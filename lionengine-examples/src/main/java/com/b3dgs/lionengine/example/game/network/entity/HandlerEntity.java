@@ -64,7 +64,7 @@ final class HandlerEntity
             if (!(mario.isDead() || entity.isDead()) && entity.collide(mario))
             {
                 // Mario hit entity if coming from its top
-                if (mario.getLocationY() - 10 > entity.getLocationY())
+                if (mario.getY() - 10 > entity.getY())
                 {
                     entity.onHurtBy(mario, 0);
                     mario.onHitThat(entity);

@@ -277,9 +277,9 @@ public class MapTileCollisionModel
      */
     private void loadTilesCollisions()
     {
-        for (int v = 0; v < map.getHeightInTile(); v++)
+        for (int v = 0; v < map.getInTileHeight(); v++)
         {
-            for (int h = 0; h < map.getWidthInTile(); h++)
+            for (int h = 0; h < map.getInTileWidth(); h++)
             {
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
@@ -321,9 +321,9 @@ public class MapTileCollisionModel
     private void applyConstraints()
     {
         final Map<Tile, Collection<CollisionFormula>> toRemove = new HashMap<>();
-        for (int v = 0; v < map.getHeightInTile(); v++)
+        for (int v = 0; v < map.getInTileHeight(); v++)
         {
-            for (int h = 0; h < map.getWidthInTile(); h++)
+            for (int h = 0; h < map.getInTileWidth(); h++)
             {
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
@@ -576,9 +576,9 @@ public class MapTileCollisionModel
     @Override
     public void render(Graphic g)
     {
-        for (int v = 0; v < map.getHeightInTile(); v++)
+        for (int v = 0; v < map.getInTileHeight(); v++)
         {
-            for (int h = 0; h < map.getWidthInTile(); h++)
+            for (int h = 0; h < map.getInTileWidth(); h++)
             {
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)

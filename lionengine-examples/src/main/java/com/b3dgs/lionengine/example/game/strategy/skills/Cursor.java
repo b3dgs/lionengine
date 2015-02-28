@@ -123,8 +123,8 @@ public final class Cursor
         if (CursorType.BOX == type)
         {
             g.setColor(boxColor);
-            g.drawRect((getScreenX() + 8) / getGridWidth() * getGridWidth() - 8,
-                    ((getScreenY() + 4) / getGridHeight() + 1) * getGridHeight() - 4 - boxHeight, boxWidth, boxHeight,
+            g.drawRect((getScreenX() + 8) / getWidth() * getWidth() - 8,
+                    ((getScreenY() + 4) / getHeight() + 1) * getHeight() - 4 - boxHeight, boxWidth, boxHeight,
                     false);
         }
     }

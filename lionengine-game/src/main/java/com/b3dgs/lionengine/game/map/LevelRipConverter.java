@@ -106,7 +106,7 @@ public final class LevelRipConverter
                     final Tile tile = searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
                     if (tile != null)
                     {
-                        map.setTile(imageMapCurrentTileX, map.getHeightInTile() - 1 - imageMapCurrentTileY, tile);
+                        map.setTile(imageMapCurrentTileX, map.getInTileHeight() - 1 - imageMapCurrentTileY, tile);
                     }
                     else
                     {

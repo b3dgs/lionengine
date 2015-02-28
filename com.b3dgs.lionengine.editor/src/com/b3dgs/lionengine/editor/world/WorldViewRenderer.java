@@ -525,8 +525,8 @@ public class WorldViewRenderer
             camera.moveLocation(1.0, vx, vy);
         }
 
-        final int maxX = Math.max(0, (map.getWidthInTile() - 1) * tw - camera.getViewWidth());
-        final int maxY = Math.max(0, map.getHeightInTile() * th - camera.getViewHeight());
+        final int maxX = Math.max(0, (map.getInTileWidth() - 1) * tw - camera.getViewWidth());
+        final int maxY = Math.max(0, map.getInTileHeight() * th - camera.getViewHeight());
         WorldViewRenderer.setCameraLimits(camera, maxX, maxY);
 
         updateRender();
@@ -666,9 +666,9 @@ public class WorldViewRenderer
         // Render selected collision
         g.setColor(WorldViewRenderer.COLOR_MOUSE_SELECTION);
         final int th = map.getTileHeight();
-        for (int ty = 0; ty < map.getHeightInTile(); ty++)
+        for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
-            for (int tx = 0; tx < map.getWidthInTile(); tx++)
+            for (int tx = 0; tx < map.getInTileWidth(); tx++)
             {
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null)

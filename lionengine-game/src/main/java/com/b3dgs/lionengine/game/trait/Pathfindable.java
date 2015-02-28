@@ -84,6 +84,14 @@ public interface Pathfindable
     /**
      * Assign a specified location. Will move automatically until reach it after this call.
      * 
+     * @param tiled The destination location in tile.
+     * @return <code>true</code> if destination reachable, <code>false</code> else.
+     */
+    boolean setDestination(Tiled tiled);
+
+    /**
+     * Assign a specified location. Will move automatically until reach it after this call.
+     * 
      * @param tx The horizontal location in tile.
      * @param ty The vertical location in tile.
      * @return <code>true</code> if destination reachable, <code>false</code> else.

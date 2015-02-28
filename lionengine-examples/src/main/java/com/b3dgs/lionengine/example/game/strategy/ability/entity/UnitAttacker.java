@@ -145,7 +145,7 @@ public abstract class UnitAttacker
     {
         if (!isMoving())
         {
-            setDestination(target.getLocationInTileX(), target.getLocationInTileY());
+            setDestination(target.getInTileX(), target.getInTileY());
         }
     }
 

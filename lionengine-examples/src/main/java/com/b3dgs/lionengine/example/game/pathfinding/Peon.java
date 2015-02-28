@@ -88,7 +88,7 @@ class Peon
     {
         if (cursor.hasClickedOnce(Mouse.RIGHT))
         {
-            pathfindable.setDestination(cursor.getLocationInTileX(), cursor.getLocationInTileY());
+            pathfindable.setDestination(cursor);
         }
         pathfindable.update(extrp);
         surface.setLocation(viewer, transformable.getX(), transformable.getY());

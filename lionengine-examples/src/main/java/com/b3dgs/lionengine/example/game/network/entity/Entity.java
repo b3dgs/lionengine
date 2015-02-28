@@ -166,7 +166,7 @@ abstract class Entity
      */
     public boolean isJumping()
     {
-        return getLocationY() > getLocationOldY();
+        return getY() > getLocationOldY();
     }
 
     /**
@@ -176,7 +176,7 @@ abstract class Entity
      */
     public boolean isFalling()
     {
-        return getLocationY() < getLocationOldY();
+        return getY() < getLocationOldY();
     }
 
     /**
@@ -271,13 +271,13 @@ abstract class Entity
     private void checkMapLimit()
     {
         final int limitLeft = 0;
-        if (getLocationX() < limitLeft)
+        if (getX() < limitLeft)
         {
             setLocationX(limitLeft);
             resetMovementSpeed();
         }
-        final int limitRight = map.getWidthInTile() * map.getTileWidth();
-        if (getLocationX() > limitRight)
+        final int limitRight = map.getInTileWidth() * map.getTileWidth();
+        if (getX() > limitRight)
         {
             setLocationX(limitRight);
             resetMovementSpeed();

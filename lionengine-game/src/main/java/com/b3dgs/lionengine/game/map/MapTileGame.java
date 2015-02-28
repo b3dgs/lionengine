@@ -268,10 +268,10 @@ public class MapTileGame
                 {
                     throw new LionEngineException(ERROR_SHEET_MISSING, tile.getSheet().toString());
                 }
-                final int th = tile.getX() / getTileWidth();
-                final int tv = tile.getY() / getTileHeight();
-                final List<Tile> list = tiles.get(tv);
-                list.set(th, tile);
+                final int tx = tile.getX() / getTileWidth();
+                final int ty = tile.getY() / getTileHeight();
+                final List<Tile> list = tiles.get(ty);
+                list.set(tx, tile);
             }
         }
     }
@@ -294,22 +294,22 @@ public class MapTileGame
         for (int s = 0; s < t; s++)
         {
             int count = 0;
-            for (int h = 0; h < x; h++)
+            for (int tx = 0; tx < x; tx++)
             {
-                for (int v = 0; v < heightInTile; v++)
+                for (int ty = 0; ty < heightInTile; ty++)
                 {
-                    if (getTile(h + s * step, v) != null)
+                    if (getTile(tx + s * step, ty) != null)
                     {
                         count++;
                     }
                 }
             }
             file.writeShort((short) count);
-            for (int h = 0; h < x; h++)
+            for (int tx = 0; tx < x; tx++)
             {
-                for (int v = 0; v < heightInTile; v++)
+                for (int ty = 0; ty < heightInTile; ty++)
                 {
-                    final Tile tile = getTile(h + s * step, v);
+                    final Tile tile = getTile(tx + s * step, ty);
                     if (tile != null)
                     {
                         saveTile(file, tile);
@@ -339,11 +339,11 @@ public class MapTileGame
         final XmlNode root = Stream.loadXml(sheetsConfig);
         final Collection<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
         final String[] files = new String[children.size()];
-        int i = 0;
+        int sheetNumber = 0;
         for (final XmlNode child : children)
         {
-            files[i] = child.getText();
-            i++;
+            files[sheetNumber] = child.getText();
+            sheetNumber++;
         }
 
         // Load sheets from list
@@ -363,8 +363,8 @@ public class MapTileGame
     {
         Check.notNull(map);
 
-        final int newWidth = widthInTile - (widthInTile - offsetX) + map.getWidthInTile();
-        final int newHeight = heightInTile - (heightInTile - offsetY) + map.getHeightInTile();
+        final int newWidth = widthInTile - (widthInTile - offsetX) + map.getInTileWidth();
+        final int newHeight = heightInTile - (heightInTile - offsetY) + map.getInTileHeight();
 
         // Adjust height
         final int sizeV = tiles.size();
@@ -373,24 +373,24 @@ public class MapTileGame
             tiles.add(new ArrayList<Tile>(newWidth));
         }
 
-        for (int v = 0; v < map.getHeightInTile(); v++)
+        for (int cty = 0; cty < map.getInTileHeight(); cty++)
         {
-            final int y = offsetY + v;
+            final int ty = offsetY + cty;
 
             // Adjust width
-            final int sizeH = tiles.get(y).size();
+            final int sizeH = tiles.get(ty).size();
             for (int h = 0; h < newWidth - sizeH; h++)
             {
-                tiles.get(y).add(null);
+                tiles.get(ty).add(null);
             }
 
-            for (int h = 0; h < map.getWidthInTile(); h++)
+            for (int ctx = 0; ctx < map.getInTileWidth(); ctx++)
             {
-                final int x = offsetX + h;
-                final Tile tile = map.getTile(h, v);
+                final int tx = offsetX + ctx;
+                final Tile tile = map.getTile(ctx, cty);
                 if (tile != null)
                 {
-                    setTile(x, y, tile);
+                    setTile(tx, ty, tile);
                 }
             }
         }
@@ -404,9 +404,9 @@ public class MapTileGame
     {
         if (tiles != null)
         {
-            for (int v = 0; v < tiles.size(); v++)
+            for (int ty = 0; ty < tiles.size(); ty++)
             {
-                final List<Tile> list = tiles.get(v);
+                final List<Tile> list = tiles.get(ty);
                 if (list != null)
                 {
                     list.clear();
@@ -447,14 +447,14 @@ public class MapTileGame
     }
 
     @Override
-    public void setTile(int h, int v, Tile tile) throws LionEngineException
+    public void setTile(int tx, int ty, Tile tile) throws LionEngineException
     {
-        Check.inferiorStrict(h, getWidthInTile());
-        Check.inferiorStrict(v, getHeightInTile());
+        Check.inferiorStrict(tx, getInTileWidth());
+        Check.inferiorStrict(ty, getInTileHeight());
 
-        tile.setX(h * tileWidth);
-        tile.setY(v * tileHeight);
-        tiles.get(v).set(h, tile);
+        tile.setX(tx * tileWidth);
+        tile.setY(ty * tileHeight);
+        tiles.get(ty).set(tx, tile);
     }
 
     @Override
@@ -527,19 +527,19 @@ public class MapTileGame
     @Override
     public int getTilesNumber()
     {
-        int n = 0;
-        for (int v = 0; v < heightInTile; v++)
+        int tilesNumber = 0;
+        for (int ty = 0; ty < heightInTile; ty++)
         {
-            for (int h = 0; h < widthInTile; h++)
+            for (int tx = 0; tx < widthInTile; tx++)
             {
-                final Tile tile = getTile(h, v);
+                final Tile tile = getTile(tx, ty);
                 if (tile != null)
                 {
-                    n++;
+                    tilesNumber++;
                 }
             }
         }
-        return n;
+        return tilesNumber;
     }
 
     @Override
@@ -555,13 +555,13 @@ public class MapTileGame
     }
 
     @Override
-    public int getWidthInTile()
+    public int getInTileWidth()
     {
         return widthInTile;
     }
 
     @Override
-    public int getHeightInTile()
+    public int getInTileHeight()
     {
         return heightInTile;
     }

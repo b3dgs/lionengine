@@ -206,8 +206,8 @@ public class ExtractorModel
     @Override
     public void setResource(Extractible entity)
     {
-        resourceLocation.setCoordinate(entity.getLocationInTileX(), entity.getLocationInTileY());
-        resourceLocation.setSize(entity.getWidthInTile(), entity.getHeightInTile());
+        resourceLocation.setCoordinate(entity.getInTileX(), entity.getInTileY());
+        resourceLocation.setSize(entity.getInTileWidth(), entity.getInTileHeight());
         resourceType = entity.getResourceType();
     }
 

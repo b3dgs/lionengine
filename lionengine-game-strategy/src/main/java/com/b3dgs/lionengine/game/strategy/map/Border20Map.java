@@ -52,7 +52,7 @@ public class Border20Map
      */
     public void create(MapTile<?> map)
     {
-        safe = new boolean[map.getHeightInTile()][map.getWidthInTile()];
+        safe = new boolean[map.getInTileHeight()][map.getInTileWidth()];
     }
 
     /**

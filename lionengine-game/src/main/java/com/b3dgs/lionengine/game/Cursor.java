@@ -23,6 +23,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
@@ -46,8 +47,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * {@link #setSyncMode(boolean)}).</li>
  * <li><code>sensibility</code>: If the cursor is not synchronized on the system pointer, it can be defined (
  * {@link #setSensibility(double, double)}).</li>
- * <li><code>grid</code>: Represents the map grid, affecting {@link #getLocationInTileX()} and
- * {@link #getLocationInTileY()}.</li>
+ * <li><code>grid</code>: Represents the map grid, affecting {@link #getInTileX()} and {@link #getInTileY()}.</li>
  * <li><code>location</code>: The internal cursor position ({@link #setLocation(int, int)}).</li>
  * <li><code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
  * </ul>
@@ -58,7 +58,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * @see Image
  */
 public class Cursor
-        implements Updatable, Renderable
+        implements Localizable, Tiled, Updatable, Renderable
 {
     /** Pointer reference. */
     private final InputDevicePointer pointer;
@@ -234,7 +234,7 @@ public class Cursor
     }
 
     /**
-     * Set the grid size. Will affect {@link #getLocationInTileX()} and {@link #getLocationInTileY()}.
+     * Set the grid size. Will affect {@link #getInTileX()} and {@link #getInTileY()}.
      * 
      * @param width The horizontal grid (> 0).
      * @param height The vertical grid (> 0).
@@ -291,48 +291,6 @@ public class Cursor
     }
 
     /**
-     * Get horizontal location.
-     * 
-     * @return The horizontal location.
-     */
-    public int getLocationX()
-    {
-        return (int) Math.round(x);
-    }
-
-    /**
-     * Get vertical location.
-     * 
-     * @return The vertical location.
-     */
-    public int getLocationY()
-    {
-        return (int) Math.round(y);
-    }
-
-    /**
-     * Get the horizontal tile pointed by the cursor (depending of the {@link #getLocationX()} and
-     * {@link #setGrid(int, int)}.
-     * 
-     * @return The horizontal tile pointed by the cursor.
-     */
-    public int getLocationInTileX()
-    {
-        return (getLocationX() + offX) / gridWidth;
-    }
-
-    /**
-     * Get the vertical tile pointed by the cursor (depending of the {@link #getLocationY()} and
-     * {@link #setGrid(int, int)}.
-     * 
-     * @return The vertical tile pointed by the cursor.
-     */
-    public int getLocationInTileY()
-    {
-        return ((viewer != null ? viewer.getHeight() : 0) - getLocationY() + offY) / gridHeight;
-    }
-
-    /**
      * Get horizontal sensibility.
      * 
      * @return The horizontal sensibility.
@@ -360,26 +318,6 @@ public class Cursor
     public boolean isSynchronized()
     {
         return sync;
-    }
-
-    /**
-     * Get the grid width.
-     * 
-     * @return The grid width.
-     */
-    public int getGridWidth()
-    {
-        return gridWidth;
-    }
-
-    /**
-     * Get the grid height.
-     * 
-     * @return The grid height.
-     */
-    public int getGridHeight()
-    {
-        return gridHeight;
     }
 
     /*
@@ -418,5 +356,61 @@ public class Cursor
     public void render(Graphic g)
     {
         surface[surfaceId].render(g);
+    }
+
+    /*
+     * Localizable
+     */
+
+    @Override
+    public double getX()
+    {
+        return x;
+    }
+
+    @Override
+    public double getY()
+    {
+        return y;
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return gridWidth;
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return gridHeight;
+    }
+
+    /*
+     * Tiled
+     */
+
+    @Override
+    public int getInTileX()
+    {
+        return ((int) x + offX) / gridWidth;
+    }
+
+    @Override
+    public int getInTileY()
+    {
+        return ((viewer != null ? viewer.getHeight() : 0) - (int) y + offY) / gridHeight;
+    }
+
+    @Override
+    public int getInTileWidth()
+    {
+        return 1;
+    }
+
+    @Override
+    public int getInTileHeight()
+    {
+        return 1;
     }
 }

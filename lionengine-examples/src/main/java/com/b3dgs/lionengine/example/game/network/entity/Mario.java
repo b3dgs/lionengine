@@ -76,7 +76,7 @@ public final class Mario
     {
         dead = true;
         resetMovementSpeed();
-        locationDie = getLocationY();
+        locationDie = getY();
         stepDie = 0;
         timerDie.start();
     }
@@ -242,7 +242,7 @@ public final class Mario
             }
 
             // Kill when fall down
-            if (getLocationY() < 0)
+            if (getY() < 0)
             {
                 kill();
             }

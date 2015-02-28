@@ -110,9 +110,9 @@ public class MapTilePathModel
     {
         final XmlNode nodePathfinding = Stream.loadXml(pathfindingConfig);
         final ConfigPathfinding config = ConfigPathfinding.create(nodePathfinding);
-        for (int ty = 0; ty < map.getHeightInTile(); ty++)
+        for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
-            for (int tx = 0; tx < map.getWidthInTile(); tx++)
+            for (int tx = 0; tx < map.getInTileWidth(); tx++)
             {
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
@@ -169,14 +169,14 @@ public class MapTilePathModel
     @Override
     public Tile getTile(Tiled tiled)
     {
-        return map.getTile(tiled.getLocationInTileX(), tiled.getLocationInTileY());
+        return map.getTile(tiled.getInTileX(), tiled.getInTileY());
     }
 
     @Override
     public boolean isBlocked(Pathfindable mover, int tx, int ty, boolean ignoreObjectsId)
     {
         // Blocked if outside map range
-        if (ty >= 0 && tx >= 0 && ty < map.getHeightInTile() && tx < map.getWidthInTile())
+        if (ty >= 0 && tx >= 0 && ty < map.getInTileHeight() && tx < map.getInTileWidth())
         {
             // Check if all objects id are non blocking
             if (!ignoreObjectsId)
@@ -228,7 +228,7 @@ public class MapTilePathModel
     @Override
     public CoordTile getFreeTileAround(Tiled tiled, int radius)
     {
-        return getFreeTileAround(tiled.getLocationInTileX(), tiled.getLocationInTileY(), radius);
+        return getFreeTileAround(tiled.getInTileX(), tiled.getInTileY(), radius);
     }
 
     @Override
@@ -260,9 +260,9 @@ public class MapTilePathModel
     @Override
     public CoordTile getClosestAvailableTile(Tiled from, Tiled to, int radius)
     {
-        return getClosestAvailableTile(from.getLocationInTileX(), from.getLocationInTileY(), from.getWidthInTile(),
-                from.getHeightInTile(), to.getLocationInTileX(), to.getLocationInTileY(), to.getWidthInTile(),
-                to.getHeightInTile(), radius);
+        return getClosestAvailableTile(from.getInTileX(), from.getInTileY(), from.getInTileWidth(),
+                from.getInTileHeight(), to.getInTileX(), to.getInTileY(), to.getInTileWidth(),
+                to.getInTileHeight(), radius);
     }
 
     @Override

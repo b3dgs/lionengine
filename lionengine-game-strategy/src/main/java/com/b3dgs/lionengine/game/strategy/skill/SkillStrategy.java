@@ -170,8 +170,8 @@ public abstract class SkillStrategy
         if (isOrder() && isActive() && okClick)
         {
             setActive(false);
-            destX = cursor.getLocationInTileX();
-            destY = cursor.getLocationInTileY();
+            destX = cursor.getInTileX();
+            destY = cursor.getInTileY();
             action(panel, cursor);
         }
     }

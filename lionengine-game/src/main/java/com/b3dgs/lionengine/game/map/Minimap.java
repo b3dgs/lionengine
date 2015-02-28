@@ -87,12 +87,12 @@ public class Minimap
     {
         if (minimap == null)
         {
-            minimap = Core.GRAPHIC.createImageBuffer(map.getWidthInTile(), map.getHeightInTile(), alpha
+            minimap = Core.GRAPHIC.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), alpha
                     ? Transparency.TRANSLUCENT : Transparency.OPAQUE);
         }
         final Graphic g = minimap.createGraphic();
-        final int vert = map.getHeightInTile();
-        final int hori = map.getWidthInTile();
+        final int vert = map.getInTileHeight();
+        final int hori = map.getInTileWidth();
 
         for (int v = 0; v < vert; v++)
         {

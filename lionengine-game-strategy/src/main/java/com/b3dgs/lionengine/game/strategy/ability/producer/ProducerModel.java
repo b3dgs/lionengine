@@ -173,7 +173,7 @@ public class ProducerModel<E extends EntityStrategy, C extends ProductionCostStr
     private void startProduction(P producible)
     {
         final E entity = user.getEntityToProduce(producible.getMedia());
-        entity.setLocation(producible.getLocationInTileX(), producible.getLocationInTileY());
+        entity.setLocation(producible.getInTileX(), producible.getInTileY());
         entity.setActive(true);
         handler.add(entity);
         inProduction = entity;

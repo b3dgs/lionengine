@@ -76,7 +76,7 @@ class Scene
         minimap.load(false);
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
-        size = map.getWidthInTile() * map.getTileWidth() - camera.getWidth();
+        size = map.getInTileWidth() * map.getTileWidth() - camera.getWidth();
         speed = 3;
     }
 

@@ -48,14 +48,14 @@ public interface MoverUsedServices
      * 
      * @return The horizontal location in tile (location on map).
      */
-    int getLocationInTileX();
+    int getInTileX();
 
     /**
      * Get vertical location in tile (location on map).
      * 
      * @return The vertical location in tile (location on map).
      */
-    int getLocationInTileY();
+    int getInTileY();
 
     /**
      * Set the orientation.
@@ -76,12 +76,12 @@ public interface MoverUsedServices
      * 
      * @return The width in tile.
      */
-    int getWidthInTile();
+    int getInTileWidth();
 
     /**
      * Get the height in tile.
      * 
      * @return The height in tile.
      */
-    int getHeightInTile();
+    int getInTileHeight();
 }

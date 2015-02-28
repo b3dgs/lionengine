@@ -151,7 +151,7 @@ public interface MapTile
 
     /**
      * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
-     * A call to {@link #append(MapTile, int, int)} at ({@link #getWidthInTile()}, {@link #getHeightInTile()}) will add
+     * A call to {@link #append(MapTile, int, int)} at ({@link #getInTileWidth()}, {@link #getInTileHeight()}) will add
      * the new map at the top-right.
      * 
      * @param map The map to append.
@@ -176,8 +176,8 @@ public interface MapTile
     /**
      * Set a tile at specified map location.
      * 
-     * @param tx The horizontal tile index location [0 - {@link #getWidthInTile()} excluded].
-     * @param ty The vertical tile index location [0 - {@link #getHeightInTile()} excluded].
+     * @param tx The horizontal tile index location [0 - {@link #getInTileWidth()} excluded].
+     * @param ty The vertical tile index location [0 - {@link #getInTileHeight()} excluded].
      * @param tile The tile reference.
      * @throws LionEngineException If outside map range.
      */
@@ -275,14 +275,14 @@ public interface MapTile
      * 
      * @return The number of horizontal tiles.
      */
-    int getWidthInTile();
+    int getInTileWidth();
 
     /**
      * Get number of vertical tiles.
      * 
      * @return The number of vertical tiles.
      */
-    int getHeightInTile();
+    int getInTileHeight();
 
     /**
      * Check if map has been created.

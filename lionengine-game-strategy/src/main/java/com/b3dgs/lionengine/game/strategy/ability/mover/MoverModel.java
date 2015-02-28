@@ -104,20 +104,20 @@ public class MoverModel
     @Override
     public void setDestination(Tiled tiled)
     {
-        setDestination(tiled.getLocationInTileX() + tiled.getWidthInTile() / 2,
-                tiled.getLocationInTileY() + tiled.getHeightInTile() / 2);
+        setDestination(tiled.getInTileX() + tiled.getInTileWidth() / 2,
+                tiled.getInTileY() + tiled.getInTileHeight() / 2);
     }
 
     @Override
     public void pointTo(int dtx, int dty)
     {
-        if (getLocationInTileY() < dty)
+        if (getInTileY() < dty)
         {
-            if (getLocationInTileX() < dtx)
+            if (getInTileX() < dtx)
             {
                 user.setOrientation(Orientation.NORTH_EAST);
             }
-            else if (getLocationInTileX() > dtx)
+            else if (getInTileX() > dtx)
             {
                 user.setOrientation(Orientation.NORTH_WEST);
             }
@@ -126,13 +126,13 @@ public class MoverModel
                 user.setOrientation(Orientation.NORTH);
             }
         }
-        else if (getLocationInTileY() > dty)
+        else if (getInTileY() > dty)
         {
-            if (getLocationInTileX() > dtx)
+            if (getInTileX() > dtx)
             {
                 user.setOrientation(Orientation.SOUTH_WEST);
             }
-            else if (getLocationInTileX() < dtx)
+            else if (getInTileX() < dtx)
             {
                 user.setOrientation(Orientation.SOUTH_EAST);
             }
@@ -143,11 +143,11 @@ public class MoverModel
         }
         else
         {
-            if (getLocationInTileX() < dtx)
+            if (getInTileX() < dtx)
             {
                 user.setOrientation(Orientation.EAST);
             }
-            else if (getLocationInTileX() > dtx)
+            else if (getInTileX() > dtx)
             {
                 user.setOrientation(Orientation.WEST);
             }
@@ -157,7 +157,7 @@ public class MoverModel
     @Override
     public void pointTo(Tiled tiled)
     {
-        pointTo(tiled.getLocationInTileX(), tiled.getLocationInTileY());
+        pointTo(tiled.getInTileX(), tiled.getInTileY());
     }
 
     @Override
@@ -290,15 +290,15 @@ public class MoverModel
     }
 
     @Override
-    public int getLocationInTileX()
+    public int getInTileX()
     {
-        return pathfindable.getLocationInTileX();
+        return pathfindable.getInTileX();
     }
 
     @Override
-    public int getLocationInTileY()
+    public int getInTileY()
     {
-        return pathfindable.getLocationInTileY();
+        return pathfindable.getInTileY();
     }
 
     /*

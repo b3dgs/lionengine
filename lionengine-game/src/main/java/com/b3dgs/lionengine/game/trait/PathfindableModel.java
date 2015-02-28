@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurer.ConfigPathfindable;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -133,8 +134,8 @@ public class PathfindableModel
         transformable = owner.getTrait(Transformable.class);
         mapPath = map.getFeature(MapTilePath.class);
         id = owner.getId();
-        final int range = (int) Math.sqrt(map.getWidthInTile() * map.getWidthInTile() + map.getHeightInTile()
-                * map.getHeightInTile());
+        final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth() + map.getInTileHeight()
+                * map.getInTileHeight());
         pathfinder = Astar.createPathFinder(map, range, true, Astar.createHeuristicClosest());
         categories = ConfigPathfindable.create(configurer);
         destinationReached = true;
@@ -341,7 +342,7 @@ public class PathfindableModel
             {
                 removeObjectId(path.getX(currentStep), path.getY(currentStep));
             }
-            path = pathfinder.findPath(this, getLocationInTileX(), getLocationInTileY(), destX, destY, false);
+            path = pathfinder.findPath(this, getInTileX(), getInTileY(), destX, destY, false);
             pathFoundChanged = false;
             currentStep = 0;
             skip = false;
@@ -559,15 +560,21 @@ public class PathfindableModel
     }
 
     @Override
+    public boolean setDestination(Tiled tiled)
+    {
+        return setDestination(tiled.getInTileX(), tiled.getInTileY());
+    }
+
+    @Override
     public boolean setDestination(int tx, int ty)
     {
-        if (getLocationInTileX() != tx || getLocationInTileY() != ty)
+        if (getInTileX() != tx || getInTileY() != ty)
         {
             // New first path, when object is not moving
             if (path == null)
             {
                 currentStep = 0;
-                path = pathfinder.findPath(this, getLocationInTileX(), getLocationInTileY(), tx, ty, true);
+                path = pathfinder.findPath(this, getInTileX(), getInTileY(), tx, ty, true);
                 pathFoundChanged = false;
                 prepareDestination(tx, ty);
                 return true;
@@ -584,9 +591,9 @@ public class PathfindableModel
     {
         if (checkObjectId(tx, ty))
         {
-            removeObjectId(getLocationInTileX(), getLocationInTileY());
+            removeObjectId(getInTileX(), getInTileY());
             transformable.setLocation(tx * map.getTileWidth(), ty * map.getTileHeight());
-            assignObjectId(getLocationInTileX(), getLocationInTileY());
+            assignObjectId(getInTileX(), getInTileY());
         }
     }
 
@@ -623,25 +630,25 @@ public class PathfindableModel
     }
 
     @Override
-    public int getLocationInTileX()
+    public int getInTileX()
     {
         return (int) transformable.getX() / map.getTileWidth();
     }
 
     @Override
-    public int getLocationInTileY()
+    public int getInTileY()
     {
         return (int) transformable.getY() / map.getTileHeight();
     }
 
     @Override
-    public int getWidthInTile()
+    public int getInTileWidth()
     {
         return transformable.getWidth() / map.getTileWidth();
     }
 
     @Override
-    public int getHeightInTile()
+    public int getInTileHeight()
     {
         return transformable.getHeight() / map.getTileHeight();
     }
@@ -659,7 +666,7 @@ public class PathfindableModel
     @Override
     public boolean isPathAvailable(int tx, int ty)
     {
-        return pathfinder.findPath(this, getLocationInTileX(), getLocationInTileY(), tx, ty, false) != null;
+        return pathfinder.findPath(this, getInTileX(), getInTileY(), tx, ty, false) != null;
     }
 
     @Override

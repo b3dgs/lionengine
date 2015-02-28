@@ -151,9 +151,9 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
         layers = new ArrayList<>(HandlerEntityStrategy.LAYERS);
         for (int i = 0; i < HandlerEntityStrategy.LAYERS; i++)
         {
-            final List<List<E>> layer = new ArrayList<>(map.getWidthInTile());
+            final List<List<E>> layer = new ArrayList<>(map.getInTileWidth());
             layers.add(layer);
-            for (int j = 0; j <= map.getHeightInTile(); j++)
+            for (int j = 0; j <= map.getInTileHeight(); j++)
             {
                 layer.add(new LinkedList<E>());
             }
@@ -189,7 +189,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
      */
     public E getEntityAt(Tiled location) throws EntityNotFoundException
     {
-        return getEntityAt(location.getLocationInTileX(), location.getLocationInTileY());
+        return getEntityAt(location.getInTileX(), location.getInTileY());
     }
 
     /**
@@ -269,8 +269,8 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
         // Allow only single assination on click
         if (entity.getPlayerId() == playerId && camera.isInside(cursor) && entity.isSelected())
         {
-            final int tx = cursor.getLocationInTileX();
-            final int ty = cursor.getLocationInTileY();
+            final int tx = cursor.getInTileX();
+            final int ty = cursor.getInTileY();
             final CoordTile coord = getPositioning(tx, ty, i);
             final int dtx = coord.getX();
             final int dty = coord.getY();
@@ -460,8 +460,8 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
         checkCursorOverEntity(entity, camera, cursor);
 
         // Update entity
-        final int oldX = entity.getLocationInTileX();
-        final int oldY = entity.getLocationInTileY();
+        final int oldX = entity.getInTileX();
+        final int oldY = entity.getInTileY();
 
         // Update after is active
         if (entity.isActive())
@@ -472,7 +472,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
         entity.update(extrp);
 
         // Notify movement
-        if (oldX != entity.getLocationInTileX() || oldY != entity.getLocationInTileY())
+        if (oldX != entity.getInTileX() || oldY != entity.getInTileY())
         {
             for (final EntityStrategyListener<E> listener : listeners)
             {
@@ -632,9 +632,9 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
      */
     private void checkEntityLayer(E entity, int oldY)
     {
-        if (oldY != entity.getLocationInTileY())
+        if (oldY != entity.getInTileY())
         {
-            entity.setMapLayer(entity.getLocationInTileY());
+            entity.setMapLayer(entity.getInTileY());
             entity.setMapLayerChanged(true);
         }
         if (entity.isLayerChanged() || entity.isMapLayerChanged())

@@ -159,22 +159,22 @@ public abstract class EntityStrategy
      */
     public void setLocation(int tx, int ty)
     {
-        for (int v = 0; v < getHeightInTile(); v++)
+        for (int v = 0; v < getInTileHeight(); v++)
         {
-            for (int h = 0; h < getWidthInTile(); h++)
+            for (int h = 0; h < getInTileWidth(); h++)
             {
-                if (map.getObjectsId(getLocationInTileX() + h, getLocationInTileY() + v).equals(getId()))
+                if (map.getObjectsId(getInTileX() + h, getInTileY() + v).equals(getId()))
                 {
-                    map.addObjectId(getLocationInTileX() + h, getLocationInTileY() + v, Integer.valueOf(0));
+                    map.addObjectId(getInTileX() + h, getInTileY() + v, Integer.valueOf(0));
                 }
             }
         }
         super.setLocation(tx * map.getTileWidth(), ty * map.getTileHeight());
-        for (int v = 0; v < getHeightInTile(); v++)
+        for (int v = 0; v < getInTileHeight(); v++)
         {
-            for (int h = 0; h < getWidthInTile(); h++)
+            for (int h = 0; h < getInTileWidth(); h++)
             {
-                map.addObjectId(getLocationInTileX() + h, getLocationInTileY() + v, getId());
+                map.addObjectId(getInTileX() + h, getInTileY() + v, getId());
             }
         }
     }
@@ -303,15 +303,15 @@ public abstract class EntityStrategy
     {
         if (fromCenter)
         {
-            return UtilMath.getDistance(getLocationInTileX() + getWidthInTile() / 2, getLocationInTileY()
-                    + getHeightInTile() / 2, tx + tw / 2, ty + th / 2);
+            return UtilMath.getDistance(getInTileX() + getInTileWidth() / 2, getInTileY()
+                    + getInTileHeight() / 2, tx + tw / 2, ty + th / 2);
         }
         int min = Integer.MAX_VALUE;
         for (int h = tx; h < tx + tw; h++)
         {
             for (int v = ty; v < ty + th; v++)
             {
-                final int dist = UtilMath.getDistance(getLocationInTileX(), getLocationInTileY(), h, v);
+                final int dist = UtilMath.getDistance(getInTileX(), getInTileY(), h, v);
                 if (dist < min)
                 {
                     min = dist;
@@ -330,8 +330,8 @@ public abstract class EntityStrategy
      */
     public int getDistanceInTile(Tiled tiled, boolean fromCenter)
     {
-        return getDistance(tiled.getLocationInTileX(), tiled.getLocationInTileY(), tiled.getWidthInTile(),
-                tiled.getHeightInTile(), fromCenter);
+        return getDistance(tiled.getInTileX(), tiled.getInTileY(), tiled.getInTileWidth(),
+                tiled.getInTileHeight(), fromCenter);
     }
 
     /**
@@ -495,9 +495,9 @@ public abstract class EntityStrategy
      */
     protected void removeRef()
     {
-        for (int v = getLocationInTileY() - 1; v <= getLocationInTileY() + getHeightInTile() + 1; v++)
+        for (int v = getInTileY() - 1; v <= getInTileY() + getInTileHeight() + 1; v++)
         {
-            for (int h = getLocationInTileX() - 1; h <= getLocationInTileX() + getWidthInTile() + 1; h++)
+            for (int h = getInTileX() - 1; h <= getInTileX() + getInTileWidth() + 1; h++)
             {
                 try
                 {
@@ -537,7 +537,7 @@ public abstract class EntityStrategy
         if (!mapLayerChanged)
         {
             mapLayerOld = layer;
-            mapLayer = UtilMath.fixBetween(layer, 0, map.getHeightInTile());
+            mapLayer = UtilMath.fixBetween(layer, 0, map.getInTileHeight());
             mapLayerChanged = true;
         }
     }
@@ -645,25 +645,25 @@ public abstract class EntityStrategy
      */
 
     @Override
-    public int getLocationInTileX()
+    public int getInTileX()
     {
         return (int) (getX() / map.getTileWidth());
     }
 
     @Override
-    public int getLocationInTileY()
+    public int getInTileY()
     {
         return (int) (getY() / map.getTileHeight());
     }
 
     @Override
-    public int getWidthInTile()
+    public int getInTileWidth()
     {
         return getWidth() / map.getTileWidth();
     }
 
     @Override
-    public int getHeightInTile()
+    public int getInTileHeight()
     {
         return getHeight() / map.getTileHeight();
     }

@@ -81,8 +81,8 @@ public abstract class FogOfWarStrategy<T extends Tile>
     public void create(MapTile<T> map)
     {
         this.map = map;
-        widthInTile = map.getWidthInTile();
-        heightInTile = map.getHeightInTile();
+        widthInTile = map.getInTileWidth();
+        heightInTile = map.getInTileHeight();
         tileWidth = map.getTileWidth();
         tileHeight = map.getTileHeight();
         visited = new Border20[heightInTile][widthInTile];
@@ -203,10 +203,10 @@ public abstract class FogOfWarStrategy<T extends Tile>
      */
     public boolean isFogged(EntityStrategy entity)
     {
-        final int tx = entity.getLocationInTileX();
-        final int ty = entity.getLocationInTileY();
-        final int tw = entity.getWidthInTile() - 1;
-        final int th = entity.getHeightInTile() - 1;
+        final int tx = entity.getInTileX();
+        final int ty = entity.getInTileY();
+        final int tw = entity.getInTileWidth() - 1;
+        final int th = entity.getInTileHeight() - 1;
 
         for (int x = tx; x <= tx + tw; x++)
         {
@@ -252,10 +252,10 @@ public abstract class FogOfWarStrategy<T extends Tile>
      */
     private void updateEntityFov(EntityStrategy entity)
     {
-        final int tx = entity.getLocationInTileX();
-        final int ty = entity.getLocationInTileY();
-        final int tw = entity.getWidthInTile() - 1;
-        final int th = entity.getHeightInTile() - 1;
+        final int tx = entity.getInTileX();
+        final int ty = entity.getInTileY();
+        final int tw = entity.getInTileWidth() - 1;
+        final int th = entity.getInTileHeight() - 1;
         final int ray = entity.getFov();
 
         if (hideMap)

@@ -29,26 +29,26 @@ public interface Tiled
      * 
      * @return The horizontal tile location.
      */
-    int getLocationInTileX();
+    int getInTileX();
 
     /**
      * Get vertical tile location.
      * 
      * @return The vertical tile location.
      */
-    int getLocationInTileY();
+    int getInTileY();
 
     /**
      * Get the width in tile.
      * 
      * @return The width in tile.
      */
-    int getWidthInTile();
+    int getInTileWidth();
 
     /**
      * Get the height in tile.
      * 
      * @return The height in tile.
      */
-    int getHeightInTile();
+    int getInTileHeight();
 }

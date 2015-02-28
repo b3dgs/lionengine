@@ -153,7 +153,7 @@ class Scene
     public void render(Graphic g)
     {
         map.render(g);
-        renderTileInfo(g, cursor.getLocationInTileX(), cursor.getLocationInTileY());
+        renderTileInfo(g, cursor.getInTileX(), cursor.getInTileY());
         cursor.render(g);
     }
 

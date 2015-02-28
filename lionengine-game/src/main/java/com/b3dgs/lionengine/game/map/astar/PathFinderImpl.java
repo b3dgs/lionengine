@@ -66,11 +66,11 @@ final class PathFinderImpl
         this.maxSearchDistance = maxSearchDistance;
         this.allowDiagMovement = allowDiagMovement;
         mapPath = map.getFeature(MapTilePath.class);
-        nodes = new Node[map.getHeightInTile()][map.getWidthInTile()];
+        nodes = new Node[map.getInTileHeight()][map.getInTileWidth()];
 
-        for (int ty = 0; ty < map.getHeightInTile(); ty++)
+        for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
-            for (int tx = 0; tx < map.getWidthInTile(); tx++)
+            for (int tx = 0; tx < map.getInTileWidth(); tx++)
             {
                 nodes[ty][tx] = new Node(tx, ty);
             }
@@ -117,7 +117,7 @@ final class PathFinderImpl
      */
     protected boolean isValidLocation(Pathfindable mover, int stx, int sty, int dtx, int dty, boolean ignoreRef)
     {
-        boolean invalid = dtx < 0 || dty < 0 || dtx >= map.getWidthInTile() || dty >= map.getHeightInTile();
+        boolean invalid = dtx < 0 || dty < 0 || dtx >= map.getInTileWidth() || dty >= map.getInTileHeight();
 
         if (!invalid && (stx != dtx || sty != dty))
         {
@@ -295,7 +295,7 @@ final class PathFinderImpl
         }
         if (mapPath.isBlocked(mover, dtx, dty, ignoreRef))
         {
-            final CoordTile tile = mapPath.getClosestAvailableTile(dtx, dty, stx, sty, map.getHeightInTile());
+            final CoordTile tile = mapPath.getClosestAvailableTile(dtx, dty, stx, sty, map.getInTileHeight());
             if (tile == null)
             {
                 return null;

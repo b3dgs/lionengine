@@ -97,25 +97,25 @@ public class Producible<E extends EntityStrategy, C extends ProductionCostStrate
      */
 
     @Override
-    public int getLocationInTileX()
+    public int getInTileX()
     {
         return tx;
     }
 
     @Override
-    public int getLocationInTileY()
+    public int getInTileY()
     {
         return ty;
     }
 
     @Override
-    public int getWidthInTile()
+    public int getInTileWidth()
     {
         return tw;
     }
 
     @Override
-    public int getHeightInTile()
+    public int getInTileHeight()
     {
         return th;
     }

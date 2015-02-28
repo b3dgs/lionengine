@@ -88,8 +88,8 @@ public class CursorTest
         cursor.update(1.0);
 
         cursor.setLocation(10, 20);
-        Assert.assertEquals(10, cursor.getLocationX());
-        Assert.assertEquals(20, cursor.getLocationY());
+        Assert.assertEquals(10.0, cursor.getX(), 0.000001);
+        Assert.assertEquals(20.0, cursor.getY(), 0.000001);
         Assert.assertEquals(1.0, cursor.getSensibilityHorizontal(), 0.000001);
         Assert.assertEquals(2.0, cursor.getSensibilityVertical(), 0.000001);
         cursor.setRenderingOffset(0, 0);

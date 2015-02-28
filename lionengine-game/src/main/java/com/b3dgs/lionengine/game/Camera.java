@@ -208,8 +208,8 @@ public class Camera
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        final int top = UtilMath.fixBetween(map.getHeightInTile() * th - height, 0, Integer.MAX_VALUE);
-        final int right = map.getWidthInTile() * tw - width;
+        final int top = UtilMath.fixBetween(map.getInTileHeight() * th - height, 0, Integer.MAX_VALUE);
+        final int right = map.getInTileWidth() * tw - width;
         mapUpLimit = top;
         mapLeftLimit = 0;
         mapRightLimit = right;
