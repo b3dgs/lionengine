@@ -113,4 +113,10 @@ class StateWalk
             }
         }
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return MarioState.WALK;
+    }
 }

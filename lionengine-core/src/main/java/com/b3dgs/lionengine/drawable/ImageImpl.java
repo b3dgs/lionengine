@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.drawable;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
@@ -129,9 +130,9 @@ class ImageImpl
     }
 
     @Override
-    public void setLocation(Viewer viewer, double x, double y)
+    public void setLocation(Viewer viewer, Localizable localizable)
     {
-        setLocation(viewer.getViewpointX(x), viewer.getViewpointY(y));
+        setLocation(viewer.getViewpointX(localizable.getX()), viewer.getViewpointY(localizable.getY()));
     }
 
     @Override

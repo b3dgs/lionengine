@@ -83,6 +83,13 @@ final class RectangleImpl
     }
 
     @Override
+    public void translate(double vx, double vy)
+    {
+        x += vx;
+        y += vy;
+    }
+
+    @Override
     public void set(double x, double y, double w, double h)
     {
         this.x = x;

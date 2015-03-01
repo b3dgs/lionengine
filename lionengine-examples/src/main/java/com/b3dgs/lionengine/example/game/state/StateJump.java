@@ -95,4 +95,10 @@ class StateJump
             mirrorable.mirror(movement.getDirectionHorizontal() < 0 ? Mirror.HORIZONTAL : Mirror.NONE);
         }
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return MarioState.JUMP;
+    }
 }

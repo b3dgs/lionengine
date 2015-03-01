@@ -131,4 +131,10 @@ class StateJump
             }
         }
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return EntityState.JUMP;
+    }
 }

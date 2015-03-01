@@ -116,4 +116,10 @@ class StateIdle
             canJump = true;
         }
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return EntityState.IDLE;
+    }
 }

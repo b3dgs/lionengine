@@ -73,10 +73,9 @@ public interface Image
      * Set the location on screen from a viewer viewpoint.
      * 
      * @param viewer The viewer reference.
-     * @param x The horizontal location.
-     * @param y The vertical location.
+     * @param localizable The localizable reference.
      */
-    void setLocation(Viewer viewer, double x, double y);
+    void setLocation(Viewer viewer, Localizable localizable);
 
     /**
      * Get the surface which represents the image.

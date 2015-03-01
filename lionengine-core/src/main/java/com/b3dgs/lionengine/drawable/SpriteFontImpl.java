@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
@@ -224,9 +225,9 @@ final class SpriteFontImpl
     }
 
     @Override
-    public void setLocation(Viewer viewer, double x, double y)
+    public void setLocation(Viewer viewer, Localizable localizable)
     {
-        surface.setLocation(viewer, x, y);
+        surface.setLocation(viewer, localizable);
     }
 
     @Override

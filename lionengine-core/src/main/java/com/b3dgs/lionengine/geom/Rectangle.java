@@ -50,6 +50,14 @@ public interface Rectangle
     boolean contains(int x, int y);
 
     /**
+     * Translate rectangle using specified vector.
+     * 
+     * @param vx The horizontal translation vector.
+     * @param vy The vertical translation vector.
+     */
+    void translate(double vx, double vy);
+
+    /**
      * Sets the location and size.
      * 
      * @param x The horizontal location.

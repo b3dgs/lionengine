@@ -73,4 +73,10 @@ class StateDieGoomba
             entity.destroy();
         }
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return EntityState.DEATH_GOOMBA;
+    }
 }

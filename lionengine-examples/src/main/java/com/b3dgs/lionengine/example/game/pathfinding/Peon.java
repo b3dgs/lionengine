@@ -72,7 +72,6 @@ class Peon
 
         pathfindable = new PathfindableModel(this, SETUP.getConfigurer(), services);
         addTrait(pathfindable);
-        pathfindable.setRenderDebug(true);
 
         viewer = services.get(Viewer.class);
         cursor = services.get(Cursor.class);
@@ -92,7 +91,7 @@ class Peon
             pathfindable.setDestination(cursor);
         }
         pathfindable.update(extrp);
-        surface.setLocation(viewer, transformable.getX(), transformable.getY());
+        surface.setLocation(viewer, transformable);
     }
 
     @Override

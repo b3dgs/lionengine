@@ -85,4 +85,10 @@ class StateIdle
     {
         // Nothing to do
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return MarioState.IDLE;
+    }
 }

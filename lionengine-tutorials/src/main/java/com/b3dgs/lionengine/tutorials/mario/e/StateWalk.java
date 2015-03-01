@@ -162,4 +162,10 @@ class StateWalk
             canJump = true;
         }
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return EntityState.WALK;
+    }
 }

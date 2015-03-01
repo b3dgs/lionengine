@@ -108,6 +108,7 @@ public interface Pathfindable
 
     /**
      * Render additional information on path rendering with {@link #render(com.b3dgs.lionengine.core.Graphic)}.
+     * (Movement cost for each tile is displayed).
      * 
      * @param debug <code>true</code> to show debug information relative to path, <code>false</code> else.
      */

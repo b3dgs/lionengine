@@ -197,7 +197,7 @@ class Entity
      */
     public boolean isState(EntityState state)
     {
-        return factory.getState(state) == this.state;
+        return this.state.getState() == state;
     }
 
     /**
@@ -292,7 +292,7 @@ class Entity
     @Override
     public void render(Graphic g)
     {
-        surface.setLocation(camera, transformable.getX(), transformable.getY());
+        surface.setLocation(camera, transformable);
         surface.render(g);
     }
 

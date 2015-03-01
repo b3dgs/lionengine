@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.map;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Viewer;
@@ -133,9 +134,9 @@ public class Minimap
     }
 
     @Override
-    public void setLocation(Viewer viewer, double x, double y)
+    public void setLocation(Viewer viewer, Localizable localizable)
     {
-        setLocation(viewer.getViewpointX(x), viewer.getViewpointY(y));
+        setLocation(viewer.getViewpointX(localizable.getX()), viewer.getViewpointY(localizable.getY()));
     }
 
     @Override

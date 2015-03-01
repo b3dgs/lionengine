@@ -91,4 +91,10 @@ class StateIdle
             animator.play(animation);
         }
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return MarioState.IDLE;
+    }
 }

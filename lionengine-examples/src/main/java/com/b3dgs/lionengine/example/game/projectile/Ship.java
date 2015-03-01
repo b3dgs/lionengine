@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
@@ -97,7 +96,6 @@ class Ship
 
         final ConfigFrames config = ConfigFrames.create(setup.getConfigurer());
         sprite = Drawable.loadSpriteAnimated(setup.surface, config.getHorizontal(), config.getVertical());
-        collidable.addCollision(ConfigCollisions.create(setup.getConfigurer()).getCollision("default"));
 
         sprite.setFrame(3);
         sprite.setOrigin(Origin.MIDDLE);
@@ -107,7 +105,7 @@ class Ship
 
         weapon = factory.create(Weapon.PULSE_CANNON);
         weapon.setOwner(this);
-        weapon.setOffset(10, -12);
+        weapon.setOffset(6, -6);
         handler.add(weapon);
 
         x = 64;
@@ -163,7 +161,7 @@ class Ship
         pointTarget();
         location += speed;
         transformable.setLocation(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
-        sprite.setLocation(viewer.getViewpointX(transformable.getX()), viewer.getViewpointY(transformable.getY()));
+        sprite.setLocation(viewer, transformable);
         weapon.fire(target);
         collidable.update(extrp);
     }

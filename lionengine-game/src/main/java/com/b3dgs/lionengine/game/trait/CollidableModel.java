@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.geom.Geom;
-import com.b3dgs.lionengine.geom.Polygon;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
@@ -56,8 +55,6 @@ public class CollidableModel
     private final Collection<Collision> collisions;
     /** The ignored collidables. */
     private final Collection<Collidable> ignored;
-    /** Collision representation. */
-    private final Map<Collision, Polygon> polygons;
     /** Temp bounding box from polygon. */
     private final Map<Collision, Rectangle> boxs;
     /** Origin used. */
@@ -96,7 +93,6 @@ public class CollidableModel
         listeners = new ArrayList<>();
         collisions = new ArrayList<>();
         ignored = new HashSet<>();
-        polygons = new HashMap<>();
         boxs = new HashMap<>();
         transformable = owner.getTrait(Transformable.class);
         viewer = services.get(Viewer.class);
@@ -123,7 +119,6 @@ public class CollidableModel
     public void addCollision(Collision collision)
     {
         collisions.add(collision);
-        polygons.put(collision, Geom.createPolygon());
     }
 
     @Override
@@ -139,35 +134,28 @@ public class CollidableModel
         {
             for (final Collision collision : collisions)
             {
-                final double xCur = transformable.getX();
-                final double yCur = transformable.getY();
-                final double xOld = transformable.getOldX();
-                final double yOld = transformable.getOldY();
-
                 Mirror mirror = Mirror.NONE;
                 if (collision.hasMirror() && transformable instanceof Mirrorable)
                 {
                     mirror = ((Mirrorable) transformable).getMirror();
                 }
                 final int offsetX = mirror == Mirror.HORIZONTAL ? -collision.getOffsetX() : collision.getOffsetX();
-                final int offsetY = collision.getOffsetY();
+                final int offsetY = mirror == Mirror.VERTICAL ? -collision.getOffsetY() : collision.getOffsetY();
                 final int width = collision.getWidth();
                 final int height = collision.getHeight();
 
-                final Polygon coll = polygons.get(collision);
-                coll.reset();
-
-                coll.addPoint(origin.getX(xCur + offsetX, width), origin.getY(yCur + offsetY, height));
-                coll.addPoint(origin.getX(xCur + offsetX, width), origin.getY(yCur + offsetY + height, height));
-                coll.addPoint(origin.getX(xCur + offsetX + width, width), origin.getY(yCur + offsetY + height, height));
-                coll.addPoint(origin.getX(xCur + offsetX + width, width), origin.getY(yCur + offsetY, height));
-
-                coll.addPoint(origin.getX(xOld + offsetX, width), origin.getY(yOld + offsetY, height));
-                coll.addPoint(origin.getX(xOld + offsetX, width), origin.getY(yOld + offsetY + height, height));
-                coll.addPoint(origin.getX(xOld + offsetX + width, width), origin.getY(yOld + offsetY + height, height));
-                coll.addPoint(origin.getX(xOld + offsetX + width, width), origin.getY(yOld + offsetY, height));
-
-                boxs.put(collision, coll.getRectangle());
+                final double x = origin.getX(transformable.getOldX() + offsetX, width);
+                final double y = origin.getY(transformable.getOldY() + offsetY, height);
+                if (boxs.containsKey(collision))
+                {
+                    final Rectangle rectangle = boxs.get(collision);
+                    rectangle.set(x, y, width, height);
+                }
+                else
+                {
+                    final Rectangle rectangle = Geom.createRectangle(x, y, width, height);
+                    boxs.put(collision, rectangle);
+                }
             }
         }
     }
@@ -179,13 +167,28 @@ public class CollidableModel
         {
             for (final Map.Entry<Collision, Rectangle> current : boxs.entrySet())
             {
-                final Rectangle box = current.getValue();
-                for (final Rectangle other : collidable.getCollisionBounds())
+                final Collision collision = current.getKey();
+                final Rectangle rectangle = current.getValue();
+
+                final double sh = rectangle.getX();
+                final double sv = rectangle.getY();
+                final double dh = origin.getX(transformable.getX() + collision.getOffsetX(), rectangle.getWidth()) - sh;
+                final double dv = origin.getY(transformable.getY() + collision.getOffsetY(), rectangle.getHeight())
+                        - sv;
+                final double norm = Math.sqrt(dh * dh + dv * dv);
+                final double sx = dh / norm;
+                final double sy = dv / norm;
+
+                for (int count = 0; count < norm; count++)
                 {
-                    if (box.intersects(other) || box.contains(other))
+                    for (final Rectangle other : collidable.getCollisionBounds())
                     {
-                        return current.getKey();
+                        if (rectangle.intersects(other) || rectangle.contains(other))
+                        {
+                            return current.getKey();
+                        }
                     }
+                    rectangle.translate(sx, sy);
                 }
             }
         }
@@ -197,11 +200,15 @@ public class CollidableModel
     {
         if (showCollision)
         {
-            for (final Rectangle box : boxs.values())
+            for (final Map.Entry<Collision, Rectangle> current : boxs.entrySet())
             {
-                final double x = viewer.getViewpointX(box.getX());
-                final double y = viewer.getViewpointY(box.getY() + box.getHeight());
-                g.drawRect((int) x, (int) y, (int) box.getWidth(), (int) box.getHeight(), false);
+                final Collision collision = current.getKey();
+
+                final int x = (int) origin.getX(viewer.getViewpointX(transformable.getX() + collision.getOffsetX()),
+                        collision.getWidth());
+                final int y = (int) origin.getY(viewer.getViewpointY(transformable.getY() + collision.getOffsetY()),
+                        collision.getHeight());
+                g.drawRect(x, y, collision.getWidth(), collision.getHeight(), false);
             }
         }
     }

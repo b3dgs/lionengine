@@ -116,4 +116,10 @@ class StateJump
             jump.setDirection(Direction.ZERO);
         }
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return MarioState.JUMP;
+    }
 }

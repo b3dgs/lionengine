@@ -198,7 +198,7 @@ class Mario
         }
         surface.setMirror(mirrorable.getMirror());
         surface.update(extrp);
-        surface.setLocation(camera, transformable.getX(), transformable.getY());
+        surface.setLocation(camera, transformable);
     }
 
     @Override

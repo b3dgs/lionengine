@@ -70,4 +70,10 @@ class StateDieMario
     {
         // Nothing to do
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return EntityState.DEATH_MARIO;
+    }
 }

@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
@@ -261,9 +262,9 @@ class SpriteImpl
     }
 
     @Override
-    public final void setLocation(Viewer viewer, double x, double y)
+    public final void setLocation(Viewer viewer, Localizable localizable)
     {
-        setLocation(viewer.getViewpointX(x), viewer.getViewpointY(y));
+        setLocation(viewer.getViewpointX(localizable.getX()), viewer.getViewpointY(localizable.getY()));
     }
 
     @Override

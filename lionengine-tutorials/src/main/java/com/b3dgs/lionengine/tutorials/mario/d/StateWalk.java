@@ -142,4 +142,10 @@ class StateWalk
             collide = true;
         }
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return MarioState.WALK;
+    }
 }

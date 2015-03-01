@@ -100,7 +100,7 @@ class Mario
         collidable = new CollidableModel(this, SETUP.getConfigurer(), services);
         addTrait(collidable);
         collidable.setCollisionVisibility(true);
-        collidable.setOrigin(Origin.CENTER_TOP);
+        collidable.setOrigin(Origin.CENTER_BOTTOM);
 
         body.setVectors(movement, jump);
         body.setDesiredFps(services.get(Integer.class).intValue());
@@ -146,7 +146,7 @@ class Mario
             body.resetGravity();
         }
         camera.follow(transformable);
-        surface.setLocation(camera, transformable.getX(), transformable.getY());
+        surface.setLocation(camera, transformable);
     }
 
     @Override

@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -83,8 +82,6 @@ class Projectile
 
         launchable = new LaunchableModel(this);
         addTrait(launchable);
-
-        collidable.addCollision(ConfigCollisions.create(setup.getConfigurer()).getCollision("default"));
     }
 
     @Override
@@ -92,7 +89,7 @@ class Projectile
     {
         launchable.update(extrp);
         collidable.update(extrp);
-        sprite.setLocation(viewer.getViewpointX(transformable.getX()), viewer.getViewpointY(transformable.getY()));
+        sprite.setLocation(viewer, transformable);
         if (!viewer.isViewable(transformable, 0, 0))
         {
             destroy();

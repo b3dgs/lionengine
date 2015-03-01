@@ -61,4 +61,11 @@ public interface State
      * Called by the {@link StateFactory} when entering in the state.
      */
     void enter();
+
+    /**
+     * Get the corresponding state enum value.
+     * 
+     * @return The state enum value.
+     */
+    Enum<?> getState();
 }

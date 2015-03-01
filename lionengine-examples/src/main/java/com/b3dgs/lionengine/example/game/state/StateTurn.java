@@ -90,4 +90,10 @@ class StateTurn
     {
         movement.setDestination(side * 2, 0);
     }
+
+    @Override
+    public Enum<?> getState()
+    {
+        return MarioState.TURN;
+    }
 }
