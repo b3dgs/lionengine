@@ -20,27 +20,34 @@ package com.b3dgs.lionengine.game.map;
 import java.util.Arrays;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.trait.Fovable;
 
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).
+ * <p>
+ * Usage example:
+ * </p>
+ * <ul>
+ * <li>{@link #setTilesheet(SpriteTiled, SpriteTiled)}</li>
+ * <li>{@link #setEnabled(boolean, boolean)}</li>
+ * <li>{@link #create(MapTile, MapTileRenderer)} - Default or external {@link MapTileRenderer} must be set here (could
+ * be the {@link MapTile} or another one).</li>
+ * <li>{@link MapTile#setTileRenderer(MapTileRenderer)} - Fog of war is a {@link MapTileRenderer} which will not
+ * override the existing map renderer, but decorate it by rendering fog after the old one.</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FogOfWar
-        implements Renderable
+        implements MapTileRenderer
 {
     /** Fog map. */
     private final Border20Map border20Map;
-    /** Viewer reference. */
-    private final Viewer viewer;
-    /** Map reference. */
-    private MapTile map;
+    /** Map tile renderer. */
+    private MapTileRenderer renderer;
     /** Fog black tile. */
     private SpriteTiled hideTiles;
     /** Fog gray tiles. */
@@ -57,75 +64,54 @@ public class FogOfWar
     private int widthInTile;
     /** Fog height in tile. */
     private int heightInTile;
-    /** Fog tile width. */
-    private int tileWidth;
-    /** Fog tile height. */
-    private int tileHeight;
-    /** Fog owner id. */
-    private int playerId;
 
     /**
      * Create a fog of war.
-     * 
-     * @param viewer The viewer reference.
      */
-    public FogOfWar(Viewer viewer)
+    public FogOfWar()
     {
-        this.viewer = viewer;
         border20Map = new Border20Map(false);
         hideMap = false;
         fogMap = false;
-        playerId = -1;
     }
 
     /**
      * Create a fog of war from a map.
      * 
      * @param map The map reference.
+     * @param renderer The renderer reference.
      */
-    public void create(MapTile map)
+    public void create(MapTile map, MapTileRenderer renderer)
     {
-        this.map = map;
+        this.renderer = renderer;
         widthInTile = map.getInTileWidth();
         heightInTile = map.getInTileHeight();
-        tileWidth = map.getTileWidth();
-        tileHeight = map.getTileHeight();
         visited = new Border20[heightInTile][widthInTile];
         fog = new Border20[heightInTile][widthInTile];
         border20Map.create(map);
 
-        for (int y = 0; y < heightInTile; y++)
+        for (int ty = 0; ty < heightInTile; ty++)
         {
-            for (int x = 0; x < widthInTile; x++)
+            for (int tx = 0; tx < widthInTile; tx++)
             {
                 if (hideMap)
                 {
-                    visited[y][x] = Border20.NONE;
+                    visited[ty][tx] = Border20.NONE;
                 }
                 else
                 {
-                    visited[y][x] = Border20.CENTER;
+                    visited[ty][tx] = Border20.CENTER;
                 }
                 if (fogMap)
                 {
-                    fog[y][x] = Border20.NONE;
+                    fog[ty][tx] = Border20.NONE;
                 }
                 else
                 {
-                    fog[y][x] = Border20.CENTER;
+                    fog[ty][tx] = Border20.CENTER;
                 }
             }
         }
-    }
-
-    /**
-     * Set player id, to know which player has to be fogged.
-     * 
-     * @param id The player id
-     */
-    public void setPlayerId(int id)
-    {
-        playerId = id;
     }
 
     /**
@@ -144,10 +130,7 @@ public class FogOfWar
         }
         for (final Fovable fovable : fovables)
         {
-            // if (playerId == fovable.getPlayerId())
-            // {
-            updateEntityFov(fovable);
-            // }
+            updateFov(fovable);
         }
     }
 
@@ -157,19 +140,19 @@ public class FogOfWar
      * @param hide The hide tilesheet.
      * @param fog The fog tilesheet.
      */
-    public void setFogTiles(SpriteTiled hide, SpriteTiled fog)
+    public void setTilesheet(SpriteTiled hide, SpriteTiled fog)
     {
         hideTiles = hide;
         fogTiles = fog;
     }
 
     /**
-     * Set fog of war state.
+     * Set fog of war enabled state.
      * 
      * @param hide <code>true</code> to enable map hiding, <code>false</code> else.
      * @param fog <code>true</code> to enable fog map, <code>false</code> else.
      */
-    public void setFogOfWar(boolean hide, boolean fog)
+    public void setEnabled(boolean hide, boolean fog)
     {
         hideMap = hide;
         fogMap = fog;
@@ -186,7 +169,7 @@ public class FogOfWar
     }
 
     /**
-     * Check if the entity is current hidden by the fog of war.
+     * Check if the tile is currently hidden by the fog of war.
      * 
      * @param tiled The tiled to check.
      * @return <code>true</code> if hidden, <code>false</code> else.
@@ -198,11 +181,11 @@ public class FogOfWar
         final int tw = tiled.getInTileWidth() - 1;
         final int th = tiled.getInTileHeight() - 1;
 
-        for (int x = tx; x <= tx + tw; x++)
+        for (int ctx = tx; ctx <= tx + tw; ctx++)
         {
-            for (int y = ty; y <= ty + th; y++)
+            for (int cty = ty; cty <= ty + th; cty++)
             {
-                if (isFogged(x, y) && isVisited(x, y))
+                if (isFogged(ctx, cty) && isVisited(ctx, cty))
                 {
                     return false;
                 }
@@ -240,7 +223,7 @@ public class FogOfWar
      * 
      * @param fovable The fovable reference.
      */
-    private void updateEntityFov(Fovable fovable)
+    private void updateFov(Fovable fovable)
     {
         final int tx = fovable.getInTileX();
         final int ty = fovable.getInTileY();
@@ -259,90 +242,31 @@ public class FogOfWar
         }
     }
 
-    /**
-     * Render map from starting position, showing a specified area, including a specific offset.
-     * 
-     * @param g The graphic output.
-     * @param screenHeight The view height (rendering start from bottom).
-     * @param sx The starting x (view real location x).
-     * @param sy The starting y (view real location y).
-     * @param inTileWidth The number of rendered tiles in width.
-     * @param inTileHeight The number of rendered tiles in height.
-     * @param offsetX The horizontal map offset (usually used as safe area to avoid negative tiles).
-     * @param offsetY The vertical map offset (usually used as safe area to avoid negative tiles).
-     */
-    private void render(Graphic g, int screenHeight, int sx, int sy, int inTileWidth, int inTileHeight, int offsetX,
-            int offsetY)
-    {
-        // Each vertical tiles
-        for (int v = 0; v <= inTileHeight; v++)
-        {
-            final int ty = v + (sy - offsetY) / tileHeight;
-            if (!(ty < 0 || ty >= heightInTile))
-            {
-                // Each horizontal tiles
-                for (int h = 0; h <= inTileWidth; h++)
-                {
-                    final int tx = h + (sx - offsetX) / tileWidth;
-                    if (!(tx < 0 || tx >= widthInTile))
-                    {
-                        final Tile tile = map.getTile(tx, ty);
-                        if (tile != null)
-                        {
-                            renderFogTile(g, screenHeight, sx, sy, tx, ty, tile);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Render a specific fog tile.
-     * 
-     * @param g The graphic output.
-     * @param screenHeight The view height (rendering start from bottom).
-     * @param sx The starting x (view real location x).
-     * @param sy The starting y (view real location y).
-     * @param tx The tile location x.
-     * @param ty The tile location y.
-     * @param tile The tile to render.
-     */
-    private void renderFogTile(Graphic g, int screenHeight, int sx, int sy, int tx, int ty, Tile tile)
-    {
-        final int x = tile.getX() - sx;
-        final int y = -tile.getY() - tile.getHeight() + sy + screenHeight;
-
-        if (!(tx < 0 || ty < 0))
-        {
-            final Border20 vid = border20Map.get(visited, tx, ty);
-            final Border20 fid = border20Map.get(fog, tx, ty);
-
-            if (fogMap && Border20.NONE != vid)
-            {
-                fogTiles.setLocation(x, y);
-                fogTiles.setTile(fid.ordinal());
-                fogTiles.render(g);
-            }
-
-            if (hideMap)
-            {
-                hideTiles.setLocation(x, y);
-                hideTiles.setTile(vid.ordinal());
-                hideTiles.render(g);
-            }
-        }
-    }
-
     /*
-     * Renderable
+     * MapTileRenderer
      */
 
     @Override
-    public void render(Graphic g)
+    public void renderTile(Graphic g, Tile tile, int x, int y)
     {
-        render(g, viewer.getHeight(), (int) viewer.getX(), (int) viewer.getY(),
-                (int) Math.ceil(viewer.getWidth() / (double) tileWidth),
-                (int) Math.ceil(viewer.getHeight() / (double) tileHeight), -viewer.getViewX(), viewer.getViewY());
+        renderer.renderTile(g, tile, x, y);
+
+        final int tx = tile.getX() / tile.getWidth();
+        final int ty = tile.getY() / tile.getHeight();
+        final Border20 vid = border20Map.get(visited, tx, ty);
+        final Border20 fid = border20Map.get(fog, tx, ty);
+
+        if (fogMap && Border20.NONE != vid)
+        {
+            fogTiles.setLocation(x, y);
+            fogTiles.setTile(fid.ordinal());
+            fogTiles.render(g);
+        }
+        if (hideMap)
+        {
+            hideTiles.setLocation(x, y);
+            hideTiles.setTile(vid.ordinal());
+            hideTiles.render(g);
+        }
     }
 }

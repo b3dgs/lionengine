@@ -76,7 +76,7 @@ class Scene
         mouse = getInputDevice(Mouse.class);
         camera = new Camera();
         map = new MapTileGame(camera, 16, 16);
-        fogOfWar = new FogOfWar(camera);
+        fogOfWar = new FogOfWar();
         fovables = new ArrayList<>();
         mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
@@ -91,9 +91,10 @@ class Scene
         final SpriteTiled fog = Drawable.loadSpriteTiled(Core.MEDIA.create("fog.png"), 16, 16);
         hide.load(false);
         fog.load(false);
-        fogOfWar.setFogTiles(hide, fog);
-        fogOfWar.setFogOfWar(true, true);
-        fogOfWar.create(map);
+        fogOfWar.setTilesheet(hide, fog);
+        fogOfWar.setEnabled(true, true);
+        fogOfWar.create(map, map);
+        map.setTileRenderer(fogOfWar);
 
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
@@ -123,7 +124,6 @@ class Scene
     {
         map.render(g);
         peon.render(g);
-        fogOfWar.render(g);
     }
 
     @Override
