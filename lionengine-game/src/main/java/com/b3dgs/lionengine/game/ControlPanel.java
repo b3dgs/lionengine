@@ -15,30 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy;
+package com.b3dgs.lionengine.game;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
+import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
- * This class represents the control panel (HUD), which will contain selected entities, actions, and many other
+ * This class represents the control panel (HUD), which will contain selected objects, actions, and many other
  * informations.
  * 
- * @param <E> Entity type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see ControlPanelListener
  */
-public abstract class ControlPanelModel<E extends EntityStrategy>
+public class ControlPanel
+        implements Updatable
 {
     /** List of listeners. */
     private final Collection<ControlPanelListener> listeners;
+    /** Viewer reference. */
+    private final Viewer viewer;
+    /** Cursor reference. */
+    private final Cursor cursor;
     /** Selection area. */
     private final Rectangle selectionArea;
     /** Area outside panel (where the map is displayed). */
@@ -56,27 +63,39 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     /** Handler ordered flag. */
     private boolean ordered;
     /** Mouse location x when started click selection. */
-    private int sy;
+    private double sy;
     /** Mouse location y when started click selection. */
-    private int sx;
+    private double sx;
     /** Current selection x (stored in selectionArea when selection is done). */
-    private int selectX;
+    private double selectX;
     /** Current selection y (stored in selectionArea when selection is done). */
-    private int selectY;
+    private double selectY;
     /** Current selection width (stored in selectionArea when selection is done). */
-    private int selectW;
+    private double selectW;
     /** Current selection height (stored in selectionArea when selection is done). */
-    private int selectH;
+    private double selectH;
     /** Cursor selection color. */
     private ColorRgba colorSelection;
 
     /**
-     * Constructor base.
+     * Create a control panel.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link Viewer}</li>
+     * <li>{@link Cursor}</li>
+     * </ul>
+     * 
+     * @param services The services reference.
+     * @throws LionEngineException If missing {@link Services}.
      */
-    public ControlPanelModel()
+    public ControlPanel(Services services) throws LionEngineException
     {
         listeners = new HashSet<>(1);
         selectionArea = Geom.createRectangle();
+        viewer = services.get(Viewer.class);
+        cursor = services.get(Cursor.class);
         outsidePanel = null;
         clicked = false;
         clickedFlag = false;
@@ -93,16 +112,6 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     }
 
     /**
-     * Called when an order started.
-     */
-    protected abstract void onStartOrder();
-
-    /**
-     * Called when an order terminated.
-     */
-    protected abstract void onTerminateOrder();
-
-    /**
      * Add a control panel listener.
      * 
      * @param listener The listener.
@@ -113,7 +122,7 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     }
 
     /**
-     * Add a control panel listener.
+     * Remove a control panel listener.
      * 
      * @param listener The listener.
      */
@@ -123,67 +132,18 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     }
 
     /**
-     * Update panel routine.
-     * 
-     * @param extrp The extrapolation value.
-     * @param camera The camera viewpoint.
-     * @param cursor The cursor reference (used for selection).
-     */
-    public void update(double extrp, CameraStrategy camera, CursorStrategy cursor)
-    {
-        // Restore clicked state
-        if (cursor.getClick() == 0)
-        {
-            clicked = false;
-        }
-
-        // Cursor selection
-        if (!ordered)
-        {
-            updateCursorSelection(cursor, camera);
-
-            // Clear selection if done
-            if (selected)
-            {
-                for (final ControlPanelListener listener : listeners)
-                {
-                    listener.notifySelectionDone(selectionArea);
-                }
-                selectionArea.set(-1, -1, 0, 0);
-                selected = false;
-            }
-        }
-        else
-        {
-            if (!clicked && cursor.getClick() > 0)
-            {
-                clicked = true;
-                ordered = false;
-                onTerminateOrder();
-            }
-        }
-
-        // Apply clicked state if necessary
-        if (clickedFlag)
-        {
-            clicked = true;
-            clickedFlag = false;
-        }
-    }
-
-    /**
      * Render cursor selection routine. This function will draw the current active selection on screen, depending of its
      * localization, and using the camera point of view (location on map).
      * 
      * @param g The graphic output.
-     * @param camera The camera reference.
+     * @param viewer The viewer reference.
      */
-    public void renderCursorSelection(Graphic g, CameraStrategy camera)
+    public void renderCursorSelection(Graphic g, Viewer viewer)
     {
         if (selecting)
         {
-            final int x = (int) camera.getViewpointX(selectionArea.getX());
-            final int y = (int) camera.getViewpointY(selectionArea.getY() + selectionArea.getHeight());
+            final int x = (int) viewer.getViewpointX(selectionArea.getX());
+            final int y = (int) viewer.getViewpointY(selectionArea.getY() + selectionArea.getHeight());
             final int w = (int) selectionArea.getWidth();
             final int h = (int) selectionArea.getHeight();
             g.setColor(colorSelection);
@@ -223,12 +183,12 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     /**
      * Set clickable area on map (not on panel), depending of the camera view.
      * 
-     * @param camera The camera reference.
+     * @param viewer The viewer reference.
      */
-    public void setClickableArea(Camera camera)
+    public void setClickableArea(Viewer viewer)
     {
         outsidePanel = Geom.createRectangle();
-        outsidePanel.set(camera.getViewX(), camera.getViewY(), camera.getWidth(), camera.getHeight());
+        outsidePanel.set(viewer.getViewX(), viewer.getViewY(), viewer.getWidth(), viewer.getHeight());
     }
 
     /**
@@ -257,9 +217,9 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
      * @param cursor The cursor reference.
      * @return <code>true</code> if can click on panel, <code>false</code> else.
      */
-    public boolean canClick(CursorStrategy cursor)
+    public boolean canClick(Cursor cursor)
     {
-        return !outsidePanel.contains(cursor.getScreenX(), cursor.getScreenY());
+        return !outsidePanel.contains(cursor.getX(), cursor.getY());
     }
 
     /**
@@ -269,7 +229,10 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     {
         ordered = true;
         clicked = true;
-        onStartOrder();
+        for (final ControlPanelListener listener : listeners)
+        {
+            listener.notifyStartOrder();
+        }
     }
 
     /**
@@ -294,11 +257,8 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
 
     /**
      * Function handling cursor selection (preparing area transposed on the map).
-     * 
-     * @param cursor The cursor reference.
-     * @param camera The camera reference.
      */
-    protected void updateCursorSelection(CursorStrategy cursor, CameraStrategy camera)
+    protected void updateCursorSelection()
     {
         // Start selection on click, and reset last selection
         if (clickSelection == cursor.getClick())
@@ -308,9 +268,9 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
             if (!selecting && !canClick && !ordered && !clicked)
             {
                 selecting = true;
-                sx = cursor.getLocationX();
-                sy = cursor.getLocationY();
-                computeSelection(cursor, camera);
+                sx = cursor.getX();
+                sy = cursor.getY();
+                computeSelection();
                 for (final ControlPanelListener listener : listeners)
                 {
                     listener.notifySelectionStarted(selectionArea);
@@ -329,52 +289,22 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
         // Update selection while selecting (mouse pressed, stop on releasing)
         if (selecting)
         {
-            computeSelection(cursor, camera);
+            computeSelection();
         }
     }
 
     /**
-     * Perform the width selection by considering the click point and current location.
-     * 
-     * @param cursor The cursor reference.
-     * @param camera The camera reference.
-     * @param sx The starting horizontal click.
-     * @param sy The starting vertical click.
-     * @return The selection width.
-     */
-    protected int computeSelectionWidth(CursorStrategy cursor, CameraStrategy camera, int sx, int sy)
-    {
-        return UtilMath.fixBetween(cursor.getLocationX() - sx, Integer.MIN_VALUE,
-                camera.getViewX() + (int) camera.getX() - sx + camera.getWidth());
-    }
-
-    /**
-     * Perform the height selection by considering the click point and current location.
-     * 
-     * @param cursor The cursor reference.
-     * @param camera The camera reference.
-     * @param sx The starting horizontal click.
-     * @param sy The starting vertical click.
-     * @return The selection height.
-     */
-    protected int computeSelectionHeight(CursorStrategy cursor, CameraStrategy camera, int sx, int sy)
-    {
-        return UtilMath.fixBetween(cursor.getLocationY() - sy, Integer.MIN_VALUE,
-                camera.getViewY() + (int) camera.getY() + camera.getHeight() + sy);
-    }
-
-    /**
      * Compute the selection from cursor location.
-     * 
-     * @param cursor The cursor reference.
-     * @param camera The camera reference.
      */
-    private void computeSelection(CursorStrategy cursor, CameraStrategy camera)
+    private void computeSelection()
     {
         selectX = sx;
         selectY = sy;
-        selectW = computeSelectionWidth(cursor, camera, sx, sy);
-        selectH = computeSelectionHeight(cursor, camera, sx, sy);
+        selectW = UtilMath.fixBetween(cursor.getX() - sx, Double.MIN_VALUE, viewer.getViewX() + viewer.getX() - sx
+                + viewer.getWidth());
+        selectH = UtilMath.fixBetween(cursor.getY() - sy, Double.MIN_VALUE,
+                viewer.getViewY() + viewer.getY() + viewer.getHeight() + sy);
+
         // This will avoid negative size
         if (selectW < 0)
         {
@@ -397,5 +327,55 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
             selectY = 0;
         }
         selectionArea.set(selectX, selectY, selectW, selectH);
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        // Restore clicked state
+        if (cursor.getClick() == 0)
+        {
+            clicked = false;
+        }
+
+        // Cursor selection
+        if (!ordered)
+        {
+            updateCursorSelection();
+
+            // Clear selection if done
+            if (selected)
+            {
+                for (final ControlPanelListener listener : listeners)
+                {
+                    listener.notifySelectionDone(selectionArea);
+                }
+                selectionArea.set(-1, -1, 0, 0);
+                selected = false;
+            }
+        }
+        else
+        {
+            if (!clicked && cursor.getClick() > 0)
+            {
+                clicked = true;
+                ordered = false;
+                for (final ControlPanelListener listener : listeners)
+                {
+                    listener.notifyTerminateOrder();
+                }
+            }
+        }
+
+        // Apply clicked state if necessary
+        if (clickedFlag)
+        {
+            clicked = true;
+            clickedFlag = false;
+        }
     }
 }

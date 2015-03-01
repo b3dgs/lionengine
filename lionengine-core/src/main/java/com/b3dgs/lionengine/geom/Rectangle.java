@@ -47,7 +47,7 @@ public interface Rectangle
      * @param y The vertical location.
      * @return <code>true</code> if contains, <code>false</code> else.
      */
-    boolean contains(int x, int y);
+    boolean contains(double x, double y);
 
     /**
      * Translate rectangle using specified vector.

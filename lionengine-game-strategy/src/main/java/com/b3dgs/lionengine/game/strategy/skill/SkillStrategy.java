@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.game.strategy.skill;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.game.ControlPanel;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.factory.Fabricable;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
-import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 
 /**
@@ -118,7 +118,7 @@ public abstract class SkillStrategy
      * @param panel The panel reference.
      * @param cursor The cursor reference.
      */
-    public abstract void action(ControlPanelModel<?> panel, CursorStrategy cursor);
+    public abstract void action(ControlPanel<?> panel, CursorStrategy cursor);
 
     /**
      * Check if the cursor is over the skill button.
@@ -133,7 +133,7 @@ public abstract class SkillStrategy
      * 
      * @param panel The panel reference.
      */
-    public abstract void onClicked(ControlPanelModel<?> panel);
+    public abstract void onClicked(ControlPanel<?> panel);
 
     /**
      * Update routine on panel.
@@ -141,7 +141,7 @@ public abstract class SkillStrategy
      * @param cursor The cursor reference.
      * @param panel The control panel reference.
      */
-    public void updateOnPanel(CursorStrategy cursor, ControlPanelModel<?> panel)
+    public void updateOnPanel(CursorStrategy cursor, ControlPanel<?> panel)
     {
         // Reset clicked flag
         if (cursor.getClick() == 0)
@@ -334,7 +334,7 @@ public abstract class SkillStrategy
      * @param cursor The cursor reference.
      * @param panel The control panel reference.
      */
-    private void updateReleased(CursorStrategy cursor, ControlPanelModel<?> panel)
+    private void updateReleased(CursorStrategy cursor, ControlPanel<?> panel)
     {
         if (isSelected())
         {

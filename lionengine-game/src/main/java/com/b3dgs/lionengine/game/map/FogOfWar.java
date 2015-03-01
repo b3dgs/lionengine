@@ -15,30 +15,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.map;
+package com.b3dgs.lionengine.game.map;
 
 import java.util.Arrays;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.strategy.CameraStrategy;
-import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
+import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.trait.Fovable;
 
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).
  * 
- * @param <T> Tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FogOfWarStrategy<T extends Tile>
+public class FogOfWar
+        implements Renderable
 {
     /** Fog map. */
     private final Border20Map border20Map;
+    /** Viewer reference. */
+    private final Viewer viewer;
     /** Map reference. */
-    private MapTile<T> map;
+    private MapTile map;
     /** Fog black tile. */
     private SpriteTiled hideTiles;
     /** Fog gray tiles. */
@@ -64,9 +66,12 @@ public abstract class FogOfWarStrategy<T extends Tile>
 
     /**
      * Create a fog of war.
+     * 
+     * @param viewer The viewer reference.
      */
-    public FogOfWarStrategy()
+    public FogOfWar(Viewer viewer)
     {
+        this.viewer = viewer;
         border20Map = new Border20Map(false);
         hideMap = false;
         fogMap = false;
@@ -78,7 +83,7 @@ public abstract class FogOfWarStrategy<T extends Tile>
      * 
      * @param map The map reference.
      */
-    public void create(MapTile<T> map)
+    public void create(MapTile map)
     {
         this.map = map;
         widthInTile = map.getInTileWidth();
@@ -124,12 +129,11 @@ public abstract class FogOfWarStrategy<T extends Tile>
     }
 
     /**
-     * Update entities field of view (fog of war).
+     * Update fovable field of view (fog of war).
      * 
-     * @param entities The entities reference.
-     * @param <E> The entity type.
+     * @param fovables The entities reference.
      */
-    public <E extends EntityStrategy> void update(Collection<E> entities)
+    public void update(Collection<Fovable> fovables)
     {
         if (fogMap)
         {
@@ -138,27 +142,13 @@ public abstract class FogOfWarStrategy<T extends Tile>
                 Arrays.fill(fog[y], Border20.NONE);
             }
         }
-        for (final E entity : entities)
+        for (final Fovable fovable : fovables)
         {
-            if (playerId != entity.getPlayerId())
-            {
-                continue;
-            }
-            updateEntityFov(entity);
+            // if (playerId == fovable.getPlayerId())
+            // {
+            updateEntityFov(fovable);
+            // }
         }
-    }
-
-    /**
-     * Render fog map from camera viewpoint, showing a specified area.
-     * 
-     * @param g The graphic output.
-     * @param camera The camera viewpoint.
-     */
-    public void render(Graphic g, CameraStrategy camera)
-    {
-        render(g, camera.getHeight(), (int) camera.getX(), (int) camera.getY(),
-                (int) Math.ceil(camera.getWidth() / (double) tileWidth),
-                (int) Math.ceil(camera.getHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
     }
 
     /**
@@ -198,15 +188,15 @@ public abstract class FogOfWarStrategy<T extends Tile>
     /**
      * Check if the entity is current hidden by the fog of war.
      * 
-     * @param entity The entity to check.
+     * @param tiled The tiled to check.
      * @return <code>true</code> if hidden, <code>false</code> else.
      */
-    public boolean isFogged(EntityStrategy entity)
+    public boolean isFogged(Tiled tiled)
     {
-        final int tx = entity.getInTileX();
-        final int ty = entity.getInTileY();
-        final int tw = entity.getInTileWidth() - 1;
-        final int th = entity.getInTileHeight() - 1;
+        final int tx = tiled.getInTileX();
+        final int ty = tiled.getInTileY();
+        final int tw = tiled.getInTileWidth() - 1;
+        final int th = tiled.getInTileHeight() - 1;
 
         for (int x = tx; x <= tx + tw; x++)
         {
@@ -246,17 +236,17 @@ public abstract class FogOfWarStrategy<T extends Tile>
     }
 
     /**
-     * Update entity field of view (fog of war).
+     * Update fovable field of view (fog of war).
      * 
-     * @param entity The entity reference.
+     * @param fovable The fovable reference.
      */
-    private void updateEntityFov(EntityStrategy entity)
+    private void updateEntityFov(Fovable fovable)
     {
-        final int tx = entity.getInTileX();
-        final int ty = entity.getInTileY();
-        final int tw = entity.getInTileWidth() - 1;
-        final int th = entity.getInTileHeight() - 1;
-        final int ray = entity.getFov();
+        final int tx = fovable.getInTileX();
+        final int ty = fovable.getInTileY();
+        final int tw = fovable.getInTileWidth();
+        final int th = fovable.getInTileHeight();
+        final int ray = fovable.getInTileFov();
 
         if (hideMap)
         {
@@ -296,8 +286,7 @@ public abstract class FogOfWarStrategy<T extends Tile>
                     final int tx = h + (sx - offsetX) / tileWidth;
                     if (!(tx < 0 || tx >= widthInTile))
                     {
-                        final T tile = map.getTile(tx, ty);
-
+                        final Tile tile = map.getTile(tx, ty);
                         if (tile != null)
                         {
                             renderFogTile(g, screenHeight, sx, sy, tx, ty, tile);
@@ -319,7 +308,7 @@ public abstract class FogOfWarStrategy<T extends Tile>
      * @param ty The tile location y.
      * @param tile The tile to render.
      */
-    private void renderFogTile(Graphic g, int screenHeight, int sx, int sy, int tx, int ty, T tile)
+    private void renderFogTile(Graphic g, int screenHeight, int sx, int sy, int tx, int ty, Tile tile)
     {
         final int x = tile.getX() - sx;
         final int y = -tile.getY() - tile.getHeight() + sy + screenHeight;
@@ -343,5 +332,17 @@ public abstract class FogOfWarStrategy<T extends Tile>
                 hideTiles.render(g);
             }
         }
+    }
+
+    /*
+     * Renderable
+     */
+
+    @Override
+    public void render(Graphic g)
+    {
+        render(g, viewer.getHeight(), (int) viewer.getX(), (int) viewer.getY(),
+                (int) Math.ceil(viewer.getWidth() / (double) tileWidth),
+                (int) Math.ceil(viewer.getHeight() / (double) tileHeight), -viewer.getViewX(), viewer.getViewY());
     }
 }

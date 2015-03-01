@@ -25,10 +25,10 @@ import com.b3dgs.lionengine.example.game.strategy.skills.entity.BarracksOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.ProducibleEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.UnitWorker;
+import com.b3dgs.lionengine.game.ControlPanel;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 
 /**
@@ -79,7 +79,7 @@ public final class BuildBarracksOrc
     }
 
     @Override
-    public void action(ControlPanelModel<?> panel, CursorStrategy cursor)
+    public void action(ControlPanel<?> panel, CursorStrategy cursor)
     {
         if (owner instanceof UnitWorker)
         {
@@ -89,7 +89,7 @@ public final class BuildBarracksOrc
     }
 
     @Override
-    public void onClicked(ControlPanelModel<?> panel)
+    public void onClicked(ControlPanel<?> panel)
     {
         cursor.setType(CursorType.BOX);
         cursor.setBoxColor(ColorRgba.GREEN);

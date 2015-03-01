@@ -37,12 +37,12 @@ import com.b3dgs.lionengine.example.game.background.AppBackground;
 import com.b3dgs.lionengine.example.game.collision.AppCollision;
 import com.b3dgs.lionengine.example.game.cursor.AppCursor;
 import com.b3dgs.lionengine.example.game.effect.AppGameEffect;
+import com.b3dgs.lionengine.example.game.fog.AppFog;
 import com.b3dgs.lionengine.example.game.map.AppGameMap;
 import com.b3dgs.lionengine.example.game.projectile.AppGameProjectile;
 import com.b3dgs.lionengine.example.game.state.AppState;
 import com.b3dgs.lionengine.example.game.strategy.ability.AppStrategyAbility;
 import com.b3dgs.lionengine.example.game.strategy.controlpanel.AppStrategyControlPanel;
-import com.b3dgs.lionengine.example.game.strategy.fog.AppStrategyFog;
 import com.b3dgs.lionengine.example.game.strategy.skills.AppStrategySkills;
 import com.b3dgs.lionengine.example.helloworld.AppHelloWorld;
 import com.b3dgs.lionengine.example.pong.AppPong;
@@ -83,7 +83,7 @@ public class AppExamples
         addExample(panel, "Ability", AppStrategyAbility.class);
         addExample(panel, "Control Panel", AppStrategyControlPanel.class);
         addExample(panel, "Cursor", AppCursor.class);
-        addExample(panel, "Fog of War", AppStrategyFog.class);
+        addExample(panel, "Fog of War", AppFog.class);
         addExample(panel, "Skills", AppStrategySkills.class);
         addExample(panel, "Pong", AppPong.class);
 

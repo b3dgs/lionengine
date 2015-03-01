@@ -15,49 +15,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.strategy.fog;
+package com.b3dgs.lionengine.example.game.fog;
 
-import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.object.Handler;
-import com.b3dgs.lionengine.game.strategy.CameraStrategy;
+import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
- * Handler implementation, containing all entities.
+ * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.game.factory
+ * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class HandlerEntity
-        extends Handler<Entity>
+public class AppFog
 {
-    /** Camera reference. */
-    private final CameraStrategy camera;
-
     /**
-     * Constructor.
+     * Main.
      * 
-     * @param camera The camera reference.
+     * @param args The arguments.
      */
-    HandlerEntity(CameraStrategy camera)
+    public static void main(String[] args)
     {
-        super();
-        this.camera = camera;
-    }
-
-    /*
-     * HandlerObjectGame
-     */
-
-    @Override
-    protected void update(double extrp, Entity entity)
-    {
-        entity.update(extrp);
-    }
-
-    @Override
-    protected void render(Graphic g, Viewer viewer, Entity entity)
-    {
-        entity.render(g, camera);
+        Engine.start("Fog of War", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "fog"));
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader(config);
+        loader.start(Scene.class);
     }
 }

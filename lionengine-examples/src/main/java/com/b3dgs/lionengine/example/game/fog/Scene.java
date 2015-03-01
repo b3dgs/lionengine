@@ -15,20 +15,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.strategy.fog;
+package com.b3dgs.lionengine.example.game.fog;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.map.LevelRipConverter;
+import com.b3dgs.lionengine.core.awt.Mouse;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.map.FogOfWar;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.strategy.CameraStrategy;
+import com.b3dgs.lionengine.game.trait.Fovable;
 
 /**
  * Game loop designed to handle our little world.
@@ -36,7 +43,7 @@ import com.b3dgs.lionengine.game.strategy.CameraStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
@@ -44,19 +51,17 @@ final class Scene
 
     /** Keyboard reference. */
     private final Keyboard keyboard;
-    /** Map reference. */
-    private final Map map;
-    /** Fog of war reference. */
-    private final FogOfWar fogOfWar;
+    /** Mouse reference. */
+    private final Mouse mouse;
     /** Camera reference. */
-    private final CameraStrategy camera;
-    /** Factory reference. */
-    private final FactoryEntity factoryEntity;
-    /** Handler reference. */
-    private final HandlerEntity handlerEntity;
-    /** Timer. */
-    private final Timing timer;
-    /** Peon. */
+    private final Camera camera;
+    /** Map reference. */
+    private final MapTile map;
+    /** Fog of war layer. */
+    private final FogOfWar fogOfWar;
+    /** Collection fog. */
+    private final Collection<Fovable> fovables;
+    /** Peon reference. */
     private Peon peon;
 
     /**
@@ -64,66 +69,61 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
-        map = new Map();
-        fogOfWar = new FogOfWar();
-        camera = new CameraStrategy(map);
-        factoryEntity = new FactoryEntity();
-        handlerEntity = new HandlerEntity(camera);
-        timer = new Timing();
-
-        final Services contextEntity = new Services();
-        contextEntity.add(map);
-        factoryEntity.setServices(contextEntity);
+        mouse = getInputDevice(Mouse.class);
+        camera = new Camera();
+        map = new MapTileGame(camera, 16, 16);
+        fogOfWar = new FogOfWar(camera);
+        fovables = new ArrayList<>();
+        mouse.setConfig(getConfig());
+        setSystemCursorVisible(false);
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     public void load()
     {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
-                Core.MEDIA.create("tile"), map);
-        rip.start();
+        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"));
+
+        final SpriteTiled hide = Drawable.loadSpriteTiled(Core.MEDIA.create("hide.png"), 16, 16);
+        final SpriteTiled fog = Drawable.loadSpriteTiled(Core.MEDIA.create("fog.png"), 16, 16);
+        hide.load(false);
+        fog.load(false);
+        fogOfWar.setFogTiles(hide, fog);
+        fogOfWar.setFogOfWar(true, true);
         fogOfWar.create(map);
 
         camera.setView(0, 0, getWidth(), getHeight());
-        camera.setSensibility(30, 30);
-        camera.setBorders(map);
+        camera.setLimits(map);
+        camera.setLocation(0, 0);
 
-        peon = factoryEntity.create(Peon.MEDIA);
-        handlerEntity.add(peon);
-        timer.start();
+        final Services services = new Services();
+        services.add(camera);
+        services.add(map);
+        peon = new Peon(services);
+        fovables.add(peon.getTrait(Fovable.class));
     }
 
     @Override
     public void update(double extrp)
     {
-        if (keyboard.isPressed(Keyboard.ESCAPE))
+        mouse.update(extrp);
+        peon.update(extrp);
+        fogOfWar.update(fovables);
+        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();
-        }
-        camera.update(keyboard);
-        handlerEntity.update(extrp);
-        if (timer.elapsed(500))
-        {
-            peon.teleport(UtilRandom.getRandomInteger(250), UtilRandom.getRandomInteger(200));
-            fogOfWar.update(handlerEntity.getObjects());
-            timer.restart();
         }
     }
 
     @Override
     public void render(Graphic g)
     {
-        map.render(g, camera);
-        handlerEntity.render(g);
-        fogOfWar.render(g, camera);
+        map.render(g);
+        peon.render(g);
+        fogOfWar.render(g);
     }
 
     @Override

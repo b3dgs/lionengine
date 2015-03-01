@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
+import com.b3dgs.lionengine.game.ControlPanel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
 
@@ -49,7 +49,7 @@ public final class MoveOrc
      */
 
     @Override
-    public void action(ControlPanelModel<?> panel, CursorStrategy cursor)
+    public void action(ControlPanel<?> panel, CursorStrategy cursor)
     {
         if (owner instanceof MoverServices)
         {

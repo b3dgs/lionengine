@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
+import com.b3dgs.lionengine.game.ControlPanel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 
 /**
@@ -47,7 +47,7 @@ public final class BuildingStandardOrc
      */
 
     @Override
-    public void action(ControlPanelModel<?> panel, CursorStrategy cursor)
+    public void action(ControlPanel<?> panel, CursorStrategy cursor)
     {
         owner.setSkillPanel(1);
     }

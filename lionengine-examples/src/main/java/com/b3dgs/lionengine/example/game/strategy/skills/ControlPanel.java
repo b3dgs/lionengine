@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.Skill;
 import com.b3dgs.lionengine.game.Bar;
+import com.b3dgs.lionengine.game.ControlPanel;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
-import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategyListener;
 
@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategyListener;
  * @see com.b3dgs.lionengine.example.game.strategy.controlpanel
  */
 public final class ControlPanel
-        extends ControlPanelModel<Entity>
+        extends ControlPanel<Entity>
         implements EntityStrategyListener<Entity>
 {
     /** Text. */

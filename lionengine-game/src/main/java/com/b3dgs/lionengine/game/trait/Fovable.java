@@ -15,31 +15,29 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.strategy.fog;
+package com.b3dgs.lionengine.game.trait;
 
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.strategy.map.FogOfWarStrategy;
+import com.b3dgs.lionengine.game.Tiled;
 
 /**
- * Fog of war implementation.
+ * Represents something that have a field of view, able to see until a defined range only.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FogOfWar
-        extends FogOfWarStrategy<Tile>
+public interface Fovable
+        extends Trait, Tiled
 {
     /**
-     * Constructor.
+     * Set the field of view value (in tile).
+     * 
+     * @param fov The field of view value (in tile).
      */
-    FogOfWar()
-    {
-        final SpriteTiled hide = Drawable.loadSpriteTiled(Core.MEDIA.create("hide.png"), 16, 16);
-        final SpriteTiled fog = Drawable.loadSpriteTiled(Core.MEDIA.create("fog.png"), 16, 16);
-        hide.load(false);
-        fog.load(false);
-        setFogTiles(hide, fog);
-        setFogOfWar(true, true);
-    }
+    void setFov(int fov);
+
+    /**
+     * Get the field of view in tile.
+     * 
+     * @return The field of view in tile.
+     */
+    int getInTileFov();
 }

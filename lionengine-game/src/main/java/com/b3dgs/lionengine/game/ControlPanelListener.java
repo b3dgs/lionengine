@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy;
+package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -39,4 +39,14 @@ public interface ControlPanelListener
      * @param selection The selection.
      */
     void notifySelectionDone(Rectangle selection);
+
+    /**
+     * Notify when an order started.
+     */
+    void notifyStartOrder();
+
+    /**
+     * Notify when an order terminated.
+     */
+    void notifyTerminateOrder();
 }

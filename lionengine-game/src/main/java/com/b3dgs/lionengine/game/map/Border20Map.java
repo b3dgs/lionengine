@@ -15,9 +15,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.map;
+package com.b3dgs.lionengine.game.map;
 
-import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Represents a 20 Axis map, designed to perform linking between two different areas. A good example is the fog of war,
@@ -50,7 +49,7 @@ public class Border20Map
      * 
      * @param map The map reference.
      */
-    public void create(MapTile<?> map)
+    public void create(MapTile map)
     {
         safe = new boolean[map.getInTileHeight()][map.getInTileWidth()];
     }

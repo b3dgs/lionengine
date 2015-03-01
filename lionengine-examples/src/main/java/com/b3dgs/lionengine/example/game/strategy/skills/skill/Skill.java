@@ -22,10 +22,10 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
+import com.b3dgs.lionengine.game.ControlPanel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
-import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
 
@@ -119,7 +119,7 @@ public abstract class Skill
     }
 
     @Override
-    public void onClicked(ControlPanelModel<?> panel)
+    public void onClicked(ControlPanel<?> panel)
     {
         // Nothing to do
     }

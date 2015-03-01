@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
-import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
+import com.b3dgs.lionengine.game.ControlPanel;
 
 /**
  * Control panel implementation.
@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ControlPanel
-        extends ControlPanelModel<Entity>
+        extends ControlPanel<Entity>
 {
     /**
      * Constructor.
