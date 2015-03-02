@@ -41,6 +41,9 @@ import com.b3dgs.lionengine.LionEngineException;
  * final Loader loader = new Loader(config);
  * loader.start(Scene.class);
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Config
@@ -130,7 +133,7 @@ public final class Loader
     /** Renderer instance. */
     private final Renderer renderer;
     /** Started state. */
-    private boolean started;
+    private volatile boolean started;
 
     /**
      * Create a loader.
@@ -162,7 +165,8 @@ public final class Loader
      * @param arguments The sequence arguments list if needed by its constructor.
      * @throws LionEngineException If the loader has already been started or sequence is invalid.
      */
-    public void start(Class<? extends Sequence> sequenceClass, Object... arguments) throws LionEngineException
+    public synchronized void start(Class<? extends Sequence> sequenceClass, Object... arguments)
+            throws LionEngineException
     {
         Check.notNull(sequenceClass);
 

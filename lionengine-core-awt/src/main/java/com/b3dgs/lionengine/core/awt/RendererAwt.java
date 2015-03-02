@@ -36,7 +36,7 @@ final class RendererAwt
      */
     RendererAwt(Config config)
     {
-        super(config, "AWT");
+        super(config, "Renderer AWT");
     }
 
     /*
@@ -46,7 +46,7 @@ final class RendererAwt
     @Override
     protected void asyncLoad(final Sequence nextSequence)
     {
-        final Thread thread = new Thread()
+        final Thread thread = new Thread("asyncLoad AWT")
         {
             @Override
             public void run()

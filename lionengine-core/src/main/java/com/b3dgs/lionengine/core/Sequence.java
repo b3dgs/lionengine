@@ -62,6 +62,9 @@ import com.b3dgs.lionengine.Resolution;
  *     }
  * }
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Loader
@@ -80,12 +83,12 @@ public abstract class Sequence
     final Resolution resolution;
     /** Renderer. */
     private final Renderer renderer;
+    /** Loaded state. */
+    private volatile boolean loaded;
     /** Rendering width. */
     private int width;
     /** Rendering height. */
     private int height;
-    /** Loaded state. */
-    private boolean loaded;
 
     /**
      * Constructor base.
@@ -105,77 +108,35 @@ public abstract class Sequence
 
     /**
      * Loading sequence data.
+     * 
+     * @throws LionEngineException If an exception occurred on loading.
      */
-    public abstract void load();
+    public abstract void load() throws LionEngineException;
 
     /**
      * Load the sequence internally. Must only be called by {@link Renderer#asyncLoad(Sequence)} implementation in order
      * to synchronize loading process when it is called asynchronously.
      * 
-     * @throws LionEngineException If the sequence has already been loaded.
+     * @throws LionEngineException If the sequence has already been loaded or an error occurred on loading.
      */
-    public final void loadInternal() throws LionEngineException
+    public synchronized final void loadInternal() throws LionEngineException
     {
         if (!loaded)
         {
-            load();
-            loaded = true;
-            loadedSemaphore.release();
+            try
+            {
+                load();
+                loaded = true;
+            }
+            finally
+            {
+                loadedSemaphore.release();
+            }
         }
         else
         {
             throw new LionEngineException(ERROR_LOADED);
         }
-    }
-
-    /**
-     * Get the rendering width.
-     * 
-     * @return The rendering width.
-     */
-    public final int getWidth()
-    {
-        return width;
-    }
-
-    /**
-     * Get the rendering height.
-     * 
-     * @return The rendering height.
-     */
-    public final int getHeight()
-    {
-        return height;
-    }
-
-    /**
-     * Get main frame location x.
-     * 
-     * @return The main frame location x.
-     */
-    public final int getX()
-    {
-        return renderer.getX();
-    }
-
-    /**
-     * Get main frame location y.
-     * 
-     * @return The main frame location y.
-     */
-    public final int getY()
-    {
-        return renderer.getY();
-    }
-
-    /**
-     * Check if the sequence has been loaded.
-     * 
-     * @return <code>true</code> if loaded, <code>false</code> else.
-     */
-    public final boolean isLoaded()
-    {
-        return loaded;
     }
 
     /**
@@ -192,6 +153,46 @@ public abstract class Sequence
     public void onLostFocus()
     {
         // Nothing by default
+    }
+
+    /**
+     * Get the rendering width.
+     * 
+     * @return The rendering width.
+     */
+    protected final int getWidth()
+    {
+        return width;
+    }
+
+    /**
+     * Get the rendering height.
+     * 
+     * @return The rendering height.
+     */
+    protected final int getHeight()
+    {
+        return height;
+    }
+
+    /**
+     * Get main frame location x.
+     * 
+     * @return The main frame location x.
+     */
+    protected final int getX()
+    {
+        return renderer.getX();
+    }
+
+    /**
+     * Get main frame location y.
+     * 
+     * @return The main frame location y.
+     */
+    protected final int getY()
+    {
+        return renderer.getY();
     }
 
     /**
@@ -230,9 +231,19 @@ public abstract class Sequence
     }
 
     /**
+     * Check if the sequence has been loaded.
+     * 
+     * @return <code>true</code> if loaded, <code>false</code> else.
+     */
+    final synchronized boolean isLoaded()
+    {
+        return loaded;
+    }
+
+    /**
      * Start the sequence and load it.
      */
-    final void start()
+    final synchronized void start()
     {
         load();
         loaded = true;

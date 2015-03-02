@@ -55,6 +55,9 @@ import com.b3dgs.lionengine.core.EngineCore;
  *     }
  * }
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @since 13 June 2010
  * @version 8.0.0
@@ -70,28 +73,33 @@ public final class Engine
      * @param version The program version (must not be <code>null</code>).
      * @param activity The activity reference (must not be <code>null</code>).
      */
-    public static void start(String name, Version version, Activity activity)
+    public static synchronized void start(String name, Version version, Activity activity)
     {
-        if (!EngineCore.isStarted())
-        {
-            EngineCore.start(name, version, new FactoryGraphicAndroid(), new FactoryMediaAndroid());
+        EngineCore.start(name, version, new FactoryGraphicAndroid(), new FactoryMediaAndroid());
 
-            final ViewAndroid view = new ViewAndroid(activity);
-            view.setWillNotDraw(false);
-            ScreenAndroid.setView(view);
-            activity.setContentView(view);
+        final ViewAndroid view = new ViewAndroid(activity);
+        view.setWillNotDraw(false);
+        ScreenAndroid.setView(view);
+        activity.setContentView(view);
 
-            UtilityMedia.setAssertManager(activity.getAssets());
-            UtilityMedia.setContentResolver(activity.getContentResolver());
-        }
+        UtilityMedia.setAssertManager(activity.getAssets());
+        UtilityMedia.setContentResolver(activity.getContentResolver());
     }
 
     /**
      * Terminate the engine. It is necessary to call this function only if the engine need to be started again during
      * the same jvm execution.
      */
-    public static void terminate()
+    public static synchronized void terminate()
     {
         EngineCore.terminate();
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Engine()
+    {
+        throw new RuntimeException();
     }
 }

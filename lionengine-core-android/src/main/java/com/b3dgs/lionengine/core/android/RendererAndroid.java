@@ -36,7 +36,7 @@ final class RendererAndroid
      */
     RendererAndroid(Config config)
     {
-        super(config, "Android");
+        super(config, "Renderer Android");
     }
 
     /*
@@ -46,7 +46,7 @@ final class RendererAndroid
     @Override
     protected void asyncLoad(final Sequence nextSequence)
     {
-        final Thread thread = new Thread()
+        final Thread thread = new Thread("asyncLoad Android")
         {
             @Override
             public void run()

@@ -28,6 +28,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Implementation provider for the {@link FactoryGraphic}.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -35,14 +38,14 @@ public final class FactoryGraphicProvider
         implements FactoryGraphic
 {
     /** Factory graphic implementation. */
-    private static FactoryGraphic factoryGraphic;
+    private static volatile FactoryGraphic factoryGraphic;
 
     /**
      * Set the graphic factory used.
      * 
      * @param factoryGraphic The graphic factory used.
      */
-    public static void setFactoryGraphic(FactoryGraphic factoryGraphic)
+    public static synchronized void setFactoryGraphic(FactoryGraphic factoryGraphic)
     {
         FactoryGraphicProvider.factoryGraphic = factoryGraphic;
     }

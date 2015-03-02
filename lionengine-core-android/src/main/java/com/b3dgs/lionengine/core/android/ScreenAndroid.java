@@ -47,19 +47,19 @@ public final class ScreenAndroid
         implements Screen, SurfaceHolder.Callback
 {
     /** View. */
-    static ViewAndroid view;
+    static volatile ViewAndroid view;
     /** Holder. */
-    static SurfaceHolder holder;
+    static volatile SurfaceHolder holder;
 
     /**
      * Set the view holder.
      * 
      * @param view The view holder.
      */
-    public static void setView(ViewAndroid view)
+    public static synchronized void setView(ViewAndroid view)
     {
         ScreenAndroid.view = view;
-        ScreenAndroid.holder = view.getHolder();
+        holder = view.getHolder();
     }
 
     /** Input devices. */
@@ -89,7 +89,7 @@ public final class ScreenAndroid
         graphics = Core.GRAPHIC.createGraphic();
 
         setResolution(config.getOutput());
-        ScreenAndroid.holder.addCallback(this);
+        holder.addCallback(this);
         addDeviceMouse();
     }
 
@@ -99,7 +99,7 @@ public final class ScreenAndroid
     private void addDeviceMouse()
     {
         final Mouse mouse = new Mouse();
-        ScreenAndroid.view.setMouse(mouse);
+        view.setMouse(mouse);
         devices.put(mouse.getClass(), mouse);
     }
 
@@ -113,7 +113,7 @@ public final class ScreenAndroid
         // Create canvas
         if (canvas == null)
         {
-            ScreenAndroid.holder.setFixedSize(output.getWidth(), output.getHeight());
+            holder.setFixedSize(output.getWidth(), output.getHeight());
             canvas = new Canvas();
             canvas.drawColor(Color.RED);
             graphics.setGraphic(canvas);
@@ -143,20 +143,20 @@ public final class ScreenAndroid
     @Override
     public void preUpdate()
     {
-        canvas = ScreenAndroid.holder.lockCanvas();
+        canvas = holder.lockCanvas();
         graphics.setGraphic(canvas);
     }
 
     @Override
     public void update()
     {
-        ScreenAndroid.holder.unlockCanvasAndPost(canvas);
+        holder.unlockCanvasAndPost(canvas);
     }
 
     @Override
     public void dispose()
     {
-        ScreenAndroid.holder.removeCallback(this);
+        holder.removeCallback(this);
     }
 
     @Override

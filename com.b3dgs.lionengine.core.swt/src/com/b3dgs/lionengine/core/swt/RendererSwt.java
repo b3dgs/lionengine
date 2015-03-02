@@ -36,7 +36,7 @@ final class RendererSwt
      */
     RendererSwt(Config config)
     {
-        super(config, "SWT");
+        super(config, "Renderer SWT");
     }
 
     /*

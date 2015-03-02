@@ -62,6 +62,9 @@ import com.b3dgs.lionengine.core.Verbose;
  *     }
  * }
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @since 13 June 2010
  * @version 8.0.0
@@ -78,7 +81,7 @@ public final class Engine
      * @param resourcesDir The main resources directory (must not be <code>null</code>).
      * @throws LionEngineException If the engine has already been started.
      */
-    public static void start(String name, Version version, String resourcesDir) throws LionEngineException
+    public static synchronized void start(String name, Version version, String resourcesDir) throws LionEngineException
     {
         Engine.start(name, version, resourcesDir, null);
     }
@@ -91,7 +94,8 @@ public final class Engine
      * @param classResource The class loader reference (resources entry point).
      * @throws LionEngineException If classResource is <code>null</code>
      */
-    public static void start(String name, Version version, Class<?> classResource) throws LionEngineException
+    public static synchronized void start(String name, Version version, Class<?> classResource)
+            throws LionEngineException
     {
         Check.notNull(classResource);
         Engine.start(name, version, null, classResource);
@@ -109,18 +113,15 @@ public final class Engine
     private static void start(String name, Version version, String resourcesDir, Class<?> classResource)
             throws LionEngineException
     {
-        if (!EngineCore.isStarted())
+        EngineCore.start(name, version, new FactoryGraphicSwt(), new FactoryMediaSwt());
+
+        UtilityMedia.setLoadFromJar(classResource);
+        UtilityMedia.setResourcesDirectory(resourcesDir);
+
+        final String workingDir = EngineCore.getSystemProperty("user.dir", null);
+        if (workingDir != null && resourcesDir != null)
         {
-            EngineCore.start(name, version, new FactoryGraphicSwt(), new FactoryMediaSwt());
-
-            UtilityMedia.setLoadFromJar(classResource);
-            UtilityMedia.setResourcesDirectory(resourcesDir);
-
-            final String workingDir = EngineCore.getSystemProperty("user.dir", null);
-            if (workingDir != null && resourcesDir != null)
-            {
-                Verbose.info("Resources directory = ", UtilFile.getPath(workingDir, UtilityMedia.getRessourcesDir()));
-            }
+            Verbose.info("Resources directory = ", UtilFile.getPath(workingDir, UtilityMedia.getRessourcesDir()));
         }
     }
 
@@ -130,11 +131,11 @@ public final class Engine
      * 
      * @throws LionEngineException If the engine has not been started.
      */
-    public static void terminate() throws LionEngineException
+    public static synchronized void terminate() throws LionEngineException
     {
-        EngineCore.terminate();
         UtilityMedia.setResourcesDirectory(null);
         UtilityMedia.setLoadFromJar(null);
+        EngineCore.terminate();
     }
 
     /**

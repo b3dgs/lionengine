@@ -42,17 +42,20 @@ import com.b3dgs.lionengine.core.Media;
  * final Media media = Media.get(&quot;img&quot;, &quot;image.png&quot;);
  * System.out.println(media.getPath()); // print: resources/img/image.png
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityMedia
 {
-    /** Resources directory. */
-    private static String resourcesDir = "";
     /** From jar flag. */
-    private static boolean fromJar = false;
+    private static volatile boolean fromJar;
+    /** Resources directory. */
+    private static volatile String resourcesDir = "";
     /** Class loader. */
-    private static Class<?> loader = null;
+    private static volatile Class<?> loader = null;
 
     /**
      * Get a media from an existing file descriptor.
@@ -60,11 +63,10 @@ public final class UtilityMedia
      * @param file The file descriptor.
      * @return The media instance.
      */
-    public static Media get(File file)
+    public static synchronized Media get(File file)
     {
         final String filename = file.getPath();
-        final String localFile = filename.substring(UtilityMedia.getRessourcesDir().length()
-                + filename.lastIndexOf(UtilityMedia.getRessourcesDir()));
+        final String localFile = filename.substring(resourcesDir.length() + filename.lastIndexOf(resourcesDir));
         return Core.MEDIA.create(localFile);
     }
 
@@ -73,9 +75,9 @@ public final class UtilityMedia
      * 
      * @return The resource directory.
      */
-    public static String getRessourcesDir()
+    public static synchronized String getRessourcesDir()
     {
-        return UtilityMedia.resourcesDir;
+        return resourcesDir;
     }
 
     /**
@@ -83,17 +85,17 @@ public final class UtilityMedia
      * 
      * @param clazz The class loader reference (resources entry point).
      */
-    public static void setLoadFromJar(Class<?> clazz)
+    public static synchronized void setLoadFromJar(Class<?> clazz)
     {
-        UtilityMedia.fromJar = clazz != null;
-        if (UtilityMedia.fromJar)
+        fromJar = clazz != null;
+        if (fromJar)
         {
-            UtilityMedia.loader = clazz;
+            loader = clazz;
             Core.MEDIA.setSeparator("/");
         }
         else
         {
-            UtilityMedia.loader = null;
+            loader = null;
             Core.MEDIA.setSeparator(File.separator);
         }
     }
@@ -103,15 +105,15 @@ public final class UtilityMedia
      * 
      * @param dir The main root directory.
      */
-    public static void setResourcesDirectory(String dir)
+    public static synchronized void setResourcesDirectory(String dir)
     {
         if (dir == null)
         {
-            UtilityMedia.resourcesDir = "";
+            resourcesDir = "";
         }
         else
         {
-            UtilityMedia.resourcesDir = dir + Core.MEDIA.getSeparator();
+            resourcesDir = dir + Core.MEDIA.getSeparator();
         }
     }
 
@@ -122,14 +124,14 @@ public final class UtilityMedia
      * @return The opened input stream.
      * @throws LionEngineException If the media is not found.
      */
-    static InputStream getInputStream(Media media) throws LionEngineException
+    static synchronized InputStream getInputStream(Media media) throws LionEngineException
     {
-        final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
+        final String path = UtilFile.getPath(resourcesDir, media.getPath());
         try
         {
-            if (UtilityMedia.fromJar)
+            if (fromJar)
             {
-                final InputStream inputStream = UtilityMedia.loader.getResourceAsStream(path);
+                final InputStream inputStream = loader.getResourceAsStream(path);
                 if (inputStream == null)
                 {
                     throw new LionEngineException(media, "Resource in JAR not found");
@@ -151,9 +153,9 @@ public final class UtilityMedia
      * @return The opened input stream.
      * @throws LionEngineException If the file can not be openened.
      */
-    static OutputStream getOutputStream(Media media) throws LionEngineException
+    static synchronized OutputStream getOutputStream(Media media) throws LionEngineException
     {
-        final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
+        final String path = UtilFile.getPath(resourcesDir, media.getPath());
         try
         {
             return new FileOutputStream(path);
@@ -170,7 +172,7 @@ public final class UtilityMedia
      * @param media The media to check.
      * @return <code>true</code> if exists, <code>false</code> else.
      */
-    static boolean exists(Media media)
+    static synchronized boolean exists(Media media)
     {
         if (fromJar)
         {

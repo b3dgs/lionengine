@@ -21,6 +21,9 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Implementation provider for the {@link FactoryMedia}.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -28,14 +31,14 @@ public final class FactoryMediaProvider
         implements FactoryMedia
 {
     /** Factory media implementation. */
-    private static FactoryMedia factoryMedia;
+    private static volatile FactoryMedia factoryMedia;
 
     /**
      * Set the graphic factory used.
      * 
      * @param factoryMedia The media factory used.
      */
-    public static void setFactoryMedia(FactoryMedia factoryMedia)
+    public static synchronized void setFactoryMedia(FactoryMedia factoryMedia)
     {
         FactoryMediaProvider.factoryMedia = factoryMedia;
     }

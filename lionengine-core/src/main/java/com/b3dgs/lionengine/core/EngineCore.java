@@ -24,6 +24,9 @@ import com.b3dgs.lionengine.Version;
 /**
  * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
  * library used (as it is done for AWT, SWT and Android engine implementation).
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -50,11 +53,11 @@ public abstract class EngineCore
     /** Engine terminated. */
     private static final String ENGINE_TERMINATED = "LionEngine terminated";
     /** Started engine flag. */
-    private static boolean started = false;
+    private static volatile boolean started;
     /** User program name. */
-    private static String programName;
+    private static volatile String programName;
     /** User program version. */
-    private static Version programVersion;
+    private static volatile Version programVersion;
 
     /**
      * Start engine. Has to be called before anything and only one time, in the main.
@@ -65,8 +68,8 @@ public abstract class EngineCore
      * @param factoryMedia The media factory (must not be <code>null</code>).
      * @throws LionEngineException If the engine has already been started.
      */
-    public static void start(String name, Version version, FactoryGraphic factoryGraphic, FactoryMedia factoryMedia)
-            throws LionEngineException
+    public static synchronized void start(String name, Version version, FactoryGraphic factoryGraphic,
+            FactoryMedia factoryMedia) throws LionEngineException
     {
         if (started)
         {
@@ -101,7 +104,7 @@ public abstract class EngineCore
      * 
      * @throws LionEngineException If the engine has not been started.
      */
-    public static void terminate() throws LionEngineException
+    public static synchronized void terminate() throws LionEngineException
     {
         if (!started)
         {
@@ -124,7 +127,7 @@ public abstract class EngineCore
      * @return The program name.
      * @throws LionEngineException If the engine has not been started.
      */
-    public static String getProgramName() throws LionEngineException
+    public static synchronized String getProgramName() throws LionEngineException
     {
         if (!started)
         {
@@ -139,7 +142,7 @@ public abstract class EngineCore
      * @return The program version.
      * @throws LionEngineException If the engine has not been started.
      */
-    public static Version getProgramVersion() throws LionEngineException
+    public static synchronized Version getProgramVersion() throws LionEngineException
     {
         if (!started)
         {
@@ -153,7 +156,7 @@ public abstract class EngineCore
      * 
      * @return <code>true</code> if started, <code>false</code> else.
      */
-    public static boolean isStarted()
+    public static synchronized boolean isStarted()
     {
         return started;
     }
