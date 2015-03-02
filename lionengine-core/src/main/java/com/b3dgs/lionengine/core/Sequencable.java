@@ -30,19 +30,6 @@ public interface Sequencable
         extends Updatable, Renderable
 {
     /**
-     * Start the next sequence and wait for current sequence to end before next sequence continues. This function should
-     * be used to synchronize two sequences (eg: load a next sequence while being in a menu). Do not forget to call
-     * {@link #end()} in order to give control to the next sequence.
-     * 
-     * @param wait <code>true</code> to wait for the next sequence to be loaded, <code>false</code> else.
-     * @param nextSequenceClass The next sequence class reference (must not be <code>null</code>).
-     * @param arguments The arguments list.
-     * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
-     */
-    void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
-            throws LionEngineException;
-
-    /**
      * Terminate sequence.
      */
     void end();

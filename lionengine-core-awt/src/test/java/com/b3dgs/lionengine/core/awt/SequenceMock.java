@@ -44,7 +44,7 @@ public class SequenceMock
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         setSystemCursorVisible(true);
         try

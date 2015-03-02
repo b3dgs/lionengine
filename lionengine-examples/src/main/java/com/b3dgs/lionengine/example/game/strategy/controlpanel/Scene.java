@@ -99,7 +99,7 @@ final class Scene
      */
 
     @Override
-    public void load()
+    protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
                 Core.MEDIA.create("tile"), map);

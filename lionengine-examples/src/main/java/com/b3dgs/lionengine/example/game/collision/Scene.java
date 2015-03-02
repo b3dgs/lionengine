@@ -77,7 +77,7 @@ class Scene
      */
 
     @Override
-    public void load()
+    protected void load()
     {
         map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"));
         mapCollision.loadCollisions(Core.MEDIA.create("map", "formulas.xml"), Core.MEDIA.create("map", "groups.xml"));

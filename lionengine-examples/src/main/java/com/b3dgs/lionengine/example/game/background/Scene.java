@@ -65,7 +65,7 @@ class Scene
      */
 
     @Override
-    public void load()
+    protected void load()
     {
         y = 230;
     }

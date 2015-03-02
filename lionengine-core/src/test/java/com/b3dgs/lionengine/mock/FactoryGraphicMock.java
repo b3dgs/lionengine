@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.mock;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
@@ -44,12 +43,6 @@ import com.b3dgs.lionengine.core.Transform;
 public class FactoryGraphicMock
         implements FactoryGraphic
 {
-    @Override
-    public Renderer createRenderer(Config config)
-    {
-        return new RendererMock(config);
-    }
-
     @Override
     public Screen createScreen(Renderer renderer)
     {

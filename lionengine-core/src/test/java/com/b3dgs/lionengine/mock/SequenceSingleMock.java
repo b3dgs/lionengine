@@ -41,7 +41,7 @@ public class SequenceSingleMock
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         // Mock
     }

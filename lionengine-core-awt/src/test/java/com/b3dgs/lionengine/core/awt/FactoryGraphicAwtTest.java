@@ -69,7 +69,7 @@ public class FactoryGraphicAwtTest
         final FactoryGraphicAwt factory = new FactoryGraphicAwt();
         Assert.assertNotNull(factory.createGraphic());
         Assert.assertNotNull(factory.createImageBuffer(1, 1, Transparency.BITMASK));
-        final Renderer renderer = factory.createRenderer(new Config(new Resolution(320, 240, 0), 16, false));
+        final Renderer renderer = new Renderer(new Config(new Resolution(320, 240, 0), 16, false));
         Assert.assertNotNull(renderer);
         Assert.assertNotNull(factory.createScreen(renderer));
         Assert.assertNotNull(factory.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL));

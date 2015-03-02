@@ -73,7 +73,7 @@ class Scene
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         camera.setView(0, 0, getWidth(), getHeight());
         setSystemCursorVisible(false);

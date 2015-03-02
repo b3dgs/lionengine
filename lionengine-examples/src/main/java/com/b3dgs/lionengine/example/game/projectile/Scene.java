@@ -58,7 +58,7 @@ class Scene
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         final Services context = new Services();
         final Factory factory = new Factory();

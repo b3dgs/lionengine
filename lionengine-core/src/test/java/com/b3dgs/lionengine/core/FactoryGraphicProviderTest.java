@@ -101,22 +101,12 @@ public class FactoryGraphicProviderTest
     }
 
     /**
-     * Test create renderer.
-     */
-    @Test
-    public void testCreateRenderer()
-    {
-        Assert.assertNotNull(Core.GRAPHIC.createRenderer(CONFIG));
-    }
-
-    /**
      * Test create screen.
      */
     @Test
     public void testCreateScreen()
     {
-        final Renderer renderer = Core.GRAPHIC.createRenderer(CONFIG);
-        Assert.assertNotNull(Core.GRAPHIC.createScreen(renderer));
+        Assert.assertNotNull(Core.GRAPHIC.createScreen(new Renderer(CONFIG)));
     }
 
     /**

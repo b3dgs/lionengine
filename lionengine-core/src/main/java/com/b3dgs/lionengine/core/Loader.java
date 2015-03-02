@@ -145,7 +145,7 @@ public final class Loader
     {
         Check.notNull(config);
 
-        final Renderer renderer = Core.GRAPHIC.createRenderer(config);
+        final Renderer renderer = new Renderer(config);
         renderer.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
         {
             @Override

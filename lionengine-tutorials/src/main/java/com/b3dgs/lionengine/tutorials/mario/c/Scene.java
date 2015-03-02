@@ -80,7 +80,7 @@ class Scene
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         if (!LEVEL.exists())
         {

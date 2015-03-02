@@ -70,7 +70,7 @@ class Scene
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"));
         minimap.load(false);

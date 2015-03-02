@@ -42,7 +42,7 @@ public class SequenceInterruptMock
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         // Mock
     }

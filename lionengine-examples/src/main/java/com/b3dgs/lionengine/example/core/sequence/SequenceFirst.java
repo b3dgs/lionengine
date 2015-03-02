@@ -15,44 +15,63 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core.swt;
+package com.b3dgs.lionengine.example.core.sequence;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
- * The renderer implementation.
+ * SequenceLinkSimple implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class RendererSwt
-        extends Renderer
+class SequenceFirst
+        extends Sequence
 {
+    /** Count value. */
+    private int count;
+
     /**
-     * Internal constructor.
+     * Constructor.
      * 
-     * @param config The config reference.
+     * @param loader The loader reference.
      */
-    RendererSwt(Config config)
+    public SequenceFirst(Loader loader)
     {
-        super(config, "Renderer SWT");
+        super(loader, new Resolution(320, 100, 32));
     }
 
-    /*
-     * Renderer
-     */
+    @Override
+    protected void load()
+    {
+        count = 0;
+    }
 
     @Override
-    protected void asyncLoad(final Sequence nextSequence)
+    public void update(double extrp)
     {
-        ScreenSwt.display.asyncExec(new Runnable()
+        count++;
+        if (count > 2)
         {
-            @Override
-            public void run()
-            {
-                nextSequence.loadInternal();
-            }
-        });
+            end(SequenceNext.class);
+        }
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        System.out.println("SimpleLink rendering number " + count);
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        if (!hasNextSequence)
+        {
+            Engine.terminate();
+        }
     }
 }

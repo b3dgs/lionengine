@@ -74,7 +74,7 @@ class Scene
      */
 
     @Override
-    public void load()
+    protected void load()
     {
         world.loadFromFile(Core.MEDIA.create("level.lvl"));
     }

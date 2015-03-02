@@ -58,7 +58,7 @@ class Scene
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         text.setText("Hello");
         text.setLocation(getWidth() / 2, getHeight() / 2 - 8);

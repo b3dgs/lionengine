@@ -58,7 +58,7 @@ public class SequenceArgumentsMock
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         width = getWidth();
         height = getHeight();

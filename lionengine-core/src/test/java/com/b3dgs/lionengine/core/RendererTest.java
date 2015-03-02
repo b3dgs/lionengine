@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.ScreenMock;
-import com.b3dgs.lionengine.mock.SequenceAsyncFailMock;
 import com.b3dgs.lionengine.mock.SequenceInterruptMock;
 import com.b3dgs.lionengine.mock.SequenceSingleMock;
 
@@ -143,23 +142,6 @@ public class RendererTest
         {
             // Wait
         }
-        renderer.join();
-    }
-
-    /**
-     * Test the async sequence interrupt.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test(timeout = 500)
-    public void testSequenceAsyncInterrupt() throws InterruptedException
-    {
-        final Loader loader = new Loader(CONFIG);
-        final Renderer renderer = loader.getRenderer();
-        loader.start(SequenceAsyncFailMock.class);
-
-        Thread.sleep(250);
-        renderer.interrupt();
         renderer.join();
     }
 

@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.Transparency;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class Renderer
+public class Renderer
         extends Thread
         implements Sequencable
 {
@@ -64,8 +64,6 @@ public abstract class Renderer
     private final Resolution output;
     /** Started. */
     private volatile boolean started;
-    /** Async load. */
-    private volatile boolean asyncLoadFlag;
     /** Loader. */
     private volatile Loader loader;
     /** First sequence arguments. */
@@ -105,11 +103,10 @@ public abstract class Renderer
      * Constructor base.
      * 
      * @param config The config reference.
-     * @param name The renderer name.
      */
-    protected Renderer(Config config, String name)
+    public Renderer(Config config)
     {
-        super("LionEngine " + name + " Renderer");
+        super("LionEngine Renderer");
         this.config = config;
         filter = config.getFilter();
         output = config.getOutput();
@@ -127,13 +124,6 @@ public abstract class Renderer
         }
         graphic = Core.GRAPHIC.createGraphic();
     }
-
-    /**
-     * Allows to load another sequence without blocking the current one.
-     * 
-     * @param nextSequence The next sequence to load.
-     */
-    protected abstract void asyncLoad(Sequence nextSequence);
 
     /**
      * Start with the first sequence.
@@ -240,33 +230,6 @@ public abstract class Renderer
                 break;
             }
         }
-    }
-
-    /**
-     * Wait for the async loading to be finished before running the sequence.
-     * 
-     * @param nextSequence The next sequence reference.
-     * @param sequenceName The sequence name to wait for.
-     * @return <code>true</code> if correctly loaded, <code>false</code> if error.
-     */
-    private synchronized boolean waitForAsyncLoad(Sequence nextSequence, String sequenceName)
-    {
-        if (asyncLoadFlag)
-        {
-            try
-            {
-                nextSequence.loadedSemaphore.acquire();
-                asyncLoadFlag = false;
-                return nextSequence.isLoaded();
-            }
-            catch (final InterruptedException exception)
-            {
-                Thread.currentThread().interrupt();
-                Verbose.critical(Renderer.class, "run", "Sequence async loading interrupted: ", sequenceName);
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -381,24 +344,6 @@ public abstract class Renderer
     /*
      * Sequencable
      */
-
-    @Override
-    public final synchronized void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
-            throws LionEngineException
-    {
-        Check.notNull(nextSequenceClass);
-
-        nextSequence = Loader.createSequence(nextSequenceClass, loader, arguments);
-        if (wait)
-        {
-            nextSequence.start();
-        }
-        else
-        {
-            asyncLoad(nextSequence);
-            asyncLoadFlag = true;
-        }
-    }
 
     @Override
     public final synchronized void end()
@@ -571,10 +516,6 @@ public abstract class Renderer
         {
             final Sequence sequence = nextSequence;
             final String sequenceName = sequence.getClass().getName();
-            if (!waitForAsyncLoad(sequence, sequenceName))
-            {
-                break;
-            }
             Verbose.info("Starting sequence: ", sequenceName);
 
             update(sequence);

@@ -128,7 +128,7 @@ public class ModuleCore
         }
 
         @Override
-        public void load()
+        protected void load()
         {
         }
 

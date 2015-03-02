@@ -38,7 +38,7 @@ public class SequenceFailMock
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         // Mock
     }

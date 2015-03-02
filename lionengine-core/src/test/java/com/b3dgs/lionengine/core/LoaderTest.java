@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.lang.reflect.Method;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -33,8 +31,6 @@ import com.b3dgs.lionengine.mock.MediaMock;
 import com.b3dgs.lionengine.mock.SequenceArgumentsMock;
 import com.b3dgs.lionengine.mock.SequenceFailMock;
 import com.b3dgs.lionengine.mock.SequenceSingleMock;
-import com.b3dgs.lionengine.mock.SequenceStartMock;
-import com.b3dgs.lionengine.mock.SequenceWaitMock;
 
 /**
  * Test the loader class.
@@ -73,31 +69,6 @@ public class LoaderTest
         System.out.println("****************************************************************************************");
         System.out.flush();
         FactoryGraphicProvider.setFactoryGraphic(null);
-    }
-
-    /**
-     * Create the sequence from loader by reflection.
-     * 
-     * @param sequence The sequence to use.
-     * @param loader The loader to used.
-     * @param params The parameters.
-     * @return The sequence instance.
-     * @throws LionEngineException If reflection error.
-     */
-    private static Sequence createSequence(Class<? extends Sequence> sequence, Loader loader, Object... params)
-            throws LionEngineException
-    {
-        try
-        {
-            final Method method = Loader.class.getDeclaredMethod("createSequence", Class.class, Loader.class,
-                    Object[].class);
-            method.setAccessible(true);
-            return (Sequence) method.invoke(Loader.class, sequence, loader, params);
-        }
-        catch (final ReflectiveOperationException exception)
-        {
-            throw new LionEngineException(exception);
-        }
     }
 
     /**
@@ -162,18 +133,6 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with a sequence that fail during the load internal.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testFailSequenceLoadInternal()
-    {
-        final Loader loader = new Loader(CONFIG);
-        final Sequence sequence = createSequence(SequenceSingleMock.class, loader);
-        sequence.loadInternal();
-        sequence.loadInternal();
-    }
-
-    /**
      * Test the loader already started.
      */
     @Test(expected = LionEngineException.class)
@@ -229,28 +188,6 @@ public class LoaderTest
     {
         final Loader loader = new Loader(CONFIG);
         loader.start(SequenceArgumentsMock.class, new Object());
-        waitEnd(loader);
-    }
-
-    /**
-     * Test the loader with a wait sequence.
-     */
-    @Test
-    public void testSequenceWait()
-    {
-        final Loader loader = new Loader(CONFIG);
-        loader.start(SequenceWaitMock.class);
-        waitEnd(loader);
-    }
-
-    /**
-     * Test the loader with linked sequences.
-     */
-    @Test
-    public void testSequenceLinked()
-    {
-        final Loader loader = new Loader(CONFIG);
-        loader.start(SequenceStartMock.class);
         waitEnd(loader);
     }
 

@@ -17,61 +17,30 @@
  */
 package com.b3dgs.lionengine.example.core.sequence;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
- * SequenceLinkSimple implementation.
+ * Program starts here.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class SequenceLinkSimple
-        extends Sequence
+public class AppSequence
 {
-    /** Count value. */
-    private int count;
-
     /**
-     * Constructor.
+     * Main function called by the jvm.
      * 
-     * @param loader The loader reference.
+     * @param args The arguments.
      */
-    public SequenceLinkSimple(Loader loader)
+    public static void main(String[] args)
     {
-        super(loader, new Resolution(320, 100, 32));
-    }
-
-    @Override
-    public void load()
-    {
-        count = 0;
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        count++;
-        if (count > 2)
-        {
-            end(SequenceNext.class);
-        }
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        System.out.println("SimpleLink rendering number " + count);
-    }
-
-    @Override
-    protected void onTerminate(boolean hasNextSequence)
-    {
-        if (!hasNextSequence)
-        {
-            Engine.terminate();
-        }
+        Engine.start("AppSequence", Version.create(1, 0, 0), "resources");
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader(config);
+        loader.start(SequenceFirst.class);
     }
 }

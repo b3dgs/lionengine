@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.util.concurrent.Semaphore;
-
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
@@ -74,11 +72,6 @@ import com.b3dgs.lionengine.Resolution;
 public abstract class Sequence
         implements Sequencable
 {
-    /** Sequence already started. */
-    private static final String ERROR_LOADED = "Sequence has already been loaded !";
-
-    /** Async loaded semaphore. */
-    final Semaphore loadedSemaphore;
     /** Native resolution. */
     final Resolution resolution;
     /** Renderer. */
@@ -99,7 +92,6 @@ public abstract class Sequence
     public Sequence(Loader loader, Resolution resolution)
     {
         this.resolution = resolution;
-        loadedSemaphore = new Semaphore(0);
         renderer = loader.getRenderer();
         renderer.getConfig().setSource(resolution);
         width = resolution.getWidth();
@@ -111,33 +103,7 @@ public abstract class Sequence
      * 
      * @throws LionEngineException If an exception occurred on loading.
      */
-    public abstract void load() throws LionEngineException;
-
-    /**
-     * Load the sequence internally. Must only be called by {@link Renderer#asyncLoad(Sequence)} implementation in order
-     * to synchronize loading process when it is called asynchronously.
-     * 
-     * @throws LionEngineException If the sequence has already been loaded or an error occurred on loading.
-     */
-    public synchronized final void loadInternal() throws LionEngineException
-    {
-        if (!loaded)
-        {
-            try
-            {
-                load();
-                loaded = true;
-            }
-            finally
-            {
-                loadedSemaphore.release();
-            }
-        }
-        else
-        {
-            throw new LionEngineException(ERROR_LOADED);
-        }
-    }
+    protected abstract void load() throws LionEngineException;
 
     /**
      * Called when sequence is focused (screen). Does nothing by default.
@@ -219,8 +185,7 @@ public abstract class Sequence
     }
 
     /**
-     * Called when sequence is closing. Should be used in case on special loading (such as music starting) when
-     * {@link #start(boolean, Class, Object...)} has been used by another sequence. Does nothing by default.
+     * Called when sequence is closing. Does nothing by default.
      * 
      * @param hasNextSequence <code>true</code> if there is a next sequence, <code>false</code> else (then application
      *            will end definitely).
@@ -265,13 +230,6 @@ public abstract class Sequence
     /*
      * Sequencable
      */
-
-    @Override
-    public final void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
-            throws LionEngineException
-    {
-        renderer.start(wait, nextSequenceClass, arguments);
-    }
 
     @Override
     public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments) throws LionEngineException

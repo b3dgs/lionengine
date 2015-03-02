@@ -98,7 +98,7 @@ class Scene
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         // Prepare surfaces without alpha (need to be called only one time)
         // If this function is not called, there won't have any surface to display

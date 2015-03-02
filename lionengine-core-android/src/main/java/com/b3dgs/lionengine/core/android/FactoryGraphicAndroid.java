@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core.android;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
@@ -52,12 +51,6 @@ final class FactoryGraphicAndroid
     /*
      * FactoryGraphic
      */
-
-    @Override
-    public Renderer createRenderer(Config config)
-    {
-        return new RendererAndroid(config);
-    }
 
     @Override
     public Screen createScreen(Renderer renderer)

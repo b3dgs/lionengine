@@ -72,7 +72,7 @@ class Scene
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"));
         raster.loadSheets(Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("raster.xml"), false);

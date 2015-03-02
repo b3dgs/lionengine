@@ -52,7 +52,7 @@ class Scene
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         // Load
     }

@@ -54,12 +54,6 @@ final class FactoryGraphicSwt
      */
 
     @Override
-    public Renderer createRenderer(Config config)
-    {
-        return new RendererSwt(config);
-    }
-
-    @Override
     public Screen createScreen(Renderer renderer)
     {
         final Config config = renderer.getConfig();

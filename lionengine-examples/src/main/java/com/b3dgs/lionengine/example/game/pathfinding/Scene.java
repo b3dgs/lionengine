@@ -92,7 +92,7 @@ class Scene
     }
 
     @Override
-    public void load()
+    protected void load()
     {
         map.addFeature(mapCollision);
         map.addFeature(mapPath);

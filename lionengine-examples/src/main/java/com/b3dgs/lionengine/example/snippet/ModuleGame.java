@@ -132,7 +132,7 @@ public class ModuleGame
         }
 
         @Override
-        public void load()
+        protected void load()
         {
             // Load resources here
         }

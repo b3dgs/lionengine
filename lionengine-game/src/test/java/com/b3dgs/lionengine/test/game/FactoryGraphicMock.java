@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.test.game;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.TextStyle;
@@ -40,12 +39,6 @@ import com.b3dgs.lionengine.core.Transform;
 public class FactoryGraphicMock
         implements FactoryGraphic
 {
-    @Override
-    public Renderer createRenderer(Config config)
-    {
-        return null;
-    }
-
     @Override
     public Screen createScreen(Renderer renderer)
     {
