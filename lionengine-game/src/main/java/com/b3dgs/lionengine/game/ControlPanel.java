@@ -21,12 +21,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -79,23 +77,16 @@ public class ControlPanel
 
     /**
      * Create a control panel.
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link Viewer}</li>
-     * <li>{@link Cursor}</li>
-     * </ul>
      * 
-     * @param services The services reference.
-     * @throws LionEngineException If missing {@link Services}.
+     * @param viewer The viewer reference.
+     * @param cursor The cursor reference.
      */
-    public ControlPanel(Services services) throws LionEngineException
+    public ControlPanel(Viewer viewer, Cursor cursor)
     {
+        this.viewer = viewer;
+        this.cursor = cursor;
         listeners = new HashSet<>(1);
         selectionArea = Geom.createRectangle();
-        viewer = services.get(Viewer.class);
-        cursor = services.get(Cursor.class);
         outsidePanel = null;
         clicked = false;
         clickedFlag = false;

@@ -15,46 +15,46 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.strategy.controlpanel;
+package com.b3dgs.lionengine.example.game.controlpanel;
 
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
+import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.game.ControlPanel;
+import com.b3dgs.lionengine.game.Cursor;
 
 /**
- * Tile implementation.
+ * Control panel implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Tile
-        extends TileStrategy<ResourceType>
+public class Panel
+        extends ControlPanel
+        implements Renderable
 {
+    /** HUD image. */
+    private final Image hud;
+
     /**
-     * {@link TileStrategy#TileStrategy(int, int, Integer, int, CollisionFormula)}
+     * {@link ControlPanel#ControlPanel(Viewer, Cursor)}
      */
-    public Tile(int width, int height, Integer pattern, int number, CollisionFormula collision)
+    public Panel(Viewer viewer, Cursor cursor)
     {
-        super(width, height, pattern, number, collision);
+        super(viewer, cursor);
+        hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
+        hud.load(false);
     }
 
     /*
-     * TileStrategy
+     * Renderable
      */
 
     @Override
-    public ResourceType checkResourceType()
+    public void render(Graphic g)
     {
-        return ResourceType.NONE;
-    }
-
-    @Override
-    public boolean checkBlocking()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean hasResources()
-    {
-        return getResourceType() != ResourceType.NONE;
+        hud.render(g);
     }
 }

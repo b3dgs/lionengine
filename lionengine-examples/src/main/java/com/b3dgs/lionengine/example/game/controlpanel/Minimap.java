@@ -15,34 +15,41 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.strategy.controlpanel;
+package com.b3dgs.lionengine.example.game.controlpanel;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.TileCollision;
 
 /**
- * Main class.
- * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
  */
-public final class AppStrategyControlPanel
+public class Minimap
+        extends com.b3dgs.lionengine.game.map.Minimap
 {
     /**
-     * Main.
-     * 
-     * @param args The arguments.
+     * {@link com.b3dgs.lionengine.game.map.Minimap#com.b3dgs.lionengine.game.map.Minimap(MapTile)}
      */
-    public static void main(String[] args)
+    public Minimap(MapTile map)
     {
-        Engine.start("Strategy Control Panel", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "strategy", "controlpanel"));
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader(config);
-        loader.start(Scene.class);
+        super(map);
+    }
+
+    /*
+     * Minimap
+     */
+
+    @Override
+    protected ColorRgba getTilePixelColor(Tile tile)
+    {
+        for (final TileColorType type : TileColorType.values())
+        {
+            if (type.name().equals(tile.getFeature(TileCollision.class).getGroup()))
+            {
+                return type.get();
+            }
+        }
+        return super.getTilePixelColor(tile);
     }
 }

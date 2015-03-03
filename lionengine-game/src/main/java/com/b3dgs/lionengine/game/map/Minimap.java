@@ -95,11 +95,11 @@ public class Minimap
         final int vert = map.getInTileHeight();
         final int hori = map.getInTileWidth();
 
-        for (int v = 0; v < vert; v++)
+        for (int ty = 0; ty < vert; ty++)
         {
-            for (int h = 0; h < hori; h++)
+            for (int tx = 0; tx < hori; tx++)
             {
-                final Tile tile = map.getTile(h, v);
+                final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
                 {
                     g.setColor(getTilePixelColor(tile));
@@ -108,7 +108,7 @@ public class Minimap
                 {
                     g.setColor(ColorRgba.BLACK);
                 }
-                g.drawRect(h, vert - v - 1, 1, 1, true);
+                g.drawRect(tx, vert - ty - 1, 1, 1, true);
             }
         }
         g.dispose();
