@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import java.util.Map;
+
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
@@ -26,17 +28,17 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.game.configurer.ConfigMinimap;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Minimap representation of a map tile. This can be used to represent strategic view of a map.
  * <p>
  * A call to {@link #load(boolean)} is needed once the {@link MapTile} as been created / loaded, and also each time
  * modification occurs on the map.
- * </p>
- * <p>
- * Minimap can be customized by overriding {@link #getTilePixelColor(Tile)} to change the tile color representation for
- * each tile depending of its type.
  * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -47,6 +49,8 @@ public class Minimap
 {
     /** Map reference. */
     private final MapTile map;
+    /** Pixel configuration. */
+    private Map<String, ColorRgba> pixels;
     /** Minimap image reference. */
     private ImageBuffer minimap;
     /** Origin reference. */
@@ -68,15 +72,14 @@ public class Minimap
     }
 
     /**
-     * Get color corresponding to the specified tile. Override it to return a specific color for each type of tile.
-     * This function is used when generating the minimap.
+     * Set the pixel configuration to use.
      * 
-     * @param tile The input tile.
-     * @return The color representing the tile on minimap.
+     * @param config The pixel configuration file.
      */
-    protected ColorRgba getTilePixelColor(Tile tile)
+    public void loadPixelConfig(Media config)
     {
-        return ColorRgba.WHITE;
+        final XmlNode root = Stream.loadXml(config);
+        pixels = ConfigMinimap.create(root, map);
     }
 
     /*
@@ -102,7 +105,14 @@ public class Minimap
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
                 {
-                    g.setColor(getTilePixelColor(tile));
+                    if (pixels != null && tile.getGroup() != null && pixels.containsKey(tile.getGroup()))
+                    {
+                        g.setColor(pixels.get(tile.getGroup()));
+                    }
+                    else
+                    {
+                        g.setColor(ColorRgba.WHITE);
+                    }
                 }
                 else
                 {

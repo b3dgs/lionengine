@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.map.MapTilePathModel;
@@ -62,8 +60,6 @@ class Scene
     private final Camera camera;
     /** Map reference. */
     private final MapTile map;
-    /** Map collision. */
-    private final MapTileCollision mapCollision;
     /** Map path. */
     private final MapTilePath mapPath;
     /** Cursor reference. */
@@ -84,7 +80,6 @@ class Scene
         text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         camera = new Camera();
         map = new MapTileGame(camera, 16, 16);
-        mapCollision = new MapTileCollisionModel(map, camera);
         mapPath = new MapTilePathModel(map);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
         mouse.setConfig(getConfig());
@@ -94,10 +89,8 @@ class Scene
     @Override
     protected void load()
     {
-        map.addFeature(mapCollision);
         map.addFeature(mapPath);
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"));
-        mapCollision.loadCollisions(Core.MEDIA.create("formulas.xml"), Core.MEDIA.create("groups.xml"));
+        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
         mapPath.loadPathfinding(Core.MEDIA.create("pathfinding.xml"));
 
         cursor.load(false);

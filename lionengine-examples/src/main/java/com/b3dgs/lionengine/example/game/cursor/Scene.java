@@ -32,11 +32,8 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.map.TileCollision;
 
 /**
  * Game loop designed to handle our little world.
@@ -60,8 +57,6 @@ class Scene
     private final Camera camera;
     /** Map reference. */
     private final MapTile map;
-    /** Map collision. */
-    private final MapTileCollision mapCollision;
     /** Cursor reference. */
     private final Cursor cursor;
 
@@ -78,8 +73,6 @@ class Scene
         text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         camera = new Camera();
         map = new MapTileGame(camera, 16, 16);
-        mapCollision = new MapTileCollisionModel(map, camera);
-        map.addFeature(mapCollision);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
         mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
@@ -104,15 +97,14 @@ class Scene
             text.setColor(ColorRgba.YELLOW);
             text.draw(g, x + 20, y + 20, "Tile number: " + tile.getNumber());
             text.draw(g, x + 20, y + 10, "X = " + tx + " | Y = " + ty);
-            text.draw(g, x + 20, y, "Group: " + tile.getFeature(TileCollision.class).getGroup());
+            text.draw(g, x + 20, y, "Group: " + tile.getGroup());
         }
     }
 
     @Override
     protected void load()
     {
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"));
-        mapCollision.loadCollisions(Core.MEDIA.create("formulas.xml"), Core.MEDIA.create("groups.xml"));
+        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
         cursor.load(false);
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());

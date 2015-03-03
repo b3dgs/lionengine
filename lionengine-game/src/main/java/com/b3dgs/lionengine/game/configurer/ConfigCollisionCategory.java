@@ -79,7 +79,7 @@ public final class ConfigCollisionCategory
     public static CollisionCategory create(XmlNode root, MapTileCollision map) throws LionEngineException
     {
         final Collection<CollisionGroup> groups = new ArrayList<>();
-        for (final XmlNode groupNode : root.getChildren(ConfigCollisionGroup.GROUP))
+        for (final XmlNode groupNode : root.getChildren(ConfigTileGroup.GROUP))
         {
             final String groupName = groupNode.getText();
             final CollisionGroup group = map.getCollisionGroup(groupName);

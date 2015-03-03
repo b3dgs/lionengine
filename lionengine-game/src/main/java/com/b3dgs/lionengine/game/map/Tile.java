@@ -47,6 +47,13 @@ public interface Tile
     void setSheet(Integer sheet);
 
     /**
+     * Set the group name.
+     * 
+     * @param name The group name.
+     */
+    void setGroup(String name);
+
+    /**
      * Set tile index inside sheet.
      * 
      * @param number The tile index.
@@ -87,6 +94,13 @@ public interface Tile
      * @return The sheet number.
      */
     Integer getSheet();
+
+    /**
+     * Get the group name.
+     * 
+     * @return The group name.
+     */
+    String getGroup();
 
     /**
      * Get tile index number.

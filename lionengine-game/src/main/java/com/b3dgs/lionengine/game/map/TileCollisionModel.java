@@ -42,8 +42,6 @@ public class TileCollisionModel
     private final Tile tile;
     /** The collision formulas used. */
     private final Collection<CollisionFormula> formulas;
-    /** Group name. */
-    private String group;
 
     /**
      * Create a tile collision.
@@ -97,12 +95,6 @@ public class TileCollisionModel
     public void removeCollisionFormulas()
     {
         formulas.clear();
-    }
-
-    @Override
-    public void setGroup(String name)
-    {
-        group = name;
     }
 
     @Override
@@ -168,12 +160,6 @@ public class TileCollisionModel
             }
         }
         return null;
-    }
-
-    @Override
-    public String getGroup()
-    {
-        return group;
     }
 
     @Override

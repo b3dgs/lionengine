@@ -36,8 +36,6 @@ public interface MapTilePath
 {
     /**
      * Load map pathfinding from an external file.
-     * Map must have the {@link MapTileCollision} feature and collisions loaded with
-     * {@link MapTileCollision#loadCollisions(Media, Media)}.
      * 
      * @param pathfindingConfig The pathfinding descriptor.
      * @throws LionEngineException If error when reading pathfinding or {@link MapTileCollision} feature missing.

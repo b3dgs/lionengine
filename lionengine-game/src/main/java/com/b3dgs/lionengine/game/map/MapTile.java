@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -66,7 +67,7 @@ public interface MapTile
      * @param widthInTile The map width in tile (must be strictly positive).
      * @param heightInTile The map height in tile (must be strictly positive).
      * @throws LionEngineException If size if invalid.
-     * @see #create(Media, Media)
+     * @see #create(Media, Media, Media)
      */
     void create(int widthInTile, int heightInTile) throws LionEngineException;
 
@@ -78,12 +79,13 @@ public interface MapTile
      * 
      * @param levelrip The file describing the levelrip as a single image.
      * @param sheetsConfig The file that define the sheets configuration.
+     * @param groupsConfig The tile collision groups descriptor.
      * @throws LionEngineException If error when importing map.
      * @see #create(int, int)
      * @see LevelRipConverter
      * @see TileExtractor
      */
-    void create(Media levelrip, Media sheetsConfig) throws LionEngineException;
+    void create(Media levelrip, Media sheetsConfig, Media groupsConfig) throws LionEngineException;
 
     /**
      * Create a tile.
@@ -100,6 +102,14 @@ public interface MapTile
      * @throws LionEngineException If error when reading sheets.
      */
     void loadSheets(Media sheetsConfig) throws LionEngineException;
+
+    /**
+     * Load tiles group from an external file.
+     * 
+     * @param groupsConfig The tile collision groups descriptor.
+     * @throws LionEngineException If error when reading groups.
+     */
+    void loadGroups(Media groupsConfig) throws LionEngineException;
 
     /**
      * Load a map from a specified file as binary data.
@@ -241,6 +251,22 @@ public interface MapTile
      * @throws LionEngineException If sheet not found.
      */
     SpriteTiled getSheet(Integer sheet) throws LionEngineException;
+
+    /**
+     * Get the group from its name.
+     * 
+     * @param name The group name.
+     * @return The supported group reference.
+     * @throws LionEngineException If group not found.
+     */
+    TileGroup getGroup(String name) throws LionEngineException;
+
+    /**
+     * Get the groups list.
+     * 
+     * @return The groups list.
+     */
+    Collection<TileGroup> getGroups();
 
     /**
      * Get the number of used sheets.

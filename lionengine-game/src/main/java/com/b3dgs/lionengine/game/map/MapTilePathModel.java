@@ -121,8 +121,7 @@ public class MapTilePathModel
                     final TilePath tilePath = new TilePathModel(tile);
                     tile.addFeature(tilePath);
 
-                    final TileCollision tileCollision = tile.getFeature(TileCollision.class);
-                    final String group = tileCollision.getGroup();
+                    final String group = tile.getGroup();
                     final String category = config.getCategory(group);
                     if (category != null)
                     {

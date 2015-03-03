@@ -37,6 +37,8 @@ public class TileGame
     private final Features<TileFeature> features;
     /** Tile sheet number where tile is contained. */
     private Integer sheet;
+    /** Group name. */
+    private String group;
     /** Position number in the tilesheet. */
     private int number;
     /** Horizontal location on map. */
@@ -82,6 +84,12 @@ public class TileGame
     }
 
     @Override
+    public void setGroup(String name)
+    {
+        group = name;
+    }
+
+    @Override
     public void setNumber(int number)
     {
         Check.superiorOrEqual(number, 0);
@@ -116,6 +124,12 @@ public class TileGame
     public Integer getSheet()
     {
         return sheet;
+    }
+
+    @Override
+    public String getGroup()
+    {
+        return group;
     }
 
     @Override

@@ -66,44 +66,6 @@ public interface MapTileCollision
     void clearCollisionDraw();
 
     /**
-     * Add a collision formula.
-     * 
-     * @param formula The collision formula reference.
-     */
-    void addCollisionFormula(CollisionFormula formula);
-
-    /**
-     * Add a collision group.
-     * 
-     * @param group The collision group reference.
-     */
-    void addCollisionGroup(CollisionGroup group);
-
-    /**
-     * Remove a collision formula.
-     * 
-     * @param formula The collision formula to remove.
-     */
-    void removeCollisionFormula(CollisionFormula formula);
-
-    /**
-     * Remove a collision group.
-     * 
-     * @param group The collision group to remove.
-     */
-    void removeCollisionGroup(CollisionGroup group);
-
-    /**
-     * Remove all collision formulas.
-     */
-    void removeCollisionFormulas();
-
-    /**
-     * Remove all collision groups.
-     */
-    void removeCollisionGroups();
-
-    /**
      * Search first tile hit by the transformable that contains collision, applying a ray tracing from its old location
      * to its current. This way, the transformable can not pass through a collidable tile.
      * 

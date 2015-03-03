@@ -74,7 +74,7 @@ class Scene
     @Override
     protected void load()
     {
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"));
+        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
         raster.loadSheets(Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("raster.xml"), false);
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);

@@ -27,6 +27,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -35,6 +36,8 @@ import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Features;
+import com.b3dgs.lionengine.game.collision.TileGroup;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -50,9 +53,10 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * <pre>
  * {@link #create(int, int)} // prepare memory to store tiles
  * {@link #loadSheets(Media)} // load tile sheets
+ * {@link #loadGroups(Media)} // load tile groups
  * </pre>
  * <p>
- * Or import a map from a level rip with {@link #create(Media, Media)}.
+ * Or import a map from a level rip with {@link #create(Media, Media, Media)}.
  * </p>
  * <p>
  * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
@@ -66,8 +70,12 @@ public class MapTileGame
 {
     /** Info loading sheets. */
     private static final String INFO_LOAD_SHEETS = "Loading sheets from: ";
+    /** Info loading groups. */
+    private static final String INFO_LOAD_GROUPS = "Loading groups from: ";
     /** Error sheet missing message. */
     private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
+    /** Error group missing message. */
+    private static final String ERROR_GROUP_MISSING = "Group missing: ";
     /** Error create tile message. */
     private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
 
@@ -77,8 +85,12 @@ public class MapTileGame
     private final Viewer viewer;
     /** Features list. */
     private final Features<MapTileFeature> features;
+    /** Tile groups list. */
+    private final Map<String, TileGroup> groups;
     /** Sheet configuration file. */
     private Media sheetsConfig;
+    /** Groups configuration file. */
+    private Media groupsConfig;
     /** Tile width. */
     private int tileWidth;
     /** Tile height. */
@@ -111,6 +123,7 @@ public class MapTileGame
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         sheets = new HashMap<>();
+        groups = new HashMap<>();
         features = new Features<>(MapTileFeature.class);
         renderer = this;
         sheetsConfig = null;
@@ -252,6 +265,7 @@ public class MapTileGame
     public void load(FileReading file) throws IOException, LionEngineException
     {
         final Media sheetsConfig = Core.MEDIA.create(file.readString());
+        final Media groupsConfig = Core.MEDIA.create(file.readString());
         final int width = file.readShort();
         final int height = file.readShort();
         tileWidth = file.readByte();
@@ -259,6 +273,7 @@ public class MapTileGame
 
         create(width, height);
         loadSheets(sheetsConfig);
+        loadGroups(groupsConfig);
 
         final int t = file.readShort();
         for (int v = 0; v < t; v++)
@@ -284,6 +299,7 @@ public class MapTileGame
     {
         // Header
         file.writeString(sheetsConfig.getPath());
+        file.writeString(groupsConfig.getPath());
         file.writeShort((short) widthInTile);
         file.writeShort((short) heightInTile);
         file.writeByte((byte) tileWidth);
@@ -323,12 +339,14 @@ public class MapTileGame
     }
 
     @Override
-    public void create(Media levelrip, Media sheetsConfig) throws LionEngineException
+    public void create(Media levelrip, Media sheetsConfig, Media groupsConfig) throws LionEngineException
     {
         clear();
         final LevelRipConverter rip = new LevelRipConverter(levelrip, sheetsConfig, this);
         rip.start();
         this.sheetsConfig = sheetsConfig;
+        this.groupsConfig = groupsConfig;
+        loadGroups(groupsConfig);
     }
 
     @Override
@@ -359,6 +377,43 @@ public class MapTileGame
             sprite.load(false);
             sheets.put(Integer.valueOf(sheet), sprite);
         }
+    }
+
+    @Override
+    public void loadGroups(Media groupsConfig) throws LionEngineException
+    {
+        Verbose.info(INFO_LOAD_GROUPS, groupsConfig.getFile().getPath());
+        this.groupsConfig = groupsConfig;
+
+        groups.clear();
+        final XmlNode nodeGroups = Stream.loadXml(groupsConfig);
+        final Collection<TileGroup> groups = ConfigTileGroup.create(nodeGroups, this);
+        for (final TileGroup group : groups)
+        {
+            this.groups.put(group.getName(), group);
+        }
+
+        for (int ty = 0; ty < heightInTile; ty++)
+        {
+            for (int tx = 0; tx < widthInTile; tx++)
+            {
+                final Tile tile = getTile(tx, ty);
+                if (tile != null)
+                {
+                    final Integer sheet = tile.getSheet();
+                    final int number = tile.getNumber();
+                    for (final TileGroup group : groups)
+                    {
+                        if (group.getSheet() == sheet.intValue()
+                                && UtilMath.isBetween(number, group.getStart(), group.getEnd()))
+                        {
+                            tile.setGroup(group.getName());
+                        }
+                    }
+                }
+            }
+        }
+        groups.clear();
     }
 
     @Override
@@ -514,6 +569,22 @@ public class MapTileGame
             throw new LionEngineException(ERROR_SHEET_MISSING, sheet.toString());
         }
         return sheets.get(sheet);
+    }
+
+    @Override
+    public TileGroup getGroup(String name)
+    {
+        if (groups.containsKey(name))
+        {
+            return groups.get(name);
+        }
+        throw new LionEngineException(ERROR_GROUP_MISSING, name);
+    }
+
+    @Override
+    public Collection<TileGroup> getGroups()
+    {
+        return groups.values();
     }
 
     @Override

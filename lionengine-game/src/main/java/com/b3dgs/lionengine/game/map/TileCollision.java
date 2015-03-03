@@ -58,13 +58,6 @@ public interface TileCollision
     void removeCollisionFormulas();
 
     /**
-     * Set the collision group name.
-     * 
-     * @param name The collision group name.
-     */
-    void setGroup(String name);
-
-    /**
      * Get the horizontal collision location between the tile and the movement vector.
      * 
      * @param category The collision category.
@@ -87,13 +80,6 @@ public interface TileCollision
      * @return The vertical collision (<code>null</code> if none).
      */
     Double getCollisionY(CollisionCategory category, double ox, double oy, double x, double y);
-
-    /**
-     * Get the collision group name.
-     * 
-     * @return The collision group name.
-     */
-    String getGroup();
 
     /**
      * Get tile collision formulas.

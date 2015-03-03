@@ -36,17 +36,11 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class ConfigCollisionGroup
 {
     /** Collision group root node. */
-    public static final String GROUPS = Configurer.PREFIX + "groups";
+    public static final String COLLISIONS = Configurer.PREFIX + "collisions";
     /** Collision group node. */
-    public static final String GROUP = Configurer.PREFIX + "group";
+    public static final String COLLISION = Configurer.PREFIX + "collision";
     /** Group name attribute. */
-    public static final String NAME = "name";
-    /** Tile sheet attribute. */
-    public static final String SHEET = "sheet";
-    /** Starting tile number attribute. */
-    public static final String START = "start";
-    /** Ending tile number attribute. */
-    public static final String END = "end";
+    public static final String GROUP = "group";
 
     /**
      * Create the collision group data from node.
@@ -59,7 +53,7 @@ public final class ConfigCollisionGroup
     public static Collection<CollisionGroup> create(XmlNode root, MapTileCollision map) throws LionEngineException
     {
         final Collection<CollisionGroup> collisions = new ArrayList<>();
-        for (final XmlNode node : root.getChildren(GROUP))
+        for (final XmlNode node : root.getChildren(COLLISION))
         {
             final Collection<CollisionFormula> formulas = new ArrayList<>();
             for (final XmlNode formula : node.getChildren(ConfigCollisionFormula.FORMULA))
@@ -67,8 +61,7 @@ public final class ConfigCollisionGroup
                 final String name = formula.getText();
                 formulas.add(map.getCollisionFormula(name));
             }
-            final CollisionGroup collision = new CollisionGroup(node.readString(NAME), node.readInteger(SHEET),
-                    node.readInteger(START), node.readInteger(END), formulas);
+            final CollisionGroup collision = new CollisionGroup(node.readString(GROUP), formulas);
             collisions.add(collision);
         }
         return collisions;
@@ -82,11 +75,8 @@ public final class ConfigCollisionGroup
      */
     public static XmlNode export(CollisionGroup group)
     {
-        final XmlNode node = Stream.createXmlNode(GROUPS);
-        node.writeString(NAME, group.getName());
-        node.writeInteger(SHEET, group.getSheet());
-        node.writeInteger(START, group.getStart());
-        node.writeInteger(END, group.getEnd());
+        final XmlNode node = Stream.createXmlNode(COLLISIONS);
+        node.writeString(GROUP, group.getGroup());
         for (final CollisionFormula formula : group.getFormulas())
         {
             node.add(ConfigCollisionFormula.export(formula));

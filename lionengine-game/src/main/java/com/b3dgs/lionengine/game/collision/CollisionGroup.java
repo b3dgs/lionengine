@@ -30,16 +30,13 @@ import com.b3dgs.lionengine.game.map.Tile;
  * 
  * <pre>
  * {@code<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">}
- *    {@code<lionengine:group name="block" sheet="0" start="0" end="5">}
+ *    {@code<lionengine:group name="block">}
  *       {@code<lionengine:formula>top</lionengine:formula>}
  *       {@code<lionengine:formula>bottom</lionengine:formula>}
  *       {@code<lionengine:formula>left</lionengine:formula>}
  *       {@code<lionengine:formula>right</lionengine:formula>}
  *    {@code</lionengine:group>}
  * {@code</lionengine:groups>}
- * 
- * This will define 4 references to existing collisions from their name.
- * It will be applied for each tile of sheet 0, with an index between 0 and 5.
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -48,73 +45,31 @@ import com.b3dgs.lionengine.game.map.Tile;
  */
 public class CollisionGroup
 {
-    /** The group Name. */
-    private final String name;
-    /** Sheet number of the accepted tile. */
-    private final int sheet;
-    /** Starting tile number. */
-    private final int start;
-    /** Ending tile number. */
-    private final int end;
+    /** The group name. */
+    private final String group;
     /** The collision formulas used. */
     private final Collection<CollisionFormula> formulas;
 
     /**
      * Create a collision group.
      * 
-     * @param name The collision group name.
-     * @param sheet The accepted sheet.
-     * @param start The starting tile number.
-     * @param end The ending tile number.
+     * @param group The group name.
      * @param formulas The collision formulas reference.
      */
-    public CollisionGroup(String name, int sheet, int start, int end, Collection<CollisionFormula> formulas)
+    public CollisionGroup(String group, Collection<CollisionFormula> formulas)
     {
-        this.name = name;
-        this.sheet = sheet;
-        this.start = start;
-        this.end = end;
+        this.group = group;
         this.formulas = formulas;
     }
 
     /**
-     * Get the collision group name.
+     * Get the group name.
      * 
-     * @return The collision group name.
+     * @return The group name.
      */
-    public String getName()
+    public String getGroup()
     {
-        return name;
-    }
-
-    /**
-     * Get the sheet value.
-     * 
-     * @return The sheet value.
-     */
-    public int getSheet()
-    {
-        return sheet;
-    }
-
-    /**
-     * Get the starting tile number.
-     * 
-     * @return The starting tile number.
-     */
-    public int getStart()
-    {
-        return start;
-    }
-
-    /**
-     * Get the ending tile number.
-     * 
-     * @return The ending tile number.
-     */
-    public int getEnd()
-    {
-        return end;
+        return group;
     }
 
     /**

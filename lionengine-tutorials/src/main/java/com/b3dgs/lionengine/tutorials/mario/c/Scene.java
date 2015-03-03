@@ -68,7 +68,7 @@ class Scene
     private static void importAndSave()
     {
         final MapTile map = new MapTileGame(null, 16, 16);
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"));
+        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
         try (FileWriting file = Stream.createFileWriting(LEVEL))
         {
             map.save(file);

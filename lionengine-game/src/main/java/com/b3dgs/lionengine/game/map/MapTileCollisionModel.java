@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
 import com.b3dgs.lionengine.game.collision.CollisionResult;
+import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.trait.Transformable;
@@ -242,13 +243,13 @@ public class MapTileCollisionModel
     private void loadCollisionFormulas(Media formulasConfig)
     {
         Verbose.info(INFO_LOAD_FORMULAS, formulasConfig.getFile().getPath());
-        removeCollisionFormulas();
+        formulas.clear();
         this.formulasConfig = formulasConfig;
         final XmlNode nodeFormulas = Stream.loadXml(formulasConfig);
         final ConfigCollisionFormula config = ConfigCollisionFormula.create(nodeFormulas);
         for (final CollisionFormula formula : config.getFormulas().values())
         {
-            addCollisionFormula(formula);
+            formulas.put(formula.getName(), formula);
         }
         config.clear();
     }
@@ -261,13 +262,13 @@ public class MapTileCollisionModel
     private void loadCollisionGroups(Media groupsConfig)
     {
         Verbose.info(INFO_LOAD_GROUPS, groupsConfig.getFile().getPath());
-        removeCollisionGroups();
+        groups.clear();
         this.groupsConfig = groupsConfig;
         final XmlNode nodeGroups = Stream.loadXml(groupsConfig);
         final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(nodeGroups, this);
         for (final CollisionGroup group : groups)
         {
-            addCollisionGroup(group);
+            this.groups.put(group.getGroup(), group);
         }
         groups.clear();
     }
@@ -302,12 +303,12 @@ public class MapTileCollisionModel
      */
     private void addTileCollisions(TileCollision tile, int sheet, int number)
     {
-        for (final CollisionGroup group : getCollisionGroups())
+        for (final CollisionGroup collision : getCollisionGroups())
         {
+            final TileGroup group = map.getGroup(collision.getGroup());
             if (group.getSheet() == sheet && UtilMath.isBetween(number, group.getStart(), group.getEnd()))
             {
-                tile.setGroup(group.getName());
-                for (final CollisionFormula formula : group.getFormulas())
+                for (final CollisionFormula formula : collision.getFormulas())
                 {
                     tile.addCollisionFormula(formula);
                 }
@@ -456,7 +457,7 @@ public class MapTileCollisionModel
         }
         if (groupsConfig != null)
         {
-            final XmlNode groupsNode = Stream.createXmlNode(ConfigCollisionGroup.GROUPS);
+            final XmlNode groupsNode = Stream.createXmlNode(ConfigCollisionGroup.COLLISIONS);
             for (final CollisionGroup group : getCollisionGroups())
             {
                 groupsNode.add(ConfigCollisionGroup.export(group));
@@ -468,13 +469,13 @@ public class MapTileCollisionModel
     /*
      * MapTileCollision
      */
-    
+
     @Override
     public void createCollisionDraw()
     {
         clearCollisionDraw();
         collisionCache = new HashMap<>(formulas.size());
-    
+
         for (final CollisionFormula collision : formulas.values())
         {
             final ImageBuffer buffer = createFunctionDraw(collision);
@@ -494,42 +495,6 @@ public class MapTileCollisionModel
             collisionCache.clear();
             collisionCache = null;
         }
-    }
-
-    @Override
-    public void addCollisionFormula(CollisionFormula formula)
-    {
-        formulas.put(formula.getName(), formula);
-    }
-
-    @Override
-    public void addCollisionGroup(CollisionGroup group)
-    {
-        groups.put(group.getName(), group);
-    }
-
-    @Override
-    public void removeCollisionFormula(CollisionFormula formula)
-    {
-        formulas.remove(formula.getName());
-    }
-
-    @Override
-    public void removeCollisionGroup(CollisionGroup group)
-    {
-        groups.remove(group.getName());
-    }
-
-    @Override
-    public void removeCollisionFormulas()
-    {
-        formulas.clear();
-    }
-
-    @Override
-    public void removeCollisionGroups()
-    {
-        groups.clear();
     }
 
     @Override
