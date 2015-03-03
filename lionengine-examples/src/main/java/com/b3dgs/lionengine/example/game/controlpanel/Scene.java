@@ -103,6 +103,7 @@ class Scene
         camera.setView(78, 28, 212, 160);
         camera.setLimits(map);
         camera.setLocation(320, 208);
+        panel.setClickableArea(camera);
 
         final Services services = new Services();
         services.add(camera);
@@ -117,6 +118,7 @@ class Scene
         mouse.update(extrp);
         cursor.update(extrp);
         peon.update(extrp);
+        panel.update(extrp);
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();

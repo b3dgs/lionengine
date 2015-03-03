@@ -75,7 +75,7 @@ class Peon
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
-        transformable.teleport(208, 224);
+        transformable.teleport(208, 160);
     }
 
     @Override

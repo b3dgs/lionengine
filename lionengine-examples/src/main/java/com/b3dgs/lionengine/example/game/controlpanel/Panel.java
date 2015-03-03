@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.example.game.controlpanel;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.ControlPanel;
@@ -33,7 +34,6 @@ import com.b3dgs.lionengine.game.Cursor;
  */
 public class Panel
         extends ControlPanel
-        implements Renderable
 {
     /** HUD image. */
     private final Image hud;
@@ -46,6 +46,8 @@ public class Panel
         super(viewer, cursor);
         hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
         hud.load(false);
+        setClickSelection(Mouse.LEFT);
+        setSelectionColor(ColorRgba.GREEN);
     }
 
     /*
@@ -56,5 +58,6 @@ public class Panel
     public void render(Graphic g)
     {
         hud.render(g);
+        super.render(g);
     }
 }

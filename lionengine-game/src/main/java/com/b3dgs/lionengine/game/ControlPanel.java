@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -36,7 +37,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * @see ControlPanelListener
  */
 public class ControlPanel
-        implements Updatable
+        implements Updatable, Renderable
 {
     /** List of listeners. */
     private final Collection<ControlPanelListener> listeners;
@@ -120,26 +121,6 @@ public class ControlPanel
     public void removeListener(ControlPanelListener listener)
     {
         listeners.add(listener);
-    }
-
-    /**
-     * Render cursor selection routine. This function will draw the current active selection on screen, depending of its
-     * localization, and using the camera point of view (location on map).
-     * 
-     * @param g The graphic output.
-     * @param viewer The viewer reference.
-     */
-    public void renderCursorSelection(Graphic g, Viewer viewer)
-    {
-        if (selecting)
-        {
-            final int x = (int) viewer.getViewpointX(selectionArea.getX());
-            final int y = (int) viewer.getViewpointY(selectionArea.getY() + selectionArea.getHeight());
-            final int w = (int) selectionArea.getWidth();
-            final int h = (int) selectionArea.getHeight();
-            g.setColor(colorSelection);
-            g.drawRect(x, y, w, h, false);
-        }
     }
 
     /**
@@ -285,16 +266,36 @@ public class ControlPanel
     }
 
     /**
+     * Render cursor selection routine. This function will draw the current active selection on screen, depending of its
+     * localization, and using the camera point of view (location on map).
+     * 
+     * @param g The graphic output.
+     * @param viewer The viewer reference.
+     */
+    protected void renderCursorSelection(Graphic g, Viewer viewer)
+    {
+        if (selecting)
+        {
+            final int x = (int) selectionArea.getX();
+            final int y = (int) selectionArea.getY();
+            final int w = (int) selectionArea.getWidth();
+            final int h = (int) selectionArea.getHeight();
+            g.setColor(colorSelection);
+            g.drawRect(x, y, w, h, false);
+        }
+    }
+
+    /**
      * Compute the selection from cursor location.
      */
     private void computeSelection()
     {
         selectX = sx;
         selectY = sy;
-        selectW = UtilMath.fixBetween(cursor.getX() - sx, Double.MIN_VALUE, viewer.getViewX() + viewer.getX() - sx
-                + viewer.getWidth());
-        selectH = UtilMath.fixBetween(cursor.getY() - sy, Double.MIN_VALUE,
-                viewer.getViewY() + viewer.getY() + viewer.getHeight() + sy);
+        selectW = UtilMath.fixBetween(cursor.getX() - sx, Double.NEGATIVE_INFINITY, viewer.getViewX() + viewer.getX()
+                - sx + viewer.getWidth());
+        selectH = UtilMath.fixBetween(cursor.getY() - sy, Double.NEGATIVE_INFINITY, viewer.getViewY() + viewer.getY()
+                + viewer.getHeight() + sy);
 
         // This will avoid negative size
         if (selectW < 0)
@@ -368,5 +369,11 @@ public class ControlPanel
             clicked = true;
             clickedFlag = false;
         }
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        renderCursorSelection(g, viewer);
     }
 }
