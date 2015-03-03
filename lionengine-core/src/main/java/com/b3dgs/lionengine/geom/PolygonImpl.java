@@ -44,8 +44,8 @@ final class PolygonImpl
     {
         double boundsMinX = Double.MAX_VALUE;
         double boundsMinY = Double.MAX_VALUE;
-        double boundsMaxX = Double.MIN_VALUE;
-        double boundsMaxY = Double.MIN_VALUE;
+        double boundsMaxX = -Double.MAX_VALUE;
+        double boundsMaxY = -Double.MAX_VALUE;
 
         for (int i = 0; i < npoints; i++)
         {
