@@ -82,11 +82,11 @@ class Scene
      * Draw info about the specified tile.
      * 
      * @param g The graphics output.
-     * @param tx The tile location x.
-     * @param ty The tile location y.
      */
-    private void renderTileInfo(Graphic g, int tx, int ty)
+    private void renderTileInfo(Graphic g)
     {
+        final int tx = cursor.getInTileX();
+        final int ty = cursor.getInTileY();
         final Tile tile = map.getTile(tx, ty);
         if (tile != null)
         {
@@ -95,9 +95,10 @@ class Scene
 
             text.drawRect(g, ColorRgba.GREEN, x, y, map.getTileWidth(), map.getTileHeight());
             text.setColor(ColorRgba.YELLOW);
-            text.draw(g, x + 20, y + 20, "Tile number: " + tile.getNumber());
-            text.draw(g, x + 20, y + 10, "X = " + tx + " | Y = " + ty);
-            text.draw(g, x + 20, y, "Group: " + tile.getGroup());
+            text.draw(g, x + 20, y + 25, "Tile number: " + tile.getNumber());
+            text.draw(g, x + 20, y + 15, "X = " + tx + " | Y = " + ty);
+            text.draw(g, x + 20, y + 5, "RX = " + cursor.getX() + " | RY = " + cursor.getY());
+            text.draw(g, x + 20, y - 5, "Group: " + tile.getGroup());
         }
     }
 
@@ -145,7 +146,7 @@ class Scene
     public void render(Graphic g)
     {
         map.render(g);
-        renderTileInfo(g, cursor.getInTileX(), cursor.getInTileY());
+        renderTileInfo(g);
         cursor.render(g);
     }
 

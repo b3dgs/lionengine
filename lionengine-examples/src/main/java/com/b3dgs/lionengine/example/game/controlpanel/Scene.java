@@ -89,9 +89,10 @@ class Scene
     protected void load()
     {
         map.addFeature(mapPath);
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
-        mapPath.loadPathfinding(Core.MEDIA.create("pathfinding.xml"));
-        minimap.loadPixelConfig(Core.MEDIA.create("minimap.xml"));
+        map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"),
+                Core.MEDIA.create("map", "groups.xml"));
+        mapPath.loadPathfinding(Core.MEDIA.create("map", "pathfinding.xml"));
+        minimap.loadPixelConfig(Core.MEDIA.create("map", "minimap.xml"));
         minimap.load(false);
         minimap.setLocation(3, 6);
 
@@ -100,7 +101,7 @@ class Scene
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setViewer(camera);
 
-        camera.setView(78, 28, 212, 160);
+        camera.setView(72, 12, 240, 176);
         camera.setLimits(map);
         camera.setLocation(320, 208);
         panel.setClickableArea(camera);
@@ -110,6 +111,7 @@ class Scene
         services.add(cursor);
         services.add(map);
         peon = new Peon(services);
+        panel.addListener(peon);
     }
 
     @Override
@@ -119,7 +121,23 @@ class Scene
         cursor.update(extrp);
         peon.update(extrp);
         panel.update(extrp);
-        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
+        if (keyboard.isPressed(Keyboard.UP))
+        {
+            camera.moveLocation(extrp, 0, 16);
+        }
+        if (keyboard.isPressed(Keyboard.DOWN))
+        {
+            camera.moveLocation(extrp, 0, -16);
+        }
+        if (keyboard.isPressed(Keyboard.LEFT))
+        {
+            camera.moveLocation(extrp, -16, 0);
+        }
+        if (keyboard.isPressed(Keyboard.RIGHT))
+        {
+            camera.moveLocation(extrp, 16, 0);
+        }
+        if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
         }

@@ -66,10 +66,14 @@ public class Cursor
     private final Image[] surface;
     /** Viewer reference. */
     private Viewer viewer;
-    /** Cursor location x. */
+    /** Cursor screen location x. */
     private double x;
-    /** Cursor location y. */
+    /** Cursor screen location y. */
     private double y;
+    /** Cursor viewer relative location x. */
+    private double viewX;
+    /** Cursor viewer relative location y. */
+    private double viewY;
     /** Synchronization mode. */
     private boolean sync;
     /** Horizontal sensibility. */
@@ -311,6 +315,26 @@ public class Cursor
     }
 
     /**
+     * Get the current horizontal location on screen.
+     * 
+     * @return The current horizontal location on screen.
+     */
+    public double getScreenX()
+    {
+        return x;
+    }
+
+    /**
+     * Get the current vertical location on screen.
+     * 
+     * @return The current vertical location on screen.
+     */
+    public double getScreenY()
+    {
+        return y;
+    }
+
+    /**
      * Check if the cursor is synchronized to the system pointer or not.
      * 
      * @return <code>true</code> = sync to the system pointer; <code>false</code> = internal movement.
@@ -340,11 +364,13 @@ public class Cursor
         if (viewer != null)
         {
             offX = (int) viewer.getX();
-            offY = (int) viewer.getY() - viewer.getViewY() * 2;
+            offY = (int) viewer.getY();
         }
 
         x = UtilMath.fixBetween(x, minX, maxX);
         y = UtilMath.fixBetween(y, minY, maxY);
+        viewX = x + offX;
+        viewY = (viewer != null ? viewer.getHeight() : 0) - y + offY;
         surface[surfaceId].setLocation(x + offsetX, y + offsetY);
     }
 
@@ -365,13 +391,13 @@ public class Cursor
     @Override
     public double getX()
     {
-        return x;
+        return viewX;
     }
 
     @Override
     public double getY()
     {
-        return y;
+        return viewY;
     }
 
     @Override
@@ -393,13 +419,13 @@ public class Cursor
     @Override
     public int getInTileX()
     {
-        return ((int) x + offX) / gridWidth;
+        return (int) viewX / gridWidth;
     }
 
     @Override
     public int getInTileY()
     {
-        return ((viewer != null ? viewer.getHeight() : 0) - (int) y + offY) / gridHeight;
+        return (int) viewY / gridHeight;
     }
 
     @Override

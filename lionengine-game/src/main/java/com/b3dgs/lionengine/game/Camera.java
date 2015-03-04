@@ -206,77 +206,11 @@ public class Camera
      */
     public void setLimits(MapTile map)
     {
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-        final int top = UtilMath.fixBetween(map.getInTileHeight() * th - height, 0, Integer.MAX_VALUE);
-        final int right = map.getInTileWidth() * tw - width;
-        mapUpLimit = top;
+        mapUpLimit = UtilMath.fixBetween(map.getInTileHeight() * map.getTileHeight() - height, 0, Integer.MAX_VALUE);
         mapLeftLimit = 0;
-        mapRightLimit = right;
+        mapRightLimit = map.getInTileWidth() * map.getTileWidth() - width;
         mapDownLimit = 0;
         moveLocation(1.0, 0.0, 0.0);
-    }
-
-    /**
-     * Get map left border.
-     * 
-     * @return The map left border.
-     */
-    public int getLimitMapLeft()
-    {
-        return mapLeftLimit;
-    }
-
-    /**
-     * Get map right border.
-     * 
-     * @return The map right border.
-     */
-    public int getLimitMapRight()
-    {
-        return mapRightLimit;
-    }
-
-    /**
-     * Get map up border.
-     * 
-     * @return The map up border.
-     */
-    public int getLimitMapUp()
-    {
-        return mapUpLimit;
-    }
-
-    /**
-     * Get map down border.
-     * 
-     * @return The map down border.
-     */
-    public int getLimitMapDown()
-    {
-        return mapDownLimit;
-    }
-
-    /**
-     * Get the horizontal location in tile.
-     * 
-     * @param map The map reference.
-     * @return The horizontal location in tile.
-     */
-    public int getLocationInTileX(MapTile map)
-    {
-        return (int) Math.floor(getX() / map.getTileWidth());
-    }
-
-    /**
-     * Get the vertical location in tile.
-     * 
-     * @param map The map reference.
-     * @return The vertical location in tile.
-     */
-    public int getLocationInTileY(MapTile map)
-    {
-        return (int) Math.floor(getY() / map.getTileHeight());
     }
 
     /**
@@ -287,8 +221,8 @@ public class Camera
     private void checkHorizontalLimit(double vx)
     {
         // Inside interval
-        if (transformable.getX() >= getLimitMapLeft() && transformable.getX() <= getLimitMapRight()
-                && getLimitMapLeft() != Integer.MIN_VALUE && getLimitMapRight() != Integer.MAX_VALUE)
+        if (transformable.getX() >= mapLeftLimit && transformable.getX() <= mapRightLimit
+                && mapLeftLimit != Integer.MIN_VALUE && mapRightLimit != Integer.MAX_VALUE)
         {
             offset.moveLocation(1, vx, 0);
 
@@ -308,13 +242,13 @@ public class Camera
             transformable.moveLocation(1, vx, 0);
         }
         // Apply limit
-        if (transformable.getX() < getLimitMapLeft() && getLimitMapLeft() != Integer.MIN_VALUE)
+        if (transformable.getX() < mapLeftLimit && mapLeftLimit != Integer.MIN_VALUE)
         {
-            transformable.teleportX(getLimitMapLeft());
+            transformable.teleportX(mapLeftLimit);
         }
-        else if (transformable.getX() > getLimitMapRight() && getLimitMapRight() != Integer.MAX_VALUE)
+        else if (transformable.getX() > mapRightLimit && mapRightLimit != Integer.MAX_VALUE)
         {
-            transformable.teleportX(getLimitMapRight());
+            transformable.teleportX(mapRightLimit);
         }
         else
         {
@@ -330,8 +264,8 @@ public class Camera
     private void checkVerticalLimit(double vy)
     {
         // Inside interval
-        if (transformable.getY() >= getLimitMapDown() && transformable.getY() <= getLimitMapUp()
-                && getLimitMapDown() != Integer.MIN_VALUE && getLimitMapUp() != Integer.MAX_VALUE)
+        if (transformable.getY() >= mapDownLimit && transformable.getY() <= mapUpLimit
+                && mapDownLimit != Integer.MIN_VALUE && mapUpLimit != Integer.MAX_VALUE)
         {
             offset.moveLocation(1, 0, vy);
 
@@ -351,13 +285,13 @@ public class Camera
             transformable.moveLocation(1, 0, vy);
         }
         // Apply limit
-        if (transformable.getY() < getLimitMapDown() && getLimitMapDown() != Integer.MIN_VALUE)
+        if (transformable.getY() < mapDownLimit && mapDownLimit != Integer.MIN_VALUE)
         {
-            transformable.teleportY(getLimitMapDown());
+            transformable.teleportY(mapDownLimit);
         }
-        else if (transformable.getY() > getLimitMapUp() && getLimitMapUp() != Integer.MAX_VALUE)
+        else if (transformable.getY() > mapUpLimit && mapUpLimit != Integer.MAX_VALUE)
         {
-            transformable.teleportY(getLimitMapUp());
+            transformable.teleportY(mapUpLimit);
         }
         else
         {

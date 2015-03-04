@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Renderable;
@@ -73,6 +72,10 @@ public class ControlPanel
     private double selectW;
     /** Current selection height (stored in selectionArea when selection is done). */
     private double selectH;
+    /** Raw selection y (used on rendering side). */
+    private double selectRawY;
+    /** Raw selection height (used on rendering side). */
+    private double selectRawH;
     /** Cursor selection color. */
     private ColorRgba colorSelection;
 
@@ -235,7 +238,7 @@ public class ControlPanel
         // Start selection on click, and reset last selection
         if (clickSelection == cursor.getClick())
         {
-            final boolean canClick = canClick(cursor);
+            final boolean canClick = false;// canClick(cursor);
             clickedFlag = true;
             if (!selecting && !canClick && !ordered && !clicked)
             {
@@ -243,6 +246,7 @@ public class ControlPanel
                 sx = cursor.getX();
                 sy = cursor.getY();
                 computeSelection();
+
                 for (final ControlPanelListener listener : listeners)
                 {
                     listener.notifySelectionStarted(selectionArea);
@@ -276,10 +280,20 @@ public class ControlPanel
     {
         if (selecting)
         {
-            final int x = (int) selectionArea.getX();
-            final int y = (int) selectionArea.getY();
+            final int x = (int) (selectionArea.getX() - viewer.getX());
             final int w = (int) selectionArea.getWidth();
-            final int h = (int) selectionArea.getHeight();
+            int y = (int) (viewer.getY() + viewer.getHeight() - selectRawY);
+            int h = (int) selectRawH;
+            if (h < 0)
+            {
+                y += h;
+                h = -h;
+            }
+            if (y < 0)
+            {
+                h += y;
+                y = 0;
+            }
             g.setColor(colorSelection);
             g.drawRect(x, y, w, h, false);
         }
@@ -292,10 +306,12 @@ public class ControlPanel
     {
         selectX = sx;
         selectY = sy;
-        selectW = UtilMath.fixBetween(cursor.getX() - sx, Double.NEGATIVE_INFINITY, viewer.getViewX() + viewer.getX()
-                - sx + viewer.getWidth());
-        selectH = UtilMath.fixBetween(cursor.getY() - sy, Double.NEGATIVE_INFINITY, viewer.getViewY() + viewer.getY()
-                + viewer.getHeight() + sy);
+        selectW = cursor.getX() - sx;
+        selectH = cursor.getY() - sy;
+
+        // Viewer Y axis is inverted compared to screen axis
+        selectRawY = selectY;
+        selectRawH = sy - cursor.getY();
 
         // This will avoid negative size
         if (selectW < 0)

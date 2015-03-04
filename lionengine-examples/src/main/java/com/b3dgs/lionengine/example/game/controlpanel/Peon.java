@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.controlpanel;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
@@ -25,13 +26,17 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.ControlPanelListener;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.trait.Collidable;
+import com.b3dgs.lionengine.game.trait.CollidableModel;
 import com.b3dgs.lionengine.game.trait.Pathfindable;
 import com.b3dgs.lionengine.game.trait.PathfindableModel;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.trait.TransformableModel;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Peon entity implementation.
@@ -40,7 +45,7 @@ import com.b3dgs.lionengine.game.trait.TransformableModel;
  */
 class Peon
         extends ObjectGame
-        implements Updatable, Renderable
+        implements Updatable, Renderable, ControlPanelListener
 {
     /** Setup reference. */
     private static final SetupSurface SETUP = new SetupSurface(Core.MEDIA.create("Peon.xml"));
@@ -49,10 +54,14 @@ class Peon
     private final Transformable transformable;
     /** Pathfindable model. */
     private final Pathfindable pathfindable;
+    /** Collidable model. */
+    private final Collidable collidable;
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
+    /** Selected flag. */
+    private boolean selected;
 
     /**
      * Create a peon.
@@ -63,11 +72,15 @@ class Peon
     {
         super(SETUP, services);
 
-        transformable = new TransformableModel(this);
+        transformable = new TransformableModel(this, SETUP.getConfigurer());
         addTrait(transformable);
 
         pathfindable = new PathfindableModel(this, SETUP.getConfigurer(), services);
         addTrait(pathfindable);
+
+        collidable = new CollidableModel(this, SETUP.getConfigurer(), services);
+        collidable.setOrigin(Origin.MIDDLE);
+        addTrait(collidable);
 
         viewer = services.get(Viewer.class);
 
@@ -75,13 +88,14 @@ class Peon
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
-        transformable.teleport(208, 160);
+        transformable.teleport(240, 160);
     }
 
     @Override
     public void update(double extrp)
     {
         pathfindable.update(extrp);
+        collidable.update(extrp);
         surface.setLocation(viewer, transformable);
     }
 
@@ -89,5 +103,46 @@ class Peon
     public void render(Graphic g)
     {
         surface.render(g);
+        if (selected)
+        {
+            g.setColor(ColorRgba.GREEN);
+            g.drawRect(viewer, Origin.MIDDLE, transformable.getX() + 8, transformable.getY() + 8,
+                    transformable.getWidth(), transformable.getHeight(), false);
+        }
+    }
+
+    /*
+     * ControlPanelListener
+     */
+
+    @Override
+    public void notifySelectionStarted(Rectangle selection)
+    {
+        selected = false;
+    }
+
+    @Override
+    public void notifySelectionDone(Rectangle selection)
+    {
+        for (final Rectangle rectangle : collidable.getCollisionBounds())
+        {
+            if (selection.contains(rectangle) || selection.intersects(rectangle))
+            {
+                selected = true;
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void notifyStartOrder()
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void notifyTerminateOrder()
+    {
+        // Nothing to do
     }
 }

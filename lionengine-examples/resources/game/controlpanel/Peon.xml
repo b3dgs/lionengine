@@ -2,8 +2,10 @@
 <lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:class>com.b3dgs.lionengine.example.game.pathfinding</lionengine:class>
     <lionengine:surface image="Peon.png"/>
+    <lionengine:size width="16" height="16"/>
     <lionengine:pathfindable category="ground" cost="1" block="false"/>
     <lionengine:pathfindable category="border" cost="1" block="true"/>
     <lionengine:pathfindable category="tree" cost="1" block="true"/>
     <lionengine:pathfindable category="water" cost="1" block="true"/>
+    <lionengine:collision name="default" offsetX="0" offsetY="0" width="16" height="16" mirror="false"/>
 </lionengine:entity>
