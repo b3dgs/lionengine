@@ -23,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryGraphicProvider;
@@ -31,6 +32,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
+import com.b3dgs.lionengine.mock.ViewerMock;
 
 /**
  * Test the image class.
@@ -97,6 +99,15 @@ public class ImageTest
         {
             // Success
         }
+        try
+        {
+            Drawable.loadImage(Core.GRAPHIC.createImageBuffer(1, 1, Transparency.OPAQUE)).load(false);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
     }
 
     /**
@@ -114,6 +125,15 @@ public class ImageTest
         Assert.assertEquals(width, imageA.getWidth());
         Assert.assertEquals(height, imageA.getHeight());
         Assert.assertEquals(surface, imageA.getSurface());
+
+        imageA.setLocation(1.0, 2.0);
+        imageA.setOrigin(Origin.TOP_LEFT);
+        Assert.assertEquals(1.0, imageA.getX(), 0.001);
+        Assert.assertEquals(2.0, imageA.getY(), 0.001);
+
+        imageA.setLocation(new ViewerMock(), imageA);
+        Assert.assertEquals(1.0, imageA.getX(), 0.001);
+        Assert.assertEquals(2.0, imageA.getY(), 0.001);
 
         // Share correctly the surface
         final Image imageB = Drawable.loadImage(imageA.getSurface());

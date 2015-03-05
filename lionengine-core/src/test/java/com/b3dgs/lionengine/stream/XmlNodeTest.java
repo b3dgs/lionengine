@@ -66,6 +66,9 @@ public class XmlNodeTest
         root.add(child1);
         root.add(child2);
 
+        Assert.assertNotNull(root.getChild("child1"));
+        Assert.assertNotNull(root.getChild("child2"));
+
         try
         {
             Assert.assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
@@ -89,6 +92,26 @@ public class XmlNodeTest
         final String text = "text";
         root.setText(text);
         Assert.assertEquals(text, root.getText());
+    }
+
+    /**
+     * Test the remove element function on node.
+     */
+    @Test
+    public void testXmlNodeRemove()
+    {
+        final XmlNode root = Stream.createXmlNode("root");
+        final XmlNode child1 = Stream.createXmlNode("child1");
+        final XmlNode child2 = Stream.createXmlNode("child2");
+
+        child1.writeString("str", "str");
+
+        root.add(child1);
+        root.add(child2);
+
+        root.removeChild("child1");
+        root.removeChildren("child2");
+        root.removeAttribute("str");
     }
 
     /**

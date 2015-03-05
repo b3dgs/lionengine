@@ -91,6 +91,7 @@ class ImageImpl
         this.surface = surface;
         width = surface.getWidth();
         height = surface.getHeight();
+        origin = Origin.TOP_LEFT;
         media = null;
     }
 

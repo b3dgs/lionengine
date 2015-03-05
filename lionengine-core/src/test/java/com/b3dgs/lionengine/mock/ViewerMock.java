@@ -17,42 +17,75 @@
  */
 package com.b3dgs.lionengine.mock;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Viewer;
 
 /**
- * Mock sequence.
+ * Viewer mock.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceFailMock
-        extends Sequence
+public class ViewerMock
+        implements Viewer
 {
-    /**
-     * Constructor.
-     */
-    public SequenceFailMock()
+    @Override
+    public double getX()
     {
-        super(null, new Resolution(320, 240, 60));
+        return 0;
     }
 
     @Override
-    protected void load()
+    public double getY()
     {
-        // Mock
+        return 0;
     }
 
     @Override
-    public void update(double extrp)
+    public int getWidth()
     {
-        throw new LionEngineException("expected failure");
+        return 0;
     }
 
     @Override
-    public void render(Graphic g)
+    public int getHeight()
     {
-        // Mock
+        return 0;
     }
+
+    @Override
+    public void follow(Localizable localizable)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public double getViewpointX(double x)
+    {
+        return x;
+    }
+
+    @Override
+    public double getViewpointY(double y)
+    {
+        return y;
+    }
+
+    @Override
+    public int getViewX()
+    {
+        return 0;
+    }
+
+    @Override
+    public int getViewY()
+    {
+        return 0;
+    }
+
+    @Override
+    public boolean isViewable(Localizable localizable, int marginX, int marginY)
+    {
+        return false;
+    }
+
 }

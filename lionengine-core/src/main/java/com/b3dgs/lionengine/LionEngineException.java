@@ -34,7 +34,7 @@ public final class LionEngineException
         extends RuntimeException
 {
     /** Activate the ignore flag. */
-    private static final boolean IGNORE_ENGINE_TRACE = false;
+    private static final boolean IGNORE_ENGINE_TRACE = true;
     /** The main ignored package. */
     private static final String IGNORE = "com.b3dgs.lionengine.";
     /** The number of ignored characters. */

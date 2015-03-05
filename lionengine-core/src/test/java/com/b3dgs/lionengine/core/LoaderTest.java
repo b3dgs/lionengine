@@ -56,8 +56,7 @@ public class LoaderTest
     public static void prepareTest()
     {
         FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        System.out.println("*********************************** SEQUENCE VERBOSE ***********************************");
-        System.out.flush();
+        Verbose.info("*********************************** SEQUENCE VERBOSE ***********************************");
     }
 
     /**
@@ -66,8 +65,7 @@ public class LoaderTest
     @AfterClass
     public static void cleanUp()
     {
-        System.out.println("****************************************************************************************");
-        System.out.flush();
+        Verbose.info("****************************************************************************************");
         FactoryGraphicProvider.setFactoryGraphic(null);
     }
 
@@ -130,6 +128,17 @@ public class LoaderTest
         waitEnd(loader);
         Assert.assertTrue(uncaught);
         uncaught = false;
+    }
+
+    /**
+     * Test the loader with fail sequence.
+     */
+    @Test
+    public void testFailSequence()
+    {
+        final Loader loader = new Loader(CONFIG);
+        loader.start(SequenceFailMock.class);
+        waitEnd(loader);
     }
 
     /**

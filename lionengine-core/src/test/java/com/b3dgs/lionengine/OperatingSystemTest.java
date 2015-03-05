@@ -43,6 +43,16 @@ public class OperatingSystemTest
 
         Assert.assertNotNull(OperatingSystem.values());
         Assert.assertEquals(OperatingSystem.WINDOWS, OperatingSystem.valueOf(OperatingSystem.WINDOWS.name()));
+
+        Assert.assertEquals(OperatingSystem.UNKNOWN, OperatingSystem.findOs(null));
+        Assert.assertEquals(OperatingSystem.UNKNOWN, OperatingSystem.findOs("azerty"));
+        Assert.assertEquals(OperatingSystem.WINDOWS, OperatingSystem.findOs("win"));
+        Assert.assertEquals(OperatingSystem.MAC, OperatingSystem.findOs("mac"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("nix"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("nux"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("bsd"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("aix"));
+        Assert.assertEquals(OperatingSystem.SOLARIS, OperatingSystem.findOs("sunos"));
     }
 
     /**

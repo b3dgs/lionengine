@@ -39,6 +39,12 @@ public class ArchitectureTest
 
         Assert.assertNotNull(Architecture.values());
         Assert.assertEquals(Architecture.X64, Architecture.valueOf(Architecture.X64.name()));
+
+        Assert.assertEquals(Architecture.UNKNOWN, OperatingSystem.findArchitecture(null));
+        Assert.assertEquals(Architecture.UNKNOWN, OperatingSystem.findArchitecture("0"));
+        Assert.assertEquals(Architecture.X86, OperatingSystem.findArchitecture("86"));
+        Assert.assertEquals(Architecture.X86, OperatingSystem.findArchitecture("32"));
+        Assert.assertEquals(Architecture.X64, OperatingSystem.findArchitecture("64"));
     }
 
     /**

@@ -54,13 +54,47 @@ public class GeomTest
     public void testGeom() throws Exception
     {
         Assert.assertNotNull(Geom.createCoord());
-        Assert.assertNotNull(Geom.createCoord(0, 0));
+
+        final Coord coord = Geom.createCoord(1, 2);
+        Assert.assertNotNull(coord);
+        final Coord coordCopy = Geom.createCoord(coord);
+        Assert.assertEquals(coord.getX(), coordCopy.getX(), 0.001);
+        Assert.assertEquals(coord.getY(), coordCopy.getY(), 0.001);
+
         Assert.assertNotNull(Geom.createLine());
-        Assert.assertNotNull(Geom.createLine(0.0, 0.0, 0.0, 0.0));
+
+        final Line line = Geom.createLine(0.0, 0.0, 0.0, 0.0);
+        Assert.assertNotNull(line);
+        final Line lineCopy = Geom.createLine(line);
+        Assert.assertEquals(line.getX1(), lineCopy.getX1(), 0.001);
+        Assert.assertEquals(line.getY1(), lineCopy.getY1(), 0.001);
+        Assert.assertEquals(line.getX2(), lineCopy.getX2(), 0.001);
+        Assert.assertEquals(line.getY2(), lineCopy.getY2(), 0.001);
+
         Assert.assertNotNull(Geom.createPoint());
-        Assert.assertNotNull(Geom.createPoint(0, 0));
-        Assert.assertNotNull(Geom.createPolygon());
+
+        final Point point = Geom.createPoint(1, 2);
+        Assert.assertNotNull(point);
+        final Point pointCopy = Geom.createPoint(point);
+        Assert.assertEquals(point.getX(), pointCopy.getX());
+        Assert.assertEquals(point.getY(), pointCopy.getY());
+
         Assert.assertNotNull(Geom.createRectangle());
-        Assert.assertNotNull(Geom.createRectangle(0.0, 0.0, 0.0, 0.0));
+
+        final Rectangle rectangle = Geom.createRectangle(0.0, 0.0, 0.0, 0.0);
+        Assert.assertNotNull(rectangle);
+        final Rectangle rectangleCopy = Geom.createRectangle(rectangle);
+        Assert.assertEquals(rectangle.getMinX(), rectangleCopy.getMinX(), 0.001);
+        Assert.assertEquals(rectangle.getMaxX(), rectangleCopy.getMaxX(), 0.001);
+        Assert.assertEquals(rectangle.getMinY(), rectangleCopy.getMinY(), 0.001);
+        Assert.assertEquals(rectangle.getMaxY(), rectangleCopy.getMaxY(), 0.001);
+        Assert.assertEquals(rectangle.getWidth(), rectangleCopy.getWidth(), 0.001);
+        Assert.assertEquals(rectangle.getHeight(), rectangleCopy.getHeight(), 0.001);
+
+        rectangleCopy.translate(2.0, 3.0);
+        Assert.assertEquals(rectangle.getX() + 2.0, rectangleCopy.getX(), 0.001);
+        Assert.assertEquals(rectangle.getY() + 3.0, rectangleCopy.getY(), 0.001);
+
+        Assert.assertNotNull(Geom.createPolygon());
     }
 }

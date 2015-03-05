@@ -121,10 +121,12 @@ public class ConfigTest
         CONFIG.setApplet(null);
         Assert.assertNull(CONFIG.getApplet(null));
         Assert.assertNull(CONFIG.getApplet(AppletMock.class));
+        Assert.assertFalse(CONFIG.hasApplet());
 
         CONFIG.setApplet(new AppletMock());
         Assert.assertNull(CONFIG.getApplet(null));
         Assert.assertNotNull(CONFIG.getApplet(AppletMock.class));
+        Assert.assertTrue(CONFIG.hasApplet());
     }
 
     /**

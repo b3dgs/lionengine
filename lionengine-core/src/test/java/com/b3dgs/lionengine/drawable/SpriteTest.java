@@ -23,6 +23,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryGraphicProvider;
@@ -31,6 +33,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
+import com.b3dgs.lionengine.mock.ViewerMock;
 
 /**
  * Test the sprite class.
@@ -72,6 +75,14 @@ public class SpriteTest
         // Sprite with existing surface
         final ImageBuffer surface = Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE);
         final Sprite spriteA = Drawable.loadSprite(surface);
+
+        spriteA.setOrigin(Origin.TOP_LEFT);
+        spriteA.setLocation(1.0, 2.0);
+        spriteA.setLocation(new ViewerMock(), spriteA);
+        spriteA.setMirror(Mirror.VERTICAL);
+        Assert.assertEquals(1.0, spriteA.getX(), 0.001);
+        Assert.assertEquals(2.0, spriteA.getY(), 0.001);
+        Assert.assertEquals(Mirror.VERTICAL, spriteA.getMirror());
 
         Assert.assertNotNull(spriteA.getSurface());
         Assert.assertEquals(surface, spriteA.getSurface());

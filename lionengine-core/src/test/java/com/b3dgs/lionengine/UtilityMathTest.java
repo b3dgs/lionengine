@@ -52,6 +52,31 @@ public class UtilityMathTest
     }
 
     /**
+     * Test the is between function.
+     */
+    @Test
+    public void testIsBetween()
+    {
+        Assert.assertTrue(UtilMath.isBetween(0, 0, 2));
+        Assert.assertTrue(UtilMath.isBetween(1, 0, 2));
+        Assert.assertTrue(UtilMath.isBetween(2, 0, 2));
+
+        Assert.assertFalse(UtilMath.isBetween(3, 0, 2));
+        Assert.assertFalse(UtilMath.isBetween(-1, 0, 2));
+
+        Assert.assertFalse(UtilMath.isBetween(1, 2, 1));
+
+        Assert.assertTrue(UtilMath.isBetween(0.0, 0.0, 0.2));
+        Assert.assertTrue(UtilMath.isBetween(0.1, 0.0, 0.2));
+        Assert.assertTrue(UtilMath.isBetween(0.2, 0.0, 0.2));
+
+        Assert.assertFalse(UtilMath.isBetween(0.3, 0.0, 0.2));
+        Assert.assertFalse(UtilMath.isBetween(-0.1, 0.0, 0.2));
+
+        Assert.assertFalse(UtilMath.isBetween(0.1, 0.2, 0.1));
+    }
+
+    /**
      * Test the fix between function.
      */
     @Test

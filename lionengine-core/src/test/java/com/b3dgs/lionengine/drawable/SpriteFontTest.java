@@ -23,6 +23,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryGraphicProvider;
@@ -30,6 +32,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
+import com.b3dgs.lionengine.mock.ViewerMock;
 
 /**
  * Test the font sprite class.
@@ -74,6 +77,14 @@ public class SpriteFontTest
         final SpriteFont sprite = Drawable.loadSpriteFont(MEDIA, FONT, 6, 7);
         Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(MEDIA, FONT, 6, 7)));
 
+        sprite.setOrigin(Origin.TOP_LEFT);
+        sprite.setLocation(1.0, 2.0);
+        sprite.setLocation(new ViewerMock(), sprite);
+        sprite.setMirror(Mirror.VERTICAL);
+        Assert.assertEquals(1.0, sprite.getX(), 0.001);
+        Assert.assertEquals(2.0, sprite.getY(), 0.001);
+        Assert.assertEquals(Mirror.VERTICAL, sprite.getMirror());
+
         DrawableTestTool.testSpriteLoading(sprite);
         DrawableTestTool.testImageRender(g, sprite);
         DrawableTestTool.testSpriteModification(2, sprite);
@@ -91,5 +102,9 @@ public class SpriteFontTest
 
         sprite.stretch(90, 110);
         Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(MEDIA, FONT, 6, 7)));
+
+        // Hash code
+        final SpriteFont spriteB = Drawable.loadSpriteFont(MEDIA, FONT, 5, 4);
+        Assert.assertTrue(sprite.hashCode() != spriteB.hashCode());
     }
 }

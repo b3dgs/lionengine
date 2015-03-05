@@ -43,7 +43,8 @@ public class SequenceSingleMock
     @Override
     protected void load()
     {
-        // Mock
+        setSystemCursorVisible(true);
+        setSystemCursorVisible(false);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class SequenceSingleMock
     {
         getX();
         getY();
-        end();
+        end(SequenceArgumentsMock.class, new Object());
     }
 
     @Override

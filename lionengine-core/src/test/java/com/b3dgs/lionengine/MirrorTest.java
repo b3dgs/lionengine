@@ -15,44 +15,50 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.mock;
+package com.b3dgs.lionengine;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Sequence;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Mock sequence.
+ * Test the mirror class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceFailMock
-        extends Sequence
+public class MirrorTest
 {
     /**
-     * Constructor.
+     * Test the mirror enum.
      */
-    public SequenceFailMock()
+    @Test
+    public void testMirror()
     {
-        super(null, new Resolution(320, 240, 60));
+        Assert.assertNotNull(Mirror.values());
+        Assert.assertEquals(Mirror.NONE, Mirror.valueOf(Mirror.NONE.name()));
     }
 
-    @Override
-    protected void load()
+    /**
+     * Test the mirror enum switch.
+     */
+    @Test
+    public void testEnumSwitch()
     {
-        // Mock
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        throw new LionEngineException("expected failure");
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        // Mock
+        for (final Mirror mirror : Mirror.values())
+        {
+            switch (mirror)
+            {
+                case HORIZONTAL:
+                    // Success
+                    break;
+                case VERTICAL:
+                    // Success
+                    break;
+                case NONE:
+                    // Success
+                    break;
+                default:
+                    Assert.fail();
+            }
+        }
     }
 }

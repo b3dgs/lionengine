@@ -23,6 +23,8 @@ import java.lang.reflect.InvocationTargetException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.core.Verbose;
+
 /**
  * Test the utility project stats class.
  * 
@@ -51,5 +53,9 @@ public class UtilityProjectStatsTest
     public void testProjectStats()
     {
         UtilProjectStats.start("src");
+
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        UtilProjectStats.countFileLines("null");
+        Verbose.info("****************************************************************************************");
     }
 }

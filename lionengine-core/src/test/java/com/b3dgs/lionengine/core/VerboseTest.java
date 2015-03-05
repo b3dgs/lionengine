@@ -43,8 +43,7 @@ public class VerboseTest
     public static void setUp()
     {
         prepareLogger();
-        System.out.println("*********************************** EXPECTED VERBOSE ***********************************");
-        System.out.flush();
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
     }
 
     /**
@@ -53,8 +52,7 @@ public class VerboseTest
     @AfterClass
     public static void cleanUp()
     {
-        System.out.println("****************************************************************************************");
-        System.out.flush();
+        Verbose.info("****************************************************************************************");
     }
 
     /**

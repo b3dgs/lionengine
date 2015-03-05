@@ -149,6 +149,9 @@ public class EngineCoreTest
     {
         Assert.assertEquals(null, EngineCore.getSystemProperty("null", null));
         System.setSecurityManager(new SecurityManagerMock(false));
+
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         Assert.assertNull("", EngineCore.getSystemProperty("security", null));
+        Verbose.info("****************************************************************************************");
     }
 }

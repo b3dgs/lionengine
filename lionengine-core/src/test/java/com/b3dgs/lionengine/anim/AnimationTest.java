@@ -41,8 +41,9 @@ public class AnimationTest
         final boolean reverse = true;
         final boolean repeat = false;
 
-        final Animation animation = Anim.createAnimation(null, first, last, speed, reverse, repeat);
+        final Animation animation = Anim.createAnimation("name", first, last, speed, reverse, repeat);
 
+        Assert.assertEquals("name", animation.getName());
         Assert.assertEquals(first, animation.getFirst());
         Assert.assertEquals(last, animation.getLast());
         Assert.assertEquals(speed, animation.getSpeed(), 0.01);

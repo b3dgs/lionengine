@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
@@ -299,9 +301,13 @@ public final class UtilFile
             {
                 deleteDirectory(new File(directory, element));
             }
-            if (!directory.delete())
+            try
             {
-                Verbose.warning(UtilFile.class, "deleteDirectory", "Directory not deleted: " + directory);
+                Files.delete(directory.toPath());
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(UtilFile.class, "deleteDirectory", exception, "Directory not deleted: " + directory);
             }
         }
         else if (directory.isFile())
@@ -319,10 +325,13 @@ public final class UtilFile
     public static void deleteFile(File file)
     {
         Check.notNull(file);
-
-        if (file.isFile() && !file.delete())
+        try
         {
-            Verbose.warning(UtilFile.class, "deleteDir", "File not deleted: " + file);
+            Files.delete(file.toPath());
+        }
+        catch (final IOException exception)
+        {
+            Verbose.warning(UtilFile.class, "deleteFile", "File not deleted: " + file);
         }
     }
 

@@ -78,6 +78,9 @@ public class SpriteParallaxedTest
         Assert.assertTrue(spriteA.equals(spriteA));
         Assert.assertEquals(info.getHeight() / LINES, spriteA.getHeight());
 
+        Assert.assertEquals(38, spriteA.getWidth());
+        Assert.assertEquals(41, spriteA.getLineWidth(2));
+
         // Test render
         spriteA.render(g, 0, 0, 0);
 

@@ -31,6 +31,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 import com.b3dgs.lionengine.mock.MediaMock;
 
@@ -180,6 +181,10 @@ public class UtilityFileTest
         UtilFile.deleteDirectory(tempDir);
 
         Assert.assertEquals("path" + File.separator + "test", UtilFile.getPath("path", "test"));
+
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        UtilFile.deleteFile(new File("null"));
+        Verbose.info("****************************************************************************************");
     }
 
     /**

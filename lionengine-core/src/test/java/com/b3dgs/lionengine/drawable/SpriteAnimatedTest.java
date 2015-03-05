@@ -139,6 +139,8 @@ public class SpriteAnimatedTest
         // Test render
         DrawableTestTool.testImageRender(g, spriteC);
         spriteC.setMirror(Mirror.HORIZONTAL);
+        spriteC.setFrameOffsets(1, 2);
+        spriteC.setLocation(1.0, 2.0);
         spriteC.render(g);
         spriteC.setMirror(Mirror.VERTICAL);
         spriteC.render(g);

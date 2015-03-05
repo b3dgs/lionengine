@@ -60,6 +60,7 @@ public class FactoryMediaProviderTest
     public void testCreateMedia()
     {
         Assert.assertEquals(PATH, new MediaMock(PATH, true).getPath());
+        Assert.assertNotNull(Core.MEDIA.create("../mock/file1.txt"));
     }
 
     /**

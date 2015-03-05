@@ -39,10 +39,6 @@ public enum OperatingSystem
     /** Unknown system. */
     UNKNOWN;
 
-    /** Operating system name. */
-    private static final String SYSTEM_OS;
-    /** System architecture. */
-    private static final String SYSTEM_ARCHI;
     /** The OS enum. */
     private static final OperatingSystem OS;
     /** The architecture used. */
@@ -55,61 +51,62 @@ public enum OperatingSystem
      */
     static
     {
-        SYSTEM_OS = EngineCore.getSystemProperty("os.name", DEFAULT).toLowerCase(Locale.getDefault());
-        OS = findOs();
-        SYSTEM_ARCHI = EngineCore.getSystemProperty("sun.arch.data.model", DEFAULT);
-        ARCHI = findArchitecture();
+        OS = findOs(EngineCore.getSystemProperty("os.name", DEFAULT).toLowerCase(Locale.getDefault()));
+        ARCHI = findArchitecture(EngineCore.getSystemProperty("sun.arch.data.model", DEFAULT));
     }
 
     /**
      * Find the current OS.
      * 
+     * @param os The system short name (usually <code>win</code> or <code>mac</code> or <code>nux</code> or
+     *            <code>sunos</code>...).
      * @return The OS found.
      */
-    private static OperatingSystem findOs()
+    public static OperatingSystem findOs(String os)
     {
-        if (SYSTEM_OS.indexOf("win") >= 0)
+        if (os != null)
         {
-            return WINDOWS;
+            if (os.indexOf("win") >= 0)
+            {
+                return WINDOWS;
+            }
+            else if (os.indexOf("mac") >= 0)
+            {
+                return MAC;
+            }
+            else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("bsd") >= 0
+                    || os.indexOf("aix") >= 0)
+            {
+                return UNIX;
+            }
+            else if (os.indexOf("sunos") >= 0)
+            {
+                return SOLARIS;
+            }
         }
-        else if (SYSTEM_OS.indexOf("mac") >= 0)
-        {
-            return MAC;
-        }
-        else if (SYSTEM_OS.indexOf("nix") >= 0 || SYSTEM_OS.indexOf("nux") >= 0 || SYSTEM_OS.indexOf("bsd") >= 0
-                || SYSTEM_OS.indexOf("aix") >= 0)
-        {
-            return UNIX;
-        }
-        else if (SYSTEM_OS.indexOf("sunos") >= 0)
-        {
-            return SOLARIS;
-        }
-        else
-        {
-            return UNKNOWN;
-        }
+        return UNKNOWN;
     }
 
     /**
      * Find the current architecture.
      * 
+     * @param arch The architecture short name (usually <code>32</code> or <code>86</code> or <code>64</code>).
      * @return The current architecture.
      */
-    private static Architecture findArchitecture()
+    public static Architecture findArchitecture(String arch)
     {
-        if (SYSTEM_ARCHI.contains("64"))
+        if (arch != null)
         {
-            return Architecture.X64;
+            if (arch.contains("64"))
+            {
+                return Architecture.X64;
+            }
+            else if (arch.contains("32") || arch.contains("86"))
+            {
+                return Architecture.X86;
+            }
         }
-        else if (SYSTEM_ARCHI.contains("32") || SYSTEM_ARCHI.contains("86"))
-        {
-            return Architecture.X86;
-        }
-        else
-        {
-            return Architecture.UNKNOWN;
-        }
+        return Architecture.UNKNOWN;
     }
 
     /**
