@@ -49,7 +49,7 @@ public final class UtilMath
      * @param max The maximum value.
      * @return <code>true</code> if between, <code>false</code> else.
      */
-    public static boolean isBetween(double value, int min, int max)
+    public static boolean isBetween(double value, double min, double max)
     {
         return value >= min && value <= max;
     }

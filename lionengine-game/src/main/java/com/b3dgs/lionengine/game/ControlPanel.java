@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Renderable;
@@ -194,7 +195,7 @@ public class ControlPanel
      */
     public boolean canClick(Cursor cursor)
     {
-        return !outsidePanel.contains(cursor.getX(), cursor.getY());
+        return !outsidePanel.contains(cursor.getScreenX(), cursor.getScreenY());
     }
 
     /**
@@ -238,14 +239,14 @@ public class ControlPanel
         // Start selection on click, and reset last selection
         if (clickSelection == cursor.getClick())
         {
-            final boolean canClick = false;// canClick(cursor);
+            final boolean canClick = canClick(cursor);
             clickedFlag = true;
             if (!selecting && !canClick && !ordered && !clicked)
             {
                 selecting = true;
                 sx = cursor.getX();
                 sy = cursor.getY();
-                computeSelection();
+                computeSelection(cursor.getX(), cursor.getY());
 
                 for (final ControlPanelListener listener : listeners)
                 {
@@ -265,7 +266,11 @@ public class ControlPanel
         // Update selection while selecting (mouse pressed, stop on releasing)
         if (selecting)
         {
-            computeSelection();
+            final double sx = UtilMath.fixBetween(cursor.getX(), viewer.getViewX() + viewer.getX(), viewer.getViewX()
+                    + viewer.getX() + viewer.getWidth());
+            final double sy = UtilMath.fixBetween(cursor.getY(), viewer.getY() - viewer.getViewY(), viewer.getY()
+                    - viewer.getViewY() + viewer.getHeight());
+            computeSelection(sx, sy);
         }
     }
 
@@ -301,17 +306,20 @@ public class ControlPanel
 
     /**
      * Compute the selection from cursor location.
+     * 
+     * @param cx The horizontal cursor location on map.
+     * @param cy The vertical cursor location on map.
      */
-    private void computeSelection()
+    private void computeSelection(double cx, double cy)
     {
         selectX = sx;
         selectY = sy;
-        selectW = cursor.getX() - sx;
-        selectH = cursor.getY() - sy;
+        selectW = cx - sx;
+        selectH = cy - sy;
 
         // Viewer Y axis is inverted compared to screen axis
         selectRawY = selectY;
-        selectRawH = sy - cursor.getY();
+        selectRawH = sy - cy;
 
         // This will avoid negative size
         if (selectW < 0)
