@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.controlpanel;
+package com.b3dgs.lionengine.example.game.selector;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Origin;
@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.ControlPanelListener;
+import com.b3dgs.lionengine.game.SelectorListener;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  */
 class Peon
         extends ObjectGame
-        implements Updatable, Renderable, ControlPanelListener
+        implements Updatable, Renderable, SelectorListener
 {
     /** Setup reference. */
     private static final SetupSurface SETUP = new SetupSurface(Core.MEDIA.create("Peon.xml"));
@@ -132,17 +132,5 @@ class Peon
                 break;
             }
         }
-    }
-
-    @Override
-    public void notifyStartOrder()
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void notifyTerminateOrder()
-    {
-        // Nothing to do
     }
 }

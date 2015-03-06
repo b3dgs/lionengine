@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.factory;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
@@ -54,12 +55,12 @@ public class AppGameFactory
         final BaseType flyMachine = factory.create(Core.MEDIA.create("FlyMachine.xml"));
         final BaseType groundTruck = factory.create(Core.MEDIA.create("GroundTruck.xml"));
 
-        System.out.println(flyMachine);
-        System.out.println(groundTruck);
+        Verbose.info(flyMachine.toString());
+        Verbose.info(groundTruck.toString());
 
         // Parameters are the same
-        System.out.println(flyMachine.getParam());
-        System.out.println(groundTruck.getParam());
+        Verbose.info(flyMachine.getParam().toString());
+        Verbose.info(groundTruck.getParam().toString());
 
         Engine.terminate();
     }

@@ -15,34 +15,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.controlpanel;
+package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
- * Main class.
+ * List of events linked to the {@link Selector}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
  */
-public class AppControlPanel
+public interface SelectorListener
 {
     /**
-     * Main.
+     * Notify when selection started.
      * 
-     * @param args The arguments.
+     * @param selection The selection.
      */
-    public static void main(String[] args)
-    {
-        Engine.start("Control Panel", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "controlpanel"));
-        final Resolution output = new Resolution(640, 400, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader(config);
-        loader.start(Scene.class);
-    }
+    void notifySelectionStarted(Rectangle selection);
+
+    /**
+     * Notify when selection is done.
+     * 
+     * @param selection The selection.
+     */
+    void notifySelectionDone(Rectangle selection);
 }

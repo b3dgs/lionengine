@@ -15,8 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.controlpanel;
+package com.b3dgs.lionengine.example.game.selector;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -25,8 +26,11 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.Selector;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTilePath;
@@ -58,10 +62,12 @@ class Scene
     private final MapTilePath mapPath;
     /** Cursor reference. */
     private final Cursor cursor;
-    /** Control panel. */
-    private final Panel panel;
+    /** Selector reference. */
+    private final Selector selector;
     /** Minimap reference. */
     private final Minimap minimap;
+    /** HUD image. */
+    private final Image hud;
     /** Peon reference. */
     private Peon peon;
 
@@ -79,8 +85,9 @@ class Scene
         map = new MapTileGame(camera, 16, 16);
         mapPath = new MapTilePathModel(map);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
-        panel = new Panel(camera, cursor);
+        selector = new Selector(camera, cursor);
         minimap = new Minimap(map);
+        hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
         mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
@@ -96,6 +103,7 @@ class Scene
         minimap.load(false);
         minimap.setLocation(3, 6);
 
+        hud.load(false);
         cursor.load(false);
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
@@ -104,14 +112,17 @@ class Scene
         camera.setView(72, 12, 240, 176);
         camera.setLimits(map);
         camera.setLocation(320, 208);
-        panel.setClickableArea(camera);
 
         final Services services = new Services();
         services.add(camera);
         services.add(cursor);
         services.add(map);
         peon = new Peon(services);
-        panel.addListener(peon);
+
+        selector.setClickableArea(camera);
+        selector.setSelectionColor(ColorRgba.GREEN);
+        selector.setClickSelection(Mouse.LEFT);
+        selector.addListener(peon);
     }
 
     @Override
@@ -120,7 +131,7 @@ class Scene
         mouse.update(extrp);
         cursor.update(extrp);
         peon.update(extrp);
-        panel.update(extrp);
+        selector.update(extrp);
         if (keyboard.isPressed(Keyboard.UP))
         {
             camera.moveLocation(extrp, 0, 16);
@@ -148,7 +159,8 @@ class Scene
     {
         map.render(g);
         peon.render(g);
-        panel.render(g);
+        hud.render(g);
+        selector.render(g);
         minimap.render(g);
         cursor.render(g);
     }

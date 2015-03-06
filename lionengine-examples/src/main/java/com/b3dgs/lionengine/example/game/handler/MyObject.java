@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.handler;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -47,12 +48,12 @@ class MyObject
     @Override
     public void update(double extrp)
     {
-        System.out.println("I am updating: " + this);
+        Verbose.info("I am updating: " + this);
     }
 
     @Override
     public void render(Graphic g)
     {
-        System.out.println("I am rendering: " + this);
+        Verbose.info("I am rendering: " + this);
     }
 }

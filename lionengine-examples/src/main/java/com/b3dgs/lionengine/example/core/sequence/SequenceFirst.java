@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
@@ -63,7 +64,7 @@ class SequenceFirst
     @Override
     public void render(Graphic g)
     {
-        System.out.println("SimpleLink rendering number " + count);
+        Verbose.info("SimpleLink rendering number " + count);
     }
 
     @Override
