@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.map;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
@@ -38,9 +37,8 @@ public interface MapTilePath
      * Load map pathfinding from an external file.
      * 
      * @param pathfindingConfig The pathfinding descriptor.
-     * @throws LionEngineException If error when reading pathfinding or {@link MapTileCollision} feature missing.
      */
-    void loadPathfinding(Media pathfindingConfig) throws LionEngineException;
+    void loadPathfinding(Media pathfindingConfig);
 
     /**
      * Add object ID at this location.
