@@ -31,17 +31,17 @@ public class ConfigAction
 {
     /** Action node name. */
     public static final String ACTION = Configurer.PREFIX + "action";
-    /** Action attribute name. */
+    /** Action node name. */
     public static final String NAME = "name";
-    /** Action attribute description. */
+    /** Action node description. */
     public static final String DESCRIPTION = "description";
-    /** Action attribute x. */
+    /** Action node x. */
     public static final String X = "x";
-    /** Action attribute y. */
+    /** Action node y. */
     public static final String Y = "y";
-    /** Action attribute width. */
+    /** Action node width. */
     public static final String WIDTH = "width";
-    /** Action attribute height. */
+    /** Action node height. */
     public static final String HEIGHT = "height";
 
     /**
@@ -54,8 +54,9 @@ public class ConfigAction
     public static ConfigAction create(Configurer configurer) throws LionEngineException
     {
         final XmlNode node = configurer.getRoot();
-        return new ConfigAction(node.readString(NAME), node.readString(DESCRIPTION), node.readInteger(X),
-                node.readInteger(Y), node.readInteger(WIDTH), node.readInteger(HEIGHT));
+        return new ConfigAction(node.getChild(NAME).getText(), node.getChild(DESCRIPTION).getText(),
+                Integer.parseInt(node.getChild(X).getText()), Integer.parseInt(node.getChild(Y).getText()),
+                Integer.parseInt(node.getChild(WIDTH).getText()), Integer.parseInt(node.getChild(HEIGHT).getText()));
     }
 
     /** Action name. */

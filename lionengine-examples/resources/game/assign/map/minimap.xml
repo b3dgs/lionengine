@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:minimaps xmlns:lionengine="http://lionengine.b3dgs.com">
+	<lionengine:minimap r="9" g="43" b="8">
+		<lionengine:group>grassDark</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="11" g="45" b="8">
+		<lionengine:group>grassDarkBorder</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="17" g="51" b="8">
+		<lionengine:group>grass</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="19" g="52" b="8">
+		<lionengine:group>grassLightBorder</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="23" g="5" b="8">
+		<lionengine:group>grassLight</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="23" g="59" b="6">
+		<lionengine:group>grassBrightBorder</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="32" g="61" b="5">
+		<lionengine:group>grassBright</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="82" g="40" b="19">
+		<lionengine:group>road</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="66" g="30" b="15">
+		<lionengine:group>bridge</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="128" g="72" b="32">
+		<lionengine:group>treeCut</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="10" g="28" b="9">
+		<lionengine:group>treeBorder</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="14" g="25" b="9">
+		<lionengine:group>tree</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="35" g="52" b="85">
+		<lionengine:group>border</lionengine:group>
+	</lionengine:minimap>
+	<lionengine:minimap r="27" g="40" b="101">
+		<lionengine:group>water</lionengine:group>
+	</lionengine:minimap>
+</lionengine:minimaps>

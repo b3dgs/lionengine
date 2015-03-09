@@ -18,10 +18,12 @@
 package com.b3dgs.lionengine.example.game.action;
 
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
@@ -38,7 +40,7 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
- * 
+ *
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
@@ -64,8 +66,14 @@ class Scene
     private final Minimap minimap;
     /** HUD image. */
     private final Image hud;
-    /** Peon reference. */
-    private Peon peon;
+    /** Text reference. */
+    private final Text text;
+    /** Buildings action. */
+    private Buildings buildings;
+    /** Build farm action. */
+    private BuildFarm buildFarm;
+    /** Cancel action. */
+    private Cancel cancel;
 
     /**
      * Constructor.
@@ -83,6 +91,7 @@ class Scene
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
         minimap = new Minimap(map);
         hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
+        text = Core.GRAPHIC.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
         mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
@@ -109,10 +118,12 @@ class Scene
         camera.setLocation(320, 208);
 
         final Services services = new Services();
-        services.add(camera);
         services.add(cursor);
-        services.add(map);
-        peon = new Peon(services);
+        services.add(text);
+
+        buildings = new Buildings(services);
+        buildFarm = new BuildFarm(services);
+        cancel = new Cancel(services);
     }
 
     @Override
@@ -120,7 +131,9 @@ class Scene
     {
         mouse.update(extrp);
         cursor.update(extrp);
-        peon.update(extrp);
+        buildings.update(extrp);
+        buildFarm.update(extrp);
+        cancel.update(extrp);
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
@@ -131,8 +144,10 @@ class Scene
     public void render(Graphic g)
     {
         map.render(g);
-        peon.render(g);
         hud.render(g);
+        buildings.render(g);
+        buildFarm.render(g);
+        cancel.render(g);
         minimap.render(g);
         cursor.render(g);
     }

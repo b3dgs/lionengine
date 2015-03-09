@@ -17,18 +17,15 @@
  */
 package com.b3dgs.lionengine.game.trait;
 
-import com.b3dgs.lionengine.core.Updatable;
-
 /**
- * Represents an assignable action, allows to assign an action by click.
+ * Represents the action, controlled by an {@link Actionable}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Assignable
-        extends Updatable
+public interface Action
 {
     /**
-     * Assign the action somewhere.
+     * Execute the action.
      */
-    void assign();
+    void execute();
 }

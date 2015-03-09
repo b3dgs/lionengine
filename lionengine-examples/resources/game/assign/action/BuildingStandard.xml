@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.warcraft.skill.orc.BuildingStandardOrc</lionengine:class>
+	<icon>BuildingStandardOrc.png</icon>
+	<name>Standard Building</name>
+	<description>Standard building panel</description>
+	<race>orc</race>
+</lionengine:skill>

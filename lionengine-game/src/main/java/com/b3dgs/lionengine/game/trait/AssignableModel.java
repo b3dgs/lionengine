@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Assignable implementation.
- *
+ * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class AssignableModel
@@ -48,7 +48,7 @@ public abstract class AssignableModel
      * <ul>
      * <li>{@link Cursor}</li>
      * </ul>
-     *
+     * 
      * @param configurer The configurer reference.
      * @param services The services reference.
      * @throws LionEngineException If wrong configurer or missing {@link Services}.
@@ -60,7 +60,7 @@ public abstract class AssignableModel
 
     /**
      * Set the mouse click assign value to {@link #assign()} the action.
-     *
+     * 
      * @param click The click number.
      * @see InputDevicePointer
      */

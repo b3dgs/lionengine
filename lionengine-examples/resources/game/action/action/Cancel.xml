@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.example.game.action.Cancel</lionengine:class>
+	<icon>Cancel.png</icon>
+	<name>Cancel</name>
+	<description>Cancel</description>
+	<x>36</x>
+	<y>114</y>
+	<width>27</width>
+	<height>19</height>
+</lionengine:skill>

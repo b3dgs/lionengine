@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.example.game.action.BuildFarm</lionengine:class>
+	<icon>BuildFarm.png</icon>
+	<name>Build Farm</name>
+	<description>Build a Farm</description>
+	<x>4</x>
+	<y>137</y>
+	<width>27</width>
+	<height>19</height>
+</lionengine:skill>
