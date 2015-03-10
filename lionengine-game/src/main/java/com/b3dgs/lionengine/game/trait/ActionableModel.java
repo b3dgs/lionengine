@@ -79,7 +79,7 @@ public class ActionableModel
     @Override
     public void update(double extrp)
     {
-        if (action != null && cursor.hasClickedOnce(clickAction) && isOver())
+        if (action != null && isOver() && cursor.hasClickedOnce(clickAction))
         {
             action.execute();
         }

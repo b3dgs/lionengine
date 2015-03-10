@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
     <lionengine:class>com.b3dgs.lionengine.example.game.action.BuildFarm</lionengine:class>
-	<icon>BuildFarm.png</icon>
+	<lionengine:surface image="BuildFarm.png"/>
 	<name>Build Farm</name>
 	<description>Build a Farm</description>
 	<x>4</x>

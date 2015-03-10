@@ -19,15 +19,18 @@ package com.b3dgs.lionengine.example.game.action;
 
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.Action;
 import com.b3dgs.lionengine.game.trait.Actionable;
 import com.b3dgs.lionengine.game.trait.ActionableModel;
@@ -41,8 +44,8 @@ public class Buildings
         extends ObjectGame
         implements Action, Updatable, Renderable
 {
-    /** Setup reference. */
-    private static final Setup SETUP = new Setup(Core.MEDIA.create("action", "Buildings.xml"));
+    /** Media reference. */
+    public static final Media MEDIA = Core.MEDIA.create("action", "Buildings.xml");
 
     /** Actionable model. */
     private final Actionable actionable;
@@ -50,19 +53,25 @@ public class Buildings
     private final Image image;
     /** Text reference. */
     private final Text text;
+    /** Factory reference. */
+    private final Factory factory;
+    /** Handler reference. */
+    private final Handler handler;
 
     /**
      * Create buildings action.
      * 
+     * @param setup The setup reference.
      * @param services The services reference.
      */
-    public Buildings(Services services)
+    public Buildings(SetupSurface setup, Services services)
     {
-        super(SETUP, services);
+        super(setup, services);
         text = services.get(Text.class);
-        image = Drawable.loadImage(Core.MEDIA.create("action", SETUP.getConfigurer().getText("icon")));
-        image.load(false);
-        actionable = new ActionableModel(this, SETUP.getConfigurer(), services);
+        factory = services.get(Factory.class);
+        handler = services.get(Handler.class);
+        image = Drawable.loadImage(setup.surface);
+        actionable = new ActionableModel(this, setup.getConfigurer(), services);
         actionable.setClickAction(Mouse.LEFT);
         actionable.setAction(this);
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
@@ -75,7 +84,11 @@ public class Buildings
     @Override
     public void execute()
     {
-
+        final ObjectGame buildFarm = factory.create(BuildFarm.MEDIA);
+        final ObjectGame cancel = factory.create(Cancel.MEDIA);
+        handler.add(buildFarm);
+        handler.add(cancel);
+        destroy();
     }
 
     /*
@@ -86,6 +99,10 @@ public class Buildings
     public void update(double extrp)
     {
         actionable.update(extrp);
+        if (actionable.isOver())
+        {
+            text.setText(actionable.getDescription());
+        }
     }
 
     /*
@@ -96,9 +113,5 @@ public class Buildings
     public void render(Graphic g)
     {
         image.render(g);
-        if (actionable.isOver())
-        {
-            text.draw(g, 74, 192, actionable.getDescription());
-        }
     }
 }

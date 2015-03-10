@@ -143,8 +143,8 @@ public class Camera
      * This represents the real position, between -interval and +interval. In other words, camera will move only when
      * the interval location is on its extremity.
      * <p>
-     * For example: if the camera is following an entity and the camera horizontal interval is 16, anything that is
-     * rendered using the camera view point will see its horizontal axis change when the entity horizontal location will
+     * For example: if the camera is following an object and the camera horizontal interval is 16, anything that is
+     * rendered using the camera view point will see its horizontal axis change when the object horizontal location will
      * be before / after the camera location -16 / +16:
      * <ul>
      * <li><code><--camera movement--> -16[..no camera movement..]+16 <--camera movement--></code></li>
@@ -174,8 +174,8 @@ public class Camera
      * (screen top-left).</li>
      * </ul>
      * <p>
-     * It is also compatible with entity rendering (by using an {@link Handler}). The entity which are outside the
-     * camera view will not be rendered. This avoid useless rendering.
+     * It is also compatible with object rendering (by using an {@link Handler}). The object which is outside the camera
+     * view will not be rendered. This avoid useless rendering.
      * </p>
      * <p>
      * Note: The rendering view is from the camera location. So <code>x</code> and <code>y</code> are an offset from

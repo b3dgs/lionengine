@@ -36,11 +36,16 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.map.MapTilePathModel;
 import com.b3dgs.lionengine.game.map.Minimap;
+import com.b3dgs.lionengine.game.object.ComponentRenderer;
+import com.b3dgs.lionengine.game.object.ComponentUpdater;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
- *
+ * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
@@ -68,12 +73,10 @@ class Scene
     private final Image hud;
     /** Text reference. */
     private final Text text;
-    /** Buildings action. */
-    private Buildings buildings;
-    /** Build farm action. */
-    private BuildFarm buildFarm;
-    /** Cancel action. */
-    private Cancel cancel;
+    /** Action factory. */
+    private final Factory factory;
+    /** Actions handler. */
+    private final Handler handler;
 
     /**
      * Constructor.
@@ -90,6 +93,8 @@ class Scene
         mapPath = new MapTilePathModel(map);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
         minimap = new Minimap(map);
+        factory = new Factory();
+        handler = new Handler();
         hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
         text = Core.GRAPHIC.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
         mouse.setConfig(getConfig());
@@ -108,6 +113,7 @@ class Scene
         minimap.setLocation(3, 6);
 
         hud.load(false);
+        text.setLocation(74, 192);
         cursor.load(false);
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
@@ -120,20 +126,23 @@ class Scene
         final Services services = new Services();
         services.add(cursor);
         services.add(text);
+        services.add(factory);
+        services.add(handler);
 
-        buildings = new Buildings(services);
-        buildFarm = new BuildFarm(services);
-        cancel = new Cancel(services);
+        factory.setServices(services);
+        final ObjectGame buildings = factory.create(Buildings.MEDIA);
+        handler.addUpdatable(new ComponentUpdater());
+        handler.addRenderable(new ComponentRenderer());
+        handler.add(buildings);
     }
 
     @Override
     public void update(double extrp)
     {
+        text.setText("");
         mouse.update(extrp);
         cursor.update(extrp);
-        buildings.update(extrp);
-        buildFarm.update(extrp);
-        cancel.update(extrp);
+        handler.update(extrp);
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
@@ -145,10 +154,9 @@ class Scene
     {
         map.render(g);
         hud.render(g);
-        buildings.render(g);
-        buildFarm.render(g);
-        cancel.render(g);
         minimap.render(g);
+        handler.render(g);
+        text.render(g);
         cursor.render(g);
     }
 
