@@ -18,22 +18,9 @@
 package com.b3dgs.lionengine.example.game.action;
 
 import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Handler;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.Action;
-import com.b3dgs.lionengine.game.trait.Actionable;
-import com.b3dgs.lionengine.game.trait.ActionableModel;
 
 /**
  * Build farm action.
@@ -41,22 +28,10 @@ import com.b3dgs.lionengine.game.trait.ActionableModel;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class BuildFarm
-        extends ObjectGame
-        implements Action, Updatable, Renderable
+        extends Button
 {
     /** Media reference. */
     public static final Media MEDIA = Core.MEDIA.create("action", "BuildFarm.xml");
-
-    /** Actionable model. */
-    private final Actionable actionable;
-    /** Button image. */
-    private final Image image;
-    /** Text reference. */
-    private final Text text;
-    /** Factory reference. */
-    private final Factory factory;
-    /** Handler reference. */
-    private final Handler handler;
 
     /**
      * Create build farm action.
@@ -67,14 +42,6 @@ public class BuildFarm
     public BuildFarm(SetupSurface setup, Services services)
     {
         super(setup, services);
-        text = services.get(Text.class);
-        factory = services.get(Factory.class);
-        handler = services.get(Handler.class);
-        image = Drawable.loadImage(setup.surface);
-        actionable = new ActionableModel(this, setup.getConfigurer(), services);
-        actionable.setClickAction(Mouse.LEFT);
-        actionable.setAction(this);
-        image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
     }
 
     /*
@@ -85,29 +52,5 @@ public class BuildFarm
     public void execute()
     {
 
-    }
-
-    /*
-     * Updatable
-     */
-
-    @Override
-    public void update(double extrp)
-    {
-        actionable.update(extrp);
-        if (actionable.isOver())
-        {
-            text.setText(actionable.getDescription());
-        }
-    }
-
-    /*
-     * Renderable
-     */
-
-    @Override
-    public void render(Graphic g)
-    {
-        image.render(g);
     }
 }

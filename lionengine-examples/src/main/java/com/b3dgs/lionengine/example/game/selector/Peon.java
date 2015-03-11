@@ -112,7 +112,7 @@ class Peon
     }
 
     /*
-     * ControlPanelListener
+     * SelectorListener
      */
 
     @Override

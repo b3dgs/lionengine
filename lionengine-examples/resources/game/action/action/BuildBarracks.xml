@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
-    <lionengine:class>com.b3dgs.lionengine.example.game.action.BuildFarm</lionengine:class>
-	<lionengine:surface image="BuildFarm.png"/>
-	<name>Build Farm</name>
-	<description>Build a Farm</description>
+    <lionengine:class>com.b3dgs.lionengine.example.game.action.BuildBarracks</lionengine:class>
+	<lionengine:surface image="BuildBarracks.png"/>
+	<name>Build Barracks</name>
+	<description>Build a Barracks</description>
 	<x>4</x>
-	<y>114</y>
+	<y>137</y>
 	<width>27</width>
 	<height>19</height>
 </lionengine:skill>

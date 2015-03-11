@@ -17,23 +17,16 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.Action;
-import com.b3dgs.lionengine.game.trait.Actionable;
-import com.b3dgs.lionengine.game.trait.ActionableModel;
 
 /**
  * Cancel action.
@@ -41,22 +34,17 @@ import com.b3dgs.lionengine.game.trait.ActionableModel;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Cancel
-        extends ObjectGame
-        implements Action, Updatable, Renderable
+        extends Button
 {
     /** Media reference. */
     public static final Media MEDIA = Core.MEDIA.create("action", "Cancel.xml");
 
-    /** Actionable model. */
-    private final Actionable actionable;
-    /** Button image. */
-    private final Image image;
-    /** Text reference. */
-    private final Text text;
     /** Factory reference. */
     private final Factory factory;
     /** Handler reference. */
     private final Handler handler;
+    /** Action to delete. */
+    private final Collection<ObjectGame> toDelete;
 
     /**
      * Create cancel action.
@@ -67,14 +55,19 @@ public class Cancel
     public Cancel(SetupSurface setup, Services services)
     {
         super(setup, services);
-        text = services.get(Text.class);
+        toDelete = new ArrayList<>();
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
-        image = Drawable.loadImage(setup.surface);
-        actionable = new ActionableModel(this, setup.getConfigurer(), services);
-        actionable.setClickAction(Mouse.LEFT);
-        actionable.setAction(this);
-        image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
+    }
+
+    /**
+     * Add an action to delete on click.
+     * 
+     * @param action The action to delete.
+     */
+    public void addToDelete(ObjectGame action)
+    {
+        toDelete.add(action);
     }
 
     /*
@@ -86,30 +79,10 @@ public class Cancel
     {
         final ObjectGame buildings = factory.create(Buildings.MEDIA);
         handler.add(buildings);
-        destroy();
-    }
-
-    /*
-     * Updatable
-     */
-
-    @Override
-    public void update(double extrp)
-    {
-        actionable.update(extrp);
-        if (actionable.isOver())
+        for (final ObjectGame current : toDelete)
         {
-            text.setText(actionable.getDescription());
+            current.destroy();
         }
-    }
-
-    /*
-     * Renderable
-     */
-
-    @Override
-    public void render(Graphic g)
-    {
-        image.render(g);
+        destroy();
     }
 }

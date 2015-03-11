@@ -19,39 +19,29 @@ package com.b3dgs.lionengine.example.game.action;
 
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Handler;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
- * Buildings action.
+ * Build barracks action.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Buildings
+public class BuildBarracks
         extends Button
 {
     /** Media reference. */
-    public static final Media MEDIA = Core.MEDIA.create("action", "Buildings.xml");
-
-    /** Factory reference. */
-    private final Factory factory;
-    /** Handler reference. */
-    private final Handler handler;
+    public static final Media MEDIA = Core.MEDIA.create("action", "BuildBarracks.xml");
 
     /**
-     * Create buildings action.
+     * Create build barracks action.
      * 
      * @param setup The setup reference.
      * @param services The services reference.
      */
-    public Buildings(SetupSurface setup, Services services)
+    public BuildBarracks(SetupSurface setup, Services services)
     {
         super(setup, services);
-        factory = services.get(Factory.class);
-        handler = services.get(Handler.class);
     }
 
     /*
@@ -61,14 +51,6 @@ public class Buildings
     @Override
     public void execute()
     {
-        final ObjectGame buildFarm = factory.create(BuildFarm.MEDIA);
-        final ObjectGame buildBarracks = factory.create(BuildBarracks.MEDIA);
-        final Cancel cancel = factory.create(Cancel.MEDIA);
-        cancel.addToDelete(buildFarm);
-        cancel.addToDelete(buildBarracks);
-        handler.add(buildFarm);
-        handler.add(buildBarracks);
-        handler.add(cancel);
-        destroy();
+
     }
 }
