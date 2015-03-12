@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.object.SetupSurface;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Cancel
+class Cancel
         extends Button
 {
     /** Media reference. */

@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.game.action;
 
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.game.configurer.ConfigAction;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 
@@ -27,11 +29,14 @@ import com.b3dgs.lionengine.game.object.SetupSurface;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class BuildBarracks
+class BuildBarracks
         extends Button
 {
     /** Media reference. */
     public static final Media MEDIA = Core.MEDIA.create("action", "BuildBarracks.xml");
+
+    /** Action name. */
+    private final String name;
 
     /**
      * Create build barracks action.
@@ -42,6 +47,7 @@ public class BuildBarracks
     public BuildBarracks(SetupSurface setup, Services services)
     {
         super(setup, services);
+        name = setup.getConfigurer().getText(ConfigAction.NAME);
     }
 
     /*
@@ -51,6 +57,6 @@ public class BuildBarracks
     @Override
     public void execute()
     {
-
+        Verbose.info(name);
     }
 }

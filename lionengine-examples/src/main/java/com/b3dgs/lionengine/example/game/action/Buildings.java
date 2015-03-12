@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.object.SetupSurface;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Buildings
+class Buildings
         extends Button
 {
     /** Media reference. */
@@ -64,11 +64,14 @@ public class Buildings
         final ObjectGame buildFarm = factory.create(BuildFarm.MEDIA);
         final ObjectGame buildBarracks = factory.create(BuildBarracks.MEDIA);
         final Cancel cancel = factory.create(Cancel.MEDIA);
+
         cancel.addToDelete(buildFarm);
         cancel.addToDelete(buildBarracks);
+
         handler.add(buildFarm);
         handler.add(buildBarracks);
         handler.add(cancel);
+
         destroy();
     }
 }

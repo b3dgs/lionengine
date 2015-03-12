@@ -12,7 +12,7 @@
 	<lionengine:minimap r="19" g="52" b="8">
 		<lionengine:group>grassLightBorder</lionengine:group>
 	</lionengine:minimap>
-	<lionengine:minimap r="23" g="5" b="8">
+	<lionengine:minimap r="23" g="55" b="8">
 		<lionengine:group>grassLight</lionengine:group>
 	</lionengine:minimap>
 	<lionengine:minimap r="23" g="59" b="6">

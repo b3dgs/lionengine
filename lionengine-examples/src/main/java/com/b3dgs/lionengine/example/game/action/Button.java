@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.trait.ActionableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class Button
+abstract class Button
         extends ObjectGame
         implements Action, Updatable, Renderable
 {

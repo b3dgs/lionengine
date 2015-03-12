@@ -143,7 +143,7 @@ class Scene
         mouse.update(extrp);
         cursor.update(extrp);
         handler.update(extrp);
-        if (keyboard.isPressed(Keyboard.ESCAPE))
+        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();
         }
