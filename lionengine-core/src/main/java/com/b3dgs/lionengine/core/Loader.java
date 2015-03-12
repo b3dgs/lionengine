@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * </p>
  * 
  * <pre>
- * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), Verbose.CRITICAL, &quot;resources&quot;);
+ * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
  * final Resolution output = new Resolution(640, 480, 60);
  * final Config config = new Config(output, 16, true);
  * final Loader loader = new Loader(config);
