@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.warcraft.skill.orc.StopOrc</lionengine:class>
-	<icon>StopOrc.png</icon>
-	<name>Stop</name>
-	<description>Stop any action</description>
-	<race>orc</race>
-</lionengine:skill>

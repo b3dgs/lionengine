@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
+    <lionengine:class>com.b3dgs.lionengine.example.game.assign.Move</lionengine:class>
+	<lionengine:surface image="Move.png"/>
+	<name>Move</name>
+	<description>Move to</description>
+	<x>4</x>
+	<y>114</y>
+	<width>27</width>
+	<height>19</height>
+</lionengine:skill>

@@ -54,10 +54,6 @@ class Buildings
         handler = services.get(Handler.class);
     }
 
-    /*
-     * Action
-     */
-
     @Override
     public void execute()
     {

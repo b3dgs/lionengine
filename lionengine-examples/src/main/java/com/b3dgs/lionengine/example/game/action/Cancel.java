@@ -70,10 +70,6 @@ class Cancel
         toDelete.add(action);
     }
 
-    /*
-     * Action
-     */
-
     @Override
     public void execute()
     {

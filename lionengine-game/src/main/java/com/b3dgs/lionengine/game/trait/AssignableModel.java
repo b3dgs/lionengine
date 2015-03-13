@@ -18,10 +18,12 @@
 package com.b3dgs.lionengine.game.trait;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.InputDevicePointer;
+import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.configurer.ConfigAction;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -29,13 +31,18 @@ import com.b3dgs.lionengine.game.object.Services;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class AssignableModel
+public class AssignableModel
+        extends TraitModel
         implements Assignable
 {
     /** Cursor reference. */
     private final Cursor cursor;
+    /** Viewer reference. */
+    private final Viewer viewer;
     /** Mouse click number to assign action. */
     private int clickAssign;
+    /** Assign used. */
+    private Assign assign;
 
     /**
      * Create an assignable model.
@@ -47,26 +54,19 @@ public abstract class AssignableModel
      * </p>
      * <ul>
      * <li>{@link Cursor}</li>
+     * <li>{@link Viewer}</li>
      * </ul>
      * 
+     * @param owner The owner reference.
      * @param configurer The configurer reference.
      * @param services The services reference.
      * @throws LionEngineException If wrong configurer or missing {@link Services}.
      */
-    public AssignableModel(Configurer configurer, Services services) throws LionEngineException
+    public AssignableModel(ObjectGame owner, Configurer configurer, Services services) throws LionEngineException
     {
+        super(owner);
         cursor = services.get(Cursor.class);
-    }
-
-    /**
-     * Set the mouse click assign value to {@link #assign()} the action.
-     * 
-     * @param click The click number.
-     * @see InputDevicePointer
-     */
-    public void setClickAction(int click)
-    {
-        clickAssign = click;
+        viewer = services.get(Viewer.class);
     }
 
     /*
@@ -76,9 +76,24 @@ public abstract class AssignableModel
     @Override
     public void update(double extrp)
     {
-        if (cursor.hasClickedOnce(clickAssign))
+        if (assign != null
+                && UtilMath.isBetween(cursor.getScreenX(), viewer.getViewX(), viewer.getViewX() + viewer.getWidth())
+                && UtilMath.isBetween(cursor.getScreenY(), viewer.getViewY(), viewer.getViewY() + viewer.getHeight())
+                && cursor.hasClickedOnce(clickAssign))
         {
-            assign();
+            assign.assign();
         }
+    }
+
+    @Override
+    public void setAssign(Assign assign)
+    {
+        this.assign = assign;
+    }
+
+    @Override
+    public void setClickAssign(int click)
+    {
+        clickAssign = click;
     }
 }

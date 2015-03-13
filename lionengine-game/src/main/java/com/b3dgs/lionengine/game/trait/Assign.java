@@ -17,29 +17,18 @@
  */
 package com.b3dgs.lionengine.game.trait;
 
-import com.b3dgs.lionengine.core.InputDevicePointer;
-import com.b3dgs.lionengine.core.Updatable;
-
 /**
- * Represents an assignable action, allows to assign an action by click.
+ * Represents something that can be assigned by an {@link Assignable} from an {@link Action}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Assignable
+ * @see Actionable
+ * @see Action
  */
-public interface Assignable
-        extends Trait, Updatable
+public interface Assign
 {
     /**
-     * Set the executable assign.
-     * 
-     * @param assign The assign to execute.
+     * Assign the action somewhere.
      */
-    void setAssign(Assign assign);
-
-    /**
-     * Set the mouse click selection value to {@link Assign#assign()} the assign.
-     * 
-     * @param click The click number.
-     * @see InputDevicePointer
-     */
-    void setClickAssign(int click);
+    void assign();
 }

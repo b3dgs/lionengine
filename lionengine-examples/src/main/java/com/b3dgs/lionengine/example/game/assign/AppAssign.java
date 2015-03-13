@@ -15,44 +15,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.action;
+package com.b3dgs.lionengine.example.game.assign;
 
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.game.configurer.ConfigAction;
-import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
- * Build farm action.
+ * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.core.minimal
  */
-class BuildFarm
-        extends Button
+public class AppAssign
 {
-    /** Media reference. */
-    public static final Media MEDIA = Core.MEDIA.create("action", "BuildFarm.xml");
-
-    /** Action name. */
-    private final String name;
-
     /**
-     * Create build farm action.
+     * Main.
      * 
-     * @param setup The setup reference.
-     * @param services The services reference.
+     * @param args The arguments.
      */
-    public BuildFarm(SetupSurface setup, Services services)
+    public static void main(String[] args)
     {
-        super(setup, services);
-        name = setup.getConfigurer().getText(ConfigAction.NAME);
-    }
-
-    @Override
-    public void execute()
-    {
-        Verbose.info(name);
+        Engine.start("Assign", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "assign"));
+        final Resolution output = new Resolution(640, 400, 60);
+        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader(config);
+        loader.start(Scene.class);
     }
 }

@@ -50,10 +50,6 @@ class BuildBarracks
         name = setup.getConfigurer().getText(ConfigAction.NAME);
     }
 
-    /*
-     * Action
-     */
-
     @Override
     public void execute()
     {
