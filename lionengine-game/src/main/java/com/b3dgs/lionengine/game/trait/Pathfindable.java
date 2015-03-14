@@ -32,8 +32,15 @@ import com.b3dgs.lionengine.game.map.MapTilePath;
  * @see com.b3dgs.lionengine.game.map.astar
  */
 public interface Pathfindable
-        extends Trait, Tiled, Updatable, Renderable
+        extends Trait, Tiled, Orientable, Updatable, Renderable
 {
+    /**
+     * Add a pathfindable listener.
+     * 
+     * @param listener The pathfindable listener to add.
+     */
+    void addListener(PathfindableListener listener);
+
     /**
      * Clear all ignored objects ID.
      */

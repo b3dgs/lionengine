@@ -15,14 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.ability.mover;
+package com.b3dgs.lionengine.game.trait;
 
 /**
- * Mover events listener.
+ * Pathfindable events listener.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface MoverListener
+public interface PathfindableListener
 {
     /**
      * Notify listener when mover starting to move.

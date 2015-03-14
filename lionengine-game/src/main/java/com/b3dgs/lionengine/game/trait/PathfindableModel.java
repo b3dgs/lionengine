@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.trait;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -29,6 +30,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurer.ConfigPathfindable;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -57,12 +59,16 @@ public class PathfindableModel
     /** Diagonal speed factor. */
     private static final double DIAGONAL_SPEED = 0.8;
 
+    /** Pathfindable listeners. */
+    private final Collection<PathfindableListener> listeners;
     /** Map reference. */
     private final MapTile map;
     /** Map path reference. */
     private final MapTilePath mapPath;
     /** Localizable model. */
     private final Transformable transformable;
+    /** Orientable model. */
+    private final Orientable orientable;
     /** Pathfinder reference. */
     private final PathFinder pathfinder;
     /** List of categories. */
@@ -117,6 +123,7 @@ public class PathfindableModel
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
+     * <li>{@link Orientable}</li>
      * </ul>
      * <p>
      * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigPathfindable}.
@@ -137,11 +144,13 @@ public class PathfindableModel
     public PathfindableModel(ObjectGame owner, Configurer configurer, Services services)
     {
         super(owner);
+        listeners = new ArrayList<>();
         ignoredIds = new HashSet<>(0);
         sharedPathIds = new HashSet<>(0);
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
         transformable = owner.getTrait(Transformable.class);
+        orientable = new OrientableModel(owner, services);
         mapPath = map.getFeature(MapTilePath.class);
         id = owner.getId();
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth() + map.getInTileHeight()
@@ -408,6 +417,10 @@ public class PathfindableModel
         moveX = 0.0;
         moveY = 0.0;
         sharedPathIds.clear();
+        for (final PathfindableListener listener : listeners)
+        {
+            listener.notifyArrived();
+        }
     }
 
     /**
@@ -475,6 +488,12 @@ public class PathfindableModel
      */
 
     @Override
+    public void addListener(PathfindableListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    @Override
     public void clearSharedPathIds()
     {
         sharedPathIds.clear();
@@ -513,10 +532,15 @@ public class PathfindableModel
             {
                 final int dx = path.getX(currentStep) * map.getTileWidth();
                 final int dy = path.getY(currentStep) * map.getTileHeight();
+                orientable.pointTo(path.getX(currentStep), path.getY(currentStep));
                 moving = false;
                 moveX = 0.0;
                 moveY = 0.0;
                 moveTo(extrp, dx, dy);
+                for (final PathfindableListener listener : listeners)
+                {
+                    listener.notifyMoving();
+                }
             }
             // Max step is reached, stop moves and animation
             else
@@ -531,6 +555,18 @@ public class PathfindableModel
     {
         final Force force = getMovementForce(transformable.getX(), transformable.getY(), x, y);
         transformable.moveLocation(extrp, force);
+    }
+
+    @Override
+    public void pointTo(int tx, int ty)
+    {
+        orientable.pointTo(tx, ty);
+    }
+
+    @Override
+    public void pointTo(Tiled tiled)
+    {
+        orientable.pointTo(tiled);
     }
 
     @Override
@@ -606,6 +642,10 @@ public class PathfindableModel
                 currentStep = 0;
                 path = pathfinder.findPath(this, tx, ty, true);
                 pathFoundChanged = false;
+                for (final PathfindableListener listener : listeners)
+                {
+                    listener.notifyStartMove();
+                }
                 prepareDestination(tx, ty);
                 return true;
             }
@@ -625,6 +665,12 @@ public class PathfindableModel
             transformable.setLocation(tx * map.getTileWidth(), ty * map.getTileHeight());
             assignObjectId(getInTileX(), getInTileY());
         }
+    }
+
+    @Override
+    public void setOrientation(Orientation orientation)
+    {
+        orientable.setOrientation(orientation);
     }
 
     @Override
@@ -660,6 +706,12 @@ public class PathfindableModel
     public double getMoveY()
     {
         return moveY;
+    }
+
+    @Override
+    public Orientation getOrientation()
+    {
+        return orientable.getOrientation();
     }
 
     @Override

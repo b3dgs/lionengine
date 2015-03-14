@@ -15,34 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.ability.mover;
+package com.b3dgs.lionengine.game.trait;
 
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.trait.Pathfindable;
 
 /**
- * Represents the ability of moving on a PathBasedMap. It includes pathfinding handling.
+ * Represents something which can be oriented.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Orientation
  */
-public interface MoverServices
-        extends Pathfindable
+public interface Orientable
 {
-    /**
-     * Get the current orientation when moving.
-     * 
-     * @return The orientation movement.
-     */
-    Orientation getMovementOrientation();
-
-    /**
-     * Assign a specified location; will move automatically until reach it.
-     * 
-     * @param tiled The tiled to reach
-     */
-    void setDestination(Tiled tiled);
-
     /**
      * Adjust orientation to face to specified tile.
      * 
@@ -57,4 +42,18 @@ public interface MoverServices
      * @param tiled The tiled to face to.
      */
     void pointTo(Tiled tiled);
+
+    /**
+     * Set the orientation to use.
+     * 
+     * @param orientation The orientation to use.
+     */
+    void setOrientation(Orientation orientation);
+
+    /**
+     * Get the current orientation.
+     * 
+     * @return The current orientation.
+     */
+    Orientation getOrientation();
 }
