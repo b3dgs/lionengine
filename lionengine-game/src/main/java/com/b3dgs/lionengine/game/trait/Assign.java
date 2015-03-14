@@ -18,7 +18,8 @@
 package com.b3dgs.lionengine.game.trait;
 
 /**
- * Represents something that can be assigned by an {@link Assignable} from an {@link Action}.
+ * Represents something that can be assigned by an {@link Assignable} from an {@link Action}. Usually a consequence of a
+ * click over a button, ready to assign on map (in other this is the second part of the action).
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Assignable

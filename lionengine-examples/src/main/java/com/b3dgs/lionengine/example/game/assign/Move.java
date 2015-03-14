@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -60,10 +61,10 @@ class Move
     private final Text text;
     /** Cursor reference. */
     private final Cursor cursor;
-    /** Executed flag. */
-    private boolean executed;
-    /** Pathfindable reference. */
-    private Pathfindable pathfindable;
+    /** Handler reference. */
+    private final Handler handler;
+    /** Current action state. */
+    private Updatable state;
 
     /**
      * Create move action.
@@ -76,6 +77,7 @@ class Move
         super(setup, services);
         text = services.get(Text.class);
         cursor = services.get(Cursor.class);
+        handler = services.get(Handler.class);
         image = Drawable.loadImage(setup.surface);
         actionable = new ActionableModel(this, setup.getConfigurer(), services);
         actionable.setClickAction(Mouse.LEFT);
@@ -84,29 +86,25 @@ class Move
         assignable.setClickAssign(Mouse.LEFT);
         assignable.setAssign(this);
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
-    }
-
-    /**
-     * Set the pathfindable reference.
-     * 
-     * @param pathfindable The pathfindable reference.
-     */
-    public void setPathfindable(Pathfindable pathfindable)
-    {
-        this.pathfindable = pathfindable;
+        state = actionable;
     }
 
     @Override
     public void execute()
     {
-        executed = true;
+        cursor.setSurfaceId(1);
+        state = assignable;
     }
 
     @Override
     public void assign()
     {
-        pathfindable.setDestination(cursor.getInTileX(), cursor.getInTileY());
-        executed = false;
+        for (final Pathfindable pathfindable : handler.get(Pathfindable.class))
+        {
+            pathfindable.setDestination(cursor.getInTileX(), cursor.getInTileY());
+        }
+        cursor.setSurfaceId(0);
+        state = actionable;
     }
 
     @Override
@@ -116,14 +114,7 @@ class Move
         {
             text.setText(actionable.getDescription());
         }
-        if (executed)
-        {
-            assignable.update(extrp);
-        }
-        else
-        {
-            actionable.update(extrp);
-        }
+        state.update(extrp);
     }
 
     @Override

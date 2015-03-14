@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.example.game.strategy.skills.skill.BuildBarracksOrc</lionengine:class>
-	<icon>BuildBarracksOrc.png</icon>
-	<name>Build Barracks</name>
-	<description>Build a Barracks</description>
-	<race>orc</race>
-</lionengine:skill>

@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.core.Updatable;
  * @see ComponentRenderable
  */
 public class Handler
-        implements Updatable, Renderable, ObjectGameListener
+        implements HandledObjects, Updatable, Renderable, ObjectGameListener
 {
     /** List of components. */
     private final Set<ComponentUpdatable> updatables;
@@ -101,17 +101,6 @@ public class Handler
     }
 
     /**
-     * Get the object from its id.
-     * 
-     * @param id The object id.
-     * @return The object reference.
-     */
-    public final ObjectGame get(Integer id)
-    {
-        return objects.get(id);
-    }
-
-    /**
      * Remove an object from the remove list. Will be removed at the beginning of {@link #update(double)} call. If
      * this function is called during {@link #update(double)}, it will be delayed to next {@link #update(double)} call.
      * 
@@ -144,16 +133,6 @@ public class Handler
     }
 
     /**
-     * Get the objects list reference.
-     * 
-     * @return The objects list reference.
-     */
-    public final Iterable<ObjectGame> getObjects()
-    {
-        return objects.values();
-    }
-
-    /**
      * Update the add list.
      */
     private void updateAdd()
@@ -183,6 +162,28 @@ public class Handler
             toDelete.clear();
             willDelete = false;
         }
+    }
+
+    /*
+     * HandledObjects
+     */
+
+    @Override
+    public final ObjectGame get(Integer id)
+    {
+        return objects.get(id);
+    }
+
+    @Override
+    public <I> Iterable<I> get(Class<I> type)
+    {
+        return objects.get(type);
+    }
+
+    @Override
+    public Iterable<ObjectGame> values()
+    {
+        return objects.values();
     }
 
     /*

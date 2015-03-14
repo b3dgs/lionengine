@@ -371,7 +371,10 @@ public class Cursor
         y = UtilMath.fixBetween(y, minY, maxY);
         viewX = x + offX;
         viewY = (viewer != null ? viewer.getHeight() : 0) - y + offY;
-        surface[surfaceId].setLocation(x + offsetX, y + offsetY);
+        for (final Image current : surface)
+        {
+            current.setLocation(x + offsetX, y + offsetY);
+        }
     }
 
     /*

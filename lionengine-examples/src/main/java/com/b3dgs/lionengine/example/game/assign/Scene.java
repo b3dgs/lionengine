@@ -42,7 +42,6 @@ import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.trait.Pathfindable;
 
 /**
  * Game loop designed to handle our little world.
@@ -92,7 +91,7 @@ class Scene
         camera = new Camera();
         map = new MapTileGame(camera, 16, 16);
         mapPath = new MapTilePathModel(map);
-        cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
+        cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"), Core.MEDIA.create("cursor_order.png"));
         minimap = new Minimap(map);
         factory = new Factory();
         handler = new Handler();
@@ -129,14 +128,14 @@ class Scene
         services.add(text);
         services.add(map);
         services.add(camera);
+        services.add(handler);
 
         factory.setServices(services);
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());
 
-        final Move move = factory.create(Move.MEDIA);
+        final ObjectGame move = factory.create(Move.MEDIA);
         final ObjectGame peon = factory.create(Peon.MEDIA);
-        move.setPathfindable(peon.getTrait(Pathfindable.class));
         handler.add(move);
         handler.add(peon);
     }

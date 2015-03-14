@@ -24,10 +24,8 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -56,8 +54,6 @@ class Peon
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Cursor reference. */
-    private final Cursor cursor;
 
     /**
      * Create a peon.
@@ -76,7 +72,6 @@ class Peon
         addTrait(pathfindable);
 
         viewer = services.get(Viewer.class);
-        cursor = services.get(Cursor.class);
 
         surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
         surface.setOrigin(Origin.MIDDLE);
@@ -88,10 +83,6 @@ class Peon
     @Override
     public void update(double extrp)
     {
-        if (cursor.hasClickedOnce(Mouse.RIGHT))
-        {
-            pathfindable.setDestination(cursor);
-        }
         pathfindable.update(extrp);
         surface.setLocation(viewer, transformable);
     }
@@ -99,7 +90,6 @@ class Peon
     @Override
     public void render(Graphic g)
     {
-        pathfindable.render(g);
         surface.render(g);
     }
 }
