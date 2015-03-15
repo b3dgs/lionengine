@@ -30,10 +30,10 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.Fovable;
-import com.b3dgs.lionengine.game.trait.FovableModel;
-import com.b3dgs.lionengine.game.trait.Transformable;
-import com.b3dgs.lionengine.game.trait.TransformableModel;
+import com.b3dgs.lionengine.game.trait.fovable.Fovable;
+import com.b3dgs.lionengine.game.trait.fovable.FovableModel;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Peon entity implementation.

@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.trait.Collidable;
-import com.b3dgs.lionengine.game.trait.CollidableListener;
+import com.b3dgs.lionengine.game.trait.collidable.Collidable;
+import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
 
 /**
  * Default collision component implementation. Designed to check collision between {@link Collidable}.

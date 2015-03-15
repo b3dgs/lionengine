@@ -29,13 +29,13 @@ import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.Collidable;
-import com.b3dgs.lionengine.game.trait.CollidableListener;
-import com.b3dgs.lionengine.game.trait.CollidableModel;
-import com.b3dgs.lionengine.game.trait.Launchable;
-import com.b3dgs.lionengine.game.trait.LaunchableModel;
-import com.b3dgs.lionengine.game.trait.Transformable;
-import com.b3dgs.lionengine.game.trait.TransformableModel;
+import com.b3dgs.lionengine.game.trait.collidable.Collidable;
+import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
+import com.b3dgs.lionengine.game.trait.collidable.CollidableModel;
+import com.b3dgs.lionengine.game.trait.launchable.Launchable;
+import com.b3dgs.lionengine.game.trait.launchable.LaunchableModel;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Projectile implementation.

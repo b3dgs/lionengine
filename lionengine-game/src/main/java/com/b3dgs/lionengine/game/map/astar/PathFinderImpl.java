@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTilePath;
-import com.b3dgs.lionengine.game.trait.Pathfindable;
+import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 
 /**
  * A path finder implementation that uses the AStar heuristic based algorithm to determine a path.

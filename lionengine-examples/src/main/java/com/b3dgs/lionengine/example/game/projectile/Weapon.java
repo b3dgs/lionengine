@@ -25,12 +25,12 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.trait.Collidable;
-import com.b3dgs.lionengine.game.trait.Launcher;
-import com.b3dgs.lionengine.game.trait.LauncherListener;
-import com.b3dgs.lionengine.game.trait.LauncherModel;
-import com.b3dgs.lionengine.game.trait.Transformable;
-import com.b3dgs.lionengine.game.trait.TransformableModel;
+import com.b3dgs.lionengine.game.trait.collidable.Collidable;
+import com.b3dgs.lionengine.game.trait.launchable.Launcher;
+import com.b3dgs.lionengine.game.trait.launchable.LauncherListener;
+import com.b3dgs.lionengine.game.trait.launchable.LauncherModel;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Weapon implementation.

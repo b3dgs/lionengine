@@ -36,11 +36,11 @@ import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.Collidable;
-import com.b3dgs.lionengine.game.trait.CollidableListener;
-import com.b3dgs.lionengine.game.trait.CollidableModel;
-import com.b3dgs.lionengine.game.trait.Transformable;
-import com.b3dgs.lionengine.game.trait.TransformableModel;
+import com.b3dgs.lionengine.game.trait.collidable.Collidable;
+import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
+import com.b3dgs.lionengine.game.trait.collidable.CollidableModel;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Ship implementation.

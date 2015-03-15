@@ -31,13 +31,13 @@ import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.Action;
-import com.b3dgs.lionengine.game.trait.Actionable;
-import com.b3dgs.lionengine.game.trait.ActionableModel;
-import com.b3dgs.lionengine.game.trait.Assign;
-import com.b3dgs.lionengine.game.trait.Assignable;
-import com.b3dgs.lionengine.game.trait.AssignableModel;
-import com.b3dgs.lionengine.game.trait.Pathfindable;
+import com.b3dgs.lionengine.game.trait.actionable.Action;
+import com.b3dgs.lionengine.game.trait.actionable.Actionable;
+import com.b3dgs.lionengine.game.trait.actionable.ActionableModel;
+import com.b3dgs.lionengine.game.trait.assignable.Assign;
+import com.b3dgs.lionengine.game.trait.assignable.Assignable;
+import com.b3dgs.lionengine.game.trait.assignable.AssignableModel;
+import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 
 /**
  * Move action.

@@ -22,7 +22,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.trait.Pathfindable;
+import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 
 /**
  * Represents the pathfinding feature of a map tile. It works by using {@link TilePath} feature.

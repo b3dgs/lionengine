@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurer.ConfigPathfinding;
-import com.b3dgs.lionengine.game.trait.Pathfindable;
+import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 

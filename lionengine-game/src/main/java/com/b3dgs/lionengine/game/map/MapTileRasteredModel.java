@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.trait.Rasterable;
+import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
 
 /**
  * Rastered map tile implementation.

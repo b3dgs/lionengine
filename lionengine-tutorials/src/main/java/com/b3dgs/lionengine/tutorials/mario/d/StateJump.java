@@ -28,9 +28,9 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
 import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.trait.Mirrorable;
-import com.b3dgs.lionengine.game.trait.TileCollidable;
-import com.b3dgs.lionengine.game.trait.TileCollidableListener;
+import com.b3dgs.lionengine.game.trait.collidable.TileCollidable;
+import com.b3dgs.lionengine.game.trait.collidable.TileCollidableListener;
+import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 
 /**
  * Turn state implementation.

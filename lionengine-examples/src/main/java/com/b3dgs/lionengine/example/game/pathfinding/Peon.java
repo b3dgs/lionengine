@@ -30,10 +30,10 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.Pathfindable;
-import com.b3dgs.lionengine.game.trait.PathfindableModel;
-import com.b3dgs.lionengine.game.trait.Transformable;
-import com.b3dgs.lionengine.game.trait.TransformableModel;
+import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
+import com.b3dgs.lionengine.game.trait.pathfindable.PathfindableModel;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Peon entity implementation.

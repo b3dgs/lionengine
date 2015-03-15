@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.trait.Launchable;
+import com.b3dgs.lionengine.game.trait.launchable.Launchable;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**

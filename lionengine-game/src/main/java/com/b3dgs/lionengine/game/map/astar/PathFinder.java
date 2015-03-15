@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map.astar;
 
-import com.b3dgs.lionengine.game.trait.Pathfindable;
+import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 
 /**
  * A description of an implementation that can find a path from one location on a tile map to another based on

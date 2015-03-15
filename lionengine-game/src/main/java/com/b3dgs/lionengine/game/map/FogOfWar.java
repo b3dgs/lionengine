@@ -23,7 +23,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.trait.Fovable;
+import com.b3dgs.lionengine.game.trait.fovable.Fovable;
 
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).

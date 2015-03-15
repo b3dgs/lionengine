@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.trait.Rasterable;
+import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
 
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.

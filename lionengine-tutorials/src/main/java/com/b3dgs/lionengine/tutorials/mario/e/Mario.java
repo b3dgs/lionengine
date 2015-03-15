@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.Collidable;
-import com.b3dgs.lionengine.game.trait.CollidableListener;
+import com.b3dgs.lionengine.game.trait.collidable.Collidable;
+import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
 
 /**
  * Mario specific implementation.

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
-import com.b3dgs.lionengine.game.trait.Mirrorable;
+import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 
 /**
  * Turn state implementation.

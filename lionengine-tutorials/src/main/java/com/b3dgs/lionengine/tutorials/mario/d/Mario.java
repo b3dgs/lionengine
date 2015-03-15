@@ -40,15 +40,15 @@ import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.Body;
-import com.b3dgs.lionengine.game.trait.BodyModel;
-import com.b3dgs.lionengine.game.trait.Mirrorable;
-import com.b3dgs.lionengine.game.trait.MirrorableModel;
-import com.b3dgs.lionengine.game.trait.TileCollidable;
-import com.b3dgs.lionengine.game.trait.TileCollidableListener;
-import com.b3dgs.lionengine.game.trait.TileCollidableModel;
-import com.b3dgs.lionengine.game.trait.Transformable;
-import com.b3dgs.lionengine.game.trait.TransformableModel;
+import com.b3dgs.lionengine.game.trait.body.Body;
+import com.b3dgs.lionengine.game.trait.body.BodyModel;
+import com.b3dgs.lionengine.game.trait.collidable.TileCollidable;
+import com.b3dgs.lionengine.game.trait.collidable.TileCollidableListener;
+import com.b3dgs.lionengine.game.trait.collidable.TileCollidableModel;
+import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.trait.mirrorable.MirrorableModel;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Implementation of our controllable entity.

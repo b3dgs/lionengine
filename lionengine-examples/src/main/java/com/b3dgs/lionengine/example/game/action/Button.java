@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.Action;
-import com.b3dgs.lionengine.game.trait.Actionable;
-import com.b3dgs.lionengine.game.trait.ActionableModel;
+import com.b3dgs.lionengine.game.trait.actionable.Action;
+import com.b3dgs.lionengine.game.trait.actionable.Actionable;
+import com.b3dgs.lionengine.game.trait.actionable.ActionableModel;
 
 /**
  * Abstract button action.

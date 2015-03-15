@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.trait.Launcher;
+import com.b3dgs.lionengine.game.trait.launchable.Launcher;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**

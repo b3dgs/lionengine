@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.trait.Actionable;
+import com.b3dgs.lionengine.game.trait.actionable.Actionable;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
