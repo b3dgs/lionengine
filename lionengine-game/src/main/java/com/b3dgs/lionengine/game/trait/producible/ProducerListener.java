@@ -15,48 +15,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.ability.producer;
+package com.b3dgs.lionengine.game.trait.producible;
 
-import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
+import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * List of event linked to the production.
  * 
- * @param <E> The entity type used.
- * @param <C> The cost type used.
- * @param <P> The producible type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ProducerListener<E extends EntityStrategy, C extends ProductionCostStrategy, P extends Producible<E, C>>
+public interface ProducerListener
 {
     /**
      * Notify listener that current element can not be produced.
      * 
      * @param producible The element that would have been under production.
      */
-    void notifyCanNotProduce(P producible);
+    void notifyCanNotProduce(Producible producible);
 
     /**
      * Notify listener that production is starting for this element.
      * 
      * @param producible The element going to be produced
-     * @param entity The entity instance from element.
+     * @param object The object instance from element.
      */
-    void notifyStartProduction(P producible, E entity);
+    void notifyStartProduction(Producible producible, ObjectGame object);
 
     /**
      * Notify listener that this element is currently under production.
      * 
      * @param producible The element under production.
-     * @param entity The entity instance from element.
+     * @param object The object instance from element.
      */
-    void notifyProducing(P producible, E entity);
+    void notifyProducing(Producible producible, ObjectGame object);
 
     /**
      * Notify listener that this element has been produced.
      * 
      * @param producible The element produced.
-     * @param entity The entity instance from element.
+     * @param object The object instance from element.
      */
-    void notifyProduced(P producible, E entity);
+    void notifyProduced(Producible producible, ObjectGame object);
 }

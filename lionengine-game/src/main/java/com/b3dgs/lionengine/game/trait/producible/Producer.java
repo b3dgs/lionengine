@@ -15,23 +15,29 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.ability.producer;
+package com.b3dgs.lionengine.game.trait.producible;
 
 import java.util.Iterator;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
+import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
- * Represents an ability of creating new entity.
+ * Represents an ability of creating new object.
  * 
- * @param <E> The entity enum type used.
- * @param <C> The cost type used.
- * @param <P> The producible type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ProducerServices<E extends EntityStrategy, C extends ProductionCostStrategy, P extends Producible<E, C>>
+public interface Producer
+        extends Trait, Updatable
 {
+    /**
+     * Add a producer listener.
+     * 
+     * @param listener The producer listener to add.
+     */
+    void addListener(ProducerListener listener);
+
     /**
      * Add an element to the production queue. It works as a FIFO (First In, First Out). Production will be stopped when
      * the list is empty. In this case, getProductionProgress() will return -1. Production list stores only entity name.
@@ -40,14 +46,7 @@ public interface ProducerServices<E extends EntityStrategy, C extends Production
      * 
      * @param producible The element to produce.
      */
-    void addToProductionQueue(P producible);
-
-    /**
-     * Update production routine.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    void updateProduction(double extrp);
+    void addToProductionQueue(Producible producible);
 
     /**
      * Skip current production.
@@ -60,18 +59,25 @@ public interface ProducerServices<E extends EntityStrategy, C extends Production
     void stopProduction();
 
     /**
+     * Set the production steps number per second.
+     * 
+     * @param stepsPerSecond The production steps number per second.
+     */
+    void setStepsPerSecond(double stepsPerSecond);
+
+    /**
      * Get production progress. If it returns -1, it means that there are not any active production.
      * 
      * @return The progress value.
      */
-    double getProductionProgress();
+    double getProgress();
 
     /**
      * Get production progress percent. If it returns -1, it means that there are not any active production.
      * 
      * @return The percent of progress.
      */
-    int getProductionProgressPercent();
+    int getProgressPercent();
 
     /**
      * Get media of current producing element.
@@ -85,7 +91,7 @@ public interface ProducerServices<E extends EntityStrategy, C extends Production
      * 
      * @return The list of production.
      */
-    Iterator<P> getProductionIterator();
+    Iterator<Producible> iterator();
 
     /**
      * Get size of production queue.

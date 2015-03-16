@@ -22,6 +22,7 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.trait.Trait;
@@ -58,6 +59,8 @@ public class ObjectGame
     private final Features<Trait> features;
     /** Listeners. */
     private final Collection<ObjectGameListener> listeners;
+    /** Media representation. */
+    private final Media media;
     /** Unique id. */
     private Integer id;
     /** Destroyed flag. */
@@ -76,6 +79,7 @@ public class ObjectGame
 
         features = new Features<>(Trait.class);
         listeners = new HashSet<>(1);
+        media = setup.getConfigFile();
         destroyed = false;
     }
 
@@ -131,6 +135,16 @@ public class ObjectGame
     public final Iterable<Class<? extends Trait>> getTraitsType()
     {
         return features.getFeatures();
+    }
+
+    /**
+     * Get the media representing this object.
+     * 
+     * @return The media representing this object.
+     */
+    public final Media getMedia()
+    {
+        return media;
     }
 
     /**

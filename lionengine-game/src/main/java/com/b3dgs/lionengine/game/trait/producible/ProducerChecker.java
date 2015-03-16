@@ -15,35 +15,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.ability.producer;
+package com.b3dgs.lionengine.game.trait.producible;
 
 /**
- * Represents the cost of a production. Designed to contain its production steps, and cost in resource.
+ * Allows to check if production can be performed.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class ProductionCostStrategy
+public interface ProducerChecker
 {
-    /** Needed production time. */
-    private final int steps;
-
     /**
-     * Constructor.
+     * Condition to start production.
+     * <p>
+     * Example:
+     * </p>
+     * <ul>
+     * <li>Did the player have enough resources ?</li>
+     * <li>Is the owner still alive ?</li>
+     * </ul>
      * 
-     * @param steps The production steps number.
+     * @param producible The producible to check.
+     * @return <code>true</code> if able to produce, <code>false</code> else.
      */
-    public ProductionCostStrategy(int steps)
-    {
-        this.steps = steps;
-    }
-
-    /**
-     * Get required steps for this production.
-     * 
-     * @return The production time.
-     */
-    public int getSteps()
-    {
-        return steps;
-    }
+    boolean checkProduction(Producible producible);
 }
