@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.producible.Producible;
+import com.b3dgs.lionengine.game.trait.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.trait.producible.ProducibleModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
@@ -41,7 +42,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  */
 class Building
         extends ObjectGame
-        implements Updatable, Renderable
+        implements Updatable, Renderable, ProducibleListener
 {
     /** Farm media reference. */
     public static final Media FARM = Core.MEDIA.create("Farm.xml");
@@ -72,6 +73,7 @@ class Building
 
         producible = new ProducibleModel(this, setup.getConfigurer());
         addTrait(producible);
+        producible.addListener(this);
 
         viewer = services.get(Viewer.class);
 
@@ -89,5 +91,23 @@ class Building
     public void render(Graphic g)
     {
         surface.render(g);
+    }
+
+    @Override
+    public void notifyProductionStarted()
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void notifyProductionProgress()
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void notifyProductionEnded()
+    {
+        surface.setFrame(2);
     }
 }

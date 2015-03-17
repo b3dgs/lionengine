@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.game.trait.producible;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.configurer.ConfigProducible;
@@ -33,6 +36,8 @@ public class ProducibleModel
         extends TraitModel
         implements Producible
 {
+    /** Producer listeners. */
+    private final Collection<ProducibleListener> listeners;
     /** Producible media. */
     private final Media media;
     /** Production steps needed. */
@@ -59,6 +64,7 @@ public class ProducibleModel
     {
         super(owner);
         Check.notNull(configurer);
+        listeners = new ArrayList<>();
         final ConfigProducible configProducible = ConfigProducible.create(configurer);
         media = owner.getMedia();
         steps = configProducible.getSteps();
@@ -69,6 +75,18 @@ public class ProducibleModel
     /*
      * Producible
      */
+
+    @Override
+    public void addListener(ProducibleListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    @Override
+    public Collection<ProducibleListener> getListeners()
+    {
+        return listeners;
+    }
 
     @Override
     public void setLocation(double x, double y)

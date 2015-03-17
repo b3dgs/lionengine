@@ -17,53 +17,25 @@
  */
 package com.b3dgs.lionengine.game.trait.producible;
 
-import java.util.Collection;
-
-import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.trait.Trait;
-
 /**
- * Represents a producible object.
+ * List of event linked to the producible production progress.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Producible
-        extends Trait, Localizable
+public interface ProducibleListener
 {
     /**
-     * Add a producible listener.
-     * 
-     * @param listener The producible listener to add.
+     * Notify listener that production has been started.
      */
-    void addListener(ProducibleListener listener);
+    void notifyProductionStarted();
 
     /**
-     * Get the listeners reference.
-     * 
-     * @return The listeners reference.
+     * Notify listener that production is currently in progress.
      */
-    Collection<ProducibleListener> getListeners();
+    void notifyProductionProgress();
 
     /**
-     * Set the production location.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
+     * Notify listener that production is over.
      */
-    void setLocation(double x, double y);
-
-    /**
-     * Get the media representing the producible.
-     * 
-     * @return The media representing the producible.
-     */
-    Media getMedia();
-
-    /**
-     * Get the production steps number.
-     * 
-     * @return The production steps number.
-     */
-    int getSteps();
+    void notifyProductionEnded();
 }

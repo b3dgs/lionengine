@@ -102,6 +102,13 @@ public class ProducerModel
             startProduction(current);
             state = ProducerState.PRODUCING;
         }
+        else
+        {
+            for (final ProducerListener listener : listeners)
+            {
+                listener.notifyCanNotProduce(current);
+            }
+        }
     }
 
     /**
@@ -114,6 +121,10 @@ public class ProducerModel
         for (final ProducerListener listener : listeners)
         {
             listener.notifyProducing(current, currentObject);
+        }
+        for (final ProducibleListener listener : current.getListeners())
+        {
+            listener.notifyProductionProgress();
         }
         progress += speed * extrp;
 
@@ -133,6 +144,10 @@ public class ProducerModel
         for (final ProducerListener listener : listeners)
         {
             listener.notifyProduced(current, currentObject);
+        }
+        for (final ProducibleListener listener : current.getListeners())
+        {
+            listener.notifyProductionEnded();
         }
         currentObject = null;
         progress = -1;
@@ -188,6 +203,10 @@ public class ProducerModel
         {
             listener.notifyStartProduction(producible, object);
         }
+        for (final ProducibleListener listener : producible.getListeners())
+        {
+            listener.notifyProductionStarted();
+        }
     }
 
     /*
@@ -203,20 +222,10 @@ public class ProducerModel
     @Override
     public void addToProductionQueue(Producible producible)
     {
-        if (checker.checkProduction(producible))
+        productions.add(producible);
+        if (state == ProducerState.NONE)
         {
-            productions.add(producible);
-            if (state == ProducerState.NONE)
-            {
-                produce();
-            }
-        }
-        else
-        {
-            for (final ProducerListener listener : listeners)
-            {
-                listener.notifyCanNotProduce(producible);
-            }
+            produce();
         }
     }
 
@@ -311,6 +320,6 @@ public class ProducerModel
     @Override
     public boolean isProducing()
     {
-        return ProducerState.WILL_PRODUCE == state || ProducerState.PRODUCING == state;
+        return ProducerState.PRODUCING == state;
     }
 }

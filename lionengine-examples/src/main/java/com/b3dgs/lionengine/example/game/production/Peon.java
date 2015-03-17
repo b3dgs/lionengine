@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.game.production;
 
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -26,6 +27,9 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -59,8 +63,12 @@ class Peon
     private final Producer producer;
     /** Surface reference. */
     private final SpriteAnimated surface;
+    /** Map tile reference. */
+    private final MapTilePath mapPath;
     /** Viewer reference. */
     private final Viewer viewer;
+    /** Visible. */
+    private boolean visible;
 
     /**
      * Create a peon.
@@ -84,12 +92,14 @@ class Peon
         producer.setStepsPerSecond(1.0);
 
         viewer = services.get(Viewer.class);
+        mapPath = services.get(MapTilePath.class);
 
         surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
         transformable.teleport(208, 160);
+        visible = true;
     }
 
     @Override
@@ -103,13 +113,18 @@ class Peon
     @Override
     public void render(Graphic g)
     {
-        surface.render(g);
+        if (visible)
+        {
+            surface.render(g);
+        }
     }
 
     @Override
     public boolean checkProduction(Producible producible)
     {
-        return true;
+        return UtilMath.isBetween(transformable.getX(), producible.getX(), producible.getX() + producible.getWidth())
+                && UtilMath.isBetween(transformable.getY(), producible.getY() - producible.getHeight(),
+                        producible.getY());
     }
 
     @Override
@@ -121,7 +136,7 @@ class Peon
     @Override
     public void notifyStartProduction(Producible producible, ObjectGame object)
     {
-        // Nothing to do
+        visible = false;
     }
 
     @Override
@@ -133,6 +148,14 @@ class Peon
     @Override
     public void notifyProduced(Producible producible, ObjectGame object)
     {
-        // Nothing to do
+        final MapTile map = mapPath.getMap();
+        final CoordTile coord = mapPath.getFreeTileAround(pathfindable, (int) producible.getX() / map.getTileWidth(),
+                (int) producible.getY() / map.getTileHeight(), producible.getWidth() / map.getTileWidth(),
+                producible.getHeight() / map.getTileHeight(), map.getInTileRadius());
+        if (coord != null)
+        {
+            pathfindable.setLocation(coord.getX(), coord.getY());
+        }
+        visible = true;
     }
 }

@@ -105,7 +105,7 @@ public interface MapTilePath
      * @param mover The object moving on map.
      * @param tiled The object to search around.
      * @param radius The search radius.
-     * @return The free tile found.
+     * @return The free tile found (<code>null</code> if none).
      */
     CoordTile getFreeTileAround(Pathfindable mover, Tiled tiled, int radius);
 
@@ -115,10 +115,12 @@ public interface MapTilePath
      * @param mover The object moving on map.
      * @param tx The horizontal tile index.
      * @param ty The vertical tile index.
+     * @param tw The width in tile.
+     * @param th The height in tile.
      * @param radius The search radius.
-     * @return The free tile found.
+     * @return The free tile found (<code>null</code> if none).
      */
-    CoordTile getFreeTileAround(Pathfindable mover, int tx, int ty, int radius);
+    CoordTile getFreeTileAround(Pathfindable mover, int tx, int ty, int tw, int th, int radius);
 
     /**
      * Get the cost of the complete path, from start to end.

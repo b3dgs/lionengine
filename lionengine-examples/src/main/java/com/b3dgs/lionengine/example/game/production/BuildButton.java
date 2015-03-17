@@ -43,6 +43,7 @@ import com.b3dgs.lionengine.game.trait.actionable.ActionableModel;
 import com.b3dgs.lionengine.game.trait.assignable.Assign;
 import com.b3dgs.lionengine.game.trait.assignable.Assignable;
 import com.b3dgs.lionengine.game.trait.assignable.AssignableModel;
+import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 import com.b3dgs.lionengine.game.trait.producible.Producer;
 import com.b3dgs.lionengine.game.trait.producible.Producible;
 import com.b3dgs.lionengine.geom.Geom;
@@ -129,6 +130,10 @@ class BuildButton
             final Producible producible = farm.getTrait(Producible.class);
             producible.setLocation(cursor.getInTileX() * cursor.getWidth(), cursor.getInTileY() * cursor.getHeight());
             producer.addToProductionQueue(producible);
+
+            final int x = (int) (producible.getX() + producible.getWidth() / 2) / cursor.getWidth();
+            final int y = (int) (producible.getY() - producible.getHeight() / 2) / cursor.getHeight();
+            producer.getOwner().getTrait(Pathfindable.class).setDestination(x, y);
         }
         area = null;
         state = actionable;

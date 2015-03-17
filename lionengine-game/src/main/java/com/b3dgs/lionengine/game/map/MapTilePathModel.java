@@ -221,11 +221,12 @@ public class MapTilePathModel
     @Override
     public CoordTile getFreeTileAround(Pathfindable mover, Tiled tiled, int radius)
     {
-        return getFreeTileAround(mover, tiled.getInTileX(), tiled.getInTileY(), radius);
+        return getFreeTileAround(mover, tiled.getInTileX(), tiled.getInTileY(), tiled.getInTileWidth(),
+                tiled.getInTileHeight(), radius);
     }
 
     @Override
-    public CoordTile getFreeTileAround(Pathfindable mover, int tx, int ty, int radius)
+    public CoordTile getFreeTileAround(Pathfindable mover, int tx, int ty, int tw, int th, int radius)
     {
         int size = 0;
         boolean search = true;
@@ -235,7 +236,7 @@ public class MapTilePathModel
             {
                 for (int cty = ty - size; cty <= ty + size; cty++)
                 {
-                    if (isAreaAvailable(mover, ctx, cty, 1, 1, null))
+                    if (isAreaAvailable(mover, ctx, cty, tw, th, null))
                     {
                         return new CoordTile(ctx, cty);
                     }
