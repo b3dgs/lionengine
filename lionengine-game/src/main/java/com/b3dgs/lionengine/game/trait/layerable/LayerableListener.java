@@ -15,38 +15,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.trait;
+package com.b3dgs.lionengine.game.trait.layerable;
 
 import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
- * Trait model base implementation.
+ * Notify when layer value changed.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TraitModel
-        implements Trait
+public interface LayerableListener
 {
-    /** The owner reference. */
-    protected final ObjectGame owner;
-
     /**
-     * Create a trait model.
+     * Notify when layer value changed.
      * 
-     * @param owner The owner reference.
+     * @param object The object reference.
+     * @param oldLayer The old layer value.
+     * @param newLayer The new layer value.
      */
-    public TraitModel(ObjectGame owner)
-    {
-        this.owner = owner;
-    }
-
-    /*
-     * Trait
-     */
-
-    @Override
-    public ObjectGame getOwner()
-    {
-        return owner;
-    }
+    void notifyLayerChanged(ObjectGame object, Integer oldLayer, Integer newLayer);
 }

@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.object.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -43,6 +44,8 @@ import com.b3dgs.lionengine.game.trait.actionable.ActionableModel;
 import com.b3dgs.lionengine.game.trait.assignable.Assign;
 import com.b3dgs.lionengine.game.trait.assignable.Assignable;
 import com.b3dgs.lionengine.game.trait.assignable.AssignableModel;
+import com.b3dgs.lionengine.game.trait.layerable.Layerable;
+import com.b3dgs.lionengine.game.trait.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 import com.b3dgs.lionengine.game.trait.producible.Producer;
 import com.b3dgs.lionengine.game.trait.producible.Producible;
@@ -95,18 +98,27 @@ class BuildButton
     public BuildButton(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        actionable = new ActionableModel(this, setup.getConfigurer(), services);
+        actionable.setClickAction(Mouse.LEFT);
+        actionable.setAction(this);
+
+        assignable = new AssignableModel(this, setup.getConfigurer(), services);
+        assignable.setClickAssign(Mouse.LEFT);
+        assignable.setAssign(this);
+
+        final Layerable layerable = new LayerableModel(this);
+        addTrait(layerable);
+        layerable.setLayer(Integer.valueOf(1));
+        layerable.addListener(services.get(ComponentRendererLayer.class));
+
         text = services.get(Text.class);
         viewer = services.get(Viewer.class);
         cursor = services.get(Cursor.class);
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
+
         image = Drawable.loadImage(setup.surface);
-        actionable = new ActionableModel(this, setup.getConfigurer(), services);
-        actionable.setClickAction(Mouse.LEFT);
-        actionable.setAction(this);
-        assignable = new AssignableModel(this, setup.getConfigurer(), services);
-        assignable.setClickAssign(Mouse.LEFT);
-        assignable.setAssign(this);
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
         target = Core.MEDIA.create(setup.getConfigurer().getText("media"));
         state = actionable;

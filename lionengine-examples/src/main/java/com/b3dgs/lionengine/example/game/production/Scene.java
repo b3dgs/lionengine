@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.map.MapTilePathModel;
 import com.b3dgs.lionengine.game.map.Minimap;
-import com.b3dgs.lionengine.game.object.ComponentRenderer;
+import com.b3dgs.lionengine.game.object.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
@@ -123,6 +123,12 @@ class Scene
         camera.setLimits(map);
         camera.setLocation(320, 208);
 
+        handler.addUpdatable(new ComponentUpdater());
+
+        final ComponentRendererLayer componentRendererLayer = new ComponentRendererLayer();
+        handler.addRenderable(componentRendererLayer);
+        handler.addListener(componentRendererLayer);
+
         final Services services = new Services();
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
         services.add(cursor);
@@ -131,10 +137,9 @@ class Scene
         services.add(camera);
         services.add(factory);
         services.add(handler);
+        services.add(componentRendererLayer);
 
         factory.setServices(services);
-        handler.addUpdatable(new ComponentUpdater());
-        handler.addRenderable(new ComponentRenderer());
 
         final ObjectGame farm = factory.create(BuildButton.FARM);
         final ObjectGame barracks = factory.create(BuildButton.BARRACKS);

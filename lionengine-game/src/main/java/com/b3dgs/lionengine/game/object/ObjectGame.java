@@ -101,6 +101,10 @@ public class ObjectGame
      */
     public final boolean hasTrait(Class<?> trait)
     {
+        if (trait.isAssignableFrom(getClass()))
+        {
+            return true;
+        }
         return features.contains(trait);
     }
 
@@ -114,6 +118,10 @@ public class ObjectGame
      */
     public final <T> T getTrait(Class<T> trait) throws LionEngineException
     {
+        if (trait.isAssignableFrom(getClass()))
+        {
+            return trait.cast(this);
+        }
         return features.get(trait);
     }
 

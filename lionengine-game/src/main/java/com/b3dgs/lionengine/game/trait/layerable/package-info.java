@@ -15,38 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.trait;
-
-import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
- * Trait model base implementation.
+ * Trait system that allow to represent a layer, mainly used to order rendering for
+ * {@link com.b3dgs.lionengine.core.Renderable} objects.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TraitModel
-        implements Trait
-{
-    /** The owner reference. */
-    protected final ObjectGame owner;
+package com.b3dgs.lionengine.game.trait.layerable;
 
-    /**
-     * Create a trait model.
-     * 
-     * @param owner The owner reference.
-     */
-    public TraitModel(ObjectGame owner)
-    {
-        this.owner = owner;
-    }
-
-    /*
-     * Trait
-     */
-
-    @Override
-    public ObjectGame getOwner()
-    {
-        return owner;
-    }
-}

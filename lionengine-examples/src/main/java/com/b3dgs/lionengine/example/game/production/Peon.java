@@ -30,9 +30,12 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTilePath;
+import com.b3dgs.lionengine.game.object.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.trait.layerable.Layerable;
+import com.b3dgs.lionengine.game.trait.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 import com.b3dgs.lionengine.game.trait.pathfindable.PathfindableModel;
 import com.b3dgs.lionengine.game.trait.producible.Producer;
@@ -90,6 +93,11 @@ class Peon
         addTrait(producer);
         producer.addListener(this);
         producer.setStepsPerSecond(1.0);
+
+        final Layerable layerable = new LayerableModel(this);
+        addTrait(layerable);
+        layerable.setLayer(Integer.valueOf(2));
+        layerable.addListener(services.get(ComponentRendererLayer.class));
 
         viewer = services.get(Viewer.class);
         mapPath = services.get(MapTilePath.class);

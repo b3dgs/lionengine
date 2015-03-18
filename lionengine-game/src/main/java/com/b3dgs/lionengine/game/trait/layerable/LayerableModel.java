@@ -15,38 +15,63 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.trait;
+package com.b3dgs.lionengine.game.trait.layerable;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.trait.TraitModel;
 
 /**
- * Trait model base implementation.
+ * Layerable model implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TraitModel
-        implements Trait
+public class LayerableModel
+        extends TraitModel
+        implements Layerable
 {
-    /** The owner reference. */
-    protected final ObjectGame owner;
+    /** Layers listener. */
+    private final Collection<LayerableListener> listeners;
+    /** Layer value. */
+    private Integer layer;
 
     /**
-     * Create a trait model.
+     * Create a layerable model.
      * 
      * @param owner The owner reference.
      */
-    public TraitModel(ObjectGame owner)
+    public LayerableModel(ObjectGame owner)
     {
-        this.owner = owner;
+        super(owner);
+        listeners = new ArrayList<>();
+        layer = Integer.valueOf(0);
     }
 
     /*
-     * Trait
+     * Layerable
      */
 
     @Override
-    public ObjectGame getOwner()
+    public void addListener(LayerableListener listener)
     {
-        return owner;
+        listeners.add(listener);
+    }
+
+    @Override
+    public void setLayer(Integer layer)
+    {
+        for (final LayerableListener listener : listeners)
+        {
+            listener.notifyLayerChanged(owner, this.layer, layer);
+        }
+        this.layer = layer;
+    }
+
+    @Override
+    public Integer getLayer()
+    {
+        return layer;
     }
 }

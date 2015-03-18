@@ -15,38 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.trait;
-
-import com.b3dgs.lionengine.game.object.ObjectGame;
+package com.b3dgs.lionengine.game.object;
 
 /**
- * Trait model base implementation.
+ * Describe the {@link Handler} events.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TraitModel
-        implements Trait
+public interface HandlerListener
 {
-    /** The owner reference. */
-    protected final ObjectGame owner;
+    /**
+     * Notify when object as been added.
+     * 
+     * @param object The added object.
+     */
+    void notifyObjectAdded(ObjectGame object);
 
     /**
-     * Create a trait model.
+     * Notify when an object has been removed.
      * 
-     * @param owner The owner reference.
+     * @param object The removed object.
      */
-    public TraitModel(ObjectGame owner)
-    {
-        this.owner = owner;
-    }
-
-    /*
-     * Trait
-     */
-
-    @Override
-    public ObjectGame getOwner()
-    {
-        return owner;
-    }
+    void notifyObjectRemoved(ObjectGame object);
 }

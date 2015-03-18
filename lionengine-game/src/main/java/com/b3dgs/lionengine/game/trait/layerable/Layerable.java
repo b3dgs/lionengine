@@ -15,38 +15,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.trait;
+package com.b3dgs.lionengine.game.trait.layerable;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
- * Trait model base implementation.
+ * Represents something that can support layer, in order to define an order.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TraitModel
-        implements Trait
+public interface Layerable
+        extends Trait
 {
-    /** The owner reference. */
-    protected final ObjectGame owner;
+    /**
+     * Add a layer listener.
+     * 
+     * @param listener The layer listener reference.
+     */
+    void addListener(LayerableListener listener);
 
     /**
-     * Create a trait model.
+     * Set the layer value.
      * 
-     * @param owner The owner reference.
+     * @param layer The layer value.
      */
-    public TraitModel(ObjectGame owner)
-    {
-        this.owner = owner;
-    }
+    void setLayer(Integer layer);
 
-    /*
-     * Trait
+    /**
+     * Get the current layer value.
+     * 
+     * @return The current layer value.
      */
-
-    @Override
-    public ObjectGame getOwner()
-    {
-        return owner;
-    }
+    Integer getLayer();
 }

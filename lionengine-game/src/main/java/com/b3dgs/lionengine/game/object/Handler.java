@@ -38,6 +38,8 @@ import com.b3dgs.lionengine.core.Updatable;
 public class Handler
         implements HandledObjects, Updatable, Renderable, ObjectGameListener
 {
+    /** Handler listeners. */
+    private final Collection<HandlerListener> listeners;
     /** List of components. */
     private final Set<ComponentUpdatable> updatables;
     /** List of components. */
@@ -58,6 +60,7 @@ public class Handler
      */
     public Handler()
     {
+        listeners = new ArrayList<>();
         updatables = new HashSet<>();
         renderables = new HashSet<>();
         objects = new HandledObjectsImpl();
@@ -65,6 +68,26 @@ public class Handler
         toAdd = new ArrayList<>();
         willDelete = false;
         willAdd = false;
+    }
+
+    /**
+     * Add a handler listener.
+     * 
+     * @param listener The listener to add.
+     */
+    public final void addListener(HandlerListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    /**
+     * Remove a handler listener.
+     * 
+     * @param listener The listener to remove.
+     */
+    public final void removeListener(HandlerListener listener)
+    {
+        listeners.remove(listener);
     }
 
     /**
@@ -142,6 +165,10 @@ public class Handler
             for (final ObjectGame object : toAdd)
             {
                 objects.add(object);
+                for (final HandlerListener listener : listeners)
+                {
+                    listener.notifyObjectAdded(object);
+                }
             }
             toAdd.clear();
             willAdd = false;
@@ -157,6 +184,10 @@ public class Handler
         {
             for (final Integer id : toDelete)
             {
+                for (final HandlerListener listener : listeners)
+                {
+                    listener.notifyObjectRemoved(objects.get(id));
+                }
                 objects.remove(id);
             }
             toDelete.clear();

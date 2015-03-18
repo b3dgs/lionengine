@@ -26,9 +26,12 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.object.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.trait.layerable.Layerable;
+import com.b3dgs.lionengine.game.trait.layerable.LayerableModel;
 import com.b3dgs.lionengine.game.trait.producible.Producible;
 import com.b3dgs.lionengine.game.trait.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.trait.producible.ProducibleModel;
@@ -74,6 +77,11 @@ class Building
         producible = new ProducibleModel(this, setup.getConfigurer());
         addTrait(producible);
         producible.addListener(this);
+
+        final Layerable layerable = new LayerableModel(this);
+        addTrait(layerable);
+        layerable.setLayer(Integer.valueOf(1));
+        layerable.addListener(services.get(ComponentRendererLayer.class));
 
         viewer = services.get(Viewer.class);
 
