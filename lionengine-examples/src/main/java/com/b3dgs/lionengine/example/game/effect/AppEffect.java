@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.projectile;
+package com.b3dgs.lionengine.example.game.effect;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-public class AppGameProjectile
+public class AppEffect
 {
     /**
      * Main.
@@ -39,7 +39,7 @@ public class AppGameProjectile
      */
     public static void main(String[] args)
     {
-        Engine.start("Projectile", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "projectile"));
+        Engine.start("Effect", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "effect"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

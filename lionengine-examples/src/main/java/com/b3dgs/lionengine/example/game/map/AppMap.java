@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.raster;
+package com.b3dgs.lionengine.example.game.map;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-public class AppGameRaster
+public class AppMap
 {
     /**
      * Main.
@@ -39,7 +39,7 @@ public class AppGameRaster
      */
     public static void main(String[] args)
     {
-        Engine.start("Raster", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "raster"));
+        Engine.start("Map", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "map"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
