@@ -43,11 +43,11 @@ class Scene
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** Camera reference. */
-    private final Camera camera;
+    private final Camera camera = new Camera();
     /** Map reference. */
-    private final MapTile map;
+    private final MapTile map = new MapTileGame(camera, 16, 16);
     /** Minimap reference. */
-    private final Minimap minimap;
+    private final Minimap minimap = new Minimap(map);
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Scrolling speed. */
@@ -63,9 +63,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        camera = new Camera();
-        map = new MapTileGame(camera, 16, 16);
-        minimap = new Minimap(map);
         keyboard = getInputDevice(Keyboard.class);
     }
 

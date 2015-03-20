@@ -55,28 +55,28 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 200, 60);
 
+    /** Camera reference. */
+    private final Camera camera = new Camera();
+    /** Action factory. */
+    private final Factory factory = new Factory();
+    /** Actions handler. */
+    private final Handler handler = new Handler();
+    /** Map reference. */
+    private final MapTile map = new MapTileGame(camera, 16, 16);
+    /** Map path. */
+    private final MapTilePath mapPath = new MapTilePathModel(map);
+    /** Minimap reference. */
+    private final Minimap minimap = new Minimap(map);
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Mouse reference. */
     private final Mouse mouse;
-    /** Camera reference. */
-    private final Camera camera;
-    /** Map reference. */
-    private final MapTile map;
-    /** Map path. */
-    private final MapTilePath mapPath;
     /** Cursor reference. */
     private final Cursor cursor;
-    /** Minimap reference. */
-    private final Minimap minimap;
     /** HUD image. */
     private final Image hud;
     /** Text reference. */
     private final Text text;
-    /** Action factory. */
-    private final Factory factory;
-    /** Actions handler. */
-    private final Handler handler;
 
     /**
      * Constructor.
@@ -88,13 +88,7 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        camera = new Camera();
-        map = new MapTileGame(camera, 16, 16);
-        mapPath = new MapTilePathModel(map);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
-        minimap = new Minimap(map);
-        factory = new Factory();
-        handler = new Handler();
         hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
         text = Core.GRAPHIC.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
         mouse.setConfig(getConfig());

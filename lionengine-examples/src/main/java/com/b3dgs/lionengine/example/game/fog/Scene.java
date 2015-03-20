@@ -50,18 +50,18 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Camera reference. */
+    private final Camera camera = new Camera();
+    /** Map reference. */
+    private final MapTile map = new MapTileGame(camera, 16, 16);
+    /** Fog of war layer. */
+    private final FogOfWar fogOfWar = new FogOfWar();
+    /** Collection fog. */
+    private final Collection<Fovable> fovables = new ArrayList<>();
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Mouse reference. */
     private final Mouse mouse;
-    /** Camera reference. */
-    private final Camera camera;
-    /** Map reference. */
-    private final MapTile map;
-    /** Fog of war layer. */
-    private final FogOfWar fogOfWar;
-    /** Collection fog. */
-    private final Collection<Fovable> fovables;
     /** Peon reference. */
     private Peon peon;
 
@@ -75,10 +75,6 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        camera = new Camera();
-        map = new MapTileGame(camera, 16, 16);
-        fogOfWar = new FogOfWar();
-        fovables = new ArrayList<>();
         mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
@@ -87,6 +83,7 @@ class Scene
     protected void load()
     {
         map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
+        map.setTileRenderer(fogOfWar);
 
         final SpriteTiled hide = Drawable.loadSpriteTiled(Core.MEDIA.create("hide.png"), 16, 16);
         final SpriteTiled fog = Drawable.loadSpriteTiled(Core.MEDIA.create("fog.png"), 16, 16);
@@ -95,7 +92,6 @@ class Scene
         fogOfWar.setTilesheet(hide, fog);
         fogOfWar.setEnabled(true, true);
         fogOfWar.create(map, map);
-        map.setTileRenderer(fogOfWar);
 
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);

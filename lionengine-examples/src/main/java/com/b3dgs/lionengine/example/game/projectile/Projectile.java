@@ -69,9 +69,11 @@ class Projectile
     public Projectile(SetupSurface setup, Services context)
     {
         super(setup, context);
-        viewer = context.get(Viewer.class);
+
         sprite = Drawable.loadSprite(setup.surface);
         sprite.setOrigin(Origin.MIDDLE);
+
+        viewer = context.get(Viewer.class);
 
         addTrait(TransformableModel.class);
         addTrait(CollidableModel.class);

@@ -47,14 +47,14 @@ class Scene
     /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
+    /** Camera reference. */
+    private final Camera camera = new Camera();
+    /** Map reference. */
+    private final MapTile map = new MapTileGame(camera, 16, 16);
+    /** Map collision. */
+    private final MapTileCollision mapCollision = new MapTileCollisionModel(map, camera);
     /** Keyboard reference. */
     private final Keyboard keyboard;
-    /** Camera reference. */
-    private final Camera camera;
-    /** Map reference. */
-    private final MapTile map;
-    /** Map collision. */
-    private final MapTileCollision mapCollision;
     /** Mario reference. */
     private Mario hero;
 
@@ -67,10 +67,6 @@ class Scene
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
-        camera = new Camera();
-        map = new MapTileGame(camera, 16, 16);
-        mapCollision = new MapTileCollisionModel(map, camera);
-        map.addFeature(mapCollision);
     }
 
     /*
@@ -80,6 +76,7 @@ class Scene
     @Override
     protected void load()
     {
+        map.addFeature(mapCollision);
         map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
         mapCollision.loadCollisions(Core.MEDIA.create("formulas.xml"), Core.MEDIA.create("collisions.xml"));
         mapCollision.createCollisionDraw();

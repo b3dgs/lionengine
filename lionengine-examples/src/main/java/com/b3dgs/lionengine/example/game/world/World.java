@@ -37,7 +37,7 @@ class World
         extends WorldGame
 {
     /** The text. */
-    private final Text text;
+    private final Text text = Core.GRAPHIC.createText(Text.SERIF, 12, TextStyle.NORMAL);
     /** The str. */
     private String str;
 
@@ -47,7 +47,6 @@ class World
     public World(Config config)
     {
         super(config);
-        text = Core.GRAPHIC.createText(Text.SERIF, 12, TextStyle.NORMAL);
     }
 
     @Override

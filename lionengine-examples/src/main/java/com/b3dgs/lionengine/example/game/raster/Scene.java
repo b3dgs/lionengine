@@ -44,15 +44,15 @@ class Scene
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** Camera reference. */
-    private final Camera camera;
+    private final Camera camera = new Camera();
     /** Map reference. */
-    private final MapTile map;
+    private final MapTile map = new MapTileGame(camera, 16, 16);
     /** Map raster reference. */
-    private final MapTileRastered raster;
+    private final MapTileRastered raster = new MapTileRasteredModel(map);
+    /** Timing value. */
+    private final Timing timing = new Timing();
     /** Keyboard reference. */
     private final Keyboard keyboard;
-    /** Timing value. */
-    private final Timing timing;
     /** Renderable selection (false = default, true = raster). */
     private boolean useRaster;
 
@@ -64,10 +64,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        camera = new Camera();
-        map = new MapTileGame(camera, 16, 16);
-        raster = new MapTileRasteredModel(map);
-        timing = new Timing();
         keyboard = getInputDevice(Keyboard.class);
     }
 

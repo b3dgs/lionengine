@@ -49,7 +49,7 @@ class Racket
     private static final ColorRgba COLOR = ColorRgba.YELLOW;
 
     /** Current force. */
-    private final Force force;
+    private final Force force = new Force();
     /** Transformable model. */
     private Transformable transformable;
     /** Collidable model. */
@@ -64,7 +64,6 @@ class Racket
     {
         super(setup, context);
 
-        force = new Force();
         addTrait(TransformableModel.class);
         addTrait(CollidableModel.class);
     }

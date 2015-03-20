@@ -39,10 +39,10 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Camera reference. */
+    private final Camera camera = new Camera();
     /** Keyboard reference. */
     private final Keyboard keyboard;
-    /** Camera reference. */
-    private final Camera camera;
     /** Mario reference. */
     private Mario mario;
 
@@ -55,7 +55,6 @@ class Scene
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
-        camera = new Camera();
     }
 
     /*

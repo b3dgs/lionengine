@@ -41,11 +41,11 @@ class Scene
         extends Sequence
 {
     /** Camera reference. */
-    private final Camera camera;
+    private final Camera camera = new Camera();
     /** Factory effect. */
-    private final Factory factory;
+    private final Factory factory = new Factory();
     /** Handler effect. */
-    private final Handler handler;
+    private final Handler handler = new Handler();
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Mouse reference. */
@@ -59,9 +59,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
-        camera = new Camera();
-        factory = new Factory();
-        handler = new Handler();
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
     }

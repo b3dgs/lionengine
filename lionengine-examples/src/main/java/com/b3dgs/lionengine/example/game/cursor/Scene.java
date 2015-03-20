@@ -47,16 +47,16 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Camera reference. */
+    private final Camera camera = new Camera();
+    /** Map reference. */
+    private final MapTile map = new MapTileGame(camera, 16, 16);
+    /** Text reference. */
+    private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Mouse reference. */
     private final Mouse mouse;
-    /** Text reference. */
-    private final TextGame text;
-    /** Camera reference. */
-    private final Camera camera;
-    /** Map reference. */
-    private final MapTile map;
     /** Cursor reference. */
     private final Cursor cursor;
 
@@ -70,9 +70,6 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
-        camera = new Camera();
-        map = new MapTileGame(camera, 16, 16);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
         mouse.setConfig(getConfig());
         setSystemCursorVisible(false);

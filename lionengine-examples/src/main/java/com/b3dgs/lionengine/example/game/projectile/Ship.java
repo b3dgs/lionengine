@@ -85,11 +85,8 @@ class Ship
     {
         super(setup, context);
 
-        viewer = context.get(Viewer.class);
-
         final ConfigFrames config = ConfigFrames.create(setup.getConfigurer());
         sprite = Drawable.loadSpriteAnimated(setup.surface, config.getHorizontal(), config.getVertical());
-
         sprite.setFrame(3);
         sprite.setOrigin(Origin.MIDDLE);
 
@@ -103,6 +100,8 @@ class Ship
         x = 64;
         y = 192;
         speed = UtilRandom.getRandomDouble() / 1.5 + 0.75;
+
+        viewer = context.get(Viewer.class);
 
         addTrait(TransformableModel.class);
         addTrait(CollidableModel.class);

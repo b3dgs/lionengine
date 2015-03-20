@@ -46,16 +46,16 @@ class World
     /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
+    /** Camera reference. */
+    private final Camera camera = new Camera();
+    /** Factory reference. */
+    private final Factory factory = new Factory();
+    /** Map reference. */
+    private final MapTile map = new MapTileGame(camera, 16, 16);
+    /** Map collision. */
+    private final MapTileCollision mapCollision = new MapTileCollisionModel(map, camera);
     /** Keyboard reference. */
     private final Keyboard keyboard;
-    /** Camera reference. */
-    private final Camera camera;
-    /** Map reference. */
-    private final MapTile map;
-    /** Map collision. */
-    private final MapTileCollision mapCollision;
-    /** Factory reference. */
-    private final Factory factory;
     /** Mario reference. */
     private Mario mario;
 
@@ -70,11 +70,7 @@ class World
         super(config);
 
         this.keyboard = keyboard;
-        camera = new Camera();
-        map = new MapTileGame(camera, 16, 16);
-        mapCollision = new MapTileCollisionModel(map, camera);
         map.addFeature(mapCollision);
-        factory = new Factory();
     }
 
     /*

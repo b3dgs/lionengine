@@ -48,12 +48,12 @@ class Peon
     /** Setup reference. */
     public static final Media MEDIA = Core.MEDIA.create("Peon.xml");
 
+    /** Random timer. */
+    private final Timing timing = new Timing();
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Random timer. */
-    private final Timing timing;
     /** Transformable model. */
     private Transformable transformable;
 
@@ -67,16 +67,14 @@ class Peon
     {
         super(setup, services);
 
-        timing = new Timing();
-        viewer = services.get(Viewer.class);
-
         surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
+        viewer = services.get(Viewer.class);
+
         addTrait(TransformableModel.class);
         addTrait(FovableModel.class);
-        timing.start();
     }
 
     @Override
@@ -87,6 +85,7 @@ class Peon
 
         final Fovable fovable = getTrait(Fovable.class);
         fovable.setFov(4);
+        timing.start();
     }
 
     @Override

@@ -34,12 +34,12 @@ import com.b3dgs.lionengine.game.object.SetupSurface;
 class Cancel
         extends Button
 {
+    /** Action to delete. */
+    private final Collection<ObjectGame> toDelete = new ArrayList<>();
     /** Factory reference. */
     private final Factory factory;
     /** Handler reference. */
     private final Handler handler;
-    /** Action to delete. */
-    private final Collection<ObjectGame> toDelete;
 
     /**
      * Create cancel action.
@@ -50,7 +50,6 @@ class Cancel
     public Cancel(SetupSurface setup, Services services)
     {
         super(setup, services);
-        toDelete = new ArrayList<>();
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
     }

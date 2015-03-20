@@ -70,11 +70,11 @@ class Mario
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** State factory. */
-    private final StateFactory factory;
+    private final StateFactory factory = new StateFactory();
     /** Movement force. */
-    private final Force movement;
+    private final Force movement = new Force();
     /** Jump force. */
-    private final Force jump;
+    private final Force jump = new Force();
     /** Mirrorable model. */
     private Mirrorable mirrorable;
     /** Transformable model. */
@@ -95,10 +95,6 @@ class Mario
     public Mario(SetupSurface setup, Services services)
     {
         super(setup, services);
-
-        jump = new Force();
-        movement = new Force();
-        factory = new StateFactory();
 
         surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);

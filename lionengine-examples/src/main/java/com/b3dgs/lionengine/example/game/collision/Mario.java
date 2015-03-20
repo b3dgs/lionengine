@@ -58,16 +58,16 @@ class Mario
     /** Media reference. */
     public static final Media MEDIA = Core.MEDIA.create("Mario.xml");
 
+    /** Movement force. */
+    private final Force movement = new Force();
+    /** Jump force. */
+    private final Force jump = new Force();
     /** Surface. */
     private final SpriteAnimated surface;
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Camera reference. */
     private final Camera camera;
-    /** Movement force. */
-    private final Force movement;
-    /** Jump force. */
-    private final Force jump;
     /** Transformable model. */
     private Transformable transformable;
     /** Body model. */
@@ -87,18 +87,15 @@ class Mario
     {
         super(setup, services);
 
-        jump = new Force();
-        movement = new Force();
-
-        jump.setVelocity(0.1);
-        jump.setDestination(0.0, 0.0);
+        surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
+        surface.setOrigin(Origin.CENTER_BOTTOM);
+        surface.setFrameOffsets(-1, 0);
 
         keyboard = services.get(Keyboard.class);
         camera = services.get(Camera.class);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
-        surface.setOrigin(Origin.CENTER_BOTTOM);
-        surface.setFrameOffsets(-1, 0);
+        jump.setVelocity(0.1);
+        jump.setDestination(0.0, 0.0);
 
         addTrait(TransformableModel.class);
         addTrait(BodyModel.class);

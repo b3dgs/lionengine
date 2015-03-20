@@ -37,9 +37,9 @@ class World
         extends WorldGame
 {
     /** Camera reference. */
-    private final Camera camera;
+    private final Camera camera = new Camera();
     /** Map reference. */
-    private final MapTile map;
+    private final MapTile map = new MapTileGame(camera, 16, 16);
 
     /**
      * @see WorldGame#WorldGame(Config)
@@ -47,8 +47,6 @@ class World
     public World(Config config)
     {
         super(config);
-        camera = new Camera();
-        map = new MapTileGame(camera, 16, 16);
     }
 
     @Override

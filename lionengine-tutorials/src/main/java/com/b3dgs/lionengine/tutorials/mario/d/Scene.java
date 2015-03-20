@@ -47,12 +47,12 @@ class Scene
     /** Level file. */
     private static final Media LEVEL = Core.MEDIA.create("map", "level.lvl");
 
+    /** Music. */
+    private final Midi music = AudioMidi.loadMidi(Core.MEDIA.create("music", "music.mid"));
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** World reference. */
     private final World world;
-    /** Music. */
-    private final Midi music;
 
     /**
      * Constructor.
@@ -64,8 +64,6 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         world = new World(getConfig(), keyboard);
-        music = AudioMidi.loadMidi(Core.MEDIA.create("music", "music.mid"));
-        music.setVolume(20);
     }
 
     /**
@@ -98,6 +96,7 @@ class Scene
             importAndSave();
         }
         world.loadFromFile(LEVEL);
+        music.setVolume(20);
         music.play(true);
     }
 

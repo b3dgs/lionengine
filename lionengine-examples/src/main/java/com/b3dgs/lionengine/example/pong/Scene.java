@@ -47,13 +47,13 @@ class Scene
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** Factory. */
-    private final Factory factory;
+    private final Factory factory = new Factory();
     /** Handler. */
-    private final Handler handler;
+    private final Handler handler = new Handler();
     /** Camera. */
-    private final Camera camera;
+    private final Camera camera = new Camera();
     /** Text drawer. */
-    private final Text text;
+    private final Text text = Core.GRAPHIC.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
     /** Keyboard reference. */
     private final Keyboard keyboard;
 
@@ -65,11 +65,7 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        factory = new Factory();
-        handler = new Handler();
-        camera = new Camera();
         keyboard = getInputDevice(Keyboard.class);
-        text = Core.GRAPHIC.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
     }
 
     @Override

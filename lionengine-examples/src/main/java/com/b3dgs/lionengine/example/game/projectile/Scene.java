@@ -41,7 +41,7 @@ class Scene
         extends Sequence
 {
     /** Handler. */
-    private final Handler handler;
+    private final Handler handler = new Handler();
     /** Keyboard reference. */
     private final Keyboard keyboard;
 
@@ -53,7 +53,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
-        handler = new Handler();
         keyboard = getInputDevice(Keyboard.class);
     }
 

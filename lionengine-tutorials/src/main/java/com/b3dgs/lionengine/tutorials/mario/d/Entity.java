@@ -65,15 +65,15 @@ class Entity
     private static final int GROUND = 32;
 
     /** State factory. */
-    protected final StateFactory factory;
+    protected final StateFactory factory = new StateFactory();
+    /** Movement force. */
+    private final Force movement = new Force();
+    /** Jump force. */
+    private final Force jump = new Force();
     /** Surface. */
     private final SpriteAnimated surface;
     /** Camera reference. */
     private final Camera camera;
-    /** Movement force. */
-    private final Force movement;
-    /** Jump force. */
-    private final Force jump;
     /** Transformable model. */
     protected Transformable transformable;
     /** Tile collidable. */
@@ -98,10 +98,6 @@ class Entity
     public Entity(SetupSurface setup, Services services)
     {
         super(setup, services);
-
-        jump = new Force();
-        movement = new Force();
-        factory = new StateFactory();
 
         final ConfigFrames frames = ConfigFrames.create(getConfigurer());
         surface = Drawable.loadSpriteAnimated(setup.surface, frames.getHorizontal(), frames.getVertical());
@@ -257,15 +253,15 @@ class Entity
         transformable = getTrait(Transformable.class);
         mirrorable = getTrait(Mirrorable.class);
         tileCollidable = getTrait(TileCollidable.class);
-    
+
         body = getTrait(Body.class);
         body.setVectors(movement, jump);
         body.setDesiredFps(60);
         body.setMass(2.0);
-    
+
         collidable = getTrait(Collidable.class);
         collidable.setOrigin(Origin.CENTER_TOP);
-    
+
         loadStates(factory);
         state = factory.getState(EntityState.IDLE);
     }
