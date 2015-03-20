@@ -17,15 +17,20 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.b;
 
+import java.io.IOException;
+
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.stream.Stream;
 
 /**
  * Game loop designed to handle our little world.
@@ -37,13 +42,13 @@ class Scene
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    /** Level file. */
+    private static final Media LEVEL = Core.MEDIA.create("level.lvl");
 
     /** Keyboard reference. */
     private final Keyboard keyboard;
-    /** Camera reference. */
-    private final Camera camera;
-    /** Map reference. */
-    private final MapTile map;
+    /** World reference. */
+    private final World world;
 
     /**
      * Constructor.
@@ -54,21 +59,40 @@ class Scene
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
-        camera = new Camera();
-        map = new MapTileGame(camera, 16, 16);
+        world = new World(getConfig());
+    }
+
+    /**
+     * Import and save the level.
+     */
+    private static void importAndSave()
+    {
+        final MapTile map = new MapTileGame(null, 16, 16);
+        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
+        try (FileWriting file = Stream.createFileWriting(LEVEL))
+        {
+            map.save(file);
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(Scene.class, "importAndSave", exception, "Error on saving map !");
+        }
     }
 
     @Override
     protected void load()
     {
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
-        camera.setView(0, 0, getWidth(), getHeight());
-        camera.setLimits(map);
+        if (!LEVEL.exists())
+        {
+            importAndSave();
+        }
+        world.loadFromFile(LEVEL);
     }
 
     @Override
     public void update(double extrp)
     {
+        world.update(extrp);
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();
@@ -78,6 +102,6 @@ class Scene
     @Override
     public void render(Graphic g)
     {
-        map.render(g);
+        world.render(g);
     }
 }

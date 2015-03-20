@@ -28,18 +28,24 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.trait.body.Body;
 import com.b3dgs.lionengine.game.trait.collidable.TileCollidable;
 import com.b3dgs.lionengine.game.trait.collidable.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
- * Turn state implementation.
+ * Jump state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateJump
         implements State, TileCollidableListener
 {
+    /** Transformable reference. */
+    private final Transformable transformable;
+    /** The body reference. */
+    private final Body body;
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
     /** Animator reference. */
@@ -54,21 +60,25 @@ class StateJump
     private final Force jump;
     /** Movement side. */
     private double side;
+    /** On ground. */
+    private boolean ground;
 
     /**
-     * Create the walk state.
+     * Create the jump state.
      * 
-     * @param mario The mario reference.
+     * @param entity The entity reference.
      * @param animation The associated animation.
      */
-    public StateJump(Mario mario, Animation animation)
+    public StateJump(Entity entity, Animation animation)
     {
         this.animation = animation;
-        mirrorable = mario.getTrait(Mirrorable.class);
-        tileCollidable = mario.getTrait(TileCollidable.class);
-        animator = mario.getSurface();
-        movement = mario.getMovement();
-        jump = mario.getJump();
+        transformable = entity.getTrait(Transformable.class);
+        body = entity.getTrait(Body.class);
+        mirrorable = entity.getTrait(Mirrorable.class);
+        tileCollidable = entity.getTrait(TileCollidable.class);
+        animator = entity.getSurface();
+        movement = entity.getMovement();
+        jump = entity.getJump();
     }
 
     @Override
@@ -78,10 +88,10 @@ class StateJump
         {
             final InputDeviceDirectional device = (InputDeviceDirectional) input;
             side = device.getHorizontalDirection();
-            if (jump.getDirectionVertical() == 0)
+            if (ground)
             {
                 tileCollidable.removeListener(this);
-                return factory.getState(MarioState.IDLE);
+                return factory.getState(EntityState.IDLE);
             }
         }
         return null;
@@ -93,9 +103,9 @@ class StateJump
         movement.setVelocity(0.5);
         movement.setSensibility(0.1);
         animator.play(animation);
-        jump.setDirection(0.0, 8.0);
         tileCollidable.addListener(this);
         side = 0;
+        ground = false;
     }
 
     @Override
@@ -114,12 +124,17 @@ class StateJump
         if (Axis.Y == axis)
         {
             jump.setDirection(Direction.ZERO);
+            body.resetGravity();
+            if (transformable.getY() < transformable.getOldY())
+            {
+                ground = true;
+            }
         }
     }
 
     @Override
     public Enum<?> getState()
     {
-        return MarioState.JUMP;
+        return EntityState.JUMP;
     }
 }

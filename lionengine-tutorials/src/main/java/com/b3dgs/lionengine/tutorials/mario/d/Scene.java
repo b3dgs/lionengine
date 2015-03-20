@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.audio.midi.AudioMidi;
+import com.b3dgs.lionengine.audio.midi.Midi;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
@@ -43,12 +45,14 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
     /** Level file. */
-    private static final Media LEVEL = Core.MEDIA.create("level.lvl");
+    private static final Media LEVEL = Core.MEDIA.create("map", "level.lvl");
 
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** World reference. */
     private final World world;
+    /** Music. */
+    private final Midi music;
 
     /**
      * Constructor.
@@ -60,6 +64,8 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         world = new World(getConfig(), keyboard);
+        music = AudioMidi.loadMidi(Core.MEDIA.create("music", "music.mid"));
+        music.setVolume(20);
     }
 
     /**
@@ -68,7 +74,8 @@ class Scene
     private static void importAndSave()
     {
         final MapTile map = new MapTileGame(null, 16, 16);
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
+        map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"),
+                Core.MEDIA.create("map", "groups.xml"));
         try (FileWriting file = Stream.createFileWriting(LEVEL))
         {
             map.save(file);
@@ -79,6 +86,10 @@ class Scene
         }
     }
 
+    /*
+     * Sequence
+     */
+
     @Override
     protected void load()
     {
@@ -87,6 +98,7 @@ class Scene
             importAndSave();
         }
         world.loadFromFile(LEVEL);
+        music.play(true);
     }
 
     @Override
@@ -103,5 +115,12 @@ class Scene
     public void render(Graphic g)
     {
         world.render(g);
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        music.stop();
+        Sfx.terminateAll();
     }
 }

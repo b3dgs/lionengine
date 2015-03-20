@@ -17,72 +17,44 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDevice;
-import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
-import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 
 /**
- * Turn state implementation.
+ * Goomba die state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateTurn
+class StateDieGoomba
         implements State
 {
-    /** Mirrorable reference. */
-    private final Mirrorable mirrorable;
+    /** Entity reference. */
+    private final Entity entity;
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
-    /** Movement force. */
-    private final Force movement;
-    /** Movement side. */
-    private double side;
 
     /**
-     * Create the walk state.
+     * Create the die state.
      * 
      * @param entity The entity reference.
      * @param animation The associated animation.
      */
-    public StateTurn(Entity entity, Animation animation)
+    public StateDieGoomba(Entity entity, Animation animation)
     {
+        this.entity = entity;
         this.animation = animation;
-        mirrorable = entity.getTrait(Mirrorable.class);
         animator = entity.getSurface();
-        movement = entity.getMovement();
     }
 
     @Override
     public State handleInput(StateFactory factory, InputDevice input)
     {
-        if (input instanceof InputDeviceDirectional)
-        {
-            final InputDeviceDirectional device = (InputDeviceDirectional) input;
-            if (device.getVerticalDirection() > 0)
-            {
-                return factory.getState(EntityState.JUMP);
-            }
-            side = device.getHorizontalDirection();
-            if ((device.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() < 0 || device
-                    .getHorizontalDirection() > 0 && movement.getDirectionHorizontal() > 0)
-                    && device.getVerticalDirection() == 0)
-            {
-                return factory.getState(EntityState.WALK);
-            }
-            else if (side == 0 && movement.getDirectionHorizontal() == 0.0)
-            {
-                mirrorable.mirror(mirrorable.getMirror() == Mirror.HORIZONTAL ? Mirror.NONE : Mirror.HORIZONTAL);
-                return factory.getState(EntityState.IDLE);
-            }
-        }
         return null;
     }
 
@@ -90,20 +62,21 @@ class StateTurn
     public void enter()
     {
         animator.play(animation);
-        movement.setVelocity(0.28);
-        movement.setSensibility(0.005);
-        side = 0;
+        entity.getMovement().setDestination(0.0, 0.0);
     }
 
     @Override
     public void update(double extrp)
     {
-        movement.setDestination(side * 2, 0);
+        if (AnimState.FINISHED == animator.getAnimState())
+        {
+            entity.destroy();
+        }
     }
 
     @Override
     public Enum<?> getState()
     {
-        return EntityState.TURN;
+        return EntityState.DEATH_GOOMBA;
     }
 }

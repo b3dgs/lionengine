@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.e;
+package com.b3dgs.lionengine.tutorials.mario.c;
 
 import java.lang.reflect.Constructor;
 import java.util.Locale;
@@ -25,11 +25,11 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.State;
 
 /**
- * List of entity states.
+ * List of mario states.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum EntityState
+enum MarioState
 {
     /** Idle state. */
     IDLE(StateIdle.class),
@@ -38,11 +38,7 @@ enum EntityState
     /** turn state. */
     TURN(StateTurn.class),
     /** Jump state. */
-    JUMP(StateJump.class),
-    /** Death mario state. */
-    DEATH_MARIO(StateDieMario.class),
-    /** Death goomba state. */
-    DEATH_GOOMBA(StateDieGoomba.class);
+    JUMP(StateJump.class);
 
     /** Class reference. */
     private final Class<?> clazz;
@@ -54,7 +50,7 @@ enum EntityState
      * 
      * @param clazz The associated class reference.
      */
-    private EntityState(Class<?> clazz)
+    private MarioState(Class<?> clazz)
     {
         this.clazz = clazz;
         animationName = name().toLowerCase(Locale.ENGLISH);
@@ -63,16 +59,16 @@ enum EntityState
     /**
      * Create the state from its parameters.
      * 
-     * @param entity The entity reference.
+     * @param mario The mario reference.
      * @param animation The associated animation reference.
      * @return The state instance.
      */
-    public State create(Entity entity, Animation animation)
+    public State create(Mario mario, Animation animation)
     {
         try
         {
-            final Constructor<?> constructor = clazz.getConstructor(Entity.class, Animation.class);
-            return State.class.cast(constructor.newInstance(entity, animation));
+            final Constructor<?> constructor = clazz.getConstructor(Mario.class, Animation.class);
+            return State.class.cast(constructor.newInstance(mario, animation));
         }
         catch (final ReflectiveOperationException exception)
         {

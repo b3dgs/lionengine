@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.e;
+package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.audio.wav.AudioWav;
 import com.b3dgs.lionengine.audio.wav.Wav;

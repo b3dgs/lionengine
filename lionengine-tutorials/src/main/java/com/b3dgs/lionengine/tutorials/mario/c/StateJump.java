@@ -15,31 +15,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.e;
+package com.b3dgs.lionengine.tutorials.mario.c;
 
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.collidable.TileCollidable;
 import com.b3dgs.lionengine.game.trait.collidable.TileCollidableListener;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 
 /**
- * Idle state implementation.
+ * Turn state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateIdle
+class StateJump
         implements State, TileCollidableListener
 {
-    /** Transformable reference. */
-    private final Transformable transformable;
+    /** Mirrorable reference. */
+    private final Mirrorable mirrorable;
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */
@@ -50,23 +52,23 @@ class StateIdle
     private final Force movement;
     /** Jump force. */
     private final Force jump;
-    /** Can jump flag. */
-    private boolean canJump;
+    /** Movement side. */
+    private double side;
 
     /**
      * Create the walk state.
      * 
-     * @param entity The entity reference.
+     * @param mario The mario reference.
      * @param animation The associated animation.
      */
-    public StateIdle(Entity entity, Animation animation)
+    public StateJump(Mario mario, Animation animation)
     {
         this.animation = animation;
-        transformable = entity.getTrait(Transformable.class);
-        tileCollidable = entity.getTrait(TileCollidable.class);
-        animator = entity.getSurface();
-        movement = entity.getMovement();
-        jump = entity.getJump();
+        mirrorable = mario.getTrait(Mirrorable.class);
+        tileCollidable = mario.getTrait(TileCollidable.class);
+        animator = mario.getSurface();
+        movement = mario.getMovement();
+        jump = mario.getJump();
     }
 
     @Override
@@ -75,18 +77,11 @@ class StateIdle
         if (input instanceof InputDeviceDirectional)
         {
             final InputDeviceDirectional device = (InputDeviceDirectional) input;
-            if (device.getVerticalDirection() > 0 && canJump)
-            {
-                Sfx.JUMP.play();
-                jump.setDirection(0.0, 8.0);
-                canJump = false;
-                tileCollidable.removeListener(this);
-                return factory.getState(EntityState.JUMP);
-            }
-            if (device.getHorizontalDirection() != 0)
+            side = device.getHorizontalDirection();
+            if (jump.getDirectionVertical() == 0)
             {
                 tileCollidable.removeListener(this);
-                return factory.getState(EntityState.WALK);
+                return factory.getState(MarioState.IDLE);
             }
         }
         return null;
@@ -95,31 +90,36 @@ class StateIdle
     @Override
     public void enter()
     {
-        tileCollidable.addListener(this);
-        movement.setDestination(0.0, 0.0);
-        movement.setVelocity(0.3);
-        movement.setSensibility(0.01);
+        movement.setVelocity(0.5);
+        movement.setSensibility(0.1);
         animator.play(animation);
+        jump.setDirection(0.0, 8.0);
+        tileCollidable.addListener(this);
+        side = 0;
     }
 
     @Override
     public void update(double extrp)
     {
-        // Nothing to do
+        movement.setDestination(side * 3, 0);
+        if (movement.getDirectionHorizontal() != 0)
+        {
+            mirrorable.mirror(movement.getDirectionHorizontal() < 0 ? Mirror.HORIZONTAL : Mirror.NONE);
+        }
     }
 
     @Override
     public void notifyTileCollided(Tile tile, Axis axis)
     {
-        if (Axis.Y == axis && transformable.getY() < transformable.getOldY())
+        if (Axis.Y == axis)
         {
-            canJump = true;
+            jump.setDirection(Direction.ZERO);
         }
     }
 
     @Override
     public Enum<?> getState()
     {
-        return EntityState.IDLE;
+        return MarioState.JUMP;
     }
 }

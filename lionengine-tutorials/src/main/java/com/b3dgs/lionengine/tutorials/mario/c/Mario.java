@@ -15,17 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.e;
+package com.b3dgs.lionengine.tutorials.mario.c;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Axis;
@@ -35,17 +35,12 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.body.Body;
 import com.b3dgs.lionengine.game.trait.body.BodyModel;
-import com.b3dgs.lionengine.game.trait.collidable.Collidable;
-import com.b3dgs.lionengine.game.trait.collidable.CollidableModel;
 import com.b3dgs.lionengine.game.trait.collidable.TileCollidable;
 import com.b3dgs.lionengine.game.trait.collidable.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.collidable.TileCollidableModel;
@@ -59,35 +54,35 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Entity
+class Mario
         extends ObjectGame
         implements Updatable, Renderable, TileCollidableListener
 {
+    /** Object media. */
+    public static final Media MEDIA = Core.MEDIA.create("Mario.xml");
     /** Ground location y. */
     private static final int GROUND = 32;
 
-    /** Transformable model. */
-    protected final Transformable transformable;
-    /** Tile collidable. */
-    protected final TileCollidable tileCollidable;
-    /** Collidable reference. */
-    protected final Collidable collidable;
-    /** State factory. */
-    protected final StateFactory factory;
     /** Surface. */
     private final SpriteAnimated surface;
-    /** Mirrorable model. */
-    private final Mirrorable mirrorable;
-    /** Body model. */
-    private final Body body;
     /** Camera reference. */
     private final Camera camera;
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
+    /** State factory. */
+    private final StateFactory factory;
     /** Movement force. */
     private final Force movement;
     /** Jump force. */
     private final Force jump;
-    /** Controller reference. */
-    private InputDeviceDirectional device;
+    /** Mirrorable model. */
+    private Mirrorable mirrorable;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Body model. */
+    private Body body;
+    /** Tile collidable. */
+    private TileCollidable tileCollidable;
     /** Entity state. */
     private State state;
 
@@ -97,7 +92,7 @@ class Entity
      * @param setup The setup reference.
      * @param services The services reference.
      */
-    public Entity(SetupSurface setup, Services services)
+    public Mario(SetupSurface setup, Services services)
     {
         super(setup, services);
 
@@ -105,58 +100,28 @@ class Entity
         movement = new Force();
         factory = new StateFactory();
 
-        final Configurer configurer = setup.getConfigurer();
-        transformable = new TransformableModel(this, configurer);
-        addTrait(transformable);
-
-        mirrorable = new MirrorableModel(this);
-        addTrait(mirrorable);
-
-        body = new BodyModel(this);
-        addTrait(body);
-
-        tileCollidable = new TileCollidableModel(this, configurer, services);
-        addTrait(tileCollidable);
-        tileCollidable.addListener(this);
-
-        collidable = new CollidableModel(this, configurer, services);
-        collidable.setOrigin(Origin.CENTER_TOP);
-        collidable.addCollision(ConfigCollisions.create(configurer).getCollision("default"));
-        addTrait(collidable);
-
-        camera = services.get(Camera.class);
-
-        body.setVectors(movement, jump);
-        body.setDesiredFps(services.get(Integer.class).intValue());
-        body.setMass(2.0);
-
-        final ConfigFrames frames = ConfigFrames.create(configurer);
-        surface = Drawable.loadSpriteAnimated(setup.surface, frames.getHorizontal(), frames.getVertical());
+        surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 
-        loadStates(configurer, factory);
-        state = factory.getState(EntityState.IDLE);
+        camera = services.get(Camera.class);
+        keyboard = services.get(Keyboard.class);
+
+        addTrait(TransformableModel.class);
+        addTrait(MirrorableModel.class);
+        addTrait(BodyModel.class);
+        addTrait(TileCollidableModel.class);
     }
 
     /**
-     * Make the entity jump.
+     * Respawn the mario.
      */
-    public void jump()
+    public void respawn()
     {
+        transformable.teleport(400, GROUND);
+        camera.resetInterval(transformable);
+        jump.setDirection(Direction.ZERO);
         body.resetGravity();
-        changeState(factory.getState(EntityState.JUMP));
-        jump.setDirection(0.0, 6.0);
-    }
-
-    /**
-     * Get the localizable reference.
-     * 
-     * @return The localizable reference.
-     */
-    public Localizable getLocalizable()
-    {
-        return transformable;
     }
 
     /**
@@ -190,76 +155,28 @@ class Entity
     }
 
     /**
-     * Check the current entity state.
+     * Update the mario controls.
      * 
-     * @param state The state to check.
-     * @return <code>true</code> if it is this state, <code>false</code> else.
+     * @param keyboard The keyboard reference.
      */
-    public boolean isState(EntityState state)
+    private void updateControl(Keyboard keyboard)
     {
-        return this.state.getState() == state;
-    }
-
-    /**
-     * Respawn the entity.
-     * 
-     * @param x The horizontal location.
-     */
-    protected void respawn(int x)
-    {
-        mirrorable.mirror(Mirror.NONE);
-        transformable.teleport(x, GROUND);
-        jump.setDirection(Direction.ZERO);
-        body.resetGravity();
-        collidable.setEnabled(true);
-        tileCollidable.setEnabled(true);
-        state = factory.getState(EntityState.IDLE);
-    }
-
-    /**
-     * Change the current state.
-     * 
-     * @param next The next state.
-     */
-    protected void changeState(State next)
-    {
-        state = next;
-        state.enter();
-    }
-
-    /**
-     * Set the device that will control the entity.
-     * 
-     * @param device The device controller.
-     */
-    protected void setControl(InputDeviceDirectional device)
-    {
-        this.device = device;
-    }
-
-    /**
-     * Update the entity controls.
-     */
-    private void updateControl()
-    {
-        final State current = state.handleInput(factory, device);
+        final State current = state.handleInput(factory, keyboard);
         if (current != null)
         {
             state = current;
-            current.enter();
         }
     }
 
     /**
      * Load all existing animations defined in the xml file.
      * 
-     * @param configurer The configurer reference.
      * @param factory The state factory reference.
      */
-    private void loadStates(Configurer configurer, StateFactory factory)
+    private void loadStates(StateFactory factory)
     {
-        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
-        for (final EntityState type : EntityState.values())
+        final ConfigAnimations configAnimations = ConfigAnimations.create(getConfigurer());
+        for (final MarioState type : MarioState.values())
         {
             try
             {
@@ -275,24 +192,44 @@ class Entity
     }
 
     @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
+        mirrorable = getTrait(Mirrorable.class);
+        tileCollidable = getTrait(TileCollidable.class);
+
+        body = getTrait(Body.class);
+        body.setVectors(movement, jump);
+        body.setDesiredFps(60);
+        body.setMass(2.0);
+
+        loadStates(factory);
+        state = factory.getState(MarioState.IDLE);
+    }
+
+    @Override
     public void update(double extrp)
     {
-        updateControl();
+        updateControl(keyboard);
         state.update(extrp);
         mirrorable.update(extrp);
         movement.update(extrp);
         jump.update(extrp);
         body.update(extrp);
         tileCollidable.update(extrp);
-        collidable.update(extrp);
+        if (transformable.getY() < 0)
+        {
+            respawn();
+        }
+        camera.follow(transformable);
         surface.setMirror(mirrorable.getMirror());
         surface.update(extrp);
+        surface.setLocation(camera, transformable);
     }
 
     @Override
     public void render(Graphic g)
     {
-        surface.setLocation(camera, transformable);
         surface.render(g);
     }
 

@@ -15,45 +15,64 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.e;
+package com.b3dgs.lionengine.tutorials.mario.c;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDevice;
+import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
 
 /**
- * Mario die state implementation.
+ * Turn state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateDieMario
+class StateTurn
         implements State
 {
-    /** Entity reference. */
-    private final Entity entity;
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
+    /** Movement force. */
+    private final Force movement;
+    /** Movement side. */
+    private double side;
 
     /**
-     * Create the die state.
+     * Create the walk state.
      * 
-     * @param entity The entity reference.
+     * @param mario The mario reference.
      * @param animation The associated animation.
      */
-    public StateDieMario(Entity entity, Animation animation)
+    public StateTurn(Mario mario, Animation animation)
     {
-        this.entity = entity;
         this.animation = animation;
-        animator = entity.getSurface();
+        animator = mario.getSurface();
+        movement = mario.getMovement();
     }
 
     @Override
     public State handleInput(StateFactory factory, InputDevice input)
     {
+        if (input instanceof InputDeviceDirectional)
+        {
+            final InputDeviceDirectional device = (InputDeviceDirectional) input;
+            if (device.getVerticalDirection() > 0)
+            {
+                return factory.getState(MarioState.JUMP);
+            }
+            side = device.getHorizontalDirection();
+            if ((device.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() < 0 || device
+                    .getHorizontalDirection() > 0 && movement.getDirectionHorizontal() > 0)
+                    && device.getVerticalDirection() == 0)
+            {
+                return factory.getState(MarioState.WALK);
+            }
+        }
         return null;
     }
 
@@ -61,19 +80,20 @@ class StateDieMario
     public void enter()
     {
         animator.play(animation);
-        entity.getMovement().setDestination(0.0, 0.0);
-        entity.getJump().setDirection(0.0, 9.0);
+        movement.setVelocity(0.28);
+        movement.setSensibility(0.005);
+        side = 0;
     }
 
     @Override
     public void update(double extrp)
     {
-        // Nothing to do
+        movement.setDestination(side * 2, 0);
     }
 
     @Override
     public Enum<?> getState()
     {
-        return EntityState.DEATH_MARIO;
+        return MarioState.TURN;
     }
 }

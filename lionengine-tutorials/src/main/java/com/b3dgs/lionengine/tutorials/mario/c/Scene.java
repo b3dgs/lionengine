@@ -59,7 +59,7 @@ class Scene
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
-        world = new World(getConfig());
+        world = new World(getConfig(), keyboard);
     }
 
     /**

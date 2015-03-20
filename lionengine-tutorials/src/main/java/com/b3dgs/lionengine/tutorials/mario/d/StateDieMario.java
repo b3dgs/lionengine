@@ -15,9 +15,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.e;
+package com.b3dgs.lionengine.tutorials.mario.d;
 
-import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDevice;
@@ -25,11 +24,11 @@ import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
 
 /**
- * Goomba die state implementation.
+ * Mario die state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateDieGoomba
+class StateDieMario
         implements State
 {
     /** Entity reference. */
@@ -45,7 +44,7 @@ class StateDieGoomba
      * @param entity The entity reference.
      * @param animation The associated animation.
      */
-    public StateDieGoomba(Entity entity, Animation animation)
+    public StateDieMario(Entity entity, Animation animation)
     {
         this.entity = entity;
         this.animation = animation;
@@ -63,20 +62,18 @@ class StateDieGoomba
     {
         animator.play(animation);
         entity.getMovement().setDestination(0.0, 0.0);
+        entity.getJump().setDirection(0.0, 9.0);
     }
 
     @Override
     public void update(double extrp)
     {
-        if (AnimState.FINISHED == animator.getAnimState())
-        {
-            entity.destroy();
-        }
+        // Nothing to do
     }
 
     @Override
     public Enum<?> getState()
     {
-        return EntityState.DEATH_GOOMBA;
+        return EntityState.DEATH_MARIO;
     }
 }
