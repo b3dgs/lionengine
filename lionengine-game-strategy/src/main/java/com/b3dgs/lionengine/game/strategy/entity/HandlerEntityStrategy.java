@@ -34,13 +34,13 @@ import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerServices;
-import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
-import com.b3dgs.lionengine.game.strategy.ability.extractor.ExtractorServices;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
 import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
+import com.b3dgs.lionengine.game.trait.extractable.Extractable;
+import com.b3dgs.lionengine.game.trait.extractable.Extractor;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -281,7 +281,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
                 updateClickAttacker(entity, dtx, dty);
             }
             // Extractor case
-            else if (entity instanceof ExtractorServices)
+            else if (entity instanceof Extractor)
             {
                 updateClickExtractor(entity, dtx, dty);
             }
@@ -552,12 +552,12 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
     {
         try
         {
-            final ExtractorServices extractor = (ExtractorServices) entity;
+            final Extractor extractor = (Extractor) entity;
             final E resource = getEntityAt(tx, ty);
             // Resource location is a building
-            if (resource instanceof Extractible)
+            if (resource instanceof Extractable)
             {
-                final Extractible extractible = (Extractible) resource;
+                final Extractable extractible = (Extractable) resource;
                 extractor.setResource(extractible);
                 extractor.startExtraction();
             }
@@ -573,7 +573,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
             if (map.getObjectsId(tx, ty).intValue() == 0 && tile.hasResources())
             {
                 final R type = tile.getResourceType();
-                final ExtractorServices extractor = (ExtractorServices) entity;
+                final Extractor extractor = (Extractor) entity;
                 extractor.setResource(type, tx, ty, 1, 1);
                 extractor.startExtraction();
             }
