@@ -52,6 +52,27 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Pathfindable implementation.
+ * <p>
+ * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * </p>
+ * <ul>
+ * <li>{@link Transformable}</li>
+ * <li>{@link Orientable}</li>
+ * </ul>
+ * <p>
+ * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigPathfindable}.
+ * </p>
+ * <p>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link MapTile}</li>
+ * <li>{@link Viewer}</li>
+ * </ul>
+ * <p>
+ * If the {@link ObjectGame} is a {@link PathfindableListener}, it will automatically
+ * {@link #addListener(PathfindableListener)} on it.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -70,10 +91,6 @@ public class PathfindableModel
     private final MapTile map;
     /** Map path reference. */
     private final MapTilePath mapPath;
-    /** Localizable model. */
-    private final Transformable transformable;
-    /** Orientable model. */
-    private final Orientable orientable;
     /** Pathfinder reference. */
     private final PathFinder pathfinder;
     /** List of categories. */
@@ -86,6 +103,10 @@ public class PathfindableModel
     private final Integer id;
     /** Viewer reference. */
     private final Viewer viewer;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Orientable model. */
+    private Orientable orientable;
     /** Last valid path found. */
     private Path path;
     /** Text debug rendering. */
@@ -123,45 +144,25 @@ public class PathfindableModel
 
     /**
      * Create a pathfindable model.
-     * <p>
-     * The owner must have the following {@link Trait}:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * <li>{@link Orientable}</li>
-     * </ul>
-     * <p>
-     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigPathfindable}.
-     * </p>
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link MapTile}</li>
-     * <li>{@link Viewer}</li>
-     * </ul>
      * 
      * @param owner The owner reference.
-     * @param configurer The configurer reference.
      * @param services The services reference.
-     * @throws LionEngineException If missing {@link Trait} or {@link Services}.
+     * @throws LionEngineException If wrong configurer or missing {@link Services}.
      */
-    public PathfindableModel(ObjectGame owner, Configurer configurer, Services services)
+    public PathfindableModel(ObjectGame owner, Services services)
     {
-        super(owner);
+        super(owner, services);
         listeners = new ArrayList<>();
         ignoredIds = new HashSet<>(0);
         sharedPathIds = new HashSet<>(0);
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
-        transformable = owner.getTrait(Transformable.class);
-        orientable = new OrientableModel(owner, services);
         mapPath = map.getFeature(MapTilePath.class);
         id = owner.getId();
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth() + map.getInTileHeight()
                 * map.getInTileHeight());
         pathfinder = Astar.createPathFinder(map, range, true, Astar.createHeuristicClosest());
-        categories = ConfigPathfindable.create(configurer);
+        categories = ConfigPathfindable.create(owner.getConfigurer());
         destinationReached = true;
         speedX = 1.0;
         speedY = 1.0;
@@ -491,6 +492,20 @@ public class PathfindableModel
     /*
      * Pathfindable
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        transformable = owner.getTrait(Transformable.class);
+        final OrientableModel orientable = new OrientableModel(owner, services);
+        orientable.prepare(services);
+        this.orientable = orientable;
+
+        if (owner instanceof PathfindableListener)
+        {
+            addListener((PathfindableListener) owner);
+        }
+    }
 
     @Override
     public void addListener(PathfindableListener listener)

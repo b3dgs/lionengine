@@ -21,12 +21,19 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Default launchable model implementation.
+ * <p>
+ * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * </p>
+ * <ul>
+ * <li>{@link Transformable}</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -34,10 +41,10 @@ public class LaunchableModel
         extends TraitModel
         implements Launchable
 {
-    /** Transformable reference. */
-    private final Transformable transformable;
     /** Launch timer. */
     private final Timing timer;
+    /** Transformable reference. */
+    private Transformable transformable;
     /** Vector reference. */
     private Force vector;
     /** Launch delay. */
@@ -45,26 +52,26 @@ public class LaunchableModel
 
     /**
      * Create the launchable model.
-     * <p>
-     * The owner must have the following {@link Trait}:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * </ul>
      * 
      * @param owner The owner reference.
-     * @throws LionEngineException If missing {@link Trait}.
+     * @param services The services reference.
+     * @throws LionEngineException If services are <code>null</code>.
      */
-    public LaunchableModel(ObjectGame owner) throws LionEngineException
+    public LaunchableModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
-        transformable = owner.getTrait(Transformable.class);
+        super(owner, services);
         timer = new Timing();
     }
 
     /*
      * Launchable
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        transformable = owner.getTrait(Transformable.class);
+    }
 
     @Override
     public void launch()

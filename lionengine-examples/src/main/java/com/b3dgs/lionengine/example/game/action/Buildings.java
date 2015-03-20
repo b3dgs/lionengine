@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -33,9 +31,6 @@ import com.b3dgs.lionengine.game.object.SetupSurface;
 class Buildings
         extends Button
 {
-    /** Media reference. */
-    public static final Media MEDIA = Core.MEDIA.create("action", "Buildings.xml");
-
     /** Factory reference. */
     private final Factory factory;
     /** Handler reference. */
@@ -57,9 +52,9 @@ class Buildings
     @Override
     public void execute()
     {
-        final ObjectGame buildFarm = factory.create(BuildFarm.MEDIA);
-        final ObjectGame buildBarracks = factory.create(BuildBarracks.MEDIA);
-        final Cancel cancel = factory.create(Cancel.MEDIA);
+        final ObjectGame buildFarm = factory.create(Button.BUILD_FARM);
+        final ObjectGame buildBarracks = factory.create(Button.BUILD_BARRACKS);
+        final Cancel cancel = factory.create(Button.CANCEL);
 
         cancel.addToDelete(buildFarm);
         cancel.addToDelete(buildBarracks);

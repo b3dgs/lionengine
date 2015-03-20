@@ -26,13 +26,11 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.object.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.layerable.Layerable;
 import com.b3dgs.lionengine.game.trait.layerable.LayerableModel;
-import com.b3dgs.lionengine.game.trait.producible.Producible;
 import com.b3dgs.lionengine.game.trait.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.trait.producible.ProducibleModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
@@ -52,14 +50,14 @@ class Building
     /** Barracks media reference. */
     public static final Media BARRACKS = Core.MEDIA.create("Barracks.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Producible model. */
-    private final Producible producible;
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Visible flag. */
+    private boolean visible;
 
     /**
      * Create a building.
@@ -71,40 +69,45 @@ class Building
     {
         super(setup, services);
 
-        transformable = new TransformableModel(this, setup.getConfigurer());
-        addTrait(transformable);
-
-        producible = new ProducibleModel(this, setup.getConfigurer());
-        addTrait(producible);
-        producible.addListener(this);
-
-        final Layerable layerable = new LayerableModel(this);
-        addTrait(layerable);
-        layerable.setLayer(Integer.valueOf(1));
-        layerable.addListener(services.get(ComponentRendererLayer.class));
+        surface = Drawable.loadSpriteAnimated(setup.surface, 2, 1);
+        surface.setOrigin(Origin.TOP_LEFT);
 
         viewer = services.get(Viewer.class);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 2, 1);
-        surface.setOrigin(Origin.TOP_LEFT);
+        addTrait(TransformableModel.class);
+        addTrait(ProducibleModel.class);
+        addTrait(LayerableModel.class);
+    }
+
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
+
+        final Layerable layerable = getTrait(Layerable.class);
+        layerable.setLayer(Integer.valueOf(1));
     }
 
     @Override
     public void update(double extrp)
     {
-        surface.setLocation(viewer, transformable);
+        // Nothing to do
     }
 
     @Override
     public void render(Graphic g)
     {
-        surface.render(g);
+        if (visible)
+        {
+            surface.render(g);
+        }
     }
 
     @Override
     public void notifyProductionStarted()
     {
-        // Nothing to do
+        surface.setLocation(viewer, transformable);
+        visible = true;
     }
 
     @Override

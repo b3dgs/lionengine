@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.object.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -66,10 +65,6 @@ class BuildButton
     /** Build barracks media. */
     public static final Media BARRACKS = Core.MEDIA.create("BuildBarracks.xml");
 
-    /** Actionable model. */
-    private final Actionable actionable;
-    /** Assignable model. */
-    private final Assignable assignable;
     /** Button image. */
     private final Image image;
     /** Text reference. */
@@ -84,6 +79,10 @@ class BuildButton
     private final Handler handler;
     /** Media target. */
     private final Media target;
+    /** Actionable model. */
+    private Actionable actionable;
+    /** Assignable model. */
+    private Assignable assignable;
     /** Current action state. */
     private Updatable state;
     /** Building area. */
@@ -99,18 +98,8 @@ class BuildButton
     {
         super(setup, services);
 
-        actionable = new ActionableModel(this, setup.getConfigurer(), services);
-        actionable.setClickAction(Mouse.LEFT);
-        actionable.setAction(this);
-
-        assignable = new AssignableModel(this, setup.getConfigurer(), services);
-        assignable.setClickAssign(Mouse.LEFT);
-        assignable.setAssign(this);
-
-        final Layerable layerable = new LayerableModel(this);
-        addTrait(layerable);
-        layerable.setLayer(Integer.valueOf(1));
-        layerable.addListener(services.get(ComponentRendererLayer.class));
+        image = Drawable.loadImage(setup.surface);
+        target = Core.MEDIA.create(setup.getConfigurer().getText("media"));
 
         text = services.get(Text.class);
         viewer = services.get(Viewer.class);
@@ -118,10 +107,25 @@ class BuildButton
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
 
-        image = Drawable.loadImage(setup.surface);
-        image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
-        target = Core.MEDIA.create(setup.getConfigurer().getText("media"));
+        addTrait(ActionableModel.class);
+        addTrait(AssignableModel.class);
+        addTrait(LayerableModel.class);
+    }
+
+    @Override
+    protected void prepareTraits()
+    {
+        actionable = getTrait(Actionable.class);
+        actionable.setClickAction(Mouse.LEFT);
+        actionable.setAction(this);
         state = actionable;
+
+        assignable = getTrait(Assignable.class);
+        assignable.setClickAssign(Mouse.LEFT);
+        assignable.setAssign(this);
+
+        final Layerable layerable = getTrait(Layerable.class);
+        layerable.setLayer(Integer.valueOf(3));
     }
 
     @Override
@@ -154,6 +158,7 @@ class BuildButton
     @Override
     public void update(double extrp)
     {
+        image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
         if (actionable.isOver())
         {
             text.setText(actionable.getDescription());

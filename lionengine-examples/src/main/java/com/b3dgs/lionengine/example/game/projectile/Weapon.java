@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -45,9 +44,9 @@ class Weapon
     public static final Media PULSE_CANNON = Core.MEDIA.create("PulseCannon.xml");
 
     /** Transformable model. */
-    private final Transformable transformable;
+    private Transformable transformable;
     /** Launcher model. */
-    private final Launcher launcher;
+    private Launcher launcher;
     /** Owner localizable. */
     private Transformable ownerLocalizable;
     /** Owner collidable. */
@@ -62,15 +61,8 @@ class Weapon
     public Weapon(Setup setup, Services context)
     {
         super(setup, context);
-
-        final Configurer configurer = setup.getConfigurer();
-
-        transformable = new TransformableModel(this, configurer);
-        addTrait(transformable);
-
-        launcher = new LauncherModel(this, configurer, context);
-        launcher.addListener(this);
-        addTrait(launcher);
+        addTrait(TransformableModel.class);
+        addTrait(LauncherModel.class);
     }
 
     /**
@@ -103,6 +95,13 @@ class Weapon
     public void fire(Localizable target)
     {
         launcher.fire(target);
+    }
+
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
+        launcher = getTrait(Launcher.class);
     }
 
     @Override

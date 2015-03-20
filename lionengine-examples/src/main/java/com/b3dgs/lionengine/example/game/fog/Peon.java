@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -45,44 +46,47 @@ class Peon
         implements Updatable, Renderable
 {
     /** Setup reference. */
-    private static final SetupSurface SETUP = new SetupSurface(Core.MEDIA.create("Peon.xml"));
+    public static final Media MEDIA = Core.MEDIA.create("Peon.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Fovable model. */
-    private final Fovable fovable;
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
     /** Random timer. */
     private final Timing timing;
+    /** Transformable model. */
+    private Transformable transformable;
 
     /**
      * Create a peon.
      * 
+     * @param setup The setup reference.
      * @param services The services reference.
      */
-    public Peon(Services services)
+    public Peon(SetupSurface setup, Services services)
     {
-        super(SETUP, services);
+        super(setup, services);
 
         timing = new Timing();
-        transformable = new TransformableModel(this);
-        addTrait(transformable);
-
-        fovable = new FovableModel(this, services);
-        addTrait(fovable);
-        fovable.setFov(4);
-
         viewer = services.get(Viewer.class);
 
-        surface = Drawable.loadSpriteAnimated(SETUP.surface, 15, 9);
+        surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
-        transformable.teleport(64, 64);
+        addTrait(TransformableModel.class);
+        addTrait(FovableModel.class);
         timing.start();
+    }
+
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
+        transformable.teleport(64, 64);
+
+        final Fovable fovable = getTrait(Fovable.class);
+        fovable.setFov(4);
     }
 
     @Override

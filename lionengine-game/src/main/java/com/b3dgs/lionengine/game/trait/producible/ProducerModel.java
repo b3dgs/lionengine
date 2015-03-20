@@ -33,6 +33,20 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Producer model implementation.
+ * <p>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link Handler}</li>
+ * <li>{@link Integer}</li> (for the desired fps).
+ * </ul>
+ * <p>
+ * The {@link ObjectGame} must be a {@link ProducerChecker}.
+ * </p>
+ * <p>
+ * If the {@link ObjectGame} is a {@link ProducerListener}, it will automatically {@link #addListener(ProducerListener)}
+ * on it.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -44,12 +58,12 @@ public class ProducerModel
     private final Collection<ProducerListener> listeners;
     /** Production queue. */
     private final Queue<Producible> productions;
-    /** Production checker. */
-    private final ProducerChecker checker;
     /** Handler reference. */
     private final Handler handler;
     /** Tick timer rate. */
     private final double desiredFps;
+    /** Production checker. */
+    private ProducerChecker checker;
     /** Steps per second. */
     private double stepsPerSecond;
     /** Current element being under production. */
@@ -67,23 +81,14 @@ public class ProducerModel
 
     /**
      * Create a producer model.
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link Handler}</li>
-     * <li>{@link Integer}</li> (for the desired fps).
-     * </ul>
      * 
      * @param owner The owner reference.
      * @param services The services reference.
-     * @param checker The production checker.
      * @throws LionEngineException If missing {@link Services}.
      */
-    public ProducerModel(ObjectGame owner, Services services, ProducerChecker checker)
+    public ProducerModel(ObjectGame owner, Services services)
     {
-        super(owner);
-        this.checker = checker;
+        super(owner, services);
         listeners = new ArrayList<>();
         productions = new LinkedList<>();
         handler = services.get(Handler.class);
@@ -212,6 +217,16 @@ public class ProducerModel
     /*
      * Producer
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        if (owner instanceof ProducerListener)
+        {
+            addListener((ProducerListener) owner);
+        }
+        checker = (ProducerChecker) owner;
+    }
 
     @Override
     public void addListener(ProducerListener listener)

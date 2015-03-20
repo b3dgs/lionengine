@@ -27,6 +27,17 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Fovable model implementation.
+ * <p>
+ * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * </p>
+ * <ul>
+ * <li>{@link Transformable}</li>
+ * </ul>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link MapTile}</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -34,41 +45,35 @@ public class FovableModel
         extends TraitModel
         implements Fovable
 {
-    /** Transformable model. */
-    private final Transformable transformable;
     /** Map tile reference. */
     private final MapTile map;
+    /** Transformable model. */
+    private Transformable transformable;
     /** Field of view in tile value. */
     private int fov;
 
     /**
      * Create a fovable model.
-     * <p>
-     * The owner must have the following {@link Trait}:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * </ul>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link MapTile}</li>
-     * </ul>
      * 
      * @param owner The owner reference.
      * @param services The services reference.
-     * @throws LionEngineException If missing {@link Trait} or {@link Services}.
+     * @throws LionEngineException If missing {@link Services}.
      */
     public FovableModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
-        transformable = owner.getTrait(Transformable.class);
+        super(owner, services);
         map = services.get(MapTile.class);
     }
 
     /*
      * Fovable
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        transformable = owner.getTrait(Transformable.class);
+    }
 
     @Override
     public void setFov(int fov)

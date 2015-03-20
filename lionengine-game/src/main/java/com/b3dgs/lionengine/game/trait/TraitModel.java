@@ -17,7 +17,10 @@
  */
 package com.b3dgs.lionengine.game.trait;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Trait model base implementation.
@@ -34,15 +37,32 @@ public class TraitModel
      * Create a trait model.
      * 
      * @param owner The owner reference.
+     * @param services The services reference.
+     * @throws LionEngineException If services are <code>null</code>.
      */
-    public TraitModel(ObjectGame owner)
+    public TraitModel(ObjectGame owner, Services services) throws LionEngineException
     {
+        Check.notNull(services);
         this.owner = owner;
+    }
+
+    /**
+     * Create a trait model with no owner.
+     */
+    protected TraitModel()
+    {
+        owner = null;
     }
 
     /*
      * Trait
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        // Nothing to do
+    }
 
     @Override
     public ObjectGame getOwner()

@@ -74,8 +74,8 @@ public class Camera
      */
     public Camera()
     {
-        transformable = new TransformableModel(null);
-        offset = new TransformableModel(null);
+        transformable = new TransformableModel();
+        offset = new TransformableModel();
         intervalHorizontal = 0;
         intervalVertical = 0;
         x = 0;

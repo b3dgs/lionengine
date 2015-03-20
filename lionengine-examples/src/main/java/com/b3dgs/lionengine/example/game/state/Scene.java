@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -70,7 +71,10 @@ class Scene
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
         services.add(keyboard);
         services.add(camera);
-        mario = new Mario(services);
+
+        final Factory factory = new Factory();
+        factory.setServices(services);
+        mario = factory.create(Mario.MEDIA);
     }
 
     @Override

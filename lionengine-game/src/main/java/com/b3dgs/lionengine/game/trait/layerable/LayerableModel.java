@@ -20,7 +20,9 @@ package com.b3dgs.lionengine.game.trait.layerable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 
 /**
@@ -41,10 +43,12 @@ public class LayerableModel
      * Create a layerable model.
      * 
      * @param owner The owner reference.
+     * @param services The services reference.
+     * @throws LionEngineException If services are <code>null</code>.
      */
-    public LayerableModel(ObjectGame owner)
+    public LayerableModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
+        super(owner, services);
         listeners = new ArrayList<>();
         layer = Integer.valueOf(0);
     }
@@ -52,6 +56,12 @@ public class LayerableModel
     /*
      * Layerable
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        addListener(services.get(LayerableListener.class));
+    }
 
     @Override
     public void addListener(LayerableListener listener)

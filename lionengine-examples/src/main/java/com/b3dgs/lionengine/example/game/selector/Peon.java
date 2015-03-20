@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -47,48 +48,53 @@ class Peon
         extends ObjectGame
         implements Updatable, Renderable, SelectorListener
 {
-    /** Setup reference. */
-    private static final SetupSurface SETUP = new SetupSurface(Core.MEDIA.create("Peon.xml"));
+    /** Media reference. */
+    public static final Media MEDIA = Core.MEDIA.create("Peon.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Pathfindable model. */
-    private final Pathfindable pathfindable;
-    /** Collidable model. */
-    private final Collidable collidable;
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Pathfindable model. */
+    private Pathfindable pathfindable;
+    /** Collidable model. */
+    private Collidable collidable;
     /** Selected flag. */
     private boolean selected;
 
     /**
      * Create a peon.
      * 
+     * @param setup The setup reference.
      * @param services The services reference.
      */
-    public Peon(Services services)
+    public Peon(SetupSurface setup, Services services)
     {
-        super(SETUP, services);
+        super(setup, services);
 
-        transformable = new TransformableModel(this, SETUP.getConfigurer());
-        addTrait(transformable);
-
-        pathfindable = new PathfindableModel(this, SETUP.getConfigurer(), services);
-        addTrait(pathfindable);
-
-        collidable = new CollidableModel(this, SETUP.getConfigurer(), services);
-        collidable.setOrigin(Origin.MIDDLE);
-        addTrait(collidable);
-
-        viewer = services.get(Viewer.class);
-
-        surface = Drawable.loadSpriteAnimated(SETUP.surface, 15, 9);
+        surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
+        viewer = services.get(Viewer.class);
+
+        addTrait(TransformableModel.class);
+        addTrait(PathfindableModel.class);
+        addTrait(CollidableModel.class);
+    }
+
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
         transformable.teleport(240, 160);
+
+        pathfindable = getTrait(Pathfindable.class);
+
+        collidable = getTrait(Collidable.class);
+        collidable.setOrigin(Origin.MIDDLE);
     }
 
     @Override

@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -50,14 +49,14 @@ class Ball
     /** Ball color. */
     private static final ColorRgba COLOR = ColorRgba.GRAY;
 
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Collidable model. */
-    private final Collidable collidable;
     /** Current force. */
     private final Force force;
     /** Speed. */
     private final double speed;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Collidable model. */
+    private Collidable collidable;
 
     /**
      * {@link ObjectGame#ObjectGame(Setup, Services)}
@@ -65,20 +64,24 @@ class Ball
     public Ball(Setup setup, Services context) throws LionEngineException
     {
         super(setup, context);
-        transformable = new TransformableModel(this, setup.getConfigurer());
-        addTrait(transformable);
-
-        collidable = new CollidableModel(this, setup.getConfigurer(), context);
-        addTrait(collidable);
 
         speed = 2.0;
         force = new Force(-speed, 0.0);
         force.setDestination(-speed, 0.0);
         force.setVelocity(speed);
 
-        collidable.addCollision(ConfigCollisions.create(setup.getConfigurer()).getCollision("default"));
-        collidable.setCollisionVisibility(true);
+        addTrait(TransformableModel.class);
+        addTrait(CollidableModel.class);
+    }
+
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
         transformable.teleport(320 / 2 - transformable.getWidth() / 2, 230 / 2 - transformable.getHeight() / 2);
+
+        collidable = getTrait(Collidable.class);
+        collidable.setCollisionVisibility(true);
     }
 
     @Override

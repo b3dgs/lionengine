@@ -125,10 +125,12 @@ public class Factory
         final Setup setup = getSetup(media);
         final Class<?> type = setup.getConfigClass(classLoader);
         final Services services = this.services == null ? Factory.EMPTY_SERVICES : this.services;
-        return create(type, new Class<?>[]
+        final E object = create(type, new Class<?>[]
         {
                 setup.getClass(), services.getClass()
         }, setup, services);
+        object.createTraits(setup, services);
+        return object;
     }
 
     /**

@@ -20,15 +20,23 @@ package com.b3dgs.lionengine.game.trait.producible;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.configurer.ConfigProducible;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 
 /**
  * Represents a producible object.
+ * <p>
+ * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigProducible}.
+ * </p>
+ * <p>
+ * If the {@link ObjectGame} is a {@link ProducibleListener}, it will automatically
+ * {@link #addListener(ProducibleListener)} on it.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -53,19 +61,16 @@ public class ProducibleModel
 
     /**
      * Create a producible and load its configuration.
-     * <p>
-     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigProducible}.
-     * </p>
      * 
      * @param owner The owner reference.
-     * @param configurer The configurer reference.
+     * @param services The services reference.
+     * @throws LionEngineException If wrong configurer.
      */
-    public ProducibleModel(ObjectGame owner, Configurer configurer)
+    public ProducibleModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
-        Check.notNull(configurer);
+        super(owner, services);
         listeners = new ArrayList<>();
-        final ConfigProducible configProducible = ConfigProducible.create(configurer);
+        final ConfigProducible configProducible = ConfigProducible.create(owner.getConfigurer());
         media = owner.getMedia();
         steps = configProducible.getSteps();
         width = configProducible.getWidth();
@@ -75,6 +80,15 @@ public class ProducibleModel
     /*
      * Producible
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        if (owner instanceof ProducibleListener)
+        {
+            addListener((ProducibleListener) owner);
+        }
+    }
 
     @Override
     public void addListener(ProducibleListener listener)

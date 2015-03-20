@@ -33,9 +33,6 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTilePath;
-import com.b3dgs.lionengine.game.map.MapTilePathModel;
-import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -63,12 +60,8 @@ class Scene
     private final Camera camera;
     /** Map reference. */
     private final MapTile map;
-    /** Map path. */
-    private final MapTilePath mapPath;
     /** Cursor reference. */
     private final Cursor cursor;
-    /** Minimap reference. */
-    private final Minimap minimap;
     /** HUD image. */
     private final Image hud;
     /** Text reference. */
@@ -90,9 +83,7 @@ class Scene
         mouse = getInputDevice(Mouse.class);
         camera = new Camera();
         map = new MapTileGame(camera, 16, 16);
-        mapPath = new MapTilePathModel(map);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
-        minimap = new Minimap(map);
         factory = new Factory();
         handler = new Handler();
         hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
@@ -104,13 +95,7 @@ class Scene
     @Override
     protected void load()
     {
-        map.addFeature(mapPath);
-        map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"),
-                Core.MEDIA.create("map", "groups.xml"));
-        mapPath.loadPathfinding(Core.MEDIA.create("map", "pathfinding.xml"));
-        minimap.loadPixelConfig(Core.MEDIA.create("map", "minimap.xml"));
-        minimap.load(false);
-        minimap.setLocation(3, 6);
+        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
 
         hud.load(false);
         text.setLocation(74, 192);
@@ -128,9 +113,9 @@ class Scene
         services.add(text);
         services.add(factory);
         services.add(handler);
-
         factory.setServices(services);
-        final ObjectGame buildings = factory.create(Buildings.MEDIA);
+
+        final ObjectGame buildings = factory.create(Button.BUILDINGS);
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());
         handler.add(buildings);
@@ -154,7 +139,6 @@ class Scene
     {
         map.render(g);
         hud.render(g);
-        minimap.render(g);
         handler.render(g);
         text.render(g);
         cursor.render(g);

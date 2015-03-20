@@ -21,12 +21,19 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Default body supporting gravity implementation.
+ * <p>
+ * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * </p>
+ * <ul>
+ * <li>{@link Transformable}</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -34,12 +41,12 @@ public class BodyModel
         extends TraitModel
         implements Body
 {
-    /** Body location. */
-    private final Transformable transformable;
     /** Body force. */
     private final Force force;
     /** Maximum gravity value. */
     private final Force gravityMax;
+    /** Body location. */
+    private Transformable transformable;
     /** Gravity used. */
     private double gravity;
     /** Vector used. */
@@ -51,20 +58,14 @@ public class BodyModel
 
     /**
      * Create a body model.
-     * <p>
-     * The owner must have the following {@link Trait}:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * </ul>
      * 
      * @param owner The owner reference.
-     * @throws LionEngineException If missing {@link Trait}.
+     * @param services The services reference.
+     * @throws LionEngineException If services are <code>null</code>.
      */
-    public BodyModel(ObjectGame owner) throws LionEngineException
+    public BodyModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
-        transformable = owner.getTrait(Transformable.class);
+        super(owner, services);
         force = new Force();
         gravityMax = new Force();
         vectors = new Direction[0];
@@ -74,6 +75,12 @@ public class BodyModel
     /*
      * Body
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        transformable = owner.getTrait(Transformable.class);
+    }
 
     @Override
     public void update(double extrp)

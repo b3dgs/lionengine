@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Keyboard;
@@ -33,7 +34,6 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -53,19 +53,13 @@ class Mario
         extends ObjectGame
         implements Updatable, Renderable
 {
+    /** Media reference. */
+    public static final Media MEDIA = Core.MEDIA.create("Mario.xml");
     /** Ground location y. */
     static final int GROUND = 32;
-    /** Setup. */
-    private static final SetupSurface SETUP = new SetupSurface(Core.MEDIA.create("mario.xml"));
 
     /** Surface. */
     private final SpriteAnimated surface;
-    /** Mirrorable model. */
-    private final Mirrorable mirrorable;
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Body model. */
-    private final Body body;
     /** Camera reference. */
     private final Camera camera;
     /** State factory. */
@@ -74,45 +68,38 @@ class Mario
     private final Force movement;
     /** Jump force. */
     private final Force jump;
+    /** Mirrorable model. */
+    private Mirrorable mirrorable;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Body model. */
+    private Body body;
     /** Entity state. */
     private State state;
 
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param services The services reference.
      */
-    public Mario(Services services)
+    public Mario(SetupSurface setup, Services services)
     {
-        super(SETUP, services);
+        super(setup, services);
 
         jump = new Force();
         movement = new Force();
         factory = new StateFactory();
 
-        final Configurer configurer = SETUP.getConfigurer();
-        transformable = new TransformableModel(this, configurer);
-        addTrait(transformable);
-
-        mirrorable = new MirrorableModel(this);
-        addTrait(mirrorable);
-
-        body = new BodyModel(this);
-        addTrait(body);
-
-        camera = services.get(Camera.class);
-
-        body.setVectors(movement, jump);
-        body.setDesiredFps(services.get(Integer.class).intValue());
-        body.setMass(2.0);
-
-        surface = Drawable.loadSpriteAnimated(SETUP.surface, 7, 1);
+        surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 
-        loadStates(configurer, factory);
-        state = factory.getState(MarioState.IDLE);
-        transformable.teleport(160, GROUND);
+        camera = services.get(Camera.class);
+
+        addTrait(TransformableModel.class);
+        addTrait(MirrorableModel.class);
+        addTrait(BodyModel.class);
     }
 
     /**
@@ -162,12 +149,11 @@ class Mario
     /**
      * Load all existing animations defined in the xml file.
      * 
-     * @param configurer The configurer reference.
      * @param factory The state factory reference.
      */
-    private void loadStates(Configurer configurer, StateFactory factory)
+    private void loadStates(StateFactory factory)
     {
-        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
+        final ConfigAnimations configAnimations = ConfigAnimations.create(getConfigurer());
         for (final MarioState state : MarioState.values())
         {
             try
@@ -180,6 +166,23 @@ class Mario
                 continue;
             }
         }
+    }
+
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
+        transformable.teleport(160, GROUND);
+
+        mirrorable = getTrait(Mirrorable.class);
+
+        body = getTrait(Body.class);
+        body.setVectors(movement, jump);
+        body.setDesiredFps(60);
+        body.setMass(2.0);
+
+        loadStates(factory);
+        state = factory.getState(MarioState.IDLE);
     }
 
     @Override

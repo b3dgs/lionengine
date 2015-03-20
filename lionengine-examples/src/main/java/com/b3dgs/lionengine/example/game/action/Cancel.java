@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.example.game.action;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -36,9 +34,6 @@ import com.b3dgs.lionengine.game.object.SetupSurface;
 class Cancel
         extends Button
 {
-    /** Media reference. */
-    public static final Media MEDIA = Core.MEDIA.create("action", "Cancel.xml");
-
     /** Factory reference. */
     private final Factory factory;
     /** Handler reference. */
@@ -73,7 +68,7 @@ class Cancel
     @Override
     public void execute()
     {
-        final ObjectGame buildings = factory.create(Buildings.MEDIA);
+        final ObjectGame buildings = factory.create(Button.BUILDINGS);
         handler.add(buildings);
         for (final ObjectGame current : toDelete)
         {

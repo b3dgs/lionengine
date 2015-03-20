@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.game.trait.mirrorable;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 
 /**
@@ -41,13 +43,15 @@ public class MirrorableModel
      * Create a mirrorable model.
      * 
      * @param owner The owner reference.
+     * @param services The services reference.
+     * @throws LionEngineException If services are <code>null</code>.
      */
-    public MirrorableModel(ObjectGame owner)
+    public MirrorableModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
+        super(owner, services);
         mirror = Mirror.NONE;
-        requested = false;
         nextState = Mirror.NONE;
+        requested = false;
     }
 
     /*

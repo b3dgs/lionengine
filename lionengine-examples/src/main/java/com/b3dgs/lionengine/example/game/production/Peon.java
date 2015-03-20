@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTilePath;
-import com.b3dgs.lionengine.game.object.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -58,18 +57,18 @@ class Peon
     /** Media reference. */
     public static final Media MEDIA = Core.MEDIA.create("Peon.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Pathfindable model. */
-    private final Pathfindable pathfindable;
-    /** Producer model. */
-    private final Producer producer;
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Map tile reference. */
     private final MapTilePath mapPath;
     /** Viewer reference. */
     private final Viewer viewer;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Pathfindable model. */
+    private Pathfindable pathfindable;
+    /** Producer model. */
+    private Producer producer;
     /** Visible. */
     private boolean visible;
 
@@ -83,31 +82,33 @@ class Peon
     {
         super(setup, services);
 
-        transformable = new TransformableModel(this);
-        addTrait(transformable);
-
-        pathfindable = new PathfindableModel(this, setup.getConfigurer(), services);
-        addTrait(pathfindable);
-
-        producer = new ProducerModel(this, services, this);
-        addTrait(producer);
-        producer.addListener(this);
-        producer.setStepsPerSecond(1.0);
-
-        final Layerable layerable = new LayerableModel(this);
-        addTrait(layerable);
-        layerable.setLayer(Integer.valueOf(2));
-        layerable.addListener(services.get(ComponentRendererLayer.class));
+        surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
+        surface.setOrigin(Origin.MIDDLE);
+        surface.setFrameOffsets(-8, -8);
+        visible = true;
 
         viewer = services.get(Viewer.class);
         mapPath = services.get(MapTilePath.class);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
-        surface.setOrigin(Origin.MIDDLE);
-        surface.setFrameOffsets(-8, -8);
+        addTrait(TransformableModel.class);
+        addTrait(PathfindableModel.class);
+        addTrait(ProducerModel.class);
+        addTrait(LayerableModel.class);
+    }
 
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
         transformable.teleport(208, 160);
-        visible = true;
+
+        pathfindable = getTrait(Pathfindable.class);
+
+        producer = getTrait(Producer.class);
+        producer.setStepsPerSecond(1.0);
+
+        final Layerable layerable = getTrait(Layerable.class);
+        layerable.setLayer(Integer.valueOf(2));
     }
 
     @Override

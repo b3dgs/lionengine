@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.example.game.pathfinding</lionengine:class>
+    <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
+    <lionengine:class>com.b3dgs.lionengine.example.game.selector.Peon</lionengine:class>
     <lionengine:surface image="Peon.png"/>
     <lionengine:size width="16" height="16"/>
     <lionengine:pathfindable category="ground" cost="1" block="false"/>

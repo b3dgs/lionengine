@@ -56,16 +56,16 @@ class Ship
 
     /** Surface. */
     private final SpriteAnimated sprite;
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Collidable model. */
-    private final Collidable collidable;
     /** Viewer reference. */
     private final Viewer viewer;
     /** Weapon model. */
     private final Weapon weapon;
     /** Speed. */
     private final double speed;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Collidable model. */
+    private Collidable collidable;
     /** Target used. */
     private Localizable target;
     /** Location ship. */
@@ -86,13 +86,6 @@ class Ship
         super(setup, context);
 
         viewer = context.get(Viewer.class);
-        transformable = new TransformableModel(this, setup.getConfigurer());
-        addTrait(transformable);
-
-        collidable = new CollidableModel(this, setup.getConfigurer(), context);
-        collidable.setOrigin(Origin.MIDDLE);
-        collidable.addListener(this);
-        addTrait(collidable);
 
         final ConfigFrames config = ConfigFrames.create(setup.getConfigurer());
         sprite = Drawable.loadSpriteAnimated(setup.surface, config.getHorizontal(), config.getVertical());
@@ -104,15 +97,15 @@ class Ship
         final Handler handler = context.get(Handler.class);
 
         weapon = factory.create(Weapon.PULSE_CANNON);
-        weapon.setOwner(this);
         weapon.setOffset(6, -6);
         handler.add(weapon);
 
         x = 64;
         y = 192;
         speed = UtilRandom.getRandomDouble() / 1.5 + 0.75;
-        transformable.teleport(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
-        weapon.update(1.0);
+
+        addTrait(TransformableModel.class);
+        addTrait(CollidableModel.class);
     }
 
     /**
@@ -153,6 +146,18 @@ class Ship
         {
             sprite.rotate(angle + 180);
         }
+    }
+
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
+        transformable.teleport(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
+        weapon.setOwner(this);
+        weapon.update(1.0);
+
+        collidable = getTrait(Collidable.class);
+        collidable.setOrigin(Origin.MIDDLE);
     }
 
     @Override

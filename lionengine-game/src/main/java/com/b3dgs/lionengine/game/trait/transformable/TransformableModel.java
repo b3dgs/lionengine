@@ -17,15 +17,19 @@
  */
 package com.b3dgs.lionengine.game.trait.transformable;
 
-import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 
 /**
  * Transformable model implementation.
+ * <p>
+ * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigSize}.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -51,29 +55,24 @@ public class TransformableModel
     private int oldHeight;
 
     /**
-     * Create a transformable model.
-     * 
-     * @param owner The owner reference.
+     * Create a transformable model. No owner defined.
      */
-    public TransformableModel(ObjectGame owner)
+    public TransformableModel()
     {
-        super(owner);
+        super();
     }
 
     /**
      * Create a transformable and load its configuration.
-     * <p>
-     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigSize}.
-     * </p>
      * 
      * @param owner The owner reference.
-     * @param configurer The configurer reference.
+     * @param services The services reference.
+     * @throws LionEngineException If wrong configuration.
      */
-    public TransformableModel(ObjectGame owner, Configurer configurer)
+    public TransformableModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
-        Check.notNull(configurer);
-        final ConfigSize sizeData = ConfigSize.create(configurer);
+        super(owner, services);
+        final ConfigSize sizeData = ConfigSize.create(owner.getConfigurer());
         width = sizeData.getWidth();
         height = sizeData.getHeight();
         oldWidth = width;

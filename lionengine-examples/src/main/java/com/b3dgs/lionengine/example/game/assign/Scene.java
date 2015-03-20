@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.map.MapTilePathModel;
-import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -67,8 +66,6 @@ class Scene
     private final MapTilePath mapPath;
     /** Cursor reference. */
     private final Cursor cursor;
-    /** Minimap reference. */
-    private final Minimap minimap;
     /** HUD image. */
     private final Image hud;
     /** Text reference. */
@@ -92,7 +89,6 @@ class Scene
         map = new MapTileGame(camera, 16, 16);
         mapPath = new MapTilePathModel(map);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"), Core.MEDIA.create("cursor_order.png"));
-        minimap = new Minimap(map);
         factory = new Factory();
         handler = new Handler();
         hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
@@ -108,9 +104,6 @@ class Scene
         map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"),
                 Core.MEDIA.create("map", "groups.xml"));
         mapPath.loadPathfinding(Core.MEDIA.create("map", "pathfinding.xml"));
-        minimap.loadPixelConfig(Core.MEDIA.create("map", "minimap.xml"));
-        minimap.load(false);
-        minimap.setLocation(3, 6);
 
         hud.load(false);
         text.setLocation(74, 192);
@@ -158,7 +151,6 @@ class Scene
     {
         map.render(g);
         hud.render(g);
-        minimap.render(g);
         handler.render(g);
         text.render(g);
         cursor.render(g);

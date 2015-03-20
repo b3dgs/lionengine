@@ -51,14 +51,14 @@ class Projectile
 
     /** Projectile surface. */
     private final Sprite sprite;
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Collidable model. */
-    private final Collidable collidable;
-    /** Launchable model. */
-    private final Launchable launchable;
     /** Viewer reference. */
     private final Viewer viewer;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Collidable model. */
+    private Collidable collidable;
+    /** Launchable model. */
+    private Launchable launchable;
 
     /**
      * Constructor.
@@ -73,15 +73,20 @@ class Projectile
         sprite = Drawable.loadSprite(setup.surface);
         sprite.setOrigin(Origin.MIDDLE);
 
-        transformable = new TransformableModel(this, setup.getConfigurer());
-        addTrait(transformable);
+        addTrait(TransformableModel.class);
+        addTrait(CollidableModel.class);
+        addTrait(LaunchableModel.class);
+    }
 
-        collidable = new CollidableModel(this, setup.getConfigurer(), context);
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
+
+        collidable = getTrait(Collidable.class);
         collidable.setOrigin(Origin.MIDDLE);
-        addTrait(collidable);
 
-        launchable = new LaunchableModel(this);
-        addTrait(launchable);
+        launchable = getTrait(Launchable.class);
     }
 
     @Override

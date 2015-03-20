@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.map.MapTilePathModel;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -106,7 +107,10 @@ class Scene
         services.add(camera);
         services.add(cursor);
         services.add(map);
-        peon = new Peon(services);
+
+        final Factory factory = new Factory();
+        factory.setServices(services);
+        peon = factory.create(Peon.MEDIA);
     }
 
     @Override

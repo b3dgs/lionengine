@@ -21,14 +21,22 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.configurer.ConfigAction;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 
 /**
  * Assignable implementation.
+ * <p>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link Cursor}</li>
+ * <li>{@link Viewer}</li>
+ * </ul>
+ * <p>
+ * If the {@link ObjectGame} is an {@link Assign}, it will automatically {@link #setAssign(Assign)} on it.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -47,25 +55,14 @@ public class AssignableModel
 
     /**
      * Create an assignable model.
-     * <p>
-     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigAction}.
-     * </p>
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link Cursor}</li>
-     * <li>{@link Viewer}</li>
-     * </ul>
      * 
      * @param owner The owner reference.
-     * @param configurer The configurer reference.
      * @param services The services reference.
-     * @throws LionEngineException If wrong configurer or missing {@link Services}.
+     * @throws LionEngineException If missing {@link Services}.
      */
-    public AssignableModel(ObjectGame owner, Configurer configurer, Services services) throws LionEngineException
+    public AssignableModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
+        super(owner, services);
         cursor = services.get(Cursor.class);
         viewer = services.get(Viewer.class);
     }
@@ -73,6 +70,15 @@ public class AssignableModel
     /*
      * Assignable
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        if (owner instanceof Assign)
+        {
+            setAssign((Assign) owner);
+        }
+    }
 
     @Override
     public void update(double extrp)

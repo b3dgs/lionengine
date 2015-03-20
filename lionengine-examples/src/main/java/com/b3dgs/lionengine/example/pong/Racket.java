@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -49,12 +48,12 @@ class Racket
     /** Racket color. */
     private static final ColorRgba COLOR = ColorRgba.YELLOW;
 
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Collidable model. */
-    private final Collidable collidable;
     /** Current force. */
     private final Force force;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Collidable model. */
+    private Collidable collidable;
     /** Ball reference. */
     private Ball ball;
 
@@ -64,17 +63,20 @@ class Racket
     public Racket(Setup setup, Services context) throws LionEngineException
     {
         super(setup, context);
-        transformable = new TransformableModel(this, setup.getConfigurer());
-        addTrait(transformable);
-
-        collidable = new CollidableModel(this, setup.getConfigurer(), context);
-        addTrait(collidable);
 
         force = new Force();
+        addTrait(TransformableModel.class);
+        addTrait(CollidableModel.class);
+    }
 
-        collidable.addCollision(ConfigCollisions.create(setup.getConfigurer()).getCollision("default"));
-        collidable.setCollisionVisibility(true);
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
         transformable.teleportY(240 / 2 - transformable.getHeight() / 2);
+
+        collidable = getTrait(Collidable.class);
+        collidable.setCollisionVisibility(true);
     }
 
     /**

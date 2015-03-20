@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -54,10 +53,10 @@ class Effect
     private final SpriteAnimated surface;
     /** Explode animation. */
     private final Animation animExplode;
-    /** Transformable model. */
-    private final Transformable transformable;
     /** The viewer reference. */
     private final Viewer viewer;
+    /** Transformable model. */
+    private Transformable transformable;
 
     /**
      * Constructor.
@@ -68,23 +67,26 @@ class Effect
     public Effect(SetupSurface setup, Services context)
     {
         super(setup, context);
-        viewer = context.get(Viewer.class);
-        final Configurer configurer = setup.getConfigurer();
 
-        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
-        animExplode = configAnimations.getAnimation("explode");
-
-        final ConfigFrames configFrames = ConfigFrames.create(configurer);
-        surface = Drawable.loadSpriteAnimated(setup.surface, configFrames.getHorizontal(), configFrames.getVertical());
-
-        transformable = new TransformableModel(this);
-
+        final ConfigFrames configFrames = ConfigFrames.create(setup.getConfigurer());
         final int scale = UtilRandom.getRandomInteger(75) + 50;
+        surface = Drawable.loadSpriteAnimated(setup.surface, configFrames.getHorizontal(), configFrames.getVertical());
         surface.stretch(scale, scale);
         surface.setOrigin(Origin.MIDDLE);
 
+        final ConfigAnimations configAnimations = ConfigAnimations.create(setup.getConfigurer());
+        animExplode = configAnimations.getAnimation("explode");
+
+        viewer = context.get(Viewer.class);
+
+        addTrait(TransformableModel.class);
+    }
+
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
         transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
-        addTrait(transformable);
     }
 
     /**

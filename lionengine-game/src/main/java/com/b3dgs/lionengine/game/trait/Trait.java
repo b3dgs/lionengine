@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.trait;
 
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Represents something that can be delegated to perform specialized computing and reduce owner visible complexity.
@@ -27,6 +28,13 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
  */
 public interface Trait
 {
+    /**
+     * Prepare the trait.
+     * 
+     * @param services The services reference.
+     */
+    void prepare(Services services);
+
     /**
      * Get the trait owner reference.
      * 

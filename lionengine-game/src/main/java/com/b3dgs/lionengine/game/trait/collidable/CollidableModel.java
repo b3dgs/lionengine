@@ -42,6 +42,25 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Box ray cast collidable model implementation.
+ * <p>
+ * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * </p>
+ * <ul>
+ * <li>{@link Transformable}</li>
+ * </ul>
+ * <p>
+ * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigCollisions}.
+ * </p>
+ * <p>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link Viewer}</li>
+ * </ul>
+ * <p>
+ * If the {@link ObjectGame} is a {@link CollidableListener}, it will automatically
+ * {@link #addListener(CollidableListener)} on it.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -49,8 +68,6 @@ public class CollidableModel
         extends TraitModel
         implements Collidable
 {
-    /** Transformable owning this model. */
-    private final Transformable transformable;
     /** The viewer reference. */
     private final Viewer viewer;
     /** The collision listener reference. */
@@ -61,6 +78,8 @@ public class CollidableModel
     private final Collection<Collidable> ignored;
     /** Temp bounding box from polygon. */
     private final Map<Collision, Rectangle> boxs;
+    /** Transformable owning this model. */
+    private Transformable transformable;
     /** Origin used. */
     private Origin origin;
     /** Enabled flag. */
@@ -70,40 +89,23 @@ public class CollidableModel
 
     /**
      * Create a collidable model.
-     * <p>
-     * The owner must have the following {@link Trait}:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * </ul>
-     * <p>
-     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigCollisions}.
-     * </p>
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link Viewer}</li>
-     * </ul>
      * 
      * @param owner The owner reference.
-     * @param configurer The configurer reference.
      * @param services The services reference.
-     * @throws LionEngineException If missing {@link Trait} or {@link Services}.
+     * @throws LionEngineException If wrong config or missing {@link Services}.
      */
-    public CollidableModel(ObjectGame owner, Configurer configurer, Services services) throws LionEngineException
+    public CollidableModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
+        super(owner, services);
         listeners = new ArrayList<>();
         collisions = new ArrayList<>();
         ignored = new HashSet<>();
         boxs = new HashMap<>();
-        transformable = owner.getTrait(Transformable.class);
         viewer = services.get(Viewer.class);
         origin = Origin.TOP_LEFT;
         enabled = true;
         showCollision = false;
-        for (final Collision collision : ConfigCollisions.create(configurer).getCollisions())
+        for (final Collision collision : ConfigCollisions.create(owner.getConfigurer()).getCollisions())
         {
             addCollision(collision);
         }
@@ -112,6 +114,16 @@ public class CollidableModel
     /*
      * Collidable
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        transformable = owner.getTrait(Transformable.class);
+        if (owner instanceof CollidableListener)
+        {
+            addListener((CollidableListener) owner);
+        }
+    }
 
     @Override
     public void addListener(CollidableListener listener)

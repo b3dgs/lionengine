@@ -29,6 +29,18 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Actionnable model implementation.
+ * <p>
+ * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigAction}.
+ * </p>
+ * <p>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link Cursor}</li>
+ * </ul>
+ * <p>
+ * If the {@link ObjectGame} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -48,27 +60,17 @@ public class ActionableModel
     private Action action;
 
     /**
-     * Create a actionable model.
-     * <p>
-     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigAction}.
-     * </p>
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link Cursor}</li>
-     * </ul>
+     * Create an actionable model.
      * 
      * @param owner The owner reference.
-     * @param configurer The configurer reference.
      * @param services The services reference.
      * @throws LionEngineException If wrong configurer or missing {@link Services}.
      */
-    public ActionableModel(ObjectGame owner, Configurer configurer, Services services) throws LionEngineException
+    public ActionableModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
+        super(owner, services);
         cursor = services.get(Cursor.class);
-        final ConfigAction config = ConfigAction.create(configurer);
+        final ConfigAction config = ConfigAction.create(owner.getConfigurer());
         button = Geom.createRectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
         description = config.getDescription();
     }
@@ -76,6 +78,15 @@ public class ActionableModel
     /*
      * Actionable
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        if (owner instanceof Action)
+        {
+            setAction((Action) owner);
+        }
+    }
 
     @Override
     public void update(double extrp)

@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.trait.orientable;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -26,9 +25,21 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Orientable model implementation.
+ * <p>
+ * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * </p>
+ * <ul>
+ * <li>{@link Transformable}</li>
+ * </ul>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link MapTile}</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -36,35 +47,23 @@ public class OrientableModel
         extends TraitModel
         implements Orientable
 {
-    /** Tiled reference. */
-    private final Localizable localizable;
     /** Map reference. */
     private final MapTile map;
+    /** Localizable reference. */
+    private Transformable transformable;
     /** Current orientation. */
     private Orientation orientation;
 
     /**
      * Create an orientable model.
-     * <p>
-     * The owner must have the following {@link Trait}:
-     * </p>
-     * <ul>
-     * <li>{@link Localizable}</li>
-     * </ul>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link MapTile}</li>
-     * </ul>
      * 
      * @param owner The owner reference.
      * @param services The services reference.
-     * @throws LionEngineException If wrong configurer or missing {@link Services}.
+     * @throws LionEngineException If missing {@link Services}.
      */
     public OrientableModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
-        localizable = owner.getTrait(Localizable.class);
+        super(owner, services);
         map = services.get(MapTile.class);
         orientation = Orientation.NORTH;
     }
@@ -74,10 +73,16 @@ public class OrientableModel
      */
 
     @Override
+    public void prepare(Services services)
+    {
+        transformable = owner.getTrait(Transformable.class);
+    }
+
+    @Override
     public void pointTo(int dtx, int dty)
     {
-        final int tx = (int) localizable.getX() / map.getTileWidth();
-        final int ty = (int) localizable.getY() / map.getTileHeight();
+        final int tx = (int) transformable.getX() / map.getTileWidth();
+        final int ty = (int) transformable.getY() / map.getTileHeight();
         if (ty < dty)
         {
             if (tx < dtx)

@@ -17,13 +17,17 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.game.configurer.ConfigAction;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -36,16 +40,27 @@ import com.b3dgs.lionengine.game.trait.actionable.ActionableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class Button
+class Button
         extends ObjectGame
         implements Action, Updatable, Renderable
 {
-    /** Actionable model. */
-    private final Actionable actionable;
+    /** Media buildings reference. */
+    public static final Media BUILDINGS = Core.MEDIA.create("action", "Buildings.xml");
+    /** Media build farm reference. */
+    public static final Media BUILD_FARM = Core.MEDIA.create("action", "BuildFarm.xml");
+    /** Media build barracks reference. */
+    public static final Media BUILD_BARRACKS = Core.MEDIA.create("action", "BuildBarracks.xml");
+    /** Media cancel reference. */
+    public static final Media CANCEL = Core.MEDIA.create("action", "Cancel.xml");
+
     /** Button image. */
     private final Image image;
     /** Text reference. */
     private final Text text;
+    /** Actionable model. */
+    private Actionable actionable;
+    /** Action name. */
+    private final String name;
 
     /**
      * Create build farm action.
@@ -58,10 +73,22 @@ abstract class Button
         super(setup, services);
         text = services.get(Text.class);
         image = Drawable.loadImage(setup.surface);
-        actionable = new ActionableModel(this, setup.getConfigurer(), services);
+        name = setup.getConfigurer().getText(ConfigAction.NAME);
+        addTrait(ActionableModel.class);
+    }
+
+    @Override
+    protected void prepareTraits()
+    {
+        actionable = getTrait(Actionable.class);
         actionable.setClickAction(Mouse.LEFT);
-        actionable.setAction(this);
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
+    }
+
+    @Override
+    public void execute()
+    {
+        Verbose.info(name);
     }
 
     @Override

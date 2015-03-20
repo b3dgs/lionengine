@@ -37,6 +37,25 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Tile collidable model implementation.
+ * <p>
+ * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * </p>
+ * <ul>
+ * <li>{@link Transformable}</li>
+ * </ul>
+ * <p>
+ * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigCollisionCategory}.
+ * </p>
+ * <p>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link MapTile}</li>
+ * </ul>
+ * <p>
+ * If the {@link ObjectGame} is a {@link TileCollidableListener}, it will automatically
+ * {@link #addListener(TileCollidableListener)} on it.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -57,33 +76,18 @@ public class TileCollidableModel
 
     /**
      * Create a tile collidable model.
-     * <p>
-     * The owner must have the following {@link Trait}:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * </ul>
-     * <p>
-     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigCollisionCategory}.
-     * </p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link MapTile}</li>
-     * </ul>
      * 
      * @param owner The owner reference.
-     * @param configurer The configurer reference.
      * @param services The services reference.
-     * @throws LionEngineException If missing {@link Trait} or {@link Services}.
+     * @throws LionEngineException If wrong config or {@link Services}.
      */
-    public TileCollidableModel(ObjectGame owner, Configurer configurer, Services services) throws LionEngineException
+    public TileCollidableModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
+        super(owner, services);
         listeners = new HashSet<>();
         transformable = owner.getTrait(Transformable.class);
         map = services.get(MapTileCollision.class);
-        categories = ConfigCollisionCategory.create(configurer, map);
+        categories = ConfigCollisionCategory.create(owner.getConfigurer(), map);
         enabled = true;
     }
 
@@ -127,6 +131,15 @@ public class TileCollidableModel
     /*
      * TileCollidable
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        if (owner instanceof TileCollidableListener)
+        {
+            addListener((TileCollidableListener) owner);
+        }
+    }
 
     @Override
     public void addListener(TileCollidableListener listener)

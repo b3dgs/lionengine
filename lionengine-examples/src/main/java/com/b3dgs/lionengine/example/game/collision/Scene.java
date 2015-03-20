@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -83,16 +84,19 @@ class Scene
         mapCollision.loadCollisions(Core.MEDIA.create("formulas.xml"), Core.MEDIA.create("collisions.xml"));
         mapCollision.createCollisionDraw();
 
+        camera.setIntervals(16, 0);
+        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setLimits(map);
+
         final Services services = new Services();
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
         services.add(map);
         services.add(keyboard);
         services.add(camera);
-        hero = new Mario(services);
 
-        camera.setIntervals(16, 0);
-        camera.setView(0, 0, getWidth(), getHeight());
-        camera.setLimits(map);
+        final Factory factory = new Factory();
+        factory.setServices(services);
+        hero = factory.create(Mario.MEDIA);
     }
 
     @Override

@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -55,12 +57,19 @@ import com.b3dgs.lionengine.game.trait.Trait;
  */
 public class ObjectGame
 {
+    /** Error create trait. */
+    private static final String ERROR_CREATE_TRAIT = "Error when creating trait: ";
+
     /** Features provider. */
     private final Features<Trait> features;
+    /** Trait to add. */
+    private final Collection<Class<? extends Trait>> traitToAdd;
     /** Listeners. */
     private final Collection<ObjectGameListener> listeners;
     /** Media representation. */
     private final Media media;
+    /** Configurer reference. */
+    private final Configurer configurer;
     /** Unique id. */
     private Integer id;
     /** Destroyed flag. */
@@ -78,8 +87,10 @@ public class ObjectGame
         Check.notNull(services);
 
         features = new Features<>(Trait.class);
+        traitToAdd = new ArrayList<>();
         listeners = new HashSet<>(1);
         media = setup.getConfigFile();
+        configurer = setup.getConfigurer();
         destroyed = false;
     }
 
@@ -88,9 +99,45 @@ public class ObjectGame
      * 
      * @param trait The trait to add.
      */
-    public final void addTrait(Trait trait)
+    public final void addTrait(Class<? extends Trait> trait)
     {
-        features.add(trait);
+        traitToAdd.add(trait);
+    }
+
+    /**
+     * Prepare traits. Does nothing by default.
+     */
+    protected void prepareTraits()
+    {
+        // Nothing to do
+    }
+
+    /**
+     * Create added traits.
+     * 
+     * @param setup The setup reference.
+     * @param services The services reference.
+     * @throws LionEngineException If error when creating instance.
+     */
+    void createTraits(Setup setup, Services services) throws LionEngineException
+    {
+        for (final Class<? extends Trait> trait : traitToAdd)
+        {
+            try
+            {
+                final Constructor<? extends Trait> constructor = trait.getConstructor(ObjectGame.class,
+                        services.getClass());
+                final Trait instance = constructor.newInstance(this, services);
+                instance.prepare(services);
+                features.add(instance);
+            }
+            catch (final ReflectiveOperationException exception)
+            {
+                throw new LionEngineException(exception, ERROR_CREATE_TRAIT, trait.getName());
+            }
+        }
+        traitToAdd.clear();
+        prepareTraits();
     }
 
     /**
@@ -153,6 +200,16 @@ public class ObjectGame
     public final Media getMedia()
     {
         return media;
+    }
+
+    /**
+     * Get the configurer reference.
+     * 
+     * @return The configurer reference.
+     */
+    public final Configurer getConfigurer()
+    {
+        return configurer;
     }
 
     /**

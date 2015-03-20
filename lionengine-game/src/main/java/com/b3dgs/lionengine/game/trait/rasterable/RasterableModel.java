@@ -36,6 +36,14 @@ import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 
 /**
  * Default rasterable implementation.
+ * <p>
+ * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * </p>
+ * <ul>
+ * <li>{@link Localizable}</li>
+ * <li>{@link Mirrorable}</li>
+ * <li>{@link Animator}</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -43,12 +51,6 @@ public class RasterableModel
         extends TraitModel
         implements Rasterable
 {
-    /** Localizable reference. */
-    private final Localizable localizable;
-    /** Mirrorable reference. */
-    private final Mirrorable mirrorable;
-    /** Animator reference. */
-    private final Animator animator;
     /** The viewer reference. */
     private final Viewer viewer;
     /** List of rastered frames. */
@@ -59,33 +61,30 @@ public class RasterableModel
     private final boolean smooth;
     /** Tile height. */
     private final int tileHeight;
+    /** Localizable reference. */
+    private Localizable localizable;
+    /** Mirrorable reference. */
+    private Mirrorable mirrorable;
+    /** Animator reference. */
+    private Animator animator;
     /** Last raster. */
     private SpriteAnimated raster;
 
     /**
-     * Create a rasterable model. The owner must have the following traits:
-     * <ul>
-     * <li>{@link Localizable}</li>
-     * <li>{@link Mirrorable}</li>
-     * <li>{@link Animator}</li>
-     * </ul>
+     * Create a rasterable model.
      * 
      * @param owner The owner reference.
      * @param services The services reference.
      * @param setup The setup reference.
      * @param tileHeight The tile height value (must be strictly positive).
-     * @throws LionEngineException If missing {@link Trait}.
+     * @throws LionEngineException If missing {@link Services}.
      */
     public RasterableModel(ObjectGame owner, Services services, SetupSurfaceRastered setup, int tileHeight)
             throws LionEngineException
     {
-        super(owner);
-
+        super(owner, services);
         Check.superiorStrict(tileHeight, 0);
         this.tileHeight = tileHeight;
-        localizable = owner.getTrait(Localizable.class);
-        mirrorable = owner.getTrait(Mirrorable.class);
-        animator = owner.getTrait(Animator.class);
         viewer = services.get(Viewer.class);
         rastersAnim = setup.rastersAnim;
         rastered = setup.rasterFile != null;
@@ -95,6 +94,14 @@ public class RasterableModel
     /*
      * Rasterable
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        localizable = owner.getTrait(Localizable.class);
+        mirrorable = owner.getTrait(Mirrorable.class);
+        animator = owner.getTrait(Animator.class);
+    }
 
     @Override
     public void update(double extrp)

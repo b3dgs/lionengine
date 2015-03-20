@@ -40,6 +40,26 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Default launcher model implementation.
+ * <p>
+ * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * </p>
+ * <ul>
+ * <li>{@link Localizable}</li>
+ * </ul>
+ * <p>
+ * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigLauncher}.
+ * </p>
+ * <p>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link Factory}</li>
+ * <li>{@link Handler}</li>
+ * </ul>
+ * <p>
+ * If the {@link ObjectGame} is a {@link LauncherListener}, it will automatically {@link #addListener(LauncherListener)}
+ * on it.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -51,14 +71,14 @@ public class LauncherModel
     private final Collection<LauncherListener> listeners;
     /** Launchable configuration. */
     private final Iterable<ConfigLaunchable> launchables;
-    /** Localizable model. */
-    private final Localizable localizable;
     /** Fire timer. */
     private final Timing fire;
     /** Factory reference. */
     private final Factory factory;
     /** Handler reference. */
     private final Handler handler;
+    /** Localizable model. */
+    private Localizable localizable;
     /** Target reference. */
     private Localizable target;
     /** Fire rate in millisecond. */
@@ -70,39 +90,21 @@ public class LauncherModel
 
     /**
      * Create a launcher model.
-     * <p>
-     * The owner must have the following {@link Trait}:
-     * </p>
-     * <ul>
-     * <li>{@link Localizable}</li>
-     * </ul>
-     * <p>
-     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigLauncher}.
-     * </p>
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link Factory}</li>
-     * <li>{@link Handler}</li>
-     * </ul>
      * 
      * @param owner The owner reference.
-     * @param configurer The configuration reference.
      * @param services The services reference.
-     * @throws LionEngineException If missing {@link Trait}, bad {@link Configurer} or {@link Services} services.
+     * @throws LionEngineException If bad {@link Configurer} or missing {@link Services}.
      */
-    public LauncherModel(ObjectGame owner, Configurer configurer, Services services) throws LionEngineException
+    public LauncherModel(ObjectGame owner, Services services) throws LionEngineException
     {
-        super(owner);
-        localizable = owner.getTrait(Localizable.class);
+        super(owner, services);
         listeners = new HashSet<>();
         fire = new Timing();
 
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
 
-        final ConfigLauncher config = ConfigLauncher.create(configurer);
+        final ConfigLauncher config = ConfigLauncher.create(owner.getConfigurer());
         launchables = config.getLaunchables();
         rate = config.getRate();
         fire.start();
@@ -192,6 +194,16 @@ public class LauncherModel
     /*
      * Launcher
      */
+
+    @Override
+    public void prepare(Services services)
+    {
+        localizable = owner.getTrait(Localizable.class);
+        if (owner instanceof LauncherListener)
+        {
+            addListener((LauncherListener) owner);
+        }
+    }
 
     @Override
     public void addListener(LauncherListener listener)

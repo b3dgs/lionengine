@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Mouse;
@@ -44,43 +45,48 @@ class Peon
         extends ObjectGame
         implements Updatable, Renderable
 {
-    /** Setup reference. */
-    private static final SetupSurface SETUP = new SetupSurface(Core.MEDIA.create("Peon.xml"));
+    /** Media reference. */
+    public static final Media MEDIA = Core.MEDIA.create("Peon.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Pathfindable model. */
-    private final Pathfindable pathfindable;
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
     /** Cursor reference. */
     private final Cursor cursor;
+    /** Transformable model. */
+    private Transformable transformable;
+    /** Pathfindable model. */
+    private Pathfindable pathfindable;
 
     /**
      * Create a peon.
      * 
+     * @param setup The setup reference.
      * @param services The services reference.
      */
-    public Peon(Services services)
+    public Peon(SetupSurface setup, Services services)
     {
-        super(SETUP, services);
+        super(setup, services);
 
-        transformable = new TransformableModel(this);
-        addTrait(transformable);
-
-        pathfindable = new PathfindableModel(this, SETUP.getConfigurer(), services);
-        addTrait(pathfindable);
+        surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
+        surface.setOrigin(Origin.MIDDLE);
+        surface.setFrameOffsets(-8, -8);
 
         viewer = services.get(Viewer.class);
         cursor = services.get(Cursor.class);
 
-        surface = Drawable.loadSpriteAnimated(SETUP.surface, 15, 9);
-        surface.setOrigin(Origin.MIDDLE);
-        surface.setFrameOffsets(-8, -8);
+        addTrait(TransformableModel.class);
+        addTrait(PathfindableModel.class);
+    }
 
+    @Override
+    protected void prepareTraits()
+    {
+        transformable = getTrait(Transformable.class);
         transformable.teleport(208, 224);
+
+        pathfindable = getTrait(Pathfindable.class);
     }
 
     @Override
