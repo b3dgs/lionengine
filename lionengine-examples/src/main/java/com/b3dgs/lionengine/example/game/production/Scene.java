@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.map.MapTilePathModel;
-import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.object.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -65,8 +64,6 @@ class Scene
     private final MapTile map = new MapTileGame(camera, 16, 16);
     /** Map path. */
     private final MapTilePath mapPath = new MapTilePathModel(map);
-    /** Minimap reference. */
-    private final Minimap minimap = new Minimap(map);
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Mouse reference. */
@@ -102,9 +99,6 @@ class Scene
         map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"),
                 Core.MEDIA.create("map", "groups.xml"));
         mapPath.loadPathfinding(Core.MEDIA.create("map", "pathfinding.xml"));
-        minimap.loadPixelConfig(Core.MEDIA.create("map", "minimap.xml"));
-        minimap.load(false);
-        minimap.setLocation(3, 6);
 
         hud.load(false);
         text.setLocation(74, 192);
@@ -161,7 +155,6 @@ class Scene
     {
         map.render(g);
         hud.render(g);
-        minimap.render(g);
         handler.render(g);
         text.render(g);
         cursor.render(g);
