@@ -277,10 +277,17 @@ public class MapTilePathModel
                 if (tile != null)
                 {
                     final TilePath tilePath = tile.getFeature(TilePath.class);
-                    if (mover.isBlocking(tilePath.getCategory()) || ignoreObjectId != null && ids.size() > 0
-                            && !ids.contains(ignoreObjectId))
+                    try
                     {
-                        return false;
+                        if (mover.isBlocking(tilePath.getCategory()) || ignoreObjectId != null && ids.size() > 0
+                                && !ids.contains(ignoreObjectId))
+                        {
+                            return false;
+                        }
+                    }
+                    catch (final LionEngineException exception)
+                    {
+                        return true;
                     }
                 }
             }

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.trait.extractable;
 
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Represents an entity that can be extractible, such as a Gold Mine.
@@ -25,7 +26,7 @@ import com.b3dgs.lionengine.game.Tiled;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Extractable
-        extends Tiled
+        extends Trait, Tiled
 {
     /**
      * Extract the specified quantity if possible.

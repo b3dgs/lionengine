@@ -173,6 +173,10 @@ public class ExtractorModel
     @Override
     public void prepare(Services services)
     {
+        if (owner instanceof ExtractorListener)
+        {
+            addListener((ExtractorListener) owner);
+        }
         checker = (ExtractorChecker) owner;
     }
 

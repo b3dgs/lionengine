@@ -52,11 +52,13 @@ final class HandledObjectsImpl
      * @return The next unused id.
      * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
      */
-    private static Integer getFreeId() throws LionEngineException
+    static Integer getFreeId() throws LionEngineException
     {
         if (!RECYCLE.isEmpty())
         {
-            return RECYCLE.poll();
+            final Integer id = RECYCLE.poll();
+            IDS.add(id);
+            return id;
         }
         if (IDS.size() >= Integer.MAX_VALUE)
         {
@@ -66,7 +68,9 @@ final class HandledObjectsImpl
         {
             lastId++;
         }
-        return Integer.valueOf(lastId);
+        final Integer id = Integer.valueOf(lastId);
+        IDS.add(id);
+        return id;
     }
 
     /** List of objects (key id the object id). */
@@ -91,10 +95,7 @@ final class HandledObjectsImpl
      */
     public void add(ObjectGame object) throws LionEngineException
     {
-        final Integer id = getFreeId();
-        IDS.add(id);
-        object.setId(id);
-        objects.put(id, object);
+        objects.put(object.getId(), object);
 
         for (final Class<? extends Trait> trait : object.getTraitsType())
         {

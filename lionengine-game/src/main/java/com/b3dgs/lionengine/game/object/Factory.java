@@ -129,6 +129,8 @@ public class Factory
         {
                 setup.getClass(), services.getClass()
         }, setup, services);
+        final Integer id = HandledObjectsImpl.getFreeId();
+        object.setId(id);
         object.createTraits(setup, services);
         return object;
     }
