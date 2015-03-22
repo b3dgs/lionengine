@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.game.extraction;
 
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -64,7 +65,7 @@ class Peon
     /** Extractor model. */
     private Extractor extractor;
     /** Visible. */
-    private final boolean visible;
+    private boolean visible;
 
     /**
      * Create a peon.
@@ -98,6 +99,9 @@ class Peon
         pathfindable = getTrait(Pathfindable.class);
 
         extractor = getTrait(Extractor.class);
+        extractor.setExtractionPerSecond(1.0);
+        extractor.setDropOffPerSecond(1.0);
+        extractor.setCapacity(5);
 
         final Layerable layerable = getTrait(Layerable.class);
         layerable.setLayer(Integer.valueOf(2));
@@ -123,7 +127,8 @@ class Peon
     @Override
     public boolean canExtract()
     {
-        return true;
+        return UtilMath.getDistance(pathfindable.getInTileX(), pathfindable.getInTileY(), extractor
+                .getResourceLocation().getInTileX(), extractor.getResourceLocation().getInTileY()) < 2;
     }
 
     @Override
@@ -141,19 +146,20 @@ class Peon
     @Override
     public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
     {
-        // Nothing to do
+        System.out.println("Started !");
+        visible = false;
     }
 
     @Override
     public void notifyExtracted(Enum<?> type, int currentQuantity)
     {
-        // Nothing to do
+        System.out.println("Extracted ! " + currentQuantity);
     }
 
     @Override
     public void notifyStartCarry(Enum<?> type, int totalQuantity)
     {
-        // Nothing to do
+        visible = true;
     }
 
     @Override
@@ -165,6 +171,6 @@ class Peon
     @Override
     public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
     {
-        // Nothing to do
+        System.out.println("done !" + droppedQuantity);
     }
 }

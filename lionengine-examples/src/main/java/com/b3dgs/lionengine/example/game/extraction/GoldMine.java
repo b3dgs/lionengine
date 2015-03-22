@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.trait.extractable.Extractable;
 import com.b3dgs.lionengine.game.trait.extractable.ExtractableModel;
 import com.b3dgs.lionengine.game.trait.layerable.Layerable;
 import com.b3dgs.lionengine.game.trait.layerable.LayerableModel;
@@ -84,6 +85,9 @@ class GoldMine
 
         final Pathfindable pathfindable = getTrait(Pathfindable.class);
         pathfindable.setLocation(21, 14);
+
+        final Extractable extractable = getTrait(Extractable.class);
+        extractable.setResourcesQuantity(100);
 
         final Layerable layerable = getTrait(Layerable.class);
         layerable.setLayer(Integer.valueOf(1));

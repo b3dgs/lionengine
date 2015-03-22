@@ -44,6 +44,27 @@ public interface Extractor
     void setResource(Extractable extractible);
 
     /**
+     * Set the extraction unit per second.
+     * 
+     * @param speed The extraction unit per second.
+     */
+    void setExtractionPerSecond(double speed);
+
+    /**
+     * Set the drop off unit per second.
+     * 
+     * @param speed The drop off unit per second.
+     */
+    void setDropOffPerSecond(double speed);
+
+    /**
+     * Set the maximum extractible unit number.
+     * 
+     * @param capacity The extraction capacity.
+     */
+    void setCapacity(int capacity);
+
+    /**
      * Set the resources location in tile.
      * 
      * @param type The resource type to extract.
@@ -72,18 +93,18 @@ public interface Extractor
     int getExtractionCapacity();
 
     /**
-     * Get the extraction speed.
+     * Get the extraction unit per second.
      * 
-     * @return The extraction speed.
+     * @return The extraction unit per second.
      */
-    int getExtractionSpeed();
+    double getExtractionPerSecond();
 
     /**
-     * Get the drop off speed.
+     * Get the drop off unit per second.
      * 
-     * @return The drop off speed.
+     * @return The drop off unit per second.
      */
-    int getDropOffSpeed();
+    double getDropOffPerSecond();
 
     /**
      * Get the resource location in tile.

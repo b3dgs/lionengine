@@ -74,6 +74,18 @@ public class ExtractableModel
     }
 
     @Override
+    public void setResourcesQuantity(int quantity)
+    {
+        resources.set(quantity);
+    }
+
+    @Override
+    public void setResourcesType(Enum<?> type)
+    {
+        this.type = type;
+    }
+
+    @Override
     public int getResourceQuantity()
     {
         return resources.getCurrent();

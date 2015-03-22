@@ -49,21 +49,17 @@ public class ExtractorModel
     /** Extraction state. */
     private ExtractorState state;
     /** Extraction capacity. */
-    private int capacity;
+    private int extractionCapacity;
     /** Extraction speed. */
-    private int speedExtract;
-    /** Extraction speed. */
-    private int speedDropOff;
-    /** Extraction speed time relative. */
+    private double extractPerSecond;
+    /** Drop off speed. */
+    private double dropOffPerSecond;
+    /** Extraction and drop off speed time relative. */
     private double speed;
     /** Extraction progress. */
     private double progress;
     /** Last extraction progress. */
     private int lastProgress;
-    /** Extraction max quantity. */
-    private int quantityMax;
-    /** Time to drop off. */
-    private int dropOffPerSecond;
 
     /**
      * Create a layerable model.
@@ -116,10 +112,10 @@ public class ExtractorModel
                 listener.notifyExtracted(resourceType, curProgress);
             }
 
-            if (curProgress >= quantityMax)
+            if (curProgress >= extractionCapacity)
             {
-                progress = quantityMax;
-                lastProgress = quantityMax;
+                progress = extractionCapacity;
+                lastProgress = extractionCapacity;
                 state = ExtractorState.GOTO_WAREHOUSE;
                 for (final ExtractorListener listener : listeners)
                 {
@@ -211,10 +207,8 @@ public class ExtractorModel
     @Override
     public void startExtraction()
     {
-        dropOffPerSecond = getDropOffSpeed();
-        quantityMax = getExtractionCapacity();
         state = ExtractorState.GOTO_RESOURCES;
-        speed = getExtractionSpeed() / desiredFps;
+        speed = extractPerSecond / desiredFps;
         progress = 0.0;
         lastProgress = 0;
         for (final ExtractorListener listener : listeners)
@@ -254,21 +248,39 @@ public class ExtractorModel
     }
 
     @Override
+    public void setExtractionPerSecond(double speed)
+    {
+        extractPerSecond = speed;
+    }
+
+    @Override
+    public void setDropOffPerSecond(double speed)
+    {
+        dropOffPerSecond = speed;
+    }
+
+    @Override
+    public void setCapacity(int capacity)
+    {
+        extractionCapacity = capacity;
+    }
+
+    @Override
     public int getExtractionCapacity()
     {
-        return capacity;
+        return extractionCapacity;
     }
 
     @Override
-    public int getExtractionSpeed()
+    public double getExtractionPerSecond()
     {
-        return speedExtract;
+        return extractPerSecond;
     }
 
     @Override
-    public int getDropOffSpeed()
+    public double getDropOffPerSecond()
     {
-        return speedDropOff;
+        return dropOffPerSecond;
     }
 
     @Override

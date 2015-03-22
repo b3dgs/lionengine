@@ -37,6 +37,20 @@ public interface Extractable
     int extractResource(int quantity);
 
     /**
+     * Set the resources quantity.
+     * 
+     * @param quantity The resources quantity.
+     */
+    void setResourcesQuantity(int quantity);
+
+    /**
+     * Set the resources type.
+     * 
+     * @param type The resources type.
+     */
+    void setResourcesType(Enum<?> type);
+
+    /**
      * Get the current resource quantity.
      * 
      * @return The current resource quantity.
