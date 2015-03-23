@@ -15,20 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.ability.attacker;
-
-import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
+package com.b3dgs.lionengine.game.trait.attackable;
 
 /**
- * List of services needed by the attacker.
+ * Allows to check if attack can be performed.
  * 
- * @param <E> The entity type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface AttackerUsedServices<E extends EntityStrategy>
-        extends AttackerListener<E>
+public interface AttackerChecker
 {
     /**
      * Check if the attacker can attack (called when attack is possible).
@@ -36,27 +30,4 @@ public interface AttackerUsedServices<E extends EntityStrategy>
      * @return <code>true</code> if can start the attack, <code>false</code> else.
      */
     boolean canAttack();
-
-    /**
-     * Get the distance in tile between attacker and target.
-     * 
-     * @param target The target reference.
-     * @param fromCenter <code>true</code> to get distance from center only, <code>false</code> from the global area.
-     * @return The distance in tile.
-     */
-    int getDistanceInTile(Tiled target, boolean fromCenter);
-
-    /**
-     * Get the current playing frame.
-     * 
-     * @return The current frame.
-     */
-    int getFrame();
-
-    /**
-     * Get the current animation state.
-     * 
-     * @return The animation state.
-     */
-    AnimState getAnimState();
 }

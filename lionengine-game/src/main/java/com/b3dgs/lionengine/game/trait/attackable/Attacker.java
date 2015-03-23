@@ -15,44 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.ability.attacker;
+package com.b3dgs.lionengine.game.trait.attackable;
 
-import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
+import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.game.trait.Trait;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * List of services provided by a weapon.
  * 
- * @param <E> The entity type used.
- * @param <A> The attacker type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface WeaponServices<E extends EntityStrategy, A extends AttackerUsedServices<E>>
+public interface Attacker
+        extends Trait, Updatable
 {
+    /**
+     * Add an attacker listener.
+     * 
+     * @param listener The attacker listener to add.
+     */
+    void addListener(AttackerListener listener);
+
     /**
      * Define a target to attack.
      * 
-     * @param entity The target to attack.
+     * @param target The target to attack.
      */
-    void attack(E entity);
+    void attack(Transformable target);
 
     /**
      * Stop the current attack.
      */
     void stopAttack();
-
-    /**
-     * Update attack routine.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    void updateAttack(double extrp);
-
-    /**
-     * Set the weapon user.
-     * 
-     * @param user The weapon user.
-     */
-    void setUser(A user);
 
     /**
      * Set attack pause time between two attacks.
@@ -102,16 +96,9 @@ public interface WeaponServices<E extends EntityStrategy, A extends AttackerUsed
     boolean isAttacking();
 
     /**
-     * Get the weapon user.
-     * 
-     * @return The weapon user.
-     */
-    A getUser();
-
-    /**
      * Get the target entity.
      * 
      * @return The target entity.
      */
-    E getTarget();
+    Transformable getTarget();
 }

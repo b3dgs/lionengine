@@ -15,60 +15,50 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.ability.attacker;
+package com.b3dgs.lionengine.game.trait.attackable;
 
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
+import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.Range;
-import com.b3dgs.lionengine.game.factory.Fabricable;
-import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.trait.TraitModel;
+import com.b3dgs.lionengine.game.trait.extractable.ExtractorListener;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
- * Default weapon model implementation.
+ * Attacker model implementation.
  * 
- * @param <E> The entity type used.
- * @param <A> The attacker type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUsedServices<E>>
-        implements WeaponServices<E, A>, AttackerListener<E>, Fabricable
+public abstract class AttackerModel
+        extends TraitModel
+        implements Attacker
 {
-    /**
-     * Attack state.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
-     */
-    private static enum State
-    {
-        /** None state. */
-        NONE,
-        /** Check for an attack state. */
-        CHECK,
-        /** Attacking state. */
-        ATTACKING;
-    }
-
     /** Listener list. */
-    private final Collection<AttackerListener<E>> listeners;
+    private final Collection<AttackerListener> listeners;
     /** Damages. */
     private final Damages damages;
     /** Attack distance allowed. */
     private final Range distAttack;
-    /** User reference. */
-    private A user;
+    /** Animator reference. */
+    private Animator animator;
+    /** Attacker checker reference. */
+    private AttackerChecker checker;
     /** Attacker target. */
-    private E target;
+    private Transformable target;
     /** Attack frame number. */
     private int frameAttack;
     /** Attack pause time. */
     private int attackPause;
     /** Attack state. */
-    private State state;
+    private AttackState state;
     /** Attack timer. */
     private long timer;
     /** True if stop attack is requested. */
@@ -79,19 +69,22 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
     private boolean attacked;
 
     /**
-     * Constructor base.
+     * Create an attacker model.
      * 
-     * @param setup The setup reference.
+     * @param owner The owner reference.
+     * @param services The services reference.
+     * @throws LionEngineException If services are <code>null</code>.
      */
-    public WeaponModel(Setup setup)
+    public AttackerModel(ObjectGame owner, Services services)
     {
+        super(owner, services);
         listeners = new HashSet<>(1);
         damages = new Damages();
         target = null;
         frameAttack = 1;
         distAttack = new Range(1, 1);
         attackPause = 1;
-        state = State.NONE;
+        state = AttackState.NONE;
         timer = 0L;
         stop = false;
         attacking = false;
@@ -106,27 +99,30 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
         attacking = false;
         attacked = false;
         // Check if target is valid; exit if invalid
-        if (target == null || !target.isAlive())
+        if (target == null)
         {
-            state = State.NONE;
+            state = AttackState.NONE;
             attacking = false;
         }
         else
         {
-            final int dist = user.getDistanceInTile(target, false);
+            final int dist = getDistanceInTile(target, false);
             final boolean validRange = dist >= distAttack.getMin() && dist <= distAttack.getMax();
 
             // Target distance is correct
             if (validRange)
             {
-                if (user.canAttack())
+                if (checker.canAttack())
                 {
-                    state = State.ATTACKING;
+                    state = AttackState.ATTACKING;
                 }
             }
             else if (UtilMath.time() - timer > attackPause)
             {
-                notifyReachingTarget(target);
+                for (final AttackerListener listener : listeners)
+                {
+                    listener.notifyReachingTarget(target);
+                }
             }
         }
     }
@@ -140,53 +136,78 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
         {
             if (!attacking)
             {
-                notifyAttackStarted(target);
+                for (final AttackerListener listener : listeners)
+                {
+                    listener.notifyAttackStarted(target);
+                }
                 attacking = true;
                 attacked = false;
             }
             // Hit when frame attack reached
-            if (attacking && user.getFrame() >= frameAttack)
+            if (attacking && animator.getFrame() >= frameAttack)
             {
                 attacking = false;
-                for (final AttackerListener<E> listener : listeners)
+                for (final AttackerListener listener : listeners)
                 {
                     listener.notifyAttackEnded(damages.getRandom(), target);
                 }
-                notifyAttackEnded(damages.getRandom(), target);
                 attacked = true;
                 timer = UtilMath.time();
             }
         }
         else if (attacked)
         {
-            if (AnimState.FINISHED == user.getAnimState())
+            if (AnimState.FINISHED == animator.getAnimState())
             {
-                notifyAttackAnimEnded();
+                for (final AttackerListener listener : listeners)
+                {
+                    listener.notifyAttackAnimEnded();
+                }
                 attacked = false;
-                state = State.CHECK;
+                state = AttackState.CHECK;
             }
         }
         else
         {
-            notifyPreparingAttack();
+            for (final AttackerListener listener : listeners)
+            {
+                listener.notifyPreparingAttack();
+            }
         }
     }
 
     /*
-     * AttackerServices
+     * Attacker
      */
 
     @Override
-    public void attack(E target)
+    public void prepare(Services services)
+    {
+        animator = owner.getTrait(Animator.class);
+        if (owner instanceof ExtractorListener)
+        {
+            addListener((AttackerListener) owner);
+        }
+        checker = (AttackerChecker) owner;
+    }
+
+    @Override
+    public void addListener(AttackerListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void attack(Transformable target)
     {
         final boolean targetExist = target != null;
         final boolean targetDifferent = target != this.target;
-        final boolean isNotAttacking = State.NONE == this.state || this.stop;
+        final boolean isNotAttacking = AttackState.NONE == state || stop;
 
         if (targetExist && targetDifferent || isNotAttacking)
         {
             this.target = target;
-            state = State.CHECK;
+            state = AttackState.CHECK;
             attacking = false;
             stop = false;
         }
@@ -199,7 +220,7 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
     }
 
     @Override
-    public void updateAttack(double extrp)
+    public void update(double extrp)
     {
         switch (state)
         {
@@ -215,16 +236,8 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
         if (stop)
         {
             attacking = false;
-            state = State.NONE;
+            state = AttackState.NONE;
         }
-    }
-
-    @Override
-    public void setUser(A user)
-    {
-        this.user = user;
-        listeners.clear();
-        listeners.add(user);
     }
 
     @Override
@@ -262,76 +275,12 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
     @Override
     public boolean isAttacking()
     {
-        return State.ATTACKING == state;
+        return AttackState.ATTACKING == state;
     }
 
     @Override
-    public A getUser()
-    {
-        return user;
-    }
-
-    @Override
-    public E getTarget()
+    public Transformable getTarget()
     {
         return target;
-    }
-
-    /*
-     * AttackerListener
-     */
-
-    @Override
-    public void notifyReachingTarget(E target)
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyReachingTarget(target);
-        }
-    }
-
-    @Override
-    public void notifyAttackStarted(E target)
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyAttackStarted(target);
-        }
-    }
-
-    @Override
-    public void notifyAttackAnimEnded()
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyAttackAnimEnded();
-        }
-    }
-
-    @Override
-    public void notifyAttackEnded(int damages, E target)
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyAttackAnimEnded();
-        }
-    }
-
-    @Override
-    public void notifyPreparingAttack()
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyPreparingAttack();
-        }
-    }
-
-    @Override
-    public void notifyTargetLost(E target)
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyTargetLost(target);
-        }
     }
 }

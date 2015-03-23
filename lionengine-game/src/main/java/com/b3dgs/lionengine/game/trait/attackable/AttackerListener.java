@@ -15,31 +15,30 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.ability.attacker;
+package com.b3dgs.lionengine.game.trait.attackable;
 
-import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * List of events listened from an attacker.
  * 
- * @param <E> The entity type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface AttackerListener<E extends EntityStrategy>
+public interface AttackerListener
 {
     /**
      * Notify while attacker is reaching target.
      * 
      * @param target The target to reach.
      */
-    void notifyReachingTarget(E target);
+    void notifyReachingTarget(Transformable target);
 
     /**
      * Notify when attacker is going to attack.
      * 
      * @param target The target reference.
      */
-    void notifyAttackStarted(E target);
+    void notifyAttackStarted(Transformable target);
 
     /**
      * Notify when attacker has done his attack.
@@ -47,7 +46,7 @@ public interface AttackerListener<E extends EntityStrategy>
      * @param target The target reference.
      * @param damages The final damages.
      */
-    void notifyAttackEnded(int damages, E target);
+    void notifyAttackEnded(int damages, Transformable target);
 
     /**
      * Notify when attacker has played his attack completely.
@@ -64,5 +63,5 @@ public interface AttackerListener<E extends EntityStrategy>
      * 
      * @param target The target lost.
      */
-    void notifyTargetLost(E target);
+    void notifyTargetLost(Transformable target);
 }

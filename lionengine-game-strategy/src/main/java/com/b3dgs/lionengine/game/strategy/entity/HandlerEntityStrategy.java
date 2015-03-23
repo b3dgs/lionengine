@@ -33,12 +33,12 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
-import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerServices;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
 import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
+import com.b3dgs.lionengine.game.trait.attackable.Attacker;
 import com.b3dgs.lionengine.game.trait.extractable.Extractable;
 import com.b3dgs.lionengine.game.trait.extractable.Extractor;
 import com.b3dgs.lionengine.geom.Geom;
@@ -276,7 +276,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
             final int dty = coord.getY();
 
             // Attacker case
-            if (entity instanceof AttackerServices)
+            if (entity instanceof Attacker)
             {
                 updateClickAttacker(entity, dtx, dty);
             }
@@ -528,7 +528,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
     private void updateClickAttacker(E entity, int tx, int ty)
     {
         @SuppressWarnings("unchecked")
-        final AttackerServices<E, ?, ?> attacker = (AttackerServices<E, ?, ?>) entity;
+        final Attacker<E, ?, ?> attacker = (Attacker<E, ?, ?>) entity;
         attacker.stopAttack();
         try
         {
