@@ -100,13 +100,13 @@ public class ExtractableModel
     @Override
     public int getInTileX()
     {
-        return (int) transformable.getX() / map.getTileWidth();
+        return map.getInTileX(transformable);
     }
 
     @Override
     public int getInTileY()
     {
-        return (int) transformable.getY() / map.getTileHeight();
+        return map.getInTileY(transformable);
     }
 
     @Override

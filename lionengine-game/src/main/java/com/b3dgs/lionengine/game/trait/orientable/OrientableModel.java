@@ -81,8 +81,8 @@ public class OrientableModel
     @Override
     public void pointTo(int dtx, int dty)
     {
-        final int tx = (int) transformable.getX() / map.getTileWidth();
-        final int ty = (int) transformable.getY() / map.getTileHeight();
+        final int tx = map.getInTileX(transformable);
+        final int ty = map.getInTileY(transformable);
         if (ty < dty)
         {
             if (tx < dtx)
