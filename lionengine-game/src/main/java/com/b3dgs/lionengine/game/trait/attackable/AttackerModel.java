@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.Range;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.TraitModel;
-import com.b3dgs.lionengine.game.trait.extractable.ExtractorListener;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
@@ -37,7 +36,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class AttackerModel
+public class AttackerModel
         extends TraitModel
         implements Attacker
 {
@@ -77,7 +76,7 @@ public abstract class AttackerModel
      * @param services The services reference.
      * @throws LionEngineException If services are <code>null</code>.
      */
-    public AttackerModel(ObjectGame owner, Services services)
+    public AttackerModel(ObjectGame owner, Services services) throws LionEngineException
     {
         super(owner, services);
         listeners = new HashSet<>(1);
@@ -189,7 +188,7 @@ public abstract class AttackerModel
     {
         animator = owner.getTrait(Animator.class);
         transformable = owner.getTrait(Transformable.class);
-        if (owner instanceof ExtractorListener)
+        if (owner instanceof AttackerListener)
         {
             addListener((AttackerListener) owner);
         }

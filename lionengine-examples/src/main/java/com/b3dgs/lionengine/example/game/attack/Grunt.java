@@ -30,7 +30,11 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.attackable.Attacker;
+import com.b3dgs.lionengine.game.trait.attackable.AttackerChecker;
+import com.b3dgs.lionengine.game.trait.attackable.AttackerListener;
 import com.b3dgs.lionengine.game.trait.attackable.AttackerModel;
+import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
+import com.b3dgs.lionengine.game.trait.pathfindable.PathfindableModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
@@ -41,7 +45,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  */
 class Grunt
         extends ObjectGame
-        implements Updatable, Renderable
+        implements Updatable, Renderable, AttackerChecker, AttackerListener
 {
     /** Media reference. */
     public static final Media MEDIA = Core.MEDIA.create("Grunt.xml");
@@ -52,6 +56,8 @@ class Grunt
     private final Viewer viewer;
     /** Transformable model. */
     private Transformable transformable;
+    /** Pathfindable model. */
+    private Pathfindable pathfindable;
     /** Attacker model. */
     private Attacker attacker;
 
@@ -65,14 +71,16 @@ class Grunt
     {
         super(setup, services);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
+        surface = Drawable.loadSpriteAnimated(setup.surface, 8, 7);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
         viewer = services.get(Viewer.class);
 
         addTrait(TransformableModel.class);
+        addTrait(PathfindableModel.class);
         addTrait(AttackerModel.class);
+        addType(surface);
     }
 
     /***
@@ -82,6 +90,7 @@ class Grunt
      */
     public void attack(Transformable target)
     {
+        pathfindable.setDestination(4, 10);
         attacker.attack(target);
     }
 
@@ -89,14 +98,22 @@ class Grunt
     protected void prepareTraits()
     {
         transformable = getTrait(Transformable.class);
-        transformable.teleport(64, 64);
+
+        pathfindable = getTrait(Pathfindable.class);
+        pathfindable.setLocation(2, 6);
 
         attacker = getTrait(Attacker.class);
+        attacker.setAttackDistance(16, 16);
+        attacker.setAttackDamages(1, 5);
+        attacker.setAttackFrame(1);
+        attacker.setAttackTimer(1000);
     }
 
     @Override
     public void update(double extrp)
     {
+        pathfindable.update(extrp);
+        attacker.update(extrp);
         surface.setLocation(viewer, transformable);
     }
 
@@ -104,5 +121,47 @@ class Grunt
     public void render(Graphic g)
     {
         surface.render(g);
+    }
+
+    @Override
+    public boolean canAttack()
+    {
+        return true;
+    }
+
+    @Override
+    public void notifyReachingTarget(Transformable target)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void notifyAttackStarted(Transformable target)
+    {
+        System.out.println("Attack !");
+    }
+
+    @Override
+    public void notifyAttackEnded(int damages, Transformable target)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void notifyAttackAnimEnded()
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void notifyPreparingAttack()
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void notifyTargetLost(Transformable target)
+    {
+        // Nothing to do
     }
 }

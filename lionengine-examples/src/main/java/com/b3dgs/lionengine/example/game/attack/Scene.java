@@ -28,9 +28,14 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTilePath;
+import com.b3dgs.lionengine.game.map.MapTilePathModel;
+import com.b3dgs.lionengine.game.object.ComponentRenderer;
+import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
@@ -51,6 +56,8 @@ class Scene
     private final Handler handler = new Handler();
     /** Map reference. */
     private final MapTile map = new MapTileGame(camera, 16, 16);
+    /** Map path. */
+    private final MapTilePath mapPath = new MapTilePathModel(map);
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Mouse reference. */
@@ -72,7 +79,9 @@ class Scene
     @Override
     protected void load()
     {
+        map.addFeature(mapPath);
         map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
+        mapPath.loadPathfinding(Core.MEDIA.create("pathfinding.xml"));
 
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
@@ -85,10 +94,16 @@ class Scene
         final Factory factory = new Factory();
         factory.setServices(services);
 
+        handler.addUpdatable(new ComponentUpdater());
+        handler.addRenderable(new ComponentRenderer());
+
         final Grunt grunt1 = factory.create(Grunt.MEDIA);
         handler.add(grunt1);
         final Grunt grunt2 = factory.create(Grunt.MEDIA);
         handler.add(grunt2);
+
+        final Pathfindable pathfindable = grunt2.getTrait(Pathfindable.class);
+        pathfindable.setLocation(4, 10);
 
         grunt1.attack(grunt2.getTrait(Transformable.class));
     }

@@ -20,7 +20,9 @@ package com.b3dgs.lionengine.game.object;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -62,6 +64,8 @@ public class ObjectGame
 
     /** Features provider. */
     private final Features<Trait> features;
+    /** Types provided. */
+    private final Map<Class<?>, Object> types;
     /** Trait to add. */
     private final Collection<Class<? extends Trait>> traitToAdd;
     /** Listeners. */
@@ -87,6 +91,7 @@ public class ObjectGame
         Check.notNull(services);
 
         features = new Features<>(Trait.class);
+        types = new HashMap<>();
         traitToAdd = new ArrayList<>();
         listeners = new HashSet<>(1);
         media = setup.getConfigFile();
@@ -102,6 +107,16 @@ public class ObjectGame
     public final void addTrait(Class<? extends Trait> trait)
     {
         traitToAdd.add(trait);
+    }
+
+    /**
+     * Add a type.
+     * 
+     * @param type The type to add.
+     */
+    public final void addType(Object type)
+    {
+        types.put(type.getClass(), type);
     }
 
     /**
@@ -152,6 +167,13 @@ public class ObjectGame
         {
             return true;
         }
+        for (final Class<?> type : types.keySet())
+        {
+            if (trait.isAssignableFrom(type))
+            {
+                return true;
+            }
+        }
         return features.contains(trait);
     }
 
@@ -168,6 +190,13 @@ public class ObjectGame
         if (trait.isAssignableFrom(getClass()))
         {
             return trait.cast(this);
+        }
+        for (final Map.Entry<Class<?>, Object> type : types.entrySet())
+        {
+            if (trait.isAssignableFrom(type.getKey()))
+            {
+                return trait.cast(type.getValue());
+            }
         }
         return features.get(trait);
     }
