@@ -172,6 +172,36 @@ public final class UtilMath
     }
 
     /**
+     * Get distance in from area to area.
+     * 
+     * @param x1 The first area x.
+     * @param y1 The first area y.
+     * @param w1 The first area width.
+     * @param h1 The first area height.
+     * @param x2 The second area x.
+     * @param y2 The second area y.
+     * @param w2 The second area width.
+     * @param h2 The second area height.
+     * @return The number of tiles between them.
+     */
+    public static double getDistance(double x1, double y1, int w1, int h1, double x2, double y2, int w2, int h2)
+    {
+        double min = Double.MAX_VALUE;
+        for (double x = x2; x < x2 + w2; x++)
+        {
+            for (double y = y2; y < y2 + h2; y++)
+            {
+                final double dist = getDistance(x1, y1, x, y);
+                if (dist < min)
+                {
+                    min = dist;
+                }
+            }
+        }
+        return min;
+    }
+
+    /**
      * Get distance in tile between the area.
      * 
      * @param tx1 The first tile x.

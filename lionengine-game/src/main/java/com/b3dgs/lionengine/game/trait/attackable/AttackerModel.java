@@ -49,6 +49,8 @@ public abstract class AttackerModel
     private final Range distAttack;
     /** Animator reference. */
     private Animator animator;
+    /** Transformable reference. */
+    private Transformable transformable;
     /** Attacker checker reference. */
     private AttackerChecker checker;
     /** Attacker target. */
@@ -106,7 +108,9 @@ public abstract class AttackerModel
         }
         else
         {
-            final int dist = getDistanceInTile(target, false);
+            final double dist = UtilMath.getDistance(transformable.getX(), transformable.getY(),
+                    transformable.getWidth(), transformable.getHeight(), target.getX(), target.getY(),
+                    target.getWidth(), target.getHeight());
             final boolean validRange = dist >= distAttack.getMin() && dist <= distAttack.getMax();
 
             // Target distance is correct
@@ -184,6 +188,7 @@ public abstract class AttackerModel
     public void prepare(Services services)
     {
         animator = owner.getTrait(Animator.class);
+        transformable = owner.getTrait(Transformable.class);
         if (owner instanceof ExtractorListener)
         {
             addListener((AttackerListener) owner);
