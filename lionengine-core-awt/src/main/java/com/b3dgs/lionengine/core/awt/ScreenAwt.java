@@ -332,6 +332,12 @@ abstract class ScreenAwt
         return buf != null;
     }
 
+    @Override
+    public void onSourceChanged(Resolution source)
+    {
+        getInputDevice(Mouse.class).setConfig(config);
+    }
+
     /*
      * FocusListener
      */

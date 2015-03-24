@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Resolution;
 
 /**
  * Representation of the screen device, supporting different screen rendering type and input devices.
@@ -131,4 +132,11 @@ public interface Screen
      * @return <code>true</code> if ready, <code>false</code> else.
      */
     boolean isReady();
+
+    /**
+     * Call when resolution source has been changed.
+     * 
+     * @param source The new resolution source.
+     */
+    void onSourceChanged(Resolution source);
 }

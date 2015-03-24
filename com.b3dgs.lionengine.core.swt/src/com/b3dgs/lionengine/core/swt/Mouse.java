@@ -95,34 +95,6 @@ public final class Mouse
     }
 
     /**
-     * Update coordinate from event.
-     * 
-     * @param event event consumed.
-     */
-    private void updateCoord(MouseEvent event)
-    {
-        oldX = x;
-        oldY = y;
-        x = event.x;
-        y = event.y;
-        wx = event.x;
-        wy = event.y;
-        mx = x - oldX;
-        my = y - oldY;
-    }
-
-    /**
-     * Set the config.
-     * 
-     * @param config The config.
-     */
-    public void setConfig(Config config)
-    {
-        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
-        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
-    }
-
-    /**
      * Get location on screen x.
      * 
      * @return The location on screen x.
@@ -140,6 +112,34 @@ public final class Mouse
     public int getOnScreenY()
     {
         return y;
+    }
+
+    /**
+     * Set the config.
+     * 
+     * @param config The config.
+     */
+    void setConfig(Config config)
+    {
+        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
+        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
+    }
+
+    /**
+     * Update coordinate from event.
+     * 
+     * @param event event consumed.
+     */
+    private void updateCoord(MouseEvent event)
+    {
+        oldX = x;
+        oldY = y;
+        x = event.x;
+        y = event.y;
+        wx = event.x;
+        wy = event.y;
+        mx = x - oldX;
+        my = y - oldY;
     }
 
     /*

@@ -411,6 +411,7 @@ public class Renderer
 
         config.setSource(newSource);
         source = config.getSource();
+        screen.onSourceChanged(source);
 
         // Scale factor
         final double scaleX = output.getWidth() / (double) source.getWidth();

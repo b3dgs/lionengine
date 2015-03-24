@@ -231,6 +231,12 @@ public final class ScreenAndroid
         return ready;
     }
 
+    @Override
+    public void onSourceChanged(Resolution source)
+    {
+        getInputDevice(Mouse.class).setConfig(config);
+    }
+
     /*
      * SurfaceHolder.Callback
      */

@@ -69,17 +69,6 @@ public final class Mouse
     }
 
     /**
-     * Set the config.
-     * 
-     * @param config The config.
-     */
-    public void setConfig(Config config)
-    {
-        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
-        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
-    }
-
-    /**
      * Get current pressed click.
      * 
      * @return The pressed click.
@@ -156,6 +145,17 @@ public final class Mouse
                 click = true;
                 break;
         }
+    }
+
+    /**
+     * Set the config.
+     * 
+     * @param config The config.
+     */
+    void setConfig(Config config)
+    {
+        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
+        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
     }
 
     /*

@@ -194,17 +194,6 @@ public final class Mouse
     }
 
     /**
-     * Set the config.
-     * 
-     * @param config The config.
-     */
-    public void setConfig(Config config)
-    {
-        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
-        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
-    }
-
-    /**
      * Set mouse center for lock operation.
      * 
      * @param x The location x.
@@ -234,6 +223,17 @@ public final class Mouse
     public int getOnScreenY()
     {
         return y;
+    }
+
+    /**
+     * Set the config.
+     * 
+     * @param config The config.
+     */
+    void setConfig(Config config)
+    {
+        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
+        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
     }
 
     /**
