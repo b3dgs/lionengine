@@ -88,7 +88,6 @@ class Scene
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
         hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
         text = Core.GRAPHIC.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
-        mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
 

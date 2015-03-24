@@ -83,7 +83,6 @@ class Scene
         mouse = getInputDevice(Mouse.class);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
         hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
-        mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
 

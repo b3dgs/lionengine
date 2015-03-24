@@ -71,7 +71,6 @@ class Scene
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
-        mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
 

@@ -75,7 +75,6 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
 

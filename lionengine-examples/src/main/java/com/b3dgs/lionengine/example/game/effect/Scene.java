@@ -70,7 +70,6 @@ class Scene
         context.add(camera);
         factory.setServices(context);
 
-        mouse.setConfig(getConfig());
         camera.setView(0, 0, getWidth(), getHeight());
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());
