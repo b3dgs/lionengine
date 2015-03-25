@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.extraction;
 
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Updatable;
@@ -53,9 +53,9 @@ class Button
         implements Action, Assign, Updatable, Renderable
 {
     /** Extract media. */
-    public static final Media EXTRACT = Core.MEDIA.create("Extract.xml");
+    public static final Media EXTRACT = Medias.create("Extract.xml");
     /** Carry media. */
-    public static final Media CARRY = Core.MEDIA.create("Carry.xml");
+    public static final Media CARRY = Medias.create("Carry.xml");
 
     /** Button image. */
     private final Image image;

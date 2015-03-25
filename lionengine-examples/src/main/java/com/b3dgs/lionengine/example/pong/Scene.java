@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
@@ -52,7 +52,7 @@ class Scene
     /** Camera. */
     private final Camera camera = new Camera();
     /** Text drawer. */
-    private final Text text = Core.GRAPHIC.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
+    private final Text text = Graphics.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
     /** Keyboard reference. */
     private final Keyboard keyboard;
 

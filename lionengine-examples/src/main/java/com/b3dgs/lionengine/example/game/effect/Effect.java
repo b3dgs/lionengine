@@ -22,9 +22,9 @@ import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -47,7 +47,7 @@ class Effect
         implements Updatable, Renderable
 {
     /** Explode media. */
-    public static final Media EXPLODE = Core.MEDIA.create("Explode.xml");
+    public static final Media EXPLODE = Medias.create("Explode.xml");
 
     /** Surface. */
     private final SpriteAnimated surface;

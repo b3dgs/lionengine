@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -47,7 +47,7 @@ class Projectile
         implements Updatable, Renderable, CollidableListener
 {
     /** Media. */
-    public static final Media PULSE = Core.MEDIA.create("Pulse.xml");
+    public static final Media PULSE = Medias.create("Pulse.xml");
 
     /** Projectile surface. */
     private final Sprite sprite;

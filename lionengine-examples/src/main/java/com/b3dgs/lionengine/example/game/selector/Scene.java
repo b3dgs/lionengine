@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.example.game.selector;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
@@ -81,9 +81,9 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
+        cursor = new Cursor(mouse, Medias.create("cursor.png"));
         selector = new Selector(camera, cursor);
-        hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
+        hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
     }
 
@@ -91,10 +91,10 @@ class Scene
     protected void load()
     {
         map.addFeature(mapPath);
-        map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"),
-                Core.MEDIA.create("map", "groups.xml"));
-        mapPath.loadPathfinding(Core.MEDIA.create("map", "pathfinding.xml"));
-        minimap.loadPixelConfig(Core.MEDIA.create("map", "minimap.xml"));
+        map.create(Medias.create("map", "level.png"), Medias.create("map", "sheets.xml"),
+                Medias.create("map", "groups.xml"));
+        mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
+        minimap.loadPixelConfig(Medias.create("map", "minimap.xml"));
         minimap.load(false);
         minimap.setLocation(3, 6);
 

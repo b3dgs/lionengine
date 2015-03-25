@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.Force;
@@ -44,7 +44,7 @@ class Racket
         implements Updatable, Renderable, CollidableListener
 {
     /** Racket media. */
-    public static final Media MEDIA = Core.MEDIA.create("Racket.xml");
+    public static final Media MEDIA = Medias.create("Racket.xml");
     /** Racket color. */
     private static final ColorRgba COLOR = ColorRgba.YELLOW;
 

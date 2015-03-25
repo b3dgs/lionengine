@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.example.game.world;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 
@@ -53,8 +53,8 @@ class Scene
     @Override
     protected void load()
     {
-        world.saveToFile(Core.MEDIA.create("world.lvl"));
-        world.loadFromFile(Core.MEDIA.create("world.lvl"));
+        world.saveToFile(Medias.create("world.lvl"));
+        world.loadFromFile(Medias.create("world.lvl"));
     }
 
     @Override

@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Updatable;
@@ -45,13 +45,13 @@ class Button
         implements Action, Updatable, Renderable
 {
     /** Media buildings reference. */
-    public static final Media BUILDINGS = Core.MEDIA.create("action", "Buildings.xml");
+    public static final Media BUILDINGS = Medias.create("action", "Buildings.xml");
     /** Media build farm reference. */
-    public static final Media BUILD_FARM = Core.MEDIA.create("action", "BuildFarm.xml");
+    public static final Media BUILD_FARM = Medias.create("action", "BuildFarm.xml");
     /** Media build barracks reference. */
-    public static final Media BUILD_BARRACKS = Core.MEDIA.create("action", "BuildBarracks.xml");
+    public static final Media BUILD_BARRACKS = Medias.create("action", "BuildBarracks.xml");
     /** Media cancel reference. */
-    public static final Media CANCEL = Core.MEDIA.create("action", "Cancel.xml");
+    public static final Media CANCEL = Medias.create("action", "Cancel.xml");
 
     /** Button image. */
     private final Image image;

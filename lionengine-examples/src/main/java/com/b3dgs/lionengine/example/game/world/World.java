@@ -21,8 +21,8 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -37,7 +37,7 @@ class World
         extends WorldGame
 {
     /** The text. */
-    private final Text text = Core.GRAPHIC.createText(Text.SERIF, 12, TextStyle.NORMAL);
+    private final Text text = Graphics.createText(Text.SERIF, 12, TextStyle.NORMAL);
     /** The str. */
     private String str;
 

@@ -21,8 +21,8 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
@@ -200,7 +200,7 @@ class Foreground
          */
         Primary(Foreground water)
         {
-            final Sprite sprite = Drawable.loadSprite(Core.MEDIA.create("calc.png"));
+            final Sprite sprite = Drawable.loadSprite(Medias.create("calc.png"));
             sprite.load(false);
             data = new BackgroundElement(0, (int) Math.ceil(water.getNominal() * scaleV), sprite);
             top = data.getRenderable().getHeight();
@@ -273,12 +273,12 @@ class Foreground
          */
         Secondary(Foreground water)
         {
-            final Sprite back = Drawable.loadSprite(Core.MEDIA.create("back.png"));
+            final Sprite back = Drawable.loadSprite(Medias.create("back.png"));
             back.load(false);
             data = new BackgroundElement(0, (int) Math.floor(water.getNominal() * scaleV), back);
 
             animation = Anim.createAnimation(null, 1, 7, 0.25, false, true);
-            anim = Drawable.loadSpriteAnimated(Core.MEDIA.create("anim.png"), 7, 1);
+            anim = Drawable.loadSpriteAnimated(Medias.create("anim.png"), 7, 1);
             anim.load(false);
             anim.play(animation);
             this.water = water;

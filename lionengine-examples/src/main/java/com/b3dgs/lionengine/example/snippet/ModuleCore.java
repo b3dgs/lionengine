@@ -34,10 +34,11 @@ import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Verbose;
@@ -97,7 +98,7 @@ public class ModuleCore
 
     void imageInfo()
     {
-        final ImageInfo info = ImageInfo.get(Core.MEDIA.create("dot.png"));
+        final ImageInfo info = ImageInfo.get(Medias.create("dot.png"));
         Assert.assertEquals(64, info.getWidth());
         Assert.assertEquals(32, info.getHeight());
         Assert.assertEquals("png", info.getFormat());
@@ -115,8 +116,8 @@ public class ModuleCore
     void media()
     {
         Engine.start("First Code", Version.create(1, 0, 0), "resources");
-        Core.MEDIA.create("img", "image.png");
-        System.out.println(Core.MEDIA.create()); // print: resources/img/image.png
+        Medias.create("img", "image.png");
+        System.out.println(Medias.create()); // print: resources/img/image.png
     }
 
     final class Scene
@@ -166,7 +167,7 @@ public class ModuleCore
     void text()
     {
         // Create the text
-        final Text text = Core.GRAPHIC.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
+        final Text text = Graphics.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
 
         // Rendering type 1
         text.setText("Hello");
@@ -255,7 +256,7 @@ public class ModuleCore
 
     void fileReading()
     {
-        final Media file = Core.MEDIA.create("test.txt");
+        final Media file = Medias.create("test.txt");
         try (FileReading reading = Stream.createFileReading(file))
         {
             reading.readBoolean();
@@ -275,7 +276,7 @@ public class ModuleCore
 
     void fileWriting()
     {
-        final Media file = Core.MEDIA.create("test.txt");
+        final Media file = Medias.create("test.txt");
         try (FileWriting writing = Stream.createFileWriting(file))
         {
             writing.writeBoolean(true);
@@ -302,7 +303,7 @@ public class ModuleCore
     void image()
     {
         // Load
-        final Image image = Drawable.loadImage(Core.MEDIA.create("image.png"));
+        final Image image = Drawable.loadImage(Medias.create("image.png"));
         image.setLocation(10, 50);
 
         // Render
@@ -312,7 +313,7 @@ public class ModuleCore
     void sprite()
     {
         // Load
-        final Sprite sprite = Drawable.loadSprite(Core.MEDIA.create("sprite.png"));
+        final Sprite sprite = Drawable.loadSprite(Medias.create("sprite.png"));
         sprite.load(false);
         sprite.setLocation(64, 280);
 
@@ -323,7 +324,7 @@ public class ModuleCore
     void spriteTiled()
     {
         // Load
-        final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Core.MEDIA.create("tilesheet.png"), 16, 16);
+        final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Medias.create("tilesheet.png"), 16, 16);
         tilesheet.load(false);
         tilesheet.setLocation(300, 300);
         tilesheet.setTile(1);
@@ -335,7 +336,7 @@ public class ModuleCore
     void spriteAnimated()
     {
         // Load
-        final SpriteAnimated animation = Drawable.loadSpriteAnimated(Core.MEDIA.create("animation.png"), 7, 1);
+        final SpriteAnimated animation = Drawable.loadSpriteAnimated(Medias.create("animation.png"), 7, 1);
         animation.load(false);
         final Animation anim = Anim.createAnimation(null, 4, 6, 0.125, false, true);
         animation.play(anim);

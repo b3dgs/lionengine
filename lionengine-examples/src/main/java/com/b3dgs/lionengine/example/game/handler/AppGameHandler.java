@@ -19,8 +19,9 @@ package com.b3dgs.lionengine.example.game.handler;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
@@ -45,13 +46,13 @@ public class AppGameHandler
     {
         Engine.start("Handler", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "handler"));
 
-        final Graphic g = Core.GRAPHIC.createGraphic();
+        final Graphic g = Graphics.createGraphic();
         final Factory factory = new Factory();
         final Handler handler = new Handler();
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());
-        handler.add(new MyObject(new Setup(Core.MEDIA.create("MyObject.xml")), factory));
-        handler.add(new MyObject(new Setup(Core.MEDIA.create("MyObject.xml")), factory));
+        handler.add(new MyObject(new Setup(Medias.create("MyObject.xml")), factory));
+        handler.add(new MyObject(new Setup(Medias.create("MyObject.xml")), factory));
 
         for (int i = 0; i < 2; i++)
         {

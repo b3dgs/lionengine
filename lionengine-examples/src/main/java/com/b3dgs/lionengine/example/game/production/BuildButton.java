@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.example.game.production;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Updatable;
@@ -61,9 +61,9 @@ class BuildButton
         implements Action, Assign, Updatable, Renderable
 {
     /** Build farm media. */
-    public static final Media FARM = Core.MEDIA.create("BuildFarm.xml");
+    public static final Media FARM = Medias.create("BuildFarm.xml");
     /** Build barracks media. */
-    public static final Media BARRACKS = Core.MEDIA.create("BuildBarracks.xml");
+    public static final Media BARRACKS = Medias.create("BuildBarracks.xml");
 
     /** Button image. */
     private final Image image;
@@ -99,7 +99,7 @@ class BuildButton
         super(setup, services);
 
         image = Drawable.loadImage(setup.surface);
-        target = Core.MEDIA.create(setup.getConfigurer().getText("media"));
+        target = Medias.create(setup.getConfigurer().getText("media"));
 
         text = services.get(Text.class);
         viewer = services.get(Viewer.class);

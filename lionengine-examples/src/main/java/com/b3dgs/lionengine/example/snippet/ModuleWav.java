@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.snippet;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.audio.wav.AudioWav;
 import com.b3dgs.lionengine.audio.wav.Wav;
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Medias;
 
 @SuppressWarnings("all")
 public class ModuleWav
@@ -31,7 +31,7 @@ public class ModuleWav
 
     void vav() throws InterruptedException
     {
-        final Wav sound = AudioWav.loadWav(Core.MEDIA.create("sound.wav"));
+        final Wav sound = AudioWav.loadWav(Medias.create("sound.wav"));
         sound.setVolume(100);
 
         sound.setAlignment(Align.LEFT);

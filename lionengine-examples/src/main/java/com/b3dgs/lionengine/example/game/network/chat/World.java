@@ -24,8 +24,8 @@ import java.util.HashMap;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorld;
@@ -62,7 +62,7 @@ abstract class World<N extends NetworkedWorld>
     public World(Config config)
     {
         super(config);
-        text = Core.GRAPHIC.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
+        text = Graphics.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         chat = new Chat(this);
         networkableModel = new NetworkableModel();
         clients = new HashMap<>(2);

@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
@@ -41,7 +41,7 @@ class Weapon
         implements Updatable, LauncherListener
 {
     /** Media. */
-    public static final Media PULSE_CANNON = Core.MEDIA.create("PulseCannon.xml");
+    public static final Media PULSE_CANNON = Medias.create("PulseCannon.xml");
 
     /** Transformable model. */
     private Transformable transformable;

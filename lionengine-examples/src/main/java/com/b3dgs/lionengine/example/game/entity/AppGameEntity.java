@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.game.entity;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
@@ -44,7 +44,7 @@ public class AppGameEntity
     {
         Engine.start("Entity", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "entity"));
 
-        final Graphic g = Core.GRAPHIC.createGraphic();
+        final Graphic g = Graphics.createGraphic();
         final Factory factory = new Factory();
         final Handler handler = new Handler();
         handler.addUpdatable(new ComponentUpdater());

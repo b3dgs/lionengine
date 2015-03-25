@@ -21,10 +21,10 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Attribute;
@@ -166,6 +166,6 @@ public class ModuleGame
 
     private void utilityTileExtractor()
     {
-        TileExtractor.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheet.png"), 16, 16, 256, 256);
+        TileExtractor.start(Medias.create("level.png"), Medias.create("sheet.png"), 16, 16, 256, 256);
     }
 }

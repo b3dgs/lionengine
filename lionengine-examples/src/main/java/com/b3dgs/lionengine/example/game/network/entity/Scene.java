@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
@@ -76,7 +76,7 @@ class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(Core.MEDIA.create("level.lvl"));
+        world.loadFromFile(Medias.create("level.lvl"));
     }
 
     @Override

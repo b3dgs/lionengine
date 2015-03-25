@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.entity;
 
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.Verbose;
@@ -37,7 +37,7 @@ class Entity
         implements Updatable, Renderable
 {
     /** Goomba config. */
-    public static final Media GOOMBA = Core.MEDIA.create("Goomba.xml");
+    public static final Media GOOMBA = Medias.create("Goomba.xml");
 
     /**
      * Constructor.

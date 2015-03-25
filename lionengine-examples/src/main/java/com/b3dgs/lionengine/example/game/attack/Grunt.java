@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.example.game.attack;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -48,7 +48,7 @@ class Grunt
         implements Updatable, Renderable, AttackerChecker, AttackerListener
 {
     /** Media reference. */
-    public static final Media MEDIA = Core.MEDIA.create("Grunt.xml");
+    public static final Media MEDIA = Medias.create("Grunt.xml");
 
     /** Surface reference. */
     private final SpriteAnimated surface;

@@ -20,12 +20,13 @@ package com.b3dgs.lionengine.example.game.network.entity;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.object.Services;
@@ -72,7 +73,7 @@ abstract class World<N extends NetworkedWorld>
         marioClients = new HashMap<>(1);
         factory = new FactoryEntity();
         networkableModel = new NetworkableModel();
-        text = Core.GRAPHIC.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
+        text = Graphics.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         chat = new Chat(this);
 
         final Services contextEntity = new Services();

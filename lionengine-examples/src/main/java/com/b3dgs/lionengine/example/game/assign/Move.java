@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.assign;
 
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Updatable;
@@ -49,7 +49,7 @@ class Move
         implements Action, Assign, Updatable, Renderable
 {
     /** Media reference. */
-    public static final Media MEDIA = Core.MEDIA.create("Move.xml");
+    public static final Media MEDIA = Medias.create("Move.xml");
 
     /** Button image. */
     private final Image image;

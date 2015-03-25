@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.example.helloworld;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
@@ -54,7 +54,7 @@ class Scene
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
-        text = Core.GRAPHIC.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
+        text = Graphics.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
     }
 
     @Override

@@ -19,9 +19,10 @@ package com.b3dgs.lionengine.example.game.action;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
@@ -58,7 +59,7 @@ class Scene
     /** Actions handler. */
     private final Handler handler = new Handler();
     /** Text reference. */
-    private final Text text = Core.GRAPHIC.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
+    private final Text text = Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
     /** Map reference. */
     private final MapTile map = new MapTileGame(camera, 16, 16);
     /** Keyboard reference. */
@@ -80,15 +81,15 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
-        hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
+        cursor = new Cursor(mouse, Medias.create("cursor.png"));
+        hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
     }
 
     @Override
     protected void load()
     {
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
+        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
 
         hud.load(false);
         text.setLocation(74, 192);

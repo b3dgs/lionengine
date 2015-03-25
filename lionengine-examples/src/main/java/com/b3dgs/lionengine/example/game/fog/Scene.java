@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
@@ -80,11 +80,11 @@ class Scene
     @Override
     protected void load()
     {
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
+        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
         map.setTileRenderer(fogOfWar);
 
-        final SpriteTiled hide = Drawable.loadSpriteTiled(Core.MEDIA.create("hide.png"), 16, 16);
-        final SpriteTiled fog = Drawable.loadSpriteTiled(Core.MEDIA.create("fog.png"), 16, 16);
+        final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create("hide.png"), 16, 16);
+        final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create("fog.png"), 16, 16);
         hide.load(false);
         fog.load(false);
         fogOfWar.setTilesheet(hide, fog);

@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.example.game.raster;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
@@ -70,8 +70,8 @@ class Scene
     @Override
     protected void load()
     {
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
-        raster.loadSheets(Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("raster.xml"), false);
+        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        raster.loadSheets(Medias.create("sheets.xml"), Medias.create("raster.xml"), false);
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
         timing.start();

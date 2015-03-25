@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.example.game.collision;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
@@ -76,8 +76,8 @@ class Scene
     protected void load()
     {
         map.addFeature(mapCollision);
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"), Core.MEDIA.create("groups.xml"));
-        mapCollision.loadCollisions(Core.MEDIA.create("formulas.xml"), Core.MEDIA.create("collisions.xml"));
+        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
         mapCollision.createCollisionDraw();
 
         camera.setIntervals(16, 0);
