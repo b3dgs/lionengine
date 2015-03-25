@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.audio.wav.AudioWav;
 import com.b3dgs.lionengine.audio.wav.Wav;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Handle the SFX.
@@ -69,7 +69,7 @@ enum Sfx
      */
     private Sfx(String sound, int count)
     {
-        final Media media = Core.MEDIA.create("sfx", sound + Sfx.AUDIO_FILE_EXTENSION);
+        final Media media = Medias.create("sfx", sound + Sfx.AUDIO_FILE_EXTENSION);
         this.sound = AudioWav.loadWav(media, count);
         this.sound.setVolume(20);
     }

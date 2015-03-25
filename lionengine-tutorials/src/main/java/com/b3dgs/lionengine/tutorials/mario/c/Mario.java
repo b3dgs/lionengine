@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Keyboard;
@@ -59,7 +59,7 @@ class Mario
         implements Updatable, Renderable, TileCollidableListener
 {
     /** Object media. */
-    public static final Media MEDIA = Core.MEDIA.create("Mario.xml");
+    public static final Media MEDIA = Medias.create("Mario.xml");
     /** Ground location y. */
     private static final int GROUND = 32;
 

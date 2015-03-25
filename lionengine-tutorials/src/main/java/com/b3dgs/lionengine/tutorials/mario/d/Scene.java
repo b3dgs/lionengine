@@ -22,10 +22,10 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.audio.midi.AudioMidi;
 import com.b3dgs.lionengine.audio.midi.Midi;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Keyboard;
@@ -45,10 +45,10 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
     /** Level file. */
-    private static final Media LEVEL = Core.MEDIA.create("map", "level.lvl");
+    private static final Media LEVEL = Medias.create("map", "level.lvl");
 
     /** Music. */
-    private final Midi music = AudioMidi.loadMidi(Core.MEDIA.create("music", "music.mid"));
+    private final Midi music = AudioMidi.loadMidi(Medias.create("music", "music.mid"));
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** World reference. */
@@ -72,8 +72,8 @@ class Scene
     private static void importAndSave()
     {
         final MapTile map = new MapTileGame(null, 16, 16);
-        map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"),
-                Core.MEDIA.create("map", "groups.xml"));
+        map.create(Medias.create("map", "level.png"), Medias.create("map", "sheets.xml"),
+                Medias.create("map", "groups.xml"));
         try (FileWriting file = Stream.createFileWriting(LEVEL))
         {
             map.save(file);
