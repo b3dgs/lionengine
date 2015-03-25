@@ -30,7 +30,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -51,7 +51,7 @@ public class UtilityFileTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryMediaProvider.setFactoryMedia(MOCK);
+        Medias.setFactoryMedia(MOCK);
     }
 
     /**
@@ -60,7 +60,7 @@ public class UtilityFileTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryMediaProvider.setFactoryMedia(null);
+        Medias.setFactoryMedia(null);
     }
 
     /**

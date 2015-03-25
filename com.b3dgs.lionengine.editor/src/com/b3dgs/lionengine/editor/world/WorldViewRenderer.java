@@ -34,8 +34,8 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
@@ -720,7 +720,7 @@ public class WorldViewRenderer
     public void paintControl(PaintEvent paintEvent)
     {
         final GC gc = paintEvent.gc;
-        final Graphic g = Core.GRAPHIC.createGraphic();
+        final Graphic g = Graphics.createGraphic();
         g.setGraphic(gc);
         if (model.getMap() != null)
         {

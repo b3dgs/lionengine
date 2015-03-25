@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -264,8 +264,8 @@ public class MapTileGame
     @Override
     public void load(FileReading file) throws IOException, LionEngineException
     {
-        final Media sheetsConfig = Core.MEDIA.create(file.readString());
-        final Media groupsConfig = Core.MEDIA.create(file.readString());
+        final Media sheetsConfig = Medias.create(file.readString());
+        final Media groupsConfig = Medias.create(file.readString());
         final int width = file.readShort();
         final int height = file.readShort();
         tileWidth = file.readByte();
@@ -372,7 +372,7 @@ public class MapTileGame
         final String folder = path.substring(0, path.length() - sheetsConfig.getFile().getName().length());
         for (int sheet = 0; sheet < files.length; sheet++)
         {
-            final Media media = Core.MEDIA.create(folder, files[sheet]);
+            final Media media = Medias.create(folder, files[sheet]);
             final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
             sprite.load(false);
             sheets.put(Integer.valueOf(sheet), sprite);

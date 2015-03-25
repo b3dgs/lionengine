@@ -25,9 +25,8 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -52,8 +51,8 @@ public class SpriteParallaxedTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -62,7 +61,7 @@ public class SpriteParallaxedTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**

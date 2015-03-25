@@ -92,8 +92,8 @@ public abstract class EngineCore
         message.append(programVersion).append("\"");
         Verbose.info(message.toString());
 
-        FactoryGraphicProvider.setFactoryGraphic(factoryGraphic);
-        FactoryMediaProvider.setFactoryMedia(factoryMedia);
+        Graphics.setFactoryGraphic(factoryGraphic);
+        Medias.setFactoryMedia(factoryMedia);
 
         started = true;
     }
@@ -111,8 +111,8 @@ public abstract class EngineCore
             throw new LionEngineException(ERROR_STARTED_NOT);
         }
 
-        FactoryGraphicProvider.setFactoryGraphic(null);
-        FactoryMediaProvider.setFactoryMedia(null);
+        Graphics.setFactoryGraphic(null);
+        Medias.setFactoryMedia(null);
 
         programName = null;
         programVersion = null;

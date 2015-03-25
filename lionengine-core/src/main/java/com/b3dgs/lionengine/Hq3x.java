@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine;
 
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
@@ -317,7 +317,7 @@ public final class Hq3x
     public ImageBuffer getScaledImage()
     {
         final RawScale3x scaler = new RawScale3x(srcData, width, height);
-        final ImageBuffer image = Core.GRAPHIC.createImageBuffer(width * 3, height * 3, Transparency.OPAQUE);
+        final ImageBuffer image = Graphics.createImageBuffer(width * 3, height * 3, Transparency.OPAQUE);
         image.setRgb(0, 0, width * 3, height * 3, scaler.getScaledData(), 0, width * 3);
         return image;
     }

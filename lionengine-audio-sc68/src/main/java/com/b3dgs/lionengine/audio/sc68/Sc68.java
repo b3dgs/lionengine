@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.core.Media;
  * <pre>
  * final Sc68 sc68 = AudioSc68.createSc68Player();
  * sc68.setVolume(25);
- * sc68.play(Core.MEDIA.create(&quot;music.sc68&quot;));
+ * sc68.play(Medias.create(&quot;music.sc68&quot;));
  * 
  * Thread.sleep(1000);
  * sc68.pause();

@@ -25,7 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -41,7 +41,7 @@ public class WorldTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
@@ -50,7 +50,7 @@ public class WorldTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**

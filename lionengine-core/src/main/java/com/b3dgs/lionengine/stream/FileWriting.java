@@ -27,7 +27,7 @@ import java.io.IOException;
  * </p>
  * 
  * <pre>
- * final Media file = Core.MEDIA.create(&quot;test.txt&quot;);
+ * final Media file = Medias.create(&quot;test.txt&quot;);
  * try (FileWriting writing = Stream.createFileWriting(file))
  * {
  *     writing.writeBoolean(true);

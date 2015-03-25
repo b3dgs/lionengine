@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -156,11 +156,11 @@ public class DrawableTestTool
         spriteB.stretch(90, 110);
         Assert.assertFalse(spriteB.equals(sprite));
 
-        final Sprite spriteC = Drawable.loadSprite(Core.GRAPHIC.getImageBuffer(sprite.getSurface()));
+        final Sprite spriteC = Drawable.loadSprite(Graphics.getImageBuffer(sprite.getSurface()));
         spriteC.stretch(100, 110);
         Assert.assertFalse(spriteC.equals(sprite));
 
-        final Sprite spriteD = Drawable.loadSprite(Core.GRAPHIC.getImageBuffer(sprite.getSurface()));
+        final Sprite spriteD = Drawable.loadSprite(Graphics.getImageBuffer(sprite.getSurface()));
         spriteD.stretch(90, 100);
         Assert.assertFalse(spriteC.equals(sprite));
     }
@@ -201,7 +201,7 @@ public class DrawableTestTool
         try
         {
             final SpriteTiled sprite = Drawable.loadSpriteTiled(
-                    Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE), tw, th);
+                    Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), tw, th);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }
@@ -233,7 +233,7 @@ public class DrawableTestTool
         try
         {
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(
-                    Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE), hf, vf);
+                    Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), hf, vf);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }

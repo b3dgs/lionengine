@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Transparency;
  * Represents the image buffer in memory.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Graphics
  */
 public interface ImageBuffer
 {

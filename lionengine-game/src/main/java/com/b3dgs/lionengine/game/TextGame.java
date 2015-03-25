@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Text;
 
 /**
@@ -58,7 +58,7 @@ public class TextGame
      */
     public TextGame(String fontName, int size, TextStyle style)
     {
-        text = Core.GRAPHIC.createText(fontName, size, style);
+        text = Graphics.createText(fontName, size, style);
     }
 
     /**

@@ -27,47 +27,70 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class FactoryMediaProvider
-        implements FactoryMedia
+public final class Medias
 {
     /** Factory media implementation. */
-    private static volatile FactoryMedia factoryMedia;
+    private static FactoryMedia factoryMedia;
 
     /**
-     * Set the graphic factory used.
+     * Set the media factory used.
      * 
      * @param factoryMedia The media factory used.
      */
     public static synchronized void setFactoryMedia(FactoryMedia factoryMedia)
     {
-        FactoryMediaProvider.factoryMedia = factoryMedia;
+        Medias.factoryMedia = factoryMedia;
     }
 
-    /*
-     * FactoryMedia
+    /**
+     * Create a media.
+     * 
+     * @param path The media path.
+     * @return The media instance.
+     * @throws LionEngineException If path is <code>null</code>.
      */
-
-    @Override
-    public Media create(String path) throws LionEngineException
+    public static synchronized Media create(String path) throws LionEngineException
     {
         return factoryMedia.create(path);
     }
 
-    @Override
-    public Media create(String... path) throws LionEngineException
+    /**
+     * Create a media from an abstract path.
+     * 
+     * @param path The media path.
+     * @return The media instance.
+     * @throws LionEngineException If path is <code>null</code>.
+     */
+    public static synchronized Media create(String... path) throws LionEngineException
     {
         return factoryMedia.create(path);
     }
 
-    @Override
-    public String getSeparator()
+    /**
+     * Get the path separator.
+     * 
+     * @return The path separator.
+     */
+    public static synchronized String getSeparator()
     {
         return factoryMedia.getSeparator();
     }
 
-    @Override
-    public void setSeparator(String separator)
+    /**
+     * Set the path separator.
+     * 
+     * @param separator The path separator.
+     */
+    public static synchronized void setSeparator(String separator)
     {
         factoryMedia.setSeparator(separator);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Medias()
+    {
+        // Utility class
     }
 }

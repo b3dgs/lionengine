@@ -41,7 +41,7 @@ public class FactoryMediaProviderTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        Medias.setFactoryMedia(new FactoryMediaMock());
     }
 
     /**
@@ -50,7 +50,7 @@ public class FactoryMediaProviderTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryMediaProvider.setFactoryMedia(null);
+        Medias.setFactoryMedia(null);
     }
 
     /**
@@ -60,7 +60,7 @@ public class FactoryMediaProviderTest
     public void testCreateMedia()
     {
         Assert.assertEquals(PATH, new MediaMock(PATH, true).getPath());
-        Assert.assertNotNull(Core.MEDIA.create("../mock/file1.txt"));
+        Assert.assertNotNull(Medias.create("../mock/file1.txt"));
     }
 
     /**
@@ -78,9 +78,9 @@ public class FactoryMediaProviderTest
     @Test
     public void testSeparator()
     {
-        final String old = Core.MEDIA.getSeparator();
-        Core.MEDIA.setSeparator("%");
-        Assert.assertEquals("test%toto", Core.MEDIA.create("test", "toto").getPath());
-        Core.MEDIA.setSeparator(old);
+        final String old = Medias.getSeparator();
+        Medias.setSeparator("%");
+        Assert.assertEquals("test%toto", Medias.create("test", "toto").getPath());
+        Medias.setSeparator(old);
     }
 }

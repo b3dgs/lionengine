@@ -26,8 +26,8 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Orientation;
@@ -699,7 +699,7 @@ public class PathfindableModel
         renderDebug = debug;
         if (text == null)
         {
-            text = Core.GRAPHIC.createText(Text.SANS_SERIF, 8, TextStyle.NORMAL);
+            text = Graphics.createText(Text.SANS_SERIF, 8, TextStyle.NORMAL);
             text.setColor(ColorRgba.BLACK);
         }
     }

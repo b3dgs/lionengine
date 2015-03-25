@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.Resolution;
  * @see InputDevice
  * @see Graphic
  * @see Sequence
+ * @see Graphics
  */
 public interface Screen
 {

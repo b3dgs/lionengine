@@ -21,6 +21,7 @@ package com.b3dgs.lionengine.core;
  * Represents an identity transform.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Graphics
  */
 public interface Transform
 {

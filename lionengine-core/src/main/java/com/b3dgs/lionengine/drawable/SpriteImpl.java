@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 
@@ -153,7 +153,7 @@ class SpriteImpl
     {
         width = newWidth;
         height = newHeight;
-        surface = Core.GRAPHIC.resize(surfaceOriginal, newWidth, newHeight);
+        surface = Graphics.resize(surfaceOriginal, newWidth, newHeight);
     }
 
     /**
@@ -195,7 +195,7 @@ class SpriteImpl
     {
         if (surfaceOriginal == null)
         {
-            surfaceOriginal = Core.GRAPHIC.getImageBuffer(surface);
+            surfaceOriginal = Graphics.getImageBuffer(surface);
         }
     }
 
@@ -208,7 +208,7 @@ class SpriteImpl
     {
         if (surface == null)
         {
-            surface = Core.GRAPHIC.getImageBuffer(media, alpha);
+            surface = Graphics.getImageBuffer(media, alpha);
         }
     }
 
@@ -231,14 +231,14 @@ class SpriteImpl
     public final void rotate(int angle)
     {
         lazySurfaceBackup();
-        surface = Core.GRAPHIC.rotate(surfaceOriginal, angle);
+        surface = Graphics.rotate(surfaceOriginal, angle);
     }
 
     @Override
     public final void filter(Filter filter) throws LionEngineException
     {
         lazySurfaceBackup();
-        surface = Core.GRAPHIC.applyFilter(surfaceOriginal, filter);
+        surface = Graphics.applyFilter(surfaceOriginal, filter);
     }
 
     @Override
@@ -271,7 +271,7 @@ class SpriteImpl
     public final void setTransparency(ColorRgba mask)
     {
         lazySurfaceBackup();
-        surface = Core.GRAPHIC.applyMask(surfaceOriginal, mask);
+        surface = Graphics.applyMask(surfaceOriginal, mask);
     }
 
     @Override

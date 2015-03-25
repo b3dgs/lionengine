@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 
@@ -83,24 +83,24 @@ final class SpriteParallaxedImpl
     @Override
     public void load(boolean alpha) throws LionEngineException
     {
-        ImageBuffer surface = Core.GRAPHIC.getImageBuffer(media, false);
+        ImageBuffer surface = Graphics.getImageBuffer(media, false);
 
         if (0 != Double.compare(factorH, 1.0) || 0 != Double.compare(factorV, 1.0))
         {
-            surface = Core.GRAPHIC.resize(surface, (int) (surface.getWidth() * factorH),
+            surface = Graphics.resize(surface, (int) (surface.getWidth() * factorH),
                     (int) (surface.getHeight() * factorV));
         }
 
         lineWidth = (int) Math.floor(surface.getWidth() * sx / 100.0);
         lineHeight = (int) Math.floor(surface.getHeight() / linesNumber * sy / 100.0);
-        lines = Core.GRAPHIC.splitImage(surface, 1, linesNumber);
+        lines = Graphics.splitImage(surface, 1, linesNumber);
         final double factH = sx / 100.0 / 0.6;
 
         for (int i = 0; i < linesNumber; i++)
         {
             final int width = (int) Math.ceil(lines[i].getWidth() * (sx + i * 2 * factH) / 100);
             final int height = lines[i].getHeight() * sy / 100;
-            lines[i] = Core.GRAPHIC.resize(lines[i], width, height);
+            lines[i] = Graphics.resize(lines[i], width, height);
         }
     }
 

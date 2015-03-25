@@ -22,9 +22,9 @@ import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 
@@ -78,7 +78,7 @@ public abstract class BackgroundGame
      */
     public BackgroundElement createElement(String name, int x, int y, boolean alpha) throws LionEngineException
     {
-        return new BackgroundElement(x, y, createSprite(Core.MEDIA.create(name), alpha));
+        return new BackgroundElement(x, y, createSprite(Medias.create(name), alpha));
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class BackgroundGame
     public BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
             throws LionEngineException
     {
-        return new BackgroundElement(x, y, createSprite(Core.MEDIA.create(path, name), alpha));
+        return new BackgroundElement(x, y, createSprite(Medias.create(path, name), alpha));
     }
 
     /**

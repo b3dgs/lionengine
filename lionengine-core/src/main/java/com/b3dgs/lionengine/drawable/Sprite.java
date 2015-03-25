@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.Mirror;
  * 
  * <pre>
  * // Load
- * final Sprite sprite = Drawable.loadSprite(Core.MEDIA.create(&quot;sprite.png&quot;));
+ * final Sprite sprite = Drawable.loadSprite(Medias.create(&quot;sprite.png&quot;));
  * sprite.load(false);
  * sprite.setPosition(64, 280);
  * 

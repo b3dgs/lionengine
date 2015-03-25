@@ -22,8 +22,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
@@ -45,7 +44,7 @@ public class Hq2xTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
@@ -54,7 +53,7 @@ public class Hq2xTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -63,7 +62,7 @@ public class Hq2xTest
     @Test
     public void testHq2x()
     {
-        final ImageBuffer image = Core.GRAPHIC.getImageBuffer(MEDIA, false);
+        final ImageBuffer image = Graphics.getImageBuffer(MEDIA, false);
         int i = 0;
         for (int y = 0; y < image.getHeight(); y++)
         {

@@ -26,7 +26,7 @@ package com.b3dgs.lionengine.drawable;
  * 
  * <pre>
  * // Load
- * final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Core.MEDIA.create(&quot;tilesheet.png&quot;), 16, 16);
+ * final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Medias.create(&quot;tilesheet.png&quot;), 16, 16);
  * tilesheet.load(false);
  * tilesheet.setPosition(300, 300);
  * tilesheet.setTile(1);

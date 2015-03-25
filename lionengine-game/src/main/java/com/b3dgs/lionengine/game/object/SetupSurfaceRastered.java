@@ -22,7 +22,7 @@ import java.util.List;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -93,7 +93,7 @@ public class SetupSurfaceRastered
      */
     private void loadRasters() throws LionEngineException
     {
-        final int[][] rasters = Core.GRAPHIC.loadRaster(rasterFile);
+        final int[][] rasters = Graphics.loadRaster(rasterFile);
         final int[] color = new int[rasters.length];
         final int[] colorNext = new int[rasters.length];
         final int max = smoothRaster ? 2 : 1;
@@ -143,7 +143,7 @@ public class SetupSurfaceRastered
      */
     private void addRaster(int fr, int fg, int fb, int er, int eg, int eb) throws LionEngineException
     {
-        final ImageBuffer rasterBuf = Core.GRAPHIC.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, frameHeight);
+        final ImageBuffer rasterBuf = Graphics.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, frameHeight);
         final SpriteAnimated raster = Drawable.loadSpriteAnimated(rasterBuf, hf, vf);
         rastersAnim.add(raster);
     }

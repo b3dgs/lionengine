@@ -122,7 +122,7 @@ public class Renderer
         {
             frameDelay = TIME_LONG / output.getRate();
         }
-        graphic = Core.GRAPHIC.createGraphic();
+        graphic = Graphics.createGraphic();
     }
 
     /**
@@ -416,7 +416,7 @@ public class Renderer
         // Scale factor
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
-        Transform transform = Core.GRAPHIC.createTransform();
+        Transform transform = Graphics.createTransform();
 
         // Filter level
         switch (filter)
@@ -450,7 +450,7 @@ public class Renderer
         // Scaled rendering
         else
         {
-            buf = Core.GRAPHIC.createImageBuffer(width, height, Transparency.OPAQUE);
+            buf = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
             gbuf = buf.createGraphic();
             if (hqx > 1 || filter == Filter.NONE)
             {
@@ -506,7 +506,7 @@ public class Renderer
     public final void run()
     {
         // First init
-        screen = Core.GRAPHIC.createScreen(this);
+        screen = Graphics.createScreen(this);
         screen.start();
         sequence = Loader.createSequence(firstSequence, loader, arguments);
         nextSequence = sequence;

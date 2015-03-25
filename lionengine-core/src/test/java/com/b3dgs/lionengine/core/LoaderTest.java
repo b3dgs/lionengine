@@ -55,7 +55,7 @@ public class LoaderTest
     @BeforeClass
     public static void prepareTest()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Verbose.info("*********************************** SEQUENCE VERBOSE ***********************************");
     }
 
@@ -66,7 +66,7 @@ public class LoaderTest
     public static void cleanUp()
     {
         Verbose.info("****************************************************************************************");
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**

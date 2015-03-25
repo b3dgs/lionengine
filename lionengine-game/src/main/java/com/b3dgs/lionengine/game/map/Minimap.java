@@ -25,8 +25,8 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Image;
@@ -91,7 +91,7 @@ public class Minimap
     {
         if (minimap == null)
         {
-            minimap = Core.GRAPHIC.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), alpha
+            minimap = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), alpha
                     ? Transparency.TRANSLUCENT : Transparency.OPAQUE);
         }
         final Graphic g = minimap.createGraphic();

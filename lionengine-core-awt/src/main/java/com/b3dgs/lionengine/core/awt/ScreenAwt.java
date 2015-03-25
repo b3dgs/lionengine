@@ -30,8 +30,8 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Media;
@@ -117,7 +117,7 @@ abstract class ScreenAwt
             throw new LionEngineException(ScreenAwt.ERROR_DISPLAY);
         }
         config = renderer.getConfig();
-        graphics = Core.GRAPHIC.createGraphic();
+        graphics = Graphics.createGraphic();
         devices = new HashMap<>(2);
     }
 

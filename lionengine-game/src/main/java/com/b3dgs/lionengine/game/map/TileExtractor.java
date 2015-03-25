@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.map;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  * </p>
  * 
  * <pre>
- * TileExtractor.start(Core.MEDIA.create(&quot;level.png&quot;), Core.MEDIA.create(&quot;sheet.png&quot;), 16, 16, 256, 256);
+ * TileExtractor.start(Medias.create(&quot;level.png&quot;), Medias.create(&quot;sheet.png&quot;), 16, 16, 256, 256);
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -147,7 +147,7 @@ public final class TileExtractor
         imageMapTilesInX = imageMap.getWidth() / this.tilew;
         startX = 0;
         endX = imageMapTilesInX;
-        sheet = Core.GRAPHIC.createImageBuffer(destW, destH, Transparency.BITMASK);
+        sheet = Graphics.createImageBuffer(destW, destH, Transparency.BITMASK);
         g = sheet.createGraphic();
         cx = 0;
         cy = 0;
@@ -194,7 +194,7 @@ public final class TileExtractor
             }
         }
         g.dispose();
-        Core.GRAPHIC.saveImage(sheet, fileout);
+        Graphics.saveImage(sheet, fileout);
     }
 
     /**

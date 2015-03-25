@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Renderer;
@@ -86,7 +86,7 @@ public final class ScreenAndroid
 
         config = renderer.getConfig();
         devices = new HashMap<Class<? extends InputDevice>, InputDevice>(1);
-        graphics = Core.GRAPHIC.createGraphic();
+        graphics = Graphics.createGraphic();
 
         setResolution(config.getOutput());
         holder.addCallback(this);

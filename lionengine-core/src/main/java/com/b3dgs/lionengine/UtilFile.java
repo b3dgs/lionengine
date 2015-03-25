@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -167,7 +167,7 @@ public final class UtilFile
      */
     public static String getFilenameFromPath(String path)
     {
-        final int i = path.lastIndexOf(Core.MEDIA.getSeparator());
+        final int i = path.lastIndexOf(Medias.getSeparator());
         return path.substring(i + 1, path.length());
     }
 

@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.core.Media;
  * </p>
  * 
  * <pre>
- * final Wav sound = AudioWav.loadWav(Core.MEDIA.create(&quot;sound.wav&quot;));
+ * final Wav sound = AudioWav.loadWav(Medias.create(&quot;sound.wav&quot;));
  * sound.setVolume(100);
  * 
  * sound.setAlignment(Align.LEFT);

@@ -30,8 +30,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.FactoryMediaProvider;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Test the utility media class.
@@ -48,7 +48,7 @@ public class UtilityMediaTest
     @BeforeClass
     public static void setUp() throws ReflectiveOperationException
     {
-        FactoryMediaProvider.setFactoryMedia(new FactoryMediaAwt());
+        Medias.setFactoryMedia(new FactoryMediaAwt());
     }
 
     /**
@@ -57,7 +57,7 @@ public class UtilityMediaTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryMediaProvider.setFactoryMedia(null);
+        Medias.setFactoryMedia(null);
     }
 
     /**

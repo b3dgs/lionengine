@@ -26,9 +26,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
@@ -53,8 +52,8 @@ public class SpriteTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -63,7 +62,7 @@ public class SpriteTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -73,7 +72,7 @@ public class SpriteTest
     public void testSprite()
     {
         // Sprite with existing surface
-        final ImageBuffer surface = Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE);
+        final ImageBuffer surface = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
         final Sprite spriteA = Drawable.loadSprite(surface);
 
         spriteA.setOrigin(Origin.TOP_LEFT);

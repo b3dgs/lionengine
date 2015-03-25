@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.configurer.ConfigLaunchable;
 import com.b3dgs.lionengine.game.configurer.ConfigLauncher;
@@ -119,7 +119,7 @@ public class LauncherModel
     {
         for (final ConfigLaunchable launchable : launchables)
         {
-            final Media media = Core.MEDIA.create(launchable.getMedia());
+            final Media media = Medias.create(launchable.getMedia());
             final ObjectGame object = factory.create(media);
             try
             {

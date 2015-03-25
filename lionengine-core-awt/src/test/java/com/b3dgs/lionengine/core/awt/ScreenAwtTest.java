@@ -32,8 +32,8 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
 
@@ -120,7 +120,7 @@ public class ScreenAwtTest
     {
         final Resolution resolution = new Resolution(320, 240, 60);
         final Config config = new Config(resolution, 32, true);
-        config.setIcon(Core.MEDIA.create("image.png"));
+        config.setIcon(Medias.create("image.png"));
         final Loader loader = new Loader(config);
         loader.start(SequenceMock.class);
         final Renderer renderer = getRenderer(loader);
@@ -143,7 +143,7 @@ public class ScreenAwtTest
     {
         final Resolution resolution = new Resolution(320, 240, 60);
         final Config config = new Config(resolution, 32, false);
-        config.setIcon(Core.MEDIA.create("image.png"));
+        config.setIcon(Medias.create("image.png"));
         config.setApplet(new AppletAwt());
         final Loader loader = new Loader(config);
         loader.start(SequenceMock.class);
@@ -184,7 +184,7 @@ public class ScreenAwtTest
 
         final Resolution resolution = new Resolution(width, height, 60);
         final Config config = new Config(resolution, 32, false);
-        config.setIcon(Core.MEDIA.create("image.png"));
+        config.setIcon(Medias.create("image.png"));
         final Loader loader = new Loader(config);
         loader.start(SequenceMock.class);
         final Renderer renderer = getRenderer(loader);

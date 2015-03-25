@@ -54,7 +54,7 @@ public class RendererTest
     @BeforeClass
     public static void prepareTest()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Verbose.info("*********************************** SEQUENCE VERBOSE ***********************************");
     }
 
@@ -66,7 +66,7 @@ public class RendererTest
     {
         Verbose.info("****************************************************************************************");
         ScreenMock.wait = false;
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**

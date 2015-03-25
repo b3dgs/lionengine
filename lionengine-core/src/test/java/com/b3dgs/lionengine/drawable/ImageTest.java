@@ -25,9 +25,8 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
@@ -52,8 +51,8 @@ public class ImageTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -62,7 +61,7 @@ public class ImageTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -73,7 +72,7 @@ public class ImageTest
     {
         try
         {
-            Core.GRAPHIC.createImageBuffer(-16, 16, Transparency.OPAQUE);
+            Graphics.createImageBuffer(-16, 16, Transparency.OPAQUE);
             Assert.fail();
         }
         catch (final NegativeArraySizeException exception)
@@ -82,7 +81,7 @@ public class ImageTest
         }
         try
         {
-            Core.GRAPHIC.createImageBuffer(16, -16, Transparency.OPAQUE);
+            Graphics.createImageBuffer(16, -16, Transparency.OPAQUE);
             Assert.fail();
         }
         catch (final NegativeArraySizeException exception)
@@ -101,7 +100,7 @@ public class ImageTest
         }
         try
         {
-            Drawable.loadImage(Core.GRAPHIC.createImageBuffer(1, 1, Transparency.OPAQUE)).load(false);
+            Drawable.loadImage(Graphics.createImageBuffer(1, 1, Transparency.OPAQUE)).load(false);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -118,7 +117,7 @@ public class ImageTest
     {
         final int width = 16;
         final int height = 16;
-        final ImageBuffer surface = Core.GRAPHIC.createImageBuffer(width, height, Transparency.OPAQUE);
+        final ImageBuffer surface = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
         final Image imageA = Drawable.loadImage(surface);
 
         Assert.assertNotNull(imageA);
@@ -149,11 +148,11 @@ public class ImageTest
         Assert.assertFalse(imageC.equals(Drawable.loadImage(MEDIA)));
 
         // Equals
-        final ImageBuffer surfaceA = Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE);
+        final ImageBuffer surfaceA = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
         final Image imageD = Drawable.loadImage(surfaceA);
-        final ImageBuffer surfaceB = Core.GRAPHIC.createImageBuffer(16, 20, Transparency.OPAQUE);
+        final ImageBuffer surfaceB = Graphics.createImageBuffer(16, 20, Transparency.OPAQUE);
         final Image imageE = Drawable.loadImage(surfaceB);
-        final ImageBuffer surfaceC = Core.GRAPHIC.createImageBuffer(20, 16, Transparency.OPAQUE);
+        final ImageBuffer surfaceC = Graphics.createImageBuffer(20, 16, Transparency.OPAQUE);
         final Image imageF = Drawable.loadImage(surfaceC);
         Assert.assertTrue(imageD.equals(imageD));
         Assert.assertFalse(imageD.equals(imageE));

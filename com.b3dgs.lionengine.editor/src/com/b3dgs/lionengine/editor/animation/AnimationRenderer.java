@@ -29,8 +29,8 @@ import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -126,7 +126,7 @@ public final class AnimationRenderer
     {
         this.parent = parent;
         animationRunner = new AnimationRunner(parent.getDisplay());
-        g = Core.GRAPHIC.createGraphic();
+        g = Graphics.createGraphic();
         final ConfigSurface configSurface = ConfigSurface.create(configurer);
         final Media media = UtilityMedia.get(new File(configurer.getPath(), configSurface.getImage()));
         final ConfigFrames framesData = ConfigFrames.create(configurer);

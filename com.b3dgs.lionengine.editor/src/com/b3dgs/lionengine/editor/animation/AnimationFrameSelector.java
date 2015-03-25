@@ -31,8 +31,8 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -97,7 +97,7 @@ public final class AnimationFrameSelector
     public AnimationFrameSelector(Composite parent, Configurer configurer)
     {
         this.parent = parent;
-        g = Core.GRAPHIC.createGraphic();
+        g = Graphics.createGraphic();
         final ConfigSurface configSurface = ConfigSurface.create(configurer);
         final Media media = UtilityMedia.get(new File(configurer.getPath(), configSurface.getImage()));
         final ConfigFrames framesData = ConfigFrames.create(configurer);

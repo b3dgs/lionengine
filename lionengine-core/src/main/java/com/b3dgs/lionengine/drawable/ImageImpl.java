@@ -23,8 +23,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 
@@ -106,7 +106,7 @@ class ImageImpl
         {
             throw new LionEngineException(media, ERROR_ALREADY_LOADED);
         }
-        surface = Core.GRAPHIC.getImageBuffer(media, alpha);
+        surface = Graphics.getImageBuffer(media, alpha);
     }
 
     @Override

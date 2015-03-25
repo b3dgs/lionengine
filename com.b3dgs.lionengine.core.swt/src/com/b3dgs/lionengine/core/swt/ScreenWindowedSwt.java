@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Monitor;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Renderer;
 
 /**
@@ -71,7 +71,7 @@ final class ScreenWindowedSwt
                 canvas.setVisible(true);
             }
             canvas.setSize(output.getWidth(), output.getHeight());
-            buffer = Core.GRAPHIC.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
+            buffer = Graphics.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
             frame.pack();
 
             final Monitor primary = ScreenSwt.display.getPrimaryMonitor();

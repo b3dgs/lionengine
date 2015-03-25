@@ -22,8 +22,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Test the factory media provider class.
@@ -43,7 +42,7 @@ public class FactoryMediaAwtTest
     @BeforeClass
     public static void setUp() throws ReflectiveOperationException
     {
-        FactoryMediaProvider.setFactoryMedia(new FactoryMediaAwt());
+        Medias.setFactoryMedia(new FactoryMediaAwt());
     }
 
     /**
@@ -52,7 +51,7 @@ public class FactoryMediaAwtTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryMediaProvider.setFactoryMedia(null);
+        Medias.setFactoryMedia(null);
     }
 
     /**
@@ -61,8 +60,8 @@ public class FactoryMediaAwtTest
     @Test
     public void testCreateMedia()
     {
-        Assert.assertEquals(PATH, Core.MEDIA.create(PATH).getPath());
-        Assert.assertEquals(PATH + Core.MEDIA.getSeparator(), Core.MEDIA.create(PATH, null).getPath());
+        Assert.assertEquals(PATH, Medias.create(PATH).getPath());
+        Assert.assertEquals(PATH + Medias.getSeparator(), Medias.create(PATH, null).getPath());
     }
 
     /**
@@ -71,7 +70,7 @@ public class FactoryMediaAwtTest
     @Test
     public void testCreateMediaPath()
     {
-        Assert.assertEquals(PATH, Core.MEDIA.create("graphic").getPath());
+        Assert.assertEquals(PATH, Medias.create("graphic").getPath());
     }
 
     /**
@@ -80,9 +79,9 @@ public class FactoryMediaAwtTest
     @Test
     public void testSeparator()
     {
-        final String old = Core.MEDIA.getSeparator();
-        Core.MEDIA.setSeparator("%");
-        Assert.assertEquals("test%toto", Core.MEDIA.create("test", "toto").getPath());
-        Core.MEDIA.setSeparator(old);
+        final String old = Medias.getSeparator();
+        Medias.setSeparator("%");
+        Assert.assertEquals("test%toto", Medias.create("test", "toto").getPath());
+        Medias.setSeparator(old);
     }
 }

@@ -18,9 +18,10 @@
 package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
@@ -61,9 +62,9 @@ public class SetupSurface
         super(config);
         final String conf = config.getPath();
         final ConfigSurface surfaceData = ConfigSurface.create(getConfigurer());
-        final String prefix = conf.substring(0, conf.lastIndexOf(Core.MEDIA.getSeparator()) + 1);
-        surfaceFile = Core.MEDIA.create(prefix + surfaceData.getImage());
-        surface = Core.GRAPHIC.getImageBuffer(surfaceFile, alpha);
+        final String prefix = conf.substring(0, conf.lastIndexOf(Medias.getSeparator()) + 1);
+        surfaceFile = Medias.create(prefix + surfaceData.getImage());
+        surface = Graphics.getImageBuffer(surfaceFile, alpha);
     }
 
     /**

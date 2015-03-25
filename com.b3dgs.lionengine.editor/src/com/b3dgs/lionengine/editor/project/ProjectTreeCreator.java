@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.handler.TilesheetsFolderTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
@@ -377,6 +377,6 @@ public class ProjectTreeCreator
         {
             relative = relative.substring(1);
         }
-        return Core.MEDIA.create(relative);
+        return Medias.create(relative);
     }
 }

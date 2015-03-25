@@ -22,9 +22,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
@@ -47,8 +46,8 @@ public class TextTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(320, 240, Transparency.OPAQUE);
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        final ImageBuffer buffer = Graphics.createImageBuffer(320, 240, Transparency.OPAQUE);
         g = buffer.createGraphic();
     }
 
@@ -59,7 +58,7 @@ public class TextTest
     public static void cleanUp()
     {
         g.dispose();
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -68,7 +67,7 @@ public class TextTest
     @Test
     public void testNormal()
     {
-        final Text text1 = Core.GRAPHIC.createText(Text.DIALOG, 12, TextStyle.NORMAL);
+        final Text text1 = Graphics.createText(Text.DIALOG, 12, TextStyle.NORMAL);
         text1.draw(g, 0, 0, VALUE);
         text1.draw(g, 0, 0, Align.CENTER, VALUE);
         text1.draw(g, 0, 0, Align.LEFT, VALUE);
@@ -94,7 +93,7 @@ public class TextTest
     @Test
     public void testBold()
     {
-        final Text text = Core.GRAPHIC.createText(Text.DIALOG, 12, TextStyle.BOLD);
+        final Text text = Graphics.createText(Text.DIALOG, 12, TextStyle.BOLD);
         text.draw(g, 0, 0, VALUE);
     }
 
@@ -104,7 +103,7 @@ public class TextTest
     @Test
     public void testItalic()
     {
-        final Text text = Core.GRAPHIC.createText(Text.DIALOG, 12, TextStyle.ITALIC);
+        final Text text = Graphics.createText(Text.DIALOG, 12, TextStyle.ITALIC);
         text.draw(g, 0, 0, VALUE);
     }
 }

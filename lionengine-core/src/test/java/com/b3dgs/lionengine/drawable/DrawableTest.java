@@ -26,8 +26,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -50,7 +49,7 @@ public class DrawableTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
     /**
@@ -59,7 +58,7 @@ public class DrawableTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -79,7 +78,7 @@ public class DrawableTest
             else
             {
                 Assert.assertNotNull(Drawable.loadImage(MEDIA));
-                Assert.assertNotNull(Drawable.loadImage(Core.GRAPHIC.getImageBuffer(MEDIA, false)));
+                Assert.assertNotNull(Drawable.loadImage(Graphics.getImageBuffer(MEDIA, false)));
             }
         }
         catch (final LionEngineException exception)
@@ -108,7 +107,7 @@ public class DrawableTest
             else
             {
                 Assert.assertNotNull(Drawable.loadSprite(MEDIA));
-                Assert.assertNotNull(Drawable.loadSprite(Core.GRAPHIC.getImageBuffer(MEDIA, false)));
+                Assert.assertNotNull(Drawable.loadSprite(Graphics.getImageBuffer(MEDIA, false)));
             }
         }
         catch (final LionEngineException exception)
@@ -139,7 +138,7 @@ public class DrawableTest
             else
             {
                 Assert.assertNotNull(Drawable.loadSpriteAnimated(MEDIA, width, height));
-                Assert.assertNotNull(Drawable.loadSpriteAnimated(Core.GRAPHIC.getImageBuffer(MEDIA, false), width,
+                Assert.assertNotNull(Drawable.loadSpriteAnimated(Graphics.getImageBuffer(MEDIA, false), width,
                         height));
             }
         }
@@ -171,7 +170,7 @@ public class DrawableTest
             else
             {
                 Assert.assertNotNull(Drawable.loadSpriteTiled(MEDIA, width, height));
-                Assert.assertNotNull(Drawable.loadSpriteTiled(Core.GRAPHIC.getImageBuffer(MEDIA, false), width, height));
+                Assert.assertNotNull(Drawable.loadSpriteTiled(Graphics.getImageBuffer(MEDIA, false), width, height));
             }
         }
         catch (final LionEngineException exception)

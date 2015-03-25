@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.anim.Animator;
  * 
  * <pre>
  * // Load
- * final SpriteAnimated animation = Drawable.loadSpriteAnimated(Core.MEDIA.create(&quot;animation.png&quot;), 7, 1);
+ * final SpriteAnimated animation = Drawable.loadSpriteAnimated(Medias.create(&quot;animation.png&quot;), 7, 1);
  * animation.load(false);
  * final Animation anim = Anim.createAnimation(4, 6, 0.125, false, true);
  * animation.play(anim);

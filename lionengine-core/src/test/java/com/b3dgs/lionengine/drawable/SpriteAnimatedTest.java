@@ -30,9 +30,8 @@ import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -55,8 +54,8 @@ public class SpriteAnimatedTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -65,7 +64,7 @@ public class SpriteAnimatedTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -75,7 +74,7 @@ public class SpriteAnimatedTest
     public void testSpriteAnimated()
     {
         final SpriteAnimated spriteA = Drawable.loadSpriteAnimated(
-                Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE), 1, 1);
+                Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), 1, 1);
 
         Assert.assertNotNull(spriteA.getSurface());
 

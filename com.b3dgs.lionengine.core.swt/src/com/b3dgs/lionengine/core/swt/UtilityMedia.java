@@ -27,8 +27,8 @@ import java.io.OutputStream;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
@@ -67,7 +67,7 @@ public final class UtilityMedia
     {
         final String filename = file.getPath();
         final String localFile = filename.substring(resourcesDir.length() + filename.lastIndexOf(resourcesDir));
-        return Core.MEDIA.create(localFile);
+        return Medias.create(localFile);
     }
 
     /**
@@ -91,12 +91,12 @@ public final class UtilityMedia
         if (fromJar)
         {
             loader = clazz;
-            Core.MEDIA.setSeparator("/");
+            Medias.setSeparator("/");
         }
         else
         {
             loader = null;
-            Core.MEDIA.setSeparator(File.separator);
+            Medias.setSeparator(File.separator);
         }
     }
 
@@ -113,7 +113,7 @@ public final class UtilityMedia
         }
         else
         {
-            resourcesDir = dir + Core.MEDIA.getSeparator();
+            resourcesDir = dir + Medias.getSeparator();
         }
     }
 

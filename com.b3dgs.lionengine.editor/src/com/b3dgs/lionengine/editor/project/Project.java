@@ -33,8 +33,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
@@ -135,7 +135,7 @@ public final class Project
         }
         final int fromPrefix = fromPath.length() + 1;
         final String relativePath = path.substring(fromPrefix);
-        return Core.MEDIA.create(relativePath);
+        return Medias.create(relativePath);
     }
 
     /** Project path. */

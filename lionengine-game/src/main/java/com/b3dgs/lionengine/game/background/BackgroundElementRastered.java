@@ -22,7 +22,7 @@ import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -138,7 +138,7 @@ public abstract class BackgroundElementRastered
     protected void addRaster(Sprite sprite, int fr, int fg, int fb) throws LionEngineException
     {
         final ImageBuffer buf = sprite.getSurface();
-        final ImageBuffer rasterBuf = Core.GRAPHIC.getImageBuffer(buf);
+        final ImageBuffer rasterBuf = Graphics.getImageBuffer(buf);
 
         for (int i = 0; i < rasterBuf.getWidth(); i++)
         {
