@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-
 /**
  * Represents a 20 Axis map, designed to perform linking between two different areas. A good example is the fog of war,
  * or a tree area inside a grass area. It supports until 20 links (verticals, horizontal, corners in/out, middle...). It

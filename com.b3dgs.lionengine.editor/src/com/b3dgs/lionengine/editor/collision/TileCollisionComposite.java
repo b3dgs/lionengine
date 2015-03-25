@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**

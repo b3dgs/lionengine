@@ -22,7 +22,6 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
 import com.b3dgs.lionengine.network.NetworkedWorldServer;
 import com.b3dgs.lionengine.stream.FileReading;

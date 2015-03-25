@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-
 /**
  * Represents something that is able to view a scene, considered as the point of view of the user, such as a camera.
  * 

@@ -138,8 +138,7 @@ public class DrawableTest
             else
             {
                 Assert.assertNotNull(Drawable.loadSpriteAnimated(MEDIA, width, height));
-                Assert.assertNotNull(Drawable.loadSpriteAnimated(Graphics.getImageBuffer(MEDIA, false), width,
-                        height));
+                Assert.assertNotNull(Drawable.loadSpriteAnimated(Graphics.getImageBuffer(MEDIA, false), width, height));
             }
         }
         catch (final LionEngineException exception)

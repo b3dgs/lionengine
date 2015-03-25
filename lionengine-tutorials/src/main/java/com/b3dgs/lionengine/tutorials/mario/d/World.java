@@ -111,8 +111,7 @@ class World
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
-        mapCollision.loadCollisions(Medias.create("map", "formulas.xml"),
-                Medias.create("map", "collisions.xml"));
+        mapCollision.loadCollisions(Medias.create("map", "formulas.xml"), Medias.create("map", "collisions.xml"));
         mapCollision.createCollisionDraw();
         camera.setIntervals(16, 0);
         camera.setView(0, 0, width, height);

@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.palette.PaletteView;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
-import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
 
