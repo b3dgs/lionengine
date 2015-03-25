@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
@@ -87,12 +86,9 @@ class Scene
         camera.setLimits(map);
         camera.setLocation(0, 0);
 
-        final Services services = new Services();
-        services.add(camera);
-        services.add(map);
-
         final Factory factory = new Factory();
-        factory.setServices(services);
+        factory.addService(camera);
+        factory.addService(map);
 
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());

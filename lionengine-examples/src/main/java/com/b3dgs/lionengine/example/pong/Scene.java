@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
-import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * This is where the game loop is running.
@@ -78,9 +77,7 @@ class Scene
         handler.addUpdatable(new ComponentCollision());
         handler.addRenderable(new ComponentRenderer());
 
-        final Services context = new Services();
-        context.add(camera);
-        factory.setServices(context);
+        factory.addService(camera);
 
         final Racket racket1 = factory.create(Racket.MEDIA);
         racket1.setSide(true);

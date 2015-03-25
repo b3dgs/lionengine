@@ -225,7 +225,7 @@ final class WorldClient
         {
             final Goomba goomba = factory.create(Goomba.MEDIA);
             goomba.setNetworkId(msg.getEntityId());
-            handler.add(goomba);
+            handler.addService(goomba);
             addNetworkable(goomba);
         }
     }

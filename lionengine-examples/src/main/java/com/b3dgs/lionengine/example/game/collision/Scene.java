@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
@@ -85,14 +84,11 @@ class Scene
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
 
-        final Services services = new Services();
-        services.add(Integer.valueOf(getConfig().getSource().getRate()));
-        services.add(map);
-        services.add(keyboard);
-        services.add(camera);
-
         final Factory factory = new Factory();
-        factory.setServices(services);
+        factory.addService(Integer.valueOf(getConfig().getSource().getRate()));
+        factory.addService(map);
+        factory.addService(keyboard);
+        factory.addService(camera);
         hero = factory.create(Mario.MEDIA);
     }
 

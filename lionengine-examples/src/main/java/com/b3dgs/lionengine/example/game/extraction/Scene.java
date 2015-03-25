@@ -40,7 +40,6 @@ import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
@@ -54,12 +53,14 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 200, 60);
 
-    /** Camera reference. */
-    private final Camera camera = new Camera();
     /** Action factory. */
     private final Factory factory = new Factory();
+    /** Camera reference. */
+    private final Camera camera = new Camera();
     /** Actions handler. */
     private final Handler handler = new Handler();
+    /** Text reference. */
+    private final Text text = Core.GRAPHIC.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
     /** Map reference. */
     private final MapTile map = new MapTileGame(camera, 16, 16);
     /** Map path. */
@@ -72,8 +73,6 @@ class Scene
     private final Cursor cursor;
     /** HUD image. */
     private final Image hud;
-    /** Text reference. */
-    private final Text text;
 
     /**
      * Constructor.
@@ -87,7 +86,6 @@ class Scene
         mouse = getInputDevice(Mouse.class);
         cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"), Core.MEDIA.create("cursor_order.png"));
         hud = Drawable.loadImage(Core.MEDIA.create("hud.png"));
-        text = Core.GRAPHIC.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
         setSystemCursorVisible(false);
     }
 
@@ -116,17 +114,13 @@ class Scene
         handler.addRenderable(componentRendererLayer);
         handler.addListener(componentRendererLayer);
 
-        final Services services = new Services();
-        services.add(Integer.valueOf(getConfig().getSource().getRate()));
-        services.add(cursor);
-        services.add(text);
-        services.add(map);
-        services.add(camera);
-        services.add(factory);
-        services.add(handler);
-        services.add(componentRendererLayer);
-
-        factory.setServices(services);
+        factory.addService(Integer.valueOf(getConfig().getSource().getRate()));
+        factory.addService(cursor);
+        factory.addService(text);
+        factory.addService(map);
+        factory.addService(camera);
+        factory.addService(handler);
+        factory.addService(componentRendererLayer);
 
         final ObjectGame extract = factory.create(Button.EXTRACT);
         final ObjectGame peon = factory.create(Peon.MEDIA);

@@ -79,19 +79,19 @@ class Ship
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
+     * @param services The services reference.
      */
-    public Ship(SetupSurface setup, Services context)
+    public Ship(SetupSurface setup, Services services)
     {
-        super(setup, context);
+        super(setup, services);
 
         final ConfigFrames config = ConfigFrames.create(setup.getConfigurer());
         sprite = Drawable.loadSpriteAnimated(setup.surface, config.getHorizontal(), config.getVertical());
         sprite.setFrame(3);
         sprite.setOrigin(Origin.MIDDLE);
 
-        final Factory factory = context.get(Factory.class);
-        final Handler handler = context.get(Handler.class);
+        final Factory factory = services.get(Factory.class);
+        final Handler handler = services.get(Handler.class);
 
         weapon = factory.create(Weapon.PULSE_CANNON);
         weapon.setOffset(6, -6);
@@ -101,7 +101,7 @@ class Ship
         y = 192;
         speed = UtilRandom.getRandomDouble() / 1.5 + 0.75;
 
-        viewer = context.get(Viewer.class);
+        viewer = services.get(Viewer.class);
 
         addTrait(TransformableModel.class);
         addTrait(CollidableModel.class);

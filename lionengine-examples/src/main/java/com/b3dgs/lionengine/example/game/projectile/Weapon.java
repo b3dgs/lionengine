@@ -56,11 +56,11 @@ class Weapon
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
+     * @param services The services reference.
      */
-    public Weapon(Setup setup, Services context)
+    public Weapon(Setup setup, Services services)
     {
-        super(setup, context);
+        super(setup, services);
         addTrait(TransformableModel.class);
         addTrait(LauncherModel.class);
     }

@@ -88,7 +88,7 @@ final class WorldServer
             final Goomba goomba = factory.create(Goomba.MEDIA);
             goomba.teleport(532 + i * 24, 25);
             goomba.setNetworkId(goomba.getId().shortValue());
-            handler.add(goomba);
+            handler.addService(goomba);
             addNetworkable(goomba);
         }
         map.adjustCollisions();

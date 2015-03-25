@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
-import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Scene implementation.
@@ -40,10 +39,10 @@ import com.b3dgs.lionengine.game.object.Services;
 class Scene
         extends Sequence
 {
-    /** Camera reference. */
-    private final Camera camera = new Camera();
     /** Factory effect. */
     private final Factory factory = new Factory();
+    /** Camera reference. */
+    private final Camera camera = new Camera();
     /** Handler effect. */
     private final Handler handler = new Handler();
     /** Keyboard reference. */
@@ -66,10 +65,7 @@ class Scene
     @Override
     protected void load()
     {
-        final Services context = new Services();
-        context.add(camera);
-        factory.setServices(context);
-
+        factory.addService(camera);
         camera.setView(0, 0, getWidth(), getHeight());
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());

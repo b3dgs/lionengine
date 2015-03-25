@@ -38,11 +38,11 @@ class MyObject
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
+     * @param services The services reference.
      */
-    public MyObject(Setup setup, Services context)
+    public MyObject(Setup setup, Services services)
     {
-        super(setup, context);
+        super(setup, services);
     }
 
     @Override

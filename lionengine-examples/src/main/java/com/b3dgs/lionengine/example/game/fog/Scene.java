@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.game.map.FogOfWar;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.fovable.Fovable;
 
 /**
@@ -96,13 +95,9 @@ class Scene
         camera.setLimits(map);
         camera.setLocation(0, 0);
 
-        final Services services = new Services();
-        services.add(camera);
-        services.add(map);
-
         final Factory factory = new Factory();
-        factory.setServices(services);
-
+        factory.addService(camera);
+        factory.addService(map);
         peon = factory.create(Peon.MEDIA);
         fovables.add(peon.getTrait(Fovable.class));
     }

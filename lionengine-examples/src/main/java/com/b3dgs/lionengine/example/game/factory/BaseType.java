@@ -36,12 +36,12 @@ class BaseType
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
+     * @param services The services reference.
      */
-    public BaseType(Setup setup, Services context)
+    public BaseType(Setup setup, Services services)
     {
-        super(setup, context);
-        param = context.get(Object.class);
+        super(setup, services);
+        param = services.get(Object.class);
     }
 
     /**

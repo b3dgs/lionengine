@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -119,12 +118,10 @@ class World
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
 
-        final Services services = new Services();
-        services.add(Integer.valueOf(source.getRate()));
-        services.add(camera);
-        services.add(map);
-        services.add(keyboard);
-        factory.setServices(services);
+        factory.addService(Integer.valueOf(source.getRate()));
+        factory.addService(camera);
+        factory.addService(map);
+        factory.addService(keyboard);
 
         mario = factory.create(Mario.CONFIG);
         mario.respawn(160);

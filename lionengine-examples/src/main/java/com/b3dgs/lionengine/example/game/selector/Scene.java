@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.map.MapTilePathModel;
 import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
@@ -109,13 +108,10 @@ class Scene
         camera.setLimits(map);
         camera.setLocation(320, 208);
 
-        final Services services = new Services();
-        services.add(camera);
-        services.add(cursor);
-        services.add(map);
-
         final Factory factory = new Factory();
-        factory.setServices(services);
+        factory.addService(camera);
+        factory.addService(cursor);
+        factory.addService(map);
         peon = factory.create(Peon.MEDIA);
 
         selector.setClickableArea(camera);

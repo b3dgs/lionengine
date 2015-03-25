@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Main class.
@@ -43,13 +42,10 @@ public class AppGameFactory
         Engine.start("Factory", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "factory"));
 
         final Factory factory = new Factory();
-
         final Object param = new Object();
 
         // Define the context and add the parameter as a service
-        final Services context = new Services();
-        context.add(param);
-        factory.setServices(context);
+        factory.addService(param);
 
         // Create types
         final BaseType flyMachine = factory.create(Core.MEDIA.create("FlyMachine.xml"));

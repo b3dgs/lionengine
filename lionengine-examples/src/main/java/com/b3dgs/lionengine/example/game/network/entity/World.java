@@ -76,9 +76,9 @@ abstract class World<N extends NetworkedWorld>
         chat = new Chat(this);
 
         final Services contextEntity = new Services();
-        contextEntity.add(map);
-        contextEntity.add(Integer.valueOf(source.getRate()));
-        contextEntity.add(Boolean.valueOf(server));
+        contextEntity.addService(map);
+        contextEntity.addService(Integer.valueOf(source.getRate()));
+        contextEntity.addService(Boolean.valueOf(server));
 
         factory.setServices(contextEntity);
     }

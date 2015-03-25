@@ -43,11 +43,11 @@ class Entity
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
+     * @param services The services reference.
      */
-    public Entity(Setup setup, Services context)
+    public Entity(Setup setup, Services services)
     {
-        super(setup, context);
+        super(setup, services);
     }
 
     @Override

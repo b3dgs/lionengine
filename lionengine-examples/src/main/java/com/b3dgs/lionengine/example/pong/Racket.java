@@ -60,9 +60,9 @@ class Racket
     /**
      * {@link ObjectGame#ObjectGame(Setup, Services)}
      */
-    public Racket(Setup setup, Services context) throws LionEngineException
+    public Racket(Setup setup, Services services) throws LionEngineException
     {
-        super(setup, context);
+        super(setup, services);
 
         addTrait(TransformableModel.class);
         addTrait(CollidableModel.class);

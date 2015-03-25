@@ -64,16 +64,16 @@ class Projectile
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
+     * @param services The services reference.
      */
-    public Projectile(SetupSurface setup, Services context)
+    public Projectile(SetupSurface setup, Services services)
     {
-        super(setup, context);
+        super(setup, services);
 
         sprite = Drawable.loadSprite(setup.surface);
         sprite.setOrigin(Origin.MIDDLE);
 
-        viewer = context.get(Viewer.class);
+        viewer = services.get(Viewer.class);
 
         addTrait(TransformableModel.class);
         addTrait(CollidableModel.class);

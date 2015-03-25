@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
@@ -66,13 +65,10 @@ class Scene
     {
         camera.setView(0, 0, getWidth(), getHeight());
 
-        final Services services = new Services();
-        services.add(Integer.valueOf(getConfig().getSource().getRate()));
-        services.add(keyboard);
-        services.add(camera);
-
         final Factory factory = new Factory();
-        factory.setServices(services);
+        factory.addService(Integer.valueOf(getConfig().getSource().getRate()));
+        factory.addService(keyboard);
+        factory.addService(camera);
         mario = factory.create(Mario.MEDIA);
     }
 

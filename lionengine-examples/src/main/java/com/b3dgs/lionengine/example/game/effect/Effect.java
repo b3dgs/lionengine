@@ -62,11 +62,11 @@ class Effect
      * Constructor.
      * 
      * @param setup the setup reference.
-     * @param context The context reference.
+     * @param services The services reference.
      */
-    public Effect(SetupSurface setup, Services context)
+    public Effect(SetupSurface setup, Services services)
     {
-        super(setup, context);
+        super(setup, services);
 
         final ConfigFrames configFrames = ConfigFrames.create(setup.getConfigurer());
         final int scale = UtilRandom.getRandomInteger(75) + 50;
@@ -77,7 +77,7 @@ class Effect
         final ConfigAnimations configAnimations = ConfigAnimations.create(setup.getConfigurer());
         animExplode = configAnimations.getAnimation("explode");
 
-        viewer = context.get(Viewer.class);
+        viewer = services.get(Viewer.class);
 
         addTrait(TransformableModel.class);
     }

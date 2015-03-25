@@ -61,9 +61,9 @@ class Ball
     /**
      * {@link ObjectGame#ObjectGame(Setup, Services)}
      */
-    public Ball(Setup setup, Services context) throws LionEngineException
+    public Ball(Setup setup, Services services) throws LionEngineException
     {
-        super(setup, context);
+        super(setup, services);
 
         speed = 2.0;
         force = new Force(-speed, 0.0);
