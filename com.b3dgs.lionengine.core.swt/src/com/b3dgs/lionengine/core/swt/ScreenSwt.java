@@ -152,9 +152,9 @@ abstract class ScreenSwt
      */
     private void addDeviceKeyboard()
     {
-        final Keyboard keyboard = new Keyboard();
+        final KeyboardSwt keyboard = new KeyboardSwt();
         addKeyboardListener(keyboard);
-        devices.put(keyboard.getClass(), keyboard);
+        devices.put(Keyboard.class, keyboard);
     }
 
     /**
@@ -162,9 +162,9 @@ abstract class ScreenSwt
      */
     private void addDeviceMouse()
     {
-        final Mouse mouse = new Mouse(ScreenSwt.display);
+        final MouseSwt mouse = new MouseSwt(ScreenSwt.display);
         addMouseListener(mouse);
-        devices.put(mouse.getClass(), mouse);
+        devices.put(Mouse.class, mouse);
     }
 
     /**
@@ -187,7 +187,7 @@ abstract class ScreenSwt
      * 
      * @param keyboard The keyboard to add.
      */
-    private void addKeyboardListener(Keyboard keyboard)
+    private void addKeyboardListener(KeyboardSwt keyboard)
     {
         frame.addKeyListener(keyboard);
         frame.forceFocus();
@@ -198,7 +198,7 @@ abstract class ScreenSwt
      * 
      * @param mouse The mouse to add.
      */
-    private void addMouseListener(Mouse mouse)
+    private void addMouseListener(MouseSwt mouse)
     {
         canvas.addMouseListener(mouse);
         canvas.addMouseMoveListener(mouse);
@@ -366,7 +366,7 @@ abstract class ScreenSwt
     @Override
     public void onSourceChanged(Resolution source)
     {
-        getInputDevice(Mouse.class).setConfig(config);
+        ((MouseSwt) getInputDevice(Mouse.class)).setConfig(config);
     }
 
     /*

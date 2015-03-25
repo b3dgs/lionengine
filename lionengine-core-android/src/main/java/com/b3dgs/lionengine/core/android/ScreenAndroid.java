@@ -98,7 +98,7 @@ public final class ScreenAndroid
      */
     private void addDeviceMouse()
     {
-        final Mouse mouse = new Mouse();
+        final MouseAndroid mouse = new MouseAndroid();
         view.setMouse(mouse);
         devices.put(mouse.getClass(), mouse);
     }
@@ -234,7 +234,7 @@ public final class ScreenAndroid
     @Override
     public void onSourceChanged(Resolution source)
     {
-        getInputDevice(Mouse.class).setConfig(config);
+        ((MouseAndroid) getInputDevice(Mouse.class)).setConfig(config);
     }
 
     /*

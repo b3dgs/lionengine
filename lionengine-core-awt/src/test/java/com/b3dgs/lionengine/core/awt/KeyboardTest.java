@@ -31,7 +31,7 @@ import org.junit.Test;
 public class KeyboardTest
 {
     /** Keyboard instance. */
-    private static final Keyboard KEYBOARD = new Keyboard();
+    private static final KeyboardAwt KEYBOARD = new KeyboardAwt();
 
     /**
      * Create a key event.

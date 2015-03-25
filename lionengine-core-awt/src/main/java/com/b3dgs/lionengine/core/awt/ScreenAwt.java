@@ -138,7 +138,7 @@ abstract class ScreenAwt
      * 
      * @param keyboard The keyboard reference.
      */
-    private void addKeyboardListener(Keyboard keyboard)
+    private void addKeyboardListener(KeyboardAwt keyboard)
     {
         componentForKeyboard.addKeyListener(keyboard);
         componentForKeyboard.requestFocus();
@@ -157,7 +157,7 @@ abstract class ScreenAwt
      * 
      * @param mouse The mouse reference.
      */
-    private void addMouseListener(Mouse mouse)
+    private void addMouseListener(MouseAwt mouse)
     {
         componentForMouse.addMouseListener(mouse);
         componentForMouse.addMouseMotionListener(mouse);
@@ -170,9 +170,9 @@ abstract class ScreenAwt
      */
     private void addDeviceKeyboard()
     {
-        final Keyboard keyboard = new Keyboard();
+        final KeyboardAwt keyboard = new KeyboardAwt();
         addKeyboardListener(keyboard);
-        devices.put(keyboard.getClass(), keyboard);
+        devices.put(Keyboard.class, keyboard);
     }
 
     /**
@@ -182,9 +182,9 @@ abstract class ScreenAwt
      */
     private void addDeviceMouse() throws LionEngineException
     {
-        final Mouse mouse = new Mouse();
+        final MouseAwt mouse = new MouseAwt();
         addMouseListener(mouse);
-        devices.put(mouse.getClass(), mouse);
+        devices.put(Mouse.class, mouse);
     }
 
     /**
@@ -335,7 +335,7 @@ abstract class ScreenAwt
     @Override
     public void onSourceChanged(Resolution source)
     {
-        getInputDevice(Mouse.class).setConfig(config);
+        ((MouseAwt) getInputDevice(Mouse.class)).setConfig(config);
     }
 
     /*

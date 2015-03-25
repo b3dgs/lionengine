@@ -30,7 +30,7 @@ final class ViewAndroid
         extends SurfaceView
 {
     /** Mouse. */
-    private Mouse mouse;
+    private MouseAndroid mouse;
 
     /**
      * Internal constructor.
@@ -47,7 +47,7 @@ final class ViewAndroid
      * 
      * @param mouse The mouse reference.
      */
-    void setMouse(Mouse mouse)
+    void setMouse(MouseAndroid mouse)
     {
         this.mouse = mouse;
     }

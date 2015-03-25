@@ -18,9 +18,6 @@
 package com.b3dgs.lionengine.core.awt;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Collection;
-import java.util.HashSet;
 
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 
@@ -29,65 +26,31 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Keyboard
-        implements InputDeviceDirectional, KeyListener
+public interface Keyboard
+        extends InputDeviceDirectional
 {
     /** Enter key. */
-    public static final Integer ENTER = Integer.valueOf(KeyEvent.VK_ENTER);
+    Integer ENTER = Integer.valueOf(KeyEvent.VK_ENTER);
     /** Tab key. */
-    public static final Integer TAB = Integer.valueOf(KeyEvent.VK_TAB);
+    Integer TAB = Integer.valueOf(KeyEvent.VK_TAB);
     /** Back Space key. */
-    public static final Integer BACK_SPACE = Integer.valueOf(KeyEvent.VK_BACK_SPACE);
+    Integer BACK_SPACE = Integer.valueOf(KeyEvent.VK_BACK_SPACE);
     /** Space key. */
-    public static final Integer SPACE = Integer.valueOf(KeyEvent.VK_SPACE);
+    Integer SPACE = Integer.valueOf(KeyEvent.VK_SPACE);
     /** Escape key. */
-    public static final Integer ESCAPE = Integer.valueOf(KeyEvent.VK_ESCAPE);
+    Integer ESCAPE = Integer.valueOf(KeyEvent.VK_ESCAPE);
     /** ALT key. */
-    public static final Integer ALT = Integer.valueOf(KeyEvent.VK_ALT);
+    Integer ALT = Integer.valueOf(KeyEvent.VK_ALT);
     /** CTRL key. */
-    public static final Integer CONTROL = Integer.valueOf(KeyEvent.VK_CONTROL);
+    Integer CONTROL = Integer.valueOf(KeyEvent.VK_CONTROL);
     /** Arrow left key. */
-    public static final Integer LEFT = Integer.valueOf(KeyEvent.VK_LEFT);
+    Integer LEFT = Integer.valueOf(KeyEvent.VK_LEFT);
     /** Arrow right key. */
-    public static final Integer RIGHT = Integer.valueOf(KeyEvent.VK_RIGHT);
+    Integer RIGHT = Integer.valueOf(KeyEvent.VK_RIGHT);
     /** Arrow down key. */
-    public static final Integer DOWN = Integer.valueOf(KeyEvent.VK_DOWN);
+    Integer DOWN = Integer.valueOf(KeyEvent.VK_DOWN);
     /** Arrow up key. */
-    public static final Integer UP = Integer.valueOf(KeyEvent.VK_UP);
-    /** No key code. */
-    private static final int NO_KEY_CODE = -1;
-    /** No key code value. */
-    private static final Integer NO_KEY_CODE_VALUE = Integer.valueOf(NO_KEY_CODE);
-    /** Empty key name. */
-    private static final char EMPTY_KEY_NAME = ' ';
-
-    /** List of keys. */
-    private final Collection<Integer> keys;
-    /** Pressed states. */
-    private final Collection<Integer> pressed;
-    /** Last key code. */
-    private Integer lastCode = NO_KEY_CODE_VALUE;
-    /** Last key name. */
-    private char lastKeyName = EMPTY_KEY_NAME;
-    /** Left key. */
-    private Integer left = LEFT;
-    /** Right key. */
-    private Integer right = RIGHT;
-    /** Up key. */
-    private Integer up = UP;
-    /** Down key. */
-    private Integer down = DOWN;
-
-    /**
-     * Internal constructor.
-     */
-    Keyboard()
-    {
-        keys = new HashSet<>();
-        pressed = new HashSet<>();
-        lastKeyName = ' ';
-        lastCode = Integer.valueOf(-1);
-    }
+    Integer UP = Integer.valueOf(KeyEvent.VK_UP);
 
     /**
      * Check if the key is currently pressed.
@@ -95,10 +58,7 @@ public final class Keyboard
      * @param key The key to check.
      * @return <code>true</code> if pressed, <code>false</code> else.
      */
-    public boolean isPressed(Integer key)
-    {
-        return keys.contains(key);
-    }
+    boolean isPressed(Integer key);
 
     /**
      * Check if the key is currently pressed (not continuously).
@@ -106,129 +66,26 @@ public final class Keyboard
      * @param key The key to check.
      * @return <code>true</code> if pressed, <code>false</code> else.
      */
-    public boolean isPressedOnce(Integer key)
-    {
-        if (keys.contains(key))
-        {
-            if (!pressed.contains(key))
-            {
-                pressed.add(key);
-                return true;
-            }
-        }
-        return false;
-    }
+    boolean isPressedOnce(Integer key);
 
     /**
      * Get the current pressed key code.
      * 
-     * @return The pressed key code (<code>{@value #NO_KEY_CODE}</code> if key never pressed).
+     * @return The pressed key code (<code>{@value KeyboardAwt#NO_KEY_CODE}</code> if key never pressed).
      */
-    public Integer getKeyCode()
-    {
-        return lastCode;
-    }
+    Integer getKeyCode();
 
     /**
      * Get the current pressed key name.
      * 
      * @return The pressed key name.
      */
-    public char getKeyName()
-    {
-        return lastKeyName;
-    }
+    char getKeyName();
 
     /**
      * Check if the keyboard is currently used (at least one pressed key).
      * 
      * @return <code>true</code> if has at least on pressed key, <code>false</code> else (no pressed key).
      */
-    public boolean used()
-    {
-        return !keys.isEmpty();
-    }
-
-    /*
-     * InputDeviceDirectional
-     */
-
-    @Override
-    public void setHorizontalControlPositive(Integer code)
-    {
-        right = code;
-    }
-
-    @Override
-    public void setHorizontalControlNegative(Integer code)
-    {
-        left = code;
-    }
-
-    @Override
-    public void setVerticalControlPositive(Integer code)
-    {
-        up = code;
-    }
-
-    @Override
-    public void setVerticalControlNegative(Integer code)
-    {
-        down = code;
-    }
-
-    @Override
-    public double getHorizontalDirection()
-    {
-        if (isPressed(left))
-        {
-            return -1;
-        }
-        else if (isPressed(right))
-        {
-            return 1;
-        }
-        return 0;
-    }
-
-    @Override
-    public double getVerticalDirection()
-    {
-        if (isPressed(down))
-        {
-            return -1;
-        }
-        else if (isPressed(up))
-        {
-            return 1;
-        }
-        return 0;
-    }
-
-    /*
-     * KeyListener
-     */
-
-    @Override
-    public void keyPressed(KeyEvent event)
-    {
-        lastCode = Integer.valueOf(event.getKeyCode());
-        lastKeyName = event.getKeyChar();
-        keys.add(Integer.valueOf(event.getKeyCode()));
-    }
-
-    @Override
-    public void keyReleased(KeyEvent event)
-    {
-        lastCode = NO_KEY_CODE_VALUE;
-        lastKeyName = EMPTY_KEY_NAME;
-        keys.remove(Integer.valueOf(event.getKeyCode()));
-        pressed.remove(Integer.valueOf(event.getKeyCode()));
-    }
-
-    @Override
-    public void keyTyped(KeyEvent event)
-    {
-        // Nothing to do
-    }
+    boolean used();
 }

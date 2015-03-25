@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.Resolution;
 public class MouseTest
 {
     /** Mouse instance. */
-    private static final Mouse MOUSE = new Mouse();
+    private static final MouseAwt MOUSE = new MouseAwt();
 
     /**
      * Prepare test.
