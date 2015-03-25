@@ -140,8 +140,7 @@ public class ObjectGame
         {
             try
             {
-                final Constructor<? extends Trait> constructor = trait.getConstructor(ObjectGame.class,
-                        services.getClass());
+                final Constructor<? extends Trait> constructor = trait.getConstructor(ObjectGame.class, Services.class);
                 final Trait instance = constructor.newInstance(this, services);
                 instance.prepare(services);
                 features.add(instance);

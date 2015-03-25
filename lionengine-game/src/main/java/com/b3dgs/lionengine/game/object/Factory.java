@@ -18,12 +18,15 @@
 package com.b3dgs.lionengine.game.object;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
@@ -36,10 +39,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * <li>{@link ObjectGame#ObjectGame(Setup, Services)}</li>
  * </ul>
  * <p>
- * The {@link Services} must be set with {@link #setServices(Services)} as its reference is given as parameter to the
- * object constructor. This will let the created object to access to external services.
- * </p>
- * <p>
  * The factory uses the {@link ClassLoader#getSystemClassLoader()}, but it is possible to set a custom one with
  * {@link #setClassLoader(ClassLoader)}. Should be used in an OSGI environment for example.
  * </p>
@@ -47,6 +46,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Factory
+        implements Services
 {
     /** Data file extension. */
     public static final String FILE_DATA_EXTENSION = "xml";
@@ -56,8 +56,8 @@ public class Factory
     private static final String ERROR_SETUP = "Setup not found for: ";
     /** Constructor error. */
     private static final String ERROR_CONSTRUCTOR = "Unable to create the following type: ";
-    /** Empty service instance. */
-    private static final Services EMPTY_SERVICES = new Services();
+    /** Service error. */
+    private static final String ERROR_SERVICE = "Service not found: ";
 
     /**
      * Create a class instance with its parameters.
@@ -95,8 +95,8 @@ public class Factory
 
     /** Setups list. */
     private final Map<Media, Setup> setups;
-    /** Services reference. */
-    private Services services;
+    /** Services list. */
+    private final Collection<Object> services;
     /** Class loader. */
     private ClassLoader classLoader;
 
@@ -107,7 +107,25 @@ public class Factory
     {
         super();
         setups = new HashMap<>();
+        services = new ArrayList<>();
         classLoader = ClassLoader.getSystemClassLoader();
+    }
+
+    /**
+     * Add a service.
+     * 
+     * @param service The service to add.
+     */
+    public void addService(Object service)
+    {
+        services.add(service);
+        if (service instanceof Featurable)
+        {
+            for (final Object feature : ((Featurable<?>) service).getFeatures())
+            {
+                addService(feature);
+            }
+        }
     }
 
     /**
@@ -124,14 +142,13 @@ public class Factory
     {
         final Setup setup = getSetup(media);
         final Class<?> type = setup.getConfigClass(classLoader);
-        final Services services = this.services == null ? Factory.EMPTY_SERVICES : this.services;
         final E object = create(type, new Class<?>[]
         {
-                setup.getClass(), services.getClass()
-        }, setup, services);
+                setup.getClass(), Services.class
+        }, setup, this);
         final Integer id = HandledObjectsImpl.getFreeId();
         object.setId(id);
-        object.createTraits(setup, services);
+        object.createTraits(setup, this);
         return object;
     }
 
@@ -145,16 +162,6 @@ public class Factory
             setup.clear();
         }
         setups.clear();
-    }
-
-    /**
-     * Set the services reference.
-     * 
-     * @param services The services reference.
-     */
-    public void setServices(Services services)
-    {
-        this.services = services;
     }
 
     /**
@@ -210,5 +217,26 @@ public class Factory
         {
             throw new LionEngineException(exception, ERROR_SETUP_CLASS);
         }
+    }
+
+    /*
+     * Services
+     */
+
+    @Override
+    public <C> C get(Class<C> service) throws LionEngineException
+    {
+        for (final Object object : services)
+        {
+            if (service.isAssignableFrom(object.getClass()))
+            {
+                return service.cast(object);
+            }
+        }
+        if (service == getClass())
+        {
+            return service.cast(this);
+        }
+        throw new LionEngineException(ERROR_SERVICE, service.getName());
     }
 }

@@ -17,11 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Featurable;
 
 /**
  * Represents something designed to keep references on main game types, such as {@link Factory}, {@link Handler} ... in
@@ -31,39 +27,8 @@ import com.b3dgs.lionengine.game.Featurable;
  * @see Factory
  * @see ObjectGame
  */
-public class Services
+public interface Services
 {
-    /** Service error. */
-    private static final String ERROR_SERVICE = "Service not found: ";
-
-    /** Services list. */
-    private final Collection<Object> services;
-
-    /**
-     * Create a context.
-     */
-    public Services()
-    {
-        services = new ArrayList<>();
-    }
-
-    /**
-     * Add a service.
-     * 
-     * @param service The service to add.
-     */
-    public void add(Object service)
-    {
-        services.add(service);
-        if (service instanceof Featurable)
-        {
-            for (final Object feature : ((Featurable<?>) service).getFeatures())
-            {
-                add(feature);
-            }
-        }
-    }
-
     /**
      * Get a service from its class.
      * 
@@ -71,15 +36,5 @@ public class Services
      * @return The service found.
      * @throws LionEngineException If service not found.
      */
-    public <C> C get(Class<C> service) throws LionEngineException
-    {
-        for (final Object object : services)
-        {
-            if (service.isAssignableFrom(object.getClass()))
-            {
-                return service.cast(object);
-            }
-        }
-        throw new LionEngineException(Services.ERROR_SERVICE, service.getName());
-    }
+    <C> C get(Class<C> service) throws LionEngineException;
 }
