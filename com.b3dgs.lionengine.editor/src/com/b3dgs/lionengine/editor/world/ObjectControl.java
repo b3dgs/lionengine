@@ -44,7 +44,7 @@ public class ObjectControl
     /** World model. */
     private final WorldViewModel model = WorldViewModel.INSTANCE;
     /** Handler object. */
-    private final Handler<ObjectGame> handlerObject;
+    private final Handler handlerObject;
     /** Mouse over object flag. */
     private final Map<ObjectGame, Boolean> objectsOver;
     /** Mouse selection object flag. */
@@ -61,7 +61,7 @@ public class ObjectControl
      * 
      * @param handlerObject The handler object reference.
      */
-    public ObjectControl(Handler<ObjectGame> handlerObject)
+    public ObjectControl(Handler handlerObject)
     {
         this.handlerObject = handlerObject;
         objectsOver = new HashMap<>();
@@ -94,7 +94,7 @@ public class ObjectControl
      */
     public void updateDragging(int oldMx, int oldMy, int mx, int my)
     {
-        final MapTile<?> map = model.getMap();
+        final MapTile map = model.getMap();
         if (!dragging)
         {
             final int th = map.getTileHeight();
@@ -146,7 +146,7 @@ public class ObjectControl
         final Media media = model.getSelectedObject();
         if (media != null)
         {
-            final MapTile<?> map = model.getMap();
+            final MapTile map = model.getMap();
             final Camera camera = model.getCamera();
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
             final Factory<?> factoryEntity = model.getFactory();
@@ -179,7 +179,7 @@ public class ObjectControl
      */
     public void selectEntities(Rectangle selectionArea)
     {
-        final MapTile<?> map = model.getMap();
+        final MapTile map = model.getMap();
         final Camera camera = model.getCamera();
 
         for (final ObjectGame object : handlerObject.getObjects())
@@ -242,7 +242,7 @@ public class ObjectControl
      */
     public void setObjectLocation(ObjectGame object, int x, int y, int side)
     {
-        final MapTile<?> map = model.getMap();
+        final MapTile map = model.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         object.teleport(UtilMath.getRounded(x + (side == 1 ? 0 : 1) * object.getWidth() / 2 + tw / 2, tw) + side
@@ -258,7 +258,7 @@ public class ObjectControl
      */
     public ObjectGame getObject(int mx, int my)
     {
-        final MapTile<?> map = model.getMap();
+        final MapTile map = model.getMap();
         final Camera camera = model.getCamera();
         final int x = UtilMath.getRounded(mx, map.getTileWidth());
         final int y = UtilMath.getRounded(camera.getViewHeight() - my - 1, map.getTileHeight());
@@ -390,7 +390,7 @@ public class ObjectControl
      */
     private boolean hitObject(ObjectGame object, int x1, int y1, int x2, int y2)
     {
-        final MapTile<?> map = model.getMap();
+        final MapTile map = model.getMap();
         final Camera camera = model.getCamera();
         if (object != null)
         {

@@ -25,7 +25,6 @@ import org.osgi.framework.BundleContext;
 
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.swt.Engine;
 
 /**
@@ -80,7 +79,7 @@ public class Activator
     public void start(BundleContext bundleContext) throws Exception
     {
         Activator.context = bundleContext;
-        Engine.start(Activator.PLUGIN_NAME, Activator.PLUGIN_VERSION, Verbose.CRITICAL, (String) null);
+        Engine.start(Activator.PLUGIN_NAME, Activator.PLUGIN_VERSION, (String) null);
     }
 
     @Override

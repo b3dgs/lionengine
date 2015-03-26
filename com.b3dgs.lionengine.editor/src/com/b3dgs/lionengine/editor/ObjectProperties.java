@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 
 /**
@@ -37,7 +38,7 @@ import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
  * @param <T> The object type handled by the properties.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class ObjectProperties<T>
+public abstract class ObjectProperties<T extends Nameable>
 {
     /**
      * Create a text and its label.

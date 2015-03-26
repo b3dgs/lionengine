@@ -208,7 +208,7 @@ public class ProjectsPart
     void updateProperties(Media media)
     {
         final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
-        if (ObjectsFolderTester.isObjectFile(media) || ObjectsFolderTester.isProjectileFile(media))
+        if (ObjectsFolderTester.isObjectFile(media))
         {
             part.setInput(new Configurer(media));
         }

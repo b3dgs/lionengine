@@ -55,9 +55,8 @@ public class AssignFactoryImplementationHandler
         final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final Project project = Project.getActive();
-        final Factory<?> factory = project.getInstance(selection, Factory.class);
+        final Factory factory = project.getInstance(selection, Factory.class);
         factory.setClassLoader(project.getClassLoader());
-        factory.setPrepareEnabled(false);
         WorldViewModel.INSTANCE.setFactory(factory);
 
         final FactoryView factoryView = new FactoryView(partService);

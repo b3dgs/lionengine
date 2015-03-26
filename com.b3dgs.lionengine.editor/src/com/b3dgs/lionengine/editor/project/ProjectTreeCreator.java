@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.handler.TilesheetsFolderTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
-import com.b3dgs.lionengine.editor.project.tester.ProjectilesFolderTester;
 
 /**
  * Generate the project tree from the project folder.
@@ -66,8 +65,6 @@ public class ProjectTreeCreator
     public static final Image ICON_OBJECT = UtilEclipse.getIcon("resources", "object.png");
     /** Entity file icon. */
     public static final Image ICON_ENTITY = UtilEclipse.getIcon("resources", "entity.png");
-    /** Projectile file icon. */
-    public static final Image ICON_PROJECTILE = UtilEclipse.getIcon("resources", "projectile.png");
     /** Class file icon. */
     public static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
     /** Tile sheets file icon. */
@@ -126,11 +123,7 @@ public class ProjectTreeCreator
      */
     private static Image getDataIcon(Media file)
     {
-        if (ProjectilesFolderTester.isProjectileFile(file))
-        {
-            return ProjectTreeCreator.ICON_PROJECTILE;
-        }
-        else if (ObjectsFolderTester.isObjectFile(file))
+        if (ObjectsFolderTester.isObjectFile(file))
         {
             return ProjectTreeCreator.ICON_OBJECT;
         }

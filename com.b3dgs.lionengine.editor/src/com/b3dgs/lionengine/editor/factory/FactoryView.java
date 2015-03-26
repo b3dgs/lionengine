@@ -146,7 +146,7 @@ public class FactoryView
     /** The combo hierarchy. */
     final Map<String, Composite> hierarchy = new HashMap<>();
     /** The factory reference. */
-    private Factory<?> factory;
+    private Factory factory;
     /** Middle composite. */
     Composite middle;
     /** Bottom composite. */
@@ -171,7 +171,7 @@ public class FactoryView
      * 
      * @param factory The factory reference.
      */
-    public void setFactory(Factory<?> factory)
+    public void setFactory(Factory factory)
     {
         this.factory = factory;
     }
@@ -185,7 +185,7 @@ public class FactoryView
      * @return The created child composite.
      * @throws FileNotFoundException If not a type folder.
      */
-    Composite load(final Factory<?> factory, File path, final Composite parent) throws FileNotFoundException
+    Composite load(final Factory factory, File path, final Composite parent) throws FileNotFoundException
     {
         final File[] folders = path.listFiles();
         if (folders != null)
@@ -264,7 +264,7 @@ public class FactoryView
         objectsComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         objectsComposite.setLayout(new RowLayout());
 
-        final Factory<?> factory = WorldViewModel.INSTANCE.getFactory();
+        final Factory factory = WorldViewModel.INSTANCE.getFactory();
         loadObjects(factory, objectsFile);
     }
 
@@ -274,7 +274,7 @@ public class FactoryView
      * @param factory The factory reference.
      * @param objectFiles The objects path.
      */
-    void loadObjects(Factory<?> factory, File[] objectFiles)
+    void loadObjects(Factory factory, File[] objectFiles)
     {
         if (objectFiles != null)
         {
@@ -298,7 +298,7 @@ public class FactoryView
      * @param factory The factory reference.
      * @param file The object data file.
      */
-    private void loadObject(Factory<?> factory, File file)
+    private void loadObject(Factory factory, File file)
     {
         final Label objectLabel = new Label(objectsComposite, SWT.NONE);
         objectLabel.setLayoutData(new RowData(34, 34));

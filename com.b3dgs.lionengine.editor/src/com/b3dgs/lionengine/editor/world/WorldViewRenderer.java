@@ -106,19 +106,19 @@ public class WorldViewRenderer
     {
         if (camera.getX() < 0.0)
         {
-            camera.teleportX(0.0);
+            camera.setLocation(0.0, camera.getY());
         }
         else if (camera.getX() > maxX)
         {
-            camera.teleportX(maxX);
+            camera.setLocation(maxX, camera.getY());
         }
         if (camera.getY() < 0.0)
         {
-            camera.teleportY(0.0);
+            camera.setLocation(camera.getX(), 0.0);
         }
         else if (camera.getY() > maxY)
         {
-            camera.teleportY(maxY);
+            camera.setLocation(camera.getX(), maxY);
         }
     }
 
@@ -133,7 +133,7 @@ public class WorldViewRenderer
     /** Tile selection listener. */
     private final Collection<TileSelectionListener> tileSelectionListeners;
     /** Handler object. */
-    private final Handler<ObjectGame> handlerObject;
+    private final Handler handlerObject;
     /** Selection handler. */
     private final Selection selection;
     /** Object controller. */
@@ -164,7 +164,7 @@ public class WorldViewRenderer
         objectSelectionListeners = new ArrayList<>();
         tileSelectionListeners = new ArrayList<>();
         model = WorldViewModel.INSTANCE;
-        handlerObject = new Handler<>();
+        handlerObject = new Handler();
         selection = new Selection();
         objectControl = new ObjectControl(handlerObject);
         gridEnabled = true;
@@ -223,7 +223,7 @@ public class WorldViewRenderer
      * 
      * @return The handler object.
      */
-    public Handler<ObjectGame> getHandler()
+    public Handler getHandler()
     {
         return handlerObject;
     }
@@ -355,7 +355,7 @@ public class WorldViewRenderer
      * @param areaX The horizontal rendering area.
      * @param areaY The vertical rendering area.
      */
-    protected void render(Graphic g, Camera camera, MapTile<?> map, int areaX, int areaY)
+    protected void render(Graphic g, Camera camera, MapTile map, int areaX, int areaY)
     {
         renderMap(g, camera, map, areaX, areaY);
         renderEntities(g);
@@ -389,7 +389,7 @@ public class WorldViewRenderer
      * @param areaX The horizontal rendering area.
      * @param areaY The vertical rendering area.
      */
-    protected void renderMap(Graphic g, Camera camera, MapTile<?> map, int areaX, int areaY)
+    protected void renderMap(Graphic g, Camera camera, MapTile map, int areaX, int areaY)
     {
         g.setColor(ColorRgba.BLUE);
         g.drawRect(0, 0, areaX, areaY, true);
@@ -430,7 +430,7 @@ public class WorldViewRenderer
      */
     private void updatePointerMap(PalettePart part, int mx, int my)
     {
-        final MapTile<?> map = model.getMap();
+        final MapTile map = model.getMap();
         if (map.isCreated() && TileCollisionView.ID.equals(part.getActivePaletteId()))
         {
             final Camera camera = model.getCamera();
@@ -485,7 +485,7 @@ public class WorldViewRenderer
     private void updateHand()
     {
         final Camera camera = model.getCamera();
-        final MapTile<?> map = model.getMap();
+        final MapTile map = model.getMap();
         camera.setLocation(UtilMath.getRounded((int) camera.getX(), map.getTileWidth()),
                 UtilMath.getRounded((int) camera.getY(), map.getTileHeight()));
     }
@@ -513,7 +513,7 @@ public class WorldViewRenderer
     private void updateCamera(int vx, int vy, int step)
     {
         final Camera camera = model.getCamera();
-        final MapTile<?> map = model.getMap();
+        final MapTile map = model.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         if (step > 0)
@@ -525,8 +525,8 @@ public class WorldViewRenderer
             camera.moveLocation(1.0, vx, vy);
         }
 
-        final int maxX = Math.max(0, (map.getInTileWidth() - 1) * tw - camera.getViewWidth());
-        final int maxY = Math.max(0, map.getInTileHeight() * th - camera.getViewHeight());
+        final int maxX = Math.max(0, (map.getInTileWidth() - 1) * tw - camera.getWidth());
+        final int maxY = Math.max(0, map.getInTileHeight() * th - camera.getHeight());
         WorldViewRenderer.setCameraLimits(camera, maxX, maxY);
 
         updateRender();
@@ -606,7 +606,7 @@ public class WorldViewRenderer
     private void render(Graphic g, int width, int height)
     {
         final Camera camera = model.getCamera();
-        final MapTile<?> map = model.getMap();
+        final MapTile map = model.getMap();
 
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
@@ -635,7 +635,7 @@ public class WorldViewRenderer
     private void renderOverAndSelectedEntities(Graphic g)
     {
         final Camera camera = model.getCamera();
-        final MapTile<?> map = model.getMap();
+        final MapTile map = model.getMap();
         final int th = map.getTileHeight();
 
         for (final ObjectGame object : handlerObject.getObjects())
@@ -648,7 +648,7 @@ public class WorldViewRenderer
                 g.setColor(WorldViewRenderer.COLOR_ENTITY_SELECTION);
                 final int x = sx - (int) camera.getX() - object.getWidth() / 2;
                 final int y = -sy + (int) camera.getY() - object.getHeight()
-                        + UtilMath.getRounded(camera.getViewHeight(), th);
+                        + UtilMath.getRounded(camera.getHeight(), th);
                 g.drawRect(x, y, object.getWidth(), object.getHeight(), true);
             }
         }
@@ -661,7 +661,7 @@ public class WorldViewRenderer
      * @param map The map reference.
      * @param camera The camera reference.
      */
-    private void renderSelectedCollisions(Graphic g, MapTile<?> map, Camera camera)
+    private void renderSelectedCollisions(Graphic g, MapTile map, Camera camera)
     {
         // Render selected collision
         g.setColor(WorldViewRenderer.COLOR_MOUSE_SELECTION);

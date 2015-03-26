@@ -53,7 +53,7 @@ public class ImportMapHandler
         Verbose.info(ImportMapHandler.VERBOSE_IMPORT_LEVEL, level.getPath(), ImportMapHandler.VERBOSE_USING_TILESHEETS,
                 pattern.getPath());
 
-        final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
         map.create(level, pattern);
         map.createCollisionDraw();
     }

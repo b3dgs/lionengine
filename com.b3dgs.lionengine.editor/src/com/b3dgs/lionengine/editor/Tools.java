@@ -158,11 +158,11 @@ public final class Tools
      * @param my The mouse Y.
      * @return The tile location in absolute location.
      */
-    public static Point getMouseTile(MapTile<?> map, Camera camera, int mx, int my)
+    public static Point getMouseTile(MapTile map, Camera camera, int mx, int my)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        final int h = UtilMath.getRounded(camera.getViewHeight(), th) - map.getTileHeight();
+        final int h = UtilMath.getRounded(camera.getHeight(), th) - map.getTileHeight();
         final int x = (int) camera.getX() + UtilMath.getRounded(mx, tw);
         final int y = (int) camera.getY() - UtilMath.getRounded(my, th) + h;
         return Geom.createPoint(x, y);

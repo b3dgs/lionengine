@@ -14,12 +14,6 @@
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_658s8EmgEeSV4bmZqF0__w" elementId="" label="%menu.object-delete" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/object-delete.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ObjectDeleteHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_93658EmgEeSV4bmZqF0__w" coreExpressionId="com.b3dgs.lionengine.editor.objects-folder.isObject"/>
                   </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_tzkSQEmwEeSY5e88dCWRPA" elementId="" label="%menu.projectile-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/projectile-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ProjectileAddHandler">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_tzkSQUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.projectiles-folder.addProjectile"/>
-                  </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_49GmoEsdEeS9gtv_zEGnhw" elementId="" label="%menu.projectile-delete" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/projectile-delete.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ObjectDeleteHandler">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_49GmoUsdEeS9gtv_zEGnhw" coreExpressionId="com.b3dgs.lionengine.editor.projectiles-folder.isProjectile"/>
-                  </children>
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_R97LoEmxEeSY5e88dCWRPA" elementId="" label="%menu.edit-folder-type" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/folder-type-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.FolderTypeEditHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_R97LoUmxEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.folder-type.category"/>
                   </children>

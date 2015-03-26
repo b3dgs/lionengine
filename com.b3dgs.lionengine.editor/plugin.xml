@@ -92,18 +92,6 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.projectiles-folder.addProjectile">
-         <test
-               property="com.b3dgs.lionengine.editor.projectilesFolderTester.addProjectile">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.projectiles-folder.isProjectile">
-         <test
-               property="com.b3dgs.lionengine.editor.projectilesFolderTester.isProjectile">
-         </test>
-      </definition>
-      <definition
             id="com.b3dgs.lionengine.editor.tile-collision-editor.test">
          <test
                property="com.b3dgs.lionengine.editor.mapImplementationTester.test">
@@ -223,13 +211,6 @@
             id="com.b3dgs.lionengine.editor.entitiesFolderTester"
             namespace="com.b3dgs.lionengine.editor.objectsFolderTester"
             properties="addObject,isObject"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.ProjectilesFolderTester"
-            id="com.b3dgs.lionengine.editor.projectilesFolderTester"
-            namespace="com.b3dgs.lionengine.editor.projectilesFolderTester"
-            properties="addProjectile,isProjectile"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
