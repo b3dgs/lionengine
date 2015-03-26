@@ -125,7 +125,6 @@ public class MapTileGame
         sheets = new HashMap<>();
         groups = new HashMap<>();
         features = new Features<>(MapTileFeature.class);
-        renderer = this;
         sheetsConfig = null;
     }
 
@@ -252,6 +251,10 @@ public class MapTileGame
             {
                 tiles.get(v).add(h, null);
             }
+        }
+        if (renderer == null)
+        {
+            renderer = this;
         }
     }
 
