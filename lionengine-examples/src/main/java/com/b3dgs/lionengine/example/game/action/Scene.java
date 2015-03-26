@@ -58,6 +58,8 @@ class Scene
     private final Camera camera = new Camera();
     /** Actions handler. */
     private final Handler handler = new Handler();
+    /** Cursor reference. */
+    private final Cursor cursor = new Cursor();
     /** Text reference. */
     private final Text text = Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
     /** Map reference. */
@@ -66,8 +68,6 @@ class Scene
     private final Keyboard keyboard;
     /** Mouse reference. */
     private final Mouse mouse;
-    /** Cursor reference. */
-    private final Cursor cursor;
     /** HUD image. */
     private final Image hud;
 
@@ -81,7 +81,6 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        cursor = new Cursor(mouse, Medias.create("cursor.png"));
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
     }
@@ -90,12 +89,13 @@ class Scene
     protected void load()
     {
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
-
         hud.load(false);
         text.setLocation(74, 192);
+        cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load(false);
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
+        cursor.setInputDevice(mouse);
         cursor.setViewer(camera);
 
         camera.setView(72, 12, 240, 176);

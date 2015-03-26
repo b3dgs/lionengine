@@ -49,6 +49,8 @@ class Scene
 
     /** Camera reference. */
     private final Camera camera = new Camera();
+    /** Cursor reference. */
+    private final Cursor cursor = new Cursor();
     /** Map reference. */
     private final MapTile map = new MapTileGame(16, 16, camera);
     /** Text reference. */
@@ -57,8 +59,6 @@ class Scene
     private final Keyboard keyboard;
     /** Mouse reference. */
     private final Mouse mouse;
-    /** Cursor reference. */
-    private final Cursor cursor;
 
     /**
      * Constructor.
@@ -70,7 +70,6 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        cursor = new Cursor(mouse, Medias.create("cursor.png"));
         setSystemCursorVisible(false);
     }
 
@@ -102,9 +101,11 @@ class Scene
     protected void load()
     {
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load(false);
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
+        cursor.setInputDevice(mouse);
         cursor.setViewer(camera);
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);

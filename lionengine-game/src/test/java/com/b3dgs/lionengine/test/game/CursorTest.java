@@ -63,7 +63,7 @@ public class CursorTest
 
         try
         {
-            final Cursor cursor = new Cursor(mouse, null);
+            final Cursor cursor = new Cursor();
             Assert.assertNotNull(cursor);
             Assert.fail();
         }
@@ -72,9 +72,11 @@ public class CursorTest
             // Success
         }
 
-        final Cursor cursor = new Cursor(mouse, new MediaMock("cursor.png"));
+        final Cursor cursor = new Cursor();
+        cursor.addImage(0, new MediaMock("cursor.png"));
         cursor.setArea(0, 0, 320, 240);
         cursor.setSensibility(1.0, 2.0);
+        cursor.setInputDevice(mouse);
         cursor.setSurfaceId(0);
 
         cursor.update(1.0);
@@ -93,7 +95,7 @@ public class CursorTest
         Assert.assertEquals(1.0, cursor.getSensibilityHorizontal(), 0.000001);
         Assert.assertEquals(2.0, cursor.getSensibilityVertical(), 0.000001);
         cursor.setRenderingOffset(0, 0);
-        Assert.assertEquals(0, cursor.getSurfaceId());
+        Assert.assertEquals(Integer.valueOf(0), cursor.getSurfaceId());
         Assert.assertEquals(0, cursor.getClick());
         cursor.render(g);
     }

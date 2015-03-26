@@ -17,9 +17,8 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -52,6 +51,16 @@ import com.b3dgs.lionengine.drawable.Image;
  * <li><code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
  * </ul>
  * </p>
+ * <p>
+ * Usage example:
+ * </p>
+ * <ul>
+ * <li>Create the cursor with {@link #Cursor()}.</li>
+ * <li>Add images with {@link #addImage(int, Media)}.</li>
+ * <li>Load added images {@link #load(boolean)}.</li>
+ * <li>Set the input to use {@link #setInputDevice(InputDevicePointer)}.</li>
+ * <li>Change the cursor image if when needed with {@link #setSurfaceId(int)}.</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see InputDevicePointer
@@ -60,10 +69,13 @@ import com.b3dgs.lionengine.drawable.Image;
 public class Cursor
         implements Localizable, Tiled, Updatable, Renderable
 {
-    /** Pointer reference. */
-    private final InputDevicePointer pointer;
+    /** Surface ID not found error. */
+    private static final String ERROR_SURFACE_ID = "Undefined surface id:";
+
     /** Surface reference. */
-    private final Image[] surface;
+    private final Map<Integer, Image> surfaces;
+    /** Pointer reference. */
+    private InputDevicePointer pointer;
     /** Viewer reference. */
     private Viewer viewer;
     /** Cursor screen location x. */
@@ -93,7 +105,9 @@ public class Cursor
     /** Maximum location y. */
     private int maxY;
     /** Surface id. */
-    private int surfaceId;
+    private Integer surfaceId;
+    /** Current surface. */
+    private Image surface;
     /** Rendering horizontal offset. */
     private int offsetX;
     /** Rendering vertical offset. */
@@ -104,64 +118,77 @@ public class Cursor
     private int offY;
 
     /**
-     * Create a cursor fixed inside the resolution and load its images.
-     * 
-     * @param pointer The pointer reference (must not be <code>null</code>).
-     * @param media The cursor media.
-     * @param others The cursor medias list (containing the different cursor surfaces path).
-     * @throws LionEngineException If invalid arguments or an error occurred when reading the image.
+     * Create a cursor.
      */
-    public Cursor(InputDevicePointer pointer, Media media, Media... others) throws LionEngineException
+    public Cursor()
     {
-        Check.notNull(pointer);
-        Check.notNull(media);
-
-        this.pointer = pointer;
+        surfaces = new HashMap<>();
         x = 0.0;
         y = 0.0;
         sensibilityHorizontal = 1.0;
         sensibilityVertical = 1.0;
-
-        final Collection<Media> images = new ArrayList<>(1 + others.length);
-        images.add(media);
-        images.addAll(Arrays.asList(others));
-        surface = new Image[images.size()];
-
-        int i = 0;
-        for (final Media current : images)
-        {
-            surface[i] = Drawable.loadImage(current);
-            i++;
-        }
-
         sync = true;
         gridWidth = 1;
         gridHeight = 1;
-        surfaceId = 0;
         offsetX = 0;
         offsetY = 0;
     }
 
     /**
-     * Load the cursor images.
+     * Add a cursor image. Once there are no more images to add, a call to {@link #load(boolean)} will be necessary.
+     * 
+     * @param id The cursor id.
+     * @param media The cursor media.
+     * @throws LionEngineException If invalid media.
+     */
+    public void addImage(int id, Media media) throws LionEngineException
+    {
+        final Integer key = Integer.valueOf(id);
+        surfaces.put(key, Drawable.loadImage(media));
+        if (surfaceId == null)
+        {
+            surfaceId = key;
+        }
+    }
+
+    /**
+     * Load the cursor images. Must be called only one time.
      * 
      * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      */
     public void load(boolean alpha)
     {
-        for (final Image current : surface)
+        for (final Image current : surfaces.values())
         {
             current.load(alpha);
+            if (surface == null)
+            {
+                surface = current;
+            }
         }
+    }
+
+    /**
+     * Set the input device pointer to use.
+     * 
+     * @param pointer The pointer reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid pointer.
+     */
+    public void setInputDevice(InputDevicePointer pointer) throws LionEngineException
+    {
+        Check.notNull(pointer);
+        this.pointer = pointer;
     }
 
     /**
      * Set the viewer reference.
      * 
      * @param viewer The viewer reference.
+     * @throws LionEngineException If invalid viewer.
      */
-    public void setViewer(Viewer viewer)
+    public void setViewer(Viewer viewer) throws LionEngineException
     {
+        Check.notNull(pointer);
         this.viewer = viewer;
     }
 
@@ -202,11 +229,21 @@ public class Cursor
     /**
      * Set the surface id to render with {@link #render(Graphic)}.
      * 
-     * @param surfaceId The surface id number (start at 0 which is default value).
+     * @param surfaceId The surface id number (must be strictly positive).
+     * @throws LionEngineException If invalid id value or not found.
      */
-    public void setSurfaceId(int surfaceId)
+    public void setSurfaceId(int surfaceId) throws LionEngineException
     {
-        this.surfaceId = Math.max(0, surfaceId);
+        Check.superiorOrEqual(surfaceId, 0);
+        this.surfaceId = Integer.valueOf(surfaceId);
+        if (surfaces.containsKey(this.surfaceId))
+        {
+            surface = surfaces.get(this.surfaceId);
+        }
+        else
+        {
+            throw new LionEngineException(ERROR_SURFACE_ID + surfaceId);
+        }
     }
 
     /**
@@ -289,7 +326,7 @@ public class Cursor
      * 
      * @return The current surface id.
      */
-    public int getSurfaceId()
+    public Integer getSurfaceId()
     {
         return surfaceId;
     }
@@ -351,15 +388,18 @@ public class Cursor
     @Override
     public void update(double extrp)
     {
-        if (sync)
+        if (pointer != null)
         {
-            x = pointer.getX();
-            y = pointer.getY();
-        }
-        else
-        {
-            x += pointer.getMoveX() * sensibilityHorizontal * extrp;
-            y += pointer.getMoveY() * sensibilityVertical * extrp;
+            if (sync)
+            {
+                x = pointer.getX();
+                y = pointer.getY();
+            }
+            else
+            {
+                x += pointer.getMoveX() * sensibilityHorizontal * extrp;
+                y += pointer.getMoveY() * sensibilityVertical * extrp;
+            }
         }
         if (viewer != null)
         {
@@ -371,7 +411,7 @@ public class Cursor
         y = UtilMath.fixBetween(y, minY, maxY);
         viewX = x + offX;
         viewY = (viewer != null ? viewer.getHeight() : 0) - y + offY;
-        for (final Image current : surface)
+        for (final Image current : surfaces.values())
         {
             current.setLocation(x + offsetX, y + offsetY);
         }
@@ -384,7 +424,7 @@ public class Cursor
     @Override
     public void render(Graphic g)
     {
-        surface[surfaceId].render(g);
+        surface.render(g);
     }
 
     /*
