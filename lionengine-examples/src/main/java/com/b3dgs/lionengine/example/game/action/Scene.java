@@ -61,7 +61,7 @@ class Scene
     /** Text reference. */
     private final Text text = Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera, 16, 16);
+    private final MapTile map = new MapTileGame(16, 16, camera);
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Mouse reference. */

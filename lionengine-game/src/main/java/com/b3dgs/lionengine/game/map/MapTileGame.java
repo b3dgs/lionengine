@@ -80,13 +80,13 @@ public class MapTileGame
     private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
 
     /** Sheets list. */
-    private final Map<Integer, SpriteTiled> sheets;
+    private final Map<Integer, SpriteTiled> sheets = new HashMap<>();
+    /** Features list. */
+    private final Features<MapTileFeature> features = new Features<>(MapTileFeature.class);
+    /** Tile groups list. */
+    private final Map<String, TileGroup> groups = new HashMap<>();
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Features list. */
-    private final Features<MapTileFeature> features;
-    /** Tile groups list. */
-    private final Map<String, TileGroup> groups;
     /** Sheet configuration file. */
     private Media sheetsConfig;
     /** Groups configuration file. */
@@ -107,24 +107,41 @@ public class MapTileGame
     private MapTileRenderer renderer;
 
     /**
-     * Create a map tile.
+     * Create a map tile. Rendering is not enable and must not be used ({@link #render(Graphic)}). Use
+     * {@link #MapTileGame(int, int, Viewer)} instead if rendering will be used.
      * 
-     * @param viewer The viewer reference.
      * @param tileWidth The tile width (must be strictly positive).
      * @param tileHeight The tile height (must be strictly positive).
      * @throws LionEngineException If invalid tile size.
      */
-    public MapTileGame(Viewer viewer, int tileWidth, int tileHeight) throws LionEngineException
+    public MapTileGame(int tileWidth, int tileHeight) throws LionEngineException
     {
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
 
-        this.viewer = viewer;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        sheets = new HashMap<>();
-        groups = new HashMap<>();
-        features = new Features<>(MapTileFeature.class);
+        sheetsConfig = null;
+        viewer = null;
+    }
+
+    /**
+     * Create a map tile.
+     * 
+     * @param tileWidth The tile width (must be strictly positive).
+     * @param tileHeight The tile height (must be strictly positive).
+     * @param viewer The viewer reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid tile size or undefined viewer.
+     */
+    public MapTileGame(int tileWidth, int tileHeight, Viewer viewer) throws LionEngineException
+    {
+        Check.superiorStrict(tileWidth, 0);
+        Check.superiorStrict(tileHeight, 0);
+        Check.notNull(viewer);
+
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+        this.viewer = viewer;
         sheetsConfig = null;
     }
 

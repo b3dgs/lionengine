@@ -39,7 +39,7 @@ class World
     /** Camera reference. */
     private final Camera camera = new Camera();
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera, 16, 16);
+    private final MapTile map = new MapTileGame(16, 16, camera);
 
     /**
      * @see WorldGame#WorldGame(Config)

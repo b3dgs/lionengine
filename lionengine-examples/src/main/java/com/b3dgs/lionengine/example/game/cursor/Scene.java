@@ -50,7 +50,7 @@ class Scene
     /** Camera reference. */
     private final Camera camera = new Camera();
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera, 16, 16);
+    private final MapTile map = new MapTileGame(16, 16, camera);
     /** Text reference. */
     private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
     /** Keyboard reference. */
