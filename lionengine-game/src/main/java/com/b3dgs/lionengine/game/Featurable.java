@@ -50,4 +50,12 @@ public interface Featurable<F>
      * @return The supported features.
      */
     Iterable<? extends F> getFeatures();
+
+    /**
+     * Check a feature existence from its type.
+     * 
+     * @param feature The feature type.
+     * @return <code>true</code> if feature exists, <code>false</code> else.
+     */
+    <C extends F> boolean hasFeature(Class<C> feature);
 }

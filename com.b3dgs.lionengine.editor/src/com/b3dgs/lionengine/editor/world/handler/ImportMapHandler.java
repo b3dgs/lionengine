@@ -44,18 +44,18 @@ public class ImportMapHandler
     /**
      * Import map from its level rip and tile sheets.
      * 
-     * @param level The level rip.
-     * @param pattern The tile sheets directory.
+     * @param levelrip The level rip.
+     * @param sheetsConfig The tile sheets directory.
+     * @param groupsConfig The groups configuration.
      * @param partService The part service reference.
      */
-    private static void importMap(EPartService partService, Media level, Media pattern)
+    private static void importMap(EPartService partService, Media levelrip, Media sheetsConfig, Media groupsConfig)
     {
-        Verbose.info(ImportMapHandler.VERBOSE_IMPORT_LEVEL, level.getPath(), ImportMapHandler.VERBOSE_USING_TILESHEETS,
-                pattern.getPath());
+        Verbose.info(ImportMapHandler.VERBOSE_IMPORT_LEVEL, levelrip.getPath(),
+                ImportMapHandler.VERBOSE_USING_TILESHEETS, sheetsConfig.getPath());
 
         final MapTile map = WorldViewModel.INSTANCE.getMap();
-        map.create(level, pattern);
-        map.createCollisionDraw();
+        map.create(levelrip, sheetsConfig, groupsConfig);
     }
 
     /**
@@ -72,9 +72,10 @@ public class ImportMapHandler
 
         if (importMapDialog.isFound())
         {
-            final Media level = importMapDialog.getLevelRipLocation();
-            final Media pattern = importMapDialog.getPatternsLocation();
-            ImportMapHandler.importMap(partService, level, pattern);
+            final Media levelrip = importMapDialog.getLevelRipLocation();
+            final Media sheetsConfig = importMapDialog.getSheetsConfigLocation();
+            final Media groupsConfig = importMapDialog.getGroupsConfigLocation();
+            ImportMapHandler.importMap(partService, levelrip, sheetsConfig, groupsConfig);
 
             final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
             part.update();

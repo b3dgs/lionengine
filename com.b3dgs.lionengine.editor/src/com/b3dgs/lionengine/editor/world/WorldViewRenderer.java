@@ -47,8 +47,12 @@ import com.b3dgs.lionengine.editor.palette.PaletteType;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.TileCollision;
+import com.b3dgs.lionengine.game.object.ComponentRenderer;
+import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 import com.b3dgs.lionengine.geom.Point;
 
 /**
@@ -165,6 +169,8 @@ public class WorldViewRenderer
         tileSelectionListeners = new ArrayList<>();
         model = WorldViewModel.INSTANCE;
         handlerObject = new Handler();
+        handlerObject.addRenderable(new ComponentRenderer());
+        handlerObject.addUpdatable(new ComponentUpdater());
         selection = new Selection();
         objectControl = new ObjectControl(handlerObject);
         gridEnabled = true;
@@ -357,7 +363,7 @@ public class WorldViewRenderer
      */
     protected void render(Graphic g, Camera camera, MapTile map, int areaX, int areaY)
     {
-        renderMap(g, camera, map, areaX, areaY);
+        renderMap(g, map, areaX, areaY);
         renderEntities(g);
         renderOverAndSelectedEntities(g);
         if (selectedTile != null)
@@ -384,19 +390,18 @@ public class WorldViewRenderer
      * Render the map.
      * 
      * @param g The graphic output.
-     * @param camera The camera reference.
      * @param map The map reference.
      * @param areaX The horizontal rendering area.
      * @param areaY The vertical rendering area.
      */
-    protected void renderMap(Graphic g, Camera camera, MapTile map, int areaX, int areaY)
+    protected void renderMap(Graphic g, MapTile map, int areaX, int areaY)
     {
         g.setColor(ColorRgba.BLUE);
         g.drawRect(0, 0, areaX, areaY, true);
 
         if (map.getSheetsNumber() > 0)
         {
-            map.render(g, camera);
+            map.render(g);
         }
     }
 
@@ -408,7 +413,7 @@ public class WorldViewRenderer
     protected void renderEntities(Graphic g)
     {
         handlerObject.update(1.0);
-        handlerObject.render(g, model.getCamera());
+        handlerObject.render(g);
     }
 
     /**
@@ -638,12 +643,12 @@ public class WorldViewRenderer
         final MapTile map = model.getMap();
         final int th = map.getTileHeight();
 
-        for (final ObjectGame object : handlerObject.getObjects())
+        for (final Transformable object : handlerObject.get(Transformable.class))
         {
             final int sx = (int) object.getX();
             final int sy = (int) object.getY();
 
-            if (objectControl.isOver(object) || objectControl.isSelected(object))
+            if (objectControl.isOver(object.getOwner()) || objectControl.isSelected(object.getOwner()))
             {
                 g.setColor(WorldViewRenderer.COLOR_ENTITY_SELECTION);
                 final int x = sx - (int) camera.getX() - object.getWidth() / 2;
@@ -671,9 +676,11 @@ public class WorldViewRenderer
             for (int tx = 0; tx < map.getInTileWidth(); tx++)
             {
                 final Tile tile = map.getTile(tx, ty);
-                if (tile != null)
+                if (tile != null && tile.hasFeature(TileCollision.class)
+                        && selectedTile.hasFeature(TileCollision.class))
                 {
-                    if (tile.getCollision() == selectedTile.getCollision())
+                    if (tile.getFeature(TileCollision.class).getCollisionFormulas() == selectedTile.getFeature(
+                            TileCollision.class).getCollisionFormulas())
                     {
                         g.drawRect((int) camera.getViewpointX(tile.getX()), (int) camera.getViewpointY(tile.getY())
                                 - th, tile.getWidth(), tile.getHeight(), true);
@@ -767,7 +774,12 @@ public class WorldViewRenderer
         objectControl.stopDragging();
         for (final ObjectGame object : objectControl.getSelectedEnties())
         {
-            objectControl.setObjectLocation(object, (int) object.getX(), (int) object.getY(), -1);
+            if (object.hasTrait(Transformable.class))
+            {
+                final Transformable transformable = object.getTrait(Transformable.class);
+                objectControl.setObjectLocation(transformable, (int) transformable.getX(), (int) transformable.getY(),
+                        -1);
+            }
         }
         click = 0;
     }

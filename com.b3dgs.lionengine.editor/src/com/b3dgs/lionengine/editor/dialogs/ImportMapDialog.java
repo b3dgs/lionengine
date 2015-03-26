@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Represents the import map dialog.
@@ -52,12 +51,16 @@ public class ImportMapDialog
 
     /** Level rip location. */
     Text levelRipLocationText;
-    /** Patterns location. */
-    Text patternsLocationText;
+    /** Sheets location. */
+    Text sheetsLocationText;
+    /** Groups location. */
+    Text groupsLocationText;
     /** Level rip file. */
     Media levelRip;
-    /** Patterns directory. */
-    Media patternsDirectory;
+    /** Sheets config file. */
+    Media sheetsConfig;
+    /** Groups config file. */
+    Media groupsConfig;
     /** Found. */
     private boolean found;
 
@@ -87,13 +90,23 @@ public class ImportMapDialog
     }
 
     /**
-     * Get the patterns location.
+     * Get the sheets config location.
      * 
-     * @return The patterns location.
+     * @return The sheets config location.
      */
-    public Media getPatternsLocation()
+    public Media getSheetsConfigLocation()
     {
-        return patternsDirectory;
+        return sheetsConfig;
+    }
+
+    /**
+     * Get the groups config location.
+     * 
+     * @return The group config location.
+     */
+    public Media getGroupsConfigLocation()
+    {
+        return groupsConfig;
     }
 
     /**
@@ -132,36 +145,66 @@ public class ImportMapDialog
             setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorLevelRip);
         }
         updateTipsLabel();
-        finish.setEnabled(levelRip != null && patternsDirectory != null);
+        finish.setEnabled(levelRip != null && sheetsConfig != null);
     }
 
     /**
-     * Called when the pattern location has been selected.
+     * Called when the sheets config location has been selected.
      * 
-     * @param path The selected pattern location path.
+     * @param path The selected sheets config location path.
      */
-    void onPatternLocationSelected(File path)
+    void onSheetsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        patternsLocationText.setText(path.getAbsolutePath());
-        boolean validPattern = false;
+        sheetsLocationText.setText(path.getAbsolutePath());
+        boolean validSheets = false;
         try
         {
-            patternsDirectory = project.getResourceMedia(new File(patternsLocationText.getText()));
-            final File patterns = new File(patternsDirectory.getFile(), MapTile.SHEETS_FILE_NAME);
-            if (!patterns.isFile())
+            sheetsConfig = project.getResourceMedia(new File(sheetsLocationText.getText()));
+            final File sheets = sheetsConfig.getFile();
+            if (!sheets.isFile())
             {
-                setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorPatterns);
+                setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorSheets);
             }
-            validPattern = patterns.isFile();
+            validSheets = sheets.isFile();
         }
         catch (final LionEngineException exception)
         {
-            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorPatterns);
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorSheets);
         }
         updateTipsLabel();
 
-        final boolean isValid = levelRip != null && patternsDirectory != null && validPattern;
+        final boolean isValid = levelRip != null && sheetsConfig != null && validSheets;
+        finish.setEnabled(isValid);
+    }
+
+    /**
+     * Called when the groups config location has been selected.
+     * 
+     * @param path The selected groups config location path.
+     */
+    void onGroupsConfigLocationSelected(File path)
+    {
+        final Project project = Project.getActive();
+        groupsLocationText.setText(path.getAbsolutePath());
+        boolean validGroups = false;
+        try
+        {
+            groupsConfig = project.getResourceMedia(new File(groupsLocationText.getText()));
+            final File groups = groupsConfig.getFile();
+            if (!groups.isFile())
+            {
+                setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorGroups);
+            }
+            validGroups = groups.isFile();
+        }
+        catch (final LionEngineException exception)
+        {
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorGroups);
+        }
+        updateTipsLabel();
+
+        final boolean isValid = levelRip != null && groupsConfig != null && validGroups;
         finish.setEnabled(isValid);
     }
 
@@ -214,14 +257,18 @@ public class ImportMapDialog
     {
         final Composite levelRipArea = new Composite(content, SWT.NONE);
         levelRipArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        levelRipArea.setLayout(new GridLayout(3, false));
+        levelRipArea.setLayout(new GridLayout(4, false));
 
         final Label locationLabel = new Label(levelRipArea, SWT.NONE);
-        locationLabel.setText(Messages.ImportMapDialog_PatternsLocation);
+        locationLabel.setText(Messages.ImportMapDialog_SheetsLocation);
 
-        patternsLocationText = new Text(levelRipArea, SWT.BORDER);
-        patternsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        patternsLocationText.setEditable(false);
+        sheetsLocationText = new Text(levelRipArea, SWT.BORDER);
+        sheetsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        sheetsLocationText.setEditable(false);
+
+        groupsLocationText = new Text(levelRipArea, SWT.BORDER);
+        groupsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        groupsLocationText.setEditable(false);
 
         final Button browse = UtilSwt.createButton(levelRipArea, Messages.AbstractDialog_Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
@@ -233,7 +280,7 @@ public class ImportMapDialog
                 final File folder = Tools.selectResourceFolder(dialog);
                 if (folder != null)
                 {
-                    onPatternLocationSelected(folder);
+                    onSheetsConfigLocationSelected(folder);
                 }
             }
         });
@@ -253,6 +300,6 @@ public class ImportMapDialog
     @Override
     protected void onFinish()
     {
-        found = levelRip != null && patternsDirectory != null;
+        found = levelRip != null && sheetsConfig != null;
     }
 }

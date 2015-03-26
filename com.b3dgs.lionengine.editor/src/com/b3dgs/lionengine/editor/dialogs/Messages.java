@@ -79,14 +79,18 @@ public final class Messages
     public static String ImportMapDialog_HeaderDesc;
     /** Level rip location. */
     public static String ImportMapDialog_LevelRipLocation;
-    /** Patterns location. */
-    public static String ImportMapDialog_PatternsLocation;
+    /** Sheets location. */
+    public static String ImportMapDialog_SheetsLocation;
+    /** Groups location. */
+    public static String ImportMapDialog_GroupsLocation;
     /** Level rip file filter. */
     public static String ImportMapDialog_FileFilter;
     /** Error level rip. */
     public static String ImportMapDialog_ErrorLevelRip;
-    /** Error patterns. */
-    public static String ImportMapDialog_ErrorPatterns;
+    /** Error sheets. */
+    public static String ImportMapDialog_ErrorSheets;
+    /** Error groups. */
+    public static String ImportMapDialog_ErrorGroups;
     /** Edit tile sheets dialog title. */
     public static String EditTilesheetsDialog_Title;
     /** Edit tile sheets dialog title header. */

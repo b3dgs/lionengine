@@ -415,7 +415,7 @@ public class FactoryView
 
         createBottom(parent);
 
-        final File objectsPath = new File(Project.getActive().getResourcesPath(), factory.getFolder());
+        final File objectsPath = Project.getActive().getResourcesPath();
         try
         {
             load(factory, objectsPath, middle);

@@ -594,6 +594,12 @@ public class MapTileGame
     }
 
     @Override
+    public <C extends MapTileFeature> boolean hasFeature(Class<C> feature)
+    {
+        return features.contains(feature);
+    }
+
+    @Override
     public int getSheetsNumber()
     {
         return sheets.size();

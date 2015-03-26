@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -104,15 +105,15 @@ public class ObjectControl
         }
         final Camera camera = model.getCamera();
         final int th = map.getTileHeight();
-        final int areaY = UtilMath.getRounded(camera.getViewHeight(), th);
+        final int areaY = UtilMath.getRounded(camera.getHeight(), th);
         final double ox = oldMx + camera.getX() + getMovingOffsetX();
         final double oy = areaY - oldMy + camera.getY() - 1 + getMovingOffsetY();
         final double x = mx + camera.getX() + getMovingOffsetX();
         final double y = areaY - my + camera.getY() - 1 + getMovingOffsetY();
 
-        for (final ObjectGame object : handlerObject.getObjects())
+        for (final Transformable object : handlerObject.get(Transformable.class))
         {
-            if (isSelected(object))
+            if (isSelected(object.getOwner()))
             {
                 object.teleport(object.getX() + x - ox, object.getY() + y - oy);
             }
@@ -149,10 +150,13 @@ public class ObjectControl
             final MapTile map = model.getMap();
             final Camera camera = model.getCamera();
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
-            final Factory<?> factoryEntity = model.getFactory();
+            final Factory factoryEntity = model.getFactory();
             final ObjectGame object = factoryEntity.create(media);
 
-            setObjectLocation(object, tile.getX(), tile.getY(), 1);
+            if (object.hasTrait(Transformable.class))
+            {
+                setObjectLocation(object.getTrait(Transformable.class), tile.getX(), tile.getY(), 1);
+            }
             handlerObject.add(object);
         }
     }
@@ -182,10 +186,10 @@ public class ObjectControl
         final MapTile map = model.getMap();
         final Camera camera = model.getCamera();
 
-        for (final ObjectGame object : handlerObject.getObjects())
+        for (final Transformable object : handlerObject.get(Transformable.class))
         {
             final int th = map.getTileHeight();
-            final int height = camera.getViewHeight();
+            final int height = camera.getHeight();
             final int offy = height - UtilMath.getRounded(height, th);
             final int sx = UtilMath.getRounded((int) selectionArea.getMinX(), map.getTileWidth());
             final int sy = UtilMath.getRounded(height - (int) selectionArea.getMinY() - offy, th);
@@ -194,7 +198,7 @@ public class ObjectControl
 
             if (hitObject(object, sx, sy, ex, ey))
             {
-                setObjectSelection(object, true);
+                setObjectSelection(object.getOwner(), true);
             }
         }
     }
@@ -204,7 +208,7 @@ public class ObjectControl
      */
     public void unSelectEntities()
     {
-        for (final ObjectGame object : handlerObject.getObjects())
+        for (final ObjectGame object : handlerObject.values())
         {
             setObjectSelection(object, false);
         }
@@ -240,7 +244,7 @@ public class ObjectControl
      * @param y The vertical location.
      * @param side 1 for place, -1 for move.
      */
-    public void setObjectLocation(ObjectGame object, int x, int y, int side)
+    public void setObjectLocation(Transformable object, int x, int y, int side)
     {
         final MapTile map = model.getMap();
         final int tw = map.getTileWidth();
@@ -261,15 +265,14 @@ public class ObjectControl
         final MapTile map = model.getMap();
         final Camera camera = model.getCamera();
         final int x = UtilMath.getRounded(mx, map.getTileWidth());
-        final int y = UtilMath.getRounded(camera.getViewHeight() - my - 1, map.getTileHeight());
-        for (final ObjectGame object : handlerObject.getObjects())
+        final int y = UtilMath.getRounded(camera.getHeight() - my - 1, map.getTileHeight());
+        for (final Transformable object : handlerObject.get(Transformable.class))
         {
             if (hitObject(object, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
             {
-                return object;
+                return object.getOwner();
             }
         }
-
         return null;
     }
 
@@ -281,7 +284,7 @@ public class ObjectControl
     public Collection<ObjectGame> getSelectedEnties()
     {
         final Collection<ObjectGame> list = new ArrayList<>(0);
-        for (final ObjectGame object : handlerObject.getObjects())
+        for (final ObjectGame object : handlerObject.values())
         {
             if (isSelected(object))
             {
@@ -368,7 +371,7 @@ public class ObjectControl
      */
     public boolean hasSelection()
     {
-        for (final ObjectGame object : handlerObject.getObjects())
+        for (final ObjectGame object : handlerObject.values())
         {
             if (isSelected(object))
             {
@@ -388,7 +391,7 @@ public class ObjectControl
      * @param y2 Second point y.
      * @return <code>true</code> if hit, <code>false</code> else.
      */
-    private boolean hitObject(ObjectGame object, int x1, int y1, int x2, int y2)
+    private boolean hitObject(Transformable object, int x1, int y1, int x2, int y2)
     {
         final MapTile map = model.getMap();
         final Camera camera = model.getCamera();

@@ -161,4 +161,10 @@ public class TileGame
     {
         return features.getAll();
     }
+
+    @Override
+    public <C extends TileFeature> boolean hasFeature(Class<C> feature)
+    {
+        return features.contains(feature);
+    }
 }
