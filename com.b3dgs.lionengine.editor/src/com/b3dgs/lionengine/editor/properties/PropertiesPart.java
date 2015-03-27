@@ -382,7 +382,7 @@ public class PropertiesPart
     private boolean updateFrames(TreeItem item, Configurer configurer)
     {
         final InputDialog frames = new InputDialog(properties.getShell(), "Frames", "Frames number", "1",
-                new InputValidator("[1-9][0-9]*", "Invalid frames number !"));
+                new InputValidator(InputValidator.INTEGER_POSITIVE_MATCH, "Invalid frames number !"));
         if (frames.open() == Window.OK)
         {
             final XmlNode root = configurer.getRoot();

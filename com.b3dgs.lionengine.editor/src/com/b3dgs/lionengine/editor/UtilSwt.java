@@ -28,6 +28,8 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -37,6 +39,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -141,6 +144,27 @@ public final class UtilSwt
             }
         });
         return combo;
+    }
+
+    /**
+     * Create a verify listener.
+     * 
+     * @param text The text to verify.
+     * @param match The expected match.
+     * @return The verify listener.
+     */
+    public static VerifyListener createVerify(final Text text, final String match)
+    {
+        return new VerifyListener()
+        {
+            @Override
+            public void verifyText(VerifyEvent event)
+            {
+                final String init = text.getText();
+                final String newText = init.substring(0, event.start) + event.text + init.substring(event.end);
+                event.doit = newText.matches(match) || newText.isEmpty();
+            }
+        };
     }
 
     /**

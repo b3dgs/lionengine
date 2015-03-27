@@ -31,6 +31,8 @@ public class InputValidator
     public static final String NAME_MATCH = "[a-zA-z0-9]+";
     /** Must match a double. */
     public static final String DOUBLE_MATCH = "[0-9]{1,13}(\\.[0-9]*)?";
+    /** Must match a positive integer. */
+    public static final String INTEGER_POSITIVE_MATCH = "[1-9][0-9]*";
 
     /** Expected matches. */
     private final String matches;
