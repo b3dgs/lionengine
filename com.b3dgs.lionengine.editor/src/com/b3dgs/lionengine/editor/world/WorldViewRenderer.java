@@ -729,14 +729,7 @@ public class WorldViewRenderer
         final GC gc = paintEvent.gc;
         final Graphic g = Graphics.createGraphic();
         g.setGraphic(gc);
-        if (model.getMap() != null)
-        {
-            render(g, paintEvent.width, paintEvent.height);
-        }
-        else
-        {
-            gc.drawString(Messages.WorldView_NoMapImpl, 0, 0, true);
-        }
+        render(g, paintEvent.width, paintEvent.height);
     }
 
     /*

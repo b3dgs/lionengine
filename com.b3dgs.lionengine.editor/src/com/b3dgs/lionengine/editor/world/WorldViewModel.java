@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.palette.PaletteType;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**
@@ -49,7 +50,12 @@ public enum WorldViewModel
      */
     private WorldViewModel()
     {
+        factory = new Factory();
         camera = new Camera();
+        map = new MapTileGame(16, 16, camera);
+
+        factory.addService(camera);
+        factory.addService(map);
     }
 
     /**

@@ -74,15 +74,6 @@ public class WorldViewPart
 
         worldViewRenderer = checkRendererExtensionPoint();
         composite.addPaintListener(worldViewRenderer);
-
-        parent.getDisplay().asyncExec(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                setToolBarEnabled(false);
-            }
-        });
     }
 
     /**
