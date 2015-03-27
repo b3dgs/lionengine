@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.collision;
 
-import java.util.Map;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.game.Collision;
@@ -55,7 +55,7 @@ public class EntityCollisionList
     public void loadCollisions()
     {
         final ConfigCollisions configCollisions = ConfigCollisions.create(configurer);
-        final Map<String, Collision> collisions = configCollisions.getCollisions();
+        final Collection<Collision> collisions = configCollisions.getCollisions();
         loadObjects(collisions);
     }
 
@@ -78,14 +78,14 @@ public class EntityCollisionList
     @Override
     protected Collision copyObject(Collision collision)
     {
-        return new Collision(collision.getOffsetX(), collision.getOffsetY(), collision.getWidth(),
+        return new Collision(collision.getName(), collision.getOffsetX(), collision.getOffsetY(), collision.getWidth(),
                 collision.getHeight(), collision.hasMirror());
     }
 
     @Override
     protected Collision createDefaultObject()
     {
-        return new Collision(0, 0, 0, 0, false);
+        return new Collision("default", 0, 0, 0, 0, false);
     }
 
     @Override

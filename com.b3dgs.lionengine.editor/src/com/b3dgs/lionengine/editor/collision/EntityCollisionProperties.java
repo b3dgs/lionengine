@@ -102,9 +102,9 @@ public class EntityCollisionProperties
     }
 
     @Override
-    protected Collision createObject()
+    protected Collision createObject(String name)
     {
-        final Collision collision = new Collision(Integer.parseInt(offsetX.getText()), Integer.parseInt(offsetY
+        final Collision collision = new Collision(name, Integer.parseInt(offsetX.getText()), Integer.parseInt(offsetY
                 .getText()), Integer.parseInt(width.getText()), Integer.parseInt(height.getText()),
                 mirror.getSelection());
         return collision;

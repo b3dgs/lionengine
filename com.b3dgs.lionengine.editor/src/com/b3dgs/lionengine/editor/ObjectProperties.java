@@ -114,9 +114,10 @@ public abstract class ObjectProperties<T extends Nameable>
     /**
      * Called when confirm button pressed.
      * 
+     * @param name The item name.
      * @return The created object from the current properties values.
      */
-    protected abstract T createObject();
+    protected abstract T createObject(String name);
 
     /**
      * Create the animation data area.
@@ -174,7 +175,7 @@ public abstract class ObjectProperties<T extends Nameable>
                     if (items.length > 0)
                     {
                         final TreeItem selection = items[0];
-                        final T object = createObject();
+                        final T object = createObject(selection.getText());
                         objectList.update(selection, object);
                     }
                 }

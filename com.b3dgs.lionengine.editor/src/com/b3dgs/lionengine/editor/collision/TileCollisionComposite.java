@@ -35,8 +35,9 @@ import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.collision.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 
 /**
  * Represents a tile collision composite, allowing to edit the tile collision data.
@@ -70,8 +71,8 @@ public class TileCollisionComposite
     Text min;
     /** Range max. */
     Text max;
-    /** Selected function. */
-    CollisionFunction selectedFunction;
+    /** Selected formula. */
+    CollisionFormula selectedFormula;
 
     /**
      * Create a tile collision composite and associate its view. It creates the formula area.
@@ -99,23 +100,23 @@ public class TileCollisionComposite
     }
 
     /**
-     * Set the selected tile function.
+     * Set the selected tile formula.
      * 
-     * @param function The selected function.
+     * @param formula The selected formula.
      */
-    public void setSelectedFunction(CollisionFunction function)
+    public void setSelectedFormula(CollisionFormula formula)
     {
-        if (function != null)
+        if (formula != null)
         {
-            referential.setText(Messages.TileCollisionComposite_Formula + function.getName());
-            axis.setText(function.getAxis().name());
-            input.setText(function.getInput().name());
-            value.setText(String.valueOf(function.getValue()));
-            offset.setText(String.valueOf(function.getOffset()));
-            min.setText(String.valueOf(function.getRange().getMin()));
-            max.setText(String.valueOf(function.getRange().getMax()));
+            referential.setText(Messages.TileCollisionComposite_Formula + formula.getName());
+            axis.setText(formula.getAxis().name());
+            input.setText(formula.getInput().name());
+            value.setText(String.valueOf(formula.getValue()));
+            offset.setText(String.valueOf(formula.getOffset()));
+            min.setText(String.valueOf(formula.getRange().getMin()));
+            max.setText(String.valueOf(formula.getRange().getMax()));
         }
-        selectedFunction = function;
+        selectedFormula = formula;
     }
 
     /**
@@ -147,13 +148,13 @@ public class TileCollisionComposite
     }
 
     /**
-     * Get the collision function associated to the composite.
+     * Get the collision formula associated to the composite.
      * 
-     * @return The collision function.
+     * @return The collision formula.
      */
-    public CollisionFunction getCollisionFunction()
+    public CollisionFormula getCollisionFormula()
     {
-        return selectedFunction;
+        return selectedFormula;
     }
 
     /**
@@ -250,14 +251,15 @@ public class TileCollisionComposite
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                selectedFunction.setAxis(Axis.valueOf(axis.getText()));
-                selectedFunction.setInput(Axis.valueOf(input.getText()));
-                selectedFunction.setValue(Double.parseDouble(value.getText()));
-                selectedFunction.setOffset(Integer.parseInt(offset.getText()));
-                selectedFunction.setRange(Integer.parseInt(min.getText()), Integer.parseInt(max.getText()));
+                selectedFormula.setAxis(Axis.valueOf(axis.getText()));
+                selectedFormula.setInput(Axis.valueOf(input.getText()));
+                selectedFormula.setValue(Double.parseDouble(value.getText()));
+                selectedFormula.setOffset(Integer.parseInt(offset.getText()));
+                selectedFormula.setRange(Integer.parseInt(min.getText()), Integer.parseInt(max.getText()));
 
-                final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
-                map.createCollisionDraw();
+                final MapTile map = WorldViewModel.INSTANCE.getMap();
+                final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
+                mapCollision.createCollisionDraw();
                 tileCollisionView.updateWorldView();
                 tileCollisionView.setSaveEnabled(true);
             }

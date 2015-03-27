@@ -40,9 +40,12 @@ import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.palette.PaletteView;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.TileCollision;
 
 /**
  * Represents the tile collision view, where the tile collision can be edited.
@@ -103,10 +106,10 @@ public class TileCollisionView
         formulas.clear();
         if (tile != null)
         {
-            for (final CollisionFunction function : tile.getCollision().getCollisionFunctions())
+            for (final CollisionFormula formula : tile.getFeature(TileCollision.class).getCollisionFormulas())
             {
                 final TileCollisionComposite tileCollisionComposite = createFormula();
-                tileCollisionComposite.setSelectedFunction(function);
+                tileCollisionComposite.setSelectedFormula(formula.getFunction());
             }
         }
         addFormula.setEnabled(tile != null);
@@ -119,9 +122,10 @@ public class TileCollisionView
      */
     public void removeFormula(TileCollisionComposite formula)
     {
-        final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
-        map.removeCollisionFunction(formula.getCollisionFunction());
-        map.createCollisionDraw();
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
+        mapCollision.removeCollisionFunction(formula.getCollisionFormula());
+        mapCollision.createCollisionDraw();
 
         formulas.remove(formula);
         formula.dispose();
@@ -205,9 +209,11 @@ public class TileCollisionView
                     final TileCollisionComposite tileCollisionComposite = createFormula();
                     final CollisionFunction function = new CollisionFunction();
                     function.setName(inputDialog.getValue());
-                    tileCollisionComposite.setSelectedFunction(function);
-                    final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
-                    map.assignCollisionFunction(tile.getCollision(), tileCollisionComposite.getCollisionFunction());
+                    tileCollisionComposite.setSelectedFormula(function);
+                    final MapTile map = WorldViewModel.INSTANCE.getMap();
+                    final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
+                    mapCollision.assignCollisionFunction(tile.getCollision(),
+                            tileCollisionComposite.getCollisionFormula());
                     updateWorldView();
                 }
             }
@@ -222,9 +228,10 @@ public class TileCollisionView
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
-                map.saveCollisions();
-                map.createCollisionDraw();
+                final MapTile map = WorldViewModel.INSTANCE.getMap();
+                final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
+                mapCollision.saveCollisions();
+                mapCollision.createCollisionDraw();
                 setSaveEnabled(false);
             }
         });
