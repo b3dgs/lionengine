@@ -97,6 +97,16 @@ public final class Messages
     public static String EditTilesheetsDialog_HeaderTitle;
     /** Edit tile sheets dialog description header. */
     public static String EditTilesheetsDialog_HeaderDesc;
+    /** Map properties dialog title. */
+    public static String MapPropertiesDialog_Title;
+    /** Map properties title header. */
+    public static String MapPropertiesDialog_HeaderTitle;
+    /** Map properties description header. */
+    public static String MapPropertiesDialog_HeaderDesc;
+    /** Map properties tile width. */
+    public static String MapPropertiesDialog_TileWidth;
+    /** Map properties tile height. */
+    public static String MapPropertiesDialog_TileHeight;
     /** About. */
     public static String AboutDialog_Title;
 
