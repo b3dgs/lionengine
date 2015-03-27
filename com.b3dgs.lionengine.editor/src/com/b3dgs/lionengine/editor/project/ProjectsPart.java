@@ -46,7 +46,6 @@ import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
-import com.b3dgs.lionengine.editor.quick.QuickAccessPart;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
@@ -151,9 +150,6 @@ public class ProjectsPart
         projectTreeCreator.start();
 
         tree.layout();
-
-        final QuickAccessPart part = UtilEclipse.getPart(partService, QuickAccessPart.ID, QuickAccessPart.class);
-        part.setInput(projectTreeCreator.getQuicks());
     }
 
     /**

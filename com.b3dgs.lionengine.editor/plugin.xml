@@ -175,6 +175,12 @@
                property="com.b3dgs.lionengine.editor.propertiesTester.removeFrames">
          </test>
       </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.map.editProperties">
+         <test
+               property="com.b3dgs.lionengine.editor.componentTester.map">
+         </test>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -186,10 +192,10 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.MapImplementationTester"
-            id="com.b3dgs.lionengine.editor.mapImplementationTester"
-            namespace="com.b3dgs.lionengine.editor.mapImplementationTester"
-            properties="test"
+            class="com.b3dgs.lionengine.editor.components.ComponentTester"
+            id="com.b3dgs.lionengine.editor.componentTester"
+            namespace="com.b3dgs.lionengine.editor.componentTester"
+            properties="map"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester

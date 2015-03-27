@@ -15,9 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.quick;
-
-import java.util.Collection;
+package com.b3dgs.lionengine.editor.components;
 
 import javax.annotation.PostConstruct;
 
@@ -34,21 +32,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 
 /**
- * Represents the quick access explorer, depending of the opened project.
+ * Represents the component access explorer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class QuickAccessPart
+public class ComponentsPart
 {
     /** ID. */
-    public static final String ID = Activator.PLUGIN_ID + ".part.quick";
+    public static final String ID = Activator.PLUGIN_ID + ".part.components";
     /** Menu ID. */
-    public static final String MENU_ID = QuickAccessPart.ID + ".menu";
+    public static final String MENU_ID = ComponentsPart.ID + ".menu";
 
     /** Tree viewer. */
     Tree tree;
@@ -78,10 +75,7 @@ public class QuickAccessPart
                 if (data instanceof TreeItem)
                 {
                     final TreeItem item = (TreeItem) data;
-                    if (item.getData() instanceof Media)
-                    {
-                        ProjectsModel.INSTANCE.setSelection((Media) item.getData());
-                    }
+                    ComponentsModel.INSTANCE.setComponent(item.getData());
                 }
             }
         });
@@ -94,25 +88,11 @@ public class QuickAccessPart
                 tree.update();
             }
         });
-        menuService.registerContextMenu(tree, QuickAccessPart.MENU_ID);
-    }
+        menuService.registerContextMenu(tree, ComponentsPart.MENU_ID);
 
-    /**
-     * Set the input items.
-     * 
-     * @param items The input items.
-     */
-    public void setInput(Collection<TreeItem> items)
-    {
-        tree.removeAll();
-        for (final TreeItem current : items)
-        {
-            final TreeItem item = new TreeItem(tree, SWT.NONE);
-            item.setText(current.getText());
-            item.setImage(current.getImage());
-            item.setData(current.getData());
-        }
-        tree.layout();
+        final TreeItem item = new TreeItem(tree, SWT.NONE);
+        item.setText("Map");
+        item.setData(MapTileGame.class);
     }
 
     /**
