@@ -15,34 +15,39 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network.entity;
-
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.awt.Engine;
+package com.b3dgs.lionengine.example.game.chat;
 
 /**
- * Main class.
+ * Networked messages enum type.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
  */
-public class AppNetworkEntity
+enum TypeMessage
 {
+    /** Chat message. */
+    MESSAGE_CHAT;
+
+    /** Values. */
+    private static final TypeMessage[] VALUES = TypeMessage.values();
+
     /**
-     * Main.
+     * Get the message type from its ordinal.
      * 
-     * @param args The arguments.
+     * @param ordinal The ordinal.
+     * @return The enum.
      */
-    public static void main(String[] args)
+    public static TypeMessage fromOrdinal(int ordinal)
     {
-        Engine.start("Network Entity", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "network"));
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader(config);
-        loader.start(Scene.class);
+        return TypeMessage.VALUES[ordinal];
+    }
+
+    /**
+     * Get the message id.
+     * 
+     * @return The message id.
+     */
+    public byte getId()
+    {
+        return (byte) ordinal();
     }
 }

@@ -15,39 +15,46 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network.chat;
+package com.b3dgs.lionengine.example.game.chat;
+
+import com.b3dgs.lionengine.network.purview.NetworkableModel;
 
 /**
- * Networked messages enum type.
+ * Network client.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum TypeMessage
+class Client
+        extends NetworkableModel
 {
-    /** Chat message. */
-    MESSAGE_CHAT;
-
-    /** Values. */
-    private static final TypeMessage[] VALUES = TypeMessage.values();
+    /** Client name. */
+    private String name;
 
     /**
-     * Get the message type from its ordinal.
-     * 
-     * @param ordinal The ordinal.
-     * @return The enum.
+     * Constructor.
      */
-    public static TypeMessage fromOrdinal(int ordinal)
+    public Client()
     {
-        return TypeMessage.VALUES[ordinal];
+        // Nothing to do
     }
 
     /**
-     * Get the message id.
+     * Set the client name.
      * 
-     * @return The message id.
+     * @param name The client name.
      */
-    public byte getId()
+    public void setName(String name)
     {
-        return (byte) ordinal();
+        this.name = name;
+    }
+
+    /**
+     * Get the client name.
+     * 
+     * @return The client name.
+     */
+    public String getName()
+    {
+        return name;
     }
 }

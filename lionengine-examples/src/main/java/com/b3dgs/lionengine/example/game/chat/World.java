@@ -15,12 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network.entity;
+package com.b3dgs.lionengine.example.game.chat;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Config;
@@ -29,7 +28,6 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.network.NetworkedWorld;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;
@@ -47,41 +45,27 @@ abstract class World<N extends NetworkedWorld>
         extends WorldGame
         implements NetworkedWorld
 {
-    /** Networkable model. */
-    protected final Networkable networkableModel;
-    /** Map reference. */
-    protected final Map map;
-    /** Factory reference. */
-    protected final FactoryEntity factory;
-    /** Mario client reference. */
-    protected final HashMap<Byte, Mario> marioClients;
     /** Text. */
     protected final Text text;
     /** Chat. */
     protected final Chat chat;
+    /** Networkable model. */
+    protected final Networkable networkableModel;
+    /** Clients list. */
+    protected final HashMap<Byte, Client> clients;
     /** Networkable world reference. */
     protected N networkedWorld;
 
     /**
-     * @param config The config reference.
-     * @param server <code>true</code> if server, <code>false</code> else.
+     * @see WorldGame#WorldGame(Config)
      */
-    World(Config config, boolean server)
+    public World(Config config)
     {
         super(config);
-        map = new Map();
-        marioClients = new HashMap<>(1);
-        factory = new FactoryEntity();
-        networkableModel = new NetworkableModel();
         text = Graphics.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         chat = new Chat(this);
-
-        final Services contextEntity = new Services();
-        contextEntity.addService(map);
-        contextEntity.addService(Integer.valueOf(source.getRate()));
-        contextEntity.addService(Boolean.valueOf(server));
-
-        factory.setServices(contextEntity);
+        networkableModel = new NetworkableModel();
+        clients = new HashMap<>(2);
     }
 
     /**
@@ -99,7 +83,7 @@ abstract class World<N extends NetworkedWorld>
      */
     public String getClientName(byte id)
     {
-        return marioClients.get(Byte.valueOf(id)).getName();
+        return clients.get(Byte.valueOf(id)).getName();
     }
 
     /*
@@ -107,13 +91,20 @@ abstract class World<N extends NetworkedWorld>
      */
 
     @Override
+    public void update(double extrp)
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void render(Graphic g)
     {
+        g.clear(0, 0, width, height);
         text.draw(g, width, 0, Align.RIGHT, "Bandwidth=" + getBandwidth() + "byte/sec");
-        text.draw(g, 0, 0, "Number of connected clients: " + marioClients.size());
+        text.draw(g, 0, 0, "Number of connected clients: " + clients.size());
         text.draw(g, 0, 12, "Clients:");
         int i = 0;
-        for (final Mario client : marioClients.values())
+        for (final Client client : clients.values())
         {
             text.draw(g, 0, 24 + i * 12, " - " + client.getName());
             i++;
@@ -124,13 +115,13 @@ abstract class World<N extends NetworkedWorld>
     @Override
     protected void saving(FileWriting file) throws IOException
     {
-        map.save(file);
+        // Nothing to do
     }
 
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        map.load(file);
+        // Nothing to do
     }
 
     /*
@@ -192,29 +183,27 @@ abstract class World<N extends NetworkedWorld>
     @Override
     public void notifyClientConnected(Byte id, String name)
     {
-        final Mario mario = factory.create(Mario.MEDIA);
-        mario.respawn();
-        mario.setName(name);
-        mario.setClientId(id);
-        addNetworkable(mario);
+        final Client client = new Client();
+        client.setName(name);
+        client.setClientId(id);
+        addNetworkable(client);
         addNetworkable(chat);
-        marioClients.put(id, mario);
+        clients.put(id, client);
         sendMessages();
-
     }
 
     @Override
     public void notifyClientDisconnected(Byte id, String name)
     {
-        final Mario mario = marioClients.get(id);
-        removeNetworkable(mario);
-        marioClients.remove(id);
+        final Client client = clients.get(id);
+        removeNetworkable(client);
+        clients.remove(id);
     }
 
     @Override
     public void notifyClientNameChanged(Byte id, String name)
     {
-        final Mario mario = marioClients.get(id);
-        mario.setName(name);
+        final Client client = clients.get(id);
+        client.setName(name);
     }
 }
