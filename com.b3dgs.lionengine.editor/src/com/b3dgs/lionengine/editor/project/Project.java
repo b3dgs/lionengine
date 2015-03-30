@@ -389,6 +389,7 @@ public final class Project
         urls.add(getClassesPath().toURI().toURL());
 
         final File librariesPath = getLibrariesPath();
+        urls.add(librariesPath.toURI().toURL());
         if (librariesPath.isDirectory())
         {
             for (final File file : librariesPath.listFiles())

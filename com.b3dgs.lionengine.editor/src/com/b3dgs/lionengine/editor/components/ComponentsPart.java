@@ -26,6 +26,7 @@ import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -33,6 +34,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 
 /**
@@ -46,6 +48,8 @@ public class ComponentsPart
     public static final String ID = Activator.PLUGIN_ID + ".part.components";
     /** Menu ID. */
     public static final String MENU_ID = ComponentsPart.ID + ".menu";
+    /** Map component. */
+    private final Image ICON_FEATURE_MAP = UtilEclipse.getIcon("resources", "map-tile.png");
 
     /** Tree viewer. */
     Tree tree;
@@ -92,6 +96,7 @@ public class ComponentsPart
 
         final TreeItem item = new TreeItem(tree, SWT.NONE);
         item.setText("Map");
+        item.setImage(ICON_FEATURE_MAP);
         item.setData(MapTileGame.class);
     }
 

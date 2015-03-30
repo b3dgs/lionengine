@@ -21,8 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -39,6 +41,8 @@ import org.osgi.framework.Bundle;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.Property;
 
 /**
  * Series of tool functions around the editor related to eclipse.
@@ -180,6 +184,69 @@ public final class UtilEclipse
             }
         }
         throw new ClassNotFoundException(UtilEclipse.ERROR_CLASS_CREATE + name);
+    }
+
+    /**
+     * Get all classes that implements the specified type.
+     * 
+     * @param type The type to check.
+     * @return The implementing class list.
+     */
+    public static <C> Collection<Class<? extends C>> getImplementing(Class<C> type)
+    {
+        final Collection<Class<? extends C>> found = new HashSet<>();
+        found.addAll(getImplementing(type, Project.getActive().getClassesPath()));
+        found.addAll(getImplementing(type, Project.getActive().getLibrariesPath()));
+        return found;
+    }
+
+    /**
+     * Get all classes that implements the specified type.
+     * 
+     * @param type The type to check.
+     * @param root The folder to search.
+     * @return The implementing class list.
+     */
+    public static <C> Collection<Class<? extends C>> getImplementing(Class<C> type, File root)
+    {
+        final Collection<Class<? extends C>> found = new HashSet<>();
+        final Collection<File> folders = new ArrayList<>();
+        final Project project = Project.getActive();
+
+        if (root.isDirectory())
+        {
+            folders.add(root);
+            while (!folders.isEmpty())
+            {
+                final Collection<File> foldersToDo = new ArrayList<>();
+                for (final File folder : folders)
+                {
+                    for (final File current : folder.listFiles())
+                    {
+                        if (current.isDirectory())
+                        {
+                            foldersToDo.add(current);
+                        }
+                        else if (current.isFile() && current.getName().endsWith(".class"))
+                        {
+                            final String name = current.getPath().replace(root.getPath(), "")
+                                    .replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".")
+                                    .substring(1);
+
+                            final Class<?> clazz = project.getClass(name);
+                            if (clazz.isInterface() && type.isAssignableFrom(clazz) && clazz != type)
+                            {
+                                found.add(clazz.asSubclass(type));
+                            }
+                        }
+                    }
+                }
+                folders.clear();
+                folders.addAll(foldersToDo);
+                foldersToDo.clear();
+            }
+        }
+        return found;
     }
 
     /**
