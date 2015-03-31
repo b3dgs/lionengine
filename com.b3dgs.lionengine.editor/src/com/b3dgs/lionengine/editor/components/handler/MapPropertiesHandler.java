@@ -22,7 +22,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.dialogs.MapPropertiesDialog;
+import com.b3dgs.lionengine.editor.components.dialogs.MapPropertiesDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 
 /**
