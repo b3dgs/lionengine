@@ -234,7 +234,7 @@ public final class UtilEclipse
                                     .substring(1);
 
                             final Class<?> clazz = project.getClass(name);
-                            if (clazz.isInterface() && type.isAssignableFrom(clazz) && clazz != type)
+                            if (type.isAssignableFrom(clazz) && clazz != type)
                             {
                                 found.add(clazz.asSubclass(type));
                             }

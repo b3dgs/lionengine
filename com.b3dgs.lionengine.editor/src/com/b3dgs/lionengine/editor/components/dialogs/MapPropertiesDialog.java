@@ -178,6 +178,7 @@ public class MapPropertiesDialog
                     item.setText(feature.getName());
                     item.setData(feature);
                 }
+                features.pack();
             }
         });
     }

@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.CheckboxTreeViewer;
+import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -44,6 +47,8 @@ public class MapFeaturesSelectionDialog
 {
     /** Icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "edit-tilesheets.png");
+    /** Class data. */
+    private static final String CLASS_DATA = "class";
 
     /**
      * Get the tree selection.
@@ -56,15 +61,19 @@ public class MapFeaturesSelectionDialog
         final Collection<Class<? extends MapTileFeature>> collection = new ArrayList<>();
         for (final TreeItem item : tree.getItems())
         {
-            if (item.getChecked())
+            final TreeItem[] items = item.getItems();
+            if (item.getChecked() && items != null)
             {
-                final Object data = item.getData();
-                if (data instanceof Class)
+                for (final TreeItem current : items)
                 {
-                    final Class<?> clazz = (Class<?>) data;
-                    if (MapTileFeature.class.isAssignableFrom(clazz))
+                    final Object data = current.getData(CLASS_DATA);
+                    if (current.getChecked() && data instanceof Class)
                     {
-                        collection.add(clazz.asSubclass(MapTileFeature.class));
+                        final Class<?> clazz = (Class<?>) data;
+                        if (MapTileFeature.class.isAssignableFrom(clazz))
+                        {
+                            collection.add(clazz.asSubclass(MapTileFeature.class));
+                        }
                     }
                 }
             }
@@ -113,19 +122,71 @@ public class MapFeaturesSelectionDialog
     private void createFeaturesList(Composite content)
     {
         final Composite featuresArea = new Composite(content, SWT.NONE);
-        featuresArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        featuresArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         featuresArea.setLayout(new GridLayout(1, false));
 
-        features = new Tree(featuresArea, SWT.CHECK);
+        features = new Tree(featuresArea, SWT.SINGLE | SWT.CHECK);
+        features.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        final CheckboxTreeViewer viewer = new CheckboxTreeViewer(features);
+        viewer.addCheckStateListener(new ICheckStateListener()
+        {
+            @Override
+            public void checkStateChanged(CheckStateChangedEvent event)
+            {
+                final Object object = event.getElement();
+                if (object instanceof TreeItem)
+                {
+                    final TreeItem item = (TreeItem) object;
+                    final TreeItem parent = item.getParentItem();
+                    if (parent != null)
+                    {
+                        for (final TreeItem other : parent.getItems())
+                        {
+                            if (!other.equals(object))
+                            {
+                                other.setChecked(false);
+                            }
+                        }
+                        parent.setChecked(item.getChecked());
+                    }
+                    else
+                    {
+                        item.setChecked(false);
+                        for (final TreeItem current : item.getItems())
+                        {
+                            current.setChecked(false);
+                        }
+                    }
+                }
+            }
+        });
 
+        createTree();
+    }
+
+    /**
+     * Create the tree with its features and their implementations.
+     */
+    private void createTree()
+    {
         final Collection<Class<? extends MapTileFeature>> available = UtilEclipse.getImplementing(MapTileFeature.class);
         for (final Class<? extends MapTileFeature> feature : available)
         {
-            if (!current.contains(feature))
+            if (feature.isInterface() && !current.contains(feature))
             {
                 final TreeItem item = new TreeItem(features, SWT.NONE);
                 item.setText(feature.getName());
-                item.setData(feature);
+                item.setData(item);
+                item.setData(CLASS_DATA, feature);
+
+                for (final Class<? extends MapTileFeature> featureImpl : UtilEclipse.getImplementing(feature))
+                {
+                    final TreeItem child = new TreeItem(item, SWT.NONE);
+                    child.setText(featureImpl.getName());
+                    child.setData(child);
+                    child.setData(CLASS_DATA, featureImpl);
+                }
+                item.setExpanded(true);
             }
         }
     }
