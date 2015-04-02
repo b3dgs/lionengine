@@ -235,7 +235,7 @@ public class ImportMapDialog
             {
                 final File file = Tools.selectResourceFile(dialog, true, new String[]
                 {
-                    Messages.ImportMapDialog_FileFilter
+                    Messages.ImportMapDialog_LevelRipFileFilter
                 }, new String[]
                 {
                     "*.bmp;*.png"
@@ -249,38 +249,80 @@ public class ImportMapDialog
     }
 
     /**
-     * Create the patterns location area.
+     * Create the sheets location area.
      * 
      * @param content The content composite.
      */
-    private void createPatternsLocationArea(Composite content)
+    private void createSheetsLocationArea(Composite content)
     {
-        final Composite levelRipArea = new Composite(content, SWT.NONE);
-        levelRipArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        levelRipArea.setLayout(new GridLayout(4, false));
+        final Composite sheetArea = new Composite(content, SWT.NONE);
+        sheetArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        sheetArea.setLayout(new GridLayout(4, false));
 
-        final Label locationLabel = new Label(levelRipArea, SWT.NONE);
+        final Label locationLabel = new Label(sheetArea, SWT.NONE);
         locationLabel.setText(Messages.ImportMapDialog_SheetsLocation);
 
-        sheetsLocationText = new Text(levelRipArea, SWT.BORDER);
+        sheetsLocationText = new Text(sheetArea, SWT.BORDER);
         sheetsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         sheetsLocationText.setEditable(false);
 
-        groupsLocationText = new Text(levelRipArea, SWT.BORDER);
-        groupsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        groupsLocationText.setEditable(false);
-
-        final Button browse = UtilSwt.createButton(levelRipArea, Messages.AbstractDialog_Browse, null);
+        final Button browse = UtilSwt.createButton(sheetArea, Messages.AbstractDialog_Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final File folder = Tools.selectResourceFolder(dialog);
-                if (folder != null)
+                final File file = Tools.selectResourceFile(dialog, true, new String[]
                 {
-                    onSheetsConfigLocationSelected(folder);
+                    Messages.ImportMapDialog_SheetsConfigFileFilter
+                }, new String[]
+                {
+                    "*.xml"
+                });
+                if (file != null)
+                {
+                    onSheetsConfigLocationSelected(file);
+                }
+            }
+        });
+    }
+
+    /**
+     * Create the groups location area.
+     * 
+     * @param content The content composite.
+     */
+    private void createGroupsLocationArea(Composite content)
+    {
+        final Composite groupArea = new Composite(content, SWT.NONE);
+        groupArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        groupArea.setLayout(new GridLayout(4, false));
+
+        final Label locationLabel = new Label(groupArea, SWT.NONE);
+        locationLabel.setText(Messages.ImportMapDialog_GroupsLocation);
+
+        groupsLocationText = new Text(groupArea, SWT.BORDER);
+        groupsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        groupsLocationText.setEditable(false);
+
+        final Button browse = UtilSwt.createButton(groupArea, Messages.AbstractDialog_Browse, null);
+        browse.setImage(AbstractDialog.ICON_BROWSE);
+        browse.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final File file = Tools.selectResourceFile(dialog, true, new String[]
+                {
+                    Messages.ImportMapDialog_GroupsConfigFileFilter
+                }, new String[]
+                {
+                    "*.xml"
+                });
+                if (file != null)
+                {
+                    onGroupsConfigLocationSelected(file);
                 }
             }
         });
@@ -294,7 +336,8 @@ public class ImportMapDialog
     protected void createContent(Composite content)
     {
         createLevelRipLocationArea(content);
-        createPatternsLocationArea(content);
+        createSheetsLocationArea(content);
+        createGroupsLocationArea(content);
     }
 
     @Override

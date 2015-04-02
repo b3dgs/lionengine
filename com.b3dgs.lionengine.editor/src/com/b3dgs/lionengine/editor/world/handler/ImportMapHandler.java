@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialogs.ImportMapDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
@@ -56,6 +57,9 @@ public class ImportMapHandler
 
         final MapTile map = WorldViewModel.INSTANCE.getMap();
         map.create(levelrip, sheetsConfig, groupsConfig);
+
+        final Camera camera = WorldViewModel.INSTANCE.getCamera();
+        camera.setLimits(map);
     }
 
     /**

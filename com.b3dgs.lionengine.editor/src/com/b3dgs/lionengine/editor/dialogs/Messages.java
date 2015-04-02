@@ -84,7 +84,11 @@ public final class Messages
     /** Groups location. */
     public static String ImportMapDialog_GroupsLocation;
     /** Level rip file filter. */
-    public static String ImportMapDialog_FileFilter;
+    public static String ImportMapDialog_LevelRipFileFilter;
+    /** Sheets config file filter. */
+    public static String ImportMapDialog_SheetsConfigFileFilter;
+    /** Groups config file filter. */
+    public static String ImportMapDialog_GroupsConfigFileFilter;
     /** Error level rip. */
     public static String ImportMapDialog_ErrorLevelRip;
     /** Error sheets. */
