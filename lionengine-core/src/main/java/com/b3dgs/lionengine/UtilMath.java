@@ -268,9 +268,9 @@ public final class UtilMath
      * @param round The round factor.
      * @return The rounded value.
      */
-    public static int getRounded(int value, int round)
+    public static int getRounded(double value, int round)
     {
-        return (int) Math.floor(value / (double) round) * round;
+        return (int) Math.floor(value / round) * round;
     }
 
     /**

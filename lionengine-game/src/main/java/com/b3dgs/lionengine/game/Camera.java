@@ -140,6 +140,18 @@ public class Camera
     }
 
     /**
+     * Teleport the camera at the specified location and reset offset position.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    public void teleport(double x, double y)
+    {
+        offset.teleport(0, 0);
+        transformable.teleport(x, y);
+    }
+
+    /**
      * This represents the real position, between -interval and +interval. In other words, camera will move only when
      * the interval location is on its extremity.
      * <p>

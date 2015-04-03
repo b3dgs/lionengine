@@ -74,6 +74,7 @@ public class WorldViewPart
 
         worldViewRenderer = checkRendererExtensionPoint();
         composite.addPaintListener(worldViewRenderer);
+        addListeners();
     }
 
     /**

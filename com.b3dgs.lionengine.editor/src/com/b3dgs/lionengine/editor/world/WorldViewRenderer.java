@@ -99,33 +99,6 @@ public class WorldViewRenderer
         }
     }
 
-    /**
-     * Set the camera limits.
-     * 
-     * @param camera The camera reference.
-     * @param maxX The maximum horizontal location.
-     * @param maxY The maximum vertical location.
-     */
-    private static void setCameraLimits(Camera camera, int maxX, int maxY)
-    {
-        if (camera.getX() < 0.0)
-        {
-            camera.setLocation(0.0, camera.getY());
-        }
-        else if (camera.getX() > maxX)
-        {
-            camera.setLocation(maxX, camera.getY());
-        }
-        if (camera.getY() < 0.0)
-        {
-            camera.setLocation(camera.getX(), 0.0);
-        }
-        else if (camera.getY() > maxY)
-        {
-            camera.setLocation(camera.getX(), maxY);
-        }
-    }
-
     /** The view model. */
     protected final WorldViewModel model;
     /** Part service. */
@@ -491,8 +464,8 @@ public class WorldViewRenderer
     {
         final Camera camera = model.getCamera();
         final MapTile map = model.getMap();
-        camera.setLocation(UtilMath.getRounded((int) camera.getX(), map.getTileWidth()),
-                UtilMath.getRounded((int) camera.getY(), map.getTileHeight()));
+        camera.teleport(UtilMath.getRounded(camera.getX(), map.getTileWidth()),
+                UtilMath.getRounded(camera.getY(), map.getTileHeight()));
     }
 
     /**
@@ -529,11 +502,6 @@ public class WorldViewRenderer
         {
             camera.moveLocation(1.0, vx, vy);
         }
-
-        final int maxX = Math.max(0, (map.getInTileWidth() - 1) * tw - camera.getWidth());
-        final int maxY = Math.max(0, map.getInTileHeight() * th - camera.getHeight());
-        WorldViewRenderer.setCameraLimits(camera, maxX, maxY);
-
         updateRender();
     }
 
@@ -618,7 +586,7 @@ public class WorldViewRenderer
         final int areaX = UtilMath.getRounded(width, tw);
         final int areaY = UtilMath.getRounded(height, th);
 
-        camera.setView(0, 0, areaX - tw, areaY);
+        camera.setView(0, 0, areaX, areaY);
 
         renderBackground(g, width, height);
         render(g, camera, map, areaX, areaY);
