@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Represents the component access explorer.
@@ -48,8 +49,10 @@ public class ComponentsPart
     public static final String ID = Activator.PLUGIN_ID + ".part.components";
     /** Menu ID. */
     public static final String MENU_ID = ComponentsPart.ID + ".menu";
-    /** Map component. */
-    private final Image ICON_FEATURE_MAP = UtilEclipse.getIcon("resources", "map-tile.png");
+    /** Map tile component. */
+    private final Image ICON_FEATURE_MAP_TILE = UtilEclipse.getIcon("components", "map-tile.png");
+    /** Factory component. */
+    private final Image ICON_FEATURE_FACTORY = UtilEclipse.getIcon("components", "factory.png");
 
     /** Tree viewer. */
     Tree tree;
@@ -93,11 +96,23 @@ public class ComponentsPart
             }
         });
         menuService.registerContextMenu(tree, ComponentsPart.MENU_ID);
+        addComponents();
+    }
 
-        final TreeItem item = new TreeItem(tree, SWT.NONE);
-        item.setText("Map");
-        item.setImage(ICON_FEATURE_MAP);
-        item.setData(MapTileGame.class);
+    /**
+     * Add all supported components.
+     */
+    private void addComponents()
+    {
+        final TreeItem map = new TreeItem(tree, SWT.NONE);
+        map.setText("Map");
+        map.setImage(ICON_FEATURE_MAP_TILE);
+        map.setData(MapTileGame.class);
+
+        final TreeItem factory = new TreeItem(tree, SWT.NONE);
+        factory.setText("Factory");
+        factory.setImage(ICON_FEATURE_FACTORY);
+        factory.setData(Factory.class);
     }
 
     /**

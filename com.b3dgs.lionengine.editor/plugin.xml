@@ -176,9 +176,15 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.map.editProperties">
+            id="com.b3dgs.lionengine.editor.components.map.editProperties">
          <test
                property="com.b3dgs.lionengine.editor.componentTester.map">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.components.factory.editProperties">
+         <test
+               property="com.b3dgs.lionengine.editor.componentTester.factory">
          </test>
       </definition>
    </extension>
@@ -195,7 +201,7 @@
             class="com.b3dgs.lionengine.editor.components.ComponentTester"
             id="com.b3dgs.lionengine.editor.componentTester"
             namespace="com.b3dgs.lionengine.editor.componentTester"
-            properties="map"
+            properties="map,factory"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester

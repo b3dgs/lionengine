@@ -26,8 +26,11 @@
             <children xsi:type="basic:PartStack" xmi:id="_UZBKAA3lEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.stack.left.components" containerData="30">
               <children xsi:type="basic:Part" xmi:id="_WE1LkA3lEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.part.components" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.components.ComponentsPart" label="%part.components" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/components.png">
                 <menus xsi:type="menu:PopupMenu" xmi:id="_niXAIA3qEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.part.components.menu">
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_DFdhMNSbEeScp5WCEko6cQ" elementId="" label="%menu.map-properties" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/tile-collision.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.components.handler.MapPropertiesHandler">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_pNscgNSbEeScp5WCEko6cQ" coreExpressionId="com.b3dgs.lionengine.editor.map.editProperties"/>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_DFdhMNSbEeScp5WCEko6cQ" elementId="" label="%menu.components.properties.map" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/tile-collision.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.components.handler.MapPropertiesHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_pNscgNSbEeScp5WCEko6cQ" coreExpressionId="com.b3dgs.lionengine.editor.components.map.editProperties"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_sgJg0NujEeSmRPl8M5xEXQ" elementId="" label="%menu.components.properties.factory" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/components/factory.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.components.handler.MapPropertiesHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_sgJg0dujEeSmRPl8M5xEXQ" coreExpressionId="com.b3dgs.lionengine.editor.components.factory.editProperties"/>
                   </children>
                 </menus>
               </children>

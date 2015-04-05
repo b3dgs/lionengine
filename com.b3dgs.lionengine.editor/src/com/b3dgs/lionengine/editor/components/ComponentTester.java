@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.editor.components;
 
 import org.eclipse.core.expressions.PropertyTester;
 
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
+
 /**
  * Test the component type.
  * 
@@ -29,6 +31,8 @@ public class ComponentTester
 {
     /** Map component name. */
     private static final String MAP = "map";
+    /** Factory component name. */
+    private static final String FACTORY = "factory";
 
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
@@ -36,7 +40,8 @@ public class ComponentTester
         final Object component = ComponentsModel.INSTANCE.getComponent();
         if (component != null)
         {
-            if (MAP.equals(property))
+            if (MAP.equals(property) && component.equals(WorldViewModel.INSTANCE.getMap().getClass())
+                    || FACTORY.equals(property) && component.equals(WorldViewModel.INSTANCE.getFactory().getClass()))
             {
                 return true;
             }
