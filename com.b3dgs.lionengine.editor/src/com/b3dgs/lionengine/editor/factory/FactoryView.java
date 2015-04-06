@@ -146,7 +146,7 @@ public class FactoryView
     /** The combo hierarchy. */
     final Map<String, Composite> hierarchy = new HashMap<>();
     /** The factory reference. */
-    private Factory factory;
+    Factory factory;
     /** Middle composite. */
     Composite middle;
     /** Bottom composite. */
@@ -179,13 +179,12 @@ public class FactoryView
     /**
      * Load elements from root folder.
      * 
-     * @param factory The factory reference.
      * @param path The folder path.
      * @param parent The composite parent.
      * @return The created child composite.
      * @throws FileNotFoundException If not a type folder.
      */
-    Composite load(final Factory factory, File path, final Composite parent) throws FileNotFoundException
+    Composite load(File path, final Composite parent) throws FileNotFoundException
     {
         final File[] folders = path.listFiles();
         if (folders != null)
@@ -240,7 +239,7 @@ public class FactoryView
                     hierarchy.get(typeName).dispose();
                     hierarchy.remove(typeName);
                 }
-                final Composite child = load(factory, typeFolder, composite);
+                final Composite child = load(typeFolder, composite);
                 if (child != null)
                 {
                     hierarchy.put(typeName, child);
@@ -264,17 +263,15 @@ public class FactoryView
         objectsComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         objectsComposite.setLayout(new RowLayout());
 
-        final Factory factory = WorldViewModel.INSTANCE.getFactory();
-        loadObjects(factory, objectsFile);
+        loadObjects(objectsFile);
     }
 
     /**
      * Load all objects from their folder (filter them by extension, <code>*.xml</code> expected).
      * 
-     * @param factory The factory reference.
      * @param objectFiles The objects path.
      */
-    void loadObjects(Factory factory, File[] objectFiles)
+    void loadObjects(File[] objectFiles)
     {
         if (objectFiles != null)
         {
@@ -282,7 +279,7 @@ public class FactoryView
             {
                 if (objectFile.isFile() && ObjectsFolderTester.isObjectFile(UtilityMedia.get(objectFile)))
                 {
-                    loadObject(factory, objectFile);
+                    loadObject(objectFile);
                 }
             }
         }
@@ -295,10 +292,9 @@ public class FactoryView
     /**
      * Load an object from its file data, and add it to the tab.
      * 
-     * @param factory The factory reference.
      * @param file The object data file.
      */
-    private void loadObject(Factory factory, File file)
+    private void loadObject(File file)
     {
         final Label objectLabel = new Label(objectsComposite, SWT.NONE);
         objectLabel.setLayoutData(new RowData(34, 34));
@@ -415,14 +411,14 @@ public class FactoryView
 
         createBottom(parent);
 
-        final File objectsPath = Project.getActive().getResourcesPath();
+        final File resourcesPath = Project.getActive().getResourcesPath();
         try
         {
-            load(factory, objectsPath, middle);
+            load(resourcesPath, middle);
         }
         catch (final FileNotFoundException exception)
         {
-            createObjects(objectsPath.listFiles());
+            createObjects(resourcesPath.listFiles());
         }
     }
 

@@ -49,7 +49,7 @@ public class FolderTypeTester
     private static final String PROPERTY_CATEGORY = "category";
 
     /**
-     * Check if the path is a folder type descriptor.
+     * Check if the path is a folder type descriptor or contains objects.
      * 
      * @param path The path to test.
      * @return <code>true</code> if valid, <code>false</code> else.
@@ -58,7 +58,18 @@ public class FolderTypeTester
     {
         try
         {
-            return Tools.getFolderTypeFile(path).isFile();
+            if (Tools.getFolderTypeFile(path).isFile())
+            {
+                return true;
+            }
+            for (final File file : path.listFiles())
+            {
+                if (ObjectsFolderTester.isObjectFile(UtilityMedia.get(file)))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         catch (final FileNotFoundException exception)
         {

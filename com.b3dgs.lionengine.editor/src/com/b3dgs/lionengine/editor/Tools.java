@@ -140,13 +140,19 @@ public final class Tools
      * 
      * @param path The type folder.
      * @return The type name.
-     * @throws FileNotFoundException If this is not a type folder.
      */
-    public static String getObjectsFolderTypeName(File path) throws FileNotFoundException
+    public static String getObjectsFolderTypeName(File path)
     {
-        final File type = Tools.getFolderTypeFile(path);
-        final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(type));
-        return typeNode.getChild(Tools.NODE_FOLDER_TYPE_NAME).getText();
+        try
+        {
+            final File type = Tools.getFolderTypeFile(path);
+            final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(type));
+            return typeNode.getChild(Tools.NODE_FOLDER_TYPE_NAME).getText();
+        }
+        catch (final FileNotFoundException exception)
+        {
+            return path.getName();
+        }
     }
 
     /**

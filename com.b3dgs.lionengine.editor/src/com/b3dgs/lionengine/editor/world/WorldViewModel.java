@@ -36,10 +36,10 @@ public enum WorldViewModel
 
     /** Camera reference. */
     private final Camera camera;
+    /** Factory reference. */
+    private final Factory factory;
     /** Map reference. */
     private MapTile map;
-    /** Factory reference. */
-    private Factory factory;
     /** Selected object media. */
     private Media selectedObject;
     /** Selected palette. */
@@ -66,16 +66,6 @@ public enum WorldViewModel
     public void setMap(MapTile map)
     {
         this.map = map;
-    }
-
-    /**
-     * Set the factory reference.
-     * 
-     * @param factory The factory reference.
-     */
-    public void setFactory(Factory factory)
-    {
-        this.factory = factory;
     }
 
     /**
