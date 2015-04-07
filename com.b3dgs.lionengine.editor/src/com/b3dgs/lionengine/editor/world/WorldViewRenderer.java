@@ -17,11 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -36,24 +32,15 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.collision.TileCollisionView;
-import com.b3dgs.lionengine.editor.factory.FactoryView;
-import com.b3dgs.lionengine.editor.palette.PalettePart;
 import com.b3dgs.lionengine.editor.palette.PaletteType;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.map.TileCollision;
-import com.b3dgs.lionengine.game.object.ComponentRenderer;
-import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Handler;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.geom.Point;
 
 /**
  * World view paint listener, rendering the current world.
@@ -73,8 +60,6 @@ public class WorldViewRenderer
     private static final ColorRgba COLOR_ENTITY_SELECTION = new ColorRgba(128, 240, 128, 192);
     /** Color of the selected tile. */
     private static final ColorRgba COLOR_TILE_SELECTED = new ColorRgba(192, 192, 192, 96);
-    /** Grid movement sensibility. */
-    private static final int GRID_MOVEMENT_SENSIBILITY = 8;
 
     /**
      * Draw the grid.
@@ -99,230 +84,74 @@ public class WorldViewRenderer
         }
     }
 
-    /** The view model. */
-    protected final WorldViewModel model;
+    /**
+     * Render the selected tiles collision.
+     * 
+     * @param g The graphic output.
+     * @param map The map reference.
+     * @param camera The camera reference.
+     * @param selectedTile The selected tile reference.
+     */
+    private static void renderSelectedCollisions(Graphic g, MapTile map, Camera camera, Tile selectedTile)
+    {
+        // Render selected collision
+        g.setColor(COLOR_MOUSE_SELECTION);
+        final int th = map.getTileHeight();
+        for (int ty = 0; ty < map.getInTileHeight(); ty++)
+        {
+            for (int tx = 0; tx < map.getInTileWidth(); tx++)
+            {
+                final Tile tile = map.getTile(tx, ty);
+                if (tile != null && tile.hasFeature(TileCollision.class)
+                        && selectedTile.hasFeature(TileCollision.class))
+                {
+                    if (tile.getFeature(TileCollision.class).getCollisionFormulas() == selectedTile.getFeature(
+                            TileCollision.class).getCollisionFormulas())
+                    {
+                        g.drawRect((int) camera.getViewpointX(tile.getX()), (int) camera.getViewpointY(tile.getY())
+                                - th, tile.getWidth(), tile.getHeight(), true);
+                    }
+                }
+            }
+        }
+
+        // Render selected tile
+        g.setColor(COLOR_TILE_SELECTED);
+        g.drawRect((int) camera.getViewpointX(selectedTile.getX()), (int) camera.getViewpointY(selectedTile.getY())
+                - th, selectedTile.getWidth(), selectedTile.getHeight(), true);
+    }
+
     /** Part service. */
     protected final EPartService partService;
     /** The parent. */
     private final Composite parent;
-    /** Object selection listener. */
-    private final Collection<ObjectSelectionListener> objectSelectionListeners;
-    /** Tile selection listener. */
-    private final Collection<TileSelectionListener> tileSelectionListeners;
+    /** Camera reference. */
+    private final Camera camera;
     /** Handler object. */
     private final Handler handlerObject;
-    /** Selection handler. */
-    private final Selection selection;
     /** Object controller. */
     private final ObjectControl objectControl;
-    /** Selected tile. */
-    private Tile selectedTile;
-    /** Last selected tile. */
-    private Tile lastSelectedTile;
-    /** Grid enabled. */
-    private boolean gridEnabled;
-    /** Current horizontal mouse location. */
-    private int mouseX;
-    /** Current vertical mouse location. */
-    private int mouseY;
-    /** Mouse click. */
-    private int click;
+    /** Selection handler. */
+    private final Selection selection;
+    /** World updater. */
+    private final WorldViewUpdater worldViewUpdater;
 
     /**
      * Create a world view renderer with grid enabled.
      * 
-     * @param partService The part service.
      * @param parent The parent container.
+     * @param partService The part services reference.
+     * @param services The services reference.
      */
-    public WorldViewRenderer(Composite parent, EPartService partService)
+    public WorldViewRenderer(Composite parent, EPartService partService, Services services)
     {
         this.parent = parent;
         this.partService = partService;
-        objectSelectionListeners = new ArrayList<>();
-        tileSelectionListeners = new ArrayList<>();
-        model = WorldViewModel.INSTANCE;
-        handlerObject = new Handler();
-        handlerObject.addRenderable(new ComponentRenderer());
-        handlerObject.addUpdatable(new ComponentUpdater());
-        selection = new Selection();
-        objectControl = new ObjectControl(handlerObject);
-        gridEnabled = true;
-    }
-
-    /**
-     * Add an object selection listener.
-     * 
-     * @param listener The listener reference.
-     */
-    public void addListenerObject(ObjectSelectionListener listener)
-    {
-        objectSelectionListeners.add(listener);
-    }
-
-    /**
-     * Add an tile selection listener.
-     * 
-     * @param listener The listener reference.
-     */
-    public void addListenerTile(TileSelectionListener listener)
-    {
-        tileSelectionListeners.add(listener);
-    }
-
-    /**
-     * Remove an object selection listener.
-     * 
-     * @param listener The listener reference.
-     */
-    public void removeListenerObject(ObjectSelectionListener listener)
-    {
-        objectSelectionListeners.remove(listener);
-    }
-
-    /**
-     * Remove a tile selection listener.
-     * 
-     * @param listener The listener reference.
-     */
-    public void removeListenerTile(TileSelectionListener listener)
-    {
-        tileSelectionListeners.remove(listener);
-    }
-
-    /**
-     * Set the grid enabled state.
-     */
-    public void switchGridEnabled()
-    {
-        gridEnabled = !gridEnabled;
-    }
-
-    /**
-     * Get the handler object.
-     * 
-     * @return The handler object.
-     */
-    public Handler getHandler()
-    {
-        return handlerObject;
-    }
-
-    /**
-     * Get the mouse click.
-     * 
-     * @return The mouse click.
-     */
-    public int getClick()
-    {
-        return click;
-    }
-
-    /**
-     * Update the palette action on click down.
-     * 
-     * @param palette The palette type.
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    protected void updatePaletteBefore(Enum<?> palette, int mx, int my)
-    {
-        if (palette == PaletteType.POINTER)
-        {
-            final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
-            updatePalettePointer(part, mx, my);
-
-            updateSingleEntitySelection(mx, my);
-        }
-        else if (palette == PaletteType.SELECTION)
-        {
-            updateSelectionBefore(mx, my);
-        }
-    }
-
-    /**
-     * Update the palette action when moving mouse.
-     * 
-     * @param palette The palette type.
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    protected void updatePaletteMoving(Enum<?> palette, int mx, int my)
-    {
-        if (palette == PaletteType.POINTER)
-        {
-            objectControl.updateMouseOver(mx, my);
-            if (getClick() == Mouse.LEFT)
-            {
-                objectControl.updateDragging(mouseX, mouseY, mx, my);
-            }
-        }
-        else if (palette == PaletteType.SELECTION && click == Mouse.LEFT)
-        {
-            if (!objectControl.hasSelection())
-            {
-                selection.update(mx, my);
-            }
-            else
-            {
-                objectControl.updateDragging(mouseX, mouseY, mx, my);
-            }
-        }
-        else if (palette == PaletteType.HAND && click > 0)
-        {
-            updateCamera(mouseX - mx, my - mouseY, 0);
-        }
-    }
-
-    /**
-     * Update the palette action on click up.
-     * 
-     * @param palette The palette type.
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    protected void updatePaletteAfter(Enum<?> palette, int mx, int my)
-    {
-        if (palette == PaletteType.SELECTION)
-        {
-            updateSelectionAfter(mx, my);
-        }
-        else if (palette == PaletteType.HAND)
-        {
-            updateHand();
-        }
-    }
-
-    /**
-     * Update the palette pointer action on click release.
-     * 
-     * @param part The palette part reference.
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    protected void updatePalettePointer(PalettePart part, int mx, int my)
-    {
-        updatePointerMap(part, mx, my);
-        updatePointerFactory(part, mx, my);
-    }
-
-    /**
-     * Update the object selection with pointer.
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    protected void updateSingleEntitySelection(int mx, int my)
-    {
-        objectControl.unSelectEntities();
-        final ObjectGame object = objectControl.getObject(mx, my);
-        if (object != null)
-        {
-            objectControl.setObjectSelection(object, true);
-        }
-        for (final ObjectSelectionListener listener : objectSelectionListeners)
-        {
-            listener.notifyObjectSelected(object);
-        }
+        camera = services.get(Camera.class);
+        handlerObject = services.get(Handler.class);
+        objectControl = services.get(ObjectControl.class);
+        selection = services.get(Selection.class);
+        worldViewUpdater = services.get(WorldViewUpdater.class);
     }
 
     /**
@@ -339,9 +168,11 @@ public class WorldViewRenderer
         renderMap(g, map, areaX, areaY);
         renderEntities(g);
         renderOverAndSelectedEntities(g);
+
+        final Tile selectedTile = worldViewUpdater.getSelectedTile();
         if (selectedTile != null)
         {
-            renderSelectedCollisions(g, map, camera);
+            renderSelectedCollisions(g, map, camera, selectedTile);
         }
         renderSelection(g);
     }
@@ -396,166 +227,7 @@ public class WorldViewRenderer
      */
     protected void renderSelection(Graphic g)
     {
-        selection.render(g, WorldViewRenderer.COLOR_MOUSE_SELECTION);
-    }
-
-    /**
-     * Update the pointer in map case.
-     * 
-     * @param part The current palette part.
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    private void updatePointerMap(PalettePart part, int mx, int my)
-    {
-        final MapTile map = model.getMap();
-        if (map.isCreated() && TileCollisionView.ID.equals(part.getActivePaletteId()))
-        {
-            final Camera camera = model.getCamera();
-            final Point point = Tools.getMouseTile(map, camera, mx, my);
-            lastSelectedTile = selectedTile;
-            selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
-
-            if (selectedTile != lastSelectedTile)
-            {
-                final TileCollisionView view = part.getPaletteView(TileCollisionView.ID, TileCollisionView.class);
-                view.setSelectedTile(selectedTile);
-            }
-            if (selectedTile != null)
-            {
-                for (final TileSelectionListener listener : tileSelectionListeners)
-                {
-                    listener.notifyTileSelected(selectedTile);
-                }
-            }
-        }
-        else
-        {
-            selectedTile = null;
-        }
-    }
-
-    /**
-     * Update the pointer in factory case.
-     * 
-     * @param part The current palette part.
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    private void updatePointerFactory(PalettePart part, int mx, int my)
-    {
-        if (FactoryView.ID.equals(part.getActivePaletteId()) && !objectControl.isDragging())
-        {
-            if (click == Mouse.LEFT && !objectControl.hasOver() && !objectControl.hasSelection())
-            {
-                objectControl.addEntity(mx, my);
-            }
-            else if (click == Mouse.RIGHT)
-            {
-                objectControl.removeEntity(mx, my);
-            }
-        }
-    }
-
-    /**
-     * Update the hand palette type.
-     */
-    private void updateHand()
-    {
-        final Camera camera = model.getCamera();
-        final MapTile map = model.getMap();
-        camera.teleport(UtilMath.getRounded(camera.getX(), map.getTileWidth()),
-                UtilMath.getRounded(camera.getY(), map.getTileHeight()));
-    }
-
-    /**
-     * Update the mouse.
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    private void updateMouse(int mx, int my)
-    {
-        mouseX = mx;
-        mouseY = my;
-        updateRender();
-    }
-
-    /**
-     * Update the keyboard.
-     * 
-     * @param vx The keyboard horizontal movement.
-     * @param vy The keyboard vertical movement.
-     * @param step The movement sensibility.
-     */
-    private void updateCamera(int vx, int vy, int step)
-    {
-        final Camera camera = model.getCamera();
-        final MapTile map = model.getMap();
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-        if (step > 0)
-        {
-            camera.moveLocation(1.0, UtilMath.getRounded(vx * tw * step, tw), UtilMath.getRounded(vy * th * step, th));
-        }
-        else
-        {
-            camera.moveLocation(1.0, vx, vy);
-        }
-        updateRender();
-    }
-
-    /**
-     * Update the selection when clicking (select single object, or unselect all previous).
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    private void updateSelectionBefore(int mx, int my)
-    {
-        final ObjectGame object = objectControl.getObject(mx, my);
-        selection.reset();
-
-        if (objectControl.hasSelection() && object == null)
-        {
-            objectControl.unSelectEntities();
-            selection.start(mx, my);
-        }
-        else
-        {
-            selection.start(mx, my);
-        }
-    }
-
-    /**
-     * Update the selection when releasing click (update the objects flags).
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    private void updateSelectionAfter(int mx, int my)
-    {
-        selection.end(mx, my);
-        if (selection.isSelected())
-        {
-            objectControl.selectEntities(selection.getArea());
-        }
-        final Collection<ObjectGame> selections = objectControl.getSelectedEnties();
-        if (selections.size() == 1)
-        {
-            final ObjectGame object = selections.toArray(new ObjectGame[1])[0];
-            for (final ObjectSelectionListener listener : objectSelectionListeners)
-            {
-                listener.notifyObjectSelected(object);
-            }
-        }
-        else
-        {
-            for (final ObjectSelectionListener listener : objectSelectionListeners)
-            {
-                listener.notifyObjectsSelected(selections);
-            }
-        }
+        selection.render(g, COLOR_MOUSE_SELECTION);
     }
 
     /**
@@ -578,9 +250,7 @@ public class WorldViewRenderer
      */
     private void render(Graphic g, int width, int height)
     {
-        final Camera camera = model.getCamera();
-        final MapTile map = model.getMap();
-
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         final int areaX = UtilMath.getRounded(width, tw);
@@ -594,9 +264,9 @@ public class WorldViewRenderer
         {
             renderCursor(g, tw, th, areaX, areaY);
         }
-        if (gridEnabled)
+        if (worldViewUpdater.isGridEnabled())
         {
-            WorldViewRenderer.drawGrid(g, tw, th, areaX, areaY, WorldViewRenderer.COLOR_GRID);
+            drawGrid(g, tw, th, areaX, areaY, COLOR_GRID);
         }
     }
 
@@ -607,8 +277,7 @@ public class WorldViewRenderer
      */
     private void renderOverAndSelectedEntities(Graphic g)
     {
-        final Camera camera = model.getCamera();
-        final MapTile map = model.getMap();
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
         final int th = map.getTileHeight();
 
         for (final Transformable object : handlerObject.get(Transformable.class))
@@ -618,49 +287,13 @@ public class WorldViewRenderer
 
             if (objectControl.isOver(object.getOwner()) || objectControl.isSelected(object.getOwner()))
             {
-                g.setColor(WorldViewRenderer.COLOR_ENTITY_SELECTION);
+                g.setColor(COLOR_ENTITY_SELECTION);
                 final int x = sx - (int) camera.getX() - object.getWidth() / 2;
                 final int y = -sy + (int) camera.getY() - object.getHeight()
                         + UtilMath.getRounded(camera.getHeight(), th);
                 g.drawRect(x, y, object.getWidth(), object.getHeight(), true);
             }
         }
-    }
-
-    /**
-     * Render the selected tiles collision.
-     * 
-     * @param g The graphic output.
-     * @param map The map reference.
-     * @param camera The camera reference.
-     */
-    private void renderSelectedCollisions(Graphic g, MapTile map, Camera camera)
-    {
-        // Render selected collision
-        g.setColor(WorldViewRenderer.COLOR_MOUSE_SELECTION);
-        final int th = map.getTileHeight();
-        for (int ty = 0; ty < map.getInTileHeight(); ty++)
-        {
-            for (int tx = 0; tx < map.getInTileWidth(); tx++)
-            {
-                final Tile tile = map.getTile(tx, ty);
-                if (tile != null && tile.hasFeature(TileCollision.class)
-                        && selectedTile.hasFeature(TileCollision.class))
-                {
-                    if (tile.getFeature(TileCollision.class).getCollisionFormulas() == selectedTile.getFeature(
-                            TileCollision.class).getCollisionFormulas())
-                    {
-                        g.drawRect((int) camera.getViewpointX(tile.getX()), (int) camera.getViewpointY(tile.getY())
-                                - th, tile.getWidth(), tile.getHeight(), true);
-                    }
-                }
-            }
-        }
-
-        // Render selected tile
-        g.setColor(WorldViewRenderer.COLOR_TILE_SELECTED);
-        g.drawRect((int) camera.getViewpointX(selectedTile.getX()), (int) camera.getViewpointY(selectedTile.getY())
-                - th, selectedTile.getWidth(), selectedTile.getHeight(), true);
     }
 
     /**
@@ -676,12 +309,14 @@ public class WorldViewRenderer
     {
         if (!selection.isSelecting() && !objectControl.isDragging() && !objectControl.hasOver())
         {
+            final int mouseX = worldViewUpdater.getMouseX();
+            final int mouseY = worldViewUpdater.getMouseY();
             if (mouseX >= 0 && mouseY >= 0 && mouseX < areaX && mouseY < areaY)
             {
                 final int mx = UtilMath.getRounded(mouseX, tw);
                 final int my = UtilMath.getRounded(mouseY, th);
 
-                g.setColor(WorldViewRenderer.COLOR_MOUSE_SELECTION);
+                g.setColor(COLOR_MOUSE_SELECTION);
                 g.drawRect(mx, my, tw, th, true);
             }
         }
@@ -705,44 +340,21 @@ public class WorldViewRenderer
      */
 
     @Override
-    public void mouseDoubleClick(MouseEvent mouseEvent)
-    {
-        // Nothing to do
-    }
-
-    @Override
     public void mouseDown(MouseEvent mouseEvent)
     {
-        final int mx = mouseEvent.x;
-        final int my = mouseEvent.y;
-        final Enum<?> palette = model.getSelectedPalette();
-        click = mouseEvent.button;
-
-        updatePaletteBefore(palette, mx, my);
-        updateMouse(mx, my);
+        updateRender();
     }
 
     @Override
     public void mouseUp(MouseEvent mouseEvent)
     {
-        final int mx = mouseEvent.x;
-        final int my = mouseEvent.y;
-        final Enum<?> palette = model.getSelectedPalette();
+        updateRender();
+    }
 
-        updatePaletteAfter(palette, mx, my);
-        updateMouse(mx, my);
-
-        objectControl.stopDragging();
-        for (final ObjectGame object : objectControl.getSelectedEnties())
-        {
-            if (object.hasTrait(Transformable.class))
-            {
-                final Transformable transformable = object.getTrait(Transformable.class);
-                objectControl.setObjectLocation(transformable, (int) transformable.getX(), (int) transformable.getY(),
-                        -1);
-            }
-        }
-        click = 0;
+    @Override
+    public void mouseDoubleClick(MouseEvent mouseEvent)
+    {
+        // Nothing to do
     }
 
     /*
@@ -752,12 +364,7 @@ public class WorldViewRenderer
     @Override
     public void mouseMove(MouseEvent mouseEvent)
     {
-        final int mx = mouseEvent.x;
-        final int my = mouseEvent.y;
-
-        final Enum<?> palette = model.getSelectedPalette();
-        updatePaletteMoving(palette, mx, my);
-        updateMouse(mx, my);
+        updateRender();
     }
 
     /*
@@ -765,40 +372,13 @@ public class WorldViewRenderer
      */
 
     @Override
-    public void keyPressed(KeyEvent keyEvent)
+    public void keyPressed(KeyEvent e)
     {
-        final int vx;
-        final int vy;
-        final int code = keyEvent.keyCode;
-        if (code == SWT.ARROW_LEFT)
-        {
-            vx = -1;
-        }
-        else if (code == SWT.ARROW_RIGHT)
-        {
-            vx = 1;
-        }
-        else
-        {
-            vx = 0;
-        }
-        if (code == SWT.ARROW_DOWN)
-        {
-            vy = -1;
-        }
-        else if (code == SWT.ARROW_UP)
-        {
-            vy = 1;
-        }
-        else
-        {
-            vy = 0;
-        }
-        updateCamera(vx, vy, WorldViewRenderer.GRID_MOVEMENT_SENSIBILITY);
+        updateRender();
     }
 
     @Override
-    public void keyReleased(KeyEvent keyEvent)
+    public void keyReleased(KeyEvent e)
     {
         // Nothing to do
     }

@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
  */
 public class Selection
 {
-    /** World model. */
-    private final WorldViewModel model = WorldViewModel.INSTANCE;
     /** Last selection area. */
     private final Rectangle selectionArea;
     /** Selection starting horizontal location. */
@@ -68,7 +66,7 @@ public class Selection
     {
         if (!isStarted())
         {
-            final MapTile map = model.getMap();
+            final MapTile map = WorldViewModel.INSTANCE.getMap();
             final int sx = UtilMath.getRounded(mx, map.getTileWidth());
             final int sy = UtilMath.getRounded(my, map.getTileHeight());
             startX = sx;
@@ -91,7 +89,7 @@ public class Selection
     {
         if (isStarted())
         {
-            final MapTile map = model.getMap();
+            final MapTile map = WorldViewModel.INSTANCE.getMap();
             endX = UtilMath.getRounded(mx + map.getTileWidth() / 2, map.getTileWidth());
             endY = UtilMath.getRounded(my + map.getTileHeight() / 2, map.getTileHeight());
             started = true;
@@ -110,7 +108,7 @@ public class Selection
     {
         if (isSelecting())
         {
-            final MapTile map = model.getMap();
+            final MapTile map = WorldViewModel.INSTANCE.getMap();
             int sx = startX;
             int sy = startY;
             int ex = UtilMath.getRounded(mx, map.getTileWidth());

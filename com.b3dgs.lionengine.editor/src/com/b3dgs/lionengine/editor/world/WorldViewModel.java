@@ -22,7 +22,10 @@ import com.b3dgs.lionengine.editor.palette.PaletteType;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.object.ComponentRenderer;
+import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Handler;
 
 /**
  * Contains the objects of the world.
@@ -56,6 +59,17 @@ public enum WorldViewModel
 
         factory.addService(camera);
         factory.addService(map);
+
+        final Handler handlerObject = new Handler();
+        handlerObject.addRenderable(new ComponentRenderer());
+        handlerObject.addUpdatable(new ComponentUpdater());
+        factory.addService(handlerObject);
+
+        final Selection selection = new Selection();
+        factory.addService(selection);
+
+        final ObjectControl objectControl = new ObjectControl(factory);
+        factory.addService(objectControl);
     }
 
     /**

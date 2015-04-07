@@ -35,6 +35,8 @@ import org.eclipse.swt.widgets.Composite;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Represents the world view, where the global map is displayed.
@@ -45,6 +47,8 @@ public class WorldViewPart
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.world-view";
+    /** Extension point attribute updater. */
+    private static final String EXTENSION_UPDATER = "updater";
     /** Extension point attribute renderer. */
     private static final String EXTENSION_RENDERER = "renderer";
 
@@ -53,6 +57,8 @@ public class WorldViewPart
     EPartService partService;
     /** Composite. */
     private Composite composite;
+    /** Updater. */
+    private WorldViewUpdater worldViewUpdater;
     /** Renderer. */
     private WorldViewRenderer worldViewRenderer;
 
@@ -72,9 +78,19 @@ public class WorldViewPart
         composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        worldViewRenderer = checkRendererExtensionPoint();
+        final Factory factory = WorldViewModel.INSTANCE.getFactory();
+
+        worldViewUpdater = checkUpdaterExtensionPoint(factory);
+        composite.addMouseListener(worldViewUpdater);
+        composite.addMouseMoveListener(worldViewUpdater);
+        composite.addKeyListener(worldViewUpdater);
+        factory.addService(worldViewUpdater);
+
+        worldViewRenderer = checkRendererExtensionPoint(factory);
         composite.addPaintListener(worldViewRenderer);
-        addListeners();
+        composite.addMouseListener(worldViewRenderer);
+        composite.addMouseMoveListener(worldViewRenderer);
+        composite.addKeyListener(worldViewRenderer);
     }
 
     /**
@@ -86,16 +102,6 @@ public class WorldViewPart
         {
             composite.redraw();
         }
-    }
-
-    /**
-     * Add mouse and keyboard listeners.
-     */
-    public void addListeners()
-    {
-        composite.addMouseListener(worldViewRenderer);
-        composite.addMouseMoveListener(worldViewRenderer);
-        composite.addKeyListener(worldViewRenderer);
     }
 
     /**
@@ -121,7 +127,7 @@ public class WorldViewPart
      */
     public void switchGridEnabled()
     {
-        worldViewRenderer.switchGridEnabled();
+        worldViewUpdater.switchGridEnabled();
     }
 
     /**
@@ -154,17 +160,46 @@ public class WorldViewPart
     }
 
     /**
-     * Check the renderer extension point.
+     * Check the updater extension point.
      * 
+     * @param services The services reference.
      * @return renderer instance from extension point or default one.
      */
-    private WorldViewRenderer checkRendererExtensionPoint()
+    private WorldViewUpdater checkUpdaterExtensionPoint(Services services)
+    {
+        final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
+                WorldViewUpdater.EXTENSION_ID);
+        if (elements.length > 0)
+        {
+            final String renderer = elements[0].getAttribute(EXTENSION_UPDATER);
+            if (renderer != null)
+            {
+                try
+                {
+                    return UtilEclipse.createClass(renderer, WorldViewUpdater.class, partService);
+                }
+                catch (final ReflectiveOperationException exception)
+                {
+                    Verbose.exception(getClass(), "checkUpdaterExtensionPoint", exception);
+                }
+            }
+        }
+        return new WorldViewUpdater(partService, services);
+    }
+
+    /**
+     * Check the renderer extension point.
+     * 
+     * @param services The services reference.
+     * @return renderer instance from extension point or default one.
+     */
+    private WorldViewRenderer checkRendererExtensionPoint(Services services)
     {
         final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
                 WorldViewRenderer.EXTENSION_ID);
         if (elements.length > 0)
         {
-            final String renderer = elements[0].getAttribute(WorldViewPart.EXTENSION_RENDERER);
+            final String renderer = elements[0].getAttribute(EXTENSION_RENDERER);
             if (renderer != null)
             {
                 try
@@ -177,6 +212,6 @@ public class WorldViewPart
                 }
             }
         }
-        return new WorldViewRenderer(composite, partService);
+        return new WorldViewRenderer(composite, partService, services);
     }
 }

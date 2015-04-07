@@ -2,6 +2,7 @@
 <plugin>
    <extension-point id="worldViewRenderer" name="World View Renderer" schema="schema/worldViewRenderer.exsd"/>
    <extension-point id="properties" name="Properties" schema="schema/properties.exsd"/>
+   <extension-point id="worldViewUpdater" name="World View Updater" schema="schema/worldViewUpdater.exsd"/>
 
    <extension
          id="product"
