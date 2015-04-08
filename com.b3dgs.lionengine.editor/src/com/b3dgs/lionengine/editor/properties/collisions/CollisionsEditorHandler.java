@@ -15,23 +15,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties;
+package com.b3dgs.lionengine.editor.properties.collisions;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.widgets.Tree;
 
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
+import com.b3dgs.lionengine.editor.collision.EntityCollisionEditor;
+import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Set icon handler.
+ * Start collisions editor handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class IconSetHandler
+public class CollisionsEditorHandler
 {
     /**
      * Execute the handler.
@@ -41,16 +40,9 @@ public class IconSetHandler
     @Execute
     public void execute(EPartService partService)
     {
-        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
-        final Configurer configurer = (Configurer) part.properties.getData();
-        final String file = Tools.selectFile(part.properties.getShell(), configurer.getPath(), true);
-        if (file != null)
-        {
-            final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
-            surfaceNode.writeString(ConfigSurface.SURFACE_ICON, file);
-            configurer.save();
-            part.createAttributeIcon(file);
-        }
+        final Tree tree = PropertiesModel.INSTANCE.getTree();
+        final Configurer configurer = (Configurer) tree.getData();
+        final EntityCollisionEditor editor = new EntityCollisionEditor(tree, configurer);
+        editor.open();
     }
 }

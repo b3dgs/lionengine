@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor;
 
+import java.io.File;
+
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
@@ -69,6 +71,18 @@ public class Activator
             return product.getDefiningBundle();
         }
         return Activator.getContext().getBundle();
+    }
+
+    /**
+     * Get the bundle absolute location.
+     * 
+     * @return The bundle absolute location.
+     */
+    public static File getLocation()
+    {
+        final String location = Activator.getMainBundle().getLocation();
+        final String path = location.substring(location.lastIndexOf(':') + 1);
+        return new File(path).getAbsoluteFile();
     }
 
     /*

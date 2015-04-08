@@ -15,23 +15,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties;
+package com.b3dgs.lionengine.editor.properties.animations;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.editor.animation.AnimationEditor;
+import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
- * Disable collisions handler.
+ * Start animations editor handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsDisableHandler
+public class AnimationsEditorHandler
 {
     /**
      * Execute the handler.
@@ -43,16 +42,7 @@ public class CollisionsDisableHandler
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();
         final Configurer configurer = (Configurer) tree.getData();
-        configurer.getRoot().removeChildren(ConfigCollisions.COLLISION);
-        configurer.save();
-
-        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
-        for (final TreeItem item : tree.getItems())
-        {
-            if (ConfigCollisions.COLLISION.equals(item.getData()))
-            {
-                part.clear(item);
-            }
-        }
+        final AnimationEditor editor = new AnimationEditor(tree, configurer);
+        editor.open();
     }
 }

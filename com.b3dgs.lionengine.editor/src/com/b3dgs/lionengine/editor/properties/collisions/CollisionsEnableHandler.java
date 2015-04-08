@@ -15,21 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties;
+package com.b3dgs.lionengine.editor.properties.collisions;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.swt.widgets.Tree;
 
-import com.b3dgs.lionengine.editor.animation.AnimationEditor;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 
 /**
- * Start animations editor handler.
+ * Enable collisions handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AnimationsEditorHandler
+public class CollisionsEnableHandler
 {
     /**
      * Execute the handler.
@@ -39,9 +38,7 @@ public class AnimationsEditorHandler
     @Execute
     public void execute(EPartService partService)
     {
-        final Tree tree = PropertiesModel.INSTANCE.getTree();
-        final Configurer configurer = (Configurer) tree.getData();
-        final AnimationEditor editor = new AnimationEditor(tree, configurer);
-        editor.open();
+        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        PropertiesCollisions.createAttributeCollisions(part.getTree());
     }
 }

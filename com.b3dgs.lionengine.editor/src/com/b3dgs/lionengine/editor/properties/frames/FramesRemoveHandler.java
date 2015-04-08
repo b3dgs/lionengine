@@ -15,25 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties;
+package com.b3dgs.lionengine.editor.properties.frames;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Remove surface handler.
+ * Remove frames handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SurfaceRemoveHandler
+public class FramesRemoveHandler
 {
     /**
      * Execute the handler.
@@ -44,16 +45,14 @@ public class SurfaceRemoveHandler
     public void execute(EPartService partService)
     {
         final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
-        final Configurer configurer = (Configurer) part.properties.getData();
+        final Tree properties = part.getTree();
+        final Configurer configurer = (Configurer) properties.getData();
         final XmlNode root = configurer.getRoot();
-        root.removeChild(ConfigSurface.SURFACE);
-        root.removeChildren(ConfigAnimations.ANIMATION);
+        root.removeChild(ConfigFrames.FRAMES);
         configurer.save();
-        for (final TreeItem item : part.properties.getItems())
+        for (final TreeItem item : properties.getItems())
         {
-            final Object data = item.getData();
-            if (ConfigSurface.SURFACE_IMAGE.equals(data) || ConfigSurface.SURFACE_ICON.equals(data)
-                    || ConfigFrames.FRAMES.equals(data) || ConfigAnimations.ANIMATION.equals(data))
+            if (ConfigFrames.FRAMES.equals(item.getData()) || ConfigAnimations.ANIMATION.equals(item.getData()))
             {
                 part.clear(item);
             }

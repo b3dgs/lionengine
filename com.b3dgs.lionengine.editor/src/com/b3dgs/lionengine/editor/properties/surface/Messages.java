@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties;
+package com.b3dgs.lionengine.editor.properties.surface;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -30,11 +30,11 @@ public final class Messages
         extends NLS
 {
     /** Bundle name. */
-    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".properties.messages"; //$NON-NLS-1$
-    /** Property key. */
-    public static String Properties_Key;
-    /** Property value. */
-    public static String Properties_Value;
+    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".properties.surface.messages"; //$NON-NLS-1$
+    /** Surface property. */
+    public static String Properties_Surface;
+    /** Surface icon property. */
+    public static String Properties_SurfaceIcon;
 
     /**
      * Initialize.

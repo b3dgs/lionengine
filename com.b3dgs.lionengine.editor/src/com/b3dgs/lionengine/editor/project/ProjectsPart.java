@@ -206,11 +206,11 @@ public class ProjectsPart
         final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
         if (ObjectsFolderTester.isObjectFile(media))
         {
-            part.setInput(new Configurer(media));
+            part.setInput(part.getTree(), new Configurer(media));
         }
         else
         {
-            part.setInput(null);
+            part.setInput(part.getTree(), null);
         }
     }
 

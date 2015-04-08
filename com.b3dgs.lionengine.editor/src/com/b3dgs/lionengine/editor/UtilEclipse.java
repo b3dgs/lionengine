@@ -195,8 +195,10 @@ public final class UtilEclipse
     public static <C> Collection<Class<? extends C>> getImplementing(Class<C> type)
     {
         final Collection<Class<? extends C>> found = new HashSet<>();
-        found.addAll(getImplementing(type, Project.getActive().getClassesPath()));
-        found.addAll(getImplementing(type, Project.getActive().getLibrariesPath()));
+        found.addAll(getImplementing(type, Project.getActive().getClassesPath(), null));
+        found.addAll(getImplementing(type, Project.getActive().getLibrariesPath(), null));
+        found.addAll(getImplementing(type, Activator.getLocation(), Activator.class.getPackage().getName()));
+
         return found;
     }
 
@@ -205,9 +207,10 @@ public final class UtilEclipse
      * 
      * @param type The type to check.
      * @param root The folder to search.
+     * @param packageStart The starting package (<code>null</code> if none).
      * @return The implementing class list.
      */
-    public static <C> Collection<Class<? extends C>> getImplementing(Class<C> type, File root)
+    public static <C> Collection<Class<? extends C>> getImplementing(Class<C> type, File root, String packageStart)
     {
         final Collection<Class<? extends C>> found = new HashSet<>();
         final Collection<File> folders = new ArrayList<>();
@@ -229,10 +232,13 @@ public final class UtilEclipse
                         }
                         else if (current.isFile() && current.getName().endsWith(".class"))
                         {
-                            final String name = current.getPath().replace(root.getPath(), "")
+                            String name = current.getPath().replace(root.getPath(), "")
                                     .replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".")
                                     .substring(1);
-
+                            if (packageStart != null)
+                            {
+                                name = name.substring(name.indexOf(packageStart));
+                            }
                             final Class<?> clazz = project.getClass(name);
                             if (type.isAssignableFrom(clazz) && clazz != type)
                             {

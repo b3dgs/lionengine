@@ -15,16 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties;
+package com.b3dgs.lionengine.editor.properties.frames;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.Stream;
@@ -46,8 +48,9 @@ public class FramesSetHandler
     public void execute(EPartService partService)
     {
         final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
-        final Configurer configurer = (Configurer) part.properties.getData();
-        final Shell shell = part.properties.getShell();
+        final Tree properties = part.getTree();
+        final Configurer configurer = (Configurer) properties.getData();
+        final Shell shell = properties.getShell();
 
         final InputDialog horizontalFrames = new InputDialog(shell, "Frames", "Number of horizontal frames", "1",
                 new InputValidator(InputValidator.INTEGER_POSITIVE_MATCH, "Invalid frames number !"));
@@ -62,7 +65,7 @@ public class FramesSetHandler
                 frames.writeString(ConfigFrames.FRAMES_VERTICAL, verticalFrames.getValue());
                 configurer.getRoot().add(frames);
                 configurer.save();
-                part.createAttributeFrames(configurer);
+                PropertiesFrames.createAttributeFrames(properties, configurer);
             }
         }
     }

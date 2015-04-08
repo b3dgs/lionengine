@@ -15,25 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties;
+package com.b3dgs.lionengine.editor.properties.clazz;
+
+import org.eclipse.osgi.util.NLS;
 
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
- * Properties extension interface.
+ * Messages internationalization.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface PropertiesListener
+public final class Messages
+        extends NLS
 {
-    /** Extension ID. */
-    String EXTENSION_ID = Activator.PLUGIN_ID + ".properties";
+    /** Bundle name. */
+    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".properties.clazz.messages"; //$NON-NLS-1$
+    /** Class property. */
+    public static String Properties_Class;
 
     /**
-     * Set the properties input.
-     * 
-     * @param configurer The configurer reference (<code>null</code> if not a valid item).
+     * Initialize.
      */
-    void setInput(Configurer configurer);
+    static
+    {
+        NLS.initializeMessages(Messages.BUNDLE_NAME, Messages.class);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Messages()
+    {
+        throw new RuntimeException();
+    }
 }

@@ -24,8 +24,6 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialogs.ImportProjectDialog;
-import com.b3dgs.lionengine.editor.factory.FactoryView;
-import com.b3dgs.lionengine.editor.palette.PalettePart;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.project.ProjectsPart;
@@ -73,12 +71,6 @@ public class ProjectImportHandler
 
             final Factory factory = WorldViewModel.INSTANCE.getFactory();
             factory.setClassLoader(project.getClassLoader());
-
-            final FactoryView factoryView = new FactoryView(partService);
-            factoryView.setFactory(factory);
-
-            final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
-            part.addPalette("factory", factoryView);
         }
     }
 }

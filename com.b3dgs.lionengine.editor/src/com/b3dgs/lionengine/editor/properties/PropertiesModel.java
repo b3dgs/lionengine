@@ -54,6 +54,20 @@ public enum PropertiesModel
     }
 
     /**
+     * Get the selected property data.
+     * 
+     * @return The selected data, <code>null</code> if none.
+     */
+    public Object getSelectedData()
+    {
+        for (final TreeItem item : properties.getSelection())
+        {
+            return item.getData();
+        }
+        return null;
+    }
+
+    /**
      * Check if properties are empty.
      * 
      * @return <code>true</code> if empty, <code>false</code> else.

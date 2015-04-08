@@ -15,19 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties;
+package com.b3dgs.lionengine.editor.properties.surface;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.widgets.Tree;
 
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.game.configurer.ConfigSurface;
+import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Enable collisions handler.
+ * Set surface handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsEnableHandler
+public class SurfaceSetHandler
 {
     /**
      * Execute the handler.
@@ -38,6 +45,17 @@ public class CollisionsEnableHandler
     public void execute(EPartService partService)
     {
         final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
-        part.createAttributeCollisions();
+        final Tree properties = part.getTree();
+        final Configurer configurer = (Configurer) properties.getData();
+        final String file = Tools.selectFile(properties.getShell(), configurer.getPath(), true);
+        if (file != null)
+        {
+            final XmlNode root = configurer.getRoot();
+            final XmlNode surfaceNode = Stream.createXmlNode(ConfigSurface.SURFACE);
+            surfaceNode.writeString(ConfigSurface.SURFACE_IMAGE, file);
+            root.add(surfaceNode);
+            configurer.save();
+            PropertiesSurface.createAttributeSurface(properties, configurer);
+        }
     }
 }
