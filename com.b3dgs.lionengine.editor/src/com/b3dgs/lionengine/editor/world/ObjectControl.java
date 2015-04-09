@@ -25,6 +25,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -143,7 +144,7 @@ public class ObjectControl
      */
     public void addEntity(int mx, int my)
     {
-        final Media media = WorldViewModel.INSTANCE.getSelectedObject();
+        final Media media = ProjectsModel.INSTANCE.getSelection();
         if (media != null)
         {
             final MapTile map = WorldViewModel.INSTANCE.getMap();

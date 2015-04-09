@@ -29,21 +29,13 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.PaletteType;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.collision.TileCollisionView;
-import com.b3dgs.lionengine.editor.factory.FactoryView;
-import com.b3dgs.lionengine.editor.palette.PalettePart;
-import com.b3dgs.lionengine.editor.palette.PaletteType;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
@@ -79,8 +71,6 @@ public class WorldViewUpdater
     private final ObjectControl objectControl;
     /** Selected tile. */
     private Tile selectedTile;
-    /** Last selected tile. */
-    private Tile lastSelectedTile;
     /** Grid enabled. */
     private boolean gridEnabled;
     /** Current horizontal mouse location. */
@@ -225,9 +215,7 @@ public class WorldViewUpdater
     {
         if (palette == PaletteType.POINTER)
         {
-            final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
-            updatePalettePointer(part, mx, my);
-
+            updatePalettePointer(mx, my);
             updateSingleEntitySelection(mx, my);
         }
         else if (palette == PaletteType.SELECTION)
@@ -292,14 +280,13 @@ public class WorldViewUpdater
     /**
      * Update the palette pointer action on click release.
      * 
-     * @param part The palette part reference.
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
      */
-    protected void updatePalettePointer(PalettePart part, int mx, int my)
+    protected void updatePalettePointer(int mx, int my)
     {
-        updatePointerMap(part, mx, my);
-        updatePointerFactory(part, mx, my);
+        updatePointerMap(mx, my);
+        updatePointerFactory(mx, my);
     }
 
     /**
@@ -323,47 +310,18 @@ public class WorldViewUpdater
     }
 
     /**
-     * Create object from selected project resource at place it at specified location.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     */
-    private void createObject(int x, int y)
-    {
-        final Factory factory = WorldViewModel.INSTANCE.getFactory();
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
-        if (selection != null && ObjectsFolderTester.isObjectFile(selection))
-        {
-            final ObjectGame object = factory.create(selection);
-            if (object.hasTrait(Transformable.class))
-            {
-                object.getTrait(Transformable.class).teleport(x, y);
-            }
-            handlerObject.add(object);
-        }
-    }
-
-    /**
      * Update the pointer in map case.
      * 
-     * @param part The current palette part.
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
      */
-    private void updatePointerMap(PalettePart part, int mx, int my)
+    private void updatePointerMap(int mx, int my)
     {
         final MapTile map = WorldViewModel.INSTANCE.getMap();
-        if (map.isCreated() && TileCollisionView.ID.equals(part.getActivePaletteId()))
+        if (map.isCreated())
         {
             final Point point = Tools.getMouseTile(map, camera, mx, my);
-            lastSelectedTile = selectedTile;
             selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
-
-            if (selectedTile != lastSelectedTile)
-            {
-                final TileCollisionView view = part.getPaletteView(TileCollisionView.ID, TileCollisionView.class);
-                view.setSelectedTile(selectedTile);
-            }
             if (selectedTile != null)
             {
                 for (final TileSelectionListener listener : tileSelectionListeners)
@@ -381,13 +339,12 @@ public class WorldViewUpdater
     /**
      * Update the pointer in factory case.
      * 
-     * @param part The current palette part.
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
      */
-    private void updatePointerFactory(PalettePart part, int mx, int my)
+    private void updatePointerFactory(int mx, int my)
     {
-        if (FactoryView.ID.equals(part.getActivePaletteId()) && !objectControl.isDragging())
+        if (!objectControl.isDragging())
         {
             if (click == Mouse.LEFT && !objectControl.hasOver() && !objectControl.hasSelection())
             {

@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.palette.PaletteType;
+import com.b3dgs.lionengine.editor.PaletteType;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
@@ -43,8 +42,6 @@ public enum WorldViewModel
     private final Factory factory;
     /** Map reference. */
     private MapTile map;
-    /** Selected object media. */
-    private Media selectedObject;
     /** Selected palette. */
     private Enum<?> palette = PaletteType.POINTER;
 
@@ -80,16 +77,6 @@ public enum WorldViewModel
     public void setMap(MapTile map)
     {
         this.map = map;
-    }
-
-    /**
-     * Set the selected object media.
-     * 
-     * @param selectedObject The selected object media.
-     */
-    public void setSelectedObject(Media selectedObject)
-    {
-        this.selectedObject = selectedObject;
     }
 
     /**
@@ -130,16 +117,6 @@ public enum WorldViewModel
     public Factory getFactory()
     {
         return factory;
-    }
-
-    /**
-     * Get the selected object media.
-     * 
-     * @return The selected object media.
-     */
-    public Media getSelectedObject()
-    {
-        return selectedObject;
     }
 
     /**

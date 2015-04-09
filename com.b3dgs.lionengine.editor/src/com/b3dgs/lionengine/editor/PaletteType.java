@@ -15,13 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.palette;
+package com.b3dgs.lionengine.editor;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Display;
-
-import com.b3dgs.lionengine.editor.UtilEclipse;
 
 /**
  * Represents the different standard palette types.
@@ -31,16 +29,26 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 public enum PaletteType
 {
     /** Pointer. Allows to interact with map and objects */
-    POINTER(Display.getDefault().getSystemCursor(SWT.CURSOR_ARROW)),
+    POINTER(SWT.CURSOR_ARROW),
     /** Hand. Allows to navigate on map with mouse. */
-    HAND(Display.getDefault().getSystemCursor(SWT.CURSOR_HAND)),
-    /** Pipet. Allows to pick an element (duplicate). */
-    PIPET(new Cursor(Display.getDefault(), UtilEclipse.getIcon("toolbar", "pipet.png").getImageData(), 0, 15)),
+    HAND(SWT.CURSOR_HAND),
     /** Selection. Allows to select many objects. */
-    SELECTION(Display.getDefault().getSystemCursor(SWT.CURSOR_CROSS));
+    SELECTION(SWT.CURSOR_CROSS),
+    /** Pipet. Allows to pick an element (duplicate). */
+    PIPET(new Cursor(Display.getDefault(), UtilEclipse.getIcon("toolbar", "pipet.png").getImageData(), 0, 15));
 
     /** The associated cursor. */
     private final Cursor cursor;
+
+    /**
+     * Private constructor.
+     * 
+     * @param cursor The cursor reference.
+     */
+    private PaletteType(int cursor)
+    {
+        this.cursor = Display.getDefault().getSystemCursor(cursor);
+    }
 
     /**
      * Private constructor.
