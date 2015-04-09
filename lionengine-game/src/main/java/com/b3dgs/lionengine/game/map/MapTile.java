@@ -55,6 +55,12 @@ import com.b3dgs.lionengine.stream.FileWriting;
 public interface MapTile
         extends MapTileRenderer, Renderable, Featurable<MapTileFeature>
 {
+    /** Tile size node. */
+    String NODE_TILE_SIZE = "lionengine:tileSize";
+    /** Tile width attribute. */
+    String ATTRIBUTE_TILE_WIDTH = "width";
+    /** Tile height attribute. */
+    String ATTRIBUTE_TILE_HEIGHT = "height";
     /** Tile sheet node. */
     String NODE_TILE_SHEET = "lionengine:sheet";
     /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */

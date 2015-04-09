@@ -52,7 +52,7 @@ public enum WorldViewModel
     {
         factory = new Factory();
         camera = new Camera();
-        map = new MapTileGame(16, 16, camera);
+        map = new MapTileGame(camera);
 
         factory.addService(camera);
         factory.addService(map);

@@ -108,39 +108,23 @@ public class MapTileGame
 
     /**
      * Create a map tile. Rendering is not enable and must not be used ({@link #render(Graphic)}). Use
-     * {@link #MapTileGame(int, int, Viewer)} instead if rendering will be used.
-     * 
-     * @param tileWidth The tile width (must be strictly positive).
-     * @param tileHeight The tile height (must be strictly positive).
-     * @throws LionEngineException If invalid tile size.
+     * {@link #MapTileGame(Viewer)} instead if rendering will be used.
      */
-    public MapTileGame(int tileWidth, int tileHeight) throws LionEngineException
+    public MapTileGame()
     {
-        Check.superiorStrict(tileWidth, 0);
-        Check.superiorStrict(tileHeight, 0);
-
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
-        sheetsConfig = null;
         viewer = null;
     }
 
     /**
      * Create a map tile.
      * 
-     * @param tileWidth The tile width (must be strictly positive).
-     * @param tileHeight The tile height (must be strictly positive).
      * @param viewer The viewer reference (must not be <code>null</code>).
-     * @throws LionEngineException If invalid tile size or undefined viewer.
+     * @throws LionEngineException If undefined viewer.
      */
-    public MapTileGame(int tileWidth, int tileHeight, Viewer viewer) throws LionEngineException
+    public MapTileGame(Viewer viewer) throws LionEngineException
     {
-        Check.superiorStrict(tileWidth, 0);
-        Check.superiorStrict(tileHeight, 0);
         Check.notNull(viewer);
 
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
         this.viewer = viewer;
         sheetsConfig = null;
     }
@@ -288,8 +272,6 @@ public class MapTileGame
         final Media groupsConfig = Medias.create(file.readString());
         final int width = file.readShort();
         final int height = file.readShort();
-        tileWidth = file.readByte();
-        tileHeight = file.readByte();
 
         create(width, height);
         loadSheets(sheetsConfig);
@@ -322,8 +304,6 @@ public class MapTileGame
         file.writeString(groupsConfig.getPath());
         file.writeShort((short) widthInTile);
         file.writeShort((short) heightInTile);
-        file.writeByte((byte) tileWidth);
-        file.writeByte((byte) tileHeight);
 
         final int step = MapTile.BLOC_SIZE;
         final int x = Math.min(step, widthInTile);
@@ -374,10 +354,14 @@ public class MapTileGame
     {
         Verbose.info(INFO_LOAD_SHEETS, sheetsConfig.getFile().getPath());
         this.sheetsConfig = sheetsConfig;
-        sheets.clear();
+        final XmlNode root = Stream.loadXml(sheetsConfig);
+
+        // Retrieve tile size
+        final XmlNode tileSize = root.getChild(MapTile.NODE_TILE_SIZE);
+        tileWidth = tileSize.readInteger(MapTile.ATTRIBUTE_TILE_WIDTH);
+        tileHeight = tileSize.readInteger(MapTile.ATTRIBUTE_TILE_HEIGHT);
 
         // Retrieve sheets list
-        final XmlNode root = Stream.loadXml(sheetsConfig);
         final Collection<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
         final String[] files = new String[children.size()];
         int sheetNumber = 0;
@@ -390,6 +374,7 @@ public class MapTileGame
         // Load sheets from list
         final String path = sheetsConfig.getPath();
         final String folder = path.substring(0, path.length() - sheetsConfig.getFile().getName().length());
+        sheets.clear();
         for (int sheet = 0; sheet < files.length; sheet++)
         {
             final Media media = Medias.create(folder, files[sheet]);

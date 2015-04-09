@@ -46,7 +46,7 @@ class Scene
     /** Camera reference. */
     private final Camera camera = new Camera();
     /** Map reference. */
-    private final MapTile map = new MapTileGame(16, 16, camera);
+    private final MapTile map = new MapTileGame(camera);
     /** Map raster reference. */
     private final MapTileRastered raster = new MapTileRasteredModel(map);
     /** Timing value. */

@@ -54,7 +54,7 @@ class Scene
     /** Handler reference. */
     private final Handler handler = new Handler();
     /** Map reference. */
-    private final MapTile map = new MapTileGame(16, 16, camera);
+    private final MapTile map = new MapTileGame(camera);
     /** Map path. */
     private final MapTilePath mapPath = new MapTilePathModel(map);
     /** Keyboard reference. */

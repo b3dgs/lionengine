@@ -52,7 +52,7 @@ class Scene
     /** Camera reference. */
     private final Camera camera = new Camera();
     /** Map reference. */
-    private final MapTile map = new MapTileGame(16, 16, camera);
+    private final MapTile map = new MapTileGame(camera);
     /** Fog of war layer. */
     private final FogOfWar fogOfWar = new FogOfWar();
     /** Collection fog. */

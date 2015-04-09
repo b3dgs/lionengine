@@ -77,10 +77,9 @@ public final class LevelRipConverter
         imageMap = Drawable.loadSprite(levelrip);
         imageMap.load(false);
 
+        map.loadSheets(sheetsConfig);
         imageMapTilesInX = imageMap.getWidth() / map.getTileWidth();
         imageMapTilesInY = imageMap.getHeight() / map.getTileHeight();
-
-        map.loadSheets(sheetsConfig);
         map.create(imageMapTilesInX, imageMapTilesInY);
 
         errors = 0;
