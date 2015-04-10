@@ -50,20 +50,22 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Game factory. */
+    private final Factory factory = new Factory();
     /** Camera reference. */
-    private final Camera camera = new Camera();
+    private final Camera camera = factory.createService(Camera.class);
     /** Cursor reference. */
-    private final Cursor cursor = new Cursor();
+    private final Cursor cursor = factory.createService(Cursor.class);
+    /** Map reference. */
+    private final MapTile map = factory.createService(MapTileGame.class);
+    /** Map path. */
+    private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
     /** Text reference. */
     private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
-    /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
-    /** Map path. */
-    private final MapTilePath mapPath = new MapTilePathModel(map);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
-    private final Mouse mouse;
+    private final Mouse mouse = getInputDevice(Mouse.class);
     /** Peon reference. */
     private Peon peon;
 
@@ -75,15 +77,12 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        mouse = getInputDevice(Mouse.class);
         setSystemCursorVisible(false);
     }
 
     @Override
     protected void load()
     {
-        map.addFeature(mapPath);
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
@@ -98,10 +97,6 @@ class Scene
         camera.setLimits(map);
         camera.setLocation(320, 208);
 
-        final Factory factory = new Factory();
-        factory.addService(camera);
-        factory.addService(cursor);
-        factory.addService(map);
         peon = factory.create(Peon.MEDIA);
     }
 
@@ -112,6 +107,7 @@ class Scene
         cursor.update(extrp);
         peon.update(extrp);
         text.update(camera);
+
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();
@@ -124,6 +120,7 @@ class Scene
         map.render(g);
         peon.render(g);
         cursor.render(g);
+
         final Tile tile = map.getTile(cursor.getInTileX(), cursor.getInTileY());
         if (tile != null)
         {

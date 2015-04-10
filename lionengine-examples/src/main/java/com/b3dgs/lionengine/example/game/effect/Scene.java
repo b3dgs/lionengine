@@ -65,7 +65,7 @@ class Scene
     @Override
     protected void load()
     {
-        factory.addService(camera);
+        factory.add(camera);
         camera.setView(0, 0, getWidth(), getHeight());
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());

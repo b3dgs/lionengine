@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurer.ConfigPathfinding;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -43,12 +44,19 @@ public class MapTilePathModel
 
     /**
      * Create a map tile path.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * </ul>
      * 
-     * @param map The map reference.
+     * @param services The services reference.
+     * @throws LionEngineException If services not found.
      */
-    public MapTilePathModel(MapTile map)
+    public MapTilePathModel(Services services) throws LionEngineException
     {
-        this.map = map;
+        map = services.get(MapTile.class);
     }
 
     /**

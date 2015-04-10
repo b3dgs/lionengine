@@ -49,18 +49,20 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Game factory. */
+    private final Factory factory = new Factory();
     /** Camera reference. */
-    private final Camera camera = new Camera();
+    private final Camera camera = factory.createService(Camera.class);
     /** Handler reference. */
-    private final Handler handler = new Handler();
+    private final Handler handler = factory.createService(Handler.class);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Map path. */
-    private final MapTilePath mapPath = new MapTilePathModel(map);
+    private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
-    private final Mouse mouse;
+    private final Mouse mouse = getInputDevice(Mouse.class);
 
     /**
      * Constructor.
@@ -70,25 +72,18 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        mouse = getInputDevice(Mouse.class);
         setSystemCursorVisible(false);
     }
 
     @Override
     protected void load()
     {
-        map.addFeature(mapPath);
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
         camera.setLocation(0, 0);
-
-        final Factory factory = new Factory();
-        factory.addService(camera);
-        factory.addService(map);
 
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());

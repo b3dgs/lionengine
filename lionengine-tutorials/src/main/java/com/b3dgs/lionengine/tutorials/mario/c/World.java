@@ -48,13 +48,11 @@ class World
     /** Factory reference. */
     private final Factory factory = new Factory();
     /** Camera reference. */
-    private final Camera camera = new Camera();
+    private final Camera camera = factory.createService(Camera.class);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Map collision. */
-    private final MapTileCollision mapCollision = new MapTileCollisionModel(map, camera);
-    /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
     /** Mario reference. */
     private Mario mario;
 
@@ -67,9 +65,7 @@ class World
     public World(Config config, Keyboard keyboard)
     {
         super(config);
-
-        this.keyboard = keyboard;
-        map.addFeature(mapCollision);
+        factory.add(keyboard);
     }
 
     /*
@@ -106,10 +102,7 @@ class World
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
 
-        factory.addService(Integer.valueOf(source.getRate()));
-        factory.addService(camera);
-        factory.addService(map);
-        factory.addService(keyboard);
+        factory.add(Integer.valueOf(source.getRate()));
 
         mario = factory.create(Mario.MEDIA);
         mario.respawn();

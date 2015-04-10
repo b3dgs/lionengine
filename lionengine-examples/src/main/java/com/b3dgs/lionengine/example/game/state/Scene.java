@@ -66,9 +66,9 @@ class Scene
         camera.setView(0, 0, getWidth(), getHeight());
 
         final Factory factory = new Factory();
-        factory.addService(Integer.valueOf(getConfig().getSource().getRate()));
-        factory.addService(keyboard);
-        factory.addService(camera);
+        factory.add(Integer.valueOf(getConfig().getSource().getRate()));
+        factory.add(keyboard);
+        factory.add(camera);
         mario = factory.create(Mario.MEDIA);
     }
 

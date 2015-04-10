@@ -60,8 +60,8 @@ class Scene
     {
         final Factory factory = new Factory();
         final Camera camera = new Camera();
-        factory.addService(handler);
-        factory.addService(camera);
+        factory.add(handler);
+        factory.add(camera);
 
         final Ship ship1 = factory.create(Ship.MEDIA);
         final Ship ship2 = factory.create(Ship.MEDIA);

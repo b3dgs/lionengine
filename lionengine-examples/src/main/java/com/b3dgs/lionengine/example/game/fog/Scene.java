@@ -49,18 +49,20 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Game factory. */
+    private final Factory factory = new Factory();
     /** Camera reference. */
-    private final Camera camera = new Camera();
+    private final Camera camera = factory.createService(Camera.class);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Fog of war layer. */
     private final FogOfWar fogOfWar = new FogOfWar();
     /** Collection fog. */
     private final Collection<Fovable> fovables = new ArrayList<>();
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
-    private final Mouse mouse;
+    private final Mouse mouse = getInputDevice(Mouse.class);
     /** Peon reference. */
     private Peon peon;
 
@@ -72,8 +74,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        mouse = getInputDevice(Mouse.class);
         setSystemCursorVisible(false);
     }
 
@@ -95,9 +95,6 @@ class Scene
         camera.setLimits(map);
         camera.setLocation(0, 0);
 
-        final Factory factory = new Factory();
-        factory.addService(camera);
-        factory.addService(map);
         peon = factory.create(Peon.MEDIA);
         fovables.add(peon.getTrait(Fovable.class));
     }

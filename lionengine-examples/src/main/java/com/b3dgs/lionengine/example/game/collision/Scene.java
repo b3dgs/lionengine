@@ -46,14 +46,16 @@ class Scene
     /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
+    /** Game factory. */
+    private final Factory factory = new Factory();
     /** Camera reference. */
-    private final Camera camera = new Camera();
+    private final Camera camera = factory.createService(Camera.class);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Map collision. */
-    private final MapTileCollision mapCollision = new MapTileCollisionModel(map, camera);
+    private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = factory.add(getInputDevice(Keyboard.class));
     /** Mario reference. */
     private Mario hero;
 
@@ -65,7 +67,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
     }
 
     /*
@@ -75,7 +76,6 @@ class Scene
     @Override
     protected void load()
     {
-        map.addFeature(mapCollision);
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
         mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
         mapCollision.createCollisionDraw();
@@ -84,11 +84,7 @@ class Scene
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
 
-        final Factory factory = new Factory();
-        factory.addService(Integer.valueOf(getConfig().getSource().getRate()));
-        factory.addService(map);
-        factory.addService(keyboard);
-        factory.addService(camera);
+        factory.add(Integer.valueOf(getConfig().getSource().getRate()));
         hero = factory.create(Mario.MEDIA);
     }
 

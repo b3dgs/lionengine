@@ -84,7 +84,7 @@ public class WorldViewPart
         composite.addMouseListener(worldViewUpdater);
         composite.addMouseMoveListener(worldViewUpdater);
         composite.addKeyListener(worldViewUpdater);
-        factory.addService(worldViewUpdater);
+        factory.add(worldViewUpdater);
 
         worldViewRenderer = checkRendererExtensionPoint(factory);
         composite.addPaintListener(worldViewRenderer);

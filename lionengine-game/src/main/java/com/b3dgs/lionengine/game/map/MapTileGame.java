@@ -38,6 +38,8 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -87,6 +89,8 @@ public class MapTileGame
     private final Map<String, TileGroup> groups = new HashMap<>();
     /** Viewer reference. */
     private final Viewer viewer;
+    /** Services reference. */
+    private final Services services;
     /** Sheet configuration file. */
     private Media sheetsConfig;
     /** Groups configuration file. */
@@ -108,24 +112,30 @@ public class MapTileGame
 
     /**
      * Create a map tile. Rendering is not enable and must not be used ({@link #render(Graphic)}). Use
-     * {@link #MapTileGame(Viewer)} instead if rendering will be used.
+     * {@link #MapTileGame(Services)} instead if rendering will be used.
      */
     public MapTileGame()
     {
         viewer = null;
+        services = null;
     }
 
     /**
      * Create a map tile.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link Viewer}</li>
+     * </ul>
      * 
-     * @param viewer The viewer reference (must not be <code>null</code>).
-     * @throws LionEngineException If undefined viewer.
+     * @param services The services reference.
+     * @throws LionEngineException If service not found.
      */
-    public MapTileGame(Viewer viewer) throws LionEngineException
+    public MapTileGame(Services services) throws LionEngineException
     {
-        Check.notNull(viewer);
-
-        this.viewer = viewer;
+        this.services = services;
+        viewer = services.get(Viewer.class);
         sheetsConfig = null;
     }
 
@@ -347,6 +357,18 @@ public class MapTileGame
         this.sheetsConfig = sheetsConfig;
         this.groupsConfig = groupsConfig;
         loadGroups(groupsConfig);
+    }
+
+    @Override
+    public <F extends MapTileFeature> F createFeature(Class<F> feature)
+    {
+        final F instance = Factory.create(feature, new Class<?>[]
+        {
+            Services.class
+        }, services);
+        services.add(instance);
+        addFeature(instance);
+        return instance;
     }
 
     @Override

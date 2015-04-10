@@ -44,6 +44,7 @@ import com.b3dgs.lionengine.game.collision.CollisionResult;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -112,14 +113,14 @@ public class MapTileCollisionModel
         return Math.ceil(value);
     }
 
+    /** Collision formulas list. */
+    private final Map<String, CollisionFormula> formulas = new HashMap<>();
+    /** Collisions groups list. */
+    private final Map<String, CollisionGroup> groups = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Collision formulas list. */
-    private final Map<String, CollisionFormula> formulas;
-    /** Collisions groups list. */
-    private final Map<String, CollisionGroup> groups;
     /** Collision draw cache. */
     private HashMap<CollisionFormula, ImageBuffer> collisionCache;
     /** Formulas configuration media. */
@@ -129,16 +130,21 @@ public class MapTileCollisionModel
 
     /**
      * Create the map tile collision.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * <li>{@link Viewer}</li>
+     * </ul>
      * 
-     * @param map The map reference.
-     * @param viewer The viewer reference.
+     * @param services The services reference.
+     * @throws LionEngineException If services not found.
      */
-    public MapTileCollisionModel(MapTile map, Viewer viewer)
+    public MapTileCollisionModel(Services services) throws LionEngineException
     {
-        this.map = map;
-        this.viewer = viewer;
-        formulas = new HashMap<>();
-        groups = new HashMap<>();
+        map = services.get(MapTile.class);
+        viewer = services.get(Viewer.class);
     }
 
     /**

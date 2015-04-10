@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Game loop designed to handle our little world.
@@ -47,18 +48,20 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Game factory. */
+    private final Factory factory = new Factory();
     /** Camera reference. */
-    private final Camera camera = new Camera();
+    private final Camera camera = factory.createService(Camera.class);
     /** Cursor reference. */
-    private final Cursor cursor = new Cursor();
+    private final Cursor cursor = factory.createService(Cursor.class);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Text reference. */
     private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
-    private final Mouse mouse;
+    private final Mouse mouse = getInputDevice(Mouse.class);
 
     /**
      * Constructor.
@@ -68,8 +71,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        mouse = getInputDevice(Mouse.class);
         setSystemCursorVisible(false);
     }
 
@@ -101,12 +102,14 @@ class Scene
     protected void load()
     {
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load(false);
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setInputDevice(mouse);
         cursor.setViewer(camera);
+
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
     }
@@ -115,8 +118,8 @@ class Scene
     public void update(double extrp)
     {
         mouse.update(extrp);
-        text.update(camera);
         cursor.update(extrp);
+
         if (keyboard.isPressedOnce(Keyboard.UP))
         {
             camera.moveLocation(extrp, 0, 64);
@@ -133,6 +136,8 @@ class Scene
         {
             camera.moveLocation(extrp, 64, 0);
         }
+        text.update(camera);
+
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();

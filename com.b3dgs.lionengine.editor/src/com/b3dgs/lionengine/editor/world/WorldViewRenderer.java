@@ -251,22 +251,25 @@ public class WorldViewRenderer
     private void render(Graphic g, int width, int height)
     {
         final MapTile map = WorldViewModel.INSTANCE.getMap();
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-        final int areaX = UtilMath.getRounded(width, tw);
-        final int areaY = UtilMath.getRounded(height, th);
-
-        camera.setView(0, 0, areaX, areaY);
-
-        renderBackground(g, width, height);
-        render(g, camera, map, areaX, areaY);
-        if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER)
+        if (map.isCreated())
         {
-            renderCursor(g, tw, th, areaX, areaY);
-        }
-        if (worldViewUpdater.isGridEnabled())
-        {
-            drawGrid(g, tw, th, areaX, areaY, COLOR_GRID);
+            final int tw = map.getTileWidth();
+            final int th = map.getTileHeight();
+            final int areaX = UtilMath.getRounded(width, tw);
+            final int areaY = UtilMath.getRounded(height, th);
+
+            camera.setView(0, 0, areaX, areaY);
+
+            renderBackground(g, width, height);
+            render(g, camera, map, areaX, areaY);
+            if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER)
+            {
+                renderCursor(g, tw, th, areaX, areaY);
+            }
+            if (worldViewUpdater.isGridEnabled())
+            {
+                drawGrid(g, tw, th, areaX, areaY, COLOR_GRID);
+            }
         }
     }
 

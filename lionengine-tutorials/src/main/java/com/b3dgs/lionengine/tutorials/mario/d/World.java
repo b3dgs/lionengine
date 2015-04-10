@@ -49,18 +49,16 @@ class World
     /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
-    /** Camera reference. */
-    private final Camera camera = new Camera();
     /** Factory reference. */
     private final Factory factory = new Factory();
+    /** Camera reference. */
+    private final Camera camera = factory.createService(Camera.class);
     /** Handler reference. */
-    private final Handler handler = new Handler();
+    private final Handler handler = factory.createService(Handler.class);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Map collision. */
-    private final MapTileCollision mapCollision = new MapTileCollisionModel(map, camera);
-    /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
     /** Mario reference. */
     private Mario mario;
 
@@ -74,8 +72,7 @@ class World
     {
         super(config);
 
-        this.keyboard = keyboard;
-        map.addFeature(mapCollision);
+        factory.add(keyboard);
         handler.addUpdatable(new ComponentUpdater());
         handler.addUpdatable(new ComponentCollision());
         handler.addRenderable(new ComponentRenderer());
@@ -117,10 +114,7 @@ class World
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
 
-        factory.addService(Integer.valueOf(source.getRate()));
-        factory.addService(camera);
-        factory.addService(map);
-        factory.addService(keyboard);
+        factory.add(Integer.valueOf(source.getRate()));
 
         mario = factory.create(Mario.CONFIG);
         mario.respawn(160);

@@ -69,7 +69,7 @@ public class Factory
      * @return The class instance.
      * @throws LionEngineException If unable to create the instance.
      */
-    private static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params) throws LionEngineException
+    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params) throws LionEngineException
     {
         try
         {
@@ -112,18 +112,33 @@ public class Factory
     }
 
     /**
-     * Add a service.
+     * Create a service from its type, and automatically {@link #add(Object)} it.
+     * The service instance must provide a public constructor with {@link Services} as single argument, or the public
+     * default constructor. Else, create manually the instance and use {@link #add(Object)} on it.
      * 
-     * @param service The service to add.
+     * @param service The service class.
+     * @return The service instance already added.
      */
-    public void addService(Object service)
+    public <S> S createService(Class<S> service)
     {
-        services.add(service);
-        if (service instanceof Featurable)
+        try
         {
-            for (final Object feature : ((Featurable<?>) service).getFeatures())
+            final S instance = create(service, new Class<?>[]
             {
-                addService(feature);
+                Services.class
+            }, this);
+            return add(instance);
+        }
+        catch (final LionEngineException exception)
+        {
+            try
+            {
+                return add(service.newInstance());
+            }
+            catch (InstantiationException
+                   | IllegalAccessException exception2)
+            {
+                throw new LionEngineException(exception2, ERROR_CONSTRUCTOR + service);
             }
         }
     }
@@ -222,6 +237,20 @@ public class Factory
     /*
      * Services
      */
+
+    @Override
+    public <S> S add(S service)
+    {
+        services.add(service);
+        if (service instanceof Featurable)
+        {
+            for (final Object feature : ((Featurable<?>) service).getFeatures())
+            {
+                add(feature);
+            }
+        }
+        return service;
+    }
 
     @Override
     public <C> C get(Class<C> service) throws LionEngineException

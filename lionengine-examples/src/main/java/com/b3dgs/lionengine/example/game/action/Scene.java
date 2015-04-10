@@ -54,20 +54,20 @@ class Scene
 
     /** Action factory. */
     private final Factory factory = new Factory();
-    /** Camera reference. */
-    private final Camera camera = new Camera();
-    /** Actions handler. */
-    private final Handler handler = new Handler();
-    /** Cursor reference. */
-    private final Cursor cursor = new Cursor();
     /** Text reference. */
-    private final Text text = Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
+    private final Text text = factory.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
+    /** Camera reference. */
+    private final Camera camera = factory.createService(Camera.class);
+    /** Actions handler. */
+    private final Handler handler = factory.createService(Handler.class);
+    /** Cursor reference. */
+    private final Cursor cursor = factory.createService(Cursor.class);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
-    private final Mouse mouse;
+    private final Mouse mouse = getInputDevice(Mouse.class);
     /** HUD image. */
     private final Image hud;
 
@@ -79,8 +79,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        mouse = getInputDevice(Mouse.class);
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
     }
@@ -101,10 +99,6 @@ class Scene
         camera.setView(72, 12, 240, 176);
         camera.setLimits(map);
         camera.setLocation(320, 208);
-
-        factory.addService(cursor);
-        factory.addService(text);
-        factory.addService(handler);
 
         final ObjectGame buildings = factory.create(Button.BUILDINGS);
         handler.addUpdatable(new ComponentUpdater());

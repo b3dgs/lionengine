@@ -45,7 +45,7 @@ public class AppGameFactory
         final Object param = new Object();
 
         // Define the context and add the parameter as a service
-        factory.addService(param);
+        factory.add(param);
 
         // Create types
         final BaseType flyMachine = factory.create(Medias.create("FlyMachine.xml"));

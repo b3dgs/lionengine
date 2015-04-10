@@ -36,12 +36,12 @@ public enum WorldViewModel
     /** Instance. */
     INSTANCE;
 
-    /** Camera reference. */
-    private final Camera camera;
     /** Factory reference. */
-    private final Factory factory;
+    private final Factory factory = new Factory();
+    /** Camera reference. */
+    private final Camera camera = factory.createService(Camera.class);
     /** Map reference. */
-    private MapTile map;
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Selected palette. */
     private Enum<?> palette = PaletteType.POINTER;
 
@@ -50,33 +50,16 @@ public enum WorldViewModel
      */
     private WorldViewModel()
     {
-        factory = new Factory();
-        camera = new Camera();
-        map = new MapTileGame(camera);
-
-        factory.addService(camera);
-        factory.addService(map);
-
         final Handler handlerObject = new Handler();
         handlerObject.addRenderable(new ComponentRenderer());
         handlerObject.addUpdatable(new ComponentUpdater());
-        factory.addService(handlerObject);
+        factory.add(handlerObject);
 
         final Selection selection = new Selection();
-        factory.addService(selection);
+        factory.add(selection);
 
         final ObjectControl objectControl = new ObjectControl(factory);
-        factory.addService(objectControl);
-    }
-
-    /**
-     * Set the map reference.
-     * 
-     * @param map The map reference.
-     */
-    public void setMap(MapTile map)
-    {
-        this.map = map;
+        factory.add(objectControl);
     }
 
     /**

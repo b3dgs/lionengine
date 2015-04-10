@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.collision.TileGroup;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -92,6 +93,16 @@ public interface MapTile
      * @see TileExtractor
      */
     void create(Media levelrip, Media sheetsConfig, Media groupsConfig) throws LionEngineException;
+
+    /**
+     * Create a feature from its type, and automatically {@link #addFeature(MapTileFeature)} it.
+     * The feature instance must provide a public constructor with {@link Services} as single argument, or the public
+     * default constructor. Else, create manually the instance and use {@link #addFeature(MapTileFeature)} on it.
+     * 
+     * @param feature The feature class.
+     * @return The feature instance already added.
+     */
+    public <F extends MapTileFeature> F createFeature(Class<F> feature);
 
     /**
      * Create a tile.

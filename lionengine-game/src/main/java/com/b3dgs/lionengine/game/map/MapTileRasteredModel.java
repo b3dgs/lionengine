@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
 
 /**
@@ -41,22 +42,28 @@ import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
 public class MapTileRasteredModel
         implements MapTileRastered
 {
+    /** List of rastered sheets. */
+    private final TreeMap<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<>();
     /** Map tile reference. */
     private final MapTile map;
-    /** List of rastered sheets. */
-    private final TreeMap<Integer, List<SpriteTiled>> rasterSheets;
     /** Rasters smooth flag. */
     private boolean smooth;
 
     /**
      * Create a map tile rastered.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * </ul>
      * 
-     * @param map The map reference.
+     * @param services The services reference.
+     * @throws LionEngineException If services not found.
      */
-    public MapTileRasteredModel(MapTile map)
+    public MapTileRasteredModel(Services services) throws LionEngineException
     {
-        this.map = map;
-        rasterSheets = new TreeMap<>();
+        map = services.get(MapTile.class);
     }
 
     /**

@@ -54,24 +54,24 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 200, 60);
 
-    /** Action factory. */
+    /** Game factory. */
     private final Factory factory = new Factory();
     /** Camera reference. */
-    private final Camera camera = new Camera();
+    private final Camera camera = factory.createService(Camera.class);
     /** Actions handler. */
-    private final Handler handler = new Handler();
+    private final Handler handler = factory.createService(Handler.class);
     /** Cursor reference. */
-    private final Cursor cursor = new Cursor();
-    /** Text reference. */
-    private final Text text = Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
+    private final Cursor cursor = factory.createService(Cursor.class);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Map path. */
-    private final MapTilePath mapPath = new MapTilePathModel(map);
+    private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
+    /** Text reference. */
+    private final Text text = factory.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
-    private final Mouse mouse;
+    private final Mouse mouse = getInputDevice(Mouse.class);
     /** HUD image. */
     private final Image hud;
 
@@ -83,8 +83,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        mouse = getInputDevice(Mouse.class);
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
     }
@@ -92,7 +90,6 @@ class Scene
     @Override
     protected void load()
     {
-        map.addFeature(mapPath);
         map.create(Medias.create("map", "level.png"), Medias.create("map", "sheets.xml"),
                 Medias.create("map", "groups.xml"));
         mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
@@ -117,13 +114,8 @@ class Scene
         handler.addRenderable(componentRendererLayer);
         handler.addListener(componentRendererLayer);
 
-        factory.addService(Integer.valueOf(getConfig().getSource().getRate()));
-        factory.addService(cursor);
-        factory.addService(text);
-        factory.addService(map);
-        factory.addService(camera);
-        factory.addService(handler);
-        factory.addService(componentRendererLayer);
+        factory.add(Integer.valueOf(getConfig().getSource().getRate()));
+        factory.add(componentRendererLayer);
 
         final ObjectGame extract = factory.create(Button.EXTRACT);
         final ObjectGame peon = factory.create(Peon.MEDIA);

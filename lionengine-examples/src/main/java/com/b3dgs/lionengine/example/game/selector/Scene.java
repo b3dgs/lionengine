@@ -50,22 +50,24 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 200, 60);
 
+    /** Game factory. */
+    private final Factory factory = new Factory();
     /** Camera reference. */
-    private final Camera camera = new Camera();
+    private final Camera camera = factory.createService(Camera.class);
     /** Cursor reference. */
-    private final Cursor cursor = new Cursor();
+    private final Cursor cursor = factory.createService(Cursor.class);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Map path. */
-    private final MapTilePath mapPath = new MapTilePathModel(map);
+    private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
-    private final Mouse mouse;
+    private final Mouse mouse = getInputDevice(Mouse.class);
     /** Selector reference. */
-    private final Selector selector;
+    private final Selector selector = new Selector(camera, cursor);
     /** HUD image. */
     private final Image hud;
     /** Peon reference. */
@@ -79,9 +81,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        mouse = getInputDevice(Mouse.class);
-        selector = new Selector(camera, cursor);
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
     }
@@ -89,7 +88,6 @@ class Scene
     @Override
     protected void load()
     {
-        map.addFeature(mapPath);
         map.create(Medias.create("map", "level.png"), Medias.create("map", "sheets.xml"),
                 Medias.create("map", "groups.xml"));
         mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
@@ -109,10 +107,6 @@ class Scene
         camera.setLimits(map);
         camera.setLocation(320, 208);
 
-        final Factory factory = new Factory();
-        factory.addService(camera);
-        factory.addService(cursor);
-        factory.addService(map);
         peon = factory.create(Peon.MEDIA);
 
         selector.setClickableArea(camera);

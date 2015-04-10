@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.LionEngineException;
 public interface Featurable<F>
 {
     /**
-     * Add a tile feature for external processing.
+     * Add a map feature for external processing.
      * 
      * @param feature The feature to add.
      */

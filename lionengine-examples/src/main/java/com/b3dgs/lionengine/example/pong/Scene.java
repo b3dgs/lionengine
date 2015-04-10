@@ -77,7 +77,7 @@ class Scene
         handler.addUpdatable(new ComponentCollision());
         handler.addRenderable(new ComponentRenderer());
 
-        factory.addService(camera);
+        factory.add(camera);
 
         final Racket racket1 = factory.create(Racket.MEDIA);
         racket1.setSide(true);

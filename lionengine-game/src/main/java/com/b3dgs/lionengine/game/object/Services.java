@@ -30,6 +30,14 @@ import com.b3dgs.lionengine.LionEngineException;
 public interface Services
 {
     /**
+     * Add a service.
+     * 
+     * @param service The service to add.
+     * @return The added service (same as source).
+     */
+    public <S> S add(S service);
+
+    /**
      * Get a service from its class.
      * 
      * @param service The service type.

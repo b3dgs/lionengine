@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileRastered;
 import com.b3dgs.lionengine.game.map.MapTileRasteredModel;
+import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Game loop designed to handle our world.
@@ -43,16 +44,18 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Game factory. */
+    private final Factory factory = new Factory();
     /** Camera reference. */
-    private final Camera camera = new Camera();
+    private final Camera camera = factory.createService(Camera.class);
     /** Map reference. */
-    private final MapTile map = new MapTileGame(camera);
+    private final MapTile map = factory.createService(MapTileGame.class);
     /** Map raster reference. */
-    private final MapTileRastered raster = new MapTileRasteredModel(map);
+    private final MapTileRastered raster = factory.createService(MapTileRasteredModel.class);
+    /** Keyboard reference. */
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Timing value. */
     private final Timing timing = new Timing();
-    /** Keyboard reference. */
-    private final Keyboard keyboard;
     /** Renderable selection (false = default, true = raster). */
     private boolean useRaster;
 
@@ -64,7 +67,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
     }
 
     @Override
@@ -72,8 +74,10 @@ class Scene
     {
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
         raster.loadSheets(Medias.create("sheets.xml"), Medias.create("raster.xml"), false);
+
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
+
         timing.start();
     }
 
