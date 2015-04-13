@@ -17,18 +17,23 @@
  */
 package com.b3dgs.lionengine.editor.world.handler;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialogs.ImportMapDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileFeature;
 
 /**
  * Import map handler.
@@ -37,6 +42,12 @@ import com.b3dgs.lionengine.game.map.MapTile;
  */
 public class ImportMapHandler
 {
+    /** Extension ID. */
+    public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".mapFeatures";
+    /** Extension point attribute map feature class. */
+    private static final String EXTENSION_CLASS = "class";
+    /** Extension point attribute map feature config dialog. */
+    private static final String EXTENSION_DIALOG = "dialog";
     /** Import level verbose. */
     private static final String VERBOSE_IMPORT_LEVEL = "Importing map from level rip: ";
     /** Using tile sheet verbose. */
@@ -83,6 +94,41 @@ public class ImportMapHandler
 
             final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
             part.update();
+
+            checkMapFeaturesExtensionPoint(shell);
+        }
+    }
+
+    /**
+     * Check the map features extension point.
+     * 
+     * @param parent The parent shell.
+     */
+    private void checkMapFeaturesExtensionPoint(Shell parent)
+    {
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
+                EXTENSION_ID);
+        for (final IConfigurationElement element : elements)
+        {
+            try
+            {
+                final String featureClass = element.getAttribute(EXTENSION_CLASS);
+                final Class<? extends MapTileFeature> implementation = Activator.getMainBundle()
+                        .loadClass(featureClass).asSubclass(MapTileFeature.class);
+                map.createFeature(implementation);
+
+                final String featureConfig = element.getAttribute(EXTENSION_DIALOG);
+                if (featureConfig != null)
+                {
+                    final AbstractDialog dialog = UtilEclipse.createClass(featureConfig, AbstractDialog.class, parent);
+                    dialog.open();
+                }
+            }
+            catch (final ReflectiveOperationException exception)
+            {
+                Verbose.exception(getClass(), "checkMapFeaturesExtensionPoint", exception);
+            }
         }
     }
 }

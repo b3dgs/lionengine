@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.project.ProjectsPart;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileFeature;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**
@@ -71,17 +69,8 @@ public class ProjectImportHandler
         {
             ProjectImportHandler.importProject(project, partService);
 
-            final MapTile map = WorldViewModel.INSTANCE.getMap();
             final Factory factory = WorldViewModel.INSTANCE.getFactory();
             factory.setClassLoader(project.getClassLoader());
-
-            for (final Class<? extends MapTileFeature> feature : UtilEclipse.getImplementing(MapTileFeature.class))
-            {
-                for (final Class<? extends MapTileFeature> implementation : UtilEclipse.getImplementing(feature))
-                {
-                    map.createFeature(implementation);
-                }
-            }
         }
     }
 }
