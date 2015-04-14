@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -37,12 +37,12 @@ import com.b3dgs.lionengine.stream.FileWriting;
 class World
         extends WorldGame
 {
-    /** Factory reference. */
-    private final Factory factory = new Factory();
+    /** Services reference. */
+    private final Services services = new Services();
     /** Camera reference. */
-    private final Camera camera = factory.createService(Camera.class);
+    private final Camera camera = services.create(Camera.class);
     /** Map reference. */
-    private final MapTile map = factory.createService(MapTileGame.class);
+    private final MapTile map = services.create(MapTileGame.class);
 
     /**
      * @see WorldGame#WorldGame(Config)

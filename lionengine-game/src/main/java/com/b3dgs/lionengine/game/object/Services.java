@@ -17,7 +17,11 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Featurable;
 
 /**
  * Represents something designed to keep references on main game types, such as {@link Factory}, {@link Handler} ... in
@@ -27,15 +31,74 @@ import com.b3dgs.lionengine.LionEngineException;
  * @see Factory
  * @see ObjectGame
  */
-public interface Services
+public class Services
 {
+    /** Service create error. */
+    private static final String ERROR_SERVICE_CREATE = "Unable to create service: ";
+    /** Service get error. */
+    private static final String ERROR_SERVICE_GET = "Service not found: ";
+
+    /** Services list. */
+    private final Collection<Object> services;
+
+    /**
+     * Create a services.
+     */
+    public Services()
+    {
+        services = new ArrayList<>();
+    }
+
+    /**
+     * Create a service from its type, and automatically {@link #add(Object)} it.
+     * The service instance must provide a public constructor with {@link Services} as single argument, or the public
+     * default constructor. Else, create manually the instance and use {@link #add(Object)} on it.
+     * 
+     * @param service The service class.
+     * @return The service instance already added.
+     */
+    public <S> S create(Class<S> service)
+    {
+        try
+        {
+            final S instance = Factory.create(service, new Class<?>[]
+            {
+                Services.class
+            }, this);
+            return add(instance);
+        }
+        catch (final LionEngineException exception)
+        {
+            try
+            {
+                return add(service.newInstance());
+            }
+            catch (InstantiationException
+                   | IllegalAccessException exception2)
+            {
+                throw new LionEngineException(exception2, ERROR_SERVICE_CREATE + service);
+            }
+        }
+    }
+
     /**
      * Add a service.
      * 
      * @param service The service to add.
      * @return The added service (same as source).
      */
-    public <S> S add(S service);
+    public <S> S add(S service)
+    {
+        services.add(service);
+        if (service instanceof Featurable)
+        {
+            for (final Object feature : ((Featurable<?>) service).getFeatures())
+            {
+                add(feature);
+            }
+        }
+        return service;
+    }
 
     /**
      * Get a service from its class.
@@ -44,5 +107,19 @@ public interface Services
      * @return The service found.
      * @throws LionEngineException If service not found.
      */
-    <C> C get(Class<C> service) throws LionEngineException;
+    public <C> C get(Class<C> service) throws LionEngineException
+    {
+        for (final Object object : services)
+        {
+            if (service.isAssignableFrom(object.getClass()))
+            {
+                return service.cast(object);
+            }
+        }
+        if (service == getClass())
+        {
+            return service.cast(this);
+        }
+        throw new LionEngineException(ERROR_SERVICE_GET, service.getName());
+    }
 }

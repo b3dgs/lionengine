@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
@@ -38,10 +39,14 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final Camera camera = new Camera();
+    private final Camera camera = services.create(Camera.class);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = services.add(getInputDevice(Keyboard.class));
     /** Mario reference. */
     private Mario mario;
 
@@ -53,7 +58,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
     }
 
     /*
@@ -64,11 +68,7 @@ class Scene
     protected void load()
     {
         camera.setView(0, 0, getWidth(), getHeight());
-
-        final Factory factory = new Factory();
-        factory.add(Integer.valueOf(getConfig().getSource().getRate()));
-        factory.add(keyboard);
-        factory.add(camera);
+        services.add(Integer.valueOf(getConfig().getSource().getRate()));
         mario = factory.create(Mario.MEDIA);
     }
 

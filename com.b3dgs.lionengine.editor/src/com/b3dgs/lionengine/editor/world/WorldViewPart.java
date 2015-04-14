@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Composite;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -78,15 +77,15 @@ public class WorldViewPart
         composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        final Factory factory = WorldViewModel.INSTANCE.getFactory();
+        final Services services = WorldViewModel.INSTANCE.getServices();
 
-        worldViewUpdater = checkUpdaterExtensionPoint(factory);
+        worldViewUpdater = checkUpdaterExtensionPoint(services);
         composite.addMouseListener(worldViewUpdater);
         composite.addMouseMoveListener(worldViewUpdater);
         composite.addKeyListener(worldViewUpdater);
-        factory.add(worldViewUpdater);
+        services.add(worldViewUpdater);
 
-        worldViewRenderer = checkRendererExtensionPoint(factory);
+        worldViewRenderer = checkRendererExtensionPoint(services);
         composite.addPaintListener(worldViewRenderer);
         composite.addMouseListener(worldViewRenderer);
         composite.addMouseMoveListener(worldViewRenderer);

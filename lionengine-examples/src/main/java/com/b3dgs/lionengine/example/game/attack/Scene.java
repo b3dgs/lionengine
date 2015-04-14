@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
@@ -49,14 +50,16 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Services reference. */
+    private final Services services = new Services();
     /** Game factory. */
-    private final Factory factory = new Factory();
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final Camera camera = factory.createService(Camera.class);
+    private final Camera camera = services.create(Camera.class);
     /** Handler reference. */
-    private final Handler handler = factory.createService(Handler.class);
+    private final Handler handler = services.create(Handler.class);
     /** Map reference. */
-    private final MapTile map = factory.createService(MapTileGame.class);
+    private final MapTile map = services.create(MapTileGame.class);
     /** Map path. */
     private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
     /** Keyboard reference. */

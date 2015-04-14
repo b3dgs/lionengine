@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * This is where the game loop is running.
@@ -45,12 +46,14 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Factory. */
-    private final Factory factory = new Factory();
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Handler. */
-    private final Handler handler = new Handler();
+    private final Handler handler = services.create(Handler.class);
     /** Camera. */
-    private final Camera camera = new Camera();
+    private final Camera camera = services.create(Camera.class);
     /** Text drawer. */
     private final Text text = Graphics.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
     /** Keyboard reference. */
@@ -76,8 +79,6 @@ class Scene
         handler.addUpdatable(new ComponentUpdater());
         handler.addUpdatable(new ComponentCollision());
         handler.addRenderable(new ComponentRenderer());
-
-        factory.add(camera);
 
         final Racket racket1 = factory.create(Racket.MEDIA);
         racket1.setSide(true);

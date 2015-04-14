@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.map.MapTilePathModel;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
@@ -50,14 +51,16 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Services reference. */
+    private final Services services = new Services();
     /** Game factory. */
-    private final Factory factory = new Factory();
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final Camera camera = factory.createService(Camera.class);
+    private final Camera camera = services.create(Camera.class);
     /** Cursor reference. */
-    private final Cursor cursor = factory.createService(Cursor.class);
+    private final Cursor cursor = services.create(Cursor.class);
     /** Map reference. */
-    private final MapTile map = factory.createService(MapTileGame.class);
+    private final MapTile map = services.create(MapTileGame.class);
     /** Map path. */
     private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
     /** Text reference. */

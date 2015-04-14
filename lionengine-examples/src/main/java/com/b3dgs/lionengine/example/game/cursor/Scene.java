@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
@@ -48,14 +48,14 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Game factory. */
-    private final Factory factory = new Factory();
+    /** Services reference. */
+    private final Services services = new Services();
     /** Camera reference. */
-    private final Camera camera = factory.createService(Camera.class);
+    private final Camera camera = services.create(Camera.class);
     /** Cursor reference. */
-    private final Cursor cursor = factory.createService(Cursor.class);
+    private final Cursor cursor = services.create(Cursor.class);
     /** Map reference. */
-    private final MapTile map = factory.createService(MapTileGame.class);
+    private final MapTile map = services.create(MapTileGame.class);
     /** Text reference. */
     private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
     /** Keyboard reference. */

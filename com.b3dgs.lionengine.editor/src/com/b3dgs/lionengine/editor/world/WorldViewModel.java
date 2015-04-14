@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Contains the objects of the world.
@@ -36,12 +37,14 @@ public enum WorldViewModel
     /** Instance. */
     INSTANCE;
 
-    /** Factory reference. */
-    private final Factory factory = new Factory();
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final Camera camera = factory.createService(Camera.class);
+    private final Camera camera = services.create(Camera.class);
     /** Map reference. */
-    private final MapTile map = factory.createService(MapTileGame.class);
+    private final MapTile map = services.create(MapTileGame.class);
     /** Selected palette. */
     private Enum<?> palette = PaletteType.POINTER;
 
@@ -53,13 +56,13 @@ public enum WorldViewModel
         final Handler handlerObject = new Handler();
         handlerObject.addRenderable(new ComponentRenderer());
         handlerObject.addUpdatable(new ComponentUpdater());
-        factory.add(handlerObject);
+        services.add(handlerObject);
 
         final Selection selection = new Selection();
-        factory.add(selection);
+        services.add(selection);
 
-        final ObjectControl objectControl = new ObjectControl(factory);
-        factory.add(objectControl);
+        final ObjectControl objectControl = new ObjectControl(services);
+        services.add(objectControl);
     }
 
     /**
@@ -70,6 +73,16 @@ public enum WorldViewModel
     public void setSelectedPalette(Enum<?> palette)
     {
         this.palette = palette;
+    }
+
+    /**
+     * Get the services reference.
+     * 
+     * @return The services reference.
+     */
+    public Services getServices()
+    {
+        return services;
     }
 
     /**

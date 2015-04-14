@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -45,12 +46,14 @@ class World
     /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
-    /** Factory reference. */
-    private final Factory factory = new Factory();
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final Camera camera = factory.createService(Camera.class);
+    private final Camera camera = services.create(Camera.class);
     /** Map reference. */
-    private final MapTile map = factory.createService(MapTileGame.class);
+    private final MapTile map = services.create(MapTileGame.class);
     /** Map collision. */
     private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
     /** Mario reference. */
@@ -65,7 +68,7 @@ class World
     public World(Config config, Keyboard keyboard)
     {
         super(config);
-        factory.add(keyboard);
+        services.add(keyboard);
     }
 
     /*
@@ -102,7 +105,7 @@ class World
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
 
-        factory.add(Integer.valueOf(source.getRate()));
+        services.add(Integer.valueOf(source.getRate()));
 
         mario = factory.create(Mario.MEDIA);
         mario.respawn();

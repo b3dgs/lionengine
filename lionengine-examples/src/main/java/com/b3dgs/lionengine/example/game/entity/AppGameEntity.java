@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Main class.
@@ -45,7 +46,8 @@ public class AppGameEntity
         Engine.start("Entity", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "entity"));
 
         final Graphic g = Graphics.createGraphic();
-        final Factory factory = new Factory();
+        final Services services = new Services();
+        final Factory factory = new Factory(services);
         final Handler handler = new Handler();
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());

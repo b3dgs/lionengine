@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
@@ -52,18 +53,20 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 200, 60);
 
-    /** Action factory. */
-    private final Factory factory = new Factory();
+    /** Services reference. */
+    private final Services services = new Services();
     /** Text reference. */
-    private final Text text = factory.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
+    private final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final Camera camera = factory.createService(Camera.class);
+    private final Camera camera = services.create(Camera.class);
     /** Actions handler. */
-    private final Handler handler = factory.createService(Handler.class);
+    private final Handler handler = services.create(Handler.class);
     /** Cursor reference. */
-    private final Cursor cursor = factory.createService(Cursor.class);
+    private final Cursor cursor = services.create(Cursor.class);
     /** Map reference. */
-    private final MapTile map = factory.createService(MapTileGame.class);
+    private final MapTile map = services.create(MapTileGame.class);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */

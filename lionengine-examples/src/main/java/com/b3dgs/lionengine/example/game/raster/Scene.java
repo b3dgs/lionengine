@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileRastered;
 import com.b3dgs.lionengine.game.map.MapTileRasteredModel;
-import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our world.
@@ -44,14 +44,14 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Game factory. */
-    private final Factory factory = new Factory();
+    /** Services reference. */
+    private final Services services = new Services();
     /** Camera reference. */
-    private final Camera camera = factory.createService(Camera.class);
+    private final Camera camera = services.create(Camera.class);
     /** Map reference. */
-    private final MapTile map = factory.createService(MapTileGame.class);
+    private final MapTile map = services.create(MapTileGame.class);
     /** Map raster reference. */
-    private final MapTileRastered raster = factory.createService(MapTileRasteredModel.class);
+    private final MapTileRastered raster = services.create(MapTileRasteredModel.class);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Timing value. */

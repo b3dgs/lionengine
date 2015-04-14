@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
@@ -46,16 +47,18 @@ class Scene
     /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
+    /** Services reference. */
+    private final Services services = new Services();
     /** Game factory. */
-    private final Factory factory = new Factory();
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final Camera camera = factory.createService(Camera.class);
+    private final Camera camera = services.create(Camera.class);
     /** Map reference. */
-    private final MapTile map = factory.createService(MapTileGame.class);
+    private final MapTile map = services.create(MapTileGame.class);
     /** Map collision. */
     private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
     /** Keyboard reference. */
-    private final Keyboard keyboard = factory.add(getInputDevice(Keyboard.class));
+    private final Keyboard keyboard = services.add(getInputDevice(Keyboard.class));
     /** Mario reference. */
     private Mario hero;
 
@@ -84,7 +87,7 @@ class Scene
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
 
-        factory.add(Integer.valueOf(getConfig().getSource().getRate()));
+        services.add(Integer.valueOf(getConfig().getSource().getRate()));
         hero = factory.create(Mario.MEDIA);
     }
 

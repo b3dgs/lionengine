@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -49,14 +50,16 @@ class World
     /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
-    /** Factory reference. */
-    private final Factory factory = new Factory();
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final Camera camera = factory.createService(Camera.class);
+    private final Camera camera = services.create(Camera.class);
     /** Handler reference. */
-    private final Handler handler = factory.createService(Handler.class);
+    private final Handler handler = services.create(Handler.class);
     /** Map reference. */
-    private final MapTile map = factory.createService(MapTileGame.class);
+    private final MapTile map = services.create(MapTileGame.class);
     /** Map collision. */
     private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
     /** Mario reference. */
@@ -72,7 +75,7 @@ class World
     {
         super(config);
 
-        factory.add(keyboard);
+        services.add(keyboard);
         handler.addUpdatable(new ComponentUpdater());
         handler.addUpdatable(new ComponentCollision());
         handler.addRenderable(new ComponentRenderer());
@@ -114,7 +117,7 @@ class World
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
 
-        factory.add(Integer.valueOf(source.getRate()));
+        services.add(Integer.valueOf(source.getRate()));
 
         mario = factory.create(Mario.CONFIG);
         mario.respawn(160);
