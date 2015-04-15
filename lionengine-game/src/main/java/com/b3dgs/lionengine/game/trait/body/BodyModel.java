@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait.body;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -58,14 +57,10 @@ public class BodyModel
 
     /**
      * Create a body model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If services are <code>null</code>.
      */
-    public BodyModel(ObjectGame owner, Services services) throws LionEngineException
+    public BodyModel()
     {
-        super(owner, services);
+        super();
         force = new Force();
         gravityMax = new Force();
         vectors = new Direction[0];
@@ -77,8 +72,9 @@ public class BodyModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
         transformable = owner.getTrait(Transformable.class);
     }
 

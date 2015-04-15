@@ -49,14 +49,14 @@ class Effect
     /** Explode media. */
     public static final Media EXPLODE = Medias.create("Explode.xml");
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
     /** Surface. */
     private final SpriteAnimated surface;
     /** Explode animation. */
     private final Animation animExplode;
     /** The viewer reference. */
     private final Viewer viewer;
-    /** Transformable model. */
-    private Transformable transformable;
 
     /**
      * Constructor.
@@ -67,26 +67,17 @@ class Effect
     public Effect(SetupSurface setup, Services services)
     {
         super(setup, services);
+        viewer = services.get(Viewer.class);
 
         final ConfigFrames configFrames = ConfigFrames.create(setup.getConfigurer());
         final int scale = UtilRandom.getRandomInteger(75) + 50;
         surface = Drawable.loadSpriteAnimated(setup.surface, configFrames.getHorizontal(), configFrames.getVertical());
         surface.stretch(scale, scale);
         surface.setOrigin(Origin.MIDDLE);
+        transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
 
         final ConfigAnimations configAnimations = ConfigAnimations.create(setup.getConfigurer());
         animExplode = configAnimations.getAnimation("explode");
-
-        viewer = services.get(Viewer.class);
-
-        addTrait(TransformableModel.class);
-    }
-
-    @Override
-    protected void prepareTraits()
-    {
-        transformable = getTrait(Transformable.class);
-        transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
     }
 
     /**

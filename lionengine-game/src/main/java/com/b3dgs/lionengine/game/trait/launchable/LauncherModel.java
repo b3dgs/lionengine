@@ -68,15 +68,15 @@ public class LauncherModel
         implements Launcher
 {
     /** Launcher listeners. */
-    private final Collection<LauncherListener> listeners;
-    /** Launchable configuration. */
-    private final Iterable<ConfigLaunchable> launchables;
+    private final Collection<LauncherListener> listeners = new HashSet<>();
     /** Fire timer. */
-    private final Timing fire;
+    private final Timing fire = new Timing();
+    /** Launchable configuration. */
+    private Iterable<ConfigLaunchable> launchables;
     /** Factory reference. */
-    private final Factory factory;
+    private Factory factory;
     /** Handler reference. */
-    private final Handler handler;
+    private Handler handler;
     /** Localizable model. */
     private Localizable localizable;
     /** Target reference. */
@@ -90,24 +90,10 @@ public class LauncherModel
 
     /**
      * Create a launcher model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If bad {@link Configurer} or missing {@link Services}.
      */
-    public LauncherModel(ObjectGame owner, Services services) throws LionEngineException
+    public LauncherModel()
     {
-        super(owner, services);
-        listeners = new HashSet<>();
-        fire = new Timing();
-
-        factory = services.get(Factory.class);
-        handler = services.get(Handler.class);
-
-        final ConfigLauncher config = ConfigLauncher.create(owner.getConfigurer());
-        launchables = config.getLaunchables();
-        rate = config.getRate();
-        fire.start();
+        super();
     }
 
     /**
@@ -196,8 +182,18 @@ public class LauncherModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
+        factory = services.get(Factory.class);
+        handler = services.get(Handler.class);
+
+        final ConfigLauncher config = ConfigLauncher.create(owner.getConfigurer());
+        launchables = config.getLaunchables();
+        rate = config.getRate();
+        fire.start();
+
         localizable = owner.getTrait(Localizable.class);
         if (owner instanceof LauncherListener)
         {

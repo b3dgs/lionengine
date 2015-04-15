@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.trait.extractable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
@@ -37,11 +36,11 @@ public class ExtractorModel
         implements Extractor
 {
     /** Extractor listeners. */
-    private final Collection<ExtractorListener> listeners;
-    /** Tick timer rate. */
-    private final double desiredFps;
+    private final Collection<ExtractorListener> listeners = new ArrayList<>();
     /** Resources location. */
-    private final ResourceLocation resourceLocation;
+    private final ResourceLocation resourceLocation = new ResourceLocation();
+    /** Tick timer rate. */
+    private double desiredFps;
     /** Extractor checker reference. */
     private ExtractorChecker checker;
     /** Current resources type. */
@@ -63,18 +62,10 @@ public class ExtractorModel
 
     /**
      * Create a layerable model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If services are <code>null</code>.
      */
-    public ExtractorModel(ObjectGame owner, Services services) throws LionEngineException
+    public ExtractorModel()
     {
-        super(owner, services);
-        listeners = new ArrayList<>();
-        desiredFps = services.get(Integer.class).intValue();
-        resourceLocation = new ResourceLocation();
-        resourceType = null;
+        super();
         state = ExtractorState.NONE;
     }
 
@@ -167,8 +158,12 @@ public class ExtractorModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
+        desiredFps = services.get(Integer.class).intValue();
+
         if (owner instanceof ExtractorListener)
         {
             addListener((ExtractorListener) owner);

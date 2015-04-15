@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait.transformable;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -55,33 +54,28 @@ public class TransformableModel
     private int oldHeight;
 
     /**
-     * Create a transformable model. No owner defined.
+     * Create a transformable model.
      */
     public TransformableModel()
     {
         super();
     }
 
-    /**
-     * Create a transformable and load its configuration.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If wrong configuration.
+    /*
+     * Transformable
      */
-    public TransformableModel(ObjectGame owner, Services services) throws LionEngineException
+
+    @Override
+    public void prepare(ObjectGame owner, Services services)
     {
-        super(owner, services);
+        super.prepare(owner, services);
+
         final ConfigSize sizeData = ConfigSize.create(owner.getConfigurer());
         width = sizeData.getWidth();
         height = sizeData.getHeight();
         oldWidth = width;
         oldHeight = height;
     }
-
-    /*
-     * Transformable
-     */
 
     @Override
     public void moveLocation(double extrp, Direction direction, Direction... directions)

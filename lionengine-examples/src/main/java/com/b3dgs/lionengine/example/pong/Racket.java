@@ -51,9 +51,9 @@ class Racket
     /** Current force. */
     private final Force force = new Force();
     /** Transformable model. */
-    private Transformable transformable;
+    private final Transformable transformable = addTrait(new TransformableModel());
     /** Collidable model. */
-    private Collidable collidable;
+    private final Collidable collidable = addTrait(new CollidableModel());
     /** Ball reference. */
     private Ball ball;
 
@@ -64,17 +64,7 @@ class Racket
     {
         super(setup, services);
 
-        addTrait(TransformableModel.class);
-        addTrait(CollidableModel.class);
-    }
-
-    @Override
-    protected void prepareTraits()
-    {
-        transformable = getTrait(Transformable.class);
         transformable.teleportY(240 / 2 - transformable.getHeight() / 2);
-
-        collidable = getTrait(Collidable.class);
         collidable.setCollisionVisibility(true);
     }
 

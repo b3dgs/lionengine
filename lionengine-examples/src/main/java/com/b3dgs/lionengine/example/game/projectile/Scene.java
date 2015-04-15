@@ -49,7 +49,7 @@ class Scene
     /** Camera. */
     private final Camera camera = services.create(Camera.class);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
 
     /**
      * Constructor.
@@ -59,7 +59,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
-        keyboard = getInputDevice(Keyboard.class);
     }
 
     @Override

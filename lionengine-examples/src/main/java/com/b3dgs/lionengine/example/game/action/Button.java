@@ -53,12 +53,12 @@ class Button
     /** Media cancel reference. */
     public static final Media CANCEL = Medias.create("action", "Cancel.xml");
 
+    /** Actionable model. */
+    private final Actionable actionable = addTrait(new ActionableModel());
     /** Button image. */
     private final Image image;
     /** Text reference. */
     private final Text text;
-    /** Actionable model. */
-    private Actionable actionable;
     /** Action name. */
     private final String name;
 
@@ -74,14 +74,12 @@ class Button
         text = services.get(Text.class);
         image = Drawable.loadImage(setup.surface);
         name = setup.getConfigurer().getText(ConfigAction.NAME);
-        addTrait(ActionableModel.class);
+        actionable.setClickAction(Mouse.LEFT);
     }
 
     @Override
-    protected void prepareTraits()
+    protected void onPrepared()
     {
-        actionable = getTrait(Actionable.class);
-        actionable.setClickAction(Mouse.LEFT);
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
     }
 

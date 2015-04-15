@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait.assignable;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.Cursor;
@@ -45,9 +44,9 @@ public class AssignableModel
         implements Assignable
 {
     /** Cursor reference. */
-    private final Cursor cursor;
+    private Cursor cursor;
     /** Viewer reference. */
-    private final Viewer viewer;
+    private Viewer viewer;
     /** Mouse click number to assign action. */
     private int clickAssign;
     /** Assign used. */
@@ -55,16 +54,10 @@ public class AssignableModel
 
     /**
      * Create an assignable model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If missing {@link Services}.
      */
-    public AssignableModel(ObjectGame owner, Services services) throws LionEngineException
+    public AssignableModel()
     {
-        super(owner, services);
-        cursor = services.get(Cursor.class);
-        viewer = services.get(Viewer.class);
+        super();
     }
 
     /*
@@ -72,8 +65,13 @@ public class AssignableModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
+        cursor = services.get(Cursor.class);
+        viewer = services.get(Viewer.class);
+
         if (owner instanceof Assign)
         {
             setAssign((Assign) owner);

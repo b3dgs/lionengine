@@ -51,16 +51,16 @@ class Peon
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Pathfindable model. */
+    private final Pathfindable pathfindable = addTrait(new PathfindableModel());
+    /** Collidable model. */
+    private final Collidable collidable = addTrait(new CollidableModel());
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Transformable model. */
-    private Transformable transformable;
-    /** Pathfindable model. */
-    private Pathfindable pathfindable;
-    /** Collidable model. */
-    private Collidable collidable;
     /** Selected flag. */
     private boolean selected;
 
@@ -73,27 +73,13 @@ class Peon
     public Peon(SetupSurface setup, Services services)
     {
         super(setup, services);
+        viewer = services.get(Viewer.class);
 
         surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
-        viewer = services.get(Viewer.class);
-
-        addTrait(TransformableModel.class);
-        addTrait(PathfindableModel.class);
-        addTrait(CollidableModel.class);
-    }
-
-    @Override
-    protected void prepareTraits()
-    {
-        transformable = getTrait(Transformable.class);
         transformable.teleport(240, 160);
-
-        pathfindable = getTrait(Pathfindable.class);
-
-        collidable = getTrait(Collidable.class);
         collidable.setOrigin(Origin.MIDDLE);
     }
 

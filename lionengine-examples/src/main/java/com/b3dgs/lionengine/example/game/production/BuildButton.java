@@ -65,6 +65,12 @@ class BuildButton
     /** Build barracks media. */
     public static final Media BARRACKS = Medias.create("BuildBarracks.xml");
 
+    /** Actionable model. */
+    private final Actionable actionable = addTrait(new ActionableModel());
+    /** Assignable model. */
+    private final Assignable assignable = addTrait(new AssignableModel());
+    /** Layerable model. */
+    private final Layerable layerable = addTrait(new LayerableModel());
     /** Button image. */
     private final Image image;
     /** Text reference. */
@@ -79,10 +85,6 @@ class BuildButton
     private final Handler handler;
     /** Media target. */
     private final Media target;
-    /** Actionable model. */
-    private Actionable actionable;
-    /** Assignable model. */
-    private Assignable assignable;
     /** Current action state. */
     private Updatable state;
     /** Building area. */
@@ -97,35 +99,26 @@ class BuildButton
     public BuildButton(SetupSurface setup, Services services)
     {
         super(setup, services);
-
-        image = Drawable.loadImage(setup.surface);
-        target = Medias.create(setup.getConfigurer().getText("media"));
-
         text = services.get(Text.class);
         viewer = services.get(Viewer.class);
         cursor = services.get(Cursor.class);
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
 
-        addTrait(ActionableModel.class);
-        addTrait(AssignableModel.class);
-        addTrait(LayerableModel.class);
+        image = Drawable.loadImage(setup.surface);
+        target = Medias.create(setup.getConfigurer().getText("media"));
+
+        actionable.setClickAction(Mouse.LEFT);
+        assignable.setClickAssign(Mouse.LEFT);
+        layerable.setLayer(Integer.valueOf(3));
+        state = actionable;
     }
 
     @Override
-    protected void prepareTraits()
+    protected void onPrepared()
     {
-        actionable = getTrait(Actionable.class);
-        actionable.setClickAction(Mouse.LEFT);
         actionable.setAction(this);
-        state = actionable;
-
-        assignable = getTrait(Assignable.class);
-        assignable.setClickAssign(Mouse.LEFT);
         assignable.setAssign(this);
-
-        final Layerable layerable = getTrait(Layerable.class);
-        layerable.setLayer(Integer.valueOf(3));
     }
 
     @Override

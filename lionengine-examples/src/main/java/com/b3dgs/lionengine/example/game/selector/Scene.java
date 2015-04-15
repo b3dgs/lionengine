@@ -125,6 +125,7 @@ class Scene
         cursor.update(extrp);
         peon.update(extrp);
         selector.update(extrp);
+
         if (keyboard.isPressed(Keyboard.UP))
         {
             camera.moveLocation(extrp, 0, 16);
@@ -141,6 +142,7 @@ class Scene
         {
             camera.moveLocation(extrp, 16, 0);
         }
+
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();

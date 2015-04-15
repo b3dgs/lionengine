@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.trait.rasterable;
 import java.util.List;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
@@ -51,8 +50,6 @@ public class RasterableModel
         extends TraitModel
         implements Rasterable
 {
-    /** The viewer reference. */
-    private final Viewer viewer;
     /** List of rastered frames. */
     private final List<SpriteAnimated> rastersAnim;
     /** Rastered flag. */
@@ -61,6 +58,8 @@ public class RasterableModel
     private final boolean smooth;
     /** Tile height. */
     private final int tileHeight;
+    /** The viewer reference. */
+    private Viewer viewer;
     /** Localizable reference. */
     private Localizable localizable;
     /** Mirrorable reference. */
@@ -73,19 +72,16 @@ public class RasterableModel
     /**
      * Create a rasterable model.
      * 
-     * @param owner The owner reference.
-     * @param services The services reference.
      * @param setup The setup reference.
      * @param tileHeight The tile height value (must be strictly positive).
-     * @throws LionEngineException If missing {@link Services}.
      */
-    public RasterableModel(ObjectGame owner, Services services, SetupSurfaceRastered setup, int tileHeight)
-            throws LionEngineException
+    public RasterableModel(SetupSurfaceRastered setup, int tileHeight)
     {
-        super(owner, services);
+        super();
+
         Check.superiorStrict(tileHeight, 0);
         this.tileHeight = tileHeight;
-        viewer = services.get(Viewer.class);
+
         rastersAnim = setup.rastersAnim;
         rastered = setup.rasterFile != null;
         smooth = setup.smoothRaster;
@@ -96,11 +92,12 @@ public class RasterableModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
         localizable = owner.getTrait(Localizable.class);
         mirrorable = owner.getTrait(Mirrorable.class);
         animator = owner.getTrait(Animator.class);
+        viewer = services.get(Viewer.class);
     }
 
     @Override

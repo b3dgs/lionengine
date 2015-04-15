@@ -54,16 +54,18 @@ class Peon
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Pathfindable model. */
+    private final Pathfindable pathfindable = addTrait(new PathfindableModel());
+    /** Extractor model. */
+    private final Extractor extractor = addTrait(new ExtractorModel());
+    /** Layerable model. */
+    private final Layerable layerable = addTrait(new LayerableModel());
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Transformable model. */
-    private Transformable transformable;
-    /** Pathfindable model. */
-    private Pathfindable pathfindable;
-    /** Extractor model. */
-    private Extractor extractor;
     /** Visible. */
     private boolean visible;
 
@@ -76,35 +78,18 @@ class Peon
     public Peon(SetupSurface setup, Services services)
     {
         super(setup, services);
+        viewer = services.get(Viewer.class);
+        transformable.teleport(208, 160);
+        layerable.setLayer(Integer.valueOf(2));
 
         surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
         visible = true;
 
-        viewer = services.get(Viewer.class);
-
-        addTrait(TransformableModel.class);
-        addTrait(PathfindableModel.class);
-        addTrait(ExtractorModel.class);
-        addTrait(LayerableModel.class);
-    }
-
-    @Override
-    protected void prepareTraits()
-    {
-        transformable = getTrait(Transformable.class);
-        transformable.teleport(208, 160);
-
-        pathfindable = getTrait(Pathfindable.class);
-
-        extractor = getTrait(Extractor.class);
         extractor.setExtractionPerSecond(1.0);
         extractor.setDropOffPerSecond(1.0);
         extractor.setCapacity(5);
-
-        final Layerable layerable = getTrait(Layerable.class);
-        layerable.setLayer(Integer.valueOf(2));
     }
 
     @Override

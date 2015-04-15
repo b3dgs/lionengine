@@ -50,6 +50,8 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Collection fog. */
+    private final Collection<Fovable> fovables = new ArrayList<>();
     /** Services reference. */
     private final Services services = new Services();
     /** Game factory. */
@@ -60,8 +62,6 @@ class Scene
     private final MapTile map = services.create(MapTileGame.class);
     /** Fog of war layer. */
     private final FogOfWar fogOfWar = new FogOfWar();
-    /** Collection fog. */
-    private final Collection<Fovable> fovables = new ArrayList<>();
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
@@ -108,6 +108,7 @@ class Scene
         mouse.update(extrp);
         peon.update(extrp);
         fogOfWar.update(fovables);
+
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();

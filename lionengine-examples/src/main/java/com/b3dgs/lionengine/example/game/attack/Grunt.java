@@ -50,16 +50,16 @@ class Grunt
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Grunt.xml");
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Pathfindable model. */
+    private final Pathfindable pathfindable = addTrait(new PathfindableModel());
+    /** Attacker model. */
+    private final Attacker attacker = addTrait(new AttackerModel());
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Transformable model. */
-    private Transformable transformable;
-    /** Pathfindable model. */
-    private Pathfindable pathfindable;
-    /** Attacker model. */
-    private Attacker attacker;
 
     /**
      * Create a peon.
@@ -70,16 +70,16 @@ class Grunt
     public Grunt(SetupSurface setup, Services services)
     {
         super(setup, services);
+        viewer = services.get(Viewer.class);
+
+        attacker.setAttackDistance(16, 16);
+        attacker.setAttackDamages(1, 5);
+        attacker.setAttackFrame(1);
+        attacker.setAttackTimer(1000);
 
         surface = Drawable.loadSpriteAnimated(setup.surface, 8, 7);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
-
-        viewer = services.get(Viewer.class);
-
-        addTrait(TransformableModel.class);
-        addTrait(PathfindableModel.class);
-        addTrait(AttackerModel.class);
         addType(surface);
     }
 
@@ -95,18 +95,9 @@ class Grunt
     }
 
     @Override
-    protected void prepareTraits()
+    protected void onPrepared()
     {
-        transformable = getTrait(Transformable.class);
-
-        pathfindable = getTrait(Pathfindable.class);
         pathfindable.setLocation(2, 6);
-
-        attacker = getTrait(Attacker.class);
-        attacker.setAttackDistance(16, 16);
-        attacker.setAttackDamages(1, 5);
-        attacker.setAttackFrame(1);
-        attacker.setAttackTimer(1000);
     }
 
     @Override

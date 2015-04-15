@@ -50,9 +50,9 @@ class Scene
     /** Music. */
     private final Midi music = AudioMidi.loadMidi(Medias.create("music", "music.mid"));
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** World reference. */
-    private final World world;
+    private final World world = new World(getConfig(), keyboard);
 
     /**
      * Constructor.
@@ -62,8 +62,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        world = new World(getConfig(), keyboard);
     }
 
     /**
@@ -103,11 +101,11 @@ class Scene
     @Override
     public void update(double extrp)
     {
-        world.update(extrp);
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();
         }
+        world.update(extrp);
     }
 
     @Override

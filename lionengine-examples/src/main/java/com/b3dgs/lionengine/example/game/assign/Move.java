@@ -51,6 +51,10 @@ class Move
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Move.xml");
 
+    /** Actionable model. */
+    private final Actionable actionable = addTrait(new ActionableModel());
+    /** Assignable model. */
+    private final Assignable assignable = addTrait(new AssignableModel());
     /** Button image. */
     private final Image image;
     /** Text reference. */
@@ -59,10 +63,6 @@ class Move
     private final Cursor cursor;
     /** Handler reference. */
     private final Handler handler;
-    /** Actionable model. */
-    private Actionable actionable;
-    /** Assignable model. */
-    private Assignable assignable;
     /** Current action state. */
     private Updatable state;
 
@@ -79,21 +79,16 @@ class Move
         cursor = services.get(Cursor.class);
         handler = services.get(Handler.class);
         image = Drawable.loadImage(setup.surface);
-        addTrait(ActionableModel.class);
-        addTrait(AssignableModel.class);
+
+        actionable.setClickAction(Mouse.LEFT);
+        assignable.setClickAssign(Mouse.LEFT);
+        state = actionable;
     }
 
     @Override
-    protected void prepareTraits()
+    protected void onPrepared()
     {
-        actionable = getTrait(Actionable.class);
-        actionable.setClickAction(Mouse.LEFT);
-
-        assignable = getTrait(Assignable.class);
-        assignable.setClickAssign(Mouse.LEFT);
-
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
-        state = actionable;
     }
 
     @Override

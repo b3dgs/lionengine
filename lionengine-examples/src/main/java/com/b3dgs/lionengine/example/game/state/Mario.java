@@ -58,22 +58,22 @@ class Mario
     /** Ground location y. */
     static final int GROUND = 32;
 
-    /** Surface. */
-    private final SpriteAnimated surface;
-    /** Camera reference. */
-    private final Camera camera;
     /** State factory. */
     private final StateFactory factory = new StateFactory();
     /** Movement force. */
     private final Force movement = new Force();
     /** Jump force. */
     private final Force jump = new Force();
-    /** Mirrorable model. */
-    private Mirrorable mirrorable;
     /** Transformable model. */
-    private Transformable transformable;
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Mirrorable model. */
+    private final Mirrorable mirrorable = addTrait(new MirrorableModel());
     /** Body model. */
-    private Body body;
+    private final Body body = addTrait(new BodyModel());
+    /** Surface. */
+    private final SpriteAnimated surface;
+    /** Camera reference. */
+    private final Camera camera;
     /** Entity state. */
     private State state;
 
@@ -86,16 +86,16 @@ class Mario
     public Mario(SetupSurface setup, Services services)
     {
         super(setup, services);
+        camera = services.get(Camera.class);
+        transformable.teleport(160, GROUND);
 
         surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 
-        camera = services.get(Camera.class);
-
-        addTrait(TransformableModel.class);
-        addTrait(MirrorableModel.class);
-        addTrait(BodyModel.class);
+        body.setVectors(movement, jump);
+        body.setDesiredFps(60);
+        body.setMass(2.0);
     }
 
     /**
@@ -165,18 +165,8 @@ class Mario
     }
 
     @Override
-    protected void prepareTraits()
+    protected void onPrepared()
     {
-        transformable = getTrait(Transformable.class);
-        transformable.teleport(160, GROUND);
-
-        mirrorable = getTrait(Mirrorable.class);
-
-        body = getTrait(Body.class);
-        body.setVectors(movement, jump);
-        body.setDesiredFps(60);
-        body.setMass(2.0);
-
         loadStates(factory);
         state = factory.getState(MarioState.IDLE);
     }

@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
@@ -68,18 +67,18 @@ public class CollidableModel
         extends TraitModel
         implements Collidable
 {
-    /** The viewer reference. */
-    private final Viewer viewer;
     /** The collision listener reference. */
-    private final Collection<CollidableListener> listeners;
+    private final Collection<CollidableListener> listeners = new ArrayList<>();
     /** The collisions used. */
-    private final Collection<Collision> collisions;
+    private final Collection<Collision> collisions = new ArrayList<>();
     /** The ignored collidables. */
-    private final Collection<Collidable> ignored;
+    private final Collection<Collidable> ignored = new HashSet<>();
     /** Temp bounding box from polygon. */
-    private final Map<Collision, Rectangle> boxs;
+    private final Map<Collision, Rectangle> boxs = new HashMap<>();
     /** Transformable owning this model. */
     private Transformable transformable;
+    /** The viewer reference. */
+    private Viewer viewer;
     /** Origin used. */
     private Origin origin;
     /** Enabled flag. */
@@ -89,26 +88,13 @@ public class CollidableModel
 
     /**
      * Create a collidable model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If wrong config or missing {@link Services}.
      */
-    public CollidableModel(ObjectGame owner, Services services) throws LionEngineException
+    public CollidableModel()
     {
-        super(owner, services);
-        listeners = new ArrayList<>();
-        collisions = new ArrayList<>();
-        ignored = new HashSet<>();
-        boxs = new HashMap<>();
-        viewer = services.get(Viewer.class);
+        super();
         origin = Origin.TOP_LEFT;
         enabled = true;
         showCollision = false;
-        for (final Collision collision : ConfigCollisions.create(owner.getConfigurer()).getCollisions())
-        {
-            addCollision(collision);
-        }
     }
 
     /*
@@ -116,8 +102,14 @@ public class CollidableModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+        viewer = services.get(Viewer.class);
+        for (final Collision collision : ConfigCollisions.create(owner.getConfigurer()).getCollisions())
+        {
+            addCollision(collision);
+        }
         transformable = owner.getTrait(Transformable.class);
         if (owner instanceof CollidableListener)
         {

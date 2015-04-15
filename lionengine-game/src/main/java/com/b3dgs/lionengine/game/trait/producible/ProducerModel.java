@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -55,13 +54,13 @@ public class ProducerModel
         implements Producer
 {
     /** Producer listeners. */
-    private final Collection<ProducerListener> listeners;
+    private final Collection<ProducerListener> listeners = new ArrayList<>();
     /** Production queue. */
-    private final Queue<Producible> productions;
+    private final Queue<Producible> productions = new LinkedList<>();
     /** Handler reference. */
-    private final Handler handler;
+    private Handler handler;
     /** Tick timer rate. */
-    private final double desiredFps;
+    private double desiredFps;
     /** Production checker. */
     private ProducerChecker checker;
     /** Steps per second. */
@@ -81,18 +80,11 @@ public class ProducerModel
 
     /**
      * Create a producer model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If missing {@link Services}.
      */
-    public ProducerModel(ObjectGame owner, Services services)
+    public ProducerModel()
     {
-        super(owner, services);
-        listeners = new ArrayList<>();
-        productions = new LinkedList<>();
-        handler = services.get(Handler.class);
-        desiredFps = services.get(Integer.class).intValue();
+        super();
+
         state = ProducerState.NONE;
         stepsPerSecond = 1.0;
     }
@@ -219,8 +211,13 @@ public class ProducerModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
+        handler = services.get(Handler.class);
+        desiredFps = services.get(Integer.class).intValue();
+
         if (owner instanceof ProducerListener)
         {
             addListener((ProducerListener) owner);

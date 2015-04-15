@@ -49,14 +49,14 @@ class Ball
     /** Ball color. */
     private static final ColorRgba COLOR = ColorRgba.GRAY;
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Collidable model. */
+    private final Collidable collidable = addTrait(new CollidableModel());
     /** Current force. */
     private final Force force;
     /** Speed. */
     private final double speed;
-    /** Transformable model. */
-    private Transformable transformable;
-    /** Collidable model. */
-    private Collidable collidable;
 
     /**
      * {@link ObjectGame#ObjectGame(Setup, Services)}
@@ -70,17 +70,8 @@ class Ball
         force.setDestination(-speed, 0.0);
         force.setVelocity(speed);
 
-        addTrait(TransformableModel.class);
-        addTrait(CollidableModel.class);
-    }
-
-    @Override
-    protected void prepareTraits()
-    {
-        transformable = getTrait(Transformable.class);
         transformable.teleport(320 / 2 - transformable.getWidth() / 2, 230 / 2 - transformable.getHeight() / 2);
 
-        collidable = getTrait(Collidable.class);
         collidable.setCollisionVisibility(true);
     }
 

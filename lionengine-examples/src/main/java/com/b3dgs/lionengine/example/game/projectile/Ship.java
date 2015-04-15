@@ -54,6 +54,10 @@ class Ship
     /** Media. */
     public static final Media MEDIA = Medias.create("Ship.xml");
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Collidable model. */
+    private final Collidable collidable = addTrait(new CollidableModel());
     /** Surface. */
     private final SpriteAnimated sprite;
     /** Viewer reference. */
@@ -62,10 +66,6 @@ class Ship
     private final Weapon weapon;
     /** Speed. */
     private final double speed;
-    /** Transformable model. */
-    private Transformable transformable;
-    /** Collidable model. */
-    private Collidable collidable;
     /** Target used. */
     private Localizable target;
     /** Location ship. */
@@ -84,11 +84,14 @@ class Ship
     public Ship(SetupSurface setup, Services services)
     {
         super(setup, services);
+        viewer = services.get(Viewer.class);
 
         final ConfigFrames config = ConfigFrames.create(setup.getConfigurer());
         sprite = Drawable.loadSpriteAnimated(setup.surface, config.getHorizontal(), config.getVertical());
         sprite.setFrame(3);
         sprite.setOrigin(Origin.MIDDLE);
+
+        collidable.setOrigin(Origin.MIDDLE);
 
         final Factory factory = services.get(Factory.class);
         final Handler handler = services.get(Handler.class);
@@ -100,11 +103,6 @@ class Ship
         x = 64;
         y = 192;
         speed = UtilRandom.getRandomDouble() / 1.5 + 0.75;
-
-        viewer = services.get(Viewer.class);
-
-        addTrait(TransformableModel.class);
-        addTrait(CollidableModel.class);
     }
 
     /**
@@ -148,15 +146,11 @@ class Ship
     }
 
     @Override
-    protected void prepareTraits()
+    protected void onPrepared()
     {
-        transformable = getTrait(Transformable.class);
         transformable.teleport(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
         weapon.setOwner(this);
         weapon.update(1.0);
-
-        collidable = getTrait(Collidable.class);
-        collidable.setOrigin(Origin.MIDDLE);
     }
 
     @Override

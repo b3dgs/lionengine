@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.trait.attackable;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animator;
@@ -41,11 +40,11 @@ public class AttackerModel
         implements Attacker
 {
     /** Listener list. */
-    private final Collection<AttackerListener> listeners;
+    private final Collection<AttackerListener> listeners = new HashSet<>(1);
     /** Damages. */
-    private final Damages damages;
+    private final Damages damages = new Damages();
     /** Attack distance allowed. */
-    private final Range distAttack;
+    private final Range distAttack = new Range(1, 1);
     /** Animator reference. */
     private Animator animator;
     /** Transformable reference. */
@@ -71,25 +70,13 @@ public class AttackerModel
 
     /**
      * Create an attacker model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If services are <code>null</code>.
      */
-    public AttackerModel(ObjectGame owner, Services services) throws LionEngineException
+    public AttackerModel()
     {
-        super(owner, services);
-        listeners = new HashSet<>(1);
-        damages = new Damages();
-        target = null;
+        super();
         frameAttack = 1;
-        distAttack = new Range(1, 1);
         attackPause = 1;
         state = AttackState.NONE;
-        timer = 0L;
-        stop = false;
-        attacking = false;
-        attacked = false;
     }
 
     /**
@@ -184,10 +171,13 @@ public class AttackerModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
         animator = owner.getTrait(Animator.class);
         transformable = owner.getTrait(Transformable.class);
+
         if (owner instanceof AttackerListener)
         {
             addListener((AttackerListener) owner);

@@ -50,12 +50,14 @@ class Building
     /** Barracks media reference. */
     public static final Media BARRACKS = Medias.create("Barracks.xml");
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Layerable model. */
+    private final Layerable layerable = addTrait(new LayerableModel());
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Transformable model. */
-    private Transformable transformable;
     /** Visible flag. */
     private boolean visible;
 
@@ -68,24 +70,14 @@ class Building
     public Building(SetupSurface setup, Services services)
     {
         super(setup, services);
+        viewer = services.get(Viewer.class);
 
         surface = Drawable.loadSpriteAnimated(setup.surface, 2, 1);
         surface.setOrigin(Origin.TOP_LEFT);
 
-        viewer = services.get(Viewer.class);
-
-        addTrait(TransformableModel.class);
-        addTrait(ProducibleModel.class);
-        addTrait(LayerableModel.class);
-    }
-
-    @Override
-    protected void prepareTraits()
-    {
-        transformable = getTrait(Transformable.class);
-
-        final Layerable layerable = getTrait(Layerable.class);
         layerable.setLayer(Integer.valueOf(1));
+
+        addTrait(new ProducibleModel());
     }
 
     @Override

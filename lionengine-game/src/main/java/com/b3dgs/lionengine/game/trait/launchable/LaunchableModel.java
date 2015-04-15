@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait.launchable;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -42,7 +41,7 @@ public class LaunchableModel
         implements Launchable
 {
     /** Launch timer. */
-    private final Timing timer;
+    private final Timing timer = new Timing();
     /** Transformable reference. */
     private Transformable transformable;
     /** Vector reference. */
@@ -52,15 +51,10 @@ public class LaunchableModel
 
     /**
      * Create the launchable model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If services are <code>null</code>.
      */
-    public LaunchableModel(ObjectGame owner, Services services) throws LionEngineException
+    public LaunchableModel()
     {
-        super(owner, services);
-        timer = new Timing();
+        super();
     }
 
     /*
@@ -68,8 +62,10 @@ public class LaunchableModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
         transformable = owner.getTrait(Transformable.class);
     }
 

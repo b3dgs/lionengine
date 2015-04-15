@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.object;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -59,17 +58,14 @@ import com.b3dgs.lionengine.game.trait.Trait;
  */
 public class ObjectGame
 {
-    /** Error create trait. */
-    private static final String ERROR_CREATE_TRAIT = "Error when creating trait: ";
-
     /** Features provider. */
-    private final Features<Trait> features;
+    private final Features<Trait> features = new Features<>(Trait.class);
     /** Types provided. */
-    private final Map<Class<?>, Object> types;
-    /** Trait to add. */
-    private final Collection<Class<? extends Trait>> traitToAdd;
+    private final Map<Class<?>, Object> types = new HashMap<>();
+    /** Trait to prepare. */
+    private final Collection<Trait> traitToPrepare = new ArrayList<>();
     /** Listeners. */
-    private final Collection<ObjectGameListener> listeners;
+    private final Collection<ObjectGameListener> listeners = new HashSet<>(1);
     /** Media representation. */
     private final Media media;
     /** Configurer reference. */
@@ -90,10 +86,6 @@ public class ObjectGame
         Check.notNull(setup);
         Check.notNull(services);
 
-        features = new Features<>(Trait.class);
-        types = new HashMap<>();
-        traitToAdd = new ArrayList<>();
-        listeners = new HashSet<>(1);
         media = setup.getConfigFile();
         configurer = setup.getConfigurer();
         destroyed = false;
@@ -103,10 +95,12 @@ public class ObjectGame
      * Add a trait.
      * 
      * @param trait The trait to add.
+     * @return The added trait (same as source).
      */
-    public final void addTrait(Class<? extends Trait> trait)
+    public final <T extends Trait> T addTrait(T trait)
     {
-        traitToAdd.add(trait);
+        traitToPrepare.add(trait);
+        return trait;
     }
 
     /**
@@ -117,41 +111,6 @@ public class ObjectGame
     public final void addType(Object type)
     {
         types.put(type.getClass(), type);
-    }
-
-    /**
-     * Prepare traits. Does nothing by default.
-     */
-    protected void prepareTraits()
-    {
-        // Nothing to do
-    }
-
-    /**
-     * Create added traits.
-     * 
-     * @param setup The setup reference.
-     * @param services The services reference.
-     * @throws LionEngineException If error when creating instance.
-     */
-    void createTraits(Setup setup, Services services) throws LionEngineException
-    {
-        for (final Class<? extends Trait> trait : traitToAdd)
-        {
-            try
-            {
-                final Constructor<? extends Trait> constructor = trait.getConstructor(ObjectGame.class, Services.class);
-                final Trait instance = constructor.newInstance(this, services);
-                instance.prepare(services);
-                features.add(instance);
-            }
-            catch (final ReflectiveOperationException exception)
-            {
-                throw new LionEngineException(exception, ERROR_CREATE_TRAIT, trait.getName());
-            }
-        }
-        traitToAdd.clear();
-        prepareTraits();
     }
 
     /**
@@ -285,5 +244,32 @@ public class ObjectGame
     final void setId(Integer id)
     {
         this.id = id;
+    }
+
+    /**
+     * Called when object has been prepare and is ready to be used. All traits are also prepared.
+     * Does nothing by default.
+     */
+    protected void onPrepared()
+    {
+        // Nothing by default
+    }
+
+    /**
+     * Prepare added traits.
+     * 
+     * @param setup The setup reference.
+     * @param services The services reference.
+     * @throws LionEngineException If error when creating instances.
+     */
+    void prepareTraits(Setup setup, Services services) throws LionEngineException
+    {
+        for (final Trait trait : traitToPrepare)
+        {
+            trait.prepare(this, services);
+            features.add(trait);
+        }
+        traitToPrepare.clear();
+        onPrepared();
     }
 }

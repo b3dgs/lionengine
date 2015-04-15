@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.trait.collidable;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionResult;
@@ -64,30 +63,22 @@ public class TileCollidableModel
         implements TileCollidable
 {
     /** Launcher listeners. */
-    private final Collection<TileCollidableListener> listeners;
+    private final Collection<TileCollidableListener> listeners = new HashSet<>();
     /** Transformable owning this model. */
-    private final Transformable transformable;
+    private Transformable transformable;
     /** The collisions used. */
-    private final Collection<CollisionCategory> categories;
+    private Collection<CollisionCategory> categories;
     /** Map tile reference. */
-    private final MapTileCollision map;
+    private MapTileCollision map;
     /** Collision enabled. */
     private boolean enabled;
 
     /**
      * Create a tile collidable model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If wrong config or {@link Services}.
      */
-    public TileCollidableModel(ObjectGame owner, Services services) throws LionEngineException
+    public TileCollidableModel()
     {
-        super(owner, services);
-        listeners = new HashSet<>();
-        transformable = owner.getTrait(Transformable.class);
-        map = services.get(MapTileCollision.class);
-        categories = ConfigCollisionCategory.create(owner.getConfigurer(), map);
+        super();
         enabled = true;
     }
 
@@ -133,8 +124,12 @@ public class TileCollidableModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        transformable = owner.getTrait(Transformable.class);
+        map = services.get(MapTileCollision.class);
+        categories = ConfigCollisionCategory.create(owner.getConfigurer(), map);
+
         if (owner instanceof TileCollidableListener)
         {
             addListener((TileCollidableListener) owner);

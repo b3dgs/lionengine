@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait.extractable;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -34,27 +33,21 @@ public class ExtractableModel
         extends TraitModel
         implements Extractable
 {
+    /** Resources count. */
+    private final Alterable resources = new Alterable(0);
     /** Map reference. */
-    private final MapTile map;
+    private MapTile map;
     /** Transformable model. */
     private Transformable transformable;
-    /** Resources count. */
-    private final Alterable resources;
     /** Resource type. */
     private Enum<?> type;
 
     /**
      * Create an extractable model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If services are <code>null</code>.
      */
-    public ExtractableModel(ObjectGame owner, Services services)
+    public ExtractableModel()
     {
-        super(owner, services);
-        map = services.get(MapTile.class);
-        resources = new Alterable(0);
+        super();
     }
 
     /*
@@ -62,9 +55,12 @@ public class ExtractableModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
         transformable = owner.getTrait(Transformable.class);
+        map = services.get(MapTile.class);
     }
 
     @Override

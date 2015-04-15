@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait.fovable;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
@@ -46,7 +45,7 @@ public class FovableModel
         implements Fovable
 {
     /** Map tile reference. */
-    private final MapTile map;
+    private MapTile map;
     /** Transformable model. */
     private Transformable transformable;
     /** Field of view in tile value. */
@@ -54,15 +53,10 @@ public class FovableModel
 
     /**
      * Create a fovable model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If missing {@link Services}.
      */
-    public FovableModel(ObjectGame owner, Services services) throws LionEngineException
+    public FovableModel()
     {
-        super(owner, services);
-        map = services.get(MapTile.class);
+        super();
     }
 
     /*
@@ -70,9 +64,12 @@ public class FovableModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
         transformable = owner.getTrait(Transformable.class);
+        map = services.get(MapTile.class);
     }
 
     @Override

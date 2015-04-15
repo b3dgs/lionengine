@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.trait.producible;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.configurer.ConfigProducible;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -45,15 +44,15 @@ public class ProducibleModel
         implements Producible
 {
     /** Producer listeners. */
-    private final Collection<ProducibleListener> listeners;
+    private final Collection<ProducibleListener> listeners = new ArrayList<>();
     /** Producible media. */
-    private final Media media;
+    private Media media;
     /** Production steps needed. */
-    private final int steps;
+    private int steps;
     /** Production width. */
-    private final int width;
+    private int width;
     /** Production height. */
-    private final int height;
+    private int height;
     /** Production location x. */
     private double x;
     /** Production location y. */
@@ -61,20 +60,10 @@ public class ProducibleModel
 
     /**
      * Create a producible and load its configuration.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If wrong configurer.
      */
-    public ProducibleModel(ObjectGame owner, Services services) throws LionEngineException
+    public ProducibleModel()
     {
-        super(owner, services);
-        listeners = new ArrayList<>();
-        final ConfigProducible configProducible = ConfigProducible.create(owner.getConfigurer());
-        media = owner.getMedia();
-        steps = configProducible.getSteps();
-        width = configProducible.getWidth();
-        height = configProducible.getHeight();
+        super();
     }
 
     /*
@@ -82,8 +71,16 @@ public class ProducibleModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
+        final ConfigProducible configProducible = ConfigProducible.create(owner.getConfigurer());
+        media = owner.getMedia();
+        steps = configProducible.getSteps();
+        width = configProducible.getWidth();
+        height = configProducible.getHeight();
+
         if (owner instanceof ProducibleListener)
         {
             addListener((ProducibleListener) owner);

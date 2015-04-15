@@ -74,8 +74,9 @@ class World
     public World(Config config, Keyboard keyboard)
     {
         super(config);
-
         services.add(keyboard);
+        services.add(Integer.valueOf(source.getRate()));
+
         handler.addUpdatable(new ComponentUpdater());
         handler.addUpdatable(new ComponentCollision());
         handler.addRenderable(new ComponentRenderer());
@@ -113,15 +114,15 @@ class World
         map.load(file);
         mapCollision.loadCollisions(Medias.create("map", "formulas.xml"), Medias.create("map", "collisions.xml"));
         mapCollision.createCollisionDraw();
-        camera.setIntervals(16, 0);
-        camera.setView(0, 0, width, height);
-        camera.setLimits(map);
-
-        services.add(Integer.valueOf(source.getRate()));
 
         mario = factory.create(Mario.CONFIG);
         mario.respawn(160);
+
+        camera.setIntervals(16, 0);
+        camera.setView(0, 0, width, height);
+        camera.setLimits(map);
         camera.resetInterval(mario.getLocalizable());
+
         handler.add(mario);
         for (int i = 0; i < 20; i++)
         {

@@ -57,6 +57,12 @@ class Button
     /** Carry media. */
     public static final Media CARRY = Medias.create("Carry.xml");
 
+    /** Actionable model. */
+    private final Actionable actionable = addTrait(new ActionableModel());
+    /** Assignable model. */
+    private final Assignable assignable = addTrait(new AssignableModel());
+    /** Layerable model. */
+    private final Layerable layerable = addTrait(new LayerableModel());
     /** Button image. */
     private final Image image;
     /** Text reference. */
@@ -67,10 +73,6 @@ class Button
     private final Handler handler;
     /** Map path reference. */
     private final MapTilePath mapPath;
-    /** Actionable model. */
-    private Actionable actionable;
-    /** Assignable model. */
-    private Assignable assignable;
     /** Current action state. */
     private Updatable state;
 
@@ -83,7 +85,6 @@ class Button
     public Button(SetupSurface setup, Services services)
     {
         super(setup, services);
-
         image = Drawable.loadImage(setup.surface);
 
         text = services.get(Text.class);
@@ -91,25 +92,20 @@ class Button
         handler = services.get(Handler.class);
         mapPath = services.get(MapTilePath.class);
 
-        addTrait(ActionableModel.class);
-        addTrait(AssignableModel.class);
-        addTrait(LayerableModel.class);
+        actionable.setClickAction(Mouse.LEFT);
+        assignable.setClickAssign(Mouse.LEFT);
     }
 
     @Override
-    protected void prepareTraits()
+    protected void onPrepared()
     {
-        actionable = getTrait(Actionable.class);
-        actionable.setClickAction(Mouse.LEFT);
-        actionable.setAction(this);
-        state = actionable;
+        image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
 
-        assignable = getTrait(Assignable.class);
-        assignable.setClickAssign(Mouse.LEFT);
+        actionable.setAction(this);
         assignable.setAssign(this);
 
-        final Layerable layerable = getTrait(Layerable.class);
         layerable.setLayer(Integer.valueOf(3));
+        state = actionable;
     }
 
     @Override
@@ -141,7 +137,6 @@ class Button
     @Override
     public void update(double extrp)
     {
-        image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
         if (actionable.isOver())
         {
             text.setText(actionable.getDescription());

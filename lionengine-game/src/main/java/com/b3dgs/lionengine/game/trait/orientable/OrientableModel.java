@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait.orientable;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -48,7 +47,7 @@ public class OrientableModel
         implements Orientable
 {
     /** Map reference. */
-    private final MapTile map;
+    private MapTile map;
     /** Localizable reference. */
     private Transformable transformable;
     /** Current orientation. */
@@ -56,15 +55,10 @@ public class OrientableModel
 
     /**
      * Create an orientable model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If missing {@link Services}.
      */
-    public OrientableModel(ObjectGame owner, Services services) throws LionEngineException
+    public OrientableModel()
     {
-        super(owner, services);
-        map = services.get(MapTile.class);
+        super();
         orientation = Orientation.NORTH;
     }
 
@@ -73,9 +67,10 @@ public class OrientableModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
         transformable = owner.getTrait(Transformable.class);
+        map = services.get(MapTile.class);
     }
 
     @Override

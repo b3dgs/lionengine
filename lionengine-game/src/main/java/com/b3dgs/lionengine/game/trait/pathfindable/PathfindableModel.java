@@ -86,23 +86,23 @@ public class PathfindableModel
     private static final double DIAGONAL_SPEED = 0.8;
 
     /** Pathfindable listeners. */
-    private final Collection<PathfindableListener> listeners;
-    /** Map reference. */
-    private final MapTile map;
-    /** Map path reference. */
-    private final MapTilePath mapPath;
-    /** Pathfinder reference. */
-    private final PathFinder pathfinder;
-    /** List of categories. */
-    private final Map<String, PathData> categories;
+    private final Collection<PathfindableListener> listeners = new ArrayList<>();
     /** List of shared path id. */
-    private final Collection<Integer> sharedPathIds;
+    private final Collection<Integer> sharedPathIds = new HashSet<>(0);
     /** List of ignored id. */
-    private final Collection<Integer> ignoredIds;
+    private final Collection<Integer> ignoredIds = new HashSet<>(0);
     /** Object id. */
-    private final Integer id;
+    private Integer id;
     /** Viewer reference. */
-    private final Viewer viewer;
+    private Viewer viewer;
+    /** Map reference. */
+    private MapTile map;
+    /** Map path reference. */
+    private MapTilePath mapPath;
+    /** Pathfinder reference. */
+    private PathFinder pathfinder;
+    /** List of categories. */
+    private Map<String, PathData> categories;
     /** Transformable model. */
     private Transformable transformable;
     /** Orientable model. */
@@ -144,25 +144,11 @@ public class PathfindableModel
 
     /**
      * Create a pathfindable model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If wrong configurer or missing {@link Services}.
      */
-    public PathfindableModel(ObjectGame owner, Services services)
+    public PathfindableModel()
     {
-        super(owner, services);
-        listeners = new ArrayList<>();
-        ignoredIds = new HashSet<>(0);
-        sharedPathIds = new HashSet<>(0);
-        map = services.get(MapTile.class);
-        viewer = services.get(Viewer.class);
-        mapPath = map.getFeature(MapTilePath.class);
-        id = owner.getId();
-        final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth() + map.getInTileHeight()
-                * map.getInTileHeight());
-        pathfinder = Astar.createPathFinder(map, range, true, Astar.createHeuristicClosest());
-        categories = ConfigPathfindable.create(owner.getConfigurer());
+        super();
+
         destinationReached = true;
         speedX = 1.0;
         speedY = 1.0;
@@ -494,11 +480,22 @@ public class PathfindableModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
+        map = services.get(MapTile.class);
+        viewer = services.get(Viewer.class);
+        mapPath = map.getFeature(MapTilePath.class);
+        id = owner.getId();
+        final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth() + map.getInTileHeight()
+                * map.getInTileHeight());
+        pathfinder = Astar.createPathFinder(map, range, true, Astar.createHeuristicClosest());
+        categories = ConfigPathfindable.create(owner.getConfigurer());
+
         transformable = owner.getTrait(Transformable.class);
-        final OrientableModel orientable = new OrientableModel(owner, services);
-        orientable.prepare(services);
+        final OrientableModel orientable = new OrientableModel();
+        orientable.prepare(owner, services);
         this.orientable = orientable;
 
         if (owner instanceof PathfindableListener)

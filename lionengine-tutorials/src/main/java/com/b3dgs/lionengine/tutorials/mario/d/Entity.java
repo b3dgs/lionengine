@@ -70,20 +70,20 @@ class Entity
     private final Force movement = new Force();
     /** Jump force. */
     private final Force jump = new Force();
+    /** Transformable model. */
+    protected final Transformable transformable = addTrait(new TransformableModel());
+    /** Tile collidable. */
+    protected final TileCollidable tileCollidable = addTrait(new TileCollidableModel());
+    /** Collidable reference. */
+    protected final Collidable collidable = addTrait(new CollidableModel());
+    /** Mirrorable model. */
+    private final Mirrorable mirrorable = addTrait(new MirrorableModel());
+    /** Body model. */
+    private final Body body = addTrait(new BodyModel());
     /** Surface. */
     private final SpriteAnimated surface;
     /** Camera reference. */
     private final Camera camera;
-    /** Transformable model. */
-    protected Transformable transformable;
-    /** Tile collidable. */
-    protected TileCollidable tileCollidable;
-    /** Collidable reference. */
-    protected Collidable collidable;
-    /** Mirrorable model. */
-    private Mirrorable mirrorable;
-    /** Body model. */
-    private Body body;
     /** Controller reference. */
     private InputDeviceDirectional device;
     /** Entity state. */
@@ -98,19 +98,17 @@ class Entity
     public Entity(SetupSurface setup, Services services)
     {
         super(setup, services);
+        camera = services.get(Camera.class);
+        collidable.setOrigin(Origin.CENTER_TOP);
 
         final ConfigFrames frames = ConfigFrames.create(getConfigurer());
         surface = Drawable.loadSpriteAnimated(setup.surface, frames.getHorizontal(), frames.getVertical());
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 
-        camera = services.get(Camera.class);
-
-        addTrait(TransformableModel.class);
-        addTrait(MirrorableModel.class);
-        addTrait(BodyModel.class);
-        addTrait(TileCollidableModel.class);
-        addTrait(CollidableModel.class);
+        body.setVectors(movement, jump);
+        body.setDesiredFps(60);
+        body.setMass(2.0);
     }
 
     /**
@@ -248,20 +246,8 @@ class Entity
     }
 
     @Override
-    protected void prepareTraits()
+    protected void onPrepared()
     {
-        transformable = getTrait(Transformable.class);
-        mirrorable = getTrait(Mirrorable.class);
-        tileCollidable = getTrait(TileCollidable.class);
-
-        body = getTrait(Body.class);
-        body.setVectors(movement, jump);
-        body.setDesiredFps(60);
-        body.setMass(2.0);
-
-        collidable = getTrait(Collidable.class);
-        collidable.setOrigin(Origin.CENTER_TOP);
-
         loadStates(factory);
         state = factory.getState(EntityState.IDLE);
     }

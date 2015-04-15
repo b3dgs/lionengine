@@ -44,9 +44,9 @@ class Weapon
     public static final Media PULSE_CANNON = Medias.create("PulseCannon.xml");
 
     /** Transformable model. */
-    private Transformable transformable;
+    private final Transformable transformable = addTrait(new TransformableModel());
     /** Launcher model. */
-    private Launcher launcher;
+    private final Launcher launcher = addTrait(new LauncherModel());
     /** Owner localizable. */
     private Transformable ownerLocalizable;
     /** Owner collidable. */
@@ -61,8 +61,6 @@ class Weapon
     public Weapon(Setup setup, Services services)
     {
         super(setup, services);
-        addTrait(TransformableModel.class);
-        addTrait(LauncherModel.class);
     }
 
     /**
@@ -95,13 +93,6 @@ class Weapon
     public void fire(Localizable target)
     {
         launcher.fire(target);
-    }
-
-    @Override
-    protected void prepareTraits()
-    {
-        transformable = getTrait(Transformable.class);
-        launcher = getTrait(Launcher.class);
     }
 
     @Override

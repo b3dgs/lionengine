@@ -50,12 +50,18 @@ class GoldMine
     /** Gold mine media reference. */
     public static final Media GOLD_MINE = Medias.create("GoldMine.xml");
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Extractable model. */
+    private final Extractable extractable = addTrait(new ExtractableModel());
+    /** Pathfindable model. */
+    private final Pathfindable pathfindable = addTrait(new PathfindableModel());
+    /** Layerable model. */
+    private final Layerable layerable = addTrait(new LayerableModel());
     /** Surface reference. */
     private final Sprite surface;
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Transformable model. */
-    private Transformable transformable;
 
     /**
      * Create a building.
@@ -66,31 +72,19 @@ class GoldMine
     public GoldMine(SetupSurface setup, Services services)
     {
         super(setup, services);
+        viewer = services.get(Viewer.class);
 
         surface = Drawable.loadSprite(setup.surface);
         surface.setOrigin(Origin.TOP_LEFT);
 
-        viewer = services.get(Viewer.class);
-
-        addTrait(TransformableModel.class);
-        addTrait(ExtractableModel.class);
-        addTrait(PathfindableModel.class);
-        addTrait(LayerableModel.class);
+        extractable.setResourcesQuantity(100);
+        layerable.setLayer(Integer.valueOf(1));
     }
 
     @Override
-    protected void prepareTraits()
+    protected void onPrepared()
     {
-        transformable = getTrait(Transformable.class);
-
-        final Pathfindable pathfindable = getTrait(Pathfindable.class);
         pathfindable.setLocation(21, 14);
-
-        final Extractable extractable = getTrait(Extractable.class);
-        extractable.setResourcesQuantity(100);
-
-        final Layerable layerable = getTrait(Layerable.class);
-        layerable.setLayer(Integer.valueOf(1));
     }
 
     @Override

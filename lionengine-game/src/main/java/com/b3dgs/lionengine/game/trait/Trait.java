@@ -31,9 +31,10 @@ public interface Trait
     /**
      * Prepare the trait.
      * 
+     * @param owner The owner reference.
      * @param services The services reference.
      */
-    void prepare(Services services);
+    void prepare(ObjectGame owner, Services services);
 
     /**
      * Get the trait owner reference.

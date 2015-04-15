@@ -49,16 +49,16 @@ class Projectile
     /** Media. */
     public static final Media PULSE = Medias.create("Pulse.xml");
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Collidable model. */
+    private final Collidable collidable = addTrait(new CollidableModel());
+    /** Launchable model. */
+    private final Launchable launchable = addTrait(new LaunchableModel());
     /** Projectile surface. */
     private final Sprite sprite;
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Transformable model. */
-    private Transformable transformable;
-    /** Collidable model. */
-    private Collidable collidable;
-    /** Launchable model. */
-    private Launchable launchable;
 
     /**
      * Constructor.
@@ -69,26 +69,12 @@ class Projectile
     public Projectile(SetupSurface setup, Services services)
     {
         super(setup, services);
+        viewer = services.get(Viewer.class);
 
         sprite = Drawable.loadSprite(setup.surface);
         sprite.setOrigin(Origin.MIDDLE);
 
-        viewer = services.get(Viewer.class);
-
-        addTrait(TransformableModel.class);
-        addTrait(CollidableModel.class);
-        addTrait(LaunchableModel.class);
-    }
-
-    @Override
-    protected void prepareTraits()
-    {
-        transformable = getTrait(Transformable.class);
-
-        collidable = getTrait(Collidable.class);
         collidable.setOrigin(Origin.MIDDLE);
-
-        launchable = getTrait(Launchable.class);
     }
 
     @Override

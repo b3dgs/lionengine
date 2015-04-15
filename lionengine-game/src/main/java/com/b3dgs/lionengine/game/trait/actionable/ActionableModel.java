@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait.actionable;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.configurer.ConfigAction;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -49,11 +48,11 @@ public class ActionableModel
         implements Actionable
 {
     /** Cursor reference. */
-    private final Cursor cursor;
+    private Cursor cursor;
     /** Rectangle button area. */
-    private final Rectangle button;
+    private Rectangle button;
     /** Action description. */
-    private final String description;
+    private String description;
     /** Mouse click number to execute action. */
     private int clickAction;
     /** Action used. */
@@ -61,18 +60,10 @@ public class ActionableModel
 
     /**
      * Create an actionable model.
-     * 
-     * @param owner The owner reference.
-     * @param services The services reference.
-     * @throws LionEngineException If wrong configurer or missing {@link Services}.
      */
-    public ActionableModel(ObjectGame owner, Services services) throws LionEngineException
+    public ActionableModel()
     {
-        super(owner, services);
-        cursor = services.get(Cursor.class);
-        final ConfigAction config = ConfigAction.create(owner.getConfigurer());
-        button = Geom.createRectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
-        description = config.getDescription();
+        super();
     }
 
     /*
@@ -80,8 +71,16 @@ public class ActionableModel
      */
 
     @Override
-    public void prepare(Services services)
+    public void prepare(ObjectGame owner, Services services)
     {
+        super.prepare(owner, services);
+
+        final ConfigAction config = ConfigAction.create(owner.getConfigurer());
+        button = Geom.createRectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
+        description = config.getDescription();
+
+        cursor = services.get(Cursor.class);
+
         if (owner instanceof Action)
         {
             setAction((Action) owner);

@@ -62,20 +62,20 @@ class Mario
     private final Force movement = new Force();
     /** Jump force. */
     private final Force jump = new Force();
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Body model. */
+    private final Body body = addTrait(new BodyModel());
+    /** Tile collidable. */
+    private final TileCollidable tileCollidable = addTrait(new TileCollidableModel());
+    /** Object collidable. */
+    private final Collidable collidable = addTrait(new CollidableModel());
     /** Surface. */
     private final SpriteAnimated surface;
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Camera reference. */
     private final Camera camera;
-    /** Transformable model. */
-    private Transformable transformable;
-    /** Body model. */
-    private Body body;
-    /** Tile collidable. */
-    private TileCollidable tileCollidable;
-    /** Object collidable. */
-    private Collidable collidable;
 
     /**
      * Constructor.
@@ -86,40 +86,30 @@ class Mario
     public Mario(SetupSurface setup, Services services)
     {
         super(setup, services);
-
-        surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
-        surface.setOrigin(Origin.CENTER_BOTTOM);
-        surface.setFrameOffsets(-1, 0);
-
         keyboard = services.get(Keyboard.class);
         camera = services.get(Camera.class);
+
+        transformable.teleport(80, 32);
 
         jump.setVelocity(0.1);
         jump.setDestination(0.0, 0.0);
 
-        addTrait(TransformableModel.class);
-        addTrait(BodyModel.class);
-        addTrait(TileCollidableModel.class);
-        addTrait(CollidableModel.class);
-    }
-
-    @Override
-    protected void prepareTraits()
-    {
-        transformable = getTrait(Transformable.class);
-        transformable.teleport(80, 32);
-
-        body = getTrait(Body.class);
         body.setVectors(movement, jump);
         body.setDesiredFps(60);
         body.setMass(2.0);
 
-        tileCollidable = getTrait(TileCollidable.class);
-        tileCollidable.addListener(this);
-
-        collidable = getTrait(Collidable.class);
         collidable.setCollisionVisibility(true);
         collidable.setOrigin(Origin.CENTER_BOTTOM);
+
+        surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
+        surface.setOrigin(Origin.CENTER_BOTTOM);
+        surface.setFrameOffsets(-1, 0);
+    }
+
+    @Override
+    protected void onPrepared()
+    {
+        tileCollidable.addListener(this);
     }
 
     @Override
@@ -139,6 +129,7 @@ class Mario
             jump.setDirection(0.0, 8.0);
         }
         movement.update(extrp);
+
         jump.update(extrp);
         body.update(extrp);
         tileCollidable.update(extrp);

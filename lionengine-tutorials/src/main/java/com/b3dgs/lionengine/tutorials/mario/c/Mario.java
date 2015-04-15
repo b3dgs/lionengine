@@ -63,12 +63,6 @@ class Mario
     /** Ground location y. */
     private static final int GROUND = 32;
 
-    /** Surface. */
-    private final SpriteAnimated surface;
-    /** Camera reference. */
-    private final Camera camera;
-    /** Keyboard reference. */
-    private final Keyboard keyboard;
     /** State factory. */
     private final StateFactory factory = new StateFactory();
     /** Movement force. */
@@ -76,13 +70,19 @@ class Mario
     /** Jump force. */
     private final Force jump = new Force();
     /** Mirrorable model. */
-    private Mirrorable mirrorable;
+    private final Mirrorable mirrorable = addTrait(new MirrorableModel());
     /** Transformable model. */
-    private Transformable transformable;
+    private final Transformable transformable = addTrait(new TransformableModel());
     /** Body model. */
-    private Body body;
+    private final Body body = addTrait(new BodyModel());
     /** Tile collidable. */
-    private TileCollidable tileCollidable;
+    private final TileCollidable tileCollidable = addTrait(new TileCollidableModel());
+    /** Surface. */
+    private final SpriteAnimated surface;
+    /** Camera reference. */
+    private final Camera camera;
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
     /** Entity state. */
     private State state;
 
@@ -95,18 +95,16 @@ class Mario
     public Mario(SetupSurface setup, Services services)
     {
         super(setup, services);
+        camera = services.get(Camera.class);
+        keyboard = services.get(Keyboard.class);
 
         surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 
-        camera = services.get(Camera.class);
-        keyboard = services.get(Keyboard.class);
-
-        addTrait(TransformableModel.class);
-        addTrait(MirrorableModel.class);
-        addTrait(BodyModel.class);
-        addTrait(TileCollidableModel.class);
+        body.setVectors(movement, jump);
+        body.setDesiredFps(60);
+        body.setMass(2.0);
     }
 
     /**
@@ -188,17 +186,8 @@ class Mario
     }
 
     @Override
-    protected void prepareTraits()
+    protected void onPrepared()
     {
-        transformable = getTrait(Transformable.class);
-        mirrorable = getTrait(Mirrorable.class);
-        tileCollidable = getTrait(TileCollidable.class);
-
-        body = getTrait(Body.class);
-        body.setVectors(movement, jump);
-        body.setDesiredFps(60);
-        body.setMass(2.0);
-
         loadStates(factory);
         state = factory.getState(MarioState.IDLE);
     }
@@ -207,16 +196,19 @@ class Mario
     public void update(double extrp)
     {
         updateControl(keyboard);
+
         state.update(extrp);
         mirrorable.update(extrp);
         movement.update(extrp);
         jump.update(extrp);
         body.update(extrp);
         tileCollidable.update(extrp);
+
         if (transformable.getY() < 0)
         {
             respawn();
         }
+
         camera.follow(transformable);
         surface.setMirror(mirrorable.getMirror());
         surface.update(extrp);

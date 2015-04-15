@@ -76,10 +76,6 @@ class Scene
     @Override
     public void update(double extrp)
     {
-        if (keyboard.isPressed(Keyboard.ESCAPE))
-        {
-            end();
-        }
         mouse.update(extrp);
         if (mouse.hasClicked(Mouse.LEFT))
         {
@@ -88,6 +84,11 @@ class Scene
             handler.add(effect);
         }
         handler.update(extrp);
+
+        if (keyboard.isPressed(Keyboard.ESCAPE))
+        {
+            end();
+        }
     }
 
     @Override

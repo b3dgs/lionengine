@@ -69,6 +69,7 @@ class World
     {
         super(config);
         services.add(keyboard);
+        services.add(Integer.valueOf(source.getRate()));
     }
 
     /*
@@ -101,11 +102,10 @@ class World
     {
         map.load(file);
         mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
+
         camera.setIntervals(16, 0);
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
-
-        services.add(Integer.valueOf(source.getRate()));
 
         mario = factory.create(Mario.MEDIA);
         mario.respawn();
