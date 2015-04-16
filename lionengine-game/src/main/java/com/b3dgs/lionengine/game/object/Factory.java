@@ -52,6 +52,8 @@ public class Factory
     private static final String ERROR_SETUP = "Setup not found for: ";
     /** Constructor error. */
     private static final String ERROR_CONSTRUCTOR = "Unable to create the following type: ";
+    /** Construction error. */
+    private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
 
     /**
      * Create a class instance with its parameters.
@@ -61,10 +63,13 @@ public class Factory
      * @param paramTypes The class base type for each parameter.
      * @param params The constructor parameters.
      * @return The class instance.
-     * @throws LionEngineException If unable to create the instance.
+     * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
+     * @throws NoSuchMethodException If constructor has not been found.
      */
-    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params) throws LionEngineException
+    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params) throws LionEngineException,
+            NoSuchMethodException
     {
+        Check.notNull(type);
         try
         {
             final Constructor<?> constructor = type.getDeclaredConstructor(paramTypes);
@@ -80,6 +85,10 @@ public class Factory
                 constructor.setAccessible(accessible);
             }
             return object;
+        }
+        catch (final NoSuchMethodException exception)
+        {
+            throw exception;
         }
         catch (final ReflectiveOperationException
                      | IllegalArgumentException exception)
@@ -121,14 +130,21 @@ public class Factory
     {
         final Setup setup = getSetup(media);
         final Class<?> type = setup.getConfigClass(classLoader);
-        final E object = create(type, new Class<?>[]
+        try
         {
-                setup.getClass(), Services.class
-        }, setup, services);
-        final Integer id = HandledObjectsImpl.getFreeId();
-        object.setId(id);
-        object.prepareTraits(setup, services);
-        return object;
+            final E object = create(type, new Class<?>[]
+            {
+                    setup.getClass(), Services.class
+            }, setup, services);
+            final Integer id = HandledObjectsImpl.getFreeId();
+            object.setId(id);
+            object.prepareTraits(setup, services);
+            return object;
+        }
+        catch (final NoSuchMethodException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + media);
+        }
     }
 
     /**
@@ -195,6 +211,10 @@ public class Factory
         catch (final ClassNotFoundException exception)
         {
             throw new LionEngineException(exception, ERROR_SETUP_CLASS);
+        }
+        catch (final NoSuchMethodException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + media.getPath());
         }
     }
 }

@@ -38,6 +38,9 @@ public final class Drawable
 {
     /**
      * Load an image from a file.
+     * <p>
+     * Once created, image must call {@link Image#load(boolean)} before any other operations.
+     * </p>
      * 
      * @param media The image media.
      * @return The loaded image.
@@ -50,6 +53,9 @@ public final class Drawable
 
     /**
      * Load an image from a java image (sharing the same surface). It may be useful in case of multiple images.
+     * <p>
+     * {@link Image#load(boolean)} must not be called as surface has already been loaded.
+     * </p>
      * 
      * @param surface The surface reference.
      * @return The loaded image.
@@ -62,6 +68,9 @@ public final class Drawable
 
     /**
      * Load a sprite from a file.
+     * <p>
+     * Once created, sprite must call {@link Sprite#load(boolean)} before any other operations.
+     * </p>
      * 
      * @param media The sprite media.
      * @return The loaded sprite.
@@ -74,6 +83,9 @@ public final class Drawable
 
     /**
      * Load a sprite from a buffered image (sharing the same surface). It may be useful in case of multiple sprites.
+     * <p>
+     * {@link Sprite#load(boolean)} must not be called as surface has already been loaded.
+     * </p>
      * 
      * @param surface The surface reference.
      * @return The loaded sprite.
@@ -86,6 +98,9 @@ public final class Drawable
 
     /**
      * Load an animated sprite from a file, giving horizontal and vertical frames.
+     * <p>
+     * Once created, sprite must call {@link SpriteAnimated#load(boolean)} before any other operations.
+     * </p>
      * 
      * @param media The sprite media.
      * @param horizontalFrames The number of horizontal frames.
@@ -102,6 +117,9 @@ public final class Drawable
     /**
      * Load an animated sprite, giving horizontal and vertical frames (sharing the same surface). It may be useful in
      * case of multiple animated sprites.
+     * <p>
+     * {@link SpriteAnimated#load(boolean)} must not be called as surface has already been loaded.
+     * </p>
      * 
      * @param surface The surface reference.
      * @param horizontalFrames The number of horizontal frames.
@@ -117,6 +135,9 @@ public final class Drawable
 
     /**
      * Load a tiled sprite from a file, giving tile dimension.
+     * <p>
+     * Once created, sprite must call {@link SpriteTiled#load(boolean)} before any other operations.
+     * </p>
      * 
      * @param media The sprite media.
      * @param tileWidth The tile width.
@@ -132,6 +153,9 @@ public final class Drawable
     /**
      * Load a tiled sprite using an image reference, giving tile dimension (sharing the same surface). It may be
      * useful in case of multiple tiled sprites.
+     * <p>
+     * {@link SpriteTiled#load(boolean)} must not be called as surface has already been loaded.
+     * </p>
      * 
      * @param surface The surface reference.
      * @param tileWidth The tile width.
@@ -147,6 +171,9 @@ public final class Drawable
 
     /**
      * Load a parallaxed sprite, for parallax effect.
+     * <p>
+     * Once created, sprite must call {@link SpriteParallaxed#load(boolean)} before any other operations.
+     * </p>
      * 
      * @param media The sprite media.
      * @param linesNumber The number of parallax lines.
@@ -163,6 +190,9 @@ public final class Drawable
 
     /**
      * Load a font based on an image.
+     * <p>
+     * Once created, sprite must call {@link SpriteFont#load(boolean)} before any other operations.
+     * </p>
      * 
      * @param media The font sprite media.
      * @param data The font data media.

@@ -44,7 +44,7 @@ public class AppJava
         // - The main resources directory, relative to the execution directory: ./resources/
         // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
         // To load resources from JAR, this alternative is preferred if external folder is not possible:
-        // Engine.start("AppJava", Version.create(1, 0, 0), Verbose.CRITICAL, AppJava.class);
+        // Engine.start("AppJava", Version.create(1, 0, 0), AppJava.class);
         Engine.start("AppJava", Version.create(1, 0, 0), "resources");
 
         // Resolution configuration (output = 640*480 at 60Hz). This is the output configuration.

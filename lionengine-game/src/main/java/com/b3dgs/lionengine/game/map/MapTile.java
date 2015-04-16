@@ -101,8 +101,9 @@ public interface MapTile
      * 
      * @param feature The feature class.
      * @return The feature instance already added.
+     * @throws LionEngineException If unable to create feature or <code>null</code>.
      */
-    public <F extends MapTileFeature> F createFeature(Class<F> feature);
+    public <F extends MapTileFeature> F createFeature(Class<F> feature) throws LionEngineException;
 
     /**
      * Create a tile.

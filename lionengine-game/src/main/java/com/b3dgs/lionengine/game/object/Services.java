@@ -20,12 +20,20 @@ package com.b3dgs.lionengine.game.object;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Featurable;
 
 /**
- * Represents something designed to keep references on main game types, such as {@link Factory}, {@link Handler} ... in
- * order to access to them from the object instance (created by a {@link Factory} with a {@link Setup}).
+ * Represents something designed to keep references on main types, such as {@link Factory}, {@link Handler},
+ * {@link Camera}, {@link Cursor} ... in order to access to them from the object instance (created by a {@link Factory}
+ * in constructor {@link ObjectGame#ObjectGame(Setup, Services)}).
+ * <p>
+ * Ensure to add any required services before creating an object with the factory, else it will fail with a
+ * {@link LionEngineException} when calling {@link Factory#create(com.b3dgs.lionengine.core.Media)}.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Factory
@@ -35,30 +43,59 @@ public class Services
 {
     /** Service create error. */
     private static final String ERROR_SERVICE_CREATE = "Unable to create service: ";
+    /** Service create error. */
+    private static final String ERROR_SERVICE_NO_CONSTRUCTOR = "No recognized constructor found for: ";
     /** Service get error. */
     private static final String ERROR_SERVICE_GET = "Service not found: ";
 
     /** Services list. */
-    private final Collection<Object> services;
+    private final Collection<Object> services = new ArrayList<>();
 
     /**
-     * Create a services.
+     * Create a services container.
      */
     public Services()
     {
-        services = new ArrayList<>();
+        // Nothing to do
     }
 
     /**
      * Create a service from its type, and automatically {@link #add(Object)} it.
+     * <p>
      * The service instance must provide a public constructor with {@link Services} as single argument, or the public
      * default constructor. Else, create manually the instance and use {@link #add(Object)} on it.
+     * </p>
+     * <p>
+     * The returned service will allow to keep its reference for an easy final initialization:
+     * </p>
+     * 
+     * <pre>
+     * private final Services services = new Services();
+     * private final Factory factory = services.create(Factory.class); // Already added !
+     * private final Camera camera = services.create(Camera.class); // Already added !
+     * private final Handler handler = services.create(Handler.class); // Already added !
+     * </pre>
+     * 
+     * An equivalent code could be:
+     * 
+     * <pre>
+     * private final Services services = new Services();
+     * private final Factory factory = new Factory(services);
+     * private final Camera camera = new Camera();
+     * private final Handler handler = new Handler();
+     * ...
+     * services.add(factory);
+     * services.add(camera);
+     * services.add(handler);
+     * </pre>
      * 
      * @param service The service class.
      * @return The service instance already added.
+     * @throws LionEngineException If unable to create service or if <code>null</code>.
      */
-    public <S> S create(Class<S> service)
+    public <S> S create(Class<S> service) throws LionEngineException
     {
+        Check.notNull(service);
         try
         {
             final S instance = Factory.create(service, new Class<?>[]
@@ -67,14 +104,18 @@ public class Services
             }, this);
             return add(instance);
         }
-        catch (final LionEngineException exception)
+        catch (final NoSuchMethodException exception)
         {
             try
             {
-                return add(service.newInstance());
+                final S instance = service.newInstance();
+                return add(instance);
             }
-            catch (InstantiationException
-                   | IllegalAccessException exception2)
+            catch (final IllegalAccessException exception2)
+            {
+                throw new LionEngineException(exception2, ERROR_SERVICE_NO_CONSTRUCTOR + service);
+            }
+            catch (final InstantiationException exception2)
             {
                 throw new LionEngineException(exception2, ERROR_SERVICE_CREATE + service);
             }
@@ -82,13 +123,32 @@ public class Services
     }
 
     /**
-     * Add a service.
+     * Add a service. If the service is {@link Featurable}, all its features will be added
+     * {@link Featurable#getFeatures()}) with {@link #add(Object)} (and so on).
+     * <p>
+     * The returned service will allow to add a service and keep its reference for an easy final initialization:
+     * </p>
+     * 
+     * <pre>
+     * private final Services services = new Services();
+     * private final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
+     * </pre>
+     * 
+     * An equivalent code could be:
+     * 
+     * <pre>
+     * private final Text text = Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);
+     * ...
+     * services.add(text);
+     * </pre>
      * 
      * @param service The service to add.
      * @return The added service (same as source).
+     * @throws LionEngineException If service is <code>null</code>.
      */
-    public <S> S add(S service)
+    public <S> S add(S service) throws LionEngineException
     {
+        Check.notNull(service);
         services.add(service);
         if (service instanceof Featurable)
         {
@@ -102,13 +162,25 @@ public class Services
 
     /**
      * Get a service from its class.
+     * <p>
+     * The first instance (previously added with {@link #add(Object)} or {@link #create(Class)}) which fit the required
+     * type is returned.
+     * </p>
+     * 
+     * <pre>
+     * Services services = new Services();
+     * services.add(new Camera());
+     * ...
+     * Viewer viewer = services.get(Viewer.class) // Get the camera as viewer
+     * </pre>
      * 
      * @param service The service type.
-     * @return The service found.
-     * @throws LionEngineException If service not found.
+     * @return The service implementation found.
+     * @throws LionEngineException If service not found or <code>null</code>.
      */
     public <C> C get(Class<C> service) throws LionEngineException
     {
+        Check.notNull(service);
         for (final Object object : services)
         {
             if (service.isAssignableFrom(object.getClass()))

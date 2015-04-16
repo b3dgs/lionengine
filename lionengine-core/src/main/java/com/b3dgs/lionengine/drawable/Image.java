@@ -47,9 +47,17 @@ public interface Image
     /**
      * Load surface and prepare it to be displayed. This function must be called if the surface is loaded from a file,
      * else the surface will never be prepared.
+     * <p>
+     * Must be called only one time.
+     * </p>
+     * <p>
+     * Images loaded with a reference of an existing {@link ImageBuffer} (such as
+     * {@link Drawable#loadImage(ImageBuffer)}) must not call this function, as surface as already been loaded and is
+     * shared.
+     * </p>
      * 
      * @param alpha Set <code>true</code> to enable alpha, <code>false</code> else.
-     * @throws LionEngineException If an error occurred when reading the image.
+     * @throws LionEngineException If an error occurred when reading the image or already loaded.
      */
     void load(boolean alpha) throws LionEngineException;
 

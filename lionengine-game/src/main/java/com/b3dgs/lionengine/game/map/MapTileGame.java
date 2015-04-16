@@ -80,6 +80,8 @@ public class MapTileGame
     private static final String ERROR_GROUP_MISSING = "Group missing: ";
     /** Error create tile message. */
     private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
+    /** Construction error. */
+    private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
 
     /** Sheets list. */
     private final Map<Integer, SpriteTiled> sheets = new HashMap<>();
@@ -360,15 +362,22 @@ public class MapTileGame
     }
 
     @Override
-    public <F extends MapTileFeature> F createFeature(Class<F> feature)
+    public <F extends MapTileFeature> F createFeature(Class<F> feature) throws LionEngineException
     {
-        final F instance = Factory.create(feature, new Class<?>[]
+        try
         {
-            Services.class
-        }, services);
-        services.add(instance);
-        addFeature(instance);
-        return instance;
+            final F instance = Factory.create(feature, new Class<?>[]
+            {
+                Services.class
+            }, services);
+            services.add(instance);
+            addFeature(instance);
+            return instance;
+        }
+        catch (final NoSuchMethodException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + feature);
+        }
     }
 
     @Override

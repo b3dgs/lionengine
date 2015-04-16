@@ -47,6 +47,8 @@ class ImageImpl
     private final int width;
     /** Sprite height. */
     private final int height;
+    /** Origin point. */
+    private Origin origin = Origin.TOP_LEFT;
     /** Image horizontal position. */
     private double x;
     /** Image vertical position. */
@@ -57,8 +59,6 @@ class ImageImpl
     private int ry;
     /** Image surface. */
     private ImageBuffer surface;
-    /** Origin point. */
-    private Origin origin;
 
     /**
      * Internal constructor.
@@ -69,13 +69,11 @@ class ImageImpl
     ImageImpl(Media media) throws LionEngineException
     {
         Check.notNull(media);
-
         this.media = media;
 
         final ImageInfo info = ImageInfo.get(media);
         width = info.getWidth();
         height = info.getHeight();
-        origin = Origin.TOP_LEFT;
     }
 
     /**
@@ -91,7 +89,6 @@ class ImageImpl
         this.surface = surface;
         width = surface.getWidth();
         height = surface.getHeight();
-        origin = Origin.TOP_LEFT;
         media = null;
     }
 

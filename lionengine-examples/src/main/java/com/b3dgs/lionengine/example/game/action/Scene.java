@@ -92,6 +92,7 @@ class Scene
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
         hud.load(false);
         text.setLocation(74, 192);
+
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load(false);
         cursor.setArea(0, 0, getWidth(), getHeight());

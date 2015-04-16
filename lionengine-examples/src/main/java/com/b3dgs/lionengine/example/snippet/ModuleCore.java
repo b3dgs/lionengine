@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.Strings;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
@@ -48,6 +49,10 @@ import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -68,7 +73,25 @@ public class ModuleCore
     /*
      * Snippet code
      */
+    
+    private final Services services = new Services();
+    private final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
 
+    private final Factory factory = services.create(Factory.class); // Already added !
+    private final Camera camera = services.create(Camera.class); // Already added !
+    private final Handler handler = services.create(Handler.class); // Already added !
+    
+    private final Factory factory = new Factory(services);
+    private final Camera camera = new Camera();
+    private final Handler handler = new Handler();
+
+    void services()
+    {
+        Services services = new Services();
+        services.add(new Camera());
+        Viewer viewer = services.get(Viewer.class) // Get the camera as viewer
+    }
+    
     void check()
     {
         Check.superiorStrict(value, 0);
