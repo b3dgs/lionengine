@@ -37,6 +37,9 @@ import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 
 /**
  * Represents the import map dialog.
@@ -67,8 +70,8 @@ public class ImportMapCollisionDialog
      */
     public ImportMapCollisionDialog(Shell parent)
     {
-        super(parent, Messages.ImportMapDialog_Title, Messages.ImportMapDialog_HeaderTitle,
-                Messages.ImportMapDialog_HeaderDesc, ImportMapCollisionDialog.ICON);
+        super(parent, Messages.ImportMapCollisionDialog_Title, Messages.ImportMapCollisionDialog_HeaderTitle,
+                Messages.ImportMapCollisionDialog_HeaderDesc, ImportMapCollisionDialog.ICON);
         createDialog();
 
         finish.setEnabled(false);
@@ -128,7 +131,7 @@ public class ImportMapCollisionDialog
         }
         catch (final LionEngineException exception)
         {
-            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorLevelRip);
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapCollisionDialog_ErrorCollisions);
         }
         updateTipsLabel();
         finish.setEnabled(collisionsConfig != null && formulasConfig != null);
@@ -150,13 +153,13 @@ public class ImportMapCollisionDialog
             final File sheets = formulasConfig.getFile();
             if (!sheets.isFile())
             {
-                setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorSheets);
+                setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapCollisionDialog_ErrorFormulas);
             }
             validSheets = sheets.isFile();
         }
         catch (final LionEngineException exception)
         {
-            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorSheets);
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapCollisionDialog_ErrorFormulas);
         }
         updateTipsLabel();
 
@@ -176,7 +179,7 @@ public class ImportMapCollisionDialog
         collisionArea.setLayout(new GridLayout(3, false));
 
         final Label locationLabel = new Label(collisionArea, SWT.NONE);
-        locationLabel.setText(Messages.ImportMapDialog_LevelRipLocation);
+        locationLabel.setText(Messages.ImportMapCollisionDialog_CollisionsLocation);
 
         collisionsText = new Text(collisionArea, SWT.BORDER);
         collisionsText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -191,7 +194,7 @@ public class ImportMapCollisionDialog
             {
                 final File file = Tools.selectResourceFile(dialog, true, new String[]
                 {
-                    Messages.ImportMapDialog_LevelRipFileFilter
+                    Messages.ImportMapCollisionDialog_CollisionsFileFilter
                 }, new String[]
                 {
                     "*.xml"
@@ -216,7 +219,7 @@ public class ImportMapCollisionDialog
         sheetArea.setLayout(new GridLayout(4, false));
 
         final Label locationLabel = new Label(sheetArea, SWT.NONE);
-        locationLabel.setText(Messages.ImportMapDialog_SheetsLocation);
+        locationLabel.setText(Messages.ImportMapCollisionDialog_FormulasLocation);
 
         formulasText = new Text(sheetArea, SWT.BORDER);
         formulasText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -231,7 +234,7 @@ public class ImportMapCollisionDialog
             {
                 final File file = Tools.selectResourceFile(dialog, true, new String[]
                 {
-                    Messages.ImportMapDialog_SheetsConfigFileFilter
+                    Messages.ImportMapCollisionDialog_FormulasConfigFileFilter
                 }, new String[]
                 {
                     "*.xml"
@@ -259,5 +262,11 @@ public class ImportMapCollisionDialog
     protected void onFinish()
     {
         found = collisionsConfig != null && formulasConfig != null;
+        if (found)
+        {
+            final MapTile map = WorldViewModel.INSTANCE.getMap();
+            final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
+            mapCollision.loadCollisions(formulasConfig, collisionsConfig);
+        }
     }
 }
