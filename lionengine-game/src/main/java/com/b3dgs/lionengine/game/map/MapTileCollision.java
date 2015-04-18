@@ -38,6 +38,11 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 public interface MapTileCollision
         extends MapTileFeature, Renderable
 {
+    /** Default formulas config file. */
+    String DEFAULT_FORMULAS_FILE = "formulas.xml";
+    /** Default collisions config file. */
+    String DEFAULT_COLLISIONS_FILE = "collisions.xml";
+
     /**
      * Load map collision from an external file.
      * 

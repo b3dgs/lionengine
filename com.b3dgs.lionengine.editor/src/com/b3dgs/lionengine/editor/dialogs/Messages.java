@@ -101,18 +101,18 @@ public final class Messages
     public static String ImportMapCollisionDialog_HeaderTitle;
     /** Import map collision description header. */
     public static String ImportMapCollisionDialog_HeaderDesc;
-    /** Map collisions location. */
-    public static String ImportMapCollisionDialog_CollisionsLocation;
     /** Map formulas location. */
     public static String ImportMapCollisionDialog_FormulasLocation;
-    /** Map collisions file filter. */
-    public static String ImportMapCollisionDialog_CollisionsFileFilter;
+    /** Map collisions location. */
+    public static String ImportMapCollisionDialog_CollisionsLocation;
     /** Formulas config file filter. */
     public static String ImportMapCollisionDialog_FormulasConfigFileFilter;
-    /** Error collisions file. */
-    public static String ImportMapCollisionDialog_ErrorCollisions;
+    /** Map collisions file filter. */
+    public static String ImportMapCollisionDialog_CollisionsFileFilter;
     /** Error formulas file. */
     public static String ImportMapCollisionDialog_ErrorFormulas;
+    /** Error collisions file. */
+    public static String ImportMapCollisionDialog_ErrorCollisions;
     /** Edit tile sheets dialog title. */
     public static String EditTilesheetsDialog_Title;
     /** Edit tile sheets dialog title header. */

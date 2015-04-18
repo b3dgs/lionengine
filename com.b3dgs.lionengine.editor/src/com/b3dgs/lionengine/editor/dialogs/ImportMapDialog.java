@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Represents the import map dialog.
@@ -144,8 +145,9 @@ public class ImportMapDialog
         {
             setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorLevelRip);
         }
+        loadDefaults();
         updateTipsLabel();
-        finish.setEnabled(levelRip != null && sheetsConfig != null);
+        finish.setEnabled(levelRip != null && sheetsConfig != null && groupsConfig != null);
     }
 
     /**
@@ -326,6 +328,29 @@ public class ImportMapDialog
                 }
             }
         });
+    }
+
+    /**
+     * Load default sheets and config file.
+     */
+    private void loadDefaults()
+    {
+        if (sheetsConfig == null)
+        {
+            final File defaultSheetFile = new File(levelRip.getFile().getParentFile(), MapTile.DEFAULT_SHEETS_FILE);
+            if (defaultSheetFile.isFile())
+            {
+                onSheetsConfigLocationSelected(defaultSheetFile);
+            }
+        }
+        if (groupsConfig == null)
+        {
+            final File defaultGroupsFile = new File(levelRip.getFile().getParentFile(), MapTile.DEFAULT_GROUPS_FILE);
+            if (defaultGroupsFile.isFile())
+            {
+                onGroupsConfigLocationSelected(defaultGroupsFile);
+            }
+        }
     }
 
     /*

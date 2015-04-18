@@ -52,14 +52,14 @@ public class ImportMapCollisionDialog
     /** Icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "import-map.png");
 
-    /** Collisions config file location. */
-    Text collisionsText;
     /** Formulas config file location. */
     Text formulasText;
-    /** Collisions config file. */
-    Media collisionsConfig;
+    /** Collisions config file location. */
+    Text collisionsText;
     /** Formulas config file. */
     Media formulasConfig;
+    /** Collisions config file. */
+    Media collisionsConfig;
     /** Found. */
     private boolean found;
 
@@ -79,16 +79,6 @@ public class ImportMapCollisionDialog
     }
 
     /**
-     * Get the collisions config file location.
-     * 
-     * @return The collisions config file location.
-     */
-    public Media getCollisionsLocation()
-    {
-        return collisionsConfig;
-    }
-
-    /**
      * Get the formulas config file location.
      * 
      * @return The formulas config file location.
@@ -96,6 +86,16 @@ public class ImportMapCollisionDialog
     public Media getFormulasLocation()
     {
         return formulasConfig;
+    }
+
+    /**
+     * Get the collisions config file location.
+     * 
+     * @return The collisions config file location.
+     */
+    public Media getCollisionsLocation()
+    {
+        return collisionsConfig;
     }
 
     /**
@@ -114,27 +114,6 @@ public class ImportMapCollisionDialog
     void updateTipsLabel()
     {
         tipsLabel.setVisible(false);
-    }
-
-    /**
-     * Called when the collision config file location has been selected.
-     * 
-     * @param path The collision config file location path.
-     */
-    void onCollisionsConfigLocationSelected(File path)
-    {
-        final Project project = Project.getActive();
-        collisionsText.setText(path.getAbsolutePath());
-        try
-        {
-            collisionsConfig = project.getResourceMedia(new File(collisionsText.getText()));
-        }
-        catch (final LionEngineException exception)
-        {
-            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapCollisionDialog_ErrorCollisions);
-        }
-        updateTipsLabel();
-        finish.setEnabled(collisionsConfig != null && formulasConfig != null);
     }
 
     /**
@@ -168,43 +147,24 @@ public class ImportMapCollisionDialog
     }
 
     /**
-     * Create the collision location area.
+     * Called when the collision config file location has been selected.
      * 
-     * @param content The content composite.
+     * @param path The collision config file location path.
      */
-    private void createCollisionLocationArea(Composite content)
+    void onCollisionsConfigLocationSelected(File path)
     {
-        final Composite collisionArea = new Composite(content, SWT.NONE);
-        collisionArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        collisionArea.setLayout(new GridLayout(3, false));
-
-        final Label locationLabel = new Label(collisionArea, SWT.NONE);
-        locationLabel.setText(Messages.ImportMapCollisionDialog_CollisionsLocation);
-
-        collisionsText = new Text(collisionArea, SWT.BORDER);
-        collisionsText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        collisionsText.setEditable(false);
-
-        final Button browse = UtilSwt.createButton(collisionArea, Messages.AbstractDialog_Browse, null);
-        browse.setImage(AbstractDialog.ICON_BROWSE);
-        browse.addSelectionListener(new SelectionAdapter()
+        final Project project = Project.getActive();
+        collisionsText.setText(path.getAbsolutePath());
+        try
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                final File file = Tools.selectResourceFile(dialog, true, new String[]
-                {
-                    Messages.ImportMapCollisionDialog_CollisionsFileFilter
-                }, new String[]
-                {
-                    "*.xml"
-                });
-                if (file != null)
-                {
-                    onCollisionsConfigLocationSelected(file);
-                }
-            }
-        });
+            collisionsConfig = project.getResourceMedia(new File(collisionsText.getText()));
+        }
+        catch (final LionEngineException exception)
+        {
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapCollisionDialog_ErrorCollisions);
+        }
+        updateTipsLabel();
+        finish.setEnabled(collisionsConfig != null && formulasConfig != null);
     }
 
     /**
@@ -247,6 +207,46 @@ public class ImportMapCollisionDialog
         });
     }
 
+    /**
+     * Create the collision location area.
+     * 
+     * @param content The content composite.
+     */
+    private void createCollisionLocationArea(Composite content)
+    {
+        final Composite collisionArea = new Composite(content, SWT.NONE);
+        collisionArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        collisionArea.setLayout(new GridLayout(3, false));
+
+        final Label locationLabel = new Label(collisionArea, SWT.NONE);
+        locationLabel.setText(Messages.ImportMapCollisionDialog_CollisionsLocation);
+
+        collisionsText = new Text(collisionArea, SWT.BORDER);
+        collisionsText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        collisionsText.setEditable(false);
+
+        final Button browse = UtilSwt.createButton(collisionArea, Messages.AbstractDialog_Browse, null);
+        browse.setImage(AbstractDialog.ICON_BROWSE);
+        browse.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final File file = Tools.selectResourceFile(dialog, true, new String[]
+                {
+                    Messages.ImportMapCollisionDialog_CollisionsFileFilter
+                }, new String[]
+                {
+                    "*.xml"
+                });
+                if (file != null)
+                {
+                    onCollisionsConfigLocationSelected(file);
+                }
+            }
+        });
+    }
+
     /*
      * AbstractDialog
      */
@@ -254,14 +254,14 @@ public class ImportMapCollisionDialog
     @Override
     protected void createContent(Composite content)
     {
-        createCollisionLocationArea(content);
         createFormulasLocationArea(content);
+        createCollisionLocationArea(content);
     }
 
     @Override
     protected void onFinish()
     {
-        found = collisionsConfig != null && formulasConfig != null;
+        found = formulasConfig != null && collisionsConfig != null;
         if (found)
         {
             final MapTile map = WorldViewModel.INSTANCE.getMap();

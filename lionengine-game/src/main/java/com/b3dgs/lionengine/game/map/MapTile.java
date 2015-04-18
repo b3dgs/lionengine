@@ -56,6 +56,10 @@ import com.b3dgs.lionengine.stream.FileWriting;
 public interface MapTile
         extends MapTileRenderer, Renderable, Featurable<MapTileFeature>
 {
+    /** Default sheets config file. */
+    String DEFAULT_SHEETS_FILE = "sheets.xml";
+    /** Default sheets config file. */
+    String DEFAULT_GROUPS_FILE = "groups.xml";
     /** Tile size node. */
     String NODE_TILE_SIZE = "lionengine:tileSize";
     /** Tile width attribute. */
