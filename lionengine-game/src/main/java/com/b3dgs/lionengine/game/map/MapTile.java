@@ -259,6 +259,13 @@ public interface MapTile
     Media getSheetsConfig();
 
     /**
+     * Get the groups configuration media file.
+     * 
+     * @return The groups configuration media file.
+     */
+    Media getGroupsConfig();
+
+    /**
      * Get list of sheets id.
      * 
      * @return The set of sheets id.

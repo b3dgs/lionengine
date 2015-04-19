@@ -592,6 +592,12 @@ public class MapTileGame
     }
 
     @Override
+    public Media getGroupsConfig()
+    {
+        return groupsConfig;
+    }
+
+    @Override
     public Collection<Integer> getSheets()
     {
         return sheets.keySet();
