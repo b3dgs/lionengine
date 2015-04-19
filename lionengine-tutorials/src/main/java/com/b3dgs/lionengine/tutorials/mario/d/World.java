@@ -117,6 +117,7 @@ class World
 
         mario = factory.create(Mario.CONFIG);
         mario.respawn(160);
+        mario.setControl(services.get(Keyboard.class));
 
         camera.setIntervals(16, 0);
         camera.setView(0, 0, width, height);
@@ -128,6 +129,7 @@ class World
         {
             final Goomba goomba = factory.create(Goomba.CONFIG);
             goomba.respawn(500 + i * 50);
+            goomba.setControl(goomba);
             handler.add(goomba);
         }
     }

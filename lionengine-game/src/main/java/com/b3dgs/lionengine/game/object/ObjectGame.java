@@ -80,8 +80,9 @@ public class ObjectGame
      * 
      * @param setup The setup reference (resources sharing entry point).
      * @param services The services reference (external services provider).
+     * @throws LionEngineException If setup or service is <code>null</code>.
      */
-    public ObjectGame(Setup setup, Services services)
+    public ObjectGame(Setup setup, Services services) throws LionEngineException
     {
         Check.notNull(setup);
         Check.notNull(services);

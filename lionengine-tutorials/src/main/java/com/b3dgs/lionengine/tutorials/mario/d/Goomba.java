@@ -50,7 +50,6 @@ class Goomba
     public Goomba(SetupSurface setup, Services services)
     {
         super(setup, services);
-        setControl(this);
         side = 0.25;
     }
 

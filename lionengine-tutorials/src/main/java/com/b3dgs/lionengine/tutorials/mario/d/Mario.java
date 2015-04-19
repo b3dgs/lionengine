@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.collidable.Collidable;
@@ -43,7 +42,6 @@ class Mario
     public Mario(SetupSurface setup, Services services)
     {
         super(setup, services);
-        setControl(services.get(Keyboard.class));
     }
 
     @Override

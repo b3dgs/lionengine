@@ -214,11 +214,14 @@ class Entity
      */
     private void updateControl()
     {
-        final State current = state.handleInput(factory, device);
-        if (current != null)
+        if (device != null)
         {
-            state = current;
-            current.enter();
+            final State current = state.handleInput(factory, device);
+            if (current != null)
+            {
+                state = current;
+                current.enter();
+            }
         }
     }
 
