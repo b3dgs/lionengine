@@ -24,6 +24,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
@@ -202,7 +203,8 @@ public class Factory
         final Configurer configurer = new Configurer(media);
         try
         {
-            final Class<?> setupClass = classLoader.loadClass(configurer.getSetupName());
+            final ConfigObject configObject = ConfigObject.create(configurer);
+            final Class<?> setupClass = classLoader.loadClass(configObject.getSetupName());
             return create(setupClass, new Class<?>[]
             {
                 Media.class

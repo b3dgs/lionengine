@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.editor.project.tester.FolderTypeTester;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
@@ -100,7 +100,7 @@ public final class Tools
     }
 
     /**
-     * Get the class from media file, by reading the attribute {@link Configurer#CLASS} attribute.
+     * Get the class from media file, by reading the attribute {@link ConfigObject#CLASS} attribute.
      * 
      * @param media The media descriptor.
      * @return The class reference.
@@ -109,7 +109,7 @@ public final class Tools
     public static Class<?> getClass(Media media) throws LionEngineException
     {
         final XmlNode root = Stream.loadXml(media);
-        final String className = root.getChild(Configurer.CLASS).getText();
+        final String className = root.getChild(ConfigObject.CLASS).getText();
         return Project.getActive().getClass(className);
     }
 

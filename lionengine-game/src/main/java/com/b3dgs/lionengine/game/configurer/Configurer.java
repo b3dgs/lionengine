@@ -35,10 +35,6 @@ public class Configurer
 {
     /** Prefix XML node. */
     public static final String PREFIX = "lionengine:";
-    /** Setup node name. */
-    public static final String SETUP = Configurer.PREFIX + "setup";
-    /** Class node name. */
-    public static final String CLASS = Configurer.PREFIX + "class";
 
     /** Media reference. */
     private final Media media;
@@ -167,28 +163,6 @@ public class Configurer
         {
             throw new LionEngineException(exception);
         }
-    }
-
-    /**
-     * Get the setup class name node value.
-     * 
-     * @return The setup class name node value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public String getSetupName() throws LionEngineException
-    {
-        return getText(Configurer.SETUP);
-    }
-
-    /**
-     * Get the class name node value.
-     * 
-     * @return The class name node value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public String getClassName() throws LionEngineException
-    {
-        return getText(Configurer.CLASS);
     }
 
     /**

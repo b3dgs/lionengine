@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
@@ -90,9 +91,10 @@ public class Setup
     {
         if (clazz == null)
         {
+            final ConfigObject configObject = ConfigObject.create(configurer);
             try
             {
-                clazz = classLoader.loadClass(configurer.getClassName());
+                clazz = classLoader.loadClass(configObject.getClassName());
             }
             catch (final ClassNotFoundException exception)
             {
