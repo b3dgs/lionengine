@@ -19,12 +19,14 @@ package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.UtilRandom;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -48,14 +50,16 @@ class Racket
     /** Racket color. */
     private static final ColorRgba COLOR = ColorRgba.YELLOW;
 
-    /** Current force. */
-    private final Force force = new Force();
     /** Transformable model. */
     private final Transformable transformable = addTrait(new TransformableModel());
     /** Collidable model. */
     private final Collidable collidable = addTrait(new CollidableModel());
+    /** Viewer reference. */
+    private final Viewer viewer;
+    /** Move speed. */
+    private final double speed;
     /** Ball reference. */
-    private Ball ball;
+    private Transformable target;
 
     /**
      * {@link ObjectGame#ObjectGame(Setup, Services)}
@@ -63,9 +67,12 @@ class Racket
     public Racket(Setup setup, Services services) throws LionEngineException
     {
         super(setup, services);
+        viewer = services.get(Viewer.class);
 
-        transformable.teleportY(240 / 2 - transformable.getHeight() / 2);
-        collidable.setCollisionVisibility(true);
+        transformable.teleportY(240 / 2);
+
+        collidable.setOrigin(Origin.MIDDLE);
+        speed = UtilRandom.getRandomDouble() + 2.0;
     }
 
     /**
@@ -77,11 +84,11 @@ class Racket
     {
         if (left)
         {
-            transformable.teleportX(0);
+            transformable.teleportX(transformable.getWidth() / 2);
         }
         else
         {
-            transformable.teleportX(320 - transformable.getWidth());
+            transformable.teleportX(320 - transformable.getWidth() / 2);
         }
     }
 
@@ -92,17 +99,21 @@ class Racket
      */
     public void setBall(Ball ball)
     {
-        this.ball = ball;
+        target = ball.getTrait(Transformable.class);
     }
 
     @Override
     public void update(double extrp)
     {
-        force.update(extrp);
-        transformable.moveLocation(extrp, force);
-
-        final Transformable object = ball.getTrait(Transformable.class);
-        transformable.moveLocation(extrp, 0.0, object.getY() - transformable.getY() < 0 ? -1.0 : 1.0);
+        final double diffY = target.getY() - transformable.getY();
+        if (diffY < 0)
+        {
+            transformable.moveLocation(extrp, 0.0, -speed);
+        }
+        else if (diffY > 0)
+        {
+            transformable.moveLocation(extrp, 0.0, speed);
+        }
         collidable.update(extrp);
     }
 
@@ -110,8 +121,9 @@ class Racket
     public void render(Graphic g)
     {
         g.setColor(COLOR);
-        g.drawRect((int) transformable.getX(), (int) transformable.getY(), transformable.getWidth(),
-                transformable.getHeight(), true);
+        g.drawRect(viewer, Origin.MIDDLE, (int) transformable.getX(), (int) transformable.getY(),
+                transformable.getWidth(), transformable.getHeight(), true);
+        collidable.render(g);
     }
 
     @Override

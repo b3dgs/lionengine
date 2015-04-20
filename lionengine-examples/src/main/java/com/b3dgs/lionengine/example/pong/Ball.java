@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
@@ -53,6 +55,8 @@ class Ball
     private final Transformable transformable = addTrait(new TransformableModel());
     /** Collidable model. */
     private final Collidable collidable = addTrait(new CollidableModel());
+    /** Viewer reference. */
+    private final Viewer viewer;
     /** Current force. */
     private final Force force;
     /** Speed. */
@@ -64,15 +68,16 @@ class Ball
     public Ball(Setup setup, Services services) throws LionEngineException
     {
         super(setup, services);
+        viewer = services.get(Viewer.class);
 
-        speed = 2.0;
+        speed = 3.0;
         force = new Force(-speed, 0.0);
         force.setDestination(-speed, 0.0);
         force.setVelocity(speed);
 
-        transformable.teleport(320 / 2 - transformable.getWidth() / 2, 230 / 2 - transformable.getHeight() / 2);
+        transformable.teleport(320 / 2, 220 / 2);
 
-        collidable.setCollisionVisibility(true);
+        collidable.setOrigin(Origin.MIDDLE);
     }
 
     @Override
@@ -80,6 +85,16 @@ class Ball
     {
         force.update(extrp);
         transformable.moveLocation(extrp, force);
+        if (transformable.getY() < transformable.getHeight() / 2)
+        {
+            transformable.teleportY(transformable.getHeight() / 2);
+            force.setDestination(force.getDirectionHorizontal(), -force.getDirectionVertical());
+        }
+        if (transformable.getY() > 240 - transformable.getHeight() / 2)
+        {
+            transformable.teleportY(240.0 - transformable.getHeight() / 2);
+            force.setDestination(force.getDirectionHorizontal(), -force.getDirectionVertical());
+        }
         collidable.update(extrp);
     }
 
@@ -87,8 +102,9 @@ class Ball
     public void render(Graphic g)
     {
         g.setColor(COLOR);
-        g.drawOval((int) transformable.getX(), (int) transformable.getY(), transformable.getWidth(),
-                transformable.getHeight(), true);
+        g.drawOval(viewer, Origin.MIDDLE, (int) transformable.getX(), (int) transformable.getY(),
+                transformable.getWidth(), transformable.getHeight(), true);
+        collidable.render(g);
     }
 
     @Override
@@ -98,17 +114,17 @@ class Ball
         int side = 0;
         if (transformable.getX() < transformable.getOldX())
         {
-            transformable.teleportX(object.getX() + object.getWidth() + 1);
+            transformable.teleportX(object.getX() + object.getWidth() / 2 + transformable.getWidth() / 2);
             side = 1;
         }
         if (transformable.getX() > transformable.getOldX())
         {
-            transformable.teleportX(object.getX() - object.getWidth() * 2 - 1);
+            transformable.teleportX(object.getX() - object.getWidth() / 2 - transformable.getWidth() / 2);
             side = -1;
         }
 
-        final double diff = (object.getY() - transformable.getY()) / object.getHeight() / 2;
-        final int angle = (int) Math.round(diff * 180);
+        final double diff = object.getY() - transformable.getY();
+        final int angle = (int) Math.round(diff * 10);
         force.setDestination(speed * UtilMath.cos(angle) * side, speed * UtilMath.sin(angle));
     }
 }
