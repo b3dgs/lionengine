@@ -213,10 +213,14 @@ public class WorldViewUpdater
      */
     protected void updatePaletteBefore(Enum<?> palette, int mx, int my)
     {
-        if (palette == PaletteType.POINTER)
+        if (palette == PaletteType.POINTER_OBJECT)
         {
-            updatePalettePointer(mx, my);
+            updatePointerFactory(mx, my);
             updateSingleEntitySelection(mx, my);
+        }
+        else if (palette == PaletteType.POINTER_TILE)
+        {
+            updatePointerMap(mx, my);
         }
         else if (palette == PaletteType.SELECTION)
         {
@@ -233,7 +237,7 @@ public class WorldViewUpdater
      */
     protected void updatePaletteMoving(Enum<?> palette, int mx, int my)
     {
-        if (palette == PaletteType.POINTER)
+        if (palette == PaletteType.POINTER_OBJECT)
         {
             objectControl.updateMouseOver(mx, my);
             if (getClick() == Mouse.LEFT)
@@ -275,18 +279,6 @@ public class WorldViewUpdater
         {
             updateHand();
         }
-    }
-
-    /**
-     * Update the palette pointer action on click release.
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    protected void updatePalettePointer(int mx, int my)
-    {
-        updatePointerMap(mx, my);
-        updatePointerFactory(mx, my);
     }
 
     /**

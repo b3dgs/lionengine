@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.animation.AnimationEditor;
-import com.b3dgs.lionengine.editor.properties.PropertiesProvider;
+import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesAnimations
-        implements PropertiesProvider
+        implements PropertiesProviderObject
 {
     /** Animations icon. */
     private static final Image ICON_ANIMATIONS = UtilEclipse.getIcon("properties", "animations.png");

@@ -42,6 +42,7 @@ import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Element properties part.
@@ -49,7 +50,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesPart
-        implements PropertiesProvider
+        implements PropertiesProviderObject, PropertiesProviderTile
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.properties";
@@ -72,27 +73,59 @@ public class PropertiesPart
     }
 
     /**
-     * Check the properties extension point.
+     * Check the properties extension point object.
      * 
      * @return The properties instance from extension point or default one.
      */
-    private static Collection<PropertiesProvider> checkPropertiesExtensionPoint()
+    private static Collection<PropertiesProviderObject> checkPropertiesExtensionPointObject()
     {
-        final IConfigurationElement[] nodes = Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_ID);
-        final Collection<PropertiesProvider> extensions = new ArrayList<>();
+        final IConfigurationElement[] nodes = Platform.getExtensionRegistry().getConfigurationElementsFor(
+                PropertiesProviderObject.EXTENSION_ID);
+        final Collection<PropertiesProviderObject> extensions = new ArrayList<>();
         for (final IConfigurationElement node : nodes)
         {
-            final String properties = node.getAttribute(EXTENSION_PROPERTIES);
+            final String properties = node.getAttribute(PropertiesProviderObject.EXTENSION_PROPERTIES);
             if (properties != null)
             {
                 try
                 {
-                    final PropertiesProvider provider = UtilEclipse.createClass(properties, PropertiesProvider.class);
+                    final PropertiesProviderObject provider = UtilEclipse.createClass(properties,
+                            PropertiesProviderObject.class);
                     extensions.add(provider);
                 }
                 catch (final ReflectiveOperationException exception)
                 {
-                    Verbose.exception(PropertiesPart.class, "checkPropertiesExtensionPoint", exception);
+                    Verbose.exception(PropertiesPart.class, "checkPropertiesExtensionPointObject", exception);
+                }
+            }
+        }
+        return extensions;
+    }
+
+    /**
+     * Check the properties extension point tile.
+     * 
+     * @return The properties instance from extension point or default one.
+     */
+    private static Collection<PropertiesProviderTile> checkPropertiesExtensionPointTile()
+    {
+        final IConfigurationElement[] nodes = Platform.getExtensionRegistry().getConfigurationElementsFor(
+                PropertiesProviderTile.EXTENSION_ID);
+        final Collection<PropertiesProviderTile> extensions = new ArrayList<>();
+        for (final IConfigurationElement node : nodes)
+        {
+            final String properties = node.getAttribute(PropertiesProviderTile.EXTENSION_PROPERTIES);
+            if (properties != null)
+            {
+                try
+                {
+                    final PropertiesProviderTile provider = UtilEclipse.createClass(properties,
+                            PropertiesProviderTile.class);
+                    extensions.add(provider);
+                }
+                catch (final ReflectiveOperationException exception)
+                {
+                    Verbose.exception(PropertiesPart.class, "checkPropertiesExtensionPointTile", exception);
                 }
             }
         }
@@ -101,8 +134,10 @@ public class PropertiesPart
 
     /** Properties tree. */
     Tree properties;
-    /** Extensions point. */
-    private Collection<PropertiesProvider> providers;
+    /** Extensions point object. */
+    private Collection<PropertiesProviderObject> providersObject;
+    /** Extensions point tile. */
+    private Collection<PropertiesProviderTile> providersTile;
 
     /**
      * Create the composite.
@@ -130,7 +165,8 @@ public class PropertiesPart
         addListeners(menuService);
         PropertiesModel.INSTANCE.setTree(properties);
 
-        providers = checkPropertiesExtensionPoint();
+        providersObject = checkPropertiesExtensionPointObject();
+        providersTile = checkPropertiesExtensionPointTile();
     }
 
     /**
@@ -153,9 +189,19 @@ public class PropertiesPart
      * 
      * @param provider The provider reference.
      */
-    public void addProvider(PropertiesProvider provider)
+    public void addProvider(PropertiesProviderObject provider)
     {
-        providers.add(provider);
+        providersObject.add(provider);
+    }
+
+    /**
+     * Add a property provider.
+     * 
+     * @param provider The provider reference.
+     */
+    public void addProvider(PropertiesProviderTile provider)
+    {
+        providersTile.add(provider);
     }
 
     /**
@@ -214,7 +260,7 @@ public class PropertiesPart
     }
 
     /*
-     * PropertiesListener
+     * PropertiesProviderObject
      */
 
     @Override
@@ -227,7 +273,7 @@ public class PropertiesPart
         properties.setData(configurer);
         if (configurer != null)
         {
-            for (final PropertiesProvider provider : providers)
+            for (final PropertiesProviderObject provider : providersObject)
             {
                 provider.setInput(properties, configurer);
             }
@@ -238,7 +284,7 @@ public class PropertiesPart
     public boolean updateProperties(TreeItem item, Configurer configurer)
     {
         boolean updated = false;
-        for (final PropertiesProvider provider : providers)
+        for (final PropertiesProviderObject provider : providersObject)
         {
             if (provider.updateProperties(item, configurer))
             {
@@ -246,5 +292,23 @@ public class PropertiesPart
             }
         }
         return updated;
+    }
+
+    /*
+     * PropertiesProviderTile
+     */
+
+    @Override
+    public void setInput(Tree properties, Tile tile)
+    {
+        for (final TreeItem item : properties.getItems())
+        {
+            clear(item);
+        }
+        properties.setData(tile);
+        for (final PropertiesProviderTile provider : providersTile)
+        {
+            provider.setInput(properties, tile);
+        }
     }
 }

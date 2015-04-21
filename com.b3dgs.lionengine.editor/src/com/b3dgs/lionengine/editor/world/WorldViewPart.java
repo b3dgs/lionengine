@@ -35,6 +35,8 @@ import org.eclipse.swt.widgets.Composite;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -43,6 +45,7 @@ import com.b3dgs.lionengine.game.object.Services;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldViewPart
+        implements TileSelectionListener
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.world-view";
@@ -80,6 +83,7 @@ public class WorldViewPart
         final Services services = WorldViewModel.INSTANCE.getServices();
 
         worldViewUpdater = checkUpdaterExtensionPoint(services);
+        worldViewUpdater.addListenerTile(this);
         composite.addMouseListener(worldViewUpdater);
         composite.addMouseMoveListener(worldViewUpdater);
         composite.addKeyListener(worldViewUpdater);
@@ -212,5 +216,12 @@ public class WorldViewPart
             }
         }
         return new WorldViewRenderer(composite, partService, services);
+    }
+
+    @Override
+    public void notifyTileSelected(Tile tile)
+    {
+        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        part.setInput(part.getTree(), tile);
     }
 }

@@ -3,7 +3,7 @@
 <schema targetNamespace="com.b3dgs.lionengine.editor" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="com.b3dgs.lionengine.editor" id="properties" name="Properties"/>
+         <meta.schema plugin="com.b3dgs.lionengine.editor" id="propertiesTile" name="Properties Tile"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":com.b3dgs.lionengine.editor.properties.PropertiesProvider"/>
+                  <meta.attribute kind="java" basedOn=":com.b3dgs.lionengine.editor.properties.PropertiesProviderTile"/>
                </appinfo>
             </annotation>
          </attribute>

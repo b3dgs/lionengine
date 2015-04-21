@@ -210,7 +210,7 @@ public class ProjectsPart
         }
         else
         {
-            part.setInput(part.getTree(), null);
+            part.setInput(part.getTree(), (Configurer) null);
         }
     }
 

@@ -262,7 +262,7 @@ public class WorldViewRenderer
 
             renderBackground(g, width, height);
             render(g, camera, map, areaX, areaY);
-            if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER)
+            if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT)
             {
                 renderCursor(g, tw, th, areaX, areaY);
             }

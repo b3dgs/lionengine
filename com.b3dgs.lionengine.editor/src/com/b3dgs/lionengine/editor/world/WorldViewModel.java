@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
-import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
@@ -46,7 +45,7 @@ public enum WorldViewModel
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
     /** Selected palette. */
-    private Enum<?> palette = PaletteType.POINTER;
+    private Enum<?> palette = PaletteType.POINTER_OBJECT;
 
     /**
      * Private constructor.
@@ -55,7 +54,6 @@ public enum WorldViewModel
     {
         final Handler handlerObject = new Handler();
         handlerObject.addRenderable(new ComponentRenderer());
-        handlerObject.addUpdatable(new ComponentUpdater());
         services.add(handlerObject);
 
         final Selection selection = new Selection();

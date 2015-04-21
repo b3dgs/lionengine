@@ -28,11 +28,11 @@ import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 
 /**
- * Set pointer handler.
+ * Set pointer object handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetPointerHandler
+public class SetPointerObjectHandler
 {
     /**
      * Execute the handler.
@@ -48,11 +48,11 @@ public class SetPointerHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemSelection(toolBar, false, "hand", "selection", "pipet");
-                UtilEclipse.setToolItemSelection(toolBar, true, "pointer");
+                UtilEclipse.setToolItemSelection(toolBar, false, "hand", "selection", "pipet", "pointer-tile");
+                UtilEclipse.setToolItemSelection(toolBar, true, "pointer-object");
             }
         }
-        final PaletteType type = PaletteType.POINTER;
+        final PaletteType type = PaletteType.POINTER_OBJECT;
         WorldViewModel.INSTANCE.setSelectedPalette(type);
         final WorldViewPart view = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
         view.setCursor(type.getCursor());

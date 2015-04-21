@@ -85,6 +85,8 @@ public class ImportProjectDialog
         checkResourcesExistence();
         updateTipsLabel();
         finish.forceFocus();
+
+        onLocationSelected("C:\\Users\\DjThunder\\git\\lionengine\\lionengine-tutorials");
     }
 
     /**

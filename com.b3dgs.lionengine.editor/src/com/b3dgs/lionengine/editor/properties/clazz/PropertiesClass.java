@@ -27,7 +27,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
-import com.b3dgs.lionengine.editor.properties.PropertiesProvider;
+import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
+import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -37,7 +38,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesClass
-        implements PropertiesProvider
+        implements PropertiesProviderObject
 {
     /** Class icon. */
     private static final Image ICON_CLASS = UtilEclipse.getIcon("properties", "class.png");
@@ -46,13 +47,13 @@ public class PropertiesClass
      * Create the attribute class.
      * 
      * @param properties The properties tree reference.
-     * @param configurer The configurer reference.
+     * @param configObject The configObject reference.
      */
-    private static void createAttributeClass(Tree properties, Configurer configurer)
+    private static void createAttributeClass(Tree properties, ConfigObject configObject)
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(classItem, Messages.Properties_Class, configurer.getClassName());
-        classItem.setData(Configurer.CLASS);
+        PropertiesPart.createLine(classItem, Messages.Properties_Class, configObject.getClassName());
+        classItem.setData(ConfigObject.CLASS);
         classItem.setImage(PropertiesClass.ICON_CLASS);
     }
 
@@ -69,7 +70,7 @@ public class PropertiesClass
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode classeNode = root.getChild(Configurer.CLASS);
+            final XmlNode classeNode = root.getChild(ConfigObject.CLASS);
             final String clazz = Tools.getClass(file).getName();
             classeNode.setText(clazz);
             item.setText(clazz);
@@ -85,7 +86,11 @@ public class PropertiesClass
     @Override
     public void setInput(Tree properties, Configurer configurer)
     {
-        createAttributeClass(properties, configurer);
+        final XmlNode root = configurer.getRoot();
+        if (root.hasChild(ConfigObject.CLASS))
+        {
+            createAttributeClass(properties, ConfigObject.create(configurer));
+        }
     }
 
     @Override
@@ -93,7 +98,7 @@ public class PropertiesClass
     {
         final Object data = item.getData();
         boolean updated = false;
-        if (Configurer.CLASS.equals(data))
+        if (ConfigObject.CLASS.equals(data))
         {
             updated = updateClass(item, configurer);
         }

@@ -18,20 +18,19 @@
 package com.b3dgs.lionengine.editor.properties;
 
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Properties provider interface. Classes which implement this interface must provide the default public constructor.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface PropertiesProvider
+public interface PropertiesProviderTile
 {
     /** Extension ID. */
-    String EXTENSION_ID = Activator.PLUGIN_ID + ".properties";
+    String EXTENSION_ID = Activator.PLUGIN_ID + ".propertiesTile";
     /** Properties extension. */
     String EXTENSION_PROPERTIES = "class";
 
@@ -39,16 +38,7 @@ public interface PropertiesProvider
      * Set the properties input.
      * 
      * @param properties The properties tree reference.
-     * @param configurer The configurer reference (<code>null</code> if not a valid item).
+     * @param tile The tile reference.
      */
-    void setInput(Tree properties, Configurer configurer);
-
-    /**
-     * Update the properties.
-     * 
-     * @param item The item reference.
-     * @param configurer The configurer reference.
-     * @return <code>true</code> if updated, <code>false</code> else.
-     */
-    boolean updateProperties(TreeItem item, Configurer configurer);
+    void setInput(Tree properties, Tile tile);
 }
