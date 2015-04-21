@@ -49,9 +49,9 @@ class Scene
     /** Handler effect. */
     private final Handler handler = services.create(Handler.class);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
-    private final Mouse mouse;
+    private final Mouse mouse = getInputDevice(Mouse.class);
 
     /**
      * Constructor.
@@ -61,8 +61,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
-        keyboard = getInputDevice(Keyboard.class);
-        mouse = getInputDevice(Mouse.class);
     }
 
     @Override

@@ -248,7 +248,7 @@ public class ObjectGame
     }
 
     /**
-     * Called when object has been prepare and is ready to be used. All traits are also prepared.
+     * Called when object has been prepared and is ready to be used. All traits are also prepared.
      * Does nothing by default.
      */
     protected void onPrepared()

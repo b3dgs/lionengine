@@ -74,7 +74,6 @@ class Effect
         surface = Drawable.loadSpriteAnimated(setup.surface, configFrames.getHorizontal(), configFrames.getVertical());
         surface.stretch(scale, scale);
         surface.setOrigin(Origin.MIDDLE);
-        transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
 
         final ConfigAnimations configAnimations = ConfigAnimations.create(setup.getConfigurer());
         animExplode = configAnimations.getAnimation("explode");

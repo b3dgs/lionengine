@@ -39,7 +39,7 @@ class Scene
     public static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Background. */
     private final BackgroundGame background;
     /** Foreground. */
@@ -55,7 +55,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
         background = new Swamp(getConfig().getSource(), 1.0, 1.0);
         foreground = new Foreground(getConfig().getSource(), 1.0, 1.0);
     }
