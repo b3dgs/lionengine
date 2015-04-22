@@ -239,10 +239,13 @@ public class PropertiesPart
                 if (items.length > 0)
                 {
                     final TreeItem item = items[0];
-                    final Configurer configurer = (Configurer) properties.getData();
-                    if (updateProperties(item, configurer))
+                    if (properties.getData() instanceof Configurer)
                     {
-                        configurer.save();
+                        final Configurer configurer = (Configurer) properties.getData();
+                        if (updateProperties(item, configurer))
+                        {
+                            configurer.save();
+                        }
                     }
                 }
             }

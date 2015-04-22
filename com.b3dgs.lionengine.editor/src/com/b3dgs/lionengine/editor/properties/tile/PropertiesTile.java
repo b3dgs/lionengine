@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderTile;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.TileFeature;
 
 /**
  * Element properties part.
@@ -40,17 +41,88 @@ public class PropertiesTile
     private static final Image ICON_CLASS = UtilEclipse.getIcon("properties", "class.png");
 
     /**
-     * Create the attribute class.
+     * Create the attribute group.
      * 
      * @param properties The properties tree reference.
      * @param tile The tile reference.
      */
     private static void createAttributeTileGroup(Tree properties, Tile tile)
     {
-        final TreeItem classItem = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(classItem, Messages.Properties_TileGroup, tile.getGroup());
-        classItem.setData(ConfigTileGroup.GROUP);
-        classItem.setImage(PropertiesTile.ICON_CLASS);
+        final TreeItem item = new TreeItem(properties, SWT.NONE);
+        PropertiesPart.createLine(item, Messages.Properties_TileGroup, tile.getGroup());
+        item.setData(ConfigTileGroup.GROUP);
+        item.setImage(PropertiesTile.ICON_CLASS);
+    }
+
+    /**
+     * Create the attribute sheet number.
+     * 
+     * @param properties The properties tree reference.
+     * @param tile The tile reference.
+     */
+    private static void createAttributeTileSheet(Tree properties, Tile tile)
+    {
+        final TreeItem item = new TreeItem(properties, SWT.NONE);
+        PropertiesPart.createLine(item, Messages.Properties_TileSheet, String.valueOf(tile.getSheet()));
+        item.setData(ConfigTileGroup.SHEET);
+        item.setImage(PropertiesTile.ICON_CLASS);
+    }
+
+    /**
+     * Create the attribute tile number.
+     * 
+     * @param properties The properties tree reference.
+     * @param tile The tile reference.
+     */
+    private static void createAttributeTileNumber(Tree properties, Tile tile)
+    {
+        final TreeItem item = new TreeItem(properties, SWT.NONE);
+        PropertiesPart.createLine(item, Messages.Properties_TileNumber, String.valueOf(tile.getNumber()));
+        item.setData(ConfigTileGroup.START);
+        item.setImage(PropertiesTile.ICON_CLASS);
+    }
+
+    /**
+     * Create the attribute tile size.
+     * 
+     * @param properties The properties tree reference.
+     * @param tile The tile reference.
+     */
+    private static void createAttributeTileSize(Tree properties, Tile tile)
+    {
+        final TreeItem item = new TreeItem(properties, SWT.NONE);
+        PropertiesPart.createLine(item, Messages.Properties_TileSize, tile.getWidth() + " * " + tile.getHeight());
+        item.setData(ConfigTileGroup.START);
+        item.setImage(PropertiesTile.ICON_CLASS);
+    }
+
+    /**
+     * Create the attribute tile features.
+     * 
+     * @param properties The properties tree reference.
+     * @param tile The tile reference.
+     */
+    private static void createAttributeTileFeatures(Tree properties, Tile tile)
+    {
+        final TreeItem features = new TreeItem(properties, SWT.NONE);
+        features.setText(Messages.Properties_TileFeatures);
+        features.setImage(PropertiesTile.ICON_CLASS);
+
+        for (final TileFeature feature : tile.getFeatures())
+        {
+            final TreeItem item = new TreeItem(features, SWT.NONE);
+            item.setText(Messages.Properties_TileFeatures);
+            item.setImage(PropertiesTile.ICON_CLASS);
+
+            final Class<?> clazz = feature.getClass();
+            for (final Class<?> type : clazz.getInterfaces())
+            {
+                if (TileFeature.class.isAssignableFrom(type))
+                {
+                    PropertiesPart.createLine(item, type.getSimpleName(), clazz.getName());
+                }
+            }
+        }
     }
 
     /*
@@ -61,5 +133,9 @@ public class PropertiesTile
     public void setInput(Tree properties, Tile tile)
     {
         createAttributeTileGroup(properties, tile);
+        createAttributeTileSheet(properties, tile);
+        createAttributeTileNumber(properties, tile);
+        createAttributeTileSize(properties, tile);
+        createAttributeTileFeatures(properties, tile);
     }
 }

@@ -33,6 +33,14 @@ public final class Messages
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".properties.tile.messages"; //$NON-NLS-1$
     /** Tile group property. */
     public static String Properties_TileGroup;
+    /** Tile sheet property. */
+    public static String Properties_TileSheet;
+    /** Tile number property. */
+    public static String Properties_TileNumber;
+    /** Tile size property. */
+    public static String Properties_TileSize;
+    /** Tile features property. */
+    public static String Properties_TileFeatures;
 
     /**
      * Initialize.
