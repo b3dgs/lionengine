@@ -41,6 +41,8 @@ public final class Messages
     public static String Properties_TileSize;
     /** Tile features property. */
     public static String Properties_TileFeatures;
+    /** Tile feature property. */
+    public static String Properties_TileFeature;
 
     /**
      * Initialize.

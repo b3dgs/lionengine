@@ -37,8 +37,18 @@ import com.b3dgs.lionengine.game.map.TileFeature;
 public class PropertiesTile
         implements PropertiesProviderTile
 {
-    /** Class icon. */
-    private static final Image ICON_CLASS = UtilEclipse.getIcon("properties", "class.png");
+    /** Tile group icon. */
+    private static final Image ICON_GROUP = UtilEclipse.getIcon("properties", "tilegroup.png");
+    /** Tile sheet icon. */
+    private static final Image ICON_SHEET = UtilEclipse.getIcon("properties", "tilesheet.png");
+    /** Tile number icon. */
+    private static final Image ICON_NUMBER = UtilEclipse.getIcon("properties", "tilenumber.png");
+    /** Tile size icon. */
+    private static final Image ICON_SIZE = UtilEclipse.getIcon("properties", "tilesize.png");
+    /** Tile features icon. */
+    private static final Image ICON_FEATURES = UtilEclipse.getIcon("properties", "tilefeatures.png");
+    /** Tile feature icon. */
+    private static final Image ICON_FEATURE = UtilEclipse.getIcon("properties", "tilefeature.png");
 
     /**
      * Create the attribute group.
@@ -51,7 +61,7 @@ public class PropertiesTile
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileGroup, tile.getGroup());
         item.setData(ConfigTileGroup.GROUP);
-        item.setImage(PropertiesTile.ICON_CLASS);
+        item.setImage(PropertiesTile.ICON_GROUP);
     }
 
     /**
@@ -65,7 +75,7 @@ public class PropertiesTile
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileSheet, String.valueOf(tile.getSheet()));
         item.setData(ConfigTileGroup.SHEET);
-        item.setImage(PropertiesTile.ICON_CLASS);
+        item.setImage(PropertiesTile.ICON_SHEET);
     }
 
     /**
@@ -79,7 +89,7 @@ public class PropertiesTile
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileNumber, String.valueOf(tile.getNumber()));
         item.setData(ConfigTileGroup.START);
-        item.setImage(PropertiesTile.ICON_CLASS);
+        item.setImage(PropertiesTile.ICON_NUMBER);
     }
 
     /**
@@ -93,7 +103,7 @@ public class PropertiesTile
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileSize, tile.getWidth() + " * " + tile.getHeight());
         item.setData(ConfigTileGroup.START);
-        item.setImage(PropertiesTile.ICON_CLASS);
+        item.setImage(PropertiesTile.ICON_SIZE);
     }
 
     /**
@@ -106,13 +116,13 @@ public class PropertiesTile
     {
         final TreeItem features = new TreeItem(properties, SWT.NONE);
         features.setText(Messages.Properties_TileFeatures);
-        features.setImage(PropertiesTile.ICON_CLASS);
+        features.setImage(PropertiesTile.ICON_FEATURES);
 
         for (final TileFeature feature : tile.getFeatures())
         {
             final TreeItem item = new TreeItem(features, SWT.NONE);
-            item.setText(Messages.Properties_TileFeatures);
-            item.setImage(PropertiesTile.ICON_CLASS);
+            item.setText(Messages.Properties_TileFeature);
+            item.setImage(PropertiesTile.ICON_FEATURE);
 
             final Class<?> clazz = feature.getClass();
             for (final Class<?> type : clazz.getInterfaces())
