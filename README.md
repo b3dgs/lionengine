@@ -37,6 +37,8 @@ Everything else is fully compatible and does not require any changes.
 
 Since the version __7__, it includes an abstract editor that should allow to write easily a dedicated levels editor for your game. It can also be used as default editor without any add-on, just run and import a project from your game compiled sources !
 
+<a href="http://lionengine.b3dgs.com/page.php?lang=en&section=home"><img src="http://lionengine.b3dgs.com/img/home/overview_en.png"/></a>
+
 ## General Features
 
 * #### __lionengine-core__
@@ -64,36 +66,26 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 
 
 * #### __lionengine-game__
+>  * Camera management (_view and movement_)
+>  * Cursor (_synced or not to system pointer_)
+>  * Background package (_for an easy background composition_)
 >  * Tile based map package (_with minimap support, native save & load function_)
 >    * Ray cast collision system
 >    * Compatibility with raster bar effect
->  * Projectile system (_with a duo: launcher / projectile_)
->  * Effect system (_and its handler_)
->  * Entity base (_support external XML configuration, gravity and collision_)
->  * Camera management (_view and movement_)
->  * Cursor (_synced or not to system pointer_)
->  * General object factory system (_create instance of entity / effect / projectile_)
->  * Tile extractor (_generate tilesheet from a level rip image_)
->  * Level rip converter (_generate a level data file from a tile sheet and a level rip image_)
-  
-
-* #### __lionengine-game-platform__
->  * Background package (_for an easy background composition_)
->  * Extended entity & map package (_including compatibility with raster bar effect_)
->  * Extended camera system
-  
-
-* #### __lionengine-game-pathfinding__
->  * __A Star (A star)__ pathfinding implementation
->  * Compatible with game map system
-
-
-* #### __lionengine-game-strategy__
->  * Extended map package (_adding support to pathfinding and fog of war_)
->  * Extended entity package (_attacker_, _extractor_, _mover_, _producer_ _..._)
->  * Entity skill system (_representing its actions, accessible from icons_)
->  * Control panel system (_map area for game action, HUD area for icons and more_)
->  * Extended cursor (_can interact with entities on map and control panel_)
+>    * __A Star (A star)__ pathfinding implementation
+>    * Tile extractor (_generate tilesheet from a level rip image_)
+>    * Level rip converter (_generate a level data file from a tile sheet and a level rip image_)
+>  * Object base (_support external XML configuration, trait system_)
+>  * General object factory system (_create instance of object_)
+>  * Objects handling system (_updating them, rendering, and retrieving_)
+>  * Extensible _Trait_ system to compose object characteristics without code complexity
+>    * Transformable (size and translation)
+>    * Body (gravity handling)
+>    * Launchable (launcher and projectile system)
+>    * Rasterable (object raster bar effect)
+>    * Producible (ability to produce other objects)
+>    * Collidable (collision handling)
+>    * ...
 
 
 * #### __lionengine-network__
@@ -113,6 +105,7 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 * #### __lionengine-audio-sc68__
 >  * Support for Sc68 Atari music
 
+
 * #### __lionengine-editor__
 >  * Complete standalone editor which can be used in any project for general level edition
 >  * Can be extended to perform more specific things
@@ -120,7 +113,7 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 ## Download
 
 * [Go to website](http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
-* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_6.2.0_lib.zip)
+* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_7.1.4_lib.zip)
 
 ## Installation
 
@@ -136,12 +129,9 @@ Steps to include the __LionEngine__ in your project:
     * __lionengine-core-swt__ _(uses_ __SWT__ _as graphic renderer, target for computer)_
     * __lionengine-core-android__ _(uses_ __Android 1.5__, _target for phones)_
     * __lionengine-game__ _(base for game development)_
-      * __lionengine-game-platform__ _(specialized for platform games)_
-      * __lionengine-game-pathfinding__ _(support for pathfinding)_
-        * __lionengine-game-strategy__ _(specialized for strategy games)_
     * __lionengine-network__ _(support for network)_
-	* __lionengine-audio-wav__ _(support for Wav sound)_
-	* __lionengine-audio-midi__ _(support for Midi music)_
+    * __lionengine-audio-wav__ _(support for Wav sound)_
+    * __lionengine-audio-midi__ _(support for Midi music)_
     * __lionengine-audio-sc68__ _(support for Sc68 Atari music)_
 6. Join (if you want) the javadoc for each library
 7. You are now ready to use the __LionEngine__ in your project
@@ -158,7 +148,7 @@ public final class AppJava
 {
     public static void main(String[] args)
     {
-        Engine.start("AppJava", Version.create(1, 0, 0), Verbose.CRITICAL, "resources");
+        Engine.start("AppJava", Version.create(1, 0, 0), "resources");
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
@@ -177,7 +167,7 @@ public final class AppAndroid
     {
         super.onPostCreate(savedInstanceState);
  
-        Engine.start("AppAndroid", Version.create(1, 0, 0), Verbose.CRITICAL, this);
+        Engine.start("AppAndroid", Version.create(1, 0, 0), this);
         final Resolution output = new Resolution(800, 480, 60);
         final Config config = new Config(output, 32, false);
         final Loader loader = new Loader(config);
@@ -195,27 +185,27 @@ public final class AppAndroid
 
 #### Minimal sequence
 ```java
-final class Scene
+class Scene
         extends Sequence
 {
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     private final Keyboard keyboard;
- 
-    Scene(Loader loader)
+
+    public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
     }
- 
+
     @Override
     protected void load()
     {
         // Load
     }
- 
+
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
@@ -223,9 +213,9 @@ final class Scene
         }
         // Update
     }
- 
+
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         // Render
     }
