@@ -261,6 +261,9 @@
       <implementation
             class="com.b3dgs.lionengine.editor.properties.tile.PropertiesTile">
       </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.properties.tilecollision.PropertiesTileCollision">
+      </implementation>
    </extension>
    <extension
          point="com.b3dgs.lionengine.editor.mapFeatures">
