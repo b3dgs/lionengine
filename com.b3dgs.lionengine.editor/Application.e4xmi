@@ -78,6 +78,15 @@
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_FtMekEyKEeSJA9sJoETiQw" elementId="" label="%menu.frames-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/frames-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.frames.FramesRemoveHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_FtMekUyKEeSJA9sJoETiQw" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeFrames"/>
                   </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_vuLX0OthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/properties/tileformula_add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.FormulaAddHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_vuLX0ethEeSC_8GDJLuRUA" coreExpressionId="com.b3dgs.lionengine.editor.properties.addFormula"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_9QEPgOthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/properties/tileformula_remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.FormulaRemoveHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_9QEPgethEeSC_8GDJLuRUA" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeFormula"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="__k5_8OthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/properties/tileformula_edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.FormulaEditHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__k5_8ethEeSC_8GDJLuRUA" coreExpressionId="com.b3dgs.lionengine.editor.properties.editFormula"/>
+                  </children>
                 </menus>
               </children>
             </children>

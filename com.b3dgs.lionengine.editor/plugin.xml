@@ -178,6 +178,24 @@
                property="com.b3dgs.lionengine.editor.propertiesTesterFrames.removeFrames">
          </test>
       </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.addFormula">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterTileCollision.addFormula">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.removeFormula">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterTileCollision.removeFormula">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.editFormula">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterTileCollision.editFormula">
+         </test>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -235,6 +253,13 @@
             id="com.b3dgs.lionengine.editor.propertiesTesterFrames"
             namespace="com.b3dgs.lionengine.editor.propertiesTesterFrames"
             properties="setFrames,removeFrames"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.properties.tilecollision.PropertiesTileCollisionTester"
+            id="com.b3dgs.lionengine.editor.propertiesTesterTileCollision"
+            namespace="com.b3dgs.lionengine.editor.propertiesTesterTileCollision"
+            properties="addFormula,removeFormula,editFormula"
             type="java.lang.Object">
       </propertyTester>
    </extension>

@@ -15,29 +15,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties.collisions;
+package com.b3dgs.lionengine.editor.properties.tilecollision;
 
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 
 /**
  * Test the properties node existence.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesCollisionsTester
+public class PropertiesTileCollisionTester
         extends PropertyTester
 {
-    /** Can enable collisions. */
-    private static final String PROPERTY_COLLISIONS_ENABLE = "enableCollisions";
-    /** Can edit collisions. */
-    private static final String PROPERTY_COLLISIONS_EDIT = "editCollisions";
-    /** Can disable collisions. */
-    private static final String PROPERTY_COLLISIONS_DISABLE = "disableCollisions";
+    /** Can add formula. */
+    private static final String PROPERTY_FORMULA_ADD = "addFormula";
+    /** Can remove formula. */
+    private static final String PROPERTY_FORMULA_REMOVE = "removeFormula";
+    /** Can edit formula. */
+    private static final String PROPERTY_FORMULA_EDIT = "editFormula";
 
     /*
      * PropertyTester
@@ -47,20 +45,20 @@ public class PropertiesCollisionsTester
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
         final PropertiesModel model = PropertiesModel.INSTANCE;
-        if (!model.isEmpty() && ObjectsFolderTester.isObjectFile(ProjectsModel.INSTANCE.getSelection()))
+        if (!model.isEmpty())
         {
             final Object data = model.getSelectedData();
-            if (PROPERTY_COLLISIONS_ENABLE.equals(property))
+            if (PROPERTY_FORMULA_ADD.equals(property))
             {
-                return !model.hasProperty(ConfigCollisions.COLLISION);
+                return ConfigCollisionFormula.FORMULAS.equals(data);
             }
-            else if (PROPERTY_COLLISIONS_EDIT.equals(property) && ConfigCollisions.COLLISION.equals(data))
+            else if (PROPERTY_FORMULA_REMOVE.equals(property))
             {
-                return model.hasProperty(ConfigCollisions.COLLISION);
+                return ConfigCollisionFormula.FORMULA.equals(data);
             }
-            else if (PROPERTY_COLLISIONS_DISABLE.equals(property) && ConfigCollisions.COLLISION.equals(data))
+            else if (PROPERTY_FORMULA_EDIT.equals(property))
             {
-                return model.hasProperty(ConfigCollisions.COLLISION);
+                return ConfigCollisionFormula.FORMULA.equals(data);
             }
         }
         return false;

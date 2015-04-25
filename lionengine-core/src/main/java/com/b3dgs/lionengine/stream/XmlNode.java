@@ -149,6 +149,13 @@ public interface XmlNode
     void removeChild(String child);
 
     /**
+     * Remove child.
+     * 
+     * @param child The child to remove.
+     */
+    void removeChild(XmlNode child);
+
+    /**
      * Remove all children.
      * 
      * @param children The children to remove.

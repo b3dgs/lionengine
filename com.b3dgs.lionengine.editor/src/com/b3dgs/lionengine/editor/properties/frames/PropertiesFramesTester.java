@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.editor.properties.frames;
 
 import org.eclipse.core.expressions.PropertyTester;
 
+import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
@@ -44,7 +46,7 @@ public class PropertiesFramesTester
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
         final PropertiesModel model = PropertiesModel.INSTANCE;
-        if (!model.isEmpty())
+        if (!model.isEmpty() && ObjectsFolderTester.isObjectFile(ProjectsModel.INSTANCE.getSelection()))
         {
             final Object data = model.getSelectedData();
             if (PROPERTY_FRAMES_SET.equals(property))
