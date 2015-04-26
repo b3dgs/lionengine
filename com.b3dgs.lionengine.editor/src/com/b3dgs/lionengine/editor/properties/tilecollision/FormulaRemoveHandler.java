@@ -67,5 +67,6 @@ public class FormulaRemoveHandler
         {
             tileCollision.removeCollisionFormula(formula);
         }
+        toRemove.clear();
     }
 }

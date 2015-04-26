@@ -17,8 +17,20 @@
  */
 package com.b3dgs.lionengine.editor.properties.tilecollision;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
+
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.map.TileCollision;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Edit formula handler.
@@ -31,10 +43,37 @@ public class FormulaEditHandler
      * Execute the handler.
      * 
      * @param partService The part service reference.
+     * @param parent The parent reference.
      */
     @Execute
-    public void execute(EPartService partService)
+    public void execute(EPartService partService, Shell parent)
     {
-        // TODO
+        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        final Tree properties = part.getTree();
+        final TileGame tile = (TileGame) properties.getData();
+        final TileCollision tileCollision = tile.getFeature(TileCollision.class);
+
+        final Collection<CollisionFormula> toEdit = new ArrayList<>();
+        for (final TreeItem selection : properties.getSelection())
+        {
+            for (final CollisionFormula formula : tileCollision.getCollisionFormulas())
+            {
+                if (formula.getName().equals(selection.getText(1)))
+                {
+                    final DialogTileCollisionEdit dialog = new DialogTileCollisionEdit(parent);
+                    dialog.open();
+                    dialog.load(formula);
+                    tileCollision.addCollisionFormula(dialog.getFormula());
+                    toEdit.add(formula);
+                }
+            }
+        }
+
+        for (final CollisionFormula formula : toEdit)
+        {
+            tileCollision.removeCollisionFormula(formula);
+        }
+        toEdit.clear();
+        part.setInput(properties, tile);
     }
 }

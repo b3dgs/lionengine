@@ -182,6 +182,12 @@ public final class XmlNodeMock
     }
 
     @Override
+    public void removeChild(XmlNode child)
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void removeChildren(String children)
     {
         // Nothing to do

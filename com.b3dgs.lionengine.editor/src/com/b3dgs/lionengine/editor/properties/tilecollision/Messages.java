@@ -36,6 +36,13 @@ public final class Messages
     /** Tile collision formula property. */
     public static String Properties_TileCollisionFormula;
 
+    /** Tile collision dialog title. */
+    public static String Dialog_TileCollision_Title;
+    /** Tile collision dialog header title. */
+    public static String Dialog_TileCollision_HeaderTitle;
+    /** Tile collision dialog header description. */
+    public static String Dialog_TileCollision_HeaderDesc;
+
     /**
      * Initialize.
      */
