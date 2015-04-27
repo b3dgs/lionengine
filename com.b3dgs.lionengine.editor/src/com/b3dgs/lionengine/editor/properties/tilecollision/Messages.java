@@ -31,24 +31,18 @@ public final class Messages
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".properties.tilecollision.messages"; //$NON-NLS-1$
+
     /** Tile collision formulas property. */
     public static String Properties_TileCollisionFormulas;
     /** Tile collision formula property. */
     public static String Properties_TileCollisionFormula;
-
-    /** Tile collision dialog title. */
-    public static String Dialog_TileCollision_Title;
-    /** Tile collision dialog header title. */
-    public static String Dialog_TileCollision_HeaderTitle;
-    /** Tile collision dialog header description. */
-    public static String Dialog_TileCollision_HeaderDesc;
 
     /**
      * Initialize.
      */
     static
     {
-        NLS.initializeMessages(Messages.BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     /**

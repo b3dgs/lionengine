@@ -207,7 +207,7 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.project.handler.TilesheetsFolderTester"
+            class="com.b3dgs.lionengine.editor.project.tester.TilesheetsFolderTester"
             id="com.b3dgs.lionengine.editor.tilesheetsFolderTester"
             namespace="com.b3dgs.lionengine.editor.tilesheetsFolderTester"
             properties="editTilesheets"
@@ -228,14 +228,14 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.properties.animations.PropertiesAnimationsTester"
+            class="com.b3dgs.lionengine.editor.properties.animation.PropertiesAnimationTester"
             id="com.b3dgs.lionengine.editor.propertiesTesterAnimations"
             namespace="com.b3dgs.lionengine.editor.propertiesTesterAnimations"
             properties="enableAnimations,editAnimations,disableAnimations"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.properties.collisions.PropertiesCollisionsTester"
+            class="com.b3dgs.lionengine.editor.properties.collision.PropertiesCollisionTester"
             id="com.b3dgs.lionengine.editor.propertiesTesterCollisions"
             namespace="com.b3dgs.lionengine.editor.propertiesTesterCollisions"
             properties="enableCollisions,editCollisions,disableCollisions"
@@ -275,10 +275,10 @@
             class="com.b3dgs.lionengine.editor.properties.frames.PropertiesFrames">
       </implementation>
       <implementation
-            class="com.b3dgs.lionengine.editor.properties.animations.PropertiesAnimations">
+            class="com.b3dgs.lionengine.editor.properties.animation.PropertiesAnimation">
       </implementation>
       <implementation
-            class="com.b3dgs.lionengine.editor.properties.collisions.PropertiesCollisions">
+            class="com.b3dgs.lionengine.editor.properties.collision.PropertiesCollision">
       </implementation>
    </extension>
    <extension
@@ -294,7 +294,7 @@
          point="com.b3dgs.lionengine.editor.mapFeatures">
       <implementation
             class="com.b3dgs.lionengine.game.map.MapTileCollisionModel"
-            dialog="com.b3dgs.lionengine.editor.dialogs.ImportMapCollisionDialog">
+            dialog="com.b3dgs.lionengine.editor.world.dialog.MapCollisionImportDialog">
       </implementation>
       <implementation
             class="com.b3dgs.lionengine.game.map.MapTilePathModel">

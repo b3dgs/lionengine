@@ -50,7 +50,7 @@ public class PropertiesFrames
      * @param properties The properties tree reference.
      * @param configurer The configurer reference.
      */
-    static void createAttributeFrames(Tree properties, Configurer configurer)
+    public static void createAttributeFrames(Tree properties, Configurer configurer)
     {
         final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
         iconItem.setText(Messages.Properties_Frames);

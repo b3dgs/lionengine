@@ -31,6 +31,7 @@ public final class Messages
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".properties.messages"; //$NON-NLS-1$
+
     /** Property key. */
     public static String Properties_Key;
     /** Property value. */
@@ -41,7 +42,7 @@ public final class Messages
      */
     static
     {
-        NLS.initializeMessages(Messages.BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     /**

@@ -31,17 +31,16 @@ public final class Messages
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".world.messages"; //$NON-NLS-1$
+
     /** World view import map. */
     public static String WorldView_ImportMap;
-    /** World view no map implementation. */
-    public static String WorldView_NoMapImpl;
 
     /**
      * Initialize.
      */
     static
     {
-        NLS.initializeMessages(Messages.BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     /**

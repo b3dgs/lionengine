@@ -30,7 +30,7 @@ public final class Messages
         extends NLS
 {
     /** Bundle name. */
-    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".project.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".project.handler.messages"; //$NON-NLS-1$
 
     /** Add object title. */
     public static String AddObject_Title;
@@ -40,10 +40,12 @@ public final class Messages
     public static String AddObject_Error_Title;
     /** Add object error text. */
     public static String AddObject_Error_Text;
+
     /** Edit folder type name title. */
     public static String EditFolderType_Name_Title;
     /** Edit folder type name text. */
     public static String EditFolderType_Name_Text;
+
     /** Remove object title. */
     public static String RemoveObject_Title;
     /** Remove object text. */
@@ -58,7 +60,7 @@ public final class Messages
      */
     static
     {
-        NLS.initializeMessages(Messages.BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     /**

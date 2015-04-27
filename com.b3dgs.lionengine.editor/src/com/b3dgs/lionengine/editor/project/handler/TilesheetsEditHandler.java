@@ -22,8 +22,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.dialogs.EditTilesheetsDialog;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.dialog.TilesheetsEditDialog;
 
 /**
  * Edit a tile sheet in the selected folder.
@@ -42,7 +42,7 @@ public class TilesheetsEditHandler
     public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final EditTilesheetsDialog editTilesheetsDialog = new EditTilesheetsDialog(parent, selection);
+        final TilesheetsEditDialog editTilesheetsDialog = new TilesheetsEditDialog(parent, selection);
         editTilesheetsDialog.open();
     }
 }

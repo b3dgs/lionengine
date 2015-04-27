@@ -31,6 +31,7 @@ public final class Messages
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".properties.tile.messages"; //$NON-NLS-1$
+
     /** Tile group property. */
     public static String Properties_TileGroup;
     /** Tile sheet property. */
@@ -49,7 +50,7 @@ public final class Messages
      */
     static
     {
-        NLS.initializeMessages(Messages.BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     /**

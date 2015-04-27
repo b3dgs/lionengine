@@ -49,13 +49,13 @@ public class PropertiesSurface
      * @param properties The properties tree reference.
      * @param configurer The configurer reference.
      */
-    static void createAttributeSurface(Tree properties, Configurer configurer)
+    public static void createAttributeSurface(Tree properties, Configurer configurer)
     {
         final ConfigSurface surface = ConfigSurface.create(configurer);
         final TreeItem surfaceItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(surfaceItem, Messages.Properties_Surface, surface.getImage());
         surfaceItem.setData(ConfigSurface.SURFACE_IMAGE);
-        surfaceItem.setImage(PropertiesSurface.ICON_SURFACE);
+        surfaceItem.setImage(ICON_SURFACE);
 
         final String icon = surface.getIcon();
         if (icon != null)
@@ -70,12 +70,12 @@ public class PropertiesSurface
      * @param properties The properties tree reference.
      * @param icon The icon path.
      */
-    static void createAttributeIcon(Tree properties, String icon)
+    public static void createAttributeIcon(Tree properties, String icon)
     {
         final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(iconItem, Messages.Properties_SurfaceIcon, icon);
         iconItem.setData(ConfigSurface.SURFACE_ICON);
-        iconItem.setImage(PropertiesSurface.ICON_ICON);
+        iconItem.setImage(ICON_ICON);
     }
 
     /**

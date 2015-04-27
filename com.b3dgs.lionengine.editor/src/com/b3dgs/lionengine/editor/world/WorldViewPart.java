@@ -31,6 +31,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
@@ -94,6 +95,15 @@ public class WorldViewPart
         composite.addMouseListener(worldViewRenderer);
         composite.addMouseMoveListener(worldViewRenderer);
         composite.addKeyListener(worldViewRenderer);
+
+        Display.getDefault().asyncExec(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                setToolBarEnabled(false);
+            }
+        });
     }
 
     /**

@@ -48,7 +48,8 @@ public class SetHandHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemSelection(toolBar, false, "pointer", "selection", "pipet");
+                UtilEclipse
+                        .setToolItemSelection(toolBar, false, "pointer-object", "pointer-tile", "selection", "pipet");
                 UtilEclipse.setToolItemSelection(toolBar, true, "hand");
             }
         }

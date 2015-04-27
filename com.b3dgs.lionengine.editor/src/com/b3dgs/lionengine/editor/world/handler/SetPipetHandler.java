@@ -48,7 +48,7 @@ public class SetPipetHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemSelection(toolBar, false, "pointer", "hand", "selection");
+                UtilEclipse.setToolItemSelection(toolBar, false, "pointer-object", "pointer-tile", "hand", "selection");
                 UtilEclipse.setToolItemSelection(toolBar, true, "pipet");
             }
         }

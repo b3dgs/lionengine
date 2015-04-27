@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
+import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 
 /**
  * Represents the object properties edition view.
