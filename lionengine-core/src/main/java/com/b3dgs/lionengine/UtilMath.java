@@ -23,6 +23,9 @@ import com.b3dgs.lionengine.geom.Line;
 
 /**
  * Static functions around math manipulation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

@@ -27,6 +27,9 @@ import com.b3dgs.lionengine.core.Media;
 
 /**
  * Special engine exception implementation which limit the trace to the user side.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

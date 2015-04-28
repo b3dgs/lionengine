@@ -34,6 +34,9 @@ import com.b3dgs.lionengine.core.Media;
  * Assert.assertEquals(32, info.getHeight());
  * Assert.assertEquals(&quot;png&quot;, info.getFormat());
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

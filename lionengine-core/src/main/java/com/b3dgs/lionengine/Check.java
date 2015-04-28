@@ -28,6 +28,9 @@ package com.b3dgs.lionengine;
  * final Object object = null;
  * Check.notNull(object);
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

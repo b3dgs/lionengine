@@ -22,6 +22,9 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * HQ2X implementation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

@@ -97,10 +97,11 @@ public class ResolutionTest
         final Resolution resolution = new Resolution(320, 240, 60);
         Assert.assertEquals(Ratio.R4_3, resolution.getRatio(), 0.000001);
 
-        resolution.set(640, 360);
+        resolution.setSize(640, 360);
         Assert.assertEquals(Ratio.R16_9, resolution.getRatio(), 0.000001);
 
-        resolution.set(640, 400, 50);
+        resolution.setSize(640, 400);
+        resolution.setRate(50);
         Assert.assertEquals(50, resolution.getRate());
         Assert.assertEquals(Ratio.R16_10, resolution.getRatio(), 0.000001);
 

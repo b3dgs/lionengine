@@ -29,6 +29,9 @@ import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Static functions giving informations related to files and directory.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

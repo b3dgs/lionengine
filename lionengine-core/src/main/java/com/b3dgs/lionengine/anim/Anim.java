@@ -23,6 +23,9 @@ package com.b3dgs.lionengine.anim;
  * <li>{@link Animation}</li>
  * <li>{@link Animator}</li>
  * </ul>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

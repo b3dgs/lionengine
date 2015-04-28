@@ -23,6 +23,9 @@ import com.b3dgs.lionengine.core.EngineCore;
 
 /**
  * List of available operating systems.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

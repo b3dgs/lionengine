@@ -31,6 +31,9 @@ package com.b3dgs.lionengine.anim;
  * animator.update(extrp);
  * animator.getAnimState(); // returns PLAYING
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Animation

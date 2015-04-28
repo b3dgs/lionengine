@@ -19,6 +19,9 @@ package com.b3dgs.lionengine;
 
 /**
  * List of origin point types.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
