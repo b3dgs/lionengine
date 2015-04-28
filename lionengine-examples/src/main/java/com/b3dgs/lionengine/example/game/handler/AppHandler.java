@@ -15,18 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.entity;
+package com.b3dgs.lionengine.example.game.handler;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
-import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Main class.
@@ -34,7 +35,7 @@ import com.b3dgs.lionengine.game.object.Services;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-public class AppGameEntity
+public class AppHandler
 {
     /**
      * Main.
@@ -43,17 +44,15 @@ public class AppGameEntity
      */
     public static void main(String[] args)
     {
-        Engine.start("Entity", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "entity"));
+        Engine.start("Handler", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "handler"));
 
         final Graphic g = Graphics.createGraphic();
         final Services services = new Services();
-        final Factory factory = new Factory(services);
         final Handler handler = new Handler();
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());
-
-        final Entity entity = factory.create(Entity.GOOMBA);
-        handler.add(entity);
+        handler.add(new MyObject(new Setup(Medias.create("MyObject.xml")), services));
+        handler.add(new MyObject(new Setup(Medias.create("MyObject.xml")), services));
 
         for (int i = 0; i < 2; i++)
         {
