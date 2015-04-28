@@ -34,6 +34,16 @@ import com.b3dgs.lionengine.game.Featurable;
  * Ensure to add any required services before creating an object with the factory, else it will fail with a
  * {@link LionEngineException} when calling {@link Factory#create(com.b3dgs.lionengine.core.Media)}.
  * </p>
+ * <p>
+ * Usage example:
+ * </p>
+ * 
+ * <pre>
+ * private final Services services = new Services();
+ * private final Factory factory = services.create(Factory.class);
+ * private final Camera camera = services.create(Camera.class);
+ * private final MapTile map = services.create(MapTileGame.class);
+ * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Factory
