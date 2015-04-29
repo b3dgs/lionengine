@@ -65,12 +65,12 @@ class Scene
     private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
+    /** Selector reference. */
+    private final Selector selector = new Selector(camera, cursor);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
     private final Mouse mouse = getInputDevice(Mouse.class);
-    /** Selector reference. */
-    private final Selector selector = new Selector(camera, cursor);
     /** HUD image. */
     private final Image hud;
     /** Peon reference. */

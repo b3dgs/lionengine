@@ -52,6 +52,8 @@ class Scene
 
     /** Collection fog. */
     private final Collection<Fovable> fovables = new ArrayList<>();
+    /** Fog of war layer. */
+    private final FogOfWar fogOfWar = new FogOfWar();
     /** Services reference. */
     private final Services services = new Services();
     /** Game factory. */
@@ -60,8 +62,6 @@ class Scene
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Fog of war layer. */
-    private final FogOfWar fogOfWar = new FogOfWar();
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */

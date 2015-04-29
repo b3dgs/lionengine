@@ -41,9 +41,9 @@ class Scene
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** Keyboard. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Text drawer. */
-    private final Text text;
+    private final Text text = Graphics.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
 
     /**
      * Constructor.
@@ -53,8 +53,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        text = Graphics.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
     }
 
     @Override

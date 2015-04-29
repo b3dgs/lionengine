@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import com.b3dgs.lionengine.core.EngineCore;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Theme;
 import com.b3dgs.lionengine.core.awt.swing.UtilitySwing;
 import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
@@ -149,7 +150,7 @@ public class AppExamples
                 }
                 catch (final ReflectiveOperationException exception)
                 {
-                    exception.printStackTrace();
+                    Verbose.exception(AppExamples.class, "addExample", exception);
                 }
                 final Thread thread = new Thread()
                 {
@@ -164,6 +165,7 @@ public class AppExamples
                             }
                             catch (final InterruptedException exception)
                             {
+                                Thread.currentThread().interrupt();
                                 break;
                             }
                         }

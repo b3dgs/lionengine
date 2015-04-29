@@ -51,6 +51,8 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Text reference. */
+    private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
     /** Services reference. */
     private final Services services = new Services();
     /** Game factory. */
@@ -63,8 +65,6 @@ class Scene
     private final MapTile map = services.create(MapTileGame.class);
     /** Map path. */
     private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
-    /** Text reference. */
-    private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */

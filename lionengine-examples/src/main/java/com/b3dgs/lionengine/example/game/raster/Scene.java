@@ -44,6 +44,8 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Timing value. */
+    private final Timing timing = new Timing();
     /** Services reference. */
     private final Services services = new Services();
     /** Camera reference. */
@@ -54,8 +56,6 @@ class Scene
     private final MapTileRastered raster = services.create(MapTileRasteredModel.class);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
-    /** Timing value. */
-    private final Timing timing = new Timing();
     /** Renderable selection (false = default, true = raster). */
     private boolean useRaster;
 

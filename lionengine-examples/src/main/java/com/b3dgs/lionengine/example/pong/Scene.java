@@ -46,6 +46,8 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Text drawer. */
+    private final Text text = Graphics.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
     /** Services reference. */
     private final Services services = new Services();
     /** Game factory. */
@@ -54,8 +56,6 @@ class Scene
     private final Handler handler = services.create(Handler.class);
     /** Camera. */
     private final Camera camera = services.create(Camera.class);
-    /** Text drawer. */
-    private final Text text = Graphics.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
 

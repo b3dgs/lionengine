@@ -47,7 +47,7 @@ class Scene
     private static final Resolution NATIVE = new Resolution(640, 480, 60);
 
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Image reference. */
     private final Image image;
     /** Sprite reference. */
@@ -73,11 +73,8 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        // As we defined our resources directory as this: Media.get("resources", "drawable")
-        // Any call to Media.get(...) will load from ./resources/drawable/
-
-        // Load keyboard
-        keyboard = getInputDevice(Keyboard.class);
+        // As we defined our resources directory as this: Medias.get("resources", "drawable")
+        // Any call to Medias.get(...) will load from ./resources/drawable/
 
         // Load an image (./resources/drawable/image.png)
         image = Drawable.loadImage(Medias.create("image.png"));

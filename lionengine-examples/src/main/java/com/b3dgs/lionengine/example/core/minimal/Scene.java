@@ -38,7 +38,7 @@ class Scene
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
 
     /**
      * Constructor.
@@ -48,7 +48,6 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
     }
 
     @Override
