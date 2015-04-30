@@ -37,10 +37,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.UtilConversion;
@@ -163,6 +166,44 @@ public final class UtilSwt
                 final String init = text.getText();
                 final String newText = init.substring(0, event.start) + event.text + init.substring(event.end);
                 event.doit = newText.matches(match) || newText.isEmpty();
+            }
+        };
+    }
+
+    /**
+     * Auto size tree column and sub items.
+     * 
+     * @param item The item parent.
+     */
+    public static void autoSize(TreeItem item)
+    {
+        for (final TreeColumn column : item.getParent().getColumns())
+        {
+            column.pack();
+        }
+    }
+
+    /**
+     * Create the auto size listener which will auto size properties.
+     * 
+     * @return The created listener.
+     */
+    public static Listener createAutosizeListener()
+    {
+        return new Listener()
+        {
+            @Override
+            public void handleEvent(Event e)
+            {
+                final TreeItem item = (TreeItem) e.item;
+                item.getDisplay().asyncExec(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        autoSize(item);
+                    }
+                });
             }
         };
     }

@@ -34,6 +34,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
@@ -41,6 +42,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.Tile;
 
@@ -55,7 +57,7 @@ public class PropertiesPart
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.properties";
     /** Menu ID. */
-    public static final String MENU_ID = PropertiesPart.ID + ".menu";
+    public static final String MENU_ID = ID + ".menu";
 
     /**
      * Create a line property for tree table.
@@ -75,57 +77,28 @@ public class PropertiesPart
     /**
      * Check the properties extension point object.
      * 
+     * @param clazz The class type.
+     * @param id The extension id.
+     * @param extension The extension attribute.
      * @return The properties instance from extension point or default one.
      */
-    private static Collection<PropertiesProviderObject> checkPropertiesExtensionPointObject()
+    private static <P> Collection<P> checkPropertiesExtensionPoint(Class<P> clazz, String id, String extension)
     {
-        final IConfigurationElement[] nodes = Platform.getExtensionRegistry().getConfigurationElementsFor(
-                PropertiesProviderObject.EXTENSION_ID);
-        final Collection<PropertiesProviderObject> extensions = new ArrayList<>();
+        final IConfigurationElement[] nodes = Platform.getExtensionRegistry().getConfigurationElementsFor(id);
+        final Collection<P> extensions = new ArrayList<>();
         for (final IConfigurationElement node : nodes)
         {
-            final String properties = node.getAttribute(PropertiesProviderObject.EXTENSION_PROPERTIES);
+            final String properties = node.getAttribute(extension);
             if (properties != null)
             {
                 try
                 {
-                    final PropertiesProviderObject provider = UtilEclipse.createClass(properties,
-                            PropertiesProviderObject.class);
+                    final P provider = UtilEclipse.createClass(properties, clazz);
                     extensions.add(provider);
                 }
                 catch (final ReflectiveOperationException exception)
                 {
-                    Verbose.exception(PropertiesPart.class, "checkPropertiesExtensionPointObject", exception);
-                }
-            }
-        }
-        return extensions;
-    }
-
-    /**
-     * Check the properties extension point tile.
-     * 
-     * @return The properties instance from extension point or default one.
-     */
-    private static Collection<PropertiesProviderTile> checkPropertiesExtensionPointTile()
-    {
-        final IConfigurationElement[] nodes = Platform.getExtensionRegistry().getConfigurationElementsFor(
-                PropertiesProviderTile.EXTENSION_ID);
-        final Collection<PropertiesProviderTile> extensions = new ArrayList<>();
-        for (final IConfigurationElement node : nodes)
-        {
-            final String properties = node.getAttribute(PropertiesProviderTile.EXTENSION_PROPERTIES);
-            if (properties != null)
-            {
-                try
-                {
-                    final PropertiesProviderTile provider = UtilEclipse.createClass(properties,
-                            PropertiesProviderTile.class);
-                    extensions.add(provider);
-                }
-                catch (final ReflectiveOperationException exception)
-                {
-                    Verbose.exception(PropertiesPart.class, "checkPropertiesExtensionPointTile", exception);
+                    Verbose.exception(PropertiesPart.class, "checkPropertiesExtensionPoint", exception);
                 }
             }
         }
@@ -148,25 +121,28 @@ public class PropertiesPart
     @PostConstruct
     public void createComposite(Composite parent, EMenuService menuService)
     {
+        final Listener listener = UtilSwt.createAutosizeListener();
         properties = new Tree(parent, SWT.H_SCROLL | SWT.V_SCROLL);
         properties.setLayout(new FillLayout());
         properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         properties.setHeaderVisible(true);
+        properties.addListener(SWT.Collapse, listener);
+        properties.addListener(SWT.Expand, listener);
 
         final TreeColumn key = new TreeColumn(properties, SWT.LEFT);
         key.setText(Messages.Properties_Key);
-        key.setWidth(256);
 
         final TreeColumn property = new TreeColumn(properties, SWT.LEFT);
         properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         property.setText(Messages.Properties_Value);
-        property.setWidth(512);
 
         addListeners(menuService);
         PropertiesModel.INSTANCE.setTree(properties);
 
-        providersObject = checkPropertiesExtensionPointObject();
-        providersTile = checkPropertiesExtensionPointTile();
+        providersObject = checkPropertiesExtensionPoint(PropertiesProviderObject.class,
+                PropertiesProviderObject.EXTENSION_ID, PropertiesProviderObject.EXTENSION_PROPERTIES);
+        providersTile = checkPropertiesExtensionPoint(PropertiesProviderTile.class,
+                PropertiesProviderTile.EXTENSION_ID, PropertiesProviderTile.EXTENSION_PROPERTIES);
     }
 
     /**
@@ -259,7 +235,7 @@ public class PropertiesPart
                 properties.update();
             }
         });
-        menuService.registerContextMenu(properties, PropertiesPart.MENU_ID);
+        menuService.registerContextMenu(properties, MENU_ID);
     }
 
     /*
@@ -280,6 +256,10 @@ public class PropertiesPart
             {
                 provider.setInput(properties, configurer);
             }
+        }
+        for (final TreeItem item : properties.getItems())
+        {
+            UtilSwt.autoSize(item);
         }
     }
 
