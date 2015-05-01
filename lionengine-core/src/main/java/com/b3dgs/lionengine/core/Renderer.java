@@ -421,6 +421,11 @@ public class Renderer
         // Filter level
         switch (filter)
         {
+            case NONE:
+            case BILINEAR:
+                hqx = 0;
+                transform.scale(scaleX, scaleY);
+                break;
             case HQ2X:
                 hqx = 2;
                 transform.scale(scaleX / 2, scaleY / 2);
@@ -430,9 +435,7 @@ public class Renderer
                 transform.scale(scaleX / 3, scaleY / 3);
                 break;
             default:
-                hqx = 0;
-                transform.scale(scaleX, scaleY);
-                break;
+                throw new RuntimeException();
         }
 
         // Store source size

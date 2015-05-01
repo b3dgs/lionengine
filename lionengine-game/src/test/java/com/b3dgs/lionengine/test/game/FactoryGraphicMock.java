@@ -91,7 +91,7 @@ public class FactoryGraphicMock
     @Override
     public ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
-        return null;
+        return new ImageBuffer[0];
     }
 
     @Override
@@ -139,6 +139,6 @@ public class FactoryGraphicMock
     @Override
     public int[][] loadRaster(Media media)
     {
-        return null;
+        return new int[0][0];
     }
 }

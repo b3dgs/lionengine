@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.Attribute;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class AttributeTest
 {
     /**

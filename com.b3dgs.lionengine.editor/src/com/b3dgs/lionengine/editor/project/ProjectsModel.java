@@ -26,15 +26,23 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum ProjectsModel
+public class ProjectsModel
 {
-    /** Resources explorer model. */
-    INSTANCE;
+    /** Project model. */
+    public static final ProjectsModel INSTANCE = new ProjectsModel();
 
     /** Project root (resources folder). */
     private File root;
     /** Last resource selected. */
     private Media selection;
+
+    /**
+     * Private constructor.
+     */
+    private ProjectsModel()
+    {
+        // Nothing to do
+    }
 
     /**
      * Set the main resources folder.

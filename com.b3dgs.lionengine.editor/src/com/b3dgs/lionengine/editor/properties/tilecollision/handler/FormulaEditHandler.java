@@ -47,6 +47,7 @@ public class FormulaEditHandler
      * @param parent The parent reference.
      */
     @Execute
+    @SuppressWarnings("static-method")
     public void execute(EPartService partService, Shell parent)
     {
         final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);

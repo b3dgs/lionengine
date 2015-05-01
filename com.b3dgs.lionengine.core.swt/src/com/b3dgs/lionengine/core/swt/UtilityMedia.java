@@ -180,7 +180,7 @@ public final class UtilityMedia
             {
                 return true;
             }
-            catch (final NullPointerException
+            catch (final LionEngineException
                          | IOException exception)
             {
                 return false;

@@ -50,6 +50,10 @@ public class ObjectControl
     private final Map<ObjectGame, Boolean> objectsSelection = new HashMap<>();
     /** Camera reference. */
     private final Camera camera;
+    /** Factory reference. */
+    private final Factory factory;
+    /** Map reference. */
+    private final MapTile map;
     /** Handler object. */
     private final Handler handlerObject;
     /** Moving offset x. */
@@ -67,6 +71,8 @@ public class ObjectControl
     public ObjectControl(Services services)
     {
         camera = services.get(Camera.class);
+        factory = services.get(Factory.class);
+        map = services.get(MapTile.class);
         handlerObject = services.get(Handler.class);
     }
 
@@ -96,7 +102,6 @@ public class ObjectControl
      */
     public void updateDragging(int oldMx, int oldMy, int mx, int my)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
         if (!dragging)
         {
             final int th = map.getTileHeight();
@@ -147,10 +152,8 @@ public class ObjectControl
         final Media media = ProjectsModel.INSTANCE.getSelection();
         if (media != null)
         {
-            final MapTile map = WorldViewModel.INSTANCE.getMap();
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
-            final Factory factoryEntity = WorldViewModel.INSTANCE.getFactory();
-            final ObjectGame object = factoryEntity.create(media);
+            final ObjectGame object = factory.create(media);
 
             if (object.hasTrait(Transformable.class))
             {
@@ -182,7 +185,6 @@ public class ObjectControl
      */
     public void selectEntities(Rectangle selectionArea)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
         for (final Transformable object : handlerObject.get(Transformable.class))
         {
             final int th = map.getTileHeight();
@@ -243,7 +245,6 @@ public class ObjectControl
      */
     public void setObjectLocation(Transformable object, int x, int y, int side)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         object.teleport(UtilMath.getRounded(x + (side == 1 ? 0 : 1) * object.getWidth() / 2 + tw / 2, tw) + side
@@ -259,7 +260,6 @@ public class ObjectControl
      */
     public ObjectGame getObject(int mx, int my)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
         final int x = UtilMath.getRounded(mx, map.getTileWidth());
         final int y = UtilMath.getRounded(camera.getHeight() - my - 1, map.getTileHeight());
         for (final Transformable object : handlerObject.get(Transformable.class))
@@ -389,7 +389,6 @@ public class ObjectControl
      */
     private boolean hitObject(Transformable object, int x1, int y1, int x2, int y2)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
         if (object != null)
         {
             final int x = UtilMath.getRounded((int) object.getX() - object.getWidth() / 2, map.getTileWidth())

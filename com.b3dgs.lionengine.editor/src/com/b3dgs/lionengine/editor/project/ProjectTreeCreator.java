@@ -271,23 +271,28 @@ public class ProjectTreeCreator
         final File[] children = folder.listFiles();
         final TreeItem folderItem;
         // Concatenate single folder child
-        if (folder.getParentFile().listFiles().length == 1)
+        final File parentFile = folder.getParentFile();
+        if (parentFile != null)
         {
-            folderItem = parent;
-            folderItem.setText(folderItem.getText() + java.io.File.separator + folder.getName());
-        }
-        else
-        {
-            folderItem = createFolder(folder, parent);
-        }
-        Arrays.sort(children, new DirectoryFolderComparator());
-        for (final File child : children)
-        {
-            final String pathName = child.getPath();
-            if (pathName.startsWith(classesPath.getPath()) || pathName.startsWith(resourcesPath.getPath())
-                    || classesPath.getPath().startsWith(pathName) || resourcesPath.getPath().startsWith(pathName))
+            final File[] parentFiles = parentFile.listFiles();
+            if (parentFiles != null && parentFiles.length == 1)
             {
-                checkPath(child, folderItem);
+                folderItem = parent;
+                folderItem.setText(folderItem.getText() + java.io.File.separator + folder.getName());
+            }
+            else
+            {
+                folderItem = createFolder(folder, parent);
+            }
+            Arrays.sort(children, new DirectoryFolderComparator());
+            for (final File child : children)
+            {
+                final String pathName = child.getPath();
+                if (pathName.startsWith(classesPath.getPath()) || pathName.startsWith(resourcesPath.getPath())
+                        || classesPath.getPath().startsWith(pathName) || resourcesPath.getPath().startsWith(pathName))
+                {
+                    checkPath(child, folderItem);
+                }
             }
         }
     }

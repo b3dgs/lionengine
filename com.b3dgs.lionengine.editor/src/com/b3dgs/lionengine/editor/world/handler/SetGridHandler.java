@@ -36,6 +36,7 @@ public class SetGridHandler
      * @param partService The part service reference.
      */
     @Execute
+    @SuppressWarnings("static-method")
     public void execute(EPartService partService)
     {
         final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);

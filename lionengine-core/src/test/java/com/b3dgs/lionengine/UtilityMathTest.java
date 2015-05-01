@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.geom.Line;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class UtilityMathTest
 {
     /** Precision value. */

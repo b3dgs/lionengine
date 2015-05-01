@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.Range;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class RangeTest
 {
     /**

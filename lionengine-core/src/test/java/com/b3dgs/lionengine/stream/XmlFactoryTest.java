@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.mock.XmlNodeMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class XmlFactoryTest
 {
     /** Default test file xml. */

@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.Resolution;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class MouseTest
 {
     /** Mouse instance. */

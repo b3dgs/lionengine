@@ -183,12 +183,12 @@ public final class UtilFile
     public static String[] getDirsList(String path)
     {
         final File file = new File(path);
-        if (!file.exists())
+        final File[] files = file.listFiles();
+        if (files == null)
         {
             return new String[0];
         }
 
-        final File[] files = file.listFiles();
         int numberOfDirs = 0;
         for (final File file2 : files)
         {
@@ -197,7 +197,6 @@ public final class UtilFile
                 numberOfDirs++;
             }
         }
-
         final String[] dirsList = new String[numberOfDirs];
         for (int i = 0, id = 0; i < files.length; i++)
         {
@@ -220,12 +219,11 @@ public final class UtilFile
     public static String[] getFilesList(String path)
     {
         final File file = new File(path);
-        if (!file.exists())
+        final File[] files = file.listFiles();
+        if (files == null)
         {
             return new String[0];
         }
-        final File[] files = file.listFiles();
-        String[] filesList;
 
         int numberOfFiles = 0;
         for (final File file2 : files)
@@ -235,8 +233,7 @@ public final class UtilFile
                 numberOfFiles++;
             }
         }
-
-        filesList = new String[numberOfFiles];
+        final String[] filesList = new String[numberOfFiles];
         for (int i = 0, id = 0; i < files.length; i++)
         {
             if (files[i].isFile())
@@ -245,7 +242,6 @@ public final class UtilFile
                 id++;
             }
         }
-
         return filesList;
     }
 
@@ -300,9 +296,12 @@ public final class UtilFile
         if (directory.isDirectory())
         {
             final String[] children = directory.list();
-            for (final String element : children)
+            if (children != null)
             {
-                deleteDirectory(new File(directory, element));
+                for (final String element : children)
+                {
+                    deleteDirectory(new File(directory, element));
+                }
             }
             try
             {
@@ -351,15 +350,18 @@ public final class UtilFile
         if (file.exists())
         {
             final File[] files = file.listFiles();
-            for (final File content : files)
+            if (files != null)
             {
-                if (content.isDirectory())
+                for (final File content : files)
                 {
-                    getFilesByExtensionRecursive(filesList, content.getPath(), extension);
-                }
-                if (content.isFile() && extension.equals(getExtension(content)))
-                {
-                    filesList.add(content);
+                    if (content.isDirectory())
+                    {
+                        getFilesByExtensionRecursive(filesList, content.getPath(), extension);
+                    }
+                    if (content.isFile() && extension.equals(getExtension(content)))
+                    {
+                        filesList.add(content);
+                    }
                 }
             }
         }
@@ -374,15 +376,19 @@ public final class UtilFile
      */
     private static void getFilesByNameRecursive(Collection<File> filesList, File path, String name)
     {
-        for (final File file : path.listFiles())
+        final File[] files = path.listFiles();
+        if (files != null)
         {
-            if (file.isFile() && file.getName().equals(name))
+            for (final File file : files)
             {
-                filesList.add(file);
-            }
-            else if (file.isDirectory())
-            {
-                getFilesByNameRecursive(filesList, file, name);
+                if (file.isFile() && file.getName().equals(name))
+                {
+                    filesList.add(file);
+                }
+                else if (file.isDirectory())
+                {
+                    getFilesByNameRecursive(filesList, file, name);
+                }
             }
         }
     }

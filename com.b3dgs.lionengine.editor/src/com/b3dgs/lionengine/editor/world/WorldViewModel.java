@@ -31,10 +31,10 @@ import com.b3dgs.lionengine.game.object.Services;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum WorldViewModel
+public class WorldViewModel
 {
-    /** Instance. */
-    INSTANCE;
+    /** World view model. */
+    public static final WorldViewModel INSTANCE = new WorldViewModel();
 
     /** Services reference. */
     private final Services services = new Services();
@@ -56,7 +56,7 @@ public enum WorldViewModel
         handlerObject.addRenderable(new ComponentRenderer());
         services.add(handlerObject);
 
-        final Selection selection = new Selection();
+        final Selection selection = new Selection(services);
         services.add(selection);
 
         final ObjectControl objectControl = new ObjectControl(services);

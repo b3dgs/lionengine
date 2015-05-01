@@ -178,6 +178,9 @@ public enum Verbose
         final String verbose = builder.toString();
         switch (level)
         {
+            case NONE:
+                LOGGER.setLevel(Level.OFF);
+                break;
             case INFORMATION:
                 LOGGER.setLevel(Level.INFO);
                 LOGGER.logp(Level.INFO, null, null, verbose, thrown);

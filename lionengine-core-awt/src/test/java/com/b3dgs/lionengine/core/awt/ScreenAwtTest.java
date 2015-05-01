@@ -42,6 +42,7 @@ import com.b3dgs.lionengine.core.Screen;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class ScreenAwtTest
 {
     /** Exception thread flag. */

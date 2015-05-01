@@ -43,6 +43,7 @@ public class SurfaceRemoveHandler
      * @param partService The part service reference.
      */
     @Execute
+    @SuppressWarnings("static-method")
     public void execute(EPartService partService)
     {
         final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);

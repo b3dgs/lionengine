@@ -190,8 +190,12 @@ public final class ToolsAndroid
         {
             case NONE:
                 return image;
-            default:
+            case BILINEAR:
+            case HQ2X:
+            case HQ3X:
                 throw new LionEngineException("Filter not supported !");
+            default:
+                throw new RuntimeException();
         }
     }
 

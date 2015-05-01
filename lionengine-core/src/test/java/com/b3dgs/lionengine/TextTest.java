@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.mock.FactoryGraphicMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class TextTest
 {
     /** Text value. */

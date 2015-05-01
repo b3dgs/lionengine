@@ -132,9 +132,14 @@ public class FactoryGraphicMock
     {
         switch (filter)
         {
-            default:
+            case NONE:
+            case BILINEAR:
+            case HQ2X:
+            case HQ3X:
                 // Nothing
                 break;
+            default:
+                throw new RuntimeException();
         }
         return new ImageBufferMock(image.getWidth(), image.getHeight(), image.getTransparency());
     }

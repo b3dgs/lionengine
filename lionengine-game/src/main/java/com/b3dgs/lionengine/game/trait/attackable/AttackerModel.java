@@ -218,6 +218,9 @@ public class AttackerModel
     {
         switch (state)
         {
+            case NONE:
+                // Nothing to do
+                break;
             case CHECK:
                 updateAttackCheck();
                 break;
@@ -225,7 +228,7 @@ public class AttackerModel
                 updateAttacking();
                 break;
             default:
-                break;
+                throw new RuntimeException();
         }
         if (stop)
         {

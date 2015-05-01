@@ -41,6 +41,7 @@ public class Manager
      * @param display The display reference.
      */
     @ProcessAdditions
+    @SuppressWarnings("static-method")
     public void processAdditions(MApplication app, EModelService modelService, Display display)
     {
         final Monitor monitor = display.getPrimaryMonitor();

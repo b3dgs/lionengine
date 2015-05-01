@@ -182,6 +182,9 @@ public class ExtractorModel
     {
         switch (state)
         {
+            case NONE:
+                // Nothing to do
+                break;
             case GOTO_RESOURCES:
                 actionGoingToResources();
                 break;
@@ -195,7 +198,7 @@ public class ExtractorModel
                 actionDropingOff(extrp);
                 break;
             default:
-                break;
+                throw new RuntimeException();
         }
     }
 

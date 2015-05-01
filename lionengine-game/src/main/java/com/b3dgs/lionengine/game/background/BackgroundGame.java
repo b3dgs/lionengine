@@ -36,6 +36,53 @@ import com.b3dgs.lionengine.drawable.Sprite;
 public abstract class BackgroundGame
         implements Background
 {
+    /**
+     * Create an element from a name, plus its coordinates.
+     * 
+     * @param name The element name.
+     * @param x The location x.
+     * @param y The location y.
+     * @param alpha The alpha use flag.
+     * @return The created element.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
+     */
+    public static BackgroundElement createElement(String name, int x, int y, boolean alpha) throws LionEngineException
+    {
+        return new BackgroundElement(x, y, createSprite(Medias.create(name), alpha));
+    }
+
+    /**
+     * Create an element from a path and its name, plus its coordinates.
+     * 
+     * @param path The element path.
+     * @param name The element name.
+     * @param x The location x.
+     * @param y The location y.
+     * @param alpha The alpha use flag.
+     * @return The created element.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
+     */
+    public static BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
+            throws LionEngineException
+    {
+        return new BackgroundElement(x, y, createSprite(Medias.create(path, name), alpha));
+    }
+
+    /**
+     * Create a sprite from its filename.
+     * 
+     * @param media The sprite media.
+     * @param alpha The alpha use flag.
+     * @return The sprite instance.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
+     */
+    protected static Sprite createSprite(Media media, boolean alpha) throws LionEngineException
+    {
+        final Sprite sprite = Drawable.loadSprite(media);
+        sprite.load(alpha);
+        return sprite;
+    }
+
     /** List of components contained by this background. */
     protected final List<BackgroundComponent> components;
     /** Minimum background value. */
@@ -64,38 +111,6 @@ public abstract class BackgroundGame
         components = new ArrayList<>(1);
         maxY = max;
         minY = min;
-    }
-
-    /**
-     * Create an element from a name, plus its coordinates.
-     * 
-     * @param name The element name.
-     * @param x The location x.
-     * @param y The location y.
-     * @param alpha The alpha use flag.
-     * @return The created element.
-     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
-     */
-    public BackgroundElement createElement(String name, int x, int y, boolean alpha) throws LionEngineException
-    {
-        return new BackgroundElement(x, y, createSprite(Medias.create(name), alpha));
-    }
-
-    /**
-     * Create an element from a path and its name, plus its coordinates.
-     * 
-     * @param path The element path.
-     * @param name The element name.
-     * @param x The location x.
-     * @param y The location y.
-     * @param alpha The alpha use flag.
-     * @return The created element.
-     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
-     */
-    public BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
-            throws LionEngineException
-    {
-        return new BackgroundElement(x, y, createSprite(Medias.create(path, name), alpha));
     }
 
     /**
@@ -138,21 +153,6 @@ public abstract class BackgroundGame
     protected void renderComponent(int index, Graphic g)
     {
         components.get(index).render(g);
-    }
-
-    /**
-     * Create a sprite from its filename.
-     * 
-     * @param media The sprite media.
-     * @param alpha The alpha use flag.
-     * @return The sprite instance.
-     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
-     */
-    protected Sprite createSprite(Media media, boolean alpha) throws LionEngineException
-    {
-        final Sprite sprite = Drawable.loadSprite(media);
-        sprite.load(alpha);
-        return sprite;
     }
 
     /**

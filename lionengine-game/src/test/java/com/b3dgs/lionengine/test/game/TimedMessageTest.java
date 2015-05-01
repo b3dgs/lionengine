@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.TimedMessage;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class TimedMessageTest
 {
     /**

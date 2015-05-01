@@ -78,8 +78,6 @@ public class MapTileGame
     private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
     /** Error group missing message. */
     private static final String ERROR_GROUP_MISSING = "Group missing: ";
-    /** Error create tile message. */
-    private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
     /** Construction error. */
     private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
 
@@ -230,10 +228,6 @@ public class MapTileGame
         final int y = file.readInteger() * tileHeight;
         final Tile tile = createTile();
 
-        if (tile == null)
-        {
-            throw new LionEngineException(ERROR_CREATE_TILE, "sheet=" + sheet, " | number=" + number);
-        }
         tile.setSheet(Integer.valueOf(sheet));
         tile.setNumber(number);
         tile.setX(x);

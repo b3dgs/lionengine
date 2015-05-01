@@ -61,11 +61,15 @@ public class FolderTypeTester
             {
                 return true;
             }
-            for (final File file : path.listFiles())
+            final File[] files = path.listFiles();
+            if (files != null)
             {
-                if (ObjectsFolderTester.isObjectFile(UtilityMedia.get(file)))
+                for (final File file : files)
                 {
-                    return true;
+                    if (ObjectsFolderTester.isObjectFile(UtilityMedia.get(file)))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -105,11 +109,15 @@ public class FolderTypeTester
     {
         if (folder.isDirectory())
         {
-            for (final File file : folder.listFiles())
+            final File[] files = folder.listFiles();
+            if (files != null)
             {
-                if (Property.LEVEL.is(UtilityMedia.get(file)))
+                for (final File file : files)
                 {
-                    return true;
+                    if (Property.LEVEL.is(UtilityMedia.get(file)))
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -126,11 +134,15 @@ public class FolderTypeTester
     {
         if (folder.isDirectory())
         {
-            for (final File file : folder.listFiles())
+            final File[] files = folder.listFiles();
+            if (files != null)
             {
-                if (TilesheetsFolderTester.isTilesheetsFile(UtilityMedia.get(file)))
+                for (final File file : files)
                 {
-                    return true;
+                    if (TilesheetsFolderTester.isTilesheetsFile(UtilityMedia.get(file)))
+                    {
+                        return true;
+                    }
                 }
             }
         }

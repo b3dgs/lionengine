@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -33,6 +34,8 @@ public class Selection
 {
     /** Last selection area. */
     private final Rectangle selectionArea;
+    /** Map reference. */
+    private final MapTile map;
     /** Selection starting horizontal location. */
     private int startX;
     /** Selection starting vertical location. */
@@ -50,10 +53,13 @@ public class Selection
 
     /**
      * Create the selection updater.
+     * 
+     * @param services The services reference.
      */
-    public Selection()
+    public Selection(Services services)
     {
         selectionArea = Geom.createRectangle();
+        map = services.get(MapTile.class);
     }
 
     /**
@@ -66,7 +72,6 @@ public class Selection
     {
         if (!isStarted())
         {
-            final MapTile map = WorldViewModel.INSTANCE.getMap();
             final int sx = UtilMath.getRounded(mx, map.getTileWidth());
             final int sy = UtilMath.getRounded(my, map.getTileHeight());
             startX = sx;
@@ -89,7 +94,6 @@ public class Selection
     {
         if (isStarted())
         {
-            final MapTile map = WorldViewModel.INSTANCE.getMap();
             endX = UtilMath.getRounded(mx + map.getTileWidth() / 2, map.getTileWidth());
             endY = UtilMath.getRounded(my + map.getTileHeight() / 2, map.getTileHeight());
             started = true;
@@ -108,7 +112,6 @@ public class Selection
     {
         if (isSelecting())
         {
-            final MapTile map = WorldViewModel.INSTANCE.getMap();
             int sx = startX;
             int sy = startY;
             int ex = UtilMath.getRounded(mx, map.getTileWidth());

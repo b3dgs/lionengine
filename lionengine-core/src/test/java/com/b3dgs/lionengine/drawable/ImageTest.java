@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.mock.ViewerMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class ImageTest
 {
     /** Image media. */

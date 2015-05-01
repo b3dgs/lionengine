@@ -127,6 +127,8 @@ public class WorldViewRenderer
     private final Composite parent;
     /** Camera reference. */
     private final Camera camera;
+    /** Map reference. */
+    private final MapTile map;
     /** Handler object. */
     private final Handler handlerObject;
     /** Object controller. */
@@ -148,6 +150,7 @@ public class WorldViewRenderer
         this.parent = parent;
         this.partService = partService;
         camera = services.get(Camera.class);
+        map = services.get(MapTile.class);
         handlerObject = services.get(Handler.class);
         objectControl = services.get(ObjectControl.class);
         selection = services.get(Selection.class);
@@ -158,14 +161,12 @@ public class WorldViewRenderer
      * Render the world and its components.
      * 
      * @param g The graphic output.
-     * @param camera The camera reference.
-     * @param map The map reference.
      * @param areaX The horizontal rendering area.
      * @param areaY The vertical rendering area.
      */
-    protected void render(Graphic g, Camera camera, MapTile map, int areaX, int areaY)
+    protected void render(Graphic g, int areaX, int areaY)
     {
-        renderMap(g, map, areaX, areaY);
+        renderMap(g, areaX, areaY);
         renderEntities(g);
         renderOverAndSelectedEntities(g);
 
@@ -194,11 +195,10 @@ public class WorldViewRenderer
      * Render the map.
      * 
      * @param g The graphic output.
-     * @param map The map reference.
      * @param areaX The horizontal rendering area.
      * @param areaY The vertical rendering area.
      */
-    protected void renderMap(Graphic g, MapTile map, int areaX, int areaY)
+    protected void renderMap(Graphic g, int areaX, int areaY)
     {
         g.setColor(ColorRgba.BLUE);
         g.drawRect(0, 0, areaX, areaY, true);
@@ -242,45 +242,12 @@ public class WorldViewRenderer
     }
 
     /**
-     * Render the world.
-     * 
-     * @param g The graphic output.
-     * @param width The view width.
-     * @param height The view height.
-     */
-    private void render(Graphic g, int width, int height)
-    {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
-        if (map.isCreated())
-        {
-            final int tw = map.getTileWidth();
-            final int th = map.getTileHeight();
-            final int areaX = UtilMath.getRounded(width, tw);
-            final int areaY = UtilMath.getRounded(height, th);
-
-            camera.setView(0, 0, areaX, areaY);
-
-            renderBackground(g, width, height);
-            render(g, camera, map, areaX, areaY);
-            if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT)
-            {
-                renderCursor(g, tw, th, areaX, areaY);
-            }
-            if (worldViewUpdater.isGridEnabled())
-            {
-                drawGrid(g, tw, th, areaX, areaY, COLOR_GRID);
-            }
-        }
-    }
-
-    /**
      * Render the object over and selection flag.
      * 
      * @param g The graphic output.
      */
     private void renderOverAndSelectedEntities(Graphic g)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
         final int th = map.getTileHeight();
 
         for (final Transformable object : handlerObject.get(Transformable.class))
@@ -332,10 +299,32 @@ public class WorldViewRenderer
     @Override
     public void paintControl(PaintEvent paintEvent)
     {
+        final int width = paintEvent.width;
+        final int height = paintEvent.height;
         final GC gc = paintEvent.gc;
         final Graphic g = Graphics.createGraphic();
         g.setGraphic(gc);
-        render(g, paintEvent.width, paintEvent.height);
+
+        if (map.isCreated())
+        {
+            final int tw = map.getTileWidth();
+            final int th = map.getTileHeight();
+            final int areaX = UtilMath.getRounded(width, tw);
+            final int areaY = UtilMath.getRounded(height, th);
+
+            camera.setView(0, 0, areaX, areaY);
+
+            renderBackground(g, width, height);
+            render(g, areaX, areaY);
+            if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT)
+            {
+                renderCursor(g, tw, th, areaX, areaY);
+            }
+            if (worldViewUpdater.isGridEnabled())
+            {
+                drawGrid(g, tw, th, areaX, areaY, COLOR_GRID);
+            }
+        }
     }
 
     /*

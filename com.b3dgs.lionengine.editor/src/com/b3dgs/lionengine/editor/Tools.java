@@ -124,11 +124,15 @@ public final class Tools
     {
         if (path.isDirectory())
         {
-            for (final File file : path.listFiles())
+            final File[] files = path.listFiles();
+            if (files != null)
             {
-                if (FolderTypeTester.isFolderTypeFile(file))
+                for (final File file : files)
                 {
-                    return file;
+                    if (FolderTypeTester.isFolderTypeFile(file))
+                    {
+                        return file;
+                    }
                 }
             }
         }

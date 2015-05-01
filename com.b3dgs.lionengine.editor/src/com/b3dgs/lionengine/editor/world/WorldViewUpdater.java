@@ -63,6 +63,8 @@ public class WorldViewUpdater
     private final Collection<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
     /** Camera reference. */
     private final Camera camera;
+    /** Map reference. */
+    private final MapTile map;
     /** Handler object. */
     private final Handler handlerObject;
     /** Selection handler. */
@@ -90,6 +92,7 @@ public class WorldViewUpdater
     {
         this.partService = partService;
         camera = services.get(Camera.class);
+        map = services.get(MapTile.class);
         handlerObject = services.get(Handler.class);
         objectControl = services.get(ObjectControl.class);
         selection = services.get(Selection.class);
@@ -309,7 +312,6 @@ public class WorldViewUpdater
      */
     private void updatePointerMap(int mx, int my)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
         if (map.isCreated())
         {
             final Point point = Tools.getMouseTile(map, camera, mx, my);
@@ -354,7 +356,6 @@ public class WorldViewUpdater
      */
     private void updateHand()
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
         camera.teleport(UtilMath.getRounded(camera.getX(), map.getTileWidth()),
                 UtilMath.getRounded(camera.getY(), map.getTileHeight()));
     }
@@ -380,7 +381,6 @@ public class WorldViewUpdater
      */
     private void updateCamera(int vx, int vy, int step)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         if (step > 0)

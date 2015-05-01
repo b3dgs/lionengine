@@ -25,13 +25,21 @@ import org.eclipse.swt.widgets.TreeItem;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum PropertiesModel
+public class PropertiesModel
 {
     /** Properties explorer model. */
-    INSTANCE;
+    public static final PropertiesModel INSTANCE = new PropertiesModel();
 
     /** Properties tree. */
     private Tree properties;
+
+    /**
+     * Private constructor.
+     */
+    private PropertiesModel()
+    {
+        // Nothing to do
+    }
 
     /**
      * Set the properties tree.

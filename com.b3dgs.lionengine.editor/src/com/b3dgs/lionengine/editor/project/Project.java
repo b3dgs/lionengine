@@ -392,11 +392,15 @@ public final class Project
         urls.add(librariesPath.toURI().toURL());
         if (librariesPath.isDirectory())
         {
-            for (final File file : librariesPath.listFiles())
+            final File[] files = librariesPath.listFiles();
+            if (files != null)
             {
-                if (file.isFile() && file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jar"))
+                for (final File file : files)
                 {
-                    urls.add(file.toURI().toURL());
+                    if (file.isFile() && file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jar"))
+                    {
+                        urls.add(file.toURI().toURL());
+                    }
                 }
             }
         }

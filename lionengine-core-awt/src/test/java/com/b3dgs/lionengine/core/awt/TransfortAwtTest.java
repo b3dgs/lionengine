@@ -27,6 +27,7 @@ import org.junit.Test;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class TransfortAwtTest
 {
     /**

@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.Collision;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class CollisionDataTest
 {
     /**

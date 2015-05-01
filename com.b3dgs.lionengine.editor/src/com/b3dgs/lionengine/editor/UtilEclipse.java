@@ -213,36 +213,31 @@ public final class UtilEclipse
     public static <C> Collection<Class<? extends C>> getImplementing(Class<C> type, File root, String packageStart)
     {
         final Collection<Class<? extends C>> found = new HashSet<>();
-        final Collection<File> folders = new ArrayList<>();
-        final Project project = Project.getActive();
-
         if (root.isDirectory())
         {
+            final Collection<File> folders = new ArrayList<>();
             folders.add(root);
             while (!folders.isEmpty())
             {
                 final Collection<File> foldersToDo = new ArrayList<>();
                 for (final File folder : folders)
                 {
-                    for (final File current : folder.listFiles())
+                    final File[] files = folder.listFiles();
+                    if (files != null)
                     {
-                        if (current.isDirectory())
+                        for (final File current : files)
                         {
-                            foldersToDo.add(current);
-                        }
-                        else if (current.isFile() && current.getName().endsWith(".class"))
-                        {
-                            String name = current.getPath().replace(root.getPath(), "")
-                                    .replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".")
-                                    .substring(1);
-                            if (packageStart != null)
+                            if (current.isDirectory())
                             {
-                                name = name.substring(name.indexOf(packageStart));
+                                foldersToDo.add(current);
                             }
-                            final Class<?> clazz = project.getClass(name);
-                            if (type.isAssignableFrom(clazz) && clazz != type)
+                            else if (current.isFile() && current.getName().endsWith(".class"))
                             {
-                                found.add(clazz.asSubclass(type));
+                                final Class<? extends C> clazz = getImplementing(type, root, packageStart, current);
+                                if (clazz != null)
+                                {
+                                    found.add(clazz);
+                                }
                             }
                         }
                     }
@@ -253,6 +248,32 @@ public final class UtilEclipse
             }
         }
         return found;
+    }
+
+    /**
+     * Get class that implements the specified type.
+     * 
+     * @param type The type to check.
+     * @param root The folder to search.
+     * @param packageStart The starting package (<code>null</code> if none).
+     * @param current The current class file to check.
+     * @return The implementing class reference.
+     */
+    private static <C> Class<? extends C> getImplementing(Class<C> type, File root, String packageStart, File current)
+    {
+        String name = current.getPath().replace(root.getPath(), "").replace("." + Property.EXTENSION_CLASS, "")
+                .replace(File.separator, ".").substring(1);
+        if (packageStart != null)
+        {
+            name = name.substring(name.indexOf(packageStart));
+        }
+        final Project project = Project.getActive();
+        final Class<?> clazz = project.getClass(name);
+        if (type.isAssignableFrom(clazz) && clazz != type)
+        {
+            return clazz.asSubclass(type);
+        }
+        return null;
     }
 
     /**

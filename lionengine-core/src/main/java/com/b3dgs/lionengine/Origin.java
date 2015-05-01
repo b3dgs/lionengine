@@ -53,9 +53,7 @@ public enum Origin
             case TOP_LEFT:
                 return x;
             case MIDDLE:
-                return width > 0 ? x - width / 2.0 : x;
             case CENTER_TOP:
-                return width > 0 ? x - width / 2.0 : x;
             case CENTER_BOTTOM:
                 return width > 0 ? x - width / 2.0 : x;
             default:

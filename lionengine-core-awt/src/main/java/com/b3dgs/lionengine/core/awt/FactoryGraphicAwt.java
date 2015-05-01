@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.core.awt;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Hq2x;
+import com.b3dgs.lionengine.Hq3x;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
@@ -135,10 +137,18 @@ public final class FactoryGraphicAwt
     {
         switch (filter)
         {
+            case NONE:
+                return imageBuffer;
             case BILINEAR:
                 return UtilityImage.applyBilinearFilter(imageBuffer);
+            case HQ2X:
+                final Hq2x hq2x = new Hq2x(imageBuffer);
+                return hq2x.getScaledImage();
+            case HQ3X:
+                final Hq3x hq3x = new Hq3x(imageBuffer);
+                return hq3x.getScaledImage();
             default:
-                throw new LionEngineException("Unsupported filter: " + filter.name());
+                throw new RuntimeException();
         }
     }
 

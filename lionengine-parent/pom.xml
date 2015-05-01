@@ -15,13 +15,13 @@
 	<version>8.0.0-SNAPSHOT</version>
 	<name>LionEngine</name>
 	<description>Java 2D Game Engine</description>
-	<url>https://github.com/DjThunder/lionengine</url>
+	<url>https://github.com/b3dgs/lionengine</url>
 	<organization>
 		<name>Byron 3D Games Studio</name>
 		<url>www.b3dgs.com</url>
 	</organization>
 	<scm>
-		<url>https://github.com/DjThunder/lionengine.git</url>
+		<url>https://github.com/b3dgs/lionengine.git</url>
 	</scm>
 	<developers>
 		<developer>

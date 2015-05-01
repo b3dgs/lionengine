@@ -27,6 +27,78 @@ package com.b3dgs.lionengine.game.map;
  */
 public class Border20Map
 {
+    /**
+     * Get axis value of the specified location.
+     * 
+     * @param map The map reference.
+     * @param tx The horizontal tile.
+     * @param ty The vertical tile.
+     * @return The axis value.
+     */
+    public static Border20 get(Border20[][] map, int tx, int ty)
+    {
+        try
+        {
+            return map[ty][tx];
+        }
+        catch (final ArrayIndexOutOfBoundsException ex)
+        {
+            return Border20.UNKNOWN;
+        }
+    }
+
+    /**
+     * Get the top from this location.
+     * 
+     * @param map The map reference.
+     * @param tx The horizontal tile.
+     * @param ty The vertical tile.
+     * @return The fog value.
+     */
+    private static Border20 top(Border20[][] map, int tx, int ty)
+    {
+        return get(map, tx, ty + 1);
+    }
+
+    /**
+     * Get the right from this location.
+     * 
+     * @param map The map reference.
+     * @param tx The horizontal tile.
+     * @param ty The vertical tile.
+     * @return The fog value.
+     */
+    private static Border20 right(Border20[][] map, int tx, int ty)
+    {
+        return get(map, tx + 1, ty);
+    }
+
+    /**
+     * Get the down from this location.
+     * 
+     * @param map The map reference.
+     * @param tx The horizontal tile.
+     * @param ty The vertical tile.
+     * @return The fog value.
+     */
+    private static Border20 down(Border20[][] map, int tx, int ty)
+    {
+        return get(map, tx, ty - 1);
+    }
+
+    /**
+     * Get the left from this location.
+     * 
+     * @param map The map reference.
+     * @param tx The horizontal tile.
+     * @param ty The vertical tile.
+     * @return The fog value.
+     */
+    private static Border20 left(Border20[][] map, int tx, int ty)
+    {
+        return get(map, tx - 1, ty);
+    }
+
     /** Middle flag. */
     private final boolean middle;
     /** Safe array. */
@@ -263,26 +335,6 @@ public class Border20Map
         catch (final ArrayIndexOutOfBoundsException exception)
         {
             // Ignore
-        }
-    }
-
-    /**
-     * Get axis value of the specified location.
-     * 
-     * @param map The map reference.
-     * @param tx The horizontal tile.
-     * @param ty The vertical tile.
-     * @return The axis value.
-     */
-    public Border20 get(Border20[][] map, int tx, int ty)
-    {
-        try
-        {
-            return map[ty][tx];
-        }
-        catch (final ArrayIndexOutOfBoundsException ex)
-        {
-            return Border20.UNKNOWN;
         }
     }
 
@@ -541,57 +593,5 @@ public class Border20Map
         {
             // Ignore
         }
-    }
-
-    /**
-     * Get the top from this location.
-     * 
-     * @param map The map reference.
-     * @param tx The horizontal tile.
-     * @param ty The vertical tile.
-     * @return The fog value.
-     */
-    private Border20 top(Border20[][] map, int tx, int ty)
-    {
-        return get(map, tx, ty + 1);
-    }
-
-    /**
-     * Get the right from this location.
-     * 
-     * @param map The map reference.
-     * @param tx The horizontal tile.
-     * @param ty The vertical tile.
-     * @return The fog value.
-     */
-    private Border20 right(Border20[][] map, int tx, int ty)
-    {
-        return get(map, tx + 1, ty);
-    }
-
-    /**
-     * Get the down from this location.
-     * 
-     * @param map The map reference.
-     * @param tx The horizontal tile.
-     * @param ty The vertical tile.
-     * @return The fog value.
-     */
-    private Border20 down(Border20[][] map, int tx, int ty)
-    {
-        return get(map, tx, ty - 1);
-    }
-
-    /**
-     * Get the left from this location.
-     * 
-     * @param map The map reference.
-     * @param tx The horizontal tile.
-     * @param ty The vertical tile.
-     * @return The fog value.
-     */
-    private Border20 left(Border20[][] map, int tx, int ty)
-    {
-        return get(map, tx - 1, ty);
     }
 }

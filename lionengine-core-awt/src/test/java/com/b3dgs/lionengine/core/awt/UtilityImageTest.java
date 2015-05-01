@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class UtilityImageTest
 {
     /**
@@ -108,7 +109,7 @@ public class UtilityImageTest
             @Override
             public int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
             {
-                return null;
+                return new int[0];
             }
 
             @Override

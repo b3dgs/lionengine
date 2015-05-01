@@ -246,6 +246,9 @@ public class ProducerModel
     {
         switch (state)
         {
+            case NONE:
+                progress = -1;
+                break;
             case WILL_PRODUCE: // Before production
                 actionWillProduce();
                 break;
@@ -259,7 +262,7 @@ public class ProducerModel
                 actionCheck();
                 break;
             default:
-                progress = -1;
+                throw new RuntimeException();
         }
     }
 

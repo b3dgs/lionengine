@@ -102,22 +102,24 @@ public final class UtilProjectStats
         final File dir = new File(dirName);
         final File[] files = dir.listFiles();
 
-        for (final File current : files)
+        if (files != null)
         {
-            if (current.isDirectory())
+            for (final File current : files)
             {
-                exploreDir(current.getAbsolutePath());
-            }
-            else if (current.isFile())
-            {
-                final String filename = current.getAbsolutePath();
-                if (JAVA_FILE_EXTENSION.equals(getExtension(filename)))
+                if (current.isDirectory())
                 {
-                    countFileLines(filename);
+                    exploreDir(current.getAbsolutePath());
+                }
+                else if (current.isFile())
+                {
+                    final String filename = current.getAbsolutePath();
+                    if (JAVA_FILE_EXTENSION.equals(getExtension(filename)))
+                    {
+                        countFileLines(filename);
+                    }
                 }
             }
         }
-
     }
 
     /**

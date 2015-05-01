@@ -40,6 +40,7 @@ public class SetPipetHandler
      * @param partService The part service reference.
      */
     @Execute
+    @SuppressWarnings("static-method")
     public void execute(EPartService partService)
     {
         final MPart part = partService.findPart(WorldViewPart.ID);

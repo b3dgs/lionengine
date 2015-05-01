@@ -38,6 +38,7 @@ public class AnimationsEditorHandler
      * @param partService The part service reference.
      */
     @Execute
+    @SuppressWarnings("static-method")
     public void execute(EPartService partService)
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();

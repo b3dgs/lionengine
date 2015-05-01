@@ -35,6 +35,7 @@ public class AboutHandler
      * @param shell The shell reference.
      */
     @Execute
+    @SuppressWarnings("static-method")
     public void execute(Shell shell)
     {
         final AboutDialog aboutDialog = new AboutDialog(shell);

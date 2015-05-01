@@ -186,18 +186,7 @@ final class Node
         final double f = getHeuristic() + getCost();
         final double of = other.getHeuristic() + other.getCost();
 
-        if (f < of)
-        {
-            return -1;
-        }
-        else if (f > of)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
+        return Double.compare(f, of);
     }
 
     @Override

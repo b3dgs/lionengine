@@ -60,6 +60,7 @@ public class ProjectImportHandler
      * @param partService The part service reference.
      */
     @Execute
+    @SuppressWarnings("static-method")
     public void execute(Shell shell, EPartService partService)
     {
         final ProjectImportDialog importProjectDialog = new ProjectImportDialog(shell);
@@ -68,7 +69,7 @@ public class ProjectImportHandler
         final Project project = importProjectDialog.getProject();
         if (project != null)
         {
-            ProjectImportHandler.importProject(project, partService);
+            importProject(project, partService);
 
             final Factory factory = WorldViewModel.INSTANCE.getFactory();
             factory.setClassLoader(project.getClassLoader());

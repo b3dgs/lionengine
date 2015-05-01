@@ -203,7 +203,7 @@ public class FogOfWar
      */
     public boolean isVisited(int tx, int ty)
     {
-        return Border20.NONE != border20Map.get(visited, tx, ty);
+        return Border20.NONE != Border20Map.get(visited, tx, ty);
     }
 
     /**
@@ -215,7 +215,7 @@ public class FogOfWar
      */
     public boolean isFogged(int tx, int ty)
     {
-        return Border20.NONE != border20Map.get(fog, tx, ty);
+        return Border20.NONE != Border20Map.get(fog, tx, ty);
     }
 
     /**
@@ -253,8 +253,8 @@ public class FogOfWar
 
         final int tx = tile.getX() / tile.getWidth();
         final int ty = tile.getY() / tile.getHeight();
-        final Border20 vid = border20Map.get(visited, tx, ty);
-        final Border20 fid = border20Map.get(fog, tx, ty);
+        final Border20 vid = Border20Map.get(visited, tx, ty);
+        final Border20 fid = Border20Map.get(fog, tx, ty);
 
         if (fogMap && Border20.NONE != vid)
         {

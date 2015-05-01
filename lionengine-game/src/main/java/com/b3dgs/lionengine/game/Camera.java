@@ -249,7 +249,7 @@ public class Camera
             }
         }
         // Outside interval
-        if (offset.getX() == -intervalHorizontal || offset.getX() == intervalHorizontal)
+        if ((int) offset.getX() == -intervalHorizontal || (int) offset.getX() == intervalHorizontal)
         {
             transformable.moveLocation(1, vx, 0);
         }
@@ -292,7 +292,7 @@ public class Camera
             }
         }
         // Outside interval
-        if (offset.getY() == -intervalVertical || offset.getY() == intervalVertical)
+        if ((int) offset.getY() == -intervalVertical || (int) offset.getY() == intervalVertical)
         {
             transformable.moveLocation(1, 0, vy);
         }
