@@ -67,7 +67,7 @@ public class TileCollisionEditor
     }
 
     /*
-     * AbstractDialog
+     * AbstractEditor
      */
 
     @Override

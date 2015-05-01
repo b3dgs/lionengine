@@ -18,12 +18,9 @@
 package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
@@ -46,8 +43,6 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Text drawer. */
-    private final Text text = Graphics.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
     /** Services reference. */
     private final Services services = new Services();
     /** Game factory. */

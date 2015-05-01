@@ -179,19 +179,6 @@ public class WorldViewRenderer
     }
 
     /**
-     * Render the world background.
-     * 
-     * @param g The graphic output.
-     * @param width The renderer width.
-     * @param height The renderer height.
-     */
-    protected void renderBackground(Graphic g, int width, int height)
-    {
-        g.setColor(ColorRgba.GRAY_LIGHT);
-        g.drawRect(0, 0, width, height, true);
-    }
-
-    /**
      * Render the map.
      * 
      * @param g The graphic output.
@@ -314,7 +301,8 @@ public class WorldViewRenderer
 
             camera.setView(0, 0, areaX, areaY);
 
-            renderBackground(g, width, height);
+            g.setColor(ColorRgba.GRAY_LIGHT);
+            g.drawRect(0, 0, width, height, true);
             render(g, areaX, areaY);
             if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT)
             {
