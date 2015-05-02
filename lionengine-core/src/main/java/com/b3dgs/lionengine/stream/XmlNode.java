@@ -145,8 +145,9 @@ public interface XmlNode
      * Remove child.
      * 
      * @param child The child to remove.
+     * @throws LionEngineException If no node is found at this child name.
      */
-    void removeChild(String child);
+    void removeChild(String child) throws LionEngineException;
 
     /**
      * Remove child.

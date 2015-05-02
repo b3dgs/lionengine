@@ -111,4 +111,18 @@ public interface MapTileCollision
      * @return The collision groups list.
      */
     Collection<CollisionGroup> getCollisionGroups();
+
+    /**
+     * Get the formulas config file.
+     * 
+     * @return The formulas config file.
+     */
+    Media getFormulasConfig();
+
+    /**
+     * Get the collisions config file.
+     * 
+     * @return The collisions config file.
+     */
+    Media getCollisionsConfig();
 }

@@ -291,8 +291,16 @@ public class MapTileCollisionModel
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
-                    final TileCollision tileCollision = new TileCollisionModel(tile);
-                    tile.addFeature(tileCollision);
+                    final TileCollision tileCollision;
+                    if (!tile.hasFeature(TileCollision.class))
+                    {
+                        tileCollision = new TileCollisionModel(tile);
+                        tile.addFeature(tileCollision);
+                    }
+                    else
+                    {
+                        tileCollision = tile.getFeature(TileCollision.class);
+                    }
                     tileCollision.removeCollisionFormulas();
                     addTileCollisions(tileCollision, tile.getSheet().intValue(), tile.getNumber());
                 }
@@ -592,6 +600,18 @@ public class MapTileCollisionModel
     public Collection<CollisionGroup> getCollisionGroups()
     {
         return groups.values();
+    }
+
+    @Override
+    public Media getFormulasConfig()
+    {
+        return formulasConfig;
+    }
+
+    @Override
+    public Media getCollisionsConfig()
+    {
+        return groupsConfig;
     }
 
     @Override

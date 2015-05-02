@@ -35,4 +35,11 @@ public interface CollisionFunction
      * @return The output value.
      */
     double compute(double input);
+
+    /**
+     * Get the collision function type.
+     * 
+     * @return The function type.
+     */
+    CollisionFunctionType getType();
 }

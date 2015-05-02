@@ -38,10 +38,10 @@ public class TileCollisionModel
     /** Error type. */
     private static final String ERROR_TYPE = "Unknown type: ";
 
+    /** The collision formulas used. */
+    private final Collection<CollisionFormula> formulas = new HashSet<>();
     /** Tile reference. */
     private final Tile tile;
-    /** The collision formulas used. */
-    private final Collection<CollisionFormula> formulas;
 
     /**
      * Create a tile collision.
@@ -51,7 +51,6 @@ public class TileCollisionModel
     public TileCollisionModel(Tile tile)
     {
         this.tile = tile;
-        formulas = new HashSet<>();
     }
 
     /**

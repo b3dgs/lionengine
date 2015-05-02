@@ -26,5 +26,30 @@ package com.b3dgs.lionengine.game.collision;
 public enum CollisionFunctionType
 {
     /** Linear computation ({@link CollisionFunctionLinear}). */
-    LINEAR;
+    LINEAR(CollisionFunctionLinear.class);
+
+    /**
+     * Type reference.
+     */
+    private Class<? extends CollisionFunction> type;
+
+    /**
+     * Create type.
+     * 
+     * @param type The associated type.
+     */
+    private CollisionFunctionType(Class<? extends CollisionFunction> type)
+    {
+        this.type = type;
+    }
+
+    /**
+     * Get the associated type.
+     * 
+     * @return The associated type.
+     */
+    public Class<? extends CollisionFunction> getType()
+    {
+        return type;
+    }
 }

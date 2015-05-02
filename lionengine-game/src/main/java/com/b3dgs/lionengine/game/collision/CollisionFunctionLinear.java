@@ -74,4 +74,10 @@ public class CollisionFunctionLinear
     {
         return a * input + b;
     }
+
+    @Override
+    public CollisionFunctionType getType()
+    {
+        return CollisionFunctionType.LINEAR;
+    }
 }

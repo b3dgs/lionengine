@@ -274,7 +274,7 @@ final class XmlNodeImpl
     }
 
     @Override
-    public void removeChild(String child)
+    public void removeChild(String child) throws LionEngineException
     {
         final XmlNode node = getChild(child);
         if (node instanceof XmlNodeImpl)
