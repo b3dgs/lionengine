@@ -33,11 +33,13 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
@@ -91,6 +93,29 @@ public final class UtilSwt
     }
 
     /**
+     * Create a text with its legend.
+     * 
+     * @param legend The legend text.
+     * @param parent The composite parent.
+     * @return The created text.
+     */
+    public static Text createText(String legend, Composite parent)
+    {
+        final Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(2, false));
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        final Label textLegend = new Label(composite, SWT.HORIZONTAL);
+        textLegend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        textLegend.setText(legend);
+
+        final Text text = new Text(composite, SWT.SINGLE);
+        text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        return text;
+    }
+
+    /**
      * Get the selected item number from the tree.
      * 
      * @param tree The tree reference.
@@ -130,6 +155,11 @@ public final class UtilSwt
         }
         final Combo combo = new Combo(parent, SWT.READ_ONLY);
         combo.setItems(items);
+        if (items.length > 0)
+        {
+            combo.setText(items[0]);
+            combo.setData(links.get(items[0]));
+        }
         combo.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -146,6 +176,30 @@ public final class UtilSwt
                 combo.setData(links.get(combo.getText()));
             }
         });
+        return combo;
+    }
+
+    /**
+     * Create a combo from an enumeration. Selected item can be accessed with {@link Combo#getData()}.
+     * Combo items are enum names as title case, converted by {@link UtilConversion#toTitleCase(String)}.
+     * Legend label will be added on left.
+     * 
+     * @param legend The combo legend.
+     * @param parent The parent reference.
+     * @param values The enumeration values.
+     * @return The combo instance.
+     */
+    public static Combo createCombo(String legend, Composite parent, Enum<?>[] values)
+    {
+        final Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(2, false));
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        final Label textLegend = new Label(composite, SWT.HORIZONTAL);
+        textLegend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        textLegend.setText(legend);
+
+        final Combo combo = createCombo(composite, values);
         return combo;
     }
 

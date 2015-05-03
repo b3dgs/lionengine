@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine.editor.properties.tilecollision.handler;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
@@ -29,9 +26,14 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.tilecollision.dialog.TileCollisionEditor;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.map.TileCollision;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
+import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Edit formula handler.
@@ -53,29 +55,37 @@ public class FormulaEditHandler
         final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final TileGame tile = (TileGame) properties.getData();
-        final TileCollision tileCollision = tile.getFeature(TileCollision.class);
 
-        final Collection<CollisionFormula> toEdit = new ArrayList<>();
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
         for (final TreeItem selection : properties.getSelection())
         {
-            for (final CollisionFormula formula : tileCollision.getCollisionFormulas())
+            final TileCollisionEditor dialog = new TileCollisionEditor(parent);
+            dialog.create();
+
+            final String name = selection.getText(PropertiesPart.COLUMN_VALUE);
+            final CollisionFormula formula = mapCollision.getCollisionFormula(name);
+            dialog.load(formula);
+            dialog.openAndWait();
+
+            final CollisionFormula edited = dialog.getFormula();
+            if (edited != null)
             {
-                if (formula.getName().equals(selection.getText(1)))
+                final Configurer configurer = new Configurer(mapCollision.getFormulasConfig());
+                final XmlNode root = configurer.getRoot();
+                for (final XmlNode child : root.getChildren())
                 {
-                    final TileCollisionEditor dialog = new TileCollisionEditor(parent);
-                    dialog.open();
-                    dialog.load(formula);
-                    tileCollision.addCollisionFormula(dialog.getFormula());
-                    toEdit.add(formula);
+                    if (child.readString(ConfigCollisionFormula.NAME).equals(name))
+                    {
+                        root.removeChild(child);
+                    }
                 }
+                root.add(ConfigCollisionFormula.export(edited));
+                configurer.save();
             }
         }
-
-        for (final CollisionFormula formula : toEdit)
-        {
-            tileCollision.removeCollisionFormula(formula);
-        }
-        toEdit.clear();
+        mapCollision.loadCollisions(mapCollision.getFormulasConfig(), mapCollision.getCollisionsConfig());
+        mapCollision.createCollisionDraw();
         part.setInput(properties, tile);
     }
 }

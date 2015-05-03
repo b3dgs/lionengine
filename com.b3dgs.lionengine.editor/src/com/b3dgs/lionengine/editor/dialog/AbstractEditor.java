@@ -25,6 +25,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.UtilSwt;
@@ -41,6 +42,7 @@ public abstract class AbstractEditor
 
     /**
      * Editor constructor base.
+     * 
      * @param parent The parent reference.
      * @param title The editor title.
      * @param icon The editor icon.
@@ -63,14 +65,40 @@ public abstract class AbstractEditor
     /**
      * Open the dialog.
      */
-    public void open()
+    public void create()
     {
         createContent(shell);
         createBottom(shell);
         shell.pack(true);
         shell.layout(true, true);
         UtilSwt.center(shell);
+    }
+
+    /**
+     * Open the dialog and wait for close.
+     */
+    public void openAndWait()
+    {
         shell.setVisible(true);
+        final Display display = shell.getDisplay();
+        while (!shell.isDisposed())
+        {
+            if (!display.readAndDispatch())
+            {
+                display.sleep();
+            }
+        }
+    }
+
+    /**
+     * Set the editor minimum size.
+     * 
+     * @param width The horizontal size.
+     * @param height The vertical size.
+     */
+    public void setMinimumSize(int width, int height)
+    {
+        shell.setMinimumSize(width, height);
     }
 
     /**

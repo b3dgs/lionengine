@@ -39,6 +39,29 @@ public final class Messages
     /** Tile collision dialog header description. */
     public static String Dialog_TileCollision_HeaderDesc;
 
+    /** Tile collision name. */
+    public static String Dialog_TileCollision_Name;
+
+    /** Tile collision range. */
+    public static String Dialog_TileCollision_Range;
+    /** Tile collision axis. */
+    public static String Dialog_TileCollision_Axis;
+    /** Tile collision min x. */
+    public static String Dialog_TileCollision_MinX;
+    /** Tile collision max x. */
+    public static String Dialog_TileCollision_MaxX;
+    /** Tile collision min y. */
+    public static String Dialog_TileCollision_MinY;
+    /** Tile collision max y. */
+    public static String Dialog_TileCollision_MaxY;
+
+    /** Tile collision function. */
+    public static String Dialog_TileCollision_Function;
+    /** Tile collision linear a. */
+    public static String Dialog_TileCollision_Linear_A;
+    /** Tile collision linear b. */
+    public static String Dialog_TileCollision_Linear_B;
+
     /**
      * Initialize.
      */

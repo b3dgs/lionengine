@@ -52,7 +52,8 @@ public class FormulaAddHandler
         final TileCollision tileCollision = tile.getFeature(TileCollision.class);
 
         final TileCollisionEditor dialog = new TileCollisionEditor(parent);
-        dialog.open();
+        dialog.create();
+        dialog.openAndWait();
 
         final CollisionFormula formula = dialog.getFormula();
         tileCollision.addCollisionFormula(formula);

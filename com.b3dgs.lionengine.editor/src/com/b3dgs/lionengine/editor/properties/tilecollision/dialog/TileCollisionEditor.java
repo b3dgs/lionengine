@@ -17,12 +17,18 @@
  */
 package com.b3dgs.lionengine.editor.properties.tilecollision.dialog;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
+import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 
 /**
@@ -36,6 +42,18 @@ public class TileCollisionEditor
     /** Tile collision icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "edit-tilesheets.png");
 
+    /** Default collision name. */
+    private static final String DEFAULT_NAME = "default";
+
+    /** Collision range. */
+    private final CollisionRangeComposite range;
+    /** Collision function. */
+    private final CollisionFunctionComposite function;
+    /** Formula name. */
+    private Text textName;
+    /** Edited formula. */
+    private CollisionFormula formula;
+
     /**
      * Create the tile collision edition dialog.
      * 
@@ -44,6 +62,9 @@ public class TileCollisionEditor
     public TileCollisionEditor(Shell parent)
     {
         super(parent, Messages.Dialog_TileCollision_Title, ICON);
+        range = new CollisionRangeComposite();
+        function = new CollisionFunctionComposite();
+        setMinimumSize(320, 240);
     }
 
     /**
@@ -53,7 +74,10 @@ public class TileCollisionEditor
      */
     public void load(CollisionFormula formula)
     {
-        // TODO
+        textName.setText(formula.getName());
+
+        range.load(formula.getRange());
+        function.load(formula.getFunction());
     }
 
     /**
@@ -63,7 +87,7 @@ public class TileCollisionEditor
      */
     public CollisionFormula getFormula()
     {
-        return null;
+        return formula;
     }
 
     /*
@@ -73,6 +97,21 @@ public class TileCollisionEditor
     @Override
     protected void createContent(Composite content)
     {
-        // TODO
+        final Composite composite = new Composite(content, SWT.NONE);
+        composite.setLayout(new GridLayout(1, true));
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        textName = UtilSwt.createText(Messages.Dialog_TileCollision_Name, composite);
+        textName.setText(DEFAULT_NAME);
+
+        range.create(composite);
+        function.create(composite);
+    }
+
+    @Override
+    protected void onExit()
+    {
+        formula = new CollisionFormula(textName.getText(), range.get(), function.get(), new CollisionConstraint(null,
+                null, null, null));
     }
 }

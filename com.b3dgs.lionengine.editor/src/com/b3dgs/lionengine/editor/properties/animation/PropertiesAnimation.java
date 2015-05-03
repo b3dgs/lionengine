@@ -74,7 +74,8 @@ public class PropertiesAnimation
         if (ConfigAnimations.ANIMATION.equals(data))
         {
             final AnimationEditor animationEditor = new AnimationEditor(item.getParent(), configurer);
-            animationEditor.open();
+            animationEditor.create();
+            animationEditor.openAndWait();
         }
         return false;
     }

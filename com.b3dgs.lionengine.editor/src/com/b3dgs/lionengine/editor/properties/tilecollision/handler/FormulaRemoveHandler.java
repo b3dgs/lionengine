@@ -57,7 +57,7 @@ public class FormulaRemoveHandler
         {
             for (final CollisionFormula formula : tileCollision.getCollisionFormulas())
             {
-                if (formula.getName().equals(selection.getText(1)))
+                if (formula.getName().equals(selection.getText(PropertiesPart.COLUMN_VALUE)))
                 {
                     toRemove.add(formula);
                     part.clear(selection);

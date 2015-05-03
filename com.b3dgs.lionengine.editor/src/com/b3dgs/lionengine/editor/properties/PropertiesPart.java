@@ -58,6 +58,10 @@ public class PropertiesPart
     public static final String ID = Activator.PLUGIN_ID + ".part.properties";
     /** Menu ID. */
     public static final String MENU_ID = ID + ".menu";
+    /** Property key column. */
+    public static final int COLUMN_KEY = 0;
+    /** Property value column. */
+    public static final int COLUMN_VALUE = 1;
 
     /**
      * Create a line property for tree table.
@@ -292,6 +296,10 @@ public class PropertiesPart
         for (final PropertiesProviderTile provider : providersTile)
         {
             provider.setInput(properties, tile);
+        }
+        for (final TreeItem item : properties.getItems())
+        {
+            UtilSwt.autoSize(item);
         }
     }
 }

@@ -74,7 +74,8 @@ public class PropertiesCollision
         if (ConfigCollisions.COLLISION.equals(data))
         {
             final EntityCollisionEditor collisionsEditor = new EntityCollisionEditor(item.getParent(), configurer);
-            collisionsEditor.open();
+            collisionsEditor.create();
+            collisionsEditor.openAndWait();
         }
         return false;
     }

@@ -44,6 +44,7 @@ public class AnimationsEditorHandler
         final Tree tree = PropertiesModel.INSTANCE.getTree();
         final Configurer configurer = (Configurer) tree.getData();
         final AnimationEditor editor = new AnimationEditor(tree, configurer);
-        editor.open();
+        editor.create();
+        editor.openAndWait();
     }
 }

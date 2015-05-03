@@ -44,6 +44,7 @@ public class CollisionsEditorHandler
         final Tree tree = PropertiesModel.INSTANCE.getTree();
         final Configurer configurer = (Configurer) tree.getData();
         final EntityCollisionEditor editor = new EntityCollisionEditor(tree, configurer);
-        editor.open();
+        editor.create();
+        editor.openAndWait();
     }
 }
