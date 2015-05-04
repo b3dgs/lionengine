@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  */
-public class ConfigSize
+public final class ConfigSize
 {
     /** Size node name. */
     public static final String SIZE = Configurer.PREFIX + "size";
@@ -51,6 +51,14 @@ public class ConfigSize
     private final int width;
     /** The height value. */
     private final int height;
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigSize()
+    {
+        throw new RuntimeException();
+    }
 
     /**
      * Create a size configuration.

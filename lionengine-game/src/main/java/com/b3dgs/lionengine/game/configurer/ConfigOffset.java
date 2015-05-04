@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  */
-public class ConfigOffset
+public final class ConfigOffset
 {
     /** Offset node name. */
     public static final String OFFSET = Configurer.PREFIX + "offset";
@@ -51,6 +51,14 @@ public class ConfigOffset
     private final int x;
     /** The y value. */
     private final int y;
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigOffset()
+    {
+        throw new RuntimeException();
+    }
 
     /**
      * Create an offset configuration.

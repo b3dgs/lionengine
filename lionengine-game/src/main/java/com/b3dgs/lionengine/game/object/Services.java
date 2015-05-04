@@ -99,6 +99,7 @@ public class Services
      * services.add(handler);
      * </pre>
      * 
+     * @param <S> The service type.
      * @param service The service class.
      * @return The service instance already added.
      * @throws LionEngineException If unable to create service or if <code>null</code>.
@@ -152,6 +153,7 @@ public class Services
      * services.add(text);
      * </pre>
      * 
+     * @param <S> The service type.
      * @param service The service to add.
      * @return The added service (same as source).
      * @throws LionEngineException If service is <code>null</code>.
@@ -184,11 +186,12 @@ public class Services
      * Viewer viewer = services.get(Viewer.class) // Get the camera as viewer
      * </pre>
      * 
+     * @param <S> The service type.
      * @param service The service type.
      * @return The service implementation found.
      * @throws LionEngineException If service not found or <code>null</code>.
      */
-    public <C> C get(Class<C> service) throws LionEngineException
+    public <S> S get(Class<S> service) throws LionEngineException
     {
         Check.notNull(service);
         for (final Object object : services)

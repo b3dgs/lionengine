@@ -91,10 +91,10 @@ public final class ConfigCollisionFunction
     }
 
     /**
-     * Constructor.
+     * Disabled constructor.
      */
     private ConfigCollisionFunction()
     {
-        // Private constructor
+        throw new RuntimeException();
     }
 }

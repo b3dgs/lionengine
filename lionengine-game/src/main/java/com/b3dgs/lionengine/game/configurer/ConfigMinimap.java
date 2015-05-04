@@ -66,10 +66,10 @@ public final class ConfigMinimap
     }
 
     /**
-     * Constructor.
+     * Disabled Constructor.
      */
     private ConfigMinimap()
     {
-        // Private constructor
+        throw new RuntimeException();
     }
 }

@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionRange
  */
-public class ConfigCollisionRange
+public final class ConfigCollisionRange
 {
     /** The range node. */
     public static final String RANGE = Configurer.PREFIX + "range";
@@ -85,10 +85,10 @@ public class ConfigCollisionRange
     }
 
     /**
-     * Constructor.
+     * Disabled constructor.
      */
     private ConfigCollisionRange()
     {
-        // Private constructor
+        throw new RuntimeException();
     }
 }

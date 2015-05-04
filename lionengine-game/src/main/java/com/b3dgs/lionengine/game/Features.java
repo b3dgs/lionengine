@@ -68,6 +68,7 @@ public class Features<F>
     /**
      * Get a feature from its class.
      * 
+     * @param <C> The custom feature type.
      * @param feature The feature class.
      * @return The feature instance.
      * @throws LionEngineException If the feature was not found.
@@ -85,6 +86,7 @@ public class Features<F>
     /**
      * Check if contains the following feature.
      * 
+     * @param <C> The custom feature type.
      * @param feature The feature to check.
      * @return <code>true</code> if contains, <code>false</code> else.
      */
@@ -116,6 +118,7 @@ public class Features<F>
     /**
      * Get a feature from its class.
      * 
+     * @param <C> The custom feature type.
      * @param feature The feature class.
      * @return The feature instance, <code>null</code> if not found.
      */

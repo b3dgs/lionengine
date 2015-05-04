@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Collision
  */
-public class ConfigCollisions
+public final class ConfigCollisions
 {
     /** Collision node name. */
     public static final String COLLISION = Configurer.PREFIX + "collision";
@@ -109,6 +109,14 @@ public class ConfigCollisions
 
     /** Collisions map. */
     private final Map<String, Collision> collisions;
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigCollisions()
+    {
+        throw new RuntimeException();
+    }
 
     /**
      * Load collisions from configuration media.

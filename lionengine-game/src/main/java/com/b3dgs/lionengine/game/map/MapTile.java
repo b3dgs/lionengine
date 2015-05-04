@@ -103,11 +103,12 @@ public interface MapTile
      * The feature instance must provide a public constructor with {@link Services} as single argument, or the public
      * default constructor. Else, create manually the instance and use {@link #addFeature(MapTileFeature)} on it.
      * 
+     * @param <F> The feature type.
      * @param feature The feature class.
      * @return The feature instance already added.
      * @throws LionEngineException If unable to create feature or <code>null</code>.
      */
-    public <F extends MapTileFeature> F createFeature(Class<F> feature) throws LionEngineException;
+    <F extends MapTileFeature> F createFeature(Class<F> feature) throws LionEngineException;
 
     /**
      * Create a tile.

@@ -253,19 +253,7 @@ public class Camera
         {
             transformable.moveLocation(1, vx, 0);
         }
-        // Apply limit
-        if (transformable.getX() < mapLeftLimit && mapLeftLimit != Integer.MIN_VALUE)
-        {
-            transformable.teleportX(mapLeftLimit);
-        }
-        else if (transformable.getX() > mapRightLimit && mapRightLimit != Integer.MAX_VALUE)
-        {
-            transformable.teleportX(mapRightLimit);
-        }
-        else
-        {
-            transformable.moveLocation(1, Direction.ZERO);
-        }
+        applyHorizontalLimit();
     }
 
     /**
@@ -296,7 +284,34 @@ public class Camera
         {
             transformable.moveLocation(1, 0, vy);
         }
+        applyVerticalLimit();
+    }
+
+    /**
+     * Fix location inside horizontal limit.
+     */
+    private void applyHorizontalLimit()
+    {
         // Apply limit
+        if (transformable.getX() < mapLeftLimit && mapLeftLimit != Integer.MIN_VALUE)
+        {
+            transformable.teleportX(mapLeftLimit);
+        }
+        else if (transformable.getX() > mapRightLimit && mapRightLimit != Integer.MAX_VALUE)
+        {
+            transformable.teleportX(mapRightLimit);
+        }
+        else
+        {
+            transformable.moveLocation(1, Direction.ZERO);
+        }
+    }
+
+    /**
+     * Fix location inside vertical limit.
+     */
+    private void applyVerticalLimit()
+    {
         if (transformable.getY() < mapDownLimit && mapDownLimit != Integer.MIN_VALUE)
         {
             transformable.teleportY(mapDownLimit);

@@ -36,7 +36,7 @@ public class PropertiesModel
     /**
      * Private constructor.
      */
-    private PropertiesModel()
+    protected PropertiesModel()
     {
         // Nothing to do
     }

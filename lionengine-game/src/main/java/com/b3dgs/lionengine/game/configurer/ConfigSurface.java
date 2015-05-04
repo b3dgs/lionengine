@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.object.SetupSurface;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see SetupSurface
  */
-public class ConfigSurface
+public final class ConfigSurface
 {
     /** Surface node name. */
     public static final String SURFACE = Configurer.PREFIX + "surface";
@@ -52,6 +52,14 @@ public class ConfigSurface
     private final String image;
     /** The icon descriptor (can be <code>null</code>). */
     private final String icon;
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigSurface()
+    {
+        throw new RuntimeException();
+    }
 
     /**
      * Create the surface configuration.

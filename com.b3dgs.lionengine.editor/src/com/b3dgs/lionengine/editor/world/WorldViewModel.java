@@ -47,9 +47,9 @@ public class WorldViewModel
     private Enum<?> palette = PaletteType.POINTER_OBJECT;
 
     /**
-     * Private constructor.
+     * Constructor.
      */
-    private WorldViewModel()
+    protected WorldViewModel()
     {
         final Handler handlerObject = new Handler();
         handlerObject.addRenderable(new ComponentRenderer());

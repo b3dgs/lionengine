@@ -85,10 +85,10 @@ public final class ConfigCollisionGroup
     }
 
     /**
-     * Constructor.
+     * Disabled constructor.
      */
     private ConfigCollisionGroup()
     {
-        // Private constructor
+        throw new RuntimeException();
     }
 }

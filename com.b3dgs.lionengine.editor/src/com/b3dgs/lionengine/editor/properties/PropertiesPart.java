@@ -81,6 +81,7 @@ public class PropertiesPart
     /**
      * Check the properties extension point object.
      * 
+     * @param <P> The properties type.
      * @param clazz The class type.
      * @param id The extension id.
      * @param extension The extension attribute.

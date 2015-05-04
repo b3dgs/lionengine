@@ -38,6 +38,7 @@ public interface Featurable<F>
     /**
      * Get a feature instance from its type.
      * 
+     * @param <C> The custom feature type.
      * @param feature The feature type.
      * @return The feature instance.
      * @throws LionEngineException If feature not found.
@@ -54,6 +55,7 @@ public interface Featurable<F>
     /**
      * Check a feature existence from its type.
      * 
+     * @param <C> The custom feature type.
      * @param feature The feature type.
      * @return <code>true</code> if feature exists, <code>false</code> else.
      */

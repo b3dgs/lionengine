@@ -200,6 +200,37 @@ public class Renderer
     }
 
     /**
+     * Check the filter level, update the HQX value and apply transform.
+     * 
+     * @return The associated transform instance.
+     */
+    private Transform checkFilter()
+    {
+        final double scaleX = output.getWidth() / (double) source.getWidth();
+        final double scaleY = output.getHeight() / (double) source.getHeight();
+        final Transform transform = Graphics.createTransform();
+        switch (filter)
+        {
+            case NONE:
+            case BILINEAR:
+                hqx = 0;
+                transform.scale(scaleX, scaleY);
+                break;
+            case HQ2X:
+                hqx = 2;
+                transform.scale(scaleX / 2, scaleY / 2);
+                break;
+            case HQ3X:
+                hqx = 3;
+                transform.scale(scaleX / 3, scaleY / 3);
+                break;
+            default:
+                throw new RuntimeException();
+        }
+        return transform;
+    }
+
+    /**
      * Wait for screen to be ready before continuing.
      */
     private void waitForScreenReady()
@@ -408,29 +439,7 @@ public class Renderer
         screen.onSourceChanged(source);
 
         // Scale factor
-        final double scaleX = output.getWidth() / (double) source.getWidth();
-        final double scaleY = output.getHeight() / (double) source.getHeight();
-        final Transform transform = Graphics.createTransform();
-
-        // Filter level
-        switch (filter)
-        {
-            case NONE:
-            case BILINEAR:
-                hqx = 0;
-                transform.scale(scaleX, scaleY);
-                break;
-            case HQ2X:
-                hqx = 2;
-                transform.scale(scaleX / 2, scaleY / 2);
-                break;
-            case HQ3X:
-                hqx = 3;
-                transform.scale(scaleX / 3, scaleY / 3);
-                break;
-            default:
-                throw new RuntimeException();
-        }
+        final Transform transform = checkFilter();
 
         // Store source size
         final int width = source.getWidth();

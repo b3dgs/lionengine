@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * {
  *     public static void main(String[] args)
  *     {
- *         // Start engine (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, resources directory = &quot;resources&quot;)
+ *         // Start engine (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, dir = &quot;resources&quot;)
  *         // The engine is initialized with our parameters:
  *         // - The name of our program: &quot;First Code&quot;
  *         // - The program version: &quot;1.0.0&quot;

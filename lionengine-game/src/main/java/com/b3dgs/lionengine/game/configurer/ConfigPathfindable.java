@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Collision
  */
-public class ConfigPathfindable
+public final class ConfigPathfindable
 {
     /** Pathfindable node name. */
     public static final String PATHFINDABLE = Configurer.PREFIX + "pathfindable";
@@ -72,5 +72,13 @@ public class ConfigPathfindable
         final double cost = node.readDouble(COST);
         final boolean blocking = node.readBoolean(BLOCK);
         return new PathData(cost, blocking);
+    }
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigPathfindable()
+    {
+        throw new RuntimeException();
     }
 }

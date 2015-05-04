@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Producible
  */
-public class ConfigProducible
+public final class ConfigProducible
 {
     /** Producible root node. */
     public static final String PRODUCIBLE = Configurer.PREFIX + "producible";
@@ -56,6 +56,14 @@ public class ConfigProducible
     private final int width;
     /** Production height. */
     private final int height;
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigProducible()
+    {
+        throw new RuntimeException();
+    }
 
     /**
      * Create producible from configuration media.

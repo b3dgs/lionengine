@@ -73,6 +73,34 @@ public final class LionEngineException
     }
 
     /**
+     * Check if ignore engine trace depending of the class name source.
+     * 
+     * @param className The class name.
+     * @return <code>true</code> if ignore trace, <code>false</code> else.
+     */
+    private static boolean checkIgnoreEngineTrace(String className)
+    {
+        if (className.startsWith("sun.") || className.startsWith("java.lang") || className.startsWith("java.net")
+                || className.startsWith("java.security"))
+        {
+            return false;
+        }
+        if (className.startsWith(IGNORE))
+        {
+            final String pack = className.substring(IGNORE_SIZE);
+            for (final String ignore : IGNORED)
+            {
+                // Ignored sub package
+                if (pack.startsWith(ignore))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Get the filtered stack traces.
      * 
      * @param allTrace All traces.
@@ -86,27 +114,14 @@ public final class LionEngineException
             final String className = element.getClassName();
 
             // Ignored package
-            boolean add = true;
+            final boolean add;
             if (IGNORE_ENGINE_TRACE)
             {
-                if (className.startsWith("sun.") || className.startsWith("java.lang")
-                        || className.startsWith("java.net") || className.startsWith("java.security"))
-                {
-                    add = false;
-                }
-                if (className.startsWith(IGNORE))
-                {
-                    final String pack = className.substring(IGNORE_SIZE);
-                    for (final String ignore : IGNORED)
-                    {
-                        // Ignored sub package
-                        if (pack.startsWith(ignore))
-                        {
-                            add = false;
-                            break;
-                        }
-                    }
-                }
+                add = checkIgnoreEngineTrace(className);
+            }
+            else
+            {
+                add = true;
             }
             if (add)
             {

@@ -48,7 +48,8 @@ import com.b3dgs.lionengine.drawable.Image;
  * {@link #setSensibility(double, double)}).</li>
  * <li><code>grid</code>: Represents the map grid, affecting {@link #getInTileX()} and {@link #getInTileY()}.</li>
  * <li><code>location</code>: The internal cursor position ({@link #setLocation(int, int)}).</li>
- * <li><code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
+ * <li>
+ * <code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
  * </ul>
  * </p>
  * <p>

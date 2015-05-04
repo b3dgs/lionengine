@@ -88,4 +88,12 @@ public final class ConfigCollisionConstraint
             node.writeString(attribute, value);
         }
     }
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigCollisionConstraint()
+    {
+        throw new RuntimeException();
+    }
 }

@@ -95,6 +95,7 @@ public class ObjectGame
     /**
      * Add a trait.
      * 
+     * @param <T> The trait type.
      * @param trait The trait to add.
      * @return The added trait (same as source).
      */

@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Force
  */
-public class ConfigForce
+public final class ConfigForce
 {
     /** Force node name. */
     public static final String FORCE = Configurer.PREFIX + "force";
@@ -57,10 +57,10 @@ public class ConfigForce
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      */
     private ConfigForce()
     {
-        // Private constructor.
+        throw new RuntimeException();
     }
 }

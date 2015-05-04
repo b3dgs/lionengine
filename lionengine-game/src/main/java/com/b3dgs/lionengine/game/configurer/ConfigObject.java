@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  */
-public class ConfigObject
+public final class ConfigObject
 {
     /** Class node name. */
     public static final String CLASS = Configurer.PREFIX + "class";
@@ -48,6 +48,14 @@ public class ConfigObject
     private final String clazz;
     /** Setup class name. */
     private final String setup;
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigObject()
+    {
+        throw new RuntimeException();
+    }
 
     /**
      * Create an object configuration.

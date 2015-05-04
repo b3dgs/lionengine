@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Animation
  */
-public class ConfigAnimations
+public final class ConfigAnimations
 {
     /** Animation node name. */
     public static final String ANIMATION = Configurer.PREFIX + "animation";
@@ -115,6 +115,14 @@ public class ConfigAnimations
 
     /** Animations map. */
     private final Map<String, Animation> animations;
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigAnimations()
+    {
+        throw new RuntimeException();
+    }
 
     /**
      * Load animations from configuration media.

@@ -121,19 +121,20 @@ public class Factory
      * Create an object from its {@link Media} using a generic way. The concerned classes to instantiate and its
      * constructor must be public, and must have the following parameters: ({@link Setup}, {@link Services}).
      * 
+     * @param <O> The object type.
      * @param media The object media.
      * @return The object instance.
      * @throws LionEngineException If {@link Media} is <code>null</code>, {@link Setup} not found, or {@link Services}
      *             missing service.
      * @see ObjectGame#ObjectGame(Setup, Services)
      */
-    public <E extends ObjectGame> E create(Media media) throws LionEngineException
+    public <O extends ObjectGame> O create(Media media) throws LionEngineException
     {
         final Setup setup = getSetup(media);
         final Class<?> type = setup.getConfigClass(classLoader);
         try
         {
-            final E object = create(type, new Class<?>[]
+            final O object = create(type, new Class<?>[]
             {
                     setup.getClass(), Services.class
             }, setup, services);

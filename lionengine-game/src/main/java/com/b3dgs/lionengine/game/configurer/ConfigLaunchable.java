@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Launchable
  */
-public class ConfigLaunchable
+public final class ConfigLaunchable
 {
     /** Launchable node name. */
     public static final String LAUNCHABLE = Configurer.PREFIX + "launchable";
@@ -58,13 +58,21 @@ public class ConfigLaunchable
     private final Force vector;
 
     /**
+     * Disabled constructor.
+     */
+    private ConfigLaunchable()
+    {
+        throw new RuntimeException();
+    }
+
+    /**
      * Constructor.
      * 
      * @param media The media value.
      * @param delay The delay value.
      * @param vector The vector force.
      */
-    public ConfigLaunchable(String media, int delay, Force vector)
+    private ConfigLaunchable(String media, int delay, Force vector)
     {
         this.media = media;
         this.delay = delay;

@@ -30,11 +30,11 @@ public interface Body
         extends Trait, Updatable
 {
     /** Gravity of Earth (in m/s²). */
-    public static final double GRAVITY_EARTH = 9.80665;
+    double GRAVITY_EARTH = 9.80665;
     /** Gravity of Mars (in m/s²). */
-    public static final double GRAVITY_MARS = 3.71;
+    double GRAVITY_MARS = 3.71;
     /** Gravity of the Moon (in m/s²). */
-    public static final double GRAVITY_MOON = 1.624;
+    double GRAVITY_MOON = 1.624;
 
     /**
      * Reset current gravity force (usually when hit the ground).

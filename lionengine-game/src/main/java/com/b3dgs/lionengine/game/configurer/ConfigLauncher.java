@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Launcher
  */
-public class ConfigLauncher
+public final class ConfigLauncher
 {
     /** Launcher node name. */
     public static final String LAUNCHER = Configurer.PREFIX + "launcher";
@@ -61,12 +61,20 @@ public class ConfigLauncher
     private final Collection<ConfigLaunchable> launchables;
 
     /**
+     * Disabled constructor.
+     */
+    private ConfigLauncher()
+    {
+        throw new RuntimeException();
+    }
+
+    /**
      * Create a launcher configuration.
      * 
      * @param rate The rate value.
      * @param launchables The launchables reference.
      */
-    public ConfigLauncher(int rate, Collection<ConfigLaunchable> launchables)
+    private ConfigLauncher(int rate, Collection<ConfigLaunchable> launchables)
     {
         this.rate = rate;
         this.launchables = launchables;

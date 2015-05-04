@@ -39,7 +39,7 @@ public class ProjectsModel
     /**
      * Private constructor.
      */
-    private ProjectsModel()
+    protected ProjectsModel()
     {
         // Nothing to do
     }

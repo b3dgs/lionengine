@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Actionable
  */
-public class ConfigAction
+public final class ConfigAction
 {
     /** Action node name. */
     public static final String ACTION = Configurer.PREFIX + "action";
@@ -71,6 +71,14 @@ public class ConfigAction
     private final int width;
     /** Height on screen. */
     private final int height;
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigAction()
+    {
+        throw new RuntimeException();
+    }
 
     /**
      * Create action from configuration media.

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.trait.attackable;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animator;
@@ -41,6 +42,8 @@ public class AttackerModel
 {
     /** Listener list. */
     private final Collection<AttackerListener> listeners = new HashSet<>(1);
+    /** Attack timer. */
+    private final Timing timer = new Timing();
     /** Damages. */
     private final Damages damages = new Damages();
     /** Attack distance allowed. */
@@ -59,8 +62,6 @@ public class AttackerModel
     private int attackPause;
     /** Attack state. */
     private AttackState state;
-    /** Attack timer. */
-    private long timer;
     /** True if stop attack is requested. */
     private boolean stop;
     /** Currently attacking flag. */
@@ -107,7 +108,7 @@ public class AttackerModel
                     state = AttackState.ATTACKING;
                 }
             }
-            else if (UtilMath.time() - timer > attackPause)
+            else if (timer.elapsed(attackPause))
             {
                 for (final AttackerListener listener : listeners)
                 {
@@ -122,28 +123,9 @@ public class AttackerModel
      */
     private void updateAttacking()
     {
-        if (UtilMath.time() - timer > attackPause)
+        if (timer.elapsed(attackPause))
         {
-            if (!attacking)
-            {
-                for (final AttackerListener listener : listeners)
-                {
-                    listener.notifyAttackStarted(target);
-                }
-                attacking = true;
-                attacked = false;
-            }
-            // Hit when frame attack reached
-            if (attacking && animator.getFrame() >= frameAttack)
-            {
-                attacking = false;
-                for (final AttackerListener listener : listeners)
-                {
-                    listener.notifyAttackEnded(damages.getRandom(), target);
-                }
-                attacked = true;
-                timer = UtilMath.time();
-            }
+            updateAttackHit();
         }
         else if (attacked)
         {
@@ -163,6 +145,33 @@ public class AttackerModel
             {
                 listener.notifyPreparingAttack();
             }
+        }
+    }
+
+    /**
+     * Update the attack state and hit when possible.
+     */
+    private void updateAttackHit()
+    {
+        if (!attacking)
+        {
+            for (final AttackerListener listener : listeners)
+            {
+                listener.notifyAttackStarted(target);
+            }
+            attacking = true;
+            attacked = false;
+        }
+        // Hit when frame attack reached
+        if (attacking && animator.getFrame() >= frameAttack)
+        {
+            attacking = false;
+            for (final AttackerListener listener : listeners)
+            {
+                listener.notifyAttackEnded(damages.getRandom(), target);
+            }
+            attacked = true;
+            timer.restart();
         }
     }
 
@@ -204,6 +213,7 @@ public class AttackerModel
             state = AttackState.CHECK;
             attacking = false;
             stop = false;
+            timer.start();
         }
     }
 

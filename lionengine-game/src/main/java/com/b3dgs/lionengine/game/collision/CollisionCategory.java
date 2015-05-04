@@ -33,19 +33,19 @@ import com.b3dgs.lionengine.game.map.MapTileCollision;
  *  {@code<lionengine:category name="leg_right" axis="Y" x="6" y="0">}
  *     {@code<lionengine:group>block</lionengine:group>}
  *  {@code</lionengine:category>}
- *  
+ * 
  *  {@code<lionengine:category name="leg_left" axis="Y" x="-6" y="0">}
  *     {@code<lionengine:group>block</lionengine:group>}
  *  {@code</lionengine:category>}
- *  
+ * 
  *  {@code<lionengine:category name="knee_right" axis="X" x="6" y="0">}
  *     {@code<lionengine:group>block</lionengine:group>}
  *  {@code</lionengine:category>}
- *  
+ * 
  *  {@code<lionengine:category name="knee_left" axis="X" x="-6" y="0">}
  *     {@code<lionengine:group>block</lionengine:group>}
  *  {@code</lionengine:category>}
- *  
+ * 
  *  This will define 4 collision points (for ground collision and their borders, plus vertical elements for horizontal
  * collision).
  * </pre>

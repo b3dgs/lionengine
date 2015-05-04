@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ConfigFrames
+public final class ConfigFrames
 {
     /** Frames node name. */
     public static final String FRAMES = Configurer.PREFIX + "frames";
@@ -52,12 +52,20 @@ public class ConfigFrames
     private final int verticalFrames;
 
     /**
+     * Disabled constructor.
+     */
+    private ConfigFrames()
+    {
+        throw new RuntimeException();
+    }
+
+    /**
      * Constructor.
      * 
      * @param horizontalFrames The horizontal frames value.
      * @param verticalFrames The vertical frames value.
      */
-    public ConfigFrames(int horizontalFrames, int verticalFrames)
+    private ConfigFrames(int horizontalFrames, int verticalFrames)
     {
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;

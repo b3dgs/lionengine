@@ -94,6 +94,14 @@ public final class ConfigCollisionFormula
     private final Map<String, CollisionFormula> formulas;
 
     /**
+     * Disabled constructor.
+     */
+    private ConfigCollisionFormula()
+    {
+        throw new RuntimeException();
+    }
+
+    /**
      * Create a collision formula config map.
      * 
      * @param formulas The collisions formula mapping.

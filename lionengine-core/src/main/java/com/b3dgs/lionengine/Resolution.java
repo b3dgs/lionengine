@@ -21,7 +21,8 @@ package com.b3dgs.lionengine;
  * Describes a display resolution. It allows to define different parameters:
  * <ul>
  * <li><code>width & height</code> : represent the screen size</li>
- * <li><code>ratio</code>, which is computed by using the <code>width & height</code>, allows to know the screen ratio.</li>
+ * <li>
+ * <code>ratio</code>, which is computed by using the <code>width & height</code>, allows to know the screen ratio.</li>
  * <li><code>rate</code> : represents the screen refresh rate (in frames per seconds)</li>
  * </ul>
  * This class is mainly used to describe the display resolution chosen.

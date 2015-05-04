@@ -156,6 +156,7 @@ public final class UtilEclipse
     /**
      * Create a class from its name and call its corresponding constructor.
      * 
+     * @param <C> The class type.
      * @param name The full class name.
      * @param type The class type.
      * @param params The constructor parameters.
@@ -189,6 +190,7 @@ public final class UtilEclipse
     /**
      * Get all classes that implements the specified type.
      * 
+     * @param <C> The class type.
      * @param type The type to check.
      * @return The implementing class list.
      */
@@ -205,6 +207,7 @@ public final class UtilEclipse
     /**
      * Get all classes that implements the specified type.
      * 
+     * @param <C> The class type.
      * @param type The type to check.
      * @param root The folder to search.
      * @param packageStart The starting package (<code>null</code> if none).
@@ -253,6 +256,7 @@ public final class UtilEclipse
     /**
      * Get class that implements the specified type.
      * 
+     * @param <C> The class type.
      * @param type The type to check.
      * @param root The folder to search.
      * @param packageStart The starting package (<code>null</code> if none).

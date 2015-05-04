@@ -98,10 +98,10 @@ public final class ConfigCollisionCategory
     }
 
     /**
-     * Constructor.
+     * Disabled constructor.
      */
     private ConfigCollisionCategory()
     {
-        // Private constructor
+        throw new RuntimeException();
     }
 }

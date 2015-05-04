@@ -84,10 +84,10 @@ public final class ConfigTileGroup
     }
 
     /**
-     * Constructor.
+     * Disabled constructor.
      */
     private ConfigTileGroup()
     {
-        // Private constructor
+        throw new RuntimeException();
     }
 }

@@ -272,4 +272,12 @@ public final class Graphics
         }
         return rasters;
     }
+
+    /**
+     * Private constructor.
+     */
+    private Graphics()
+    {
+        throw new RuntimeException();
+    }
 }
