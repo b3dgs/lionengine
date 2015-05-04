@@ -100,7 +100,7 @@ public abstract class EngineCore
 
     /**
      * Terminate the engine. It is necessary to call this function only if the engine need to be started again during
-     * the same jvm execution. This function is automatically called when the program life cycle reach the end.
+     * the same jvm execution.
      * 
      * @throws LionEngineException If the engine has not been started.
      */
@@ -156,7 +156,7 @@ public abstract class EngineCore
      * 
      * @return <code>true</code> if started, <code>false</code> else.
      */
-    public static synchronized boolean isStarted()
+    public static boolean isStarted()
     {
         return started;
     }

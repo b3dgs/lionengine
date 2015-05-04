@@ -74,30 +74,24 @@ public class Renderer
     private volatile Sequence sequence;
     /** First sequence. */
     private volatile Class<? extends Sequence> firstSequence;
+    /** Screen reference. */
+    private volatile Screen screen;
     /** Thread running flag. */
     private volatile boolean isRunning;
-    /** Source resolution reference. */
-    private Resolution source;
-    /** Screen width. */
-    private int width;
-    /** Screen height. */
-    private int height;
-    /** Screen reference. */
-    private Screen screen;
-    /** Image buffer. */
-    private ImageBuffer buf;
-    /** Graphic buffer. */
-    private Graphic gbuf;
-    /** Hq3x use flag. */
-    private int hqx;
-    /** Filter used. */
-    private Transform op;
-    /** Direct rendering. */
-    private boolean directRendering;
-    /** Current frame rate. */
-    private double currentFrameRate;
     /** Extrapolation flag. */
-    private boolean extrapolated;
+    private volatile boolean extrapolated;
+    /** Current frame rate. */
+    private volatile int currentFrameRate;
+    /** Image buffer. */
+    private volatile ImageBuffer buf;
+    /** Hq3x use flag. */
+    private volatile int hqx;
+    /** Filter used. */
+    private volatile Transform op;
+    /** Direct rendering. */
+    private volatile boolean directRendering;
+    /** Source resolution reference. */
+    private volatile Resolution source;
 
     /**
      * Constructor base.
@@ -335,7 +329,7 @@ public class Renderer
     {
         if (currentTime - updateFpsTimer > TIME_LONG)
         {
-            currentFrameRate = TIME_DOUBLE / (currentTime - lastTime);
+            currentFrameRate = (int) (TIME_DOUBLE / (currentTime - lastTime));
             return currentTime;
         }
         return updateFpsTimer;
@@ -346,7 +340,7 @@ public class Renderer
      */
 
     @Override
-    public final synchronized void end()
+    public final void end()
     {
         isRunning = false;
     }
@@ -405,7 +399,7 @@ public class Renderer
     }
 
     @Override
-    public final void setResolution(Resolution newSource) throws LionEngineException
+    public final synchronized void setResolution(Resolution newSource) throws LionEngineException
     {
         Check.notNull(newSource);
 
@@ -416,7 +410,7 @@ public class Renderer
         // Scale factor
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
-        Transform transform = Graphics.createTransform();
+        final Transform transform = Graphics.createTransform();
 
         // Filter level
         switch (filter)
@@ -439,22 +433,20 @@ public class Renderer
         }
 
         // Store source size
-        width = source.getWidth();
-        height = source.getHeight();
+        final int width = source.getWidth();
+        final int height = source.getHeight();
 
         // Standard rendering
         if (hqx == 0 && source.getWidth() == output.getWidth() && source.getHeight() == output.getHeight())
         {
             buf = null;
-            gbuf = null;
-            transform = null;
+            op = null;
             graphic.setGraphic(null);
         }
         // Scaled rendering
         else
         {
             buf = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
-            gbuf = buf.createGraphic();
             if (hqx > 1 || filter == Filter.NONE)
             {
                 transform.setInterpolation(false);
@@ -463,15 +455,16 @@ public class Renderer
             {
                 transform.setInterpolation(true);
             }
+            op = transform;
+            final Graphic gbuf = buf.createGraphic();
             graphic.setGraphic(gbuf.getGraphic());
         }
-        op = transform;
         directRendering = hqx == 0 && (op == null || buf == null);
         sequence.setResolution(width, height);
     }
 
     @Override
-    public final void setSystemCursorVisible(boolean visible)
+    public final synchronized void setSystemCursorVisible(boolean visible)
     {
         if (visible)
         {
@@ -492,7 +485,7 @@ public class Renderer
     @Override
     public final int getFps()
     {
-        return (int) currentFrameRate;
+        return currentFrameRate;
     }
 
     @Override

@@ -79,9 +79,9 @@ public abstract class Sequence
     /** Loaded state. */
     private volatile boolean loaded;
     /** Rendering width. */
-    private int width;
+    private volatile int width;
     /** Rendering height. */
-    private int height;
+    private volatile int height;
 
     /**
      * Constructor base.
@@ -200,7 +200,7 @@ public abstract class Sequence
      * 
      * @return <code>true</code> if loaded, <code>false</code> else.
      */
-    final synchronized boolean isLoaded()
+    final boolean isLoaded()
     {
         return loaded;
     }
