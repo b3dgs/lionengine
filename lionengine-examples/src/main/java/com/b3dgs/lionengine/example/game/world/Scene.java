@@ -46,7 +46,7 @@ class Scene
      */
     public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
+        super(loader, NATIVE);
         world = new World(getConfig());
     }
 

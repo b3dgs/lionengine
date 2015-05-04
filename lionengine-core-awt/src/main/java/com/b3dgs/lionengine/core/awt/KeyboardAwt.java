@@ -19,8 +19,12 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Keyboard implementation.
@@ -37,14 +41,18 @@ final class KeyboardAwt
     /** Empty key name. */
     private static final char EMPTY_KEY_NAME = ' ';
 
+    /** Actions pressed listeners. */
+    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
+    /** Actions released listeners. */
+    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
     /** List of keys. */
-    private final Collection<Integer> keys;
+    private final Collection<Integer> keys = new HashSet<>();
     /** Pressed states. */
-    private final Collection<Integer> pressed;
+    private final Collection<Integer> pressed = new HashSet<>();
     /** Last key code. */
-    private Integer lastCode = NO_KEY_CODE_VALUE;
+    private volatile Integer lastCode = NO_KEY_CODE_VALUE;
     /** Last key name. */
-    private char lastKeyName = EMPTY_KEY_NAME;
+    private volatile char lastKeyName = EMPTY_KEY_NAME;
     /** Left key. */
     private Integer left = LEFT;
     /** Right key. */
@@ -59,8 +67,6 @@ final class KeyboardAwt
      */
     KeyboardAwt()
     {
-        keys = new HashSet<>();
-        pressed = new HashSet<>();
         lastKeyName = ' ';
         lastCode = Integer.valueOf(-1);
     }
@@ -68,6 +74,50 @@ final class KeyboardAwt
     /*
      * Keyboard
      */
+
+    @Override
+    public void addActionPressed(Integer key, EventAction action)
+    {
+        final List<EventAction> list;
+        if (actionsPressed.get(key) == null)
+        {
+            list = new ArrayList<>();
+            actionsPressed.put(key, list);
+        }
+        else
+        {
+            list = actionsPressed.get(key);
+        }
+        list.add(action);
+    }
+
+    @Override
+    public void addActionReleased(Integer key, EventAction action)
+    {
+        final List<EventAction> list;
+        if (actionsReleased.get(key) == null)
+        {
+            list = new ArrayList<>();
+            actionsReleased.put(key, list);
+        }
+        else
+        {
+            list = actionsReleased.get(key);
+        }
+        list.add(action);
+    }
+
+    @Override
+    public void removeActionsPressed()
+    {
+        actionsPressed.clear();
+    }
+
+    @Override
+    public void removeActionsReleased()
+    {
+        actionsReleased.clear();
+    }
 
     @Override
     public boolean isPressed(Integer key)
@@ -170,18 +220,41 @@ final class KeyboardAwt
     @Override
     public void keyPressed(KeyEvent event)
     {
-        lastCode = Integer.valueOf(event.getKeyCode());
         lastKeyName = event.getKeyChar();
-        keys.add(Integer.valueOf(event.getKeyCode()));
+        lastCode = Integer.valueOf(event.getKeyCode());
+        if (!keys.contains(lastCode))
+        {
+            keys.add(lastCode);
+        }
+
+        if (actionsPressed.containsKey(lastCode))
+        {
+            final List<EventAction> actions = actionsPressed.get(lastCode);
+            for (final EventAction current : actions)
+            {
+                current.action();
+            }
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent event)
     {
-        lastCode = NO_KEY_CODE_VALUE;
         lastKeyName = EMPTY_KEY_NAME;
-        keys.remove(Integer.valueOf(event.getKeyCode()));
-        pressed.remove(Integer.valueOf(event.getKeyCode()));
+        lastCode = NO_KEY_CODE_VALUE;
+
+        final Integer key = Integer.valueOf(event.getKeyCode());
+        keys.remove(key);
+        pressed.remove(key);
+
+        if (actionsPressed.containsKey(key))
+        {
+            final List<EventAction> actions = actionsReleased.get(key);
+            for (final EventAction current : actions)
+            {
+                current.action();
+            }
+        }
     }
 
     @Override

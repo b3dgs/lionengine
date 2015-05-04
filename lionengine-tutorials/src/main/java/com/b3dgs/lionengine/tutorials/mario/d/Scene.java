@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -61,7 +62,15 @@ class Scene
      */
     public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
+        super(loader, NATIVE);
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
     }
 
     /**
@@ -101,10 +110,6 @@ class Scene
     @Override
     public void update(double extrp)
     {
-        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
-        {
-            end();
-        }
         world.update(extrp);
     }
 

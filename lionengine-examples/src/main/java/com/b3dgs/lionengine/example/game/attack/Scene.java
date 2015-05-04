@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -74,8 +75,16 @@ class Scene
      */
     public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
+        super(loader, NATIVE);
         setSystemCursorVisible(false);
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
     }
 
     @Override
@@ -107,10 +116,6 @@ class Scene
     {
         mouse.update(extrp);
         handler.update(extrp);
-        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
-        {
-            end();
-        }
     }
 
     @Override

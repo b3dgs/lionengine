@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.awt.EventAction;
 
 /**
  * Scene implementation.
@@ -40,10 +41,10 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Keyboard. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Text drawer. */
     private final Text text = Graphics.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
+    /** Keyboard. */
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
 
     /**
      * Constructor.
@@ -52,7 +53,15 @@ class Scene
      */
     public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
+        super(loader, NATIVE);
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
     }
 
     @Override
@@ -66,10 +75,7 @@ class Scene
     @Override
     public void update(double extrp)
     {
-        if (keyboard.isPressed(Keyboard.ESCAPE))
-        {
-            end();
-        }
+        // Update
     }
 
     @Override

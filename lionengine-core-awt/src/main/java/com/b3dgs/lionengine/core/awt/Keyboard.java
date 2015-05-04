@@ -53,7 +53,45 @@ public interface Keyboard
     Integer UP = Integer.valueOf(KeyEvent.VK_UP);
 
     /**
+     * Add an action that will be triggered on pressed state.
+     * <p>
+     * Alternative usage with classic programming style can be achieved with {@link #isPressed(Integer)} or
+     * {@link #isPressedOnce(Integer)}.
+     * </p>
+     * 
+     * @param key The action key.
+     * @param action The action reference.
+     */
+    void addActionPressed(Integer key, EventAction action);
+
+    /**
+     * Add an action that will be triggered on released state.
+     * <p>
+     * Alternative usage with classic programming style can be achieved with {@link #isPressed(Integer)} or
+     * {@link #isPressedOnce(Integer)}.
+     * </p>
+     * 
+     * @param key The action key.
+     * @param action The action reference.
+     */
+    void addActionReleased(Integer key, EventAction action);
+
+    /**
+     * Remove all pressed actions.
+     */
+    void removeActionsPressed();
+
+    /**
+     * Remove all released actions.
+     */
+    void removeActionsReleased();
+
+    /**
      * Check if the key is currently pressed.
+     * <p>
+     * Alternative usage with event programming style can be achieved with
+     * {@link #addActionPressed(Integer, EventAction)} and {@link #addActionReleased(Integer, EventAction)}.
+     * </p>
      * 
      * @param key The key to check.
      * @return <code>true</code> if pressed, <code>false</code> else.
@@ -62,6 +100,10 @@ public interface Keyboard
 
     /**
      * Check if the key is currently pressed (not continuously).
+     * <p>
+     * Alternative usage with event programming style can be achieved with
+     * {@link #addActionPressed(Integer, EventAction)} and {@link #addActionReleased(Integer, EventAction)}.
+     * </p>
      * 
      * @param key The key to check.
      * @return <code>true</code> if pressed, <code>false</code> else.

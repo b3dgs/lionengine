@@ -44,7 +44,7 @@ class Scene
      */
     public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
+        super(loader, NATIVE);
         setExtrapolated(true);
 
         final boolean server = true;

@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
@@ -85,9 +86,17 @@ class Scene
      */
     public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
+        super(loader, NATIVE);
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
     }
 
     @Override
@@ -135,10 +144,6 @@ class Scene
         mouse.update(extrp);
         cursor.update(extrp);
         handler.update(extrp);
-        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
-        {
-            end();
-        }
     }
 
     @Override

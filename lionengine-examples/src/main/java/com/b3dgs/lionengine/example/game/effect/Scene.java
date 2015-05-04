@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
@@ -61,6 +62,14 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
     }
 
     @Override
@@ -82,11 +91,6 @@ class Scene
             handler.add(effect);
         }
         handler.update(extrp);
-
-        if (keyboard.isPressed(Keyboard.ESCAPE))
-        {
-            end();
-        }
     }
 
     @Override
