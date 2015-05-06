@@ -17,6 +17,11 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -24,7 +29,6 @@ import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Mouse input implementation.
@@ -34,6 +38,10 @@ import com.b3dgs.lionengine.core.Verbose;
 public final class MouseSwt
         implements Mouse, MouseListener, MouseMoveListener, MouseWheelListener
 {
+    /** Actions pressed listeners. */
+    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
+    /** Actions released listeners. */
+    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
     /** Clicks flags. */
     private final boolean[] clicks;
     /** Clicked flags. */
@@ -116,6 +124,40 @@ public final class MouseSwt
     /*
      * Mouse
      */
+
+    @Override
+    public void addActionPressed(int click, EventAction action)
+    {
+        final List<EventAction> list;
+        final Integer key = Integer.valueOf(click);
+        if (actionsPressed.get(key) == null)
+        {
+            list = new ArrayList<>();
+            actionsPressed.put(key, list);
+        }
+        else
+        {
+            list = actionsPressed.get(key);
+        }
+        list.add(action);
+    }
+
+    @Override
+    public void addActionReleased(int click, EventAction action)
+    {
+        final Integer key = Integer.valueOf(click);
+        final List<EventAction> list;
+        if (actionsReleased.get(key) == null)
+        {
+            list = new ArrayList<>();
+            actionsReleased.put(key, list);
+        }
+        else
+        {
+            list = actionsReleased.get(key);
+        }
+        list.add(action);
+    }
 
     @Override
     public int getOnScreenX()
@@ -211,29 +253,42 @@ public final class MouseSwt
     public void mouseDown(MouseEvent event)
     {
         lastClick = event.button;
-        try
+        if (lastClick < clicks.length)
         {
             clicks[lastClick] = true;
         }
-        catch (final ArrayIndexOutOfBoundsException exception)
+
+        final Integer key = Integer.valueOf(lastClick);
+        if (actionsPressed.containsKey(key))
         {
-            Verbose.warning(Mouse.class, "mouseReleased", "Button out of range: ", String.valueOf(lastClick));
+            final List<EventAction> actions = actionsPressed.get(key);
+            for (final EventAction current : actions)
+            {
+                current.action();
+            }
         }
     }
 
     @Override
     public void mouseUp(MouseEvent event)
     {
+        final Integer key = Integer.valueOf(lastClick);
         lastClick = 0;
+
         final int button = event.button;
-        try
+        if (button < clicks.length)
         {
             clicks[button] = false;
             clicked[button] = false;
         }
-        catch (final ArrayIndexOutOfBoundsException exception)
+
+        if (actionsPressed.containsKey(key))
         {
-            Verbose.warning(Mouse.class, "mouseReleased", "Button out of range: ", String.valueOf(button));
+            final List<EventAction> actions = actionsReleased.get(key);
+            for (final EventAction current : actions)
+            {
+                current.action();
+            }
         }
     }
 

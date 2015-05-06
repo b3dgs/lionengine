@@ -31,11 +31,35 @@ public interface Mouse
         extends InputDevicePointer, Updatable
 {
     /** Left click. */
-    public static final int LEFT = MouseEvent.BUTTON1;
+    int LEFT = MouseEvent.BUTTON1;
     /** Middle click. */
-    public static final int MIDDLE = MouseEvent.BUTTON2;
+    int MIDDLE = MouseEvent.BUTTON2;
     /** Right click. */
-    public static final int RIGHT = MouseEvent.BUTTON3;
+    int RIGHT = MouseEvent.BUTTON3;
+
+    /**
+     * Add an action that will be triggered on pressed state.
+     * <p>
+     * Alternative usage with classic programming style can be achieved with {@link #hasClicked(int)} or
+     * {@link #hasClickedOnce(int)}.
+     * </p>
+     * 
+     * @param click The action key.
+     * @param action The action reference.
+     */
+    void addActionPressed(int click, EventAction action);
+
+    /**
+     * Add an action that will be triggered on released state.
+     * <p>
+     * Alternative usage with classic programming style can be achieved with {@link #hasClicked(int)} or
+     * {@link #hasClickedOnce(int)}.
+     * </p>
+     * 
+     * @param click The action key.
+     * @param action The action reference.
+     */
+    void addActionReleased(int click, EventAction action);
 
     /**
      * Lock mouse at its center.

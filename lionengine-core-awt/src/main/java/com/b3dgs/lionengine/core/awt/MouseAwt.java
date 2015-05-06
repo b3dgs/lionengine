@@ -29,6 +29,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Verbose;
@@ -46,6 +50,10 @@ final class MouseAwt
     /** Robot error. */
     private static final String ERROR_ROBOT = "No mouse robot available !";
 
+    /** Actions pressed listeners. */
+    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
+    /** Actions released listeners. */
+    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
     /** Clicks flags. */
     private final boolean[] clicks;
     /** Clicked flags. */
@@ -162,6 +170,40 @@ final class MouseAwt
     /*
      * Mouse
      */
+
+    @Override
+    public void addActionPressed(int click, EventAction action)
+    {
+        final List<EventAction> list;
+        final Integer key = Integer.valueOf(click);
+        if (actionsPressed.get(key) == null)
+        {
+            list = new ArrayList<>();
+            actionsPressed.put(key, list);
+        }
+        else
+        {
+            list = actionsPressed.get(key);
+        }
+        list.add(action);
+    }
+
+    @Override
+    public void addActionReleased(int click, EventAction action)
+    {
+        final Integer key = Integer.valueOf(click);
+        final List<EventAction> list;
+        if (actionsReleased.get(key) == null)
+        {
+            list = new ArrayList<>();
+            actionsReleased.put(key, list);
+        }
+        else
+        {
+            list = actionsReleased.get(key);
+        }
+        list.add(action);
+    }
 
     @Override
     public void lock()
@@ -314,17 +356,38 @@ final class MouseAwt
         {
             clicks[lastClick] = true;
         }
+
+        final Integer key = Integer.valueOf(lastClick);
+        if (actionsPressed.containsKey(key))
+        {
+            final List<EventAction> actions = actionsPressed.get(key);
+            for (final EventAction current : actions)
+            {
+                current.action();
+            }
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent event)
     {
+        final Integer key = Integer.valueOf(lastClick);
         lastClick = 0;
+
         final int button = event.getButton();
         if (button < clicks.length)
         {
             clicks[button] = false;
             clicked[button] = false;
+        }
+
+        if (actionsPressed.containsKey(key))
+        {
+            final List<EventAction> actions = actionsReleased.get(key);
+            for (final EventAction current : actions)
+            {
+                current.action();
+            }
         }
     }
 

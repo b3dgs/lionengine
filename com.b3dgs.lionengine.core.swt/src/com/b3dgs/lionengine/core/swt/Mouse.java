@@ -36,6 +36,30 @@ public interface Mouse
     int RIGHT = 3;
 
     /**
+     * Add an action that will be triggered on pressed state.
+     * <p>
+     * Alternative usage with classic programming style can be achieved with {@link #hasClicked(int)} or
+     * {@link #hasClickedOnce(int)}.
+     * </p>
+     * 
+     * @param click The action key.
+     * @param action The action reference.
+     */
+    void addActionPressed(int click, EventAction action);
+
+    /**
+     * Add an action that will be triggered on released state.
+     * <p>
+     * Alternative usage with classic programming style can be achieved with {@link #hasClicked(int)} or
+     * {@link #hasClickedOnce(int)}.
+     * </p>
+     * 
+     * @param click The action key.
+     * @param action The action reference.
+     */
+    void addActionReleased(int click, EventAction action);
+
+    /**
      * Get location on screen x.
      * 
      * @return The location on screen x.
