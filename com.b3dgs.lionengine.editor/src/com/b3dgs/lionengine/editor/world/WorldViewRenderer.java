@@ -312,9 +312,11 @@ public class WorldViewRenderer
             final int areaY = UtilMath.getRounded(height, th);
 
             camera.setView(0, 0, areaX, areaY);
+            camera.setLimits(map);
 
             g.setColor(ColorRgba.GRAY_LIGHT);
             g.drawRect(0, 0, width, height, true);
+
             render(g, areaX, areaY);
             if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT)
             {
@@ -324,6 +326,10 @@ public class WorldViewRenderer
             {
                 drawGrid(g, tw, th, areaX, areaY, COLOR_GRID);
             }
+
+            g.setColor(ColorRgba.GRAY_LIGHT);
+            g.drawRect(areaX, 0, width - areaX, height, true);
+            g.drawRect(0, areaY, width, height - areaY, true);
         }
     }
 

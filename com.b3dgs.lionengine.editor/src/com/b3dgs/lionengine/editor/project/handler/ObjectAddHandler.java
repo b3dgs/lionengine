@@ -40,6 +40,8 @@ import com.b3dgs.lionengine.editor.project.ProjectTreeCreator;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.project.ProjectsPart;
 import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Add an object in the selected folder.
@@ -56,9 +58,10 @@ public class ObjectAddHandler
      * 
      * @param object The object file destination.
      * @param clazz The object class.
+     * @param setup The setup class.
      * @throws IOException If error when creating the object.
      */
-    private static void createObject(File object, Class<?> clazz) throws IOException
+    private static void createObject(File object, Class<?> clazz, Class<?> setup) throws IOException
     {
         final File template = Tools.getTemplate(Tools.TEMPLATE_OBJECT);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
@@ -68,6 +71,10 @@ public class ObjectAddHandler
             if (line.contains(Tools.TEMPLATE_CLASS_AREA))
             {
                 dest.add(line.replace(Tools.TEMPLATE_CLASS_AREA, clazz.getName()));
+            }
+            else if (line.contains(Tools.TEMPLATE_SETUP_AREA))
+            {
+                dest.add(line.replace(Tools.TEMPLATE_SETUP_AREA, setup.getName()));
             }
             else
             {
@@ -85,13 +92,12 @@ public class ObjectAddHandler
      * @param partService The part service reference.
      * @param selection The current folder selection.
      * @param object The object file destination.
-     * @param clazz The object class.
      */
-    private static void addObject(EPartService partService, Media selection, File object, Class<?> clazz)
+    private static void addObject(EPartService partService, Media selection, File object)
     {
         try
         {
-            ObjectAddHandler.createObject(object, clazz);
+            createObject(object, ObjectGame.class, Setup.class);
             final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
             part.addTreeItem(selection, object, ProjectTreeCreator.ICON_OBJECT);
         }
@@ -127,12 +133,7 @@ public class ObjectAddHandler
             }
             else
             {
-                final File classFile = Tools.selectClassFile(parent);
-                if (classFile != null)
-                {
-                    final Class<?> clazz = Tools.getClass(classFile);
-                    ObjectAddHandler.addObject(partService, selection, object, clazz);
-                }
+                addObject(partService, selection, object);
             }
         }
     }

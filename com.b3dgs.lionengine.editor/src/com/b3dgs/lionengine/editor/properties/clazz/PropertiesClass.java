@@ -42,6 +42,8 @@ public class PropertiesClass
 {
     /** Class icon. */
     private static final Image ICON_CLASS = UtilEclipse.getIcon("properties", "class.png");
+    /** Setup icon. */
+    private static final Image ICON_SETUP = UtilEclipse.getIcon("properties", "class.png");
 
     /**
      * Create the attribute class.
@@ -54,7 +56,21 @@ public class PropertiesClass
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(classItem, Messages.Properties_Class, configObject.getClassName());
         classItem.setData(ConfigObject.CLASS);
-        classItem.setImage(PropertiesClass.ICON_CLASS);
+        classItem.setImage(ICON_CLASS);
+    }
+
+    /**
+     * Create the attribute setup.
+     * 
+     * @param properties The properties tree reference.
+     * @param configObject The configObject reference.
+     */
+    private static void createAttributeSetup(Tree properties, ConfigObject configObject)
+    {
+        final TreeItem classItem = new TreeItem(properties, SWT.NONE);
+        PropertiesPart.createLine(classItem, Messages.Properties_Setup, configObject.getSetupName());
+        classItem.setData(ConfigObject.SETUP);
+        classItem.setImage(ICON_SETUP);
     }
 
     /**
@@ -79,6 +95,28 @@ public class PropertiesClass
         return false;
     }
 
+    /**
+     * Update the setup.
+     * 
+     * @param item The item reference.
+     * @param configurer The configurer reference.
+     * @return <code>true</code> if updated, <code>false</code> else.
+     */
+    private static boolean updateSetup(TreeItem item, Configurer configurer)
+    {
+        final File file = Tools.selectClassFile(item.getParent().getShell());
+        if (file != null)
+        {
+            final XmlNode root = configurer.getRoot();
+            final XmlNode setupNode = root.getChild(ConfigObject.SETUP);
+            final String setup = Tools.getClass(file).getName();
+            setupNode.setText(setup);
+            item.setText(setup);
+            return true;
+        }
+        return false;
+    }
+
     /*
      * PropertiesListener
      */
@@ -87,9 +125,14 @@ public class PropertiesClass
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
+        final ConfigObject configObject = ConfigObject.create(configurer);
         if (root.hasChild(ConfigObject.CLASS))
         {
-            createAttributeClass(properties, ConfigObject.create(configurer));
+            createAttributeClass(properties, configObject);
+        }
+        if (root.hasChild(ConfigObject.SETUP))
+        {
+            createAttributeSetup(properties, configObject);
         }
     }
 
@@ -101,6 +144,10 @@ public class PropertiesClass
         if (ConfigObject.CLASS.equals(data))
         {
             updated = updateClass(item, configurer);
+        }
+        if (ConfigObject.SETUP.equals(data))
+        {
+            updated = updateSetup(item, configurer);
         }
         return updated;
     }

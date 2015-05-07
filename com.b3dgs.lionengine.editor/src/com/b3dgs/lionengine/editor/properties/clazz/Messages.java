@@ -34,6 +34,8 @@ public final class Messages
 
     /** Class property. */
     public static String Properties_Class;
+    /** Setup property. */
+    public static String Properties_Setup;
 
     /**
      * Initialize.

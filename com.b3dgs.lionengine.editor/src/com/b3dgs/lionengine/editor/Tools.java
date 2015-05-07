@@ -64,6 +64,8 @@ public final class Tools
     public static final String TEMPLATE_OBJECT = "object." + Tools.TEMPLATE_EXTENSION;
     /** Template class area. */
     public static final String TEMPLATE_CLASS_AREA = "%CLASS%";
+    /** Template setup area. */
+    public static final String TEMPLATE_SETUP_AREA = "%SETUP%";
     /** Folder type name node. */
     private static final String NODE_FOLDER_TYPE_NAME = "lionengine:name";
     /** Create directory error. */
