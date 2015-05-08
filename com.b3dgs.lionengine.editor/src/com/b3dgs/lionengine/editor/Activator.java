@@ -38,11 +38,11 @@ public class Activator
         implements BundleActivator
 {
     /** Plugin name. */
-    public static final String PLUGIN_NAME = "LionEngine Editor";
+    public static final String PLUGIN_NAME = EngineCore.NAME + " Editor";
     /** Plugin version. */
     public static final Version PLUGIN_VERSION = EngineCore.VERSION;
     /** Plugin website. */
-    public static final String PLUGIN_WEBSITE = "www.b3dgs.com";
+    public static final String PLUGIN_WEBSITE = EngineCore.WEBSITE;
     /** Plugin ID. */
     public static final String PLUGIN_ID = "com.b3dgs.lionengine.editor";
     /** Context reference. */

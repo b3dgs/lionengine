@@ -97,14 +97,13 @@ public final class ConfigAnimations
     /**
      * Create an XML node from an animation.
      * 
-     * @param name The animation name.
      * @param animation The animation reference.
      * @return The animation node.
      */
-    public static XmlNode createNode(String name, Animation animation)
+    public static XmlNode createNode(Animation animation)
     {
         final XmlNode node = Stream.createXmlNode(ANIMATION);
-        node.writeString(ANIMATION_NAME, name);
+        node.writeString(ANIMATION_NAME, animation.getName());
         node.writeInteger(ANIMATION_START, animation.getFirst());
         node.writeInteger(ANIMATION_END, animation.getLast());
         node.writeDouble(ANIMATION_SPEED, animation.getSpeed());

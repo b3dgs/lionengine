@@ -22,10 +22,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -150,16 +153,24 @@ public class ObjectControl
     public void addEntity(int mx, int my)
     {
         final Media media = ProjectsModel.INSTANCE.getSelection();
-        if (media != null)
+        if (ObjectsFolderTester.isObjectFile(media))
         {
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
-            final ObjectGame object = factory.create(media);
-
-            if (object.hasTrait(Transformable.class))
+            try
             {
-                setObjectLocation(object.getTrait(Transformable.class), tile.getX(), tile.getY(), 1);
+                final ObjectGame object = factory.create(media);
+
+                if (object.hasTrait(Transformable.class))
+                {
+                    setObjectLocation(object.getTrait(Transformable.class), tile.getX(), tile.getY(), 1);
+                }
+                handlerObject.add(object);
             }
-            handlerObject.add(object);
+            catch (final LionEngineException exception)
+            {
+                Verbose.warning(ObjectControl.class, "addEntity", exception.getMessage());
+                // TODO Handle the case when trait are missing
+            }
         }
     }
 

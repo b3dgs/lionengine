@@ -44,7 +44,7 @@ public class ObjectsFolderTester
     /**
      * Check if the file is an object descriptor.
      * 
-     * @param media The media to test.
+     * @param media The media to test (can be <code>null</code>).
      * @return <code>true</code> if valid, <code>false</code> else.
      */
     public static boolean isObjectFile(Media media)

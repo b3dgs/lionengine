@@ -58,5 +58,6 @@ public class FramesRemoveHandler
                 part.clear(item);
             }
         }
+        part.setInput(properties, configurer);
     }
 }

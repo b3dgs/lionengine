@@ -60,14 +60,15 @@ public class FormulaRemoveHandler
                 if (formula.getName().equals(selection.getText(PropertiesPart.COLUMN_VALUE)))
                 {
                     toRemove.add(formula);
-                    part.clear(selection);
                 }
             }
+            part.clear(selection);
         }
         for (final CollisionFormula formula : toRemove)
         {
             tileCollision.removeCollisionFormula(formula);
         }
         toRemove.clear();
+        part.setInput(properties, tile);
     }
 }

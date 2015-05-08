@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.core.Media;
 public final class LionEngineException
         extends RuntimeException
 {
-    /** Activate the ignore flag. */
-    private static final boolean IGNORE_ENGINE_TRACE = true;
     /** The main ignored package. */
     private static final String IGNORE = "com.b3dgs.lionengine.";
     /** The number of ignored characters. */
@@ -53,6 +51,18 @@ public final class LionEngineException
     };
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599464L;
+    /** Activate the ignore flag. */
+    private static volatile boolean ignoreEngineTrace = true;
+
+    /**
+     * Set the engine trace ignore flag.
+     * 
+     * @param ignore <code>true</code> to ignore in depth engine trace, <code>false</code> to show full trace.
+     */
+    public static void setIgnoreEngineTrace(boolean ignore)
+    {
+        ignoreEngineTrace = ignore;
+    }
 
     /**
      * Revert the stack trace array.
@@ -115,7 +125,7 @@ public final class LionEngineException
 
             // Ignored package
             final boolean add;
-            if (IGNORE_ENGINE_TRACE)
+            if (ignoreEngineTrace)
             {
                 add = checkIgnoreEngineTrace(className);
             }

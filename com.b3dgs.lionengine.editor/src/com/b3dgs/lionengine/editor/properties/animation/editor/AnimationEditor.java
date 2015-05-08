@@ -158,8 +158,7 @@ public class AnimationEditor
         for (final TreeItem item : animationList.getTree().getItems())
         {
             final Animation animation = (Animation) item.getData();
-            final String anim = item.getText();
-            final XmlNode nodeAnim = ConfigAnimations.createNode(anim, animation);
+            final XmlNode nodeAnim = ConfigAnimations.createNode(animation);
             root.add(nodeAnim);
         }
         configurer.save();

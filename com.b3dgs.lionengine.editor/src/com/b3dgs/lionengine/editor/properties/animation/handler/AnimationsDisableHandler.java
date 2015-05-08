@@ -57,5 +57,7 @@ public class AnimationsDisableHandler
                 part.clear(item);
             }
         }
+        final Tree properties = part.getTree();
+        part.setInput(properties, configurer);
     }
 }

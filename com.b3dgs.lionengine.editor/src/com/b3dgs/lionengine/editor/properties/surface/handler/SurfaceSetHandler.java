@@ -58,6 +58,7 @@ public class SurfaceSetHandler
             root.add(surfaceNode);
             configurer.save();
             PropertiesSurface.createAttributeSurface(properties, configurer);
+            part.setInput(properties, configurer);
         }
     }
 }

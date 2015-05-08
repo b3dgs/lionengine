@@ -75,6 +75,7 @@ public class EntityCollisionEditor
 
         entityCollisionList.create(content);
         entityCollisionProperties.create(content);
+        entityCollisionProperties.setObjectList(entityCollisionList);
 
         entityCollisionList.loadCollisions();
     }
@@ -87,8 +88,7 @@ public class EntityCollisionEditor
         for (final TreeItem item : entityCollisionList.getTree().getItems())
         {
             final Collision collision = (Collision) item.getData();
-            final String coll = item.getText();
-            final XmlNode nodeAnim = ConfigCollisions.createNode(coll, collision);
+            final XmlNode nodeAnim = ConfigCollisions.createNode(collision);
             root.add(nodeAnim);
         }
         configurer.save();

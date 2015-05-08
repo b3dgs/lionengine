@@ -91,14 +91,13 @@ public final class ConfigCollisions
     /**
      * Create an XML node from a collision.
      * 
-     * @param name The collision name.
      * @param collision The collision reference.
      * @return The collision node.
      */
-    public static XmlNode createNode(String name, Collision collision)
+    public static XmlNode createNode(Collision collision)
     {
         final XmlNode node = Stream.createXmlNode(COLLISION);
-        node.writeString(COLLISION_NAME, name);
+        node.writeString(COLLISION_NAME, collision.getName());
         node.writeInteger(COLLISION_OFFSETX, collision.getOffsetX());
         node.writeInteger(COLLISION_OFFSETY, collision.getOffsetY());
         node.writeInteger(COLLISION_WIDTH, collision.getWidth());

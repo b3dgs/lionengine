@@ -68,6 +68,7 @@ public class FramesSetHandler
                 configurer.getRoot().add(frames);
                 configurer.save();
                 PropertiesFrames.createAttributeFrames(properties, configurer);
+                part.setInput(properties, configurer);
             }
         }
     }
