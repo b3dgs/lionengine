@@ -67,6 +67,7 @@ public class XmlNodeTest
         root.add(child1);
         root.add(child2);
 
+        Assert.assertEquals(root.getNodeName(), "root");
         Assert.assertNotNull(root.getChild("child1"));
         Assert.assertNotNull(root.getChild("child2"));
 

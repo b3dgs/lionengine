@@ -38,15 +38,15 @@ import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the tile sheets edition dialog.
+ * Represents the sheets edition dialog.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TilesheetsEditDialog
+public class SheetsEditDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit-tilesheets.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "sheets-edit.png");
 
     /** Tile sheets media. */
     final Media tilesheets;
@@ -59,10 +59,10 @@ public class TilesheetsEditDialog
      * @param parent The parent shell.
      * @param tilesheets The tile sheets media.
      */
-    public TilesheetsEditDialog(Shell parent, Media tilesheets)
+    public SheetsEditDialog(Shell parent, Media tilesheets)
     {
-        super(parent, Messages.EditTilesheetsDialog_Title, Messages.EditTilesheetsDialog_HeaderTitle,
-                Messages.EditTilesheetsDialog_HeaderDesc, ICON);
+        super(parent, Messages.EditSheetsDialog_Title, Messages.EditSheetsDialog_HeaderTitle,
+                Messages.EditSheetsDialog_HeaderDesc, ICON);
         this.tilesheets = tilesheets;
         buttons = new ArrayList<>();
         createDialog();

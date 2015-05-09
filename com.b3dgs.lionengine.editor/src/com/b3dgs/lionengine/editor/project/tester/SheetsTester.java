@@ -32,24 +32,24 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TilesheetsFolderTester
+public class SheetsTester
         extends PropertyTester
 {
-    /** Can edit tile sheets property. */
-    private static final String PROPERTY_EDIT_TILESHEETS = "editTilesheets";
+    /** Can edit sheets property. */
+    private static final String PROPERTY_EDIT_SHEETS = "editSheets";
 
     /**
-     * Check if the media is a tile sheets descriptor.
+     * Check if the media is a sheets descriptor.
      * 
      * @param media The media to test.
      * @return <code>true</code> if valid, <code>false</code> else.
      */
-    public static boolean isTilesheetsFile(Media media)
+    public static boolean isSheetsFile(Media media)
     {
         try
         {
             final XmlNode root = Stream.loadXml(media);
-            return root.getChild(MapTile.NODE_TILE_SHEET) != null;
+            return MapTile.NODE_TILE_SHEETS.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)
         {
@@ -70,9 +70,9 @@ public class TilesheetsFolderTester
             final Media selection = ProjectsModel.INSTANCE.getSelection();
             if (selection != null)
             {
-                if (TilesheetsFolderTester.PROPERTY_EDIT_TILESHEETS.equals(property))
+                if (PROPERTY_EDIT_SHEETS.equals(property))
                 {
-                    return TilesheetsFolderTester.isTilesheetsFile(selection);
+                    return isSheetsFile(selection);
                 }
             }
         }

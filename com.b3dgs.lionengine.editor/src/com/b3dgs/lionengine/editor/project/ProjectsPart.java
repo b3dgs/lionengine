@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
+import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
@@ -204,7 +204,7 @@ public class ProjectsPart
     void updateProperties(Media media)
     {
         final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
-        if (ObjectsFolderTester.isObjectFile(media))
+        if (ObjectsTester.isObjectFile(media))
         {
             part.setInput(part.getTree(), new Configurer(media));
         }

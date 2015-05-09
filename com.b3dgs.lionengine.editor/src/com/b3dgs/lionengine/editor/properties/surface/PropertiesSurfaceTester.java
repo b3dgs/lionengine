@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.properties.surface;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
+import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 
@@ -49,7 +49,7 @@ public class PropertiesSurfaceTester
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
         final PropertiesModel model = PropertiesModel.INSTANCE;
-        if (!model.isEmpty() && ObjectsFolderTester.isObjectFile(ProjectsModel.INSTANCE.getSelection()))
+        if (!model.isEmpty() && ObjectsTester.isObjectFile(ProjectsModel.INSTANCE.getSelection()))
         {
             final Object data = model.getSelectedData();
             if (PROPERTY_SURFACE_SET.equals(property))

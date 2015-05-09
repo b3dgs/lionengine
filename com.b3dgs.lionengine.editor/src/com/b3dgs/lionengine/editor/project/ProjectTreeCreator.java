@@ -31,8 +31,9 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
-import com.b3dgs.lionengine.editor.project.tester.TilesheetsFolderTester;
+import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
+import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
+import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 
 /**
  * Generate the project tree from the project folder.
@@ -67,8 +68,10 @@ public class ProjectTreeCreator
     public static final Image ICON_ENTITY = UtilEclipse.getIcon("resources", "entity.png");
     /** Class file icon. */
     public static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
-    /** Tile sheets file icon. */
-    public static final Image ICON_TILESHEETS = UtilEclipse.getIcon("resources", "tilesheets.png");
+    /** Sheets file icon. */
+    public static final Image ICON_SHEETS = UtilEclipse.getIcon("resources", "sheets.png");
+    /** Groups file icon. */
+    public static final Image ICON_GROUPS = UtilEclipse.getIcon("resources", "groups.png");
 
     /** Classes folder. */
     private static final String FOLDER_CLASSES = "classes";
@@ -123,13 +126,17 @@ public class ProjectTreeCreator
      */
     private static Image getDataIcon(Media file)
     {
-        if (ObjectsFolderTester.isObjectFile(file))
+        if (ObjectsTester.isObjectFile(file))
         {
             return ProjectTreeCreator.ICON_OBJECT;
         }
-        else if (TilesheetsFolderTester.isTilesheetsFile(file))
+        else if (SheetsTester.isSheetsFile(file))
         {
-            return ProjectTreeCreator.ICON_TILESHEETS;
+            return ProjectTreeCreator.ICON_SHEETS;
+        }
+        else if (GroupsTester.isGroupsFile(file))
+        {
+            return ProjectTreeCreator.ICON_GROUPS;
         }
         return ProjectTreeCreator.ICON_DATA;
     }

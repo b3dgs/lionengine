@@ -66,6 +66,8 @@ public interface MapTile
     String ATTRIBUTE_TILE_WIDTH = "width";
     /** Tile height attribute. */
     String ATTRIBUTE_TILE_HEIGHT = "height";
+    /** Tile sheets node. */
+    String NODE_TILE_SHEETS = "lionengine:sheets";
     /** Tile sheet node. */
     String NODE_TILE_SHEET = "lionengine:sheet";
     /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */

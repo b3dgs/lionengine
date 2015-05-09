@@ -164,6 +164,13 @@ public interface XmlNode
     void removeChildren(String children);
 
     /**
+     * Get the name of the current node.
+     * 
+     * @return The node name.
+     */
+    String getNodeName();
+
+    /**
      * Return the text inside the node.
      * 
      * @return The text.

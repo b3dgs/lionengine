@@ -16,8 +16,11 @@
                 <children xsi:type="menu:DirectMenuItem" xmi:id="_R97LoEmxEeSY5e88dCWRPA" elementId="" label="%menu.edit-folder-type" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/folder-type-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.FolderTypeEditHandler">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_R97LoUmxEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.folder-type.category"/>
                 </children>
-                <children xsi:type="menu:DirectMenuItem" xmi:id="_1MDiwEmwEeSY5e88dCWRPA" elementId="" label="%menu.tilesheets-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/tilesheets-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.TilesheetsEditHandler">
-                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_1MDiwUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.tilesheets-folder.editTilesheets"/>
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_1MDiwEmwEeSY5e88dCWRPA" elementId="" label="%menu.sheets-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/sheets-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.SheetsEditHandler">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_1MDiwUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.sheets.edit"/>
+                </children>
+                <children xsi:type="menu:DirectMenuItem" xmi:id="__oic4PZQEeSRrd1pxiHA1g" elementId="" label="%menu.groups-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/groups-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__oic4fZQEeSRrd1pxiHA1g" coreExpressionId="com.b3dgs.lionengine.editor.groups.edit"/>
                 </children>
               </menus>
             </children>

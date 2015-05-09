@@ -194,6 +194,12 @@ public final class XmlNodeMock
     }
 
     @Override
+    public String getNodeName()
+    {
+        return null;
+    }
+
+    @Override
     public String getText()
     {
         return null;

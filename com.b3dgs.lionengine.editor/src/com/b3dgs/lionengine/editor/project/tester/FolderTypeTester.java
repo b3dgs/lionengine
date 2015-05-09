@@ -66,7 +66,7 @@ public class FolderTypeTester
             {
                 for (final File file : files)
                 {
-                    if (ObjectsFolderTester.isObjectFile(UtilityMedia.get(file)))
+                    if (ObjectsTester.isObjectFile(UtilityMedia.get(file)))
                     {
                         return true;
                     }
@@ -139,7 +139,7 @@ public class FolderTypeTester
             {
                 for (final File file : files)
                 {
-                    if (TilesheetsFolderTester.isTilesheetsFile(UtilityMedia.get(file)))
+                    if (SheetsTester.isSheetsFile(UtilityMedia.get(file)))
                     {
                         return true;
                     }

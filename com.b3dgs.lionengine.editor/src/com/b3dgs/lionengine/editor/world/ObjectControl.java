@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
+import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -153,7 +153,7 @@ public class ObjectControl
     public void addEntity(int mx, int my)
     {
         final Media media = ProjectsModel.INSTANCE.getSelection();
-        if (ObjectsFolderTester.isObjectFile(media))
+        if (ObjectsTester.isObjectFile(media))
         {
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
             try

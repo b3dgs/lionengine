@@ -101,9 +101,15 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.tilesheets-folder.editTilesheets">
+            id="com.b3dgs.lionengine.editor.sheets.edit">
          <test
-               property="com.b3dgs.lionengine.editor.tilesheetsFolderTester.editTilesheets">
+               property="com.b3dgs.lionengine.editor.sheetsTester.editSheets">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.groups.edit">
+         <test
+               property="com.b3dgs.lionengine.editor.groupsTester.editGroups">
          </test>
       </definition>
       <definition
@@ -207,10 +213,17 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.TilesheetsFolderTester"
-            id="com.b3dgs.lionengine.editor.tilesheetsFolderTester"
-            namespace="com.b3dgs.lionengine.editor.tilesheetsFolderTester"
-            properties="editTilesheets"
+            class="com.b3dgs.lionengine.editor.project.tester.SheetsTester"
+            id="com.b3dgs.lionengine.editor.sheetsTester"
+            namespace="com.b3dgs.lionengine.editor.sheetsTester"
+            properties="editSheets"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.tester.GroupsTester"
+            id="com.b3dgs.lionengine.editor.groupsTester"
+            namespace="com.b3dgs.lionengine.editor.groupsTester"
+            properties="editGroups"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
@@ -221,7 +234,7 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester"
+            class="com.b3dgs.lionengine.editor.project.tester.ObjectsTester"
             id="com.b3dgs.lionengine.editor.entitiesFolderTester"
             namespace="com.b3dgs.lionengine.editor.objectsFolderTester"
             properties="addObject,isObject"

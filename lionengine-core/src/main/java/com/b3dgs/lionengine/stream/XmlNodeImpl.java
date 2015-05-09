@@ -305,6 +305,12 @@ final class XmlNodeImpl
     }
 
     @Override
+    public String getNodeName()
+    {
+        return root.getTagName();
+    }
+
+    @Override
     public String getText()
     {
         return root.getTextContent();

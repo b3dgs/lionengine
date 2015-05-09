@@ -68,12 +68,19 @@ public final class Messages
     /** Import project error dialog text properties. */
     public static String ImportProjectDialog_ErrorPropertiesText;
 
-    /** Edit tile sheets dialog title. */
-    public static String EditTilesheetsDialog_Title;
-    /** Edit tile sheets dialog title header. */
-    public static String EditTilesheetsDialog_HeaderTitle;
-    /** Edit tile sheets dialog description header. */
-    public static String EditTilesheetsDialog_HeaderDesc;
+    /** Edit sheets dialog title. */
+    public static String EditSheetsDialog_Title;
+    /** Edit sheets dialog title header. */
+    public static String EditSheetsDialog_HeaderTitle;
+    /** Edit sheets dialog description header. */
+    public static String EditSheetsDialog_HeaderDesc;
+
+    /** Edit groups dialog title. */
+    public static String EditGroupsDialog_Title;
+    /** Edit groups dialog title header. */
+    public static String EditGroupsDialog_HeaderTitle;
+    /** Edit groups dialog description header. */
+    public static String EditGroupsDialog_HeaderDesc;
 
     /**
      * Initialize.

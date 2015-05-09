@@ -17,42 +17,39 @@
  */
 package com.b3dgs.lionengine.editor.project.tester;
 
-import java.io.File;
-
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Test if the folder contains objects.
+ * Test if the folder contains groups file.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ObjectsFolderTester
+public class GroupsTester
         extends PropertyTester
 {
-    /** Can add object property. */
-    private static final String PROPERTY_ADD_OBJECT = "addObject";
-    /** Is object property. */
-    private static final String PROPERTY_IS_OBJECT = "isObject";
+    /** Can edit groups property. */
+    private static final String PROPERTY_EDIT_GROUPS = "editGroups";
 
     /**
-     * Check if the file is an object descriptor.
+     * Check if the media is a groups descriptor.
      * 
-     * @param media The media to test (can be <code>null</code>).
+     * @param media The media to test.
      * @return <code>true</code> if valid, <code>false</code> else.
      */
-    public static boolean isObjectFile(Media media)
+    public static boolean isGroupsFile(Media media)
     {
         try
         {
-            final Class<?> clazz = Tools.getClass(media);
-            return ObjectGame.class.isAssignableFrom(clazz);
+            final XmlNode root = Stream.loadXml(media);
+            return ConfigTileGroup.GROUPS.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)
         {
@@ -73,14 +70,9 @@ public class ObjectsFolderTester
             final Media selection = ProjectsModel.INSTANCE.getSelection();
             if (selection != null)
             {
-                final File file = selection.getFile();
-                if (ObjectsFolderTester.PROPERTY_ADD_OBJECT.equals(property))
+                if (PROPERTY_EDIT_GROUPS.equals(property))
                 {
-                    return file.isDirectory() && !FolderTypeTester.isFolderType(selection.getFile());
-                }
-                else if (ObjectsFolderTester.PROPERTY_IS_OBJECT.equals(property))
-                {
-                    return ObjectsFolderTester.isObjectFile(selection);
+                    return isGroupsFile(selection);
                 }
             }
         }
