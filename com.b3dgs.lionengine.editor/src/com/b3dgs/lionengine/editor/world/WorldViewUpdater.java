@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -74,6 +75,8 @@ public class WorldViewUpdater
     private Tile selectedTile;
     /** Grid enabled. */
     private boolean gridEnabled;
+    /** Collisions enabled. */
+    private boolean collisionsEnabled;
     /** Current horizontal mouse location. */
     private int mouseX;
     /** Current vertical mouse location. */
@@ -147,6 +150,27 @@ public class WorldViewUpdater
     }
 
     /**
+     * Set the collisions enabled state.
+     */
+    public void switchCollisionsEnabled()
+    {
+        collisionsEnabled = !collisionsEnabled;
+
+        if (map.hasFeature(MapTileCollision.class))
+        {
+            final MapTileCollision mapTileCollision = map.getFeature(MapTileCollision.class);
+            if (collisionsEnabled)
+            {
+                mapTileCollision.createCollisionDraw();
+            }
+            else
+            {
+                mapTileCollision.clearCollisionDraw();
+            }
+        }
+    }
+
+    /**
      * Get the handler object.
      * 
      * @return The handler object.
@@ -204,6 +228,16 @@ public class WorldViewUpdater
     public boolean isGridEnabled()
     {
         return gridEnabled;
+    }
+
+    /**
+     * Check if collisions is enabled.
+     * 
+     * @return <code>true</code> if enabled, <code>false</code> else.
+     */
+    public boolean isCollisionsEnabled()
+    {
+        return collisionsEnabled;
     }
 
     /**

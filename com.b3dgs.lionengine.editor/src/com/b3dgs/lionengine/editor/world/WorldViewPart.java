@@ -144,6 +144,14 @@ public class WorldViewPart
     }
 
     /**
+     * Switch the collisions enabled state.
+     */
+    public void switchCollisionsEnabled()
+    {
+        worldViewUpdater.switchCollisionsEnabled();
+    }
+
+    /**
      * Set the current cursor.
      * 
      * @param cursor The cursor to set.

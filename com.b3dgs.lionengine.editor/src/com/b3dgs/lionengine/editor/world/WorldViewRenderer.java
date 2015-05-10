@@ -196,7 +196,7 @@ public class WorldViewRenderer
             map.render(g);
             try
             {
-                if (map.hasFeature(MapTileCollision.class))
+                if (map.hasFeature(MapTileCollision.class) && worldViewUpdater.isCollisionsEnabled())
                 {
                     map.getFeature(MapTileCollision.class).render(g);
                 }
