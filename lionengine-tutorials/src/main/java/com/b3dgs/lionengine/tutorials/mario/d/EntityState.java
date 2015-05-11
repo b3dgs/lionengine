@@ -35,7 +35,7 @@ enum EntityState
     IDLE(StateIdle.class),
     /** Walk state. */
     WALK(StateWalk.class),
-    /** turn state. */
+    /** Turn state. */
     TURN(StateTurn.class),
     /** Jump state. */
     JUMP(StateJump.class),

@@ -144,10 +144,8 @@ class Mario
 
     /**
      * Load all existing animations defined in the xml file.
-     * 
-     * @param factory The state factory reference.
      */
-    private void loadStates(StateFactory factory)
+    private void loadStates()
     {
         final ConfigAnimations configAnimations = ConfigAnimations.create(getConfigurer());
         for (final MarioState state : MarioState.values())
@@ -167,7 +165,7 @@ class Mario
     @Override
     protected void onPrepared()
     {
-        loadStates(factory);
+        loadStates();
         state = factory.getState(MarioState.IDLE);
     }
 

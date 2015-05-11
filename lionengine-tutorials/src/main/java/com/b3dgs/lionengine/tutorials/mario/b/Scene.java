@@ -46,6 +46,23 @@ class Scene
     /** Level file. */
     private static final Media LEVEL = Medias.create("level.lvl");
 
+    /**
+     * Import and save the level.
+     */
+    private static void importAndSave()
+    {
+        final MapTile map = new MapTileGame();
+        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        try (FileWriting file = Stream.createFileWriting(LEVEL))
+        {
+            map.save(file);
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(Scene.class, "importAndSave", exception, "Error on saving map !");
+        }
+    }
+
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** World reference. */
@@ -67,23 +84,6 @@ class Scene
                 end();
             }
         });
-    }
-
-    /**
-     * Import and save the level.
-     */
-    private static void importAndSave()
-    {
-        final MapTile map = new MapTileGame();
-        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
-        try (FileWriting file = Stream.createFileWriting(LEVEL))
-        {
-            map.save(file);
-        }
-        catch (final IOException exception)
-        {
-            Verbose.exception(Scene.class, "importAndSave", exception, "Error on saving map !");
-        }
     }
 
     @Override

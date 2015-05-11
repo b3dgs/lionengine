@@ -227,10 +227,8 @@ class Entity
 
     /**
      * Load all existing animations defined in the xml file.
-     * 
-     * @param factory The state factory reference.
      */
-    private void loadStates(StateFactory factory)
+    private void loadStates()
     {
         final ConfigAnimations configAnimations = ConfigAnimations.create(getConfigurer());
         for (final EntityState type : EntityState.values())
@@ -251,7 +249,7 @@ class Entity
     @Override
     protected void onPrepared()
     {
-        loadStates(factory);
+        loadStates();
         state = factory.getState(EntityState.IDLE);
     }
 

@@ -45,7 +45,9 @@ class World
     private final MapTile map = services.create(MapTileGame.class);
 
     /**
-     * @see WorldGame#WorldGame(Config)
+     * Constructor.
+     * 
+     * @param config The config reference.
      */
     public World(Config config)
     {
