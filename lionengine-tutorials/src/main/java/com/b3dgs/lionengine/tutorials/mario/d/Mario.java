@@ -62,7 +62,7 @@ class Mario
         {
             this.collidable.setEnabled(false);
             tileCollidable.setEnabled(false);
-            changeState(factory.getState(EntityState.DEATH_MARIO));
+            changeState(EntityState.DEATH_MARIO);
         }
     }
 }

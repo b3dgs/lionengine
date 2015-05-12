@@ -36,31 +36,47 @@ import com.b3dgs.lionengine.core.Updatable;
  * <ul>
  * <li>{@link #enter()} one time on the state (reset default state and prepare for update)</li>
  * <li>{@link #update(double)} the state for each game loop</li>
- * <li>{@link #handleInput(StateFactory, InputDevice)} will allow to return the next state, depending of the user
- * {@link InputDevice} usage. The state needs to implement {@link #handleInput(StateFactory, InputDevice)}</li>
  * <li>The {@link StateFactory} will allow to choose which state should be then returned if needed, and {@link #enter()}
  * will be called, and so on</li>
  * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see StateHandler
  * @see StateFactory
  */
 public interface State
         extends Updatable
 {
     /**
-     * Handle the input by retrieving its state.
+     * Add a transition with another state.
      * 
-     * @param factory The state factory reference.
-     * @param input The input reference.
-     * @return The new state (<code>null</code> if unchanged).
+     * @param transition The transition to add.
      */
-    State handleInput(StateFactory factory, InputDevice input);
+    void addTransition(StateTransition transition);
+
+    /**
+     * Clear all transitions defined.
+     */
+    void clearTransitions();
 
     /**
      * Called by the {@link StateFactory} when entering in the state.
      */
     void enter();
+
+    /**
+     * Called by the {@link StateHandler} when exiting the state.
+     */
+    void exit();
+
+    /**
+     * Check the transitions in order to find the next state.
+     * 
+     * @param factory The state factory reference.
+     * @param input The input device reference.
+     * @return The next state (<code>null</code> if none).
+     */
+    State checkTransitions(StateFactory factory, InputDevice input);
 
     /**
      * Get the corresponding state enum value.

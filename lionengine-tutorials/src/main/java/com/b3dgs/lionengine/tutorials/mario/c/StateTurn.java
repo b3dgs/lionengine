@@ -19,11 +19,12 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.State;
-import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.StateGame;
+import com.b3dgs.lionengine.game.StateInputDirectionalUpdater;
+import com.b3dgs.lionengine.game.StateTransition;
+import com.b3dgs.lionengine.game.StateTransitionInputDirectionalChecker;
 
 /**
  * Turn state implementation.
@@ -31,14 +32,15 @@ import com.b3dgs.lionengine.game.StateFactory;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateTurn
-        implements State
+        extends StateGame
+        implements StateInputDirectionalUpdater
 {
+    /** Movement force. */
+    final Force movement;
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
-    /** Movement force. */
-    private final Force movement;
     /** Movement side. */
     private double side;
 
@@ -50,30 +52,12 @@ class StateTurn
      */
     public StateTurn(Mario mario, Animation animation)
     {
+        super(MarioState.TURN);
         this.animation = animation;
         animator = mario.getSurface();
         movement = mario.getMovement();
-    }
-
-    @Override
-    public State handleInput(StateFactory factory, InputDevice input)
-    {
-        if (input instanceof InputDeviceDirectional)
-        {
-            final InputDeviceDirectional device = (InputDeviceDirectional) input;
-            if (device.getVerticalDirection() > 0)
-            {
-                return factory.getState(MarioState.JUMP);
-            }
-            side = device.getHorizontalDirection();
-            if ((device.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() < 0 || device
-                    .getHorizontalDirection() > 0 && movement.getDirectionHorizontal() > 0)
-                    && device.getVerticalDirection() == 0)
-            {
-                return factory.getState(MarioState.WALK);
-            }
-        }
-        return null;
+        addTransition(new TransitionTurnToWalk());
+        addTransition(new TransitionTurnToJump());
     }
 
     @Override
@@ -86,14 +70,60 @@ class StateTurn
     }
 
     @Override
+    public void updateInput(InputDeviceDirectional input)
+    {
+        side = input.getHorizontalDirection();
+    }
+
+    @Override
     public void update(double extrp)
     {
         movement.setDestination(side * 2, 0);
     }
 
-    @Override
-    public Enum<?> getState()
+    /**
+     * Transition from {@link StateTurn} to {@link StateWalk}.
+     */
+    private final class TransitionTurnToWalk
+            extends StateTransition
+            implements StateTransitionInputDirectionalChecker
     {
-        return MarioState.TURN;
+        /**
+         * Create the transition.
+         */
+        public TransitionTurnToWalk()
+        {
+            super(MarioState.WALK);
+        }
+
+        @Override
+        public boolean check(InputDeviceDirectional input)
+        {
+            return (input.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() < 0 || input
+                    .getHorizontalDirection() > 0 && movement.getDirectionHorizontal() > 0)
+                    && input.getVerticalDirection() == 0;
+        }
+    }
+
+    /**
+     * Transition from {@link StateTurn} to {@link StateJump}.
+     */
+    private final class TransitionTurnToJump
+            extends StateTransition
+            implements StateTransitionInputDirectionalChecker
+    {
+        /**
+         * Create the transition.
+         */
+        public TransitionTurnToJump()
+        {
+            super(MarioState.JUMP);
+        }
+
+        @Override
+        public boolean check(InputDeviceDirectional input)
+        {
+            return input.getVerticalDirection() > 0;
+        }
     }
 }

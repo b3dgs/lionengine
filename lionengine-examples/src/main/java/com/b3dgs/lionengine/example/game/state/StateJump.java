@@ -20,11 +20,12 @@ package com.b3dgs.lionengine.example.game.state;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.State;
-import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.StateGame;
+import com.b3dgs.lionengine.game.StateInputDirectionalUpdater;
+import com.b3dgs.lionengine.game.StateTransition;
+import com.b3dgs.lionengine.game.StateTransitionInputDirectionalChecker;
 import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 
 /**
@@ -33,8 +34,11 @@ import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateJump
-        implements State
+        extends StateGame
+        implements StateInputDirectionalUpdater
 {
+    /** Jump force. */
+    final Force jump;
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
     /** Animator reference. */
@@ -43,8 +47,6 @@ class StateJump
     private final Animation animation;
     /** Movement force. */
     private final Force movement;
-    /** Jump force. */
-    private final Force jump;
     /** Movement side. */
     private double side;
 
@@ -56,26 +58,13 @@ class StateJump
      */
     public StateJump(Mario mario, Animation animation)
     {
+        super(MarioState.JUMP);
         this.animation = animation;
         mirrorable = mario.getTrait(Mirrorable.class);
         animator = mario.getSurface();
         movement = mario.getMovement();
         jump = mario.getJump();
-    }
-
-    @Override
-    public State handleInput(StateFactory factory, InputDevice input)
-    {
-        if (input instanceof InputDeviceDirectional)
-        {
-            final InputDeviceDirectional device = (InputDeviceDirectional) input;
-            side = device.getHorizontalDirection();
-            if (jump.getDirectionVertical() == 0)
-            {
-                return factory.getState(MarioState.IDLE);
-            }
-        }
-        return null;
+        addTransition(new TransitionJumpToIdle());
     }
 
     @Override
@@ -84,6 +73,12 @@ class StateJump
         animator.play(animation);
         jump.setDirection(0.0, 8.0);
         side = 0;
+    }
+
+    @Override
+    public void updateInput(InputDeviceDirectional input)
+    {
+        side = input.getHorizontalDirection();
     }
 
     @Override
@@ -96,9 +91,25 @@ class StateJump
         }
     }
 
-    @Override
-    public Enum<?> getState()
+    /**
+     * Transition from {@link StateJump} to {@link StateIdle}.
+     */
+    private final class TransitionJumpToIdle
+            extends StateTransition
+            implements StateTransitionInputDirectionalChecker
     {
-        return MarioState.JUMP;
+        /**
+         * Create the transition.
+         */
+        public TransitionJumpToIdle()
+        {
+            super(MarioState.IDLE);
+        }
+
+        @Override
+        public boolean check(InputDeviceDirectional input)
+        {
+            return jump.getDirectionVertical() == 0;
+        }
     }
 }

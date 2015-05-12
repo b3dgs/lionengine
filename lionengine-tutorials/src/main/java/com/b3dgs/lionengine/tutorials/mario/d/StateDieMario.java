@@ -19,9 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.InputDevice;
-import com.b3dgs.lionengine.game.State;
-import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.StateGame;
 
 /**
  * Mario die state implementation.
@@ -29,7 +27,7 @@ import com.b3dgs.lionengine.game.StateFactory;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateDieMario
-        implements State
+        extends StateGame
 {
     /** Entity reference. */
     private final Entity entity;
@@ -46,15 +44,10 @@ class StateDieMario
      */
     public StateDieMario(Entity entity, Animation animation)
     {
+        super(EntityState.DEATH_MARIO);
         this.entity = entity;
         this.animation = animation;
         animator = entity.getSurface();
-    }
-
-    @Override
-    public State handleInput(StateFactory factory, InputDevice input)
-    {
-        return null;
     }
 
     @Override
@@ -69,11 +62,5 @@ class StateDieMario
     public void update(double extrp)
     {
         // Nothing to do
-    }
-
-    @Override
-    public Enum<?> getState()
-    {
-        return EntityState.DEATH_MARIO;
     }
 }

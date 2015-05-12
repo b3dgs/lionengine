@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.State;
-import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.StateGame;
+import com.b3dgs.lionengine.game.StateTransition;
+import com.b3dgs.lionengine.game.StateTransitionInputDirectionalChecker;
 
 /**
  * Idle state implementation.
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.StateFactory;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateIdle
-        implements State
+        extends StateGame
 {
     /** Animator reference. */
     private final Animator animator;
@@ -48,27 +48,12 @@ class StateIdle
      */
     public StateIdle(Mario mario, Animation animation)
     {
+        super(MarioState.IDLE);
         this.animation = animation;
         animator = mario.getSurface();
         movement = mario.getMovement();
-    }
-
-    @Override
-    public State handleInput(StateFactory factory, InputDevice input)
-    {
-        if (input instanceof InputDeviceDirectional)
-        {
-            final InputDeviceDirectional device = (InputDeviceDirectional) input;
-            if (device.getVerticalDirection() > 0)
-            {
-                return factory.getState(MarioState.JUMP);
-            }
-            if (device.getHorizontalDirection() != 0)
-            {
-                return factory.getState(MarioState.WALK);
-            }
-        }
-        return null;
+        addTransition(new TransitionIdleToWalk());
+        addTransition(new TransitionIdleToJump());
     }
 
     @Override
@@ -86,9 +71,47 @@ class StateIdle
         // Nothing to do
     }
 
-    @Override
-    public Enum<?> getState()
+    /**
+     * Transition from {@link StateIdle} to {@link StateWalk}.
+     */
+    private final class TransitionIdleToWalk
+            extends StateTransition
+            implements StateTransitionInputDirectionalChecker
     {
-        return MarioState.IDLE;
+        /**
+         * Create the transition.
+         */
+        public TransitionIdleToWalk()
+        {
+            super(MarioState.WALK);
+        }
+
+        @Override
+        public boolean check(InputDeviceDirectional input)
+        {
+            return input.getHorizontalDirection() != 0;
+        }
+    }
+
+    /**
+     * Transition from {@link StateIdle} to {@link StateJump}.
+     */
+    private final class TransitionIdleToJump
+            extends StateTransition
+            implements StateTransitionInputDirectionalChecker
+    {
+        /**
+         * Create the transition.
+         */
+        public TransitionIdleToJump()
+        {
+            super(MarioState.JUMP);
+        }
+
+        @Override
+        public boolean check(InputDeviceDirectional input)
+        {
+            return input.getVerticalDirection() > 0;
+        }
     }
 }

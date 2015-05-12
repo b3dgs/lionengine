@@ -109,7 +109,7 @@ class Goomba
             collider.teleportY(transformable.getY() + transformable.getHeight());
             ((Entity) target).jump();
             this.collidable.setEnabled(false);
-            changeState(factory.getState(EntityState.DEATH_GOOMBA));
+            changeState(EntityState.DEATH_GOOMBA);
             Sfx.CRUSH.play();
         }
     }

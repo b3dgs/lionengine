@@ -21,18 +21,18 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.StateHandler;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
@@ -60,6 +60,8 @@ class Mario
 
     /** State factory. */
     private final StateFactory factory = new StateFactory();
+    /** State handler. */
+    private final StateHandler handler = new StateHandler(factory);
     /** Movement force. */
     private final Force movement = new Force();
     /** Jump force. */
@@ -74,8 +76,6 @@ class Mario
     private final SpriteAnimated surface;
     /** Camera reference. */
     private final Camera camera;
-    /** Entity state. */
-    private State state;
 
     /**
      * Constructor.
@@ -99,17 +99,13 @@ class Mario
     }
 
     /**
-     * Update the mario controls.
+     * Add an input controller.
      * 
-     * @param keyboard The keyboard reference.
+     * @param input The input reference.
      */
-    public void updateControl(Keyboard keyboard)
+    public void addInput(InputDevice input)
     {
-        final State current = state.handleInput(factory, keyboard);
-        if (current != null)
-        {
-            state = current;
-        }
+        handler.addInput(input);
     }
 
     /**
@@ -166,13 +162,13 @@ class Mario
     protected void onPrepared()
     {
         loadStates();
-        state = factory.getState(MarioState.IDLE);
+        handler.start(MarioState.IDLE);
     }
 
     @Override
     public void update(double extrp)
     {
-        state.update(extrp);
+        handler.update(extrp);
         mirrorable.update(extrp);
         movement.update(extrp);
         jump.update(extrp);

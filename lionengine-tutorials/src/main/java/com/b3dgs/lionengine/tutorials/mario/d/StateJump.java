@@ -17,16 +17,19 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.State;
-import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.StateGame;
+import com.b3dgs.lionengine.game.StateInputDirectionalUpdater;
+import com.b3dgs.lionengine.game.StateTransition;
+import com.b3dgs.lionengine.game.StateTransitionInputDirectionalChecker;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.body.Body;
 import com.b3dgs.lionengine.game.trait.collidable.TileCollidable;
@@ -40,8 +43,11 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateJump
-        implements State, TileCollidableListener
+        extends StateGame
+        implements StateInputDirectionalUpdater, TileCollidableListener
 {
+    /** On ground. */
+    final AtomicBoolean ground = new AtomicBoolean();
     /** Transformable reference. */
     private final Transformable transformable;
     /** The body reference. */
@@ -60,8 +66,6 @@ class StateJump
     private final Force jump;
     /** Movement side. */
     private double side;
-    /** On ground. */
-    private boolean ground;
 
     /**
      * Create the jump state.
@@ -71,6 +75,7 @@ class StateJump
      */
     public StateJump(Entity entity, Animation animation)
     {
+        super(EntityState.JUMP);
         this.animation = animation;
         transformable = entity.getTrait(Transformable.class);
         body = entity.getTrait(Body.class);
@@ -79,22 +84,7 @@ class StateJump
         animator = entity.getSurface();
         movement = entity.getMovement();
         jump = entity.getJump();
-    }
-
-    @Override
-    public State handleInput(StateFactory factory, InputDevice input)
-    {
-        if (input instanceof InputDeviceDirectional)
-        {
-            final InputDeviceDirectional device = (InputDeviceDirectional) input;
-            side = device.getHorizontalDirection();
-            if (ground)
-            {
-                tileCollidable.removeListener(this);
-                return factory.getState(EntityState.IDLE);
-            }
-        }
-        return null;
+        addTransition(new TransitionJumpToIdle());
     }
 
     @Override
@@ -104,8 +94,20 @@ class StateJump
         movement.setSensibility(0.1);
         animator.play(animation);
         tileCollidable.addListener(this);
+        ground.set(false);
         side = 0;
-        ground = false;
+    }
+
+    @Override
+    public void exit()
+    {
+        tileCollidable.removeListener(this);
+    }
+
+    @Override
+    public void updateInput(InputDeviceDirectional input)
+    {
+        side = input.getHorizontalDirection();
     }
 
     @Override
@@ -127,14 +129,30 @@ class StateJump
             body.resetGravity();
             if (transformable.getY() < transformable.getOldY())
             {
-                ground = true;
+                ground.set(true);
             }
         }
     }
 
-    @Override
-    public Enum<?> getState()
+    /**
+     * Transition from {@link StateJump} to {@link StateIdle}.
+     */
+    private final class TransitionJumpToIdle
+            extends StateTransition
+            implements StateTransitionInputDirectionalChecker
     {
-        return EntityState.JUMP;
+        /**
+         * Create the transition.
+         */
+        public TransitionJumpToIdle()
+        {
+            super(EntityState.IDLE);
+        }
+
+        @Override
+        public boolean check(InputDeviceDirectional input)
+        {
+            return ground.get();
+        }
     }
 }

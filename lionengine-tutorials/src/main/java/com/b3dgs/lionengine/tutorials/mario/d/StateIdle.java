@@ -17,14 +17,16 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.State;
-import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.StateGame;
+import com.b3dgs.lionengine.game.StateTransition;
+import com.b3dgs.lionengine.game.StateTransitionInputDirectionalChecker;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.collidable.TileCollidable;
 import com.b3dgs.lionengine.game.trait.collidable.TileCollidableListener;
@@ -36,8 +38,13 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateIdle
-        implements State, TileCollidableListener
+        extends StateGame
+        implements TileCollidableListener
 {
+    /** Can jump flag. */
+    final AtomicBoolean canJump = new AtomicBoolean(false);
+    /** Jump force. */
+    final Force jump;
     /** Transformable reference. */
     private final Transformable transformable;
     /** Animator reference. */
@@ -48,10 +55,6 @@ class StateIdle
     private final TileCollidable tileCollidable;
     /** Movement force. */
     private final Force movement;
-    /** Jump force. */
-    private final Force jump;
-    /** Can jump flag. */
-    private boolean canJump;
 
     /**
      * Create the walk state.
@@ -61,35 +64,15 @@ class StateIdle
      */
     public StateIdle(Entity entity, Animation animation)
     {
+        super(EntityState.IDLE);
         this.animation = animation;
         transformable = entity.getTrait(Transformable.class);
         tileCollidable = entity.getTrait(TileCollidable.class);
         animator = entity.getSurface();
         movement = entity.getMovement();
         jump = entity.getJump();
-    }
-
-    @Override
-    public State handleInput(StateFactory factory, InputDevice input)
-    {
-        if (input instanceof InputDeviceDirectional)
-        {
-            final InputDeviceDirectional device = (InputDeviceDirectional) input;
-            if (device.getVerticalDirection() > 0 && canJump)
-            {
-                Sfx.JUMP.play();
-                jump.setDirection(0.0, 8.0);
-                canJump = false;
-                tileCollidable.removeListener(this);
-                return factory.getState(EntityState.JUMP);
-            }
-            if (device.getHorizontalDirection() != 0)
-            {
-                tileCollidable.removeListener(this);
-                return factory.getState(EntityState.WALK);
-            }
-        }
-        return null;
+        addTransition(new TransitionIdleToWalk());
+        addTransition(new TransitionIdleToJump());
     }
 
     @Override
@@ -103,6 +86,12 @@ class StateIdle
     }
 
     @Override
+    public void exit()
+    {
+        tileCollidable.removeListener(this);
+    }
+
+    @Override
     public void update(double extrp)
     {
         // Nothing to do
@@ -113,13 +102,59 @@ class StateIdle
     {
         if (Axis.Y == axis && transformable.getY() < transformable.getOldY())
         {
-            canJump = true;
+            canJump.set(true);
         }
     }
 
-    @Override
-    public Enum<?> getState()
+    /**
+     * Transition from {@link StateIdle} to {@link StateWalk}.
+     */
+    private final class TransitionIdleToWalk
+            extends StateTransition
+            implements StateTransitionInputDirectionalChecker
     {
-        return EntityState.IDLE;
+        /**
+         * Create the transition.
+         */
+        public TransitionIdleToWalk()
+        {
+            super(EntityState.WALK);
+        }
+
+        @Override
+        public boolean check(InputDeviceDirectional input)
+        {
+            return input.getHorizontalDirection() != 0;
+        }
+    }
+
+    /**
+     * Transition from {@link StateIdle} to {@link StateJump}.
+     */
+    private final class TransitionIdleToJump
+            extends StateTransition
+            implements StateTransitionInputDirectionalChecker
+    {
+        /**
+         * Create the transition.
+         */
+        public TransitionIdleToJump()
+        {
+            super(EntityState.JUMP);
+        }
+
+        @Override
+        public boolean check(InputDeviceDirectional input)
+        {
+            return input.getVerticalDirection() > 0 && canJump.get();
+        }
+
+        @Override
+        public void exit()
+        {
+            Sfx.JUMP.play();
+            jump.setDirection(0.0, 8.0);
+            canJump.set(false);
+        }
     }
 }

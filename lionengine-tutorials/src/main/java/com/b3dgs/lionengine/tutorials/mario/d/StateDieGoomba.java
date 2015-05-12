@@ -20,9 +20,7 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.InputDevice;
-import com.b3dgs.lionengine.game.State;
-import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.StateGame;
 
 /**
  * Goomba die state implementation.
@@ -30,7 +28,7 @@ import com.b3dgs.lionengine.game.StateFactory;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateDieGoomba
-        implements State
+        extends StateGame
 {
     /** Entity reference. */
     private final Entity entity;
@@ -47,15 +45,10 @@ class StateDieGoomba
      */
     public StateDieGoomba(Entity entity, Animation animation)
     {
+        super(EntityState.DEATH_GOOMBA);
         this.entity = entity;
         this.animation = animation;
         animator = entity.getSurface();
-    }
-
-    @Override
-    public State handleInput(StateFactory factory, InputDevice input)
-    {
-        return null;
     }
 
     @Override
@@ -72,11 +65,5 @@ class StateDieGoomba
         {
             entity.destroy();
         }
-    }
-
-    @Override
-    public Enum<?> getState()
-    {
-        return EntityState.DEATH_GOOMBA;
     }
 }

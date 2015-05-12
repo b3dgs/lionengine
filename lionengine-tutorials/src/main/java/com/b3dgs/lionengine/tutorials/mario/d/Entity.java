@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.StateHandler;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.map.Tile;
@@ -66,6 +67,8 @@ class Entity
 
     /** State factory. */
     protected final StateFactory factory = new StateFactory();
+    /** State handler. */
+    private final StateHandler handler = new StateHandler(factory);
     /** Movement force. */
     private final Force movement = new Force();
     /** Jump force. */
@@ -84,10 +87,6 @@ class Entity
     private final SpriteAnimated surface;
     /** Camera reference. */
     private final Camera camera;
-    /** Controller reference. */
-    private InputDeviceDirectional device;
-    /** Entity state. */
-    private State state;
 
     /**
      * Constructor.
@@ -117,7 +116,7 @@ class Entity
     public void jump()
     {
         body.resetGravity();
-        changeState(factory.getState(EntityState.JUMP));
+        changeState(EntityState.JUMP);
         jump.setDirection(0.0, 6.0);
     }
 
@@ -169,7 +168,7 @@ class Entity
      */
     public boolean isState(EntityState state)
     {
-        return this.state.getState() == state;
+        return handler.isState(state);
     }
 
     /**
@@ -185,7 +184,7 @@ class Entity
         body.resetGravity();
         collidable.setEnabled(true);
         tileCollidable.setEnabled(true);
-        state = factory.getState(EntityState.IDLE);
+        handler.changeState(EntityState.IDLE);
     }
 
     /**
@@ -193,10 +192,9 @@ class Entity
      * 
      * @param next The next state.
      */
-    protected void changeState(State next)
+    protected void changeState(Enum<?> next)
     {
-        state = next;
-        state.enter();
+        handler.changeState(next);
     }
 
     /**
@@ -206,23 +204,7 @@ class Entity
      */
     protected void setControl(InputDeviceDirectional device)
     {
-        this.device = device;
-    }
-
-    /**
-     * Update the entity controls.
-     */
-    private void updateControl()
-    {
-        if (device != null)
-        {
-            final State current = state.handleInput(factory, device);
-            if (current != null)
-            {
-                state = current;
-                current.enter();
-            }
-        }
+        handler.addInput(device);
     }
 
     /**
@@ -250,14 +232,13 @@ class Entity
     protected void onPrepared()
     {
         loadStates();
-        state = factory.getState(EntityState.IDLE);
+        handler.start(EntityState.IDLE);
     }
 
     @Override
     public void update(double extrp)
     {
-        updateControl();
-        state.update(extrp);
+        handler.update(extrp);
         mirrorable.update(extrp);
         movement.update(extrp);
         jump.update(extrp);

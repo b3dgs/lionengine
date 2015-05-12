@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.StateHandler;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -65,6 +66,8 @@ class Mario
 
     /** State factory. */
     private final StateFactory factory = new StateFactory();
+    /** State handler. */
+    private final StateHandler handler = new StateHandler(factory);
     /** Movement force. */
     private final Force movement = new Force();
     /** Jump force. */
@@ -83,8 +86,6 @@ class Mario
     private final Camera camera;
     /** Keyboard reference. */
     private final Keyboard keyboard;
-    /** Entity state. */
-    private State state;
 
     /**
      * Constructor.
@@ -149,20 +150,6 @@ class Mario
     }
 
     /**
-     * Update the mario controls.
-     * 
-     * @param keyboard The keyboard reference.
-     */
-    private void updateControl(Keyboard keyboard)
-    {
-        final State current = state.handleInput(factory, keyboard);
-        if (current != null)
-        {
-            state = current;
-        }
-    }
-
-    /**
      * Load all existing animations defined in the xml file.
      */
     private void loadStates()
@@ -187,15 +174,14 @@ class Mario
     protected void onPrepared()
     {
         loadStates();
-        state = factory.getState(MarioState.IDLE);
+        handler.start(MarioState.IDLE);
+        handler.addInput(keyboard);
     }
 
     @Override
     public void update(double extrp)
     {
-        updateControl(keyboard);
-
-        state.update(extrp);
+        handler.update(extrp);
         mirrorable.update(extrp);
         movement.update(extrp);
         jump.update(extrp);

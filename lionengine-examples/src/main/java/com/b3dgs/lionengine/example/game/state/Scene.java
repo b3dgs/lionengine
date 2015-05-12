@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
-import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.EventAction;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
@@ -79,12 +79,12 @@ class Scene
         camera.setView(0, 0, getWidth(), getHeight());
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
         mario = factory.create(Mario.MEDIA);
+        mario.addInput(keyboard);
     }
 
     @Override
     public void update(double extrp)
     {
-        mario.updateControl(keyboard);
         mario.update(extrp);
     }
 

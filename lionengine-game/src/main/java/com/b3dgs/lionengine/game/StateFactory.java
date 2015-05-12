@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see State
+ * @see StateHandler
  */
 public class StateFactory
 {
