@@ -149,7 +149,7 @@ class Mario
             try
             {
                 final Animation animation = configAnimations.getAnimation(state.getAnimationName());
-                factory.addState(state, state.create(this, animation));
+                factory.addState(state.create(this, animation));
             }
             catch (final LionEngineException exception)
             {

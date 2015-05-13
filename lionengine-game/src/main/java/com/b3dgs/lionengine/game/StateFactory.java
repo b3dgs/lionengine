@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -48,11 +49,12 @@ public class StateFactory
     /**
      * Add a supported state with its corresponding enum value.
      * 
-     * @param type The state enum value.
      * @param state The state instance.
      */
-    public void addState(Enum<?> type, State state)
+    public void addState(State state)
     {
+        final Enum<?> type = state.getState();
+        Check.notNull(type);
         states.put(type, state);
     }
 
