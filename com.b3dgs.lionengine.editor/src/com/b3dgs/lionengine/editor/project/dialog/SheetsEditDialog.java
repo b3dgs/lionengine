@@ -28,12 +28,18 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
+import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -48,23 +54,26 @@ public class SheetsEditDialog
     /** Icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "sheets-edit.png");
 
-    /** Tile sheets media. */
-    final Media tilesheets;
+    /** Sheets media. */
+    final Media sheets;
     /** Buttons list. */
-    private final Collection<Button> buttons;
+    private final Collection<Button> buttons = new ArrayList<>();
+    /** Tile width text. */
+    private Text tileWidthText;
+    /** Tile height text. */
+    private Text tileHeightText;
 
     /**
-     * Create a tile sheets dialog.
+     * Create a sheets dialog.
      * 
      * @param parent The parent shell.
-     * @param tilesheets The tile sheets media.
+     * @param sheets The sheets media.
      */
-    public SheetsEditDialog(Shell parent, Media tilesheets)
+    public SheetsEditDialog(Shell parent, Media sheets)
     {
         super(parent, Messages.EditSheetsDialog_Title, Messages.EditSheetsDialog_HeaderTitle,
                 Messages.EditSheetsDialog_HeaderDesc, ICON);
-        this.tilesheets = tilesheets;
-        buttons = new ArrayList<>();
+        this.sheets = sheets;
         createDialog();
         finish.setEnabled(true);
     }
@@ -80,7 +89,16 @@ public class SheetsEditDialog
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         composite.setLayout(new GridLayout(1, false));
 
-        final File[] files = tilesheets.getFile().getParentFile().listFiles();
+        final Composite tileSizeArea = new Composite(composite, SWT.NONE);
+        tileSizeArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        tileSizeArea.setLayout(new GridLayout(2, false));
+
+        tileWidthText = UtilSwt.createText(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
+        tileWidthText.addVerifyListener(UtilSwt.createVerify(tileWidthText, InputValidator.INTEGER_POSITIVE_MATCH));
+        tileHeightText = UtilSwt.createText(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
+        tileHeightText.addVerifyListener(UtilSwt.createVerify(tileHeightText, InputValidator.INTEGER_POSITIVE_MATCH));
+
+        final File[] files = sheets.getFile().getParentFile().listFiles();
         if (files != null)
         {
             for (final File file : files)
@@ -96,7 +114,10 @@ public class SheetsEditDialog
             }
         }
 
-        final XmlNode node = Stream.loadXml(tilesheets);
+        final XmlNode node = Stream.loadXml(sheets);
+        final XmlNode tileSize = node.getChild(MapTile.NODE_TILE_SIZE);
+        tileWidthText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_WIDTH));
+        tileHeightText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_HEIGHT));
         final Collection<XmlNode> sheets = node.getChildren();
         for (final Button button : buttons)
         {
@@ -114,17 +135,21 @@ public class SheetsEditDialog
     @Override
     protected void onFinish()
     {
-        final XmlNode root = Stream.createXmlNode("lionengine:tilesheets");
-        root.writeString("xmlns:lionengine", "http://lionengine.b3dgs.com");
+        final XmlNode root = Stream.createXmlNode(MapTile.NODE_TILE_SHEETS);
+        root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
+        final XmlNode tileSize = Stream.createXmlNode(MapTile.NODE_TILE_SIZE);
+        tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, tileWidthText.getText());
+        tileSize.writeString(MapTile.ATTRIBUTE_TILE_HEIGHT, tileHeightText.getText());
+        root.add(tileSize);
         for (final Button button : buttons)
         {
             if (button.getSelection())
             {
-                final XmlNode node = Stream.createXmlNode("lionengine:tilesheet");
+                final XmlNode node = Stream.createXmlNode(MapTile.NODE_TILE_SHEET);
                 node.setText(button.getText());
                 root.add(node);
             }
         }
-        Stream.saveXml(root, tilesheets);
+        Stream.saveXml(root, sheets);
     }
 }

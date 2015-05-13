@@ -33,6 +33,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class Configurer
 {
+    /** Header XML. */
+    public static final String HEADER = "xmlns:lionengine";
     /** Prefix XML node. */
     public static final String PREFIX = "lionengine:";
 

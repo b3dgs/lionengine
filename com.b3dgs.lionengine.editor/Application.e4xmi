@@ -16,6 +16,9 @@
                 <children xsi:type="menu:DirectMenuItem" xmi:id="_R97LoEmxEeSY5e88dCWRPA" elementId="" label="%menu.edit-folder-type" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/folder-type-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.FolderTypeEditHandler">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_R97LoUmxEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.folder-type.category"/>
                 </children>
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_bwlfEPmmEeSmU7qv7Jh8TQ" elementId="" label="%menu.sheets-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/sheets-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.SheetsAddHandler">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_bwlfEfmmEeSmU7qv7Jh8TQ" coreExpressionId="com.b3dgs.lionengine.editor.sheets.add"/>
+                </children>
                 <children xsi:type="menu:DirectMenuItem" xmi:id="_1MDiwEmwEeSY5e88dCWRPA" elementId="" label="%menu.sheets-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/sheets-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.SheetsEditHandler">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_1MDiwUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.sheets.edit"/>
                 </children>

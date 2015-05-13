@@ -209,6 +209,7 @@ public final class UtilSwt
      * @param text The text to verify.
      * @param match The expected match.
      * @return The verify listener.
+     * @see InputValidator
      */
     public static VerifyListener createVerify(final Text text, final String match)
     {

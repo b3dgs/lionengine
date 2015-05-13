@@ -39,67 +39,61 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.ProjectTreeCreator;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.project.ProjectsPart;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
 
 /**
- * Add an object in the selected folder.
+ * Add a sheets descriptor in the selected folder.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ObjectAddHandler
+public class SheetsAddHandler
 {
-    /** Default new object name. */
-    private static final String DEFAULT_NEW_OBJECT_NAME = "object";
+    /** Default tile size. */
+    private static final String DEFAULT_TILE_SIZE = String.valueOf(16);
 
     /**
-     * Create the object.
+     * Create the sheets.
      * 
-     * @param object The object file destination.
-     * @param clazz The object class.
-     * @param setup The setup class.
-     * @throws IOException If error when creating the object.
+     * @param sheets The sheets file destination.
+     * @throws IOException If error when creating the sheets.
      */
-    private static void createObject(File object, Class<?> clazz, Class<?> setup) throws IOException
+    private static void createSheets(File sheets) throws IOException
     {
-        final File template = Tools.getTemplate(Tools.TEMPLATE_OBJECT);
+        final File template = Tools.getTemplate(Tools.TEMPLATE_SHEETS);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
         final Collection<String> dest = new ArrayList<>();
         for (final String line : lines)
         {
-            if (line.contains(Tools.TEMPLATE_CLASS_AREA))
+            if (line.contains(Tools.TEMPLATE_SHEETS_WIDTH) && line.contains(Tools.TEMPLATE_SHEETS_HEIGHT))
             {
-                dest.add(line.replace(Tools.TEMPLATE_CLASS_AREA, clazz.getName()));
-            }
-            else if (line.contains(Tools.TEMPLATE_SETUP_AREA))
-            {
-                dest.add(line.replace(Tools.TEMPLATE_SETUP_AREA, setup.getName()));
+                dest.add(line.replace(Tools.TEMPLATE_SHEETS_WIDTH, DEFAULT_TILE_SIZE).replace(
+                        Tools.TEMPLATE_SHEETS_HEIGHT, DEFAULT_TILE_SIZE));
             }
             else
             {
                 dest.add(line);
             }
         }
-        Files.write(object.toPath(), dest, StandardCharsets.UTF_8);
+        Files.write(sheets.toPath(), dest, StandardCharsets.UTF_8);
         lines.clear();
         dest.clear();
     }
 
     /**
-     * Add the object.
+     * Add the sheets.
      * 
      * @param partService The part service reference.
      * @param selection The current folder selection.
-     * @param object The object file destination.
+     * @param sheets The sheets file destination.
      */
-    private static void addObject(EPartService partService, Media selection, File object)
+    private static void addSheets(EPartService partService, Media selection, File sheets)
     {
         try
         {
-            createObject(object, ObjectGame.class, Setup.class);
+            createSheets(sheets);
             final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
-            part.addTreeItem(selection, object, ProjectTreeCreator.ICON_OBJECT);
+            part.addTreeItem(selection, sheets, ProjectTreeCreator.ICON_SHEETS);
         }
         catch (final IOException exception)
         {
@@ -117,23 +111,23 @@ public class ObjectAddHandler
     public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, Messages.AddObject_Title, Messages.AddObject_Text,
-                DEFAULT_NEW_OBJECT_NAME, new InputValidator(InputValidator.NAME_MATCH,
-                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+        final InputDialog inputDialog = new InputDialog(parent, Messages.AddSheets_Title, Messages.AddSheets_Text,
+                MapTile.DEFAULT_SHEETS_FILE.replace("." + Factory.FILE_DATA_EXTENSION, ""), new InputValidator(
+                        InputValidator.NAME_MATCH, com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         final int code = inputDialog.open();
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File object = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
+            final File sheets = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
 
-            if (object.exists())
+            if (sheets.exists())
             {
-                MessageDialog.openError(parent, Messages.AddObject_Error_Title, Messages.AddObject_Error_Text);
+                MessageDialog.openError(parent, Messages.AddSheets_Error_Title, Messages.AddSheets_Error_Text);
                 execute(partService, parent);
             }
             else
             {
-                addObject(partService, selection, object);
+                addSheets(partService, selection, sheets);
             }
         }
     }

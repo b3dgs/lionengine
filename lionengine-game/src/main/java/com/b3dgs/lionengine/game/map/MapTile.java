@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.collision.TileGroup;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -39,6 +40,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * 
  * <pre>
  * {@code<lionengine:sheets xmlns:lionengine="http://lionengine.b3dgs.com">}
+ *    {@code<lionengine:tileSize width="16" height="16"/>}
  *    {@code<lionengine:sheet>ground.png</lionengine:sheet>}
  *    {@code<lionengine:sheet>wall.png</lionengine:sheet>}
  *    {@code<lionengine:sheet>water.png</lionengine:sheet>}
@@ -61,15 +63,15 @@ public interface MapTile
     /** Default sheets config file. */
     String DEFAULT_GROUPS_FILE = "groups.xml";
     /** Tile size node. */
-    String NODE_TILE_SIZE = "lionengine:tileSize";
+    String NODE_TILE_SIZE = Configurer.PREFIX + "tileSize";
     /** Tile width attribute. */
     String ATTRIBUTE_TILE_WIDTH = "width";
     /** Tile height attribute. */
     String ATTRIBUTE_TILE_HEIGHT = "height";
     /** Tile sheets node. */
-    String NODE_TILE_SHEETS = "lionengine:sheets";
+    String NODE_TILE_SHEETS = Configurer.PREFIX + "sheets";
     /** Tile sheet node. */
-    String NODE_TILE_SHEET = "lionengine:sheet";
+    String NODE_TILE_SHEET = Configurer.PREFIX + "sheet";
     /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
     int BLOC_SIZE = 256;
 

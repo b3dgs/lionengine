@@ -35,6 +35,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class SheetsTester
         extends PropertyTester
 {
+    /** Can add sheets property. */
+    private static final String PROPERTY_ADD_SHEETS = "addSheets";
     /** Can edit sheets property. */
     private static final String PROPERTY_EDIT_SHEETS = "editSheets";
 
@@ -73,6 +75,10 @@ public class SheetsTester
                 if (PROPERTY_EDIT_SHEETS.equals(property))
                 {
                     return isSheetsFile(selection);
+                }
+                if (PROPERTY_ADD_SHEETS.equals(property))
+                {
+                    return selection.getFile().isDirectory();
                 }
             }
         }

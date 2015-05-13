@@ -41,6 +41,15 @@ public final class Messages
     /** Add object error text. */
     public static String AddObject_Error_Text;
 
+    /** Add sheets title. */
+    public static String AddSheets_Title;
+    /** Add sheets title. */
+    public static String AddSheets_Text;
+    /** Add sheets error title. */
+    public static String AddSheets_Error_Title;
+    /** Add sheets error text. */
+    public static String AddSheets_Error_Text;
+
     /** Edit folder type name title. */
     public static String EditFolderType_Name_Title;
     /** Edit folder type name text. */

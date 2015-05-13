@@ -62,10 +62,16 @@ public final class Tools
     public static final String TEMPLATES_DIR = "templates";
     /** Template object. */
     public static final String TEMPLATE_OBJECT = "object." + Tools.TEMPLATE_EXTENSION;
+    /** Template sheets. */
+    public static final String TEMPLATE_SHEETS = "sheets." + Tools.TEMPLATE_EXTENSION;
     /** Template class area. */
     public static final String TEMPLATE_CLASS_AREA = "%CLASS%";
     /** Template setup area. */
     public static final String TEMPLATE_SETUP_AREA = "%SETUP%";
+    /** Template sheets tile width area. */
+    public static final String TEMPLATE_SHEETS_WIDTH = "%WIDTH%";
+    /** Template sheets tile height area. */
+    public static final String TEMPLATE_SHEETS_HEIGHT = "%HEIGHT%";
     /** Folder type name node. */
     private static final String NODE_FOLDER_TYPE_NAME = "lionengine:name";
     /** Create directory error. */

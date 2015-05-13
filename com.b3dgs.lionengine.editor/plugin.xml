@@ -101,6 +101,12 @@
          </test>
       </definition>
       <definition
+            id="com.b3dgs.lionengine.editor.sheets.add">
+         <test
+               property="com.b3dgs.lionengine.editor.sheetsTester.addSheets">
+         </test>
+      </definition>
+      <definition
             id="com.b3dgs.lionengine.editor.sheets.edit">
          <test
                property="com.b3dgs.lionengine.editor.sheetsTester.editSheets">
@@ -216,7 +222,7 @@
             class="com.b3dgs.lionengine.editor.project.tester.SheetsTester"
             id="com.b3dgs.lionengine.editor.sheetsTester"
             namespace="com.b3dgs.lionengine.editor.sheetsTester"
-            properties="editSheets"
+            properties="addSheets,editSheets"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
