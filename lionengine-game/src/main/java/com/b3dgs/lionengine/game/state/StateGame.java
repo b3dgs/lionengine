@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.state;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -73,13 +73,13 @@ public abstract class StateGame
      */
 
     @Override
-    public void addTransition(StateTransition transition)
+    public final void addTransition(StateTransition transition)
     {
         transitions.add(transition);
     }
 
     @Override
-    public void clearTransitions()
+    public final void clearTransitions()
     {
         transitions.clear();
     }

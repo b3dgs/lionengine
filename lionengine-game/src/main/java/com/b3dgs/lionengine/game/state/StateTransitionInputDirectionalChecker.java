@@ -15,23 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.state;
 
-import com.b3dgs.lionengine.core.InputDevice;
+import com.b3dgs.lionengine.core.InputDeviceDirectional;
 
 /**
- * Represents the {@link InputDevice} updater for the state.
+ * Represents the {@link InputDeviceDirectional} updater for the state.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @param <I> The input device type.
  */
-public interface StateTransitionInputChecker<I extends InputDevice>
+public interface StateTransitionInputDirectionalChecker
+        extends StateTransitionInputChecker<InputDeviceDirectional>
 {
-    /**
-     * Check if transition is effective.
-     * 
-     * @param input The input device reference.
-     * @return <code>true</code> if transition can be made, <code>false</code> else.
-     */
-    boolean check(I input);
+    // Marker interface
 }

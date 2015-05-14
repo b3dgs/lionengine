@@ -15,12 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.state;
+
+import com.b3dgs.lionengine.core.InputDevice;
 
 /**
  * Represents the transition between two {@link State}.
+ * <p>
+ * It is possible to listen to {@link InputDevice}, by implementing children of {@link StateTransitionInputChecker}.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see State
+ * @see StateTransitionInputChecker
  */
 public abstract class StateTransition
 {

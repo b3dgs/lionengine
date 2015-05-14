@@ -21,10 +21,10 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.StateGame;
-import com.b3dgs.lionengine.game.StateInputDirectionalUpdater;
-import com.b3dgs.lionengine.game.StateTransition;
-import com.b3dgs.lionengine.game.StateTransitionInputDirectionalChecker;
+import com.b3dgs.lionengine.game.state.StateGame;
+import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
+import com.b3dgs.lionengine.game.state.StateTransition;
+import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
 
 /**
  * Turn state implementation.

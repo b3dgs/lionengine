@@ -15,17 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
-
-import com.b3dgs.lionengine.core.InputDevicePointer;
 
 /**
- * Represents the {@link InputDevicePointer} updater for the state.
+ * State object representation which allows to represent a gameplay as a finite state machine.
+ * <p>
+ * A {@link com.b3dgs.lionengine.game.state.State} is created by the
+ * {@link com.b3dgs.lionengine.game.state.StateFactory}, and is handled by the
+ * {@link com.b3dgs.lionengine.game.state.StateHandler}, which checks
+ * {@link com.b3dgs.lionengine.game.state.StateTransition} depending of the
+ * {@link com.b3dgs.lionengine.game.state.StateInputUpdater}.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface StateTransitionInputPointerChecker
-        extends StateTransitionInputChecker<InputDevicePointer>
-{
-    // Marker interface
-}
+package com.b3dgs.lionengine.game.state;
+

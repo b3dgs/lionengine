@@ -15,22 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.state;
 
-import com.b3dgs.lionengine.core.InputDevice;
+import com.b3dgs.lionengine.core.InputDevicePointer;
 
 /**
- * Represents the {@link InputDevice} updater for the state.
+ * Represents the {@link InputDevicePointer} updater for the state.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @param <I> The input device type.
  */
-public interface StateInputUpdater<I extends InputDevice>
+public interface StateTransitionInputPointerChecker
+        extends StateTransitionInputChecker<InputDevicePointer>
 {
-    /**
-     * Retrieve the input.
-     * 
-     * @param input The input reference.
-     */
-    void updateInput(I input);
+    // Marker interface
 }

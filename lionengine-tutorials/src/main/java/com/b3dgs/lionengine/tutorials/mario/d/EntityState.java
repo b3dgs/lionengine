@@ -22,7 +22,7 @@ import java.util.Locale;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.game.State;
+import com.b3dgs.lionengine.game.state.State;
 
 /**
  * List of entity states.
