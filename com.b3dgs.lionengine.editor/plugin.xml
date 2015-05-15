@@ -113,6 +113,12 @@
          </test>
       </definition>
       <definition
+            id="com.b3dgs.lionengine.editor.groups.add">
+         <test
+               property="com.b3dgs.lionengine.editor.groupsTester.addGroups">
+         </test>
+      </definition>
+      <definition
             id="com.b3dgs.lionengine.editor.groups.edit">
          <test
                property="com.b3dgs.lionengine.editor.groupsTester.editGroups">
@@ -229,7 +235,7 @@
             class="com.b3dgs.lionengine.editor.project.tester.GroupsTester"
             id="com.b3dgs.lionengine.editor.groupsTester"
             namespace="com.b3dgs.lionengine.editor.groupsTester"
-            properties="editGroups"
+            properties="addGroups,editGroups"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester

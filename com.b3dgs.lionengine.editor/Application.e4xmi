@@ -22,6 +22,9 @@
                 <children xsi:type="menu:DirectMenuItem" xmi:id="_1MDiwEmwEeSY5e88dCWRPA" elementId="" label="%menu.sheets-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/sheets-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.SheetsEditHandler">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_1MDiwUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.sheets.edit"/>
                 </children>
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_6eyjcPpDEeSxR9u4f19PmA" elementId="" label="%menu.groups-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/groups-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.GroupsAddHandler">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_6eyjcfpDEeSxR9u4f19PmA" coreExpressionId="com.b3dgs.lionengine.editor.groups.add"/>
+                </children>
                 <children xsi:type="menu:DirectMenuItem" xmi:id="__oic4PZQEeSRrd1pxiHA1g" elementId="" label="%menu.groups-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/groups-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__oic4fZQEeSRrd1pxiHA1g" coreExpressionId="com.b3dgs.lionengine.editor.groups.edit"/>
                 </children>

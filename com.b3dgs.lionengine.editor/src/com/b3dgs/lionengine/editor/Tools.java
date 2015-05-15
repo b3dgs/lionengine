@@ -64,6 +64,8 @@ public final class Tools
     public static final String TEMPLATE_OBJECT = "object." + Tools.TEMPLATE_EXTENSION;
     /** Template sheets. */
     public static final String TEMPLATE_SHEETS = "sheets." + Tools.TEMPLATE_EXTENSION;
+    /** Template sheets. */
+    public static final String TEMPLATE_GROUPS = "groups." + Tools.TEMPLATE_EXTENSION;
     /** Template class area. */
     public static final String TEMPLATE_CLASS_AREA = "%CLASS%";
     /** Template setup area. */

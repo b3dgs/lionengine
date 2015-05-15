@@ -35,6 +35,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class GroupsTester
         extends PropertyTester
 {
+    /** Can add groups property. */
+    private static final String PROPERTY_ADD_GROUPS = "addGroups";
     /** Can edit groups property. */
     private static final String PROPERTY_EDIT_GROUPS = "editGroups";
 
@@ -73,6 +75,10 @@ public class GroupsTester
                 if (PROPERTY_EDIT_GROUPS.equals(property))
                 {
                     return isGroupsFile(selection);
+                }
+                if (PROPERTY_ADD_GROUPS.equals(property))
+                {
+                    return selection.getFile().isDirectory();
                 }
             }
         }

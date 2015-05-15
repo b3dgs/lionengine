@@ -50,6 +50,15 @@ public final class Messages
     /** Add sheets error text. */
     public static String AddSheets_Error_Text;
 
+    /** Add groups title. */
+    public static String AddGroups_Title;
+    /** Add groups title. */
+    public static String AddGroups_Text;
+    /** Add groups error title. */
+    public static String AddGroups_Error_Title;
+    /** Add groups error text. */
+    public static String AddGroups_Error_Text;
+
     /** Edit folder type name title. */
     public static String EditFolderType_Name_Title;
     /** Edit folder type name text. */
