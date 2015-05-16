@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
- * Represents the animation list, allowing to add and remove animations.
+ * Represents the animation list, allowing to add and remove {@link Animation}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -51,7 +51,7 @@ public class AnimationList
     }
 
     /**
-     * Load the existing animations from the entity configurer.
+     * Load the existing animations from the object configurer.
      */
     public void loadAnimations()
     {

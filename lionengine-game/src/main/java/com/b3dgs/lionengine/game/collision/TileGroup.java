@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.collision;
 
+import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.Tile;
 
@@ -35,6 +36,7 @@ import com.b3dgs.lionengine.game.map.Tile;
  * @see ConfigTileGroup
  */
 public class TileGroup
+        implements Nameable
 {
     /** The group Name. */
     private final String name;
@@ -59,16 +61,6 @@ public class TileGroup
         this.sheet = sheet;
         this.start = start;
         this.end = end;
-    }
-
-    /**
-     * Get the collision group name.
-     * 
-     * @return The collision group name.
-     */
-    public String getName()
-    {
-        return name;
     }
 
     /**
@@ -99,5 +91,15 @@ public class TileGroup
     public int getEnd()
     {
         return end;
+    }
+
+    /*
+     * Nameable
+     */
+
+    @Override
+    public String getName()
+    {
+        return name;
     }
 }

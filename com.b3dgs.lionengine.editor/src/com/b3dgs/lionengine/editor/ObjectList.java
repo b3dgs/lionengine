@@ -104,7 +104,7 @@ public abstract class ObjectList<T extends Nameable>
      * 
      * @param parent The composite parent.
      */
-    public void create(final Composite parent)
+    public void create(Composite parent)
     {
         final Group objects = new Group(parent, SWT.NONE);
         objects.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));

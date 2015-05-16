@@ -22,7 +22,6 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.TileGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -51,11 +50,10 @@ public final class ConfigTileGroup
      * Create the group data from node.
      * 
      * @param root The node root reference.
-     * @param map The map reference.
      * @return The group data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<TileGroup> create(XmlNode root, MapTile map) throws LionEngineException
+    public static Collection<TileGroup> create(XmlNode root) throws LionEngineException
     {
         final Collection<TileGroup> groups = new ArrayList<>();
         for (final XmlNode node : root.getChildren(GROUP))
@@ -75,7 +73,7 @@ public final class ConfigTileGroup
      */
     public static XmlNode export(TileGroup group)
     {
-        final XmlNode node = Stream.createXmlNode(GROUPS);
+        final XmlNode node = Stream.createXmlNode(GROUP);
         node.writeString(NAME, group.getName());
         node.writeInteger(SHEET, group.getSheet());
         node.writeInteger(START, group.getStart());

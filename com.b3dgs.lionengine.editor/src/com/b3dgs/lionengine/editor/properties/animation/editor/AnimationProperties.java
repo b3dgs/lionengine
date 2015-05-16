@@ -78,11 +78,11 @@ public class AnimationProperties
      */
     public void setSelectedAnimation(Animation animation)
     {
-        ObjectProperties.setTextValue(firstFrame, String.valueOf(animation.getFirst()));
-        ObjectProperties.setTextValue(lastFrame, String.valueOf(animation.getLast()));
-        ObjectProperties.setTextValue(speed, String.valueOf(animation.getSpeed()));
-        ObjectProperties.setButtonSelection(reverseAnim, animation.getReverse());
-        ObjectProperties.setButtonSelection(repeatAnim, animation.getRepeat());
+        setTextValue(firstFrame, String.valueOf(animation.getFirst()));
+        setTextValue(lastFrame, String.valueOf(animation.getLast()));
+        setTextValue(speed, String.valueOf(animation.getSpeed()));
+        setButtonSelection(reverseAnim, animation.getReverse());
+        setButtonSelection(repeatAnim, animation.getRepeat());
 
         animationFrameSelector.setSelectedFrames(animation.getFirst(), animation.getLast());
     }
@@ -95,8 +95,8 @@ public class AnimationProperties
      */
     public void setAnimationRange(int first, int last)
     {
-        ObjectProperties.setTextValue(firstFrame, String.valueOf(first));
-        ObjectProperties.setTextValue(lastFrame, String.valueOf(last));
+        setTextValue(firstFrame, String.valueOf(first));
+        setTextValue(lastFrame, String.valueOf(last));
     }
 
     /*
@@ -110,9 +110,9 @@ public class AnimationProperties
         frames.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         frames.setLayout(new GridLayout(1, false));
 
-        firstFrame = ObjectProperties.createTextField(frames, Messages.AnimationProperties_FirstFrame);
-        lastFrame = ObjectProperties.createTextField(frames, Messages.AnimationProperties_LastFrame);
-        speed = ObjectProperties.createTextField(frames, Messages.AnimationProperties_AnimSpeed);
+        firstFrame = createTextField(frames, Messages.AnimationProperties_FirstFrame);
+        lastFrame = createTextField(frames, Messages.AnimationProperties_LastFrame);
+        speed = createTextField(frames, Messages.AnimationProperties_AnimSpeed);
 
         final Composite flags = new Composite(parent, SWT.NONE);
         flags.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));

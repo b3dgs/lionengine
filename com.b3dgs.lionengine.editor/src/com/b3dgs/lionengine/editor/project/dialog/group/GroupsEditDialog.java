@@ -15,26 +15,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project.dialog;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
+package com.b3dgs.lionengine.editor.project.dialog.group;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -51,8 +48,10 @@ public class GroupsEditDialog
 
     /** Groups media. */
     final Media groups;
-    /** Buttons list. */
-    private final Collection<Button> buttons;
+    /** Group properties. */
+    private final GroupProperties properties = new GroupProperties();
+    /** Groups list. */
+    private final GroupList list = new GroupList(properties);
 
     /**
      * Create a groups edit dialog.
@@ -65,7 +64,6 @@ public class GroupsEditDialog
         super(parent, Messages.EditGroupsDialog_Title, Messages.EditGroupsDialog_HeaderTitle,
                 Messages.EditGroupsDialog_HeaderDesc, ICON);
         groups = tilesheets;
-        buttons = new ArrayList<>();
         createDialog();
         finish.setEnabled(true);
     }
@@ -77,54 +75,26 @@ public class GroupsEditDialog
     @Override
     protected void createContent(Composite content)
     {
-        final Composite composite = new Composite(content, SWT.NONE);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        composite.setLayout(new GridLayout(1, false));
+        content.setLayout(new GridLayout(2, false));
+        content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        list.create(content);
+        properties.create(content);
+        properties.setObjectList(list);
 
-        final File[] files = groups.getFile().getParentFile().listFiles();
-        if (files != null)
-        {
-            for (final File file : files)
-            {
-                final Media media = UtilityMedia.get(file);
-                if (ImageInfo.isImage(media))
-                {
-                    final Button check = new Button(composite, SWT.CHECK);
-                    check.setText(file.getName());
-                    check.setSelection(false);
-                    buttons.add(check);
-                }
-            }
-        }
-
-        final XmlNode node = Stream.loadXml(groups);
-        final Collection<XmlNode> sheets = node.getChildren();
-        for (final Button button : buttons)
-        {
-            for (final XmlNode sheet : sheets)
-            {
-                if (button.getText().equals(sheet.getText()))
-                {
-                    button.setSelection(true);
-                    break;
-                }
-            }
-        }
+        list.loadGroups(groups);
     }
 
     @Override
     protected void onFinish()
     {
         final XmlNode root = Stream.createXmlNode(ConfigTileGroup.GROUPS);
-        root.writeString("xmlns:lionengine", "http://lionengine.b3dgs.com");
-        for (final Button button : buttons)
+        root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
+
+        for (final TreeItem item : list.getTree().getItems())
         {
-            if (button.getSelection())
-            {
-                final XmlNode node = Stream.createXmlNode(ConfigTileGroup.GROUP);
-                node.setText(button.getText());
-                root.add(node);
-            }
+            final TileGroup group = (TileGroup) item.getData();
+            final XmlNode nodeGroup = ConfigTileGroup.export(group);
+            root.add(nodeGroup);
         }
         Stream.saveXml(root, groups);
     }

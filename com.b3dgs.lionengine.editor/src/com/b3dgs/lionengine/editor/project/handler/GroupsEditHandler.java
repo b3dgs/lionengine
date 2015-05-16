@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.dialog.GroupsEditDialog;
+import com.b3dgs.lionengine.editor.project.dialog.group.GroupsEditDialog;
 
 /**
  * Edit selected group file.

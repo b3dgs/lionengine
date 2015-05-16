@@ -417,7 +417,7 @@ public class MapTileGame
 
         groups.clear();
         final XmlNode nodeGroups = Stream.loadXml(groupsConfig);
-        final Collection<TileGroup> groups = ConfigTileGroup.create(nodeGroups, this);
+        final Collection<TileGroup> groups = ConfigTileGroup.create(nodeGroups);
         for (final TileGroup group : groups)
         {
             this.groups.put(group.getName(), group);

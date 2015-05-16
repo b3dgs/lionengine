@@ -79,13 +79,6 @@ public final class Messages
     /** Edit sheets dialog tile height. */
     public static String EditSheetsDialog_TileHeight;
 
-    /** Edit groups dialog title. */
-    public static String EditGroupsDialog_Title;
-    /** Edit groups dialog title header. */
-    public static String EditGroupsDialog_HeaderTitle;
-    /** Edit groups dialog description header. */
-    public static String EditGroupsDialog_HeaderDesc;
-
     /**
      * Initialize.
      */
