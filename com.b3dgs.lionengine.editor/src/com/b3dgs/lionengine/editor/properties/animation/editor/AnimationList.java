@@ -35,19 +35,16 @@ public class AnimationList
 {
     /** Configurer reference. */
     private final Configurer configurer;
-    /** Animation properties. */
-    private final AnimationProperties animationProperties;
 
     /**
      * Create animation list and associate its properties.
      * 
      * @param configurer The configurer reference.
-     * @param animationProperties The animation properties reference.
      */
-    public AnimationList(Configurer configurer, AnimationProperties animationProperties)
+    public AnimationList(Configurer configurer)
     {
+        super(Animation.class);
         this.configurer = configurer;
-        this.animationProperties = animationProperties;
     }
 
     /**
@@ -65,18 +62,6 @@ public class AnimationList
      */
 
     @Override
-    protected boolean instanceOf(Object object)
-    {
-        return object instanceof Animation;
-    }
-
-    @Override
-    protected Animation cast(Object object)
-    {
-        return Animation.class.cast(object);
-    }
-
-    @Override
     protected Animation copyObject(Animation animation)
     {
         return Anim.createAnimation(animation.getName(), animation.getFirst(), animation.getLast(),
@@ -88,12 +73,5 @@ public class AnimationList
     {
         return Anim.createAnimation(Animation.DEFAULT_NAME, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, 0.1,
                 false, false);
-    }
-
-    @Override
-    protected void setSelectedObject(Animation animation)
-    {
-        super.setSelectedObject(animation);
-        animationProperties.setSelectedAnimation(animation);
     }
 }

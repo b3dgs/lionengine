@@ -48,7 +48,7 @@ public class AnimationEditor
     /** Configurer reference. */
     private final Configurer configurer;
     /** Animations list. */
-    private AnimationList animationList;
+    private final AnimationList animationList;
 
     /**
      * Create an animation editor and associate its configurer.
@@ -60,6 +60,7 @@ public class AnimationEditor
     {
         super(parent, Messages.AnimationEditor_Title, ICON);
         this.configurer = configurer;
+        animationList = new AnimationList(configurer);
     }
 
     /**
@@ -130,14 +131,13 @@ public class AnimationEditor
         final AnimationFrameSelector animationFrameSelector = createAnimationFrameSelector(animationTabs);
         final AnimationRenderer animationRenderer = createAnimationRenderer(animationTabs);
 
-        final AnimationProperties animationProperties = new AnimationProperties(animationRenderer);
-        animationList = new AnimationList(configurer, animationProperties);
+        final AnimationProperties animationProperties = new AnimationProperties(animationList, animationRenderer);
+        animationList.addListener(animationProperties);
         final AnimationPlayer animationPlayer = new AnimationPlayer(animationList, animationRenderer);
         animationPlayer.createAnimationPlayer(animationRenderer.getParent().getParent());
 
         animationFrameSelector.setAnimationList(animationList);
         animationFrameSelector.setAnimationProperties(animationProperties);
-        animationProperties.setObjectList(animationList);
         animationProperties.setAnimationFrameSelector(animationFrameSelector);
         animationRenderer.setAnimationPlayer(animationPlayer);
 

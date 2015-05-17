@@ -98,10 +98,12 @@ public abstract class ObjectProperties<T extends Nameable>
 
     /**
      * Create an object properties.
+     * 
+     * @param objectList The list reference.
      */
-    public ObjectProperties()
+    public ObjectProperties(ObjectList<T> objectList)
     {
-        // Nothing to do
+        this.objectList = objectList;
     }
 
     /**
@@ -143,16 +145,6 @@ public abstract class ObjectProperties<T extends Nameable>
 
         createResetButton(objectButtons);
         createConfirmButton(objectButtons);
-    }
-
-    /**
-     * Set the object list.
-     * 
-     * @param objectList The objectList list reference.
-     */
-    public void setObjectList(ObjectList<T> objectList)
-    {
-        this.objectList = objectList;
     }
 
     /**

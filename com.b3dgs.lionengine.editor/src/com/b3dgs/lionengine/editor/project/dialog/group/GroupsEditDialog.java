@@ -48,10 +48,10 @@ public class GroupsEditDialog
 
     /** Groups media. */
     final Media groups;
-    /** Group properties. */
-    private final GroupProperties properties = new GroupProperties();
     /** Groups list. */
-    private final GroupList list = new GroupList(properties);
+    private final GroupList list = new GroupList();
+    /** Group properties. */
+    private final GroupProperties properties = new GroupProperties(list);
 
     /**
      * Create a groups edit dialog.
@@ -78,8 +78,8 @@ public class GroupsEditDialog
         content.setLayout(new GridLayout(2, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         list.create(content);
+        list.addListener(properties);
         properties.create(content);
-        properties.setObjectList(list);
 
         list.loadGroups(groups);
     }

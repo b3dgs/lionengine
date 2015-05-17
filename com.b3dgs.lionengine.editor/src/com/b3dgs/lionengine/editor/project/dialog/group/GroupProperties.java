@@ -23,6 +23,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 
@@ -33,6 +34,7 @@ import com.b3dgs.lionengine.game.collision.TileGroup;
  */
 public class GroupProperties
         extends ObjectProperties<TileGroup>
+        implements ObjectListListener<TileGroup>
 {
     /** Sheet index. */
     private Text sheetText;
@@ -43,22 +45,12 @@ public class GroupProperties
 
     /**
      * Create the properties.
-     */
-    public GroupProperties()
-    {
-        // Nothing to do
-    }
-
-    /**
-     * Set the selected group, and update the properties fields.
      * 
-     * @param group The selected group.
+     * @param list The list reference.
      */
-    public void setSelectedGroup(TileGroup group)
+    public GroupProperties(GroupList list)
     {
-        setTextValue(sheetText, String.valueOf(group.getSheet()));
-        setTextValue(startText, String.valueOf(group.getStart()));
-        setTextValue(endText, String.valueOf(group.getEnd()));
+        super(list);
     }
 
     /*
@@ -85,5 +77,17 @@ public class GroupProperties
         final int end = Integer.parseInt(endText.getText());
         final TileGroup group = new TileGroup(name, sheet, start, end);
         return group;
+    }
+
+    /*
+     * ObjectListListener
+     */
+
+    @Override
+    public void notifyObjectSelected(TileGroup group)
+    {
+        setTextValue(sheetText, String.valueOf(group.getSheet()));
+        setTextValue(startText, String.valueOf(group.getStart()));
+        setTextValue(endText, String.valueOf(group.getEnd()));
     }
 }

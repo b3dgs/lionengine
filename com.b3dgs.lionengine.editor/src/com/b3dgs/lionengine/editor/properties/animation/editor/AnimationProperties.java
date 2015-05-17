@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
 
 /**
@@ -35,6 +36,7 @@ import com.b3dgs.lionengine.editor.ObjectProperties;
  */
 public class AnimationProperties
         extends ObjectProperties<Animation>
+        implements ObjectListListener<Animation>
 {
     /** Maximum frame */
     final int maxFrame;
@@ -54,10 +56,12 @@ public class AnimationProperties
     /**
      * Create an animation properties and associate its renderer to retrieve the maximum frames number.
      * 
+     * @param list The list reference.
      * @param animationRenderer The animation renderer reference.
      */
-    public AnimationProperties(AnimationRenderer animationRenderer)
+    public AnimationProperties(AnimationList list, AnimationRenderer animationRenderer)
     {
+        super(list);
         maxFrame = animationRenderer.surface.getFramesHorizontal() * animationRenderer.surface.getFramesVertical();
     }
 
@@ -69,22 +73,6 @@ public class AnimationProperties
     public void setAnimationFrameSelector(AnimationFrameSelector animationFrameSelector)
     {
         this.animationFrameSelector = animationFrameSelector;
-    }
-
-    /**
-     * Set the selected animation, and update the properties fields.
-     * 
-     * @param animation The selected animation.
-     */
-    public void setSelectedAnimation(Animation animation)
-    {
-        setTextValue(firstFrame, String.valueOf(animation.getFirst()));
-        setTextValue(lastFrame, String.valueOf(animation.getLast()));
-        setTextValue(speed, String.valueOf(animation.getSpeed()));
-        setButtonSelection(reverseAnim, animation.getReverse());
-        setButtonSelection(repeatAnim, animation.getRepeat());
-
-        animationFrameSelector.setSelectedFrames(animation.getFirst(), animation.getLast());
     }
 
     /**
@@ -132,5 +120,21 @@ public class AnimationProperties
         final Animation animation = Anim.createAnimation(name, Math.min(first, last), Math.max(first, last),
                 Double.parseDouble(speed.getText()), reverseAnim.getSelection(), repeatAnim.getSelection());
         return animation;
+    }
+
+    /*
+     * ObjectListListener
+     */
+
+    @Override
+    public void notifyObjectSelected(Animation animation)
+    {
+        setTextValue(firstFrame, String.valueOf(animation.getFirst()));
+        setTextValue(lastFrame, String.valueOf(animation.getLast()));
+        setTextValue(speed, String.valueOf(animation.getSpeed()));
+        setButtonSelection(reverseAnim, animation.getReverse());
+        setButtonSelection(repeatAnim, animation.getRepeat());
+
+        animationFrameSelector.setSelectedFrames(animation.getFirst(), animation.getLast());
     }
 }

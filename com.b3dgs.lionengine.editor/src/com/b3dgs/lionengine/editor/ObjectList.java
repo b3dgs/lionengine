@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.editor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.jface.dialogs.InputDialog;
@@ -53,6 +54,10 @@ public abstract class ObjectList<T extends Nameable>
     /** Default new object name. */
     private static final String DEFAULT_NEW_OBJECT_NAME = "new";
 
+    /** Listeners. */
+    private final Collection<ObjectListListener<T>> listeners = new ArrayList<>();
+    /** Class type. */
+    private final Class<T> type;
     /** Objects list. */
     Tree objectsTree;
     /** Selected data. */
@@ -62,27 +67,13 @@ public abstract class ObjectList<T extends Nameable>
 
     /**
      * Create an object list.
+     * 
+     * @param type The list class type.
      */
-    public ObjectList()
+    public ObjectList(Class<T> type)
     {
-        // Nothing to do
+        this.type = type;
     }
-
-    /**
-     * Check if the object is an instance of the handled type.
-     * 
-     * @param object The object to check.
-     * @return <code>true</code> if instance of, <code>false</code> else.
-     */
-    protected abstract boolean instanceOf(Object object);
-
-    /**
-     * Cast the object to the handled type.
-     * 
-     * @param object The object to cast.
-     * @return The casted object.
-     */
-    protected abstract T cast(Object object);
 
     /**
      * Return a copy of the object.
@@ -98,6 +89,16 @@ public abstract class ObjectList<T extends Nameable>
      * @return The default object instance.
      */
     protected abstract T createDefaultObject();
+
+    /**
+     * Add an object list listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void addListener(ObjectListListener<T> listener)
+    {
+        listeners.add(listener);
+    }
 
     /**
      * Create the objects list area.
@@ -191,6 +192,28 @@ public abstract class ObjectList<T extends Nameable>
     }
 
     /**
+     * Check if the object is an instance of the handled type.
+     * 
+     * @param object The object to check.
+     * @return <code>true</code> if instance of, <code>false</code> else.
+     */
+    protected boolean instanceOf(Object object)
+    {
+        return type.isAssignableFrom(object.getClass());
+    }
+
+    /**
+     * Cast the object to the handled type.
+     * 
+     * @param object The object to cast.
+     * @return The casted object.
+     */
+    protected T cast(Object object)
+    {
+        return type.cast(object);
+    }
+
+    /**
      * Load a map of object, and store them by using their name.
      * 
      * @param objects The object collection.
@@ -222,6 +245,10 @@ public abstract class ObjectList<T extends Nameable>
     {
         selectedObject = object;
         selectedObjectBackup = copyObject(object);
+        for (final ObjectListListener<T> listener : listeners)
+        {
+            listener.notifyObjectSelected(object);
+        }
     }
 
     /**

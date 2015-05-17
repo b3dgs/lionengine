@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
 import com.b3dgs.lionengine.game.Collision;
 
@@ -34,6 +35,7 @@ import com.b3dgs.lionengine.game.Collision;
  */
 public class EntityCollisionProperties
         extends ObjectProperties<Collision>
+        implements ObjectListListener<Collision>
 {
     /** Horizontal offset. */
     Text offsetX;
@@ -48,24 +50,12 @@ public class EntityCollisionProperties
 
     /**
      * Create an entity collision properties.
-     */
-    public EntityCollisionProperties()
-    {
-        // Nothing to do
-    }
-
-    /**
-     * Set the selected collision, and update the properties fields.
      * 
-     * @param collision The selected collision.
+     * @param list The list reference.
      */
-    public void setSelectedCollision(Collision collision)
+    public EntityCollisionProperties(EntityCollisionList list)
     {
-        ObjectProperties.setTextValue(offsetX, String.valueOf(collision.getOffsetX()));
-        ObjectProperties.setTextValue(offsetY, String.valueOf(collision.getOffsetY()));
-        ObjectProperties.setTextValue(width, String.valueOf(collision.getWidth()));
-        ObjectProperties.setTextValue(height, String.valueOf(collision.getHeight()));
-        ObjectProperties.setButtonSelection(mirror, collision.hasMirror());
+        super(list);
     }
 
     /**
@@ -108,5 +98,19 @@ public class EntityCollisionProperties
                 .getText()), Integer.parseInt(width.getText()), Integer.parseInt(height.getText()),
                 mirror.getSelection());
         return collision;
+    }
+
+    /*
+     * ObjectListListener
+     */
+
+    @Override
+    public void notifyObjectSelected(Collision collision)
+    {
+        setTextValue(offsetX, String.valueOf(collision.getOffsetX()));
+        setTextValue(offsetY, String.valueOf(collision.getOffsetY()));
+        setTextValue(width, String.valueOf(collision.getWidth()));
+        setTextValue(height, String.valueOf(collision.getHeight()));
+        setButtonSelection(mirror, collision.hasMirror());
     }
 }

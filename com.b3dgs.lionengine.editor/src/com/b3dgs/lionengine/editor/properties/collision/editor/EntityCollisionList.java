@@ -34,19 +34,16 @@ public class EntityCollisionList
 {
     /** Configurer reference. */
     private final Configurer configurer;
-    /** Animation properties. */
-    final EntityCollisionProperties entityCollisionProperties;
 
     /**
      * Create an entity collision list and associate its configurer and properties.
      * 
      * @param configurer The configurer reference.
-     * @param entityCollisionProperties The collision properties reference.
      */
-    public EntityCollisionList(Configurer configurer, EntityCollisionProperties entityCollisionProperties)
+    public EntityCollisionList(Configurer configurer)
     {
+        super(Collision.class);
         this.configurer = configurer;
-        this.entityCollisionProperties = entityCollisionProperties;
     }
 
     /**
@@ -64,18 +61,6 @@ public class EntityCollisionList
      */
 
     @Override
-    protected boolean instanceOf(Object object)
-    {
-        return object instanceof Collision;
-    }
-
-    @Override
-    protected Collision cast(Object object)
-    {
-        return Collision.class.cast(object);
-    }
-
-    @Override
     protected Collision copyObject(Collision collision)
     {
         return new Collision(collision.getName(), collision.getOffsetX(), collision.getOffsetY(), collision.getWidth(),
@@ -86,12 +71,5 @@ public class EntityCollisionList
     protected Collision createDefaultObject()
     {
         return new Collision("default", 0, 0, 0, 0, false);
-    }
-
-    @Override
-    protected void setSelectedObject(Collision collision)
-    {
-        super.setSelectedObject(collision);
-        entityCollisionProperties.setSelectedCollision(collision);
     }
 }

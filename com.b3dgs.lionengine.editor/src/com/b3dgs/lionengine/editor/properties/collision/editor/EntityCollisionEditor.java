@@ -46,7 +46,7 @@ public class EntityCollisionEditor
     /** Configurer reference. */
     private final Configurer configurer;
     /** Collisions list. */
-    private EntityCollisionList entityCollisionList;
+    private final EntityCollisionList entityCollisionList;
 
     /**
      * Create an entity collision editor and associate its configurer.
@@ -58,6 +58,7 @@ public class EntityCollisionEditor
     {
         super(parent, EntityCollisionEditor.DIALOG_TITLE, ICON);
         this.configurer = configurer;
+        entityCollisionList = new EntityCollisionList(configurer);
     }
 
     /*
@@ -70,12 +71,11 @@ public class EntityCollisionEditor
         final Composite content = new Composite(parent, SWT.NONE);
         content.setLayout(new GridLayout(2, false));
 
-        final EntityCollisionProperties entityCollisionProperties = new EntityCollisionProperties();
-        entityCollisionList = new EntityCollisionList(configurer, entityCollisionProperties);
+        final EntityCollisionProperties entityCollisionProperties = new EntityCollisionProperties(entityCollisionList);
+        entityCollisionList.addListener(entityCollisionProperties);
 
         entityCollisionList.create(content);
         entityCollisionProperties.create(content);
-        entityCollisionProperties.setObjectList(entityCollisionList);
 
         entityCollisionList.loadCollisions();
     }

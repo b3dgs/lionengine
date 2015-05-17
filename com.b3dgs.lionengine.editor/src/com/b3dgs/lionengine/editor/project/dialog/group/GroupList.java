@@ -36,17 +36,12 @@ public class GroupList
     /** Default group name. */
     private static final String DEFAULT_NAME = "default;";
 
-    /** Properties. */
-    private final GroupProperties properties;
-
     /**
      * Create the group list.
-     * 
-     * @param properties The properties reference.
      */
-    public GroupList(GroupProperties properties)
+    public GroupList()
     {
-        this.properties = properties;
+        super(TileGroup.class);
     }
 
     /**
@@ -65,18 +60,6 @@ public class GroupList
      */
 
     @Override
-    protected boolean instanceOf(Object object)
-    {
-        return object instanceof TileGroup;
-    }
-
-    @Override
-    protected TileGroup cast(Object object)
-    {
-        return TileGroup.class.cast(object);
-    }
-
-    @Override
     protected TileGroup copyObject(TileGroup object)
     {
         return new TileGroup(object.getName(), object.getSheet(), object.getStart(), object.getEnd());
@@ -86,12 +69,5 @@ public class GroupList
     protected TileGroup createDefaultObject()
     {
         return new TileGroup(DEFAULT_NAME, 0, 0, 0);
-    }
-
-    @Override
-    protected void setSelectedObject(TileGroup object)
-    {
-        super.setSelectedObject(object);
-        properties.setSelectedGroup(object);
     }
 }
