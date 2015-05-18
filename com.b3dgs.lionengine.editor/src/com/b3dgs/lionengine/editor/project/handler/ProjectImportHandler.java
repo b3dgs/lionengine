@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.editor.project.ProjectsPart;
 import com.b3dgs.lionengine.editor.project.dialog.ProjectImportDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**
@@ -76,6 +77,7 @@ public class ProjectImportHandler
 
             final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
             part.setToolBarEnabled(true);
+            part.setToolItemEnabled(SetShowCollisionsHandler.SHORT_ID, false);
         }
     }
 }

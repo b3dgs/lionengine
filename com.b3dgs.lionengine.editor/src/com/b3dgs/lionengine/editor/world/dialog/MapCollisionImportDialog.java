@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.world.dialog;
 
 import java.io.File;
 
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -39,6 +40,8 @@ import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 
@@ -53,6 +56,8 @@ public class MapCollisionImportDialog
     /** Icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "import-map.png");
 
+    /** Part services. */
+    private final EPartService partService;
     /** Formulas config file location. */
     Text formulasText;
     /** Collisions config file location. */
@@ -68,13 +73,15 @@ public class MapCollisionImportDialog
      * Create an import map dialog.
      * 
      * @param parent The shell parent.
+     * @param partService The part service reference.
      */
-    public MapCollisionImportDialog(Shell parent)
+    public MapCollisionImportDialog(Shell parent, EPartService partService)
     {
         super(parent, Messages.ImportMapCollisionDialog_Title, Messages.ImportMapCollisionDialog_HeaderTitle,
                 Messages.ImportMapCollisionDialog_HeaderDesc, MapCollisionImportDialog.ICON);
         createDialog();
 
+        this.partService = partService;
         finish.setEnabled(false);
         finish.forceFocus();
     }
@@ -286,6 +293,10 @@ public class MapCollisionImportDialog
             final MapTile map = WorldViewModel.INSTANCE.getMap();
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             mapCollision.loadCollisions(formulasConfig, collisionsConfig);
+            mapCollision.createCollisionDraw();
+
+            final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+            part.setToolItemEnabled(SetShowCollisionsHandler.SHORT_ID, true);
         }
     }
 }

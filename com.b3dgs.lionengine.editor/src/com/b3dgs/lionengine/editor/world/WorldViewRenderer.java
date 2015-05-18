@@ -29,7 +29,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
@@ -194,16 +193,9 @@ public class WorldViewRenderer
         if (map.getSheetsNumber() > 0)
         {
             map.render(g);
-            try
+            if (worldViewUpdater.isCollisionsEnabled() && map.hasFeature(MapTileCollision.class))
             {
-                if (map.hasFeature(MapTileCollision.class) && worldViewUpdater.isCollisionsEnabled())
-                {
-                    map.getFeature(MapTileCollision.class).render(g);
-                }
-            }
-            catch (final LionEngineException e)
-            {
-                // TODO Fix map rendering while importing (feature not totally ready)
+                map.getFeature(MapTileCollision.class).render(g);
             }
         }
     }

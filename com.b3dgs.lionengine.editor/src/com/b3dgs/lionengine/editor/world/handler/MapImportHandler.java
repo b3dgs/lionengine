@@ -86,12 +86,12 @@ public class MapImportHandler
             final Media levelrip = importMapDialog.getLevelRipLocation();
             final Media sheetsConfig = importMapDialog.getSheetsConfigLocation();
             final Media groupsConfig = importMapDialog.getGroupsConfigLocation();
-            MapImportHandler.importMap(partService, levelrip, sheetsConfig, groupsConfig);
+            importMap(partService, levelrip, sheetsConfig, groupsConfig);
 
             final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
             part.update();
 
-            checkMapFeaturesExtensionPoint(shell);
+            checkMapFeaturesExtensionPoint(shell, partService);
         }
     }
 
@@ -99,8 +99,9 @@ public class MapImportHandler
      * Check the map features extension point.
      * 
      * @param parent The parent shell.
+     * @param partService The part service reference.
      */
-    private void checkMapFeaturesExtensionPoint(Shell parent)
+    private void checkMapFeaturesExtensionPoint(Shell parent, EPartService partService)
     {
         final MapTile map = WorldViewModel.INSTANCE.getMap();
         final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
@@ -117,8 +118,19 @@ public class MapImportHandler
                 final String featureConfig = element.getAttribute(EXTENSION_DIALOG);
                 if (featureConfig != null)
                 {
-                    final AbstractDialog dialog = UtilEclipse.createClass(featureConfig, AbstractDialog.class, parent);
-                    dialog.open();
+                    try
+                    {
+                        final AbstractDialog dialog = UtilEclipse.createClass(featureConfig, AbstractDialog.class,
+                                parent, partService);
+                        dialog.open();
+                    }
+                    catch (final ReflectiveOperationException exception)
+                    {
+                        final AbstractDialog dialog = UtilEclipse.createClass(featureConfig, AbstractDialog.class,
+                                parent);
+                        dialog.open();
+                    }
+
                 }
             }
             catch (final ReflectiveOperationException exception)

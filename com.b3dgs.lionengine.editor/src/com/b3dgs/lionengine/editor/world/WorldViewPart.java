@@ -136,6 +136,25 @@ public class WorldViewPart
     }
 
     /**
+     * Set the tool item enabled state.
+     * 
+     * @param item The item id extract.
+     * @param enabled <code>true</code> if enabled, <code>false</code> else.
+     */
+    public void setToolItemEnabled(String item, boolean enabled)
+    {
+        final MPart part = partService.findPart(WorldViewPart.ID);
+        if (part != null)
+        {
+            final MToolBar toolBar = part.getToolbar();
+            if (toolBar != null)
+            {
+                UtilEclipse.setToolItemEnabled(toolBar, enabled, item);
+            }
+        }
+    }
+
+    /**
      * Switch the grid enabled state.
      */
     public void switchGridEnabled()
