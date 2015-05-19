@@ -37,7 +37,10 @@ class Mario
     public static final Media CONFIG = Medias.create("entity", "Mario.xml");
 
     /**
-     * {@link Entity#Entity(SetupSurface, Services)}
+     * Constructor.
+     * 
+     * @param setup The setup reference.
+     * @param services The services reference.
      */
     public Mario(SetupSurface setup, Services services)
     {

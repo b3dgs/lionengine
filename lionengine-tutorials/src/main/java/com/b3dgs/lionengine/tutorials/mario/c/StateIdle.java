@@ -41,7 +41,7 @@ class StateIdle
     private final Force movement;
 
     /**
-     * Create the walk state.
+     * Create the state.
      * 
      * @param mario The mario reference.
      * @param animation The associated animation.

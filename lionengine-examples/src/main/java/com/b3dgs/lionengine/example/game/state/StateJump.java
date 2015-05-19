@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
 import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 
 /**
- * Turn state implementation.
+ * Jump state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -51,7 +51,7 @@ class StateJump
     private double side;
 
     /**
-     * Create the walk state.
+     * Create the state.
      * 
      * @param mario The mario reference.
      * @param animation The associated animation.

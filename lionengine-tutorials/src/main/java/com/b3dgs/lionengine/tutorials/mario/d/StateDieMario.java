@@ -37,7 +37,7 @@ class StateDieMario
     private final Animation animation;
 
     /**
-     * Create the die state.
+     * Create the state.
      * 
      * @param entity The entity reference.
      * @param animation The associated animation.

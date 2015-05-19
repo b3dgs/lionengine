@@ -62,7 +62,7 @@ class StateWalk
     private boolean played;
 
     /**
-     * Create the walk state.
+     * Create the state.
      * 
      * @param mario The mario reference.
      * @param animation The associated animation.
@@ -113,19 +113,14 @@ class StateWalk
         }
         movement.setDestination(side * 3, 0);
         animator.setAnimSpeed(Math.abs(movement.getDirectionHorizontal()) / 12.0);
-        if (side < 0)
+
+        if (side < 0 && movement.getDirectionHorizontal() < 0)
         {
-            if (movement.getDirectionHorizontal() < 0)
-            {
-                mirrorable.mirror(Mirror.HORIZONTAL);
-            }
+            mirrorable.mirror(Mirror.HORIZONTAL);
         }
-        else if (side > 0)
+        else if (side > 0 && movement.getDirectionHorizontal() > 0)
         {
-            if (movement.getDirectionHorizontal() > 0)
-            {
-                mirrorable.mirror(Mirror.NONE);
-            }
+            mirrorable.mirror(Mirror.NONE);
         }
     }
 

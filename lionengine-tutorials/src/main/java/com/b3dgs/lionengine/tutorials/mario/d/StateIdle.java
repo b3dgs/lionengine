@@ -57,7 +57,7 @@ class StateIdle
     private final Force movement;
 
     /**
-     * Create the walk state.
+     * Create the state.
      * 
      * @param entity The entity reference.
      * @param animation The associated animation.

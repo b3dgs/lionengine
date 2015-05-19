@@ -68,7 +68,7 @@ class StateJump
     private double side;
 
     /**
-     * Create the jump state.
+     * Create the state.
      * 
      * @param entity The entity reference.
      * @param animation The associated animation.

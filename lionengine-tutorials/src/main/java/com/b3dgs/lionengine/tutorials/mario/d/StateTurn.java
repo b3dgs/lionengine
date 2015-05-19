@@ -49,7 +49,7 @@ class StateTurn
     private double side;
 
     /**
-     * Create the walk state.
+     * Create the state.
      * 
      * @param entity The entity reference.
      * @param animation The associated animation.
