@@ -60,6 +60,8 @@ public class ProjectsPart
     /** Menu ID. */
     public static final String MENU_ID = ProjectsPart.ID + ".menu";
 
+    /** Watcher. */
+    private final FolderModificationWatcher watcher = new FolderModificationWatcher();
     /** The part service. */
     @Inject
     EPartService partService;
@@ -149,7 +151,18 @@ public class ProjectsPart
         projectTreeCreator = new ProjectTreeCreator(project, tree);
         projectTreeCreator.start();
 
+        watcher.stop();
+        watcher.start(project.getResourcesPath().toPath(), tree, projectTreeCreator);
+
         tree.layout();
+    }
+
+    /**
+     * Close the project.
+     */
+    public void close()
+    {
+        watcher.terminate();
     }
 
     /**

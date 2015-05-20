@@ -251,7 +251,7 @@ public class ProjectTreeCreator
      * @param path The parent path.
      * @param parent The parent tree item.
      */
-    private void checkPath(File path, TreeItem parent)
+    public void checkPath(File path, TreeItem parent)
     {
         if (path.isDirectory() && !path.getName().equals("META-INF"))
         {
