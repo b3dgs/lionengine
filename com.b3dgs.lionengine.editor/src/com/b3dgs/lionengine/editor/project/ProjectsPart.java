@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -42,9 +43,14 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler;
+import com.b3dgs.lionengine.editor.project.handler.SheetsEditHandler;
+import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
+import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
@@ -92,6 +98,7 @@ public class ProjectsPart
             public void mouseDoubleClick(MouseEvent mouseEvent)
             {
                 expandOnDoubleClick();
+                checkOpenFile();
             }
         });
         tree.addSelectionListener(new SelectionAdapter()
@@ -184,6 +191,36 @@ public class ProjectsPart
             for (final TreeItem item : tree.getSelection())
             {
                 item.setExpanded(!item.getExpanded());
+            }
+        }
+    }
+
+    /**
+     * Check file opening depending of its type.
+     */
+    void checkOpenFile()
+    {
+        final Media media = ProjectsModel.INSTANCE.getSelection();
+        if (media != null)
+        {
+            if (SheetsTester.isSheetsFile(media))
+            {
+                SheetsEditHandler.execute(tree.getShell());
+            }
+            else if (GroupsTester.isGroupsFile(media))
+            {
+                GroupsEditHandler.execute(tree.getShell());
+            }
+            else if (media.getFile().isFile())
+            {
+                try
+                {
+                    java.awt.Desktop.getDesktop().open(media.getFile());
+                }
+                catch (final IOException exception)
+                {
+                    Verbose.exception(getClass(), "checkOpenFile", exception);
+                }
             }
         }
     }

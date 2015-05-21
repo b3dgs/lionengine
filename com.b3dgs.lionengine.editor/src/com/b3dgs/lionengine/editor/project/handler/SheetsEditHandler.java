@@ -35,6 +35,18 @@ public class SheetsEditHandler
     /**
      * Execute the handler.
      * 
+     * @param parent The shell parent.
+     */
+    public static void execute(Shell parent)
+    {
+        final Media selection = ProjectsModel.INSTANCE.getSelection();
+        final SheetsEditDialog editSheetsDialog = new SheetsEditDialog(parent, selection);
+        editSheetsDialog.open();
+    }
+
+    /**
+     * Execute the handler.
+     * 
      * @param partService The part service reference.
      * @param parent The shell parent.
      */
@@ -42,8 +54,6 @@ public class SheetsEditHandler
     @SuppressWarnings("static-method")
     public void execute(EPartService partService, Shell parent)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final SheetsEditDialog editSheetsDialog = new SheetsEditDialog(parent, selection);
-        editSheetsDialog.open();
+        execute(parent);
     }
 }

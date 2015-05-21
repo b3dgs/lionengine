@@ -35,6 +35,18 @@ public class GroupsEditHandler
     /**
      * Execute the handler.
      * 
+     * @param parent The shell parent.
+     */
+    public static void execute(Shell parent)
+    {
+        final Media selection = ProjectsModel.INSTANCE.getSelection();
+        final GroupsEditDialog editGroupsDialog = new GroupsEditDialog(parent, selection);
+        editGroupsDialog.open();
+    }
+
+    /**
+     * Execute the handler.
+     * 
      * @param partService The part service reference.
      * @param parent The shell parent.
      */
@@ -42,8 +54,6 @@ public class GroupsEditHandler
     @SuppressWarnings("static-method")
     public void execute(EPartService partService, Shell parent)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final GroupsEditDialog editGroupsDialog = new GroupsEditDialog(parent, selection);
-        editGroupsDialog.open();
+        execute(parent);
     }
 }
