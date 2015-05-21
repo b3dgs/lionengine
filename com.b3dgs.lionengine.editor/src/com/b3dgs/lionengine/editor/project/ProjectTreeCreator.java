@@ -18,9 +18,7 @@
 package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -58,14 +56,8 @@ public class ProjectTreeCreator
     public static final Image ICON_DATA = UtilEclipse.getIcon("resources", "data.png");
     /** Level file icon. */
     public static final Image ICON_LEVEL = UtilEclipse.getIcon("resources", "level.png");
-    /** Map file icon. */
-    public static final Image ICON_MAP = UtilEclipse.getIcon("resources", "map-tile.png");
-    /** Factory entity file icon. */
-    public static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "factory.png");
     /** Object file icon. */
     public static final Image ICON_OBJECT = UtilEclipse.getIcon("resources", "object.png");
-    /** Entity file icon. */
-    public static final Image ICON_ENTITY = UtilEclipse.getIcon("resources", "entity.png");
     /** Class file icon. */
     public static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
     /** Sheets file icon. */
@@ -93,7 +85,7 @@ public class ProjectTreeCreator
         {
             final TreeItem folder = new TreeItem(parent, SWT.NONE);
             folder.setText(title);
-            folder.setImage(ProjectTreeCreator.ICON_FOLDER);
+            folder.setImage(ICON_FOLDER);
             return folder;
         }
         return parent;
@@ -107,15 +99,7 @@ public class ProjectTreeCreator
      */
     private static Image getClassIcon(Media file)
     {
-        if (Property.MAP_IMPL.is(file))
-        {
-            return ProjectTreeCreator.ICON_MAP;
-        }
-        else if (Property.FACTORY_IMPL.is(file))
-        {
-            return ProjectTreeCreator.ICON_FACTORY_ENTITY;
-        }
-        return ProjectTreeCreator.ICON_CLASS;
+        return ICON_CLASS;
     }
 
     /**
@@ -128,17 +112,17 @@ public class ProjectTreeCreator
     {
         if (ObjectsTester.isObjectFile(file))
         {
-            return ProjectTreeCreator.ICON_OBJECT;
+            return ICON_OBJECT;
         }
         else if (SheetsTester.isSheetsFile(file))
         {
-            return ProjectTreeCreator.ICON_SHEETS;
+            return ICON_SHEETS;
         }
         else if (GroupsTester.isGroupsFile(file))
         {
-            return ProjectTreeCreator.ICON_GROUPS;
+            return ICON_GROUPS;
         }
-        return ProjectTreeCreator.ICON_DATA;
+        return ICON_DATA;
     }
 
     /**
@@ -151,35 +135,33 @@ public class ProjectTreeCreator
     {
         if (Property.SOUND.is(file))
         {
-            return ProjectTreeCreator.ICON_SOUND;
+            return ICON_SOUND;
         }
         else if (Property.MUSIC.is(file))
         {
-            return ProjectTreeCreator.ICON_MUSIC;
+            return ICON_MUSIC;
         }
         else if (Property.IMAGE.is(file))
         {
-            return ProjectTreeCreator.ICON_IMAGE;
+            return ICON_IMAGE;
         }
         else if (Property.LEVEL.is(file))
         {
-            return ProjectTreeCreator.ICON_LEVEL;
+            return ICON_LEVEL;
         }
         else if (Property.DATA.is(file))
         {
-            return ProjectTreeCreator.getDataIcon(file);
+            return getDataIcon(file);
         }
         else if (Property.CLASS.is(file))
         {
-            return ProjectTreeCreator.getClassIcon(file);
+            return getClassIcon(file);
         }
-        return ProjectTreeCreator.ICON_FILE;
+        return ICON_FILE;
     }
 
     /** Project reference. */
     private final Project project;
-    /** Quick access list. */
-    private final Collection<TreeItem> quicks;
     /** Project path. */
     private final File projectPath;
     /** Classes path. */
@@ -199,7 +181,6 @@ public class ProjectTreeCreator
     {
         this.project = project;
         this.tree = tree;
-        quicks = new ArrayList<>();
         projectPath = project.getPath();
         classesPath = new File(projectPath, project.getClasses());
         resourcesPath = new File(projectPath, project.getResources());
@@ -212,7 +193,7 @@ public class ProjectTreeCreator
     {
         final TreeItem folder = new TreeItem(tree, SWT.NONE);
         folder.setText(project.getName());
-        folder.setImage(ProjectTreeCreator.ICON_MAIN);
+        folder.setImage(ICON_MAIN);
         checkPath(projectPath, folder);
     }
 
@@ -233,16 +214,6 @@ public class ProjectTreeCreator
         item.setData(media);
         tree.setData(media.getPath(), item);
         return item;
-    }
-
-    /**
-     * Get the quick access list.
-     * 
-     * @return The quick access list.
-     */
-    public Collection<TreeItem> getQuicks()
-    {
-        return quicks;
     }
 
     /**
@@ -315,16 +286,15 @@ public class ProjectTreeCreator
     {
         if (classesPath.getPath().startsWith(path.getPath()))
         {
-            return ProjectTreeCreator.checkPathReference(ProjectTreeCreator.FOLDER_CLASSES, parent, classesPath, path);
+            return checkPathReference(FOLDER_CLASSES, parent, classesPath, path);
         }
         else if (resourcesPath.getPath().startsWith(path.getPath()))
         {
-            return ProjectTreeCreator.checkPathReference(ProjectTreeCreator.FOLDER_RESOURCES, parent, resourcesPath,
-                    path);
+            return checkPathReference(FOLDER_RESOURCES, parent, resourcesPath, path);
         }
         else
         {
-            return createItem(parent, path, ProjectTreeCreator.ICON_FOLDER);
+            return createItem(parent, path, ICON_FOLDER);
         }
     }
 
@@ -338,7 +308,7 @@ public class ProjectTreeCreator
     {
         final String childName = file.getName();
         final Media media = getMedia(file.getPath());
-        final Image icon = ProjectTreeCreator.getFileIcon(media);
+        final Image icon = getFileIcon(media);
         final TreeItem item = createItem(parent, file, icon);
 
         if (Property.CLASS.is(media))
@@ -349,11 +319,6 @@ public class ProjectTreeCreator
         else
         {
             item.setText(file.getName());
-        }
-
-        if (icon == ProjectTreeCreator.ICON_FACTORY_ENTITY || icon == ProjectTreeCreator.ICON_MAP)
-        {
-            quicks.add(item);
         }
     }
 
