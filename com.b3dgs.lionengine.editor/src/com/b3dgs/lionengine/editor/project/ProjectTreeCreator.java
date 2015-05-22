@@ -65,8 +65,6 @@ public class ProjectTreeCreator
     /** Groups file icon. */
     public static final Image ICON_GROUPS = UtilEclipse.getIcon("resources", "groups.png");
 
-    /** Classes folder. */
-    private static final String FOLDER_CLASSES = "classes";
     /** Resources folder. */
     private static final String FOLDER_RESOURCES = "resources";
 
@@ -164,8 +162,6 @@ public class ProjectTreeCreator
     private final Project project;
     /** Project path. */
     private final File projectPath;
-    /** Classes path. */
-    private final File classesPath;
     /** Resources path. */
     private final File resourcesPath;
     /** Tree reference. */
@@ -182,7 +178,6 @@ public class ProjectTreeCreator
         this.project = project;
         this.tree = tree;
         projectPath = project.getPath();
-        classesPath = new File(projectPath, project.getClasses());
         resourcesPath = new File(projectPath, project.getResources());
     }
 
@@ -231,7 +226,7 @@ public class ProjectTreeCreator
         else if (path.isFile())
         {
             final String pathName = path.getParent();
-            if (pathName.startsWith(classesPath.getPath()) || pathName.startsWith(resourcesPath.getPath()))
+            if (pathName.startsWith(resourcesPath.getPath()))
             {
                 createChild(path, parent);
             }
@@ -266,8 +261,7 @@ public class ProjectTreeCreator
             for (final File child : children)
             {
                 final String pathName = child.getPath();
-                if (pathName.startsWith(classesPath.getPath()) || pathName.startsWith(resourcesPath.getPath())
-                        || classesPath.getPath().startsWith(pathName) || resourcesPath.getPath().startsWith(pathName))
+                if (pathName.startsWith(resourcesPath.getPath()) || resourcesPath.getPath().startsWith(pathName))
                 {
                     checkPath(child, folderItem);
                 }
@@ -284,18 +278,11 @@ public class ProjectTreeCreator
      */
     private TreeItem createFolder(File path, TreeItem parent)
     {
-        if (classesPath.getPath().startsWith(path.getPath()))
-        {
-            return checkPathReference(FOLDER_CLASSES, parent, classesPath, path);
-        }
-        else if (resourcesPath.getPath().startsWith(path.getPath()))
+        if (resourcesPath.getPath().startsWith(path.getPath()))
         {
             return checkPathReference(FOLDER_RESOURCES, parent, resourcesPath, path);
         }
-        else
-        {
-            return createItem(parent, path, ICON_FOLDER);
-        }
+        return createItem(parent, path, ICON_FOLDER);
     }
 
     /**
@@ -331,11 +318,7 @@ public class ProjectTreeCreator
     private Media getMedia(String path)
     {
         String relative;
-        if (path.startsWith(classesPath.getPath()))
-        {
-            relative = path.replace(classesPath.getPath(), "");
-        }
-        else if (path.startsWith(resourcesPath.getPath()))
+        if (path.startsWith(resourcesPath.getPath()))
         {
             relative = path.replace(resourcesPath.getPath(), "");
         }
