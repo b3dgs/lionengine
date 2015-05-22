@@ -22,6 +22,7 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
@@ -34,6 +35,9 @@ import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileExtractor;
+import com.b3dgs.lionengine.game.state.StateGame;
+import com.b3dgs.lionengine.game.state.StateTransition;
+import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -67,6 +71,48 @@ public class ModuleGame
         @Override
         protected void loading(FileReading file) throws IOException
         {
+        }
+    }
+
+    enum States
+    {
+        TEST1,
+        TEST2;
+    }
+
+    class StateTest
+            extends StateGame
+    {
+        public StateTest()
+        {
+            super(States.TEST1);
+            addTransition(new TransitionTest());
+        }
+
+        @Override
+        public void enter()
+        {
+        }
+
+        @Override
+        public void update(double extrp)
+        {
+        }
+
+        private final class TransitionTest
+                extends StateTransition
+                implements StateTransitionInputDirectionalChecker
+        {
+            public TransitionTest()
+            {
+                super(States.TEST2);
+            }
+
+            @Override
+            public boolean check(InputDeviceDirectional input)
+            {
+                return true;
+            }
         }
     }
 

@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.Checksum;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Strings;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Version;
@@ -73,25 +72,25 @@ public class ModuleCore
     /*
      * Snippet code
      */
-    
+
     private final Services services = new Services();
     private final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
 
     private final Factory factory = services.create(Factory.class); // Already added !
     private final Camera camera = services.create(Camera.class); // Already added !
     private final Handler handler = services.create(Handler.class); // Already added !
-    
+
     private final Factory factory = new Factory(services);
     private final Camera camera = new Camera();
     private final Handler handler = new Handler();
 
     void services()
     {
-        Services services = new Services();
+        final Services services = new Services();
         services.add(new Camera());
-        Viewer viewer = services.get(Viewer.class) // Get the camera as viewer
+        final Viewer viewer = services.get(Viewer.class); // Get the camera as viewer
     }
-    
+
     void check()
     {
         Check.superiorStrict(value, 0);
@@ -165,26 +164,6 @@ public class ModuleCore
         public void render(Graphic g)
         {
         }
-    }
-
-    void strings()
-    {
-        final String str = "test";
-        final String str1 = Strings.getStringRef(str);
-        final String str2 = Strings.getStringRef(str);
-
-        Assert.assertTrue(!Strings.getStringsRefs().isEmpty());
-        Assert.assertTrue(str1 == str2);
-        Assert.assertEquals(str1, str2);
-
-        for (final String string : Strings.getStringsRefs())
-        {
-            Assert.assertTrue(string == str);
-        }
-
-        Strings.removeStringRef(str);
-        Strings.clearStringsRef();
-        Assert.assertTrue(Strings.getStringsRefs().isEmpty());
     }
 
     void text()
