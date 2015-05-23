@@ -49,6 +49,13 @@ public interface Media
     String getPath();
 
     /**
+     * Get the media parent path.
+     * 
+     * @return The media parent path.
+     */
+    String getParentPath();
+
+    /**
      * Get the file descriptor.
      * 
      * @return The file descriptor.

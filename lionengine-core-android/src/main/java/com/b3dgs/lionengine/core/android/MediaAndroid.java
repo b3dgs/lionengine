@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Media implementation.
@@ -33,8 +34,13 @@ import com.b3dgs.lionengine.core.Media;
 final class MediaAndroid
         implements Media
 {
+    /** No parent. */
+    private static final String NO_PARENT = "";
+
     /** Media path. */
     private final String path;
+    /** Media parent path. */
+    private final String parent;
     /** File reference. */
     private final File file;
 
@@ -48,6 +54,15 @@ final class MediaAndroid
     {
         Check.notNull(path);
         this.path = path;
+        final int index = path.lastIndexOf(Medias.getSeparator());
+        if (index > -1)
+        {
+            parent = path.substring(0, index);
+        }
+        else
+        {
+            parent = NO_PARENT;
+        }
         file = new File(path);
     }
 
@@ -59,6 +74,12 @@ final class MediaAndroid
     public String getPath()
     {
         return path;
+    }
+
+    @Override
+    public String getParentPath()
+    {
+        return parent;
     }
 
     @Override

@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Media mock.
@@ -56,6 +57,12 @@ public final class MediaMock
     public String getPath()
     {
         return path;
+    }
+
+    @Override
+    public String getParentPath()
+    {
+        return path.substring(0, path.lastIndexOf(Medias.getSeparator()));
     }
 
     @Override
