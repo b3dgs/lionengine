@@ -100,10 +100,8 @@ public abstract class Sequence
 
     /**
      * Loading sequence data.
-     * 
-     * @throws LionEngineException If an exception occurred on loading.
      */
-    protected abstract void load() throws LionEngineException;
+    protected abstract void load();
 
     /**
      * Called when sequence is focused (screen). Does nothing by default.
