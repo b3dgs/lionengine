@@ -59,11 +59,6 @@ public final class Messages
     /** Add groups error text. */
     public static String AddGroups_Error_Text;
 
-    /** Edit folder type name title. */
-    public static String EditFolderType_Name_Title;
-    /** Edit folder type name text. */
-    public static String EditFolderType_Name_Text;
-
     /** Remove object title. */
     public static String RemoveObject_Title;
     /** Remove object text. */

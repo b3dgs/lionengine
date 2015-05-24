@@ -54,12 +54,8 @@ public class ProjectTreeCreator
     public static final Image ICON_IMAGE = UtilEclipse.getIcon("resources", "image.png");
     /** Data file icon. */
     public static final Image ICON_DATA = UtilEclipse.getIcon("resources", "data.png");
-    /** Level file icon. */
-    public static final Image ICON_LEVEL = UtilEclipse.getIcon("resources", "level.png");
     /** Object file icon. */
     public static final Image ICON_OBJECT = UtilEclipse.getIcon("resources", "object.png");
-    /** Class file icon. */
-    public static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
     /** Sheets file icon. */
     public static final Image ICON_SHEETS = UtilEclipse.getIcon("resources", "sheets.png");
     /** Groups file icon. */
@@ -87,17 +83,6 @@ public class ProjectTreeCreator
             return folder;
         }
         return parent;
-    }
-
-    /**
-     * Get the class file icon.
-     * 
-     * @param file The child file.
-     * @return The icon image associated to the file type.
-     */
-    private static Image getClassIcon(Media file)
-    {
-        return ICON_CLASS;
     }
 
     /**
@@ -143,17 +128,9 @@ public class ProjectTreeCreator
         {
             return ICON_IMAGE;
         }
-        else if (Property.LEVEL.is(file))
-        {
-            return ICON_LEVEL;
-        }
         else if (Property.DATA.is(file))
         {
             return getDataIcon(file);
-        }
-        else if (Property.CLASS.is(file))
-        {
-            return getClassIcon(file);
         }
         return ICON_FILE;
     }
