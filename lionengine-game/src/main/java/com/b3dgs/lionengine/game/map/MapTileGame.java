@@ -345,11 +345,24 @@ public class MapTileGame
     }
 
     @Override
+    public void create(Media levelrip) throws LionEngineException
+    {
+        create(levelrip, Medias.create(levelrip.getParentPath(), DEFAULT_SHEETS_FILE),
+                Medias.create(levelrip.getParentPath(), DEFAULT_GROUPS_FILE));
+    }
+
+    @Override
     public void create(Media levelrip, Media sheetsConfig, Media groupsConfig) throws LionEngineException
     {
         clear();
         final LevelRipConverter rip = new LevelRipConverter(levelrip, sheetsConfig, this);
         rip.start();
+
+        final int errors = rip.getErrors();
+        if (errors > 0)
+        {
+            Verbose.warning(getClass(), "create", "Number of missing tiles: " + errors);
+        }
         this.sheetsConfig = sheetsConfig;
         this.groupsConfig = groupsConfig;
         loadGroups(groupsConfig);

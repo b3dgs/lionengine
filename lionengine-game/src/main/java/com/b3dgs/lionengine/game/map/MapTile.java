@@ -91,6 +91,24 @@ public interface MapTile
      * A level rip is an image file (*.PNG, *.BMP) that represents the full map in one time.
      * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created.
      * Previous map data (if existing) will be cleared.
+     * <p>
+     * {@link #DEFAULT_SHEETS_FILE} and {@link #DEFAULT_GROUPS_FILE} will be used as default, by calling
+     * {@link #create(Media, Media, Media)}.
+     * </p>
+     * 
+     * @param levelrip The file describing the levelrip as a single image.
+     * @throws LionEngineException If error when importing map.
+     * @see #create(int, int)
+     * @see LevelRipConverter
+     * @see TileExtractor
+     */
+    void create(Media levelrip) throws LionEngineException;
+
+    /**
+     * Create a map from a level rip and the associated tiles directory.
+     * A level rip is an image file (*.PNG, *.BMP) that represents the full map in one time.
+     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created.
+     * Previous map data (if existing) will be cleared.
      * 
      * @param levelrip The file describing the levelrip as a single image.
      * @param sheetsConfig The file that define the sheets configuration.
