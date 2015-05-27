@@ -51,7 +51,7 @@ public class ProjectImportDialog
     /** From verbose. */
     private static final String VERBOSE_FROM = " from ";
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "import-project.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
 
     /** Already exists. */
     private boolean hasProject;

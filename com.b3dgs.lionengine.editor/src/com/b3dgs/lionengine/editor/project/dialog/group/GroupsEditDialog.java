@@ -44,7 +44,7 @@ public class GroupsEditDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "groups-edit.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
 
     /** Groups media. */
     final Media groups;

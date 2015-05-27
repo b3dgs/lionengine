@@ -49,7 +49,7 @@ public class MapImportDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "import-map.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
 
     /** Level rip location. */
     Text levelRipLocationText;

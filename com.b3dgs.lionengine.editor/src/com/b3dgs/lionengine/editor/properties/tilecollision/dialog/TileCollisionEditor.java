@@ -40,7 +40,7 @@ public class TileCollisionEditor
         extends AbstractEditor
 {
     /** Tile collision icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit-tilesheets.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
 
     /** Default collision name. */
     private static final String DEFAULT_NAME = "default";

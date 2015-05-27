@@ -52,7 +52,7 @@ public class SheetsEditDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "sheets-edit.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
 
     /** Sheets media. */
     final Media sheets;

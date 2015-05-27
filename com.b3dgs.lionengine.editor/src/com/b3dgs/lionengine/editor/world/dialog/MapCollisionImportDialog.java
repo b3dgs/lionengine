@@ -54,7 +54,7 @@ public class MapCollisionImportDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "import-map.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
 
     /** Part services. */
     private final EPartService partService;
