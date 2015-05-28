@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
@@ -24,6 +27,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 
@@ -45,25 +49,6 @@ public final class TileExtractor
 {
     /** Ignored color. */
     public static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
-
-    /**
-     * Start tiles extraction.
-     * 
-     * @param levelrip The input media, containing level rip as an image.
-     * @param out The output media, which will contain unique tiles.
-     * @param tilew The level tile width.
-     * @param tileh The level tile height.
-     * @param destW The output image width.
-     * @param destH The output image height.
-     * @throws LionEngineException If arguments are invalid or image cannot be read or an error occurred when saving the
-     *             image.
-     */
-    public static void start(Media levelrip, Media out, int tilew, int tileh, int destW, int destH)
-            throws LionEngineException
-    {
-        final TileExtractor extractor = new TileExtractor(levelrip, tilew, tileh, destW, destH);
-        extractor.start(out);
-    }
 
     /**
      * Compare two tiles by checking all pixels.
@@ -96,131 +81,230 @@ public final class TileExtractor
         return true;
     }
 
-    /** Image map reference. */
-    private SpriteTiled imageMap;
-    /** Built sheet from map. */
-    private ImageBuffer sheet;
-    /** Graphics. */
-    private Graphic g;
-    /** Image map height. */
-    private int imageMapTilesInY;
-    /** Image map width. */
-    private int imageMapTilesInX;
-    /** Exploring area start x. */
-    private int startX;
-    /** Exploring area start y. */
-    private int endX;
+    /** Levels rip. */
+    private final Collection<Media> rips = new ArrayList<>();
+    /** Extracted tile sheets. */
+    private final Collection<ImageBuffer> extractions = new ArrayList<>();
+    /** Extraction folder. */
+    private final Media folder;
+    /** Extracted tile sheet prefix. */
+    private final String prefix;
     /** Tile width. */
-    private int tilew;
+    private final int tileWidth;
     /** Tile height. */
-    private int tileh;
+    private final int tileHeight;
+    /** Maximum tile sheet horizontal tiles. */
+    private final int horizontal;
+    /** Maximum tile sheet vertical tiles. */
+    private final int vertical;
+    /** Last sheet buffer. */
+    private ImageBuffer sheet;
+    /** Last sheet graphic. */
+    private Graphic g;
+    /** Last tile sheet extraction number. */
+    private int lastIndex;
     /** Draw tile found location x. */
     private int cx;
     /** Draw tile found location y. */
     private int cy;
 
     /**
-     * Private constructor.
+     * Create the extractor.
+     * 
+     * @param folder The generated levelrip folder.
+     * @param tileWidth The level rip tile width.
+     * @param tileHeight The level rip tile height.
+     * @param horizontal The number of horizontal tiles on tile sheet.
+     * @param vertical The number of vertical tiles on tile sheet.
      */
-    private TileExtractor()
+    public TileExtractor(Media folder, int tileWidth, int tileHeight, int horizontal, int vertical)
     {
-        throw new RuntimeException();
+        this(folder, "", tileWidth, tileHeight, horizontal, vertical);
     }
 
     /**
-     * Private constructor.
+     * Create the extractor.
      * 
-     * @param media The levelrip media path.
-     * @param tilew The tile width.
-     * @param tileh The tile height.
-     * @param destW The tilesheet width.
-     * @param destH The tilesheet height.
-     * @throws LionEngineException If arguments are invalid or image cannot be read.
+     * @param folder The generated levelrip folder.
+     * @param prefix The extracted tile sheets prefix.
+     * @param tileWidth The level rip tile width.
+     * @param tileHeight The level rip tile height.
+     * @param horizontal The number of horizontal tiles on tile sheet.
+     * @param vertical The number of vertical tiles on tile sheet.
      */
-    private TileExtractor(Media media, int tilew, int tileh, int destW, int destH) throws LionEngineException
+    public TileExtractor(Media folder, String prefix, int tileWidth, int tileHeight, int horizontal, int vertical)
     {
-        this.tilew = tilew;
-        this.tileh = tileh;
-        imageMap = Drawable.loadSpriteTiled(media, tilew, tileh);
-        imageMap.load(false);
-        imageMapTilesInY = imageMap.getHeight() / this.tileh;
-        imageMapTilesInX = imageMap.getWidth() / this.tilew;
-        startX = 0;
-        endX = imageMapTilesInX;
-        sheet = Graphics.createImageBuffer(destW, destH, Transparency.BITMASK);
-        g = sheet.createGraphic();
-        cx = 0;
-        cy = 0;
+        this.folder = folder;
+        this.prefix = prefix;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+        this.horizontal = horizontal;
+        this.vertical = vertical;
+    }
+
+    /**
+     * Add a level rip to proceed during extraction.
+     * 
+     * @param rip The level rip media.
+     */
+    public void addRip(Media rip)
+    {
+        rips.add(rip);
     }
 
     /**
      * Start using specified output file.
      * 
-     * @param fileout The output file.
      * @throws LionEngineException If an error occurred when saving the image.
      */
-    private void start(Media fileout) throws LionEngineException
+    public void start() throws LionEngineException
     {
-        // Check all image tiles
-        final ImageBuffer tileRef = imageMap.getSurface();
-        for (int imageMapCurrentTileY = imageMapTilesInY - 1; imageMapCurrentTileY >= 0; imageMapCurrentTileY--)
+        sheet = Graphics.createImageBuffer(horizontal * tileWidth, vertical * tileHeight, Transparency.BITMASK);
+        extractions.add(sheet);
+        g = sheet.createGraphic();
+
+        for (final Media rip : rips)
         {
-            for (int imageMapCurrentTileX = startX; imageMapCurrentTileX < endX; imageMapCurrentTileX++)
+            proceed(rip);
+        }
+        g.dispose();
+        saveExtraction();
+    }
+
+    /**
+     * Proceed the specified level rip.
+     * 
+     * @param ripMedia The level rip.
+     * @throws LionEngineException If an error occurred when proceeding the image.
+     */
+    private void proceed(Media ripMedia) throws LionEngineException
+    {
+        final SpriteTiled rip = Drawable.loadSpriteTiled(ripMedia, tileWidth, tileHeight);
+        rip.load(false);
+
+        final int ripHorizontalTiles = rip.getWidth() / tileWidth;
+        final int ripVerticalTiles = rip.getHeight() / tileHeight;
+        final ImageBuffer surface = rip.getSurface();
+
+        for (int ripV = ripVerticalTiles - 1; ripV >= 0; ripV--)
+        {
+            for (int ripH = 0; ripH < ripHorizontalTiles; ripH++)
             {
                 // Skip blank tile of image map (0, 128, 128)
-                final int imageColor = tileRef.getRgb(imageMapCurrentTileX * tilew + 1,
-                        (imageMapTilesInY - 1 - imageMapCurrentTileY) * tileh + 1);
-                if (imageColor != TileExtractor.IGNORED_COLOR)
+                if (IGNORED_COLOR != surface.getRgb(ripH * tileWidth, ripV * tileHeight))
                 {
-                    // Search if tile is on sheet and get it
-                    final boolean found = searchForTile(tileRef, imageMapCurrentTileX, imageMapTilesInY - 1
-                            - imageMapCurrentTileY);
-                    final int n = imageMapCurrentTileX + (imageMapTilesInY - 1 - imageMapCurrentTileY)
-                            * imageMap.getTilesHorizontal();
-
-                    if (!found)
+                    if (!isExtracted(surface, ripH, ripV))
                     {
-                        imageMap.setLocation(cx, cy);
-                        imageMap.setTile(n);
-                        imageMap.render(g);
-                        cx += tilew;
-                        if (cx > sheet.getWidth())
-                        {
-                            cx = 0;
-                            cy += tileh;
-                        }
+                        final int tileNumber = ripH + ripV * rip.getTilesHorizontal();
+                        extract(rip, tileNumber);
+                        checkSheetFilled();
                     }
                 }
             }
         }
-        g.dispose();
-        Graphics.saveImage(sheet, fileout);
     }
 
     /**
-     * Search current tile of image map by checking all surfaces.
+     * Extract the tile number from the level rip to draw it on current tile sheet.
      * 
-     * @param tileSprite The the tile
-     * @param x The location x.
-     * @param y The location y.
+     * @param imageMap The level rip image.
+     * @param tile The tile number on level rip.
+     */
+    private void extract(SpriteTiled imageMap, int tile)
+    {
+        imageMap.setLocation(cx, cy);
+        imageMap.setTile(tile);
+        imageMap.render(g);
+
+        cx += tileWidth;
+        if (cx > sheet.getWidth())
+        {
+            cx = 0;
+            cy += tileHeight;
+        }
+    }
+
+    /**
+     * Check if current extracted sheet has been filled, and prepare a new one if needed.
+     */
+    private void checkSheetFilled()
+    {
+        if (cy >= sheet.getHeight())
+        {
+            saveExtraction();
+            sheet = Graphics.createImageBuffer(horizontal * tileWidth, vertical * tileHeight, Transparency.BITMASK);
+            extractions.add(sheet);
+
+            g.dispose();
+            g = sheet.createGraphic();
+
+            cx = 0;
+            cy = 0;
+            lastIndex++;
+        }
+    }
+
+    /**
+     * Save the current extracted tile sheet.
+     */
+    private void saveExtraction()
+    {
+        Graphics.saveImage(sheet, getSheetMedia(lastIndex));
+    }
+
+    /**
+     * Get the sheet media from its index.
+     * 
+     * @param index The sheet index.
+     * @return The sheet media.
+     */
+    private Media getSheetMedia(int index)
+    {
+        return Medias.create(folder.getPath(), prefix + index + ".png");
+    }
+
+    /**
+     * Check if tile has already been extracted at the current level rip location.
+     * 
+     * @param rip The the level rip.
+     * @param ripH The tile horizontal index.
+     * @param ripV The tile vertical index.
      * @return <code>true</code> if found, <code>false</code> else.
      */
-    private boolean searchForTile(ImageBuffer tileSprite, int x, int y)
+    private boolean isExtracted(ImageBuffer rip, int ripH, int ripV)
     {
-        final int tilesInX = sheet.getWidth() / tilew;
-        final int tilesInY = sheet.getHeight() / tileh;
-
-        // Check each tile of the tile sheet
-        for (int surfaceCurrentTileY = 0; surfaceCurrentTileY < tilesInY; surfaceCurrentTileY++)
+        for (final ImageBuffer sheet : extractions)
         {
-            for (int surfaceCurrentTileX = 0; surfaceCurrentTileX < tilesInX; surfaceCurrentTileX++)
+            if (isExtracted(rip, sheet, ripH, ripV))
             {
-                // Compare tiles between sheet and image map
-                final int xa = x * tilew;
-                final int ya = y * tileh;
-                final int xb = surfaceCurrentTileX * tilew;
-                final int yb = surfaceCurrentTileY * tileh;
-                if (compareTile(tilew, tileh, tileSprite, xa, ya, sheet, xb, yb))
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if tile has already been extracted at the current level rip location in the tile sheet.
+     * 
+     * @param rip The the level rip.
+     * @param sheet The tile sheet to check.
+     * @param ripH The tile horizontal index.
+     * @param ripV The tile vertical index.
+     * @return <code>true</code> if found, <code>false</code> else.
+     */
+    private boolean isExtracted(ImageBuffer rip, ImageBuffer sheet, int ripH, int ripV)
+    {
+        // Check each tile of the current tile sheet
+        for (int sheetV = 0; sheetV < vertical; sheetV++)
+        {
+            for (int sheetH = 0; sheetH < horizontal; sheetH++)
+            {
+                // Compare tiles between sheet and level rip
+                final int ripX = ripH * tileWidth;
+                final int ripY = ripV * tileHeight;
+                final int sheetX = sheetH * tileWidth;
+                final int sheetY = sheetV * tileHeight;
+                if (compareTile(tileWidth, tileHeight, rip, ripX, ripY, sheet, sheetX, sheetY))
                 {
                     return true;
                 }
