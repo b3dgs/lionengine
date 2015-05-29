@@ -35,10 +35,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.ProjectTreeCreator;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.ProjectsPart;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
 
@@ -70,27 +67,6 @@ public class GroupsAddHandler
     }
 
     /**
-     * Add the groups.
-     * 
-     * @param partService The part service reference.
-     * @param selection The current folder selection.
-     * @param groups The groups file destination.
-     */
-    private static void addGroups(EPartService partService, Media selection, File groups)
-    {
-        try
-        {
-            createGroups(groups);
-            final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
-            part.addTreeItem(selection, groups, ProjectTreeCreator.ICON_GROUPS);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
      * Execute the handler.
      * 
      * @param partService The part service reference.
@@ -116,7 +92,14 @@ public class GroupsAddHandler
             }
             else
             {
-                addGroups(partService, selection, groups);
+                try
+                {
+                    createGroups(groups);
+                }
+                catch (final IOException exception)
+                {
+                    throw new LionEngineException(exception);
+                }
             }
         }
     }

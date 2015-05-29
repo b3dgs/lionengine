@@ -26,9 +26,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.ProjectsPart;
 
 /**
  * Remove an object in the selected folder.
@@ -57,8 +55,6 @@ public class ObjectDeleteHandler
                 messageBox.setText(Messages.RemoveObject_Title);
                 messageBox.setMessage(Messages.RemoveObject_Text + file);
                 messageBox.open();
-                final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
-                part.removeTreeItem(selection);
             }
             else
             {

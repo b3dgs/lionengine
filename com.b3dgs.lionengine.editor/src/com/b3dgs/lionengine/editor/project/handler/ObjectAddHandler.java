@@ -35,10 +35,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.ProjectTreeCreator;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.ProjectsPart;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -87,27 +84,6 @@ public class ObjectAddHandler
     }
 
     /**
-     * Add the object.
-     * 
-     * @param partService The part service reference.
-     * @param selection The current folder selection.
-     * @param object The object file destination.
-     */
-    private static void addObject(EPartService partService, Media selection, File object)
-    {
-        try
-        {
-            createObject(object, ObjectGame.class, Setup.class);
-            final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
-            part.addTreeItem(selection, object, ProjectTreeCreator.ICON_OBJECT);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
      * Execute the handler.
      * 
      * @param partService The part service reference.
@@ -133,7 +109,14 @@ public class ObjectAddHandler
             }
             else
             {
-                addObject(partService, selection, object);
+                try
+                {
+                    createObject(object, ObjectGame.class, Setup.class);
+                }
+                catch (final IOException exception)
+                {
+                    throw new LionEngineException(exception);
+                }
             }
         }
     }
