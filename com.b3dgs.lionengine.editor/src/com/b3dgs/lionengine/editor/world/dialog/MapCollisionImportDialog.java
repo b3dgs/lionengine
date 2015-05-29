@@ -220,7 +220,7 @@ public class MapCollisionImportDialog
     {
         final Composite sheetArea = new Composite(content, SWT.NONE);
         sheetArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        sheetArea.setLayout(new GridLayout(4, false));
+        sheetArea.setLayout(new GridLayout(3, false));
 
         final Label locationLabel = new Label(sheetArea, SWT.NONE);
         locationLabel.setText(Messages.ImportMapCollisionDialog_FormulasLocation);

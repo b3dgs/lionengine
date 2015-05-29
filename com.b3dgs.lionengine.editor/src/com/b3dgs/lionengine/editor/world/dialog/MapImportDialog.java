@@ -305,7 +305,7 @@ public class MapImportDialog
     {
         final Composite sheetArea = new Composite(content, SWT.NONE);
         sheetArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        sheetArea.setLayout(new GridLayout(4, false));
+        sheetArea.setLayout(new GridLayout(3, false));
 
         final Label locationLabel = new Label(sheetArea, SWT.NONE);
         locationLabel.setText(Messages.ImportMapDialog_SheetsLocation);
@@ -336,7 +336,7 @@ public class MapImportDialog
     {
         final Composite groupArea = new Composite(content, SWT.NONE);
         groupArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        groupArea.setLayout(new GridLayout(4, false));
+        groupArea.setLayout(new GridLayout(3, false));
 
         final Label locationLabel = new Label(groupArea, SWT.NONE);
         locationLabel.setText(Messages.ImportMapDialog_GroupsLocation);

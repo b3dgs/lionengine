@@ -32,6 +32,8 @@ public final class Messages
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".project.dialog.messages"; //$NON-NLS-1$
 
+    /** Project. */
+    public static String AbstractProjectDialog_Project;
     /** Classes. */
     public static String AbstractProjectDialog_Classes;
     /** Libraries */

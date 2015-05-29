@@ -160,21 +160,15 @@ public abstract class AbstractProjectDialog
         classesArea.setLayout(new GridLayout(4, false));
 
         final Label classesLabel = new Label(classesArea, SWT.NONE);
-        final GridData classesData = new GridData();
-        classesData.widthHint = 64;
-        classesLabel.setLayoutData(classesData);
         classesLabel.setText(Messages.AbstractProjectDialog_Classes);
 
         projectClassesText = new Text(classesArea, SWT.BORDER);
         projectClassesText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         projectClassesText.setTextLimit(AbstractDialog.MAX_CHAR);
 
-        final Composite browse = new Composite(classesArea, SWT.NONE);
-        browse.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
-        browse.setLayout(new GridLayout(2, false));
-        projectClassesBrowseFolder = createBrowseButton(browse,
+        projectClassesBrowseJar = createBrowseButton(classesArea, JAR_TEXT, projectClassesText, false, "*.jar");
+        projectClassesBrowseFolder = createBrowseButton(classesArea,
                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, projectClassesText, true);
-        projectClassesBrowseJar = createBrowseButton(browse, AbstractProjectDialog.JAR_TEXT, projectClassesText, false);
     }
 
     /**
@@ -186,12 +180,9 @@ public abstract class AbstractProjectDialog
     {
         final Composite librariesArea = new Composite(content, SWT.NONE);
         librariesArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        librariesArea.setLayout(new GridLayout(4, false));
+        librariesArea.setLayout(new GridLayout(3, false));
 
         final Label librariesLabel = new Label(librariesArea, SWT.NONE);
-        final GridData librariesData = new GridData();
-        librariesData.widthHint = 64;
-        librariesLabel.setLayoutData(librariesData);
         librariesLabel.setText(Messages.AbstractProjectDialog_Libraries);
 
         projectLibrariesText = new Text(librariesArea, SWT.BORDER);
@@ -211,12 +202,9 @@ public abstract class AbstractProjectDialog
     {
         final Composite resourcesArea = new Composite(content, SWT.NONE);
         resourcesArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        resourcesArea.setLayout(new GridLayout(4, false));
+        resourcesArea.setLayout(new GridLayout(3, false));
 
         final Label resourcesLabel = new Label(resourcesArea, SWT.NONE);
-        final GridData resourcesData = new GridData();
-        resourcesData.widthHint = 64;
-        resourcesLabel.setLayoutData(resourcesData);
         resourcesLabel.setText(Messages.AbstractProjectDialog_Resources);
 
         projectResourcesText = new Text(resourcesArea, SWT.BORDER);
@@ -242,9 +230,10 @@ public abstract class AbstractProjectDialog
      * 
      * @param projectPath The project path.
      * @param folder <code>true</code> for folder search, <code>false</code> for file search.
+     * @param extensions The extensions to filter.
      * @return The selected path (can be folder or file).
      */
-    String getSelectedPath(String projectPath, boolean folder)
+    String getSelectedPath(String projectPath, boolean folder, String... extensions)
     {
         if (folder)
         {
@@ -254,6 +243,7 @@ public abstract class AbstractProjectDialog
         }
         final FileDialog fileDialog = new FileDialog(dialog, SWT.APPLICATION_MODAL);
         fileDialog.setFilterPath(projectPath);
+        fileDialog.setFilterExtensions(extensions);
         return fileDialog.open();
     }
 
@@ -264,12 +254,13 @@ public abstract class AbstractProjectDialog
      * @param title The button title.
      * @param text The text reference.
      * @param folder <code>true</code> for folder search, <code>false</code> for file search.
+     * @param extensions The extensions to filter.
      * @return The created button.
      */
-    private Button createBrowseButton(Composite parent, String title, final Text text, final boolean folder)
+    private Button createBrowseButton(Composite parent, String title, final Text text, final boolean folder,
+            final String... extensions)
     {
-        final Button browse = UtilSwt.createButton(parent, title, null);
-        browse.setImage(AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilSwt.createButton(parent, title, AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
         browse.addSelectionListener(new SelectionAdapter()
         {
@@ -279,7 +270,7 @@ public abstract class AbstractProjectDialog
                 final String projectPath = projectLocationText.getText();
                 if (projectPath != null && !projectPath.isEmpty())
                 {
-                    final String path = getSelectedPath(projectPath, folder);
+                    final String path = getSelectedPath(projectPath, folder, extensions);
                     if (path != null)
                     {
                         text.setText(path.substring(projectPath.length() + 1));
@@ -297,8 +288,13 @@ public abstract class AbstractProjectDialog
     @Override
     protected void createContent(Composite content)
     {
-        createProjectNameArea(content);
-        createProjectLocationArea(content);
+        final Group project = new Group(content, SWT.SHADOW_NONE);
+        project.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
+        project.setLayout(new GridLayout(1, false));
+        project.setText(Messages.AbstractProjectDialog_Project);
+
+        createProjectNameArea(project);
+        createProjectLocationArea(project);
 
         final Group folders = new Group(content, SWT.SHADOW_NONE);
         folders.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
