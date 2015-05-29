@@ -173,6 +173,51 @@ public class ProjectImportDialog
     }
 
     /**
+     * Generate the project properties.
+     * 
+     * @param location The project location destination.
+     */
+    private void generateProperties(File location)
+    {
+        final String classes = projectClassesText.getText();
+        final String libraries = projectLibrariesText.getText();
+        final String resources = projectResourcesText.getText();
+        final ProjectGenerator createProject = new ProjectGenerator(classes, libraries, resources);
+        try
+        {
+            createProject.createProperties(location);
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(getClass(), "generateProperties", exception);
+            MessageDialog.openError(dialog, Messages.ImportProjectDialog_ErrorTitle,
+                    Messages.ImportProjectDialog_ErrorText);
+        }
+    }
+
+    /**
+     * Create the project at the specified location.
+     * 
+     * @param location The project location destination.
+     */
+    private void createProject(File location)
+    {
+        final String name = projectNameText.getText();
+        try
+        {
+            project = Project.create(location);
+            Verbose.info(ProjectImportDialog.VERBOSE_PROJECT_IMPORTED, name, ProjectImportDialog.VERBOSE_FROM,
+                    location.getAbsolutePath());
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(getClass(), "createProject", exception);
+            MessageDialog.openError(dialog, Messages.ImportProjectDialog_ErrorTitle,
+                    Messages.ImportProjectDialog_ErrorText);
+        }
+    }
+
+    /**
      * Check if the project is not already existing.
      */
     private void checkProjectExistence()
@@ -308,50 +353,5 @@ public class ProjectImportDialog
         final File location = new File(projectLocationText.getText());
         generateProperties(location);
         createProject(location);
-    }
-
-    /**
-     * Generate the project properties.
-     * 
-     * @param location The project location destination.
-     */
-    private void generateProperties(File location)
-    {
-        final String classes = projectClassesText.getText();
-        final String libraries = projectLibrariesText.getText();
-        final String resources = projectResourcesText.getText();
-        final ProjectGenerator createProject = new ProjectGenerator(classes, libraries, resources);
-        try
-        {
-            createProject.createProperties(location);
-        }
-        catch (final IOException exception)
-        {
-            Verbose.exception(getClass(), "generateProperties", exception);
-            MessageDialog.openError(dialog, Messages.ImportProjectDialog_ErrorTitle,
-                    Messages.ImportProjectDialog_ErrorText);
-        }
-    }
-
-    /**
-     * Create the project at the specified location.
-     * 
-     * @param location The project location destination.
-     */
-    private void createProject(File location)
-    {
-        final String name = projectNameText.getText();
-        try
-        {
-            project = Project.create(location);
-            Verbose.info(ProjectImportDialog.VERBOSE_PROJECT_IMPORTED, name, ProjectImportDialog.VERBOSE_FROM,
-                    location.getAbsolutePath());
-        }
-        catch (final IOException exception)
-        {
-            Verbose.exception(getClass(), "createProject", exception);
-            MessageDialog.openError(dialog, Messages.ImportProjectDialog_ErrorTitle,
-                    Messages.ImportProjectDialog_ErrorText);
-        }
     }
 }
