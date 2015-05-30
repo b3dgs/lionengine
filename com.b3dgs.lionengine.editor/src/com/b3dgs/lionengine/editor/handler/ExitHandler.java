@@ -47,7 +47,7 @@ public class ExitHandler
     {
         if (MessageDialog.openConfirm(shell, Messages.ExitHandler_Title, Messages.ExitHandler_Text))
         {
-            final ProjectsPart part = UtilEclipse.getPart(null, ProjectsPart.ID, ProjectsPart.class);
+            final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
             part.close();
             workbench.close();
         }
