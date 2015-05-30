@@ -32,6 +32,27 @@ public final class Messages
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".world.dialog.messages"; //$NON-NLS-1$
 
+    /** Import sheets dialog title. */
+    public static String SheetsImportDialog_Title;
+    /** Import sheets title header. */
+    public static String SheetsImportDialog_HeaderTitle;
+    /** Import sheets description header. */
+    public static String SheetsImportDialog_HeaderDesc;
+    /** Add level rip. */
+    public static String SheetsImportDialog_AddLevelRip;
+    /** Remove level rip. */
+    public static String SheetsImportDialog_RemoveLevelRip;
+    /** No level rip defined. */
+    public static String SheetsImportDialog_NoLevelRipDefined;
+    /** Tile width. */
+    public static String SheetsImportDialog_TileWidth;
+    /** Tile height. */
+    public static String SheetsImportDialog_TileHeight;
+    /** Horizontal tiles. */
+    public static String SheetsImportDialog_HorizontalTiles;
+    /** Vertical tiles. */
+    public static String SheetsImportDialog_VerticalTiles;
+
     /** Import map dialog title. */
     public static String ImportMapDialog_Title;
     /** Import map title header. */

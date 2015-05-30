@@ -39,13 +39,6 @@ public final class Messages
     /** Browse. */
     public static String AbstractDialog_Browse;
 
-    /** Import sheets dialog title. */
-    public static String SheetsImportDialogTitle;
-    /** Import sheets title header. */
-    public static String SheetsImportDialog_HeaderTitle;
-    /** Import sheets description header. */
-    public static String SheetsImportDialog_HeaderDesc;
-
     /** About. */
     public static String AboutDialog_Title;
 
