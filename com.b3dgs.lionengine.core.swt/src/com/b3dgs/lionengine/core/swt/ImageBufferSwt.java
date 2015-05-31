@@ -108,8 +108,11 @@ final class ImageBufferSwt
             gc.dispose();
             gc = null;
         }
-        image.dispose();
-        image = null;
+        if (image != null)
+        {
+            image.dispose();
+            image = null;
+        }
     }
 
     @Override
@@ -137,7 +140,11 @@ final class ImageBufferSwt
         final int pixel = data.getPixel(x, y);
         final PaletteData palette = data.palette;
         final RGB rgb = palette.getRGB(pixel);
-        return new ColorRgba(rgb.red, rgb.green, rgb.blue).getRgba();
+        if (pixel == data.transparentPixel)
+        {
+            return ColorRgba.TRANSPARENT.getRgba();
+        }
+        return new ColorRgba(rgb.red, rgb.green, rgb.blue, data.getAlpha(x, y)).getRgba();
     }
 
     @Override
