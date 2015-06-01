@@ -160,7 +160,6 @@ public final class TileExtractor
     public void start() throws LionEngineException
     {
         sheet = Graphics.createImageBuffer(horizontal * tileWidth, vertical * tileHeight, Transparency.BITMASK);
-        extractions.add(sheet);
         g = sheet.createGraphic();
 
         for (final Media rip : rips)
@@ -169,6 +168,11 @@ public final class TileExtractor
         }
         g.dispose();
         saveExtraction();
+        sheet.dispose();
+        for (final ImageBuffer image : extractions)
+        {
+            image.dispose();
+        }
     }
 
     /**
@@ -231,11 +235,10 @@ public final class TileExtractor
     {
         if (cy >= sheet.getHeight())
         {
-            saveExtraction();
-            sheet = Graphics.createImageBuffer(horizontal * tileWidth, vertical * tileHeight, Transparency.BITMASK);
-            extractions.add(sheet);
-
             g.dispose();
+            saveExtraction();
+            extractions.add(Graphics.getImageBuffer(sheet));
+            sheet = Graphics.createImageBuffer(horizontal * tileWidth, vertical * tileHeight, Transparency.BITMASK);
             g = sheet.createGraphic();
 
             cx = 0;
@@ -273,13 +276,24 @@ public final class TileExtractor
      */
     private boolean isExtracted(ImageBuffer rip, int ripH, int ripV)
     {
-        for (final ImageBuffer sheet : extractions)
+        final Collection<ImageBuffer> checks = new ArrayList<>(extractions);
+        g.dispose();
+
+        final ImageBuffer buffer = Graphics.getImageBuffer(sheet);
+        checks.add(buffer);
+        for (final ImageBuffer current : checks)
         {
-            if (isExtracted(rip, sheet, ripH, ripV))
+            if (isExtracted(rip, current, ripH, ripV))
             {
+                g = sheet.createGraphic();
+                buffer.dispose();
+                checks.clear();
                 return true;
             }
         }
+        g = sheet.createGraphic();
+        buffer.dispose();
+        checks.clear();
         return false;
     }
 
