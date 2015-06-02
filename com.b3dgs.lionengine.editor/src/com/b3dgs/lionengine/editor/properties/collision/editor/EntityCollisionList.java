@@ -68,8 +68,8 @@ public class EntityCollisionList
     }
 
     @Override
-    protected Collision createDefaultObject()
+    protected Collision createObject(String name)
     {
-        return new Collision("default", 0, 0, 0, 0, false);
+        return new Collision(name, 0, 0, 0, 0, false);
     }
 }

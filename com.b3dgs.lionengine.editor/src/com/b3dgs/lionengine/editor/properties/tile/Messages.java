@@ -45,6 +45,15 @@ public final class Messages
     /** Tile feature property. */
     public static String Properties_TileFeature;
 
+    /** Group chooser title. */
+    public static String GroupChooser_Title;
+    /** Group chooser header title. */
+    public static String GroupChooser_HeaderTitle;
+    /** Group chooser header description. */
+    public static String GroupChooser_HeaderDesc;
+    /** Group choice. */
+    public static String GroupChooser_Choice;
+
     /**
      * Initialize.
      */

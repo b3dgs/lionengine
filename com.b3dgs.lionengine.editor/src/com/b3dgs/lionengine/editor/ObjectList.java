@@ -55,9 +55,9 @@ public abstract class ObjectList<T extends Nameable>
     private static final String DEFAULT_NEW_OBJECT_NAME = "new";
 
     /** Listeners. */
-    private final Collection<ObjectListListener<T>> listeners = new ArrayList<>();
+    final Collection<ObjectListListener<T>> listeners = new ArrayList<>();
     /** Class type. */
-    private final Class<T> type;
+    final Class<T> type;
     /** Objects list. */
     Tree objectsTree;
     /** Selected data. */
@@ -86,9 +86,10 @@ public abstract class ObjectList<T extends Nameable>
     /**
      * Create a default object (called when clicked on add object from tool bar).
      * 
+     * @param name The object name.
      * @return The default object instance.
      */
-    protected abstract T createDefaultObject();
+    protected abstract T createObject(String name);
 
     /**
      * Add an object list listener.
@@ -288,7 +289,7 @@ public abstract class ObjectList<T extends Nameable>
                     final String name = inputDialog.getValue();
                     final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
                     item.setText(name);
-                    item.setData(createDefaultObject());
+                    item.setData(createObject(name));
                 }
             }
         });
@@ -310,6 +311,10 @@ public abstract class ObjectList<T extends Nameable>
             {
                 for (final TreeItem item : objectsTree.getSelection())
                 {
+                    for (final ObjectListListener<T> listener : listeners)
+                    {
+                        listener.notifyObjectDeleted(type.cast(item.getData()));
+                    }
                     item.dispose();
                 }
                 objectsTree.layout(true, true);
@@ -342,7 +347,7 @@ public abstract class ObjectList<T extends Nameable>
                     }
                     else
                     {
-                        final T object = createDefaultObject();
+                        final T object = createObject("default");
                         selection.setData(object);
                         setSelectedObject(object);
                     }

@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.map.TileCollision;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
@@ -62,6 +61,26 @@ public class WorldViewRenderer
     private static final ColorRgba COLOR_TILE_SELECTED = new ColorRgba(192, 192, 192, 96);
 
     /**
+     * Check if tiles groups are same.
+     * 
+     * @param groupA The first group.
+     * @param groupB The second group.
+     * @return <code>true</code> if groups are same (<code>null</code> included).
+     */
+    public static boolean groupEquals(String groupA, String groupB)
+    {
+        if (groupA != null)
+        {
+            return groupA.equals(groupB);
+        }
+        else if (groupB != null)
+        {
+            return groupB.equals(groupA);
+        }
+        return true;
+    }
+
+    /**
      * Draw the grid.
      * 
      * @param g The graphic output.
@@ -82,43 +101,6 @@ public class WorldViewRenderer
         {
             g.drawLine(h, 0, h, areaY);
         }
-    }
-
-    /**
-     * Render the selected tiles collision.
-     * 
-     * @param g The graphic output.
-     * @param map The map reference.
-     * @param camera The camera reference.
-     * @param selectedTile The selected tile reference.
-     */
-    private static void renderSelectedCollisions(Graphic g, MapTile map, Camera camera, Tile selectedTile)
-    {
-        // Render selected collision
-        g.setColor(COLOR_MOUSE_SELECTION);
-        final int th = map.getTileHeight();
-        for (int ty = 0; ty < map.getInTileHeight(); ty++)
-        {
-            for (int tx = 0; tx < map.getInTileWidth(); tx++)
-            {
-                final Tile tile = map.getTile(tx, ty);
-                if (tile != null && tile.hasFeature(TileCollision.class)
-                        && selectedTile.hasFeature(TileCollision.class))
-                {
-                    if (tile.getFeature(TileCollision.class).getCollisionFormulas() == selectedTile.getFeature(
-                            TileCollision.class).getCollisionFormulas())
-                    {
-                        g.drawRect((int) camera.getViewpointX(tile.getX()), (int) camera.getViewpointY(tile.getY())
-                                - th, tile.getWidth(), tile.getHeight(), true);
-                    }
-                }
-            }
-        }
-
-        // Render selected tile
-        g.setColor(COLOR_TILE_SELECTED);
-        g.drawRect((int) camera.getViewpointX(selectedTile.getX()), (int) camera.getViewpointY(selectedTile.getY())
-                - th, selectedTile.getWidth(), selectedTile.getHeight(), true);
     }
 
     /** Part service. */
@@ -173,7 +155,7 @@ public class WorldViewRenderer
         final Tile selectedTile = worldViewUpdater.getSelectedTile();
         if (selectedTile != null)
         {
-            renderSelectedCollisions(g, map, camera, selectedTile);
+            renderSelectedGroup(g, selectedTile);
         }
         renderSelection(g);
     }
@@ -230,6 +212,36 @@ public class WorldViewRenderer
         {
             parent.redraw();
         }
+    }
+
+    /**
+     * Render the selected tiles group.
+     * 
+     * @param g The graphic output.
+     * @param selectedTile The selected tile reference.
+     */
+    private void renderSelectedGroup(Graphic g, Tile selectedTile)
+    {
+        // Render selected group
+        g.setColor(COLOR_MOUSE_SELECTION);
+        final int th = map.getTileHeight();
+        for (int ty = 0; ty < map.getInTileHeight(); ty++)
+        {
+            for (int tx = 0; tx < map.getInTileWidth(); tx++)
+            {
+                final Tile tile = map.getTile(tx, ty);
+                if (tile != null && groupEquals(selectedTile.getGroup(), tile.getGroup()))
+                {
+                    g.drawRect((int) camera.getViewpointX(tile.getX()), (int) camera.getViewpointY(tile.getY()) - th,
+                            tile.getWidth(), tile.getHeight(), true);
+                }
+            }
+        }
+
+        // Render selected tile
+        g.setColor(COLOR_TILE_SELECTED);
+        g.drawRect((int) camera.getViewpointX(selectedTile.getX()), (int) camera.getViewpointY(selectedTile.getY())
+                - th, selectedTile.getWidth(), selectedTile.getHeight(), true);
     }
 
     /**

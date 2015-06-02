@@ -113,4 +113,10 @@ public class EntityCollisionProperties
         setTextValue(height, String.valueOf(collision.getHeight()));
         setButtonSelection(mirror, collision.hasMirror());
     }
+
+    @Override
+    public void notifyObjectDeleted(Collision collision)
+    {
+        // Nothing to do
+    }
 }

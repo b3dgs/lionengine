@@ -137,4 +137,10 @@ public class AnimationProperties
 
         animationFrameSelector.setSelectedFrames(animation.getFirst(), animation.getLast());
     }
+
+    @Override
+    public void notifyObjectDeleted(Animation animation)
+    {
+        // Nothing to do
+    }
 }

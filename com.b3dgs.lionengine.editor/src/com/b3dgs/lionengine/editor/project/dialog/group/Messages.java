@@ -39,13 +39,6 @@ public final class Messages
     /** Edit groups dialog description header. */
     public static String EditGroupsDialog_HeaderDesc;
 
-    /** Group sheet index. */
-    public static String GroupProperties_Sheet;
-    /** Group sheet start. */
-    public static String GroupProperties_Start;
-    /** Group sheet end. */
-    public static String GroupProperties_End;
-
     /**
      * Initialize.
      */

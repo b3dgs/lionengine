@@ -69,9 +69,8 @@ public class AnimationList
     }
 
     @Override
-    protected Animation createDefaultObject()
+    protected Animation createObject(String name)
     {
-        return Anim.createAnimation(Animation.DEFAULT_NAME, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, 0.1,
-                false, false);
+        return Anim.createAnimation(name, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, 0.1, false, false);
     }
 }

@@ -29,9 +29,11 @@ import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -44,14 +46,12 @@ public class GroupsEditDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
+    public static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
 
     /** Groups media. */
     final Media groups;
     /** Groups list. */
     private final GroupList list = new GroupList();
-    /** Group properties. */
-    private final GroupProperties properties = new GroupProperties(list);
 
     /**
      * Create a groups edit dialog.
@@ -63,6 +63,7 @@ public class GroupsEditDialog
     {
         super(parent, Messages.EditGroupsDialog_Title, Messages.EditGroupsDialog_HeaderTitle,
                 Messages.EditGroupsDialog_HeaderDesc, ICON);
+        dialog.setMinimumSize(128, 320);
         groups = tilesheets;
         createDialog();
         finish.setEnabled(true);
@@ -78,10 +79,8 @@ public class GroupsEditDialog
         content.setLayout(new GridLayout(2, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         list.create(content);
-        list.addListener(properties);
-        properties.create(content);
-
         list.loadGroups(groups);
+        list.addListener(list);
     }
 
     @Override
@@ -97,5 +96,7 @@ public class GroupsEditDialog
             root.add(nodeGroup);
         }
         Stream.saveXml(root, groups);
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        map.loadGroups(groups);
     }
 }

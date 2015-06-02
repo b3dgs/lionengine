@@ -33,4 +33,11 @@ public interface ObjectListListener<T extends Nameable>
      * @param object The selected object.
      */
     void notifyObjectSelected(T object);
+
+    /**
+     * Notify when object has been deleted from list.
+     * 
+     * @param object The deleted object.
+     */
+    void notifyObjectDeleted(T object);
 }
