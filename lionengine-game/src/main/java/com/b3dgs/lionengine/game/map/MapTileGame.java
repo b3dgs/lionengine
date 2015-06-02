@@ -27,7 +27,6 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
@@ -443,12 +442,10 @@ public class MapTileGame
                 final Tile tile = getTile(tx, ty);
                 if (tile != null)
                 {
-                    final Integer sheet = tile.getSheet();
-                    final int number = tile.getNumber();
+                    tile.setGroup(null);
                     for (final TileGroup group : groups)
                     {
-                        if (group.getSheet() == sheet.intValue()
-                                && UtilMath.isBetween(number, group.getStart(), group.getEnd()))
+                        if (group.contains(tile))
                         {
                             tile.setGroup(group.getName());
                         }

@@ -302,7 +302,7 @@ public class MapTileCollisionModel
                         tileCollision = tile.getFeature(TileCollision.class);
                     }
                     tileCollision.removeCollisionFormulas();
-                    addTileCollisions(tileCollision, tile.getSheet().intValue(), tile.getNumber());
+                    addTileCollisions(tileCollision, tile);
                 }
             }
         }
@@ -311,20 +311,19 @@ public class MapTileCollisionModel
     /**
      * Add the tile collisions from loaded configuration.
      * 
+     * @param tileCollision The tile reference.
      * @param tile The tile reference.
-     * @param sheet The tile sheet value.
-     * @param number The tile number value.
      */
-    private void addTileCollisions(TileCollision tile, int sheet, int number)
+    private void addTileCollisions(TileCollision tileCollision, Tile tile)
     {
         for (final CollisionGroup collision : getCollisionGroups())
         {
             final TileGroup group = map.getGroup(collision.getGroup());
-            if (group.getSheet() == sheet && UtilMath.isBetween(number, group.getStart(), group.getEnd()))
+            if (group.contains(tile))
             {
                 for (final CollisionFormula formula : collision.getFormulas())
                 {
-                    tile.addCollisionFormula(formula);
+                    tileCollision.addCollisionFormula(formula);
                 }
             }
         }

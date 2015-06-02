@@ -17,17 +17,26 @@
  */
 package com.b3dgs.lionengine.game.collision;
 
+import java.util.Collection;
+
 import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.Tile;
 
 /**
- * Represents the tile group, which can be applied to a {@link Tile}.
+ * Represents the tile group, which can be applied to a {@link TileRef}.
  * Here a definition example:
  * 
  * <pre>
  * {@code<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">}
- *    {@code<lionengine:group name="block" sheet="0" start="0" end="5"/>}
+ *    {@code<lionengine:group name="block">}
+ *      {@code<lionengine:tile sheet="0" number="1"/>}
+ *      {@code<lionengine:tile sheet="1" number="5"/>}
+ *    {@code</lionengine:group>}
+ *    {@code<lionengine:group name="top">}
+ *      {@code<lionengine:tile sheet="0" number="2"/>}
+ *      {@code<lionengine:tile sheet="0" number="3"/>}
+ *    {@code</lionengine:group>}
  * {@code</lionengine:groups>}
  * 
  * </pre>
@@ -38,59 +47,74 @@ import com.b3dgs.lionengine.game.map.Tile;
 public class TileGroup
         implements Nameable
 {
+    /**
+     * Represents the tile reference indexes.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
+     */
+    public static class TileRef
+    {
+        /** Sheet id. */
+        public final int sheet;
+        /** TIle number. */
+        public final int number;
+
+        /**
+         * Create the tile reference.
+         * 
+         * @param sheet The tile sheet number.
+         * @param number The tile number.
+         */
+        public TileRef(int sheet, int number)
+        {
+            this.sheet = sheet;
+            this.number = number;
+        }
+    }
+
     /** The group Name. */
     private final String name;
-    /** Sheet number of the accepted tile. */
-    private final int sheet;
-    /** Starting tile number. */
-    private final int start;
-    /** Ending tile number. */
-    private final int end;
+    /** Elements inside group. */
+    private final Collection<TileRef> tiles;
 
     /**
      * Create a tile group.
      * 
      * @param name The group name.
-     * @param sheet The accepted sheet.
-     * @param start The starting tile number.
-     * @param end The ending tile number.
+     * @param tiles The tiles inside the group.
      */
-    public TileGroup(String name, int sheet, int start, int end)
+    public TileGroup(String name, Collection<TileRef> tiles)
     {
         this.name = name;
-        this.sheet = sheet;
-        this.start = start;
-        this.end = end;
+        this.tiles = tiles;
     }
 
     /**
-     * Get the sheet value.
+     * Check if tile is contained by the group.
      * 
-     * @return The sheet value.
+     * @param tile The tile reference.
+     * @return <code>true</code> if part of the group, <code>false</code> else.
      */
-    public int getSheet()
+    public boolean contains(Tile tile)
     {
-        return sheet;
+        for (final TileRef current : tiles)
+        {
+            if (current.sheet == tile.getSheet().intValue() && current.number == tile.getNumber())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-     * Get the starting tile number.
+     * Get the tiles inside group.
      * 
-     * @return The starting tile number.
+     * @return The tiles inside group.
      */
-    public int getStart()
+    public Collection<TileRef> getTiles()
     {
-        return start;
-    }
-
-    /**
-     * Get the ending tile number.
-     * 
-     * @return The ending tile number.
-     */
-    public int getEnd()
-    {
-        return end;
+        return tiles;
     }
 
     /*

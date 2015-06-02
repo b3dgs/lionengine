@@ -22,6 +22,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.TileGroup;
+import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -37,14 +38,14 @@ public final class ConfigTileGroup
     public static final String GROUPS = Configurer.PREFIX + "groups";
     /** Group node. */
     public static final String GROUP = Configurer.PREFIX + "group";
+    /** Tile node. */
+    public static final String TILE = Configurer.PREFIX + "tile";
     /** Group name attribute. */
     public static final String NAME = "name";
     /** Tile sheet attribute. */
     public static final String SHEET = "sheet";
-    /** Starting tile number attribute. */
-    public static final String START = "start";
-    /** Ending tile number attribute. */
-    public static final String END = "end";
+    /** Tile number attribute. */
+    public static final String NUMBER = "number";
 
     /**
      * Create the group data from node.
@@ -58,8 +59,13 @@ public final class ConfigTileGroup
         final Collection<TileGroup> groups = new ArrayList<>();
         for (final XmlNode node : root.getChildren(GROUP))
         {
-            final TileGroup group = new TileGroup(node.readString(NAME), node.readInteger(SHEET),
-                    node.readInteger(START), node.readInteger(END));
+            final Collection<TileRef> tiles = new ArrayList<>();
+            for (final XmlNode ref : node.getChildren(TILE))
+            {
+                tiles.add(new TileRef(ref.readInteger(SHEET), ref.readInteger(NUMBER)));
+            }
+
+            final TileGroup group = new TileGroup(node.readString(NAME), tiles);
             groups.add(group);
         }
         return groups;
@@ -75,9 +81,15 @@ public final class ConfigTileGroup
     {
         final XmlNode node = Stream.createXmlNode(GROUP);
         node.writeString(NAME, group.getName());
-        node.writeInteger(SHEET, group.getSheet());
-        node.writeInteger(START, group.getStart());
-        node.writeInteger(END, group.getEnd());
+
+        for (final TileRef ref : group.getTiles())
+        {
+            final XmlNode tileRef = Stream.createXmlNode(TILE);
+            tileRef.writeInteger(SHEET, ref.sheet);
+            tileRef.writeInteger(NUMBER, ref.number);
+            node.add(tileRef);
+        }
+
         return node;
     }
 
