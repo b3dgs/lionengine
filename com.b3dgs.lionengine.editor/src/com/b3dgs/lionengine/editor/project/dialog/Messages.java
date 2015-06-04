@@ -50,7 +50,7 @@ public final class Messages
     /** Invalid import. */
     public static String ImportProjectDialog_InvalidImport;
     /** Import project dialog title. */
-    public static String ImportProjectDialogTitle;
+    public static String ImportProjectDialog_Title;
     /** Title header. */
     public static String ImportProjectDialog_HeaderTitle;
     /** Description header. */

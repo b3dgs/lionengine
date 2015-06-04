@@ -69,10 +69,11 @@ public class ProjectImportDialog
      */
     public ProjectImportDialog(Shell parent)
     {
-        super(parent, Messages.ImportProjectDialogTitle, Messages.ImportProjectDialog_HeaderTitle,
+        super(parent, Messages.ImportProjectDialog_Title, Messages.ImportProjectDialog_HeaderTitle,
                 Messages.ImportProjectDialog_HeaderDesc, ICON);
 
         createDialog();
+        dialog.setMinimumSize(512, 100);
         projectNameText.setEditable(false);
         projectLocationText.setEditable(false);
         projectClassesText.setEditable(false);
