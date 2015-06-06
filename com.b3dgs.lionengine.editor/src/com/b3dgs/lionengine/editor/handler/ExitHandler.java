@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.editor.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.IWorkbench;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -38,16 +37,15 @@ public class ExitHandler
      * Execute the handler.
      * 
      * @param workbench The workbench reference.
-     * @param partService The part services.
      * @param shell The shell reference.
      */
     @Execute
     @SuppressWarnings("static-method")
-    public void execute(IWorkbench workbench, EPartService partService, Shell shell)
+    public void execute(IWorkbench workbench, Shell shell)
     {
         if (MessageDialog.openConfirm(shell, Messages.ExitHandler_Title, Messages.ExitHandler_Text))
         {
-            final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
+            final ProjectsPart part = UtilEclipse.getPart(ProjectsPart.ID, ProjectsPart.class);
             part.close();
             workbench.close();
         }

@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.properties.tilecollision.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 
@@ -39,14 +38,13 @@ public class FormulaAddHandler
     /**
      * Execute the handler.
      * 
-     * @param partService The part service reference.
      * @param parent The parent reference.
      */
     @Execute
     @SuppressWarnings("static-method")
-    public void execute(EPartService partService, Shell parent)
+    public void execute(Shell parent)
     {
-        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final TileGame tile = (TileGame) properties.getData();
         final TileCollision tileCollision = tile.getFeature(TileCollision.class);

@@ -55,7 +55,7 @@ public class SetPipetHandler
         }
         final PaletteType type = PaletteType.PIPET;
         WorldViewModel.INSTANCE.setSelectedPalette(type);
-        final WorldViewPart view = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        final WorldViewPart view = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         view.setCursor(type.getCursor());
     }
 }

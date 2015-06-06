@@ -27,6 +27,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MDirectToolItem;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
@@ -61,6 +63,19 @@ public final class UtilEclipse
     private static final String ERROR_ICON_PATH = "Icon not found: ";
     /** Icon not created error. */
     private static final String ERROR_ICON_CREATE = "Icon cannot be created: ";
+
+    /** Active application. */
+    private static MApplication app;
+
+    /**
+     * Set the current active application.
+     * 
+     * @param app The active application.
+     */
+    public static void setApplication(MApplication app)
+    {
+        UtilEclipse.app = app;
+    }
 
     /**
      * Get the icon from its name.
@@ -129,15 +144,16 @@ public final class UtilEclipse
     /**
      * Get a part from its id.
      * 
-     * @param <C> The class type.
-     * @param partService The part service.
      * @param id The part id.
      * @param clazz The part class type.
+     * @param <C> The class type.
      * @return The part class instance.
      * @throws LionEngineException If part can not be found.
      */
-    public static <C> C getPart(EPartService partService, String id, Class<C> clazz) throws LionEngineException
+    public static <C> C getPart(String id, Class<C> clazz) throws LionEngineException
     {
+        final IEclipseContext activeContext = app.getContext().getActiveLeaf();
+        final EPartService partService = activeContext.get(EPartService.class);
         final MPart part = partService.findPart(id);
         if (part != null)
         {

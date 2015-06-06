@@ -144,7 +144,7 @@ public class PropertiesTile
                     {
                         changeTileGroup(map, oldGroup, newGroup, tile);
 
-                        final WorldViewPart part = UtilEclipse.getPart(null, WorldViewPart.ID, WorldViewPart.class);
+                        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
                         part.update();
                     }
                 }

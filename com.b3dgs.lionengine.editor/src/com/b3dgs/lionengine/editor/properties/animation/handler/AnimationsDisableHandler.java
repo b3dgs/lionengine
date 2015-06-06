@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.properties.animation.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -37,19 +36,17 @@ public class AnimationsDisableHandler
 {
     /**
      * Execute the handler.
-     * 
-     * @param partService The part service reference.
      */
     @Execute
     @SuppressWarnings("static-method")
-    public void execute(EPartService partService)
+    public void execute()
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();
         final Configurer configurer = (Configurer) tree.getData();
         configurer.getRoot().removeChildren(ConfigAnimations.ANIMATION);
         configurer.save();
 
-        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
         for (final TreeItem item : tree.getItems())
         {
             if (ConfigAnimations.ANIMATION.equals(item.getData()))

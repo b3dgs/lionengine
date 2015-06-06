@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.world.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
@@ -35,14 +34,12 @@ public class SetShowCollisionsHandler
 
     /**
      * Execute the handler.
-     * 
-     * @param partService The part service reference.
      */
     @Execute
     @SuppressWarnings("static-method")
-    public void execute(EPartService partService)
+    public void execute()
     {
-        final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         part.switchCollisionsEnabled();
         part.update();
     }

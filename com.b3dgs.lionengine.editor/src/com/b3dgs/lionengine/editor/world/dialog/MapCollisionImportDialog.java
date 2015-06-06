@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.editor.world.dialog;
 
 import java.io.File;
 
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -56,8 +55,8 @@ public class MapCollisionImportDialog
     /** Icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
 
-    /** Part services. */
-    private final EPartService partService;
+    /** World view part reference. */
+    private final WorldViewPart part;
     /** Formulas config file location. */
     Text formulasText;
     /** Collisions config file location. */
@@ -73,15 +72,14 @@ public class MapCollisionImportDialog
      * Create an import map dialog.
      * 
      * @param parent The shell parent.
-     * @param partService The part service reference.
      */
-    public MapCollisionImportDialog(Shell parent, EPartService partService)
+    public MapCollisionImportDialog(Shell parent)
     {
         super(parent, Messages.ImportMapCollisionDialog_Title, Messages.ImportMapCollisionDialog_HeaderTitle,
                 Messages.ImportMapCollisionDialog_HeaderDesc, MapCollisionImportDialog.ICON);
         createDialog();
 
-        this.partService = partService;
+        part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         finish.setEnabled(false);
         finish.forceFocus();
     }
@@ -295,7 +293,6 @@ public class MapCollisionImportDialog
             mapCollision.loadCollisions(formulasConfig, collisionsConfig);
             mapCollision.createCollisionDraw();
 
-            final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
             part.setToolItemEnabled(SetShowCollisionsHandler.SHORT_ID, true);
         }
     }

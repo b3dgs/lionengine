@@ -21,11 +21,9 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
@@ -65,11 +63,26 @@ public class ProjectsPart
     /** Menu ID. */
     public static final String MENU_ID = ProjectsPart.ID + ".menu";
 
+    /**
+     * Update the properties view with the selected media.
+     * 
+     * @param media The selected media.
+     */
+    static void updateProperties(Media media)
+    {
+        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
+        if (ObjectsTester.isObjectFile(media))
+        {
+            part.setInput(part.getTree(), new Configurer(media));
+        }
+        else
+        {
+            part.setInput(part.getTree(), (Configurer) null);
+        }
+    }
+
     /** Watcher. */
     private final FolderModificationWatcher watcher = new FolderModificationWatcher();
-    /** The part service. */
-    @Inject
-    EPartService partService;
     /** Tree viewer. */
     private Tree tree;
     /** Tree creator. */
@@ -147,10 +160,9 @@ public class ProjectsPart
      * Set the project main folders.
      * 
      * @param project The project reference.
-     * @param partService The part service reference.
      * @throws LionEngineException If error while reading project children.
      */
-    public void setInput(Project project, EPartService partService) throws LionEngineException
+    public void setInput(Project project) throws LionEngineException
     {
         tree.removeAll();
 
@@ -242,24 +254,6 @@ public class ProjectsPart
                     updateProperties(media);
                 }
             }
-        }
-    }
-
-    /**
-     * Update the properties view with the selected media.
-     * 
-     * @param media The selected media.
-     */
-    void updateProperties(Media media)
-    {
-        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
-        if (ObjectsTester.isObjectFile(media))
-        {
-            part.setInput(part.getTree(), new Configurer(media));
-        }
-        else
-        {
-            part.setInput(part.getTree(), (Configurer) null);
         }
     }
 

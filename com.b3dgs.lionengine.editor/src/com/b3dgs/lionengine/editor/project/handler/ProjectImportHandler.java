@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.project.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
@@ -43,26 +42,24 @@ public class ProjectImportHandler
      * Import the project and update the view.
      * 
      * @param project The project to import.
-     * @param partService The part service.
      */
-    public static void importProject(Project project, EPartService partService)
+    public static void importProject(Project project)
     {
         UtilityMedia.setResourcesDirectory(project.getResourcesPath().getPath());
 
-        final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
+        final ProjectsPart part = UtilEclipse.getPart(ProjectsPart.ID, ProjectsPart.class);
         ProjectsModel.INSTANCE.setRoot(project.getPath());
-        part.setInput(project, partService);
+        part.setInput(project);
     }
 
     /**
      * Execute the handler.
      * 
      * @param shell The shell reference.
-     * @param partService The part service reference.
      */
     @Execute
     @SuppressWarnings("static-method")
-    public void execute(Shell shell, EPartService partService)
+    public void execute(Shell shell)
     {
         final ProjectImportDialog importProjectDialog = new ProjectImportDialog(shell);
         importProjectDialog.open();
@@ -70,12 +67,12 @@ public class ProjectImportHandler
         final Project project = importProjectDialog.getProject();
         if (project != null)
         {
-            importProject(project, partService);
+            importProject(project);
 
             final Factory factory = WorldViewModel.INSTANCE.getFactory();
             factory.setClassLoader(project.getClassLoader());
 
-            final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+            final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
             part.setToolBarEnabled(true);
             part.setToolItemEnabled(SetShowCollisionsHandler.SHORT_ID, false);
         }

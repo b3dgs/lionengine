@@ -44,6 +44,8 @@ public class Manager
     @SuppressWarnings("static-method")
     public void processAdditions(MApplication app, EModelService modelService, Display display)
     {
+        UtilEclipse.setApplication(app);
+
         final Monitor monitor = display.getPrimaryMonitor();
         final Rectangle monitorRect = monitor.getBounds();
         final MTrimmedWindow window = (MTrimmedWindow) modelService.find(Activator.PLUGIN_ID + ".window", app);

@@ -258,7 +258,7 @@ public class WorldViewPart
     @Override
     public void notifyTileSelected(Tile tile)
     {
-        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
         part.setInput(part.getTree(), tile);
     }
 }

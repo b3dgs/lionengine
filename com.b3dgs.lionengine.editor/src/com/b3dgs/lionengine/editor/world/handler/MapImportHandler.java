@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor.world.handler;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
@@ -58,9 +57,8 @@ public class MapImportHandler
      * @param levelrip The level rip.
      * @param sheetsConfig The tile sheets directory.
      * @param groupsConfig The groups configuration.
-     * @param partService The part service reference.
      */
-    private static void importMap(EPartService partService, Media levelrip, Media sheetsConfig, Media groupsConfig)
+    private static void importMap(Media levelrip, Media sheetsConfig, Media groupsConfig)
     {
         Verbose.info(MapImportHandler.VERBOSE_IMPORT_LEVEL, levelrip.getPath(),
                 MapImportHandler.VERBOSE_USING_TILESHEETS, sheetsConfig.getPath());
@@ -73,10 +71,9 @@ public class MapImportHandler
      * Execute the handler.
      * 
      * @param shell The shell reference.
-     * @param partService The part service reference.
      */
     @Execute
-    public void execute(Shell shell, EPartService partService)
+    public void execute(Shell shell)
     {
         final MapImportDialog importMapDialog = new MapImportDialog(shell);
         importMapDialog.open();
@@ -86,12 +83,12 @@ public class MapImportHandler
             final Media levelrip = importMapDialog.getLevelRipLocation();
             final Media sheetsConfig = importMapDialog.getSheetsConfigLocation();
             final Media groupsConfig = importMapDialog.getGroupsConfigLocation();
-            importMap(partService, levelrip, sheetsConfig, groupsConfig);
+            importMap(levelrip, sheetsConfig, groupsConfig);
 
-            final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+            final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
             part.update();
 
-            checkMapFeaturesExtensionPoint(shell, partService);
+            checkMapFeaturesExtensionPoint(shell);
         }
     }
 
@@ -99,9 +96,8 @@ public class MapImportHandler
      * Check the map features extension point.
      * 
      * @param parent The parent shell.
-     * @param partService The part service reference.
      */
-    private void checkMapFeaturesExtensionPoint(Shell parent, EPartService partService)
+    private void checkMapFeaturesExtensionPoint(Shell parent)
     {
         final MapTile map = WorldViewModel.INSTANCE.getMap();
         final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
@@ -118,19 +114,8 @@ public class MapImportHandler
                 final String featureConfig = element.getAttribute(EXTENSION_DIALOG);
                 if (featureConfig != null)
                 {
-                    try
-                    {
-                        final AbstractDialog dialog = UtilEclipse.createClass(featureConfig, AbstractDialog.class,
-                                parent, partService);
-                        dialog.open();
-                    }
-                    catch (final ReflectiveOperationException exception)
-                    {
-                        final AbstractDialog dialog = UtilEclipse.createClass(featureConfig, AbstractDialog.class,
-                                parent);
-                        dialog.open();
-                    }
-
+                    final AbstractDialog dialog = UtilEclipse.createClass(featureConfig, AbstractDialog.class, parent);
+                    dialog.open();
                 }
             }
             catch (final ReflectiveOperationException exception)

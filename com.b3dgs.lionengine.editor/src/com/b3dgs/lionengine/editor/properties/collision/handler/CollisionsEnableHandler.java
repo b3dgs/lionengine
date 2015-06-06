@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.properties.collision.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
@@ -36,14 +35,12 @@ public class CollisionsEnableHandler
 {
     /**
      * Execute the handler.
-     * 
-     * @param partService The part service reference.
      */
     @Execute
     @SuppressWarnings("static-method")
-    public void execute(EPartService partService)
+    public void execute()
     {
-        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final Collision collision = new Collision("default", 0, 0, 0, 0, false);

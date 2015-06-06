@@ -56,7 +56,7 @@ public class SetHandHandler
         }
         final PaletteType type = PaletteType.HAND;
         WorldViewModel.INSTANCE.setSelectedPalette(type);
-        final WorldViewPart view = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        final WorldViewPart view = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         view.setCursor(type.getCursor());
     }
 }

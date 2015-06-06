@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.properties.frames.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
@@ -42,14 +41,12 @@ public class FramesSetHandler
 {
     /**
      * Execute the handler.
-     * 
-     * @param partService The part service reference.
      */
     @Execute
     @SuppressWarnings("static-method")
-    public void execute(EPartService partService)
+    public void execute()
     {
-        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final Shell shell = properties.getShell();
