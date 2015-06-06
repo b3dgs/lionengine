@@ -66,14 +66,10 @@ public class Renderer
     private volatile boolean started;
     /** Loader. */
     private volatile Loader loader;
-    /** First sequence arguments. */
-    private volatile Object[] arguments;
     /** Next sequence pointer. */
     private volatile Sequence nextSequence;
     /** Current sequence. */
     private volatile Sequence sequence;
-    /** First sequence. */
-    private volatile Class<? extends Sequence> firstSequence;
     /** Screen reference. */
     private volatile Screen screen;
     /** Thread running flag. */
@@ -123,18 +119,14 @@ public class Renderer
      * Start with the first sequence.
      * 
      * @param sequence The first sequence to start.
-     * @param loader The loader reference.
-     * @param arguments The sequence arguments list if needed by its constructor.
      * @throws LionEngineException If the renderer has already been started.
      */
-    public final synchronized void startFirstSequence(Class<? extends Sequence> sequence, Loader loader,
-            Object... arguments) throws LionEngineException
+    public final synchronized void startFirstSequence(Sequence sequence) throws LionEngineException
     {
         if (!started)
         {
-            this.loader = loader;
-            this.arguments = arguments;
-            firstSequence = sequence;
+            loader = loader;
+            this.sequence = sequence;
             started = true;
             start();
         }
@@ -513,10 +505,8 @@ public class Renderer
         // First init
         screen = Graphics.createScreen(this);
         screen.start();
-        sequence = Loader.createSequence(firstSequence, loader, arguments);
         nextSequence = sequence;
         waitForScreenReady();
-        firstSequence = null;
 
         while (nextSequence != null)
         {

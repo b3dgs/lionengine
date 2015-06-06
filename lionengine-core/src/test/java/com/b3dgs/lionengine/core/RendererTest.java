@@ -80,7 +80,7 @@ public class RendererTest
     {
         final Loader loader = new Loader(CONFIG);
         final Renderer renderer = loader.getRenderer();
-        renderer.startFirstSequence(SequenceSingleMock.class, loader);
+        renderer.startFirstSequence(new SequenceSingleMock(loader));
         renderer.join();
     }
 
@@ -103,11 +103,11 @@ public class RendererTest
             }
         };
         renderer.setUncaughtExceptionHandler(handler);
-        renderer.startFirstSequence(SequenceSingleMock.class, loader);
+        renderer.startFirstSequence(new SequenceSingleMock(loader));
         Assert.assertTrue(renderer.isStarted());
         Assert.assertNull(renderer.getNextSequence());
         renderer.join();
-        renderer.startFirstSequence(SequenceSingleMock.class, loader);
+        renderer.startFirstSequence(new SequenceSingleMock(loader));
         renderer.join();
         Assert.assertTrue(uncaught);
     }

@@ -173,7 +173,8 @@ public final class Loader
         if (!started)
         {
             started = true;
-            renderer.startFirstSequence(sequenceClass, this, arguments);
+            final Sequence sequence = createSequence(sequenceClass, this, arguments);
+            renderer.startFirstSequence(sequence);
         }
         else
         {
