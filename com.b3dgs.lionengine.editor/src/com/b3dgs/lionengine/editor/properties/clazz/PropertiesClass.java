@@ -89,7 +89,7 @@ public class PropertiesClass
             final XmlNode classeNode = root.getChild(ConfigObject.CLASS);
             final String clazz = Tools.getClass(file).getName();
             classeNode.setText(clazz);
-            item.setText(clazz);
+            item.setText(PropertiesPart.COLUMN_VALUE, clazz);
             return true;
         }
         return false;
@@ -111,7 +111,7 @@ public class PropertiesClass
             final XmlNode setupNode = root.getChild(ConfigObject.SETUP);
             final String setup = Tools.getClass(file).getName();
             setupNode.setText(setup);
-            item.setText(setup);
+            item.setText(PropertiesPart.COLUMN_VALUE, setup);
             return true;
         }
         return false;

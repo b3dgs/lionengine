@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.editor.UtilSwt;
 public abstract class AbstractDialog
         extends Dialog
 {
-    /** OK icon. */
+    /** Ok icon. */
     public static final Image ICON_OK = UtilEclipse.getIcon("dialog", "ok.png");
     /** Cancel icon. */
     public static final Image ICON_CANCEL = UtilEclipse.getIcon("dialog", "cancel.png");
@@ -90,7 +90,7 @@ public abstract class AbstractDialog
         this.headerDesc = headerDesc;
         this.headerIcon = headerIcon;
         dialog = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-        dialog.setMinimumSize(500, 300);
+        dialog.setMinimumSize(640, 100);
         final GridLayout dialogLayout = new GridLayout(1, false);
         dialogLayout.marginHeight = 0;
         dialogLayout.marginWidth = 0;

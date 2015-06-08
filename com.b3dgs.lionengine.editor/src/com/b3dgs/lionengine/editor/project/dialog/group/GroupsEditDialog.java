@@ -57,14 +57,14 @@ public class GroupsEditDialog
      * Create a groups edit dialog.
      * 
      * @param parent The parent shell.
-     * @param tilesheets The groups media.
+     * @param groups The groups media.
      */
-    public GroupsEditDialog(Shell parent, Media tilesheets)
+    public GroupsEditDialog(Shell parent, Media groups)
     {
         super(parent, Messages.EditGroupsDialog_Title, Messages.EditGroupsDialog_HeaderTitle,
                 Messages.EditGroupsDialog_HeaderDesc, ICON);
+        this.groups = groups;
         dialog.setMinimumSize(128, 320);
-        groups = tilesheets;
         createDialog();
         finish.setEnabled(true);
     }

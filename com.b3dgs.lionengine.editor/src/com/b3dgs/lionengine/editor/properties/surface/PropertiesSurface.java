@@ -93,7 +93,7 @@ public class PropertiesSurface
             final XmlNode root = configurer.getRoot();
             final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
             surfaceNode.writeString(ConfigSurface.SURFACE_IMAGE, file);
-            item.setText(file);
+            item.setText(PropertiesPart.COLUMN_VALUE, file);
             return true;
         }
         return false;
@@ -114,7 +114,7 @@ public class PropertiesSurface
             final XmlNode root = configurer.getRoot();
             final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
             surfaceNode.writeString(ConfigSurface.SURFACE_ICON, file);
-            item.setText(file);
+            item.setText(PropertiesPart.COLUMN_VALUE, file);
             return true;
         }
         return false;

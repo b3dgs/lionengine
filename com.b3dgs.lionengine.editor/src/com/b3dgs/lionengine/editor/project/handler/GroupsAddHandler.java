@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
@@ -69,11 +68,10 @@ public class GroupsAddHandler
     /**
      * Execute the handler.
      * 
-     * @param partService The part service reference.
      * @param parent The shell parent.
      */
     @Execute
-    public void execute(EPartService partService, Shell parent)
+    public void execute(Shell parent)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final InputDialog inputDialog = new InputDialog(parent, Messages.AddGroups_Title, Messages.AddGroups_Text,
@@ -88,7 +86,7 @@ public class GroupsAddHandler
             if (groups.exists())
             {
                 MessageDialog.openError(parent, Messages.AddGroups_Error_Title, Messages.AddGroups_Error_Text);
-                execute(partService, parent);
+                execute(parent);
             }
             else
             {

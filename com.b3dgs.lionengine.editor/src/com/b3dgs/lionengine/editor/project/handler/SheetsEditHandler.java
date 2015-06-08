@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.project.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
@@ -37,23 +36,22 @@ public class SheetsEditHandler
      * 
      * @param parent The shell parent.
      */
-    public static void execute(Shell parent)
+    public static void executeHandler(Shell parent)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final SheetsEditDialog editSheetsDialog = new SheetsEditDialog(parent, selection);
-        editSheetsDialog.open();
+        final SheetsEditDialog dialog = new SheetsEditDialog(parent, selection);
+        dialog.open();
     }
 
     /**
      * Execute the handler.
      * 
-     * @param partService The part service reference.
      * @param parent The shell parent.
      */
     @Execute
     @SuppressWarnings("static-method")
-    public void execute(EPartService partService, Shell parent)
+    public void execute(Shell parent)
     {
-        execute(parent);
+        executeHandler(parent);
     }
 }

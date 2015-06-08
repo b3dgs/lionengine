@@ -111,6 +111,13 @@ public class SheetsImportDialog
                 finish.setEnabled(true);
                 tipsLabel.setVisible(false);
             }
+
+            if (folderText.getData() == null)
+            {
+                folderText.setText(file.getParentFile().getPath());
+                final Media extractFolder = Project.getActive().getResourceMedia(file.getParentFile());
+                folderText.setData(extractFolder);
+            }
         }
     }
 
