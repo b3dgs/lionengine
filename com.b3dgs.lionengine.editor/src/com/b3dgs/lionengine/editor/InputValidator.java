@@ -32,7 +32,9 @@ public class InputValidator
     /** Must match a double. */
     public static final String DOUBLE_MATCH = "[0-9]{1,13}(\\.[0-9]*)?";
     /** Must match a positive integer. */
-    public static final String INTEGER_POSITIVE_MATCH = "[1-9][0-9]*";
+    public static final String INTEGER_POSITIVE_MATCH = "[0-9]*";
+    /** Must match a strict positive integer. */
+    public static final String INTEGER_POSITIVE_STRICT_MATCH = "[1-9][0-9]*";
 
     /** Expected matches. */
     private final String matches;

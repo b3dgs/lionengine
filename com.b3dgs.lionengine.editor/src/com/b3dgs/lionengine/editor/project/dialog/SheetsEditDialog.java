@@ -94,9 +94,11 @@ public class SheetsEditDialog
         tileSizeArea.setLayout(new GridLayout(2, false));
 
         tileWidthText = UtilSwt.createText(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
-        tileWidthText.addVerifyListener(UtilSwt.createVerify(tileWidthText, InputValidator.INTEGER_POSITIVE_MATCH));
+        tileWidthText.addVerifyListener(UtilSwt.createVerify(tileWidthText,
+                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         tileHeightText = UtilSwt.createText(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
-        tileHeightText.addVerifyListener(UtilSwt.createVerify(tileHeightText, InputValidator.INTEGER_POSITIVE_MATCH));
+        tileHeightText.addVerifyListener(UtilSwt.createVerify(tileHeightText,
+                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
 
         final File[] files = sheets.getFile().getParentFile().listFiles();
         if (files != null)

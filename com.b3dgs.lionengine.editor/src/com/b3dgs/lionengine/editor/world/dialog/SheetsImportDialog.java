@@ -235,16 +235,18 @@ public class SheetsImportDialog
         config.setLayout(new GridLayout(2, true));
 
         widthText = UtilSwt.createText(Messages.SheetsImportDialog_TileWidth, config);
-        widthText.addVerifyListener(UtilSwt.createVerify(widthText, InputValidator.INTEGER_POSITIVE_MATCH));
+        widthText.addVerifyListener(UtilSwt.createVerify(widthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
 
         heightText = UtilSwt.createText(Messages.SheetsImportDialog_TileHeight, config);
-        heightText.addVerifyListener(UtilSwt.createVerify(heightText, InputValidator.INTEGER_POSITIVE_MATCH));
+        heightText.addVerifyListener(UtilSwt.createVerify(heightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
 
         horizontalText = UtilSwt.createText(Messages.SheetsImportDialog_HorizontalTiles, config);
-        horizontalText.addVerifyListener(UtilSwt.createVerify(horizontalText, InputValidator.INTEGER_POSITIVE_MATCH));
+        horizontalText.addVerifyListener(UtilSwt.createVerify(horizontalText,
+                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
 
         verticalText = UtilSwt.createText(Messages.SheetsImportDialog_VerticalTiles, config);
-        verticalText.addVerifyListener(UtilSwt.createVerify(verticalText, InputValidator.INTEGER_POSITIVE_MATCH));
+        verticalText
+                .addVerifyListener(UtilSwt.createVerify(verticalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
     }
 
     /*

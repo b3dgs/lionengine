@@ -34,6 +34,16 @@ public final class Messages
 
     /** Frames property. */
     public static String Properties_Frames;
+    /** Horizontal frames. */
+    public static String Properties_Frames_Horizontal;
+    /** Vertical frames. */
+    public static String Properties_Frames_Vertical;
+    /** Set frames dialog title. */
+    public static String Properties_Frames_Title;
+    /** Set frames dialog message. */
+    public static String Properties_Frames_Message;
+    /** Frames error. */
+    public static String Properties_Frames_Error;
 
     /**
      * Initialize.

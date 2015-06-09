@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -60,11 +59,13 @@ public class PropertiesFrames
         final ConfigFrames configFrames = ConfigFrames.create(configurer);
 
         final TreeItem framesHorizontal = new TreeItem(iconItem, SWT.NONE);
-        PropertiesPart.createLine(framesHorizontal, "Horizontal", String.valueOf(configFrames.getHorizontal()));
+        PropertiesPart.createLine(framesHorizontal, Messages.Properties_Frames_Horizontal,
+                String.valueOf(configFrames.getHorizontal()));
         framesHorizontal.setData(ConfigFrames.FRAMES_HORIZONTAL);
 
         final TreeItem framesVertical = new TreeItem(iconItem, SWT.NONE);
-        PropertiesPart.createLine(framesVertical, "Vertical", String.valueOf(configFrames.getVertical()));
+        PropertiesPart.createLine(framesVertical, Messages.Properties_Frames_Vertical,
+                String.valueOf(configFrames.getVertical()));
         framesVertical.setData(ConfigFrames.FRAMES_VERTICAL);
     }
 
@@ -77,14 +78,15 @@ public class PropertiesFrames
      */
     private static boolean updateFrames(TreeItem item, Configurer configurer)
     {
-        final InputDialog frames = new InputDialog(item.getParent().getShell(), "Frames", "Frames number", "1",
-                new InputValidator(InputValidator.INTEGER_POSITIVE_MATCH, "Invalid frames number !"));
+        final InputDialog frames = new InputDialog(item.getParent().getShell(), Messages.Properties_Frames_Title,
+                Messages.Properties_Frames_Message, item.getText(1), new InputValidator(
+                        InputValidator.INTEGER_POSITIVE_STRICT_MATCH, Messages.Properties_Frames_Error));
         if (frames.open() == Window.OK)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
+            final XmlNode surfaceNode = root.getChild(ConfigFrames.FRAMES);
             surfaceNode.writeString((String) item.getData(), frames.getValue());
-            item.setText(frames.getValue());
+            item.setText(PropertiesPart.COLUMN_VALUE, frames.getValue());
             return true;
         }
         return false;

@@ -52,11 +52,11 @@ public class FramesSetHandler
         final Shell shell = properties.getShell();
 
         final InputDialog horizontalFrames = new InputDialog(shell, "Frames", "Number of horizontal frames", "1",
-                new InputValidator(InputValidator.INTEGER_POSITIVE_MATCH, "Invalid frames number !"));
+                new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, "Invalid frames number !"));
         if (horizontalFrames.open() == Window.OK)
         {
             final InputDialog verticalFrames = new InputDialog(shell, "Frames", "Number of vertical frames", "1",
-                    new InputValidator(InputValidator.INTEGER_POSITIVE_MATCH, "Invalid frames number !"));
+                    new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, "Invalid frames number !"));
             if (verticalFrames.open() == Window.OK)
             {
                 final XmlNode frames = Stream.createXmlNode(ConfigFrames.FRAMES);
