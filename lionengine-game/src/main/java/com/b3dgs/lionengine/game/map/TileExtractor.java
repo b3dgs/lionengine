@@ -71,7 +71,10 @@ public final class TileExtractor
             for (int y = 0; y < th; y++)
             {
                 // Compare color
-                if (a.getRgb(x + xa, y + ya) != b.getRgb(x + xb, y + yb))
+                final int colorA = a.getRgb(x + xa, y + ya);
+                final int colorB = b.getRgb(x + xb, y + yb);
+
+                if (colorA != colorB && !ColorRgba.isOpaqueTransparentExclusive(colorA, colorB))
                 {
                     return false;
                 }
@@ -199,9 +202,9 @@ public final class TileExtractor
                 {
                     if (!isExtracted(surface, ripH, ripV))
                     {
-                        final int tileNumber = ripH + ripV * rip.getTilesHorizontal();
-                        extract(rip, tileNumber);
                         checkSheetFilled();
+                        final int tileNumber = ripH + ripV * ripHorizontalTiles;
+                        extract(rip, tileNumber);
                     }
                 }
             }
@@ -221,7 +224,7 @@ public final class TileExtractor
         imageMap.render(g);
 
         cx += tileWidth;
-        if (cx > sheet.getWidth())
+        if (cx >= sheet.getWidth())
         {
             cx = 0;
             cy += tileHeight;
