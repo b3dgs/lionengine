@@ -69,9 +69,9 @@ class StateJump
         this.animation = animation;
         mirrorable = mario.getTrait(Mirrorable.class);
         tileCollidable = mario.getTrait(TileCollidable.class);
-        animator = mario.getSurface();
-        movement = mario.getMovement();
-        jump = mario.getJump();
+        animator = mario.surface;
+        movement = mario.movement;
+        jump = mario.jump;
         addTransition(new TransitionJumpToIdle());
     }
 

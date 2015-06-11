@@ -60,8 +60,8 @@ class Mario
     @Override
     public void notifyCollided(Collidable collidable)
     {
-        if (transformable.getY() >= transformable.getOldY()
-                && !((Entity) collidable.getOwner()).isState(EntityState.DEATH_GOOMBA))
+        final Entity entity = collidable.getOwner();
+        if (transformable.getY() >= transformable.getOldY() && !entity.isState(EntityState.DEATH_GOOMBA))
         {
             this.collidable.setEnabled(false);
             tileCollidable.setEnabled(false);

@@ -68,9 +68,9 @@ class StateIdle
         this.animation = animation;
         transformable = entity.getTrait(Transformable.class);
         tileCollidable = entity.getTrait(TileCollidable.class);
-        animator = entity.getSurface();
-        movement = entity.getMovement();
-        jump = entity.getJump();
+        animator = entity.surface;
+        movement = entity.movement;
+        jump = entity.jump;
         addTransition(new TransitionIdleToWalk());
         addTransition(new TransitionIdleToJump());
     }

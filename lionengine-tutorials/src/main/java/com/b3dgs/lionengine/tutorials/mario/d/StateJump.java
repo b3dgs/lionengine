@@ -81,9 +81,9 @@ class StateJump
         body = entity.getTrait(Body.class);
         mirrorable = entity.getTrait(Mirrorable.class);
         tileCollidable = entity.getTrait(TileCollidable.class);
-        animator = entity.getSurface();
-        movement = entity.getMovement();
-        jump = entity.getJump();
+        animator = entity.surface;
+        movement = entity.movement;
+        jump = entity.jump;
         addTransition(new TransitionJumpToIdle());
     }
 

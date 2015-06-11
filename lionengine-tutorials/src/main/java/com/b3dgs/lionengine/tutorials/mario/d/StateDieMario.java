@@ -47,15 +47,15 @@ class StateDieMario
         super(EntityState.DEATH_MARIO);
         this.entity = entity;
         this.animation = animation;
-        animator = entity.getSurface();
+        animator = entity.surface;
     }
 
     @Override
     public void enter()
     {
         animator.play(animation);
-        entity.getMovement().setDestination(0.0, 0.0);
-        entity.getJump().setDirection(0.0, 9.0);
+        entity.movement.setDestination(0.0, 0.0);
+        entity.jump.setDirection(0.0, 9.0);
     }
 
     @Override

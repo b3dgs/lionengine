@@ -48,14 +48,14 @@ class StateDieGoomba
         super(EntityState.DEATH_GOOMBA);
         this.entity = entity;
         this.animation = animation;
-        animator = entity.getSurface();
+        animator = entity.surface;
     }
 
     @Override
     public void enter()
     {
         animator.play(animation);
-        entity.getMovement().setDestination(0.0, 0.0);
+        entity.movement.setDestination(0.0, 0.0);
     }
 
     @Override

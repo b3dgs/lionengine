@@ -81,9 +81,9 @@ class StateWalk
         mirrorable = entity.getTrait(Mirrorable.class);
         tileCollidable = entity.getTrait(TileCollidable.class);
         transformable = entity.getTrait(Transformable.class);
-        animator = entity.getSurface();
-        movement = entity.getMovement();
-        jump = entity.getJump();
+        animator = entity.surface;
+        movement = entity.movement;
+        jump = entity.jump;
         addTransition(new TransitionWalkToIdle());
         addTransition(new TransitionWalkToTurn());
         addTransition(new TransitionWalkToJump());

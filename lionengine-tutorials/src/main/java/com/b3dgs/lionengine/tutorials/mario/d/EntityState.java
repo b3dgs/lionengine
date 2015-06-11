@@ -17,19 +17,17 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import java.lang.reflect.Constructor;
 import java.util.Locale;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.state.State;
+import com.b3dgs.lionengine.game.state.StateAnimationBased;
 
 /**
  * List of entity states.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum EntityState
+enum EntityState implements StateAnimationBased
 {
     /** Idle state. */
     IDLE(StateIdle.class),
@@ -45,7 +43,7 @@ enum EntityState
     DEATH_GOOMBA(StateDieGoomba.class);
 
     /** Class reference. */
-    private final Class<?> clazz;
+    private final Class<? extends State> clazz;
     /** Animation name. */
     private final String animationName;
 
@@ -54,37 +52,19 @@ enum EntityState
      * 
      * @param clazz The associated class reference.
      */
-    private EntityState(Class<?> clazz)
+    private EntityState(Class<? extends State> clazz)
     {
         this.clazz = clazz;
         animationName = name().toLowerCase(Locale.ENGLISH);
     }
 
-    /**
-     * Create the state from its parameters.
-     * 
-     * @param entity The entity reference.
-     * @param animation The associated animation reference.
-     * @return The state instance.
-     */
-    public State create(Entity entity, Animation animation)
+    @Override
+    public Class<? extends State> getStateClass()
     {
-        try
-        {
-            final Constructor<?> constructor = clazz.getConstructor(Entity.class, Animation.class);
-            return State.class.cast(constructor.newInstance(entity, animation));
-        }
-        catch (final ReflectiveOperationException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        return clazz;
     }
 
-    /**
-     * Get the animation name.
-     * 
-     * @return The animation name.
-     */
+    @Override
     public String getAnimationName()
     {
         return animationName;

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.c;
 
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
@@ -25,6 +26,7 @@ import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
 import com.b3dgs.lionengine.game.state.StateTransition;
 import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
+import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 
 /**
  * Turn state implementation.
@@ -37,6 +39,8 @@ class StateTurn
 {
     /** Movement force. */
     final Force movement;
+    /** Mirrorable reference. */
+    final Mirrorable mirrorable;
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */
@@ -54,8 +58,10 @@ class StateTurn
     {
         super(MarioState.TURN);
         this.animation = animation;
-        animator = mario.getSurface();
-        movement = mario.getMovement();
+        animator = mario.surface;
+        movement = mario.movement;
+        mirrorable = mario.getTrait(Mirrorable.class);
+        addTransition(new TransitionTurnToIdle());
         addTransition(new TransitionTurnToWalk());
         addTransition(new TransitionTurnToJump());
     }
@@ -79,6 +85,35 @@ class StateTurn
     public void update(double extrp)
     {
         movement.setDestination(side * 2, 0);
+    }
+
+    /**
+     * Transition from {@link StateTurn} to {@link StateIdle}.
+     */
+    private final class TransitionTurnToIdle
+            extends StateTransition
+            implements StateTransitionInputDirectionalChecker
+    {
+        /**
+         * Create the transition.
+         */
+        public TransitionTurnToIdle()
+        {
+            super(MarioState.IDLE);
+        }
+
+        @Override
+        public boolean check(InputDeviceDirectional input)
+        {
+            return input.getHorizontalDirection() == 0 && movement.getDirectionHorizontal() == 0
+                    && input.getVerticalDirection() == 0;
+        }
+
+        @Override
+        public void exit()
+        {
+            mirrorable.mirror(mirrorable.getMirror() == Mirror.HORIZONTAL ? Mirror.NONE : Mirror.HORIZONTAL);
+        }
     }
 
     /**

@@ -59,8 +59,9 @@ class StateTurn
         super(EntityState.TURN);
         this.animation = animation;
         mirrorable = entity.getTrait(Mirrorable.class);
-        animator = entity.getSurface();
-        movement = entity.getMovement();
+        animator = entity.surface;
+        movement = entity.movement;
+        addTransition(new TransitionTurnToIdle());
         addTransition(new TransitionTurnToWalk());
         addTransition(new TransitionTurnToJump());
     }
@@ -84,6 +85,35 @@ class StateTurn
     public void update(double extrp)
     {
         movement.setDestination(side * 2, 0);
+    }
+
+    /**
+     * Transition from {@link StateTurn} to {@link StateIdle}.
+     */
+    private final class TransitionTurnToIdle
+            extends StateTransition
+            implements StateTransitionInputDirectionalChecker
+    {
+        /**
+         * Create the transition.
+         */
+        public TransitionTurnToIdle()
+        {
+            super(EntityState.IDLE);
+        }
+
+        @Override
+        public boolean check(InputDeviceDirectional input)
+        {
+            return input.getHorizontalDirection() == 0 && movement.getDirectionHorizontal() == 0
+                    && input.getVerticalDirection() == 0;
+        }
+
+        @Override
+        public void exit()
+        {
+            mirrorable.mirror(mirrorable.getMirror() == Mirror.HORIZONTAL ? Mirror.NONE : Mirror.HORIZONTAL);
+        }
     }
 
     /**

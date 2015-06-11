@@ -90,7 +90,7 @@ class World
     public void update(double extrp)
     {
         handler.update(extrp);
-        camera.follow(mario.getLocalizable());
+        camera.follow(mario.transformable);
     }
 
     @Override
@@ -122,7 +122,7 @@ class World
         camera.setIntervals(16, 0);
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
-        camera.resetInterval(mario.getLocalizable());
+        camera.resetInterval(mario.transformable);
 
         handler.add(mario);
         for (int i = 0; i < 20; i++)

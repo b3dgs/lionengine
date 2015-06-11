@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.collidable.Collidable;
@@ -102,12 +101,12 @@ class Goomba
     @Override
     public void notifyCollided(Collidable collidable)
     {
-        final ObjectGame target = collidable.getOwner();
+        final Entity target = collidable.getOwner();
         final Transformable collider = target.getTrait(Transformable.class);
         if (collider.getY() < collider.getOldY() && collider.getY() > transformable.getY())
         {
             collider.teleportY(transformable.getY() + transformable.getHeight());
-            ((Entity) target).jump();
+            target.jump();
             this.collidable.setEnabled(false);
             changeState(EntityState.DEATH_GOOMBA);
             Sfx.CRUSH.play();

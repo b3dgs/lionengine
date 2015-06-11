@@ -50,8 +50,8 @@ class StateIdle
     {
         super(MarioState.IDLE);
         this.animation = animation;
-        animator = mario.getSurface();
-        movement = mario.getMovement();
+        animator = mario.surface;
+        movement = mario.movement;
         addTransition(new TransitionIdleToWalk());
         addTransition(new TransitionIdleToJump());
     }

@@ -17,11 +17,8 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.core.Renderable;
@@ -32,13 +29,12 @@ import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.state.State;
+import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.state.StateFactory;
 import com.b3dgs.lionengine.game.state.StateHandler;
 import com.b3dgs.lionengine.game.trait.body.Body;
@@ -65,16 +61,14 @@ class Entity
     /** Ground location y. */
     private static final int GROUND = 32;
 
-    /** State factory. */
-    protected final StateFactory factory = new StateFactory();
-    /** State handler. */
-    private final StateHandler handler = new StateHandler(factory);
     /** Movement force. */
-    private final Force movement = new Force();
+    public final Force movement = new Force();
     /** Jump force. */
-    private final Force jump = new Force();
+    public final Force jump = new Force();
+    /** Surface. */
+    public final SpriteAnimated surface;
     /** Transformable model. */
-    protected final Transformable transformable = addTrait(new TransformableModel());
+    public final Transformable transformable = addTrait(new TransformableModel());
     /** Tile collidable. */
     protected final TileCollidable tileCollidable = addTrait(new TileCollidableModel());
     /** Collidable reference. */
@@ -83,8 +77,10 @@ class Entity
     private final Mirrorable mirrorable = addTrait(new MirrorableModel());
     /** Body model. */
     private final Body body = addTrait(new BodyModel());
-    /** Surface. */
-    private final SpriteAnimated surface;
+    /** State factory. */
+    private final StateFactory factory = new StateFactory();
+    /** State handler. */
+    private final StateHandler handler = new StateHandler(factory);
     /** Camera reference. */
     private final Camera camera;
 
@@ -118,46 +114,6 @@ class Entity
         body.resetGravity();
         changeState(EntityState.JUMP);
         jump.setDirection(0.0, 6.0);
-    }
-
-    /**
-     * Get the localizable reference.
-     * 
-     * @return The localizable reference.
-     */
-    public Localizable getLocalizable()
-    {
-        return transformable;
-    }
-
-    /**
-     * Get the movement force.
-     * 
-     * @return The movement force.
-     */
-    public Force getMovement()
-    {
-        return movement;
-    }
-
-    /**
-     * Get the jump force.
-     * 
-     * @return The jump force.
-     */
-    public Force getJump()
-    {
-        return jump;
-    }
-
-    /**
-     * Get the surface.
-     * 
-     * @return The surface reference.
-     */
-    public SpriteAnimated getSurface()
-    {
-        return surface;
     }
 
     /**
@@ -207,31 +163,10 @@ class Entity
         handler.addInput(device);
     }
 
-    /**
-     * Load all existing animations defined in the xml file.
-     */
-    private void loadStates()
-    {
-        final ConfigAnimations configAnimations = ConfigAnimations.create(getConfigurer());
-        for (final EntityState type : EntityState.values())
-        {
-            try
-            {
-                final Animation animation = configAnimations.getAnimation(type.getAnimationName());
-                final State state = type.create(this, animation);
-                factory.addState(state);
-            }
-            catch (final LionEngineException exception)
-            {
-                continue;
-            }
-        }
-    }
-
     @Override
     protected void onPrepared()
     {
-        loadStates();
+        StateAnimationBased.Util.loadStates(EntityState.values(), factory, this);
         handler.start(EntityState.IDLE);
     }
 
