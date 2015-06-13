@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.trait;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 
@@ -39,7 +40,9 @@ public interface Trait
     /**
      * Get the trait owner reference.
      * 
+     * @param <O> The owner type.
      * @return The trait owner reference.
+     * @throws LionEngineException If cast error.
      */
-    ObjectGame getOwner();
+    <O extends ObjectGame> O getOwner() throws LionEngineException;
 }

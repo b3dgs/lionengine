@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.trait;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 
@@ -28,6 +29,9 @@ import com.b3dgs.lionengine.game.object.Services;
 public abstract class TraitModel
         implements Trait
 {
+    /** Cast error. */
+    private static final String ERROR_CAST = "Unable to cast: ";
+
     /** The owner reference. */
     private ObjectGame owner;
 
@@ -50,8 +54,16 @@ public abstract class TraitModel
     }
 
     @Override
-    public ObjectGame getOwner()
+    @SuppressWarnings("unchecked")
+    public <O extends ObjectGame> O getOwner() throws LionEngineException
     {
-        return owner;
+        try
+        {
+            return (O) owner;
+        }
+        catch (final ClassCastException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CAST, owner.getClass().getName());
+        }
     }
 }
