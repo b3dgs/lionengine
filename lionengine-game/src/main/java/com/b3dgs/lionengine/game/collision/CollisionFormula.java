@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.collision;
 
+import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 
 /**
@@ -57,6 +58,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
  * @see CollisionConstraint
  */
 public class CollisionFormula
+        implements Nameable
 {
     /** Formula name. */
     private final String name;
@@ -82,16 +84,6 @@ public class CollisionFormula
         this.range = range;
         this.function = function;
         this.constraint = constraint;
-    }
-
-    /**
-     * Get the formula name.
-     * 
-     * @return The formula name.
-     */
-    public String getName()
-    {
-        return name;
     }
 
     /**
@@ -122,5 +114,15 @@ public class CollisionFormula
     public CollisionConstraint getConstraint()
     {
         return constraint;
+    }
+
+    /*
+     * Nameable
+     */
+
+    @Override
+    public String getName()
+    {
+        return name;
     }
 }

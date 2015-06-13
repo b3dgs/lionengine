@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.collision;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
@@ -55,6 +56,7 @@ import com.b3dgs.lionengine.game.map.MapTileCollision;
  * @see CollisionFormula
  */
 public class CollisionCategory
+        implements Nameable
 {
     /** Category name. */
     private final String name;
@@ -64,6 +66,8 @@ public class CollisionCategory
     private final int x;
     /** Vertical offset relative to collision owner. */
     private final int y;
+    /** Defined groups. */
+    private final Collection<CollisionGroup> groups;
     /** Collision formula used list (each must be available in {@link MapTileCollision#getCollisionFormula(String)}. */
     private final Collection<CollisionFormula> formulas;
 
@@ -82,6 +86,7 @@ public class CollisionCategory
         this.axis = axis;
         this.x = x;
         this.y = y;
+        this.groups = groups;
         formulas = new HashSet<>();
         for (final CollisionGroup group : groups)
         {
@@ -90,13 +95,13 @@ public class CollisionCategory
     }
 
     /**
-     * Get the collision category name.
+     * Get the defined groups.
      * 
-     * @return The collision category name.
+     * @return The defined groups.
      */
-    public String getName()
+    public Collection<CollisionGroup> getGroups()
     {
-        return name;
+        return groups;
     }
 
     /**
@@ -137,5 +142,15 @@ public class CollisionCategory
     public int getOffsetY()
     {
         return y;
+    }
+
+    /*
+     * Nameable
+     */
+
+    @Override
+    public String getName()
+    {
+        return name;
     }
 }

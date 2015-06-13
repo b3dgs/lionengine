@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.collision;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
@@ -44,6 +45,7 @@ import com.b3dgs.lionengine.game.map.Tile;
  * @see CollisionFormula
  */
 public class CollisionGroup
+        implements Nameable
 {
     /** The group name. */
     private final String group;
@@ -63,16 +65,6 @@ public class CollisionGroup
     }
 
     /**
-     * Get the group name.
-     * 
-     * @return The group name.
-     */
-    public String getGroup()
-    {
-        return group;
-    }
-
-    /**
      * Get collision formulas reference.
      * 
      * @return The collision formulas reference.
@@ -80,5 +72,15 @@ public class CollisionGroup
     public Collection<CollisionFormula> getFormulas()
     {
         return formulas;
+    }
+
+    /*
+     * Nameable
+     */
+
+    @Override
+    public String getName()
+    {
+        return group;
     }
 }

@@ -43,6 +43,31 @@ public final class ConfigCollisionGroup
     public static final String GROUP = "group";
 
     /**
+     * Create the collision group data from node (should only be used to display names, as real content is
+     * <code>null</code>, mainly UI specific to not have dependency on {@link MapTileCollision}).
+     * 
+     * @param root The node root reference.
+     * @return The collisions group data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static Collection<CollisionGroup> create(XmlNode root) throws LionEngineException
+    {
+        final Collection<CollisionGroup> collisions = new ArrayList<>();
+        for (final XmlNode node : root.getChildren(COLLISION))
+        {
+            final Collection<CollisionFormula> formulas = new ArrayList<>();
+            for (final XmlNode formula : node.getChildren(ConfigCollisionFormula.FORMULA))
+            {
+                final String name = formula.getText();
+                formulas.add(new CollisionFormula(name, null, null, null));
+            }
+            final CollisionGroup collision = new CollisionGroup(node.readString(GROUP), formulas);
+            collisions.add(collision);
+        }
+        return collisions;
+    }
+
+    /**
      * Create the collision group data from node.
      * 
      * @param root The node root reference.
@@ -75,8 +100,8 @@ public final class ConfigCollisionGroup
      */
     public static XmlNode export(CollisionGroup group)
     {
-        final XmlNode node = Stream.createXmlNode(COLLISIONS);
-        node.writeString(GROUP, group.getGroup());
+        final XmlNode node = Stream.createXmlNode(COLLISION);
+        node.writeString(GROUP, group.getName());
         for (final CollisionFormula formula : group.getFormulas())
         {
             node.add(ConfigCollisionFormula.export(formula));
