@@ -56,7 +56,7 @@ public class AboutDialog
         top.setLayout(new GridLayout(2, false));
         top.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         top.setBackground(top.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        AboutDialog.createTop(top);
+        createTop(top);
 
         final Label separatorHeader = new Label(dialog, SWT.SEPARATOR | SWT.HORIZONTAL);
         separatorHeader.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -68,7 +68,7 @@ public class AboutDialog
         bottomLayout.marginHeight = 4;
         bottomLayout.marginWidth = 4;
         bottom.setLayout(bottomLayout);
-        AboutDialog.createBottom(dialog, bottom);
+        createBottom(dialog, bottom);
     }
 
     /**
@@ -138,7 +138,7 @@ public class AboutDialog
         dialog.setLayout(dialogLayout);
         dialog.setText(Messages.AboutDialog_Title);
 
-        AboutDialog.create(dialog);
+        create(dialog);
 
         dialog.pack();
         UtilSwt.center(dialog);

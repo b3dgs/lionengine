@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.properties.frames;
 
+import java.io.File;
+
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -24,12 +26,17 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.configurer.ConfigSize;
+import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -84,12 +91,44 @@ public class PropertiesFrames
         if (frames.open() == Window.OK)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(ConfigFrames.FRAMES);
-            surfaceNode.writeString((String) item.getData(), frames.getValue());
+            final XmlNode framesNode = root.getChild(ConfigFrames.FRAMES);
+            framesNode.writeString((String) item.getData(), frames.getValue());
             item.setText(PropertiesPart.COLUMN_VALUE, frames.getValue());
+            updateSize(configurer, root, framesNode);
+
             return true;
         }
         return false;
+    }
+
+    /**
+     * Update the size property depending of the image and frames.
+     * 
+     * @param configurer The configurer reference.
+     * @param root The root node.
+     * @param framesNode The frames node.
+     */
+    public static void updateSize(Configurer configurer, XmlNode root, XmlNode framesNode)
+    {
+        final XmlNode size;
+        final File file = new File(configurer.getPath(), root.getChild(ConfigSurface.SURFACE).readString(
+                ConfigSurface.SURFACE_IMAGE));
+        final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(file));
+        if (!root.hasChild(ConfigSize.SIZE))
+        {
+            size = Stream.createXmlNode(ConfigSize.SIZE);
+            size.writeInteger(ConfigSize.SIZE_WIDTH, info.getWidth());
+            size.writeInteger(ConfigSize.SIZE_HEIGHT, info.getHeight());
+            root.add(size);
+        }
+        else
+        {
+            size = root.getChild(ConfigSize.SIZE);
+        }
+        size.writeInteger(ConfigSize.SIZE_WIDTH,
+                info.getWidth() / framesNode.readInteger(ConfigFrames.FRAMES_HORIZONTAL));
+        size.writeInteger(ConfigSize.SIZE_HEIGHT,
+                info.getHeight() / framesNode.readInteger(ConfigFrames.FRAMES_VERTICAL));
     }
 
     /*

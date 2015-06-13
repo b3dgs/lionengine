@@ -25,6 +25,18 @@
                 <children xsi:type="menu:DirectMenuItem" xmi:id="__oic4PZQEeSRrd1pxiHA1g" elementId="" label="%menu.groups-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/groups-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__oic4fZQEeSRrd1pxiHA1g" coreExpressionId="com.b3dgs.lionengine.editor.groups.edit"/>
                 </children>
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_3BbfEAz3EeW4-uOMX2ElnQ" elementId="" label="%menu.formulas-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/formulas-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.FormulasAddHandler">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_3BbfEQz3EeW4-uOMX2ElnQ" coreExpressionId="com.b3dgs.lionengine.editor.formulas.add"/>
+                </children>
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_3Zc9gAz3EeW4-uOMX2ElnQ" elementId="" label="%menu.formulas-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/formulas-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.FormulasEditHandler">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_3Zc9gQz3EeW4-uOMX2ElnQ" coreExpressionId="com.b3dgs.lionengine.editor.formulas.edit"/>
+                </children>
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_4EFPIA7JEeW6A_3RaUH7Zw" elementId="" label="%menu.collisions-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/collisions-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.CollisionsAddHandler">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_4EFPIQ7JEeW6A_3RaUH7Zw" coreExpressionId="com.b3dgs.lionengine.editor.collisions.add"/>
+                </children>
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_4awpwA7JEeW6A_3RaUH7Zw" elementId="" label="%menu.collisions-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/collisions-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.CollisionsEditHandler">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_4axQ0A7JEeW6A_3RaUH7Zw" coreExpressionId="com.b3dgs.lionengine.editor.collisions.edit"/>
+                </children>
               </menus>
             </children>
           </children>
@@ -41,7 +53,7 @@
                   <children xsi:type="menu:DirectToolItem" xmi:id="_6lxSEPcKEeS8L5kniFEmyw" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.grid" label="%toolbar.world-view.grid" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/grid.png" tooltip="%toolbar.world-view.grid-tip" selected="true" type="Check" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.SetGridHandler"/>
                   <children xsi:type="menu:DirectToolItem" xmi:id="_uZR-IEvDEeSHc9sOFbIdbg" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.collisions" label="%toolbar.world-view.collisions" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/collisions.png" tooltip="%toolbar.world-view.collisions-tip" type="Check" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler"/>
                   <children xsi:type="menu:ToolBarSeparator" xmi:id="_nudHgEGUEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.separator1"/>
-                  <children xsi:type="menu:DirectToolItem" xmi:id="_n8HC4AauEeW4xftU0CS5Cg" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.import-sheets" label="%toolbar.world-view.import-sheets" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/menu/sheets-import.png" tooltip="%toolbar.world-view.import-sheets-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.SheetsImportHandler"/>
+                  <children xsi:type="menu:DirectToolItem" xmi:id="_n8HC4AauEeW4xftU0CS5Cg" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.import-sheets" label="%toolbar.world-view.import-sheets" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/sheets-import.png" tooltip="%toolbar.world-view.import-sheets-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.SheetsImportHandler"/>
                   <children xsi:type="menu:DirectToolItem" xmi:id="_5ARyAEvDEeSHc9sOFbIdbg" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.import-map" label="%toolbar.world-view.import-map" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/import-map.png" tooltip="%toolbar.world-view.import-map-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.MapImportHandler"/>
                   <children xsi:type="menu:ToolBarSeparator" xmi:id="_8wtDQEW7EeSL6NkV2Tqd7Q" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.separator2"/>
                 </toolbar>
@@ -86,13 +98,13 @@
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_FtMekEyKEeSJA9sJoETiQw" elementId="" label="%menu.frames-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/frames-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.frames.handler.FramesRemoveHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_FtMekUyKEeSJA9sJoETiQw" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeFrames"/>
                   </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_vuLX0OthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/tileformula_add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.handler.FormulaAddHandler">
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_vuLX0OthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/tileformula-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.handler.FormulaAddHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_vuLX0ethEeSC_8GDJLuRUA" coreExpressionId="com.b3dgs.lionengine.editor.properties.addFormula"/>
                   </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_9QEPgOthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/tileformula_remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.handler.FormulaRemoveHandler">
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_9QEPgOthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/tileformula-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.handler.FormulaRemoveHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_9QEPgethEeSC_8GDJLuRUA" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeFormula"/>
                   </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="__k5_8OthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/tileformula_edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.handler.FormulaEditHandler">
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="__k5_8OthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/tileformula-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.handler.FormulaEditHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__k5_8ethEeSC_8GDJLuRUA" coreExpressionId="com.b3dgs.lionengine.editor.properties.editFormula"/>
                   </children>
                 </menus>

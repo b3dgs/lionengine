@@ -17,19 +17,22 @@
  */
 package com.b3dgs.lionengine.editor.properties.clazz;
 
-import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.ComboDialogChooser;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -82,12 +85,22 @@ public class PropertiesClass
      */
     private static boolean updateClass(TreeItem item, Configurer configurer)
     {
-        final File file = Tools.selectClassFile(item.getParent().getShell());
-        if (file != null)
+        final ComboDialogChooser chooser = new ComboDialogChooser(item.getParent().getShell());
+        final Collection<Class<? extends ObjectGame>> objects = UtilEclipse.getImplementing(ObjectGame.class);
+        objects.add(ObjectGame.class);
+        final String[] items = new String[objects.size()];
+        int i = 0;
+        for (final Class<? extends ObjectGame> object : objects)
+        {
+            items[i] = object.getName();
+            i++;
+        }
+        Arrays.sort(items);
+        final String clazz = chooser.open(items);
+        if (clazz != null)
         {
             final XmlNode root = configurer.getRoot();
             final XmlNode classeNode = root.getChild(ConfigObject.CLASS);
-            final String clazz = Tools.getClass(file).getName();
             classeNode.setText(clazz);
             item.setText(PropertiesPart.COLUMN_VALUE, clazz);
             return true;
@@ -104,12 +117,22 @@ public class PropertiesClass
      */
     private static boolean updateSetup(TreeItem item, Configurer configurer)
     {
-        final File file = Tools.selectClassFile(item.getParent().getShell());
-        if (file != null)
+        final ComboDialogChooser chooser = new ComboDialogChooser(item.getParent().getShell());
+        final Collection<Class<? extends Setup>> setups = UtilEclipse.getImplementing(Setup.class);
+        setups.add(Setup.class);
+        final String[] items = new String[setups.size()];
+        int i = 0;
+        for (final Class<? extends Setup> current : setups)
+        {
+            items[i] = current.getName();
+            i++;
+        }
+        Arrays.sort(items);
+        final String setup = chooser.open(items);
+        if (setup != null)
         {
             final XmlNode root = configurer.getRoot();
             final XmlNode setupNode = root.getChild(ConfigObject.SETUP);
-            final String setup = Tools.getClass(file).getName();
             setupNode.setText(setup);
             item.setText(PropertiesPart.COLUMN_VALUE, setup);
             return true;

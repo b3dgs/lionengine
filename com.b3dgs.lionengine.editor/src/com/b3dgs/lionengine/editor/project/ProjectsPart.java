@@ -43,8 +43,12 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.project.handler.CollisionsEditHandler;
+import com.b3dgs.lionengine.editor.project.handler.FormulasEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.SheetsEditHandler;
+import com.b3dgs.lionengine.editor.project.tester.CollisionsTester;
+import com.b3dgs.lionengine.editor.project.tester.FormulasTester;
 import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
@@ -216,11 +220,19 @@ public class ProjectsPart
         {
             if (SheetsTester.isSheetsFile(media))
             {
-                SheetsEditHandler.execute(tree.getShell());
+                SheetsEditHandler.executeHandler(tree.getShell());
             }
             else if (GroupsTester.isGroupsFile(media))
             {
-                GroupsEditHandler.execute(tree.getShell());
+                GroupsEditHandler.executeHandler(tree.getShell());
+            }
+            else if (FormulasTester.isFormulasFile(media))
+            {
+                FormulasEditHandler.executeHandler(tree.getShell());
+            }
+            else if (CollisionsTester.isCollisionsFile(media))
+            {
+                CollisionsEditHandler.executeHandler(tree.getShell());
             }
             else if (media.getFile().isFile())
             {

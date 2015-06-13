@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.Tools;
 
 /**
  * Represents a project and its data.
@@ -58,8 +57,6 @@ public final class Project
     public static final String PROPERTY_PROJECT_RESOURCES = "ResourcesFolder";
     /** Load class error. */
     public static final String ERROR_LOAD_CLASS = "Unable to load the class: ";
-    /** Create class path directory error. */
-    private static final String ERROR_CREATE_CLASSPATH_DIR = "Unable to create class path directory: ";
     /** Media is not in class folder. */
     private static final String ERROR_MEDIA_RELATIVE_TO_CLASS = "Media is not in class folder: ";
     /** Media is not in resources folder. */
@@ -68,8 +65,6 @@ public final class Project
     private static final String ERROR_CLASS_CAST = "Can not cast class to: ";
     /** Reading project properties verbose. */
     private static final String VERBOSE_READ_PROJECT_PROPERTIES = "Reading project properties for: ";
-    /** Extract jar classes verbose. */
-    private static final String VERBOSE_EXTRACT_JAR = "Extract project classes from JAR at: ";
     /** Bundle warning. */
     private static final String WARNING_BUNDLE = "No bundle found, external classLoader will not be defined !";
     /** Active project. */
@@ -108,7 +103,6 @@ public final class Project
             project.setName(projectPath.getName());
             project.setClasses(classes, libraries);
             project.setResources(resources);
-            project.checkClassPath();
 
             Project.activeProject = project;
 
@@ -405,34 +399,5 @@ public final class Project
             }
         }
         return new URLClassLoader(urls.toArray(new URL[urls.size()]), bundleClassLoader);
-    }
-
-    /**
-     * Check the class path project, and extract from JAR if necessary.
-     * 
-     * @throws IOException If error when creating folder, or extracting classes.
-     */
-    private void checkClassPath() throws IOException
-    {
-        final File classPath = getClassesPath();
-        if (classPath.isFile())
-        {
-            final String name = classPath.getName();
-            final String dirName = name.substring(0, name.lastIndexOf('.'));
-            final File dir = new File(classPath.getParentFile(), dirName);
-            if (!dir.exists() && !dir.mkdir())
-            {
-                throw new IOException(Project.ERROR_CREATE_CLASSPATH_DIR + dir.toString());
-            }
-            final String classes = classPath.getAbsolutePath();
-            final File librariesPath = getLibrariesPath();
-            Verbose.info(Project.VERBOSE_EXTRACT_JAR, classes);
-            Tools.unzip(classes, dir.getAbsolutePath());
-
-            final int length = getPath().getAbsolutePath().length();
-            final String classesFolderName = dir.getAbsolutePath().substring(length);
-            final String librariesFolderName = librariesPath.getAbsolutePath().substring(length);
-            setClasses(classesFolderName, librariesFolderName);
-        }
     }
 }

@@ -17,4 +17,6 @@
 	<suppress checks="[a-zA-Z0-9]*" files="[\\/]resources[\\/]"/>
 	<suppress checks="[a-zA-Z0-9]*" files="messages.properties"/>
 	<suppress checks="StaticVariableName" files="Messages.java"/>
+	<suppress checks="EmptyBlock" files="StateAnimationBased.java" lines="108"/>
+	<suppress checks="EmptyBlock" files="ProjectsPart.java" lines="244"/>
 </suppressions>

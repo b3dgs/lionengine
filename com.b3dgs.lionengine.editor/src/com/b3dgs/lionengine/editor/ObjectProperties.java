@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -30,7 +31,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 
 /**
  * Represents the object properties edition view.
@@ -40,6 +40,11 @@ import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
  */
 public abstract class ObjectProperties<T extends Nameable>
 {
+    /** Revert icon. */
+    public static final Image ICON_APPLY = UtilEclipse.getIcon("dialog", "apply.png");
+    /** Apply icon. */
+    public static final Image ICON_REVERT = UtilEclipse.getIcon("dialog", "revert.png");
+
     /**
      * Create a text and its label.
      * 
@@ -155,7 +160,7 @@ public abstract class ObjectProperties<T extends Nameable>
     private void createConfirmButton(Composite parent)
     {
         final Button confirm = UtilSwt.createButton(parent, Messages.ObjectProperties_Confirm, null);
-        confirm.setImage(AbstractDialog.ICON_OK);
+        confirm.setImage(ICON_APPLY);
         confirm.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -183,7 +188,7 @@ public abstract class ObjectProperties<T extends Nameable>
     private void createResetButton(Composite parent)
     {
         final Button reset = UtilSwt.createButton(parent, Messages.ObjectProperties_Reset, null);
-        reset.setImage(AbstractDialog.ICON_CANCEL);
+        reset.setImage(ICON_REVERT);
         reset.addSelectionListener(new SelectionAdapter()
         {
             @Override

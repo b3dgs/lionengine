@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.project.tester.CollisionsTester;
+import com.b3dgs.lionengine.editor.project.tester.FormulasTester;
 import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
@@ -60,6 +62,10 @@ public class ProjectTreeCreator
     public static final Image ICON_SHEETS = UtilEclipse.getIcon("resources", "sheets.png");
     /** Groups file icon. */
     public static final Image ICON_GROUPS = UtilEclipse.getIcon("resources", "groups.png");
+    /** Formulas file icon. */
+    public static final Image ICON_FORMULAS = UtilEclipse.getIcon("resources", "formulas.png");
+    /** Collisions file icon. */
+    public static final Image ICON_COLLISIONS = UtilEclipse.getIcon("resources", "collisions.png");
 
     /** Resources folder. */
     private static final String FOLDER_RESOURCES = "resources";
@@ -104,6 +110,14 @@ public class ProjectTreeCreator
         else if (GroupsTester.isGroupsFile(file))
         {
             return ICON_GROUPS;
+        }
+        else if (FormulasTester.isFormulasFile(file))
+        {
+            return ICON_FORMULAS;
+        }
+        else if (CollisionsTester.isCollisionsFile(file))
+        {
+            return ICON_COLLISIONS;
         }
         return ICON_DATA;
     }

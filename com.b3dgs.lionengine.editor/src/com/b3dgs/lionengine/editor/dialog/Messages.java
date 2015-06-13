@@ -39,6 +39,9 @@ public final class Messages
     /** Browse. */
     public static String AbstractDialog_Browse;
 
+    /** Combo dialog chooser title. */
+    public static String ComboDialogChooser_Title;
+
     /** About. */
     public static String AboutDialog_Title;
 

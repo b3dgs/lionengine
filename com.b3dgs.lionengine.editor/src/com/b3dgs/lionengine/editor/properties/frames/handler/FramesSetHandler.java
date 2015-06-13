@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Set icon handler.
+ * Set frames handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -62,7 +62,11 @@ public class FramesSetHandler
                 final XmlNode frames = Stream.createXmlNode(ConfigFrames.FRAMES);
                 frames.writeString(ConfigFrames.FRAMES_HORIZONTAL, horizontalFrames.getValue());
                 frames.writeString(ConfigFrames.FRAMES_VERTICAL, verticalFrames.getValue());
-                configurer.getRoot().add(frames);
+
+                final XmlNode root = configurer.getRoot();
+                root.add(frames);
+                PropertiesFrames.updateSize(configurer, root, frames);
+
                 configurer.save();
                 PropertiesFrames.createAttributeFrames(properties, configurer);
                 part.setInput(properties, configurer);

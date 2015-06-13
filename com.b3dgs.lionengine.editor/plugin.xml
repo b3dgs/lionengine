@@ -125,6 +125,30 @@
          </test>
       </definition>
       <definition
+            id="com.b3dgs.lionengine.editor.formulas.add">
+         <test
+               property="com.b3dgs.lionengine.editor.formulasTester.addFormulas">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.formulas.edit">
+         <test
+               property="com.b3dgs.lionengine.editor.formulasTester.editFormulas">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.collisions.add">
+         <test
+               property="com.b3dgs.lionengine.editor.collisionsTester.addCollisions">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.collisions.edit">
+         <test
+               property="com.b3dgs.lionengine.editor.collisionsTester.editCollisions">
+         </test>
+      </definition>
+      <definition
             id="com.b3dgs.lionengine.editor.properties.setSurface">
          <test
                property="com.b3dgs.lionengine.editor.propertiesTesterSurface.setSurface">
@@ -239,6 +263,20 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
+            class="com.b3dgs.lionengine.editor.project.tester.FormulasTester"
+            id="com.b3dgs.lionengine.editor.formulasTester"
+            namespace="com.b3dgs.lionengine.editor.formulasTester"
+            properties="addFormulas,editFormulas"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.tester.CollisionsTester"
+            id="com.b3dgs.lionengine.editor.collisionsTester"
+            namespace="com.b3dgs.lionengine.editor.collisionsTester"
+            properties="addCollisions,editCollisions"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
             class="com.b3dgs.lionengine.editor.project.tester.FolderTypeTester"
             id="com.b3dgs.lionengine.editor.folderTypeTester"
             namespace="com.b3dgs.lionengine.editor.folderTypeTester"
@@ -304,6 +342,9 @@
       </implementation>
       <implementation
             class="com.b3dgs.lionengine.editor.properties.collision.PropertiesCollision">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.properties.collisioncategory.PropertiesCollisionCategory">
       </implementation>
    </extension>
    <extension

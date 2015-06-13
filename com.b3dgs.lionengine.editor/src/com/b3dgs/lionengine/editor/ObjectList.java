@@ -120,6 +120,54 @@ public abstract class ObjectList<T extends Nameable>
     }
 
     /**
+     * Create the tool bar.
+     * 
+     * @param parent The composite parent.
+     */
+    public void createToolBar(final Composite parent)
+    {
+        final ToolBar toolbar = new ToolBar(parent, SWT.HORIZONTAL);
+        toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
+
+        createAddObjectToolItem(toolbar);
+        createRemoveObjectToolItem(toolbar);
+    }
+
+    /**
+     * Create the object tree.
+     * 
+     * @param parent The composite parent.
+     */
+    public void createTree(final Composite parent)
+    {
+        objectsTree = new Tree(parent, SWT.SINGLE);
+        objectsTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        objectsTree.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final TreeItem[] items = objectsTree.getSelection();
+                if (items.length > 0)
+                {
+                    final TreeItem selection = items[0];
+                    final Object data = selection.getData();
+                    if (instanceOf(data))
+                    {
+                        setSelectedObject(cast(data));
+                    }
+                    else
+                    {
+                        final T object = createObject("default");
+                        selection.setData(object);
+                        setSelectedObject(object);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
      * Update the selected object with its new values.
      * 
      * @param selection The selected item.
@@ -180,6 +228,21 @@ public abstract class ObjectList<T extends Nameable>
     public T getSelectedObject()
     {
         return selectedObject;
+    }
+
+    /**
+     * Get the objects list handled by the tree.
+     * 
+     * @return The objects list.
+     */
+    public Collection<T> getObjects()
+    {
+        final Collection<T> objects = new ArrayList<>();
+        for (final TreeItem item : objectsTree.getItems())
+        {
+            objects.add(cast(item.getData()));
+        }
+        return objects;
     }
 
     /**
@@ -253,20 +316,6 @@ public abstract class ObjectList<T extends Nameable>
     }
 
     /**
-     * Create the tool bar.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createToolBar(final Composite parent)
-    {
-        final ToolBar toolbar = new ToolBar(parent, SWT.HORIZONTAL);
-        toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
-
-        createAddObjectToolItem(toolbar);
-        createRemoveObjectToolItem(toolbar);
-    }
-
-    /**
      * Create the add object tool item.
      * 
      * @param toolbar The tool bar reference.
@@ -318,40 +367,6 @@ public abstract class ObjectList<T extends Nameable>
                     item.dispose();
                 }
                 objectsTree.layout(true, true);
-            }
-        });
-    }
-
-    /**
-     * Create the object tree.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createTree(final Composite parent)
-    {
-        objectsTree = new Tree(parent, SWT.SINGLE);
-        objectsTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        objectsTree.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                final TreeItem[] items = objectsTree.getSelection();
-                if (items.length > 0)
-                {
-                    final TreeItem selection = items[0];
-                    final Object data = selection.getData();
-                    if (instanceOf(data))
-                    {
-                        setSelectedObject(cast(data));
-                    }
-                    else
-                    {
-                        final T object = createObject("default");
-                        selection.setData(object);
-                        setSelectedObject(object);
-                    }
-                }
             }
         });
     }

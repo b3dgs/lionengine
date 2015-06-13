@@ -219,8 +219,7 @@ public abstract class AbstractDialog
         buttonArea.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         buttonArea.setLayout(new GridLayout(2, true));
 
-        finish = UtilSwt.createButton(buttonArea, Messages.AbstractDialog_Finish, null);
-        finish.setImage(AbstractDialog.ICON_OK);
+        finish = UtilSwt.createButton(buttonArea, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
         finish.setEnabled(false);
         finish.addSelectionListener(new SelectionAdapter()
         {
@@ -232,8 +231,8 @@ public abstract class AbstractDialog
             }
         });
 
-        final Button cancel = UtilSwt.createButton(buttonArea, Messages.AbstractDialog_Cancel, null);
-        cancel.setImage(AbstractDialog.ICON_CANCEL);
+        final Button cancel = UtilSwt.createButton(buttonArea, Messages.AbstractDialog_Cancel,
+                AbstractDialog.ICON_CANCEL);
         cancel.addSelectionListener(new SelectionAdapter()
         {
             @Override
