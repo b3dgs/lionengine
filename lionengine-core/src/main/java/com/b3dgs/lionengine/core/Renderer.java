@@ -88,6 +88,10 @@ public class Renderer
     private volatile boolean directRendering;
     /** Source resolution reference. */
     private volatile Resolution source;
+    /** First sequence class. */
+    private volatile Class<? extends Sequence> firstSequence;
+    /** First sequence arguments. */
+    private volatile Object[] firstSequenceArguments;
 
     /**
      * Constructor base.
@@ -118,15 +122,19 @@ public class Renderer
     /**
      * Start with the first sequence.
      * 
-     * @param sequence The first sequence to start.
+     * @param loader The loader reference.
+     * @param first The first sequence to start.
+     * @param param The sequence parameters.
      * @throws LionEngineException If the renderer has already been started.
      */
-    public final synchronized void startFirstSequence(Sequence sequence) throws LionEngineException
+    public final synchronized void startFirstSequence(Loader loader, Class<? extends Sequence> first, Object... param)
+            throws LionEngineException
     {
         if (!started)
         {
-            loader = loader;
-            this.sequence = sequence;
+            this.loader = loader;
+            firstSequence = first;
+            firstSequenceArguments = param;
             started = true;
             start();
         }
@@ -505,7 +513,8 @@ public class Renderer
         // First init
         screen = Graphics.createScreen(this);
         screen.start();
-        nextSequence = sequence;
+
+        nextSequence = Loader.createSequence(firstSequence, loader, firstSequenceArguments);
         waitForScreenReady();
 
         while (nextSequence != null)

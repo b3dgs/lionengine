@@ -107,39 +107,13 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with wrong sequence.
-     */
-    @Test
-    public void testFailSequenceConstructor()
-    {
-        final Loader loader = new Loader(CONFIG);
-        final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
-        {
-            @Override
-            public void uncaughtException(Thread t, Throwable exception)
-            {
-                uncaught = true;
-            }
-        };
-        loader.getRenderer().setUncaughtExceptionHandler(handler);
-
-        loader.start(SequenceFailMock.class);
-        Assert.assertNull(loader.getRenderer().getNextSequence());
-
-        waitEnd(loader);
-        Assert.assertTrue(uncaught);
-        uncaught = false;
-    }
-
-    /**
      * Test the loader with fail sequence.
      */
-    @Test
+    @Test(expected = LionEngineException.class)
     public void testFailSequence()
     {
         final Loader loader = new Loader(CONFIG);
         loader.start(SequenceFailMock.class);
-        waitEnd(loader);
     }
 
     /**

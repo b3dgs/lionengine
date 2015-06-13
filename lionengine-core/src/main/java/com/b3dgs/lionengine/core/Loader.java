@@ -170,16 +170,22 @@ public final class Loader
     {
         Check.notNull(sequenceClass);
 
-        if (!started)
+        // Ensure sequence constructor is valid
+        try
         {
-            started = true;
-            final Sequence sequence = createSequence(sequenceClass, this, arguments);
-            renderer.startFirstSequence(sequence);
+            sequenceClass.getDeclaredConstructor(Loader.getParamTypes(this, arguments));
         }
-        else
+        catch (final NoSuchMethodException exception)
+        {
+            throw new LionEngineException(exception);
+        }
+
+        if (started)
         {
             throw new LionEngineException(ERROR_STARTED);
         }
+        started = true;
+        renderer.startFirstSequence(this, sequenceClass, arguments);
     }
 
     /**
