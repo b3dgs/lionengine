@@ -274,7 +274,7 @@ public class MapTileCollisionModel
         final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(nodeGroups, this);
         for (final CollisionGroup group : groups)
         {
-            this.groups.put(group.getGroup(), group);
+            this.groups.put(group.getName(), group);
         }
         groups.clear();
     }
@@ -318,7 +318,7 @@ public class MapTileCollisionModel
     {
         for (final CollisionGroup collision : getCollisionGroups())
         {
-            final TileGroup group = map.getGroup(collision.getGroup());
+            final TileGroup group = map.getGroup(collision.getName());
             if (group.contains(tile))
             {
                 for (final CollisionFormula formula : collision.getFormulas())

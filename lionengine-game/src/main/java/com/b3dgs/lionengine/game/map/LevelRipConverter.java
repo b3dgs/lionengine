@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.util.Iterator;
-
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -96,8 +94,8 @@ public final class LevelRipConverter
         {
             for (int imageMapCurrentTileX = 0; imageMapCurrentTileX < imageMapTilesInX; imageMapCurrentTileX++)
             {
-                final int imageColor = tileRef.getRgb(imageMapCurrentTileX * map.getTileWidth() + 1,
-                        imageMapCurrentTileY * map.getTileHeight() + 1);
+                final int imageColor = tileRef.getRgb(imageMapCurrentTileX * map.getTileWidth(), imageMapCurrentTileY
+                        * map.getTileHeight());
                 // Skip blank tile of image map
                 if (TileExtractor.IGNORED_COLOR != imageColor)
                 {
@@ -136,14 +134,12 @@ public final class LevelRipConverter
      */
     private Tile searchForTile(ImageBuffer tileSprite, int x, int y)
     {
-        // Check each tile on each sheet
-        final Iterator<Integer> itr = map.getSheets().iterator();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
 
-        while (itr.hasNext())
+        // Check each tile on each sheet
+        for (final Integer sheet : map.getSheets())
         {
-            final Integer sheet = itr.next();
             final SpriteTiled tileSheet = map.getSheet(sheet);
             final ImageBuffer sheetImage = tileSheet.getSurface();
             final int tilesInX = tileSheet.getWidth() / tw;
