@@ -265,6 +265,11 @@ public class ProjectsPart
                     ProjectsModel.INSTANCE.setSelection(media);
                     updateProperties(media);
                 }
+                else
+                {
+                    ProjectsModel.INSTANCE.setSelection(null);
+                    updateProperties(null);
+                }
             }
         }
     }

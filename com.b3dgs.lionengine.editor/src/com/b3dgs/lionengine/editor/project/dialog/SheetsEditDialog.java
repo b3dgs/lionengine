@@ -27,6 +27,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -74,8 +75,82 @@ public class SheetsEditDialog
         super(parent, Messages.EditSheetsDialog_Title, Messages.EditSheetsDialog_HeaderTitle,
                 Messages.EditSheetsDialog_HeaderDesc, ICON);
         this.sheets = sheets;
+        dialog.setMinimumSize(100, 100);
         createDialog();
         finish.setEnabled(true);
+    }
+
+    /**
+     * Create size text area.
+     * 
+     * @param parent The parent composite.
+     */
+    private void createTextSize(Composite parent)
+    {
+        final Group tileSizeArea = new Group(parent, SWT.NONE);
+        tileSizeArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        tileSizeArea.setLayout(new GridLayout(1, false));
+        tileSizeArea.setText(Messages.EditSheetsDialog_TileSize);
+
+        tileWidthText = UtilSwt.createText(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
+        tileWidthText.addVerifyListener(UtilSwt.createVerify(tileWidthText,
+                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        tileHeightText = UtilSwt.createText(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
+        tileHeightText.addVerifyListener(UtilSwt.createVerify(tileHeightText,
+                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+    }
+
+    /**
+     * Create the sheets list with their check box.
+     * 
+     * @param parent The parent composite.
+     */
+    private void createCheckSheets(Composite parent)
+    {
+        final Group tileSheetsArea = new Group(parent, SWT.NONE);
+        tileSheetsArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        tileSheetsArea.setLayout(new GridLayout(1, false));
+        tileSheetsArea.setText(Messages.EditSheetsDialog_TileSheets);
+
+        final File[] files = sheets.getFile().getParentFile().listFiles();
+        if (files != null)
+        {
+            for (final File file : files)
+            {
+                final Media media = UtilityMedia.get(file);
+                if (ImageInfo.isImage(media))
+                {
+                    final Button check = new Button(tileSheetsArea, SWT.CHECK);
+                    check.setText(file.getName());
+                    check.setSelection(false);
+                    buttons.add(check);
+                }
+            }
+        }
+    }
+
+    /**
+     * Load existing data and fill fields.
+     */
+    private void loadData()
+    {
+        final XmlNode node = Stream.loadXml(sheets);
+        final XmlNode tileSize = node.getChild(MapTile.NODE_TILE_SIZE);
+        tileWidthText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_WIDTH));
+        tileHeightText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_HEIGHT));
+
+        final Collection<XmlNode> sheets = node.getChildren();
+        for (final Button button : buttons)
+        {
+            for (final XmlNode sheet : sheets)
+            {
+                if (button.getText().equals(sheet.getText()))
+                {
+                    button.setSelection(true);
+                    break;
+                }
+            }
+        }
     }
 
     /*
@@ -89,49 +164,9 @@ public class SheetsEditDialog
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         composite.setLayout(new GridLayout(1, false));
 
-        final Composite tileSizeArea = new Composite(composite, SWT.NONE);
-        tileSizeArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        tileSizeArea.setLayout(new GridLayout(2, false));
-
-        tileWidthText = UtilSwt.createText(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
-        tileWidthText.addVerifyListener(UtilSwt.createVerify(tileWidthText,
-                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
-        tileHeightText = UtilSwt.createText(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
-        tileHeightText.addVerifyListener(UtilSwt.createVerify(tileHeightText,
-                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
-
-        final File[] files = sheets.getFile().getParentFile().listFiles();
-        if (files != null)
-        {
-            for (final File file : files)
-            {
-                final Media media = UtilityMedia.get(file);
-                if (ImageInfo.isImage(media))
-                {
-                    final Button check = new Button(composite, SWT.CHECK);
-                    check.setText(file.getName());
-                    check.setSelection(false);
-                    buttons.add(check);
-                }
-            }
-        }
-
-        final XmlNode node = Stream.loadXml(sheets);
-        final XmlNode tileSize = node.getChild(MapTile.NODE_TILE_SIZE);
-        tileWidthText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_WIDTH));
-        tileHeightText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_HEIGHT));
-        final Collection<XmlNode> sheets = node.getChildren();
-        for (final Button button : buttons)
-        {
-            for (final XmlNode sheet : sheets)
-            {
-                if (button.getText().equals(sheet.getText()))
-                {
-                    button.setSelection(true);
-                    break;
-                }
-            }
-        }
+        createTextSize(composite);
+        createCheckSheets(composite);
+        loadData();
     }
 
     @Override

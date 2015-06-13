@@ -76,10 +76,14 @@ public final class Messages
     public static String EditSheetsDialog_HeaderTitle;
     /** Edit sheets dialog description header. */
     public static String EditSheetsDialog_HeaderDesc;
+    /** Edit sheets dialog tile size. */
+    public static String EditSheetsDialog_TileSize;
     /** Edit sheets dialog tile width. */
     public static String EditSheetsDialog_TileWidth;
     /** Edit sheets dialog tile height. */
     public static String EditSheetsDialog_TileHeight;
+    /** Edit sheets dialog tile sheets. */
+    public static String EditSheetsDialog_TileSheets;
 
     /**
      * Initialize.
