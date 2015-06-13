@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class AnimationTest
 {
     /**
@@ -41,8 +42,9 @@ public class AnimationTest
         final boolean reverse = true;
         final boolean repeat = false;
 
-        final Animation animation = Anim.createAnimation(first, last, speed, reverse, repeat);
+        final Animation animation = Anim.createAnimation("name", first, last, speed, reverse, repeat);
 
+        Assert.assertEquals("name", animation.getName());
         Assert.assertEquals(first, animation.getFirst());
         Assert.assertEquals(last, animation.getLast());
         Assert.assertEquals(speed, animation.getSpeed(), 0.01);
@@ -56,7 +58,7 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureMinimumFrame()
     {
-        Assert.assertNotNull(Anim.createAnimation(Animation.MINIMUM_FRAME - 1, 0, 0.0, false, false));
+        Assert.assertNotNull(Anim.createAnimation(null, Animation.MINIMUM_FRAME - 1, 0, 0.0, false, false));
     }
 
     /**
@@ -65,8 +67,8 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureMaximumFrame()
     {
-        Assert.assertNotNull(Anim.createAnimation(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME - 1, 0.0, false,
-                false));
+        Assert.assertNotNull(Anim.createAnimation(null, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME - 1, 0.0,
+                false, false));
     }
 
     /**
@@ -75,7 +77,7 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureSpeed()
     {
-        Assert.assertNotNull(Anim.createAnimation(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, -1.0, false,
-                false));
+        Assert.assertNotNull(Anim.createAnimation(null, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, -1.0,
+                false, false));
     }
 }

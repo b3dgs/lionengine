@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,6 +31,12 @@ public class InputValidator
     public static final String NAME_MATCH = "[a-zA-z0-9]+";
     /** Must match a double. */
     public static final String DOUBLE_MATCH = "[0-9]{1,13}(\\.[0-9]*)?";
+    /** Must match an integer. */
+    public static final String INTEGER_MATCH = "^-?[0-9]*";
+    /** Must match a positive integer. */
+    public static final String INTEGER_POSITIVE_MATCH = "[0-9]*";
+    /** Must match a strict positive integer. */
+    public static final String INTEGER_POSITIVE_STRICT_MATCH = "[1-9][0-9]*";
 
     /** Expected matches. */
     private final String matches;

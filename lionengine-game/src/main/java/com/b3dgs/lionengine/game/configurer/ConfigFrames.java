@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,16 +18,13 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the frames data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
- * @see XmlNode
  */
-public class ConfigFrames
+public final class ConfigFrames
 {
     /** Frames node name. */
     public static final String FRAMES = Configurer.PREFIX + "frames";
@@ -40,7 +37,7 @@ public class ConfigFrames
      * Create the frames node.
      * 
      * @param configurer The configurer reference.
-     * @return The frames node value.
+     * @return The frames data.
      * @throws LionEngineException If unable to read node or not a valid integer.
      */
     public static ConfigFrames create(Configurer configurer) throws LionEngineException
@@ -55,12 +52,20 @@ public class ConfigFrames
     private final int verticalFrames;
 
     /**
+     * Disabled constructor.
+     */
+    private ConfigFrames()
+    {
+        throw new RuntimeException();
+    }
+
+    /**
      * Constructor.
      * 
      * @param horizontalFrames The horizontal frames value.
      * @param verticalFrames The vertical frames value.
      */
-    public ConfigFrames(int horizontalFrames, int verticalFrames)
+    private ConfigFrames(int horizontalFrames, int verticalFrames)
     {
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;

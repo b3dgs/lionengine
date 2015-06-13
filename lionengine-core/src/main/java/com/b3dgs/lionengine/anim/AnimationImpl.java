@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,12 +21,17 @@ import com.b3dgs.lionengine.Check;
 
 /**
  * Animation implementation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class AnimationImpl
         implements Animation
 {
+    /** Animation name. */
+    private final String name;
     /** First animation frame. */
     private final int firstFrame;
     /** Last animation frame. */
@@ -41,18 +46,20 @@ final class AnimationImpl
     /**
      * Internal constructor.
      * 
+     * @param name The animation name.
      * @param firstFrame The first frame (included) index to play (>= {@link Animation#MINIMUM_FRAME}).
      * @param lastFrame The last frame (included) index to play (>= firstFrame).
      * @param speed The animation playing speed (>= 0.0).
      * @param reverse <code>true</code> to reverse animation play (play it from first to last, and last to first).
      * @param repeat The repeat state (<code>true</code> will play in loop, <code>false</code> will play once only).
      */
-    AnimationImpl(int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
+    AnimationImpl(String name, int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
     {
         Check.superiorOrEqual(firstFrame, Animation.MINIMUM_FRAME);
         Check.superiorOrEqual(lastFrame, firstFrame);
         Check.superiorOrEqual(speed, 0.0);
 
+        this.name = name;
         this.firstFrame = firstFrame;
         this.lastFrame = lastFrame;
         this.speed = speed;
@@ -63,6 +70,12 @@ final class AnimationImpl
     /*
      * Animation
      */
+
+    @Override
+    public String getName()
+    {
+        return name;
+    }
 
     @Override
     public int getFirst()

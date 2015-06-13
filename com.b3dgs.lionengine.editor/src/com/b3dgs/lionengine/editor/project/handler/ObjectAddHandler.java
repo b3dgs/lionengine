@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,11 +35,10 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.ProjectTreeCreator;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.ProjectsPart;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Add an object in the selected folder.
@@ -52,13 +51,14 @@ public class ObjectAddHandler
     private static final String DEFAULT_NEW_OBJECT_NAME = "object";
 
     /**
-     * Create the object
+     * Create the object.
      * 
      * @param object The object file destination.
      * @param clazz The object class.
+     * @param setup The setup class.
      * @throws IOException If error when creating the object.
      */
-    private static void createObject(File object, Class<?> clazz) throws IOException
+    private static void createObject(File object, Class<?> clazz, Class<?> setup) throws IOException
     {
         final File template = Tools.getTemplate(Tools.TEMPLATE_OBJECT);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
@@ -69,6 +69,10 @@ public class ObjectAddHandler
             {
                 dest.add(line.replace(Tools.TEMPLATE_CLASS_AREA, clazz.getName()));
             }
+            else if (line.contains(Tools.TEMPLATE_SETUP_AREA))
+            {
+                dest.add(line.replace(Tools.TEMPLATE_SETUP_AREA, setup.getName()));
+            }
             else
             {
                 dest.add(line);
@@ -77,28 +81,6 @@ public class ObjectAddHandler
         Files.write(object.toPath(), dest, StandardCharsets.UTF_8);
         lines.clear();
         dest.clear();
-    }
-
-    /**
-     * Add the object
-     * 
-     * @param partService The part service reference.
-     * @param selection The current folder selection.
-     * @param object The object file destination.
-     * @param clazz The object class.
-     */
-    private static void addObject(EPartService partService, Media selection, File object, Class<?> clazz)
-    {
-        try
-        {
-            ObjectAddHandler.createObject(object, clazz);
-            final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
-            part.addTreeItem(selection, object, ProjectTreeCreator.ICON_OBJECT);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
     }
 
     /**
@@ -112,13 +94,13 @@ public class ObjectAddHandler
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final InputDialog inputDialog = new InputDialog(parent, Messages.AddObject_Title, Messages.AddObject_Text,
-                ObjectAddHandler.DEFAULT_NEW_OBJECT_NAME, new InputValidator(InputValidator.NAME_MATCH,
+                DEFAULT_NEW_OBJECT_NAME, new InputValidator(InputValidator.NAME_MATCH,
                         com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         final int code = inputDialog.open();
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File object = new File(selection.getFile(), name + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+            final File object = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
 
             if (object.exists())
             {
@@ -127,11 +109,13 @@ public class ObjectAddHandler
             }
             else
             {
-                final File classFile = Tools.selectClassFile(parent);
-                if (classFile != null)
+                try
                 {
-                    final Class<?> clazz = Tools.getClass(classFile);
-                    ObjectAddHandler.addObject(partService, selection, object, clazz);
+                    createObject(object, ObjectGame.class, Setup.class);
+                }
+                catch (final IOException exception)
+                {
+                    throw new LionEngineException(exception);
                 }
             }
         }

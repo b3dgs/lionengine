@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,19 +25,20 @@ import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.purview.Localizable;
-import com.b3dgs.lionengine.game.utility.LevelRipConverter;
-import com.b3dgs.lionengine.game.utility.UtilMapTile;
+import com.b3dgs.lionengine.game.Features;
+import com.b3dgs.lionengine.game.collision.TileGroup;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -45,71 +46,96 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to
- * store patterns references (SpriteTiled), and collisions.
+ * store sheets references (SpriteTiled), and collisions.
  * <p>
  * The way to prepare a map is the following:
  * </p>
  * 
  * <pre>
  * {@link #create(int, int)} // prepare memory to store tiles
- * {@link #loadPatterns(Media)} // load tilesheet
+ * {@link #loadSheets(Media)} // load tile sheets
+ * {@link #loadGroups(Media)} // load tile groups
  * </pre>
- * 
+ * <p>
+ * Or import a map from a level rip with {@link #create(Media, Media, Media)}.
+ * </p>
+ * <p>
  * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
+ * </p>
  * 
- * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see TileGame
+ * @see Tile
  */
-public abstract class MapTileGame<T extends TileGame>
-        implements MapTile<T>
+public class MapTileGame
+        implements MapTile
 {
-    /** Error pattern number message. */
-    private static final String ERROR_PATTERN_NUMBER = "Error on getting pattern number (should be a name with a number only) !";
-    /** Error pattern missing message. */
-    private static final String ERROR_PATTERN_MISSING = "Pattern missing !";
-    /** Error create tile message. */
-    private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
+    /** Info loading sheets. */
+    private static final String INFO_LOAD_SHEETS = "Loading sheets from: ";
+    /** Info loading groups. */
+    private static final String INFO_LOAD_GROUPS = "Loading groups from: ";
+    /** Error sheet missing message. */
+    private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
+    /** Error group missing message. */
+    private static final String ERROR_GROUP_MISSING = "Group missing: ";
+    /** Construction error. */
+    private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
 
-    /** Collisions. */
-    private final CollisionTile[] collisions;
-    /** Patterns list. */
-    private final Map<Integer, SpriteTiled> patterns;
-    /** Tiles directory. */
-    protected Media patternsDirectory;
+    /** Sheets list. */
+    private final Map<Integer, SpriteTiled> sheets = new HashMap<>();
+    /** Features list. */
+    private final Features<MapTileFeature> features = new Features<>(MapTileFeature.class);
+    /** Tile groups list. */
+    private final Map<String, TileGroup> groups = new HashMap<>();
+    /** Viewer reference. */
+    private final Viewer viewer;
+    /** Services reference. */
+    private final Services services;
+    /** Sheet configuration file. */
+    private Media sheetsConfig;
+    /** Groups configuration file. */
+    private Media groupsConfig;
     /** Tile width. */
-    protected int tileWidth;
+    private int tileWidth;
     /** Tile height. */
-    protected int tileHeight;
+    private int tileHeight;
     /** Number of horizontal tiles. */
-    protected int widthInTile;
+    private int widthInTile;
     /** Number of vertical tiles. */
-    protected int heightInTile;
-    /** Minimap reference. */
-    protected ImageBuffer minimap;
+    private int heightInTile;
+    /** Map radius. */
+    private int radius;
     /** Tiles map. */
-    private List<List<T>> tiles;
-    /** Collision draw cache. */
-    private HashMap<CollisionTile, ImageBuffer> collisionCache;
+    private List<List<Tile>> tiles;
+    /** Tile renderer. */
+    private MapTileRenderer renderer;
 
     /**
-     * Constructor base.
-     * 
-     * @param tileWidth The tile width (must be strictly positive).
-     * @param tileHeight The tile height (must be strictly positive).
-     * @param collisions The collisions list (must not be <code>null</code>).
+     * Create a map tile. Rendering is not enable and must not be used ({@link #render(Graphic)}). Use
+     * {@link #MapTileGame(Services)} instead if rendering will be used.
      */
-    public MapTileGame(int tileWidth, int tileHeight, CollisionTile[] collisions)
+    public MapTileGame()
     {
-        Check.superiorStrict(tileWidth, 0);
-        Check.superiorStrict(tileHeight, 0);
-        Check.notNull(collisions);
+        viewer = null;
+        services = null;
+    }
 
-        this.collisions = collisions;
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
-        patterns = new HashMap<>();
-        patternsDirectory = null;
+    /**
+     * Create a map tile.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link Viewer}</li>
+     * </ul>
+     * 
+     * @param services The services reference.
+     * @throws LionEngineException If service not found.
+     */
+    public MapTileGame(Services services) throws LionEngineException
+    {
+        this.services = services;
+        viewer = services.get(Viewer.class);
+        sheetsConfig = null;
     }
 
     /**
@@ -140,12 +166,12 @@ public abstract class MapTileGame<T extends TileGame>
                     if (!(tx < 0 || tx >= widthInTile))
                     {
                         // Get the tile and render it
-                        final T tile = getTile(tx, ty);
+                        final Tile tile = getTile(tx, ty);
                         if (tile != null)
                         {
                             final int x = tile.getX() - sx;
                             final int y = -tile.getY() - tile.getHeight() + sy + screenHeight;
-                            renderTile(g, tile, x, y);
+                            renderer.renderTile(g, tile, x, y);
                         }
                     }
                 }
@@ -154,44 +180,11 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     /**
-     * Render tile on its designed location (automatically called by
-     * {@link #render(Graphic, int, int, int, int, int, int, int)}).
-     * 
-     * @param g The graphic output.
-     * @param x The location x.
-     * @param y The location y.
-     * @param tile The tile to render.
-     */
-    protected void renderTile(Graphic g, T tile, int x, int y)
-    {
-        renderingTile(g, tile, tile.getPattern(), tile.getNumber(), x, y);
-        if (collisionCache != null)
-        {
-            renderCollision(g, tile, x, y);
-        }
-    }
-
-    /**
-     * Render a specific tile to specified location.
-     * 
-     * @param g The graphic output.
-     * @param tile The tile to render.
-     * @param pattern The tile pattern.
-     * @param number The tile number.
-     * @param x The location x.
-     * @param y The location y.
-     */
-    protected void renderingTile(Graphic g, T tile, Integer pattern, int number, int x, int y)
-    {
-        getPattern(pattern).render(g, number, x, y);
-    }
-
-    /**
      * Save tile. Data are saved this way:
      * 
      * <pre>
-     * (integer) pattern number
-     * (integer) index number inside pattern
+     * (integer) sheet number
+     * (integer) index number inside sheet
      * (integer) tile location x % AbstractMapTile.BLOC_SIZE
      * (integer tile location y
      * </pre>
@@ -200,68 +193,46 @@ public abstract class MapTileGame<T extends TileGame>
      * @param tile The tile to save.
      * @throws IOException If error on writing.
      */
-    protected void saveTile(FileWriting file, T tile) throws IOException
+    protected void saveTile(FileWriting file, Tile tile) throws IOException
     {
-        file.writeInteger(tile.getPattern().intValue());
+        file.writeInteger(tile.getSheet().intValue());
         file.writeInteger(tile.getNumber());
         file.writeInteger(tile.getX() / tileWidth % MapTile.BLOC_SIZE);
         file.writeInteger(tile.getY() / tileHeight);
     }
 
     /**
-     * Get color corresponding to the specified tile. Override it to return a specific color for each type of tile.
-     * This function is used when generating the minimap.
+     * Load tile. Data are loaded this way:
      * 
-     * @param tile The input tile.
-     * @return The color representing the tile on minimap.
+     * <pre>
+     * (integer) sheet number
+     * (integer) index number inside sheet
+     * (integer) tile location x
+     * (integer tile location y
+     * </pre>
+     * 
+     * @param file The file reader reference.
+     * @param i The last loaded tile number.
+     * @return The loaded tile.
+     * @throws IOException If error on reading.
+     * @throws LionEngineException If error on creating tile.
      */
-    protected ColorRgba getTilePixelColor(T tile)
+    protected Tile loadTile(FileReading file, int i) throws IOException, LionEngineException
     {
-        return ColorRgba.WHITE;
-    }
+        Check.notNull(file);
 
-    /**
-     * Check the collision at the specified location.
-     * 
-     * @param localizable The localizable reference.
-     * @param collisions Collisions list to search for.
-     * @param h The horizontal index.
-     * @param ty The vertical tile.
-     * @param applyRayCast <code>true</code> to apply collision to each tile crossed, <code>false</code> to ignore and
-     *            just return the first tile hit.
-     * @return The first tile hit, <code>null</code> if none found.
-     */
-    private T checkCollision(Localizable localizable, Collection<CollisionTile> collisions, double h, int ty,
-            boolean applyRayCast)
-    {
-        final T tile = getTile((int) Math.floor(h / getTileWidth()), ty);
-        if (tile != null && collisions.contains(tile.getCollision()))
-        {
-            final Double coll = tile.getCollisionY(localizable);
-            if (applyRayCast && coll != null)
-            {
-                localizable.teleportY(coll.doubleValue());
-            }
-            return tile;
-        }
-        return null;
-    }
+        final int sheet = file.readInteger();
+        final int number = file.readInteger();
+        final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
+        final int y = file.readInteger() * tileHeight;
+        final Tile tile = createTile();
 
-    /**
-     * Render the collision function.
-     * 
-     * @param g The graphic output.
-     * @param tile The tile reference.
-     * @param x The horizontal render location.
-     * @param y The vertical render location.
-     */
-    private void renderCollision(Graphic g, T tile, int x, int y)
-    {
-        final ImageBuffer buffer = collisionCache.get(tile.getCollision());
-        if (buffer != null)
-        {
-            g.drawImage(buffer, x, y);
-        }
+        tile.setSheet(Integer.valueOf(sheet));
+        tile.setNumber(number);
+        tile.setX(x);
+        tile.setY(y);
+
+        return tile;
     }
 
     /*
@@ -269,317 +240,75 @@ public abstract class MapTileGame<T extends TileGame>
      */
 
     @Override
-    public void create(int widthInTile, int heightInTile)
+    public void create(int widthInTile, int heightInTile) throws LionEngineException
     {
         Check.superiorStrict(widthInTile, 0);
         Check.superiorStrict(heightInTile, 0);
 
         this.widthInTile = widthInTile;
         this.heightInTile = heightInTile;
+        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * heightInTile));
         tiles = new ArrayList<>(heightInTile);
 
         for (int v = 0; v < heightInTile; v++)
         {
-            tiles.add(v, new ArrayList<T>(widthInTile));
+            tiles.add(v, new ArrayList<Tile>(widthInTile));
             for (int h = 0; h < widthInTile; h++)
             {
                 tiles.get(v).add(h, null);
             }
         }
-    }
-
-    @Override
-    public void createCollisionDraw()
-    {
-        clearCollisionDraw();
-        collisionCache = new HashMap<>(collisions.length);
-
-        for (final CollisionTile collision : collisions)
+        if (renderer == null)
         {
-            final Collection<CollisionFunction> functions = collision.getCollisionFunctions();
-            final ImageBuffer buffer = UtilMapTile.createFunctionDraw(functions, this);
-            collisionCache.put(collision, buffer);
+            renderer = this;
         }
     }
 
     @Override
-    public void createMiniMap()
+    public Tile createTile()
     {
-        if (minimap == null)
-        {
-            minimap = Core.GRAPHIC.createImageBuffer(getWidthInTile(), getHeightInTile(), Transparency.OPAQUE);
-        }
-        final Graphic g = minimap.createGraphic();
-        final int vert = getHeightInTile();
-        final int hori = getWidthInTile();
-
-        for (int v = 0; v < vert; v++)
-        {
-            for (int h = 0; h < hori; h++)
-            {
-                final T tile = getTile(h, v);
-                if (tile != null)
-                {
-                    g.setColor(getTilePixelColor(tile));
-                }
-                else
-                {
-                    g.setColor(ColorRgba.BLACK);
-                }
-                g.drawRect(h, vert - v - 1, 1, 1, true);
-            }
-        }
-        g.dispose();
+        return new TileGame(tileWidth, tileHeight);
     }
 
     @Override
     public void load(FileReading file) throws IOException, LionEngineException
     {
-        patternsDirectory = Core.MEDIA.create(file.readString());
+        final Media sheetsConfig = Medias.create(file.readString());
+        final Media groupsConfig = Medias.create(file.readString());
         final int width = file.readShort();
         final int height = file.readShort();
-        tileWidth = file.readByte();
-        tileHeight = file.readByte();
 
         create(width, height);
-        loadPatterns(patternsDirectory);
-
-        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME);
-        final XmlNode root = Stream.loadXml(media);
-        final Collection<XmlNode> nodes = root.getChildren();
+        loadSheets(sheetsConfig);
+        loadGroups(groupsConfig);
 
         final int t = file.readShort();
-        for (int i = 0; i < t; i++)
+        for (int v = 0; v < t; v++)
         {
             final int n = file.readShort();
-            for (int j = 0; j < n; j++)
+            for (int h = 0; h < n; h++)
             {
-                final T tile = loadTile(nodes, file, i);
-                if (tile.getPattern().intValue() > getNumberPatterns())
+                final Tile tile = loadTile(file, v);
+                if (tile.getSheet().intValue() > getSheetsNumber())
                 {
-                    throw new LionEngineException(media, ERROR_PATTERN_MISSING);
+                    throw new LionEngineException(ERROR_SHEET_MISSING, tile.getSheet().toString());
                 }
-                final int v = tile.getY() / getTileHeight();
-                final int h = tile.getX() / getTileWidth();
-                final List<T> list = tiles.get(v);
-                list.set(h, tile);
+                final int tx = tile.getX() / getTileWidth();
+                final int ty = tile.getY() / getTileHeight();
+                final List<Tile> list = tiles.get(ty);
+                list.set(tx, tile);
             }
         }
-        loadCollisions(media);
-    }
-
-    @Override
-    public void load(Media levelrip, Media patternsDirectory) throws LionEngineException
-    {
-        clear();
-        final LevelRipConverter<T> rip = new LevelRipConverter<>(levelrip, patternsDirectory, this);
-        rip.start();
-        this.patternsDirectory = patternsDirectory;
-        loadCollisions(Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME));
-    }
-
-    @Override
-    public void loadPatterns(Media directory) throws LionEngineException
-    {
-        patternsDirectory = directory;
-        patterns.clear();
-        String[] files;
-
-        // Retrieve patterns list
-        final Media mediaPatterns = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.TILE_SHEETS_FILE_NAME);
-        final XmlNode root = Stream.loadXml(mediaPatterns);
-        final Collection<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
-        files = new String[children.size()];
-        int i = 0;
-        for (final XmlNode child : children)
-        {
-            files[i] = child.getText();
-            i++;
-        }
-
-        // Load patterns from list
-        for (final String file : files)
-        {
-            final Media media = Core.MEDIA.create(patternsDirectory.getPath(), file);
-            try
-            {
-                final Integer pattern = Integer.valueOf(file.substring(0, file.length() - 4));
-                final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
-
-                sprite.load(false);
-                patterns.put(pattern, sprite);
-            }
-            catch (final NumberFormatException exception)
-            {
-                throw new LionEngineException(exception, media, MapTileGame.ERROR_PATTERN_NUMBER);
-            }
-        }
-    }
-
-    @Override
-    public void loadCollisions(Media media) throws LionEngineException
-    {
-        removeCollisions();
-        final XmlNode root = Stream.loadXml(media);
-        final Collection<XmlNode> collisions = root.getChildren();
-        for (int i = 0; i < heightInTile; i++)
-        {
-            final List<T> list = tiles.get(i);
-            for (int j = 0; j < widthInTile; j++)
-            {
-                final T tile = list.get(j);
-                if (tile != null)
-                {
-                    tile.setCollision(getCollisionFrom(UtilMapTile.getCollision(collisions, tile.getPattern()
-                            .intValue(), tile.getNumber())));
-                }
-            }
-        }
-        for (final XmlNode node : collisions)
-        {
-            final CollisionTile collision = getCollisionFrom(node.readString(UtilMapTile.ATT_TILE_COLLISION_NAME));
-            for (final XmlNode functionNode : node.getChildren(UtilMapTile.TAG_FUNCTION))
-            {
-                final CollisionFunction function = UtilMapTile.getCollisionFunction(collision, functionNode);
-                assignCollisionFunction(collision, function);
-            }
-        }
-    }
-
-    @Override
-    public T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException, LionEngineException
-    {
-        Check.notNull(file);
-
-        final int pattern = file.readInteger();
-        final int number = file.readInteger();
-        final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
-        final int y = file.readInteger() * tileHeight;
-        final CollisionTile collision = getCollisionFrom(UtilMapTile.getCollision(nodes, pattern, number));
-        final T tile = createTile(tileWidth, tileHeight, Integer.valueOf(pattern), number, collision);
-
-        if (tile == null)
-        {
-            throw new LionEngineException(ERROR_CREATE_TILE, "pattern=" + pattern, " | number=" + number);
-        }
-        tile.setX(x);
-        tile.setY(y);
-
-        return tile;
-    }
-
-    @Override
-    public void append(MapTile<T> map, int offsetX, int offsetY)
-    {
-        Check.notNull(map);
-
-        final int newWidth = widthInTile - (widthInTile - offsetX) + map.getWidthInTile();
-        final int newHeight = heightInTile - (heightInTile - offsetY) + map.getHeightInTile();
-
-        // Adjust height
-        final int sizeV = tiles.size();
-        for (int i = 0; i < newHeight - sizeV; i++)
-        {
-            tiles.add(new ArrayList<T>(newWidth));
-        }
-
-        for (int v = 0; v < map.getHeightInTile(); v++)
-        {
-            final int y = offsetY + v;
-
-            // Adjust width
-            final int sizeH = tiles.get(y).size();
-            for (int i = 0; i < newWidth - sizeH; i++)
-            {
-                tiles.get(y).add(null);
-            }
-
-            for (int h = 0; h < map.getWidthInTile(); h++)
-            {
-                final int x = offsetX + h;
-                final T tile = map.getTile(h, v);
-                if (tile != null)
-                {
-                    setTile(y, x, tile);
-                }
-            }
-        }
-
-        widthInTile = newWidth;
-        heightInTile = newHeight;
-    }
-
-    @Override
-    public void clear()
-    {
-        if (tiles != null)
-        {
-            for (int v = 0; v < tiles.size(); v++)
-            {
-                final List<T> list = tiles.get(v);
-                if (list != null)
-                {
-                    list.clear();
-                }
-            }
-            tiles.clear();
-        }
-    }
-
-    @Override
-    public void clearCollisionDraw()
-    {
-        if (collisionCache != null)
-        {
-            for (final ImageBuffer buffer : collisionCache.values())
-            {
-                buffer.dispose();
-            }
-            collisionCache.clear();
-            collisionCache = null;
-        }
-    }
-
-    @Override
-    public void assignCollisionFunction(CollisionTile collision, CollisionFunction function)
-    {
-        collision.addCollisionFunction(function);
-    }
-
-    @Override
-    public void removeCollisionFunction(CollisionFunction function)
-    {
-        for (final CollisionTile collision : collisions)
-        {
-            collision.removeCollisionFunction(function);
-        }
-    }
-
-    @Override
-    public void removeCollisions()
-    {
-        for (final CollisionTile collision : collisions)
-        {
-            collision.removeCollisions();
-        }
-    }
-
-    @Override
-    public void saveCollisions()
-    {
-        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME);
-        UtilMapTile.saveCollisions(this, media);
     }
 
     @Override
     public void save(FileWriting file) throws IOException
     {
         // Header
-        file.writeString(patternsDirectory.getPath());
+        file.writeString(sheetsConfig.getPath());
+        file.writeString(groupsConfig.getPath());
         file.writeShort((short) widthInTile);
         file.writeShort((short) heightInTile);
-        file.writeByte((byte) tileWidth);
-        file.writeByte((byte) tileHeight);
 
         final int step = MapTile.BLOC_SIZE;
         final int x = Math.min(step, widthInTile);
@@ -589,22 +318,22 @@ public abstract class MapTileGame<T extends TileGame>
         for (int s = 0; s < t; s++)
         {
             int count = 0;
-            for (int h = 0; h < x; h++)
+            for (int tx = 0; tx < x; tx++)
             {
-                for (int v = 0; v < heightInTile; v++)
+                for (int ty = 0; ty < heightInTile; ty++)
                 {
-                    if (getTile(h + s * step, v) != null)
+                    if (getTile(tx + s * step, ty) != null)
                     {
                         count++;
                     }
                 }
             }
             file.writeShort((short) count);
-            for (int h = 0; h < x; h++)
+            for (int tx = 0; tx < x; tx++)
             {
-                for (int v = 0; v < heightInTile; v++)
+                for (int ty = 0; ty < heightInTile; ty++)
                 {
-                    final T tile = getTile(h + s * step, v);
+                    final Tile tile = getTile(tx + s * step, ty);
                     if (tile != null)
                     {
                         saveTile(file, tile);
@@ -615,29 +344,220 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void create(Media levelrip) throws LionEngineException
     {
-        render(g, camera.getViewHeight(), camera.getLocationIntX(), camera.getLocationIntY(),
-                (int) Math.ceil(camera.getViewWidth() / (double) tileWidth),
-                (int) Math.ceil(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
+        create(levelrip, Medias.create(levelrip.getParentPath(), DEFAULT_SHEETS_FILE),
+                Medias.create(levelrip.getParentPath(), DEFAULT_GROUPS_FILE));
     }
 
     @Override
-    public void renderMiniMap(Graphic g, int x, int y)
+    public void create(Media levelrip, Media sheetsConfig, Media groupsConfig) throws LionEngineException
     {
-        g.drawImage(minimap, x, y);
+        clear();
+        final LevelRipConverter rip = new LevelRipConverter(levelrip, sheetsConfig, this);
+        rip.start();
+
+        final int errors = rip.getErrors();
+        if (errors > 0)
+        {
+            Verbose.warning(getClass(), "create", "Number of missing tiles: " + errors);
+        }
+        this.sheetsConfig = sheetsConfig;
+        this.groupsConfig = groupsConfig;
+        loadGroups(groupsConfig);
     }
 
     @Override
-    public void setTile(int v, int h, T tile)
+    public <F extends MapTileFeature> F createFeature(Class<F> feature) throws LionEngineException
     {
-        tile.setX(h * tileWidth);
-        tile.setY(v * tileHeight);
-        tiles.get(v).set(h, tile);
+        try
+        {
+            final F instance = Factory.create(feature, new Class<?>[]
+            {
+                Services.class
+            }, services);
+            services.add(instance);
+            addFeature(instance);
+            return instance;
+        }
+        catch (final NoSuchMethodException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + feature);
+        }
     }
 
     @Override
-    public T getTile(int tx, int ty)
+    public void loadSheets(Media sheetsConfig) throws LionEngineException
+    {
+        Verbose.info(INFO_LOAD_SHEETS, sheetsConfig.getFile().getPath());
+        this.sheetsConfig = sheetsConfig;
+        final XmlNode root = Stream.loadXml(sheetsConfig);
+
+        // Retrieve tile size
+        final XmlNode tileSize = root.getChild(MapTile.NODE_TILE_SIZE);
+        tileWidth = tileSize.readInteger(MapTile.ATTRIBUTE_TILE_WIDTH);
+        tileHeight = tileSize.readInteger(MapTile.ATTRIBUTE_TILE_HEIGHT);
+
+        // Retrieve sheets list
+        final Collection<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
+        final String[] files = new String[children.size()];
+        int sheetNumber = 0;
+        for (final XmlNode child : children)
+        {
+            files[sheetNumber] = child.getText();
+            sheetNumber++;
+        }
+
+        // Load sheets from list
+        final String path = sheetsConfig.getPath();
+        final String folder = path.substring(0, path.length() - sheetsConfig.getFile().getName().length());
+        sheets.clear();
+        for (int sheet = 0; sheet < files.length; sheet++)
+        {
+            final Media media = Medias.create(folder, files[sheet]);
+            final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
+            sprite.load(false);
+            sheets.put(Integer.valueOf(sheet), sprite);
+        }
+    }
+
+    @Override
+    public void loadGroups(Media groupsConfig) throws LionEngineException
+    {
+        Verbose.info(INFO_LOAD_GROUPS, groupsConfig.getFile().getPath());
+        this.groupsConfig = groupsConfig;
+
+        groups.clear();
+        final XmlNode nodeGroups = Stream.loadXml(groupsConfig);
+        final Collection<TileGroup> groups = ConfigTileGroup.create(nodeGroups);
+        for (final TileGroup group : groups)
+        {
+            this.groups.put(group.getName(), group);
+        }
+
+        for (int ty = 0; ty < heightInTile; ty++)
+        {
+            for (int tx = 0; tx < widthInTile; tx++)
+            {
+                final Tile tile = getTile(tx, ty);
+                if (tile != null)
+                {
+                    tile.setGroup(null);
+                    for (final TileGroup group : groups)
+                    {
+                        if (group.contains(tile))
+                        {
+                            tile.setGroup(group.getName());
+                        }
+                    }
+                }
+            }
+        }
+        groups.clear();
+    }
+
+    @Override
+    public void append(MapTile map, int offsetX, int offsetY)
+    {
+        Check.notNull(map);
+
+        final int newWidth = widthInTile - (widthInTile - offsetX) + map.getInTileWidth();
+        final int newHeight = heightInTile - (heightInTile - offsetY) + map.getInTileHeight();
+
+        // Adjust height
+        final int sizeV = tiles.size();
+        for (int v = 0; v < newHeight - sizeV; v++)
+        {
+            tiles.add(new ArrayList<Tile>(newWidth));
+        }
+
+        for (int cty = 0; cty < map.getInTileHeight(); cty++)
+        {
+            final int ty = offsetY + cty;
+
+            // Adjust width
+            final int sizeH = tiles.get(ty).size();
+            for (int h = 0; h < newWidth - sizeH; h++)
+            {
+                tiles.get(ty).add(null);
+            }
+
+            for (int ctx = 0; ctx < map.getInTileWidth(); ctx++)
+            {
+                final int tx = offsetX + ctx;
+                final Tile tile = map.getTile(ctx, cty);
+                if (tile != null)
+                {
+                    setTile(tx, ty, tile);
+                }
+            }
+        }
+
+        widthInTile = newWidth;
+        heightInTile = newHeight;
+        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * heightInTile));
+    }
+
+    @Override
+    public void clear()
+    {
+        if (tiles != null)
+        {
+            for (int ty = 0; ty < tiles.size(); ty++)
+            {
+                final List<Tile> list = tiles.get(ty);
+                if (list != null)
+                {
+                    list.clear();
+                }
+            }
+            tiles.clear();
+        }
+    }
+
+    @Override
+    public void addFeature(MapTileFeature feature)
+    {
+        features.add(feature);
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        render(g, viewer.getHeight(), (int) Math.ceil(viewer.getX()), (int) Math.ceil(viewer.getY()),
+                (int) Math.ceil(viewer.getWidth() / (double) tileWidth),
+                (int) Math.ceil(viewer.getHeight() / (double) tileHeight), -viewer.getViewX(), viewer.getViewY());
+    }
+
+    @Override
+    public void renderTile(Graphic g, Tile tile, int x, int y)
+    {
+        final SpriteTiled sprite = getSheet(tile.getSheet());
+        sprite.setLocation(x, y);
+        sprite.setTile(tile.getNumber());
+        sprite.render(g);
+    }
+
+    @Override
+    public void setTileRenderer(MapTileRenderer renderer) throws LionEngineException
+    {
+        Check.notNull(renderer);
+        this.renderer = renderer;
+    }
+
+    @Override
+    public void setTile(int tx, int ty, Tile tile) throws LionEngineException
+    {
+        Check.inferiorStrict(tx, getInTileWidth());
+        Check.inferiorStrict(ty, getInTileHeight());
+
+        tile.setX(tx * tileWidth);
+        tile.setY(ty * tileHeight);
+        tiles.get(ty).set(tx, tile);
+    }
+
+    @Override
+    public Tile getTile(int tx, int ty)
     {
         try
         {
@@ -650,123 +570,103 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public T getTile(Localizable entity, int offsetX, int offsetY)
+    public Tile getTile(Localizable localizable, int offsetX, int offsetY)
     {
-        final int tx = (entity.getLocationIntX() + offsetX) / getTileWidth();
-        final int ty = (entity.getLocationIntY() + offsetY) / getTileHeight();
+        final int tx = (int) Math.floor((localizable.getX() + offsetX) / getTileWidth());
+        final int ty = (int) Math.floor((localizable.getY() + offsetY) / getTileHeight());
         return getTile(tx, ty);
-    }
-
-    @Override
-    public T getFirstTileHit(Localizable localizable, Collection<CollisionTile> collisions, boolean applyRayCast)
-    {
-        // Starting location
-        final int sv = (int) Math.floor(localizable.getLocationOldY());
-        final int sh = (int) Math.floor(localizable.getLocationOldX());
-
-        // Ending location
-        final int ev = (int) Math.floor(localizable.getLocationY());
-        final int eh = (int) Math.floor(localizable.getLocationX());
-
-        // Distance calculation
-        final int dv = ev - sv;
-        final int dh = eh - sh;
-
-        // Search vector and number of search steps
-        final double sx, sy;
-        final int stepMax;
-        if (Math.abs(dv) >= Math.abs(dh))
-        {
-            sy = UtilMapTile.getTileSearchSpeed(dv);
-            sx = UtilMapTile.getTileSearchSpeed(Math.abs(dv), dh);
-            stepMax = Math.abs(dv);
-        }
-        else
-        {
-            sx = UtilMapTile.getTileSearchSpeed(dh);
-            sy = UtilMapTile.getTileSearchSpeed(Math.abs(dh), dv);
-            stepMax = Math.abs(dh);
-        }
-
-        T t = null;
-        int step = 0;
-        for (double v = sv, h = sh; step <= stepMax;)
-        {
-            T tile = checkCollision(localizable, collisions, h, (int) Math.floor(v / getTileHeight()), applyRayCast);
-            if (t == null)
-            {
-                t = tile;
-            }
-            h += sx;
-
-            tile = checkCollision(localizable, collisions, h, (int) Math.ceil(v / getTileHeight()), applyRayCast);
-            if (t == null)
-            {
-                t = tile;
-            }
-            v += sy;
-
-            step++;
-            if (!applyRayCast && t != null)
-            {
-                return t;
-            }
-        }
-        return t;
     }
 
     @Override
     public int getInTileX(Localizable localizable)
     {
-        return (int) Math.floor(localizable.getLocationX() / getTileWidth());
+        return (int) Math.floor(localizable.getX() / getTileWidth());
     }
 
     @Override
     public int getInTileY(Localizable localizable)
     {
-        return (int) Math.floor(localizable.getLocationY() / getTileHeight());
+        return (int) Math.floor(localizable.getY() / getTileHeight());
     }
 
     @Override
-    public Media getPatternsDirectory()
+    public Media getSheetsConfig()
     {
-        return patternsDirectory;
+        return sheetsConfig;
     }
 
     @Override
-    public Collection<Integer> getPatterns()
+    public Media getGroupsConfig()
     {
-        return patterns.keySet();
+        return groupsConfig;
     }
 
     @Override
-    public SpriteTiled getPattern(Integer pattern)
+    public Collection<Integer> getSheets()
     {
-        return patterns.get(pattern);
+        return sheets.keySet();
     }
 
     @Override
-    public int getNumberPatterns()
+    public SpriteTiled getSheet(Integer sheet) throws LionEngineException
     {
-        return patterns.size();
-    }
-
-    @Override
-    public int getNumberTiles()
-    {
-        int n = 0;
-        for (int v = 0; v < heightInTile; v++)
+        if (!sheets.containsKey(sheet))
         {
-            for (int h = 0; h < widthInTile; h++)
+            throw new LionEngineException(ERROR_SHEET_MISSING, sheet.toString());
+        }
+        return sheets.get(sheet);
+    }
+
+    @Override
+    public TileGroup getGroup(String name)
+    {
+        if (groups.containsKey(name))
+        {
+            return groups.get(name);
+        }
+        throw new LionEngineException(ERROR_GROUP_MISSING, name);
+    }
+
+    @Override
+    public Collection<TileGroup> getGroups()
+    {
+        return groups.values();
+    }
+
+    @Override
+    public <C extends MapTileFeature> C getFeature(Class<C> feature) throws LionEngineException
+    {
+        return features.get(feature);
+    }
+
+    @Override
+    public <C extends MapTileFeature> boolean hasFeature(Class<C> feature)
+    {
+        return features.contains(feature);
+    }
+
+    @Override
+    public int getSheetsNumber()
+    {
+        return sheets.size();
+    }
+
+    @Override
+    public int getTilesNumber()
+    {
+        int tilesNumber = 0;
+        for (int ty = 0; ty < heightInTile; ty++)
+        {
+            for (int tx = 0; tx < widthInTile; tx++)
             {
-                final T tile = getTile(h, v);
+                final Tile tile = getTile(tx, ty);
                 if (tile != null)
                 {
-                    n++;
+                    tilesNumber++;
                 }
             }
         }
-        return n;
+        return tilesNumber;
     }
 
     @Override
@@ -782,27 +682,27 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public int getWidthInTile()
+    public int getInTileWidth()
     {
         return widthInTile;
     }
 
     @Override
-    public int getHeightInTile()
+    public int getInTileHeight()
     {
         return heightInTile;
     }
 
     @Override
-    public CollisionTile[] getCollisions()
+    public int getInTileRadius()
     {
-        return collisions;
+        return radius;
     }
 
     @Override
-    public ImageBuffer getMiniMap()
+    public Iterable<? extends MapTileFeature> getFeatures()
     {
-        return minimap;
+        return features.getAll();
     }
 
     @Override

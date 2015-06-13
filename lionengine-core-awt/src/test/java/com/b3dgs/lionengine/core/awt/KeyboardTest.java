@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,10 +28,11 @@ import org.junit.Test;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class KeyboardTest
 {
     /** Keyboard instance. */
-    private static final Keyboard KEYBOARD = new Keyboard();
+    private static final KeyboardAwt KEYBOARD = new KeyboardAwt();
 
     /**
      * Create a key event.
@@ -97,19 +98,19 @@ public class KeyboardTest
         KEYBOARD.setVerticalControlPositive(Keyboard.UP);
 
         KEYBOARD.keyPressed(createEvent(Keyboard.RIGHT));
-        Assert.assertEquals(1, KEYBOARD.getHorizontalDirection());
+        Assert.assertEquals(1.0, KEYBOARD.getHorizontalDirection(), 0.0001);
         KEYBOARD.keyReleased(createEvent(Keyboard.RIGHT));
         KEYBOARD.keyPressed(createEvent(Keyboard.LEFT));
-        Assert.assertEquals(-1, KEYBOARD.getHorizontalDirection());
+        Assert.assertEquals(-1.0, KEYBOARD.getHorizontalDirection(), 0.0001);
         KEYBOARD.keyReleased(createEvent(Keyboard.LEFT));
-        Assert.assertEquals(0, KEYBOARD.getHorizontalDirection());
+        Assert.assertEquals(0.0, KEYBOARD.getHorizontalDirection(), 0.0001);
 
         KEYBOARD.keyPressed(createEvent(Keyboard.UP));
-        Assert.assertEquals(1, KEYBOARD.getVerticalDirection());
+        Assert.assertEquals(1.0, KEYBOARD.getVerticalDirection(), 0.0001);
         KEYBOARD.keyReleased(createEvent(Keyboard.UP));
         KEYBOARD.keyPressed(createEvent(Keyboard.DOWN));
-        Assert.assertEquals(-1, KEYBOARD.getVerticalDirection());
+        Assert.assertEquals(-1.0, KEYBOARD.getVerticalDirection(), 0.0001);
         KEYBOARD.keyReleased(createEvent(Keyboard.DOWN));
-        Assert.assertEquals(0, KEYBOARD.getVerticalDirection());
+        Assert.assertEquals(0.0, KEYBOARD.getVerticalDirection(), 0.0001);
     }
 }

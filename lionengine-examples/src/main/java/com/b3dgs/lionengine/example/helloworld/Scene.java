@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,12 +20,13 @@ package com.b3dgs.lionengine.example.helloworld;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 
 /**
@@ -34,32 +35,34 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Keyboard. */
-    private final Keyboard keyboard;
     /** Text drawer. */
-    private final Text text;
+    private final Text text = Graphics.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
+    /** Keyboard. */
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        text = Core.GRAPHIC.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
+        super(loader, NATIVE);
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     protected void load()
@@ -70,16 +73,13 @@ final class Scene
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
-        if (keyboard.isPressed(Keyboard.ESCAPE))
-        {
-            end();
-        }
+        // Update
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         g.clear(0, 0, getWidth(), getHeight());
         // Simple rendering

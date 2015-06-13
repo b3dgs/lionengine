@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -47,7 +47,15 @@ public interface Rectangle
      * @param y The vertical location.
      * @return <code>true</code> if contains, <code>false</code> else.
      */
-    boolean contains(int x, int y);
+    boolean contains(double x, double y);
+
+    /**
+     * Translate rectangle using specified vector.
+     * 
+     * @param vx The horizontal translation vector.
+     * @param vy The vertical translation vector.
+     */
+    void translate(double vx, double vy);
 
     /**
      * Sets the location and size.

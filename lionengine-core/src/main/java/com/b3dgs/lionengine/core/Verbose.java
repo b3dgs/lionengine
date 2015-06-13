@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -47,6 +47,9 @@ import com.b3dgs.lionengine.LionEngineException;
  *     Verbose.exception(MyClass.class, &quot;function&quot;, exception);
  * }
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -66,14 +69,14 @@ public enum Verbose
     /** Error formatter. */
     private static final String ERROR_FORMATTER = "Unable to set logger formatter due to security exception !";
     /** Verbose flag. */
-    private static Verbose level = CRITICAL;
+    private static volatile Verbose level = CRITICAL;
 
     /**
      * Display an informative verbose message to standard output.
      * 
      * @param message The list of messages.
      */
-    public static void info(String... message)
+    public static synchronized void info(String... message)
     {
         if (NONE != level)
         {
@@ -88,7 +91,7 @@ public enum Verbose
      * @param function The current function name.
      * @param message The list of messages.
      */
-    public static void warning(Class<?> clazz, String function, String... message)
+    public static synchronized void warning(Class<?> clazz, String function, String... message)
     {
         if (WARNING == level || CRITICAL == level)
         {
@@ -103,7 +106,7 @@ public enum Verbose
      * @param function The current function name.
      * @param message The list of messages.
      */
-    public static void critical(Class<?> clazz, String function, String... message)
+    public static synchronized void critical(Class<?> clazz, String function, String... message)
     {
         if (CRITICAL == level)
         {
@@ -119,7 +122,7 @@ public enum Verbose
      * @param thrown The thrown exception.
      * @param message The list of messages.
      */
-    public static void exception(Class<?> clazz, String function, Throwable thrown, String... message)
+    public static synchronized void exception(Class<?> clazz, String function, Throwable thrown, String... message)
     {
         if (CRITICAL == level)
         {
@@ -132,7 +135,7 @@ public enum Verbose
      * 
      * @param verbose Verbosity level.
      */
-    public static void set(Verbose verbose)
+    public static synchronized void set(Verbose verbose)
     {
         level = verbose;
     }
@@ -140,7 +143,7 @@ public enum Verbose
     /**
      * Prepare the logger handler.
      */
-    static void prepareLogger()
+    static synchronized void prepareLogger()
     {
         try
         {
@@ -175,6 +178,9 @@ public enum Verbose
         final String verbose = builder.toString();
         switch (level)
         {
+            case NONE:
+                LOGGER.setLevel(Level.OFF);
+                break;
             case INFORMATION:
                 LOGGER.setLevel(Level.INFO);
                 LOGGER.logp(Level.INFO, null, null, verbose, thrown);

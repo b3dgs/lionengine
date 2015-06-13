@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ import org.junit.Test;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class OperatingSystemTest
 {
     /**
@@ -43,6 +44,16 @@ public class OperatingSystemTest
 
         Assert.assertNotNull(OperatingSystem.values());
         Assert.assertEquals(OperatingSystem.WINDOWS, OperatingSystem.valueOf(OperatingSystem.WINDOWS.name()));
+
+        Assert.assertEquals(OperatingSystem.UNKNOWN, OperatingSystem.findOs(null));
+        Assert.assertEquals(OperatingSystem.UNKNOWN, OperatingSystem.findOs("azerty"));
+        Assert.assertEquals(OperatingSystem.WINDOWS, OperatingSystem.findOs("win"));
+        Assert.assertEquals(OperatingSystem.MAC, OperatingSystem.findOs("mac"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("nix"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("nux"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("bsd"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("aix"));
+        Assert.assertEquals(OperatingSystem.SOLARIS, OperatingSystem.findOs("sunos"));
     }
 
     /**

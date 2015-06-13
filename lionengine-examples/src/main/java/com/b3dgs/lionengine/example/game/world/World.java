@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,8 +21,8 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -33,31 +33,26 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class World
+class World
         extends WorldGame
 {
     /** The text. */
-    private final Text text;
+    private final Text text = Graphics.createText(Text.SERIF, 12, TextStyle.NORMAL);
     /** The str. */
     private String str;
 
     /**
      * @see WorldGame#WorldGame(Config)
      */
-    World(Config config)
+    public World(Config config)
     {
         super(config);
-        text = Core.GRAPHIC.createText(Text.SERIF, 12, TextStyle.NORMAL);
     }
-
-    /*
-     * WorldGame
-     */
 
     @Override
     public void update(double extrp)
     {
-        // Nothing do update
+        // Nothing to update
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -144,13 +144,13 @@ final class AnimatorImpl
     }
 
     @Override
-    public void stopAnimation()
+    public void stop()
     {
         state = AnimState.STOPPED;
     }
 
     @Override
-    public void updateAnimation(double extrp)
+    public void update(double extrp)
     {
         if (state == AnimState.PLAYING)
         {
@@ -179,12 +179,6 @@ final class AnimatorImpl
     }
 
     @Override
-    public AnimState getAnimState()
-    {
-        return state;
-    }
-
-    @Override
     public int getFrame()
     {
         return (int) Math.floor(current);
@@ -194,5 +188,11 @@ final class AnimatorImpl
     public int getFrameAnim()
     {
         return getFrame() - first + 1;
+    }
+
+    @Override
+    public AnimState getAnimState()
+    {
+        return state;
     }
 }

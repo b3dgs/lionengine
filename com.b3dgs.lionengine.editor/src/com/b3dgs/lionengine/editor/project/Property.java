@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,8 +24,6 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Properties type list.
@@ -44,10 +42,6 @@ public enum Property
     DATA("xml"),
     /** Level property. */
     LEVEL("lel"),
-    /** Map implementation property. */
-    MAP_IMPL(MapTile.class),
-    /** Factory implementation property. */
-    FACTORY_IMPL(FactoryObjectGame.class),
     /** Class file. */
     CLASS(Property.EXTENSION_CLASS);
 

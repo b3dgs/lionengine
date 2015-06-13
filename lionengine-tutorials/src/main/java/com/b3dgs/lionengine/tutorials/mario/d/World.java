@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,12 +19,23 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
+import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.object.ComponentCollision;
+import com.b3dgs.lionengine.game.object.ComponentRenderer;
+import com.b3dgs.lionengine.game.object.ComponentUpdater;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -33,19 +44,26 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class World
+class World
         extends WorldGame
 {
-    /** Keyboard reference. */
-    private final Keyboard keyboard;
+    /** Background color. */
+    private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
+
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final CameraPlatform camera;
+    private final Camera camera = services.create(Camera.class);
+    /** Handler reference. */
+    private final Handler handler = services.create(Handler.class);
     /** Map reference. */
-    private final Map map;
-    /** Factory reference. */
-    private final FactoryEntity factory;
+    private final MapTile map = services.create(MapTileGame.class);
+    /** Map collision. */
+    private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
     /** Mario reference. */
-    private final Mario mario;
+    private Mario mario;
 
     /**
      * Constructor.
@@ -53,21 +71,15 @@ final class World
      * @param config The config reference.
      * @param keyboard The keyboard reference.
      */
-    World(Config config, Keyboard keyboard)
+    public World(Config config, Keyboard keyboard)
     {
         super(config);
+        services.add(keyboard);
+        services.add(Integer.valueOf(source.getRate()));
 
-        this.keyboard = keyboard;
-        camera = new CameraPlatform(width, height);
-        map = new Map();
-        factory = new FactoryEntity();
-
-        final ContextGame contextEntity = new ContextGame();
-        contextEntity.addService(map);
-        contextEntity.addService(Integer.valueOf(source.getRate()));
-        factory.setContext(contextEntity);
-
-        mario = factory.create(Mario.MEDIA);
+        handler.addUpdatable(new ComponentUpdater());
+        handler.addUpdatable(new ComponentCollision());
+        handler.addRenderable(new ComponentRenderer());
     }
 
     /*
@@ -77,17 +89,17 @@ final class World
     @Override
     public void update(double extrp)
     {
-        mario.updateControl(keyboard);
-        mario.update(extrp);
-        camera.follow(mario);
+        handler.update(extrp);
+        camera.follow(mario.transformable);
     }
 
     @Override
     public void render(Graphic g)
     {
-        g.clear(0, 0, width, height);
-        map.render(g, camera);
-        mario.render(g, camera);
+        g.setColor(BACKGROUND_COLOR);
+        g.drawRect(0, 0, width, height, true);
+        map.render(g);
+        handler.render(g);
     }
 
     @Override
@@ -100,8 +112,25 @@ final class World
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
-        camera.setLimits(map);
+        mapCollision.loadCollisions(Medias.create("map", "formulas.xml"), Medias.create("map", "collisions.xml"));
+        mapCollision.createCollisionDraw();
+
+        mario = factory.create(Mario.CONFIG);
+        mario.respawn(160);
+        mario.setControl(services.get(Keyboard.class));
+
         camera.setIntervals(16, 0);
-        mario.respawn();
+        camera.setView(0, 0, width, height);
+        camera.setLimits(map);
+        camera.resetInterval(mario.transformable);
+
+        handler.add(mario);
+        for (int i = 0; i < 20; i++)
+        {
+            final Goomba goomba = factory.create(Goomba.CONFIG);
+            goomba.respawn(500 + i * 50);
+            goomba.setControl(goomba);
+            handler.add(goomba);
+        }
     }
 }

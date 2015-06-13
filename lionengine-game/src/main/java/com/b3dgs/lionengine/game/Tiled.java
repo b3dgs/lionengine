@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,26 +29,26 @@ public interface Tiled
      * 
      * @return The horizontal tile location.
      */
-    int getLocationInTileX();
+    int getInTileX();
 
     /**
      * Get vertical tile location.
      * 
      * @return The vertical tile location.
      */
-    int getLocationInTileY();
+    int getInTileY();
 
     /**
      * Get the width in tile.
      * 
      * @return The width in tile.
      */
-    int getWidthInTile();
+    int getInTileWidth();
 
     /**
      * Get the height in tile.
      * 
      * @return The height in tile.
      */
-    int getHeightInTile();
+    int getInTileHeight();
 }

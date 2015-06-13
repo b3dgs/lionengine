@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,9 +26,10 @@ import android.view.SurfaceHolder;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Renderer;
@@ -46,19 +47,19 @@ public final class ScreenAndroid
         implements Screen, SurfaceHolder.Callback
 {
     /** View. */
-    static ViewAndroid view;
+    static volatile ViewAndroid view;
     /** Holder. */
-    static SurfaceHolder holder;
+    static volatile SurfaceHolder holder;
 
     /**
      * Set the view holder.
      * 
      * @param view The view holder.
      */
-    public static void setView(ViewAndroid view)
+    public static synchronized void setView(ViewAndroid view)
     {
         ScreenAndroid.view = view;
-        ScreenAndroid.holder = view.getHolder();
+        holder = view.getHolder();
     }
 
     /** Input devices. */
@@ -85,10 +86,10 @@ public final class ScreenAndroid
 
         config = renderer.getConfig();
         devices = new HashMap<Class<? extends InputDevice>, InputDevice>(1);
-        graphics = Core.GRAPHIC.createGraphic();
+        graphics = Graphics.createGraphic();
 
         setResolution(config.getOutput());
-        ScreenAndroid.holder.addCallback(this);
+        holder.addCallback(this);
         addDeviceMouse();
     }
 
@@ -97,8 +98,8 @@ public final class ScreenAndroid
      */
     private void addDeviceMouse()
     {
-        final Mouse mouse = new Mouse();
-        ScreenAndroid.view.setMouse(mouse);
+        final MouseAndroid mouse = new MouseAndroid();
+        view.setMouse(mouse);
         devices.put(mouse.getClass(), mouse);
     }
 
@@ -112,7 +113,7 @@ public final class ScreenAndroid
         // Create canvas
         if (canvas == null)
         {
-            ScreenAndroid.holder.setFixedSize(output.getWidth(), output.getHeight());
+            holder.setFixedSize(output.getWidth(), output.getHeight());
             canvas = new Canvas();
             canvas.drawColor(Color.RED);
             graphics.setGraphic(canvas);
@@ -142,20 +143,20 @@ public final class ScreenAndroid
     @Override
     public void preUpdate()
     {
-        canvas = ScreenAndroid.holder.lockCanvas();
+        canvas = holder.lockCanvas();
         graphics.setGraphic(canvas);
     }
 
     @Override
     public void update()
     {
-        ScreenAndroid.holder.unlockCanvasAndPost(canvas);
+        holder.unlockCanvasAndPost(canvas);
     }
 
     @Override
     public void dispose()
     {
-        ScreenAndroid.holder.removeCallback(this);
+        holder.removeCallback(this);
     }
 
     @Override
@@ -207,7 +208,7 @@ public final class ScreenAndroid
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type)
+    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
     {
         return null;
     }
@@ -228,6 +229,12 @@ public final class ScreenAndroid
     public boolean isReady()
     {
         return ready;
+    }
+
+    @Override
+    public void onSourceChanged(Resolution source)
+    {
+        ((MouseAndroid) getInputDevice(Mouse.class)).setConfig(config);
     }
 
     /*

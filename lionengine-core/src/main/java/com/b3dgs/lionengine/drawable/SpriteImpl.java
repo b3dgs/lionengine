@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,8 +24,12 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 
@@ -37,20 +41,31 @@ import com.b3dgs.lionengine.core.Media;
 class SpriteImpl
         implements Sprite
 {
-    /** Sprite original width. */
-    private final int widthOriginal;
-    /** Sprite original height. */
-    private final int heightOriginal;
+    /** Invalid mirror type. */
+    private static final String ERROR_MIRROR = "Invalid mirror type used: ";
+
     /** Sprite file name. */
     private final Media media;
     /** Sprite current surface. */
     private ImageBuffer surface;
+    /** Sprite original surface. */
+    private ImageBuffer surfaceOriginal;
+    /** Origin point. */
+    private Origin origin;
+    /** Sprite horizontal position. */
+    private double x;
+    /** Sprite vertical position. */
+    private double y;
     /** Sprite width. */
     private int width;
     /** Sprite height. */
     private int height;
-    /** Sprite original surface. */
-    private ImageBuffer surfaceOriginal;
+    /** Render horizontal position. */
+    private int rx;
+    /** Render vertical position. */
+    private int ry;
+    /** Mirror flag. */
+    private Mirror mirror;
     /** Sprite raw data (used for alpha). */
     private int[][] rgb;
     /** First alpha. */
@@ -69,11 +84,11 @@ class SpriteImpl
         this.media = media;
 
         final ImageInfo info = ImageInfo.get(media);
-        widthOriginal = info.getWidth();
-        heightOriginal = info.getHeight();
+        width = info.getWidth();
+        height = info.getHeight();
 
-        width = widthOriginal;
-        height = heightOriginal;
+        mirror = Mirror.NONE;
+        origin = Origin.TOP_LEFT;
         rgb = null;
     }
 
@@ -90,12 +105,42 @@ class SpriteImpl
         this.surface = surface;
         media = null;
 
-        widthOriginal = surface.getWidth();
-        heightOriginal = surface.getHeight();
+        width = surface.getWidth();
+        height = surface.getHeight();
 
-        width = widthOriginal;
-        height = heightOriginal;
+        mirror = Mirror.NONE;
+        origin = Origin.TOP_LEFT;
         rgb = null;
+    }
+
+    /**
+     * Render an extract of a surface to a specified destination.
+     * 
+     * @param g The graphic output.
+     * @param x The horizontal destination.
+     * @param y The vertical destination.
+     * @param w The width extract.
+     * @param h The height extract.
+     * @param ox The horizontal offset (width count).
+     * @param oy The vertical offset (height count).
+     * @throws LionEngineException If mirror error.
+     */
+    protected final void render(Graphic g, int x, int y, int w, int h, int ox, int oy) throws LionEngineException
+    {
+        switch (mirror)
+        {
+            case HORIZONTAL:
+                g.drawImage(surface, x, y, x + w, y + h, ox * w + w, oy * h, ox * w, oy * h + h);
+                break;
+            case VERTICAL:
+                g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h + h, ox * w + w, oy * h);
+                break;
+            case NONE:
+                g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h, ox * w + w, oy * h + h);
+                break;
+            default:
+                throw new LionEngineException(ERROR_MIRROR);
+        }
     }
 
     /**
@@ -104,11 +149,43 @@ class SpriteImpl
      * @param newWidth The new width.
      * @param newHeight The new height.
      */
-    protected void stretchSurface(int newWidth, int newHeight)
+    protected void stretch(int newWidth, int newHeight)
     {
         width = newWidth;
         height = newHeight;
-        surface = Core.GRAPHIC.resize(surfaceOriginal, newWidth, newHeight);
+        surface = Graphics.resize(surfaceOriginal, newWidth, newHeight);
+    }
+
+    /**
+     * Compute the rendering point.
+     * 
+     * @param width The width to use.
+     * @param height The height to use.
+     */
+    protected void computeRenderingPoint(int width, int height)
+    {
+        rx = (int) Math.floor(origin.getX(x, width));
+        ry = (int) Math.floor(origin.getY(y, height));
+    }
+
+    /**
+     * Get the horizontal rendering point.
+     * 
+     * @return The horizontal rendering point.
+     */
+    protected int getRenderX()
+    {
+        return rx;
+    }
+
+    /**
+     * Get the vertical rendering point.
+     * 
+     * @return The vertical rendering point.
+     */
+    protected int getRenderY()
+    {
+        return ry;
     }
 
     /**
@@ -118,7 +195,7 @@ class SpriteImpl
     {
         if (surfaceOriginal == null)
         {
-            surfaceOriginal = Core.GRAPHIC.getImageBuffer(surface);
+            surfaceOriginal = Graphics.getImageBuffer(surface);
         }
     }
 
@@ -127,32 +204,26 @@ class SpriteImpl
      */
 
     @Override
-    public final void load(boolean alpha) throws LionEngineException
+    public void load(boolean alpha) throws LionEngineException
     {
         if (surface == null)
         {
-            surface = Core.GRAPHIC.getImageBuffer(media, alpha);
+            surface = Graphics.getImageBuffer(media, alpha);
         }
     }
 
     @Override
-    public final void scale(int percent) throws LionEngineException
-    {
-        stretch(percent, percent);
-    }
-
-    @Override
-    public final void stretch(int widthPercent, int heightPercent) throws LionEngineException
+    public final void stretch(double widthPercent, double heightPercent) throws LionEngineException
     {
         Check.superiorStrict(widthPercent, 0);
         Check.superiorStrict(heightPercent, 0);
 
         if (widthPercent != 100 || heightPercent != 100)
         {
-            final int newWidth = getWidthOriginal() * widthPercent / 100;
-            final int newHeight = getHeightOriginal() * heightPercent / 100;
+            final int newWidth = (int) Math.floor(width * widthPercent / 100.0);
+            final int newHeight = (int) Math.floor(height * heightPercent / 100.0);
             lazySurfaceBackup();
-            stretchSurface(newWidth, newHeight);
+            stretch(newWidth, newHeight);
         }
     }
 
@@ -160,35 +231,47 @@ class SpriteImpl
     public final void rotate(int angle)
     {
         lazySurfaceBackup();
-        surface = Core.GRAPHIC.rotate(surfaceOriginal, angle);
-    }
-
-    @Override
-    public final void flipHorizontal()
-    {
-        lazySurfaceBackup();
-        surface = Core.GRAPHIC.flipHorizontal(surfaceOriginal);
-    }
-
-    @Override
-    public final void flipVertical()
-    {
-        lazySurfaceBackup();
-        surface = Core.GRAPHIC.flipVertical(surfaceOriginal);
+        surface = Graphics.rotate(surfaceOriginal, angle);
     }
 
     @Override
     public final void filter(Filter filter) throws LionEngineException
     {
         lazySurfaceBackup();
-        surface = Core.GRAPHIC.applyFilter(surfaceOriginal, filter);
+        surface = Graphics.applyFilter(surfaceOriginal, filter);
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        render(g, rx, ry, width, height, 0, 0);
+    }
+
+    @Override
+    public void setOrigin(Origin origin)
+    {
+        this.origin = origin;
+    }
+
+    @Override
+    public final void setLocation(double x, double y)
+    {
+        this.x = x;
+        this.y = y;
+        computeRenderingPoint(width, height);
+    }
+
+    @Override
+    public final void setLocation(Viewer viewer, Localizable localizable)
+    {
+        setLocation(viewer.getViewpointX(localizable.getX()), viewer.getViewpointY(localizable.getY()));
     }
 
     @Override
     public final void setTransparency(ColorRgba mask)
     {
         lazySurfaceBackup();
-        surface = Core.GRAPHIC.applyMask(surfaceOriginal, mask);
+        surface = Graphics.applyMask(surfaceOriginal, mask);
     }
 
     @Override
@@ -227,9 +310,27 @@ class SpriteImpl
     }
 
     @Override
-    public void render(Graphic g, int x, int y)
+    public final void setMirror(Mirror mirror)
     {
-        g.drawImage(surface, x, y);
+        this.mirror = mirror;
+    }
+
+    @Override
+    public final Mirror getMirror()
+    {
+        return mirror;
+    }
+
+    @Override
+    public final double getX()
+    {
+        return x;
+    }
+
+    @Override
+    public final double getY()
+    {
+        return y;
     }
 
     @Override
@@ -242,18 +343,6 @@ class SpriteImpl
     public final int getHeight()
     {
         return height;
-    }
-
-    @Override
-    public final int getWidthOriginal()
-    {
-        return widthOriginal;
-    }
-
-    @Override
-    public final int getHeightOriginal()
-    {
-        return heightOriginal;
     }
 
     @Override
@@ -291,13 +380,12 @@ class SpriteImpl
     {
         final int prime = 31;
         int result = 1;
+        result = prime * result + width;
         result = prime * result + height;
-        result = prime * result + heightOriginal;
         result = prime * result + (media == null ? 0 : media.hashCode());
         result = prime * result + Arrays.hashCode(rgb);
         result = prime * result + (surface == null ? 0 : surface.hashCode());
-        result = prime * result + width;
-        result = prime * result + widthOriginal;
+        result = prime * result + mirror.hashCode();
         return result;
     }
 }

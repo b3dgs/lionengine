@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * {
  *     public static void main(String[] args)
  *     {
- *         // Start engine (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, resources directory = &quot;resources&quot;)
+ *         // Start engine (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, dir = &quot;resources&quot;)
  *         // The engine is initialized with our parameters:
  *         // - The name of our program: &quot;First Code&quot;
  *         // - The program version: &quot;1.0.0&quot;
@@ -62,9 +62,12 @@ import com.b3dgs.lionengine.core.Verbose;
  *     }
  * }
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @since 13 June 2010
- * @version 7.1.4
+ * @version 8.0.0
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Engine
@@ -75,14 +78,12 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param level The verbose level (must not be <code>null</code>).
      * @param resourcesDir The main resources directory (can be <code>null</code>).
      * @throws LionEngineException If the engine has already been started.
      */
-    public static void start(String name, Version version, Verbose level, String resourcesDir)
-            throws LionEngineException
+    public static synchronized void start(String name, Version version, String resourcesDir) throws LionEngineException
     {
-        Engine.start(name, version, level, resourcesDir, null);
+        Engine.start(name, version, resourcesDir, null);
     }
 
     /**
@@ -90,16 +91,14 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param level The verbose level (must not be <code>null</code>).
      * @param classResource The class loader reference (resources entry point).
      * @throws LionEngineException If the engine has already been started.
      */
-    public static void start(String name, Version version, Verbose level, Class<?> classResource)
+    public static synchronized void start(String name, Version version, Class<?> classResource)
             throws LionEngineException
     {
         Check.notNull(classResource);
-
-        Engine.start(name, version, level, null, classResource);
+        Engine.start(name, version, null, classResource);
     }
 
     /**
@@ -107,27 +106,23 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param level The verbose level (must not be <code>null</code>).
      * @param resourcesDir The main resources directory (must not be <code>null</code>).
      * @param classResource The class loader reference (resources entry point).
      * @throws LionEngineException If the engine has already been started.
      */
-    private static void start(String name, Version version, Verbose level, String resourcesDir, Class<?> classResource)
+    private static void start(String name, Version version, String resourcesDir, Class<?> classResource)
             throws LionEngineException
     {
-        if (!EngineCore.isStarted())
+        EngineCore.start(name, version, new FactoryGraphicAwt(), new FactoryMediaAwt());
+
+        UtilityMedia.setLoadFromJar(classResource);
+        UtilityMedia.setResourcesDirectory(resourcesDir);
+
+        // LionEngine started
+        final String workingDir = EngineCore.getSystemProperty("user.dir", null);
+        if (workingDir != null && resourcesDir != null)
         {
-            EngineCore.start(name, version, level, new FactoryGraphicAwt(), new FactoryMediaAwt());
-
-            UtilityMedia.setLoadFromJar(classResource);
-            UtilityMedia.setResourcesDirectory(resourcesDir);
-
-            // LionEngine started
-            final String workingDir = EngineCore.getSystemProperty("user.dir", null);
-            if (workingDir != null && resourcesDir != null)
-            {
-                Verbose.info("Resources directory = ", UtilFile.getPath(workingDir, UtilityMedia.getRessourcesDir()));
-            }
+            Verbose.info("Resources directory = ", UtilFile.getPath(workingDir, UtilityMedia.getRessourcesDir()));
         }
     }
 
@@ -137,7 +132,7 @@ public final class Engine
      * 
      * @throws LionEngineException If the engine has not been started.
      */
-    public static void terminate() throws LionEngineException
+    public static synchronized void terminate() throws LionEngineException
     {
         UtilityMedia.setResourcesDirectory(null);
         UtilityMedia.setLoadFromJar(null);

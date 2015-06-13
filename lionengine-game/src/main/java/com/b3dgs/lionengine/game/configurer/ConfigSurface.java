@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,16 +18,15 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
- * Represents the surface data from a configurer node.
+ * Represents the surface data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
- * @see SetupSurfaceGame
+ * @see SetupSurface
  */
-public class ConfigSurface
+public final class ConfigSurface
 {
     /** Surface node name. */
     public static final String SURFACE = Configurer.PREFIX + "surface";
@@ -37,10 +36,10 @@ public class ConfigSurface
     public static final String SURFACE_ICON = "icon";
 
     /**
-     * Get the surface node value.
+     * Create the surface data from node.
      * 
      * @param configurer The configurer reference.
-     * @return The surface node value.
+     * @return The surface data.
      * @throws LionEngineException If unable to read node.
      */
     public static ConfigSurface create(Configurer configurer) throws LionEngineException
@@ -55,7 +54,15 @@ public class ConfigSurface
     private final String icon;
 
     /**
-     * Constructor.
+     * Disabled constructor.
+     */
+    private ConfigSurface()
+    {
+        throw new RuntimeException();
+    }
+
+    /**
+     * Create the surface configuration.
      * 
      * @param image The image file path.
      * @param icon The icon file path (can be <code>null</code>).

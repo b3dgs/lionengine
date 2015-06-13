@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -98,10 +98,15 @@ public final class AudioSc68
     {
         switch (OperatingSystem.getOperatingSystem())
         {
+            case UNIX:
+            case MAC:
+            case SOLARIS:
+            case UNKNOWN:
+                return AudioSc68.SYSTEM_LINUX;
             case WINDOWS:
                 return AudioSc68.SYSTEM_WINDOW;
             default:
-                return AudioSc68.SYSTEM_LINUX;
+                throw new RuntimeException();
         }
     }
 
@@ -114,10 +119,15 @@ public final class AudioSc68
     {
         switch (OperatingSystem.getOperatingSystem())
         {
+            case UNIX:
+            case MAC:
+            case SOLARIS:
+            case UNKNOWN:
+                return AudioSc68.EXTENSION_SO;
             case WINDOWS:
                 return AudioSc68.EXTENSION_DLL;
             default:
-                return AudioSc68.EXTENSION_SO;
+                throw new RuntimeException();
         }
     }
 
@@ -130,10 +140,13 @@ public final class AudioSc68
     {
         switch (OperatingSystem.getArchitecture())
         {
+            case X86:
+            case UNKNOWN:
+                return AudioSc68.ARCHITECTURE_X86;
             case X64:
                 return AudioSc68.ARCHITECTURE_X64;
             default:
-                return AudioSc68.ARCHITECTURE_X86;
+                throw new RuntimeException();
         }
     }
 

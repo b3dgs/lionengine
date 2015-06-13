@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,13 +25,21 @@ import org.eclipse.swt.widgets.TreeItem;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum PropertiesModel
+public class PropertiesModel
 {
     /** Properties explorer model. */
-    INSTANCE;
+    public static final PropertiesModel INSTANCE = new PropertiesModel();
 
     /** Properties tree. */
     private Tree properties;
+
+    /**
+     * Private constructor.
+     */
+    protected PropertiesModel()
+    {
+        // Nothing to do
+    }
 
     /**
      * Set the properties tree.
@@ -51,6 +59,20 @@ public enum PropertiesModel
     public Tree getTree()
     {
         return properties;
+    }
+
+    /**
+     * Get the selected property data.
+     * 
+     * @return The selected data, <code>null</code> if none.
+     */
+    public Object getSelectedData()
+    {
+        for (final TreeItem item : properties.getSelection())
+        {
+            return item.getData();
+        }
+        return null;
     }
 
     /**

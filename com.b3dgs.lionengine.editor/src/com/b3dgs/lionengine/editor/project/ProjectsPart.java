@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,13 +18,12 @@
 package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
@@ -44,9 +43,16 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
+import com.b3dgs.lionengine.editor.project.handler.CollisionsEditHandler;
+import com.b3dgs.lionengine.editor.project.handler.FormulasEditHandler;
+import com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler;
+import com.b3dgs.lionengine.editor.project.handler.SheetsEditHandler;
+import com.b3dgs.lionengine.editor.project.tester.CollisionsTester;
+import com.b3dgs.lionengine.editor.project.tester.FormulasTester;
+import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
+import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
+import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
-import com.b3dgs.lionengine.editor.quick.QuickAccessPart;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
@@ -61,9 +67,26 @@ public class ProjectsPart
     /** Menu ID. */
     public static final String MENU_ID = ProjectsPart.ID + ".menu";
 
-    /** The part service. */
-    @Inject
-    EPartService partService;
+    /**
+     * Update the properties view with the selected media.
+     * 
+     * @param media The selected media.
+     */
+    static void updateProperties(Media media)
+    {
+        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
+        if (ObjectsTester.isObjectFile(media))
+        {
+            part.setInput(part.getTree(), new Configurer(media));
+        }
+        else
+        {
+            part.setInput(part.getTree(), (Configurer) null);
+        }
+    }
+
+    /** Watcher. */
+    private final FolderModificationWatcher watcher = new FolderModificationWatcher();
     /** Tree viewer. */
     private Tree tree;
     /** Tree creator. */
@@ -91,6 +114,7 @@ public class ProjectsPart
             public void mouseDoubleClick(MouseEvent mouseEvent)
             {
                 expandOnDoubleClick();
+                checkOpenFile();
             }
         });
         tree.addSelectionListener(new SelectionAdapter()
@@ -140,20 +164,27 @@ public class ProjectsPart
      * Set the project main folders.
      * 
      * @param project The project reference.
-     * @param partService The part service reference.
      * @throws LionEngineException If error while reading project children.
      */
-    public void setInput(Project project, EPartService partService) throws LionEngineException
+    public void setInput(Project project) throws LionEngineException
     {
         tree.removeAll();
 
         projectTreeCreator = new ProjectTreeCreator(project, tree);
         projectTreeCreator.start();
 
-        tree.layout();
+        watcher.stop();
+        watcher.start(project.getResourcesPath().toPath(), tree, projectTreeCreator);
 
-        final QuickAccessPart part = UtilEclipse.getPart(partService, QuickAccessPart.ID, QuickAccessPart.class);
-        part.setInput(projectTreeCreator.getQuicks());
+        tree.layout();
+    }
+
+    /**
+     * Close the project.
+     */
+    public void close()
+    {
+        watcher.terminate();
     }
 
     /**
@@ -180,6 +211,44 @@ public class ProjectsPart
     }
 
     /**
+     * Check file opening depending of its type.
+     */
+    void checkOpenFile()
+    {
+        final Media media = ProjectsModel.INSTANCE.getSelection();
+        if (media != null)
+        {
+            if (SheetsTester.isSheetsFile(media))
+            {
+                SheetsEditHandler.executeHandler(tree.getShell());
+            }
+            else if (GroupsTester.isGroupsFile(media))
+            {
+                GroupsEditHandler.executeHandler(tree.getShell());
+            }
+            else if (FormulasTester.isFormulasFile(media))
+            {
+                FormulasEditHandler.executeHandler(tree.getShell());
+            }
+            else if (CollisionsTester.isCollisionsFile(media))
+            {
+                CollisionsEditHandler.executeHandler(tree.getShell());
+            }
+            else if (media.getFile().isFile())
+            {
+                try
+                {
+                    java.awt.Desktop.getDesktop().open(media.getFile());
+                }
+                catch (final IOException exception)
+                {
+                    // Not able to open the file, just skip
+                }
+            }
+        }
+    }
+
+    /**
      * Update tree selection by storing it.
      */
     void updateSelection()
@@ -196,25 +265,12 @@ public class ProjectsPart
                     ProjectsModel.INSTANCE.setSelection(media);
                     updateProperties(media);
                 }
+                else
+                {
+                    ProjectsModel.INSTANCE.setSelection(null);
+                    updateProperties(null);
+                }
             }
-        }
-    }
-
-    /**
-     * Update the properties view with the selected media.
-     * 
-     * @param media The selected media.
-     */
-    void updateProperties(Media media)
-    {
-        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
-        if (ObjectsFolderTester.isObjectFile(media) || ObjectsFolderTester.isProjectileFile(media))
-        {
-            part.setInput(new Configurer(media));
-        }
-        else
-        {
-            part.setInput(null);
         }
     }
 

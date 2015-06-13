@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.mock.MediaMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class ConfigTest
 {
     /** Resolution. */
@@ -121,10 +122,12 @@ public class ConfigTest
         CONFIG.setApplet(null);
         Assert.assertNull(CONFIG.getApplet(null));
         Assert.assertNull(CONFIG.getApplet(AppletMock.class));
+        Assert.assertFalse(CONFIG.hasApplet());
 
         CONFIG.setApplet(new AppletMock());
         Assert.assertNull(CONFIG.getApplet(null));
         Assert.assertNotNull(CONFIG.getApplet(AppletMock.class));
+        Assert.assertTrue(CONFIG.hasApplet());
     }
 
     /**

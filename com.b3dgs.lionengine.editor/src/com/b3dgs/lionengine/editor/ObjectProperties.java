@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -29,7 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
+import com.b3dgs.lionengine.Nameable;
 
 /**
  * Represents the object properties edition view.
@@ -37,8 +38,13 @@ import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
  * @param <T> The object type handled by the properties.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class ObjectProperties<T>
+public abstract class ObjectProperties<T extends Nameable>
 {
+    /** Revert icon. */
+    public static final Image ICON_APPLY = UtilEclipse.getIcon("dialog", "apply.png");
+    /** Apply icon. */
+    public static final Image ICON_REVERT = UtilEclipse.getIcon("dialog", "revert.png");
+
     /**
      * Create a text and its label.
      * 
@@ -97,10 +103,12 @@ public abstract class ObjectProperties<T>
 
     /**
      * Create an object properties.
+     * 
+     * @param objectList The list reference.
      */
-    public ObjectProperties()
+    public ObjectProperties(ObjectList<T> objectList)
     {
-        // Nothing to do
+        this.objectList = objectList;
     }
 
     /**
@@ -113,9 +121,10 @@ public abstract class ObjectProperties<T>
     /**
      * Called when confirm button pressed.
      * 
+     * @param name The item name.
      * @return The created object from the current properties values.
      */
-    protected abstract T createObject();
+    protected abstract T createObject(String name);
 
     /**
      * Create the animation data area.
@@ -144,16 +153,6 @@ public abstract class ObjectProperties<T>
     }
 
     /**
-     * Set the object list.
-     * 
-     * @param objectList The objectList list reference.
-     */
-    public void setObjectList(ObjectList<T> objectList)
-    {
-        this.objectList = objectList;
-    }
-
-    /**
      * Create the confirm button.
      * 
      * @param parent The composite parent.
@@ -161,7 +160,7 @@ public abstract class ObjectProperties<T>
     private void createConfirmButton(Composite parent)
     {
         final Button confirm = UtilSwt.createButton(parent, Messages.ObjectProperties_Confirm, null);
-        confirm.setImage(AbstractDialog.ICON_OK);
+        confirm.setImage(ICON_APPLY);
         confirm.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -173,7 +172,7 @@ public abstract class ObjectProperties<T>
                     if (items.length > 0)
                     {
                         final TreeItem selection = items[0];
-                        final T object = createObject();
+                        final T object = createObject(selection.getText());
                         objectList.update(selection, object);
                     }
                 }
@@ -189,7 +188,7 @@ public abstract class ObjectProperties<T>
     private void createResetButton(Composite parent)
     {
         final Button reset = UtilSwt.createButton(parent, Messages.ObjectProperties_Reset, null);
-        reset.setImage(AbstractDialog.ICON_CANCEL);
+        reset.setImage(ICON_REVERT);
         reset.addSelectionListener(new SelectionAdapter()
         {
             @Override

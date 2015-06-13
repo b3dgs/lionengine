@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@ import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.palette.PaletteType;
+import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 
@@ -40,6 +40,7 @@ public class SetSelectionHandler
      * @param partService The part service reference.
      */
     @Execute
+    @SuppressWarnings("static-method")
     public void execute(EPartService partService)
     {
         final MPart part = partService.findPart(WorldViewPart.ID);
@@ -48,13 +49,13 @@ public class SetSelectionHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemSelection(toolBar, false, "pointer", "hand", "pipet");
+                UtilEclipse.setToolItemSelection(toolBar, false, "pointer-object", "pointer-tile", "hand", "pipet");
                 UtilEclipse.setToolItemSelection(toolBar, true, "selection");
             }
         }
         final PaletteType type = PaletteType.SELECTION;
         WorldViewModel.INSTANCE.setSelectedPalette(type);
-        final WorldViewPart view = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        final WorldViewPart view = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         view.setCursor(type.getCursor());
     }
 }

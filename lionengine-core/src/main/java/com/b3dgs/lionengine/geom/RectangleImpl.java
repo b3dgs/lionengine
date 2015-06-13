@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -77,9 +77,16 @@ final class RectangleImpl
     }
 
     @Override
-    public boolean contains(int x, int y)
+    public boolean contains(double x, double y)
     {
         return x >= this.x && y >= this.y && x < this.x + width && y < this.y + height;
+    }
+
+    @Override
+    public void translate(double vx, double vy)
+    {
+        x += vx;
+        y += vy;
     }
 
     @Override

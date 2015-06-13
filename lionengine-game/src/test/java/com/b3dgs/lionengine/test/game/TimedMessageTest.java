@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,9 +17,12 @@
  */
 package com.b3dgs.lionengine.test.game;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.game.TimedMessage;
 
 /**
@@ -27,8 +30,27 @@ import com.b3dgs.lionengine.game.TimedMessage;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class TimedMessageTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Graphics.setFactoryGraphic(null);
+    }
+
     /**
      * Test timed message functions.
      * 
@@ -37,14 +59,14 @@ public class TimedMessageTest
     @Test
     public void testTimedMessage() throws InterruptedException
     {
-        final TimedMessage timedMessage = new TimedMessage();
+        final TimedMessage timedMessage = new TimedMessage(null);
         Assert.assertFalse(timedMessage.hasMessage());
         timedMessage.addMessage("test", 0, 0, 100);
         timedMessage.addMessage("test", 0, 0, 500);
         Assert.assertTrue(timedMessage.hasMessage());
-        timedMessage.update();
+        timedMessage.update(0.0);
         Thread.sleep(150);
-        timedMessage.update();
-        timedMessage.update();
+        timedMessage.update(0.0);
+        timedMessage.update(0.0);
     }
 }

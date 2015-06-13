@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,11 +17,14 @@
  */
 package com.b3dgs.lionengine;
 
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * HQ3X implementation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -317,7 +320,7 @@ public final class Hq3x
     public ImageBuffer getScaledImage()
     {
         final RawScale3x scaler = new RawScale3x(srcData, width, height);
-        final ImageBuffer image = Core.GRAPHIC.createImageBuffer(width * 3, height * 3, Transparency.OPAQUE);
+        final ImageBuffer image = Graphics.createImageBuffer(width * 3, height * 3, Transparency.OPAQUE);
         image.setRgb(0, 0, width * 3, height * 3, scaler.getScaledData(), 0, width * 3);
         return image;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.game.configurer;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Represents the offset data from a configurer node.
+ * Represents the offset data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  */
-public class ConfigOffset
+public final class ConfigOffset
 {
     /** Offset node name. */
     public static final String OFFSET = Configurer.PREFIX + "offset";
@@ -35,11 +35,11 @@ public class ConfigOffset
     public static final String OFFSET_Y = "y";
 
     /**
-     * Create the offset node.
+     * Create the offset data from node.
      * 
      * @param configurer The configurer reference.
-     * @return The offset node value.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The offset data.
+     * @throws LionEngineException If unable to read node.
      */
     public static ConfigOffset create(Configurer configurer) throws LionEngineException
     {
@@ -53,7 +53,15 @@ public class ConfigOffset
     private final int y;
 
     /**
-     * Constructor.
+     * Disabled constructor.
+     */
+    private ConfigOffset()
+    {
+        throw new RuntimeException();
+    }
+
+    /**
+     * Create an offset configuration.
      * 
      * @param x The x value.
      * @param y The y value.

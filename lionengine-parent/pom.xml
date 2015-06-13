@@ -7,21 +7,21 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<jdk.version>1.7</jdk.version>
-		<tycho.version>0.21.0</tycho.version>
+		<tycho.version>0.22.0</tycho.version>
 	</properties>
 	<groupId>com.b3dgs.lionengine</groupId>
 	<artifactId>lionengine</artifactId>
 	<packaging>pom</packaging>
-	<version>7.1.4</version>
+	<version>8.0.0</version>
 	<name>LionEngine</name>
 	<description>Java 2D Game Engine</description>
-	<url>https://github.com/DjThunder/lionengine</url>
+	<url>https://github.com/b3dgs/lionengine</url>
 	<organization>
 		<name>Byron 3D Games Studio</name>
 		<url>www.b3dgs.com</url>
 	</organization>
 	<scm>
-		<url>https://github.com/DjThunder/lionengine.git</url>
+		<url>https://github.com/b3dgs/lionengine.git</url>
 	</scm>
 	<developers>
 		<developer>
@@ -45,7 +45,7 @@
 		</license>
 	</licenses>
 	<prerequisites>
-		<maven>3.2.3</maven>
+		<maven>3.3.3</maven>
 	</prerequisites>
 	<profiles>
 		<profile>
@@ -54,13 +54,11 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
+				<module>../lionengine-build-tools</module>
 				<module>../lionengine-core</module>
 				<module>../lionengine-core-android</module>
 				<module>../lionengine-core-awt</module>
 				<module>../lionengine-game</module>
-				<module>../lionengine-game-platform</module>
-				<module>../lionengine-game-pathfinding</module>
-				<module>../lionengine-game-strategy</module>
 				<module>../lionengine-network</module>
 				<module>../lionengine-audio-wav</module>
 				<module>../lionengine-audio-midi</module>
@@ -112,6 +110,11 @@
 		<dependencies>
 			<dependency>
 				<groupId>com.b3dgs.lionengine</groupId>
+				<artifactId>lionengine-build-tools</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.b3dgs.lionengine</groupId>
 				<artifactId>lionengine-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -147,16 +150,6 @@
 			</dependency>
 			<dependency>
 				<groupId>com.b3dgs.lionengine</groupId>
-				<artifactId>lionengine-game-pathfinding</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.b3dgs.lionengine</groupId>
-				<artifactId>lionengine-game-platform</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.b3dgs.lionengine</groupId>
 				<artifactId>lionengine-game-strategy</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -188,6 +181,14 @@
 			<plugin>
 				<groupId>lt.velykis.maven</groupId>
 				<artifactId>pde-target-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -267,7 +268,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
+					<version>3.3</version>
 					<configuration>
 						<source>${jdk.version}</source>
 						<target>${jdk.version}</target>
@@ -281,7 +282,7 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.5.3</version>
+					<version>2.5.4</version>
 					<extensions>true</extensions>
 					<configuration>
 						<manifestLocation>META-INF</manifestLocation>
@@ -312,7 +313,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.5</version>
+					<version>2.6</version>
 					<configuration>
 						<archive>
 							<manifestFile>META-INF/MANIFEST.MF</manifestFile>
@@ -321,35 +322,13 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.13</version>
-					<executions>
-						<execution>
-							<id>validate</id>
-							<phase>validate</phase>
-							<configuration>
-								<configLocation>../lionengine-build-tools/checkstyle.xml</configLocation>
-								<suppressionsLocation>../lionengine-build-tools/checkstyle-suppressions.xml</suppressionsLocation>
-								<encoding>UTF-8</encoding>
-								<consoleOutput>true</consoleOutput>
-								<failsOnError>true</failsOnError>
-								<linkXRef>false</linkXRef>
-							</configuration>
-							<goals>
-								<goal>check</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.6</version>
+					<version>2.6.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.1</version>
+					<version>2.10.3</version>
 					<configuration>
 						<show>protected</show>
 						<nohelp>true</nohelp>
@@ -358,12 +337,66 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.17</version>
+					<version>2.18.1</version>
 					<dependencies>
 						<dependency>
 							<groupId>org.apache.maven.surefire</groupId>
 							<artifactId>surefire-junit47</artifactId>
-							<version>2.17</version>
+							<version>2.18.1</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.15</version>
+					<configuration>
+						<propertiesLocation>../lionengine-build-tools/checkstyle.properties</propertiesLocation>
+						<propertyExpansion>dir=${project.basedir}/../lionengine-build-tools</propertyExpansion>
+						<configLocation>../lionengine-build-tools/checkstyle.xml</configLocation>
+			            <headerLocation>../lionengine-build-tools/header.txt</headerLocation>
+			            <suppressionsLocation>../lionengine-build-tools/checkstyle-suppression.xml</suppressionsLocation>
+					</configuration>
+					<executions>
+						<execution>
+							<id>validate</id>
+							<phase>validate</phase>
+							<configuration>
+								<encoding>UTF-8</encoding>
+								<consoleOutput>true</consoleOutput>
+								<failsOnError>true</failsOnError>
+								<linkXRef>false</linkXRef>
+							</configuration>
+							<goals>
+								<goal>check</goal>
+								<goal>checkstyle</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>2.9</version>
+					<configuration>
+						<additionalBuildcommands>
+							<buildcommand>net.sf.eclipsecs.core.CheckstyleBuilder</buildcommand>
+						</additionalBuildcommands>
+						<additionalProjectnatures>
+							<projectnature>net.sf.eclipsecs.core.CheckstyleNature</projectnature>
+						</additionalProjectnatures>
+						<additionalConfig>
+							<file>
+								<name>.checkstyle</name>
+								<location>../lionengine-build-tools/eclipse-checkstyle.xml</location>
+							</file>
+						</additionalConfig>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>lionengine-build-tools</artifactId>
+							<version>${project.version}</version>
 						</dependency>
 					</dependencies>
 				</plugin>

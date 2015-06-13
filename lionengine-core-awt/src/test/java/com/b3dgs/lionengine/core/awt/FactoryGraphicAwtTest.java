@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
@@ -34,13 +33,13 @@ import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the factory graphic provider class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class FactoryGraphicAwtTest
 {
     /**
@@ -49,8 +48,7 @@ public class FactoryGraphicAwtTest
     @BeforeClass
     public static void setUp()
     {
-        EngineCore.start("test", Version.create(0, 0, 0), Verbose.CRITICAL, new FactoryGraphicAwt(),
-                new FactoryMediaAwt());
+        EngineCore.start("test", Version.create(0, 0, 0), new FactoryGraphicAwt(), new FactoryMediaAwt());
     }
 
     /**
@@ -71,7 +69,7 @@ public class FactoryGraphicAwtTest
         final FactoryGraphicAwt factory = new FactoryGraphicAwt();
         Assert.assertNotNull(factory.createGraphic());
         Assert.assertNotNull(factory.createImageBuffer(1, 1, Transparency.BITMASK));
-        final Renderer renderer = factory.createRenderer(new Config(new Resolution(320, 240, 0), 16, false));
+        final Renderer renderer = new Renderer(new Config(new Resolution(320, 240, 0), 16, false));
         Assert.assertNotNull(renderer);
         Assert.assertNotNull(factory.createScreen(renderer));
         Assert.assertNotNull(factory.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL));
@@ -83,15 +81,7 @@ public class FactoryGraphicAwtTest
         Assert.assertNotNull(factory.getImageBuffer(image));
         Assert.assertNotNull(factory.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));
         Assert.assertNotNull(factory.applyFilter(image, Filter.BILINEAR));
-        try
-        {
-            Assert.assertNotNull(factory.applyFilter(image, Filter.HQ3X));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        Assert.assertNotNull(factory.applyFilter(image, Filter.HQ3X));
         Assert.assertNotNull(factory.applyMask(image, ColorRgba.BLACK));
         Assert.assertNotNull(factory.flipHorizontal(image));
         Assert.assertNotNull(factory.flipVertical(image));

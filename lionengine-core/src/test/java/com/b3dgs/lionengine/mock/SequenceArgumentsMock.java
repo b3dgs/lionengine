@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -67,13 +67,13 @@ public class SequenceArgumentsMock
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         end();
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         Verbose.info("Sequence single mock info");
         Verbose.info(String.valueOf(width));

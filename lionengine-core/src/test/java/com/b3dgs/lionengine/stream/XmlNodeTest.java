@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class XmlNodeTest
 {
     /** Float precision. */
@@ -66,6 +67,10 @@ public class XmlNodeTest
         root.add(child1);
         root.add(child2);
 
+        Assert.assertEquals(root.getNodeName(), "root");
+        Assert.assertNotNull(root.getChild("child1"));
+        Assert.assertNotNull(root.getChild("child2"));
+
         try
         {
             Assert.assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
@@ -89,6 +94,26 @@ public class XmlNodeTest
         final String text = "text";
         root.setText(text);
         Assert.assertEquals(text, root.getText());
+    }
+
+    /**
+     * Test the remove element function on node.
+     */
+    @Test
+    public void testXmlNodeRemove()
+    {
+        final XmlNode root = Stream.createXmlNode("root");
+        final XmlNode child1 = Stream.createXmlNode("child1");
+        final XmlNode child2 = Stream.createXmlNode("child2");
+
+        child1.writeString("str", "str");
+
+        root.add(child1);
+        root.add(child2);
+
+        root.removeChild("child1");
+        root.removeChildren("child2");
+        root.removeAttribute("str");
     }
 
     /**

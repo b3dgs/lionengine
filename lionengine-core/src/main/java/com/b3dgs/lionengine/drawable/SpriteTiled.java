@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-
 /**
  * Tiled sprite are mainly used for tile based levels. It works by loading an image and render only a part of it
  * (virtually splited). The first tile is 0.
@@ -29,12 +26,13 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * <pre>
  * // Load
- * final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Core.MEDIA.create(&quot;tilesheet.png&quot;), 16, 16);
+ * final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Medias.create(&quot;tilesheet.png&quot;), 16, 16);
  * tilesheet.load(false);
+ * tilesheet.setPosition(300, 300);
+ * tilesheet.setTile(1);
  * 
  * // Render
- * tilesheet.render(g, 1, 300, 300);
- * tilesheet.render(g, 350, 300);
+ * tilesheet.render(g);
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -43,14 +41,11 @@ public interface SpriteTiled
         extends Sprite
 {
     /**
-     * Render a tile to the specified coordinates.
+     * Set the active tile.
      * 
-     * @param g The graphic output.
-     * @param tile The tile to render (>= 0).
-     * @param x The horizontal location..
-     * @param y The vertical location.
+     * @param tile The tile to render (>= 0 & < {@link #getTilesHorizontal()} * {@link #getTilesVertical()}).
      */
-    void render(Graphic g, int tile, int x, int y);
+    void setTile(int tile);
 
     /**
      * Get the number of horizontal tiles.
@@ -67,13 +62,6 @@ public interface SpriteTiled
     int getTilesVertical();
 
     /**
-     * Get the number of tiles.
-     * 
-     * @return The number of tiles.
-     */
-    int getTilesNumber();
-
-    /**
      * Get current tile width.
      * 
      * @return The tile width.
@@ -86,26 +74,4 @@ public interface SpriteTiled
      * @return The tile height.
      */
     int getTileHeight();
-
-    /**
-     * Get original tile width.
-     * 
-     * @return The tile width.
-     */
-    int getTileWidthOriginal();
-
-    /**
-     * Get original tile height.
-     * 
-     * @return The tile height.
-     */
-    int getTileHeightOriginal();
-
-    /**
-     * Get a tile (store it on a new buffered image, no reference, can be slow).
-     * 
-     * @param tile The desired tile.
-     * @return The tile's surface.
-     */
-    ImageBuffer getTile(int tile);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,78 +18,54 @@
 package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.trait.collidable.Collidable;
+import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
 
 /**
- * Implementation of our controllable entity.
+ * Mario specific implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Mario
+class Mario
         extends Entity
+        implements CollidableListener
 {
-    /** Class media. */
-    public static final Media MEDIA = Entity.getConfig(Mario.class);
+    /** Mario media. */
+    public static final Media CONFIG = Medias.create("entity", "Mario.xml");
 
     /**
      * Constructor.
      * 
-     * @param setup setup reference.
+     * @param setup The setup reference.
+     * @param services The services reference.
      */
-    public Mario(SetupSurfaceGame setup)
+    public Mario(SetupSurface setup, Services services)
     {
-        super(setup);
+        super(setup, services);
     }
-
-    /**
-     * Update the mario controls.
-     * 
-     * @param keyboard The keyboard reference.
-     */
-    public void updateControl(Keyboard keyboard)
-    {
-        right = keyboard.isPressed(Keyboard.RIGHT);
-        left = keyboard.isPressed(Keyboard.LEFT);
-        up = keyboard.isPressed(Keyboard.UP);
-    }
-
-    /**
-     * Respawn mario.
-     */
-    public void respawn()
-    {
-        mirror(false);
-        teleport(80, 32);
-        movement.reset();
-        jumpForce.setDirection(Direction.ZERO);
-        resetGravity();
-    }
-
-    /*
-     * Entity
-     */
 
     @Override
-    protected void handleMovements(double extrp)
+    public void update(double extrp)
     {
-        // Smooth walking speed...
-        final double speed;
-        final double sensibility;
-        if (right || left)
+        if (transformable.getY() < 0)
         {
-            speed = 0.3;
-            sensibility = 0.01;
+            respawn(160);
         }
-        // ...but quick stop
-        else
+        super.update(extrp);
+    }
+
+    @Override
+    public void notifyCollided(Collidable collidable)
+    {
+        final Entity entity = collidable.getOwner();
+        if (transformable.getY() >= transformable.getOldY() && !entity.isState(EntityState.DEATH_GOOMBA))
         {
-            speed = 0.5;
-            sensibility = 0.1;
+            this.collidable.setEnabled(false);
+            tileCollidable.setEnabled(false);
+            changeState(EntityState.DEATH_MARIO);
         }
-        movement.setVelocity(speed);
-        movement.setSensibility(sensibility);
-        super.handleMovements(extrp);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,12 +35,15 @@ import com.b3dgs.lionengine.LionEngineException;
  * </p>
  * 
  * <pre>
- * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), Verbose.CRITICAL, &quot;resources&quot;);
+ * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
  * final Resolution output = new Resolution(640, 480, 60);
  * final Config config = new Config(output, 16, true);
  * final Loader loader = new Loader(config);
  * loader.start(Scene.class);
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Config
@@ -130,7 +133,7 @@ public final class Loader
     /** Renderer instance. */
     private final Renderer renderer;
     /** Started state. */
-    private boolean started;
+    private volatile boolean started;
 
     /**
      * Create a loader.
@@ -142,7 +145,7 @@ public final class Loader
     {
         Check.notNull(config);
 
-        final Renderer renderer = Core.GRAPHIC.createRenderer(config);
+        final Renderer renderer = new Renderer(config);
         renderer.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
         {
             @Override
@@ -162,19 +165,27 @@ public final class Loader
      * @param arguments The sequence arguments list if needed by its constructor.
      * @throws LionEngineException If the loader has already been started or sequence is invalid.
      */
-    public void start(Class<? extends Sequence> sequenceClass, Object... arguments) throws LionEngineException
+    public synchronized void start(Class<? extends Sequence> sequenceClass, Object... arguments)
+            throws LionEngineException
     {
         Check.notNull(sequenceClass);
 
-        if (!started)
+        // Ensure sequence constructor is valid
+        try
         {
-            started = true;
-            renderer.startFirstSequence(sequenceClass, this, arguments);
+            sequenceClass.getDeclaredConstructor(Loader.getParamTypes(this, arguments));
         }
-        else
+        catch (final NoSuchMethodException exception)
+        {
+            throw new LionEngineException(exception);
+        }
+
+        if (started)
         {
             throw new LionEngineException(ERROR_STARTED);
         }
+        started = true;
+        renderer.startFirstSequence(this, sequenceClass, arguments);
     }
 
     /**

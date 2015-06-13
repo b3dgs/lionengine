@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,14 +18,16 @@
 package com.b3dgs.lionengine.example.core.drawable;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
@@ -39,20 +41,24 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(640, 480, 60);
 
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Image reference. */
     private final Image image;
     /** Sprite reference. */
     private final Sprite sprite;
     /** Animation reference. */
     private final SpriteAnimated animation;
+    /** Animation mirror reference. */
+    private final SpriteAnimated animationMirror;
+    /** Tile reference. */
+    private final Sprite tilesheets;
     /** Tile reference. */
     private final SpriteTiled tilesheet;
     /** Animation to play. */
@@ -65,82 +71,100 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
-        // As we defined our resources directory as this: Media.get("resources", "drawable")
-        // Any call to Media.get(...) will load from ./resources/drawable/
-
-        // Load keyboard
-        keyboard = getInputDevice(Keyboard.class);
+        super(loader, NATIVE);
+        // As we defined our resources directory as this: Medias.get("resources", "drawable")
+        // Any call to Medias.get(...) will load from ./resources/drawable/
 
         // Load an image (./resources/drawable/image.png)
-        image = Drawable.loadImage(Core.MEDIA.create("image.png"));
-        // Load a sprite (./resources/drawable/sprite.png)
-        sprite = Drawable.loadSprite(Core.MEDIA.create("sprite.png"));
-        // Load an animated sprite, with 7 horizontal frames only
-        animation = Drawable.loadSpriteAnimated(Core.MEDIA.create("animation.png"), 7, 1);
-        // Load a tile in 16*16
-        tilesheet = Drawable.loadSpriteTiled(Core.MEDIA.create("tilesheet.png"), 16, 16);
-        // Set animation data (frames between 4-6, at a speed of 0.125, looped)
-        anim = Anim.createAnimation(4, 6, 0.125, false, true);
-    }
+        image = Drawable.loadImage(Medias.create("image.png"));
 
-    /*
-     * Sequence
-     */
+        // Load a sprite (./resources/drawable/sprite.png)
+        sprite = Drawable.loadSprite(Medias.create("sprite.png"));
+
+        // Load an animated sprite, with 7 horizontal frames only
+        animation = Drawable.loadSpriteAnimated(Medias.create("animation.png"), 7, 1);
+        animationMirror = Drawable.loadSpriteAnimated(Medias.create("animation.png"), 7, 1);
+
+        // Load a tile in 16*16
+        tilesheets = Drawable.loadSprite(Medias.create("tilesheet.png"));
+        tilesheet = Drawable.loadSpriteTiled(Medias.create("tilesheet.png"), 16, 16);
+
+        // Set animation data (frames between 4-6, at a speed of 0.125, looped)
+        anim = Anim.createAnimation(null, 4, 6, 0.125, false, true);
+
+        // Exit
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
+    }
 
     @Override
     protected void load()
     {
         // Prepare surfaces without alpha (need to be called only one time)
         // If this function is not called, there won't have any surface to display
+        image.load(false);
         sprite.load(false);
         animation.load(false);
+        animationMirror.load(false);
+        tilesheets.load(false);
         tilesheet.load(false);
+
         tile = 0.0;
+
+        // Place images
+        image.setLocation(0, 0);
+        sprite.setLocation(64, 280);
+        animation.setLocation(160, 300);
+        animationMirror.setLocation(200, 300);
+        tilesheet.setLocation(300, 300);
+        tilesheets.setLocation(350, 300);
+
+        animationMirror.setMirror(Mirror.HORIZONTAL);
 
         // Set animation to play
         animation.play(anim);
+        animationMirror.play(anim);
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         // Update animation
-        animation.updateAnimation(extrp);
+        animation.update(extrp);
+        animationMirror.update(extrp);
 
         // Change the tile number to display
         tile += 0.1 * extrp;
 
         // Ensure value is lower than the total number of tile
-        tile %= tilesheet.getTilesNumber();
+        tile %= tilesheet.getTilesHorizontal() * tilesheet.getTilesVertical();
+        tilesheet.setTile((int) tile);
 
         // Rotate sprite
-        sprite.rotate((int) tile * (360 / tilesheet.getTilesNumber()));
-
-        // Exit
-        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
-        {
-            end();
-        }
+        sprite.rotate((int) tile * (360 / (tilesheet.getTilesHorizontal() * tilesheet.getTilesVertical())));
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         // Clean screen (as we don't have any background)
         g.clear(0, 0, getWidth(), getHeight());
 
         // Render all resources at specified location
-        image.render(g, 0, 0);
-        sprite.render(g, 64, 280);
-        animation.setMirror(false);
-        animation.render(g, 160, 300);
-        animation.setMirror(true);
-        animation.render(g, 200, 300);
-        tilesheet.render(g, (int) tile, 300, 300);
-        tilesheet.render(g, 350, 300);
+        image.render(g);
+        sprite.render(g);
+        animation.render(g);
+        animationMirror.render(g);
+        tilesheets.render(g);
+        tilesheet.render(g);
 
         // Box the current tile
         final int x = 350 + (int) (tile % tilesheet.getTilesHorizontal()) * tilesheet.getTileWidth();

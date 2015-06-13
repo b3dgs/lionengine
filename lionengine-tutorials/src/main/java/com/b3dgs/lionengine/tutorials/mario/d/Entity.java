@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,285 +17,186 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import java.util.EnumMap;
-
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Movement;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
+import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.state.StateAnimationBased;
+import com.b3dgs.lionengine.game.state.StateFactory;
+import com.b3dgs.lionengine.game.state.StateHandler;
+import com.b3dgs.lionengine.game.trait.body.Body;
+import com.b3dgs.lionengine.game.trait.body.BodyModel;
+import com.b3dgs.lionengine.game.trait.collidable.Collidable;
+import com.b3dgs.lionengine.game.trait.collidable.CollidableModel;
+import com.b3dgs.lionengine.game.trait.collidable.TileCollidable;
+import com.b3dgs.lionengine.game.trait.collidable.TileCollidableListener;
+import com.b3dgs.lionengine.game.trait.collidable.TileCollidableModel;
+import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.trait.mirrorable.MirrorableModel;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
- * Abstract entity base implementation.
+ * Implementation of our controllable entity.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class Entity
-        extends EntityPlatform
+class Entity
+        extends ObjectGame
+        implements Updatable, Renderable, TileCollidableListener
 {
-    /**
-     * Get an entity configuration file.
-     * 
-     * @param type The config associated class.
-     * @return The media config.
-     */
-    protected static Media getConfig(Class<? extends Entity> type)
-    {
-        return Core.MEDIA.create(FactoryEntity.ENTITY_DIR, type.getSimpleName() + "."
-                + FactoryObjectGame.FILE_DATA_EXTENSION);
-    }
+    /** Ground location y. */
+    private static final int GROUND = 32;
 
     /** Movement force. */
-    protected final Movement movement;
-    /** Movement jump force. */
-    protected final Force jumpForce;
-    /** Animations list. */
-    private final EnumMap<EntityState, Animation> animations;
-    /** Map reference. */
-    protected Map map;
-    /** Desired fps value. */
-    protected int desiredFps;
+    public final Force movement = new Force();
     /** Jump force. */
-    protected double jumpForceValue;
-    /** Movement max speed. */
-    protected double movementSpeedValue;
-    /** Key right state. */
-    protected boolean right;
-    /** Key left state. */
-    protected boolean left;
-    /** Key up state. */
-    protected boolean up;
-    /** Entity state. */
-    protected EntityState state;
-    /** Old state. */
-    protected EntityState stateOld;
-    /** Collision state. */
-    protected EntityCollision coll;
+    public final Force jump = new Force();
+    /** Surface. */
+    public final SpriteAnimated surface;
+    /** Transformable model. */
+    public final Transformable transformable = addTrait(new TransformableModel());
+    /** Tile collidable. */
+    protected final TileCollidable tileCollidable = addTrait(new TileCollidableModel());
+    /** Collidable reference. */
+    protected final Collidable collidable = addTrait(new CollidableModel());
+    /** Mirrorable model. */
+    private final Mirrorable mirrorable = addTrait(new MirrorableModel());
+    /** Body model. */
+    private final Body body = addTrait(new BodyModel());
+    /** State factory. */
+    private final StateFactory factory = new StateFactory();
+    /** State handler. */
+    private final StateHandler handler = new StateHandler(factory);
+    /** Camera reference. */
+    private final Camera camera;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
+     * @param services The services reference.
      */
-    protected Entity(SetupSurfaceGame setup)
+    public Entity(SetupSurface setup, Services services)
     {
-        super(setup);
-        animations = new EnumMap<>(EntityState.class);
-        final Configurer configurer = setup.getConfigurer();
-        jumpForceValue = configurer.getDouble("jumpSpeed", "data");
-        movementSpeedValue = configurer.getDouble("movementSpeed", "data");
-        movement = new Movement();
-        jumpForce = new Force();
-        state = EntityState.IDLE;
-        setMass(configurer.getDouble("mass", "data"));
-        setFrameOffsets(0, 1);
-        loadAnimations(configurer);
+        super(setup, services);
+        camera = services.get(Camera.class);
+        collidable.setOrigin(Origin.CENTER_TOP);
+
+        final ConfigFrames frames = ConfigFrames.create(getConfigurer());
+        surface = Drawable.loadSpriteAnimated(setup.surface, frames.getHorizontal(), frames.getVertical());
+        surface.setOrigin(Origin.CENTER_BOTTOM);
+        surface.setFrameOffsets(-1, 0);
+
+        body.setVectors(movement, jump);
+        body.setDesiredFps(60);
+        body.setMass(2.0);
     }
 
     /**
-     * Check if hero can jump.
+     * Make the entity jump.
+     */
+    public void jump()
+    {
+        body.resetGravity();
+        changeState(EntityState.JUMP);
+        jump.setDirection(0.0, 6.0);
+    }
+
+    /**
+     * Check the current entity state.
      * 
-     * @return <code>true</code> if can jump, <code>false</code> else.
+     * @param state The state to check.
+     * @return <code>true</code> if it is this state, <code>false</code> else.
      */
-    public boolean canJump()
+    public boolean isState(EntityState state)
     {
-        return isOnGround();
+        return handler.isState(state);
     }
 
     /**
-     * Check if hero is jumping.
+     * Respawn the entity.
      * 
-     * @return <code>true</code> if jumping, <code>false</code> else.
+     * @param x The horizontal location.
      */
-    public boolean isJumping()
+    protected void respawn(int x)
     {
-        return getLocationY() > getLocationOldY();
+        mirrorable.mirror(Mirror.NONE);
+        transformable.teleport(x, GROUND);
+        jump.setDirection(Direction.ZERO);
+        body.resetGravity();
+        collidable.setEnabled(true);
+        tileCollidable.setEnabled(true);
+        handler.changeState(EntityState.IDLE);
     }
 
     /**
-     * Check if hero is falling.
+     * Change the current state.
      * 
-     * @return <code>true</code> if falling, <code>false</code> else.
+     * @param next The next state.
      */
-    public boolean isFalling()
+    protected void changeState(Enum<?> next)
     {
-        return getLocationY() < getLocationOldY();
+        handler.changeState(next);
     }
 
     /**
-     * Check if entity is on ground.
+     * Set the device that will control the entity.
      * 
-     * @return <code>true</code> if on ground, <code>false</code> else.
+     * @param device The device controller.
      */
-    public boolean isOnGround()
+    protected void setControl(InputDeviceDirectional device)
     {
-        return coll == EntityCollision.GROUND;
-    }
-
-    /**
-     * Load all existing animations defined in the xml file.
-     * 
-     * @param configurer The configurer reference.
-     */
-    private void loadAnimations(Configurer configurer)
-    {
-        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
-        for (final EntityState state : EntityState.values())
-        {
-            try
-            {
-                animations.put(state, configAnimations.getAnimation(state.getAnimationName()));
-            }
-            catch (final LionEngineException exception)
-            {
-                continue;
-            }
-        }
-    }
-
-    /**
-     * Check the map limit and apply collision if necessary.
-     */
-    private void checkMapLimit()
-    {
-        final int limitLeft = 0;
-        if (getLocationX() < limitLeft)
-        {
-            setLocationX(limitLeft);
-            movement.reset();
-        }
-        final int limitRight = map.getWidthInTile() * map.getTileWidth();
-        if (getLocationX() > limitRight)
-        {
-            setLocationX(limitRight);
-            movement.reset();
-        }
-    }
-
-    /**
-     * Update the forces depending of the pressed key.
-     */
-    private void updateForces()
-    {
-        movement.setDirectionToReach(Direction.ZERO);
-        final double speed;
-        if (right && !left)
-        {
-            speed = movementSpeedValue;
-        }
-        else if (left && !right)
-        {
-            speed = -movementSpeedValue;
-        }
-        else
-        {
-            speed = 0.0;
-        }
-        movement.setDirectionToReach(speed, 0.0);
-
-        if (up && canJump())
-        {
-            jumpForce.setDirection(0.0, jumpForceValue);
-            resetGravity();
-            coll = EntityCollision.NONE;
-        }
-    }
-
-    /**
-     * Update entity states.
-     */
-    private void updateStates()
-    {
-        final double diffHorizontal = getDiffHorizontal();
-        stateOld = state;
-
-        if (diffHorizontal != 0.0)
-        {
-            mirror(diffHorizontal < 0.0);
-        }
-
-        final boolean mirror = getMirror();
-        if (!isOnGround())
-        {
-            state = EntityState.JUMP;
-        }
-        else if (mirror && right && diffHorizontal < 0.0)
-        {
-            state = EntityState.TURN;
-        }
-        else if (!mirror && left && diffHorizontal > 0.0)
-        {
-            state = EntityState.TURN;
-        }
-        else if (diffHorizontal != 0.0)
-        {
-            state = EntityState.WALK;
-        }
-        else
-        {
-            state = EntityState.IDLE;
-        }
-    }
-
-    /*
-     * EntityPlatform
-     */
-
-    @Override
-    public void prepare(ContextGame context)
-    {
-        map = context.getService(Map.class);
-        desiredFps = context.getService(Integer.class).intValue();
+        handler.addInput(device);
     }
 
     @Override
-    protected void handleActions(double extrp)
+    protected void onPrepared()
     {
-        updateForces();
-        updateStates();
+        StateAnimationBased.Util.loadStates(EntityState.values(), factory, this);
+        handler.start(EntityState.IDLE);
     }
 
     @Override
-    protected void handleMovements(double extrp)
+    public void update(double extrp)
     {
+        handler.update(extrp);
+        mirrorable.update(extrp);
         movement.update(extrp);
-        updateGravity(extrp, desiredFps, jumpForce, movement);
-        updateMirror();
+        jump.update(extrp);
+        body.update(extrp);
+        tileCollidable.update(extrp);
+        collidable.update(extrp);
+        surface.setMirror(mirrorable.getMirror());
+        surface.update(extrp);
     }
 
     @Override
-    protected void handleCollisions(double extrp)
+    public void render(Graphic g)
     {
-        checkMapLimit();
-        coll = EntityCollision.NONE;
-        if (getLocationY() < 31)
-        {
-            teleportY(31);
-            coll = EntityCollision.GROUND;
-        }
+        surface.setLocation(camera, transformable);
+        surface.render(g);
     }
 
     @Override
-    protected void handleAnimations(double extrp)
+    public void notifyTileCollided(Tile tile, Axis axis)
     {
-        // Assign an animation for each state
-        if (state == EntityState.WALK)
+        if (Axis.Y == axis && transformable.getY() < transformable.getOldY())
         {
-            setAnimSpeed(Math.abs(movement.getDirectionHorizontal()) / 12.0);
+            body.resetGravity();
         }
-        // Play the assigned animation
-        if (stateOld != state)
-        {
-            play(animations.get(state));
-        }
-        updateAnimation(extrp);
     }
 }

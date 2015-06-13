@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,14 +24,14 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.mock.MediaMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class SpriteAnimatedTest
 {
     /** Image media. */
@@ -54,8 +55,8 @@ public class SpriteAnimatedTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -64,7 +65,7 @@ public class SpriteAnimatedTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -74,12 +75,12 @@ public class SpriteAnimatedTest
     public void testSpriteAnimated()
     {
         final SpriteAnimated spriteA = Drawable.loadSpriteAnimated(
-                Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE), 1, 1);
+                Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), 1, 1);
 
         Assert.assertNotNull(spriteA.getSurface());
 
         final Animator animator = Anim.createAnimator();
-        final Animation animation = Anim.createAnimation(1, 6, 1.0, false, false);
+        final Animation animation = Anim.createAnimation(null, 1, 6, 1.0, false, false);
 
         // Load from file
         final int frameHorizontal = 4;
@@ -87,10 +88,7 @@ public class SpriteAnimatedTest
         final SpriteAnimated spriteC = Drawable.loadSpriteAnimated(MEDIA, frameHorizontal, frameVertical);
         final ImageInfo info = DrawableTestTool.assertImageInfoCorrect(MEDIA, spriteC);
 
-        Assert.assertEquals(frameHorizontal * frameVertical, spriteC.getFramesNumber());
-        Assert.assertEquals(info.getWidth() / frameHorizontal, spriteC.getFrameWidthOriginal());
         Assert.assertEquals(info.getWidth() / frameHorizontal, spriteC.getFrameWidth());
-        Assert.assertEquals(info.getHeight() / frameVertical, spriteC.getFrameHeightOriginal());
         Assert.assertEquals(info.getHeight() / frameVertical, spriteC.getFrameHeight());
 
         DrawableTestTool.testSpriteLoading(spriteC);
@@ -103,15 +101,15 @@ public class SpriteAnimatedTest
         spriteE.load(false);
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(110, 100);
-        spriteD.setMirror(true);
+        spriteD.setMirror(Mirror.HORIZONTAL);
         final int hash = spriteD.hashCode();
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(100, 110);
-        spriteD.setMirror(false);
+        spriteD.setMirror(Mirror.NONE);
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(110, 110);
         Assert.assertTrue(hash != spriteD.hashCode());
-        spriteD.setMirrorAxis(false);
+        spriteD.setMirror(Mirror.VERTICAL);
         Assert.assertTrue(hash != spriteD.hashCode());
         Assert.assertFalse(spriteD.equals(spriteE));
         final SpriteAnimated spriteF = Drawable
@@ -121,7 +119,7 @@ public class SpriteAnimatedTest
         try
         {
             animator.play(null);
-            animator.updateAnimation(1.0);
+            animator.update(1.0);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -131,7 +129,7 @@ public class SpriteAnimatedTest
         try
         {
             animator.play(animation);
-            animator.updateAnimation(1.0);
+            animator.update(1.0);
         }
         catch (final LionEngineException exception)
         {
@@ -140,11 +138,12 @@ public class SpriteAnimatedTest
 
         // Test render
         DrawableTestTool.testImageRender(g, spriteC);
-        spriteC.setMirror(true);
-        spriteC.setMirrorAxis(false);
-        spriteC.render(g, 0, 0);
-        spriteC.setMirrorAxis(true);
-        spriteC.render(g, 0, 0);
+        spriteC.setMirror(Mirror.HORIZONTAL);
+        spriteC.setFrameOffsets(1, 2);
+        spriteC.setLocation(1.0, 2.0);
+        spriteC.render(g);
+        spriteC.setMirror(Mirror.VERTICAL);
+        spriteC.render(g);
 
         // Error
         DrawableTestTool.testSpriteAnimatedLoadError(0, 0);
@@ -154,16 +153,13 @@ public class SpriteAnimatedTest
         // Animations
         spriteA.play(animation);
         spriteA.setAnimSpeed(1.0);
-        spriteA.updateAnimation(1.0);
-        spriteA.stopAnimation();
+        spriteA.update(1.0);
+        spriteA.stop();
         spriteA.setFrame(1);
         Assert.assertEquals(1, spriteA.getFrame());
         Assert.assertEquals(1, spriteA.getFrameAnim());
         Assert.assertEquals(AnimState.STOPPED, spriteA.getAnimState());
 
-        Assert.assertNotNull(spriteA.getFrame(1));
-        Assert.assertNotNull(spriteA.getFrame(-1));
-        Assert.assertNotNull(spriteA.getFrame(0));
         Assert.assertFalse(spriteC.equals(Drawable.loadSpriteAnimated(MEDIA, frameHorizontal, frameVertical)));
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ import org.junit.Test;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class ResolutionTest
 {
     /**
@@ -97,10 +98,11 @@ public class ResolutionTest
         final Resolution resolution = new Resolution(320, 240, 60);
         Assert.assertEquals(Ratio.R4_3, resolution.getRatio(), 0.000001);
 
-        resolution.set(640, 360);
+        resolution.setSize(640, 360);
         Assert.assertEquals(Ratio.R16_9, resolution.getRatio(), 0.000001);
 
-        resolution.set(640, 400, 50);
+        resolution.setSize(640, 400);
+        resolution.setRate(50);
         Assert.assertEquals(50, resolution.getRate());
         Assert.assertEquals(Ratio.R16_10, resolution.getRatio(), 0.000001);
 

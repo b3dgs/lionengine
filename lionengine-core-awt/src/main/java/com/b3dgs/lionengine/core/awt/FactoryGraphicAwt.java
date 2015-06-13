@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,14 +18,15 @@
 package com.b3dgs.lionengine.core.awt;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Hq2x;
+import com.b3dgs.lionengine.Hq3x;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryGraphic;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderer;
@@ -52,12 +53,6 @@ public final class FactoryGraphicAwt
     /*
      * FactoryGraphic
      */
-
-    @Override
-    public Renderer createRenderer(Config config)
-    {
-        return new RendererAwt(config);
-    }
 
     @Override
     public Screen createScreen(Renderer renderer)
@@ -142,10 +137,18 @@ public final class FactoryGraphicAwt
     {
         switch (filter)
         {
+            case NONE:
+                return imageBuffer;
             case BILINEAR:
                 return UtilityImage.applyBilinearFilter(imageBuffer);
+            case HQ2X:
+                final Hq2x hq2x = new Hq2x(imageBuffer);
+                return hq2x.getScaledImage();
+            case HQ3X:
+                final Hq3x hq3x = new Hq3x(imageBuffer);
+                return hq3x.getScaledImage();
             default:
-                throw new LionEngineException("Unsupported filter: " + filter.name());
+                throw new RuntimeException();
         }
     }
 
@@ -165,6 +168,6 @@ public final class FactoryGraphicAwt
     @Override
     public int[][] loadRaster(Media media) throws LionEngineException
     {
-        return Core.GRAPHIC.loadRaster(media);
+        return Graphics.loadRaster(media);
     }
 }

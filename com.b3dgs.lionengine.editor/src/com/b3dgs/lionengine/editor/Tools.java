@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,8 +41,8 @@ import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.editor.project.tester.FolderTypeTester;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
@@ -62,8 +62,22 @@ public final class Tools
     public static final String TEMPLATES_DIR = "templates";
     /** Template object. */
     public static final String TEMPLATE_OBJECT = "object." + Tools.TEMPLATE_EXTENSION;
+    /** Template sheets. */
+    public static final String TEMPLATE_SHEETS = "sheets." + Tools.TEMPLATE_EXTENSION;
+    /** Template sheets. */
+    public static final String TEMPLATE_GROUPS = "groups." + Tools.TEMPLATE_EXTENSION;
+    /** Template sheets. */
+    public static final String TEMPLATE_FORMULAS = "formulas." + Tools.TEMPLATE_EXTENSION;
+    /** Template sheets. */
+    public static final String TEMPLATE_COLLISIONS = "collisions." + Tools.TEMPLATE_EXTENSION;
     /** Template class area. */
     public static final String TEMPLATE_CLASS_AREA = "%CLASS%";
+    /** Template setup area. */
+    public static final String TEMPLATE_SETUP_AREA = "%SETUP%";
+    /** Template sheets tile width area. */
+    public static final String TEMPLATE_SHEETS_WIDTH = "%WIDTH%";
+    /** Template sheets tile height area. */
+    public static final String TEMPLATE_SHEETS_HEIGHT = "%HEIGHT%";
     /** Folder type name node. */
     private static final String NODE_FOLDER_TYPE_NAME = "lionengine:name";
     /** Create directory error. */
@@ -100,7 +114,7 @@ public final class Tools
     }
 
     /**
-     * Get the class from media file, by reading the attribute {@link Configurer#CLASS} attribute.
+     * Get the class from media file, by reading the attribute {@link ConfigObject#CLASS} attribute.
      * 
      * @param media The media descriptor.
      * @return The class reference.
@@ -109,7 +123,7 @@ public final class Tools
     public static Class<?> getClass(Media media) throws LionEngineException
     {
         final XmlNode root = Stream.loadXml(media);
-        final String className = root.getChild(Configurer.CLASS).getText();
+        final String className = root.getChild(ConfigObject.CLASS).getText();
         return Project.getActive().getClass(className);
     }
 
@@ -124,11 +138,15 @@ public final class Tools
     {
         if (path.isDirectory())
         {
-            for (final File file : path.listFiles())
+            final File[] files = path.listFiles();
+            if (files != null)
             {
-                if (FolderTypeTester.isFolderTypeFile(file))
+                for (final File file : files)
                 {
-                    return file;
+                    if (FolderTypeTester.isFolderTypeFile(file))
+                    {
+                        return file;
+                    }
                 }
             }
         }
@@ -140,13 +158,19 @@ public final class Tools
      * 
      * @param path The type folder.
      * @return The type name.
-     * @throws FileNotFoundException If this is not a type folder.
      */
-    public static String getObjectsFolderTypeName(File path) throws FileNotFoundException
+    public static String getObjectsFolderTypeName(File path)
     {
-        final File type = Tools.getFolderTypeFile(path);
-        final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(type));
-        return typeNode.getChild(Tools.NODE_FOLDER_TYPE_NAME).getText();
+        try
+        {
+            final File type = Tools.getFolderTypeFile(path);
+            final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(type));
+            return typeNode.getChild(Tools.NODE_FOLDER_TYPE_NAME).getText();
+        }
+        catch (final FileNotFoundException exception)
+        {
+            return path.getName();
+        }
     }
 
     /**
@@ -158,13 +182,13 @@ public final class Tools
      * @param my The mouse Y.
      * @return The tile location in absolute location.
      */
-    public static Point getMouseTile(MapTile<?> map, CameraGame camera, int mx, int my)
+    public static Point getMouseTile(MapTile map, Camera camera, int mx, int my)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        final int h = UtilMath.getRounded(camera.getViewHeight(), th) - map.getTileHeight();
-        final int x = camera.getLocationIntX() + UtilMath.getRounded(mx, tw);
-        final int y = camera.getLocationIntY() - UtilMath.getRounded(my, th) + h;
+        final int h = UtilMath.getRounded(camera.getHeight(), th) - map.getTileHeight();
+        final int x = (int) camera.getX() + UtilMath.getRounded(mx, tw);
+        final int y = (int) camera.getY() - UtilMath.getRounded(my, th) + h;
         return Geom.createPoint(x, y);
     }
 

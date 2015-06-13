@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.lang.reflect.Method;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -33,14 +31,13 @@ import com.b3dgs.lionengine.mock.MediaMock;
 import com.b3dgs.lionengine.mock.SequenceArgumentsMock;
 import com.b3dgs.lionengine.mock.SequenceFailMock;
 import com.b3dgs.lionengine.mock.SequenceSingleMock;
-import com.b3dgs.lionengine.mock.SequenceStartMock;
-import com.b3dgs.lionengine.mock.SequenceWaitMock;
 
 /**
  * Test the loader class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class LoaderTest
 {
     /** Output. */
@@ -59,9 +56,8 @@ public class LoaderTest
     @BeforeClass
     public static void prepareTest()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        System.out.println("*********************************** SEQUENCE VERBOSE ***********************************");
-        System.out.flush();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        Verbose.info("*********************************** SEQUENCE VERBOSE ***********************************");
     }
 
     /**
@@ -70,34 +66,8 @@ public class LoaderTest
     @AfterClass
     public static void cleanUp()
     {
-        System.out.println("****************************************************************************************");
-        System.out.flush();
-        FactoryGraphicProvider.setFactoryGraphic(null);
-    }
-
-    /**
-     * Create the sequence from loader by reflection.
-     * 
-     * @param sequence The sequence to use.
-     * @param loader The loader to used.
-     * @param params The parameters.
-     * @return The sequence instance.
-     * @throws LionEngineException If reflection error.
-     */
-    private static Sequence createSequence(Class<? extends Sequence> sequence, Loader loader, Object... params)
-            throws LionEngineException
-    {
-        try
-        {
-            final Method method = Loader.class.getDeclaredMethod("createSequence", Class.class, Loader.class,
-                    Object[].class);
-            method.setAccessible(true);
-            return (Sequence) method.invoke(Loader.class, sequence, loader, params);
-        }
-        catch (final ReflectiveOperationException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        Verbose.info("****************************************************************************************");
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -137,40 +107,13 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with wrong sequence.
-     */
-    @Test
-    public void testFailSequenceConstructor()
-    {
-        final Loader loader = new Loader(CONFIG);
-        final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
-        {
-            @Override
-            public void uncaughtException(Thread t, Throwable exception)
-            {
-                uncaught = true;
-            }
-        };
-        loader.getRenderer().setUncaughtExceptionHandler(handler);
-
-        loader.start(SequenceFailMock.class);
-        Assert.assertNull(loader.getRenderer().getNextSequence());
-
-        waitEnd(loader);
-        Assert.assertTrue(uncaught);
-        uncaught = false;
-    }
-
-    /**
-     * Test the loader with a sequence that fail during the load internal.
+     * Test the loader with fail sequence.
      */
     @Test(expected = LionEngineException.class)
-    public void testFailSequenceLoadInternal()
+    public void testFailSequence()
     {
         final Loader loader = new Loader(CONFIG);
-        final Sequence sequence = createSequence(SequenceSingleMock.class, loader);
-        sequence.loadInternal();
-        sequence.loadInternal();
+        loader.start(SequenceFailMock.class);
     }
 
     /**
@@ -229,28 +172,6 @@ public class LoaderTest
     {
         final Loader loader = new Loader(CONFIG);
         loader.start(SequenceArgumentsMock.class, new Object());
-        waitEnd(loader);
-    }
-
-    /**
-     * Test the loader with a wait sequence.
-     */
-    @Test
-    public void testSequenceWait()
-    {
-        final Loader loader = new Loader(CONFIG);
-        loader.start(SequenceWaitMock.class);
-        waitEnd(loader);
-    }
-
-    /**
-     * Test the loader with linked sequences.
-     */
-    @Test
-    public void testSequenceLinked()
-    {
-        final Loader loader = new Loader(CONFIG);
-        loader.start(SequenceStartMock.class);
         waitEnd(loader);
     }
 

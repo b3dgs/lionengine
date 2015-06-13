@@ -1,0 +1,65 @@
+/*
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+package com.b3dgs.lionengine;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+/**
+ * Test the mirror class.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ */
+@SuppressWarnings("static-method")
+public class MirrorTest
+{
+    /**
+     * Test the mirror enum.
+     */
+    @Test
+    public void testMirror()
+    {
+        Assert.assertNotNull(Mirror.values());
+        Assert.assertEquals(Mirror.NONE, Mirror.valueOf(Mirror.NONE.name()));
+    }
+
+    /**
+     * Test the mirror enum switch.
+     */
+    @Test
+    public void testEnumSwitch()
+    {
+        for (final Mirror mirror : Mirror.values())
+        {
+            switch (mirror)
+            {
+                case HORIZONTAL:
+                    // Success
+                    break;
+                case VERTICAL:
+                    // Success
+                    break;
+                case NONE:
+                    // Success
+                    break;
+                default:
+                    Assert.fail();
+            }
+        }
+    }
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,10 +18,9 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 
@@ -41,10 +40,6 @@ final class SpriteParallaxedImpl
     private final int sx;
     /** Parallax height. */
     private final int sy;
-    /** Width original. */
-    private int widthOriginal;
-    /** Height original. */
-    private int heightOriginal;
     /** Surface of each line. */
     private ImageBuffer[] lines;
     /** Line width. */
@@ -86,9 +81,27 @@ final class SpriteParallaxedImpl
      */
 
     @Override
-    public void scale(int percent)
+    public void load(boolean alpha) throws LionEngineException
     {
-        stretch(percent, percent);
+        ImageBuffer surface = Graphics.getImageBuffer(media, false);
+
+        if (0 != Double.compare(factorH, 1.0) || 0 != Double.compare(factorV, 1.0))
+        {
+            surface = Graphics.resize(surface, (int) (surface.getWidth() * factorH),
+                    (int) (surface.getHeight() * factorV));
+        }
+
+        lineWidth = (int) Math.floor(surface.getWidth() * sx / 100.0);
+        lineHeight = (int) Math.floor(surface.getHeight() / linesNumber * sy / 100.0);
+        lines = Graphics.splitImage(surface, 1, linesNumber);
+        final double factH = sx / 100.0 / 0.6;
+
+        for (int i = 0; i < linesNumber; i++)
+        {
+            final int width = (int) Math.ceil(lines[i].getWidth() * (sx + i * 2 * factH) / 100);
+            final int height = lines[i].getHeight() * sy / 100;
+            lines[i] = Graphics.resize(lines[i], width, height);
+        }
     }
 
     @Override
@@ -99,70 +112,15 @@ final class SpriteParallaxedImpl
     }
 
     @Override
-    public void prepare(Filter filter) throws LionEngineException
-    {
-        ImageBuffer surface = Core.GRAPHIC.getImageBuffer(media, false);
-        widthOriginal = surface.getWidth();
-        heightOriginal = surface.getHeight();
-
-        if (0 != Double.compare(factorH, 1.0) || 0 != Double.compare(factorV, 1.0))
-        {
-            surface = Core.GRAPHIC.resize(surface, (int) (surface.getWidth() * factorH),
-                    (int) (surface.getHeight() * factorV));
-        }
-        if (Filter.BILINEAR == filter)
-        {
-            surface = Core.GRAPHIC.applyFilter(surface, filter);
-        }
-
-        lineWidth = (int) Math.floor(surface.getWidth() * sx / 100.0);
-        lineHeight = (int) Math.floor(surface.getHeight() / linesNumber * sy / 100.0);
-        lines = Core.GRAPHIC.splitImage(surface, 1, linesNumber);
-        final double factH = sx / 100.0 / 0.6;
-
-        for (int i = 0; i < linesNumber; i++)
-        {
-            final int width = (int) Math.ceil(lines[i].getWidth() * (sx + i * 2 * factH) / 100);
-            final int height = lines[i].getHeight() * sy / 100;
-            lines[i] = Core.GRAPHIC.resize(lines[i], width, height);
-        }
-    }
-
-    @Override
     public void render(Graphic g, int line, int x, int y)
     {
         g.drawImage(lines[line], x, y);
     }
 
     @Override
-    public int getWidthOriginal()
+    public int getLineWidth(int line)
     {
-        return widthOriginal;
-    }
-
-    @Override
-    public int getHeightOriginal()
-    {
-        return heightOriginal;
-    }
-
-    @Override
-    public ImageBuffer getLine(int line)
-    {
-        return lines[line];
-    }
-
-    /*
-     * Renderable
-     */
-
-    @Override
-    public void render(Graphic g, int x, int y)
-    {
-        for (int line = 0; line < linesNumber; line++)
-        {
-            g.drawImage(lines[line], x, y);
-        }
+        return lines[line].getWidth();
     }
 
     @Override

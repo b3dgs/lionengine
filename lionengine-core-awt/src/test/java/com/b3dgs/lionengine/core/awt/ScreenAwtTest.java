@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,17 +32,17 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the screen class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class ScreenAwtTest
 {
     /** Exception thread flag. */
@@ -56,7 +56,7 @@ public class ScreenAwtTest
     @Before
     public void setUp() throws ReflectiveOperationException
     {
-        Engine.start("screen", Version.create(0, 0, 0), Verbose.CRITICAL, ScreenAwtTest.class);
+        Engine.start("screen", Version.create(0, 0, 0), ScreenAwtTest.class);
     }
 
     /**
@@ -106,7 +106,6 @@ public class ScreenAwtTest
         }
         catch (final ReflectiveOperationException exception)
         {
-            exception.printStackTrace();
             throw new LionEngineException(exception);
         }
     }
@@ -121,7 +120,7 @@ public class ScreenAwtTest
     {
         final Resolution resolution = new Resolution(320, 240, 60);
         final Config config = new Config(resolution, 32, true);
-        config.setIcon(Core.MEDIA.create("image.png"));
+        config.setIcon(Medias.create("image.png"));
         final Loader loader = new Loader(config);
         loader.start(SequenceMock.class);
         final Renderer renderer = getRenderer(loader);
@@ -144,7 +143,7 @@ public class ScreenAwtTest
     {
         final Resolution resolution = new Resolution(320, 240, 60);
         final Config config = new Config(resolution, 32, false);
-        config.setIcon(Core.MEDIA.create("image.png"));
+        config.setIcon(Medias.create("image.png"));
         config.setApplet(new AppletAwt());
         final Loader loader = new Loader(config);
         loader.start(SequenceMock.class);
@@ -185,7 +184,7 @@ public class ScreenAwtTest
 
         final Resolution resolution = new Resolution(width, height, 60);
         final Config config = new Config(resolution, 32, false);
-        config.setIcon(Core.MEDIA.create("image.png"));
+        config.setIcon(Medias.create("image.png"));
         final Loader loader = new Loader(config);
         loader.start(SequenceMock.class);
         final Renderer renderer = getRenderer(loader);

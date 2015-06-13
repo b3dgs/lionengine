@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,20 +27,8 @@ import com.b3dgs.lionengine.Resolution;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Sequencable
+        extends Updatable, Renderable
 {
-    /**
-     * Start the next sequence and wait for current sequence to end before next sequence continues. This function should
-     * be used to synchronize two sequences (eg: load a next sequence while being in a menu). Do not forget to call
-     * {@link #end()} in order to give control to the next sequence.
-     * 
-     * @param wait <code>true</code> to wait for the next sequence to be loaded, <code>false</code> else.
-     * @param nextSequenceClass The next sequence class reference (must not be <code>null</code>).
-     * @param arguments The arguments list.
-     * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
-     */
-    void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
-            throws LionEngineException;
-
     /**
      * Terminate sequence.
      */
@@ -103,7 +91,8 @@ public interface Sequencable
      * 
      * @param <T> The input device.
      * @param type The input device type.
-     * @return The input instance reference, <code>null</code> if not found.
+     * @return The input instance reference.
+     * @throws LionEngineException If device not found.
      */
-    <T extends InputDevice> T getInputDevice(Class<T> type);
+    <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException;
 }

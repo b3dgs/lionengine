@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,9 +23,9 @@ import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryGraphic;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderer;
@@ -52,12 +52,6 @@ final class FactoryGraphicSwt
     /*
      * FactoryGraphic
      */
-
-    @Override
-    public Renderer createRenderer(Config config)
-    {
-        return new RendererSwt(config);
-    }
 
     @Override
     public Screen createScreen(Renderer renderer)
@@ -164,6 +158,6 @@ final class FactoryGraphicSwt
     @Override
     public int[][] loadRaster(Media media) throws LionEngineException
     {
-        return Core.GRAPHIC.loadRaster(media);
+        return Graphics.loadRaster(media);
     }
 }

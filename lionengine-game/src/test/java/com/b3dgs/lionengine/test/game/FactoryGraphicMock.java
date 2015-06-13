@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.test.game;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.TextStyle;
@@ -40,12 +39,6 @@ import com.b3dgs.lionengine.core.Transform;
 public class FactoryGraphicMock
         implements FactoryGraphic
 {
-    @Override
-    public Renderer createRenderer(Config config)
-    {
-        return null;
-    }
-
     @Override
     public Screen createScreen(Renderer renderer)
     {
@@ -98,7 +91,7 @@ public class FactoryGraphicMock
     @Override
     public ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
-        return null;
+        return new ImageBuffer[0];
     }
 
     @Override
@@ -146,6 +139,6 @@ public class FactoryGraphicMock
     @Override
     public int[][] loadRaster(Media media)
     {
-        return null;
+        return new int[0][0];
     }
 }

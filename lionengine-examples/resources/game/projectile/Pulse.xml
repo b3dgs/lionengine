@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lionengine:projectile xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.example.game.projectile.Pulse</lionengine:class>
+<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
+    <lionengine:class>com.b3dgs.lionengine.example.game.projectile.Projectile</lionengine:class>
     <lionengine:surface image="Pulse.png"/>
 	<lionengine:size width="12" height="14"/>
-</lionengine:projectile>
+	<lionengine:collision name="default" offsetX="0" offsetY="0" width="1" height="1" mirror="false"/>
+</lionengine:object>

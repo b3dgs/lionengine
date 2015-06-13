@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -59,7 +59,7 @@ public final class UtilityImage
         {
             return ((ImageBufferSwt) image).getBuffer();
         }
-        throw new LionEngineException(UtilityImage.ERROR_IMAGE_BUFFER_IMPL);
+        throw new LionEngineException(ERROR_IMAGE_BUFFER_IMPL);
     }
 
     /**
@@ -94,7 +94,7 @@ public final class UtilityImage
     static ImageBuffer createImage(int width, int height, Transparency transparency)
     {
         final ImageBufferSwt buffer = new ImageBufferSwt(ToolsSwt.createImage(width, height,
-                UtilityImage.getTransparency(transparency)));
+                getTransparency(transparency)));
 
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.BLACK);
@@ -121,7 +121,7 @@ public final class UtilityImage
         catch (final IOException
                      | SWTException exception)
         {
-            throw new LionEngineException(exception, UtilityImage.ERROR_IMAGE_READING);
+            throw new LionEngineException(exception, ERROR_IMAGE_READING);
         }
     }
 
@@ -133,7 +133,7 @@ public final class UtilityImage
      */
     static ImageBuffer getImage(ImageBuffer image)
     {
-        return new ImageBufferSwt(ToolsSwt.getImage(UtilityImage.getBuffer(image)));
+        return new ImageBufferSwt(ToolsSwt.getImage(getBuffer(image)));
     }
 
     /**
@@ -145,7 +145,7 @@ public final class UtilityImage
      */
     static ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
-        return new ImageBufferSwt(ToolsSwt.applyMask(UtilityImage.getBuffer(image), maskColor.getRgba()));
+        return new ImageBufferSwt(ToolsSwt.applyMask(getBuffer(image), maskColor.getRgba()));
     }
 
     /**
@@ -158,7 +158,7 @@ public final class UtilityImage
      */
     static ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
-        final Image[] images = ToolsSwt.splitImage(UtilityImage.getBuffer(image), h, v);
+        final Image[] images = ToolsSwt.splitImage(getBuffer(image), h, v);
         final ImageBuffer[] imageBuffers = new ImageBuffer[images.length];
         for (int i = 0; i < imageBuffers.length; i++)
         {
@@ -176,7 +176,7 @@ public final class UtilityImage
      */
     static ImageBuffer rotate(ImageBuffer image, int angle)
     {
-        return new ImageBufferSwt(ToolsSwt.rotate(UtilityImage.getBuffer(image), angle));
+        return new ImageBufferSwt(ToolsSwt.rotate(getBuffer(image), angle));
     }
 
     /**
@@ -189,7 +189,7 @@ public final class UtilityImage
      */
     static ImageBuffer resize(ImageBuffer image, int width, int height)
     {
-        return new ImageBufferSwt(ToolsSwt.resize(UtilityImage.getBuffer(image), width, height));
+        return new ImageBufferSwt(ToolsSwt.resize(getBuffer(image), width, height));
     }
 
     /**
@@ -200,7 +200,7 @@ public final class UtilityImage
      */
     static ImageBuffer flipHorizontal(ImageBuffer image)
     {
-        return new ImageBufferSwt(ToolsSwt.flipHorizontal(UtilityImage.getBuffer(image)));
+        return new ImageBufferSwt(ToolsSwt.flipHorizontal(getBuffer(image)));
     }
 
     /**
@@ -211,7 +211,7 @@ public final class UtilityImage
      */
     static ImageBuffer flipVertical(ImageBuffer image)
     {
-        return new ImageBufferSwt(ToolsSwt.flipVertical(UtilityImage.getBuffer(image)));
+        return new ImageBufferSwt(ToolsSwt.flipVertical(getBuffer(image)));
     }
 
     /**
@@ -224,7 +224,7 @@ public final class UtilityImage
      */
     static ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException
     {
-        return new ImageBufferSwt(ToolsSwt.applyFilter(UtilityImage.getBuffer(image), filter));
+        return new ImageBufferSwt(ToolsSwt.applyFilter(getBuffer(image), filter));
     }
 
     /**
@@ -238,12 +238,12 @@ public final class UtilityImage
     {
         try (OutputStream outputStream = media.getOutputStream())
         {
-            ToolsSwt.saveImage(UtilityImage.getBuffer(image), outputStream);
+            ToolsSwt.saveImage(getBuffer(image), outputStream);
         }
         catch (final IOException
                      | SWTException exception)
         {
-            throw new LionEngineException(exception, UtilityImage.ERROR_IMAGE_SAVE);
+            throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
         }
     }
 
@@ -262,8 +262,7 @@ public final class UtilityImage
      */
     static ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
-        return new ImageBufferSwt(ToolsSwt.getRasterBuffer(UtilityImage.getBuffer(image), fr, fg, fb, er, eg, eb,
-                refSize));
+        return new ImageBufferSwt(ToolsSwt.getRasterBuffer(getBuffer(image), fr, fg, fb, er, eg, eb, refSize));
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,9 @@ package com.b3dgs.lionengine;
 
 /**
  * Represents a color with red, green, blue and alpha.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -48,6 +51,8 @@ public final class ColorRgba
     public static final ColorRgba BLACK = new ColorRgba(0, 0, 0);
     /** Transparent color. */
     public static final ColorRgba TRANSPARENT = new ColorRgba(0, 0, 0, 0);
+    /** Opaque color. */
+    public static final ColorRgba OPAQUE = new ColorRgba(0, 0, 0, 255);
 
     /**
      * Apply a filter rgb.
@@ -141,6 +146,31 @@ public final class ColorRgba
             return data[0] + data[1] * (int) (data[2] * UtilMath.sin(i * (data[3] / (double) max) - data[4]));
         }
         return data[0] + data[1] * (int) (data[2] * UtilMath.cos(i * (data[3] / (double) max) - data[4]));
+    }
+
+    /**
+     * Check if colors transparency type are exclusive (one is {@link #OPAQUE} and the other {@link #TRANSPARENT}).
+     * 
+     * @param colorA The first color.
+     * @param colorB The second color.
+     * @return <code>true</code> if exclusive, <code>false</code> else.
+     */
+    public static boolean isOpaqueTransparentExclusive(ColorRgba colorA, ColorRgba colorB)
+    {
+        return isOpaqueTransparentExclusive(colorA.getRgba(), colorB.getRgba());
+    }
+
+    /**
+     * Check if colors transparency type are exclusive (one is {@link #OPAQUE} and the other {@link #TRANSPARENT}).
+     * 
+     * @param colorA The first color.
+     * @param colorB The second color.
+     * @return <code>true</code> if exclusive, <code>false</code> else.
+     */
+    public static boolean isOpaqueTransparentExclusive(int colorA, int colorB)
+    {
+        return colorA == ColorRgba.TRANSPARENT.getRgba() && colorB == ColorRgba.OPAQUE.getRgba()
+                || colorA == ColorRgba.OPAQUE.getRgba() && colorB == ColorRgba.TRANSPARENT.getRgba();
     }
 
     /**
@@ -270,5 +300,33 @@ public final class ColorRgba
     public int getAlpha()
     {
         return alpha;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + alpha;
+        result = prime * result + blue;
+        result = prime * result + green;
+        result = prime * result + red;
+        result = prime * result + value;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object instanceof ColorRgba)
+        {
+            final ColorRgba color = (ColorRgba) object;
+            return color.value == value;
+        }
+        return false;
     }
 }

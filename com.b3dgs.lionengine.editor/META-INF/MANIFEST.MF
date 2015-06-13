@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.b3dgs.lionengine.editor;singleton:=true
-Bundle-Version: 7.1.4
+Bundle-Version: 8.0.0
 Bundle-Activator: com.b3dgs.lionengine.editor.Activator
 Bundle-Vendor: %Bundle-Vendor
 Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -27,16 +27,13 @@ Import-Package: javax.annotation;version="1.0.0",
  org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: com.b3dgs.lionengine.editor,
- com.b3dgs.lionengine.editor.animation,
- com.b3dgs.lionengine.editor.collision,
- com.b3dgs.lionengine.editor.dialogs,
- com.b3dgs.lionengine.editor.factory,
- com.b3dgs.lionengine.editor.palette,
+ com.b3dgs.lionengine.editor.dialog,
  com.b3dgs.lionengine.editor.project,
  com.b3dgs.lionengine.editor.project.handler,
  com.b3dgs.lionengine.editor.project.tester,
  com.b3dgs.lionengine.editor.properties,
- com.b3dgs.lionengine.editor.quick,
+ com.b3dgs.lionengine.editor.properties.animation.editor,
+ com.b3dgs.lionengine.editor.properties.collision.editor,
  com.b3dgs.lionengine.editor.world,
  com.b3dgs.lionengine.editor.world.handler
 Bundle-ClassPath: .

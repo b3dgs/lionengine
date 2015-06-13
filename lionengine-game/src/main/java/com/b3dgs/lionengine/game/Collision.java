@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,20 +17,25 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.purview.Collidable;
+import com.b3dgs.lionengine.game.object.ComponentCollision;
+import com.b3dgs.lionengine.game.trait.collidable.Collidable;
 
 /**
  * Represents the collision data, offsets and size. Should be used in combination with
- * {@link ConfigCollisions#getCollision(String)} and {@link Collidable#setCollision(Collision)}.
+ * {@link ConfigCollisions#getCollision(String)} and {@link Collidable#addCollision(Collision)}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
- * @see Collidable
+ * @see ComponentCollision
  */
 public class Collision
+        implements Nameable
 {
+    /** Name. */
+    private final String name;
     /** Horizontal offset. */
     private final int offsetX;
     /** Vertical offset. */
@@ -45,14 +50,16 @@ public class Collision
     /**
      * Create a collision.
      * 
+     * @param name The collision name.
      * @param offsetX The collision horizontal offset.
      * @param offsetY The collision vertical offset.
      * @param width The collision width.
      * @param height The collision height.
      * @param mirror The mirror flag.
      */
-    public Collision(int offsetX, int offsetY, int width, int height, boolean mirror)
+    public Collision(String name, int offsetX, int offsetY, int width, int height, boolean mirror)
     {
+        this.name = name;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.width = width;
@@ -108,5 +115,15 @@ public class Collision
     public boolean hasMirror()
     {
         return mirror;
+    }
+
+    /*
+     * Nameable
+     */
+
+    @Override
+    public String getName()
+    {
+        return name;
     }
 }

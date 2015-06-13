@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,25 +17,22 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the collisions data from a configurer node.
+ * Represents the collisions data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
  * @see Collision
- * @see XmlNode
  */
-public class ConfigCollisions
+public final class ConfigCollisions
 {
     /** Collision node name. */
     public static final String COLLISION = Configurer.PREFIX + "collision";
@@ -51,21 +48,23 @@ public class ConfigCollisions
     public static final String COLLISION_HEIGHT = "height";
     /** Collision attribute mirror. */
     public static final String COLLISION_MIRROR = "mirror";
+    /** Error collision not found. */
+    private static final String ERROR_COLLISION_NOT_FOUND = "Collision not found: ";
 
     /**
-     * Create the size node.
+     * Create the collision data from node.
      * 
      * @param configurer The configurer reference.
-     * @return The config collisions instance.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The collisions data.
+     * @throws LionEngineException If unable to read node.
      */
-    public static ConfigCollisions create(Configurer configurer)
+    public static ConfigCollisions create(Configurer configurer) throws LionEngineException
     {
         final Map<String, Collision> collisions = new HashMap<>(0);
-        for (final XmlNode node : configurer.getRoot().getChildren(ConfigCollisions.COLLISION))
+        for (final XmlNode node : configurer.getRoot().getChildren(COLLISION))
         {
-            final String coll = node.readString(ConfigCollisions.COLLISION_NAME);
-            final Collision collision = ConfigCollisions.createCollision(node);
+            final String coll = node.readString(COLLISION_NAME);
+            final Collision collision = createCollision(node);
             collisions.put(coll, collision);
         }
         return new ConfigCollisions(collisions);
@@ -80,35 +79,43 @@ public class ConfigCollisions
      */
     public static Collision createCollision(XmlNode node) throws LionEngineException
     {
-        final int offsetX = node.readInteger(ConfigCollisions.COLLISION_OFFSETX);
-        final int offsetY = node.readInteger(ConfigCollisions.COLLISION_OFFSETY);
-        final int width = node.readInteger(ConfigCollisions.COLLISION_WIDTH);
-        final int height = node.readInteger(ConfigCollisions.COLLISION_HEIGHT);
-        final boolean mirror = node.readBoolean(ConfigCollisions.COLLISION_MIRROR);
-        return new Collision(offsetX, offsetY, width, height, mirror);
+        final String name = node.readString(COLLISION_NAME);
+        final int offsetX = node.readInteger(COLLISION_OFFSETX);
+        final int offsetY = node.readInteger(COLLISION_OFFSETY);
+        final int width = node.readInteger(COLLISION_WIDTH);
+        final int height = node.readInteger(COLLISION_HEIGHT);
+        final boolean mirror = node.readBoolean(COLLISION_MIRROR);
+        return new Collision(name, offsetX, offsetY, width, height, mirror);
     }
 
     /**
      * Create an XML node from a collision.
      * 
-     * @param name The collision name.
      * @param collision The collision reference.
      * @return The collision node.
      */
-    public static XmlNode createNode(String name, Collision collision)
+    public static XmlNode createNode(Collision collision)
     {
-        final XmlNode node = Stream.createXmlNode(ConfigCollisions.COLLISION);
-        node.writeString(ConfigCollisions.COLLISION_NAME, name);
-        node.writeInteger(ConfigCollisions.COLLISION_OFFSETX, collision.getOffsetX());
-        node.writeInteger(ConfigCollisions.COLLISION_OFFSETY, collision.getOffsetY());
-        node.writeInteger(ConfigCollisions.COLLISION_WIDTH, collision.getWidth());
-        node.writeInteger(ConfigCollisions.COLLISION_HEIGHT, collision.getHeight());
-        node.writeBoolean(ConfigCollisions.COLLISION_MIRROR, collision.hasMirror());
+        final XmlNode node = Stream.createXmlNode(COLLISION);
+        node.writeString(COLLISION_NAME, collision.getName());
+        node.writeInteger(COLLISION_OFFSETX, collision.getOffsetX());
+        node.writeInteger(COLLISION_OFFSETY, collision.getOffsetY());
+        node.writeInteger(COLLISION_WIDTH, collision.getWidth());
+        node.writeInteger(COLLISION_HEIGHT, collision.getHeight());
+        node.writeBoolean(COLLISION_MIRROR, collision.hasMirror());
         return node;
     }
 
     /** Collisions map. */
     private final Map<String, Collision> collisions;
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigCollisions()
+    {
+        throw new RuntimeException();
+    }
 
     /**
      * Load collisions from configuration media.
@@ -134,22 +141,24 @@ public class ConfigCollisions
      * 
      * @param name The collision name.
      * @return The collision reference.
-     * @throws LionEngineException If the collision with the specified name is not found.
+     * @throws LionEngineException If the collision with the specified name was not found.
      */
     public Collision getCollision(String name) throws LionEngineException
     {
-        final Collision collision = collisions.get(name);
-        Check.notNull(collision);
-        return collision;
+        if (collisions.containsKey(name))
+        {
+            return collisions.get(name);
+        }
+        throw new LionEngineException(ERROR_COLLISION_NOT_FOUND, name);
     }
 
     /**
      * Get all collisions.
      * 
-     * @return The unmodifiable collisions map, where key is the collision name.
+     * @return The collisions list.
      */
-    public Map<String, Collision> getCollisions()
+    public Collection<Collision> getCollisions()
     {
-        return Collections.unmodifiableMap(collisions);
+        return collisions.values();
     }
 }

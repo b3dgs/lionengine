@@ -6,15 +6,6 @@
    <bundle id="com.b3dgs.lionengine.game">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
-   <bundle id="com.b3dgs.lionengine.game-platform">
-      <category name="com.b3dgs.lionengine"/>
-   </bundle>
-   <bundle id="com.b3dgs.lionengine.game-pathfinding">
-      <category name="com.b3dgs.lionengine"/>
-   </bundle>
-   <bundle id="com.b3dgs.lionengine.game-strategy">
-      <category name="com.b3dgs.lionengine"/>
-   </bundle>
    <bundle id="com.b3dgs.lionengine.network">
       <category name="com.b3dgs.lionengine"/>
    </bundle>

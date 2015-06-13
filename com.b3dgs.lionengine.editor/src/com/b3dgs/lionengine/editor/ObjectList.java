@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,8 @@
  */
 package com.b3dgs.lionengine.editor;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -34,13 +35,15 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.Nameable;
+
 /**
  * Represents the object list, allowing to add and remove objects.
  * 
  * @param <T> The object type handled by the list.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class ObjectList<T>
+public abstract class ObjectList<T extends Nameable>
 {
     /** Icon add. */
     public static final Image ICON_ADD = UtilEclipse.getIcon("add.png");
@@ -51,6 +54,10 @@ public abstract class ObjectList<T>
     /** Default new object name. */
     private static final String DEFAULT_NEW_OBJECT_NAME = "new";
 
+    /** Listeners. */
+    final Collection<ObjectListListener<T>> listeners = new ArrayList<>();
+    /** Class type. */
+    final Class<T> type;
     /** Objects list. */
     Tree objectsTree;
     /** Selected data. */
@@ -60,27 +67,13 @@ public abstract class ObjectList<T>
 
     /**
      * Create an object list.
+     * 
+     * @param type The list class type.
      */
-    public ObjectList()
+    public ObjectList(Class<T> type)
     {
-        // Nothing to do
+        this.type = type;
     }
-
-    /**
-     * Check if the object is an instance of the handled type.
-     * 
-     * @param object The object to check.
-     * @return <code>true</code> if instance of, <code>false</code> else.
-     */
-    protected abstract boolean instanceOf(Object object);
-
-    /**
-     * Cast the object to the handled type.
-     * 
-     * @param object The object to cast.
-     * @return The casted object.
-     */
-    protected abstract T cast(Object object);
 
     /**
      * Return a copy of the object.
@@ -93,16 +86,27 @@ public abstract class ObjectList<T>
     /**
      * Create a default object (called when clicked on add object from tool bar).
      * 
+     * @param name The object name.
      * @return The default object instance.
      */
-    protected abstract T createDefaultObject();
+    protected abstract T createObject(String name);
+
+    /**
+     * Add an object list listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void addListener(ObjectListListener<T> listener)
+    {
+        listeners.add(listener);
+    }
 
     /**
      * Create the objects list area.
      * 
      * @param parent The composite parent.
      */
-    public void create(final Composite parent)
+    public void create(Composite parent)
     {
         final Group objects = new Group(parent, SWT.NONE);
         objects.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -113,6 +117,54 @@ public abstract class ObjectList<T>
 
         createToolBar(objects);
         createTree(objects);
+    }
+
+    /**
+     * Create the tool bar.
+     * 
+     * @param parent The composite parent.
+     */
+    public void createToolBar(final Composite parent)
+    {
+        final ToolBar toolbar = new ToolBar(parent, SWT.HORIZONTAL);
+        toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
+
+        createAddObjectToolItem(toolbar);
+        createRemoveObjectToolItem(toolbar);
+    }
+
+    /**
+     * Create the object tree.
+     * 
+     * @param parent The composite parent.
+     */
+    public void createTree(final Composite parent)
+    {
+        objectsTree = new Tree(parent, SWT.SINGLE);
+        objectsTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        objectsTree.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final TreeItem[] items = objectsTree.getSelection();
+                if (items.length > 0)
+                {
+                    final TreeItem selection = items[0];
+                    final Object data = selection.getData();
+                    if (instanceOf(data))
+                    {
+                        setSelectedObject(cast(data));
+                    }
+                    else
+                    {
+                        final T object = createObject("default");
+                        selection.setData(object);
+                        setSelectedObject(object);
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -179,6 +231,21 @@ public abstract class ObjectList<T>
     }
 
     /**
+     * Get the objects list handled by the tree.
+     * 
+     * @return The objects list.
+     */
+    public Collection<T> getObjects()
+    {
+        final Collection<T> objects = new ArrayList<>();
+        for (final TreeItem item : objectsTree.getItems())
+        {
+            objects.add(cast(item.getData()));
+        }
+        return objects;
+    }
+
+    /**
      * Get the objects tree reference.
      * 
      * @return The objects tree reference.
@@ -189,18 +256,39 @@ public abstract class ObjectList<T>
     }
 
     /**
+     * Check if the object is an instance of the handled type.
+     * 
+     * @param object The object to check.
+     * @return <code>true</code> if instance of, <code>false</code> else.
+     */
+    protected boolean instanceOf(Object object)
+    {
+        return type.isAssignableFrom(object.getClass());
+    }
+
+    /**
+     * Cast the object to the handled type.
+     * 
+     * @param object The object to cast.
+     * @return The casted object.
+     */
+    protected T cast(Object object)
+    {
+        return type.cast(object);
+    }
+
+    /**
      * Load a map of object, and store them by using their name.
      * 
-     * @param objects The object map.
+     * @param objects The object collection.
      */
-    protected void loadObjects(Map<String, T> objects)
+    protected void loadObjects(Collection<T> objects)
     {
         boolean selected = false;
-        for (final Map.Entry<String, T> name : objects.entrySet())
+        for (final T object : objects)
         {
-            final T object = name.getValue();
             final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
-            item.setText(name.getKey());
+            item.setText(object.getName());
             item.setData(object);
             if (!selected)
             {
@@ -221,20 +309,10 @@ public abstract class ObjectList<T>
     {
         selectedObject = object;
         selectedObjectBackup = copyObject(object);
-    }
-
-    /**
-     * Create the tool bar.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createToolBar(final Composite parent)
-    {
-        final ToolBar toolbar = new ToolBar(parent, SWT.HORIZONTAL);
-        toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
-
-        createAddObjectToolItem(toolbar);
-        createRemoveObjectToolItem(toolbar);
+        for (final ObjectListListener<T> listener : listeners)
+        {
+            listener.notifyObjectSelected(object);
+        }
     }
 
     /**
@@ -260,7 +338,7 @@ public abstract class ObjectList<T>
                     final String name = inputDialog.getValue();
                     final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
                     item.setText(name);
-                    item.setData(createDefaultObject());
+                    item.setData(createObject(name));
                 }
             }
         });
@@ -282,43 +360,13 @@ public abstract class ObjectList<T>
             {
                 for (final TreeItem item : objectsTree.getSelection())
                 {
+                    for (final ObjectListListener<T> listener : listeners)
+                    {
+                        listener.notifyObjectDeleted(type.cast(item.getData()));
+                    }
                     item.dispose();
                 }
                 objectsTree.layout(true, true);
-            }
-        });
-    }
-
-    /**
-     * Create the object tree.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createTree(final Composite parent)
-    {
-        objectsTree = new Tree(parent, SWT.SINGLE);
-        objectsTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        objectsTree.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                final TreeItem[] items = objectsTree.getSelection();
-                if (items.length > 0)
-                {
-                    final TreeItem selection = items[0];
-                    final Object data = selection.getData();
-                    if (instanceOf(data))
-                    {
-                        setSelectedObject(cast(data));
-                    }
-                    else
-                    {
-                        final T object = createDefaultObject();
-                        selection.setData(object);
-                        setSelectedObject(object);
-                    }
-                }
             }
         });
     }

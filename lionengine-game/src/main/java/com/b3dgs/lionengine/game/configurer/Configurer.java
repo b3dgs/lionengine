@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,8 +20,7 @@ package com.b3dgs.lionengine.game.configurer;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.ObjectGame;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -29,16 +28,15 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Allows to retrieve informations from an external XML configuration file.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see SetupGame
- * @see ObjectGame
+ * @see Setup
  * @see XmlNode
  */
 public class Configurer
 {
+    /** Header XML. */
+    public static final String HEADER = "xmlns:lionengine";
     /** Prefix XML node. */
     public static final String PREFIX = "lionengine:";
-    /** Class node name. */
-    public static final String CLASS = Configurer.PREFIX + "class";
 
     /** Media reference. */
     private final Media media;
@@ -167,17 +165,6 @@ public class Configurer
         {
             throw new LionEngineException(exception);
         }
-    }
-
-    /**
-     * Get the class name node value.
-     * 
-     * @return The class name node value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public String getClassName() throws LionEngineException
-    {
-        return getText(Configurer.CLASS);
     }
 
     /**

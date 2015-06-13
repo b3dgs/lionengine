@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,6 +41,9 @@ import java.util.Arrays;
  * Assert.assertFalse(checksum.check(other, signature));
  * Assert.assertTrue(checksum.check(integer, test));
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -64,6 +67,8 @@ public final class Checksum
         return new Checksum(SHA);
     }
 
+    /** SHA lock. */
+    private final Object lockSha = new Object();
     /** Message digest instance. */
     private final MessageDigest sha;
 
@@ -119,7 +124,11 @@ public final class Checksum
      */
     public String getSha256(byte[] bytes)
     {
-        final byte[] v = sha.digest(bytes);
+        final byte[] v;
+        synchronized (lockSha)
+        {
+            v = sha.digest(bytes);
+        }
         final StringBuilder builder = new StringBuilder(84);
         for (final byte b : v)
         {

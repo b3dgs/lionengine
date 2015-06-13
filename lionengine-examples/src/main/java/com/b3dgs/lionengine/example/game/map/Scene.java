@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,16 +17,20 @@
  */
 package com.b3dgs.lionengine.example.game.map;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.map.TileGame;
-import com.b3dgs.lionengine.game.utility.LevelRipConverter;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.Minimap;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our world.
@@ -34,78 +38,81 @@ import com.b3dgs.lionengine.game.utility.LevelRipConverter;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Camera reference. */
+    private final Camera camera = services.create(Camera.class);
+    /** Map reference. */
+    private final MapTile map = services.create(MapTileGame.class);
+    /** Minimap reference. */
+    private final Minimap minimap = new Minimap(map);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
-    /** Camera. */
-    private final CameraGame camera;
-    /** Map. */
-    private final Map map;
-    /** Offset x. */
-    private double x;
-    /** Side. */
-    private double side;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
+    /** Scrolling speed. */
+    private double speed;
+    /** Map size. */
+    private int size;
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        camera = new CameraGame();
-        map = new Map();
+        super(loader, NATIVE);
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     protected void load()
     {
-        final LevelRipConverter<TileGame> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
-                Core.MEDIA.create("tile"), map);
-        rip.start();
+        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        minimap.load(false);
         camera.setView(0, 0, getWidth(), getHeight());
-        side = 3;
+        camera.setLimits(map);
+        size = map.getInTileWidth() * map.getTileWidth() - camera.getWidth();
+        speed = 3;
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
-        if (keyboard.isPressed(Keyboard.ESCAPE))
+        if (camera.getX() > size)
         {
-            end();
+            camera.setLocation(size, 0);
+            speed *= -1;
         }
-
-        x += side * extrp;
-        final int size = map.getWidthInTile() * map.getTileWidth() - camera.getViewWidth();
-        if (x > size)
+        if (camera.getX() < 0)
         {
-            x = size;
-            side *= -1;
+            camera.setLocation(0, 0);
+            speed *= -1;
         }
-        if (x < 0)
-        {
-            x = 0;
-            side *= -1;
-        }
-        camera.setLocationX(x);
+        camera.moveLocation(extrp, speed, 0.0);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         g.clear(0, 0, getWidth(), getHeight());
-        map.render(g, camera);
+        map.render(g);
+        minimap.render(g);
+        g.setColor(ColorRgba.RED);
+        g.drawRect((int) (camera.getX() / map.getTileWidth()), (int) (camera.getY() / map.getTileHeight()),
+                camera.getWidth() / map.getTileWidth(), camera.getHeight() / map.getTileWidth(), false);
     }
 
     @Override

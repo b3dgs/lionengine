@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,9 +23,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -35,6 +34,7 @@ import com.b3dgs.lionengine.mock.MediaMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class SpriteTiledTest
 {
     /** Image media. */
@@ -48,8 +48,8 @@ public class SpriteTiledTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -58,7 +58,7 @@ public class SpriteTiledTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -71,15 +71,13 @@ public class SpriteTiledTest
         final int height = 16;
         final int tileSize = 1;
         final SpriteTiled spriteA = Drawable.loadSpriteTiled(
-                Core.GRAPHIC.createImageBuffer(width, height, Transparency.OPAQUE), tileSize, tileSize);
+                Graphics.createImageBuffer(width, height, Transparency.OPAQUE), tileSize, tileSize);
 
         Assert.assertNotNull(spriteA.getSurface());
         Assert.assertEquals(tileSize, spriteA.getTileWidth());
         Assert.assertEquals(tileSize, spriteA.getTileHeight());
-        Assert.assertNotNull(spriteA.getTile(0));
         Assert.assertEquals(width, spriteA.getTilesHorizontal());
         Assert.assertEquals(height, spriteA.getTilesVertical());
-        Assert.assertEquals(width * height, spriteA.getTilesNumber());
 
         // Load from file
         final int tileWidth = 16;
@@ -87,16 +85,14 @@ public class SpriteTiledTest
         final SpriteTiled spriteB = Drawable.loadSpriteTiled(MEDIA, tileWidth, tileHeight);
         DrawableTestTool.assertImageInfoCorrect(MEDIA, spriteB);
 
-        Assert.assertEquals(tileWidth, spriteB.getTileWidthOriginal());
         Assert.assertEquals(tileWidth, spriteB.getTileWidth());
-        Assert.assertEquals(tileHeight, spriteB.getTileHeightOriginal());
         Assert.assertEquals(tileHeight, spriteB.getTileHeight());
 
         DrawableTestTool.testSpriteLoading(spriteB);
 
         DrawableTestTool.testSpriteModification(2, spriteB);
         DrawableTestTool.testImageRender(g, spriteB);
-        spriteB.render(g, 0, 0, 0);
+        spriteB.render(g);
 
         Assert.assertFalse(spriteA.equals(spriteB));
 
@@ -114,11 +110,6 @@ public class SpriteTiledTest
         Assert.assertFalse(spriteD.equals(spriteE));
         final SpriteTiled spriteF = Drawable.loadSpriteTiled(spriteD.getSurface(), tileWidth, tileHeight);
         Assert.assertTrue(spriteD.equals(spriteF));
-
-        // Get tile
-        Assert.assertNotNull(spriteB.getTile(0));
-        Assert.assertNotNull(spriteB.getTile(99));
-        Assert.assertNotNull(spriteB.getTile(-1));
 
         // Error
         DrawableTestTool.testSpriteTiledLoadError(0, 0);

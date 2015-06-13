@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -182,9 +182,21 @@ public final class XmlNodeMock
     }
 
     @Override
+    public void removeChild(XmlNode child)
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void removeChildren(String children)
     {
         // Nothing to do
+    }
+
+    @Override
+    public String getNodeName()
+    {
+        return null;
     }
 
     @Override

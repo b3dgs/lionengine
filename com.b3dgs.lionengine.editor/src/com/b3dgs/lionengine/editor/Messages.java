@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,10 +29,12 @@ public final class Messages
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".messages"; //$NON-NLS-1$
+
     /** Exit handler title. */
     public static String ExitHandler_Title;
     /** Exit handler text. */
     public static String ExitHandler_Text;
+
     /** Object properties. */
     public static String ObjectProperties_Properties;
     /** Object properties confirm. */
@@ -45,6 +47,7 @@ public final class Messages
     public static String ObjectList_AddObject_Title;
     /** Object list add text. */
     public static String ObjectList_AddObject_Text;
+
     /** Input validator name error text. */
     public static String InputValidator_Error_Name;
 
@@ -53,7 +56,7 @@ public final class Messages
      */
     static
     {
-        NLS.initializeMessages(Messages.BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     /**

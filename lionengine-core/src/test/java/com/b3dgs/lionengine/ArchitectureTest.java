@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ import org.junit.Test;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class ArchitectureTest
 {
     /**
@@ -39,6 +40,12 @@ public class ArchitectureTest
 
         Assert.assertNotNull(Architecture.values());
         Assert.assertEquals(Architecture.X64, Architecture.valueOf(Architecture.X64.name()));
+
+        Assert.assertEquals(Architecture.UNKNOWN, OperatingSystem.findArchitecture(null));
+        Assert.assertEquals(Architecture.UNKNOWN, OperatingSystem.findArchitecture("0"));
+        Assert.assertEquals(Architecture.X86, OperatingSystem.findArchitecture("86"));
+        Assert.assertEquals(Architecture.X86, OperatingSystem.findArchitecture("32"));
+        Assert.assertEquals(Architecture.X64, OperatingSystem.findArchitecture("64"));
     }
 
     /**

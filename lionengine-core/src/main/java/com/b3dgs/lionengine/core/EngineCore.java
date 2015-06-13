@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +24,9 @@ import com.b3dgs.lionengine.Version;
 /**
  * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
  * library used (as it is done for AWT, SWT and Android engine implementation).
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -32,11 +35,11 @@ public abstract class EngineCore
     /** Engine name. */
     public static final String NAME = "LionEngine";
     /** Engine version. */
-    public static final Version VERSION = Version.create(7, 1, 4);
+    public static final Version VERSION = Version.create(8, 0, 0);
     /** Engine begin date. */
     public static final String BEGIN_DATE = "13 June 2010";
     /** Engine last release date. */
-    public static final String LAST_RELEASE_DATE = "02 November 2014";
+    public static final String LAST_RELEASE_DATE = "13 June 2015";
     /** Engine author. */
     public static final String AUTHOR = "Pierre-Alexandre";
     /** Engine website. */
@@ -50,23 +53,22 @@ public abstract class EngineCore
     /** Engine terminated. */
     private static final String ENGINE_TERMINATED = "LionEngine terminated";
     /** Started engine flag. */
-    private static boolean started = false;
+    private static volatile boolean started;
     /** User program name. */
-    private static String programName;
+    private static volatile String programName;
     /** User program version. */
-    private static Version programVersion;
+    private static volatile Version programVersion;
 
     /**
      * Start engine. Has to be called before anything and only one time, in the main.
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param level The verbose level (must not be <code>null</code>).
      * @param factoryGraphic The graphic factory (must not be <code>null</code>).
      * @param factoryMedia The media factory (must not be <code>null</code>).
      * @throws LionEngineException If the engine has already been started.
      */
-    public static void start(String name, Version version, Verbose level, FactoryGraphic factoryGraphic,
+    public static synchronized void start(String name, Version version, FactoryGraphic factoryGraphic,
             FactoryMedia factoryMedia) throws LionEngineException
     {
         if (started)
@@ -76,11 +78,9 @@ public abstract class EngineCore
 
         Check.notNull(name);
         Check.notNull(version);
-        Check.notNull(level);
         Check.notNull(factoryGraphic);
         Check.notNull(factoryMedia);
 
-        Verbose.set(level);
         Verbose.prepareLogger();
 
         programName = name;
@@ -92,27 +92,27 @@ public abstract class EngineCore
         message.append(programVersion).append("\"");
         Verbose.info(message.toString());
 
-        FactoryGraphicProvider.setFactoryGraphic(factoryGraphic);
-        FactoryMediaProvider.setFactoryMedia(factoryMedia);
+        Graphics.setFactoryGraphic(factoryGraphic);
+        Medias.setFactoryMedia(factoryMedia);
 
         started = true;
     }
 
     /**
      * Terminate the engine. It is necessary to call this function only if the engine need to be started again during
-     * the same jvm execution. This function is automatically called when the program life cycle reach the end.
+     * the same jvm execution.
      * 
      * @throws LionEngineException If the engine has not been started.
      */
-    public static void terminate() throws LionEngineException
+    public static synchronized void terminate() throws LionEngineException
     {
         if (!started)
         {
             throw new LionEngineException(ERROR_STARTED_NOT);
         }
 
-        FactoryGraphicProvider.setFactoryGraphic(null);
-        FactoryMediaProvider.setFactoryMedia(null);
+        Graphics.setFactoryGraphic(null);
+        Medias.setFactoryMedia(null);
 
         programName = null;
         programVersion = null;
@@ -127,7 +127,7 @@ public abstract class EngineCore
      * @return The program name.
      * @throws LionEngineException If the engine has not been started.
      */
-    public static String getProgramName() throws LionEngineException
+    public static synchronized String getProgramName() throws LionEngineException
     {
         if (!started)
         {
@@ -142,7 +142,7 @@ public abstract class EngineCore
      * @return The program version.
      * @throws LionEngineException If the engine has not been started.
      */
-    public static Version getProgramVersion() throws LionEngineException
+    public static synchronized Version getProgramVersion() throws LionEngineException
     {
         if (!started)
         {

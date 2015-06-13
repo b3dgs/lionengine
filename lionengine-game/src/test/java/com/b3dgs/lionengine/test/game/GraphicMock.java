@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.test.game;
 
 import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Transform;
@@ -74,7 +76,19 @@ public class GraphicMock
     }
 
     @Override
+    public void drawRect(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
+    {
+        // Mock
+    }
+
+    @Override
     public void drawGradient(int x, int y, int width, int height)
+    {
+        // Mock
+    }
+
+    @Override
+    public void drawGradient(Viewer viewer, Origin origin, double x, double y, int width, int height)
     {
         // Mock
     }
@@ -86,7 +100,19 @@ public class GraphicMock
     }
 
     @Override
+    public void drawLine(Viewer viewer, double x1, double y1, double x2, double y2)
+    {
+        // Mock
+    }
+
+    @Override
     public void drawOval(int x, int y, int width, int height, boolean fill)
+    {
+        // Mock
+    }
+
+    @Override
+    public void drawOval(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
         // Mock
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.ScreenMock;
-import com.b3dgs.lionengine.mock.SequenceAsyncFailMock;
 import com.b3dgs.lionengine.mock.SequenceInterruptMock;
 import com.b3dgs.lionengine.mock.SequenceSingleMock;
 
@@ -38,6 +37,7 @@ import com.b3dgs.lionengine.mock.SequenceSingleMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class RendererTest
 {
     /** Output. */
@@ -55,9 +55,8 @@ public class RendererTest
     @BeforeClass
     public static void prepareTest()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        System.out.println("*********************************** SEQUENCE VERBOSE ***********************************");
-        System.out.flush();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        Verbose.info("*********************************** SEQUENCE VERBOSE ***********************************");
     }
 
     /**
@@ -66,10 +65,9 @@ public class RendererTest
     @AfterClass
     public static void cleanUp()
     {
-        System.out.println("****************************************************************************************");
-        System.out.flush();
+        Verbose.info("****************************************************************************************");
         ScreenMock.wait = false;
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -82,7 +80,7 @@ public class RendererTest
     {
         final Loader loader = new Loader(CONFIG);
         final Renderer renderer = loader.getRenderer();
-        renderer.startFirstSequence(SequenceSingleMock.class, loader);
+        renderer.startFirstSequence(loader, SequenceSingleMock.class);
         renderer.join();
     }
 
@@ -105,11 +103,11 @@ public class RendererTest
             }
         };
         renderer.setUncaughtExceptionHandler(handler);
-        renderer.startFirstSequence(SequenceSingleMock.class, loader);
+        renderer.startFirstSequence(loader, SequenceSingleMock.class);
         Assert.assertTrue(renderer.isStarted());
         Assert.assertNull(renderer.getNextSequence());
         renderer.join();
-        renderer.startFirstSequence(SequenceSingleMock.class, loader);
+        renderer.startFirstSequence(loader, SequenceSingleMock.class);
         renderer.join();
         Assert.assertTrue(uncaught);
     }
@@ -143,45 +141,6 @@ public class RendererTest
         {
             // Wait
         }
-        renderer.join();
-    }
-
-    /**
-     * Test the async sequence interrupt.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test(timeout = 500)
-    public void testSequenceAsyncInterrupt() throws InterruptedException
-    {
-        final Loader loader = new Loader(CONFIG);
-        final Renderer renderer = loader.getRenderer();
-        loader.start(SequenceAsyncFailMock.class);
-
-        Thread.sleep(250);
-        renderer.interrupt();
-        renderer.join();
-    }
-
-    /**
-     * Test the sync interrupt.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test(timeout = 500)
-    public void testSyncInterrupt() throws InterruptedException
-    {
-        final Resolution resolution = new Resolution(320, 240, 1);
-        final Config config = new Config(resolution, 32, true);
-        final Loader loader = new Loader(config);
-        final Renderer renderer = loader.getRenderer();
-        loader.start(SequenceSingleMock.class);
-
-        while (renderer.getState() != State.TIMED_WAITING)
-        {
-            // Wait
-        }
-        renderer.interrupt();
         renderer.join();
     }
 

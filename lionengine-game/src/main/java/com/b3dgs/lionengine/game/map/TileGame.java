@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,320 +17,154 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.util.Collection;
-
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.game.purview.Localizable;
-import com.b3dgs.lionengine.stream.FileReading;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Features;
 
 /**
- * Default class tile; containing following data:
- * <ul>
- * <li><code>pattern</code> : tilesheet number</li>
- * <li><code>number</code> : tile number inside current tilesheet</li>
- * <li><code>x & y</code> : real location</li>
- * <li><code>collision</code> : collision type</li>
- * </ul>
+ * Tile base implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TileGame
+        implements Tile
 {
     /** Tile width. */
     private final int width;
     /** Tile height. */
     private final int height;
-    /** Tilesheet number where this tile is contained. */
-    private Integer pattern;
-    /** Location number in the tilesheet. */
+    /** Features list. */
+    private final Features<TileFeature> features;
+    /** Tile sheet number where tile is contained. */
+    private Integer sheet;
+    /** Group name. */
+    private String group;
+    /** Position number in the tilesheet. */
     private int number;
-    /** Tile x on map. */
+    /** Horizontal location on map. */
     private int x;
-    /** Tile y on map. */
+    /** Vertical location on map. */
     private int y;
-    /** Tile collision. */
-    private CollisionTile collision;
 
     /**
      * Create a tile.
      * 
      * @param width The tile width (must be strictly positive).
      * @param height The tile height (must be strictly positive).
-     * @param pattern The tile pattern (must not be <code>null</code>).
-     * @param number The tile number (must be positive).
-     * @param collision The tile collision (must not be <code>null</code>).
+     * @throws LionEngineException If tile size is not correct.
      */
-    public TileGame(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public TileGame(int width, int height) throws LionEngineException
     {
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);
-        Check.superiorOrEqual(number, 0);
-        Check.notNull(pattern);
-        Check.notNull(collision);
 
         this.width = width;
         this.height = height;
-        this.pattern = pattern;
-        this.number = number;
-        this.collision = collision;
+        features = new Features<>(TileFeature.class);
+        sheet = Integer.valueOf(0);
         x = 0;
         y = 0;
     }
 
-    /**
-     * Set pattern number.
-     * 
-     * @param pattern The pattern number (must not be <code>null</code>).
+    /*
+     * Tile
      */
-    public void setPattern(Integer pattern)
+
+    @Override
+    public void addFeature(TileFeature feature)
     {
-        Check.notNull(pattern);
-        this.pattern = pattern;
+        features.add(feature);
     }
 
-    /**
-     * Set tile index inside pattern.
-     * 
-     * @param number The tile index.
-     */
+    @Override
+    public void setSheet(Integer sheet)
+    {
+        Check.notNull(sheet);
+        this.sheet = sheet;
+    }
+
+    @Override
+    public void setGroup(String name)
+    {
+        group = name;
+    }
+
+    @Override
     public void setNumber(int number)
     {
         Check.superiorOrEqual(number, 0);
         this.number = number;
     }
 
-    /**
-     * Set collision.
-     * 
-     * @param collision The collision (must not be <code>null</code>).
-     */
-    public void setCollision(CollisionTile collision)
-    {
-        Check.notNull(collision);
-        this.collision = collision;
-    }
-
-    /**
-     * Set tile location x. Should be used only when overriding the
-     * {@link MapTile#loadTile(Collection, FileReading, int)} function.
-     * 
-     * @param x The tile location x.
-     */
+    @Override
     public void setX(int x)
     {
         this.x = x;
     }
 
-    /**
-     * Set tile location y. Should be used only when overriding the
-     * {@link MapTile#loadTile(Collection, FileReading, int)} function.
-     * 
-     * @param y The tile location y.
-     */
+    @Override
     public void setY(int y)
     {
         this.y = y;
     }
 
-    /**
-     * Get the horizontal collision location between the tile and the localizable.
-     * 
-     * @param localizable The localizable object searching the collision.
-     * @return The collision x (<code>null</code> if none).
-     */
-    public Double getCollisionX(Localizable localizable)
-    {
-        for (final CollisionFunction function : getCollision().getCollisionFunctions())
-        {
-            if (function.getAxis() == CollisionRefential.X)
-            {
-                final int min = function.getRange().getMin();
-                final int max = function.getRange().getMax();
-                final int x = getInputValue(function, localizable);
-                if (x >= min && x <= max)
-                {
-                    final double value = getX() + function.computeCollision(x);
-                    if (localizable.getLocationOldX() >= value && localizable.getLocationX() <= value
-                            || localizable.getLocationX() >= value && localizable.getLocationOldX() <= value)
-                    {
-                        return Double.valueOf(value);
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Get the vertical collision location between the tile and the localizable.
-     * 
-     * @param localizable The localizable object searching the collision.
-     * @return The collision y (<code>null</code> if none).
-     */
-    public Double getCollisionY(Localizable localizable)
-    {
-        for (final CollisionFunction function : getCollision().getCollisionFunctions())
-        {
-            if (function.getAxis() == CollisionRefential.Y)
-            {
-                final int min = function.getRange().getMin();
-                final int max = function.getRange().getMax();
-                final int x = getInputValue(function, localizable);
-                if (x >= min && x <= max)
-                {
-                    final double margin = Math.ceil(Math.abs((localizable.getLocationOldX() - localizable
-                            .getLocationX()) * function.getValue())) + 1;
-                    final double value = getY() + function.computeCollision(x);
-                    if (localizable.getLocationOldY() >= value - margin && localizable.getLocationY() <= value + margin)
-                    {
-                        return Double.valueOf(value);
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Get the left position of the tile.
-     * 
-     * @return The left position of the tile.
-     */
-    public int getLeft()
-    {
-        return getX();
-    }
-
-    /**
-     * Get the right position of the tile.
-     * 
-     * @return The right position of the tile.
-     */
-    public int getRight()
-    {
-        return getX() + getWidth() - 1;
-    }
-
-    /**
-     * Get the top position of the tile.
-     * 
-     * @return The top position of the tile.
-     */
-    public int getTop()
-    {
-        return getY() + getHeight() - 1;
-    }
-
-    /**
-     * Get the bottom position of the tile.
-     * 
-     * @return The bottom position of the tile.
-     */
-    public int getBottom()
-    {
-        return getY();
-    }
-
-    /**
-     * Get the width.
-     * 
-     * @return The tile width.
-     */
+    @Override
     public int getWidth()
     {
         return width;
     }
 
-    /**
-     * Get the height.
-     * 
-     * @return The tile height.
-     */
+    @Override
     public int getHeight()
     {
         return height;
     }
 
-    /**
-     * Get pattern number.
-     * 
-     * @return The pattern number.
-     */
-    public Integer getPattern()
+    @Override
+    public Integer getSheet()
     {
-        return pattern;
+        return sheet;
     }
 
-    /**
-     * Get tile index number.
-     * 
-     * @return The tile index number.
-     */
+    @Override
+    public String getGroup()
+    {
+        return group;
+    }
+
+    @Override
     public int getNumber()
     {
         return number;
     }
 
-    /**
-     * Get tile location x.
-     * 
-     * @return The tile location x.
-     */
+    @Override
     public int getX()
     {
         return x;
     }
 
-    /**
-     * Get tile location y.
-     * 
-     * @return The tile location y.
-     */
+    @Override
     public int getY()
     {
         return y;
     }
 
-    /**
-     * Get tile collision.
-     * 
-     * @return The tile collision.
-     */
-    public CollisionTile getCollision()
+    @Override
+    public <C extends TileFeature> C getFeature(Class<C> feature) throws LionEngineException
     {
-        return collision;
+        return features.get(feature);
     }
 
-    /**
-     * Check if there is a collision between the localizable and the tile.
-     * 
-     * @param localizable The localizable.
-     * @return <code>true</code> if collide, <code>false</code> else.
-     */
-    public boolean hasCollision(Localizable localizable)
+    @Override
+    public Iterable<? extends TileFeature> getFeatures()
     {
-        return getCollision() != null && (getCollisionX(localizable) != null || getCollisionY(localizable) != null);
+        return features.getAll();
     }
 
-    /**
-     * Get the input value from the function.
-     * 
-     * @param function The function used.
-     * @param localizable The localizable reference.
-     * @return The input value.
-     */
-    private int getInputValue(CollisionFunction function, Localizable localizable)
+    @Override
+    public <C extends TileFeature> boolean hasFeature(Class<C> feature)
     {
-        final CollisionRefential input = function.getInput();
-        switch (input)
-        {
-            case X:
-                return UtilMath.fixBetween(localizable.getLocationIntX() - getX(), 0, getWidth() - 1);
-            case Y:
-                return UtilMath.fixBetween(localizable.getLocationIntY() - getY(), 0, getHeight() - 1);
-            default:
-                throw new RuntimeException("Unknow type: " + input);
-        }
+        return features.contains(feature);
     }
 }

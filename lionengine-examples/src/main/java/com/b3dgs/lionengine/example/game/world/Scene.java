@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.example.game.world;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 
@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
@@ -44,31 +44,27 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
+        super(loader, NATIVE);
         world = new World(getConfig());
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     protected void load()
     {
-        world.saveToFile(Core.MEDIA.create("world.lvl"));
-        world.loadFromFile(Core.MEDIA.create("world.lvl"));
+        world.saveToFile(Medias.create("world.lvl"));
+        world.loadFromFile(Medias.create("world.lvl"));
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         world.update(extrp);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         world.render(g);
     }

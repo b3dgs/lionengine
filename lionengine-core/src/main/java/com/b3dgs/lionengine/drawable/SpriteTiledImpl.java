@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -38,12 +36,8 @@ final class SpriteTiledImpl
     private final int horizontalTiles;
     /** Number of vertical tiles. */
     private final int verticalTiles;
-    /** Original tile width. */
-    private final int tileOriginalWidth;
-    /** Original tile height. */
-    private final int tileOriginalHeight;
-    /** Total number of tiles. */
-    private final int tilesNumber;
+    /** Current tile. */
+    private int tile;
 
     /**
      * Internal constructor.
@@ -56,15 +50,11 @@ final class SpriteTiledImpl
     SpriteTiledImpl(Media media, int tileWidth, int tileHeight) throws LionEngineException
     {
         super(media);
-
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
 
-        tileOriginalWidth = tileWidth;
-        tileOriginalHeight = tileHeight;
-        horizontalTiles = getWidthOriginal() / tileWidth;
-        verticalTiles = getHeightOriginal() / tileHeight;
-        tilesNumber = horizontalTiles * verticalTiles;
+        horizontalTiles = getWidth() / tileWidth;
+        verticalTiles = getHeight() / tileHeight;
     }
 
     /**
@@ -78,15 +68,11 @@ final class SpriteTiledImpl
     SpriteTiledImpl(ImageBuffer surface, int tileWidth, int tileHeight) throws LionEngineException
     {
         super(surface);
-
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
 
-        tileOriginalWidth = tileWidth;
-        tileOriginalHeight = tileHeight;
-        horizontalTiles = getWidthOriginal() / tileWidth;
-        verticalTiles = getHeightOriginal() / tileHeight;
-        tilesNumber = horizontalTiles * verticalTiles;
+        horizontalTiles = getWidth() / tileWidth;
+        verticalTiles = getHeight() / tileHeight;
     }
 
     /*
@@ -94,14 +80,17 @@ final class SpriteTiledImpl
      */
 
     @Override
-    public void render(Graphic g, int tile, int x, int y)
+    public void render(Graphic g)
     {
-        final int cx = tile % horizontalTiles;
-        final int cy = (int) Math.floor(tile / (double) horizontalTiles);
-        final int w = getTileWidth();
-        final int h = getTileHeight();
+        final int ox = tile % horizontalTiles;
+        final int oy = (int) Math.floor(tile / (double) horizontalTiles);
+        render(g, getRenderX(), getRenderY(), getTileWidth(), getTileHeight(), ox, oy);
+    }
 
-        g.drawImage(getSurface(), x, y, x + w, y + h, cx * w, cy * h, cx * w + w, cy * h + h);
+    @Override
+    public void setTile(int tile)
+    {
+        this.tile = tile;
     }
 
     @Override
@@ -117,18 +106,6 @@ final class SpriteTiledImpl
     }
 
     @Override
-    public int getTileWidthOriginal()
-    {
-        return tileOriginalWidth;
-    }
-
-    @Override
-    public int getTileHeightOriginal()
-    {
-        return tileOriginalHeight;
-    }
-
-    @Override
     public int getTilesHorizontal()
     {
         return horizontalTiles;
@@ -141,34 +118,17 @@ final class SpriteTiledImpl
     }
 
     @Override
-    public int getTilesNumber()
-    {
-        return tilesNumber;
-    }
-
-    @Override
-    public ImageBuffer getTile(int tile)
-    {
-        final ImageBuffer buffer = Core.GRAPHIC
-                .createImageBuffer(getTileWidth(), getTileHeight(), Transparency.BITMASK);
-        final Graphic g = buffer.createGraphic();
-        final int cx = tile % getTilesHorizontal();
-        final int cy = (int) Math.floor(tile / (double) getTilesHorizontal());
-        final int w = getTileWidth();
-        final int h = getTileHeight();
-
-        g.drawImage(getSurface(), 0, 0, w, h, cx * w, cy * h, cx * w + w, cy * h + h);
-        g.dispose();
-
-        return buffer;
-    }
-
-    @Override
-    protected void stretchSurface(int newWidth, int newHeight)
+    protected void stretch(int newWidth, int newHeight)
     {
         final int w = Math.round(newWidth / (float) getTilesHorizontal()) * getTilesHorizontal();
         final int h = Math.round(newHeight / (float) getTilesVertical()) * getTilesVertical();
-        super.stretchSurface(w, h);
+        super.stretch(w, h);
+    }
+
+    @Override
+    protected void computeRenderingPoint(int width, int height)
+    {
+        super.computeRenderingPoint(width / horizontalTiles, height / verticalTiles);
     }
 
     /*
@@ -191,9 +151,7 @@ final class SpriteTiledImpl
             final boolean sameTileHeight = sprite.getTileHeight() == getTileHeight();
             final boolean sameHorizontalTiles = sprite.getTilesHorizontal() == getTilesHorizontal();
             final boolean sameVerticalTiles = sprite.getTilesVertical() == getTilesVertical();
-            final boolean sameTilesNumber = sprite.getTilesNumber() == getTilesNumber();
-            return sameTileWidth && sameTileHeight && sameHorizontalTiles && sameVerticalTiles && sameTilesNumber
-                    && sameSurface;
+            return sameTileWidth && sameTileHeight && sameHorizontalTiles && sameVerticalTiles && sameSurface;
         }
         return false;
     }
@@ -204,9 +162,6 @@ final class SpriteTiledImpl
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + horizontalTiles;
-        result = prime * result + tileOriginalHeight;
-        result = prime * result + tileOriginalWidth;
-        result = prime * result + tilesNumber;
         result = prime * result + verticalTiles;
         return result;
     }

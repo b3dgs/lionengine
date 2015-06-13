@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,6 +44,9 @@ import com.b3dgs.lionengine.core.Verbose;
  * final Media media = Media.get(&quot;img&quot;, &quot;image.png&quot;);
  * System.out.println(media.getPath()); // print: resources/img/image.png
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -52,13 +55,13 @@ public final class UtilityMedia
     /** System temp directory. */
     public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir", null);
     /** System separator. */
-    private static String separator = File.separator;
+    private static volatile String separator = File.separator;
     /** Engine temporary directory. */
-    private static String tmpDir;
+    private static volatile String tmpDir;
     /** Asset manager. */
-    private static AssetManager assetManager;
+    private static volatile AssetManager assetManager;
     /** Content resolver. */
-    private static ContentResolver contentResolver;
+    private static volatile ContentResolver contentResolver;
 
     /**
      * Create a full path and each directory.
@@ -67,12 +70,12 @@ public final class UtilityMedia
      * @param path The full path.
      * @return <code>true</code> if created, <code>false</code> else.
      */
-    public static boolean createPath(String source, String... path)
+    public static synchronized boolean createPath(String source, String... path)
     {
         final StringBuilder string = new StringBuilder(source);
         for (final String name : path)
         {
-            string.append(name).append(UtilityMedia.separator);
+            string.append(name).append(separator);
         }
         return new File(string.toString()).mkdir();
     }
@@ -87,10 +90,10 @@ public final class UtilityMedia
      * @param path The list of folders (if has) and file.
      * @return The full media path.
      */
-    public static Media get(String... path)
+    public static synchronized Media get(String... path)
     {
         Check.notNull(path);
-        return new MediaAndroid(UtilityMedia.getPathSeparator(UtilityMedia.separator, path));
+        return new MediaAndroid(getPathSeparator(separator, path));
     }
 
     /**
@@ -100,9 +103,9 @@ public final class UtilityMedia
      * @param path The list of folders (if has) and file.
      * @return The full media path.
      */
-    public static String getPath(String... path)
+    public static synchronized String getPath(String... path)
     {
-        return UtilityMedia.getPathSeparator(UtilityMedia.separator, path);
+        return getPathSeparator(separator, path);
     }
 
     /**
@@ -143,7 +146,7 @@ public final class UtilityMedia
      */
     public static InputStream getStream(Media media, String from)
     {
-        return UtilityMedia.getStream(media, from, true);
+        return getStream(media, from, true);
     }
 
     /**
@@ -154,7 +157,7 @@ public final class UtilityMedia
      * @param logger The logger flag.
      * @return The opened input stream.
      */
-    public static InputStream getStream(Media media, String from, boolean logger)
+    public static synchronized InputStream getStream(Media media, String from, boolean logger)
     {
         Check.notNull(media);
         final String path = media.getPath();
@@ -164,7 +167,7 @@ public final class UtilityMedia
         }
         try
         {
-            return UtilityMedia.assetManager.open(media.getPath());
+            return assetManager.open(media.getPath());
         }
         catch (final IOException exception)
         {
@@ -180,7 +183,7 @@ public final class UtilityMedia
      * @param logger The logger flag.
      * @return The opened input stream.
      */
-    public static OutputStream getOutputStream(Media media, String from, boolean logger)
+    public static synchronized OutputStream getOutputStream(Media media, String from, boolean logger)
     {
         Check.notNull(media);
         final String path = media.getPath();
@@ -190,7 +193,7 @@ public final class UtilityMedia
         }
         try
         {
-            return UtilityMedia.contentResolver.openOutputStream(Uri.parse(Uri.encode(path)));
+            return contentResolver.openOutputStream(Uri.parse(Uri.encode(path)));
         }
         catch (final IOException exception)
         {
@@ -204,12 +207,12 @@ public final class UtilityMedia
      * @param path The path used to extract filename.
      * @return The filename extracted from path.
      */
-    public static String getFilenameFromPath(String path)
+    public static synchronized String getFilenameFromPath(String path)
     {
-        int i = path.lastIndexOf(UtilityMedia.separator);
+        int i = path.lastIndexOf(separator);
         if (i == -1)
         {
-            i = path.lastIndexOf(UtilityMedia.separator);
+            i = path.lastIndexOf(separator);
         }
         return path.substring(i + 1, path.length());
     }
@@ -219,9 +222,9 @@ public final class UtilityMedia
      * 
      * @return The temporary directory (<code>/tmp, .../AppData/Local/Temp, ...</code>)
      */
-    public static String getTempDir()
+    public static synchronized String getTempDir()
     {
-        return UtilityMedia.tmpDir;
+        return tmpDir;
     }
 
     /**
@@ -229,9 +232,9 @@ public final class UtilityMedia
      * 
      * @return The path separator representation.
      */
-    public static String getSeparator()
+    public static synchronized String getSeparator()
     {
-        return UtilityMedia.separator;
+        return separator;
     }
 
     /**
@@ -239,7 +242,7 @@ public final class UtilityMedia
      * 
      * @param assetManager The asset manager.
      */
-    static void setAssertManager(AssetManager assetManager)
+    static synchronized void setAssertManager(AssetManager assetManager)
     {
         UtilityMedia.assetManager = assetManager;
     }
@@ -249,7 +252,7 @@ public final class UtilityMedia
      * 
      * @param contentResolver The content resolver.
      */
-    static void setContentResolver(ContentResolver contentResolver)
+    static synchronized void setContentResolver(ContentResolver contentResolver)
     {
         UtilityMedia.contentResolver = contentResolver;
     }

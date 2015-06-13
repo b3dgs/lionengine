@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
+    <lionengine:class>com.b3dgs.lionengine.tutorials.mario.d.Goomba</lionengine:class>
+    <lionengine:surface image="Goomba.png"/>
+	<lionengine:frames horizontal="3" vertical="1"/>
+	<lionengine:size height="16" width="16"/>
+	
+	
+	
+	<lionengine:collision height="15" mirror="false" name="default" offsetX="0" offsetY="0" width="12"/>
+	<lionengine:category axis="Y" name="leg_right" x="6" y="0">
+	    <lionengine:group>block</lionengine:group>
+	</lionengine:category>
+	<lionengine:category axis="Y" name="leg_left" x="-6" y="0">
+	    <lionengine:group>block</lionengine:group>
+	</lionengine:category>
+	<lionengine:category axis="X" name="knee_right" x="6" y="0">
+	    <lionengine:group>block</lionengine:group>
+	</lionengine:category>
+	<lionengine:category axis="X" name="knee_left" x="-6" y="0">
+	    <lionengine:group>block</lionengine:group>
+	</lionengine:category>
+<lionengine:animation end="3" name="death_goomba" repeat="false" reversed="false" speed="0.1" start="3"/>
+    <lionengine:animation end="2" name="walk" repeat="true" reversed="false" speed="0.25" start="1"/>
+    <lionengine:animation end="1" name="idle" repeat="false" reversed="false" speed="0.125" start="1"/>
+</lionengine:entity>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,9 +22,15 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.object.ComponentRenderer;
+import com.b3dgs.lionengine.game.object.ComponentUpdater;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Scene implementation.
@@ -32,70 +38,66 @@ import com.b3dgs.lionengine.game.CameraGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
-    /** Keyboard reference. */
-    private final Keyboard keyboard;
-    /** Mouse reference. */
-    private final Mouse mouse;
-    /** Camera. */
-    private final CameraGame camera;
-    /** Factory effect. */
-    private final FactoryEffect factoryEffect;
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
+    /** Camera reference. */
+    private final Camera camera = services.create(Camera.class);
     /** Handler effect. */
-    private final HandlerEffect handlerEffect;
+    private final Handler handler = services.create(Handler.class);
+    /** Keyboard reference. */
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
+    /** Mouse reference. */
+    private final Mouse mouse = getInputDevice(Mouse.class);
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
-        keyboard = getInputDevice(Keyboard.class);
-        mouse = getInputDevice(Mouse.class);
-        camera = new CameraGame();
-        factoryEffect = new FactoryEffect();
-        handlerEffect = new HandlerEffect(camera);
-        camera.setView(0, 0, getWidth(), getHeight());
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     protected void load()
     {
-        mouse.setConfig(getConfig());
+        camera.setView(0, 0, getWidth(), getHeight());
+        handler.addUpdatable(new ComponentUpdater());
+        handler.addRenderable(new ComponentRenderer());
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
-        mouse.update();
-        if (keyboard.isPressed(Keyboard.ESCAPE))
-        {
-            end();
-        }
-
+        mouse.update(extrp);
         if (mouse.hasClicked(Mouse.LEFT))
         {
-            final Effect effect = factoryEffect.create(Explode.MEDIA);
-            effect.start(mouse.getX(), getHeight() - mouse.getY());
-            handlerEffect.add(effect);
+            final Effect effect = factory.create(Effect.EXPLODE);
+            effect.start(camera.getViewpointX(mouse.getX()), camera.getViewpointY(mouse.getY()));
+            handler.add(effect);
         }
-
-        handlerEffect.update(extrp);
+        handler.update(extrp);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         g.clear(0, 0, getWidth(), getHeight());
-        handlerEffect.render(g);
+        handler.render(g);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,6 +30,7 @@ import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 
@@ -73,7 +74,7 @@ public final class ToolsSwt
         if (transparency != SWT.TRANSPARENCY_NONE)
         {
             final ImageData data = image.getImageData();
-            data.transparentPixel = 0;
+            data.transparentPixel = ColorRgba.TRANSPARENT.getRgba();
             return new Image(ScreenSwt.display, data);
         }
         return image;

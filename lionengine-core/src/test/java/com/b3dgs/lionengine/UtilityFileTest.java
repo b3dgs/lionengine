@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,7 +30,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 import com.b3dgs.lionengine.mock.MediaMock;
 
@@ -39,6 +40,7 @@ import com.b3dgs.lionengine.mock.MediaMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class UtilityFileTest
 {
     /** Mock media. */
@@ -50,7 +52,7 @@ public class UtilityFileTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryMediaProvider.setFactoryMedia(MOCK);
+        Medias.setFactoryMedia(MOCK);
     }
 
     /**
@@ -59,7 +61,7 @@ public class UtilityFileTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryMediaProvider.setFactoryMedia(null);
+        Medias.setFactoryMedia(null);
     }
 
     /**
@@ -180,6 +182,10 @@ public class UtilityFileTest
         UtilFile.deleteDirectory(tempDir);
 
         Assert.assertEquals("path" + File.separator + "test", UtilFile.getPath("path", "test"));
+
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        UtilFile.deleteFile(new File("null"));
+        Verbose.info("****************************************************************************************");
     }
 
     /**

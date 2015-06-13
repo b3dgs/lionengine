@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,30 +21,36 @@ package com.b3dgs.lionengine;
  * Describes a display resolution. It allows to define different parameters:
  * <ul>
  * <li><code>width & height</code> : represent the screen size</li>
- * <li><code>ratio</code>, which is computed by using the <code>width & height</code>, allows to know the screen ratio.</li>
+ * <li>
+ * <code>ratio</code>, which is computed by using the <code>width & height</code>, allows to know the screen ratio.</li>
  * <li><code>rate</code> : represents the screen refresh rate (in frames per seconds)</li>
  * </ul>
  * This class is mainly used to describe the display resolution chosen.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Resolution
 {
-    /** Resolution width. */
-    private int width;
-    /** Resolution height. */
-    private int height;
+    /** Size lock. */
+    private final Object lockSize = new Object();
     /** Display rate. */
-    private int rate;
-    /** Resolution ratio. */
+    private volatile int rate;
+    /** Resolution width (locked by {@link #lockSize}). */
+    private int width;
+    /** Resolution height (locked by {@link #lockSize}). */
+    private int height;
+    /** Resolution ratio (locked by {@link #lockSize}). */
     private double ratio;
 
     /**
      * Create a resolution.
      * 
-     * @param width The resolution width (in pixel).
-     * @param height The resolution height (in pixel).
-     * @param rate The refresh rate (usually 50 or 60).
+     * @param width The resolution width (in pixel) [> 0].
+     * @param height The resolution height (in pixel) [> 0].
+     * @param rate The refresh rate (usually 50 or 60) [>= 0].
      * @throws LionEngineException If arguments are invalid.
      */
     public Resolution(int width, int height, int rate) throws LionEngineException
@@ -59,29 +65,12 @@ public final class Resolution
      * @param height The resolution height (in pixel).
      * @throws LionEngineException If arguments are invalid.
      */
-    public void set(int width, int height) throws LionEngineException
+    public void setSize(int width, int height) throws LionEngineException
     {
-        set(width, height, rate);
-    }
-
-    /**
-     * Set the resolution.
-     * 
-     * @param width The resolution width (in pixel) [> 0].
-     * @param height The resolution height (in pixel) [> 0].
-     * @param rate The refresh rate in hertz (usually 50 or 60) [>= 0].
-     * @throws LionEngineException If arguments are invalid.
-     */
-    public void set(int width, int height, int rate) throws LionEngineException
-    {
-        Check.superiorStrict(width, 0);
-        Check.superiorStrict(height, 0);
-        Check.superiorOrEqual(rate, 0);
-
-        this.width = width;
-        this.height = height;
-        this.rate = rate;
-        ratio = width / (double) height;
+        synchronized (lockSize)
+        {
+            set(width, height, rate);
+        }
     }
 
     /**
@@ -94,11 +83,14 @@ public final class Resolution
     {
         Check.superiorStrict(ratio, 0);
 
-        if (!Ratio.equals(this.ratio, ratio))
+        synchronized (lockSize)
         {
-            width = (int) Math.ceil(height * ratio);
-            width = (int) Math.floor(width / 2.0) * 2;
-            this.ratio = ratio;
+            if (!Ratio.equals(this.ratio, ratio))
+            {
+                width = (int) Math.ceil(height * ratio);
+                width = (int) Math.floor(width / 2.0) * 2;
+                this.ratio = ratio;
+            }
         }
     }
 
@@ -122,7 +114,10 @@ public final class Resolution
      */
     public int getWidth()
     {
-        return width;
+        synchronized (lockSize)
+        {
+            return width;
+        }
     }
 
     /**
@@ -132,7 +127,10 @@ public final class Resolution
      */
     public int getHeight()
     {
-        return height;
+        synchronized (lockSize)
+        {
+            return height;
+        }
     }
 
     /**
@@ -142,7 +140,10 @@ public final class Resolution
      */
     public double getRatio()
     {
-        return ratio;
+        synchronized (lockSize)
+        {
+            return ratio;
+        }
     }
 
     /**
@@ -153,5 +154,25 @@ public final class Resolution
     public int getRate()
     {
         return rate;
+    }
+
+    /**
+     * Set the resolution.
+     * 
+     * @param width The resolution width (in pixel) [> 0].
+     * @param height The resolution height (in pixel) [> 0].
+     * @param rate The refresh rate in hertz (usually 50 or 60) [>= 0].
+     * @throws LionEngineException If arguments are invalid.
+     */
+    private void set(int width, int height, int rate) throws LionEngineException
+    {
+        Check.superiorStrict(width, 0);
+        Check.superiorStrict(height, 0);
+        Check.superiorOrEqual(rate, 0);
+
+        this.width = width;
+        this.height = height;
+        this.rate = rate;
+        ratio = width / (double) height;
     }
 }

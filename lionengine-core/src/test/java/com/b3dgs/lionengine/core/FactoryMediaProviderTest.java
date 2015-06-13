@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.mock.MediaMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class FactoryMediaProviderTest
 {
     /** Resources path. */
@@ -41,7 +42,7 @@ public class FactoryMediaProviderTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        Medias.setFactoryMedia(new FactoryMediaMock());
     }
 
     /**
@@ -50,7 +51,7 @@ public class FactoryMediaProviderTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryMediaProvider.setFactoryMedia(null);
+        Medias.setFactoryMedia(null);
     }
 
     /**
@@ -60,6 +61,7 @@ public class FactoryMediaProviderTest
     public void testCreateMedia()
     {
         Assert.assertEquals(PATH, new MediaMock(PATH, true).getPath());
+        Assert.assertNotNull(Medias.create("../mock/file1.txt"));
     }
 
     /**
@@ -77,9 +79,9 @@ public class FactoryMediaProviderTest
     @Test
     public void testSeparator()
     {
-        final String old = Core.MEDIA.getSeparator();
-        Core.MEDIA.setSeparator("%");
-        Assert.assertEquals("test%toto", Core.MEDIA.create("test", "toto").getPath());
-        Core.MEDIA.setSeparator(old);
+        final String old = Medias.getSeparator();
+        Medias.setSeparator("%");
+        Assert.assertEquals("test%toto", Medias.create("test", "toto").getPath());
+        Medias.setSeparator(old);
     }
 }

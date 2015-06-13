@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,6 +37,17 @@ public final class Geom
     /**
      * Create a point.
      * 
+     * @param point The original point.
+     * @return The created point.
+     */
+    public static Point createPoint(Point point)
+    {
+        return new PointImpl(point.getX(), point.getY());
+    }
+
+    /**
+     * Create a point.
+     * 
      * @param x The x coordinate of the point.
      * @param y The y coordinate of the point.
      * @return The created point.
@@ -54,6 +65,17 @@ public final class Geom
     public static Coord createCoord()
     {
         return new CoordImpl(0.0, 0.0);
+    }
+
+    /**
+     * Create a coord.
+     * 
+     * @param coord The original coord.
+     * @return The created coord.
+     */
+    public static Coord createCoord(Coord coord)
+    {
+        return new CoordImpl(coord.getX(), coord.getY());
     }
 
     /**
@@ -81,6 +103,17 @@ public final class Geom
     /**
      * Create a line.
      * 
+     * @param line The original line.
+     * @return The created line.
+     */
+    public static Line createLine(Line line)
+    {
+        return new LineImpl(line.getX1(), line.getY1(), line.getX2(), line.getY2());
+    }
+
+    /**
+     * Create a line.
+     * 
      * @param x1 The x coordinate of the start point.
      * @param y1 The y coordinate of the start point.
      * @param x2 The x coordinate of the end point.
@@ -100,6 +133,17 @@ public final class Geom
     public static Rectangle createRectangle()
     {
         return new RectangleImpl(0, 0, 0, 0);
+    }
+
+    /**
+     * Create a rectangle.
+     * 
+     * @param rectangle The original rectangle.
+     * @return The created rectangle.
+     */
+    public static Rectangle createRectangle(Rectangle rectangle)
+    {
+        return new RectangleImpl(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
     }
 
     /**

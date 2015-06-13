@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,40 +19,52 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import java.util.Locale;
 
+import com.b3dgs.lionengine.game.state.State;
+import com.b3dgs.lionengine.game.state.StateAnimationBased;
+
 /**
  * List of entity states.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum EntityState
+enum EntityState implements StateAnimationBased
 {
     /** Idle state. */
-    IDLE,
+    IDLE(StateIdle.class),
     /** Walk state. */
-    WALK,
-    /** turn state. */
-    TURN,
+    WALK(StateWalk.class),
+    /** Turn state. */
+    TURN(StateTurn.class),
     /** Jump state. */
-    JUMP,
-    /** Dead state. */
-    DEAD;
+    JUMP(StateJump.class),
+    /** Death mario state. */
+    DEATH_MARIO(StateDieMario.class),
+    /** Death goomba state. */
+    DEATH_GOOMBA(StateDieGoomba.class);
 
+    /** Class reference. */
+    private final Class<? extends State> clazz;
     /** Animation name. */
     private final String animationName;
 
     /**
      * Constructor.
+     * 
+     * @param clazz The associated class reference.
      */
-    private EntityState()
+    private EntityState(Class<? extends State> clazz)
     {
+        this.clazz = clazz;
         animationName = name().toLowerCase(Locale.ENGLISH);
     }
 
-    /**
-     * Get the animation name.
-     * 
-     * @return The animation name.
-     */
+    @Override
+    public Class<? extends State> getStateClass()
+    {
+        return clazz;
+    }
+
+    @Override
     public String getAnimationName()
     {
         return animationName;

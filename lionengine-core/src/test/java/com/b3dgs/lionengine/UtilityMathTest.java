@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.geom.Line;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class UtilityMathTest
 {
     /** Precision value. */
@@ -49,6 +50,31 @@ public class UtilityMathTest
         utilityMath.setAccessible(true);
         final UtilMath clazz = utilityMath.newInstance();
         Assert.assertNotNull(clazz);
+    }
+
+    /**
+     * Test the is between function.
+     */
+    @Test
+    public void testIsBetween()
+    {
+        Assert.assertTrue(UtilMath.isBetween(0, 0, 2));
+        Assert.assertTrue(UtilMath.isBetween(1, 0, 2));
+        Assert.assertTrue(UtilMath.isBetween(2, 0, 2));
+
+        Assert.assertFalse(UtilMath.isBetween(3, 0, 2));
+        Assert.assertFalse(UtilMath.isBetween(-1, 0, 2));
+
+        Assert.assertFalse(UtilMath.isBetween(1, 2, 1));
+
+        Assert.assertTrue(UtilMath.isBetween(0.0, 0.0, 0.2));
+        Assert.assertTrue(UtilMath.isBetween(0.1, 0.0, 0.2));
+        Assert.assertTrue(UtilMath.isBetween(0.2, 0.0, 0.2));
+
+        Assert.assertFalse(UtilMath.isBetween(0.3, 0.0, 0.2));
+        Assert.assertFalse(UtilMath.isBetween(-0.1, 0.0, 0.2));
+
+        Assert.assertFalse(UtilMath.isBetween(0.1, 0.2, 0.1));
     }
 
     /**
@@ -93,9 +119,10 @@ public class UtilityMathTest
     @Test
     public void testDistance()
     {
-        Assert.assertEquals(2, UtilMath.getDistance(4, 6, 6, 6));
+        Assert.assertEquals(2.0, UtilMath.getDistance(4, 6, 6, 6), PRECISION);
         Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0), PRECISION);
-        Assert.assertEquals(2, UtilMath.getDistance(4, 6, 2, 2, 6, 6, 2, 2));
+        Assert.assertEquals(2.0, UtilMath.getDistance(4, 6, 2, 2, 6, 6, 2, 2), PRECISION);
+        Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 2, 2, 6.0, 6.0, 2, 2), PRECISION);
     }
 
     /**

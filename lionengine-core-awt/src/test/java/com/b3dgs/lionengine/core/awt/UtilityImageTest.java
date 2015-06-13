@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,9 @@ package com.b3dgs.lionengine.core.awt;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
@@ -29,14 +31,34 @@ import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Test the utility image.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class UtilityImageTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void prepare()
+    {
+        Medias.setFactoryMedia(new FactoryMediaAwt());
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setFactoryMedia(null);
+    }
+
     /**
      * Test the constructor.
      * 
@@ -108,7 +130,7 @@ public class UtilityImageTest
             @Override
             public int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
             {
-                return null;
+                return new int[0];
             }
 
             @Override

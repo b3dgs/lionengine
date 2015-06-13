@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,11 +32,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Represents the animations data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
  * @see Animation
- * @see XmlNode
  */
-public class ConfigAnimations
+public final class ConfigAnimations
 {
     /** Animation node name. */
     public static final String ANIMATION = Configurer.PREFIX + "animation";
@@ -54,26 +52,32 @@ public class ConfigAnimations
     public static final String ANIMATION_REPEAT = "repeat";
 
     /**
-     * Create the size node.
+     * Create the animation data from configurer.
      * 
      * @param configurer The configurer reference.
-     * @return The config animations instance.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The animations configuration instance.
+     * @throws LionEngineException If unable to read data.
      */
     public static ConfigAnimations create(Configurer configurer)
     {
         final Map<String, Animation> animations = new HashMap<>(0);
-        for (final XmlNode node : configurer.getRoot().getChildren(ConfigAnimations.ANIMATION))
+        for (final XmlNode node : configurer.getRoot().getChildren(ANIMATION))
         {
-            final String anim = node.readString(ConfigAnimations.ANIMATION_NAME);
-            final Animation animation = ConfigAnimations.createAnimation(node);
+            final String anim = node.readString(ANIMATION_NAME);
+            final Animation animation = createAnimation(node);
             animations.put(anim, animation);
         }
         return new ConfigAnimations(animations);
     }
 
     /**
-     * Create an animation from its node.
+     * Create animation data from node.
+     * Example:
+     * 
+     * <pre>
+     * {@code<lionengine:animation name="walk" start="1" end="2" step="1" speed="0.25" reversed="false"
+     * repeat="true"/>}
+     * </pre>
      * 
      * @param node The animation node.
      * @return The animation instance.
@@ -81,35 +85,43 @@ public class ConfigAnimations
      */
     public static Animation createAnimation(XmlNode node) throws LionEngineException
     {
-        final int start = node.readInteger(ConfigAnimations.ANIMATION_START);
-        final int end = node.readInteger(ConfigAnimations.ANIMATION_END);
-        final double speed = node.readDouble(ConfigAnimations.ANIMATION_SPEED);
-        final boolean reversed = node.readBoolean(ConfigAnimations.ANIMATION_REVERSED);
-        final boolean repeat = node.readBoolean(ConfigAnimations.ANIMATION_REPEAT);
-        return Anim.createAnimation(start, end, speed, reversed, repeat);
+        final String name = node.readString(ANIMATION_NAME);
+        final int start = node.readInteger(ANIMATION_START);
+        final int end = node.readInteger(ANIMATION_END);
+        final double speed = node.readDouble(ANIMATION_SPEED);
+        final boolean reversed = node.readBoolean(ANIMATION_REVERSED);
+        final boolean repeat = node.readBoolean(ANIMATION_REPEAT);
+        return Anim.createAnimation(name, start, end, speed, reversed, repeat);
     }
 
     /**
      * Create an XML node from an animation.
      * 
-     * @param name The animation name.
      * @param animation The animation reference.
      * @return The animation node.
      */
-    public static XmlNode createNode(String name, Animation animation)
+    public static XmlNode createNode(Animation animation)
     {
-        final XmlNode node = Stream.createXmlNode(ConfigAnimations.ANIMATION);
-        node.writeString(ConfigAnimations.ANIMATION_NAME, name);
-        node.writeInteger(ConfigAnimations.ANIMATION_START, animation.getFirst());
-        node.writeInteger(ConfigAnimations.ANIMATION_END, animation.getLast());
-        node.writeDouble(ConfigAnimations.ANIMATION_SPEED, animation.getSpeed());
-        node.writeBoolean(ConfigAnimations.ANIMATION_REVERSED, animation.getReverse());
-        node.writeBoolean(ConfigAnimations.ANIMATION_REPEAT, animation.getRepeat());
+        final XmlNode node = Stream.createXmlNode(ANIMATION);
+        node.writeString(ANIMATION_NAME, animation.getName());
+        node.writeInteger(ANIMATION_START, animation.getFirst());
+        node.writeInteger(ANIMATION_END, animation.getLast());
+        node.writeDouble(ANIMATION_SPEED, animation.getSpeed());
+        node.writeBoolean(ANIMATION_REVERSED, animation.getReverse());
+        node.writeBoolean(ANIMATION_REPEAT, animation.getRepeat());
         return node;
     }
 
     /** Animations map. */
     private final Map<String, Animation> animations;
+
+    /**
+     * Disabled constructor.
+     */
+    private ConfigAnimations()
+    {
+        throw new RuntimeException();
+    }
 
     /**
      * Load animations from configuration media.
@@ -147,10 +159,10 @@ public class ConfigAnimations
     /**
      * Get all animations.
      * 
-     * @return The unmodifiable animations map, where key is the animation name.
+     * @return The animations list.
      */
-    public Map<String, Animation> getAnimations()
+    public Collection<Animation> getAnimations()
     {
-        return Collections.unmodifiableMap(animations);
+        return animations.values();
     }
 }

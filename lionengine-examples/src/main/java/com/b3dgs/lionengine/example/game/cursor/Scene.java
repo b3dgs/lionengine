@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,91 +17,142 @@
  */
 package com.b3dgs.lionengine.example.game.cursor;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.TextGame;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
- * Scene implementation.
+ * Game loop designed to handle our little world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
-    /** Cursor. */
-    private final Cursor cursor;
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Text reference. */
+    private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Camera reference. */
+    private final Camera camera = services.create(Camera.class);
+    /** Cursor reference. */
+    private final Cursor cursor = services.create(Cursor.class);
+    /** Map reference. */
+    private final MapTile map = services.create(MapTileGame.class);
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
-    private final Mouse mouse;
+    private final Mouse mouse = getInputDevice(Mouse.class);
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
-        super(loader, new Resolution(320, 240, 60));
-        keyboard = getInputDevice(Keyboard.class);
-        mouse = getInputDevice(Mouse.class);
-        mouse.setConfig(getConfig());
-        cursor = new Cursor(mouse, getConfig().getSource(), Core.MEDIA.create("cursor", "cursor1.png"),
-                Core.MEDIA.create("cursor", "cursor2.png"));
+        super(loader, NATIVE);
         setSystemCursorVisible(false);
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
     }
 
-    /*
-     * Sequence
+    /**
+     * Draw info about the specified tile.
+     * 
+     * @param g The graphics output.
      */
+    private void renderTileInfo(Graphic g)
+    {
+        final int tx = cursor.getInTileX();
+        final int ty = cursor.getInTileY();
+        final Tile tile = map.getTile(tx, ty);
+        if (tile != null)
+        {
+            final int x = tx * map.getTileWidth();
+            final int y = ty * map.getTileHeight();
+
+            text.drawRect(g, ColorRgba.GREEN, x, y, map.getTileWidth(), map.getTileHeight());
+            text.setColor(ColorRgba.YELLOW);
+            text.draw(g, x + 20, y + 25, "Tile number: " + tile.getNumber());
+            text.draw(g, x + 20, y + 15, "X = " + tx + " | Y = " + ty);
+            text.draw(g, x + 20, y + 5, "RX = " + cursor.getX() + " | RY = " + cursor.getY());
+            text.draw(g, x + 20, y - 5, "Group: " + tile.getGroup());
+        }
+    }
 
     @Override
     protected void load()
     {
-        cursor.setSensibility(0.5, 0.5);
+        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+
+        cursor.addImage(0, Medias.create("cursor.png"));
+        cursor.load(false);
+        cursor.setArea(0, 0, getWidth(), getHeight());
+        cursor.setGrid(map.getTileWidth(), map.getTileHeight());
+        cursor.setInputDevice(mouse);
+        cursor.setViewer(camera);
+
+        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setLimits(map);
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
-        if (keyboard.isPressed(Keyboard.ESCAPE))
-        {
-            end();
-        }
-
-        if (mouse.hasClickedOnce(Mouse.LEFT))
-        {
-            cursor.setSurfaceId(0);
-        }
-        if (mouse.hasClickedOnce(Mouse.RIGHT))
-        {
-            cursor.setSurfaceId(1);
-        }
-        if (mouse.hasClickedOnce(Mouse.MIDDLE))
-        {
-            cursor.setSyncMode(!cursor.isSynchronized());
-        }
-
+        mouse.update(extrp);
         cursor.update(extrp);
-        if (!cursor.isSynchronized())
+
+        if (keyboard.isPressedOnce(Keyboard.UP))
         {
-            mouse.lock();
+            camera.moveLocation(extrp, 0, 64);
         }
+        if (keyboard.isPressedOnce(Keyboard.DOWN))
+        {
+            camera.moveLocation(extrp, 0, -64);
+        }
+        if (keyboard.isPressedOnce(Keyboard.LEFT))
+        {
+            camera.moveLocation(extrp, -64, 0);
+        }
+        if (keyboard.isPressedOnce(Keyboard.RIGHT))
+        {
+            camera.moveLocation(extrp, 64, 0);
+        }
+        text.update(camera);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
-        g.clear(0, 0, getWidth(), getHeight());
+        map.render(g);
+        renderTileInfo(g);
         cursor.render(g);
     }
 

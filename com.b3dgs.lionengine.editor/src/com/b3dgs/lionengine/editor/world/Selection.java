@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -31,10 +32,10 @@ import com.b3dgs.lionengine.geom.Rectangle;
  */
 public class Selection
 {
-    /** World model. */
-    private final WorldViewModel model = WorldViewModel.INSTANCE;
     /** Last selection area. */
     private final Rectangle selectionArea;
+    /** Map reference. */
+    private final MapTile map;
     /** Selection starting horizontal location. */
     private int startX;
     /** Selection starting vertical location. */
@@ -52,10 +53,13 @@ public class Selection
 
     /**
      * Create the selection updater.
+     * 
+     * @param services The services reference.
      */
-    public Selection()
+    public Selection(Services services)
     {
         selectionArea = Geom.createRectangle();
+        map = services.get(MapTile.class);
     }
 
     /**
@@ -68,7 +72,6 @@ public class Selection
     {
         if (!isStarted())
         {
-            final MapTile<?> map = model.getMap();
             final int sx = UtilMath.getRounded(mx, map.getTileWidth());
             final int sy = UtilMath.getRounded(my, map.getTileHeight());
             startX = sx;
@@ -91,7 +94,6 @@ public class Selection
     {
         if (isStarted())
         {
-            final MapTile<?> map = model.getMap();
             endX = UtilMath.getRounded(mx + map.getTileWidth() / 2, map.getTileWidth());
             endY = UtilMath.getRounded(my + map.getTileHeight() / 2, map.getTileHeight());
             started = true;
@@ -110,7 +112,6 @@ public class Selection
     {
         if (isSelecting())
         {
-            final MapTile<?> map = model.getMap();
             int sx = startX;
             int sy = startY;
             int ex = UtilMath.getRounded(mx, map.getTileWidth());

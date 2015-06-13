@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,14 +27,15 @@ import com.b3dgs.lionengine.core.Media;
 
 /**
  * Special engine exception implementation which limit the trace to the user side.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class LionEngineException
         extends RuntimeException
 {
-    /** Activate the ignore flag. */
-    private static final boolean IGNORE_ENGINE_TRACE = true;
     /** The main ignored package. */
     private static final String IGNORE = "com.b3dgs.lionengine.";
     /** The number of ignored characters. */
@@ -42,14 +43,26 @@ public final class LionEngineException
     /** The list of ignored sub packages and main class. */
     private static final String[] IGNORED =
     {
-            "audio", "anim", "core", "drawable", "geom", "stream", "game", "network", "utility", "editor", "xsd",
-            "Align", "Architecture", "Check", "Checksum", "ColorGradient", "ColorRgba", "Config", "Filter", "Hq2x",
-            "Hq3x", "ImageInfo", "LionEngineException", "OperatingSystem", "Ratio", "Resolution", "Strings",
-            "TextStyle", "Timing", "Transparency", "UtilConversion", "UtilFile", "UtilMath", "UtilProjectStats",
-            "UtilRandom", "Version"
+            "audio", "anim", "core", "drawable", "geom", "stream", "game", "trait", "component", "handler", "factory",
+            "network", "utility", "editor", "xsd", "Align", "Architecture", "Check", "Checksum", "ColorGradient",
+            "ColorRgba", "Config", "Filter", "Hq2x", "Hq3x", "ImageInfo", "LionEngineException", "OperatingSystem",
+            "Ratio", "Resolution", "Strings", "TextStyle", "Timing", "Transparency", "UtilConversion", "UtilFile",
+            "UtilMath", "UtilProjectStats", "UtilRandom", "Version"
     };
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599464L;
+    /** Activate the ignore flag. */
+    private static volatile boolean ignoreEngineTrace = true;
+
+    /**
+     * Set the engine trace ignore flag.
+     * 
+     * @param ignore <code>true</code> to ignore in depth engine trace, <code>false</code> to show full trace.
+     */
+    public static void setIgnoreEngineTrace(boolean ignore)
+    {
+        ignoreEngineTrace = ignore;
+    }
 
     /**
      * Revert the stack trace array.
@@ -70,6 +83,34 @@ public final class LionEngineException
     }
 
     /**
+     * Check if ignore engine trace depending of the class name source.
+     * 
+     * @param className The class name.
+     * @return <code>true</code> if ignore trace, <code>false</code> else.
+     */
+    private static boolean checkIgnoreEngineTrace(String className)
+    {
+        if (className.startsWith("sun.") || className.startsWith("java.lang") || className.startsWith("java.net")
+                || className.startsWith("java.security"))
+        {
+            return false;
+        }
+        if (className.startsWith(IGNORE))
+        {
+            final String pack = className.substring(IGNORE_SIZE);
+            for (final String ignore : IGNORED)
+            {
+                // Ignored sub package
+                if (pack.startsWith(ignore))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Get the filtered stack traces.
      * 
      * @param allTrace All traces.
@@ -83,27 +124,14 @@ public final class LionEngineException
             final String className = element.getClassName();
 
             // Ignored package
-            boolean add = true;
-            if (IGNORE_ENGINE_TRACE)
+            final boolean add;
+            if (ignoreEngineTrace)
             {
-                if (className.startsWith("sun.") || className.startsWith("java.lang")
-                        || className.startsWith("java.net") || className.startsWith("java.security"))
-                {
-                    add = false;
-                }
-                if (className.startsWith(IGNORE))
-                {
-                    final String pack = className.substring(IGNORE_SIZE);
-                    for (final String ignore : IGNORED)
-                    {
-                        // Ignored sub package
-                        if (pack.startsWith(ignore))
-                        {
-                            add = false;
-                            break;
-                        }
-                    }
-                }
+                add = checkIgnoreEngineTrace(className);
+            }
+            else
+            {
+                add = true;
             }
             if (add)
             {

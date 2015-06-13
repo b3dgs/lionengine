@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,69 +17,48 @@
  */
 package com.b3dgs.lionengine.example.game.entity;
 
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Entity implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class Entity
-        extends EntityGame
+class Entity
+        extends ObjectGame
+        implements Updatable, Renderable
 {
-    /**
-     * Get an entity configuration file.
-     * 
-     * @param type The config associated class.
-     * @return The media config.
-     */
-    protected static Media getConfig(Class<? extends Entity> type)
-    {
-        return Core.MEDIA
-                .create(Factory.ENTITY_DIR, type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
-    }
+    /** Goomba config. */
+    public static final Media GOOMBA = Medias.create("Goomba.xml");
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
+     * @param services The services reference.
      */
-    protected Entity(SetupSurfaceGame setup)
+    public Entity(Setup setup, Services services)
     {
-        super(setup);
-        final Configurer configurer = setup.getConfigurer();
-        final ConfigCollisions configCollisions = ConfigCollisions.create(configurer);
-        setCollision(configCollisions.getCollision("default"));
-    }
-
-    /*
-     * EntityGame
-     */
-
-    @Override
-    public void prepare(ContextGame context)
-    {
-        // Nothing to do
+        super(setup, services);
     }
 
     @Override
     public void update(double extrp)
     {
-        System.out.println("I am updating: " + this);
+        Verbose.info("I am updating: " + this);
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void render(Graphic g)
     {
-        System.out.println("I am rendering: " + this);
+        Verbose.info("I am rendering: " + this);
     }
 }

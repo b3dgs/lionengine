@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
@@ -31,7 +30,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-public final class AppDrawable
+public class AppDrawable
 {
     /**
      * Main function.
@@ -40,7 +39,7 @@ public final class AppDrawable
      */
     public static void main(String[] args)
     {
-        Engine.start("Drawable", Version.create(1, 0, 0), Verbose.CRITICAL, UtilFile.getPath("resources", "drawable"));
+        Engine.start("Drawable", Version.create(1, 0, 0), UtilFile.getPath("resources", "drawable"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

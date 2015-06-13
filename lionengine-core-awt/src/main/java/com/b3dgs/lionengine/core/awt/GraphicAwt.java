@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +25,8 @@ import java.awt.image.AffineTransformOp;
 
 import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Transform;
@@ -125,6 +127,13 @@ final class GraphicAwt
     }
 
     @Override
+    public void drawRect(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
+    {
+        drawRect((int) origin.getX(viewer.getViewpointX(x), width), (int) origin.getY(viewer.getViewpointY(y), height),
+                width, height, fill);
+    }
+
+    @Override
     public void drawGradient(int x, int y, int width, int height)
     {
         g.setPaint(gradientPaint);
@@ -133,9 +142,23 @@ final class GraphicAwt
     }
 
     @Override
+    public void drawGradient(Viewer viewer, Origin origin, double x, double y, int width, int height)
+    {
+        drawGradient((int) origin.getX(viewer.getViewpointX(x), width),
+                (int) origin.getY(viewer.getViewpointY(y), height), width, height);
+    }
+
+    @Override
     public void drawLine(int x1, int y1, int x2, int y2)
     {
         g.drawLine(x1, y1, x2, y2);
+    }
+
+    @Override
+    public void drawLine(Viewer viewer, double x1, double y1, double x2, double y2)
+    {
+        g.drawLine((int) viewer.getViewpointX(x1), (int) viewer.getViewpointY(y1), (int) viewer.getViewpointX(x2),
+                (int) viewer.getViewpointY(y2));
     }
 
     @Override
@@ -149,6 +172,13 @@ final class GraphicAwt
         {
             g.drawOval(x, y, width, height);
         }
+    }
+
+    @Override
+    public void drawOval(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
+    {
+        drawOval((int) origin.getX(viewer.getViewpointX(x), width), (int) origin.getY(viewer.getViewpointY(y), height),
+                width, height, fill);
     }
 
     @Override

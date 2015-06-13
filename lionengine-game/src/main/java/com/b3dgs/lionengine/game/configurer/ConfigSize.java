@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.game.configurer;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Represents the size data from a configurer node.
+ * Represents the size data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  */
-public class ConfigSize
+public final class ConfigSize
 {
     /** Size node name. */
     public static final String SIZE = Configurer.PREFIX + "size";
@@ -35,11 +35,11 @@ public class ConfigSize
     public static final String SIZE_HEIGHT = "height";
 
     /**
-     * Create the size node.
+     * Create the size data from node.
      * 
      * @param configurer The configurer reference.
-     * @return The config size instance.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The size data.
+     * @throws LionEngineException If unable to read node.
      */
     public static ConfigSize create(Configurer configurer) throws LionEngineException
     {
@@ -53,7 +53,15 @@ public class ConfigSize
     private final int height;
 
     /**
-     * Constructor.
+     * Disabled constructor.
+     */
+    private ConfigSize()
+    {
+        throw new RuntimeException();
+    }
+
+    /**
+     * Create a size configuration.
      * 
      * @param width The width value.
      * @param height The height value.

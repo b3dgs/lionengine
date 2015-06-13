@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,9 +18,7 @@
 package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -28,12 +26,14 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.handler.TilesheetsFolderTester;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
-import com.b3dgs.lionengine.editor.project.tester.ProjectilesFolderTester;
+import com.b3dgs.lionengine.editor.project.tester.CollisionsTester;
+import com.b3dgs.lionengine.editor.project.tester.FormulasTester;
+import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
+import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
+import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 
 /**
  * Generate the project tree from the project folder.
@@ -56,25 +56,17 @@ public class ProjectTreeCreator
     public static final Image ICON_IMAGE = UtilEclipse.getIcon("resources", "image.png");
     /** Data file icon. */
     public static final Image ICON_DATA = UtilEclipse.getIcon("resources", "data.png");
-    /** Level file icon. */
-    public static final Image ICON_LEVEL = UtilEclipse.getIcon("resources", "level.png");
-    /** Map file icon. */
-    public static final Image ICON_MAP = UtilEclipse.getIcon("resources", "map-tile.png");
-    /** Factory entity file icon. */
-    public static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "factory.png");
     /** Object file icon. */
     public static final Image ICON_OBJECT = UtilEclipse.getIcon("resources", "object.png");
-    /** Entity file icon. */
-    public static final Image ICON_ENTITY = UtilEclipse.getIcon("resources", "entity.png");
-    /** Projectile file icon. */
-    public static final Image ICON_PROJECTILE = UtilEclipse.getIcon("resources", "projectile.png");
-    /** Class file icon. */
-    public static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
-    /** Tile sheets file icon. */
-    public static final Image ICON_TILESHEETS = UtilEclipse.getIcon("resources", "tilesheets.png");
+    /** Sheets file icon. */
+    public static final Image ICON_SHEETS = UtilEclipse.getIcon("resources", "sheets.png");
+    /** Groups file icon. */
+    public static final Image ICON_GROUPS = UtilEclipse.getIcon("resources", "groups.png");
+    /** Formulas file icon. */
+    public static final Image ICON_FORMULAS = UtilEclipse.getIcon("resources", "formulas.png");
+    /** Collisions file icon. */
+    public static final Image ICON_COLLISIONS = UtilEclipse.getIcon("resources", "collisions.png");
 
-    /** Classes folder. */
-    private static final String FOLDER_CLASSES = "classes";
     /** Resources folder. */
     private static final String FOLDER_RESOURCES = "resources";
 
@@ -93,29 +85,10 @@ public class ProjectTreeCreator
         {
             final TreeItem folder = new TreeItem(parent, SWT.NONE);
             folder.setText(title);
-            folder.setImage(ProjectTreeCreator.ICON_FOLDER);
+            folder.setImage(ICON_FOLDER);
             return folder;
         }
         return parent;
-    }
-
-    /**
-     * Get the class file icon.
-     * 
-     * @param file The child file.
-     * @return The icon image associated to the file type.
-     */
-    private static Image getClassIcon(Media file)
-    {
-        if (Property.MAP_IMPL.is(file))
-        {
-            return ProjectTreeCreator.ICON_MAP;
-        }
-        else if (Property.FACTORY_IMPL.is(file))
-        {
-            return ProjectTreeCreator.ICON_FACTORY_ENTITY;
-        }
-        return ProjectTreeCreator.ICON_CLASS;
     }
 
     /**
@@ -126,19 +99,27 @@ public class ProjectTreeCreator
      */
     private static Image getDataIcon(Media file)
     {
-        if (ProjectilesFolderTester.isProjectileFile(file))
+        if (ObjectsTester.isObjectFile(file))
         {
-            return ProjectTreeCreator.ICON_PROJECTILE;
+            return ICON_OBJECT;
         }
-        else if (ObjectsFolderTester.isObjectFile(file))
+        else if (SheetsTester.isSheetsFile(file))
         {
-            return ProjectTreeCreator.ICON_OBJECT;
+            return ICON_SHEETS;
         }
-        else if (TilesheetsFolderTester.isTilesheetsFile(file))
+        else if (GroupsTester.isGroupsFile(file))
         {
-            return ProjectTreeCreator.ICON_TILESHEETS;
+            return ICON_GROUPS;
         }
-        return ProjectTreeCreator.ICON_DATA;
+        else if (FormulasTester.isFormulasFile(file))
+        {
+            return ICON_FORMULAS;
+        }
+        else if (CollisionsTester.isCollisionsFile(file))
+        {
+            return ICON_COLLISIONS;
+        }
+        return ICON_DATA;
     }
 
     /**
@@ -151,39 +132,27 @@ public class ProjectTreeCreator
     {
         if (Property.SOUND.is(file))
         {
-            return ProjectTreeCreator.ICON_SOUND;
+            return ICON_SOUND;
         }
         else if (Property.MUSIC.is(file))
         {
-            return ProjectTreeCreator.ICON_MUSIC;
+            return ICON_MUSIC;
         }
         else if (Property.IMAGE.is(file))
         {
-            return ProjectTreeCreator.ICON_IMAGE;
-        }
-        else if (Property.LEVEL.is(file))
-        {
-            return ProjectTreeCreator.ICON_LEVEL;
+            return ICON_IMAGE;
         }
         else if (Property.DATA.is(file))
         {
-            return ProjectTreeCreator.getDataIcon(file);
+            return getDataIcon(file);
         }
-        else if (Property.CLASS.is(file))
-        {
-            return ProjectTreeCreator.getClassIcon(file);
-        }
-        return ProjectTreeCreator.ICON_FILE;
+        return ICON_FILE;
     }
 
     /** Project reference. */
     private final Project project;
-    /** Quick access list. */
-    private final Collection<TreeItem> quicks;
     /** Project path. */
     private final File projectPath;
-    /** Classes path. */
-    private final File classesPath;
     /** Resources path. */
     private final File resourcesPath;
     /** Tree reference. */
@@ -199,9 +168,7 @@ public class ProjectTreeCreator
     {
         this.project = project;
         this.tree = tree;
-        quicks = new ArrayList<>();
         projectPath = project.getPath();
-        classesPath = new File(projectPath, project.getClasses());
         resourcesPath = new File(projectPath, project.getResources());
     }
 
@@ -212,7 +179,7 @@ public class ProjectTreeCreator
     {
         final TreeItem folder = new TreeItem(tree, SWT.NONE);
         folder.setText(project.getName());
-        folder.setImage(ProjectTreeCreator.ICON_MAIN);
+        folder.setImage(ICON_MAIN);
         checkPath(projectPath, folder);
     }
 
@@ -236,22 +203,12 @@ public class ProjectTreeCreator
     }
 
     /**
-     * Get the quick access list.
-     * 
-     * @return The quick access list.
-     */
-    public Collection<TreeItem> getQuicks()
-    {
-        return quicks;
-    }
-
-    /**
      * Check the current path for its children.
      * 
      * @param path The parent path.
      * @param parent The parent tree item.
      */
-    private void checkPath(File path, TreeItem parent)
+    public void checkPath(File path, TreeItem parent)
     {
         if (path.isDirectory() && !path.getName().equals("META-INF"))
         {
@@ -260,7 +217,7 @@ public class ProjectTreeCreator
         else if (path.isFile())
         {
             final String pathName = path.getParent();
-            if (pathName.startsWith(classesPath.getPath()) || pathName.startsWith(resourcesPath.getPath()))
+            if (pathName.startsWith(resourcesPath.getPath()))
             {
                 createChild(path, parent);
             }
@@ -278,23 +235,27 @@ public class ProjectTreeCreator
         final File[] children = folder.listFiles();
         final TreeItem folderItem;
         // Concatenate single folder child
-        if (folder.getParentFile().listFiles().length == 1)
+        final File parentFile = folder.getParentFile();
+        if (parentFile != null)
         {
-            folderItem = parent;
-            folderItem.setText(folderItem.getText() + java.io.File.separator + folder.getName());
-        }
-        else
-        {
-            folderItem = createFolder(folder, parent);
-        }
-        Arrays.sort(children, new DirectoryFolderComparator());
-        for (final File child : children)
-        {
-            final String pathName = child.getPath();
-            if (pathName.startsWith(classesPath.getPath()) || pathName.startsWith(resourcesPath.getPath())
-                    || classesPath.getPath().startsWith(pathName) || resourcesPath.getPath().startsWith(pathName))
+            final File[] parentFiles = parentFile.listFiles();
+            if (parentFiles != null && parentFiles.length == 1)
             {
-                checkPath(child, folderItem);
+                folderItem = parent;
+                folderItem.setText(folderItem.getText() + java.io.File.separator + folder.getName());
+            }
+            else
+            {
+                folderItem = createFolder(folder, parent);
+            }
+            Arrays.sort(children, new DirectoryFolderComparator());
+            for (final File child : children)
+            {
+                final String pathName = child.getPath();
+                if (pathName.startsWith(resourcesPath.getPath()) || resourcesPath.getPath().startsWith(pathName))
+                {
+                    checkPath(child, folderItem);
+                }
             }
         }
     }
@@ -308,19 +269,11 @@ public class ProjectTreeCreator
      */
     private TreeItem createFolder(File path, TreeItem parent)
     {
-        if (classesPath.getPath().startsWith(path.getPath()))
+        if (resourcesPath.getPath().startsWith(path.getPath()))
         {
-            return ProjectTreeCreator.checkPathReference(ProjectTreeCreator.FOLDER_CLASSES, parent, classesPath, path);
+            return checkPathReference(FOLDER_RESOURCES, parent, resourcesPath, path);
         }
-        else if (resourcesPath.getPath().startsWith(path.getPath()))
-        {
-            return ProjectTreeCreator.checkPathReference(ProjectTreeCreator.FOLDER_RESOURCES, parent, resourcesPath,
-                    path);
-        }
-        else
-        {
-            return createItem(parent, path, ProjectTreeCreator.ICON_FOLDER);
-        }
+        return createItem(parent, path, ICON_FOLDER);
     }
 
     /**
@@ -333,7 +286,7 @@ public class ProjectTreeCreator
     {
         final String childName = file.getName();
         final Media media = getMedia(file.getPath());
-        final Image icon = ProjectTreeCreator.getFileIcon(media);
+        final Image icon = getFileIcon(media);
         final TreeItem item = createItem(parent, file, icon);
 
         if (Property.CLASS.is(media))
@@ -344,11 +297,6 @@ public class ProjectTreeCreator
         else
         {
             item.setText(file.getName());
-        }
-
-        if (icon == ProjectTreeCreator.ICON_FACTORY_ENTITY || icon == ProjectTreeCreator.ICON_MAP)
-        {
-            quicks.add(item);
         }
     }
 
@@ -361,11 +309,7 @@ public class ProjectTreeCreator
     private Media getMedia(String path)
     {
         String relative;
-        if (path.startsWith(classesPath.getPath()))
-        {
-            relative = path.replace(classesPath.getPath(), "");
-        }
-        else if (path.startsWith(resourcesPath.getPath()))
+        if (path.startsWith(resourcesPath.getPath()))
         {
             relative = path.replace(resourcesPath.getPath(), "");
         }
@@ -377,6 +321,6 @@ public class ProjectTreeCreator
         {
             relative = relative.substring(1);
         }
-        return Core.MEDIA.create(relative);
+        return Medias.create(relative);
     }
 }

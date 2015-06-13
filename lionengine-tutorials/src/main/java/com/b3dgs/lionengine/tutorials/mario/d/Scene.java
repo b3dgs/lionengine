@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,39 +17,78 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
+import java.io.IOException;
+
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.audio.midi.AudioMidi;
+import com.b3dgs.lionengine.audio.midi.Midi;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.stream.Stream;
 
 /**
  * Game loop designed to handle our little world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    /** Level file. */
+    private static final Media LEVEL = Medias.create("map", "level.lvl");
 
+    /** Music. */
+    private final Midi music = AudioMidi.loadMidi(Medias.create("music", "music.mid"));
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** World reference. */
-    private final World world;
+    private final World world = new World(getConfig(), keyboard);
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        world = new World(getConfig(), keyboard);
+        super(loader, NATIVE);
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
+    }
+
+    /**
+     * Import and save the level.
+     */
+    private static void importAndSave()
+    {
+        final MapTile map = new MapTileGame();
+        map.create(Medias.create("map", "level.png"), Medias.create("map", "sheets.xml"),
+                Medias.create("map", "groups.xml"));
+        try (FileWriting file = Stream.createFileWriting(LEVEL))
+        {
+            map.save(file);
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(Scene.class, "importAndSave", exception, "Error on saving map !");
+        }
     }
 
     /*
@@ -59,22 +98,31 @@ final class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(Core.MEDIA.create("level.lvl"));
+        if (!LEVEL.exists())
+        {
+            importAndSave();
+        }
+        world.loadFromFile(LEVEL);
+        music.setVolume(20);
+        music.play(true);
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         world.update(extrp);
-        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
-        {
-            end();
-        }
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         world.render(g);
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        music.stop();
+        Sfx.terminateAll();
     }
 }

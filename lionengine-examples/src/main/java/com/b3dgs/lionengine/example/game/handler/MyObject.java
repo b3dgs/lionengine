@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,41 +18,42 @@
 package com.b3dgs.lionengine.example.game.handler;
 
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.purview.model.HandlableModel;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * My object implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MyObject
-        extends HandlableModel
+class MyObject
+        extends ObjectGame
+        implements Updatable, Renderable
 {
     /**
      * Constructor.
+     * 
+     * @param setup The setup reference.
+     * @param services The services reference.
      */
-    MyObject()
+    public MyObject(Setup setup, Services services)
     {
-        super();
+        super(setup, services);
     }
 
-    /**
-     * Update the object.
-     * 
-     * @param extrp The extrapolation value.
-     */
+    @Override
     public void update(double extrp)
     {
-        System.out.println("I am updating: " + this);
+        Verbose.info("I am updating: " + this);
     }
 
-    /**
-     * Render the object.
-     * 
-     * @param g The graphic output.
-     */
+    @Override
     public void render(Graphic g)
     {
-        System.out.println("I am rendering: " + this);
+        Verbose.info("I am rendering: " + this);
     }
 }

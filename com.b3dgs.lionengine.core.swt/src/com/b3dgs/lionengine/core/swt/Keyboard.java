@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,206 +17,115 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 
 /**
- * Keyboard input implementation.
+ * Keyboard input.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Keyboard
-        implements InputDeviceDirectional, KeyListener
+public interface Keyboard
+        extends InputDeviceDirectional
 {
     /** Arrow up key. */
-    public static final Integer UP = Integer.valueOf(SWT.ARROW_UP);
+    Integer UP = Integer.valueOf(SWT.ARROW_UP);
     /** Arrow down key. */
-    public static final Integer DOWN = Integer.valueOf(SWT.ARROW_DOWN);
+    Integer DOWN = Integer.valueOf(SWT.ARROW_DOWN);
     /** Arrow right key. */
-    public static final Integer RIGHT = Integer.valueOf(SWT.ARROW_RIGHT);
+    Integer RIGHT = Integer.valueOf(SWT.ARROW_RIGHT);
     /** Arrow left key. */
-    public static final Integer LEFT = Integer.valueOf(SWT.ARROW_LEFT);
+    Integer LEFT = Integer.valueOf(SWT.ARROW_LEFT);
     /** CTRL key. */
-    public static final Integer CONTROL = Integer.valueOf(SWT.CONTROL);
+    Integer CONTROL = Integer.valueOf(SWT.CONTROL);
     /** ALT key. */
-    public static final Integer ALT = Integer.valueOf(SWT.ALT);
+    Integer ALT = Integer.valueOf(SWT.ALT);
     /** Escape key. */
-    public static final Integer ESCAPE = Integer.valueOf(SWT.ESC);
+    Integer ESCAPE = Integer.valueOf(SWT.ESC);
     /** Enter key. */
-    public static final Integer ENTER = Integer.valueOf(SWT.LF);
+    Integer ENTER = Integer.valueOf(SWT.LF);
     /** Back Space key. */
-    public static final Integer BACK_SPACE = Integer.valueOf(SWT.BS);
+    Integer BACK_SPACE = Integer.valueOf(SWT.BS);
     /** Tab key. */
-    public static final Integer TAB = Integer.valueOf(SWT.TAB);
-
-    /** List of keys. */
-    private final Collection<Integer> keys;
-    /** Pressed states. */
-    private final Collection<Integer> pressed;
-    /** Last key code. */
-    private Integer lastCode;
-    /** Last key name. */
-    private char lastKeyName;
-    /** Left key. */
-    private Integer left;
-    /** Right key. */
-    private Integer right;
-    /** Up key. */
-    private Integer up;
-    /** Down key. */
-    private Integer down;
+    Integer TAB = Integer.valueOf(SWT.TAB);
 
     /**
-     * Internal constructor.
+     * Add an action that will be triggered on pressed state.
+     * <p>
+     * Alternative usage with classic programming style can be achieved with {@link #isPressed(Integer)} or
+     * {@link #isPressedOnce(Integer)}.
+     * </p>
+     * 
+     * @param key The action key.
+     * @param action The action reference.
      */
-    Keyboard()
-    {
-        keys = new HashSet<>();
-        pressed = new HashSet<>();
-        lastKeyName = ' ';
-        lastCode = Integer.valueOf(-1);
-    }
+    void addActionPressed(Integer key, EventAction action);
+
+    /**
+     * Add an action that will be triggered on released state.
+     * <p>
+     * Alternative usage with classic programming style can be achieved with {@link #isPressed(Integer)} or
+     * {@link #isPressedOnce(Integer)}.
+     * </p>
+     * 
+     * @param key The action key.
+     * @param action The action reference.
+     */
+    void addActionReleased(Integer key, EventAction action);
+
+    /**
+     * Remove all pressed actions.
+     */
+    void removeActionsPressed();
+
+    /**
+     * Remove all released actions.
+     */
+    void removeActionsReleased();
 
     /**
      * Check if the key is currently pressed.
+     * <p>
+     * Alternative usage with event programming style can be achieved with
+     * {@link #addActionPressed(Integer, EventAction)} and {@link #addActionReleased(Integer, EventAction)}.
+     * </p>
      * 
      * @param key The key to check.
      * @return <code>true</code> if pressed, <code>false</code> else.
      */
-    public boolean isPressed(Integer key)
-    {
-        return keys.contains(key);
-    }
+    boolean isPressed(Integer key);
 
     /**
      * Check if the key is currently pressed (not continuously).
+     * <p>
+     * Alternative usage with event programming style can be achieved with
+     * {@link #addActionPressed(Integer, EventAction)} and {@link #addActionReleased(Integer, EventAction)}.
+     * </p>
      * 
      * @param key The key to check.
      * @return <code>true</code> if pressed, <code>false</code> else.
      */
-    public boolean isPressedOnce(Integer key)
-    {
-        if (keys.contains(key))
-        {
-            if (!pressed.contains(key))
-            {
-                pressed.add(key);
-                return true;
-            }
-        }
-        return false;
-    }
+    boolean isPressedOnce(Integer key);
 
     /**
      * Get the current pressed key code.
      * 
-     * @return The pressed key code.
+     * @return The pressed key code (<code>{@value KeyboardSwt#NO_KEY_CODE}</code> if key never pressed).
      */
-    public Integer getKeyCode()
-    {
-        return lastCode;
-    }
+    Integer getKeyCode();
 
     /**
      * Get the current pressed key name.
      * 
      * @return The pressed key name.
      */
-    public char getKeyName()
-    {
-        return lastKeyName;
-    }
+    char getKeyName();
 
     /**
      * Check if the keyboard is currently used (at least one pressed key).
      * 
      * @return <code>true</code> if has at least on pressed key, <code>false</code> else (no pressed key).
      */
-    public boolean used()
-    {
-        return !keys.isEmpty();
-    }
-
-    /*
-     * InputDeviceDirectional
-     */
-
-    @Override
-    public void setHorizontalControlPositive(Integer code)
-    {
-        right = code;
-    }
-
-    @Override
-    public void setHorizontalControlNegative(Integer code)
-    {
-        left = code;
-    }
-
-    @Override
-    public void setVerticalControlPositive(Integer code)
-    {
-        up = code;
-    }
-
-    @Override
-    public void setVerticalControlNegative(Integer code)
-    {
-        down = code;
-    }
-
-    @Override
-    public int getHorizontalDirection()
-    {
-        if (isPressed(left))
-        {
-            return -1;
-        }
-        else if (isPressed(right))
-        {
-            return 1;
-        }
-        return 0;
-    }
-
-    @Override
-    public int getVerticalDirection()
-    {
-        if (isPressed(down))
-        {
-            return -1;
-        }
-        else if (isPressed(up))
-        {
-            return 1;
-        }
-        return 0;
-    }
-
-    /*
-     * KeyListener
-     */
-
-    @Override
-    public void keyPressed(KeyEvent event)
-    {
-        lastCode = Integer.valueOf(event.keyCode);
-        lastKeyName = event.character;
-        keys.add(Integer.valueOf(event.keyCode));
-    }
-
-    @Override
-    public void keyReleased(KeyEvent event)
-    {
-        lastCode = Integer.valueOf(-1);
-        lastKeyName = ' ';
-        keys.remove(Integer.valueOf(event.keyCode));
-        pressed.remove(Integer.valueOf(event.keyCode));
-    }
+    boolean used();
 }

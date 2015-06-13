@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -56,14 +56,14 @@ public interface InputDeviceDirectional
     /**
      * Get the horizontal direction.
      * 
-     * @return <code>-1</code> if left, <code>1</code> if right, 0 if none.
+     * @return <code>negative</code> if left, <code>positive</code> if right, 0 if none.
      */
-    int getHorizontalDirection();
+    double getHorizontalDirection();
 
     /**
      * Get the horizontal direction.
      * 
-     * @return <code>1</code> if up, <code>1</code> if down, 0 if none.
+     * @return <code>positive</code> if up, <code>negative</code> if down, 0 if none.
      */
-    int getVerticalDirection();
+    double getVerticalDirection();
 }

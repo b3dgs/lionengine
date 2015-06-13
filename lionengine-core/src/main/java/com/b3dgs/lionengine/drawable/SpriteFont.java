@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,13 +44,23 @@ import com.b3dgs.lionengine.core.Graphic;
  * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Sprite
  */
 public interface SpriteFont
         extends Sprite
 {
     /** New line char. */
     char NEW_LINE = '%';
+
+    /**
+     * Draw a single text at specified location. Multiple lines can be used with {@link SpriteFont#NEW_LINE}.
+     * 
+     * @param g The graphics output.
+     * @param x The location x.
+     * @param y The location y.
+     * @param align The alignment.
+     * @param text The input text.
+     */
+    void draw(Graphic g, int x, int y, Align align, String text);
 
     /**
      * Draw a multiple text at specified location.
@@ -62,17 +72,6 @@ public interface SpriteFont
      * @param text The input text.
      */
     void draw(Graphic g, int x, int y, Align align, String... text);
-
-    /**
-     * Draw a single text at specified location.
-     * 
-     * @param g The graphics output.
-     * @param x The location x.
-     * @param y The location y.
-     * @param align The alignment.
-     * @param text The input text.
-     */
-    void draw(Graphic g, int x, int y, Align align, String text);
 
     /**
      * Set line height (default = letter height).

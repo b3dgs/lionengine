@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,20 +23,23 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
+import com.b3dgs.lionengine.mock.ViewerMock;
 
 /**
  * Test the sprite class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class SpriteTest
 {
     /** Image media. */
@@ -50,8 +53,8 @@ public class SpriteTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -60,7 +63,7 @@ public class SpriteTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -70,8 +73,16 @@ public class SpriteTest
     public void testSprite()
     {
         // Sprite with existing surface
-        final ImageBuffer surface = Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE);
+        final ImageBuffer surface = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
         final Sprite spriteA = Drawable.loadSprite(surface);
+
+        spriteA.setOrigin(Origin.TOP_LEFT);
+        spriteA.setLocation(1.0, 2.0);
+        spriteA.setLocation(new ViewerMock(), spriteA);
+        spriteA.setMirror(Mirror.VERTICAL);
+        Assert.assertEquals(1.0, spriteA.getX(), 0.001);
+        Assert.assertEquals(2.0, spriteA.getY(), 0.001);
+        Assert.assertEquals(Mirror.VERTICAL, spriteA.getMirror());
 
         Assert.assertNotNull(spriteA.getSurface());
         Assert.assertEquals(surface, spriteA.getSurface());

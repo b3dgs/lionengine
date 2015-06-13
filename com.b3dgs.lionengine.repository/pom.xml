@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.b3dgs.lionengine</groupId>
 		<artifactId>lionengine</artifactId>
-		<version>7.1.4</version>
+		<version>8.0.0</version>
 		<relativePath>../lionengine-parent</relativePath>
 	</parent>
 
@@ -24,21 +24,6 @@
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-platform</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-pathfinding</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-strategy</artifactId>
 		</dependency>
 
 		<dependency>

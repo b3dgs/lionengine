@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:collisions xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:collision group="block">
+        <lionengine:formula>top</lionengine:formula>
+        <lionengine:formula>bottom</lionengine:formula>
+        <lionengine:formula>left</lionengine:formula>
+        <lionengine:formula>right</lionengine:formula>
+    </lionengine:collision>
+</lionengine:collisions>

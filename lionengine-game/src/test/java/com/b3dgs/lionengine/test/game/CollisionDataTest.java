@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.Collision;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class CollisionDataTest
 {
     /**
@@ -35,7 +36,7 @@ public class CollisionDataTest
     @Test
     public void testCollisionData()
     {
-        final Collision collisionData = new Collision(1, 2, 3, 4, true);
+        final Collision collisionData = new Collision(null, 1, 2, 3, 4, true);
         Assert.assertTrue(collisionData.getOffsetX() == 1);
         Assert.assertTrue(collisionData.getOffsetY() == 2);
         Assert.assertTrue(collisionData.getWidth() == 3);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,8 +30,8 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Media;
@@ -117,7 +117,7 @@ abstract class ScreenAwt
             throw new LionEngineException(ScreenAwt.ERROR_DISPLAY);
         }
         config = renderer.getConfig();
-        graphics = Core.GRAPHIC.createGraphic();
+        graphics = Graphics.createGraphic();
         devices = new HashMap<>(2);
     }
 
@@ -138,7 +138,7 @@ abstract class ScreenAwt
      * 
      * @param keyboard The keyboard reference.
      */
-    private void addKeyboardListener(Keyboard keyboard)
+    private void addKeyboardListener(KeyboardAwt keyboard)
     {
         componentForKeyboard.addKeyListener(keyboard);
         componentForKeyboard.requestFocus();
@@ -157,7 +157,7 @@ abstract class ScreenAwt
      * 
      * @param mouse The mouse reference.
      */
-    private void addMouseListener(Mouse mouse)
+    private void addMouseListener(MouseAwt mouse)
     {
         componentForMouse.addMouseListener(mouse);
         componentForMouse.addMouseMotionListener(mouse);
@@ -170,9 +170,9 @@ abstract class ScreenAwt
      */
     private void addDeviceKeyboard()
     {
-        final Keyboard keyboard = new Keyboard();
+        final KeyboardAwt keyboard = new KeyboardAwt();
         addKeyboardListener(keyboard);
-        devices.put(keyboard.getClass(), keyboard);
+        devices.put(Keyboard.class, keyboard);
     }
 
     /**
@@ -182,9 +182,9 @@ abstract class ScreenAwt
      */
     private void addDeviceMouse() throws LionEngineException
     {
-        final Mouse mouse = new Mouse();
+        final MouseAwt mouse = new MouseAwt();
         addMouseListener(mouse);
-        devices.put(mouse.getClass(), mouse);
+        devices.put(Mouse.class, mouse);
     }
 
     /**
@@ -295,7 +295,7 @@ abstract class ScreenAwt
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type)
+    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
     {
         return type.cast(devices.get(type));
     }
@@ -330,6 +330,12 @@ abstract class ScreenAwt
     public boolean isReady()
     {
         return buf != null;
+    }
+
+    @Override
+    public void onSourceChanged(Resolution source)
+    {
+        ((MouseAwt) getInputDevice(Mouse.class)).setConfig(config);
     }
 
     /*

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,13 +22,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -38,6 +36,7 @@ import com.b3dgs.lionengine.mock.MediaMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class SpriteParallaxedTest
 {
     /** Lines number. */
@@ -53,8 +52,8 @@ public class SpriteParallaxedTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -63,7 +62,7 @@ public class SpriteParallaxedTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -75,38 +74,20 @@ public class SpriteParallaxedTest
         final ImageInfo info = ImageInfo.get(MEDIA);
         final SpriteParallaxed spriteA = Drawable.loadSpriteParallaxed(MEDIA, LINES, 60, 100);
 
-        Assert.assertEquals(0, spriteA.getWidthOriginal());
-        Assert.assertEquals(0, spriteA.getHeightOriginal());
-
-        spriteA.prepare(Filter.NONE);
+        spriteA.load(false);
         Assert.assertTrue(spriteA.equals(spriteA));
-        Assert.assertEquals((int) (spriteA.getWidthOriginal() * 0.6), spriteA.getWidth());
-        Assert.assertEquals(info.getWidth(), spriteA.getWidthOriginal());
         Assert.assertEquals(info.getHeight() / LINES, spriteA.getHeight());
 
-        for (int i = 0; i < LINES; i++)
-        {
-            Assert.assertNotNull(spriteA.getLine(i));
-            spriteA.render(g, i, 0, 0);
-        }
+        Assert.assertEquals(38, spriteA.getWidth());
+        Assert.assertEquals(41, spriteA.getLineWidth(2));
 
         // Test render
-        try
-        {
-            spriteA.render(null, 0, 0);
-            Assert.fail();
-        }
-        catch (final NullPointerException exception)
-        {
-            // Success
-        }
-        spriteA.render(g, 0, 0);
+        spriteA.render(g, 0, 0, 0);
 
         // Resize
         final SpriteParallaxed spriteB = Drawable.loadSpriteParallaxed(MEDIA, LINES, 60, 100);
-        spriteB.scale(200);
-        spriteB.prepare(Filter.BILINEAR);
-        Assert.assertEquals(info.getWidth(), spriteB.getWidthOriginal());
+        spriteB.stretch(200, 200);
+        spriteB.load(true);
         Assert.assertFalse(spriteB.equals(spriteA));
         Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());
         Assert.assertFalse(spriteA.equals(MEDIA));

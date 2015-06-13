@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 package com.b3dgs.lionengine.anim;
+
+import com.b3dgs.lionengine.Nameable;
 
 /**
  * Animation data container for animation routine.
@@ -55,7 +57,10 @@ package com.b3dgs.lionengine.anim;
  * @see AnimState
  */
 public interface Animation
+        extends Nameable
 {
+    /** Animation default name; */
+    String DEFAULT_NAME = "default_anim";
     /** The minimum frame number. */
     int MINIMUM_FRAME = 1;
 

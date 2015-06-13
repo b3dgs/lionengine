@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,10 +19,19 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
+import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -31,22 +40,36 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class World
+class World
         extends WorldGame
 {
+    /** Background color. */
+    private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
+
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final CameraPlatform camera;
+    private final Camera camera = services.create(Camera.class);
     /** Map reference. */
-    private final Map map;
+    private final MapTile map = services.create(MapTileGame.class);
+    /** Map collision. */
+    private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
+    /** Mario reference. */
+    private Mario mario;
 
     /**
-     * @see WorldGame#WorldGame(Config)
+     * Constructor.
+     * 
+     * @param config The config reference.
+     * @param keyboard The keyboard reference.
      */
-    World(Config config)
+    public World(Config config, Keyboard keyboard)
     {
         super(config);
-        camera = new CameraPlatform(width, height);
-        map = new Map();
+        services.add(keyboard);
+        services.add(Integer.valueOf(source.getRate()));
     }
 
     /*
@@ -56,13 +79,16 @@ final class World
     @Override
     public void update(double extrp)
     {
-        // Update
+        mario.update(extrp);
     }
 
     @Override
     public void render(Graphic g)
     {
-        map.render(g, camera);
+        g.setColor(BACKGROUND_COLOR);
+        g.drawRect(0, 0, width, height, true);
+        map.render(g);
+        mario.render(g);
     }
 
     @Override
@@ -75,7 +101,13 @@ final class World
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
-        camera.setLimits(map);
+        mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
+
         camera.setIntervals(16, 0);
+        camera.setView(0, 0, width, height);
+        camera.setLimits(map);
+
+        mario = factory.create(Mario.MEDIA);
+        mario.respawn();
     }
 }

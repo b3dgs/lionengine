@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +23,9 @@ package com.b3dgs.lionengine.anim;
  * <li>{@link Animation}</li>
  * <li>{@link Animator}</li>
  * </ul>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -31,6 +34,7 @@ public final class Anim
     /**
      * Create an animation, which can be played by an {@link Animator}.
      * 
+     * @param name The animation name.
      * @param firstFrame The first frame (included) index to play (>= {@link Animation#MINIMUM_FRAME}).
      * @param lastFrame The last frame (included) index to play (>= firstFrame).
      * @param speed The animation playing speed (>= 0.0).
@@ -38,9 +42,10 @@ public final class Anim
      * @param repeat The repeat state (<code>true</code> will play in loop, <code>false</code> will play once only).
      * @return The created animation.
      */
-    public static Animation createAnimation(int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
+    public static Animation createAnimation(String name, int firstFrame, int lastFrame, double speed, boolean reverse,
+            boolean repeat)
     {
-        return new AnimationImpl(firstFrame, lastFrame, speed, reverse, repeat);
+        return new AnimationImpl(name, firstFrame, lastFrame, speed, reverse, repeat);
     }
 
     /**

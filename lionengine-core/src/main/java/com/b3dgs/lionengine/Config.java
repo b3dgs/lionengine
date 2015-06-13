@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,6 +41,9 @@ import com.b3dgs.lionengine.core.Sequence;
  * final Resolution output = new Resolution(640, 480, 60);
  * final Config config = new Config(output, 16, true);
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Resolution
@@ -49,6 +52,10 @@ import com.b3dgs.lionengine.core.Sequence;
  */
 public final class Config
 {
+    /** Applet lock. */
+    private final Object lockApplet = new Object();
+    /** Source lock. */
+    private final Object sourceLock = new Object();
     /** Output resolution reference. */
     private final Resolution output;
     /** Filter reference. */
@@ -57,13 +64,13 @@ public final class Config
     private final int depth;
     /** Windowed mode. */
     private final boolean windowed;
-    /** Ratio desired. */
-    private double ratio;
-    /** Source resolution reference. */
-    private Resolution source;
     /** Icon media. */
-    private Media icon;
-    /** Applet reference. */
+    private volatile Media icon;
+    /** Ratio desired (locked by {@link #sourceLock}). */
+    private double ratio;
+    /** Source resolution reference (locked by {@link #sourceLock}). */
+    private Resolution source;
+    /** Applet reference (locked by {@link #lockApplet}). */
     private Applet<?> applet;
 
     /**
@@ -99,7 +106,7 @@ public final class Config
         this.windowed = windowed;
         this.filter = filter;
 
-        setRatio(output.getWidth() / (double) output.getHeight());
+        setRatioValue(output.getWidth() / (double) output.getHeight());
     }
 
     /**
@@ -110,10 +117,10 @@ public final class Config
      */
     public void setRatio(double ratio) throws LionEngineException
     {
-        Check.superiorStrict(ratio, 0);
-
-        this.ratio = ratio;
-        output.setRatio(ratio);
+        synchronized (sourceLock)
+        {
+            setRatioValue(ratio);
+        }
     }
 
     /**
@@ -123,7 +130,10 @@ public final class Config
      */
     public void setApplet(Applet<?> applet)
     {
-        this.applet = applet;
+        synchronized (lockApplet)
+        {
+            this.applet = applet;
+        }
     }
 
     /**
@@ -146,8 +156,11 @@ public final class Config
     {
         Check.notNull(source);
 
-        this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
-        this.source.setRatio(ratio);
+        synchronized (sourceLock)
+        {
+            this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
+            this.source.setRatio(ratio);
+        }
     }
 
     /**
@@ -157,7 +170,10 @@ public final class Config
      */
     public Resolution getSource()
     {
-        return source;
+        synchronized (sourceLock)
+        {
+            return source;
+        }
     }
 
     /**
@@ -179,11 +195,18 @@ public final class Config
      */
     public <A extends Applet<A>> A getApplet(Class<A> appletClass)
     {
-        if (applet != null && appletClass != null)
+        A cast = null;
+        if (appletClass != null)
         {
-            return appletClass.cast(applet.getApplet());
+            synchronized (lockApplet)
+            {
+                if (applet != null)
+                {
+                    cast = appletClass.cast(applet.getApplet());
+                }
+            }
         }
-        return null;
+        return cast;
     }
 
     /**
@@ -233,6 +256,23 @@ public final class Config
      */
     public boolean hasApplet()
     {
-        return applet != null;
+        synchronized (lockApplet)
+        {
+            return applet != null;
+        }
+    }
+
+    /**
+     * Set the ratio value.
+     * 
+     * @param ratio The new ratio [> 0].
+     * @throws LionEngineException If ratio is not strictly positive.
+     */
+    private void setRatioValue(double ratio) throws LionEngineException
+    {
+        Check.superiorStrict(ratio, 0);
+
+        this.ratio = ratio;
+        output.setRatio(ratio);
     }
 }

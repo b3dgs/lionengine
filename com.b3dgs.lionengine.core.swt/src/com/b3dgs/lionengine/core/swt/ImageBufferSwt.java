@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -108,8 +108,11 @@ final class ImageBufferSwt
             gc.dispose();
             gc = null;
         }
-        image.dispose();
-        image = null;
+        if (image != null)
+        {
+            image.dispose();
+            image = null;
+        }
     }
 
     @Override
@@ -137,7 +140,11 @@ final class ImageBufferSwt
         final int pixel = data.getPixel(x, y);
         final PaletteData palette = data.palette;
         final RGB rgb = palette.getRGB(pixel);
-        return new ColorRgba(rgb.red, rgb.green, rgb.blue).getRgba();
+        if (pixel == data.transparentPixel)
+        {
+            return ColorRgba.TRANSPARENT.getRgba();
+        }
+        return new ColorRgba(rgb.red, rgb.green, rgb.blue, data.getAlpha(x, y)).getRgba();
     }
 
     @Override

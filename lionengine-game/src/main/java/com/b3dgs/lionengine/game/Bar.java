@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Renderable;
 
 /**
  * Surface representing a bar designed to display a kind of progress bar (life...).
@@ -28,6 +29,7 @@ import com.b3dgs.lionengine.core.Graphic;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Bar
+        implements Renderable
 {
     /** Horizontal location. */
     private int x;
@@ -78,11 +80,7 @@ public class Bar
         foreground = null;
     }
 
-    /**
-     * Render the bar.
-     * 
-     * @param g The graphic output.
-     */
+    @Override
     public void render(Graphic g)
     {
         if (background != null)

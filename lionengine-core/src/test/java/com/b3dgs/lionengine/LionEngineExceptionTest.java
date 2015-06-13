@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,13 +17,17 @@
  */
 package com.b3dgs.lionengine;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.mock.MediaMock;
 
 /**
@@ -31,6 +35,7 @@ import com.b3dgs.lionengine.mock.MediaMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class LionEngineExceptionTest
 {
     /**
@@ -39,8 +44,7 @@ public class LionEngineExceptionTest
     @BeforeClass
     public static void prepareTest()
     {
-        System.out.println("*********************************** EXPECTED VERBOSE ***********************************");
-        System.out.flush();
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
     }
 
     /**
@@ -49,8 +53,7 @@ public class LionEngineExceptionTest
     @AfterClass
     public static void cleanUp()
     {
-        System.out.println("****************************************************************************************");
-        System.out.flush();
+        Verbose.info("****************************************************************************************");
     }
 
     /**
@@ -122,9 +125,11 @@ public class LionEngineExceptionTest
 
     /**
      * Test the exception with a throwable as argument.
+     * 
+     * @throws FileNotFoundException If error.
      */
     @Test
-    public void testLionEngineExceptionWithThrowable()
+    public void testLionEngineExceptionWithThrowable() throws FileNotFoundException
     {
         try
         {
@@ -133,6 +138,30 @@ public class LionEngineExceptionTest
         catch (final LionEngineException exception)
         {
             exception.printStackTrace();
+        }
+        try
+        {
+            throw new LionEngineException(new LionEngineException("reason"));
+        }
+        catch (final LionEngineException exception)
+        {
+            exception.printStackTrace();
+        }
+        final File out = new File("out.txt");
+        try (PrintWriter writer = new PrintWriter(out))
+        {
+            try
+            {
+                throw new LionEngineException(new LionEngineException(new RuntimeException("sub")));
+            }
+            catch (final LionEngineException exception)
+            {
+                exception.printStackTrace(writer);
+            }
+        }
+        if (out.isFile())
+        {
+            UtilFile.deleteFile(out);
         }
     }
 

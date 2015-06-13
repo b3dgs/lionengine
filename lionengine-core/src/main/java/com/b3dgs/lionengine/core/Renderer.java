@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,23 +29,24 @@ import com.b3dgs.lionengine.Transparency;
 
 /**
  * Main thread renderer, which can handle a {@link Sequence}.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class Renderer
+public class Renderer
         extends Thread
         implements Sequencable
 {
     /** Screen ready timeout in milli second. */
-    static final long SCREEN_READY_TIME_OUT = 5000L;
+    static final long SCREEN_READY_TIME_OUT = 50L;
     /** Error message already started. */
     private static final String ERROR_STARTED = "Renderer has already been started !";
     /** One nano second. */
     private static final long TIME_LONG = 1000000000L;
     /** One nano second. */
     private static final double TIME_DOUBLE = 1000000000.0;
-    /** One millisecond. */
-    private static final long TIME_INT = 1000000L;
     /** Extrapolation standard. */
     private static final double EXTRP = 1.0;
 
@@ -61,59 +62,50 @@ public abstract class Renderer
     private final boolean sync;
     /** Output resolution reference. */
     private final Resolution output;
-    /** Source resolution reference. */
-    private Resolution source;
-    /** Screen width. */
-    private int width;
-    /** Screen height. */
-    private int height;
-    /** Loader. */
-    private Loader loader;
-    /** Screen reference. */
-    private Screen screen;
-    /** First sequence. */
-    private Class<? extends Sequence> firstSequence;
-    /** First sequence arguments. */
-    private Object[] arguments;
-    /** Current sequence. */
-    private Sequence sequence;
-    /** Next sequence pointer. */
-    private Sequence nextSequence;
     /** Started. */
-    private boolean started;
-    /** Image buffer. */
-    private ImageBuffer buf;
-    /** Graphic buffer. */
-    private Graphic gbuf;
-    /** Hq3x use flag. */
-    private int hqx;
-    /** Filter used. */
-    private Transform op;
-    /** Direct rendering. */
-    private boolean directRendering;
-    /** Current frame rate. */
-    private double currentFrameRate;
-    /** Extrapolation flag. */
-    private boolean extrapolated;
-    /** Async load. */
-    private boolean asyncLoadFlag;
+    private volatile boolean started;
+    /** Loader. */
+    private volatile Loader loader;
+    /** Next sequence pointer. */
+    private volatile Sequence nextSequence;
+    /** Current sequence. */
+    private volatile Sequence sequence;
+    /** Screen reference. */
+    private volatile Screen screen;
     /** Thread running flag. */
-    private boolean isRunning;
+    private volatile boolean isRunning;
+    /** Extrapolation flag. */
+    private volatile boolean extrapolated;
+    /** Current frame rate. */
+    private volatile int currentFrameRate;
+    /** Image buffer. */
+    private volatile ImageBuffer buf;
+    /** Hq3x use flag. */
+    private volatile int hqx;
+    /** Filter used. */
+    private volatile Transform op;
+    /** Direct rendering. */
+    private volatile boolean directRendering;
+    /** Source resolution reference. */
+    private volatile Resolution source;
+    /** First sequence class. */
+    private volatile Class<? extends Sequence> firstSequence;
+    /** First sequence arguments. */
+    private volatile Object[] firstSequenceArguments;
 
     /**
      * Constructor base.
      * 
      * @param config The config reference.
-     * @param name The renderer name.
      */
-    protected Renderer(Config config, String name)
+    public Renderer(Config config)
     {
-        super("LionEngine " + name + " Renderer");
+        super("LionEngine Renderer");
         this.config = config;
         filter = config.getFilter();
         output = config.getOutput();
         sync = config.isWindowed() && output.getRate() > 0;
-        extrapolated = true;
+        extrapolated = false;
 
         // Time needed for a loop to reach desired rate
         if (output.getRate() == 0)
@@ -124,32 +116,25 @@ public abstract class Renderer
         {
             frameDelay = TIME_LONG / output.getRate();
         }
-        graphic = Core.GRAPHIC.createGraphic();
+        graphic = Graphics.createGraphic();
     }
-
-    /**
-     * Allow to load another sequence without blocking the current one.
-     * 
-     * @param nextSequence The next sequence to load.
-     */
-    protected abstract void asyncLoad(Sequence nextSequence);
 
     /**
      * Start with the first sequence.
      * 
-     * @param sequence The first sequence to start.
      * @param loader The loader reference.
-     * @param arguments The sequence arguments list if needed by its constructor.
+     * @param first The first sequence to start.
+     * @param param The sequence parameters.
      * @throws LionEngineException If the renderer has already been started.
      */
-    public final void startFirstSequence(Class<? extends Sequence> sequence, Loader loader, Object... arguments)
+    public final synchronized void startFirstSequence(Loader loader, Class<? extends Sequence> first, Object... param)
             throws LionEngineException
     {
         if (!started)
         {
             this.loader = loader;
-            this.arguments = arguments;
-            firstSequence = sequence;
+            firstSequence = first;
+            firstSequenceArguments = param;
             started = true;
             start();
         }
@@ -160,31 +145,11 @@ public abstract class Renderer
     }
 
     /**
-     * Get main frame location x.
-     * 
-     * @return The main frame location x.
-     */
-    public final int getX()
-    {
-        return screen.getX();
-    }
-
-    /**
-     * Get main frame location y.
-     * 
-     * @return The main frame location y.
-     */
-    public final int getY()
-    {
-        return screen.getY();
-    }
-
-    /**
      * Check if the renderer is started.
      * 
      * @return <code>true</code> if started, <code>false</code> else.
      */
-    public final boolean isStarted()
+    public final synchronized boolean isStarted()
     {
         return started;
     }
@@ -200,9 +165,29 @@ public abstract class Renderer
     }
 
     /**
+     * Get main frame location x.
+     * 
+     * @return The main frame location x.
+     */
+    protected final int getX()
+    {
+        return screen.getX();
+    }
+
+    /**
+     * Get main frame location y.
+     * 
+     * @return The main frame location y.
+     */
+    protected final int getY()
+    {
+        return screen.getY();
+    }
+
+    /**
      * Terminate the renderer.
      */
-    void terminate()
+    final synchronized void terminate()
     {
         if (sequence != null)
         {
@@ -215,55 +200,59 @@ public abstract class Renderer
     }
 
     /**
-     * Render handler.
+     * Check the filter level, update the HQX value and apply transform.
      * 
-     * @param g The graphic output.
+     * @return The associated transform instance.
      */
-    private void preRender(final Graphic g)
+    private Transform checkFilter()
     {
-        if (directRendering)
+        final double scaleX = output.getWidth() / (double) source.getWidth();
+        final double scaleY = output.getHeight() / (double) source.getHeight();
+        final Transform transform = Graphics.createTransform();
+        switch (filter)
         {
-            sequence.render(g);
+            case NONE:
+            case BILINEAR:
+                hqx = 0;
+                transform.scale(scaleX, scaleY);
+                break;
+            case HQ2X:
+                hqx = 2;
+                transform.scale(scaleX / 2, scaleY / 2);
+                break;
+            case HQ3X:
+                hqx = 3;
+                transform.scale(scaleX / 3, scaleY / 3);
+                break;
+            default:
+                throw new RuntimeException();
         }
-        else
-        {
-            sequence.render(graphic);
-            switch (hqx)
-            {
-                case 2:
-                    g.drawImage(new Hq2x(buf).getScaledImage(), op, 0, 0);
-                    break;
-                case 3:
-                    g.drawImage(new Hq3x(buf).getScaledImage(), op, 0, 0);
-                    break;
-                default:
-                    g.drawImage(buf, op, 0, 0);
-                    break;
-            }
-        }
+        return transform;
     }
 
     /**
-     * Sync frame rate to desired if possible.
-     * 
-     * @param time The update tile.
+     * Wait for screen to be ready before continuing.
      */
-    private void sync(final long time)
+    private void waitForScreenReady()
     {
-        if (sync)
+        final Timing timeout = new Timing();
+        timeout.start();
+        while (!screen.isReady())
         {
             try
             {
-                final long waitTime = frameDelay - time;
-                if (waitTime > 0)
+                Thread.sleep(100);
+                if (timeout.elapsed(SCREEN_READY_TIME_OUT))
                 {
-                    Thread.sleep(waitTime / TIME_INT, (int) (waitTime % TIME_INT));
+                    Thread.currentThread().interrupt();
                 }
             }
             catch (final InterruptedException exception)
             {
-                Verbose.critical(Renderer.class, "sync", "Renderer interrupted !");
-                isRunning = false;
+                Thread.currentThread().interrupt();
+                Verbose.critical(Renderer.class, "run", "Unable to get screen ready !");
+                nextSequence = null;
+                break;
             }
         }
     }
@@ -300,28 +289,17 @@ public abstract class Renderer
             final long lastTime = System.nanoTime();
             if (screen.isReady())
             {
-                sequence.update(extrp);
+                update(extrp);
                 screen.preUpdate();
-                preRender(screen.getGraphic());
+                render(screen.getGraphic());
                 screen.update();
             }
             sync(System.nanoTime() - lastTime);
 
-            // Perform extrapolation and frame rate calculation
-            final long currentTime = System.nanoTime();
-            if (extrapolated)
-            {
-                extrp = source.getRate() / TIME_DOUBLE * (currentTime - lastTime);
-            }
-            else
-            {
-                extrp = EXTRP;
-            }
-            if (currentTime - updateFpsTimer > TIME_LONG)
-            {
-                currentFrameRate = TIME_DOUBLE / (currentTime - lastTime);
-                updateFpsTimer = currentTime;
-            }
+            final long currentTime = Math.max(lastTime + 1, System.nanoTime());
+            extrp = computeExtrapolation(lastTime, currentTime);
+            updateFpsTimer = computeFrameRate(lastTime, currentTime, updateFpsTimer);
+
             if (!EngineCore.isStarted())
             {
                 isRunning = false;
@@ -334,77 +312,63 @@ public abstract class Renderer
     }
 
     /**
-     * Wait for screen to be ready before continuing.
+     * Sync frame rate to desired if possible.
+     * 
+     * @param time The update tile.
      */
-    private void waitForScreenReady()
+    private void sync(final long time)
     {
-        final Timing timeout = new Timing();
-        timeout.start();
-        while (!screen.isReady())
+        if (sync)
         {
-            try
+            final double waitTime = frameDelay - time;
+            if (waitTime > 0.0)
             {
-                Thread.sleep(100);
-                if (timeout.elapsed(SCREEN_READY_TIME_OUT))
+                final long prevTime = System.nanoTime();
+                while (System.nanoTime() - prevTime < waitTime)
                 {
-                    Thread.currentThread().interrupt();
+                    Thread.yield();
                 }
-            }
-            catch (final InterruptedException exception)
-            {
-                Verbose.critical(Renderer.class, "run", "Unable to get screen ready !");
-                nextSequence = null;
-                break;
             }
         }
     }
 
     /**
-     * Wait for the async loading to be finished before running the sequence.
+     * Compute extrapolation value depending of the elapsed time.
      * 
-     * @param nextSequence The next sequence reference.
-     * @param sequenceName The sequence name to wait for.
-     * @return <code>true</code> if correctly loaded, <code>false</code> if error.
+     * @param lastTime The last time value before game loop.
+     * @param currentTime The current time after game loop.
+     * @return The computed extrapolation value.
      */
-    private boolean waitForAsyncLoad(Sequence nextSequence, String sequenceName)
+    private double computeExtrapolation(long lastTime, long currentTime)
     {
-        if (asyncLoadFlag)
+        if (extrapolated)
         {
-            try
-            {
-                nextSequence.loadedSemaphore.acquire();
-                asyncLoadFlag = false;
-            }
-            catch (final InterruptedException exception)
-            {
-                Verbose.critical(Renderer.class, "run", "Sequence async loading interrupted: ", sequenceName);
-                return false;
-            }
+            return source.getRate() / TIME_DOUBLE * (currentTime - lastTime);
         }
-        return true;
+        return EXTRP;
+    }
+
+    /**
+     * Compute the frame rate depending of the game loop speed.
+     * 
+     * @param lastTime The last time value before game loop.
+     * @param currentTime The current time after game loop.
+     * @param updateFpsTimer The last fps update time.
+     * @return The next fps update time.
+     */
+    private long computeFrameRate(long lastTime, long currentTime, long updateFpsTimer)
+    {
+        if (currentTime - updateFpsTimer > TIME_LONG)
+        {
+            currentFrameRate = (int) (TIME_DOUBLE / (currentTime - lastTime));
+            return currentTime;
+        }
+        return updateFpsTimer;
     }
 
     /*
      * Sequencable
      */
-
-    @Override
-    public final void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
-            throws LionEngineException
-    {
-        Check.notNull(nextSequenceClass);
-
-        nextSequence = Loader.createSequence(nextSequenceClass, loader, arguments);
-        if (wait)
-        {
-            nextSequence.start();
-        }
-        else
-        {
-            asyncLoad(nextSequence);
-            asyncLoadFlag = true;
-        }
-    }
 
     @Override
     public final void end()
@@ -413,12 +377,44 @@ public abstract class Renderer
     }
 
     @Override
-    public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments) throws LionEngineException
+    public final synchronized void end(Class<? extends Sequence> nextSequenceClass, Object... arguments)
+            throws LionEngineException
     {
         Check.notNull(nextSequenceClass);
 
         nextSequence = Loader.createSequence(nextSequenceClass, loader, arguments);
         isRunning = false;
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        sequence.update(extrp);
+    }
+
+    @Override
+    public void render(final Graphic g)
+    {
+        if (directRendering)
+        {
+            sequence.render(g);
+        }
+        else
+        {
+            sequence.render(graphic);
+            switch (hqx)
+            {
+                case 2:
+                    g.drawImage(new Hq2x(buf).getScaledImage(), op, 0, 0);
+                    break;
+                case 3:
+                    g.drawImage(new Hq3x(buf).getScaledImage(), op, 0, 0);
+                    break;
+                default:
+                    g.drawImage(buf, op, 0, 0);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -434,52 +430,32 @@ public abstract class Renderer
     }
 
     @Override
-    public final void setResolution(Resolution newSource) throws LionEngineException
+    public final synchronized void setResolution(Resolution newSource) throws LionEngineException
     {
         Check.notNull(newSource);
 
         config.setSource(newSource);
         source = config.getSource();
+        screen.onSourceChanged(source);
 
         // Scale factor
-        final double scaleX = output.getWidth() / (double) source.getWidth();
-        final double scaleY = output.getHeight() / (double) source.getHeight();
-        Transform transform = Core.GRAPHIC.createTransform();
-
-        // Filter level
-        switch (filter)
-        {
-            case HQ2X:
-                hqx = 2;
-                transform.scale(scaleX / 2, scaleY / 2);
-                break;
-            case HQ3X:
-                hqx = 3;
-                transform.scale(scaleX / 3, scaleY / 3);
-                break;
-            default:
-                hqx = 0;
-                transform.scale(scaleX, scaleY);
-                break;
-        }
+        final Transform transform = checkFilter();
 
         // Store source size
-        width = source.getWidth();
-        height = source.getHeight();
+        final int width = source.getWidth();
+        final int height = source.getHeight();
 
         // Standard rendering
         if (hqx == 0 && source.getWidth() == output.getWidth() && source.getHeight() == output.getHeight())
         {
             buf = null;
-            gbuf = null;
-            transform = null;
+            op = null;
             graphic.setGraphic(null);
         }
         // Scaled rendering
         else
         {
-            buf = Core.GRAPHIC.createImageBuffer(width, height, Transparency.OPAQUE);
-            gbuf = buf.createGraphic();
+            buf = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
             if (hqx > 1 || filter == Filter.NONE)
             {
                 transform.setInterpolation(false);
@@ -488,15 +464,16 @@ public abstract class Renderer
             {
                 transform.setInterpolation(true);
             }
+            op = transform;
+            final Graphic gbuf = buf.createGraphic();
             graphic.setGraphic(gbuf.getGraphic());
         }
-        op = transform;
         directRendering = hqx == 0 && (op == null || buf == null);
         sequence.setResolution(width, height);
     }
 
     @Override
-    public final void setSystemCursorVisible(boolean visible)
+    public final synchronized void setSystemCursorVisible(boolean visible)
     {
         if (visible)
         {
@@ -517,11 +494,11 @@ public abstract class Renderer
     @Override
     public final int getFps()
     {
-        return (int) currentFrameRate;
+        return currentFrameRate;
     }
 
     @Override
-    public final <T extends InputDevice> T getInputDevice(Class<T> type)
+    public final <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
     {
         return screen.getInputDevice(type);
     }
@@ -534,22 +511,16 @@ public abstract class Renderer
     public final void run()
     {
         // First init
-        started = true;
-        screen = Core.GRAPHIC.createScreen(this);
+        screen = Graphics.createScreen(this);
         screen.start();
-        sequence = Loader.createSequence(firstSequence, loader, arguments);
-        nextSequence = sequence;
+
+        nextSequence = Loader.createSequence(firstSequence, loader, firstSequenceArguments);
         waitForScreenReady();
-        firstSequence = null;
 
         while (nextSequence != null)
         {
             final Sequence sequence = nextSequence;
             final String sequenceName = sequence.getClass().getName();
-            if (!waitForAsyncLoad(sequence, sequenceName))
-            {
-                break;
-            }
             Verbose.info("Starting sequence: ", sequenceName);
 
             update(sequence);

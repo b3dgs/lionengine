@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,25 +31,18 @@ public final class Messages
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".properties.messages"; //$NON-NLS-1$
-    /** Class property. */
-    public static String Properties_Class;
-    /** Surface property. */
-    public static String Properties_Surface;
-    /** Surface icon property. */
-    public static String Properties_SurfaceIcon;
-    /** Frames property. */
-    public static String Properties_Frames;
-    /** Animations property. */
-    public static String Properties_Animations;
-    /** Collisions property. */
-    public static String Properties_Collisions;
+
+    /** Property key. */
+    public static String Properties_Key;
+    /** Property value. */
+    public static String Properties_Value;
 
     /**
      * Initialize.
      */
     static
     {
-        NLS.initializeMessages(Messages.BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     /**

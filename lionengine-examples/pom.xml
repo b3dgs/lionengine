@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.b3dgs.lionengine</groupId>
 		<artifactId>lionengine</artifactId>
-		<version>7.1.4</version>
+		<version>8.0.0</version>
 		<relativePath>../lionengine-parent</relativePath>
 	</parent>
 
@@ -38,23 +38,34 @@
 
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-pathfinding</artifactId>
+			<artifactId>lionengine-audio-sc68</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-platform</artifactId>
+			<artifactId>lionengine-audio-wav</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-strategy</artifactId>
+			<artifactId>lionengine-audio-midi</artifactId>
 		</dependency>
 
 	</dependencies>
 
 	<build>
+	
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/com/b3dgs/lionengine/example/snippet/*.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -72,7 +83,6 @@
 
 				</executions>
 			</plugin>
-
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

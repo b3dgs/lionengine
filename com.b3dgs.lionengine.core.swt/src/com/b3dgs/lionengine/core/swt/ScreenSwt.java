@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,9 +35,9 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
@@ -106,7 +106,7 @@ abstract class ScreenSwt
         config = renderer.getConfig();
         cursorHidden = ToolsSwt.createHiddenCursor();
         cursorDefault = ScreenSwt.display.getSystemCursor(0);
-        graphics = Core.GRAPHIC.createGraphic();
+        graphics = Graphics.createGraphic();
         devices = new HashMap<>(2);
         frame = initMainFrame(config.isWindowed());
 
@@ -152,9 +152,9 @@ abstract class ScreenSwt
      */
     private void addDeviceKeyboard()
     {
-        final Keyboard keyboard = new Keyboard();
+        final KeyboardSwt keyboard = new KeyboardSwt();
         addKeyboardListener(keyboard);
-        devices.put(keyboard.getClass(), keyboard);
+        devices.put(Keyboard.class, keyboard);
     }
 
     /**
@@ -162,9 +162,9 @@ abstract class ScreenSwt
      */
     private void addDeviceMouse()
     {
-        final Mouse mouse = new Mouse(ScreenSwt.display);
+        final MouseSwt mouse = new MouseSwt(ScreenSwt.display);
         addMouseListener(mouse);
-        devices.put(mouse.getClass(), mouse);
+        devices.put(Mouse.class, mouse);
     }
 
     /**
@@ -187,7 +187,7 @@ abstract class ScreenSwt
      * 
      * @param keyboard The keyboard to add.
      */
-    private void addKeyboardListener(Keyboard keyboard)
+    private void addKeyboardListener(KeyboardSwt keyboard)
     {
         frame.addKeyListener(keyboard);
         frame.forceFocus();
@@ -198,7 +198,7 @@ abstract class ScreenSwt
      * 
      * @param mouse The mouse to add.
      */
-    private void addMouseListener(Mouse mouse)
+    private void addMouseListener(MouseSwt mouse)
     {
         canvas.addMouseListener(mouse);
         canvas.addMouseMoveListener(mouse);
@@ -332,7 +332,7 @@ abstract class ScreenSwt
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type)
+    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
     {
         return type.cast(devices.get(type));
     }
@@ -361,6 +361,12 @@ abstract class ScreenSwt
     public boolean isReady()
     {
         return buf != null;
+    }
+
+    @Override
+    public void onSourceChanged(Resolution source)
+    {
+        ((MouseSwt) getInputDevice(Mouse.class)).setConfig(config);
     }
 
     /*

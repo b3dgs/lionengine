@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,17 +17,19 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 
@@ -41,35 +43,60 @@ import com.b3dgs.lionengine.drawable.Image;
  * <li><code>area</code>: Represents the area where the cursor can move on. Its location can not exit this area (
  * {@link #setArea(int, int, int, int)}).</li>
  * <li><code>sync</code>: <code>true</code> if cursor is synchronized on the system pointer, <code>false</code> not (
- * {@link Cursor#setSyncMode(boolean)}).</li>
+ * {@link #setSyncMode(boolean)}).</li>
  * <li><code>sensibility</code>: If the cursor is not synchronized on the system pointer, it can be defined (
- * {@link Cursor#setSensibility(double, double)}).</li>
+ * {@link #setSensibility(double, double)}).</li>
+ * <li><code>grid</code>: Represents the map grid, affecting {@link #getInTileX()} and {@link #getInTileY()}.</li>
  * <li><code>location</code>: The internal cursor position ({@link #setLocation(int, int)}).</li>
- * <li><code>surfaceId</code>: This is the current cursor surface that can be displayed (
- * {@link Cursor#setSurfaceId(int)}).</li>
+ * <li>
+ * <code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
  * </ul>
  * </p>
+ * <p>
+ * Usage example:
+ * </p>
+ * <ul>
+ * <li>Create the cursor with {@link #Cursor()}.</li>
+ * <li>Add images with {@link #addImage(int, Media)}.</li>
+ * <li>Load added images {@link #load(boolean)}.</li>
+ * <li>Set the input to use {@link #setInputDevice(InputDevicePointer)}.</li>
+ * <li>Change the cursor image if when needed with {@link #setSurfaceId(int)}.</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see InputDevicePointer
  * @see Image
  */
 public class Cursor
+        implements Localizable, Tiled, Updatable, Renderable
 {
-    /** Pointer reference. */
-    private final InputDevicePointer pointer;
+    /** Surface ID not found error. */
+    private static final String ERROR_SURFACE_ID = "Undefined surface id:";
+
     /** Surface reference. */
-    private final Image[] surface;
-    /** Cursor location x. */
+    private final Map<Integer, Image> surfaces;
+    /** Pointer reference. */
+    private InputDevicePointer pointer;
+    /** Viewer reference. */
+    private Viewer viewer;
+    /** Cursor screen location x. */
     private double x;
-    /** Cursor location y. */
+    /** Cursor screen location y. */
     private double y;
+    /** Cursor viewer relative location x. */
+    private double viewX;
+    /** Cursor viewer relative location y. */
+    private double viewY;
     /** Synchronization mode. */
     private boolean sync;
     /** Horizontal sensibility. */
     private double sensibilityHorizontal;
     /** Vertical sensibility. */
     private double sensibilityVertical;
+    /** Grid width. */
+    private int gridWidth;
+    /** Grid height. */
+    private int gridHeight;
     /** Minimum location x. */
     private int minX;
     /** Minimum location y. */
@@ -78,107 +105,92 @@ public class Cursor
     private int maxX;
     /** Maximum location y. */
     private int maxY;
-    /** Click number. */
-    private int click;
     /** Surface id. */
-    private int surfaceId;
+    private Integer surfaceId;
+    /** Current surface. */
+    private Image surface;
     /** Rendering horizontal offset. */
     private int offsetX;
     /** Rendering vertical offset. */
     private int offsetY;
+    /** Location offset x. */
+    private int offX;
+    /** Location offset y. */
+    private int offY;
 
     /**
-     * Create a cursor fixed inside the resolution and load its images.
-     * 
-     * @param pointer The pointer reference (must not be <code>null</code>).
-     * @param resolution The resolution used to know the screen limits.
-     * @param media The cursor media.
-     * @param others The cursor medias list (containing the different cursor surfaces path).
-     * @throws LionEngineException If invalid arguments or an error occurred when reading the image.
+     * Create a cursor.
      */
-    public Cursor(InputDevicePointer pointer, Resolution resolution, Media media, Media... others)
-            throws LionEngineException
+    public Cursor()
     {
-        this(pointer, 0, 0, resolution.getWidth(), resolution.getHeight(), media, others);
-    }
-
-    /**
-     * Create a cursor and load its images.
-     * 
-     * @param pointer The pointer reference (must not be <code>null</code>).
-     * @param minX The minimal x location on screen.
-     * @param minY The minimal y location on screen.
-     * @param maxX The maximal x location on screen.
-     * @param maxY The maximal y location on screen.
-     * @param media The cursor media.
-     * @param others The cursor media list (containing the different cursor surfaces path).
-     * @throws LionEngineException If invalid arguments or an error occurred when reading the image.
-     */
-    public Cursor(InputDevicePointer pointer, int minX, int minY, int maxX, int maxY, Media media, Media... others)
-            throws LionEngineException
-    {
-        Check.notNull(pointer);
-        Check.notNull(media);
-
-        this.pointer = pointer;
+        surfaces = new HashMap<>();
         x = 0.0;
         y = 0.0;
         sensibilityHorizontal = 1.0;
         sensibilityVertical = 1.0;
-
-        final Collection<Media> images = new ArrayList<>(1 + others.length);
-        images.add(media);
-        images.addAll(Arrays.asList(others));
-        surface = new Image[images.size()];
-
-        int i = 0;
-        for (final Media current : images)
-        {
-            surface[i] = Drawable.loadImage(current);
-            i++;
-        }
-
-        this.minX = Math.min(minX, maxX);
-        this.minY = Math.min(minY, maxY);
-        this.maxX = Math.max(maxX, minX);
-        this.maxY = Math.max(maxY, minY);
         sync = true;
-        surfaceId = 0;
+        gridWidth = 1;
+        gridHeight = 1;
         offsetX = 0;
         offsetY = 0;
     }
 
     /**
-     * Update cursor position depending of pointer movement.
+     * Add a cursor image. Once there are no more images to add, a call to {@link #load(boolean)} will be necessary.
      * 
-     * @param extrp The extrapolation value.
+     * @param id The cursor id.
+     * @param media The cursor media.
+     * @throws LionEngineException If invalid media.
      */
-    public void update(double extrp)
+    public void addImage(int id, Media media) throws LionEngineException
     {
-        if (sync)
+        final Integer key = Integer.valueOf(id);
+        surfaces.put(key, Drawable.loadImage(media));
+        if (surfaceId == null)
         {
-            x = pointer.getX();
-            y = pointer.getY();
+            surfaceId = key;
         }
-        else
-        {
-            x += pointer.getMoveX() * sensibilityHorizontal * extrp;
-            y += pointer.getMoveY() * sensibilityVertical * extrp;
-        }
-
-        x = UtilMath.fixBetween(x, minX, maxX);
-        y = UtilMath.fixBetween(y, minY, maxY);
-        click = pointer.getClick();
     }
 
     /**
-     * Render cursor on screen at its current location.
+     * Load the cursor images. Must be called only one time.
      * 
-     * @param g The graphic output.
+     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      */
-    public void render(Graphic g)
+    public void load(boolean alpha)
     {
-        surface[surfaceId].render(g, (int) x + offsetX, (int) y + offsetY);
+        for (final Image current : surfaces.values())
+        {
+            current.load(alpha);
+            if (surface == null)
+            {
+                surface = current;
+            }
+        }
+    }
+
+    /**
+     * Set the input device pointer to use.
+     * 
+     * @param pointer The pointer reference (must not be <code>null</code>).
+     * @throws LionEngineException If invalid pointer.
+     */
+    public void setInputDevice(InputDevicePointer pointer) throws LionEngineException
+    {
+        Check.notNull(pointer);
+        this.pointer = pointer;
+    }
+
+    /**
+     * Set the viewer reference.
+     * 
+     * @param viewer The viewer reference.
+     * @throws LionEngineException If invalid viewer.
+     */
+    public void setViewer(Viewer viewer) throws LionEngineException
+    {
+        Check.notNull(pointer);
+        this.viewer = viewer;
     }
 
     /**
@@ -218,11 +230,21 @@ public class Cursor
     /**
      * Set the surface id to render with {@link #render(Graphic)}.
      * 
-     * @param surfaceId The surface id number (start at 0 which is default value).
+     * @param surfaceId The surface id number (must be strictly positive).
+     * @throws LionEngineException If invalid id value or not found.
      */
-    public void setSurfaceId(int surfaceId)
+    public void setSurfaceId(int surfaceId) throws LionEngineException
     {
-        this.surfaceId = Math.max(0, surfaceId);
+        Check.superiorOrEqual(surfaceId, 0);
+        this.surfaceId = Integer.valueOf(surfaceId);
+        if (surfaces.containsKey(this.surfaceId))
+        {
+            surface = surfaces.get(this.surfaceId);
+        }
+        else
+        {
+            throw new LionEngineException(ERROR_SURFACE_ID + surfaceId);
+        }
     }
 
     /**
@@ -254,13 +276,50 @@ public class Cursor
     }
 
     /**
-     * Return pointer click number.
+     * Set the grid size. Will affect {@link #getInTileX()} and {@link #getInTileY()}.
      * 
-     * @return The pointer click number.
+     * @param width The horizontal grid (> 0).
+     * @param height The vertical grid (> 0).
+     * @throws LionEngineException If grid is not strictly positive.
+     */
+    public void setGrid(int width, int height) throws LionEngineException
+    {
+        Check.superiorStrict(width, 0);
+        Check.superiorStrict(height, 0);
+        gridWidth = width;
+        gridHeight = height;
+    }
+
+    /**
+     * Get the click number.
+     * 
+     * @return The click number.
      */
     public int getClick()
     {
-        return click;
+        return pointer.getClick();
+    }
+
+    /**
+     * Check if click is pressed.
+     * 
+     * @param click The click to check.
+     * @return The pressed state.
+     */
+    public boolean hasClicked(int click)
+    {
+        return pointer.hasClicked(click);
+    }
+
+    /**
+     * Check if click is pressed once only (ignore 'still clicked').
+     * 
+     * @param click The click to check.
+     * @return The pressed state.
+     */
+    public boolean hasClickedOnce(int click)
+    {
+        return pointer.hasClickedOnce(click);
     }
 
     /**
@@ -268,29 +327,9 @@ public class Cursor
      * 
      * @return The current surface id.
      */
-    public int getSurfaceId()
+    public Integer getSurfaceId()
     {
         return surfaceId;
-    }
-
-    /**
-     * Get horizontal location.
-     * 
-     * @return The horizontal location.
-     */
-    public int getLocationX()
-    {
-        return (int) Math.floor(x);
-    }
-
-    /**
-     * Get vertical location.
-     * 
-     * @return The vertical location.
-     */
-    public int getLocationY()
-    {
-        return (int) Math.floor(y);
     }
 
     /**
@@ -314,6 +353,26 @@ public class Cursor
     }
 
     /**
+     * Get the current horizontal location on screen.
+     * 
+     * @return The current horizontal location on screen.
+     */
+    public double getScreenX()
+    {
+        return x;
+    }
+
+    /**
+     * Get the current vertical location on screen.
+     * 
+     * @return The current vertical location on screen.
+     */
+    public double getScreenY()
+    {
+        return y;
+    }
+
+    /**
      * Check if the cursor is synchronized to the system pointer or not.
      * 
      * @return <code>true</code> = sync to the system pointer; <code>false</code> = internal movement.
@@ -321,5 +380,107 @@ public class Cursor
     public boolean isSynchronized()
     {
         return sync;
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        if (pointer != null)
+        {
+            if (sync)
+            {
+                x = pointer.getX();
+                y = pointer.getY();
+            }
+            else
+            {
+                x += pointer.getMoveX() * sensibilityHorizontal * extrp;
+                y += pointer.getMoveY() * sensibilityVertical * extrp;
+            }
+        }
+        if (viewer != null)
+        {
+            offX = (int) viewer.getX();
+            offY = (int) viewer.getY();
+        }
+
+        x = UtilMath.fixBetween(x, minX, maxX);
+        y = UtilMath.fixBetween(y, minY, maxY);
+        viewX = x + offX;
+        viewY = (viewer != null ? viewer.getHeight() : 0) - y + offY;
+        for (final Image current : surfaces.values())
+        {
+            current.setLocation(x + offsetX, y + offsetY);
+        }
+    }
+
+    /*
+     * Renderable
+     */
+
+    @Override
+    public void render(Graphic g)
+    {
+        surface.render(g);
+    }
+
+    /*
+     * Localizable
+     */
+
+    @Override
+    public double getX()
+    {
+        return viewX;
+    }
+
+    @Override
+    public double getY()
+    {
+        return viewY;
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return gridWidth;
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return gridHeight;
+    }
+
+    /*
+     * Tiled
+     */
+
+    @Override
+    public int getInTileX()
+    {
+        return (int) viewX / gridWidth;
+    }
+
+    @Override
+    public int getInTileY()
+    {
+        return (int) viewY / gridHeight;
+    }
+
+    @Override
+    public int getInTileWidth()
+    {
+        return 1;
+    }
+
+    @Override
+    public int getInTileHeight()
+    {
+        return 1;
     }
 }

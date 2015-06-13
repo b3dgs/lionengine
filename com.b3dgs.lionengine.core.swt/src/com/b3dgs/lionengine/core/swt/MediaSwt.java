@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,9 +21,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Media implementation.
@@ -33,17 +35,36 @@ import com.b3dgs.lionengine.core.Media;
 final class MediaSwt
         implements Media
 {
+    /** No parent. */
+    private static final String NO_PARENT = "";
+
     /** Media path. */
     private final String path;
+    /** Media parent path. */
+    private final String parent;
+    /** File reference. */
+    private final File file;
 
     /**
      * Internal constructor.
      * 
      * @param path The media path.
+     * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaSwt(String path)
+    MediaSwt(String path) throws LionEngineException
     {
+        Check.notNull(path);
         this.path = path;
+        final int index = path.lastIndexOf(Medias.getSeparator());
+        if (index > -1)
+        {
+            parent = path.substring(0, index);
+        }
+        else
+        {
+            parent = NO_PARENT;
+        }
+        file = new File(UtilFile.getPath(UtilityMedia.getRessourcesDir(), path));
     }
 
     /*
@@ -57,21 +78,33 @@ final class MediaSwt
     }
 
     @Override
+    public String getParentPath()
+    {
+        return parent;
+    }
+
+    @Override
     public File getFile()
     {
-        return new File(UtilFile.getPath(UtilityMedia.getRessourcesDir(), path));
+        return file;
     }
 
     @Override
     public InputStream getInputStream() throws LionEngineException
     {
-        return UtilityMedia.getInputStream(this, MediaSwt.class.getSimpleName());
+        return UtilityMedia.getInputStream(this);
     }
 
     @Override
     public OutputStream getOutputStream() throws LionEngineException
     {
-        return UtilityMedia.getOutputStream(this, MediaSwt.class.getSimpleName());
+        return UtilityMedia.getOutputStream(this);
+    }
+
+    @Override
+    public boolean exists()
+    {
+        return UtilityMedia.exists(this);
     }
 
     @Override

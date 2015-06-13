@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,10 +21,14 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MDirectToolItem;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
@@ -39,6 +43,8 @@ import org.osgi.framework.Bundle;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.Property;
 
 /**
  * Series of tool functions around the editor related to eclipse.
@@ -57,6 +63,19 @@ public final class UtilEclipse
     private static final String ERROR_ICON_PATH = "Icon not found: ";
     /** Icon not created error. */
     private static final String ERROR_ICON_CREATE = "Icon cannot be created: ";
+
+    /** Active application. */
+    private static MApplication app;
+
+    /**
+     * Set the current active application.
+     * 
+     * @param app The active application.
+     */
+    public static void setApplication(MApplication app)
+    {
+        UtilEclipse.app = app;
+    }
 
     /**
      * Get the icon from its name.
@@ -125,15 +144,16 @@ public final class UtilEclipse
     /**
      * Get a part from its id.
      * 
-     * @param <C> The class type.
-     * @param partService The part service.
      * @param id The part id.
      * @param clazz The part class type.
+     * @param <C> The class type.
      * @return The part class instance.
      * @throws LionEngineException If part can not be found.
      */
-    public static <C> C getPart(EPartService partService, String id, Class<C> clazz) throws LionEngineException
+    public static <C> C getPart(String id, Class<C> clazz) throws LionEngineException
     {
+        final IEclipseContext activeContext = app.getContext().getActiveLeaf();
+        final EPartService partService = activeContext.get(EPartService.class);
         final MPart part = partService.findPart(id);
         if (part != null)
         {
@@ -152,6 +172,7 @@ public final class UtilEclipse
     /**
      * Create a class from its name and call its corresponding constructor.
      * 
+     * @param <C> The class type.
      * @param name The full class name.
      * @param type The class type.
      * @param params The constructor parameters.
@@ -180,6 +201,99 @@ public final class UtilEclipse
             }
         }
         throw new ClassNotFoundException(UtilEclipse.ERROR_CLASS_CREATE + name);
+    }
+
+    /**
+     * Get all classes that implements the specified type.
+     * 
+     * @param <C> The class type.
+     * @param type The type to check.
+     * @return The implementing class list.
+     */
+    public static <C> Collection<Class<? extends C>> getImplementing(Class<C> type)
+    {
+        final Collection<Class<? extends C>> found = new HashSet<>();
+        found.addAll(getImplementing(type, Project.getActive().getClassesPath(), null));
+        found.addAll(getImplementing(type, Project.getActive().getLibrariesPath(), null));
+        found.addAll(getImplementing(type, Activator.getLocation(), Activator.class.getPackage().getName()));
+
+        return found;
+    }
+
+    /**
+     * Get all classes that implements the specified type.
+     * 
+     * @param <C> The class type.
+     * @param type The type to check.
+     * @param root The folder to search.
+     * @param packageStart The starting package (<code>null</code> if none).
+     * @return The implementing class list.
+     */
+    public static <C> Collection<Class<? extends C>> getImplementing(Class<C> type, File root, String packageStart)
+    {
+        final Collection<Class<? extends C>> found = new HashSet<>();
+        if (root.isDirectory())
+        {
+            final Collection<File> folders = new ArrayList<>();
+            folders.add(root);
+            while (!folders.isEmpty())
+            {
+                final Collection<File> foldersToDo = new ArrayList<>();
+                for (final File folder : folders)
+                {
+                    final File[] files = folder.listFiles();
+                    if (files != null)
+                    {
+                        for (final File current : files)
+                        {
+                            if (current.isDirectory())
+                            {
+                                foldersToDo.add(current);
+                            }
+                            else if (current.isFile() && current.getName().endsWith(".class"))
+                            {
+                                final Class<? extends C> clazz = getImplementing(type, root, packageStart, current);
+                                if (clazz != null)
+                                {
+                                    found.add(clazz);
+                                }
+                            }
+                        }
+                    }
+                }
+                folders.clear();
+                folders.addAll(foldersToDo);
+                foldersToDo.clear();
+            }
+        }
+        return found;
+    }
+
+    /**
+     * Get class that implements the specified type.
+     * 
+     * @param <C> The class type.
+     * @param type The type to check.
+     * @param root The folder to search.
+     * @param packageStart The starting package (<code>null</code> if none).
+     * @param current The current class file to check.
+     * @return The implementing class reference.
+     */
+    private static <C> Class<? extends C> getImplementing(Class<C> type, File root, String packageStart, File current)
+    {
+        String name = current.getPath().replace(root.getPath(), "").replace("." + Property.EXTENSION_CLASS, "")
+                .replace(File.separator, ".").substring(1);
+        if (packageStart != null)
+        {
+            name = name.substring(name.indexOf(packageStart));
+        }
+        final Project project = Project.getActive();
+        final Class<?> clazz = project.getClass(name);
+        if (type.isAssignableFrom(clazz) && clazz != type)
+        {
+            return clazz.asSubclass(type);
+        }
+        return null;
     }
 
     /**

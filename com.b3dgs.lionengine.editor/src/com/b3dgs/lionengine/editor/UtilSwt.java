@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,16 +28,24 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.UtilConversion;
@@ -85,6 +93,29 @@ public final class UtilSwt
     }
 
     /**
+     * Create a text with its legend.
+     * 
+     * @param legend The legend text.
+     * @param parent The composite parent.
+     * @return The created text.
+     */
+    public static Text createText(String legend, Composite parent)
+    {
+        final Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(2, false));
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        final Label textLegend = new Label(composite, SWT.HORIZONTAL);
+        textLegend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        textLegend.setText(legend);
+
+        final Text text = new Text(composite, SWT.SINGLE);
+        text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        return text;
+    }
+
+    /**
      * Get the selected item number from the tree.
      * 
      * @param tree The tree reference.
@@ -124,6 +155,11 @@ public final class UtilSwt
         }
         final Combo combo = new Combo(parent, SWT.READ_ONLY);
         combo.setItems(items);
+        if (items.length > 0)
+        {
+            combo.setText(items[0]);
+            combo.setData(links.get(items[0]));
+        }
         combo.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -141,6 +177,90 @@ public final class UtilSwt
             }
         });
         return combo;
+    }
+
+    /**
+     * Create a combo from an enumeration. Selected item can be accessed with {@link Combo#getData()}.
+     * Combo items are enum names as title case, converted by {@link UtilConversion#toTitleCase(String)}.
+     * Legend label will be added on left.
+     * 
+     * @param legend The combo legend.
+     * @param parent The parent reference.
+     * @param values The enumeration values.
+     * @return The combo instance.
+     */
+    public static Combo createCombo(String legend, Composite parent, Enum<?>[] values)
+    {
+        final Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(2, false));
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        final Label textLegend = new Label(composite, SWT.HORIZONTAL);
+        textLegend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        textLegend.setText(legend);
+
+        final Combo combo = createCombo(composite, values);
+        return combo;
+    }
+
+    /**
+     * Create a verify listener.
+     * 
+     * @param text The text to verify.
+     * @param match The expected match.
+     * @return The verify listener.
+     * @see InputValidator
+     */
+    public static VerifyListener createVerify(final Text text, final String match)
+    {
+        return new VerifyListener()
+        {
+            @Override
+            public void verifyText(VerifyEvent event)
+            {
+                final String init = text.getText();
+                final String newText = init.substring(0, event.start) + event.text + init.substring(event.end);
+                event.doit = newText.matches(match) || newText.isEmpty();
+            }
+        };
+    }
+
+    /**
+     * Auto size tree column and sub items.
+     * 
+     * @param item The item parent.
+     */
+    public static void autoSize(TreeItem item)
+    {
+        for (final TreeColumn column : item.getParent().getColumns())
+        {
+            column.pack();
+        }
+    }
+
+    /**
+     * Create the auto size listener which will auto size properties.
+     * 
+     * @return The created listener.
+     */
+    public static Listener createAutosizeListener()
+    {
+        return new Listener()
+        {
+            @Override
+            public void handleEvent(Event e)
+            {
+                final TreeItem item = (TreeItem) e.item;
+                item.getDisplay().asyncExec(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        autoSize(item);
+                    }
+                });
+            }
+        };
     }
 
     /**

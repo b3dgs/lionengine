@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,15 +26,23 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum ProjectsModel
+public class ProjectsModel
 {
-    /** Resources explorer model. */
-    INSTANCE;
+    /** Project model. */
+    public static final ProjectsModel INSTANCE = new ProjectsModel();
 
     /** Project root (resources folder). */
     private File root;
     /** Last resource selected. */
     private Media selection;
+
+    /**
+     * Private constructor.
+     */
+    protected ProjectsModel()
+    {
+        // Nothing to do
+    }
 
     /**
      * Set the main resources folder.

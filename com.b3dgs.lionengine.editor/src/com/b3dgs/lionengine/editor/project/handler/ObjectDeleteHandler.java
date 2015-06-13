@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,9 +26,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.ProjectsPart;
 
 /**
  * Remove an object in the selected folder.
@@ -44,6 +42,7 @@ public class ObjectDeleteHandler
      * @param parent The shell parent.
      */
     @Execute
+    @SuppressWarnings("static-method")
     public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
@@ -56,8 +55,6 @@ public class ObjectDeleteHandler
                 messageBox.setText(Messages.RemoveObject_Title);
                 messageBox.setMessage(Messages.RemoveObject_Text + file);
                 messageBox.open();
-                final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
-                part.removeTreeItem(selection);
             }
             else
             {

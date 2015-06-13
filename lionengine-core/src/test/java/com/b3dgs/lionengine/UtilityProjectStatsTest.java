@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,11 +23,14 @@ import java.lang.reflect.InvocationTargetException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.core.Verbose;
+
 /**
  * Test the utility project stats class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class UtilityProjectStatsTest
 {
     /**
@@ -51,5 +54,9 @@ public class UtilityProjectStatsTest
     public void testProjectStats()
     {
         UtilProjectStats.start("src");
+
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        UtilProjectStats.countFileLines("null");
+        Verbose.info("****************************************************************************************");
     }
 }

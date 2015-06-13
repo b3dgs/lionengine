@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,15 +20,14 @@ package com.b3dgs.lionengine.mock;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryGraphic;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderer;
@@ -44,12 +43,6 @@ import com.b3dgs.lionengine.core.Transform;
 public class FactoryGraphicMock
         implements FactoryGraphic
 {
-    @Override
-    public Renderer createRenderer(Config config)
-    {
-        return new RendererMock(config);
-    }
-
     @Override
     public Screen createScreen(Renderer renderer)
     {
@@ -139,9 +132,14 @@ public class FactoryGraphicMock
     {
         switch (filter)
         {
-            default:
+            case NONE:
+            case BILINEAR:
+            case HQ2X:
+            case HQ3X:
                 // Nothing
                 break;
+            default:
+                throw new RuntimeException();
         }
         return new ImageBufferMock(image.getWidth(), image.getHeight(), image.getTransparency());
     }
@@ -168,6 +166,6 @@ public class FactoryGraphicMock
     @Override
     public int[][] loadRaster(Media media)
     {
-        return Core.GRAPHIC.loadRaster(media);
+        return Graphics.loadRaster(media);
     }
 }

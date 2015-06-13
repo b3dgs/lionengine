@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,69 +17,49 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.palette.PaletteType;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.object.ComponentRenderer;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Contains the objects of the world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum WorldViewModel
+public class WorldViewModel
 {
-    /** Instance. */
-    INSTANCE;
+    /** World view model. */
+    public static final WorldViewModel INSTANCE = new WorldViewModel();
 
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
-    private final CameraGame camera;
+    private final Camera camera = services.create(Camera.class);
     /** Map reference. */
-    private MapTile<?> map;
-    /** Factory reference. */
-    private FactoryObjectGame<?> factory;
-    /** Selected object media. */
-    private Media selectedObject;
+    private final MapTile map = services.create(MapTileGame.class);
     /** Selected palette. */
-    private Enum<?> palette = PaletteType.POINTER;
+    private Enum<?> palette = PaletteType.POINTER_OBJECT;
 
     /**
-     * Private constructor.
+     * Constructor.
      */
-    private WorldViewModel()
+    protected WorldViewModel()
     {
-        camera = new CameraGame();
-    }
+        final Handler handlerObject = new Handler();
+        handlerObject.addRenderable(new ComponentRenderer());
+        services.add(handlerObject);
 
-    /**
-     * Set the map reference.
-     * 
-     * @param map The map reference.
-     */
-    public void setMap(MapTile<?> map)
-    {
-        this.map = map;
-    }
+        final Selection selection = new Selection(services);
+        services.add(selection);
 
-    /**
-     * Set the factory reference.
-     * 
-     * @param factory The factory reference.
-     */
-    public void setFactory(FactoryObjectGame<?> factory)
-    {
-        this.factory = factory;
-    }
-
-    /**
-     * Set the selected object media.
-     * 
-     * @param selectedObject The selected object media.
-     */
-    public void setSelectedObject(Media selectedObject)
-    {
-        this.selectedObject = selectedObject;
+        final ObjectControl objectControl = new ObjectControl(services);
+        services.add(objectControl);
     }
 
     /**
@@ -93,11 +73,21 @@ public enum WorldViewModel
     }
 
     /**
+     * Get the services reference.
+     * 
+     * @return The services reference.
+     */
+    public Services getServices()
+    {
+        return services;
+    }
+
+    /**
      * Get the camera reference.
      * 
      * @return The camera reference.
      */
-    public CameraGame getCamera()
+    public Camera getCamera()
     {
         return camera;
     }
@@ -107,7 +97,7 @@ public enum WorldViewModel
      * 
      * @return The map reference.
      */
-    public MapTile<?> getMap()
+    public MapTile getMap()
     {
         return map;
     }
@@ -117,19 +107,9 @@ public enum WorldViewModel
      * 
      * @return The factory object reference.
      */
-    public FactoryObjectGame<?> getFactory()
+    public Factory getFactory()
     {
         return factory;
-    }
-
-    /**
-     * Get the selected object media.
-     * 
-     * @return The selected object media.
-     */
-    public Media getSelectedObject()
-    {
-        return selectedObject;
     }
 
     /**

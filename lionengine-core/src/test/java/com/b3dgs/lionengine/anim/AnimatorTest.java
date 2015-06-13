@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class AnimatorTest
 {
     /**
@@ -52,7 +53,7 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 4;
-        final Animation animation = Anim.createAnimation(first, last, 1.0, false, false);
+        final Animation animation = Anim.createAnimation(null, first, last, 1.0, false, false);
         final Animator animator = Anim.createAnimator();
 
         testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
@@ -61,16 +62,16 @@ public class AnimatorTest
 
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, last, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, last, AnimState.FINISHED);
 
-        animator.stopAnimation();
+        animator.stop();
         testAnimatorState(animator, first, last, AnimState.STOPPED);
     }
 
@@ -82,26 +83,26 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 4;
-        final Animation animation = Anim.createAnimation(first, last, 1.0, true, false);
+        final Animation animation = Anim.createAnimation(null, first, last, 1.0, true, false);
         final Animator animator = Anim.createAnimator();
 
         animator.play(animation);
 
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 2, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.REVERSING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first, AnimState.REVERSING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first, AnimState.FINISHED);
     }
 
@@ -113,20 +114,20 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 3;
-        final Animation animation = Anim.createAnimation(first, last, 1.0, false, true);
+        final Animation animation = Anim.createAnimation(null, first, last, 1.0, false, true);
         final Animator animator = Anim.createAnimator();
 
         animator.play(animation);
 
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
     }
 
@@ -138,23 +139,23 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 3;
-        final Animation animation = Anim.createAnimation(first, last, 1.0, true, true);
+        final Animation animation = Anim.createAnimation(null, first, last, 1.0, true, true);
         final Animator animator = Anim.createAnimator();
 
         animator.play(animation);
 
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first, AnimState.REVERSING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first, AnimState.REVERSING);
     }
 
@@ -167,23 +168,23 @@ public class AnimatorTest
         final int first = 2;
         final int last = 5;
         final double speed = 2.0;
-        final Animation animation = Anim.createAnimation(first, last, speed, false, false);
+        final Animation animation = Anim.createAnimation(null, first, last, speed, false, false);
         final Animator animator = Anim.createAnimator();
 
         animator.play(animation);
 
         animator.setAnimSpeed(speed - 1.0);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
 
         animator.setFrame(1);
 
         testAnimatorState(animator, first, 1, AnimState.PLAYING);
 
-        animator.stopAnimation();
+        animator.stop();
         testAnimatorState(animator, first, 1, AnimState.STOPPED);
     }
 

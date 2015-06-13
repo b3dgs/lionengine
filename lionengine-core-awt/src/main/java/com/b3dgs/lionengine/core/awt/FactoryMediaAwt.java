@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.io.File;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.FactoryMedia;
 import com.b3dgs.lionengine.core.Media;
 
@@ -46,13 +47,13 @@ final class FactoryMediaAwt
      */
 
     @Override
-    public Media create(String path)
+    public Media create(String path) throws LionEngineException
     {
         return new MediaAwt(path);
     }
 
     @Override
-    public Media create(String... path)
+    public Media create(String... path) throws LionEngineException
     {
         final StringBuilder fullPath = new StringBuilder();
         for (int i = 0; i < path.length; i++)

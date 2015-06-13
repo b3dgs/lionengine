@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,82 +17,88 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.configurer.ConfigSize;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.projectile.ProjectileGame;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.trait.collidable.Collidable;
+import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
+import com.b3dgs.lionengine.game.trait.collidable.CollidableModel;
+import com.b3dgs.lionengine.game.trait.launchable.Launchable;
+import com.b3dgs.lionengine.game.trait.launchable.LaunchableModel;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
- * Projectile base implementation.
+ * Projectile implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class Projectile
-        extends ProjectileGame<Entity, Entity>
+class Projectile
+        extends ObjectGame
+        implements Updatable, Renderable, CollidableListener
 {
-    /**
-     * Get a projectile configuration file.
-     * 
-     * @param type The config associated class.
-     * @return The media config.
-     */
-    protected static Media getConfig(Class<? extends Projectile> type)
-    {
-        return Core.MEDIA.create(type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
-    }
+    /** Media. */
+    public static final Media PULSE = Medias.create("Pulse.xml");
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
+    /** Collidable model. */
+    private final Collidable collidable = addTrait(new CollidableModel());
+    /** Launchable model. */
+    private final Launchable launchable = addTrait(new LaunchableModel());
     /** Projectile surface. */
     private final Sprite sprite;
+    /** Viewer reference. */
+    private final Viewer viewer;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
+     * @param services The services reference.
      */
-    Projectile(SetupSurfaceGame setup)
+    public Projectile(SetupSurface setup, Services services)
     {
-        super(setup);
-        final Configurer configurer = setup.getConfigurer();
-        final ConfigSize sizeData = ConfigSize.create(configurer);
+        super(setup, services);
+        viewer = services.get(Viewer.class);
+
         sprite = Drawable.loadSprite(setup.surface);
-        setSize(sizeData.getWidth(), sizeData.getHeight());
-        setCollision(new Collision(getWidth(), -getHeight() / 2, 1, 1, false));
+        sprite.setOrigin(Origin.MIDDLE);
+
+        collidable.setOrigin(Origin.MIDDLE);
     }
 
-    /*
-     * ProjectileGame
-     */
+    @Override
+    public void update(double extrp)
+    {
+        launchable.update(extrp);
+        collidable.update(extrp);
+        sprite.setLocation(viewer, transformable);
+        if (!viewer.isViewable(transformable, 0, 0))
+        {
+            destroy();
+        }
+    }
 
     @Override
-    public void prepare(ContextGame context)
+    public void render(Graphic g)
+    {
+        sprite.render(g);
+        collidable.render(g);
+    }
+
+    @Override
+    public void notifyCollided(Collidable collidable)
     {
         // Nothing to do
-    }
-
-    @Override
-    public void render(Graphic g, CameraGame camera)
-    {
-        sprite.render(g, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
-    }
-
-    @Override
-    public void onHit(Entity entity, int damages)
-    {
-        destroy();
-    }
-
-    @Override
-    protected void updateMovement(double extrp, double vecX, double vecY)
-    {
-        moveLocation(extrp, vecX, vecY);
     }
 }

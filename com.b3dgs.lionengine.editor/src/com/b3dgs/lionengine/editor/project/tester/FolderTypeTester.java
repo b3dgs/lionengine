@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.project.Property;
-import com.b3dgs.lionengine.editor.project.handler.TilesheetsFolderTester;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -49,7 +48,7 @@ public class FolderTypeTester
     private static final String PROPERTY_CATEGORY = "category";
 
     /**
-     * Check if the path is a folder type descriptor.
+     * Check if the path is a folder type descriptor or contains objects.
      * 
      * @param path The path to test.
      * @return <code>true</code> if valid, <code>false</code> else.
@@ -58,7 +57,22 @@ public class FolderTypeTester
     {
         try
         {
-            return Tools.getFolderTypeFile(path).isFile();
+            if (Tools.getFolderTypeFile(path).isFile())
+            {
+                return true;
+            }
+            final File[] files = path.listFiles();
+            if (files != null)
+            {
+                for (final File file : files)
+                {
+                    if (ObjectsTester.isObjectFile(UtilityMedia.get(file)))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
         catch (final FileNotFoundException exception)
         {
@@ -95,11 +109,15 @@ public class FolderTypeTester
     {
         if (folder.isDirectory())
         {
-            for (final File file : folder.listFiles())
+            final File[] files = folder.listFiles();
+            if (files != null)
             {
-                if (Property.LEVEL.is(UtilityMedia.get(file)))
+                for (final File file : files)
                 {
-                    return true;
+                    if (Property.LEVEL.is(UtilityMedia.get(file)))
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -116,11 +134,15 @@ public class FolderTypeTester
     {
         if (folder.isDirectory())
         {
-            for (final File file : folder.listFiles())
+            final File[] files = folder.listFiles();
+            if (files != null)
             {
-                if (TilesheetsFolderTester.isTilesheetsFile(UtilityMedia.get(file)))
+                for (final File file : files)
                 {
-                    return true;
+                    if (SheetsTester.isSheetsFile(UtilityMedia.get(file)))
+                    {
+                        return true;
+                    }
                 }
             }
         }

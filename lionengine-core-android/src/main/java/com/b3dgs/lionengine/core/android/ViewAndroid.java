@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ final class ViewAndroid
         extends SurfaceView
 {
     /** Mouse. */
-    private Mouse mouse;
+    private MouseAndroid mouse;
 
     /**
      * Internal constructor.
@@ -47,7 +47,7 @@ final class ViewAndroid
      * 
      * @param mouse The mouse reference.
      */
-    void setMouse(Mouse mouse)
+    void setMouse(MouseAndroid mouse)
     {
         this.mouse = mouse;
     }

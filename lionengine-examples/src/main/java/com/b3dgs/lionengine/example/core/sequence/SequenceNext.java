@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
@@ -28,7 +29,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceNext
+class SequenceNext
         extends Sequence
 {
     /**
@@ -41,26 +42,22 @@ public class SequenceNext
         super(loader, new Resolution(320, 100, 32));
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
     protected void load()
     {
-        System.out.println("SequenceNext loaded !");
+        Verbose.info("SequenceNext loaded !");
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         end();
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
-        System.out.println("I am Next !");
+        Verbose.info("I am Next !");
     }
 
     @Override

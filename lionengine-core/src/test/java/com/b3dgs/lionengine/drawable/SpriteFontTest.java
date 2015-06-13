@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,20 +23,22 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
+import com.b3dgs.lionengine.mock.ViewerMock;
 
 /**
  * Test the font sprite class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class SpriteFontTest
 {
     /** Image media. */
@@ -52,8 +54,8 @@ public class SpriteFontTest
     @BeforeClass
     public static void setUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
-        g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -62,7 +64,7 @@ public class SpriteFontTest
     @AfterClass
     public static void cleanUp()
     {
-        FactoryGraphicProvider.setFactoryGraphic(null);
+        Graphics.setFactoryGraphic(null);
     }
 
     /**
@@ -75,15 +77,19 @@ public class SpriteFontTest
         final SpriteFont sprite = Drawable.loadSpriteFont(MEDIA, FONT, 6, 7);
         Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(MEDIA, FONT, 6, 7)));
 
-        final ImageInfo info = DrawableTestTool.assertImageInfoCorrect(MEDIA, sprite);
-        Assert.assertEquals(info.getWidth(), sprite.getWidthOriginal());
-        Assert.assertEquals(info.getHeight(), sprite.getHeightOriginal());
+        sprite.setOrigin(Origin.TOP_LEFT);
+        sprite.setLocation(1.0, 2.0);
+        sprite.setLocation(new ViewerMock(), sprite);
+        sprite.setMirror(Mirror.VERTICAL);
+        Assert.assertEquals(1.0, sprite.getX(), 0.001);
+        Assert.assertEquals(2.0, sprite.getY(), 0.001);
+        Assert.assertEquals(Mirror.VERTICAL, sprite.getMirror());
 
         DrawableTestTool.testSpriteLoading(sprite);
         DrawableTestTool.testImageRender(g, sprite);
         DrawableTestTool.testSpriteModification(2, sprite);
         sprite.setFade(0, -255);
-        sprite.scale(200);
+        sprite.stretch(200, 200);
 
         sprite.draw(g, 0, 0, Align.LEFT, text);
         sprite.draw(g, 0, 0, Align.CENTER, text);
@@ -96,5 +102,9 @@ public class SpriteFontTest
 
         sprite.stretch(90, 110);
         Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(MEDIA, FONT, 6, 7)));
+
+        // Hash code
+        final SpriteFont spriteB = Drawable.loadSpriteFont(MEDIA, FONT, 5, 4);
+        Assert.assertTrue(sprite.hashCode() != spriteB.hashCode());
     }
 }

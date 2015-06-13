@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.core;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Represents the media factory.
  * 
@@ -29,16 +31,18 @@ public interface FactoryMedia
      * 
      * @param path The media path.
      * @return The media instance.
+     * @throws LionEngineException If path is <code>null</code>.
      */
-    Media create(String path);
+    Media create(String path) throws LionEngineException;
 
     /**
      * Create a media from an abstract path.
      * 
      * @param path The media path.
      * @return The media instance.
+     * @throws LionEngineException If path is <code>null</code>.
      */
-    Media create(String... path);
+    Media create(String... path) throws LionEngineException;
 
     /**
      * Get the path separator.

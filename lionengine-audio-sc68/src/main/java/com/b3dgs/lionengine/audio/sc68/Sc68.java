@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.core.Media;
  * <pre>
  * final Sc68 sc68 = AudioSc68.createSc68Player();
  * sc68.setVolume(25);
- * sc68.play(Core.MEDIA.create(&quot;music.sc68&quot;));
+ * sc68.play(Medias.create(&quot;music.sc68&quot;));
  * 
  * Thread.sleep(1000);
  * sc68.pause();

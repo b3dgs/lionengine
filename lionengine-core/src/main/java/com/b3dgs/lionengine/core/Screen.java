@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Resolution;
 
 /**
  * Representation of the screen device, supporting different screen rendering type and input devices.
@@ -27,6 +29,7 @@ import com.b3dgs.lionengine.Config;
  * @see InputDevice
  * @see Graphic
  * @see Sequence
+ * @see Graphics
  */
 public interface Screen
 {
@@ -105,7 +108,8 @@ public interface Screen
      * 
      * @param <T> The input device.
      * @param type The input device type.
-     * @return The input instance reference, <code>null</code> if not found.
+     * @return The input instance reference.
+     * @throws LionEngineException If device not found.
      */
     <T extends InputDevice> T getInputDevice(Class<T> type);
 
@@ -129,4 +133,11 @@ public interface Screen
      * @return <code>true</code> if ready, <code>false</code> else.
      */
     boolean isReady();
+
+    /**
+     * Call when resolution source has been changed.
+     * 
+     * @param source The new resolution source.
+     */
+    void onSourceChanged(Resolution source);
 }

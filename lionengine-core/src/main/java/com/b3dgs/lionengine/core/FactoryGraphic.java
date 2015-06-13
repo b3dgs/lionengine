@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
@@ -37,14 +36,6 @@ import com.b3dgs.lionengine.Transparency;
  */
 public interface FactoryGraphic
 {
-    /**
-     * Create a renderer.
-     * 
-     * @param config The config reference.
-     * @return The renderer instance.
-     */
-    Renderer createRenderer(Config config);
-
     /**
      * Create a screen.
      * 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ public final class Messages
         extends NLS
 {
     /** Bundle name. */
-    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".project.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".project.handler.messages"; //$NON-NLS-1$
 
     /** Add object title. */
     public static String AddObject_Title;
@@ -40,10 +40,43 @@ public final class Messages
     public static String AddObject_Error_Title;
     /** Add object error text. */
     public static String AddObject_Error_Text;
-    /** Edit folder type name title. */
-    public static String EditFolderType_Name_Title;
-    /** Edit folder type name text. */
-    public static String EditFolderType_Name_Text;
+
+    /** Add sheets title. */
+    public static String AddSheets_Title;
+    /** Add sheets title. */
+    public static String AddSheets_Text;
+    /** Add sheets error title. */
+    public static String AddSheets_Error_Title;
+    /** Add sheets error text. */
+    public static String AddSheets_Error_Text;
+
+    /** Add groups title. */
+    public static String AddGroups_Title;
+    /** Add groups title. */
+    public static String AddGroups_Text;
+    /** Add groups error title. */
+    public static String AddGroups_Error_Title;
+    /** Add groups error text. */
+    public static String AddGroups_Error_Text;
+
+    /** Add formulas title. */
+    public static String AddFormulas_Title;
+    /** Add formulas title. */
+    public static String AddFormulas_Text;
+    /** Add formulas error title. */
+    public static String AddFormulas_Error_Title;
+    /** Add formulas error text. */
+    public static String AddFormulas_Error_Text;
+
+    /** Add collisions title. */
+    public static String AddCollisions_Title;
+    /** Add collisions title. */
+    public static String AddCollisions_Text;
+    /** Add collisions error title. */
+    public static String AddCollisions_Error_Title;
+    /** Add collisions error text. */
+    public static String AddCollisions_Error_Text;
+
     /** Remove object title. */
     public static String RemoveObject_Title;
     /** Remove object text. */
@@ -58,7 +91,7 @@ public final class Messages
      */
     static
     {
-        NLS.initializeMessages(Messages.BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     /**

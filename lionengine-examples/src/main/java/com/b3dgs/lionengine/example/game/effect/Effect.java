@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,64 +17,66 @@
  */
 package com.b3dgs.lionengine.example.game.effect;
 
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilRandom;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.ObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Effect base implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class Effect
+class Effect
         extends ObjectGame
+        implements Updatable, Renderable
 {
-    /**
-     * Get an effect configuration file.
-     * 
-     * @param type The config associated class.
-     * @return The media config.
-     */
-    protected static Media getConfig(Class<? extends Effect> type)
-    {
-        return Core.MEDIA.create(type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
-    }
+    /** Explode media. */
+    public static final Media EXPLODE = Medias.create("Explode.xml");
 
+    /** Transformable model. */
+    private final Transformable transformable = addTrait(new TransformableModel());
     /** Surface. */
-    private final SpriteAnimated sprite;
+    private final SpriteAnimated surface;
     /** Explode animation. */
     private final Animation animExplode;
+    /** The viewer reference. */
+    private final Viewer viewer;
 
     /**
      * Constructor.
      * 
      * @param setup the setup reference.
+     * @param services The services reference.
      */
-    protected Effect(SetupSurfaceGame setup)
+    public Effect(SetupSurface setup, Services services)
     {
-        super(setup);
-        // Data are loaded from the XML file, depending of the type
-        final Configurer configurer = setup.getConfigurer();
-        final ConfigFrames framesData = ConfigFrames.create(configurer);
-        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
+        super(setup, services);
+        viewer = services.get(Viewer.class);
+
+        final ConfigFrames configFrames = ConfigFrames.create(setup.getConfigurer());
+        final int scale = UtilRandom.getRandomInteger(75) + 50;
+        surface = Drawable.loadSpriteAnimated(setup.surface, configFrames.getHorizontal(), configFrames.getVertical());
+        surface.stretch(scale, scale);
+        surface.setOrigin(Origin.MIDDLE);
+
+        final ConfigAnimations configAnimations = ConfigAnimations.create(setup.getConfigurer());
         animExplode = configAnimations.getAnimation("explode");
-        sprite = Drawable.loadSpriteAnimated(setup.surface, framesData.getHorizontal(), framesData.getVertical());
-        sprite.load(false);
-        sprite.scale(UtilRandom.getRandomInteger(75) + 50);
-        setSize(sprite.getFrameWidth(), sprite.getFrameHeight());
     }
 
     /**
@@ -83,36 +85,29 @@ abstract class Effect
      * @param x The horizontal location.
      * @param y The vertical location.
      */
-    public void start(int x, int y)
+    public void start(double x, double y)
     {
-        setLocation(x - getWidth() / 2, y + getHeight() / 2);
-        sprite.play(animExplode);
-    }
-
-    /*
-     * Effect
-     */
-
-    @Override
-    public void prepare(ContextGame context)
-    {
-        // Nothing to do
+        transformable.teleport(x, y);
+        surface.setLocation(viewer.getViewpointX(transformable.getX()), viewer.getViewpointY(transformable.getY()));
+        surface.play(animExplode);
     }
 
     @Override
     public void update(double extrp)
     {
-        sprite.updateAnimation(extrp);
-        // Destroy the effect when the animation is done
-        if (sprite.getAnimState() == AnimState.FINISHED)
+        surface.update(extrp);
+        if (surface.getAnimState() == AnimState.FINISHED)
         {
             destroy();
         }
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void render(Graphic g)
     {
-        sprite.render(g, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
+        if (viewer.isViewable(surface, 0, 0))
+        {
+            surface.render(g);
+        }
     }
 }

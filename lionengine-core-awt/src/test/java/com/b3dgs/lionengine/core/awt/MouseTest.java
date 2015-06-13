@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,10 +32,11 @@ import com.b3dgs.lionengine.Resolution;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class MouseTest
 {
     /** Mouse instance. */
-    private static final Mouse MOUSE = new Mouse();
+    private static final MouseAwt MOUSE = new MouseAwt();
 
     /**
      * Prepare test.
@@ -143,7 +144,7 @@ public class MouseTest
     public void testMouse()
     {
         MOUSE.mouseDragged(createEvent(0, 0, 0));
-        MOUSE.update();
+        MOUSE.update(1.0);
         Assert.assertEquals(0, MOUSE.getMoveX());
         Assert.assertEquals(0, MOUSE.getMoveY());
         Assert.assertTrue(MOUSE.hasMoved());

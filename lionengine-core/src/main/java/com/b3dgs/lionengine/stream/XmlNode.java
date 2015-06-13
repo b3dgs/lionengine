@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -145,8 +145,16 @@ public interface XmlNode
      * Remove child.
      * 
      * @param child The child to remove.
+     * @throws LionEngineException If no node is found at this child name.
      */
-    void removeChild(String child);
+    void removeChild(String child) throws LionEngineException;
+
+    /**
+     * Remove child.
+     * 
+     * @param child The child to remove.
+     */
+    void removeChild(XmlNode child);
 
     /**
      * Remove all children.
@@ -154,6 +162,13 @@ public interface XmlNode
      * @param children The children to remove.
      */
     void removeChildren(String children);
+
+    /**
+     * Get the name of the current node.
+     * 
+     * @return The node name.
+     */
+    String getNodeName();
 
     /**
      * Return the text inside the node.

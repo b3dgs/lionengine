@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,21 +17,20 @@
  */
 package com.b3dgs.lionengine.example.pong;
 
-import java.util.Collection;
-import java.util.HashSet;
-
-import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.object.ComponentCollision;
+import com.b3dgs.lionengine.game.object.ComponentRenderer;
+import com.b3dgs.lionengine.game.object.ComponentUpdater;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * This is where the game loop is running.
@@ -39,99 +38,77 @@ import com.b3dgs.lionengine.game.CameraGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
-    /** Number of lines in the middle. */
-    private static final int LINES = 30;
 
-    /** Keyboard reference. */
-    private final Keyboard keyboard;
-    /** Text drawer. */
-    private final Text text;
-    /** Camera. */
-    private final CameraGame camera;
-    /** Rackets. */
-    private final Collection<Racket> rackets;
-    /** Ball. */
-    private final Ball ball;
+    /** Services reference. */
+    private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Handler. */
-    private final Handler handler;
+    private final Handler handler = services.create(Handler.class);
+    /** Camera. */
+    private final Camera camera = services.create(Camera.class);
+    /** Keyboard reference. */
+    private final Keyboard keyboard = getInputDevice(Keyboard.class);
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
-        super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        text = Core.GRAPHIC.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
-        camera = new CameraGame();
-        rackets = new HashSet<>(2);
-        ball = new Ball(getWidth(), getHeight());
-        handler = new Handler(getWidth(), getHeight(), rackets, ball);
-        setSystemCursorVisible(false);
+        super(loader, NATIVE);
+        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
+        {
+            @Override
+            public void action()
+            {
+                end();
+            }
+        });
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     protected void load()
     {
         camera.setView(0, 0, getWidth(), getHeight());
-        // Add a player on left
-        rackets.add(new Racket(getWidth(), getHeight(), 10, getHeight() / 2, true));
-        // Add a player on right
-        rackets.add(new Racket(getWidth(), getHeight(), getWidth() - 10, getHeight() / 2, true));
-        handler.setRacketSpeed(3.0);
-        handler.engage();
+        setSystemCursorVisible(false);
+
+        handler.addUpdatable(new ComponentUpdater());
+        handler.addUpdatable(new ComponentCollision());
+        handler.addRenderable(new ComponentRenderer());
+
+        final Racket racket1 = factory.create(Racket.MEDIA);
+        racket1.setSide(true);
+        handler.add(racket1);
+
+        final Racket racket2 = factory.create(Racket.MEDIA);
+        racket2.setSide(false);
+        handler.add(racket2);
+
+        final Ball ball = factory.create(Ball.MEDIA);
+        handler.add(ball);
+
+        racket1.setBall(ball);
+        racket2.setBall(ball);
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
-        handler.update(extrp, keyboard);
-        // Terminate
-        if (keyboard.isPressed(Keyboard.ESCAPE))
-        {
-            end();
-        }
+        handler.update(extrp);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
-        // Clear screen
         g.clear(0, 0, getWidth(), getHeight());
-
-        // Draw middle line
-        final int size = getHeight() / Scene.LINES;
-        g.setColor(ColorRgba.GRAY);
-
-        for (int i = 0; i < Scene.LINES; i++)
-        {
-            g.drawRect(getWidth() / 2 - 4, i * size + size / 4, 4, size / 2, true);
-        }
-
-        // Draw rackets
-        for (final Racket racket : rackets)
-        {
-            racket.render(g, camera);
-        }
-
-        // Draw ball
-        ball.render(g, camera);
-
-        // Display scores
-        text.setColor(ColorRgba.BLUE);
-        text.draw(g, getWidth() / 4, 0, Align.CENTER, String.valueOf(handler.getScoreLeft()));
-        text.draw(g, getWidth() / 2 + getWidth() / 4, 0, Align.CENTER, String.valueOf(handler.getScoreRight()));
+        handler.render(g);
     }
 
     @Override

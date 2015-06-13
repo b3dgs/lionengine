@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.b3dgs.lionengine</groupId>
 		<artifactId>lionengine</artifactId>
-		<version>7.1.4</version>
+		<version>8.0.0</version>
 		<relativePath>../lionengine-parent</relativePath>
 	</parent>
 
@@ -35,17 +35,7 @@
 
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-audio-sc68</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-platform</artifactId>
 		</dependency>
 
 		<dependency>
@@ -57,6 +47,23 @@
 
 	<build>
 		<plugins>
+
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes</outputDirectory>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.felix</groupId>

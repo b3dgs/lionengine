@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,8 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 package com.b3dgs.lionengine.core;
-
-import java.util.concurrent.Semaphore;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
@@ -62,6 +60,9 @@ import com.b3dgs.lionengine.Resolution;
  *     }
  * }
  * </pre>
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Loader
@@ -71,21 +72,16 @@ import com.b3dgs.lionengine.Resolution;
 public abstract class Sequence
         implements Sequencable
 {
-    /** Sequence already started. */
-    private static final String ERROR_LOADED = "Sequence has already been loaded !";
-
-    /** Async loaded semaphore. */
-    final Semaphore loadedSemaphore;
     /** Native resolution. */
     final Resolution resolution;
     /** Renderer. */
     private final Renderer renderer;
-    /** Rendering width. */
-    private int width;
-    /** Rendering height. */
-    private int height;
     /** Loaded state. */
-    private boolean loaded;
+    private volatile boolean loaded;
+    /** Rendering width. */
+    private volatile int width;
+    /** Rendering height. */
+    private volatile int height;
 
     /**
      * Constructor base.
@@ -96,106 +92,16 @@ public abstract class Sequence
     public Sequence(Loader loader, Resolution resolution)
     {
         this.resolution = resolution;
-        loadedSemaphore = new Semaphore(0);
         renderer = loader.getRenderer();
         renderer.getConfig().setSource(resolution);
         width = resolution.getWidth();
         height = resolution.getHeight();
     }
 
-    /*
-     * Sequencable
-     */
-
     /**
      * Loading sequence data.
      */
     protected abstract void load();
-
-    /**
-     * Update sequence.
-     * 
-     * @param extrp The extrapolation value. Can be used to have an non dependent machine speed calculation.
-     *            Example: <code>x += 5.0 * extrp</code>
-     */
-    protected abstract void update(double extrp);
-
-    /**
-     * Render sequence.
-     * 
-     * @param g The graphic output.
-     */
-    protected abstract void render(Graphic g);
-
-    /**
-     * Load the sequence internally. Must only be called by {@link Renderer#asyncLoad(Sequence)} implementation in order
-     * to synchronize loading process when it is called asynchronously.
-     * 
-     * @throws LionEngineException If the sequence has already been loaded.
-     */
-    public final void loadInternal() throws LionEngineException
-    {
-        if (!loaded)
-        {
-            load();
-            loaded = true;
-            loadedSemaphore.release();
-        }
-        else
-        {
-            throw new LionEngineException(ERROR_LOADED);
-        }
-    }
-
-    /**
-     * Get the rendering width.
-     * 
-     * @return The rendering width.
-     */
-    public final int getWidth()
-    {
-        return width;
-    }
-
-    /**
-     * Get the rendering height.
-     * 
-     * @return The rendering height.
-     */
-    public final int getHeight()
-    {
-        return height;
-    }
-
-    /**
-     * Get main frame location x.
-     * 
-     * @return The main frame location x.
-     */
-    public final int getX()
-    {
-        return renderer.getX();
-    }
-
-    /**
-     * Get main frame location y.
-     * 
-     * @return The main frame location y.
-     */
-    public final int getY()
-    {
-        return renderer.getY();
-    }
-
-    /**
-     * Check if the sequence has been loaded.
-     * 
-     * @return <code>true</code> if loaded, <code>false</code> else.
-     */
-    public final boolean isLoaded()
-    {
-        return loaded;
-    }
 
     /**
      * Called when sequence is focused (screen). Does nothing by default.
@@ -211,6 +117,46 @@ public abstract class Sequence
     public void onLostFocus()
     {
         // Nothing by default
+    }
+
+    /**
+     * Get the rendering width.
+     * 
+     * @return The rendering width.
+     */
+    protected final int getWidth()
+    {
+        return width;
+    }
+
+    /**
+     * Get the rendering height.
+     * 
+     * @return The rendering height.
+     */
+    protected final int getHeight()
+    {
+        return height;
+    }
+
+    /**
+     * Get main frame location x.
+     * 
+     * @return The main frame location x.
+     */
+    protected final int getX()
+    {
+        return renderer.getX();
+    }
+
+    /**
+     * Get main frame location y.
+     * 
+     * @return The main frame location y.
+     */
+    protected final int getY()
+    {
+        return renderer.getY();
     }
 
     /**
@@ -237,8 +183,7 @@ public abstract class Sequence
     }
 
     /**
-     * Called when sequence is closing. Should be used in case on special loading (such as music starting) when
-     * {@link #start(boolean, Class, Object...)} has been used by another sequence. Does nothing by default.
+     * Called when sequence is closing. Does nothing by default.
      * 
      * @param hasNextSequence <code>true</code> if there is a next sequence, <code>false</code> else (then application
      *            will end definitely).
@@ -249,9 +194,19 @@ public abstract class Sequence
     }
 
     /**
+     * Check if the sequence has been loaded.
+     * 
+     * @return <code>true</code> if loaded, <code>false</code> else.
+     */
+    final boolean isLoaded()
+    {
+        return loaded;
+    }
+
+    /**
      * Start the sequence and load it.
      */
-    final void start()
+    final synchronized void start()
     {
         load();
         loaded = true;
@@ -273,13 +228,6 @@ public abstract class Sequence
     /*
      * Sequencable
      */
-
-    @Override
-    public final void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
-            throws LionEngineException
-    {
-        renderer.start(wait, nextSequenceClass, arguments);
-    }
 
     @Override
     public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments) throws LionEngineException
@@ -312,7 +260,7 @@ public abstract class Sequence
     }
 
     @Override
-    public final <T extends InputDevice> T getInputDevice(Class<T> type)
+    public final <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
     {
         return renderer.getInputDevice(type);
     }

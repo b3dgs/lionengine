@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:class>com.b3dgs.lionengine.example.game.pojectile.Entity</lionengine:class>
-    <lionengine:surface image="Entity.png"/>
-	<lionengine:size width="24" height="28"/>
-</lionengine:entity>

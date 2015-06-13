@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,21 +30,24 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import com.b3dgs.lionengine.core.EngineCore;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Theme;
 import com.b3dgs.lionengine.core.awt.swing.UtilitySwing;
 import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
-import com.b3dgs.lionengine.example.game.effect.AppGameEffect;
-import com.b3dgs.lionengine.example.game.map.AppGameMap;
-import com.b3dgs.lionengine.example.game.platform.background.AppPlatformBackground;
-import com.b3dgs.lionengine.example.game.platform.collision.AppPlatformCollision;
-import com.b3dgs.lionengine.example.game.platform.entity.AppPlatformEntity;
-import com.b3dgs.lionengine.example.game.platform.tile.AppPlatformTile;
-import com.b3dgs.lionengine.example.game.projectile.AppGameProjectile;
-import com.b3dgs.lionengine.example.game.strategy.ability.AppStrategyAbility;
-import com.b3dgs.lionengine.example.game.strategy.controlpanel.AppStrategyControlPanel;
-import com.b3dgs.lionengine.example.game.strategy.cursor.AppStrategyCursor;
-import com.b3dgs.lionengine.example.game.strategy.fog.AppStrategyFog;
-import com.b3dgs.lionengine.example.game.strategy.skills.AppStrategySkills;
+import com.b3dgs.lionengine.example.game.action.AppAction;
+import com.b3dgs.lionengine.example.game.assign.AppAssign;
+import com.b3dgs.lionengine.example.game.background.AppBackground;
+import com.b3dgs.lionengine.example.game.collision.AppCollision;
+import com.b3dgs.lionengine.example.game.cursor.AppCursor;
+import com.b3dgs.lionengine.example.game.effect.AppEffect;
+import com.b3dgs.lionengine.example.game.fog.AppFog;
+import com.b3dgs.lionengine.example.game.map.AppMap;
+import com.b3dgs.lionengine.example.game.pathfinding.AppPathfinding;
+import com.b3dgs.lionengine.example.game.production.AppProduction;
+import com.b3dgs.lionengine.example.game.projectile.AppProjectile;
+import com.b3dgs.lionengine.example.game.raster.AppRaster;
+import com.b3dgs.lionengine.example.game.selector.AppSelector;
+import com.b3dgs.lionengine.example.game.state.AppState;
 import com.b3dgs.lionengine.example.helloworld.AppHelloWorld;
 import com.b3dgs.lionengine.example.pong.AppPong;
 
@@ -53,7 +56,7 @@ import com.b3dgs.lionengine.example.pong.AppPong;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AppExamples
+public class AppExamples
 {
     /** Application name. */
     public static final String NAME = "LionEngine Examples";
@@ -75,18 +78,20 @@ public final class AppExamples
 
         addExample(panel, "Hello World", AppHelloWorld.class);
         addExample(panel, "Drawable", AppDrawable.class);
-        addExample(panel, "Effect", AppGameEffect.class);
-        addExample(panel, "Projectile", AppGameProjectile.class);
-        addExample(panel, "Map", AppGameMap.class);
-        addExample(panel, "Background", AppPlatformBackground.class);
-        addExample(panel, "Collision", AppPlatformCollision.class);
-        addExample(panel, "Entity", AppPlatformEntity.class);
-        addExample(panel, "Tile", AppPlatformTile.class);
-        addExample(panel, "Ability", AppStrategyAbility.class);
-        addExample(panel, "Control Panel", AppStrategyControlPanel.class);
-        addExample(panel, "Cursor", AppStrategyCursor.class);
-        addExample(panel, "Fog of War", AppStrategyFog.class);
-        addExample(panel, "Skills", AppStrategySkills.class);
+        addExample(panel, "Action", AppAction.class);
+        addExample(panel, "Assign", AppAssign.class);
+        addExample(panel, "Background", AppBackground.class);
+        addExample(panel, "Collision", AppCollision.class);
+        addExample(panel, "Cursor", AppCursor.class);
+        addExample(panel, "Effect", AppEffect.class);
+        addExample(panel, "Fog", AppFog.class);
+        addExample(panel, "Map", AppMap.class);
+        addExample(panel, "Pathfinding", AppPathfinding.class);
+        addExample(panel, "Production", AppProduction.class);
+        addExample(panel, "Projectile", AppProjectile.class);
+        addExample(panel, "Raster", AppRaster.class);
+        addExample(panel, "Selector", AppSelector.class);
+        addExample(panel, "State", AppState.class);
         addExample(panel, "Pong", AppPong.class);
 
         final JButton exit = new JButton("Exit");
@@ -145,7 +150,7 @@ public final class AppExamples
                 }
                 catch (final ReflectiveOperationException exception)
                 {
-                    exception.printStackTrace();
+                    Verbose.exception(AppExamples.class, "addExample", exception);
                 }
                 final Thread thread = new Thread()
                 {
@@ -160,6 +165,7 @@ public final class AppExamples
                             }
                             catch (final InterruptedException exception)
                             {
+                                Thread.currentThread().interrupt();
                                 break;
                             }
                         }
@@ -177,13 +183,5 @@ public final class AppExamples
             }
         });
         panel.add(drawable);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private AppExamples()
-    {
-        throw new RuntimeException();
     }
 }

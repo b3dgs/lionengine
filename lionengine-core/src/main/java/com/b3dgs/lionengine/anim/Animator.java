@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.anim;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * Animator can play an {@link Animation}.
@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
  * To play correctly an animation, it just needs the following steps:
  * <ul>
  * <li>Call only one time {@link #play(Animation)}</li>
- * <li>Call {@link #updateAnimation(double)} in your main loop</li>
+ * <li>Call {@link #update(double)} in your main loop</li>
  * </ul>
  * </p>
  * <p>
@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
  * animator.play(animation);
  * 
  * // ... (loop)
- * animator.updateAnimation(extrp);
+ * animator.update(extrp);
  * // (loop) ...
  * </pre>
  * 
@@ -49,10 +49,10 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
  * @see AnimState
  */
 public interface Animator
+        extends Updatable
 {
     /**
-     * Play the animation. Should be called only one time, as {@link #updateAnimation(double)} does the animation
-     * update.
+     * Play the animation. Should be called only one time, as {@link #update(double)} does the animation update.
      * 
      * @param animation The animation to play (must not be <code>null</code>).
      * @throws LionEngineException If the animation is <code>null</code>.
@@ -62,15 +62,7 @@ public interface Animator
     /**
      * Stop the current animation (animation state set to {@link AnimState#STOPPED}).
      */
-    void stopAnimation();
-
-    /**
-     * Animation update routine.
-     * It will update the animation that have been defined with the last call of {@link #play(Animation)}.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    void updateAnimation(double extrp);
+    void stop();
 
     /**
      * Set the current animation speed. This function allows to change the current playing animation speed.
@@ -86,17 +78,10 @@ public interface Animator
     /**
      * Set a fixed frame (it will overwrite the current animation frame).
      * 
-     * @param frame The frame to set (>= {@link Animation#MINIMUM_FRAME}, <= {@link SpriteAnimated#getFramesNumber()}).
+     * @param frame The frame to set (>= {@link Animation#MINIMUM_FRAME}).
      * @throws LionEngineException If frame is out of range.
      */
     void setFrame(int frame) throws LionEngineException;
-
-    /**
-     * Get current animation state.
-     * 
-     * @return animation The current animation state.
-     */
-    AnimState getAnimState();
 
     /**
      * Get the playing frame number.
@@ -111,4 +96,11 @@ public interface Animator
      * @return The current playing animation frame number.
      */
     int getFrameAnim();
+
+    /**
+     * Get current animation state.
+     * 
+     * @return animation The current animation state.
+     */
+    AnimState getAnimState();
 }

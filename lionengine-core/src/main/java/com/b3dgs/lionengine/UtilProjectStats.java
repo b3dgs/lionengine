@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,6 +33,9 @@ import com.b3dgs.lionengine.core.Verbose;
  */
 public final class UtilProjectStats
 {
+    /** Java file extension. */
+    private static final String JAVA_FILE_EXTENSION = "java";
+
     /** Number of files. */
     private static int numberOfFiles;
     /** Number of lines. */
@@ -58,39 +61,11 @@ public final class UtilProjectStats
     }
 
     /**
-     * Check each directory.
-     * 
-     * @param dirName The current directory.
-     */
-    private static void exploreDir(String dirName)
-    {
-        final File dir = new File(dirName);
-        final File[] files = dir.listFiles();
-
-        for (final File current : files)
-        {
-            if (current.isDirectory())
-            {
-                exploreDir(current.getAbsolutePath());
-            }
-            else if (current.isFile())
-            {
-                final String filename = current.getAbsolutePath();
-                if (getExtension(filename).equals("java"))
-                {
-                    countFileLines(filename);
-                }
-            }
-        }
-
-    }
-
-    /**
      * Count lines of file.
      * 
      * @param fileName The file name.
      */
-    private static void countFileLines(String fileName)
+    public static void countFileLines(String fileName)
     {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileName),
                 StandardCharsets.UTF_8)))
@@ -109,12 +84,42 @@ public final class UtilProjectStats
                     stop = true;
                 }
             }
+            numberOfFiles++;
         }
         catch (final IOException exception)
         {
             Verbose.exception(UtilProjectStats.class, "countFileLines", exception);
         }
-        numberOfFiles++;
+    }
+
+    /**
+     * Check each directory.
+     * 
+     * @param dirName The current directory.
+     */
+    private static void exploreDir(String dirName)
+    {
+        final File dir = new File(dirName);
+        final File[] files = dir.listFiles();
+
+        if (files != null)
+        {
+            for (final File current : files)
+            {
+                if (current.isDirectory())
+                {
+                    exploreDir(current.getAbsolutePath());
+                }
+                else if (current.isFile())
+                {
+                    final String filename = current.getAbsolutePath();
+                    if (JAVA_FILE_EXTENSION.equals(getExtension(filename)))
+                    {
+                        countFileLines(filename);
+                    }
+                }
+            }
+        }
     }
 
     /**

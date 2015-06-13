@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.mock.SecurityManagerMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("static-method")
 public class VerboseTest
 {
     /**
@@ -43,8 +44,7 @@ public class VerboseTest
     public static void setUp()
     {
         prepareLogger();
-        System.out.println("*********************************** EXPECTED VERBOSE ***********************************");
-        System.out.flush();
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
     }
 
     /**
@@ -53,8 +53,7 @@ public class VerboseTest
     @AfterClass
     public static void cleanUp()
     {
-        System.out.println("****************************************************************************************");
-        System.out.flush();
+        Verbose.info("****************************************************************************************");
     }
 
     /**

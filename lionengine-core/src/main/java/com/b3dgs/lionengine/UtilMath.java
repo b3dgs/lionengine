@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,11 +23,40 @@ import com.b3dgs.lionengine.geom.Line;
 
 /**
  * Static functions around math manipulation.
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilMath
 {
+    /**
+     * Check if value is between an interval.
+     * 
+     * @param value The value to check.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     * @return <code>true</code> if between, <code>false</code> else.
+     */
+    public static boolean isBetween(int value, int min, int max)
+    {
+        return value >= min && value <= max;
+    }
+
+    /**
+     * Check if value is between an interval.
+     * 
+     * @param value The value to check.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     * @return <code>true</code> if between, <code>false</code> else.
+     */
+    public static boolean isBetween(double value, double min, double max)
+    {
+        return value >= min && value <= max;
+    }
+
     /**
      * Fix a value between an interval.
      * 
@@ -126,9 +155,9 @@ public final class UtilMath
      * @param y2 The point 2 y.
      * @return The distance between point 1 and 2.
      */
-    public static int getDistance(int x1, int y1, int x2, int y2)
+    public static double getDistance(int x1, int y1, int x2, int y2)
     {
-        return (int) StrictMath.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        return StrictMath.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     }
 
     /**
@@ -146,6 +175,36 @@ public final class UtilMath
     }
 
     /**
+     * Get distance in from area to area.
+     * 
+     * @param x1 The first area x.
+     * @param y1 The first area y.
+     * @param w1 The first area width.
+     * @param h1 The first area height.
+     * @param x2 The second area x.
+     * @param y2 The second area y.
+     * @param w2 The second area width.
+     * @param h2 The second area height.
+     * @return The number of tiles between them.
+     */
+    public static double getDistance(double x1, double y1, int w1, int h1, double x2, double y2, int w2, int h2)
+    {
+        double min = Double.MAX_VALUE;
+        for (double x = x2; x < x2 + w2; x++)
+        {
+            for (double y = y2; y < y2 + h2; y++)
+            {
+                final double dist = getDistance(x1, y1, x, y);
+                if (dist < min)
+                {
+                    min = dist;
+                }
+            }
+        }
+        return min;
+    }
+
+    /**
      * Get distance in tile between the area.
      * 
      * @param tx1 The first tile x.
@@ -158,14 +217,14 @@ public final class UtilMath
      * @param th2 The second height in tile.
      * @return The number of tiles between them.
      */
-    public static int getDistance(int tx1, int ty1, int tw1, int th1, int tx2, int ty2, int tw2, int th2)
+    public static double getDistance(int tx1, int ty1, int tw1, int th1, int tx2, int ty2, int tw2, int th2)
     {
-        int min = Integer.MAX_VALUE;
+        double min = Double.MAX_VALUE;
         for (int h = tx2; h < tx2 + tw2; h++)
         {
             for (int v = ty2; v < ty2 + th2; v++)
             {
-                final int dist = getDistance(tx1, ty1, h, v);
+                final double dist = getDistance(tx1, ty1, h, v);
                 if (dist < min)
                 {
                     min = dist;
@@ -212,9 +271,9 @@ public final class UtilMath
      * @param round The round factor.
      * @return The rounded value.
      */
-    public static int getRounded(int value, int round)
+    public static int getRounded(double value, int round)
     {
-        return (int) Math.floor(value / (double) round) * round;
+        return (int) Math.floor(value / round) * round;
     }
 
     /**

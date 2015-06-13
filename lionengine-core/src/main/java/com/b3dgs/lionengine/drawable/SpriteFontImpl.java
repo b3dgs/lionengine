@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +24,10 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -137,9 +141,35 @@ final class SpriteFontImpl
         children.clear();
     }
 
-    /*
-     * SpriteFont
-     */
+    @Override
+    public void load(boolean alpha) throws LionEngineException
+    {
+        surface.load(alpha);
+    }
+
+    @Override
+    public void stretch(double percentWidth, double percentHeight) throws LionEngineException
+    {
+        surface.stretch(percentWidth, percentHeight);
+    }
+
+    @Override
+    public void rotate(int angle)
+    {
+        surface.rotate(angle);
+    }
+
+    @Override
+    public void filter(Filter filter) throws LionEngineException
+    {
+        surface.filter(filter);
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        surface.render(g);
+    }
 
     @Override
     public void draw(Graphic g, int x, int y, Align align, String... texts)
@@ -165,7 +195,9 @@ final class SpriteFontImpl
             for (int j = 0; j < length; j++)
             {
                 final Data d = fontData.get(Character.valueOf(text.charAt(j)));
-                surface.render(g, d.getId(), x + lx - width, y + ly + d.getHeight());
+                surface.setLocation(x + lx - width, y + ly + d.getHeight());
+                surface.setTile(d.getId());
+                surface.render(g);
                 lx += d.getWidth() + 1;
             }
 
@@ -178,6 +210,54 @@ final class SpriteFontImpl
     public void draw(Graphic g, int x, int y, Align align, String text)
     {
         draw(g, x, y, align, text.split(NL_STR));
+    }
+
+    @Override
+    public void setOrigin(Origin origin)
+    {
+        surface.setOrigin(origin);
+    }
+
+    @Override
+    public void setLocation(double x, double y)
+    {
+        surface.setLocation(x, y);
+    }
+
+    @Override
+    public void setLocation(Viewer viewer, Localizable localizable)
+    {
+        surface.setLocation(viewer, localizable);
+    }
+
+    @Override
+    public void setTransparency(ColorRgba mask)
+    {
+        surface.setTransparency(mask);
+    }
+
+    @Override
+    public void setAlpha(int alpha) throws LionEngineException
+    {
+        surface.setAlpha(alpha);
+    }
+
+    @Override
+    public void setFade(int alpha, int fade)
+    {
+        surface.setFade(alpha, fade);
+    }
+
+    @Override
+    public void setMirror(Mirror mirror) throws LionEngineException
+    {
+        surface.setMirror(mirror);
+    }
+
+    @Override
+    public void setLineHeight(int height)
+    {
+        lineHeight = height;
     }
 
     @Override
@@ -214,101 +294,21 @@ final class SpriteFontImpl
     }
 
     @Override
-    public void setLineHeight(int height)
+    public double getX()
     {
-        lineHeight = height;
-    }
-
-    /*
-     * Sprite
-     */
-
-    @Override
-    public void load(boolean alpha) throws LionEngineException
-    {
-        surface.load(alpha);
+        return surface.getX();
     }
 
     @Override
-    public void scale(int percent) throws LionEngineException
+    public double getY()
     {
-        surface.scale(percent);
+        return surface.getY();
     }
 
     @Override
-    public void stretch(int percentWidth, int percentHeight) throws LionEngineException
+    public Mirror getMirror()
     {
-        surface.stretch(percentWidth, percentHeight);
-    }
-
-    @Override
-    public void rotate(int angle)
-    {
-        surface.rotate(angle);
-    }
-
-    @Override
-    public void flipHorizontal()
-    {
-        surface.flipHorizontal();
-    }
-
-    @Override
-    public void flipVertical()
-    {
-        surface.flipVertical();
-    }
-
-    @Override
-    public void filter(Filter filter) throws LionEngineException
-    {
-        surface.filter(filter);
-    }
-
-    @Override
-    public void setTransparency(ColorRgba mask)
-    {
-        surface.setTransparency(mask);
-    }
-
-    @Override
-    public void setAlpha(int alpha) throws LionEngineException
-    {
-        surface.setAlpha(alpha);
-    }
-
-    @Override
-    public void setFade(int alpha, int fade)
-    {
-        surface.setFade(alpha, fade);
-    }
-
-    @Override
-    public int getWidthOriginal()
-    {
-        return surface.getWidthOriginal();
-    }
-
-    @Override
-    public int getHeightOriginal()
-    {
-        return surface.getHeightOriginal();
-    }
-
-    @Override
-    public ImageBuffer getSurface()
-    {
-        return surface.getSurface();
-    }
-
-    /*
-     * Renderable
-     */
-
-    @Override
-    public void render(Graphic g, int x, int y)
-    {
-        surface.render(g, x, y);
+        return surface.getMirror();
     }
 
     @Override
@@ -321,6 +321,12 @@ final class SpriteFontImpl
     public int getHeight()
     {
         return surface.getHeight();
+    }
+
+    @Override
+    public ImageBuffer getSurface()
+    {
+        return surface.getSurface();
     }
 
     /*

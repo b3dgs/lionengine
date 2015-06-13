@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -68,12 +68,12 @@ public class DrawableTestTool
     {
         try
         {
-            image.render(null, 0, 0);
+            image.render(null);
             Assert.fail();
         }
         catch (final NullPointerException exception)
         {
-            image.render(g, 0, 0);
+            image.render(g);
         }
     }
 
@@ -90,32 +90,12 @@ public class DrawableTestTool
 
         ImageBuffer surface = sprite.getSurface();
 
-        if (!(sprite instanceof SpriteFont))
-        {
-            sprite.scale(100 * scale);
-            Assert.assertNotSame(spriteOriginal, sprite);
-            Assert.assertNotSame(surface, sprite.getSurface());
-            Assert.assertEquals(surface.getWidth(), sprite.getWidthOriginal());
-            Assert.assertEquals(surface.getWidth() * scale, sprite.getWidth());
-            Assert.assertEquals(surface.getHeight(), sprite.getHeightOriginal());
-            Assert.assertEquals(surface.getHeight() * scale, sprite.getHeight());
-            Assert.assertTrue(sprite.equals(sprite));
-        }
-
         surface = sprite.getSurface();
         sprite.stretch(50, 50);
         Assert.assertNotSame(surface, sprite.getSurface());
 
         surface = sprite.getSurface();
         sprite.filter(Filter.BILINEAR);
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        surface = sprite.getSurface();
-        sprite.flipHorizontal();
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        surface = sprite.getSurface();
-        sprite.flipVertical();
         Assert.assertNotSame(surface, sprite.getSurface());
 
         surface = sprite.getSurface();
@@ -130,15 +110,6 @@ public class DrawableTestTool
         sprite.rotate(361);
         Assert.assertNotSame(surface, sprite.getSurface());
 
-        try
-        {
-            sprite.scale(0);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
         try
         {
             sprite.stretch(1, -1);
@@ -185,11 +156,11 @@ public class DrawableTestTool
         spriteB.stretch(90, 110);
         Assert.assertFalse(spriteB.equals(sprite));
 
-        final Sprite spriteC = Drawable.loadSprite(Core.GRAPHIC.getImageBuffer(sprite.getSurface()));
+        final Sprite spriteC = Drawable.loadSprite(Graphics.getImageBuffer(sprite.getSurface()));
         spriteC.stretch(100, 110);
         Assert.assertFalse(spriteC.equals(sprite));
 
-        final Sprite spriteD = Drawable.loadSprite(Core.GRAPHIC.getImageBuffer(sprite.getSurface()));
+        final Sprite spriteD = Drawable.loadSprite(Graphics.getImageBuffer(sprite.getSurface()));
         spriteD.stretch(90, 100);
         Assert.assertFalse(spriteC.equals(sprite));
     }
@@ -230,7 +201,7 @@ public class DrawableTestTool
         try
         {
             final SpriteTiled sprite = Drawable.loadSpriteTiled(
-                    Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE), tw, th);
+                    Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), tw, th);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }
@@ -262,7 +233,7 @@ public class DrawableTestTool
         try
         {
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(
-                    Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE), hf, vf);
+                    Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), hf, vf);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,105 +21,149 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.collision.TileGroup;
+import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Describe a map using tile for its representation. This is the lower level interface to describe a 2D map using tiles.
- * Each tiles are stored vertically and then horizontally. A pattern represents a tilesheet number (number of surface
- * containing tiles). A map can have one or more patterns. The map picks its resources from a patterns folder, which
- * must contains the following files (and its tiles sheets):
- * <ul>
- * <li>{@value #TILE_SHEETS_FILE_NAME} - describes the patterns used. Must be used like this:
+ * Each tiles are stored vertically and then horizontally. A sheet id represents a tilesheet number (surface number
+ * containing tiles). A map can have one or more sheets. The map picks its resources from a sheets folder, which
+ * must contains the files images. Example of a sheet configuration file:
  * 
  * <pre>
- * {@code <lionengine:tileSheets xmlns:lionengine="http://lionengine.b3dgs.com">}
- *     {@code <lionengine:tileSheet>0.png</lionengine:tileSheet>}
- *     {@code <lionengine:tileSheet>1.png</lionengine:tileSheet>}
- *     ...
- * {@code </lionengine:tileSheets>}
+ * {@code<lionengine:sheets xmlns:lionengine="http://lionengine.b3dgs.com">}
+ *    {@code<lionengine:tileSize width="16" height="16"/>}
+ *    {@code<lionengine:sheet>ground.png</lionengine:sheet>}
+ *    {@code<lionengine:sheet>wall.png</lionengine:sheet>}
+ *    {@code<lionengine:sheet>water.png</lionengine:sheet>}
+ * {@code</lionengine:sheets>}
+ * 
+ * Note: ground.png, wall.png and water.png are in the same directory of this configuration file.
  * </pre>
  * 
- * </li>
- * <li>{@value #COLLISIONS_FILE_NAME} - defines the collision for each tiles. Must be used like this:
- * 
- * <pre>
- * {@code <lionengine:tileCollisions xmlns:lionengine="http://lionengine.b3dgs.com">}
- *     {@code <lionengine:tileCollision name="GROUND">}
- *         {@code <lionengine:tile number="1" pattern="0"/>}
- *         {@code <lionengine:function axis="X" input="X" max="15" min="0" name="horizontal_left" offset="0" value="0.0"/>}
- *         {@code <lionengine:function axis="X" input="X" max="15" min="0" name="horizontal_right" offset="15" value="0.0"/>}
- *         {@code <lionengine:function axis="Y" input="X" max="15" min="0" name="vertical" offset="15" value="0.0"/>}
- *     {@code </lionengine:tileCollision>}
- *     ...
- * {@code </lionengine:tileCollisions>}
- * </pre>
- * 
- * </li>
- * </ul>
- * 
- * @param <T> Tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see TileGame
  * @see MapTileGame
- * @see CollisionFunction
+ * @see Minimap
+ * @see MapTileFeature
+ * @see Tile
  */
-public interface MapTile<T extends TileGame>
+public interface MapTile
+        extends MapTileRenderer, Renderable, Featurable<MapTileFeature>
 {
-    /** Number of horizontal tiles to make a bloc. */
-    int BLOC_SIZE = 256;
-    /** Collisions file name. */
-    String COLLISIONS_FILE_NAME = "tileCollisions.xml";
-    /** Tile sheets data file name. */
-    String TILE_SHEETS_FILE_NAME = "tileSheets.xml";
+    /** Default sheets config file. */
+    String DEFAULT_SHEETS_FILE = "sheets.xml";
+    /** Default sheets config file. */
+    String DEFAULT_GROUPS_FILE = "groups.xml";
+    /** Tile size node. */
+    String NODE_TILE_SIZE = Configurer.PREFIX + "tileSize";
+    /** Tile width attribute. */
+    String ATTRIBUTE_TILE_WIDTH = "width";
+    /** Tile height attribute. */
+    String ATTRIBUTE_TILE_HEIGHT = "height";
+    /** Tile sheets node. */
+    String NODE_TILE_SHEETS = Configurer.PREFIX + "sheets";
     /** Tile sheet node. */
-    String NODE_TILE_SHEET = "lionengine:tileSheet";
+    String NODE_TILE_SHEET = Configurer.PREFIX + "sheet";
+    /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
+    int BLOC_SIZE = 256;
 
     /**
      * Create and prepare map memory area. Must be called before assigning tiles.
+     * Previous map data (if existing) will be cleared.
      * 
      * @param widthInTile The map width in tile (must be strictly positive).
      * @param heightInTile The map height in tile (must be strictly positive).
+     * @throws LionEngineException If size if invalid.
+     * @see #create(Media, Media, Media)
      */
-    void create(int widthInTile, int heightInTile);
+    void create(int widthInTile, int heightInTile) throws LionEngineException;
+
+    /**
+     * Create a map from a level rip and the associated tiles directory.
+     * A level rip is an image file (*.PNG, *.BMP) that represents the full map in one time.
+     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created.
+     * Previous map data (if existing) will be cleared.
+     * <p>
+     * {@link #DEFAULT_SHEETS_FILE} and {@link #DEFAULT_GROUPS_FILE} will be used as default, by calling
+     * {@link #create(Media, Media, Media)}.
+     * </p>
+     * 
+     * @param levelrip The file describing the levelrip as a single image.
+     * @throws LionEngineException If error when importing map.
+     * @see #create(int, int)
+     * @see LevelRipConverter
+     * @see TileExtractor
+     */
+    void create(Media levelrip) throws LionEngineException;
+
+    /**
+     * Create a map from a level rip and the associated tiles directory.
+     * A level rip is an image file (*.PNG, *.BMP) that represents the full map in one time.
+     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created.
+     * Previous map data (if existing) will be cleared.
+     * 
+     * @param levelrip The file describing the levelrip as a single image.
+     * @param sheetsConfig The file that define the sheets configuration.
+     * @param groupsConfig The tile collision groups descriptor.
+     * @throws LionEngineException If error when importing map.
+     * @see #create(int, int)
+     * @see LevelRipConverter
+     * @see TileExtractor
+     */
+    void create(Media levelrip, Media sheetsConfig, Media groupsConfig) throws LionEngineException;
+
+    /**
+     * Create a feature from its type, and automatically {@link #addFeature(MapTileFeature)} it.
+     * The feature instance must provide a public constructor with {@link Services} as single argument, or the public
+     * default constructor. Else, create manually the instance and use {@link #addFeature(MapTileFeature)} on it.
+     * 
+     * @param <F> The feature type.
+     * @param feature The feature class.
+     * @return The feature instance already added.
+     * @throws LionEngineException If unable to create feature or <code>null</code>.
+     */
+    <F extends MapTileFeature> F createFeature(Class<F> feature) throws LionEngineException;
 
     /**
      * Create a tile.
      * 
-     * @param width The tile width.
-     * @param height The tile height.
-     * @param pattern The tile pattern.
-     * @param number The tile number.
-     * @param collision The tile collision.
      * @return The created tile.
      */
-    T createTile(int width, int height, Integer pattern, int number, CollisionTile collision);
+    Tile createTile();
 
     /**
-     * Create the collision draw surface. Must be called after map creation to enable collision rendering.
+     * Load map sheets (tiles surfaces) from directory. Must be called before rendering map.
+     * Clear previous sheets if has.
+     * 
+     * @param sheetsConfig The file that define the sheets configuration.
+     * @throws LionEngineException If error when reading sheets.
      */
-    void createCollisionDraw();
+    void loadSheets(Media sheetsConfig) throws LionEngineException;
 
     /**
-     * Generate the minimap from the current map.
+     * Load tiles group from an external file.
+     * 
+     * @param groupsConfig The tile collision groups descriptor.
+     * @throws LionEngineException If error when reading groups.
      */
-    void createMiniMap();
+    void loadGroups(Media groupsConfig) throws LionEngineException;
 
     /**
      * Load a map from a specified file as binary data.
      * <p>
-     * Data are loaded this way (see save(file) order):
+     * Data are loaded this way (see {@link #save(FileWriting)} order):
      * </p>
      * 
      * <pre>
-     * <code>(String)</code> theme
+     * <code>(String)</code> sheets file configuration
      * <code>(short)</code> width in tiles
      * <code>(short)</code> height in tiles
      * <code>(byte)</code> tile width
@@ -133,112 +177,17 @@ public interface MapTile<T extends TileGame>
      *     call setTile(...) to update map with this new tile
      * </pre>
      * 
-     * @param file The input file.
+     * @param file The input level file.
      * @throws IOException If error on reading.
-     * @throws LionEngineException If error when reading patterns or collisions.
+     * @throws LionEngineException If error when reading map file.
      */
     void load(FileReading file) throws IOException, LionEngineException;
-
-    /**
-     * Load a map from a level rip and the associated tiles directory. A file called {@value #TILE_SHEETS_FILE_NAME} and
-     * {@value #COLLISIONS_FILE_NAME} has to be in the same directory.
-     * 
-     * @param levelrip The file containing the levelrip as an image.
-     * @param patternsDirectory The directory containing tiles themes.
-     * @throws LionEngineException If error when reading collisions.
-     */
-    void load(Media levelrip, Media patternsDirectory) throws LionEngineException;
-
-    /**
-     * Load map patterns (tiles surfaces) from theme name. Must be called after map creation. A file called
-     * {@value #TILE_SHEETS_FILE_NAME} which describes the tile sheets used.
-     * <p>
-     * Patterns number and name have to be written inside a file named 'count', else, all files as .png will be loaded.
-     * </p>
-     * 
-     * @param directory The patterns directory.
-     * @throws LionEngineException If error when reading patterns.
-     */
-    void loadPatterns(Media directory) throws LionEngineException;
-
-    /**
-     * Load map collision from an external file.
-     * 
-     * @param media The collision container.
-     * @throws LionEngineException If error when reading collisions.
-     */
-    void loadCollisions(Media media) throws LionEngineException;
-
-    /**
-     * Load tile. Data are loaded this way:
-     * 
-     * <pre>
-     * (integer) pattern number
-     * (integer) index number inside pattern
-     * (integer) tile location x
-     * (integer tile location y
-     * </pre>
-     * 
-     * @param nodes The collision nodes.
-     * @param file The file reader reference.
-     * @param i The last loaded tile number.
-     * @return The loaded tile.
-     * @throws IOException If error on reading.
-     * @throws LionEngineException If error on creating tile.
-     */
-    T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException, LionEngineException;
-
-    /**
-     * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
-     * A call to {@link #append(MapTile, int, int)} at ({@link #getWidthInTile()}, {@link #getHeightInTile()}) will add
-     * the new map at the top-right.
-     * 
-     * @param map The map to append.
-     * @param offsetX The horizontal offset in tile (>= 0).
-     * @param offsetY The vertical offset in tile (>= 0).
-     */
-    void append(MapTile<T> map, int offsetX, int offsetY);
-
-    /**
-     * Remove all tiles from map.
-     */
-    void clear();
-
-    /**
-     * Clear the cached collision image created with {@link #createCollisionDraw()}.
-     */
-    void clearCollisionDraw();
-
-    /**
-     * Assign the collision function to all tiles with the same collision.
-     * 
-     * @param collision The current collision enum.
-     * @param function The function reference.
-     */
-    void assignCollisionFunction(CollisionTile collision, CollisionFunction function);
-
-    /**
-     * Remove a collision function.
-     * 
-     * @param function The function to remove.
-     */
-    void removeCollisionFunction(CollisionFunction function);
-
-    /**
-     * Remove all collisions.
-     */
-    void removeCollisions();
-
-    /**
-     * Save the current collisions to the collision file.
-     */
-    void saveCollisions();
 
     /**
      * Save map to specified file as binary data. Data are saved this way (using specific types to save space):
      * 
      * <pre>
-     * <code>(String)</code> theme
+     * <code>(String)</code> sheets configuration file
      * <code>(short)</code> width in tiles
      * <code>(short)</code> height in tiles
      * <code>(byte)</code> tile width (use of byte because tile width &lt; 255)
@@ -250,38 +199,44 @@ public interface MapTile<T extends TileGame>
      *     call tile.save(file)
      * </pre>
      * 
-     * Collisions are not saved, because it is possible to retrieve them from {@value #COLLISIONS_FILE_NAME}.
-     * 
-     * @param file The output file.
+     * @param file The output level file.
      * @throws IOException If error on writing.
      */
     void save(FileWriting file) throws IOException;
 
     /**
-     * Render map from camera viewpoint, showing a specified area.
+     * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
+     * A call to {@link #append(MapTile, int, int)} at ({@link #getInTileWidth()}, {@link #getInTileHeight()}) will add
+     * the new map at the top-right.
      * 
-     * @param g The graphic output.
-     * @param camera The camera viewpoint.
+     * @param map The map to append.
+     * @param offsetX The horizontal offset in tile (>= 0).
+     * @param offsetY The vertical offset in tile (>= 0).
      */
-    void render(Graphic g, CameraGame camera);
+    void append(MapTile map, int offsetX, int offsetY);
 
     /**
-     * Render minimap on graphic output at specified location.
-     * 
-     * @param g The graphic output.
-     * @param x The location x.
-     * @param y The location y.
+     * Remove all tiles from map and clear internal data. Keep existing loaded tile sheets ({@link #loadSheets(Media)}).
      */
-    void renderMiniMap(Graphic g, int x, int y);
+    void clear();
 
     /**
-     * Set a tile at specified map indexes.
+     * Set an external map tile renderer, defining how tiles are rendered.
      * 
-     * @param v The vertical index.
-     * @param h The horizontal index.
+     * @param renderer The renderer reference.
+     * @throws LionEngineException If renderer is <code>null</code>.
+     */
+    void setTileRenderer(MapTileRenderer renderer) throws LionEngineException;
+
+    /**
+     * Set a tile at specified map location.
+     * 
+     * @param tx The horizontal tile index location [0 - {@link #getInTileWidth()} excluded].
+     * @param ty The vertical tile index location [0 - {@link #getInTileHeight()} excluded].
      * @param tile The tile reference.
+     * @throws LionEngineException If outside map range.
      */
-    void setTile(int v, int h, T tile);
+    void setTile(int tx, int ty, Tile tile) throws LionEngineException;
 
     /**
      * Get tile from specified map location (in tile index). If the returned tile is equal to <code>null</code>, this
@@ -289,31 +244,19 @@ public interface MapTile<T extends TileGame>
      * 
      * @param tx The horizontal tile index location.
      * @param ty The vertical tile index location.
-     * @return The tile reference.
+     * @return The tile found at this location, <code>null</code> if none.
      */
-    T getTile(int tx, int ty);
+    Tile getTile(int tx, int ty);
 
     /**
      * Get the tile at the localizable.
      * 
-     * @param entity The entity.
+     * @param localizable The localizable reference.
      * @param offsetX The horizontal offset search.
      * @param offsetY The vertical offset search.
-     * @return The tile found at the entity.
+     * @return The tile found at the localizable, <code>null</code> if none.
      */
-    T getTile(Localizable entity, int offsetX, int offsetY);
-
-    /**
-     * Get the first tile hit by the localizable that contains collision, applying a ray tracing from its old location
-     * to its current. This way, the localizable can not pass through a collidable tile.
-     * 
-     * @param localizable The localizable reference.
-     * @param collisions Collisions list to search for.
-     * @param applyRayCast <code>true</code> to apply collision to each tile crossed, <code>false</code> to ignore and
-     *            just return the first tile hit.
-     * @return The first tile hit, <code>null</code> if none found.
-     */
-    T getFirstTileHit(Localizable localizable, Collection<CollisionTile> collisions, boolean applyRayCast);
+    Tile getTile(Localizable localizable, int offsetX, int offsetY);
 
     /**
      * Get location x relative to map referential as tile.
@@ -332,40 +275,64 @@ public interface MapTile<T extends TileGame>
     int getInTileY(Localizable localizable);
 
     /**
-     * Get map theme.
+     * Get the sheets configuration media file.
      * 
-     * @return The map tiles directory.
+     * @return The sheet configuration media file.
      */
-    Media getPatternsDirectory();
+    Media getSheetsConfig();
 
     /**
-     * Get list of patterns id.
+     * Get the groups configuration media file.
      * 
-     * @return The set of patterns id.
+     * @return The groups configuration media file.
      */
-    Collection<Integer> getPatterns();
+    Media getGroupsConfig();
 
     /**
-     * Get pattern (tilesheet) from its id.
+     * Get list of sheets id.
      * 
-     * @param pattern The pattern id.
-     * @return The pattern found.
+     * @return The set of sheets id.
      */
-    SpriteTiled getPattern(Integer pattern);
+    Collection<Integer> getSheets();
 
     /**
-     * Get the number of used pattern.
+     * Get sheet from its id.
      * 
-     * @return The number of used pattern.
+     * @param sheet The sheet id.
+     * @return The sheet found.
+     * @throws LionEngineException If sheet not found.
      */
-    int getNumberPatterns();
+    SpriteTiled getSheet(Integer sheet) throws LionEngineException;
+
+    /**
+     * Get the group from its name.
+     * 
+     * @param name The group name.
+     * @return The supported group reference.
+     * @throws LionEngineException If group not found.
+     */
+    TileGroup getGroup(String name) throws LionEngineException;
+
+    /**
+     * Get the groups list.
+     * 
+     * @return The groups list.
+     */
+    Collection<TileGroup> getGroups();
+
+    /**
+     * Get the number of used sheets.
+     * 
+     * @return The number of used sheets.
+     */
+    int getSheetsNumber();
 
     /**
      * Get number of active tiles (which are not <code>null</code>).
      * 
      * @return The number of non <code>null</code> tile.
      */
-    int getNumberTiles();
+    int getTilesNumber();
 
     /**
      * Get width of a tile.
@@ -386,37 +353,21 @@ public interface MapTile<T extends TileGame>
      * 
      * @return The number of horizontal tiles.
      */
-    int getWidthInTile();
+    int getInTileWidth();
 
     /**
      * Get number of vertical tiles.
      * 
      * @return The number of vertical tiles.
      */
-    int getHeightInTile();
+    int getInTileHeight();
 
     /**
-     * Get collision type from its name as string. The parameter value is read from the file describing the map
-     * collisions. The best way to store map collisions name is to use an enum with the same names.
+     * Get the radius in tile.
      * 
-     * @param collision The collision name.
-     * @return The collision type.
+     * @return The radius in tile.
      */
-    CollisionTile getCollisionFrom(String collision);
-
-    /**
-     * Get the supported collisions list.
-     * 
-     * @return The supported collisions list.
-     */
-    CollisionTile[] getCollisions();
-
-    /**
-     * Get minimap surface reference.
-     * 
-     * @return The minimap surface reference.
-     */
-    ImageBuffer getMiniMap();
+    int getInTileRadius();
 
     /**
      * Check if map has been created.

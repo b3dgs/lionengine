@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -274,12 +274,21 @@ final class XmlNodeImpl
     }
 
     @Override
-    public void removeChild(String child)
+    public void removeChild(String child) throws LionEngineException
     {
         final XmlNode node = getChild(child);
         if (node instanceof XmlNodeImpl)
         {
             root.removeChild(((XmlNodeImpl) node).getElement());
+        }
+    }
+
+    @Override
+    public void removeChild(XmlNode child)
+    {
+        if (child instanceof XmlNodeImpl)
+        {
+            root.removeChild(((XmlNodeImpl) child).getElement());
         }
     }
 
@@ -293,6 +302,12 @@ final class XmlNodeImpl
                 root.removeChild(((XmlNodeImpl) child).getElement());
             }
         }
+    }
+
+    @Override
+    public String getNodeName()
+    {
+        return root.getTagName();
     }
 
     @Override

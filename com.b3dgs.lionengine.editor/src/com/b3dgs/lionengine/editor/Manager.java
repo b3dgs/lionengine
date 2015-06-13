@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,8 +41,11 @@ public class Manager
      * @param display The display reference.
      */
     @ProcessAdditions
+    @SuppressWarnings("static-method")
     public void processAdditions(MApplication app, EModelService modelService, Display display)
     {
+        UtilEclipse.setApplication(app);
+
         final Monitor monitor = display.getPrimaryMonitor();
         final Rectangle monitorRect = monitor.getBounds();
         final MTrimmedWindow window = (MTrimmedWindow) modelService.find(Activator.PLUGIN_ID + ".window", app);

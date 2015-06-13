@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <FindBugsFilter>
 	<Match>
-		<Class name="com.b3dgs.lionengine.audio.Sc68Binding" />
+		<Class name="com.b3dgs.lionengine.core.Renderer" />
+		<Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY" />
+	</Match>
+	<Match>
+		<Class name="com.b3dgs.lionengine.audio.sc68.Sc68Binding" />
 		<Bug pattern="NM_METHOD_NAMING_CONVENTION" />
 	</Match>
 	<Match>

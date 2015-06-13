@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -61,7 +61,7 @@ public final class UtilityImage
         {
             return ((ImageBufferAwt) image).getBuffer();
         }
-        throw new LionEngineException(UtilityImage.ERROR_IMAGE_BUFFER_IMPL);
+        throw new LionEngineException(ERROR_IMAGE_BUFFER_IMPL);
     }
 
     /**
@@ -95,7 +95,7 @@ public final class UtilityImage
      */
     static ImageBuffer createImage(int width, int height, Transparency transparency)
     {
-        return new ImageBufferAwt(ToolsAwt.createImage(width, height, UtilityImage.getTransparency(transparency)));
+        return new ImageBufferAwt(ToolsAwt.createImage(width, height, getTransparency(transparency)));
     }
 
     /**
@@ -115,7 +115,7 @@ public final class UtilityImage
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, UtilityImage.ERROR_IMAGE_READING);
+            throw new LionEngineException(exception, ERROR_IMAGE_READING);
         }
     }
 
@@ -131,11 +131,11 @@ public final class UtilityImage
         Check.notNull(media);
         try (OutputStream outputStream = media.getOutputStream())
         {
-            ToolsAwt.saveImage(UtilityImage.getBuffer(image), outputStream);
+            ToolsAwt.saveImage(getBuffer(image), outputStream);
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, UtilityImage.ERROR_IMAGE_SAVE);
+            throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
         }
     }
 
@@ -148,8 +148,7 @@ public final class UtilityImage
      */
     static ImageBuffer copyImage(ImageBuffer image, Transparency transparency)
     {
-        return new ImageBufferAwt(ToolsAwt.copyImage(UtilityImage.getBuffer(image),
-                UtilityImage.getTransparency(transparency)));
+        return new ImageBufferAwt(ToolsAwt.copyImage(getBuffer(image), getTransparency(transparency)));
     }
 
     /**
@@ -160,9 +159,9 @@ public final class UtilityImage
      */
     static ImageBuffer applyBilinearFilter(ImageBuffer image)
     {
-        final Kernel kernel = new Kernel(3, 3, UtilityImage.BILINEAR_FILTER);
+        final Kernel kernel = new Kernel(3, 3, BILINEAR_FILTER);
         final ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
-        return new ImageBufferAwt(op.filter(UtilityImage.getBuffer(image), null));
+        return new ImageBufferAwt(op.filter(getBuffer(image), null));
     }
 
     /**
@@ -186,7 +185,7 @@ public final class UtilityImage
      */
     static ImageBuffer rotate(ImageBuffer image, int angle)
     {
-        return new ImageBufferAwt(ToolsAwt.rotate(UtilityImage.getBuffer(image), angle));
+        return new ImageBufferAwt(ToolsAwt.rotate(getBuffer(image), angle));
     }
 
     /**
@@ -199,7 +198,7 @@ public final class UtilityImage
      */
     static ImageBuffer resize(ImageBuffer image, int width, int height)
     {
-        return new ImageBufferAwt(ToolsAwt.resize(UtilityImage.getBuffer(image), width, height));
+        return new ImageBufferAwt(ToolsAwt.resize(getBuffer(image), width, height));
     }
 
     /**
@@ -210,7 +209,7 @@ public final class UtilityImage
      */
     static ImageBuffer flipHorizontal(ImageBuffer image)
     {
-        return new ImageBufferAwt(ToolsAwt.flipHorizontal(UtilityImage.getBuffer(image)));
+        return new ImageBufferAwt(ToolsAwt.flipHorizontal(getBuffer(image)));
     }
 
     /**
@@ -221,7 +220,7 @@ public final class UtilityImage
      */
     static ImageBuffer flipVertical(ImageBuffer image)
     {
-        return new ImageBufferAwt(ToolsAwt.flipVertical(UtilityImage.getBuffer(image)));
+        return new ImageBufferAwt(ToolsAwt.flipVertical(getBuffer(image)));
     }
 
     /**
@@ -234,7 +233,7 @@ public final class UtilityImage
      */
     static ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
-        final BufferedImage[] images = ToolsAwt.splitImage(UtilityImage.getBuffer(image), h, v);
+        final BufferedImage[] images = ToolsAwt.splitImage(getBuffer(image), h, v);
         final ImageBuffer[] imageBuffers = new ImageBuffer[h * v];
         for (int i = 0; i < imageBuffers.length; i++)
         {
@@ -258,8 +257,7 @@ public final class UtilityImage
      */
     static ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
-        return new ImageBufferAwt(ToolsAwt.getRasterBuffer(UtilityImage.getBuffer(image), fr, fg, fb, er, eg, eb,
-                refSize));
+        return new ImageBufferAwt(ToolsAwt.getRasterBuffer(getBuffer(image), fr, fg, fb, er, eg, eb, refSize));
     }
 
     /**
