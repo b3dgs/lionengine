@@ -88,8 +88,6 @@ public class ProjectImportDialog
         checkResourcesExistence();
         updateTipsLabel();
         finish.forceFocus();
-
-        onLocationSelected("C:\\Users\\DjThunder\\git\\lionengine\\lionengine-tutorials");
     }
 
     /**
@@ -207,8 +205,7 @@ public class ProjectImportDialog
         try
         {
             project = Project.create(location);
-            Verbose.info(ProjectImportDialog.VERBOSE_PROJECT_IMPORTED, name, ProjectImportDialog.VERBOSE_FROM,
-                    location.getAbsolutePath());
+            Verbose.info(VERBOSE_PROJECT_IMPORTED, name, VERBOSE_FROM, location.getAbsolutePath());
         }
         catch (final IOException exception)
         {
