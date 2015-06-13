@@ -25,7 +25,6 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
@@ -82,15 +81,7 @@ public class FactoryGraphicAwtTest
         Assert.assertNotNull(factory.getImageBuffer(image));
         Assert.assertNotNull(factory.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));
         Assert.assertNotNull(factory.applyFilter(image, Filter.BILINEAR));
-        try
-        {
-            Assert.assertNotNull(factory.applyFilter(image, Filter.HQ3X));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        Assert.assertNotNull(factory.applyFilter(image, Filter.HQ3X));
         Assert.assertNotNull(factory.applyMask(image, ColorRgba.BLACK));
         Assert.assertNotNull(factory.flipHorizontal(image));
         Assert.assertNotNull(factory.flipVertical(image));

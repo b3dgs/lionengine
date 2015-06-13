@@ -106,7 +106,6 @@ public class ScreenAwtTest
         }
         catch (final ReflectiveOperationException exception)
         {
-            exception.printStackTrace();
             throw new LionEngineException(exception);
         }
     }

@@ -20,7 +20,9 @@ package com.b3dgs.lionengine.core.awt;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
@@ -29,6 +31,7 @@ import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Test the utility image.
@@ -38,6 +41,24 @@ import com.b3dgs.lionengine.core.Media;
 @SuppressWarnings("static-method")
 public class UtilityImageTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void prepare()
+    {
+        Medias.setFactoryMedia(new FactoryMediaAwt());
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setFactoryMedia(null);
+    }
+
     /**
      * Test the constructor.
      * 

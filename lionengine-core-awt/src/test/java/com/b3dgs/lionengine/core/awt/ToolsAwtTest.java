@@ -24,12 +24,15 @@ import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Test the tools class.
@@ -39,6 +42,24 @@ import com.b3dgs.lionengine.core.Media;
 @SuppressWarnings("static-method")
 public class ToolsAwtTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void prepare()
+    {
+        Medias.setFactoryMedia(new FactoryMediaAwt());
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setFactoryMedia(null);
+    }
+
     /**
      * Test the constructor.
      * 
