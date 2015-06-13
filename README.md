@@ -72,7 +72,7 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 >  * Tile based map package (_with minimap support, native save & load function_)
 >    * Ray cast collision system
 >    * Compatibility with raster bar effect
->    * __A Star (A star)__ pathfinding implementation
+>    * A Star pathfinding implementation
 >    * Tile extractor (_generate tilesheet from a level rip image_)
 >    * Level rip converter (_generate a level data file from a tile sheet and a level rip image_)
 >  * Object base (_support external XML configuration, trait system_)
@@ -113,7 +113,7 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 ## Download
 
 * [Go to website](http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
-* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_7.1.4_lib.zip)
+* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_8.0.0_lib.zip)
 
 ## Installation
 
