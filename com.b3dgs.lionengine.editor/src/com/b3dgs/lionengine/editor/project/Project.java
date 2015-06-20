@@ -127,6 +127,10 @@ public final class Project
         {
             throw new LionEngineException(error + path);
         }
+        if (fromPath.length() == path.length())
+        {
+            return Medias.create(""); // Media folder itself
+        }
         final int fromPrefix = fromPath.length() + 1;
         final String relativePath = path.substring(fromPrefix);
         return Medias.create(relativePath);
