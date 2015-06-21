@@ -204,6 +204,27 @@ public final class UtilSwt
     }
 
     /**
+     * Create a check box button with its legend.
+     * 
+     * @param legend The check legend.
+     * @param parent The parent reference.
+     * @return The check instance.
+     */
+    public static Button createCheck(String legend, Composite parent)
+    {
+        final Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(2, false));
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        final Label textLegend = new Label(composite, SWT.HORIZONTAL);
+        textLegend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        textLegend.setText(legend);
+
+        final Button check = new Button(composite, SWT.CHECK);
+        return check;
+    }
+
+    /**
      * Create a verify listener.
      * 
      * @param text The text to verify.

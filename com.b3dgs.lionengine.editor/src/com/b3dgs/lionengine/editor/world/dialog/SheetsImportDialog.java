@@ -27,13 +27,17 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.Tools;
@@ -41,7 +45,11 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileExtractor;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Import sheets dialog.
@@ -53,6 +61,8 @@ public class SheetsImportDialog
 {
     /** Icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    /** Error on config file generation. */
+    private static final String ERROR_GENERATE = "Unable to generate sheets config file !";
 
     /** Level rip list. */
     Tree levelRips;
@@ -66,6 +76,8 @@ public class SheetsImportDialog
     Text horizontalText;
     /** Vertical tiles. */
     Text verticalText;
+    /** Generate sheets config. */
+    Button generate;
     /** Add level rip. */
     private Button addLevelRip;
     /** Remove level rip. */
@@ -91,19 +103,20 @@ public class SheetsImportDialog
      */
     void onAddLevelRip()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File[] files = Tools.selectResourceFiles(dialog, new String[]
         {
             com.b3dgs.lionengine.editor.world.dialog.Messages.ImportMapDialog_LevelRipFileFilter
         }, new String[]
         {
             "*.bmp;*.png"
         });
-        if (file != null)
+        final Project project = Project.getActive();
+        for (final File file : files)
         {
             final TreeItem item = new TreeItem(levelRips, SWT.NONE);
             item.setText(file.getPath());
 
-            final Media media = Project.getActive().getResourceMedia(file);
+            final Media media = project.getResourceMedia(file);
             item.setData(media);
 
             if (!finish.isEnabled())
@@ -114,8 +127,9 @@ public class SheetsImportDialog
 
             if (folderText.getData() == null)
             {
-                folderText.setText(file.getParentFile().getPath());
-                final Media extractFolder = Project.getActive().getResourceMedia(file.getParentFile());
+                final File parent = file.getParentFile();
+                folderText.setText(parent.getPath());
+                final Media extractFolder = project.getResourceMedia(parent);
                 folderText.setData(extractFolder);
             }
         }
@@ -204,13 +218,13 @@ public class SheetsImportDialog
         area.setLayout(new GridLayout(3, false));
 
         final Label locationLabel = new Label(area, SWT.NONE);
-        locationLabel.setText(com.b3dgs.lionengine.editor.project.dialog.Messages.AbstractProjectDialog_Location);
+        locationLabel.setText(Messages.SheetsImportDialog_ExtractTo);
 
         folderText = new Text(area, SWT.BORDER);
         folderText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         final Button browse = UtilSwt.createButton(area,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, AbstractDialog.ICON_BROWSE);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
         browse.addSelectionListener(new SelectionAdapter()
@@ -230,7 +244,7 @@ public class SheetsImportDialog
      */
     private void createTextConfig(Composite parent)
     {
-        final Composite config = new Composite(parent, SWT.NONE);
+        final Group config = new Group(parent, SWT.NONE);
         config.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         config.setLayout(new GridLayout(2, true));
 
@@ -249,6 +263,38 @@ public class SheetsImportDialog
                 .addVerifyListener(UtilSwt.createVerify(verticalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
     }
 
+    /**
+     * Generate config file.
+     * 
+     * @param tw The tile width.
+     * @param th The tile height.
+     * @param extractFolder The extraction folder.
+     */
+    private void generateConfig(int tw, int th, Media extractFolder)
+    {
+        try
+        {
+            final XmlNode root = Stream.createXmlNode(MapTile.NODE_TILE_SHEETS);
+            root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
+            final XmlNode tileSize = Stream.createXmlNode(MapTile.NODE_TILE_SIZE);
+            tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, Integer.toString(tw));
+            tileSize.writeString(MapTile.ATTRIBUTE_TILE_HEIGHT, Integer.toString(th));
+            root.add(tileSize);
+            for (final TreeItem item : levelRips.getItems())
+            {
+                final XmlNode node = Stream.createXmlNode(MapTile.NODE_TILE_SHEET);
+                node.setText(((Media) item.getData()).getFile().getName());
+                root.add(node);
+            }
+            final File file = new File(extractFolder.getFile(), MapTile.DEFAULT_SHEETS_FILE);
+            Stream.saveXml(root, Project.getActive().getResourceMedia(file));
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(getClass(), "onFinish", exception, ERROR_GENERATE);
+        }
+    }
+
     /*
      * AbstractDialog
      */
@@ -256,22 +302,32 @@ public class SheetsImportDialog
     @Override
     protected void createContent(Composite content)
     {
-        final Composite area = new Composite(content, SWT.NONE);
+        final Group area = new Group(content, SWT.NONE);
         area.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         area.setLayout(new GridLayout(1, false));
+        area.setText(Messages.SheetsImportDialog_RipsList);
 
         levelRips = new Tree(area, SWT.SINGLE);
         levelRips.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         final Composite buttons = new Composite(area, SWT.NONE);
         buttons.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        buttons.setLayout(new GridLayout(2, true));
+        buttons.setLayout(new GridLayout(3, false));
+
+        final Label label = new Label(buttons, SWT.NONE);
+        label.setText(Messages.SheetsImportDialog_AddRemoveRip);
 
         createButtonAdd(buttons);
         createButtonRemove(buttons);
 
-        createExtractLocationArea(content);
-        createTextConfig(content);
+        final Composite config = new Composite(content, SWT.NONE);
+        config.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        config.setLayout(new GridLayout(1, false));
+
+        createExtractLocationArea(config);
+        createTextConfig(config);
+
+        generate = UtilSwt.createCheck(Messages.SheetsImportDialog_GenerateSheetsConfig, config);
     }
 
     @Override
@@ -288,5 +344,10 @@ public class SheetsImportDialog
             tileExtractor.addRip((Media) item.getData());
         }
         tileExtractor.start();
+        if (generate.getSelection())
+        {
+            generateConfig(tw, th, extractFolder);
+        }
+        UtilEclipse.showInfo(Messages.SheetsImportDialog_Title, Messages.SheetsImportDialog_Finished);
     }
 }

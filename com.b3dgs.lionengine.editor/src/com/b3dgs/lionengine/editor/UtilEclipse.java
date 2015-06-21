@@ -297,6 +297,17 @@ public final class UtilEclipse
     }
 
     /**
+     * Show an info dialog.
+     * 
+     * @param title The info title.
+     * @param message The info message.
+     */
+    public static void showInfo(String title, String message)
+    {
+        MessageDialog.openInformation(Display.getDefault().getActiveShell(), title, message);
+    }
+
+    /**
      * Show an error dialog.
      * 
      * @param title The error title.

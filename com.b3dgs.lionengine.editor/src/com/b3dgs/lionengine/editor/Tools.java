@@ -280,6 +280,31 @@ public final class Tools
     }
 
     /**
+     * Select media files from dialog.
+     * 
+     * @param parent The shell parent.
+     * @param extensionsName The filtered extensions name.
+     * @param extensions The filtered extensions.
+     * @return The media files.
+     */
+    public static File[] selectResourceFiles(Shell parent, String[] extensionsName, String[] extensions)
+    {
+        final FileDialog fileDialog = new FileDialog(parent, SWT.OPEN | SWT.MULTI);
+        fileDialog.setFilterPath(Project.getActive().getResourcesPath().getAbsolutePath());
+        fileDialog.setFilterNames(extensionsName);
+        fileDialog.setFilterExtensions(extensions);
+        final String selection = fileDialog.open();
+
+        final String[] names = fileDialog.getFileNames();
+        final File[] files = new File[names.length];
+        for (int i = 0; i < names.length; i++)
+        {
+            files[i] = new File(new File(selection).getParentFile(), names[i]);
+        }
+        return files;
+    }
+
+    /**
      * Extracts ZIP content to specified directory.
      * 
      * @param zipPath Path of the ZIP file.

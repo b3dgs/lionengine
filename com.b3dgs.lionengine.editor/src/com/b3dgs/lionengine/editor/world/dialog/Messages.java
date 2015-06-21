@@ -38,6 +38,10 @@ public final class Messages
     public static String SheetsImportDialog_HeaderTitle;
     /** Import sheets description header. */
     public static String SheetsImportDialog_HeaderDesc;
+    /** Rips list. */
+    public static String SheetsImportDialog_RipsList;
+    /** Add remove rip. */
+    public static String SheetsImportDialog_AddRemoveRip;
     /** Add level rip. */
     public static String SheetsImportDialog_AddLevelRip;
     /** Remove level rip. */
@@ -52,6 +56,12 @@ public final class Messages
     public static String SheetsImportDialog_HorizontalTiles;
     /** Vertical tiles. */
     public static String SheetsImportDialog_VerticalTiles;
+    /** Extract to. */
+    public static String SheetsImportDialog_ExtractTo;
+    /** Generate sheets config. */
+    public static String SheetsImportDialog_GenerateSheetsConfig;
+    /** Import sheets finished. */
+    public static String SheetsImportDialog_Finished;
 
     /** Import map dialog title. */
     public static String ImportMapDialog_Title;
