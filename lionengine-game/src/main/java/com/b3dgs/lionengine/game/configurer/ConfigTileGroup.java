@@ -46,6 +46,8 @@ public final class ConfigTileGroup
     public static final String SHEET = "sheet";
     /** Tile number attribute. */
     public static final String NUMBER = "number";
+    /** Remove group. */
+    public static final String REMOVE_GROUP_NAME = "";
 
     /**
      * Create the group data from node.

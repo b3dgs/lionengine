@@ -69,10 +69,10 @@ public class PropertiesTile
      * 
      * @param map The map reference.
      * @param oldGroup The old group name.
-     * @param newGroup The new group name.
+     * @param newGroup The new group name (empty to remove it).
      * @param tile The tile reference.
      */
-    static void changeTileGroup(MapTile map, String oldGroup, String newGroup, Tile tile)
+    public static void changeTileGroup(MapTile map, String oldGroup, String newGroup, Tile tile)
     {
         final Media config = map.getGroupsConfig();
         final XmlNode node = Stream.loadXml(config);
@@ -94,7 +94,8 @@ public class PropertiesTile
                     nodeGroup.removeChild(remove);
                 }
             }
-            if (WorldViewRenderer.groupEquals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
+            if (newGroup.equals(ConfigTileGroup.REMOVE_GROUP_NAME)
+                    && WorldViewRenderer.groupEquals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
             {
                 final XmlNode tileRef = Stream.createXmlNode(ConfigTileGroup.TILE);
                 tileRef.writeInteger(ConfigTileGroup.SHEET, tile.getSheet().intValue());
@@ -132,6 +133,7 @@ public class PropertiesTile
                     final MapTile map = WorldViewModel.INSTANCE.getMap();
                     final Collection<TileGroup> groups = map.getGroups();
                     final Collection<String> values = new ArrayList<>();
+                    values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
                     for (final TileGroup group : groups)
                     {
                         values.add(group.getName());

@@ -53,6 +53,8 @@ public final class Messages
     public static String GroupChooser_HeaderDesc;
     /** Group choice. */
     public static String GroupChooser_Choice;
+    /** Group add. */
+    public static String GroupChooser_Add;
 
     /**
      * Initialize.

@@ -107,6 +107,7 @@
                   <children xsi:type="menu:DirectMenuItem" xmi:id="__k5_8OthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/tileformula-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.handler.FormulaEditHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__k5_8ethEeSC_8GDJLuRUA" coreExpressionId="com.b3dgs.lionengine.editor.properties.editFormula"/>
                   </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_E-VP8BhKEeWF3Y2YGaz8Ig" elementId="" label="%menu.properties.copy" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/copy-property.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.PropertyCopyHandler"/>
                 </menus>
               </children>
             </children>

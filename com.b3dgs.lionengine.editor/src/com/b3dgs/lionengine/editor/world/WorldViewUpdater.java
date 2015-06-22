@@ -32,7 +32,10 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.properties.PropertiesModel;
+import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.Tile;
@@ -479,6 +482,19 @@ public class WorldViewUpdater
         }
     }
 
+    /**
+     * Check if property can be past from middle click.
+     */
+    private void checkPastProperty()
+    {
+        final Object copy = PropertiesModel.INSTANCE.getCopyData();
+        final String group = PropertiesModel.INSTANCE.getCopyText();
+        if (copy != null && selectedTile != null && ConfigTileGroup.GROUP == copy)
+        {
+            PropertiesTile.changeTileGroup(map, selectedTile.getGroup(), group, selectedTile);
+        }
+    }
+
     /*
      * MouseListener
      */
@@ -493,6 +509,11 @@ public class WorldViewUpdater
 
         updatePaletteBefore(palette, mx, my);
         updateMouse(mx, my);
+
+        if (mouseEvent.button == Mouse.MIDDLE)
+        {
+            checkPastProperty();
+        }
     }
 
     @Override
