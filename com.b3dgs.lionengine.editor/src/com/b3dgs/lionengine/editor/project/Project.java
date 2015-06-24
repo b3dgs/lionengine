@@ -319,7 +319,8 @@ public final class Project
         {
             return classLoader.loadClass(name);
         }
-        catch (final ClassNotFoundException exception)
+        catch (final ClassNotFoundException
+                     | NoClassDefFoundError exception)
         {
             throw new LionEngineException(exception, Project.ERROR_LOAD_CLASS, name);
         }
@@ -336,7 +337,7 @@ public final class Project
      */
     public <C> Class<? extends C> getClass(Media media, Class<C> clazz) throws LionEngineException
     {
-        final String name = media.getPath().replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".");
+        final String name = media.getPath().replace(Property.EXTENSION_CLASS, "").replace(File.separator, ".");
         final Class<?> clazzRef = getClass(name);
         try
         {

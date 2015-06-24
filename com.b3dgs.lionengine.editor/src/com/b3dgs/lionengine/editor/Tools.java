@@ -109,7 +109,7 @@ public final class Tools
     {
         final Project project = Project.getActive();
         final Media media = project.getClassMedia(file);
-        final String name = media.getPath().replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".");
+        final String name = media.getPath().replace(Property.EXTENSION_CLASS, "").replace(File.separator, ".");
         return project.getClass(name);
     }
 

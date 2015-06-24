@@ -46,7 +46,7 @@ public enum Property
     CLASS(Property.EXTENSION_CLASS);
 
     /** Java class file extension. */
-    public static final String EXTENSION_CLASS = "class";
+    public static final String EXTENSION_CLASS = ".class";
 
     /** Extension list. */
     private final Collection<String> extensions;
@@ -85,7 +85,7 @@ public enum Property
         this.extensions = new ArrayList<>(extensions.length);
         for (final String extension : extensions)
         {
-            this.extensions.add(extension);
+            this.extensions.add(extension.replace(".", ""));
         }
     }
 
@@ -151,7 +151,7 @@ public enum Property
      */
     private boolean isParent(Media file)
     {
-        final String name = file.getPath().replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".");
+        final String name = file.getPath().replace(Property.EXTENSION_CLASS, "").replace(File.separator, ".");
         try
         {
             final Class<?> clazz = Project.getActive().getClass(name);
