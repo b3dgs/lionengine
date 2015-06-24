@@ -141,7 +141,7 @@ abstract class ScreenSwt
             @Override
             public void widgetDisposed(DisposeEvent event)
             {
-                renderer.end(null);
+                renderer.end();
             }
         });
         return shell;

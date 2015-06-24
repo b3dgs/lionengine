@@ -80,23 +80,17 @@ public final class ToolsAwt
      * Get an image from an input stream.
      * 
      * @param inputStream The image input stream.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The loaded image.
      * @throws IOException If error when reading image.
      */
-    static BufferedImage getImage(InputStream inputStream, boolean alpha) throws IOException
+    static BufferedImage getImage(InputStream inputStream) throws IOException
     {
         final BufferedImage buffer = ImageIO.read(inputStream);
         if (buffer == null)
         {
             throw new IOException("Invalid image !");
         }
-        int transparency = buffer.getTransparency();
-        if (alpha)
-        {
-            transparency = java.awt.Transparency.TRANSLUCENT;
-        }
-        final BufferedImage image = ToolsAwt.copyImage(buffer, transparency);
+        final BufferedImage image = ToolsAwt.copyImage(buffer, buffer.getTransparency());
         return image;
     }
 

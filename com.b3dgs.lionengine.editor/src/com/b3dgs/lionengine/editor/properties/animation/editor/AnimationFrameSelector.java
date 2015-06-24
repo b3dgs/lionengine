@@ -106,7 +106,8 @@ public final class AnimationFrameSelector
         surface = Drawable.loadSprite(media);
         frameWidth = surface.getWidth() / horizontalFrames;
         frameHeight = surface.getHeight() / verticalFrames;
-        surface.load(false);
+        surface.load();
+        surface.prepare();
         surface.setLocation(0, 0);
 
         final GridData data = new GridData(surface.getWidth(), surface.getHeight());

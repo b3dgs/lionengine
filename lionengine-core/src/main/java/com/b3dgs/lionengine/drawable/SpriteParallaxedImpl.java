@@ -83,7 +83,7 @@ final class SpriteParallaxedImpl
     @Override
     public void load(boolean alpha) throws LionEngineException
     {
-        ImageBuffer surface = Graphics.getImageBuffer(media, false);
+        ImageBuffer surface = Graphics.getImageBuffer(media);
 
         if (0 != Double.compare(factorH, 1.0) || 0 != Double.compare(factorV, 1.0))
         {

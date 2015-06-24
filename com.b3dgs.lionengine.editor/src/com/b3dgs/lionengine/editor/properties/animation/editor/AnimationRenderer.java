@@ -131,7 +131,8 @@ public final class AnimationRenderer
         final Media media = UtilityMedia.get(new File(configurer.getPath(), configSurface.getImage()));
         final ConfigFrames framesData = ConfigFrames.create(configurer);
         surface = Drawable.loadSpriteAnimated(media, framesData.getHorizontal(), framesData.getVertical());
-        surface.load(false);
+        surface.load();
+        surface.prepare();
 
         final GridData data = new GridData(surface.getWidth(), surface.getHeight());
         data.horizontalAlignment = SWT.CENTER;

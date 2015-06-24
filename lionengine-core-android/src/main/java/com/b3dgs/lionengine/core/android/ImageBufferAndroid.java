@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.core.android;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -58,6 +59,12 @@ final class ImageBufferAndroid
     /*
      * ImageBuffer
      */
+
+    @Override
+    public void prepare() throws LionEngineException
+    {
+        // Nothing to do
+    }
 
     @Override
     public Graphic createGraphic()

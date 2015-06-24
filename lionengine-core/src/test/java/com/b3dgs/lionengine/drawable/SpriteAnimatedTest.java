@@ -97,8 +97,10 @@ public class SpriteAnimatedTest
         // Equals
         final SpriteAnimated spriteD = Drawable.loadSpriteAnimated(MEDIA, frameHorizontal, frameVertical);
         final SpriteAnimated spriteE = Drawable.loadSpriteAnimated(MEDIA, frameHorizontal + 2, frameVertical + 1);
-        spriteD.load(false);
-        spriteE.load(false);
+        spriteD.load();
+        spriteD.prepare();
+        spriteE.load();
+        spriteE.prepare();
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(110, 100);
         spriteD.setMirror(Mirror.HORIZONTAL);

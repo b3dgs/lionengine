@@ -99,8 +99,10 @@ public class SpriteTiledTest
         // Equals
         final SpriteTiled spriteD = Drawable.loadSpriteTiled(MEDIA, tileWidth, tileHeight);
         final SpriteTiled spriteE = Drawable.loadSpriteTiled(MEDIA, tileWidth + 2, tileHeight + 1);
-        spriteD.load(false);
-        spriteE.load(false);
+        spriteD.load();
+        spriteD.prepare();
+        spriteE.load();
+        spriteE.prepare();
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(110, 100);
         Assert.assertFalse(spriteD.equals(spriteE));

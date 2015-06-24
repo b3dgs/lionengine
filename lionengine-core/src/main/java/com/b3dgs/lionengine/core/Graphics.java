@@ -109,13 +109,12 @@ public final class Graphics
      * Get an image buffer from an image file.
      * 
      * @param media The image media.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image buffer from file.
      * @throws LionEngineException If an error occurred when reading the image.
      */
-    public static ImageBuffer getImageBuffer(Media media, boolean alpha) throws LionEngineException
+    public static ImageBuffer getImageBuffer(Media media) throws LionEngineException
     {
-        return factoryGraphic.getImageBuffer(media, alpha);
+        return factoryGraphic.getImageBuffer(media);
     }
 
     /**

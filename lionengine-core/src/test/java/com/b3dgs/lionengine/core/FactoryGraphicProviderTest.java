@@ -71,7 +71,7 @@ public class FactoryGraphicProviderTest
         final File temp = Files.createTempFile("save", "png").toFile();
         temp.deleteOnExit();
         mediaSave = new MediaMock(temp.getAbsolutePath(), true);
-        image = Graphics.getImageBuffer(MEDIA_IMAGE, true);
+        image = Graphics.getImageBuffer(MEDIA_IMAGE);
     }
 
     /**
@@ -179,8 +179,8 @@ public class FactoryGraphicProviderTest
     @Test
     public void testGetImageBufferFromMedia()
     {
-        final ImageBuffer imageA = Graphics.getImageBuffer(MEDIA_IMAGE, true);
-        final ImageBuffer imageB = Graphics.getImageBuffer(MEDIA_IMAGE, false);
+        final ImageBuffer imageA = Graphics.getImageBuffer(MEDIA_IMAGE);
+        final ImageBuffer imageB = Graphics.getImageBuffer(MEDIA_IMAGE);
 
         Assert.assertNotEquals(imageA, imageB);
         Assert.assertEquals(imageB.getWidth(), imageA.getWidth());
@@ -193,7 +193,7 @@ public class FactoryGraphicProviderTest
     @Test(expected = LionEngineException.class)
     public void testGetImageBufferFailureMedia()
     {
-        Assert.assertNotNull(Graphics.getImageBuffer(new MediaMock("null", true), false));
+        Assert.assertNotNull(Graphics.getImageBuffer(new MediaMock("null", true)));
     }
 
     /**
@@ -202,7 +202,7 @@ public class FactoryGraphicProviderTest
     @Test(expected = LionEngineException.class)
     public void testGetImageBufferFailureWrongImage()
     {
-        Assert.assertNotNull(Graphics.getImageBuffer(new MediaMock("wrong_image.png", true), false));
+        Assert.assertNotNull(Graphics.getImageBuffer(new MediaMock("wrong_image.png", true)));
     }
 
     /**

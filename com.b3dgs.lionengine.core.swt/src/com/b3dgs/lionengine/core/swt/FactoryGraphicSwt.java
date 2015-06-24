@@ -89,9 +89,9 @@ final class FactoryGraphicSwt
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media, boolean alpha)
+    public ImageBuffer getImageBuffer(Media media)
     {
-        return UtilityImage.getImage(media, alpha);
+        return UtilityImage.getImage(media);
     }
 
     @Override

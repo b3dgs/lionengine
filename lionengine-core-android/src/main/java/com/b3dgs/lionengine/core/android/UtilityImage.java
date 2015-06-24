@@ -74,16 +74,15 @@ public final class UtilityImage
      * Get an image from an image file.
      * 
      * @param media The image input media.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image from file.
      * @throws LionEngineException If an error occurred when reading the image.
      */
-    static ImageBuffer getImage(Media media, boolean alpha) throws LionEngineException
+    static ImageBuffer getImage(Media media) throws LionEngineException
     {
         try
         {
             final InputStream inputStream = media.getInputStream();
-            final Bitmap image = ToolsAndroid.getImage(inputStream, alpha);
+            final Bitmap image = ToolsAndroid.getImage(inputStream);
             inputStream.close();
             return new ImageBufferAndroid(image);
         }

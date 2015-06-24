@@ -25,6 +25,7 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -70,6 +71,17 @@ final class ImageBufferSwt
     /**
      * Internal constructor.
      * 
+     * @param data The image data.
+     */
+    ImageBufferSwt(ImageData data)
+    {
+        this.data = data;
+        transparency = ImageBufferSwt.getTransparency(data.getTransparencyType());
+    }
+
+    /**
+     * Internal constructor.
+     * 
      * @param image The image.
      */
     ImageBufferSwt(Image image)
@@ -92,6 +104,12 @@ final class ImageBufferSwt
     /*
      * ImageBuffer
      */
+
+    @Override
+    public void prepare() throws LionEngineException
+    {
+        image = new Image(ScreenSwt.display, data);
+    }
 
     @Override
     public Graphic createGraphic()

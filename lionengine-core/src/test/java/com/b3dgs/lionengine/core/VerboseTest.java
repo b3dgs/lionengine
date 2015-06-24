@@ -125,7 +125,7 @@ public class VerboseTest
     /**
      * Test the verbose security.
      */
-    @Test
+    @Test(expected = LionEngineException.class)
     public void testVerboseSecurity()
     {
         System.setSecurityManager(new SecurityManagerMock(false));

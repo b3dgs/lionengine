@@ -97,7 +97,7 @@ public class ToolsAwtTest
         Assert.assertNotNull(ToolsAwt.applyMask(image, ColorRgba.WHITE.getRgba()));
 
         final Media media = new MediaAwt(MediaAwt.class.getResource("image.png").getFile());
-        final BufferedImage buffer = ToolsAwt.getImage(media.getInputStream(), true);
+        final BufferedImage buffer = ToolsAwt.getImage(media.getInputStream());
         Assert.assertNotNull(buffer);
         Assert.assertNotNull(ToolsAwt.getImageData(image));
         ToolsAwt.optimizeGraphicsQuality(buffer.createGraphics());
@@ -125,8 +125,8 @@ public class ToolsAwtTest
     @Test
     public void testSave() throws LionEngineException, IOException
     {
-        final BufferedImage image = ToolsAwt.getImage(
-                new MediaAwt(MediaAwt.class.getResource("image.png").getFile()).getInputStream(), false);
+        final BufferedImage image = ToolsAwt.getImage(new MediaAwt(MediaAwt.class.getResource("image.png").getFile())
+                .getInputStream());
         Assert.assertNotNull(image);
 
         final MediaAwt save = new MediaAwt("test");
@@ -148,7 +148,7 @@ public class ToolsAwtTest
     @Test(expected = LionEngineException.class)
     public void testGetFail() throws LionEngineException, IOException
     {
-        final BufferedImage image = ToolsAwt.getImage(new MediaAwt("image.png").getInputStream(), false);
+        final BufferedImage image = ToolsAwt.getImage(new MediaAwt("image.png").getInputStream());
         Assert.assertNotNull(image);
     }
 
@@ -162,7 +162,7 @@ public class ToolsAwtTest
     public void testGetIoFail() throws LionEngineException, IOException
     {
         final Media media = new MediaAwt(MediaAwt.class.getResource("raster.xml").getFile());
-        final BufferedImage image = ToolsAwt.getImage(media.getInputStream(), true);
+        final BufferedImage image = ToolsAwt.getImage(media.getInputStream());
         Assert.assertNotNull(image);
     }
 }

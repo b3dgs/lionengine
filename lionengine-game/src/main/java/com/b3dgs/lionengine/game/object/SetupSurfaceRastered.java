@@ -57,15 +57,13 @@ public class SetupSurfaceRastered
      * Create a setup.
      * 
      * @param config The config media.
-     * @param alpha The alpha use flag.
      * @param rasterFile The raster media.
      * @param smoothRaster The raster smooth flag.
      * @throws LionEngineException If error when opening the media.
      */
-    public SetupSurfaceRastered(Media config, boolean alpha, Media rasterFile, boolean smoothRaster)
-            throws LionEngineException
+    public SetupSurfaceRastered(Media config, Media rasterFile, boolean smoothRaster) throws LionEngineException
     {
-        super(config, alpha);
+        super(config);
         this.rasterFile = rasterFile;
         this.smoothRaster = smoothRaster;
         if (rasterFile != null)

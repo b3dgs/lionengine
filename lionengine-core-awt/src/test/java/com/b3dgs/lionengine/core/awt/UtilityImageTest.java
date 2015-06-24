@@ -104,6 +104,12 @@ public class UtilityImageTest
         final ImageBuffer wrong = new ImageBuffer()
         {
             @Override
+            public void prepare() throws LionEngineException
+            {
+                // Nothing to do
+            }
+
+            @Override
             public void setRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
             {
                 // Nothing to do
@@ -177,8 +183,8 @@ public class UtilityImageTest
     @Test
     public void testSave()
     {
-        final ImageBuffer image = UtilityImage.getImage(
-                new MediaAwt(MediaAwt.class.getResource("image.png").getFile()), false);
+        final ImageBuffer image = UtilityImage
+                .getImage(new MediaAwt(MediaAwt.class.getResource("image.png").getFile()));
         Assert.assertNotNull(image);
 
         final MediaAwt save = new MediaAwt("test");
@@ -194,7 +200,7 @@ public class UtilityImageTest
     @Test(expected = LionEngineException.class)
     public void testGetFail()
     {
-        final ImageBuffer image = UtilityImage.getImage(new MediaAwt("image.png"), false);
+        final ImageBuffer image = UtilityImage.getImage(new MediaAwt("image.png"));
         Assert.assertNotNull(image);
     }
 
@@ -205,7 +211,7 @@ public class UtilityImageTest
     public void testGetIoFail()
     {
         final Media media = new MediaAwt(MediaAwt.class.getResource("raster.xml").getFile());
-        final ImageBuffer image = UtilityImage.getImage(media, false);
+        final ImageBuffer image = UtilityImage.getImage(media);
         Assert.assertNotNull(image);
     }
 }

@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Minimap representation of a map tile. This can be used to represent strategic view of a map.
  * <p>
- * A call to {@link #load(boolean)} is needed once the {@link MapTile} as been created / loaded, and also each time
+ * A call to {@link #load()} is needed once the {@link MapTile} as been created / loaded, and also each time
  * modification occurs on the map.
  * </p>
  * 
@@ -59,6 +59,8 @@ public class Minimap
     private double x;
     /** Vertical location. */
     private double y;
+    /** Alpha. */
+    private boolean alpha;
 
     /**
      * Create a minimap.
@@ -87,7 +89,13 @@ public class Minimap
      */
 
     @Override
-    public void load(boolean alpha) throws LionEngineException
+    public void load() throws LionEngineException
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void prepare() throws LionEngineException
     {
         if (minimap == null)
         {
@@ -177,5 +185,11 @@ public class Minimap
     public ImageBuffer getSurface()
     {
         return minimap;
+    }
+
+    @Override
+    public boolean isLoaded()
+    {
+        return minimap != null;
     }
 }

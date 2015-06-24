@@ -187,7 +187,8 @@ public final class TileExtractor
     private void proceed(Media ripMedia) throws LionEngineException
     {
         final SpriteTiled rip = Drawable.loadSpriteTiled(ripMedia, tileWidth, tileHeight);
-        rip.load(false);
+        rip.load();
+        rip.prepare();
 
         final int ripHorizontalTiles = rip.getWidth() / tileWidth;
         final int ripVerticalTiles = rip.getHeight() / tileHeight;

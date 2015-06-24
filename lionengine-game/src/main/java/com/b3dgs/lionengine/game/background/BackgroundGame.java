@@ -79,7 +79,8 @@ public abstract class BackgroundGame
     protected static Sprite createSprite(Media media, boolean alpha) throws LionEngineException
     {
         final Sprite sprite = Drawable.loadSprite(media);
-        sprite.load(alpha);
+        sprite.load();
+        sprite.prepare();
         return sprite;
     }
 

@@ -113,7 +113,7 @@ class Scene
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
 
         cursor.addImage(0, Medias.create("cursor.png"));
-        cursor.load(false);
+        cursor.load();
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setInputDevice(mouse);

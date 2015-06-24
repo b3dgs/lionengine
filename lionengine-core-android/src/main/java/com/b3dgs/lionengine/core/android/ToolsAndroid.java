@@ -56,10 +56,9 @@ public final class ToolsAndroid
      * Get an image from an image file.
      * 
      * @param inputStream The image input stream.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image from file.
      */
-    static Bitmap getImage(InputStream inputStream, boolean alpha)
+    static Bitmap getImage(InputStream inputStream)
     {
         return BitmapFactory.decodeStream(inputStream);
     }

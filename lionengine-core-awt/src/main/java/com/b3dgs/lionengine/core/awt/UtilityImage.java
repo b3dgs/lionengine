@@ -102,16 +102,15 @@ public final class UtilityImage
      * Get an image from an input stream.
      * 
      * @param media The image input media.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The loaded image.
      * @throws LionEngineException If error when getting image.
      */
-    static ImageBuffer getImage(Media media, boolean alpha) throws LionEngineException
+    static ImageBuffer getImage(Media media) throws LionEngineException
     {
         Check.notNull(media);
         try (InputStream inputStream = media.getInputStream())
         {
-            return new ImageBufferAwt(ToolsAwt.getImage(inputStream, alpha));
+            return new ImageBufferAwt(ToolsAwt.getImage(inputStream));
         }
         catch (final IOException exception)
         {

@@ -63,7 +63,7 @@ public class Hq3xTest
     @Test
     public void testHq3x()
     {
-        final ImageBuffer image = Graphics.getImageBuffer(MEDIA, false);
+        final ImageBuffer image = Graphics.getImageBuffer(MEDIA);
         int i = 0;
         for (int y = 0; y < image.getHeight(); y++)
         {

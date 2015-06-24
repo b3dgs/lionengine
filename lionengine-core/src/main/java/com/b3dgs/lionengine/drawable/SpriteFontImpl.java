@@ -142,9 +142,15 @@ final class SpriteFontImpl
     }
 
     @Override
-    public void load(boolean alpha) throws LionEngineException
+    public void load() throws LionEngineException
     {
-        surface.load(alpha);
+        surface.load();
+    }
+
+    @Override
+    public void prepare() throws LionEngineException
+    {
+        surface.prepare();
     }
 
     @Override
@@ -327,6 +333,12 @@ final class SpriteFontImpl
     public ImageBuffer getSurface()
     {
         return surface.getSurface();
+    }
+
+    @Override
+    public boolean isLoaded()
+    {
+        return surface.isLoaded();
     }
 
     /*

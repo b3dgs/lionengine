@@ -110,12 +110,18 @@ class Scene
     {
         // Prepare surfaces without alpha (need to be called only one time)
         // If this function is not called, there won't have any surface to display
-        image.load(false);
-        sprite.load(false);
-        animation.load(false);
-        animationMirror.load(false);
-        tilesheets.load(false);
-        tilesheet.load(false);
+        image.load();
+        image.prepare();
+        sprite.load();
+        sprite.prepare();
+        animation.load();
+        animation.prepare();
+        animationMirror.load();
+        animationMirror.prepare();
+        tilesheets.load();
+        tilesheets.prepare();
+        tilesheet.load();
+        tilesheet.prepare();
 
         tile = 0.0;
 

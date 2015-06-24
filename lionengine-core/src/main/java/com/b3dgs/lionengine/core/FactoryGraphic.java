@@ -82,11 +82,10 @@ public interface FactoryGraphic
      * Get an image buffer from an image file.
      * 
      * @param media The image media.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image buffer from file.
      * @throws LionEngineException If an error occurred when reading the image.
      */
-    ImageBuffer getImageBuffer(Media media, boolean alpha) throws LionEngineException;
+    ImageBuffer getImageBuffer(Media media) throws LionEngineException;
 
     /**
      * Get an image buffer from an image buffer.

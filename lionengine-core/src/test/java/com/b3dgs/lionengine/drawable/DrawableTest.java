@@ -79,7 +79,7 @@ public class DrawableTest
             else
             {
                 Assert.assertNotNull(Drawable.loadImage(MEDIA));
-                Assert.assertNotNull(Drawable.loadImage(Graphics.getImageBuffer(MEDIA, false)));
+                Assert.assertNotNull(Drawable.loadImage(Graphics.getImageBuffer(MEDIA)));
             }
         }
         catch (final LionEngineException exception)
@@ -108,7 +108,7 @@ public class DrawableTest
             else
             {
                 Assert.assertNotNull(Drawable.loadSprite(MEDIA));
-                Assert.assertNotNull(Drawable.loadSprite(Graphics.getImageBuffer(MEDIA, false)));
+                Assert.assertNotNull(Drawable.loadSprite(Graphics.getImageBuffer(MEDIA)));
             }
         }
         catch (final LionEngineException exception)
@@ -139,7 +139,7 @@ public class DrawableTest
             else
             {
                 Assert.assertNotNull(Drawable.loadSpriteAnimated(MEDIA, width, height));
-                Assert.assertNotNull(Drawable.loadSpriteAnimated(Graphics.getImageBuffer(MEDIA, false), width, height));
+                Assert.assertNotNull(Drawable.loadSpriteAnimated(Graphics.getImageBuffer(MEDIA), width, height));
             }
         }
         catch (final LionEngineException exception)
@@ -170,7 +170,7 @@ public class DrawableTest
             else
             {
                 Assert.assertNotNull(Drawable.loadSpriteTiled(MEDIA, width, height));
-                Assert.assertNotNull(Drawable.loadSpriteTiled(Graphics.getImageBuffer(MEDIA, false), width, height));
+                Assert.assertNotNull(Drawable.loadSpriteTiled(Graphics.getImageBuffer(MEDIA), width, height));
             }
         }
         catch (final LionEngineException exception)

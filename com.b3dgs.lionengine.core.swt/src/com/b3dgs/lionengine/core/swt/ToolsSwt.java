@@ -81,13 +81,23 @@ public final class ToolsSwt
     }
 
     /**
+     * Get an image data from an image file.
+     * 
+     * @param inputStream The image input stream.
+     * @return The created image from file.
+     */
+    static ImageData getImageData(InputStream inputStream)
+    {
+        return new ImageData(inputStream);
+    }
+
+    /**
      * Get an image from an image file.
      * 
      * @param inputStream The image input stream.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image from file.
      */
-    static Image getImage(InputStream inputStream, boolean alpha)
+    static Image getImage(InputStream inputStream)
     {
         return new Image(ScreenSwt.display, inputStream);
     }

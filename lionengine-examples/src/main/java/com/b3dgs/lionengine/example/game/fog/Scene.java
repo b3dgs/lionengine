@@ -97,8 +97,10 @@ class Scene
 
         final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create("hide.png"), 16, 16);
         final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create("fog.png"), 16, 16);
-        hide.load(false);
-        fog.load(false);
+        hide.load();
+        hide.prepare();
+        fog.load();
+        fog.prepare();
         fogOfWar.setTilesheet(hide, fog);
         fogOfWar.setEnabled(true, true);
         fogOfWar.create(map, map);

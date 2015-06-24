@@ -101,7 +101,7 @@ public class ImageTest
         }
         try
         {
-            Drawable.loadImage(Graphics.createImageBuffer(1, 1, Transparency.OPAQUE)).load(false);
+            Drawable.loadImage(Graphics.createImageBuffer(1, 1, Transparency.OPAQUE)).load();
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -120,6 +120,11 @@ public class ImageTest
         final int height = 16;
         final ImageBuffer surface = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
         final Image imageA = Drawable.loadImage(surface);
+
+        final Image check = Drawable.loadImage(new MediaMock("image.png"));
+        check.load();
+        check.prepare();
+        Assert.assertNotEquals(check.hashCode(), Drawable.loadImage(check.getSurface()).hashCode());
 
         Assert.assertNotNull(imageA);
         Assert.assertEquals(width, imageA.getWidth());
@@ -142,7 +147,8 @@ public class ImageTest
 
         // Load from file
         final Image imageC = Drawable.loadImage(MEDIA);
-        imageC.load(false);
+        imageC.load();
+        imageC.prepare();
         DrawableTestTool.assertImageInfoCorrect(MEDIA, imageC);
         Assert.assertNotNull(imageC.getSurface());
         DrawableTestTool.testImageRender(g, imageC);

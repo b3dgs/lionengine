@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 
 /**
@@ -27,6 +28,13 @@ import com.b3dgs.lionengine.Transparency;
  */
 public interface ImageBuffer
 {
+    /**
+     * Prepare loaded surface to be displayed. It will prepare memory data to be displayed.
+     * 
+     * @throws LionEngineException If error on preparing.
+     */
+    void prepare() throws LionEngineException;
+
     /**
      * Create the image graphic context.
      * 

@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.Mirror;
  * </p>
  * <ul>
  * <li>Create the sprite.</li>
- * <li>Call {@link #load(boolean)} (this function will load the surface)</li>
+ * <li>Call {@link #load()} (this function will load the surface)</li>
  * </ul>
  * <p>
  * <p>

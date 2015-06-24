@@ -81,7 +81,8 @@ class Scene
     protected void load()
     {
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
-        minimap.load(false);
+        minimap.load();
+        minimap.prepare();
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
         size = map.getInTileWidth() * map.getTileWidth() - camera.getWidth();

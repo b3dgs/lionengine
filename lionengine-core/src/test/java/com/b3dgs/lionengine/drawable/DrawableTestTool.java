@@ -174,9 +174,22 @@ public class DrawableTestTool
     {
         Assert.assertTrue(sprite.equals(sprite));
         Assert.assertNull(sprite.getSurface());
-        sprite.load(false);
+        Assert.assertFalse(sprite.isLoaded());
+        sprite.load();
+
+        try
+        {
+            sprite.load();
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+
         Assert.assertNotNull(sprite.getSurface());
-        sprite.load(false);
+        sprite.prepare();
+        Assert.assertTrue(sprite.isLoaded());
         Assert.assertNotNull(sprite.getSurface());
         Assert.assertTrue(sprite.equals(sprite));
         Assert.assertTrue(Drawable.loadSprite(sprite.getSurface()).equals(sprite));

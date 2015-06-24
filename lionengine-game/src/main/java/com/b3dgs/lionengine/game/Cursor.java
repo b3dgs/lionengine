@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Resource;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
@@ -58,7 +59,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * <ul>
  * <li>Create the cursor with {@link #Cursor()}.</li>
  * <li>Add images with {@link #addImage(int, Media)}.</li>
- * <li>Load added images {@link #load(boolean)}.</li>
+ * <li>Load added images {@link #load()}.</li>
  * <li>Set the input to use {@link #setInputDevice(InputDevicePointer)}.</li>
  * <li>Change the cursor image if when needed with {@link #setSurfaceId(int)}.</li>
  * </ul>
@@ -68,7 +69,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * @see Image
  */
 public class Cursor
-        implements Localizable, Tiled, Updatable, Renderable
+        implements Resource, Localizable, Tiled, Updatable, Renderable
 {
     /** Surface ID not found error. */
     private static final String ERROR_SURFACE_ID = "Undefined surface id:";
@@ -136,7 +137,7 @@ public class Cursor
     }
 
     /**
-     * Add a cursor image. Once there are no more images to add, a call to {@link #load(boolean)} will be necessary.
+     * Add a cursor image. Once there are no more images to add, a call to {@link #load()} will be necessary.
      * 
      * @param id The cursor id.
      * @param media The cursor media.
@@ -149,23 +150,6 @@ public class Cursor
         if (surfaceId == null)
         {
             surfaceId = key;
-        }
-    }
-
-    /**
-     * Load the cursor images. Must be called only one time.
-     * 
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
-     */
-    public void load(boolean alpha)
-    {
-        for (final Image current : surfaces.values())
-        {
-            current.load(alpha);
-            if (surface == null)
-            {
-                surface = current;
-            }
         }
     }
 
@@ -380,6 +364,37 @@ public class Cursor
     public boolean isSynchronized()
     {
         return sync;
+    }
+
+    /*
+     * Resource
+     */
+
+    @Override
+    public void load()
+    {
+        for (final Image current : surfaces.values())
+        {
+            current.load();
+            current.prepare();
+            if (surface == null)
+            {
+                surface = current;
+            }
+        }
+    }
+
+    @Override
+    public boolean isLoaded()
+    {
+        for (final Image current : surfaces.values())
+        {
+            if (current.isLoaded())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /*

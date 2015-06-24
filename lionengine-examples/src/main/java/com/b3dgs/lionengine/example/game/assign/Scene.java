@@ -106,11 +106,12 @@ class Scene
                 Medias.create("map", "groups.xml"));
         mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
 
-        hud.load(false);
+        hud.load();
+        hud.prepare();
         text.setLocation(74, 192);
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.addImage(1, Medias.create("cursor_order.png"));
-        cursor.load(false);
+        cursor.load();
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setInputDevice(mouse);

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.test.game;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -51,6 +52,12 @@ public class ImageBufferMock
         this.height = height;
         this.transparency = transparency;
         rgba = new int[width * height];
+    }
+
+    @Override
+    public void prepare() throws LionEngineException
+    {
+        // Nothing to do
     }
 
     @Override

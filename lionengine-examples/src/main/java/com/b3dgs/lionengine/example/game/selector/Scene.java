@@ -104,12 +104,14 @@ class Scene
                 Medias.create("map", "groups.xml"));
         mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
         minimap.loadPixelConfig(Medias.create("map", "minimap.xml"));
-        minimap.load(false);
+        minimap.load();
+        minimap.prepare();
         minimap.setLocation(3, 6);
 
-        hud.load(false);
+        hud.load();
+        hud.prepare();
         cursor.addImage(0, Medias.create("cursor.png"));
-        cursor.load(false);
+        cursor.load();
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setInputDevice(mouse);

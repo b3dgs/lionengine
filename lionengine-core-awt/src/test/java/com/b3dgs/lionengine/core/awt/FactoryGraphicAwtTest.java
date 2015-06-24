@@ -75,8 +75,8 @@ public class FactoryGraphicAwtTest
         Assert.assertNotNull(factory.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL));
         Assert.assertNotNull(factory.createTransform());
         Assert.assertNotNull(factory.loadRaster(new MediaAwt(MediaAwt.class.getResource("raster.xml").getFile())));
-        final ImageBuffer image = factory.getImageBuffer(
-                new MediaAwt(MediaAwt.class.getResource("image.png").getFile()), false);
+        final ImageBuffer image = factory
+                .getImageBuffer(new MediaAwt(MediaAwt.class.getResource("image.png").getFile()));
         Assert.assertNotNull(image);
         Assert.assertNotNull(factory.getImageBuffer(image));
         Assert.assertNotNull(factory.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));

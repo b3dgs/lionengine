@@ -41,13 +41,15 @@ import com.b3dgs.lionengine.core.Media;
 class SpriteImpl
         implements Sprite
 {
+    /** Surface already loaded error. */
+    private static final String ERROR_LOADED = "Surface has already been loaded !";
     /** Invalid mirror type. */
     private static final String ERROR_MIRROR = "Invalid mirror type used: ";
 
     /** Sprite file name. */
     private final Media media;
-    /** Sprite current surface. */
-    private ImageBuffer surface;
+    /** Sprite current surface (<code>null</code> if not loaded). */
+    private volatile ImageBuffer surface;
     /** Sprite original surface. */
     private ImageBuffer surfaceOriginal;
     /** Origin point. */
@@ -204,12 +206,19 @@ class SpriteImpl
      */
 
     @Override
-    public void load(boolean alpha) throws LionEngineException
+    public synchronized void load() throws LionEngineException
     {
-        if (surface == null)
+        if (surface != null)
         {
-            surface = Graphics.getImageBuffer(media, alpha);
+            throw new LionEngineException(ERROR_LOADED);
         }
+        surface = Graphics.getImageBuffer(media);
+    }
+
+    @Override
+    public void prepare() throws LionEngineException
+    {
+        surface.prepare();
     }
 
     @Override
@@ -349,6 +358,12 @@ class SpriteImpl
     public final ImageBuffer getSurface()
     {
         return surface;
+    }
+
+    @Override
+    public boolean isLoaded()
+    {
+        return surface != null;
     }
 
     /*

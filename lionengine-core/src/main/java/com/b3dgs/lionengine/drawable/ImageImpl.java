@@ -47,6 +47,8 @@ class ImageImpl
     private final int width;
     /** Sprite height. */
     private final int height;
+    /** Image surface. */
+    private volatile ImageBuffer surface;
     /** Origin point. */
     private Origin origin = Origin.TOP_LEFT;
     /** Image horizontal position. */
@@ -57,8 +59,6 @@ class ImageImpl
     private int rx;
     /** Render vertical position. */
     private int ry;
-    /** Image surface. */
-    private ImageBuffer surface;
 
     /**
      * Internal constructor.
@@ -97,13 +97,19 @@ class ImageImpl
      */
 
     @Override
-    public void load(boolean alpha) throws LionEngineException
+    public synchronized void load() throws LionEngineException
     {
         if (surface != null)
         {
             throw new LionEngineException(media, ERROR_ALREADY_LOADED);
         }
-        surface = Graphics.getImageBuffer(media, alpha);
+        surface = Graphics.getImageBuffer(media);
+    }
+
+    @Override
+    public void prepare() throws LionEngineException
+    {
+        surface.prepare();
     }
 
     @Override
@@ -163,6 +169,12 @@ class ImageImpl
         return surface;
     }
 
+    @Override
+    public boolean isLoaded()
+    {
+        return surface != null;
+    }
+
     /*
      * Object
      */
@@ -192,7 +204,7 @@ class ImageImpl
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + surface.hashCode();
+        result = prime * result + (media != null ? media.hashCode() : surface.hashCode());
         return result;
     }
 }

@@ -83,9 +83,9 @@ final class FactoryGraphicAndroid
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws LionEngineException
+    public ImageBuffer getImageBuffer(Media media) throws LionEngineException
     {
-        return UtilityImage.getImage(media, alpha);
+        return UtilityImage.getImage(media);
     }
 
     @Override

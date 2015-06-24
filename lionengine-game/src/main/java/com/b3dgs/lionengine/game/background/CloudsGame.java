@@ -65,7 +65,8 @@ public abstract class CloudsGame
     {
         this.decY = decY;
         sprite = Drawable.loadSpriteTiled(media, cloudWidth, cloudHeight);
-        sprite.load(alpha);
+        sprite.load();
+        sprite.prepare();
         cloudsNumber = sprite.getTilesHorizontal() * sprite.getTilesVertical();
         data = new BackgroundElement(0, 0, sprite);
 

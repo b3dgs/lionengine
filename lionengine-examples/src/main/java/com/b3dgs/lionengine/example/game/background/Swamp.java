@@ -51,7 +51,8 @@ class Swamp
     static ElementRastered createElementRastered(String name, int x, int y, int rastersNumber)
     {
         final Sprite sprite = Drawable.loadSprite(Medias.create(name));
-        sprite.load(false);
+        sprite.load();
+        sprite.prepare();
         return new ElementRastered(x, y, sprite, rastersNumber);
     }
 

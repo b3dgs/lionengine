@@ -145,12 +145,11 @@ public class EngineCoreTest
     /**
      * Test the engine system property.
      */
-    @Test
+    @Test(expected = SecurityException.class)
     public void testSystemProperty()
     {
         Assert.assertEquals(null, EngineCore.getSystemProperty("null", null));
         System.setSecurityManager(new SecurityManagerMock(false));
-
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         Assert.assertNull("", EngineCore.getSystemProperty("security", null));
         Verbose.info("****************************************************************************************");

@@ -63,7 +63,7 @@ public class Hq2xTest
     @Test
     public void testHq2x()
     {
-        final ImageBuffer image = Graphics.getImageBuffer(MEDIA, false);
+        final ImageBuffer image = Graphics.getImageBuffer(MEDIA);
         int i = 0;
         for (int y = 0; y < image.getHeight(); y++)
         {

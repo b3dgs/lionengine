@@ -416,7 +416,8 @@ public class MapTileGame
         {
             final Media media = Medias.create(folder, files[sheet]);
             final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
-            sprite.load(false);
+            sprite.load();
+            sprite.prepare();
             sheets.put(Integer.valueOf(sheet), sprite);
         }
     }
