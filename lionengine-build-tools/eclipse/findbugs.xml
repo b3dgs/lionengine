@@ -62,21 +62,21 @@
 		<Bug pattern="DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED" />
 	</Match>
 	<Match>
-		<Class name="~.*Test$"/>
+		<Class name="~.*Test$" />
 	</Match>
 	<Match>
-		<Package name="~com.b3dgs.lionengine.mock.*"/>
+		<Package name="~com.b3dgs.lionengine.mock.*" />
 	</Match>
 	<Match>
-		<Class name="com.b3dgs.lionengine.drawable.DrawableTestTool"/>
+		<Class name="com.b3dgs.lionengine.drawable.DrawableTestTool" />
 	</Match>
 	<Match>
-		<Package name="~org.*"/>
+		<Package name="~org.*" />
 	</Match>
 	<Match>
-		<Package name="~com.jcraft.*"/>
+		<Package name="~com.jcraft.*" />
 	</Match>
 	<Match>
-		<Package name="~com.sun.*"/>
+		<Package name="~com.sun.*" />
 	</Match>
 </FindBugsFilter>

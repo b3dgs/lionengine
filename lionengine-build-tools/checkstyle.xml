@@ -1,215 +1,211 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 
-<!--
-    This configuration file was written by the eclipse-cs plugin configuration editor
--->
-<!--
-    Checkstyle-Configuration: LionEngine
-    Description: none
--->
+<!-- This configuration file was written by the eclipse-cs plugin configuration editor -->
+<!-- Checkstyle-Configuration: b3dgs Description: none -->
 <module name="Checker">
-  <property name="severity" value="error"/>
-  <module name="TreeWalker">
-    <module name="JavadocMethod">
-      <property name="suppressLoadErrors" value="true"/>
-    </module>
-    <module name="JavadocType"/>
-    <module name="JavadocVariable"/>
-    <module name="JavadocStyle">
-      <property name="checkFirstSentence" value="false"/>
-      <property name="checkHtml" value="false"/>
-    </module>
-    <module name="ConstantName"/>
-    <module name="LocalFinalVariableName"/>
-    <module name="LocalVariableName"/>
-    <module name="MemberName"/>
-    <module name="MethodName"/>
-    <module name="PackageName"/>
-    <module name="ParameterName"/>
-    <module name="StaticVariableName"/>
-    <module name="TypeName"/>
-    <module name="AvoidStarImport"/>
-    <module name="IllegalImport"/>
-    <module name="RedundantImport"/>
-    <module name="UnusedImports">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="MethodLength"/>
-    <module name="ParameterNumber">
-      <property name="severity" value="ignore"/>
-      <property name="max" value="9"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="LineLength">
-      <property name="severity" value="ignore"/>
-      <property name="max" value="121"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="EmptyForIteratorPad">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="MethodParamPad">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="NoWhitespaceAfter">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="NoWhitespaceBefore">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="OperatorWrap">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="ParenPad">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="TypecastParenPad">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="WhitespaceAfter">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="WhitespaceAround">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="ModifierOrder"/>
-    <module name="RedundantModifier"/>
-    <module name="AvoidNestedBlocks">
-      <property name="allowInSwitchCase" value="true"/>
-    </module>
-    <module name="EmptyBlock"/>
-    <module name="LeftCurly">
-      <property name="option" value="nl"/>
-      <property name="maxLineLength" value="120"/>
-    </module>
-    <module name="NeedBraces"/>
-    <module name="RightCurly">
-      <property name="option" value="alone"/>
-    </module>
-    <module name="AvoidInlineConditionals">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="EmptyStatement"/>
-    <module name="EqualsHashCode"/>
-    <module name="HiddenField">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="IllegalInstantiation"/>
-    <module name="InnerAssignment"/>
-    <module name="MagicNumber">
-      <property name="severity" value="ignore"/>
-      <property name="ignoreNumbers" value="-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 24, 32, 64, 100, 128, 256, 512, 1024, 9, 99, 100, 1000, 100.0, 0.0, 3.0, 4.0, 5.0, 9.0, 16.0, 10.0, 255"/>
-      <property name="ignoreHashCodeMethod" value="true"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="MissingSwitchDefault"/>
-    <module name="SimplifyBooleanExpression"/>
-    <module name="SimplifyBooleanReturn"/>
-    <module name="DesignForExtension">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="FinalClass"/>
-    <module name="HideUtilityClassConstructor"/>
-    <module name="InterfaceIsType">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="VisibilityModifier">
-      <property name="severity" value="ignore"/>
-      <property name="protectedAllowed" value="true"/>
-      <property name="publicMemberPattern" value="[a-z]* final [a-z]+"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="ArrayTypeStyle">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="FinalParameters">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="TodoComment">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="UpperEll">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="MagicNumber">
-      <property name="severity" value="ignore"/>
-      <property name="ignoreHashCodeMethod" value="true"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="MagicNumber">
-      <property name="severity" value="ignore"/>
-      <property name="ignoreHashCodeMethod" value="true"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="MagicNumber">
-      <property name="severity" value="ignore"/>
-      <property name="ignoreHashCodeMethod" value="true"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="InterfaceIsType">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
-    <module name="ClassFanOutComplexity">
-      <property name="max" value="25"/>
-    </module>
-    <module name="NPathComplexity"/>
-    <module name="MissingDeprecated"/>
-    <module name="MissingOverride"/>
-    <module name="SuppressWarnings"/>
-    <module name="MethodCount"/>
-    <module name="BooleanExpressionComplexity"/>
-    <module name="CyclomaticComplexity"/>
-    <module name="LineLength">
-      <property name="max" value="120"/>
-    </module>
-  </module>
-  <module name="JavadocPackage">
-    <property name="severity" value="ignore"/>
-    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-  </module>
-  <module name="NewlineAtEndOfFile">
-    <property name="severity" value="ignore"/>
-    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-  </module>
-  <module name="Translation">
-    <property name="severity" value="ignore"/>
-    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-  </module>
-  <module name="FileLength"/>
-  <module name="FileTabCharacter">
-    <property name="severity" value="ignore"/>
-    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-  </module>
-  <module name="RegexpSingleline">
-    <property name="format" value="[^\*]\s+$"/>
-    <property name="message" value="Line has trailing spaces."/>
-  </module>
-  <module name="Header">
-    <property name="severity" value="error"/>
-    <property name="headerFile" value="${dir}/${header.file}"/>
-    <property name="fileExtensions" value="java"/>
-  </module>
-  <module name="SuppressionFilter">
-    <property name="file" value="${dir}/${suppressions.file}"/>
-  </module>
+	<property name="severity" value="error" />
+	<module name="TreeWalker">
+		<module name="JavadocMethod">
+			<property name="suppressLoadErrors" value="true" />
+		</module>
+		<module name="JavadocType" />
+		<module name="JavadocVariable" />
+		<module name="JavadocStyle">
+			<property name="checkFirstSentence" value="false" />
+			<property name="checkHtml" value="false" />
+		</module>
+		<module name="ConstantName" />
+		<module name="LocalFinalVariableName" />
+		<module name="LocalVariableName" />
+		<module name="MemberName" />
+		<module name="MethodName" />
+		<module name="PackageName" />
+		<module name="ParameterName" />
+		<module name="StaticVariableName" />
+		<module name="TypeName" />
+		<module name="AvoidStarImport" />
+		<module name="IllegalImport" />
+		<module name="RedundantImport" />
+		<module name="UnusedImports">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="MethodLength" />
+		<module name="ParameterNumber">
+			<property name="severity" value="ignore" />
+			<property name="max" value="9" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="LineLength">
+			<property name="severity" value="ignore" />
+			<property name="max" value="121" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="EmptyForIteratorPad">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="MethodParamPad">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="NoWhitespaceAfter">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="NoWhitespaceBefore">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="OperatorWrap">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="ParenPad">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="TypecastParenPad">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="WhitespaceAfter">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="WhitespaceAround">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="ModifierOrder" />
+		<module name="RedundantModifier" />
+		<module name="AvoidNestedBlocks">
+			<property name="allowInSwitchCase" value="true" />
+		</module>
+		<module name="EmptyBlock" />
+		<module name="LeftCurly">
+			<property name="option" value="nl" />
+			<property name="maxLineLength" value="120" />
+		</module>
+		<module name="NeedBraces" />
+		<module name="RightCurly">
+			<property name="option" value="alone" />
+		</module>
+		<module name="AvoidInlineConditionals">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="EmptyStatement" />
+		<module name="EqualsHashCode" />
+		<module name="HiddenField">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="IllegalInstantiation" />
+		<module name="InnerAssignment" />
+		<module name="MagicNumber">
+			<property name="severity" value="ignore" />
+			<property name="ignoreNumbers"
+				value="-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 24, 32, 64, 100, 128, 256, 512, 1024, 9, 99, 100, 1000, 100.0, 0.0, 3.0, 4.0, 5.0, 9.0, 16.0, 10.0, 255" />
+			<property name="ignoreHashCodeMethod" value="true" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="MissingSwitchDefault" />
+		<module name="SimplifyBooleanExpression" />
+		<module name="SimplifyBooleanReturn" />
+		<module name="DesignForExtension">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="FinalClass" />
+		<module name="HideUtilityClassConstructor" />
+		<module name="InterfaceIsType">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="VisibilityModifier">
+			<property name="severity" value="ignore" />
+			<property name="protectedAllowed" value="true" />
+			<property name="publicMemberPattern" value="[a-z]* final [a-z]+" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="ArrayTypeStyle">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="FinalParameters">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="TodoComment">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="UpperEll">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="MagicNumber">
+			<property name="severity" value="ignore" />
+			<property name="ignoreHashCodeMethod" value="true" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="MagicNumber">
+			<property name="severity" value="ignore" />
+			<property name="ignoreHashCodeMethod" value="true" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="MagicNumber">
+			<property name="severity" value="ignore" />
+			<property name="ignoreHashCodeMethod" value="true" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="InterfaceIsType">
+			<property name="severity" value="ignore" />
+			<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+		</module>
+		<module name="ClassFanOutComplexity">
+			<property name="max" value="25" />
+		</module>
+		<module name="NPathComplexity" />
+		<module name="MissingDeprecated" />
+		<module name="MissingOverride" />
+		<module name="SuppressWarnings" />
+		<module name="MethodCount" />
+		<module name="BooleanExpressionComplexity" />
+		<module name="CyclomaticComplexity" />
+		<module name="LineLength">
+			<property name="max" value="120" />
+		</module>
+	</module>
+	<module name="JavadocPackage">
+		<property name="severity" value="ignore" />
+		<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+	</module>
+	<module name="NewlineAtEndOfFile">
+		<property name="severity" value="ignore" />
+		<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+	</module>
+	<module name="Translation">
+		<property name="severity" value="ignore" />
+		<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+	</module>
+	<module name="FileLength" />
+	<module name="FileTabCharacter">
+		<property name="severity" value="ignore" />
+		<metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit" />
+	</module>
+	<module name="RegexpSingleline">
+		<property name="format" value="[^\*]\s+$" />
+		<property name="message" value="Line has trailing spaces." />
+	</module>
+	<module name="Header">
+		<property name="severity" value="error" />
+		<property name="headerFile" value="${dir}/${header.file}" />
+		<property name="fileExtensions" value="java" />
+	</module>
+	<module name="SuppressionFilter">
+		<property name="file" value="${dir}/${suppressions.file}" />
+	</module>
 </module>
