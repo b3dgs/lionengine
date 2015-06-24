@@ -354,8 +354,8 @@
 						<propertiesLocation>../lionengine-build-tools/checkstyle.properties</propertiesLocation>
 						<propertyExpansion>dir=${project.basedir}/../lionengine-build-tools</propertyExpansion>
 						<configLocation>../lionengine-build-tools/checkstyle.xml</configLocation>
-			            <headerLocation>../lionengine-build-tools/header.txt</headerLocation>
-			            <suppressionsLocation>../lionengine-build-tools/checkstyle-suppression.xml</suppressionsLocation>
+						<headerLocation>../lionengine-build-tools/header.txt</headerLocation>
+						<suppressionsLocation>../lionengine-build-tools/checkstyle-suppression.xml</suppressionsLocation>
 					</configuration>
 					<executions>
 						<execution>
