@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -49,6 +52,8 @@ final class GraphicSwt
         return ((ImageBufferSwt) imageBuffer).getBuffer();
     }
 
+    /** Flip image cache. */
+    private final Map<ImageBuffer, Image> cacheFlip = new HashMap<>();
     /** The graphic output. */
     private GC gc;
     /** Gradient paint. */
@@ -92,6 +97,11 @@ final class GraphicSwt
     @Override
     public void dispose()
     {
+        for (final Image image : cacheFlip.values())
+        {
+            image.dispose();
+        }
+        cacheFlip.clear();
         gc.dispose();
     }
 
@@ -119,15 +129,12 @@ final class GraphicSwt
     {
         if (sx2 < sx1)
         {
-            // TODO not working
-            final org.eclipse.swt.graphics.Transform old = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
-            final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(
-                    ScreenSwt.display);
-            transform.setElements(1, 0, 0, -1, 0, 0);
-            gc.setTransform(transform);
-            gc.drawImage(GraphicSwt.getBuffer(image), dx1, dy1);
-            transform.dispose();
-            gc.setTransform(old);
+            if (!cacheFlip.containsKey(image))
+            {
+                final Image flip = ToolsSwt.flipHorizontal(getBuffer(image));
+                cacheFlip.put(image, flip);
+            }
+            gc.drawImage(cacheFlip.get(image), dx1, dy1);
         }
         else
         {

@@ -19,6 +19,9 @@ package com.b3dgs.lionengine.core.swt;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -29,10 +32,9 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Transform;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Misc tools for SWT.
@@ -122,8 +124,15 @@ public final class ToolsSwt
      */
     static Image applyMask(Image image, int maskColor)
     {
-        // TODO To be implemented
-        throw new LionEngineException("Not implemented yet !");
+        final ImageData sourceData = image.getImageData();
+        final int width = sourceData.width;
+        final int height = sourceData.height;
+
+        final ImageData newData = new ImageData(width, height, sourceData.depth, sourceData.palette);
+        final ColorRgba mask = new ColorRgba(maskColor);
+        newData.transparentPixel = newData.palette.getPixel(new RGB(mask.getRed(), mask.getGreen(), mask.getBlue()));
+
+        return new Image(ScreenSwt.display, newData);
     }
 
     /**
@@ -208,18 +217,7 @@ public final class ToolsSwt
      */
     static Image flipHorizontal(Image image)
     {
-        final ImageData data = image.getImageData();
-        final int width = data.width, height = data.height;
-        final Image flipped = new Image(ScreenSwt.display, width, height);
-        final GC gc = new GC(flipped);
-        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
-
-        transform.scale(-1.0f, 1.0f);
-        gc.setTransform(transform);
-        gc.drawImage(image, 0, 0);
-        gc.dispose();
-
-        return flipped;
+        return flip(image, false);
     }
 
     /**
@@ -230,32 +228,38 @@ public final class ToolsSwt
      */
     static Image flipVertical(Image image)
     {
-        final ImageData data = image.getImageData();
-        final int width = data.width, height = data.height;
-        final Image flipped = new Image(ScreenSwt.display, width, height);
-        final GC gc = new GC(flipped);
-        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
-
-        transform.scale(1.0f, -1.0f);
-        gc.setTransform(transform);
-        gc.drawImage(image, 0, 0);
-        gc.dispose();
-
-        return flipped;
+        return flip(image, true);
     }
 
     /**
      * Apply a filter to the input image.
      * 
      * @param image The input image.
-     * @param filter The filter to use.
      * @return The filtered image as a new instance.
-     * @throws LionEngineException If the filter is not supported.
      */
-    static Image applyFilter(Image image, Filter filter) throws LionEngineException
+    static Image applyBilinearFilter(Image image)
     {
-        // TODO To be implemented
-        throw new LionEngineException("Not implemented yet !");
+        final ImageData data = image.getImageData();
+        final int width = data.width, height = data.height;
+
+        final Image filtered = createImage(width * 2, height * 2, SWT.TRANSPARENCY_ALPHA);
+        final GC gc = new GC(filtered);
+
+        final Transform transform = new Transform(ScreenSwt.display);
+        transform.scale(2.0f, 2.0f);
+        gc.setTransform(transform);
+        gc.drawImage(image, 0, 0);
+        gc.dispose();
+
+        final Image filtered2 = createImage(width, height, SWT.TRANSPARENCY_ALPHA);
+        final GC gc2 = new GC(filtered2);
+        final Transform transform2 = new Transform(ScreenSwt.display);
+        transform2.scale(0.5f, 0.5f);
+        gc2.setTransform(transform2);
+        gc2.drawImage(filtered, 0, 0);
+        gc2.dispose();
+
+        return filtered2;
     }
 
     /**
@@ -289,8 +293,83 @@ public final class ToolsSwt
      */
     static Image getRasterBuffer(Image image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
-        // TODO To be implemented
-        throw new LionEngineException("Not implemented yet !");
+        final ImageData data = image.getImageData();
+        final PaletteData palette = data.palette;
+        final RGB[] colors = palette.getRGBs();
+        final Map<Integer, RGB> newColors = new TreeMap<>();
+        final Map<RGB, Integer> newColorsPixel = new HashMap<>();
+        for (final RGB color : colors)
+        {
+            final ColorRgba colorRgba = new ColorRgba(color.red, color.green, color.blue);
+            newColors.put(Integer.valueOf(colorRgba.getRgba()), color);
+            newColorsPixel.put(color, Integer.valueOf(palette.getPixel(color)));
+        }
+
+        final double sr = -((er - fr) / 0x010000) / (double) refSize;
+        final double sg = -((eg - fg) / 0x000100) / (double) refSize;
+        final double sb = -((eb - fb) / 0x000001) / (double) refSize;
+
+        int lastPixel = newColorsPixel.size();
+        final int pixels[][] = new int[data.width][data.height];
+        for (int i = 0; i < data.width; i++)
+        {
+            for (int j = 0; j < data.height; j++)
+            {
+                final int r = (int) (sr * (j % refSize)) * 0x010000;
+                final int g = (int) (sg * (j % refSize)) * 0x000100;
+                final int b = (int) (sb * (j % refSize)) * 0x000001;
+
+                final int pixel = data.getPixel(i, j);
+                if (pixel != data.transparentPixel)
+                {
+                    final RGB rgb = palette.getRGB(pixel);
+                    final ColorRgba colorRgba = new ColorRgba(rgb.red, rgb.green, rgb.blue);
+
+                    final int filter = ColorRgba.filterRgb(colorRgba.getRgba(), fr + r, fg + g, fb + b);
+                    final ColorRgba output = new ColorRgba(filter);
+
+                    final Integer rasterRgba = Integer.valueOf(output.getRgba());
+                    final RGB rasterColor = new RGB(output.getRed(), output.getGreen(), output.getBlue());
+                    if (!newColors.containsKey(rasterRgba))
+                    {
+                        newColors.put(rasterRgba, rasterColor);
+                        newColorsPixel.put(rasterColor, Integer.valueOf(lastPixel));
+                        lastPixel++;
+                    }
+                    pixels[i][j] = newColorsPixel.get(rasterColor).intValue();
+                    data.setPixel(i, j, pixels[i][j]);
+                }
+            }
+        }
+        final RGB[] newColorsRgb = new RGB[newColorsPixel.size()];
+        for (final Map.Entry<RGB, Integer> current : newColorsPixel.entrySet())
+        {
+            newColorsRgb[current.getValue().intValue()] = current.getKey();
+        }
+        palette.colors = newColorsRgb;
+
+        return new Image(ScreenSwt.display, data);
+    }
+
+    /**
+     * Flip an image depending of the axis.
+     * 
+     * @param image The image source.
+     * @param vertical <code>true</code> if vertical, <code>false</code> if horizontal.
+     * @return The flipped image data.
+     */
+    private static Image flip(Image image, boolean vertical)
+    {
+        final ImageData data = image.getImageData();
+        final ImageData flip = image.getImageData();
+        for (int y = 0; y < data.height; y++)
+        {
+            for (int x = 0; x < data.width; x++)
+            {
+                flip.setPixel(data.width - x - 1, y, data.getPixel(x, y));
+            }
+        }
+        return new Image(ScreenSwt.display, flip);
     }
 
     /**

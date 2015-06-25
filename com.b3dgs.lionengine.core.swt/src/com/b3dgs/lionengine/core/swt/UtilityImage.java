@@ -26,7 +26,6 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
@@ -217,13 +216,11 @@ public final class UtilityImage
      * Apply a filter to the input image.
      * 
      * @param image The input image.
-     * @param filter The filter to use.
      * @return The filtered image as a new instance.
-     * @throws LionEngineException If the filter is not supported.
      */
-    static ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException
+    static ImageBuffer applyBilinearFilter(ImageBuffer image)
     {
-        return new ImageBufferSwt(ToolsSwt.applyFilter(getBuffer(image), filter));
+        return new ImageBufferSwt(ToolsSwt.applyBilinearFilter(getBuffer(image)));
     }
 
     /**
