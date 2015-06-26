@@ -54,9 +54,9 @@ public final class ToolsAwt
     /** Graphics environment. */
     private static final GraphicsEnvironment ENV = GraphicsEnvironment.getLocalGraphicsEnvironment();
     /** Graphics device. */
-    private static final GraphicsDevice DEV = ToolsAwt.ENV.getDefaultScreenDevice();
+    private static final GraphicsDevice DEV = ENV.getDefaultScreenDevice();
     /** Graphics configuration. */
-    private static final GraphicsConfiguration CONFIG = ToolsAwt.DEV.getDefaultConfiguration();
+    private static final GraphicsConfiguration CONFIG = DEV.getDefaultConfiguration();
     /** Bilinear filter. */
     private static final float[] BILINEAR_FILTER = new float[]
     {
@@ -73,7 +73,7 @@ public final class ToolsAwt
      */
     static BufferedImage createImage(int width, int height, int transparency)
     {
-        return ToolsAwt.CONFIG.createCompatibleImage(width, height, transparency);
+        return CONFIG.createCompatibleImage(width, height, transparency);
     }
 
     /**
@@ -90,7 +90,7 @@ public final class ToolsAwt
         {
             throw new IOException("Invalid image !");
         }
-        final BufferedImage image = ToolsAwt.copyImage(buffer, buffer.getTransparency());
+        final BufferedImage image = copyImage(buffer, buffer.getTransparency());
         return image;
     }
 
@@ -115,7 +115,7 @@ public final class ToolsAwt
      */
     static BufferedImage copyImage(BufferedImage image, int transparency)
     {
-        final BufferedImage copy = ToolsAwt.createImage(image.getWidth(), image.getHeight(), transparency);
+        final BufferedImage copy = createImage(image.getWidth(), image.getHeight(), transparency);
         final Graphics2D g = copy.createGraphics();
         g.setComposite(AlphaComposite.Src);
         g.drawImage(image, 0, 0, null);
@@ -142,7 +142,7 @@ public final class ToolsAwt
      */
     static BufferedImage applyBilinearFilter(BufferedImage image)
     {
-        final Kernel kernel = new Kernel(3, 3, ToolsAwt.BILINEAR_FILTER);
+        final Kernel kernel = new Kernel(3, 3, BILINEAR_FILTER);
         final ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
         return op.filter(image, null);
     }
@@ -156,7 +156,7 @@ public final class ToolsAwt
      */
     static BufferedImage applyMask(BufferedImage image, int rgba)
     {
-        final BufferedImage mask = ToolsAwt.copyImage(image, Transparency.BITMASK);
+        final BufferedImage mask = copyImage(image, Transparency.BITMASK);
         final int height = mask.getHeight();
         final int width = mask.getWidth();
 
@@ -186,10 +186,10 @@ public final class ToolsAwt
     {
         final int w = image.getWidth(), h = image.getHeight();
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage rotated = ToolsAwt.createImage(w, h, transparency);
+        final BufferedImage rotated = createImage(w, h, transparency);
         final Graphics2D g = rotated.createGraphics();
 
-        ToolsAwt.optimizeGraphics(g);
+        optimizeGraphics(g);
         g.rotate(Math.toRadians(angle), w / 2.0, h / 2.0);
         g.drawImage(image, null, 0, 0);
         g.dispose();
@@ -208,10 +208,10 @@ public final class ToolsAwt
     static BufferedImage resize(BufferedImage image, int width, int height)
     {
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage resized = ToolsAwt.createImage(width, height, transparency);
+        final BufferedImage resized = createImage(width, height, transparency);
         final Graphics2D g = resized.createGraphics();
 
-        ToolsAwt.optimizeGraphics(g);
+        optimizeGraphics(g);
         g.drawImage(image, 0, 0, width, height, 0, 0, image.getWidth(), image.getHeight(), null);
         g.dispose();
 
@@ -227,10 +227,10 @@ public final class ToolsAwt
     static BufferedImage flipHorizontal(BufferedImage image)
     {
         final int w = image.getWidth(), h = image.getHeight();
-        final BufferedImage flipped = ToolsAwt.createImage(w, h, image.getColorModel().getTransparency());
+        final BufferedImage flipped = createImage(w, h, image.getColorModel().getTransparency());
         final Graphics2D g = flipped.createGraphics();
 
-        ToolsAwt.optimizeGraphics(g);
+        optimizeGraphics(g);
         g.drawImage(image, 0, 0, w, h, w, 0, 0, h, null);
         g.dispose();
 
@@ -246,10 +246,10 @@ public final class ToolsAwt
     static BufferedImage flipVertical(BufferedImage image)
     {
         final int w = image.getWidth(), h = image.getHeight();
-        final BufferedImage flipped = ToolsAwt.createImage(w, h, image.getColorModel().getTransparency());
+        final BufferedImage flipped = createImage(w, h, image.getColorModel().getTransparency());
         final Graphics2D g = flipped.createGraphics();
 
-        ToolsAwt.optimizeGraphics(g);
+        optimizeGraphics(g);
         g.drawImage(image, 0, 0, w, h, 0, h, w, 0, null);
         g.dispose();
 
@@ -276,9 +276,9 @@ public final class ToolsAwt
         {
             for (int x = 0; x < h; x++)
             {
-                images[frame] = ToolsAwt.createImage(width, height, transparency);
+                images[frame] = createImage(width, height, transparency);
                 final Graphics2D g = images[frame].createGraphics();
-                ToolsAwt.optimizeGraphics(g);
+                optimizeGraphics(g);
                 g.drawImage(image, 0, 0, width, height, x * width, y * height, (x + 1) * width, (y + 1) * height, null);
                 g.dispose();
                 frame++;
@@ -305,7 +305,7 @@ public final class ToolsAwt
             int refSize)
     {
         final boolean method = true;
-        final BufferedImage raster = ToolsAwt.createImage(image.getWidth(), image.getHeight(), image.getTransparency());
+        final BufferedImage raster = createImage(image.getWidth(), image.getHeight(), image.getTransparency());
 
         final double sr = -((er - fr) / 0x010000) / (double) refSize;
         final double sg = -((eg - fg) / 0x000100) / (double) refSize;
@@ -327,10 +327,10 @@ public final class ToolsAwt
         }
         else
         {
-            final int[] org = ToolsAwt.getImageData(image);
+            final int[] org = getImageData(image);
             final int width = raster.getWidth();
             final int height = raster.getHeight();
-            final int[] pixels = ToolsAwt.getImageData(raster);
+            final int[] pixels = getImageData(raster);
 
             for (int j = 0; j < height; j++)
             {
@@ -355,8 +355,8 @@ public final class ToolsAwt
         {
             final Toolkit toolkit = Toolkit.getDefaultToolkit();
             final Dimension dim = toolkit.getBestCursorSize(1, 1);
-            final BufferedImage cursor = ToolsAwt.createImage(dim.width, dim.height, Transparency.BITMASK);
-            final BufferedImage buffer = ToolsAwt.applyMask(cursor, Color.BLACK.getRGB());
+            final BufferedImage cursor = createImage(dim.width, dim.height, Transparency.BITMASK);
+            final BufferedImage buffer = applyMask(cursor, Color.BLACK.getRGB());
             return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
         }
         catch (final AWTError
@@ -408,7 +408,7 @@ public final class ToolsAwt
      */
     static void optimizeGraphics(Graphics2D g)
     {
-        ToolsAwt.optimizeGraphicsSpeed(g);
+        optimizeGraphicsSpeed(g);
     }
 
     /**
