@@ -19,8 +19,10 @@ package com.b3dgs.lionengine.game.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
@@ -84,10 +86,46 @@ public final class TileExtractor
         return true;
     }
 
+    /**
+     * Listen to extraction progress.
+     */
+    public interface ProgressListener
+    {
+        /**
+         * Called once progress detected.
+         * 
+         * @param percent Progress percent.
+         * @param current The current extracting sheet.
+         */
+        void notifyProgress(int percent, ImageBuffer current);
+
+        /**
+         * Called once sheet fully extracted.
+         * 
+         * @param sheet Last exported sheet (may be <code>null</code>).
+         */
+        void notifyExtracted(ImageBuffer sheet);
+    }
+
+    /**
+     * Cancel controller.
+     */
+    public interface Canceler
+    {
+        /**
+         * Check if operation is canceled.
+         * 
+         * @return <code>true</code> if canceled, <code>false</code> else.
+         */
+        boolean isCanceled();
+    }
+
     /** Levels rip. */
     private final Collection<Media> rips = new ArrayList<>();
     /** Extracted tile sheets. */
     private final Collection<ImageBuffer> extractions = new ArrayList<>();
+    /** Progress listener. */
+    private final Collection<ProgressListener> listeners = new HashSet<>();
     /** Extraction folder. */
     private final Media folder;
     /** Extracted tile sheet prefix. */
@@ -100,8 +138,12 @@ public final class TileExtractor
     private final int horizontal;
     /** Maximum tile sheet vertical tiles. */
     private final int vertical;
+    /** Canceler. */
+    private Canceler canceler;
     /** Last sheet buffer. */
     private ImageBuffer sheet;
+    /** Last exported sheet. */
+    private ImageBuffer lastExport;
     /** Last sheet graphic. */
     private Graphic g;
     /** Last tile sheet extraction number. */
@@ -110,6 +152,12 @@ public final class TileExtractor
     private int cx;
     /** Draw tile found location y. */
     private int cy;
+    /** Progress max. */
+    private double progressMax;
+    /** Old progress. */
+    private long progressPercentOld;
+    /** Current progress. */
+    private long progress;
 
     /**
      * Create the extractor.
@@ -156,18 +204,51 @@ public final class TileExtractor
     }
 
     /**
-     * Start using specified output file.
+     * Add a listener.
+     * 
+     * @param listener The listener to add.
+     */
+    public void addListener(ProgressListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    /**
+     * Start using specified output file. Listeners are cleared once ended.
      * 
      * @throws LionEngineException If an error occurred when saving the image.
      */
     public void start() throws LionEngineException
     {
+        start(null);
+    }
+
+    /**
+     * Start using specified output file. Listeners are cleared once ended.
+     * 
+     * @param canceler The canceler reference.
+     * @throws LionEngineException If an error occurred when saving the image.
+     */
+    public void start(Canceler canceler) throws LionEngineException
+    {
+        this.canceler = canceler;
         sheet = Graphics.createImageBuffer(horizontal * tileWidth, vertical * tileHeight, Transparency.BITMASK);
         g = sheet.createGraphic();
 
         for (final Media rip : rips)
         {
-            proceed(rip);
+            final ImageInfo info = ImageInfo.get(rip);
+            final int h = info.getWidth() / tileWidth;
+            final int v = info.getHeight() / tileHeight;
+            progressMax += h * v;
+        }
+
+        for (final Media rip : rips)
+        {
+            if (!proceed(rip))
+            {
+                break;
+            }
         }
         g.dispose();
         saveExtraction();
@@ -176,15 +257,27 @@ public final class TileExtractor
         {
             image.dispose();
         }
+        listeners.clear();
+    }
+
+    /**
+     * Get percent progress.
+     * 
+     * @return Progress percent.
+     */
+    private int getProgressPercent()
+    {
+        return (int) Math.round(progress / progressMax * 100);
     }
 
     /**
      * Proceed the specified level rip.
      * 
      * @param ripMedia The level rip.
+     * @return <code>true</code> if continue, <code>false</code> if cancel.
      * @throws LionEngineException If an error occurred when proceeding the image.
      */
-    private void proceed(Media ripMedia) throws LionEngineException
+    private boolean proceed(Media ripMedia) throws LionEngineException
     {
         final SpriteTiled rip = Drawable.loadSpriteTiled(ripMedia, tileWidth, tileHeight);
         rip.load();
@@ -208,7 +301,30 @@ public final class TileExtractor
                         extract(rip, tileNumber);
                     }
                 }
+                updateProgress();
+                if (canceler != null && canceler.isCanceled())
+                {
+                    return false;
+                }
             }
+        }
+        return true;
+    }
+
+    /**
+     * Update progress and notify if needed.
+     */
+    private void updateProgress()
+    {
+        progress++;
+        final int percent = getProgressPercent();
+        if (percent != progressPercentOld)
+        {
+            for (final ProgressListener listener : listeners)
+            {
+                listener.notifyProgress(percent, sheet);
+            }
+            progressPercentOld = percent;
         }
     }
 
@@ -241,7 +357,12 @@ public final class TileExtractor
         {
             g.dispose();
             saveExtraction();
-            extractions.add(Graphics.getImageBuffer(sheet));
+            lastExport = Graphics.getImageBuffer(sheet);
+            for (final ProgressListener listener : listeners)
+            {
+                listener.notifyExtracted(lastExport);
+            }
+            extractions.add(lastExport);
             sheet = Graphics.createImageBuffer(horizontal * tileWidth, vertical * tileHeight, Transparency.BITMASK);
             g = sheet.createGraphic();
 
