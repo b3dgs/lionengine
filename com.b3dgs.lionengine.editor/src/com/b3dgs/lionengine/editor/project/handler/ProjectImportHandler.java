@@ -45,11 +45,18 @@ public class ProjectImportHandler
      */
     public static void importProject(Project project)
     {
+        final Factory factory = WorldViewModel.INSTANCE.getFactory();
+        factory.setClassLoader(project.getClassLoader());
+
+        final WorldViewPart worldViewPart = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        worldViewPart.setToolBarEnabled(true);
+        worldViewPart.setToolItemEnabled(SetShowCollisionsHandler.SHORT_ID, false);
+
         UtilityMedia.setResourcesDirectory(project.getResourcesPath().getPath());
 
-        final ProjectsPart part = UtilEclipse.getPart(ProjectsPart.ID, ProjectsPart.class);
+        final ProjectsPart projectsPart = UtilEclipse.getPart(ProjectsPart.ID, ProjectsPart.class);
         ProjectsModel.INSTANCE.setRoot(project.getPath());
-        part.setInput(project);
+        projectsPart.setInput(project);
     }
 
     /**
@@ -68,13 +75,6 @@ public class ProjectImportHandler
         if (project != null)
         {
             importProject(project);
-
-            final Factory factory = WorldViewModel.INSTANCE.getFactory();
-            factory.setClassLoader(project.getClassLoader());
-
-            final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-            part.setToolBarEnabled(true);
-            part.setToolItemEnabled(SetShowCollisionsHandler.SHORT_ID, false);
         }
     }
 }
