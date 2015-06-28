@@ -70,6 +70,6 @@ public final class ConfigMinimap
      */
     private ConfigMinimap()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

@@ -58,7 +58,7 @@ public final class ConfigAnimations
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static ConfigAnimations create(Configurer configurer)
+    public static ConfigAnimations create(Configurer configurer) throws LionEngineException
     {
         final Map<String, Animation> animations = new HashMap<>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(ANIMATION))
@@ -91,6 +91,7 @@ public final class ConfigAnimations
         final double speed = node.readDouble(ANIMATION_SPEED);
         final boolean reversed = node.readBoolean(ANIMATION_REVERSED);
         final boolean repeat = node.readBoolean(ANIMATION_REPEAT);
+
         return Anim.createAnimation(name, start, end, speed, reversed, repeat);
     }
 
@@ -99,16 +100,19 @@ public final class ConfigAnimations
      * 
      * @param animation The animation reference.
      * @return The animation node.
+     * @throws LionEngineException If error on writing.
      */
-    public static XmlNode createNode(Animation animation)
+    public static XmlNode createNode(Animation animation) throws LionEngineException
     {
         final XmlNode node = Stream.createXmlNode(ANIMATION);
+
         node.writeString(ANIMATION_NAME, animation.getName());
         node.writeInteger(ANIMATION_START, animation.getFirst());
         node.writeInteger(ANIMATION_END, animation.getLast());
         node.writeDouble(ANIMATION_SPEED, animation.getSpeed());
         node.writeBoolean(ANIMATION_REVERSED, animation.getReverse());
         node.writeBoolean(ANIMATION_REPEAT, animation.getRepeat());
+
         return node;
     }
 
@@ -120,16 +124,15 @@ public final class ConfigAnimations
      */
     private ConfigAnimations()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**
      * Load animations from configuration media.
      * 
      * @param animations The animations mapping.
-     * @throws LionEngineException If error when opening the media.
      */
-    private ConfigAnimations(Map<String, Animation> animations) throws LionEngineException
+    private ConfigAnimations(Map<String, Animation> animations)
     {
         this.animations = animations;
     }

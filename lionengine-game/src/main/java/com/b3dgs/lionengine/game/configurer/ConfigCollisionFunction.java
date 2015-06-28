@@ -76,8 +76,9 @@ public final class ConfigCollisionFunction
      * 
      * @param function The collision function to export.
      * @return The node reference.
+     * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(CollisionFunction function)
+    public static XmlNode export(CollisionFunction function) throws LionEngineException
     {
         final XmlNode node = Stream.createXmlNode(FUNCTION);
         if (function instanceof CollisionFunctionLinear)
@@ -95,6 +96,6 @@ public final class ConfigCollisionFunction
      */
     private ConfigCollisionFunction()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

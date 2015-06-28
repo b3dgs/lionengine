@@ -31,7 +31,7 @@ public final class ConfigProducible
 {
     /** Producible root node. */
     public static final String PRODUCIBLE = Configurer.PREFIX + "producible";
-    /** Production steps node name. */
+    /** Production steps attribute name. */
     public static final String STEPS = "steps";
 
     /**
@@ -47,6 +47,7 @@ public final class ConfigProducible
         final XmlNode node = configurer.getRoot();
         final ConfigSize size = ConfigSize.create(configurer);
         final int time = node.getChild(PRODUCIBLE).readInteger(STEPS);
+
         return new ConfigProducible(time, size.getWidth(), size.getHeight());
     }
 
@@ -62,7 +63,7 @@ public final class ConfigProducible
      */
     private ConfigProducible()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**

@@ -44,7 +44,7 @@ public final class ConfigCollisionRange
     /** Input max Y attribute. */
     public static final String MAX_Y = "maxY";
     /** Axis type error. */
-    private static final String ERROR_TYPE = "Unknown type: ";
+    private static final String ERROR_TYPE = "Unknown axis: ";
 
     /**
      * Create the collision range data from a node.
@@ -58,8 +58,13 @@ public final class ConfigCollisionRange
         final String axisName = node.readString(AXIS);
         try
         {
-            return new CollisionRange(Axis.valueOf(axisName), node.readInteger(MIN_X), node.readInteger(MAX_X),
-                    node.readInteger(MIN_Y), node.readInteger(MAX_Y));
+            final Axis axis = Axis.valueOf(axisName);
+            final int minX = node.readInteger(MIN_X);
+            final int maxX = node.readInteger(MAX_X);
+            final int minY = node.readInteger(MIN_Y);
+            final int maxY = node.readInteger(MAX_Y);
+
+            return new CollisionRange(axis, minX, maxX, minY, maxY);
         }
         catch (final IllegalArgumentException exception)
         {
@@ -72,15 +77,18 @@ public final class ConfigCollisionRange
      * 
      * @param range The collision range to export.
      * @return The node reference.
+     * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(CollisionRange range)
+    public static XmlNode export(CollisionRange range) throws LionEngineException
     {
         final XmlNode node = Stream.createXmlNode(RANGE);
+
         node.writeString(AXIS, range.getOutput().name());
         node.writeInteger(MIN_X, range.getMinX());
         node.writeInteger(MIN_Y, range.getMinY());
         node.writeInteger(MAX_X, range.getMaxX());
         node.writeInteger(MAX_Y, range.getMaxY());
+
         return node;
     }
 
@@ -89,6 +97,6 @@ public final class ConfigCollisionRange
      */
     private ConfigCollisionRange()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

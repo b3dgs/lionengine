@@ -36,6 +36,8 @@ import com.b3dgs.lionengine.core.Media;
 public final class LionEngineException
         extends RuntimeException
 {
+    /** Error private constructor. */
+    public static final String ERROR_PRIVATE_CONSTRUCTOR = "Private constructor !";
     /** The main ignored package. */
     private static final String IGNORE = "com.b3dgs.lionengine.";
     /** The number of ignored characters. */

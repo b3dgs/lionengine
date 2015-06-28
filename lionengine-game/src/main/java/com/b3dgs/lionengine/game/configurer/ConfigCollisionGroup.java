@@ -97,8 +97,9 @@ public final class ConfigCollisionGroup
      * 
      * @param group The collision group to export.
      * @return The node reference.
+     * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(CollisionGroup group)
+    public static XmlNode export(CollisionGroup group) throws LionEngineException
     {
         final XmlNode node = Stream.createXmlNode(COLLISION);
         node.writeString(GROUP, group.getName());
@@ -114,6 +115,6 @@ public final class ConfigCollisionGroup
      */
     private ConfigCollisionGroup()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

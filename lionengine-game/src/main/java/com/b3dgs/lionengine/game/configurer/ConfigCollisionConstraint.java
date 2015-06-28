@@ -63,14 +63,17 @@ public final class ConfigCollisionConstraint
      * 
      * @param constraint The collision constraint to export.
      * @return The node reference.
+     * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(CollisionConstraint constraint)
+    public static XmlNode export(CollisionConstraint constraint) throws LionEngineException
     {
         final XmlNode node = Stream.createXmlNode(CONSTRAINT);
+
         writeNodeIfExists(node, TOP, constraint.getTop());
         writeNodeIfExists(node, BOTTOM, constraint.getBottom());
         writeNodeIfExists(node, LEFT, constraint.getLeft());
         writeNodeIfExists(node, RIGHT, constraint.getRight());
+
         return node;
     }
 
@@ -80,10 +83,11 @@ public final class ConfigCollisionConstraint
      * @param node The node reference.
      * @param attribute The attribute name.
      * @param value The attribute value.
+     * @throws LionEngineException If error on writing.
      */
-    private static void writeNodeIfExists(XmlNode node, String attribute, String value)
+    private static void writeNodeIfExists(XmlNode node, String attribute, String value) throws LionEngineException
     {
-        if (value != null)
+        if (value != null && !value.isEmpty())
         {
             node.writeString(attribute, value);
         }
@@ -94,6 +98,6 @@ public final class ConfigCollisionConstraint
      */
     private ConfigCollisionConstraint()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

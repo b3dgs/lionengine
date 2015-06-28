@@ -85,6 +85,7 @@ public final class ConfigCollisions
         final int width = node.readInteger(COLLISION_WIDTH);
         final int height = node.readInteger(COLLISION_HEIGHT);
         final boolean mirror = node.readBoolean(COLLISION_MIRROR);
+
         return new Collision(name, offsetX, offsetY, width, height, mirror);
     }
 
@@ -97,12 +98,14 @@ public final class ConfigCollisions
     public static XmlNode createNode(Collision collision)
     {
         final XmlNode node = Stream.createXmlNode(COLLISION);
+
         node.writeString(COLLISION_NAME, collision.getName());
         node.writeInteger(COLLISION_OFFSETX, collision.getOffsetX());
         node.writeInteger(COLLISION_OFFSETY, collision.getOffsetY());
         node.writeInteger(COLLISION_WIDTH, collision.getWidth());
         node.writeInteger(COLLISION_HEIGHT, collision.getHeight());
         node.writeBoolean(COLLISION_MIRROR, collision.hasMirror());
+
         return node;
     }
 
@@ -114,16 +117,15 @@ public final class ConfigCollisions
      */
     private ConfigCollisions()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**
      * Load collisions from configuration media.
      * 
      * @param collisions The collisions mapping.
-     * @throws LionEngineException If error when opening the media.
      */
-    private ConfigCollisions(Map<String, Collision> collisions) throws LionEngineException
+    private ConfigCollisions(Map<String, Collision> collisions)
     {
         this.collisions = collisions;
     }

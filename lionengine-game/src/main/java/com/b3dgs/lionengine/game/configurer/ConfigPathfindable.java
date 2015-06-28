@@ -71,6 +71,7 @@ public final class ConfigPathfindable
     {
         final double cost = node.readDouble(COST);
         final boolean blocking = node.readBoolean(BLOCK);
+
         return new PathData(cost, blocking);
     }
 
@@ -79,6 +80,6 @@ public final class ConfigPathfindable
      */
     private ConfigPathfindable()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

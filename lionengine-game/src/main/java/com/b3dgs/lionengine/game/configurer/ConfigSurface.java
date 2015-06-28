@@ -44,8 +44,9 @@ public final class ConfigSurface
      */
     public static ConfigSurface create(Configurer configurer) throws LionEngineException
     {
-        return new ConfigSurface(configurer.getString(ConfigSurface.SURFACE_IMAGE, ConfigSurface.SURFACE),
-                ConfigSurface.getSurfaceIcon(configurer));
+        final String surface = configurer.getString(ConfigSurface.SURFACE_IMAGE, ConfigSurface.SURFACE);
+
+        return new ConfigSurface(surface, ConfigSurface.getSurfaceIcon(configurer));
     }
 
     /** The image descriptor. */
@@ -58,7 +59,7 @@ public final class ConfigSurface
      */
     private ConfigSurface()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**

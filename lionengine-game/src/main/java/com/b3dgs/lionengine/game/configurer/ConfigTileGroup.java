@@ -100,6 +100,6 @@ public final class ConfigTileGroup
      */
     private ConfigTileGroup()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

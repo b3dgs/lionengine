@@ -34,7 +34,7 @@ public final class ConfigLauncher
 {
     /** Launcher node name. */
     public static final String LAUNCHER = Configurer.PREFIX + "launcher";
-    /** Rate node name. */
+    /** Rate attribute name. */
     public static final String RATE = "rate";
 
     /**
@@ -52,6 +52,7 @@ public final class ConfigLauncher
             launchables.add(ConfigLaunchable.create(launchable));
         }
         final int rate = configurer.getInteger(ConfigLauncher.RATE, ConfigLauncher.LAUNCHER);
+
         return new ConfigLauncher(rate, launchables);
     }
 
@@ -65,7 +66,7 @@ public final class ConfigLauncher
      */
     private ConfigLauncher()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**

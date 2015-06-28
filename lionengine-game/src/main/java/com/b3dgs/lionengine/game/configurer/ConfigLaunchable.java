@@ -32,9 +32,9 @@ public final class ConfigLaunchable
 {
     /** Launchable node name. */
     public static final String LAUNCHABLE = Configurer.PREFIX + "launchable";
-    /** Media node name. */
+    /** Media attribute name. */
     public static final String MEDIA = "media";
-    /** Rate node name. */
+    /** Rate attribute name. */
     public static final String DELAY = "delay";
 
     /**
@@ -46,8 +46,10 @@ public final class ConfigLaunchable
      */
     public static ConfigLaunchable create(XmlNode node) throws LionEngineException
     {
-        return new ConfigLaunchable(node.readString(MEDIA), node.readInteger(ConfigLaunchable.DELAY),
-                ConfigForce.create(node));
+        final String media = node.readString(MEDIA);
+        final int delay = node.readInteger(ConfigLaunchable.DELAY);
+
+        return new ConfigLaunchable(media, delay, ConfigForce.create(node));
     }
 
     /** The media value. */
@@ -62,7 +64,7 @@ public final class ConfigLaunchable
      */
     private ConfigLaunchable()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**

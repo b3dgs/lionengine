@@ -62,8 +62,10 @@ public class Configurer
 
     /**
      * Save the configurer.
+     * 
+     * @throws LionEngineException If error on saving.
      */
-    public void save()
+    public void save() throws LionEngineException
     {
         Stream.saveXml(root, media);
     }

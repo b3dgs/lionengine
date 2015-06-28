@@ -42,8 +42,10 @@ public final class ConfigFrames
      */
     public static ConfigFrames create(Configurer configurer) throws LionEngineException
     {
-        return new ConfigFrames(configurer.getInteger(ConfigFrames.FRAMES_HORIZONTAL, ConfigFrames.FRAMES),
-                configurer.getInteger(ConfigFrames.FRAMES_VERTICAL, ConfigFrames.FRAMES));
+        final int horizontals = configurer.getInteger(ConfigFrames.FRAMES_HORIZONTAL, ConfigFrames.FRAMES);
+        final int verticals = configurer.getInteger(ConfigFrames.FRAMES_VERTICAL, ConfigFrames.FRAMES);
+
+        return new ConfigFrames(horizontals, verticals);
     }
 
     /** The number of horizontal frames. */
@@ -56,7 +58,7 @@ public final class ConfigFrames
      */
     private ConfigFrames()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**
