@@ -52,7 +52,7 @@ public final class UtilityImage
      * @param image The image buffer.
      * @return The buffer.
      */
-    static Image getBuffer(ImageBuffer image)
+    public static Image getBuffer(ImageBuffer image)
     {
         if (image instanceof ImageBufferSwt)
         {
