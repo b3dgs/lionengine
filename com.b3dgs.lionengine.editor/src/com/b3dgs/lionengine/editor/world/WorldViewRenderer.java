@@ -69,15 +69,15 @@ public class WorldViewRenderer
      */
     public static boolean groupEquals(String groupA, String groupB)
     {
-        if (groupA != null)
+        if (groupA != null && groupB != null)
         {
             return groupA.equals(groupB);
         }
-        else if (groupB != null)
+        else if (groupA == null && groupB == null)
         {
-            return groupB.equals(groupA);
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

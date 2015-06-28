@@ -176,7 +176,7 @@ public final class UtilityMedia
     {
         if (fromJar)
         {
-            try (InputStream stream = getInputStream(media))
+            try (final InputStream stream = getInputStream(media))
             {
                 return true;
             }

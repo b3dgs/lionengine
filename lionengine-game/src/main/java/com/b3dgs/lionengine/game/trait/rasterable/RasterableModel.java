@@ -117,7 +117,7 @@ public class RasterableModel
     {
         if (raster != null)
         {
-            final double x = viewer.getViewpointX(localizable.getX() - raster.getFrameWidth() / 2);
+            final double x = viewer.getViewpointX(localizable.getX() - Math.round(raster.getFrameWidth() / 2.0));
             final double y = viewer.getViewpointY(localizable.getY() + raster.getFrameHeight());
             raster.setLocation(x, y);
             raster.render(g);

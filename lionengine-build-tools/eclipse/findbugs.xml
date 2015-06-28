@@ -9,29 +9,18 @@
 		<Bug pattern="NM_METHOD_NAMING_CONVENTION" />
 	</Match>
 	<Match>
-		<Bug pattern="NM_FIELD_NAMING_CONVENTION" />
-	</Match>
-	<Match>
-		<Class name="com.b3dgs.lionengine.example.snippet.ModuleCore">
-			<Method name="strings" />
-		</Class>
-		<Bug pattern="ES_COMPARING_STRINGS_WITH_EQ" />
-	</Match>
-	<Match>
 		<Class name="com.b3dgs.lionengine.example.snippet.ModuleCore">
 			<Method name="check" />
 		</Class>
 		<Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
 	</Match>
 	<Match>
-		<Class name="com.b3dgs.lionengine.example.d_rts.f_warcraft.skill.SkillProduceBuilding">
-			<Method name="action" />
-		</Class>
-		<Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
-	</Match>
-	<Match>
 		<Package name="com.b3dgs.lionengine.test" />
 		<Bug pattern="ICAST_INTEGER_MULTIPLY_CAST_TO_LONG" />
+	</Match>
+	<Match>
+		<Package name="~com.b3dgs.lionengine.example.*" />
+		<Bug pattern="ICAST_IDIV_CAST_TO_DOUBLE" />
 	</Match>
 	<Match>
 		<Class name="com.b3dgs.lionengine.core.Verbose" />
@@ -48,6 +37,14 @@
 	<Match>
 		<Class name="com.b3dgs.lionengine.network.ClientSocket" />
 		<Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
+	</Match>
+	<Match>
+		<Class name="com.b3dgs.lionengine.core.awt.UtilityMedia" />
+		<Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
+	</Match>
+	<Match>
+		<Class name="com.b3dgs.lionengine.core.swt.UtilityMedia" />
+		<Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
 	</Match>
 	<Match>
 		<Class name="com.b3dgs.lionengine.game.map.MapTileGame" />

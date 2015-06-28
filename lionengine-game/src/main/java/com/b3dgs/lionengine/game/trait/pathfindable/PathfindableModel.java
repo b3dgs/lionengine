@@ -190,9 +190,9 @@ public class PathfindableModel
         {
             for (int ty = dty; ty < dty + th; ty++)
             {
-                if (mapPath.getObjectsId(tx, ty).equals(id))
+                if (mapPath.getObjectsId(tx, ty).contains(id))
                 {
-                    mapPath.addObjectId(tx, ty, Integer.valueOf(0));
+                    mapPath.removeObjectId(tx, ty, id);
                 }
             }
         }

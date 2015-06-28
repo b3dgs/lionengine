@@ -146,19 +146,23 @@ public final class FolderModificationWatcher
          */
         private void createWatchers(File current)
         {
-            for (final File file : current.listFiles())
+            final File[] files = current.listFiles();
+            if (files != null)
             {
-                if (file.isDirectory())
+                for (final File file : files)
                 {
-                    try
+                    if (file.isDirectory())
                     {
-                        tasks.add(new Task(root, file.toPath(), tree, creator));
+                        try
+                        {
+                            tasks.add(new Task(root, file.toPath(), tree, creator));
+                        }
+                        catch (final IOException exception)
+                        {
+                            continue;
+                        }
+                        createWatchers(file);
                     }
-                    catch (final IOException exception)
-                    {
-                        continue;
-                    }
-                    createWatchers(file);
                 }
             }
         }

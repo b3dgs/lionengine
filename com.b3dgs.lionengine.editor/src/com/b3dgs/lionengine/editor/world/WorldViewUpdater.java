@@ -489,7 +489,7 @@ public class WorldViewUpdater
     {
         final Object copy = PropertiesModel.INSTANCE.getCopyData();
         final String group = PropertiesModel.INSTANCE.getCopyText();
-        if (copy != null && selectedTile != null && ConfigTileGroup.GROUP == copy)
+        if (copy != null && selectedTile != null && ConfigTileGroup.GROUP.equals(copy))
         {
             PropertiesTile.changeTileGroup(map, selectedTile.getGroup(), group, selectedTile);
         }

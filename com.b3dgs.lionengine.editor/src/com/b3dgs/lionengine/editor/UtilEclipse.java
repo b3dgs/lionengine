@@ -229,11 +229,15 @@ public final class UtilEclipse
         places.add(file);
         if (file.isDirectory())
         {
-            for (final File current : file.listFiles())
+            final File[] files = file.listFiles();
+            if (files != null)
             {
-                if (isJar(current))
+                for (final File current : files)
                 {
-                    places.add(current);
+                    if (isJar(current))
+                    {
+                        places.add(current);
+                    }
                 }
             }
         }
