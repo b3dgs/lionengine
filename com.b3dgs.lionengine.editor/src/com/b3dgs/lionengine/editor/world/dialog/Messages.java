@@ -62,6 +62,8 @@ public final class Messages
     public static String SheetsImportDialog_GenerateSheetsConfig;
     /** Import sheets finished. */
     public static String SheetsImportDialog_Finished;
+    /** Import sheets progress. */
+    public static String SheetsImportDialog_Progress;
 
     /** Import map dialog title. */
     public static String ImportMapDialog_Title;

@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -36,8 +37,10 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.EngineCore;
+import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.core.swt.UtilityImage;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.Tools;
@@ -60,7 +63,7 @@ public class SheetsImportDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
     /** Error on config file generation. */
     private static final String ERROR_GENERATE = "Unable to generate sheets config file !";
 
@@ -167,6 +170,38 @@ public class SheetsImportDialog
     }
 
     /**
+     * Generate config file.
+     * 
+     * @param tw The tile width.
+     * @param th The tile height.
+     * @param extractFolder The extraction folder.
+     */
+    void generateConfig(int tw, int th, Media extractFolder)
+    {
+        try
+        {
+            final XmlNode root = Stream.createXmlNode(MapTile.NODE_TILE_SHEETS);
+            root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
+            final XmlNode tileSize = Stream.createXmlNode(MapTile.NODE_TILE_SIZE);
+            tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, Integer.toString(tw));
+            tileSize.writeString(MapTile.ATTRIBUTE_TILE_HEIGHT, Integer.toString(th));
+            root.add(tileSize);
+            for (final TreeItem item : levelRips.getItems())
+            {
+                final XmlNode node = Stream.createXmlNode(MapTile.NODE_TILE_SHEET);
+                node.setText(((Media) item.getData()).getFile().getName());
+                root.add(node);
+            }
+            final File file = new File(extractFolder.getFile(), MapTile.DEFAULT_SHEETS_FILE);
+            Stream.saveXml(root, Project.getActive().getResourceMedia(file));
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(getClass(), "onFinish", exception, ERROR_GENERATE);
+        }
+    }
+
+    /**
      * Create the add level rip button.
      * 
      * @param parent The composite parent.
@@ -263,38 +298,6 @@ public class SheetsImportDialog
                 .addVerifyListener(UtilSwt.createVerify(verticalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
     }
 
-    /**
-     * Generate config file.
-     * 
-     * @param tw The tile width.
-     * @param th The tile height.
-     * @param extractFolder The extraction folder.
-     */
-    private void generateConfig(int tw, int th, Media extractFolder)
-    {
-        try
-        {
-            final XmlNode root = Stream.createXmlNode(MapTile.NODE_TILE_SHEETS);
-            root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
-            final XmlNode tileSize = Stream.createXmlNode(MapTile.NODE_TILE_SIZE);
-            tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, Integer.toString(tw));
-            tileSize.writeString(MapTile.ATTRIBUTE_TILE_HEIGHT, Integer.toString(th));
-            root.add(tileSize);
-            for (final TreeItem item : levelRips.getItems())
-            {
-                final XmlNode node = Stream.createXmlNode(MapTile.NODE_TILE_SHEET);
-                node.setText(((Media) item.getData()).getFile().getName());
-                root.add(node);
-            }
-            final File file = new File(extractFolder.getFile(), MapTile.DEFAULT_SHEETS_FILE);
-            Stream.saveXml(root, Project.getActive().getResourceMedia(file));
-        }
-        catch (final LionEngineException exception)
-        {
-            Verbose.exception(getClass(), "onFinish", exception, ERROR_GENERATE);
-        }
-    }
-
     /*
      * AbstractDialog
      */
@@ -338,16 +341,131 @@ public class SheetsImportDialog
         final int th = Integer.parseInt(heightText.getText());
         final int h = Integer.parseInt(horizontalText.getText());
         final int v = Integer.parseInt(verticalText.getText());
-        final TileExtractor tileExtractor = new TileExtractor(extractFolder, tw, th, h, v);
+
+        final TileExtractor extractor = new TileExtractor(extractFolder, tw, th, h, v);
         for (final TreeItem item : levelRips.getItems())
         {
-            tileExtractor.addRip((Media) item.getData());
+            extractor.addRip((Media) item.getData());
         }
-        tileExtractor.start();
-        if (generate.getSelection())
+
+        final SheetsImportProgressDialog progress = new SheetsImportProgressDialog(dialog, tw * h, th * v);
+        extractor.addListener(progress);
+        progress.open();
+        extractor.start(progress);
+        progress.finish();
+
+        if (!progress.isCanceled())
         {
-            generateConfig(tw, th, extractFolder);
+            if (generate.getSelection())
+            {
+                generateConfig(tw, th, extractFolder);
+            }
+            UtilEclipse.showInfo(Messages.SheetsImportDialog_Title, Messages.SheetsImportDialog_Finished);
         }
-        UtilEclipse.showInfo(Messages.SheetsImportDialog_Title, Messages.SheetsImportDialog_Finished);
+    }
+
+    /**
+     * Progress dialog.
+     */
+    private static final class SheetsImportProgressDialog
+            extends AbstractDialog
+            implements TileExtractor.ProgressListener, TileExtractor.Canceler
+    {
+        /** Image width. */
+        private final int width;
+        /** Image height. */
+        private final int height;
+        /** Progress bar. */
+        private ProgressBar progress;
+        /** Current sheets area. */
+        private Label image;
+        /** Canceled flag. */
+        private boolean canceled;
+
+        /**
+         * Create the dialog.
+         * 
+         * @param parent The parent reference.
+         * @param width Image width.
+         * @param height Image height.
+         */
+        public SheetsImportProgressDialog(Shell parent, int width, int height)
+        {
+            super(parent, Messages.SheetsImportDialog_Title, Messages.SheetsImportDialog_HeaderTitle,
+                    Messages.SheetsImportDialog_Progress, ICON);
+            this.width = width;
+            this.height = height;
+            createDialog();
+            finish.dispose();
+            dialog.setMinimumSize(128, 128);
+        }
+
+        /**
+         * Terminate dialog manually.
+         */
+        public void finish()
+        {
+            onFinish();
+            dialog.dispose();
+        }
+
+        @Override
+        protected void createContent(Composite content)
+        {
+            progress = new ProgressBar(content, SWT.HORIZONTAL);
+            progress.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+            progress.setMinimum(0);
+            progress.setMaximum(100);
+
+            final Label separatorHeader = new Label(content, SWT.SEPARATOR | SWT.HORIZONTAL);
+            separatorHeader.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+            image = new Label(dialog, SWT.NONE);
+            image.setLayoutData(new GridData(width, height));
+        }
+
+        @Override
+        public void open()
+        {
+            dialog.pack(true);
+            UtilSwt.center(dialog);
+            dialog.open();
+        }
+
+        @Override
+        protected void onFinish()
+        {
+            // Nothing to do
+        }
+
+        @Override
+        protected void onCanceled()
+        {
+            canceled = true;
+        }
+
+        @Override
+        public void notifyProgress(int percent, ImageBuffer current)
+        {
+            if (!progress.isDisposed())
+            {
+                progress.setSelection(percent);
+                image.setImage(UtilityImage.getBuffer(current));
+                dialog.update();
+                dialog.getDisplay().readAndDispatch();
+            }
+        }
+
+        @Override
+        public void notifyExtracted(ImageBuffer sheet)
+        {
+            // Nothing to do
+        }
+
+        @Override
+        public boolean isCanceled()
+        {
+            return canceled;
+        }
     }
 }
