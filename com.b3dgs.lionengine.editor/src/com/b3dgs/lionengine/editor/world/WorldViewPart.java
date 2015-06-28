@@ -259,6 +259,13 @@ public class WorldViewPart
     public void notifyTileSelected(Tile tile)
     {
         final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
-        part.setInput(part.getTree(), tile);
+        if (tile != null)
+        {
+            part.setInput(part.getTree(), tile);
+        }
+        else
+        {
+            part.clear();
+        }
     }
 }

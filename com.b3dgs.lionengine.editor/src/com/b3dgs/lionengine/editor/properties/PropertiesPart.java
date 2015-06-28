@@ -151,6 +151,18 @@ public class PropertiesPart
     }
 
     /**
+     * Clear properties.
+     */
+    public void clear()
+    {
+        for (final TreeItem item : properties.getItems())
+        {
+            clear(item);
+        }
+        properties.setData(null);
+    }
+
+    /**
      * Clear all sub items.
      * 
      * @param item The item root.

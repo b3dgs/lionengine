@@ -352,17 +352,14 @@ public class WorldViewUpdater
         {
             final Point point = Tools.getMouseTile(map, camera, mx, my);
             selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
-            if (selectedTile != null)
-            {
-                for (final TileSelectionListener listener : tileSelectionListeners)
-                {
-                    listener.notifyTileSelected(selectedTile);
-                }
-            }
         }
         else
         {
             selectedTile = null;
+        }
+        for (final TileSelectionListener listener : tileSelectionListeners)
+        {
+            listener.notifyTileSelected(selectedTile);
         }
     }
 
