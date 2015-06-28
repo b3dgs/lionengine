@@ -71,6 +71,8 @@ public abstract class AbstractDialog
     private final Image headerIcon;
     /** Finish button. */
     protected Button finish;
+    /** Cancel button. */
+    protected Button cancel;
     /** Tips label. */
     protected CLabel tipsLabel;
 
@@ -111,6 +113,14 @@ public abstract class AbstractDialog
      * Called when click on finish button.
      */
     protected abstract void onFinish();
+
+    /**
+     * Called when canceled. Does nothing by default.
+     */
+    protected void onCanceled()
+    {
+        // Nothing by default
+    }
 
     /**
      * Open the dialog.
@@ -231,13 +241,13 @@ public abstract class AbstractDialog
             }
         });
 
-        final Button cancel = UtilSwt.createButton(buttonArea, Messages.AbstractDialog_Cancel,
-                AbstractDialog.ICON_CANCEL);
+        cancel = UtilSwt.createButton(buttonArea, Messages.AbstractDialog_Cancel, AbstractDialog.ICON_CANCEL);
         cancel.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
+                onCanceled();
                 dialog.dispose();
             }
         });
