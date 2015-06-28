@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.editor.world.dialog;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -124,8 +126,7 @@ public class SheetsImportDialog
 
             if (!finish.isEnabled())
             {
-                finish.setEnabled(true);
-                tipsLabel.setVisible(false);
+                checkFinish();
             }
 
             if (folderText.getData() == null)
@@ -150,8 +151,7 @@ public class SheetsImportDialog
         }
         if (levelRips.getItems().length == 0)
         {
-            finish.setEnabled(false);
-            tipsLabel.setVisible(true);
+            checkFinish();
         }
     }
 
@@ -199,6 +199,20 @@ public class SheetsImportDialog
         {
             Verbose.exception(getClass(), "onFinish", exception, ERROR_GENERATE);
         }
+    }
+
+    /**
+     * Check for finish button enabling.
+     */
+    void checkFinish()
+    {
+        final boolean hasRips = levelRips.getItems().length > 0;
+        final boolean hasSize = !widthText.getText().isEmpty() && !heightText.getText().isEmpty();
+        final boolean hasNumbers = !horizontalText.getText().isEmpty() && !verticalText.getText().isEmpty();
+        final boolean finished = hasRips && !folderText.getText().isEmpty() && hasSize && hasNumbers;
+
+        finish.setEnabled(finished);
+        tipsLabel.setVisible(!finished);
     }
 
     /**
@@ -257,6 +271,7 @@ public class SheetsImportDialog
 
         folderText = new Text(area, SWT.BORDER);
         folderText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        textCheckFinish(folderText);
 
         final Button browse = UtilSwt.createButton(area,
                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, AbstractDialog.ICON_BROWSE);
@@ -285,17 +300,38 @@ public class SheetsImportDialog
 
         widthText = UtilSwt.createText(Messages.SheetsImportDialog_TileWidth, config);
         widthText.addVerifyListener(UtilSwt.createVerify(widthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        textCheckFinish(widthText);
 
         heightText = UtilSwt.createText(Messages.SheetsImportDialog_TileHeight, config);
         heightText.addVerifyListener(UtilSwt.createVerify(heightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        textCheckFinish(heightText);
 
         horizontalText = UtilSwt.createText(Messages.SheetsImportDialog_HorizontalTiles, config);
         horizontalText.addVerifyListener(UtilSwt.createVerify(horizontalText,
                 InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        textCheckFinish(horizontalText);
 
         verticalText = UtilSwt.createText(Messages.SheetsImportDialog_VerticalTiles, config);
         verticalText
                 .addVerifyListener(UtilSwt.createVerify(verticalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        textCheckFinish(verticalText);
+    }
+
+    /**
+     * Check if finish button can be enabled on text edition.
+     * 
+     * @param text The text reference.
+     */
+    private void textCheckFinish(Text text)
+    {
+        text.addModifyListener(new ModifyListener()
+        {
+            @Override
+            public void modifyText(ModifyEvent event)
+            {
+                checkFinish();
+            }
+        });
     }
 
     /*
