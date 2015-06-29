@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -49,16 +52,56 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  */
 public final class LevelRipConverter
 {
+    /**
+     * Listen to import progress.
+     */
+    public interface ProgressListener
+    {
+        /**
+         * Called once progress detected.
+         * 
+         * @param percent Progress percent.
+         * @param progressTileX Current progress on horizontal tile.
+         * @param progressTileY Current progress on vertical tile.
+         */
+        void notifyProgress(int percent, int progressTileX, int progressTileY);
+    }
+
+    /**
+     * Cancel controller.
+     */
+    public interface Canceler
+    {
+        /**
+         * Check if operation is canceled.
+         * 
+         * @return <code>true</code> if canceled, <code>false</code> else.
+         */
+        boolean isCanceled();
+    }
+
+    /** Progress listener. */
+    private final Collection<ProgressListener> listeners = new HashSet<>();
     /** Map reference. */
     private final MapTile map;
     /** Level rip image. */
     private final Sprite imageMap;
     /** Level rip width in tile. */
-    private final int imageMapTilesInX;
+    private int imageMapTilesInX;
     /** Level rip height in tile. */
-    private final int imageMapTilesInY;
+    private int imageMapTilesInY;
     /** Number of errors. */
     private int errors;
+    /** Progress on horizontal tile. */
+    private int progressTileX;
+    /** Progress on vertical tile. */
+    private int progressTileY;
+    /** Progress max. */
+    private double progressMax;
+    /** Old progress. */
+    private long progressPercentOld;
+    /** Current progress. */
+    private long progress;
 
     /**
      * Must be called to start conversion.
@@ -71,17 +114,20 @@ public final class LevelRipConverter
     public LevelRipConverter(Media levelrip, Media sheetsConfig, MapTile map)
     {
         this.map = map;
+        map.loadSheets(sheetsConfig);
 
         imageMap = Drawable.loadSprite(levelrip);
-        imageMap.load();
-        imageMap.prepare();
-
-        map.loadSheets(sheetsConfig);
-        imageMapTilesInX = imageMap.getWidth() / map.getTileWidth();
-        imageMapTilesInY = imageMap.getHeight() / map.getTileHeight();
-        map.create(imageMapTilesInX, imageMapTilesInY);
-
         errors = 0;
+    }
+
+    /**
+     * Add a listener.
+     * 
+     * @param listener The listener to add.
+     */
+    public void addListener(ProgressListener listener)
+    {
+        listeners.add(listener);
     }
 
     /**
@@ -89,27 +135,53 @@ public final class LevelRipConverter
      */
     public void start()
     {
+        start(null);
+    }
+
+    /**
+     * Run the converter.
+     * 
+     * @param canceler The canceler reference.
+     */
+    public void start(Canceler canceler)
+    {
+        imageMap.load();
+        imageMap.prepare();
+
+        imageMapTilesInX = imageMap.getWidth() / map.getTileWidth();
+        imageMapTilesInY = imageMap.getHeight() / map.getTileHeight();
+        map.create(imageMapTilesInX, imageMapTilesInY);
+
+        progressMax = imageMapTilesInX * imageMapTilesInY;
+        progress = 0L;
+        progressPercentOld = -1L;
+
         // Check all image tiles
         final ImageBuffer tileRef = imageMap.getSurface();
-        for (int imageMapCurrentTileY = 0; imageMapCurrentTileY < imageMapTilesInY; imageMapCurrentTileY++)
+        for (progressTileY = 0; progressTileY < imageMapTilesInY; progressTileY++)
         {
-            for (int imageMapCurrentTileX = 0; imageMapCurrentTileX < imageMapTilesInX; imageMapCurrentTileX++)
+            for (progressTileX = 0; progressTileX < imageMapTilesInX; progressTileX++)
             {
-                final int imageColor = tileRef.getRgb(imageMapCurrentTileX * map.getTileWidth(), imageMapCurrentTileY
-                        * map.getTileHeight());
+                final int imageColor = tileRef.getRgb(progressTileX * map.getTileWidth(),
+                        progressTileY * map.getTileHeight());
                 // Skip blank tile of image map
                 if (TileExtractor.IGNORED_COLOR != imageColor)
                 {
                     // Search if tile is on sheet and get it
-                    final Tile tile = searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
+                    final Tile tile = searchForTile(tileRef, progressTileX, progressTileY);
                     if (tile != null)
                     {
-                        map.setTile(imageMapCurrentTileX, map.getInTileHeight() - 1 - imageMapCurrentTileY, tile);
+                        map.setTile(progressTileX, map.getInTileHeight() - 1 - progressTileY, tile);
                     }
                     else
                     {
                         errors++;
                     }
+                }
+                updateProgress();
+                if (canceler != null && canceler.isCanceled())
+                {
+                    return;
                 }
             }
         }
@@ -174,5 +246,32 @@ public final class LevelRipConverter
 
         // No tile found
         return null;
+    }
+
+    /**
+     * Update progress and notify if needed.
+     */
+    private void updateProgress()
+    {
+        progress++;
+        final int percent = getProgressPercent();
+        if (percent != progressPercentOld)
+        {
+            for (final ProgressListener listener : listeners)
+            {
+                listener.notifyProgress(percent, progressTileX, progressTileY);
+            }
+            progressPercentOld = percent;
+        }
+    }
+
+    /**
+     * Get percent progress.
+     * 
+     * @return Progress percent.
+     */
+    private int getProgressPercent()
+    {
+        return (int) Math.round(progress / progressMax * 100);
     }
 }

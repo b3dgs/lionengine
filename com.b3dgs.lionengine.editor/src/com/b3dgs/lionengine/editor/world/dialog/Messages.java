@@ -89,6 +89,8 @@ public final class Messages
     public static String ImportMapDialog_ErrorSheets;
     /** Error groups. */
     public static String ImportMapDialog_ErrorGroups;
+    /** Import map progress. */
+    public static String ImportMapDialog_Progress;
 
     /** Import map collision dialog title. */
     public static String ImportMapCollisionDialog_Title;

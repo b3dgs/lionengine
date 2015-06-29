@@ -38,6 +38,8 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
@@ -49,7 +51,7 @@ public class MapImportDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    public static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
 
     /** Level rip location. */
     Text levelRipLocationText;
@@ -63,8 +65,6 @@ public class MapImportDialog
     Media sheetsConfig;
     /** Groups config file. */
     Media groupsConfig;
-    /** Found. */
-    private boolean found;
 
     /**
      * Create an import map dialog.
@@ -79,46 +79,6 @@ public class MapImportDialog
 
         finish.setEnabled(false);
         finish.forceFocus();
-    }
-
-    /**
-     * Get the level rip location.
-     * 
-     * @return The level rip location.
-     */
-    public Media getLevelRipLocation()
-    {
-        return levelRip;
-    }
-
-    /**
-     * Get the sheets config location.
-     * 
-     * @return The sheets config location.
-     */
-    public Media getSheetsConfigLocation()
-    {
-        return sheetsConfig;
-    }
-
-    /**
-     * Get the groups config location.
-     * 
-     * @return The group config location.
-     */
-    public Media getGroupsConfigLocation()
-    {
-        return groupsConfig;
-    }
-
-    /**
-     * Check if import is found.
-     * 
-     * @return <code>true</code> if found, <code>false</code> else.
-     */
-    public boolean isFound()
-    {
-        return found;
     }
 
     /**
@@ -396,6 +356,15 @@ public class MapImportDialog
     @Override
     protected void onFinish()
     {
-        found = levelRip != null && sheetsConfig != null;
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final LevelRipConverter levelRipConverter = new LevelRipConverter(levelRip, sheetsConfig, map);
+        final MapImportProgressDialog progress = new MapImportProgressDialog(dialog, levelRip);
+
+        levelRipConverter.addListener(progress);
+        progress.open();
+        levelRipConverter.start(progress);
+        progress.finish();
+
+        map.loadGroups(groupsConfig);
     }
 }

@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
@@ -46,26 +45,6 @@ public class MapImportHandler
     private static final String EXTENSION_CLASS = "class";
     /** Extension point attribute map feature config dialog. */
     private static final String EXTENSION_DIALOG = "dialog";
-    /** Import level verbose. */
-    private static final String VERBOSE_IMPORT_LEVEL = "Importing map from level rip: ";
-    /** Using tile sheet verbose. */
-    private static final String VERBOSE_USING_TILESHEETS = " using the following sheets: ";
-
-    /**
-     * Import map from its level rip and tile sheets.
-     * 
-     * @param levelrip The level rip.
-     * @param sheetsConfig The tile sheets directory.
-     * @param groupsConfig The groups configuration.
-     */
-    private static void importMap(Media levelrip, Media sheetsConfig, Media groupsConfig)
-    {
-        Verbose.info(MapImportHandler.VERBOSE_IMPORT_LEVEL, levelrip.getPath(),
-                MapImportHandler.VERBOSE_USING_TILESHEETS, sheetsConfig.getPath());
-
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
-        map.create(levelrip, sheetsConfig, groupsConfig);
-    }
 
     /**
      * Execute the handler.
@@ -78,18 +57,10 @@ public class MapImportHandler
         final MapImportDialog importMapDialog = new MapImportDialog(shell);
         importMapDialog.open();
 
-        if (importMapDialog.isFound())
-        {
-            final Media levelrip = importMapDialog.getLevelRipLocation();
-            final Media sheetsConfig = importMapDialog.getSheetsConfigLocation();
-            final Media groupsConfig = importMapDialog.getGroupsConfigLocation();
-            importMap(levelrip, sheetsConfig, groupsConfig);
+        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        part.update();
 
-            final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-            part.update();
-
-            checkMapFeaturesExtensionPoint(shell);
-        }
+        checkMapFeaturesExtensionPoint(shell);
     }
 
     /**
