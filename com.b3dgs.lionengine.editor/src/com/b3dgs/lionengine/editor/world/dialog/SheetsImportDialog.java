@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -39,10 +38,8 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.core.swt.UtilityImage;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.Tools;
@@ -397,111 +394,6 @@ public class SheetsImportDialog
                 generateConfig(tw, th, extractFolder);
             }
             UtilEclipse.showInfo(Messages.SheetsImportDialog_Title, Messages.SheetsImportDialog_Finished);
-        }
-    }
-
-    /**
-     * Progress dialog.
-     */
-    private static final class SheetsImportProgressDialog
-            extends AbstractDialog
-            implements TileExtractor.ProgressListener, TileExtractor.Canceler
-    {
-        /** Image width. */
-        private final int width;
-        /** Image height. */
-        private final int height;
-        /** Progress bar. */
-        private ProgressBar progress;
-        /** Current sheets area. */
-        private Label image;
-        /** Canceled flag. */
-        private boolean canceled;
-
-        /**
-         * Create the dialog.
-         * 
-         * @param parent The parent reference.
-         * @param width Image width.
-         * @param height Image height.
-         */
-        public SheetsImportProgressDialog(Shell parent, int width, int height)
-        {
-            super(parent, Messages.SheetsImportDialog_Title, Messages.SheetsImportDialog_HeaderTitle,
-                    Messages.SheetsImportDialog_Progress, ICON);
-            this.width = width;
-            this.height = height;
-            createDialog();
-            finish.dispose();
-            dialog.setMinimumSize(128, 128);
-        }
-
-        /**
-         * Terminate dialog manually.
-         */
-        public void finish()
-        {
-            onFinish();
-            dialog.dispose();
-        }
-
-        @Override
-        protected void createContent(Composite content)
-        {
-            progress = new ProgressBar(content, SWT.HORIZONTAL);
-            progress.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-            progress.setMinimum(0);
-            progress.setMaximum(100);
-
-            final Label separatorHeader = new Label(content, SWT.SEPARATOR | SWT.HORIZONTAL);
-            separatorHeader.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-            image = new Label(dialog, SWT.NONE);
-            image.setLayoutData(new GridData(width, height));
-        }
-
-        @Override
-        public void open()
-        {
-            dialog.pack(true);
-            UtilSwt.center(dialog);
-            dialog.open();
-        }
-
-        @Override
-        protected void onFinish()
-        {
-            // Nothing to do
-        }
-
-        @Override
-        protected void onCanceled()
-        {
-            canceled = true;
-        }
-
-        @Override
-        public void notifyProgress(int percent, ImageBuffer current)
-        {
-            if (!progress.isDisposed())
-            {
-                progress.setSelection(percent);
-                image.setImage(UtilityImage.getBuffer(current));
-                dialog.update();
-                dialog.getDisplay().readAndDispatch();
-            }
-        }
-
-        @Override
-        public void notifyExtracted(ImageBuffer sheet)
-        {
-            // Nothing to do
-        }
-
-        @Override
-        public boolean isCanceled()
-        {
-            return canceled;
         }
     }
 }
