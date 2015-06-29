@@ -48,7 +48,7 @@ public final class ToolsSwt
      * 
      * @return Hidden cursor.
      */
-    static Cursor createHiddenCursor()
+    public static Cursor createHiddenCursor()
     {
         final Color white = ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE);
         final Color black = ScreenSwt.display.getSystemColor(SWT.COLOR_BLACK);
@@ -70,7 +70,7 @@ public final class ToolsSwt
      * @param transparency The image transparency.
      * @return The image.
      */
-    static Image createImage(int width, int height, int transparency)
+    public static Image createImage(int width, int height, int transparency)
     {
         final Image image = new Image(ScreenSwt.display, width, height);
         if (transparency != SWT.TRANSPARENCY_NONE)
@@ -88,7 +88,7 @@ public final class ToolsSwt
      * @param inputStream The image input stream.
      * @return The created image from file.
      */
-    static ImageData getImageData(InputStream inputStream)
+    public static ImageData getImageData(InputStream inputStream)
     {
         return new ImageData(inputStream);
     }
@@ -99,7 +99,7 @@ public final class ToolsSwt
      * @param inputStream The image input stream.
      * @return The created image from file.
      */
-    static Image getImage(InputStream inputStream)
+    public static Image getImage(InputStream inputStream)
     {
         return new Image(ScreenSwt.display, inputStream);
     }
@@ -110,7 +110,7 @@ public final class ToolsSwt
      * @param image The image.
      * @return The created image from file.
      */
-    static Image getImage(Image image)
+    public static Image getImage(Image image)
     {
         return new Image(ScreenSwt.display, image, SWT.IMAGE_COPY);
     }
@@ -122,7 +122,7 @@ public final class ToolsSwt
      * @param maskColor The color mask.
      * @return The masked image.
      */
-    static Image applyMask(Image image, int maskColor)
+    public static Image applyMask(Image image, int maskColor)
     {
         final ImageData sourceData = image.getImageData();
         final int width = sourceData.width;
@@ -143,7 +143,7 @@ public final class ToolsSwt
      * @param v The number of vertical divisions (> 0).
      * @return The splited images array (can not be empty).
      */
-    static Image[] splitImage(Image image, int h, int v)
+    public static Image[] splitImage(Image image, int h, int v)
     {
         final int total = h * v;
         final ImageData data = image.getImageData();
@@ -173,7 +173,7 @@ public final class ToolsSwt
      * @param angle The angle to apply in degree (0-359)
      * @return The new image with angle applied.
      */
-    static Image rotate(Image image, int angle)
+    public static Image rotate(Image image, int angle)
     {
         final ImageData sourceData = image.getImageData();
         final int width = sourceData.width;
@@ -204,7 +204,7 @@ public final class ToolsSwt
      * @param height The new height.
      * @return The new image with new size.
      */
-    static Image resize(Image image, int width, int height)
+    public static Image resize(Image image, int width, int height)
     {
         return new Image(ScreenSwt.display, image.getImageData().scaledTo(width, height));
     }
@@ -215,7 +215,7 @@ public final class ToolsSwt
      * @param image The input image.
      * @return The flipped image as a new instance.
      */
-    static Image flipHorizontal(Image image)
+    public static Image flipHorizontal(Image image)
     {
         return flip(image, false);
     }
@@ -226,7 +226,7 @@ public final class ToolsSwt
      * @param image The input image.
      * @return The flipped image as a new instance.
      */
-    static Image flipVertical(Image image)
+    public static Image flipVertical(Image image)
     {
         return flip(image, true);
     }
@@ -237,7 +237,7 @@ public final class ToolsSwt
      * @param image The input image.
      * @return The filtered image as a new instance.
      */
-    static Image applyBilinearFilter(Image image)
+    public static Image applyBilinearFilter(Image image)
     {
         final ImageData data = image.getImageData();
         final int width = data.width, height = data.height;
@@ -268,7 +268,7 @@ public final class ToolsSwt
      * @param image The image to save.
      * @param outputStream The output stream.
      */
-    static void saveImage(Image image, OutputStream outputStream)
+    public static void saveImage(Image image, OutputStream outputStream)
     {
         final ImageLoader imageLoader = new ImageLoader();
         imageLoader.data = new ImageData[]
@@ -291,7 +291,7 @@ public final class ToolsSwt
      * @param refSize The reference size.
      * @return The rastered image.
      */
-    static Image getRasterBuffer(Image image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
+    public static Image getRasterBuffer(Image image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
         final ImageData data = image.getImageData();
         final PaletteData palette = data.palette;
@@ -358,7 +358,7 @@ public final class ToolsSwt
      * @param vertical <code>true</code> if vertical, <code>false</code> if horizontal.
      * @return The flipped image data.
      */
-    private static Image flip(Image image, boolean vertical)
+    public static Image flip(Image image, boolean vertical)
     {
         final ImageData data = image.getImageData();
         final ImageData flip = image.getImageData();

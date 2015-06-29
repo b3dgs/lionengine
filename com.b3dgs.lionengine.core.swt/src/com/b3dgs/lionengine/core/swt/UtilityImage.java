@@ -67,7 +67,7 @@ public final class UtilityImage
      * @param transparency The transparency type.
      * @return The transparency value.
      */
-    static int getTransparency(Transparency transparency)
+    public static int getTransparency(Transparency transparency)
     {
         switch (transparency)
         {
@@ -90,7 +90,7 @@ public final class UtilityImage
      * @param transparency The image transparency.
      * @return The image.
      */
-    static ImageBuffer createImage(int width, int height, Transparency transparency)
+    public static ImageBuffer createImage(int width, int height, Transparency transparency)
     {
         final ImageBufferSwt buffer = new ImageBufferSwt(ToolsSwt.createImage(width, height,
                 getTransparency(transparency)));
@@ -110,7 +110,7 @@ public final class UtilityImage
      * @return The created image from file.
      * @throws LionEngineException If image cannot be read.
      */
-    static ImageBuffer getImage(Media media) throws LionEngineException
+    public static ImageBuffer getImage(Media media) throws LionEngineException
     {
         try (InputStream inputStream = media.getInputStream())
         {
@@ -129,7 +129,7 @@ public final class UtilityImage
      * @param image The image.
      * @return The created image from file.
      */
-    static ImageBuffer getImage(ImageBuffer image)
+    public static ImageBuffer getImage(ImageBuffer image)
     {
         return new ImageBufferSwt(ToolsSwt.getImage(getBuffer(image)));
     }
@@ -141,7 +141,7 @@ public final class UtilityImage
      * @param maskColor The color mask.
      * @return The masked image.
      */
-    static ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
+    public static ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
         return new ImageBufferSwt(ToolsSwt.applyMask(getBuffer(image), maskColor.getRgba()));
     }
@@ -154,7 +154,7 @@ public final class UtilityImage
      * @param v The number of vertical divisions (> 0).
      * @return The splited images array (can not be empty).
      */
-    static ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
+    public static ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
         final Image[] images = ToolsSwt.splitImage(getBuffer(image), h, v);
         final ImageBuffer[] imageBuffers = new ImageBuffer[images.length];
@@ -172,7 +172,7 @@ public final class UtilityImage
      * @param angle The angle to apply in degree (0-359)
      * @return The new image with angle applied.
      */
-    static ImageBuffer rotate(ImageBuffer image, int angle)
+    public static ImageBuffer rotate(ImageBuffer image, int angle)
     {
         return new ImageBufferSwt(ToolsSwt.rotate(getBuffer(image), angle));
     }
@@ -185,7 +185,7 @@ public final class UtilityImage
      * @param height The new height.
      * @return The new image with new size.
      */
-    static ImageBuffer resize(ImageBuffer image, int width, int height)
+    public static ImageBuffer resize(ImageBuffer image, int width, int height)
     {
         return new ImageBufferSwt(ToolsSwt.resize(getBuffer(image), width, height));
     }
@@ -196,7 +196,7 @@ public final class UtilityImage
      * @param image The input image.
      * @return The flipped image as a new instance.
      */
-    static ImageBuffer flipHorizontal(ImageBuffer image)
+    public static ImageBuffer flipHorizontal(ImageBuffer image)
     {
         return new ImageBufferSwt(ToolsSwt.flipHorizontal(getBuffer(image)));
     }
@@ -207,7 +207,7 @@ public final class UtilityImage
      * @param image The input image.
      * @return The flipped image as a new instance.
      */
-    static ImageBuffer flipVertical(ImageBuffer image)
+    public static ImageBuffer flipVertical(ImageBuffer image)
     {
         return new ImageBufferSwt(ToolsSwt.flipVertical(getBuffer(image)));
     }
@@ -218,7 +218,7 @@ public final class UtilityImage
      * @param image The input image.
      * @return The filtered image as a new instance.
      */
-    static ImageBuffer applyBilinearFilter(ImageBuffer image)
+    public static ImageBuffer applyBilinearFilter(ImageBuffer image)
     {
         return new ImageBufferSwt(ToolsSwt.applyBilinearFilter(getBuffer(image)));
     }
@@ -230,7 +230,7 @@ public final class UtilityImage
      * @param media The output media.
      * @throws LionEngineException If image cannot be read.
      */
-    static void saveImage(ImageBuffer image, Media media) throws LionEngineException
+    public static void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
         try (OutputStream outputStream = media.getOutputStream())
         {
@@ -256,7 +256,8 @@ public final class UtilityImage
      * @param refSize The reference size.
      * @return The rastered image.
      */
-    static ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
+    public static ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb,
+            int refSize)
     {
         return new ImageBufferSwt(ToolsSwt.getRasterBuffer(getBuffer(image), fr, fg, fb, er, eg, eb, refSize));
     }
