@@ -120,6 +120,11 @@
         <children xsi:type="menu:DirectMenuItem" xmi:id="_Mdn1YEsdEeS9gtv_zEGnhw" elementId="" label="%menu.file.import-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/menu/project-import.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ProjectImportHandler"/>
         <children xsi:type="menu:DirectMenuItem" xmi:id="_R5dL8EsdEeS9gtv_zEGnhw" elementId="" label="%menu.file.exit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/dialog/exit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handler.ExitHandler"/>
       </children>
+      <children xsi:type="menu:Menu" xmi:id="_NQqXgB9mEeWl-qhW9GtH-g" elementId="" label="%menu.map">
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_Uq-0AB9mEeWl-qhW9GtH-g" elementId="" label="%menu.map.import-map-collision" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/import-map.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.MapCollisionImportHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_CafCsB9nEeWl-qhW9GtH-g" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
+        </children>
+      </children>
       <children xsi:type="menu:Menu" xmi:id="_RgxMzscnEeO6QsMPtNpkHg" label="%menu.help" mnemonics="">
         <children xsi:type="menu:DirectMenuItem" xmi:id="_VgEtUEsdEeS9gtv_zEGnhw" elementId="" label="%menu.help.about" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/dialog/info.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handler.AboutHandler"/>
       </children>

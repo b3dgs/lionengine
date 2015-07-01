@@ -78,7 +78,7 @@ public class MapCollisionImportDialog
         super(parent, Messages.ImportMapCollisionDialog_Title, Messages.ImportMapCollisionDialog_HeaderTitle,
                 Messages.ImportMapCollisionDialog_HeaderDesc, MapCollisionImportDialog.ICON);
         createDialog();
-
+        dialog.setMinimumSize(512, 160);
         part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         finish.setEnabled(false);
         finish.forceFocus();
@@ -166,11 +166,11 @@ public class MapCollisionImportDialog
     void onFormulasConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        formulasText.setText(path.getAbsolutePath());
         boolean validSheets = false;
         try
         {
-            formulasConfig = project.getResourceMedia(new File(formulasText.getText()));
+            formulasConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
+            formulasText.setText(formulasConfig.getPath());
             final File sheets = formulasConfig.getFile();
             if (!sheets.isFile())
             {
@@ -196,10 +196,10 @@ public class MapCollisionImportDialog
     void onCollisionsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        collisionsText.setText(path.getAbsolutePath());
         try
         {
-            collisionsConfig = project.getResourceMedia(new File(collisionsText.getText()));
+            collisionsConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
+            collisionsText.setText(collisionsConfig.getPath());
         }
         catch (final LionEngineException exception)
         {

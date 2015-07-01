@@ -75,6 +75,8 @@ public abstract class AbstractDialog
     protected Button cancel;
     /** Tips label. */
     protected CLabel tipsLabel;
+    /** Canceled flag. */
+    protected boolean canceled;
 
     /**
      * Dialog constructor base.
@@ -139,6 +141,16 @@ public abstract class AbstractDialog
                 display.sleep();
             }
         }
+    }
+
+    /**
+     * Check if dialog has been canceled.
+     * 
+     * @return <code>true</code> if canceled, <code>false</code> else.
+     */
+    public boolean isCanceled()
+    {
+        return canceled;
     }
 
     /**
@@ -247,6 +259,7 @@ public abstract class AbstractDialog
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
+                canceled = true;
                 onCanceled();
                 dialog.dispose();
             }

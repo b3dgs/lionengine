@@ -76,7 +76,7 @@ public class MapImportDialog
         super(parent, Messages.ImportMapDialog_Title, Messages.ImportMapDialog_HeaderTitle,
                 Messages.ImportMapDialog_HeaderDesc, MapImportDialog.ICON);
         createDialog();
-
+        dialog.setMinimumSize(512, 160);
         finish.setEnabled(false);
         finish.forceFocus();
     }
@@ -151,10 +151,10 @@ public class MapImportDialog
     void onLevelRipLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        levelRipLocationText.setText(path.getAbsolutePath());
         try
         {
-            levelRip = project.getResourceMedia(new File(levelRipLocationText.getText()));
+            levelRip = project.getResourceMedia(new File(path.getAbsolutePath()));
+            levelRipLocationText.setText(levelRip.getPath());
         }
         catch (final LionEngineException exception)
         {
@@ -173,11 +173,11 @@ public class MapImportDialog
     void onSheetsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        sheetsLocationText.setText(path.getAbsolutePath());
         boolean validSheets = false;
         try
         {
-            sheetsConfig = project.getResourceMedia(new File(sheetsLocationText.getText()));
+            sheetsConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
+            sheetsLocationText.setText(sheetsConfig.getPath());
             final File sheets = sheetsConfig.getFile();
             if (!sheets.isFile())
             {
@@ -203,11 +203,11 @@ public class MapImportDialog
     void onGroupsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        groupsLocationText.setText(path.getAbsolutePath());
         boolean validGroups = false;
         try
         {
-            groupsConfig = project.getResourceMedia(new File(groupsLocationText.getText()));
+            groupsConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
+            groupsLocationText.setText(groupsConfig.getPath());
             final File groups = groupsConfig.getFile();
             if (!groups.isFile())
             {

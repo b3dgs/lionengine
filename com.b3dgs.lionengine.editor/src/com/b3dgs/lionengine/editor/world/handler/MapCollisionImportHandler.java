@@ -22,14 +22,14 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
-import com.b3dgs.lionengine.editor.world.dialog.MapImportDialog;
+import com.b3dgs.lionengine.editor.world.dialog.MapCollisionImportDialog;
 
 /**
- * Import map handler.
+ * Import map collisions handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapImportHandler
+public class MapCollisionImportHandler
 {
     /**
      * Execute the handler.
@@ -40,8 +40,8 @@ public class MapImportHandler
     @SuppressWarnings("static-method")
     public void execute(Shell shell)
     {
-        final MapImportDialog importMapDialog = new MapImportDialog(shell);
-        importMapDialog.open();
+        final MapCollisionImportDialog dialog = new MapCollisionImportDialog(shell);
+        dialog.open();
 
         final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         part.update();

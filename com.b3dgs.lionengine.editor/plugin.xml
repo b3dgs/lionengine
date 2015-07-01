@@ -2,7 +2,6 @@
 <plugin>
    <extension-point id="worldViewUpdater" name="World View Updater" schema="schema/worldViewUpdater.exsd"/>
    <extension-point id="worldViewRenderer" name="World View Renderer" schema="schema/worldViewRenderer.exsd"/>
-   <extension-point id="mapFeatures" name="Map Features" schema="schema/mapFeatures.exsd"/>
    <extension-point id="propertiesObject" name="Properties Object" schema="schema/propertiesObject.exsd"/>
    <extension-point id="propertiesTile" name="Properties Tile" schema="schema/propertiesTile.exsd"/>
 
@@ -59,21 +58,9 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.resource.map_impl">
+            id="com.b3dgs.lionengine.editor.map.test">
          <test
-               property="com.b3dgs.lionengine.editor.resourceExtensionTester.map_impl">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.map-implementation.test">
-         <test
-               property="com.b3dgs.lionengine.editor.mapImplementationTester.test">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.resource.factory_impl">
-         <test
-               property="com.b3dgs.lionengine.editor.resourceExtensionTester.factory_impl">
+               property="com.b3dgs.lionengine.editor.mapTester.test">
          </test>
       </definition>
       <definition
@@ -245,7 +232,14 @@
             class="com.b3dgs.lionengine.editor.project.tester.ResourceExtensionTester"
             id="com.b3dgs.lionengine.editor.resourceExtensionTester"
             namespace="com.b3dgs.lionengine.editor.resourceExtensionTester"
-            properties="music,sound,data,image,level,map_impl,factory_impl"
+            properties="music,sound,data,image,level"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.world.tester.MapTester"
+            id="com.b3dgs.lionengine.editor.mapTester"
+            namespace="com.b3dgs.lionengine.editor.mapTester"
+            properties="test"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
@@ -325,6 +319,13 @@
             properties="addFormula,removeFormula,editFormula"
             type="java.lang.Object">
       </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.tester.SheetsTester"
+            id="com.b3dgs.lionengine.editor.sheetsTester"
+            namespace="com.b3dgs.lionengine.editor.sheetsTester"
+            properties="addSheets,editSheets"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
    <extension
          point="com.b3dgs.lionengine.editor.propertiesObject">
@@ -354,19 +355,6 @@
       </implementation>
       <implementation
             class="com.b3dgs.lionengine.editor.properties.tilecollision.PropertiesTileCollision">
-      </implementation>
-   </extension>
-   <extension
-         point="com.b3dgs.lionengine.editor.mapFeatures">
-      <implementation
-            class="com.b3dgs.lionengine.game.map.MapTileCollisionModel"
-            dialog="com.b3dgs.lionengine.editor.world.dialog.MapCollisionImportDialog">
-      </implementation>
-      <implementation
-            class="com.b3dgs.lionengine.game.map.MapTilePathModel">
-      </implementation>
-      <implementation
-            class="com.b3dgs.lionengine.game.map.MapTileRasteredModel">
       </implementation>
    </extension>
 

@@ -37,8 +37,6 @@ public abstract class AbstractProgressDialog
 {
     /** Progress bar. */
     private ProgressBar progress;
-    /** Canceled flag. */
-    private boolean canceled;
 
     /**
      * Dialog constructor base.
@@ -86,16 +84,6 @@ public abstract class AbstractProgressDialog
     }
 
     /**
-     * Check if progress has been canceled.
-     * 
-     * @return <code>true</code> if canceled, <code>false</code> else.
-     */
-    public boolean isCanceled()
-    {
-        return canceled;
-    }
-
-    /**
      * Check if progress is disposed.
      * 
      * @return <code>true</code> if disposed, <code>false</code> else.
@@ -140,7 +128,6 @@ public abstract class AbstractProgressDialog
     @Override
     protected void onCanceled()
     {
-        canceled = true;
         onTerminated();
     }
 }
