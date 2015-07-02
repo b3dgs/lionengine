@@ -110,7 +110,7 @@ public class FormulaList
     protected CollisionFormula createObject(String name)
     {
         return new CollisionFormula(name, new CollisionRange(Axis.Y, 0, 0, 0, 0), new CollisionFunctionLinear(0, 0),
-                new CollisionConstraint(null, null, null, null));
+                new CollisionConstraint());
     }
 
     /*

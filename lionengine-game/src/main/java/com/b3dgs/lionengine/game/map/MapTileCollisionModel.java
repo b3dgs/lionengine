@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
@@ -67,13 +68,13 @@ public class MapTileCollisionModel
     /**
      * Check the constraint with the specified tile.
      * 
-     * @param constraint The constraint name to check.
+     * @param constraints The constraint groups to check.
      * @param tile The tile to check with.
      * @return <code>true</code> if can be ignored, <code>false</code> else.
      */
-    private static boolean checkConstraint(String constraint, Tile tile)
+    private static boolean checkConstraint(Collection<String> constraints, Tile tile)
     {
-        return constraint != null && tile != null
+        return tile != null && constraints.contains(tile.getGroup())
                 && !tile.getFeature(TileCollision.class).getCollisionFormulas().isEmpty();
     }
 
@@ -377,8 +378,10 @@ public class MapTileCollisionModel
         for (final CollisionFormula formula : tile.getCollisionFormulas())
         {
             final CollisionConstraint constraint = formula.getConstraint();
-            if (checkConstraint(constraint.getTop(), top) || checkConstraint(constraint.getBottom(), bottom)
-                    || checkConstraint(constraint.getLeft(), left) || checkConstraint(constraint.getRight(), right))
+            if (checkConstraint(constraint.getConstraints(Orientation.NORTH), top)
+                    || checkConstraint(constraint.getConstraints(Orientation.SOUTH), bottom)
+                    || checkConstraint(constraint.getConstraints(Orientation.WEST), left)
+                    || checkConstraint(constraint.getConstraints(Orientation.EAST), right))
             {
                 toRemove.add(formula);
             }

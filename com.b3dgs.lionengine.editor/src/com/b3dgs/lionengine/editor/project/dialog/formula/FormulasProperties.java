@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.project.dialog.formula;
 
+import java.util.Collections;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -26,19 +28,24 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
 import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.project.dialog.group.GroupList;
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionType;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
+import com.b3dgs.lionengine.game.collision.TileGroup;
 
 /**
  * Represents the formulas properties edition view.
@@ -53,16 +60,47 @@ public class FormulasProperties
     private static final String ERROR_TYPE = "Unknown collision function type: ";
 
     /**
-     * Get the constraint value.
+     * Add groups to constraint.
      * 
-     * @param constraint The constraint value.
-     * @return The same constraint value, empty string if <code>null</code>.
+     * @param constraint The constraint reference.
+     * @param orientation The orientation.
+     * @param list The groups reference.
      */
-    private static String getConstraintValue(String constraint)
+    private static void addGroups(CollisionConstraint constraint, Orientation orientation, GroupList list)
     {
-        return constraint != null ? constraint : "";
+        for (final TileGroup group : list.getObjects())
+        {
+            constraint.add(orientation, group.getName());
+        }
     }
 
+    /**
+     * Read constraints from specified list and orientation.
+     * 
+     * @param constraint The constraint container.
+     * @param constraints The constraints tree.
+     * @param orientation The orientation value.
+     */
+    private static void readConstraints(CollisionConstraint constraint, GroupList constraints, Orientation orientation)
+    {
+        constraints.clear();
+        final Tree tree = constraints.getTree();
+        for (final String group : constraint.getConstraints(orientation))
+        {
+            final TreeItem item = new TreeItem(tree, SWT.NONE);
+            item.setText(group);
+            item.setData(new TileGroup(group, Collections.EMPTY_LIST));
+        }
+    }
+
+    /** Constraints top. */
+    private final GroupList constraintsTop = new GroupList();
+    /** Constraints bottom. */
+    private final GroupList constraintsBottom = new GroupList();
+    /** Constraints left. */
+    private final GroupList constraintsLeft = new GroupList();
+    /** Constraints right. */
+    private final GroupList constraintsRight = new GroupList();
     /** Last collision function panel. */
     private Composite lastFunctionPanel;
     /** Function type. */
@@ -83,14 +121,6 @@ public class FormulasProperties
     private Text linearA;
     /** Function linear B. */
     private Text linearB;
-    /** Constraint top. */
-    private Text constraintTop;
-    /** Constraint bottom. */
-    private Text constraintBottom;
-    /** Constraint left. */
-    private Text constraintLeft;
-    /** Constraint right. */
-    private Text constraintRight;
 
     /**
      * Create formulas properties.
@@ -222,10 +252,10 @@ public class FormulasProperties
     {
         final Composite constraintArea = new Composite(parent, SWT.NONE);
         constraintArea.setLayout(new GridLayout(2, true));
-        constraintTop = UtilSwt.createText(Messages.EditFormulasDialog_ConstraintTop, constraintArea);
-        constraintBottom = UtilSwt.createText(Messages.EditFormulasDialog_ConstraintBottom, constraintArea);
-        constraintLeft = UtilSwt.createText(Messages.EditFormulasDialog_ConstraintLeft, constraintArea);
-        constraintRight = UtilSwt.createText(Messages.EditFormulasDialog_ConstraintRight, constraintArea);
+        constraintsTop.create(constraintArea);
+        constraintsBottom.create(constraintArea);
+        constraintsRight.create(constraintArea);
+        constraintsLeft.create(constraintArea);
     }
 
     /**
@@ -304,8 +334,12 @@ public class FormulasProperties
 
         final CollisionRange range = new CollisionRange(output, minX, maxX, minY, maxY);
         final CollisionFunction function = createFunction(type);
-        final CollisionConstraint constraint = new CollisionConstraint(constraintTop.getText(),
-                constraintBottom.getText(), constraintLeft.getText(), constraintRight.getText());
+        final CollisionConstraint constraint = new CollisionConstraint();
+        addGroups(constraint, Orientation.NORTH, constraintsTop);
+        addGroups(constraint, Orientation.SOUTH, constraintsBottom);
+        addGroups(constraint, Orientation.WEST, constraintsLeft);
+        addGroups(constraint, Orientation.EAST, constraintsRight);
+
         final CollisionFormula formula = new CollisionFormula(name, range, function, constraint);
         return formula;
     }
@@ -331,10 +365,10 @@ public class FormulasProperties
         loadFunction(function);
 
         final CollisionConstraint constraint = formula.getConstraint();
-        constraintTop.setText(getConstraintValue(constraint.getTop()));
-        constraintBottom.setText(getConstraintValue(constraint.getBottom()));
-        constraintLeft.setText(getConstraintValue(constraint.getLeft()));
-        constraintRight.setText(getConstraintValue(constraint.getRight()));
+        readConstraints(constraint, constraintsTop, Orientation.NORTH);
+        readConstraints(constraint, constraintsBottom, Orientation.SOUTH);
+        readConstraints(constraint, constraintsLeft, Orientation.WEST);
+        readConstraints(constraint, constraintsRight, Orientation.EAST);
     }
 
     @Override
@@ -350,9 +384,9 @@ public class FormulasProperties
         type.setData(null);
         linearA.setText("");
         linearB.setText("");
-        constraintTop.setText("");
-        constraintBottom.setText("");
-        constraintLeft.setText("");
-        constraintRight.setText("");
+        constraintsTop.clear();
+        constraintsBottom.clear();
+        constraintsLeft.clear();
+        constraintsRight.clear();
     }
 }

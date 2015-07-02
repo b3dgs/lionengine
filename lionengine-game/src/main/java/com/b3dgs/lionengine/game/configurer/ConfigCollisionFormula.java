@@ -77,7 +77,10 @@ public final class ConfigCollisionFormula
         node.writeString(NAME, formula.getName());
         node.add(ConfigCollisionRange.export(formula.getRange()));
         node.add(ConfigCollisionFunction.export(formula.getFunction()));
-        node.add(ConfigCollisionConstraint.export(formula.getConstraint()));
+        for (final XmlNode current : ConfigCollisionConstraint.export(formula.getConstraint()))
+        {
+            node.add(current);
+        }
 
         return node;
     }
@@ -94,8 +97,7 @@ public final class ConfigCollisionFormula
         final String name = node.readString(NAME);
         final CollisionRange range = ConfigCollisionRange.create(node.getChild(ConfigCollisionRange.RANGE));
         final CollisionFunction function = ConfigCollisionFunction.create(node);
-        final CollisionConstraint constraint = ConfigCollisionConstraint.create(node
-                .getChild(ConfigCollisionConstraint.CONSTRAINT));
+        final CollisionConstraint constraint = ConfigCollisionConstraint.create(node);
 
         return new CollisionFormula(name, range, function, constraint);
     }

@@ -111,7 +111,6 @@ public class TileCollisionEditor
     @Override
     protected void onExit()
     {
-        formula = new CollisionFormula(textName.getText(), range.get(), function.get(), new CollisionConstraint(null,
-                null, null, null));
+        formula = new CollisionFormula(textName.getText(), range.get(), function.get(), new CollisionConstraint());
     }
 }

@@ -256,6 +256,18 @@ public abstract class ObjectList<T extends Nameable>
     }
 
     /**
+     * Clear all items.
+     */
+    public void clear()
+    {
+        for (final TreeItem item : objectsTree.getItems())
+        {
+            item.setData(null);
+            item.dispose();
+        }
+    }
+
+    /**
      * Check if the object is an instance of the handled type.
      * 
      * @param object The object to check.

@@ -17,6 +17,12 @@
  */
 package com.b3dgs.lionengine.game.collision;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.Map;
+
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionConstraint;
 
 /**
@@ -27,68 +33,63 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisionConstraint;
  */
 public class CollisionConstraint
 {
-    /** Top constraint. */
-    private final String top;
-    /** Bottom constraint. */
-    private final String bottom;
-    /** Left constraint. */
-    private final String left;
-    /** Right constraint. */
-    private final String right;
+    /** Constraints defined. */
+    private final Map<Orientation, Collection<String>> constraints;
 
     /**
      * Create a collision constraint.
-     * 
-     * @param top The top constraint.
-     * @param bottom The bottom constraint.
-     * @param left The left constraint.
-     * @param right The right constraint.
      */
-    public CollisionConstraint(String top, String bottom, String left, String right)
+    public CollisionConstraint()
     {
-        this.top = top;
-        this.bottom = bottom;
-        this.left = left;
-        this.right = right;
+        constraints = new EnumMap<>(Orientation.class);
+        for (final Orientation orientation : Orientation.values())
+        {
+            constraints.put(orientation, new ArrayList<String>());
+        }
     }
 
     /**
-     * Get the top constraint.
+     * Add the group constraint at the specified orientation.
      * 
-     * @return The top constraint.
+     * @param orientation The orientation.
+     * @param group The group where constraint is applied.
      */
-    public String getTop()
+    public void add(Orientation orientation, String group)
     {
-        return top;
+        final Collection<String> groups = constraints.get(orientation);
+        groups.add(group);
     }
 
     /**
-     * Get the bottom constraint.
+     * Get the constraints defined.
      * 
-     * @return The bottom constraint.
+     * @return The constraints defined.
      */
-    public String getBottom()
+    public Map<Orientation, Collection<String>> getConstraints()
     {
-        return bottom;
+        return constraints;
     }
 
     /**
-     * Get the left constraint.
+     * Get the constraints defined for the specified orientation.
      * 
-     * @return The left constraint.
+     * @param orientation The orientation value.
+     * @return The constraints defined for this orientation.
      */
-    public String getLeft()
+    public Collection<String> getConstraints(Orientation orientation)
     {
-        return left;
+        return constraints.get(orientation);
     }
 
     /**
-     * Get the right constraint.
+     * Check if constraint is defined for the group at the specified orientation.
      * 
-     * @return The right constraint.
+     * @param orientation The orientation to check on.
+     * @param group The group to check.
+     * @return <code>true</code> if constraint defined, <code>false</code> else.
      */
-    public String getRight()
+    public boolean has(Orientation orientation, String group)
     {
-        return right;
+        return getConstraints(orientation).contains(group);
     }
 }
