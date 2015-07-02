@@ -126,6 +126,8 @@ public final class TileExtractor
     private final Collection<ImageBuffer> extractions = new ArrayList<>();
     /** Progress listener. */
     private final Collection<ProgressListener> listeners = new HashSet<>();
+    /** Generated sheets. */
+    private final Collection<Media> generatedSheets = new ArrayList<>();
     /** Extraction folder. */
     private final Media folder;
     /** Extracted tile sheet prefix. */
@@ -261,6 +263,16 @@ public final class TileExtractor
     }
 
     /**
+     * Get the list of generated sheets.
+     * 
+     * @return The generated sheets.
+     */
+    public Collection<Media> getGeneratedSheets()
+    {
+        return generatedSheets;
+    }
+
+    /**
      * Get percent progress.
      * 
      * @return Progress percent.
@@ -377,7 +389,9 @@ public final class TileExtractor
      */
     private void saveExtraction()
     {
-        Graphics.saveImage(sheet, getSheetMedia(lastIndex));
+        final Media media = getSheetMedia(lastIndex);
+        Graphics.saveImage(sheet, media);
+        generatedSheets.add(media);
     }
 
     /**

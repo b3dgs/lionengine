@@ -84,6 +84,8 @@ public class SheetsImportDialog
     private Button addLevelRip;
     /** Remove level rip. */
     private Button removeLevelRip;
+    /** Tile extractor. */
+    private TileExtractor extractor;
 
     /**
      * Create the dialog.
@@ -183,10 +185,10 @@ public class SheetsImportDialog
             tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, Integer.toString(tw));
             tileSize.writeString(MapTile.ATTRIBUTE_TILE_HEIGHT, Integer.toString(th));
             root.add(tileSize);
-            for (final TreeItem item : levelRips.getItems())
+            for (final Media media : extractor.getGeneratedSheets())
             {
                 final XmlNode node = Stream.createXmlNode(MapTile.NODE_TILE_SHEET);
-                node.setText(((Media) item.getData()).getFile().getName());
+                node.setText(media.getFile().getName());
                 root.add(node);
             }
             final File file = new File(extractFolder.getFile(), MapTile.DEFAULT_SHEETS_FILE);
@@ -375,7 +377,7 @@ public class SheetsImportDialog
         final int h = Integer.parseInt(horizontalText.getText());
         final int v = Integer.parseInt(verticalText.getText());
 
-        final TileExtractor extractor = new TileExtractor(extractFolder, tw, th, h, v);
+        extractor = new TileExtractor(extractFolder, tw, th, h, v);
         for (final TreeItem item : levelRips.getItems())
         {
             extractor.addRip((Media) item.getData());
