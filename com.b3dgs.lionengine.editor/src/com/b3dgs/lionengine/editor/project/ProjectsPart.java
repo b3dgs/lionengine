@@ -88,7 +88,7 @@ public class ProjectsPart
     /** Watcher. */
     private final FolderModificationWatcher watcher = new FolderModificationWatcher();
     /** Tree viewer. */
-    private Tree tree;
+    Tree tree;
     /** Tree creator. */
     private ProjectTreeCreator projectTreeCreator;
 
@@ -177,6 +177,22 @@ public class ProjectsPart
         watcher.start(project.getResourcesPath().toPath(), tree, projectTreeCreator);
 
         tree.layout();
+
+        tree.getDisplay().asyncExec(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (final TreeItem item : tree.getItems())
+                {
+                    item.setExpanded(true);
+                    for (final TreeItem child : item.getItems())
+                    {
+                        child.setExpanded(true);
+                    }
+                }
+            }
+        });
     }
 
     /**
