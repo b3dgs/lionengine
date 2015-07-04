@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.properties.tile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
@@ -65,7 +66,7 @@ public class GroupChooser
                 GroupsEditDialog.ICON);
         this.groups = groups.toArray(new String[groups.size()]);
         createDialog();
-        dialog.setMinimumSize(64, 64);
+        dialog.setMinimumSize(256, 64);
         finish.setEnabled(true);
     }
 
@@ -86,6 +87,7 @@ public class GroupChooser
      */
     void loadGroups(String[] groups)
     {
+        Arrays.sort(groups);
         combo.setItems(groups);
         if (groups.length > 0)
         {

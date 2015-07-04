@@ -95,7 +95,7 @@ public class PropertiesTile
                 }
             }
             if (newGroup.equals(ConfigTileGroup.REMOVE_GROUP_NAME)
-                    && WorldViewRenderer.groupEquals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
+                    || WorldViewRenderer.groupEquals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
             {
                 final XmlNode tileRef = Stream.createXmlNode(ConfigTileGroup.TILE);
                 tileRef.writeInteger(ConfigTileGroup.SHEET, tile.getSheet().intValue());
