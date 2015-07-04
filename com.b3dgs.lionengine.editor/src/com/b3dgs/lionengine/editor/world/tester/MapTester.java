@@ -19,7 +19,13 @@ package com.b3dgs.lionengine.editor.world.tester;
 
 import org.eclipse.core.expressions.PropertyTester;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Test if the map has been defined.
@@ -31,6 +37,44 @@ public class MapTester
 {
     /** Test if map defined. */
     private static final String PROPERTY_TEST = "test";
+
+    /**
+     * Check if media is a formulas configuration file.
+     * 
+     * @param media The media to check.
+     * @return <code>true</code> if describes formulas, <code>false</code> else.
+     */
+    public static boolean isFormulasConfig(Media media)
+    {
+        try
+        {
+            final XmlNode node = Stream.loadXml(media);
+            return ConfigCollisionFormula.FORMULAS.equals(node.getNodeName());
+        }
+        catch (final LionEngineException exception)
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Check if media is a collisions configuration file.
+     * 
+     * @param media The media to check.
+     * @return <code>true</code> if describes collisions, <code>false</code> else.
+     */
+    public static boolean isCollisionsConfig(Media media)
+    {
+        try
+        {
+            final XmlNode node = Stream.loadXml(media);
+            return ConfigCollisionGroup.COLLISIONS.equals(node.getNodeName());
+        }
+        catch (final LionEngineException exception)
+        {
+            return false;
+        }
+    }
 
     /*
      * PropertyTester

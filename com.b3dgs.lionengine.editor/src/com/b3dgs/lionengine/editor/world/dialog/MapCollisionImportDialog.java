@@ -41,8 +41,10 @@ import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
+import com.b3dgs.lionengine.editor.world.tester.MapTester;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
+import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 
 /**
  * Represents the import map dialog.
@@ -82,6 +84,7 @@ public class MapCollisionImportDialog
         part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         finish.setEnabled(false);
         finish.forceFocus();
+        loadDefaults();
     }
 
     /**
@@ -271,6 +274,28 @@ public class MapCollisionImportDialog
         });
     }
 
+    /**
+     * Load default files.
+     */
+    private void loadDefaults()
+    {
+        final Project project = Project.getActive();
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final File parentFile = map.getGroupsConfig().getFile().getParentFile();
+
+        final File formulas = new File(parentFile, MapTileCollision.DEFAULT_FORMULAS_FILE);
+        if (MapTester.isFormulasConfig(project.getResourceMedia(formulas)))
+        {
+            onFormulasConfigLocationSelected(formulas);
+        }
+
+        final File collisions = new File(parentFile, MapTileCollision.DEFAULT_COLLISIONS_FILE);
+        if (MapTester.isCollisionsConfig(project.getResourceMedia(collisions)))
+        {
+            onCollisionsConfigLocationSelected(collisions);
+        }
+    }
+
     /*
      * AbstractDialog
      */
@@ -289,6 +314,10 @@ public class MapCollisionImportDialog
         if (found)
         {
             final MapTile map = WorldViewModel.INSTANCE.getMap();
+            if (!map.hasFeature(MapTileCollision.class))
+            {
+                map.createFeature(MapTileCollisionModel.class);
+            }
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             mapCollision.loadCollisions(formulasConfig, collisionsConfig);
             mapCollision.createCollisionDraw();
