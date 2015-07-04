@@ -3,11 +3,24 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<properties>
+		<encoding.type>UTF-8</encoding.type>
 		<working.dir>${project.basedir}</working.dir>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.build.sourceEncoding>${encoding.type}</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>${encoding.type}</project.reporting.outputEncoding>
+		<maven.version>3.3.3</maven.version>
 		<jdk.version>1.7</jdk.version>
-		<tycho.version>0.22.0</tycho.version>
+		<tycho.version>0.23.0</tycho.version>
+		<junit.version>4.11</junit.version>
+		<maven-bundle.version>2.5.4</maven-bundle.version>
+		<maven-compiler.version>3.3</maven-compiler.version>
+		<maven-osgi-packaging.version>0.11.1</maven-osgi-packaging.version>
+		<maven-jar.version>2.6</maven-jar.version>
+		<maven-clean.version>2.6.1</maven-clean.version>
+		<maven-javadoc.version>2.10.3</maven-javadoc.version>
+		<maven-surfire.version>2.18.1</maven-surfire.version>
+		<maven-checkstyle.version>2.15</maven-checkstyle.version>
+		<maven-eclipse.version>2.10</maven-eclipse.version>
+		<pde-target-maven.version>1.0.1</pde-target-maven.version>
 	</properties>
 	<groupId>com.b3dgs.lionengine</groupId>
 	<artifactId>lionengine</artifactId>
@@ -45,7 +58,7 @@
 		</license>
 	</licenses>
 	<prerequisites>
-		<maven>3.3.3</maven>
+		<maven>${maven.version}</maven>
 	</prerequisites>
 	<profiles>
 		<profile>
@@ -56,8 +69,8 @@
 			<modules>
 				<module>../lionengine-build-tools</module>
 				<module>../lionengine-core</module>
-				<module>../lionengine-core-android</module>
 				<module>../lionengine-core-awt</module>
+				<module>../lionengine-core-android</module>
 				<module>../lionengine-game</module>
 				<module>../lionengine-network</module>
 				<module>../lionengine-audio-wav</module>
@@ -70,7 +83,6 @@
 			<modules>
 				<module>../com.b3dgs.lionengine.target</module>
 				<module>../com.b3dgs.lionengine.core.swt</module>
-				<module>../com.b3dgs.lionengine.editor</module>
 			</modules>
 		</profile>
 		<profile>
@@ -156,7 +168,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.11</version>
+				<version>${junit.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -173,10 +185,6 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>lt.velykis.maven</groupId>
@@ -251,7 +259,7 @@
 						<compilerArguments>
 							<inlineJSR />
 							<enableJavadoc />
-							<encoding>UTF-8</encoding>
+							<encoding>${encoding.type}</encoding>
 						</compilerArguments>
 					</configuration>
 				</plugin>
@@ -268,11 +276,11 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.3</version>
+					<version>${maven-compiler.version}</version>
 					<configuration>
 						<source>${jdk.version}</source>
 						<target>${jdk.version}</target>
-						<encoding>UTF-8</encoding>
+						<encoding>${encoding.type}</encoding>
 						<showDeprecation>true</showDeprecation>
 						<showWarnings>true</showWarnings>
 						<executable>${java.home}/../bin/javac</executable>
@@ -282,7 +290,7 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.5.4</version>
+					<version>${maven-bundle.version}</version>
 					<extensions>true</extensions>
 					<configuration>
 						<manifestLocation>META-INF</manifestLocation>
@@ -303,7 +311,7 @@
 				<plugin>
 					<groupId>org.sonatype.tycho</groupId>
 					<artifactId>maven-osgi-packaging-plugin</artifactId>
-					<version>0.11.1</version>
+					<version>${maven-osgi-packaging.version}</version>
 					<configuration>
 						<archive>
 							<addMavenDescriptor>false</addMavenDescriptor>
@@ -313,7 +321,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.6</version>
+					<version>${maven-jar.version}</version>
 					<configuration>
 						<archive>
 							<manifestFile>META-INF/MANIFEST.MF</manifestFile>
@@ -323,12 +331,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.6.1</version>
+					<version>${maven-clean.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.3</version>
+					<version>${maven-javadoc.version}</version>
 					<configuration>
 						<show>protected</show>
 						<nohelp>true</nohelp>
@@ -337,19 +345,19 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.18.1</version>
+					<version>${maven-surfire.version}</version>
 					<dependencies>
 						<dependency>
 							<groupId>org.apache.maven.surefire</groupId>
 							<artifactId>surefire-junit47</artifactId>
-							<version>2.18.1</version>
+							<version>${maven-surfire.version}</version>
 						</dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.15</version>
+					<version>${maven-checkstyle.version}</version>
 					<configuration>
 						<propertiesLocation>../lionengine-build-tools/checkstyle.properties</propertiesLocation>
 						<propertyExpansion>dir=${project.basedir}/../lionengine-build-tools</propertyExpansion>
@@ -362,7 +370,7 @@
 							<id>validate</id>
 							<phase>validate</phase>
 							<configuration>
-								<encoding>UTF-8</encoding>
+								<encoding>${encoding.type}</encoding>
 								<consoleOutput>true</consoleOutput>
 								<failsOnError>true</failsOnError>
 								<linkXRef>false</linkXRef>
@@ -377,7 +385,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.9</version>
+					<version>${maven-eclipse.version}</version>
 					<configuration>
 						<additionalBuildcommands>
 							<buildcommand>net.sf.eclipsecs.core.CheckstyleBuilder</buildcommand>
@@ -403,7 +411,7 @@
 				<plugin>
 					<groupId>lt.velykis.maven</groupId>
 					<artifactId>pde-target-maven-plugin</artifactId>
-					<version>1.0.1</version>
+					<version>${pde-target-maven.version}</version>
 					<executions>
 						<execution>
 							<id>pde-target</id>
