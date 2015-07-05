@@ -67,8 +67,8 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureMaximumFrame()
     {
-        Assert.assertNotNull(Anim.createAnimation(null, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME - 1, 0.0,
-                false, false));
+        Assert.assertNotNull(
+                Anim.createAnimation(null, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME - 1, 0.0, false, false));
     }
 
     /**
@@ -77,7 +77,7 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureSpeed()
     {
-        Assert.assertNotNull(Anim.createAnimation(null, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, -1.0,
-                false, false));
+        Assert.assertNotNull(
+                Anim.createAnimation(null, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, -1.0, false, false));
     }
 }

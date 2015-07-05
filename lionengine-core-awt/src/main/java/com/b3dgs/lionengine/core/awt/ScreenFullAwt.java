@@ -122,10 +122,9 @@ final class ScreenFullAwt
         final DisplayMode disp = new DisplayMode(output.getWidth(), output.getHeight(), depth, output.getRate());
         if (!isSupported(disp))
         {
-            throw new LionEngineException(ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN,
-                    String.valueOf(output.getWidth()), "*", String.valueOf(output.getHeight()), "*",
-                    String.valueOf(depth), " @", String.valueOf(output.getRate()), "Hz", "\n",
-                    getSupportedResolutions());
+            throw new LionEngineException(ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN, String.valueOf(output.getWidth()),
+                    "*", String.valueOf(output.getHeight()), "*", String.valueOf(depth), " @",
+                    String.valueOf(output.getRate()), "Hz", "\n", getSupportedResolutions());
         }
         if (!dev.isDisplayChangeSupported())
         {

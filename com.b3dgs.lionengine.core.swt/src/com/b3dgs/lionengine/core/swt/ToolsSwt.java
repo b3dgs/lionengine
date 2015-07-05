@@ -273,7 +273,7 @@ public final class ToolsSwt
         final ImageLoader imageLoader = new ImageLoader();
         imageLoader.data = new ImageData[]
         {
-            image.getImageData()
+                image.getImageData()
         };
         imageLoader.save(outputStream, SWT.IMAGE_PNG);
     }

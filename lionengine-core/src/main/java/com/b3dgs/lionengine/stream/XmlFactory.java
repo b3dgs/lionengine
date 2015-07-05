@@ -84,8 +84,7 @@ public final class XmlFactory
             final Element root = document.getDocumentElement();
             return new XmlNodeImpl(document, root);
         }
-        catch (final IOException
-                     | SAXException exception)
+        catch (final IOException | SAXException exception)
         {
             throw new LionEngineException(exception, media, ERROR_READING);
         }
@@ -119,8 +118,7 @@ public final class XmlFactory
                 transformer.transform(source, result);
             }
         }
-        catch (final IOException
-                     | TransformerException exception)
+        catch (final IOException | TransformerException exception)
         {
             throw new LionEngineException(exception, media, ERROR_WRITING);
         }

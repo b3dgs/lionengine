@@ -121,20 +121,21 @@ public class UtilityFileTest
 
         try
         {
-            final String[] dirs = UtilFile.getDirsList(new File(new MediaMock("file").getPath()).getParentFile()
-                    .getAbsolutePath());
+            final String[] dirs = UtilFile
+                    .getDirsList(new File(new MediaMock("file").getPath()).getParentFile().getAbsolutePath());
             Assert.assertEquals(1, dirs.length);
             Assert.assertEquals("bis", dirs[0]);
             Assert.assertEquals(0, UtilFile.getDirsList(UtilFile.getPath("null")).length);
 
-            final String[] files = UtilFile.getFilesList(new File(new MediaMock("file").getPath()).getParentFile()
-                    .getParentFile().getAbsolutePath());
+            final String[] files = UtilFile.getFilesList(
+                    new File(new MediaMock("file").getPath()).getParentFile().getParentFile().getAbsolutePath());
             Assert.assertTrue("Count = " + files.length, files.length >= 25);
             Assert.assertEquals(0, UtilFile.getFilesList(UtilFile.getPath("null")).length);
             Assert.assertEquals(0, UtilFile.getFilesByExtension(UtilFile.getPath("null"), "txt").size());
 
             final File parent = new File(new MediaMock("file").getPath());
-            Assert.assertEquals(2, UtilFile.getFilesByExtension(parent.getParentFile().getAbsolutePath(), "txt").size());
+            Assert.assertEquals(2,
+                    UtilFile.getFilesByExtension(parent.getParentFile().getAbsolutePath(), "txt").size());
             Assert.assertFalse(UtilFile.getFilesByName(parent.getParentFile(), "file").isEmpty());
         }
         catch (final LionEngineException exception)

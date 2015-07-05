@@ -132,10 +132,10 @@ public class MapCollisionImportDialog
     {
         final File file = Tools.selectResourceFile(dialog, true, new String[]
         {
-            Messages.ImportMapCollisionDialog_FormulasConfigFileFilter
+                Messages.ImportMapCollisionDialog_FormulasConfigFileFilter
         }, new String[]
         {
-            "*.xml"
+                "*.xml"
         });
         if (file != null)
         {
@@ -150,10 +150,10 @@ public class MapCollisionImportDialog
     {
         final File file = Tools.selectResourceFile(dialog, true, new String[]
         {
-            Messages.ImportMapCollisionDialog_CollisionsFileFilter
+                Messages.ImportMapCollisionDialog_CollisionsFileFilter
         }, new String[]
         {
-            "*.xml"
+                "*.xml"
         });
         if (file != null)
         {

@@ -359,8 +359,7 @@ public final class ToolsAwt
             final BufferedImage buffer = applyMask(cursor, Color.BLACK.getRGB());
             return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
         }
-        catch (final AWTError
-                     | HeadlessException exception)
+        catch (final AWTError | HeadlessException exception)
         {
             Verbose.exception(ToolsAwt.class, "createHiddenCursor", exception);
             return Cursor.getDefaultCursor();

@@ -133,8 +133,7 @@ public final class Midi
                 sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
             }
         }
-        catch (final InvalidMidiDataException
-                     | MidiUnavailableException exception)
+        catch (final InvalidMidiDataException | MidiUnavailableException exception)
         {
             throw new LionEngineException(exception, "No midi output available !");
         }
@@ -223,8 +222,7 @@ public final class Midi
                     MidiSystem.getReceiver().send(volumeMessage, -1);
                 }
             }
-            catch (MidiUnavailableException
-                   | InvalidMidiDataException exception)
+            catch (final MidiUnavailableException | InvalidMidiDataException exception)
             {
                 return;
             }

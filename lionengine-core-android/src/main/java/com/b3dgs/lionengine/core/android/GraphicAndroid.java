@@ -243,8 +243,8 @@ final class GraphicAndroid
     {
         if (gc != gradientColor)
         {
-            linearGradient = new LinearGradient(gc.getX1(), gc.getY1(), gc.getX2(), gc.getY2(), gc.getColor1()
-                    .getRgba(), gc.getColor2().getRgba(), TileMode.CLAMP);
+            linearGradient = new LinearGradient(gc.getX1(), gc.getY1(), gc.getX2(), gc.getY2(),
+                    gc.getColor1().getRgba(), gc.getColor2().getRgba(), TileMode.CLAMP);
         }
     }
 

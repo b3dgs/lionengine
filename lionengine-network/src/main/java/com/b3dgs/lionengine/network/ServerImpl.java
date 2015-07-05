@@ -151,8 +151,7 @@ final class ServerImpl
             clientsList.put(Byte.valueOf(client.getId()), client);
             clientsNumber++;
         }
-        catch (final IOException
-                     | LionEngineException exception)
+        catch (final IOException | LionEngineException exception)
         {
             Verbose.warning(Server.class, "addClient", "Error on adding client: ", exception.getMessage());
             if (clientsList.remove(Byte.valueOf(lastId)) != null)

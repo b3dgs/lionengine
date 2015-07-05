@@ -92,8 +92,8 @@ public final class UtilityImage
      */
     public static ImageBuffer createImage(int width, int height, Transparency transparency)
     {
-        final ImageBufferSwt buffer = new ImageBufferSwt(ToolsSwt.createImage(width, height,
-                getTransparency(transparency)));
+        final ImageBufferSwt buffer = new ImageBufferSwt(
+                ToolsSwt.createImage(width, height, getTransparency(transparency)));
 
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.BLACK);
@@ -116,8 +116,7 @@ public final class UtilityImage
         {
             return new ImageBufferSwt(ToolsSwt.getImageData(inputStream));
         }
-        catch (final IOException
-                     | SWTException exception)
+        catch (final IOException | SWTException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_READING);
         }
@@ -236,8 +235,7 @@ public final class UtilityImage
         {
             ToolsSwt.saveImage(getBuffer(image), outputStream);
         }
-        catch (final IOException
-                     | SWTException exception)
+        catch (final IOException | SWTException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
         }

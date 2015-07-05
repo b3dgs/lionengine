@@ -93,11 +93,11 @@ public class SheetsEditDialog
         tileSizeArea.setText(Messages.EditSheetsDialog_TileSize);
 
         tileWidthText = UtilSwt.createText(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
-        tileWidthText.addVerifyListener(UtilSwt.createVerify(tileWidthText,
-                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        tileWidthText
+                .addVerifyListener(UtilSwt.createVerify(tileWidthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         tileHeightText = UtilSwt.createText(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
-        tileHeightText.addVerifyListener(UtilSwt.createVerify(tileHeightText,
-                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        tileHeightText
+                .addVerifyListener(UtilSwt.createVerify(tileHeightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
     }
 
     /**

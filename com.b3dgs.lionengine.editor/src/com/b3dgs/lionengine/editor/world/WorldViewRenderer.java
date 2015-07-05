@@ -240,8 +240,9 @@ public class WorldViewRenderer
 
         // Render selected tile
         g.setColor(COLOR_TILE_SELECTED);
-        g.drawRect((int) camera.getViewpointX(selectedTile.getX()), (int) camera.getViewpointY(selectedTile.getY())
-                - th, selectedTile.getWidth(), selectedTile.getHeight(), true);
+        g.drawRect((int) camera.getViewpointX(selectedTile.getX()),
+                (int) camera.getViewpointY(selectedTile.getY()) - th, selectedTile.getWidth(), selectedTile.getHeight(),
+                true);
     }
 
     /**

@@ -287,8 +287,8 @@ public class MapTilePathModel
                     final TilePath tilePath = tile.getFeature(TilePath.class);
                     try
                     {
-                        if (mover.isBlocking(tilePath.getCategory()) || ignoreObjectId != null && ids.size() > 0
-                                && !ids.contains(ignoreObjectId))
+                        if (mover.isBlocking(tilePath.getCategory())
+                                || ignoreObjectId != null && ids.size() > 0 && !ids.contains(ignoreObjectId))
                         {
                             return false;
                         }

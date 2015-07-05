@@ -125,8 +125,8 @@ public class ToolsAwtTest
     @Test
     public void testSave() throws LionEngineException, IOException
     {
-        final BufferedImage image = ToolsAwt.getImage(new MediaAwt(MediaAwt.class.getResource("image.png").getFile())
-                .getInputStream());
+        final BufferedImage image = ToolsAwt
+                .getImage(new MediaAwt(MediaAwt.class.getResource("image.png").getFile()).getInputStream());
         Assert.assertNotNull(image);
 
         final MediaAwt save = new MediaAwt("test");

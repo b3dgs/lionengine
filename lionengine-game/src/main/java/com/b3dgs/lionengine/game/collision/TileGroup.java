@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.game.map.Tile;
  *      {@code<lionengine:tile sheet="0" number="3"/>}
  *    {@code</lionengine:group>}
  * {@code</lionengine:groups>}
- * 
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)

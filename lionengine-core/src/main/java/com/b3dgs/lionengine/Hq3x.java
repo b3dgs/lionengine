@@ -63,8 +63,8 @@ public final class Hq3x
          */
         private static int computeE1(int a, int b, int c, int d, int e, int f)
         {
-            return !RawScale3x.different(d, b) && RawScale3x.different(e, c) || !RawScale3x.different(b, f)
-                    && RawScale3x.different(e, a) ? b : e;
+            return !RawScale3x.different(d, b) && RawScale3x.different(e, c)
+                    || !RawScale3x.different(b, f) && RawScale3x.different(e, a) ? b : e;
         }
 
         /**
@@ -93,8 +93,8 @@ public final class Hq3x
          */
         private static int computeE3(int a, int b, int d, int e, int g, int h)
         {
-            return !RawScale3x.different(d, b) && RawScale3x.different(e, g) || !RawScale3x.different(d, h)
-                    && RawScale3x.different(e, a) ? d : e;
+            return !RawScale3x.different(d, b) && RawScale3x.different(e, g)
+                    || !RawScale3x.different(d, h) && RawScale3x.different(e, a) ? d : e;
         }
 
         /**
@@ -110,8 +110,8 @@ public final class Hq3x
          */
         private static int computeE5(int b, int c, int e, int f, int h, int i)
         {
-            return !RawScale3x.different(b, f) && RawScale3x.different(e, i) || !RawScale3x.different(h, f)
-                    && RawScale3x.different(e, c) ? f : e;
+            return !RawScale3x.different(b, f) && RawScale3x.different(e, i)
+                    || !RawScale3x.different(h, f) && RawScale3x.different(e, c) ? f : e;
         }
 
         /**
@@ -140,8 +140,8 @@ public final class Hq3x
          */
         private static int computeE7(int d, int e, int f, int g, int h, int i)
         {
-            return !RawScale3x.different(d, h) && RawScale3x.different(e, i) || !RawScale3x.different(h, f)
-                    && RawScale3x.different(e, g) ? h : e;
+            return !RawScale3x.different(d, h) && RawScale3x.different(e, i)
+                    || !RawScale3x.different(h, f) && RawScale3x.different(e, g) ? h : e;
         }
 
         /**

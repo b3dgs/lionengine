@@ -200,8 +200,8 @@ public final class ImageInfo
      * @throws IOException If an error occurred.
      * @throws LionEngineException If image has an invalid format.
      */
-    private void checkFormat(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException,
-            LionEngineException
+    private void checkFormat(InputStream inputStream, int byte1, int byte2, int byte3)
+            throws IOException, LionEngineException
     {
         if (!checkGif(inputStream, byte1, byte2, byte3))
         {
@@ -308,8 +308,8 @@ public final class ImageInfo
      * @throws IOException If an error occurred.
      * @throws LionEngineException If image has an invalid format.
      */
-    private void checkTiff(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException,
-            LionEngineException
+    private void checkTiff(InputStream inputStream, int byte1, int byte2, int byte3)
+            throws IOException, LionEngineException
     {
         final int byte4 = inputStream.read();
         final boolean tiff1 = 'M' == byte1 && 'M' == byte2 && 0 == byte3 && 42 == byte4;

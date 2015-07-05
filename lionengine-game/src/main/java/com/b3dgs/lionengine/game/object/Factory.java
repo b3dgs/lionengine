@@ -67,8 +67,8 @@ public class Factory
      * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
      * @throws NoSuchMethodException If constructor has not been found.
      */
-    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params) throws LionEngineException,
-            NoSuchMethodException
+    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params)
+            throws LionEngineException, NoSuchMethodException
     {
         Check.notNull(type);
         try
@@ -91,8 +91,7 @@ public class Factory
         {
             throw exception;
         }
-        catch (final ReflectiveOperationException
-                     | IllegalArgumentException exception)
+        catch (final ReflectiveOperationException | IllegalArgumentException exception)
         {
             throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
         }
@@ -208,7 +207,7 @@ public class Factory
             final Class<?> setupClass = classLoader.loadClass(configObject.getSetupName());
             return create(setupClass, new Class<?>[]
             {
-                Media.class
+                    Media.class
             }, media);
         }
         catch (final ClassNotFoundException exception)

@@ -228,7 +228,7 @@ public final class Tools
         fileDialog.setFilterPath(Project.getActive().getClassesPath().getAbsolutePath());
         fileDialog.setFilterExtensions(new String[]
         {
-            "*.class"
+                "*.class"
         });
         final String file = fileDialog.open();
         if (file != null)

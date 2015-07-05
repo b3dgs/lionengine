@@ -373,10 +373,9 @@ public abstract class ObjectList<T extends Nameable>
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final InputDialog inputDialog = new InputDialog(toolbar.getShell(),
-                        Messages.ObjectList_AddObject_Title, Messages.ObjectList_AddObject_Text,
-                        ObjectList.DEFAULT_NEW_OBJECT_NAME, new InputValidator(InputValidator.NAME_MATCH,
-                                Messages.InputValidator_Error_Name));
+                final InputDialog inputDialog = new InputDialog(toolbar.getShell(), Messages.ObjectList_AddObject_Title,
+                        Messages.ObjectList_AddObject_Text, ObjectList.DEFAULT_NEW_OBJECT_NAME,
+                        new InputValidator(InputValidator.NAME_MATCH, Messages.InputValidator_Error_Name));
                 if (inputDialog.open() == Window.OK)
                 {
                     final String name = inputDialog.getValue();

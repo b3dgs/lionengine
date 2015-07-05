@@ -55,6 +55,7 @@ public class ImageBufferAwtTest
 
         Assert.assertEquals(Transparency.OPAQUE, ImageBufferAwt.getTransparency(java.awt.Transparency.OPAQUE));
         Assert.assertEquals(Transparency.BITMASK, ImageBufferAwt.getTransparency(java.awt.Transparency.BITMASK));
-        Assert.assertEquals(Transparency.TRANSLUCENT, ImageBufferAwt.getTransparency(java.awt.Transparency.TRANSLUCENT));
+        Assert.assertEquals(Transparency.TRANSLUCENT,
+                ImageBufferAwt.getTransparency(java.awt.Transparency.TRANSLUCENT));
     }
 }

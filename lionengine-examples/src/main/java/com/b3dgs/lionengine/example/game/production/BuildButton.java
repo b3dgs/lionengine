@@ -159,8 +159,8 @@ class BuildButton
         state.update(extrp);
         if (area != null)
         {
-            area.set(cursor.getInTileX() * cursor.getWidth(), cursor.getInTileY() * cursor.getHeight(),
-                    area.getWidth(), area.getHeight());
+            area.set(cursor.getInTileX() * cursor.getWidth(), cursor.getInTileY() * cursor.getHeight(), area.getWidth(),
+                    area.getHeight());
         }
     }
 
@@ -171,8 +171,8 @@ class BuildButton
         if (area != null)
         {
             g.setColor(ColorRgba.GREEN);
-            g.drawRect(viewer, Origin.TOP_LEFT, area.getX(), area.getY(), (int) area.getWidth(),
-                    (int) area.getHeight(), false);
+            g.drawRect(viewer, Origin.TOP_LEFT, area.getX(), area.getY(), (int) area.getWidth(), (int) area.getHeight(),
+                    false);
         }
     }
 }

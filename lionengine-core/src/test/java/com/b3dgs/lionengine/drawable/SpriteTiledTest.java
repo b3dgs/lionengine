@@ -25,6 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -70,8 +71,8 @@ public class SpriteTiledTest
         final int width = 16;
         final int height = 16;
         final int tileSize = 1;
-        final SpriteTiled spriteA = Drawable.loadSpriteTiled(
-                Graphics.createImageBuffer(width, height, Transparency.OPAQUE), tileSize, tileSize);
+        final ImageBuffer buffer = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
+        final SpriteTiled spriteA = Drawable.loadSpriteTiled(buffer, tileSize, tileSize);
 
         Assert.assertNotNull(spriteA.getSurface());
         Assert.assertEquals(tileSize, spriteA.getTileWidth());

@@ -167,8 +167,7 @@ public enum Verbose
                 handler.setFormatter(formatter);
             }
         }
-        catch (final SecurityException
-                     | IOException exception)
+        catch (final SecurityException | IOException exception)
         {
             critical(Verbose.class, "start", ERROR_FORMATTER);
         }

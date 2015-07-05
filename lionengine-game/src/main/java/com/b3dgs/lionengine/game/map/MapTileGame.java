@@ -374,7 +374,7 @@ public class MapTileGame
         {
             final F instance = Factory.create(feature, new Class<?>[]
             {
-                Services.class
+                    Services.class
             }, services);
             services.add(instance);
             addFeature(instance);

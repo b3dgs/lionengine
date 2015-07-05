@@ -133,8 +133,8 @@ class Ship
      */
     private void pointTarget()
     {
-        final int angle = (int) StrictMath.toDegrees(Math.atan((transformable.getX() - target.getX())
-                / (target.getY() - transformable.getY())));
+        final int angle = (int) StrictMath
+                .toDegrees(Math.atan((transformable.getX() - target.getX()) / (target.getY() - transformable.getY())));
         if (sprite.getMirror() == Mirror.NONE)
         {
             sprite.rotate(-angle + 180);

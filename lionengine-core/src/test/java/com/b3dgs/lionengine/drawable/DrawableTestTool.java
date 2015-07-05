@@ -213,8 +213,8 @@ public class DrawableTestTool
     {
         try
         {
-            final SpriteTiled sprite = Drawable.loadSpriteTiled(
-                    Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), tw, th);
+            final ImageBuffer buffer = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
+            final SpriteTiled sprite = Drawable.loadSpriteTiled(buffer, tw, th);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }
@@ -245,8 +245,8 @@ public class DrawableTestTool
     {
         try
         {
-            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(
-                    Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), hf, vf);
+            final SpriteAnimated sprite = Drawable
+                    .loadSpriteAnimated(Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), hf, vf);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }

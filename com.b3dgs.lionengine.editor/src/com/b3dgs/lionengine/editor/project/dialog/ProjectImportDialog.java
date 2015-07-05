@@ -287,8 +287,7 @@ public class ProjectImportDialog
                 projectResourcesText.setEditable(true);
                 projectResourcesBrowse.setEnabled(true);
             }
-            catch (final LionEngineException
-                         | IOException exception)
+            catch (final LionEngineException | IOException exception)
             {
                 setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportProjectDialog_InvalidImport);
                 tipsLabel.setVisible(true);

@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -217,8 +218,8 @@ public class WorldViewPart
      */
     private WorldViewUpdater checkUpdaterExtensionPoint(Services services)
     {
-        final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
-                WorldViewUpdater.EXTENSION_ID);
+        final IExtensionRegistry registry = Platform.getExtensionRegistry();
+        final IConfigurationElement[] elements = registry.getConfigurationElementsFor(WorldViewUpdater.EXTENSION_ID);
         if (elements.length > 0)
         {
             final String renderer = elements[0].getAttribute(EXTENSION_UPDATER);
@@ -245,8 +246,8 @@ public class WorldViewPart
      */
     private WorldViewRenderer checkRendererExtensionPoint(Services services)
     {
-        final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
-                WorldViewRenderer.EXTENSION_ID);
+        final IExtensionRegistry registry = Platform.getExtensionRegistry();
+        final IConfigurationElement[] elements = registry.getConfigurationElementsFor(WorldViewRenderer.EXTENSION_ID);
         if (elements.length > 0)
         {
             final String renderer = elements[0].getAttribute(EXTENSION_RENDERER);

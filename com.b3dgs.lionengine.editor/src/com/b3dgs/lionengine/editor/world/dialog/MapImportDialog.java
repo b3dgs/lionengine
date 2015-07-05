@@ -96,10 +96,10 @@ public class MapImportDialog
     {
         final File file = Tools.selectResourceFile(dialog, true, new String[]
         {
-            Messages.ImportMapDialog_LevelRipFileFilter
+                Messages.ImportMapDialog_LevelRipFileFilter
         }, new String[]
         {
-            "*.bmp;*.png"
+                "*.bmp;*.png"
         });
         if (file != null)
         {
@@ -114,10 +114,10 @@ public class MapImportDialog
     {
         final File file = Tools.selectResourceFile(dialog, true, new String[]
         {
-            Messages.ImportMapDialog_SheetsConfigFileFilter
+                Messages.ImportMapDialog_SheetsConfigFileFilter
         }, new String[]
         {
-            "*.xml"
+                "*.xml"
         });
         if (file != null)
         {
@@ -132,10 +132,10 @@ public class MapImportDialog
     {
         final File file = Tools.selectResourceFile(dialog, true, new String[]
         {
-            Messages.ImportMapDialog_GroupsConfigFileFilter
+                Messages.ImportMapDialog_GroupsConfigFileFilter
         }, new String[]
         {
-            "*.xml"
+                "*.xml"
         });
         if (file != null)
         {

@@ -146,8 +146,8 @@ public class PropertiesPart
 
         providersObject = checkPropertiesExtensionPoint(PropertiesProviderObject.class,
                 PropertiesProviderObject.EXTENSION_ID, PropertiesProviderObject.EXTENSION_PROPERTIES);
-        providersTile = checkPropertiesExtensionPoint(PropertiesProviderTile.class,
-                PropertiesProviderTile.EXTENSION_ID, PropertiesProviderTile.EXTENSION_PROPERTIES);
+        providersTile = checkPropertiesExtensionPoint(PropertiesProviderTile.class, PropertiesProviderTile.EXTENSION_ID,
+                PropertiesProviderTile.EXTENSION_PROPERTIES);
     }
 
     /**

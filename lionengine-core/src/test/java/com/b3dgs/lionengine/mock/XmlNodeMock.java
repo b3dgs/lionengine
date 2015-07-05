@@ -60,7 +60,7 @@ public final class XmlNodeMock
     {
         // Nothing to do
     }
-    
+
     @Override
     public XmlNode createChild(String child)
     {

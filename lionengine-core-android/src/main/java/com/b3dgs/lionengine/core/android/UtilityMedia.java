@@ -44,6 +44,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * final Media media = Media.get(&quot;img&quot;, &quot;image.png&quot;);
  * System.out.println(media.getPath()); // print: resources/img/image.png
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

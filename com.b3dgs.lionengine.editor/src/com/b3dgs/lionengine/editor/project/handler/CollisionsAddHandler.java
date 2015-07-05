@@ -75,8 +75,9 @@ public class CollisionsAddHandler
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final InputDialog inputDialog = new InputDialog(parent, Messages.AddCollisions_Title,
-                Messages.AddCollisions_Text, MapTileCollision.DEFAULT_COLLISIONS_FILE.replace("."
-                        + Factory.FILE_DATA_EXTENSION, ""), new InputValidator(InputValidator.NAME_MATCH,
+                Messages.AddCollisions_Text,
+                MapTileCollision.DEFAULT_COLLISIONS_FILE.replace("." + Factory.FILE_DATA_EXTENSION, ""),
+                new InputValidator(InputValidator.NAME_MATCH,
                         com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         final int code = inputDialog.open();
         if (code == Window.OK)

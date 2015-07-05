@@ -62,6 +62,7 @@ import com.b3dgs.lionengine.core.Verbose;
  *     }
  * }
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

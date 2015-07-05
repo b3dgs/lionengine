@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
@@ -74,8 +75,8 @@ public class SpriteAnimatedTest
     @Test
     public void testSpriteAnimated()
     {
-        final SpriteAnimated spriteA = Drawable.loadSpriteAnimated(
-                Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), 1, 1);
+        final ImageBuffer buffer = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
+        final SpriteAnimated spriteA = Drawable.loadSpriteAnimated(buffer, 1, 1);
 
         Assert.assertNotNull(spriteA.getSurface());
 
@@ -83,20 +84,20 @@ public class SpriteAnimatedTest
         final Animation animation = Anim.createAnimation(null, 1, 6, 1.0, false, false);
 
         // Load from file
-        final int frameHorizontal = 4;
-        final int frameVertical = 2;
-        final SpriteAnimated spriteC = Drawable.loadSpriteAnimated(MEDIA, frameHorizontal, frameVertical);
+        final int framesH = 4;
+        final int framesV = 2;
+        final SpriteAnimated spriteC = Drawable.loadSpriteAnimated(MEDIA, framesH, framesV);
         final ImageInfo info = DrawableTestTool.assertImageInfoCorrect(MEDIA, spriteC);
 
-        Assert.assertEquals(info.getWidth() / frameHorizontal, spriteC.getFrameWidth());
-        Assert.assertEquals(info.getHeight() / frameVertical, spriteC.getFrameHeight());
+        Assert.assertEquals(info.getWidth() / framesH, spriteC.getFrameWidth());
+        Assert.assertEquals(info.getHeight() / framesV, spriteC.getFrameHeight());
 
         DrawableTestTool.testSpriteLoading(spriteC);
         DrawableTestTool.testSpriteModification(2, spriteA);
 
         // Equals
-        final SpriteAnimated spriteD = Drawable.loadSpriteAnimated(MEDIA, frameHorizontal, frameVertical);
-        final SpriteAnimated spriteE = Drawable.loadSpriteAnimated(MEDIA, frameHorizontal + 2, frameVertical + 1);
+        final SpriteAnimated spriteD = Drawable.loadSpriteAnimated(MEDIA, framesH, framesV);
+        final SpriteAnimated spriteE = Drawable.loadSpriteAnimated(MEDIA, framesH + 2, framesV + 1);
         spriteD.load();
         spriteD.prepare();
         spriteE.load();
@@ -114,8 +115,7 @@ public class SpriteAnimatedTest
         spriteD.setMirror(Mirror.VERTICAL);
         Assert.assertTrue(hash != spriteD.hashCode());
         Assert.assertFalse(spriteD.equals(spriteE));
-        final SpriteAnimated spriteF = Drawable
-                .loadSpriteAnimated(spriteD.getSurface(), frameHorizontal, frameVertical);
+        final SpriteAnimated spriteF = Drawable.loadSpriteAnimated(spriteD.getSurface(), framesH, framesV);
         Assert.assertTrue(spriteD.equals(spriteF));
 
         try
@@ -162,6 +162,6 @@ public class SpriteAnimatedTest
         Assert.assertEquals(1, spriteA.getFrameAnim());
         Assert.assertEquals(AnimState.STOPPED, spriteA.getAnimState());
 
-        Assert.assertFalse(spriteC.equals(Drawable.loadSpriteAnimated(MEDIA, frameHorizontal, frameVertical)));
+        Assert.assertFalse(spriteC.equals(Drawable.loadSpriteAnimated(MEDIA, framesH, framesV)));
     }
 }

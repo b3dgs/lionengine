@@ -111,7 +111,7 @@ public class Services
         {
             final S instance = Factory.create(service, new Class<?>[]
             {
-                Services.class
+                    Services.class
             }, this);
             return add(instance);
         }

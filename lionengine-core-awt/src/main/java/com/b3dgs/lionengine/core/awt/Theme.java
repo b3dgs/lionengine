@@ -81,8 +81,7 @@ public enum Theme
         {
             UIManager.setLookAndFeel(lookAndFeel);
         }
-        catch (final ReflectiveOperationException
-                     | UnsupportedLookAndFeelException exception)
+        catch (final ReflectiveOperationException | UnsupportedLookAndFeelException exception)
         {
             throw new LionEngineException(exception, Theme.MESSAGE_ERROR_SET);
         }

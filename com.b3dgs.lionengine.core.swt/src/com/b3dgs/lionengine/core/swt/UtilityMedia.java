@@ -42,6 +42,7 @@ import com.b3dgs.lionengine.core.Medias;
  * final Media media = Media.get(&quot;img&quot;, &quot;image.png&quot;);
  * System.out.println(media.getPath()); // print: resources/img/image.png
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -180,8 +181,7 @@ public final class UtilityMedia
             {
                 return true;
             }
-            catch (final LionEngineException
-                         | IOException exception)
+            catch (final LionEngineException | IOException exception)
             {
                 return false;
             }

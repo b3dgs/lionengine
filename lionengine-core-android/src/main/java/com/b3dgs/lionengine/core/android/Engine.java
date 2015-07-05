@@ -55,6 +55,7 @@ import com.b3dgs.lionengine.core.EngineCore;
  *     }
  * }
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

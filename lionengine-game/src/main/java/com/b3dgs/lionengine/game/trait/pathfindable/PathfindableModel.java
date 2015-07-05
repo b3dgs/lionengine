@@ -488,8 +488,8 @@ public class PathfindableModel
         viewer = services.get(Viewer.class);
         mapPath = map.getFeature(MapTilePath.class);
         id = owner.getId();
-        final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth() + map.getInTileHeight()
-                * map.getInTileHeight());
+        final int range = (int) Math
+                .sqrt(map.getInTileWidth() * map.getInTileWidth() + map.getInTileHeight() * map.getInTileHeight());
         pathfinder = Astar.createPathFinder(map, range, true, Astar.createHeuristicClosest());
         categories = ConfigPathfindable.create(owner.getConfigurer());
 

@@ -64,8 +64,8 @@ public class SheetsAddHandler
         {
             if (line.contains(Tools.TEMPLATE_SHEETS_WIDTH) && line.contains(Tools.TEMPLATE_SHEETS_HEIGHT))
             {
-                dest.add(line.replace(Tools.TEMPLATE_SHEETS_WIDTH, DEFAULT_TILE_SIZE).replace(
-                        Tools.TEMPLATE_SHEETS_HEIGHT, DEFAULT_TILE_SIZE));
+                dest.add(line.replace(Tools.TEMPLATE_SHEETS_WIDTH, DEFAULT_TILE_SIZE)
+                        .replace(Tools.TEMPLATE_SHEETS_HEIGHT, DEFAULT_TILE_SIZE));
             }
             else
             {

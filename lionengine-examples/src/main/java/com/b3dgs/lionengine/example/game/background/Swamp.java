@@ -140,8 +140,8 @@ class Swamp
         {
             backcolor.setOffsetY(y);
             moon.setOffsetY(-20 - moonOffset + getOffsetY());
-            mountain.setOffsetX(UtilMath.wrapDouble(mountain.getOffsetX() + speed * 0.24, 0.0,
-                    mountainSprite.getWidth()));
+            mountain.setOffsetX(
+                    UtilMath.wrapDouble(mountain.getOffsetX() + speed * 0.24, 0.0, mountainSprite.getWidth()));
             mountain.setOffsetY(y);
         }
 

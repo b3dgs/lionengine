@@ -99,8 +99,8 @@ public class Minimap
     {
         if (minimap == null)
         {
-            minimap = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), alpha
-                    ? Transparency.TRANSLUCENT : Transparency.OPAQUE);
+            minimap = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(),
+                    alpha ? Transparency.TRANSLUCENT : Transparency.OPAQUE);
         }
         final Graphic g = minimap.createGraphic();
         final int vert = map.getInTileHeight();

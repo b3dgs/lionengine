@@ -43,8 +43,7 @@ public class ResolutionTest
             Assert.assertNotNull(resolution);
             Assert.fail();
         }
-        catch (final IllegalArgumentException
-                     | LionEngineException exception)
+        catch (final IllegalArgumentException | LionEngineException exception)
         {
             // Success
         }

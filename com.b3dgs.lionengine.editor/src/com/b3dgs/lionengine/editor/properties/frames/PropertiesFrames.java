@@ -85,8 +85,8 @@ public class PropertiesFrames
     private static boolean updateFrames(TreeItem item, Configurer configurer)
     {
         final InputDialog frames = new InputDialog(item.getParent().getShell(), Messages.Properties_Frames_Title,
-                Messages.Properties_Frames_Message, item.getText(1), new InputValidator(
-                        InputValidator.INTEGER_POSITIVE_STRICT_MATCH, Messages.Properties_Frames_Error));
+                Messages.Properties_Frames_Message, item.getText(1),
+                new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, Messages.Properties_Frames_Error));
         if (frames.open() == Window.OK)
         {
             final XmlNode root = configurer.getRoot();
@@ -110,8 +110,8 @@ public class PropertiesFrames
     public static void updateSize(Configurer configurer, XmlNode root, XmlNode framesNode)
     {
         final XmlNode size;
-        final File file = new File(configurer.getPath(), root.getChild(ConfigSurface.SURFACE).readString(
-                ConfigSurface.SURFACE_IMAGE));
+        final File file = new File(configurer.getPath(),
+                root.getChild(ConfigSurface.SURFACE).readString(ConfigSurface.SURFACE_IMAGE));
         final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(file));
         if (!root.hasChild(ConfigSize.SIZE))
         {
