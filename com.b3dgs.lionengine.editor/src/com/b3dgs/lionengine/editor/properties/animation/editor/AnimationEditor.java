@@ -48,7 +48,7 @@ public class AnimationEditor
     /** Configurer reference. */
     private final Configurer configurer;
     /** Animations list. */
-    private final AnimationList animationList;
+    private AnimationList animationList;
 
     /**
      * Create an animation editor and associate its configurer.
@@ -60,7 +60,6 @@ public class AnimationEditor
     {
         super(parent, Messages.AnimationEditor_Title, ICON);
         this.configurer = configurer;
-        animationList = new AnimationList(configurer);
     }
 
     /**
@@ -131,7 +130,8 @@ public class AnimationEditor
         final AnimationFrameSelector animationFrameSelector = createAnimationFrameSelector(animationTabs);
         final AnimationRenderer animationRenderer = createAnimationRenderer(animationTabs);
 
-        final AnimationProperties animationProperties = new AnimationProperties(animationList, animationRenderer);
+        final AnimationProperties animationProperties = new AnimationProperties(animationRenderer);
+        animationList = new AnimationList(configurer, animationProperties);
         animationList.addListener(animationProperties);
         final AnimationPlayer animationPlayer = new AnimationPlayer(animationList, animationRenderer);
         animationPlayer.createAnimationPlayer(animationRenderer.getParent().getParent());
@@ -153,6 +153,7 @@ public class AnimationEditor
     @Override
     protected void onExit()
     {
+        animationList.save();
         final XmlNode root = configurer.getRoot();
         root.removeChildren(ConfigAnimations.ANIMATION);
         for (final TreeItem item : animationList.getTree().getItems())

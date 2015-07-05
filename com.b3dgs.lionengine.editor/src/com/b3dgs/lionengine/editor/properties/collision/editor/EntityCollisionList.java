@@ -39,10 +39,11 @@ public class EntityCollisionList
      * Create an entity collision list and associate its configurer and properties.
      * 
      * @param configurer The configurer reference.
+     * @param properties The properties reference.
      */
-    public EntityCollisionList(Configurer configurer)
+    public EntityCollisionList(Configurer configurer, EntityCollisionProperties properties)
     {
-        super(Collision.class);
+        super(Collision.class, properties);
         this.configurer = configurer;
     }
 

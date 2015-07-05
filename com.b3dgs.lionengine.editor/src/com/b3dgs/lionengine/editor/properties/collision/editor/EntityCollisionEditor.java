@@ -45,6 +45,8 @@ public class EntityCollisionEditor
 
     /** Configurer reference. */
     private final Configurer configurer;
+    /** Properties. */
+    private final EntityCollisionProperties entityCollisionProperties = new EntityCollisionProperties();
     /** Collisions list. */
     private final EntityCollisionList entityCollisionList;
 
@@ -58,7 +60,7 @@ public class EntityCollisionEditor
     {
         super(parent, EntityCollisionEditor.DIALOG_TITLE, ICON);
         this.configurer = configurer;
-        entityCollisionList = new EntityCollisionList(configurer);
+        entityCollisionList = new EntityCollisionList(configurer, entityCollisionProperties);
     }
 
     /*
@@ -71,7 +73,6 @@ public class EntityCollisionEditor
         final Composite content = new Composite(parent, SWT.NONE);
         content.setLayout(new GridLayout(2, false));
 
-        final EntityCollisionProperties entityCollisionProperties = new EntityCollisionProperties(entityCollisionList);
         entityCollisionList.addListener(entityCollisionProperties);
 
         entityCollisionList.create(content);
@@ -83,6 +84,7 @@ public class EntityCollisionEditor
     @Override
     protected void onExit()
     {
+        entityCollisionList.save();
         final XmlNode root = configurer.getRoot();
         root.removeChildren(ConfigCollisions.COLLISION);
         for (final TreeItem item : entityCollisionList.getTree().getItems())

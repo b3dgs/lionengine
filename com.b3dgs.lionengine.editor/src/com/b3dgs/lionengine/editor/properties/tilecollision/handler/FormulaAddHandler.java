@@ -19,14 +19,11 @@ package com.b3dgs.lionengine.editor.properties.tilecollision.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Tree;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.properties.PropertiesPart;
-import com.b3dgs.lionengine.editor.properties.tilecollision.dialog.TileCollisionEditor;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.map.TileCollision;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.editor.project.dialog.formula.FormulasEditDialog;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 
 /**
  * Add formula handler.
@@ -44,18 +41,9 @@ public class FormulaAddHandler
     @SuppressWarnings("static-method")
     public void execute(Shell parent)
     {
-        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
-        final Tree properties = part.getTree();
-        final TileGame tile = (TileGame) properties.getData();
-        final TileCollision tileCollision = tile.getFeature(TileCollision.class);
-
-        final TileCollisionEditor dialog = new TileCollisionEditor(parent);
-        dialog.create();
-        dialog.openAndWait();
-
-        final CollisionFormula formula = dialog.getFormula();
-        tileCollision.addCollisionFormula(formula);
-
-        part.setInput(properties, tile);
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
+        final FormulasEditDialog dialog = new FormulasEditDialog(parent, mapCollision.getFormulasConfig());
+        dialog.open();
     }
 }

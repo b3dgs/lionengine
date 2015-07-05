@@ -44,12 +44,10 @@ public class CollisionsProperties
 
     /**
      * Create collisions properties.
-     * 
-     * @param list The list reference.
      */
-    public CollisionsProperties(CollisionList list)
+    public CollisionsProperties()
     {
-        super(list);
+        super();
     }
 
     /**

@@ -32,12 +32,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupsEditDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Represents the tile group chooser.
@@ -87,12 +91,21 @@ public class GroupChooser
      */
     void loadGroups(String[] groups)
     {
+        UtilSwt.registerDirty(combo, false);
         Arrays.sort(groups);
         combo.setItems(groups);
-        if (groups.length > 0)
+
+        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        final Tile tile = part.getUpdater().getSelectedTile();
+        if (tile != null && tile.getGroup() != null)
+        {
+            combo.setText(tile.getGroup());
+        }
+        else if (groups.length > 0)
         {
             combo.setText(groups[0]);
         }
+        UtilSwt.registerDirty(combo, true);
     }
 
     /*
@@ -125,7 +138,10 @@ public class GroupChooser
 
                 final Collection<TileGroup> groups = map.getGroups();
                 final Collection<String> values = new ArrayList<>();
-                values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
+                if (!groups.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
+                {
+                    values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
+                }
                 for (final TileGroup group : groups)
                 {
                     values.add(group.getName());

@@ -44,6 +44,8 @@ public class CollisionCategoryEditor
 
     /** Configurer reference. */
     private final Configurer configurer;
+    /** Properties. */
+    private final CollisionCategoryProperties categoryProperties = new CollisionCategoryProperties();
     /** Collision category list. */
     private final CollisionCategoryList categoryList;
 
@@ -57,7 +59,7 @@ public class CollisionCategoryEditor
     {
         super(parent, Messages.CollisionCategoryEditor_Title, ICON);
         this.configurer = configurer;
-        categoryList = new CollisionCategoryList(configurer);
+        categoryList = new CollisionCategoryList(configurer, categoryProperties);
     }
 
     /*
@@ -67,7 +69,6 @@ public class CollisionCategoryEditor
     @Override
     protected void createContent(Composite parent)
     {
-        final CollisionCategoryProperties categoryProperties = new CollisionCategoryProperties(categoryList);
         categoryList.addListener(categoryProperties);
 
         final Composite properties = new Composite(parent, SWT.NONE);
@@ -82,6 +83,7 @@ public class CollisionCategoryEditor
     @Override
     protected void onExit()
     {
+        categoryList.save();
         final XmlNode root = configurer.getRoot();
         root.removeChildren(ConfigCollisionCategory.CATEGORY);
         for (final TreeItem item : categoryList.getTree().getItems())

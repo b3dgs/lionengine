@@ -58,8 +58,12 @@ public abstract class ObjectList<T extends Nameable>
     final Collection<ObjectListListener<T>> listeners = new ArrayList<>();
     /** Class type. */
     final Class<T> type;
+    /** Properties. */
+    final ObjectProperties<T> properties;
     /** Objects list. */
     Tree objectsTree;
+    /** Selected item. */
+    TreeItem selectedItem;
     /** Selected data. */
     T selectedObject;
     /** Selected data backup. */
@@ -72,7 +76,19 @@ public abstract class ObjectList<T extends Nameable>
      */
     public ObjectList(Class<T> type)
     {
+        this(type, null);
+    }
+
+    /**
+     * Create an object list.
+     * 
+     * @param type The list class type.
+     * @param properties The properties reference.
+     */
+    public ObjectList(Class<T> type, ObjectProperties<T> properties)
+    {
         this.type = type;
+        this.properties = properties;
     }
 
     /**
@@ -141,17 +157,21 @@ public abstract class ObjectList<T extends Nameable>
     public void createTree(final Composite parent)
     {
         objectsTree = new Tree(parent, SWT.SINGLE);
-        objectsTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        final GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+        data.minimumWidth = 128;
+        data.minimumHeight = 96;
+        objectsTree.setLayoutData(data);
         objectsTree.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
+                save();
                 final TreeItem[] items = objectsTree.getSelection();
                 if (items.length > 0)
                 {
-                    final TreeItem selection = items[0];
-                    final Object data = selection.getData();
+                    selectedItem = items[0];
+                    final Object data = selectedItem.getData();
                     if (instanceOf(data))
                     {
                         setSelectedObject(cast(data));
@@ -159,7 +179,7 @@ public abstract class ObjectList<T extends Nameable>
                     else
                     {
                         final T object = createObject("default");
-                        selection.setData(object);
+                        selectedItem.setData(object);
                         setSelectedObject(object);
                     }
                 }
@@ -268,6 +288,17 @@ public abstract class ObjectList<T extends Nameable>
     }
 
     /**
+     * Save current element.
+     */
+    public void save()
+    {
+        if (properties != null && selectedItem != null)
+        {
+            update(selectedItem, properties.createObject(selectedItem.getText()));
+        }
+    }
+
+    /**
      * Check if the object is an instance of the handled type.
      * 
      * @param object The object to check.
@@ -304,6 +335,7 @@ public abstract class ObjectList<T extends Nameable>
             item.setData(object);
             if (!selected)
             {
+                selectedItem = item;
                 objectsTree.setSelection(item);
                 objectsTree.forceFocus();
                 setSelectedObject(object);
@@ -351,6 +383,8 @@ public abstract class ObjectList<T extends Nameable>
                     final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
                     item.setText(name);
                     item.setData(createObject(name));
+
+                    UtilSwt.setDirty(toolbar.getShell(), true);
                 }
             }
         });
@@ -361,7 +395,7 @@ public abstract class ObjectList<T extends Nameable>
      * 
      * @param toolbar The tool bar reference.
      */
-    private void createRemoveObjectToolItem(ToolBar toolbar)
+    private void createRemoveObjectToolItem(final ToolBar toolbar)
     {
         final ToolItem removeObject = new ToolItem(toolbar, SWT.PUSH);
         removeObject.setImage(ObjectList.ICON_REMOVE);
@@ -379,6 +413,8 @@ public abstract class ObjectList<T extends Nameable>
                     item.dispose();
                 }
                 objectsTree.layout(true, true);
+
+                UtilSwt.setDirty(toolbar.getShell(), true);
             }
         });
     }

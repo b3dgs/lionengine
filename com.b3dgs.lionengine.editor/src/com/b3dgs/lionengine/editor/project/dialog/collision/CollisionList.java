@@ -79,6 +79,16 @@ public class CollisionList
     }
 
     /**
+     * Create the collision list.
+     * 
+     * @param properties The properties reference.
+     */
+    public CollisionList(CollisionsProperties properties)
+    {
+        super(CollisionGroup.class, properties);
+    }
+
+    /**
      * Load the existing collisions from the object configurer.
      * 
      * @param config The config file.

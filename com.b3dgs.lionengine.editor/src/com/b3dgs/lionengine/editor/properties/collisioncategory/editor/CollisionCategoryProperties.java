@@ -55,12 +55,10 @@ public class CollisionCategoryProperties
 
     /**
      * Create a collision category properties.
-     * 
-     * @param list The list reference.
      */
-    public CollisionCategoryProperties(CollisionCategoryList list)
+    public CollisionCategoryProperties()
     {
-        super(list);
+        super();
         groups = new CollisionList();
     }
 

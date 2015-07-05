@@ -60,6 +60,21 @@ public class FormulasProperties
     private static final String ERROR_TYPE = "Unknown collision function type: ";
 
     /**
+     * Create the constraints list.
+     * 
+     * @param title The constraints type.
+     * @param list The current list.
+     * @param parent The parent composite.
+     * @return The constraints list.
+     */
+    private static GroupList createConstraintsList(String title, GroupList list, Composite parent)
+    {
+        list.create(parent);
+        ((Group) list.getTree().getParent()).setText(title);
+        return list;
+    }
+
+    /**
      * Add groups to constraint.
      * 
      * @param constraint The constraint reference.
@@ -124,12 +139,10 @@ public class FormulasProperties
 
     /**
      * Create formulas properties.
-     * 
-     * @param list The list reference.
      */
-    public FormulasProperties(FormulaList list)
+    public FormulasProperties()
     {
-        super(list);
+        super();
     }
 
     /**
@@ -251,11 +264,12 @@ public class FormulasProperties
     private void createTextConstraint(Composite parent)
     {
         final Composite constraintArea = new Composite(parent, SWT.NONE);
-        constraintArea.setLayout(new GridLayout(2, true));
-        constraintsTop.create(constraintArea);
-        constraintsBottom.create(constraintArea);
-        constraintsRight.create(constraintArea);
-        constraintsLeft.create(constraintArea);
+        constraintArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        constraintArea.setLayout(new GridLayout(4, true));
+        createConstraintsList(Orientation.NORTH.name(), constraintsTop, constraintArea);
+        createConstraintsList(Orientation.SOUTH.name(), constraintsBottom, constraintArea);
+        createConstraintsList(Orientation.WEST.name(), constraintsLeft, constraintArea);
+        createConstraintsList(Orientation.EAST.name(), constraintsRight, constraintArea);
     }
 
     /**
@@ -288,8 +302,8 @@ public class FormulasProperties
         {
             case LINEAR:
                 final CollisionFunctionLinear linear = (CollisionFunctionLinear) function;
-                linearA.setText(Double.toString(linear.getA()));
-                linearB.setText(Double.toString(linear.getB()));
+                setValueDefault(linearA, Double.toString(linear.getA()));
+                setValueDefault(linearB, Double.toString(linear.getB()));
                 break;
             default:
                 throw new LionEngineException(ERROR_TYPE, function.getType().name());
@@ -303,23 +317,28 @@ public class FormulasProperties
     @Override
     protected void createTextFields(Composite parent)
     {
-        final Group range = new Group(parent, SWT.NONE);
-        range.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(2, false));
+
+        final Group range = new Group(composite, SWT.NONE);
+        range.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         range.setLayout(new GridLayout(1, false));
         range.setText(Messages.EditFormulasDialog_Range);
         createTextRange(range);
 
-        final Group function = new Group(parent, SWT.NONE);
-        function.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final Group function = new Group(composite, SWT.NONE);
+        function.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         function.setLayout(new GridLayout(1, false));
         function.setText(Messages.EditFormulasDialog_Function);
         createTextFunction(function);
 
         final Group constraint = new Group(parent, SWT.NONE);
-        constraint.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        constraint.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         constraint.setLayout(new GridLayout(1, false));
         constraint.setText(Messages.EditFormulasDialog_Constraint);
         createTextConstraint(constraint);
+
+        notifyObjectDeleted(null);
     }
 
     @Override
@@ -344,6 +363,17 @@ public class FormulasProperties
         return formula;
     }
 
+    /**
+     * Save constraints.
+     */
+    public void save()
+    {
+        constraintsTop.save();
+        constraintsBottom.save();
+        constraintsLeft.save();
+        constraintsRight.save();
+    }
+
     /*
      * ObjectListListener
      */
@@ -354,13 +384,13 @@ public class FormulasProperties
         final CollisionRange range = formula.getRange();
         output.setText(range.getOutput().name());
         output.setData(range.getOutput());
-        minX.setText(Integer.toString(range.getMinX()));
-        maxX.setText(Integer.toString(range.getMaxX()));
-        minY.setText(Integer.toString(range.getMinY()));
-        maxY.setText(Integer.toString(range.getMaxY()));
+        setValueDefault(minX, Integer.toString(range.getMinX()));
+        setValueDefault(maxX, Integer.toString(range.getMaxX()));
+        setValueDefault(minY, Integer.toString(range.getMinY()));
+        setValueDefault(maxY, Integer.toString(range.getMaxY()));
 
         final CollisionFunction function = formula.getFunction();
-        type.setText(function.getType().name());
+        UtilSwt.setDefaultValue(type, function.getType().name());
         type.setData(function.getType());
         loadFunction(function);
 
@@ -374,16 +404,19 @@ public class FormulasProperties
     @Override
     public void notifyObjectDeleted(CollisionFormula formula)
     {
-        output.setText("");
+        setValueDefault(output, "");
+        setValueDefault(minX, "");
+        setValueDefault(maxX, "");
+        setValueDefault(minY, "");
+        setValueDefault(maxY, "");
+        setValueDefault(type, "");
+
+        setValueDefault(linearA, "");
+        setValueDefault(linearB, "");
+
         output.setData(null);
-        minX.setText("");
-        maxX.setText("");
-        minY.setText("");
-        maxY.setText("");
-        type.setText("");
         type.setData(null);
-        linearA.setText("");
-        linearB.setText("");
+
         constraintsTop.clear();
         constraintsBottom.clear();
         constraintsLeft.clear();

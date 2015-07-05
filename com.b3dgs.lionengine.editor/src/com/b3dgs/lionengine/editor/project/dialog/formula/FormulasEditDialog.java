@@ -51,8 +51,10 @@ public class FormulasEditDialog
 
     /** Formulas media. */
     final Media formulas;
+    /** Formulas properties. */
+    private final FormulasProperties properties = new FormulasProperties();
     /** Formulas list. */
-    private final FormulaList list = new FormulaList();
+    private final FormulaList list = new FormulaList(properties);
 
     /**
      * Create a formulas edit dialog.
@@ -80,17 +82,17 @@ public class FormulasEditDialog
         content.setLayout(new GridLayout(2, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         list.create(content);
-        list.loadFormulas(formulas);
         list.addListener(list);
 
-        final FormulasProperties properties = new FormulasProperties(list);
         properties.create(content);
         list.addListener(properties);
+        list.loadFormulas(formulas);
     }
 
     @Override
     protected void onFinish()
     {
+        list.save();
         final XmlNode root = Stream.createXmlNode(ConfigCollisionFormula.FORMULAS);
         root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
 

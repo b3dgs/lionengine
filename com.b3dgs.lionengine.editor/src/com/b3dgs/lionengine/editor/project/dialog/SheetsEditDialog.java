@@ -123,6 +123,8 @@ public class SheetsEditDialog
                     final Button check = new Button(tileSheetsArea, SWT.CHECK);
                     check.setText(file.getName());
                     check.setSelection(false);
+                    UtilSwt.registerDirty(check, true);
+
                     buttons.add(check);
                 }
             }
@@ -138,6 +140,9 @@ public class SheetsEditDialog
         final XmlNode tileSize = node.getChild(MapTile.NODE_TILE_SIZE);
         tileWidthText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_WIDTH));
         tileHeightText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_HEIGHT));
+
+        UtilSwt.registerDirty(tileWidthText, true);
+        UtilSwt.registerDirty(tileHeightText, true);
 
         final Collection<XmlNode> sheets = node.getChildren();
         for (final Button button : buttons)

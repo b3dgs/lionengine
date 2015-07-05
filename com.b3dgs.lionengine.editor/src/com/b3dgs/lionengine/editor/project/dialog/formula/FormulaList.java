@@ -83,6 +83,16 @@ public class FormulaList
     }
 
     /**
+     * Create the group list.
+     * 
+     * @param properties The properties reference.
+     */
+    public FormulaList(FormulasProperties properties)
+    {
+        super(CollisionFormula.class, properties);
+    }
+
+    /**
      * Load the existing formulas from the object configurer.
      * 
      * @param config The config file.

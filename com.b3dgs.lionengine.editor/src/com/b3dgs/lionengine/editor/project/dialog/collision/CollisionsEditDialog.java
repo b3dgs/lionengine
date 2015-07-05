@@ -53,8 +53,10 @@ public class CollisionsEditDialog
 
     /** Collisions media. */
     final Media collisions;
+    /** Collisions properties. */
+    private final CollisionsProperties properties = new CollisionsProperties();
     /** Collisions list. */
-    private final CollisionList list = new CollisionList();
+    private final CollisionList list = new CollisionList(properties);
 
     /**
      * Create a collisions edit dialog.
@@ -82,17 +84,17 @@ public class CollisionsEditDialog
         content.setLayout(new GridLayout(2, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         list.create(content);
-        list.loadCollisions(collisions);
         list.addListener(list);
 
-        final CollisionsProperties properties = new CollisionsProperties(list);
         properties.create(content);
         list.addListener(properties);
+        list.loadCollisions(collisions);
     }
 
     @Override
     protected void onFinish()
     {
+        list.save();
         final XmlNode root = Stream.createXmlNode(ConfigCollisionGroup.COLLISIONS);
         root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
 

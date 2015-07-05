@@ -181,6 +181,16 @@ public class WorldViewPart
     }
 
     /**
+     * Get the world updater.
+     * 
+     * @return The world updater.
+     */
+    public WorldViewUpdater getUpdater()
+    {
+        return worldViewUpdater;
+    }
+
+    /**
      * Get the world renderer.
      * 
      * @return The world renderer.

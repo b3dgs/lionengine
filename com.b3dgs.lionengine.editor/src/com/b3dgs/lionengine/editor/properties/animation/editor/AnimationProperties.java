@@ -56,12 +56,11 @@ public class AnimationProperties
     /**
      * Create an animation properties and associate its renderer to retrieve the maximum frames number.
      * 
-     * @param list The list reference.
      * @param animationRenderer The animation renderer reference.
      */
-    public AnimationProperties(AnimationList list, AnimationRenderer animationRenderer)
+    public AnimationProperties(AnimationRenderer animationRenderer)
     {
-        super(list);
+        super();
         maxFrame = animationRenderer.surface.getFramesHorizontal() * animationRenderer.surface.getFramesVertical();
     }
 
@@ -83,8 +82,8 @@ public class AnimationProperties
      */
     public void setAnimationRange(int first, int last)
     {
-        setTextValue(firstFrame, String.valueOf(first));
-        setTextValue(lastFrame, String.valueOf(last));
+        setValue(firstFrame, String.valueOf(first));
+        setValue(lastFrame, String.valueOf(last));
     }
 
     /*
@@ -129,9 +128,9 @@ public class AnimationProperties
     @Override
     public void notifyObjectSelected(Animation animation)
     {
-        setTextValue(firstFrame, String.valueOf(animation.getFirst()));
-        setTextValue(lastFrame, String.valueOf(animation.getLast()));
-        setTextValue(speed, String.valueOf(animation.getSpeed()));
+        setValueDefault(firstFrame, String.valueOf(animation.getFirst()));
+        setValueDefault(lastFrame, String.valueOf(animation.getLast()));
+        setValueDefault(speed, String.valueOf(animation.getSpeed()));
         setButtonSelection(reverseAnim, animation.getReverse());
         setButtonSelection(repeatAnim, animation.getRepeat());
 

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.dialog;
 
+import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -35,6 +36,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.world.WorldViewPart;
 
 /**
  * Represents the abstract dialog.
@@ -43,6 +45,7 @@ import com.b3dgs.lionengine.editor.UtilSwt;
  */
 public abstract class AbstractDialog
         extends Dialog
+        implements MDirtyable
 {
     /** Ok icon. */
     public static final Image ICON_OK = UtilEclipse.getIcon("dialog", "ok.png");
@@ -63,6 +66,8 @@ public abstract class AbstractDialog
 
     /** Dialog shell. */
     protected final Shell dialog;
+    /** Dialog title. */
+    private final String title;
     /** Header title. */
     private final String headerTitle;
     /** Header description. */
@@ -77,6 +82,10 @@ public abstract class AbstractDialog
     protected CLabel tipsLabel;
     /** Canceled flag. */
     protected boolean canceled;
+    /** Dirty flag. */
+    private boolean dirty;
+    /** Last dirty flag. */
+    private boolean dirtyOld;
 
     /**
      * Dialog constructor base.
@@ -90,6 +99,7 @@ public abstract class AbstractDialog
     public AbstractDialog(Shell parent, String title, String headerTitle, String headerDesc, Image headerIcon)
     {
         super(parent);
+        this.title = title;
         this.headerTitle = headerTitle;
         this.headerDesc = headerDesc;
         this.headerIcon = headerIcon;
@@ -132,6 +142,7 @@ public abstract class AbstractDialog
         dialog.pack(true);
         UtilSwt.center(dialog);
         dialog.open();
+        dialog.setData(this);
 
         final Display display = dialog.getDisplay();
         while (!dialog.isDisposed())
@@ -250,6 +261,9 @@ public abstract class AbstractDialog
             {
                 onFinish();
                 dialog.dispose();
+
+                final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+                part.update();
             }
         });
 
@@ -262,7 +276,40 @@ public abstract class AbstractDialog
                 canceled = true;
                 onCanceled();
                 dialog.dispose();
+
+                final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+                part.update();
             }
         });
+    }
+
+    /*
+     * MDirtyable
+     */
+
+    @Override
+    public void setDirty(boolean value)
+    {
+        dirty = value;
+        if (dirtyOld != dirty)
+        {
+            dirtyOld = dirty;
+            if (dirty)
+            {
+                dialog.setText("*" + title);
+                dialog.update();
+            }
+            else
+            {
+                dialog.update();
+                dialog.setText(title);
+            }
+        }
+    }
+
+    @Override
+    public boolean isDirty()
+    {
+        return dirty;
     }
 }

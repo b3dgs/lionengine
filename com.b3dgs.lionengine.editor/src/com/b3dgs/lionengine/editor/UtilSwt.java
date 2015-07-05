@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
@@ -28,6 +29,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
@@ -57,6 +59,9 @@ import com.b3dgs.lionengine.UtilConversion;
  */
 public final class UtilSwt
 {
+    /** Dirty key. */
+    private static final String KEY_DIRTY = "dirty";
+
     /**
      * Center the shell on screen.
      * 
@@ -110,7 +115,9 @@ public final class UtilSwt
         textLegend.setText(legend);
 
         final Text text = new Text(composite, SWT.SINGLE);
-        text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final GridData data = new GridData(SWT.FILL, SWT.CENTER, true, false);
+        data.minimumWidth = 64;
+        text.setLayoutData(data);
 
         return text;
     }
@@ -297,6 +304,131 @@ public final class UtilSwt
             scrollable.getParent().addMouseWheelListener(scroller);
         }
         UtilSwt.installMouseWheelScrollRecursively(scroller, scrollable);
+    }
+
+    /**
+     * Register dirty listener on text modification. Reference will be the current text value.
+     * 
+     * @param text The text reference.
+     * @param enable <code>true</code> to enable dirty detection, <code>false</code> else.
+     */
+    public static void registerDirty(final Text text, boolean enable)
+    {
+        final Object oldListener = text.getData(KEY_DIRTY);
+        if (oldListener instanceof ModifyListener)
+        {
+            text.removeModifyListener((ModifyListener) oldListener);
+        }
+        if (enable)
+        {
+            final ModifyListener listener = new ModifyListener()
+            {
+                @Override
+                public void modifyText(ModifyEvent event)
+                {
+                    setDirty(text.getShell(), true);
+                }
+            };
+            text.setData(KEY_DIRTY, listener);
+            text.addModifyListener(listener);
+        }
+    }
+
+    /**
+     * Register dirty listener on button modification. Reference will be the current text value.
+     * 
+     * @param button button text reference.
+     * @param enable <code>true</code> to enable dirty detection, <code>false</code> else.
+     */
+    public static void registerDirty(final Button button, boolean enable)
+    {
+        final Object oldListener = button.getData(KEY_DIRTY);
+        if (oldListener instanceof SelectionListener)
+        {
+            button.removeSelectionListener((SelectionListener) oldListener);
+        }
+        if (enable)
+        {
+            final SelectionListener listener = new SelectionAdapter()
+            {
+                @Override
+                public void widgetSelected(SelectionEvent event)
+                {
+                    setDirty(button.getShell(), true);
+                }
+            };
+            button.setData(KEY_DIRTY, listener);
+            button.addSelectionListener(listener);
+        }
+    }
+
+    /**
+     * Register dirty listener on combo modification. Reference will be the current combo value.
+     * 
+     * @param combo The combo reference.
+     * @param enable <code>true</code> to enable dirty detection, <code>false</code> else.
+     */
+    public static void registerDirty(final Combo combo, boolean enable)
+    {
+        final Object oldListener = combo.getData(KEY_DIRTY);
+        if (oldListener instanceof ModifyListener)
+        {
+            combo.removeModifyListener((ModifyListener) oldListener);
+        }
+        if (enable)
+        {
+            final ModifyListener listener = new ModifyListener()
+            {
+                @Override
+                public void modifyText(ModifyEvent event)
+                {
+                    setDirty(combo.getShell(), true);
+                }
+            };
+            combo.setData(KEY_DIRTY, listener);
+            combo.addModifyListener(listener);
+        }
+    }
+
+    /**
+     * Set the default text value, and register dirty.
+     * 
+     * @param text The text reference.
+     * @param value The text default value.
+     */
+    public static void setDefaultValue(Text text, String value)
+    {
+        registerDirty(text, false);
+        text.setText(value);
+        registerDirty(text, true);
+    }
+
+    /**
+     * Set the default combo value, and register dirty.
+     * 
+     * @param combo The combo reference.
+     * @param value The text default value.
+     */
+    public static void setDefaultValue(Combo combo, String value)
+    {
+        registerDirty(combo, false);
+        combo.setText(value);
+        registerDirty(combo, true);
+    }
+
+    /**
+     * Set the dirty flag.
+     * 
+     * @param shell The shell reference.
+     * @param dirty <code>true</code> if dirty, <code>false</code> else.
+     */
+    static void setDirty(Shell shell, boolean dirty)
+    {
+        final Object data = shell.getData();
+        if (data instanceof MDirtyable)
+        {
+            ((MDirtyable) data).setDirty(dirty);
+        }
     }
 
     /**

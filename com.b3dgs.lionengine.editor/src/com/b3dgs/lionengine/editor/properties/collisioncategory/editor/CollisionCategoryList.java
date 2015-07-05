@@ -42,10 +42,11 @@ public class CollisionCategoryList
      * Create category list and associate its properties.
      * 
      * @param configurer The configurer reference.
+     * @param properties The properties reference.
      */
-    public CollisionCategoryList(Configurer configurer)
+    public CollisionCategoryList(Configurer configurer, CollisionCategoryProperties properties)
     {
-        super(CollisionCategory.class);
+        super(CollisionCategory.class, properties);
         this.configurer = configurer;
     }
 

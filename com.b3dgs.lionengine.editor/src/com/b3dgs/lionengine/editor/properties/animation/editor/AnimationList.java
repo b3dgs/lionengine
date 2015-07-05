@@ -40,10 +40,11 @@ public class AnimationList
      * Create animation list and associate its properties.
      * 
      * @param configurer The configurer reference.
+     * @param properties The properties reference.
      */
-    public AnimationList(Configurer configurer)
+    public AnimationList(Configurer configurer, AnimationProperties properties)
     {
-        super(Animation.class);
+        super(Animation.class, properties);
         this.configurer = configurer;
     }
 

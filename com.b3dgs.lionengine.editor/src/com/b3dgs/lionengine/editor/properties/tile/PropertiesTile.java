@@ -76,6 +76,7 @@ public class PropertiesTile
     {
         final Media config = map.getGroupsConfig();
         final XmlNode node = Stream.loadXml(config);
+        final Collection<XmlNode> toAdd = new ArrayList<>();
         for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroup.GROUP))
         {
             final Collection<XmlNode> toRemove = new ArrayList<>();
@@ -94,18 +95,46 @@ public class PropertiesTile
                     nodeGroup.removeChild(remove);
                 }
             }
-            if (newGroup.equals(ConfigTileGroup.REMOVE_GROUP_NAME)
-                    || WorldViewRenderer.groupEquals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
+            if (WorldViewRenderer.groupEquals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
             {
                 final XmlNode tileRef = Stream.createXmlNode(ConfigTileGroup.TILE);
                 tileRef.writeInteger(ConfigTileGroup.SHEET, tile.getSheet().intValue());
                 tileRef.writeInteger(ConfigTileGroup.NUMBER, tile.getNumber());
-                nodeGroup.add(tileRef);
+                toAdd.add(tileRef);
+            }
+        }
+        if (!ConfigTileGroup.REMOVE_GROUP_NAME.equals(newGroup))
+        {
+            final XmlNode newNode = getNewNode(node, newGroup);
+            for (final XmlNode current : toAdd)
+            {
+                newNode.add(current);
             }
         }
         Stream.saveXml(node, config);
         map.loadGroups(config);
+    }
 
+    /**
+     * Get the new node group.
+     * 
+     * @param node The node root.
+     * @param newGroup The new group name.
+     * @return The node found or created.
+     */
+    private static XmlNode getNewNode(XmlNode node, String newGroup)
+    {
+        for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroup.GROUP))
+        {
+            if (newGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME)))
+            {
+                return nodeGroup;
+            }
+        }
+        final XmlNode newGroupNode = Stream.createXmlNode(ConfigTileGroup.GROUP);
+        newGroupNode.writeString(ConfigTileGroup.NAME, newGroup);
+        node.add(newGroupNode);
+        return newGroupNode;
     }
 
     /**
@@ -133,7 +162,10 @@ public class PropertiesTile
                     final MapTile map = WorldViewModel.INSTANCE.getMap();
                     final Collection<TileGroup> groups = map.getGroups();
                     final Collection<String> values = new ArrayList<>();
-                    values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
+                    if (!groups.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
+                    {
+                        values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
+                    }
                     for (final TileGroup group : groups)
                     {
                         values.add(group.getName());
@@ -145,6 +177,7 @@ public class PropertiesTile
                     if (newGroup != null)
                     {
                         changeTileGroup(map, oldGroup, newGroup, tile);
+                        item.setText(PropertiesPart.COLUMN_VALUE, newGroup);
 
                         final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
                         part.update();

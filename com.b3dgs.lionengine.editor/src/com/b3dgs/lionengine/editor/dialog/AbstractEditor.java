@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.dialog;
 
+import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -36,9 +37,16 @@ import com.b3dgs.lionengine.editor.UtilSwt;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class AbstractEditor
+        implements MDirtyable
 {
     /** Shell reference. */
     final Shell shell;
+    /** Title. */
+    private final String title;
+    /** Dirty flag. */
+    private boolean dirty;
+    /** Last dirty flag. */
+    private boolean dirtyOld;
 
     /**
      * Editor constructor base.
@@ -49,6 +57,7 @@ public abstract class AbstractEditor
      */
     public AbstractEditor(Composite parent, String title, Image icon)
     {
+        this.title = title;
         shell = new Shell(parent.getDisplay(), SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
         shell.setLayout(new GridLayout(1, false));
         shell.setImage(icon);
@@ -80,6 +89,7 @@ public abstract class AbstractEditor
     public void openAndWait()
     {
         shell.setVisible(true);
+        shell.setData(this);
         final Display display = shell.getDisplay();
         while (!shell.isDisposed())
         {
@@ -131,5 +141,35 @@ public abstract class AbstractEditor
                 shell.dispose();
             }
         });
+    }
+
+    /*
+     * MDirtyable
+     */
+
+    @Override
+    public void setDirty(boolean value)
+    {
+        dirty = value;
+        if (dirtyOld != dirty)
+        {
+            dirtyOld = dirty;
+            if (dirty)
+            {
+                shell.setText("*" + title);
+                shell.update();
+            }
+            else
+            {
+                shell.update();
+                shell.setText(title);
+            }
+        }
+    }
+
+    @Override
+    public boolean isDirty()
+    {
+        return dirty;
     }
 }
