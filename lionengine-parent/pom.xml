@@ -297,6 +297,11 @@
 						<supportedProjectTypes>
 							<supportedProjectType>jar</supportedProjectType>
 						</supportedProjectTypes>
+                        <instructions>
+                            <Import-Package>
+                                org.junit;resolution:=optional
+                            </Import-Package>
+                        </instructions>
 					</configuration>
 					<executions>
 						<execution>

@@ -12,8 +12,8 @@
 	<packaging>eclipse-plugin</packaging>
 	<repositories>
 		<repository>
-			<id>luna</id>
-			<url>http://download.eclipse.org/releases/luna</url>
+			<id>mars</id>
+			<url>http://download.eclipse.org/releases/mars</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
