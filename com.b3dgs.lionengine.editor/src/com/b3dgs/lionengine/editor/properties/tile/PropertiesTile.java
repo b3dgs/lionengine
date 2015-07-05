@@ -162,13 +162,13 @@ public class PropertiesTile
                     final MapTile map = WorldViewModel.INSTANCE.getMap();
                     final Collection<TileGroup> groups = map.getGroups();
                     final Collection<String> values = new ArrayList<>();
-                    if (!groups.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
-                    {
-                        values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
-                    }
                     for (final TileGroup group : groups)
                     {
                         values.add(group.getName());
+                    }
+                    if (!values.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
+                    {
+                        values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
                     }
                     final GroupChooser chooser = new GroupChooser(properties.getShell(), values);
                     chooser.open();

@@ -138,13 +138,13 @@ public class GroupChooser
 
                 final Collection<TileGroup> groups = map.getGroups();
                 final Collection<String> values = new ArrayList<>();
-                if (!groups.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
-                {
-                    values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
-                }
                 for (final TileGroup group : groups)
                 {
                     values.add(group.getName());
+                }
+                if (!values.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
+                {
+                    values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
                 }
                 loadGroups(values.toArray(new String[values.size()]));
             }
