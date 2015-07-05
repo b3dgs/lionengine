@@ -18,6 +18,6 @@
     <lionengine:formula name="right">
         <lionengine:range output="X" minX="15" maxX="15" minY="0" maxY="15"/>
         <lionengine:function type="LINEAR" a="0" b="15"/>
-       	<lionengine:constraint group="block" orientation="EAST"/>
+        <lionengine:constraint group="block" orientation="EAST"/>
     </lionengine:formula>
 </lionengine:formulas>

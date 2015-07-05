@@ -3,19 +3,19 @@
     <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
     <lionengine:class>com.b3dgs.lionengine.example.game.collision.Mario</lionengine:class>
     <lionengine:surface image="Mario.png"/>
-	<lionengine:frames horizontal="7" vertical="1"/>
-	<lionengine:size width="16" height="16"/>
-	<lionengine:category name="leg_right" axis="Y" x="6" y="0">
-	    <lionengine:group>block</lionengine:group>
-	</lionengine:category>
-	<lionengine:category name="leg_left" axis="Y" x="-6" y="0">
-	    <lionengine:group>block</lionengine:group>
-	</lionengine:category>
-	<lionengine:category name="knee_right" axis="X" x="6" y="0">
-	    <lionengine:group>block</lionengine:group>
-	</lionengine:category>
-	<lionengine:category name="knee_left" axis="X" x="-6" y="0">
-	    <lionengine:group>block</lionengine:group>
-	</lionengine:category>
-	<lionengine:collision name="default" offsetX="0" offsetY="0" width="12" height="16" mirror="false"/>
+    <lionengine:frames horizontal="7" vertical="1"/>
+    <lionengine:size width="16" height="16"/>
+    <lionengine:category name="leg_right" axis="Y" x="6" y="0">
+        <lionengine:group>block</lionengine:group>
+    </lionengine:category>
+    <lionengine:category name="leg_left" axis="Y" x="-6" y="0">
+        <lionengine:group>block</lionengine:group>
+    </lionengine:category>
+    <lionengine:category name="knee_right" axis="X" x="6" y="0">
+        <lionengine:group>block</lionengine:group>
+    </lionengine:category>
+    <lionengine:category name="knee_left" axis="X" x="-6" y="0">
+        <lionengine:group>block</lionengine:group>
+    </lionengine:category>
+    <lionengine:collision name="default" offsetX="0" offsetY="0" width="12" height="16" mirror="false"/>
 </lionengine:entity>

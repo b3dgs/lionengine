@@ -9,6 +9,6 @@
     <lionengine:pathfindable category="tree" cost="1" block="true"/>
     <lionengine:pathfindable category="water" cost="1" block="true"/>
     <lionengine:animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
-	<lionengine:animation name="walk" start="6" end="10" speed="0.1875" reversed="true" repeat="true"/>
-	<lionengine:animation name="attack" start="31" end="34" speed="0.1875" reversed="true" repeat="false"/>
+    <lionengine:animation name="walk" start="6" end="10" speed="0.1875" reversed="true" repeat="true"/>
+    <lionengine:animation name="attack" start="31" end="34" speed="0.1875" reversed="true" repeat="false"/>
 </lionengine:entity>

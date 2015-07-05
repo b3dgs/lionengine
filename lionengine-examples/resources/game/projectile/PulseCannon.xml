@@ -4,9 +4,9 @@
     <lionengine:class>com.b3dgs.lionengine.example.game.projectile.Weapon</lionengine:class>
     <lionengine:surface image="Pulse.png"/>
     <lionengine:size width="0" height="0"/>
-	<lionengine:launcher rate="100">
-	    <lionengine:launchable media="Pulse.xml" delay="0">
-	    	<lionengine:force velocity="8" sensibility="0" vx="8" vy="8"/>
-	    </lionengine:launchable>
-	</lionengine:launcher>
+    <lionengine:launcher rate="100">
+        <lionengine:launchable media="Pulse.xml" delay="0">
+            <lionengine:force velocity="8" sensibility="0" vx="8" vy="8"/>
+        </lionengine:launchable>
+    </lionengine:launcher>
 </lionengine:object>

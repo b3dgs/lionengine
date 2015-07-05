@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:sheets xmlns:lionengine="http://lionengine.b3dgs.com">
-	<lionengine:tileSize width="16" height="16"/>
-	<lionengine:sheet>tiles.png</lionengine:sheet>
+    <lionengine:tileSize width="16" height="16"/>
+    <lionengine:sheet>tiles.png</lionengine:sheet>
 </lionengine:sheets>

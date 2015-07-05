@@ -4,6 +4,6 @@
     <lionengine:class>com.b3dgs.lionengine.example.game.projectile.Ship</lionengine:class>
     <lionengine:surface image="Ship.png"/>
     <lionengine:frames horizontal="5" vertical="1"/>
-	<lionengine:size width="24" height="28"/>
-	<lionengine:collision name="default" offsetX="0" offsetY="0" width="16" height="18" mirror="false"/>
+    <lionengine:size width="24" height="28"/>
+    <lionengine:collision name="default" offsetX="0" offsetY="0" width="16" height="18" mirror="false"/>
 </lionengine:entity>

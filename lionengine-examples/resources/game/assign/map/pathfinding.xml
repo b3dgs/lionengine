@@ -13,7 +13,7 @@
         <lionengine:group>treeCut</lionengine:group>
     </lionengine:tilepath>
     <lionengine:tilepath category="border">
-       	<lionengine:group>border</lionengine:group>
+        <lionengine:group>border</lionengine:group>
     </lionengine:tilepath>
     <lionengine:tilepath category="tree">
         <lionengine:group>tree</lionengine:group>
