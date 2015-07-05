@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -98,22 +97,19 @@ public final class ConfigAnimations
     /**
      * Create an XML node from an animation.
      * 
+     * @param root The node root.
      * @param animation The animation reference.
-     * @return The animation node.
      * @throws LionEngineException If error on writing.
      */
-    public static XmlNode createNode(Animation animation) throws LionEngineException
+    public static void export(XmlNode root, Animation animation) throws LionEngineException
     {
-        final XmlNode node = Stream.createXmlNode(ANIMATION);
-
+        final XmlNode node = root.createChild(ANIMATION);
         node.writeString(ANIMATION_NAME, animation.getName());
         node.writeInteger(ANIMATION_START, animation.getFirst());
         node.writeInteger(ANIMATION_END, animation.getLast());
         node.writeDouble(ANIMATION_SPEED, animation.getSpeed());
         node.writeBoolean(ANIMATION_REVERSED, animation.getReverse());
         node.writeBoolean(ANIMATION_REPEAT, animation.getRepeat());
-
-        return node;
     }
 
     /** Animations map. */

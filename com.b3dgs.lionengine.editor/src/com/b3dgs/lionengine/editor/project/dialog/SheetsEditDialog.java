@@ -179,17 +179,17 @@ public class SheetsEditDialog
     {
         final XmlNode root = Stream.createXmlNode(MapTile.NODE_TILE_SHEETS);
         root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
-        final XmlNode tileSize = Stream.createXmlNode(MapTile.NODE_TILE_SIZE);
+
+        final XmlNode tileSize = root.createChild(MapTile.NODE_TILE_SIZE);
         tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, tileWidthText.getText());
         tileSize.writeString(MapTile.ATTRIBUTE_TILE_HEIGHT, tileHeightText.getText());
-        root.add(tileSize);
+
         for (final Button button : buttons)
         {
             if (button.getSelection())
             {
-                final XmlNode node = Stream.createXmlNode(MapTile.NODE_TILE_SHEET);
+                final XmlNode node = root.createChild(MapTile.NODE_TILE_SHEET);
                 node.setText(button.getText());
-                root.add(node);
             }
         }
         Stream.saveXml(root, sheets);

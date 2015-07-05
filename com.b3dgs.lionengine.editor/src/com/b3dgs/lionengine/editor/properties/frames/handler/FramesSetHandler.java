@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.frames.PropertiesFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -59,12 +58,11 @@ public class FramesSetHandler
                     new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, "Invalid frames number !"));
             if (verticalFrames.open() == Window.OK)
             {
-                final XmlNode frames = Stream.createXmlNode(ConfigFrames.FRAMES);
+                final XmlNode root = configurer.getRoot();
+                final XmlNode frames = root.createChild(ConfigFrames.FRAMES);
                 frames.writeString(ConfigFrames.FRAMES_HORIZONTAL, horizontalFrames.getValue());
                 frames.writeString(ConfigFrames.FRAMES_VERTICAL, verticalFrames.getValue());
 
-                final XmlNode root = configurer.getRoot();
-                root.add(frames);
                 PropertiesFrames.updateSize(configurer, root, frames);
 
                 configurer.save();

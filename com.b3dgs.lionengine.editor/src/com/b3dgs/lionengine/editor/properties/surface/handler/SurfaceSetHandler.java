@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.editor.properties.surface.PropertiesSurface;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -55,21 +54,19 @@ public class SurfaceSetHandler
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = Stream.createXmlNode(ConfigSurface.SURFACE);
-            surfaceNode.writeString(ConfigSurface.SURFACE_IMAGE, file);
-
             if (!root.hasChild(ConfigSize.SIZE))
             {
-                final XmlNode size = Stream.createXmlNode(ConfigSize.SIZE);
-                root.add(size);
-
                 final File surface = new File(configurer.getPath(), file);
                 final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(surface));
+
+                final XmlNode size = root.createChild(ConfigSize.SIZE);
                 size.writeInteger(ConfigSize.SIZE_WIDTH, info.getWidth());
                 size.writeInteger(ConfigSize.SIZE_HEIGHT, info.getHeight());
             }
 
-            root.add(surfaceNode);
+            final XmlNode surfaceNode = root.createChild(ConfigSurface.SURFACE);
+            surfaceNode.writeString(ConfigSurface.SURFACE_IMAGE, file);
+
             configurer.save();
             PropertiesSurface.createAttributeSurface(properties, configurer);
             part.setInput(properties, configurer);

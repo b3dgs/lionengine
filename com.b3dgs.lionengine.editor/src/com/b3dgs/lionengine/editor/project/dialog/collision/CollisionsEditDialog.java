@@ -95,23 +95,24 @@ public class CollisionsEditDialog
     protected void onFinish()
     {
         list.save();
+
         final XmlNode root = Stream.createXmlNode(ConfigCollisionGroup.COLLISIONS);
         root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
 
         for (final TreeItem item : list.getTree().getItems())
         {
             final CollisionGroup collision = (CollisionGroup) item.getData();
-            final XmlNode nodeGroup = Stream.createXmlNode(ConfigCollisionGroup.COLLISION);
+            final XmlNode nodeGroup = root.createChild(ConfigCollisionGroup.COLLISION);
             nodeGroup.writeString(ConfigCollisionGroup.GROUP, collision.getName());
+
             for (final CollisionFormula formula : collision.getFormulas())
             {
-                final XmlNode nodeFormula = Stream.createXmlNode(ConfigCollisionFormula.FORMULA);
+                final XmlNode nodeFormula = nodeGroup.createChild(ConfigCollisionFormula.FORMULA);
                 nodeFormula.setText(formula.getName());
-                nodeGroup.add(nodeFormula);
             }
-            root.add(nodeGroup);
         }
         Stream.saveXml(root, collisions);
+
         final MapTile map = WorldViewModel.INSTANCE.getMap();
         if (map.hasFeature(MapTileCollision.class))
         {

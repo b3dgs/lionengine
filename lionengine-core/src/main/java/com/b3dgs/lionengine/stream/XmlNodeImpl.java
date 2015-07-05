@@ -22,8 +22,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -34,6 +36,7 @@ import org.w3c.dom.NodeList;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * XML node implementation.
@@ -43,6 +46,8 @@ import com.b3dgs.lionengine.LionEngineException;
 final class XmlNodeImpl
         implements XmlNode
 {
+    /** Normalize. */
+    private static final String NORMALIZE = "//text()[normalize-space()='']";
     /** Node error. */
     private static final String ERROR_NODE = "Node not found: ";
     /** Attribute error. */
@@ -51,9 +56,9 @@ final class XmlNodeImpl
     private static final String ERROR_WRITE_ATTRIBUTE = "Error when setting the attribute:";
     /** Attribute error. */
     private static final String ERROR_WRITE_CONTENT = " with the following content: ";
-    /** Document. */
-    private static Document document;
 
+    /** Document. */
+    private final Document document;
     /** Root reference. */
     private final Element root;
 
@@ -66,21 +71,12 @@ final class XmlNodeImpl
     XmlNodeImpl(String name) throws LionEngineException
     {
         Check.notNull(name);
-
         try
         {
-            final DocumentBuilder constructeur = XmlFactory.getDocumentFactory().newDocumentBuilder();
-            synchronized (XmlNodeImpl.class)
-            {
-                if (document == null)
-                {
-                    document = constructeur.newDocument();
-                }
-            }
+            document = XmlFactory.getDocumentFactory().newDocument();
             root = document.createElement(name);
         }
-        catch (final ParserConfigurationException
-                     | DOMException exception)
+        catch (final DOMException exception)
         {
             throw new LionEngineException(exception);
         }
@@ -89,11 +85,34 @@ final class XmlNodeImpl
     /**
      * Internal constructor.
      * 
+     * @param document The document reference.
      * @param root The root reference.
      */
-    XmlNodeImpl(Element root)
+    XmlNodeImpl(Document document, Element root)
     {
+        this.document = document;
         this.root = root;
+    }
+
+    /**
+     * Normalize document.
+     */
+    void normalize()
+    {
+        final XPath xPath = XPathFactory.newInstance().newXPath();
+        try
+        {
+            final NodeList nodeList = (NodeList) xPath.evaluate(NORMALIZE, document, XPathConstants.NODESET);
+            for (int i = 0; i < nodeList.getLength(); ++i)
+            {
+                final Node node = nodeList.item(i);
+                node.getParentNode().removeChild(node);
+            }
+        }
+        catch (final XPathExpressionException exception)
+        {
+            Verbose.exception(getClass(), "normalize", exception);
+        }
     }
 
     /**
@@ -146,10 +165,18 @@ final class XmlNodeImpl
      */
 
     @Override
+    public XmlNode createChild(String child)
+    {
+        final Element element = document.createElement(child);
+        root.appendChild(element);
+        return new XmlNodeImpl(document, element);
+    }
+
+    @Override
     public void add(XmlNode node) throws LionEngineException
     {
         final Element element = XmlNodeImpl.class.cast(node).getElement();
-        root.getOwnerDocument().adoptNode(element);
+        document.adoptNode(element);
         root.appendChild(element);
     }
 
@@ -325,7 +352,7 @@ final class XmlNodeImpl
             final Node node = list.item(i);
             if (node instanceof Element && node.getNodeName().equals(name))
             {
-                return new XmlNodeImpl((Element) node);
+                return new XmlNodeImpl(document, (Element) node);
             }
         }
         throw new LionEngineException(ERROR_NODE, name);
@@ -341,7 +368,7 @@ final class XmlNodeImpl
             final Node node = list.item(i);
             if (node instanceof Element)
             {
-                nodes.add(new XmlNodeImpl((Element) node));
+                nodes.add(new XmlNodeImpl(document, (Element) node));
             }
         }
         return nodes;
@@ -357,7 +384,7 @@ final class XmlNodeImpl
             final Node node = list.item(i);
             if (node instanceof Element)
             {
-                nodes.add(new XmlNodeImpl((Element) node));
+                nodes.add(new XmlNodeImpl(document, (Element) node));
             }
         }
         return nodes;

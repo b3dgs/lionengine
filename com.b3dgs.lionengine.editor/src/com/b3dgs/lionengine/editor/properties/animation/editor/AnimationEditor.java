@@ -154,13 +154,14 @@ public class AnimationEditor
     protected void onExit()
     {
         animationList.save();
+
         final XmlNode root = configurer.getRoot();
         root.removeChildren(ConfigAnimations.ANIMATION);
+
         for (final TreeItem item : animationList.getTree().getItems())
         {
             final Animation animation = (Animation) item.getData();
-            final XmlNode nodeAnim = ConfigAnimations.createNode(animation);
-            root.add(nodeAnim);
+            ConfigAnimations.export(root, animation);
         }
         configurer.save();
     }

@@ -38,6 +38,7 @@ import org.xml.sax.SAXException;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * XML parser implementation.
@@ -58,7 +59,7 @@ public final class XmlFactory
     private static final String PROPERTY_INDENT = "{http://xml.apache.org/xslt}indent-amount";
 
     /** Load factory. */
-    private static DocumentBuilderFactory documentFactory;
+    private static DocumentBuilder documentFactory;
     /** Save factory. */
     private static TransformerFactory transformerFactory;
 
@@ -77,15 +78,14 @@ public final class XmlFactory
         {
             Check.notNull(inputStream);
 
-            final DocumentBuilder builder = getDocumentFactory().newDocumentBuilder();
+            final DocumentBuilder builder = getDocumentFactory();
             builder.setErrorHandler(null);
             final Document document = builder.parse(inputStream);
             final Element root = document.getDocumentElement();
-            return new XmlNodeImpl(root);
+            return new XmlNodeImpl(document, root);
         }
         catch (final IOException
-                     | SAXException
-                     | ParserConfigurationException exception)
+                     | SAXException exception)
         {
             throw new LionEngineException(exception, media, ERROR_READING);
         }
@@ -108,8 +108,10 @@ public final class XmlFactory
             final Transformer transformer = getTransformerFactory().newTransformer();
             if (root instanceof XmlNodeImpl)
             {
+                final XmlNodeImpl node = (XmlNodeImpl) root;
+                node.normalize();
                 root.writeString(HEADER_ATTRIBUTE, HEADER_VALUE);
-                final DOMSource source = new DOMSource(((XmlNodeImpl) root).getElement());
+                final DOMSource source = new DOMSource(node.getElement());
                 final StreamResult result = new StreamResult(outputStream);
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
@@ -129,13 +131,22 @@ public final class XmlFactory
      * 
      * @return The document factory.
      */
-    static DocumentBuilderFactory getDocumentFactory()
+    static DocumentBuilder getDocumentFactory()
     {
         synchronized (XmlFactory.class)
         {
             if (documentFactory == null)
             {
-                documentFactory = DocumentBuilderFactory.newInstance();
+                final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setIgnoringElementContentWhitespace(true);
+                try
+                {
+                    documentFactory = documentBuilderFactory.newDocumentBuilder();
+                }
+                catch (final ParserConfigurationException exception)
+                {
+                    Verbose.exception(XmlFactory.class, "getDocumentFactory", exception);
+                }
             }
         }
         return documentFactory;

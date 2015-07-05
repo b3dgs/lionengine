@@ -85,13 +85,14 @@ public class EntityCollisionEditor
     protected void onExit()
     {
         entityCollisionList.save();
+
         final XmlNode root = configurer.getRoot();
         root.removeChildren(ConfigCollisions.COLLISION);
+
         for (final TreeItem item : entityCollisionList.getTree().getItems())
         {
             final Collision collision = (Collision) item.getData();
-            final XmlNode nodeAnim = ConfigCollisions.createNode(collision);
-            root.add(nodeAnim);
+            ConfigCollisions.export(root, collision);
         }
         configurer.save();
     }

@@ -44,7 +44,7 @@ public class CollisionsEnableHandler
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final Collision collision = new Collision("default", 0, 0, 0, 0, false);
-        configurer.getRoot().add(ConfigCollisions.createNode(collision));
+        ConfigCollisions.export(configurer.getRoot(), collision);
         configurer.save();
         part.setInput(properties, configurer);
     }

@@ -23,7 +23,6 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -92,21 +91,18 @@ public final class ConfigCollisions
     /**
      * Create an XML node from a collision.
      * 
+     * @param root The node root.
      * @param collision The collision reference.
-     * @return The collision node.
      */
-    public static XmlNode createNode(Collision collision)
+    public static void export(XmlNode root, Collision collision)
     {
-        final XmlNode node = Stream.createXmlNode(COLLISION);
-
+        final XmlNode node = root.createChild(COLLISION);
         node.writeString(COLLISION_NAME, collision.getName());
         node.writeInteger(COLLISION_OFFSETX, collision.getOffsetX());
         node.writeInteger(COLLISION_OFFSETY, collision.getOffsetY());
         node.writeInteger(COLLISION_WIDTH, collision.getWidth());
         node.writeInteger(COLLISION_HEIGHT, collision.getHeight());
         node.writeBoolean(COLLISION_MIRROR, collision.hasMirror());
-
-        return node;
     }
 
     /** Collisions map. */

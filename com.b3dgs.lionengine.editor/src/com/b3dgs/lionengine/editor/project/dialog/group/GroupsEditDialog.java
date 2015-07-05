@@ -92,10 +92,10 @@ public class GroupsEditDialog
         for (final TreeItem item : list.getTree().getItems())
         {
             final TileGroup group = (TileGroup) item.getData();
-            final XmlNode nodeGroup = ConfigTileGroup.export(group);
-            root.add(nodeGroup);
+            ConfigTileGroup.export(root, group);
         }
         Stream.saveXml(root, groups);
+
         final MapTile map = WorldViewModel.INSTANCE.getMap();
         map.loadGroups(groups);
     }

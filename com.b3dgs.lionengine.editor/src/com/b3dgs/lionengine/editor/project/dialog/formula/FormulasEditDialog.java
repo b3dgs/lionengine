@@ -99,10 +99,10 @@ public class FormulasEditDialog
         for (final TreeItem item : list.getTree().getItems())
         {
             final CollisionFormula formula = (CollisionFormula) item.getData();
-            final XmlNode nodeFormula = ConfigCollisionFormula.export(formula);
-            root.add(nodeFormula);
+            ConfigCollisionFormula.export(root, formula);
         }
         Stream.saveXml(root, formulas);
+
         final MapTile map = WorldViewModel.INSTANCE.getMap();
         if (map.hasFeature(MapTileCollision.class))
         {

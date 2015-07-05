@@ -131,9 +131,9 @@ public class PropertiesTile
                 return nodeGroup;
             }
         }
-        final XmlNode newGroupNode = Stream.createXmlNode(ConfigTileGroup.GROUP);
+        final XmlNode newGroupNode = node.createChild(ConfigTileGroup.GROUP);
         newGroupNode.writeString(ConfigTileGroup.NAME, newGroup);
-        node.add(newGroupNode);
+
         return newGroupNode;
     }
 

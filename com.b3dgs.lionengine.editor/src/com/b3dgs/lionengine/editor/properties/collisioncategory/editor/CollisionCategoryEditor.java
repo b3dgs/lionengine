@@ -84,13 +84,14 @@ public class CollisionCategoryEditor
     protected void onExit()
     {
         categoryList.save();
+
         final XmlNode root = configurer.getRoot();
         root.removeChildren(ConfigCollisionCategory.CATEGORY);
+
         for (final TreeItem item : categoryList.getTree().getItems())
         {
             final CollisionCategory category = (CollisionCategory) item.getData();
-            final XmlNode nodeCategory = ConfigCollisionCategory.export(category);
-            root.add(nodeCategory);
+            ConfigCollisionCategory.export(root, category);
         }
         configurer.save();
     }

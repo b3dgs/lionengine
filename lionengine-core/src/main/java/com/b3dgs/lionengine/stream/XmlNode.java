@@ -47,6 +47,14 @@ public interface XmlNode
     String NULL = "null";
 
     /**
+     * Create a child node.
+     * 
+     * @param child The child name.
+     * @return The child node.
+     */
+    XmlNode createChild(String child);
+
+    /**
      * Add a child node.
      * 
      * @param node The child node.

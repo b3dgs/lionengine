@@ -23,7 +23,6 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -76,23 +75,20 @@ public final class ConfigTileGroup
     /**
      * Export the group data as a node.
      * 
+     * @param root The root node.
      * @param group The group to export.
-     * @return The node reference.
      */
-    public static XmlNode export(TileGroup group)
+    public static void export(XmlNode root, TileGroup group)
     {
-        final XmlNode node = Stream.createXmlNode(GROUP);
+        final XmlNode node = root.createChild(GROUP);
         node.writeString(NAME, group.getName());
 
         for (final TileRef ref : group.getTiles())
         {
-            final XmlNode tileRef = Stream.createXmlNode(TILE);
+            final XmlNode tileRef = node.createChild(TILE);
             tileRef.writeInteger(SHEET, ref.sheet);
             tileRef.writeInteger(NUMBER, ref.number);
-            node.add(tileRef);
         }
-
-        return node;
     }
 
     /**

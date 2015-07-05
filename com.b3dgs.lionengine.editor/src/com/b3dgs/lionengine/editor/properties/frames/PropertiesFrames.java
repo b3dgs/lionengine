@@ -36,7 +36,6 @@ import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -116,10 +115,9 @@ public class PropertiesFrames
         final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(file));
         if (!root.hasChild(ConfigSize.SIZE))
         {
-            size = Stream.createXmlNode(ConfigSize.SIZE);
+            size = root.createChild(ConfigSize.SIZE);
             size.writeInteger(ConfigSize.SIZE_WIDTH, info.getWidth());
             size.writeInteger(ConfigSize.SIZE_HEIGHT, info.getHeight());
-            root.add(size);
         }
         else
         {

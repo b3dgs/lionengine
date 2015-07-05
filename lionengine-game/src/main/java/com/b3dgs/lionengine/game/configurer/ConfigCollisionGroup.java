@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -95,19 +94,19 @@ public final class ConfigCollisionGroup
     /**
      * Export the collision group data as a node.
      * 
+     * @param root The node root.
      * @param group The collision group to export.
-     * @return The node reference.
      * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(CollisionGroup group) throws LionEngineException
+    public static void export(XmlNode root, CollisionGroup group) throws LionEngineException
     {
-        final XmlNode node = Stream.createXmlNode(COLLISION);
+        final XmlNode node = root.createChild(COLLISION);
         node.writeString(GROUP, group.getName());
+
         for (final CollisionFormula formula : group.getFormulas())
         {
-            node.add(ConfigCollisionFormula.export(formula));
+            ConfigCollisionFormula.export(node, formula);
         }
-        return node;
     }
 
     /**

@@ -44,11 +44,13 @@ public class AnimationsEnableHandler
     {
         final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
         PropertiesAnimation.createAttributeAnimations(part.getTree());
+
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final Animation animation = Anim.createAnimation(Animation.DEFAULT_NAME, Animation.MINIMUM_FRAME,
                 Animation.MINIMUM_FRAME + 1, 0.1, false, false);
-        configurer.getRoot().add(ConfigAnimations.createNode(animation));
+        ConfigAnimations.export(configurer.getRoot(), animation);
+
         configurer.save();
         part.setInput(properties, configurer);
     }

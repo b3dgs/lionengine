@@ -17,14 +17,12 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -67,25 +65,22 @@ public final class ConfigCollisionConstraint
     /**
      * Export the collision constraint as a node.
      * 
+     * @param root The node root.
      * @param constraint The collision constraint to export.
-     * @return The node reference.
      * @throws LionEngineException If error on writing.
      */
-    public static Collection<XmlNode> export(CollisionConstraint constraint) throws LionEngineException
+    public static void export(XmlNode root, CollisionConstraint constraint) throws LionEngineException
     {
-        final Collection<XmlNode> node = new ArrayList<>();
         for (final Entry<Orientation, Collection<String>> entry : constraint.getConstraints().entrySet())
         {
             final Orientation orientation = entry.getKey();
             for (final String group : entry.getValue())
             {
-                final XmlNode current = Stream.createXmlNode(CONSTRAINT);
+                final XmlNode current = root.createChild(CONSTRAINT);
                 current.writeString(ORIENTATION, orientation.name());
                 current.writeString(GROUP, group);
-                node.add(current);
             }
         }
-        return node;
     }
 
     /**

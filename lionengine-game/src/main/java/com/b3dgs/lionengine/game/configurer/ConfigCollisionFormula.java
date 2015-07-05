@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -66,23 +65,18 @@ public final class ConfigCollisionFormula
     /**
      * Export the current formula data to the formula node.
      * 
+     * @param root The root node.
      * @param formula The formula reference.
-     * @return The exported node.
      * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(CollisionFormula formula) throws LionEngineException
+    public static void export(XmlNode root, CollisionFormula formula) throws LionEngineException
     {
-        final XmlNode node = Stream.createXmlNode(FORMULA);
-
+        final XmlNode node = root.createChild(FORMULA);
         node.writeString(NAME, formula.getName());
-        node.add(ConfigCollisionRange.export(formula.getRange()));
-        node.add(ConfigCollisionFunction.export(formula.getFunction()));
-        for (final XmlNode current : ConfigCollisionConstraint.export(formula.getConstraint()))
-        {
-            node.add(current);
-        }
 
-        return node;
+        ConfigCollisionRange.export(node, formula.getRange());
+        ConfigCollisionFunction.export(node, formula.getFunction());
+        ConfigCollisionConstraint.export(node, formula.getConstraint());
     }
 
     /**

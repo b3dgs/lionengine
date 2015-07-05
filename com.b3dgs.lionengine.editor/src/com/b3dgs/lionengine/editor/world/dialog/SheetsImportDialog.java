@@ -181,15 +181,15 @@ public class SheetsImportDialog
         {
             final XmlNode root = Stream.createXmlNode(MapTile.NODE_TILE_SHEETS);
             root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
-            final XmlNode tileSize = Stream.createXmlNode(MapTile.NODE_TILE_SIZE);
+
+            final XmlNode tileSize = root.createChild(MapTile.NODE_TILE_SIZE);
             tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, Integer.toString(tw));
             tileSize.writeString(MapTile.ATTRIBUTE_TILE_HEIGHT, Integer.toString(th));
-            root.add(tileSize);
+
             for (final Media media : extractor.getGeneratedSheets())
             {
-                final XmlNode node = Stream.createXmlNode(MapTile.NODE_TILE_SHEET);
+                final XmlNode node = root.createChild(MapTile.NODE_TILE_SHEET);
                 node.setText(media.getFile().getName());
-                root.add(node);
             }
             final File file = new File(extractFolder.getFile(), MapTile.DEFAULT_SHEETS_FILE);
             Stream.saveXml(root, Project.getActive().getResourceMedia(file));
