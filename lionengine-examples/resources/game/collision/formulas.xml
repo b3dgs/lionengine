@@ -2,7 +2,7 @@
 <lionengine:formulas xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:formula name="top">
         <lionengine:range output="Y" minX="0" maxX="15" minY="15" maxY="15"/>
-        <lionengine:function type="LINEAR" a="0" b="0"/>
+        <lionengine:function type="LINEAR" a="0" b="15"/>
         <lionengine:constraint group="block" orientation="NORTH"/>
     </lionengine:formula>
     <lionengine:formula name="bottom">
@@ -17,7 +17,7 @@
     </lionengine:formula>
     <lionengine:formula name="right">
         <lionengine:range output="X" minX="15" maxX="15" minY="0" maxY="15"/>
-        <lionengine:function type="LINEAR" a="0" b="0"/>
+        <lionengine:function type="LINEAR" a="0" b="15"/>
        	<lionengine:constraint group="block" orientation="EAST"/>
     </lionengine:formula>
 </lionengine:formulas>

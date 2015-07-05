@@ -210,31 +210,17 @@ public class MapTileCollisionModel
         switch (range.getOutput())
         {
             case X:
-                final double fx = function.compute(ox);
+                final double fx = function.compute(oy);
                 if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
                 {
-                    if (x > ox)
-                    {
-                        g.drawRect((int) fx + 1 + range.getMinX(), map.getTileHeight() - y - 1, 0, 0, false);
-                    }
-                    else
-                    {
-                        g.drawRect((int) fx + 1 + range.getMaxX(), map.getTileHeight() - y - 1, 0, 0, false);
-                    }
+                    g.drawRect((int) fx + 1, map.getTileHeight() - y - 1, 0, 0, false);
                 }
                 break;
             case Y:
-                final double fy = function.compute(oy);
+                final double fy = function.compute(ox);
                 if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
                 {
-                    if (y > oy)
-                    {
-                        g.drawRect(x + 1, map.getTileHeight() - (int) fy - range.getMinY() - 1, 0, 0, false);
-                    }
-                    else
-                    {
-                        g.drawRect(x + 1, map.getTileHeight() - (int) fy - range.getMaxY() - 1, 0, 0, false);
-                    }
+                    g.drawRect(ox + 1, map.getTileHeight() - (int) fy - 1, 0, 0, false);
                 }
                 break;
             default:
@@ -467,7 +453,7 @@ public class MapTileCollisionModel
             final XmlNode formulasRoot = Stream.createXmlNode(ConfigCollisionFormula.FORMULAS);
             for (final CollisionFormula formula : getCollisionFormulas())
             {
-                formulasRoot.add(ConfigCollisionFormula.export(formula));
+                ConfigCollisionFormula.export(formulasRoot, formula);
             }
             Stream.saveXml(formulasRoot, formulasConfig);
         }
@@ -476,7 +462,7 @@ public class MapTileCollisionModel
             final XmlNode groupsNode = Stream.createXmlNode(ConfigCollisionGroup.COLLISIONS);
             for (final CollisionGroup group : getCollisionGroups())
             {
-                groupsNode.add(ConfigCollisionGroup.export(group));
+                ConfigCollisionGroup.export(groupsNode, group);
             }
             Stream.saveXml(groupsNode, groupsConfig);
         }

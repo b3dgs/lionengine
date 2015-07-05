@@ -117,9 +117,9 @@ public class TileCollisionModel
                             final double coll = tile.getX() + result - category.getOffsetX();
                             if (x > ox)
                             {
-                                return Double.valueOf(coll + range.getMinX() - 1);
+                                return Double.valueOf(coll - 1);
                             }
-                            return Double.valueOf(coll + range.getMaxX() + 1);
+                            return Double.valueOf(coll + 1);
                         }
                     }
                 }
@@ -150,9 +150,9 @@ public class TileCollisionModel
                             final double coll = tile.getY() + result - category.getOffsetY();
                             if (y > oy)
                             {
-                                return Double.valueOf(coll + range.getMinY() - 1);
+                                return Double.valueOf(coll - 1);
                             }
-                            return Double.valueOf(coll + range.getMaxY() + 1);
+                            return Double.valueOf(coll + 1);
                         }
                     }
                 }
