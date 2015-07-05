@@ -10,7 +10,7 @@
 		<maven.version>3.3.3</maven.version>
 		<jdk.version>1.7</jdk.version>
 		<tycho.version>0.23.0</tycho.version>
-		<junit.version>4.11</junit.version>
+		<junit.version>4.12</junit.version>
 		<maven-bundle.version>2.5.4</maven-bundle.version>
 		<maven-compiler.version>3.3</maven-compiler.version>
 		<maven-osgi-packaging.version>0.11.1</maven-osgi-packaging.version>
