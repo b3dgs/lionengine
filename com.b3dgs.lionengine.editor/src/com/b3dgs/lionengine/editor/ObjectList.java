@@ -292,7 +292,7 @@ public abstract class ObjectList<T extends Nameable>
      */
     public void save()
     {
-        if (properties != null && selectedItem != null)
+        if (properties != null && selectedItem != null && !selectedItem.isDisposed())
         {
             update(selectedItem, properties.createObject(selectedItem.getText()));
         }
