@@ -38,8 +38,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class GraphicSwt
-        implements Graphic
+final class GraphicSwt implements Graphic
 {
     /**
      * Get the image buffer.

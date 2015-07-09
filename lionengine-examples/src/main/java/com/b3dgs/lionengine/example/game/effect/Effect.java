@@ -42,9 +42,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Effect
-        extends ObjectGame
-        implements Updatable, Renderable
+class Effect extends ObjectGame implements Updatable, Renderable
 {
     /** Explode media. */
     public static final Media EXPLODE = Medias.create("Explode.xml");
@@ -69,9 +67,9 @@ class Effect
         super(setup, services);
         viewer = services.get(Viewer.class);
 
-        final ConfigFrames configFrames = ConfigFrames.create(setup.getConfigurer());
+        final ConfigFrames config = ConfigFrames.create(setup.getConfigurer());
         final int scale = UtilRandom.getRandomInteger(75) + 50;
-        surface = Drawable.loadSpriteAnimated(setup.surface, configFrames.getHorizontal(), configFrames.getVertical());
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         surface.stretch(scale, scale);
         surface.setOrigin(Origin.MIDDLE);
 

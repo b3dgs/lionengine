@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.core.Text;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TextAndroid
-        implements Text
+final class TextAndroid implements Text
 {
     /**
      * Get the text style equivalence.
@@ -43,17 +42,22 @@ final class TextAndroid
      */
     private static int getStyle(TextStyle style)
     {
+        final int value;
         switch (style)
         {
             case NORMAL:
-                return Typeface.NORMAL;
+                value = Typeface.NORMAL;
+                break;
             case BOLD:
-                return Typeface.BOLD;
+                value = Typeface.BOLD;
+                break;
             case ITALIC:
-                return Typeface.ITALIC;
+                value = Typeface.ITALIC;
+                break;
             default:
                 throw new RuntimeException("Unknown type: " + style);
         }
+        return value;
     }
 
     /** Paint. */
@@ -108,7 +112,8 @@ final class TextAndroid
     @Override
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {
-        ((GraphicAndroid) g).drawString(x, y + (int) (size * 0.8), alignment, text, paint);
+        final double ratio = 0.8;
+        ((GraphicAndroid) g).drawString(x, y + (int) (size * ratio), alignment, text, paint);
     }
 
     @Override

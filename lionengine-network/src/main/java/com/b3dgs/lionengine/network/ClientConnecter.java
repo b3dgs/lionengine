@@ -28,8 +28,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ClientConnecter
-        extends Thread
+final class ClientConnecter extends Thread
 {
     /** Server socket. */
     private final ServerSocket serverSocket;

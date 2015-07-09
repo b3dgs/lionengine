@@ -41,9 +41,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Racket
-        extends ObjectGame
-        implements Updatable, Renderable, CollidableListener
+class Racket extends ObjectGame implements Updatable, Renderable, CollidableListener
 {
     /** Racket media. */
     public static final Media MEDIA = Medias.create("Racket.xml");

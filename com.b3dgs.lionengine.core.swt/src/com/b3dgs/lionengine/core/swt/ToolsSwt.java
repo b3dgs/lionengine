@@ -35,6 +35,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Transform;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Misc tools for SWT.
@@ -54,7 +55,7 @@ public final class ToolsSwt
         final Color black = ScreenSwt.display.getSystemColor(SWT.COLOR_BLACK);
         final PaletteData palette = new PaletteData(new RGB[]
         {
-                white.getRGB(), black.getRGB()
+            white.getRGB(), black.getRGB()
         });
         final ImageData sourceData = new ImageData(16, 16, 1, palette);
         sourceData.transparentPixel = 0;
@@ -147,7 +148,8 @@ public final class ToolsSwt
     {
         final int total = h * v;
         final ImageData data = image.getImageData();
-        final int width = data.width / h, height = data.height / v;
+        final int width = data.width / h;
+        final int height = data.height / v;
         final Image[] images = new Image[total];
         int frame = 0;
 
@@ -240,7 +242,8 @@ public final class ToolsSwt
     public static Image applyBilinearFilter(Image image)
     {
         final ImageData data = image.getImageData();
-        final int width = data.width, height = data.height;
+        final int width = data.width;
+        final int height = data.height;
 
         final Image filtered = createImage(width * 2, height * 2, SWT.TRANSPARENCY_ALPHA);
         final GC gc = new GC(filtered);
@@ -254,7 +257,8 @@ public final class ToolsSwt
         final Image filtered2 = createImage(width, height, SWT.TRANSPARENCY_ALPHA);
         final GC gc2 = new GC(filtered2);
         final Transform transform2 = new Transform(ScreenSwt.display);
-        transform2.scale(0.5f, 0.5f);
+        final float scale = 0.5f;
+        transform2.scale(scale, scale);
         gc2.setTransform(transform2);
         gc2.drawImage(filtered, 0, 0);
         gc2.dispose();
@@ -273,7 +277,7 @@ public final class ToolsSwt
         final ImageLoader imageLoader = new ImageLoader();
         imageLoader.data = new ImageData[]
         {
-                image.getImageData()
+            image.getImageData()
         };
         imageLoader.save(outputStream, SWT.IMAGE_PNG);
     }
@@ -305,19 +309,23 @@ public final class ToolsSwt
             newColorsPixel.put(color, Integer.valueOf(palette.getPixel(color)));
         }
 
-        final double sr = -((er - fr) / 0x010000) / (double) refSize;
-        final double sg = -((eg - fg) / 0x000100) / (double) refSize;
-        final double sb = -((eb - fb) / 0x000001) / (double) refSize;
+        final int divisorRed = 0x010000;
+        final int divisorGreen = 0x000100;
+        final int divisorBlue = 0x000001;
+
+        final double sr = -((er - fr) / divisorRed) / (double) refSize;
+        final double sg = -((eg - fg) / divisorGreen) / (double) refSize;
+        final double sb = -((eb - fb) / divisorBlue) / (double) refSize;
 
         int lastPixel = newColorsPixel.size();
-        final int pixels[][] = new int[data.width][data.height];
+        final int[][] pixels = new int[data.width][data.height];
         for (int i = 0; i < data.width; i++)
         {
             for (int j = 0; j < data.height; j++)
             {
-                final int r = (int) (sr * (j % refSize)) * 0x010000;
-                final int g = (int) (sg * (j % refSize)) * 0x000100;
-                final int b = (int) (sb * (j % refSize)) * 0x000001;
+                final int r = (int) (sr * (j % refSize)) * divisorRed;
+                final int g = (int) (sg * (j % refSize)) * divisorGreen;
+                final int b = (int) (sb * (j % refSize)) * divisorBlue;
 
                 final int pixel = data.getPixel(i, j);
                 if (pixel != data.transparentPixel)
@@ -377,6 +385,6 @@ public final class ToolsSwt
      */
     private ToolsSwt()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

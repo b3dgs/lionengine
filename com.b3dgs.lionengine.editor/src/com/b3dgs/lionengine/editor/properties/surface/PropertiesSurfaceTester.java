@@ -29,8 +29,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigSurface;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesSurfaceTester
-        extends PropertyTester
+public final class PropertiesSurfaceTester extends PropertyTester
 {
     /** Can set surface. */
     private static final String PROPERTY_SURFACE_SET = "setSurface";
@@ -40,6 +39,48 @@ public class PropertiesSurfaceTester
     private static final String PROPERTY_ICON_SET = "setIcon";
     /** Can remove icon. */
     private static final String PROPERTY_ICON_REMOVE = "removeIcon";
+
+    /**
+     * Check result depending of selection.
+     * 
+     * @param model The properties model.
+     * @param data The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(PropertiesModel model, Object data, String property)
+    {
+        final boolean result;
+        if (PROPERTY_SURFACE_SET.equals(property))
+        {
+            result = !model.hasProperty(ConfigSurface.SURFACE_IMAGE);
+        }
+        else if (PROPERTY_SURFACE_REMOVE.equals(property) && ConfigSurface.SURFACE_IMAGE.equals(data))
+        {
+            result = model.hasProperty(ConfigSurface.SURFACE_IMAGE);
+        }
+        else if (PROPERTY_ICON_SET.equals(property))
+        {
+            result = !model.hasProperty(ConfigSurface.SURFACE_ICON) && model.hasProperty(ConfigSurface.SURFACE_IMAGE);
+        }
+        else if (PROPERTY_ICON_REMOVE.equals(property) && ConfigSurface.SURFACE_ICON.equals(data))
+        {
+            result = model.hasProperty(ConfigSurface.SURFACE_ICON);
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Create tester.
+     */
+    public PropertiesSurfaceTester()
+    {
+        // Nothing to do
+    }
 
     /*
      * PropertyTester
@@ -52,22 +93,7 @@ public class PropertiesSurfaceTester
         if (!model.isEmpty() && ObjectsTester.isObjectFile(ProjectsModel.INSTANCE.getSelection()))
         {
             final Object data = model.getSelectedData();
-            if (PROPERTY_SURFACE_SET.equals(property))
-            {
-                return !model.hasProperty(ConfigSurface.SURFACE_IMAGE);
-            }
-            else if (PROPERTY_SURFACE_REMOVE.equals(property) && ConfigSurface.SURFACE_IMAGE.equals(data))
-            {
-                return model.hasProperty(ConfigSurface.SURFACE_IMAGE);
-            }
-            else if (PROPERTY_ICON_SET.equals(property))
-            {
-                return !model.hasProperty(ConfigSurface.SURFACE_ICON) && model.hasProperty(ConfigSurface.SURFACE_IMAGE);
-            }
-            else if (PROPERTY_ICON_REMOVE.equals(property) && ConfigSurface.SURFACE_ICON.equals(data))
-            {
-                return model.hasProperty(ConfigSurface.SURFACE_ICON);
-            }
+            return check(model, data, property);
         }
         return false;
     }

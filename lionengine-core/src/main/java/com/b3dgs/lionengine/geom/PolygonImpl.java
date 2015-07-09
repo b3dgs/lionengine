@@ -26,8 +26,7 @@ import java.util.Collection;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class PolygonImpl
-        implements Polygon
+final class PolygonImpl implements Polygon
 {
     /** Minimum number of points. */
     private static final int MIN = 4;

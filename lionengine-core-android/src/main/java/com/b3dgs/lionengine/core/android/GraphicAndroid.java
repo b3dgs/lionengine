@@ -40,8 +40,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class GraphicAndroid
-        implements Graphic
+final class GraphicAndroid implements Graphic
 {
     /**
      * Get the image buffer.

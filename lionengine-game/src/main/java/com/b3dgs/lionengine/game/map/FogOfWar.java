@@ -41,8 +41,7 @@ import com.b3dgs.lionengine.game.trait.fovable.Fovable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FogOfWar
-        implements MapTileRenderer
+public class FogOfWar implements MapTileRenderer
 {
     /** Fog map. */
     private final Border20Map border20Map;

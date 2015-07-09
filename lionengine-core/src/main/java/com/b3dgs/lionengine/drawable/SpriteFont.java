@@ -45,8 +45,7 @@ import com.b3dgs.lionengine.core.Graphic;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface SpriteFont
-        extends Sprite
+public interface SpriteFont extends Sprite
 {
     /** New line char. */
     char NEW_LINE = '%';

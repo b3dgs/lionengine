@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
@@ -40,8 +41,9 @@ import com.b3dgs.lionengine.core.Medias;
  * <pre>
  * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
  * final Media media = Media.get(&quot;img&quot;, &quot;image.png&quot;);
- * System.out.println(media.getPath()); // print: resources/img/image.png
+ * print(media.getPath()); // print: resources/img/image.png
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -50,12 +52,14 @@ import com.b3dgs.lionengine.core.Medias;
  */
 public final class UtilityMedia
 {
+    /** Error open media. */
+    private static final String ERROR_OPEN_MEDIA = "Cannot open the media";
     /** From jar flag. */
     private static boolean fromJar;
     /** Resources directory. */
-    private static String resourcesDir = "";
+    private static String resourcesDir = Constant.EMPTY_STRING;
     /** Class loader. */
-    private static Class<?> loader = null;
+    private static Class<?> loader;
 
     /**
      * Get a media from an existing file descriptor.
@@ -109,7 +113,7 @@ public final class UtilityMedia
     {
         if (dir == null)
         {
-            resourcesDir = "";
+            resourcesDir = Constant.EMPTY_STRING;
         }
         else
         {
@@ -142,7 +146,7 @@ public final class UtilityMedia
         }
         catch (final FileNotFoundException exception)
         {
-            throw new LionEngineException(exception, media, "Cannot open the media");
+            throw new LionEngineException(exception, media, ERROR_OPEN_MEDIA);
         }
     }
 
@@ -162,7 +166,7 @@ public final class UtilityMedia
         }
         catch (final FileNotFoundException exception)
         {
-            throw new LionEngineException(exception, media, "Cannot open the media");
+            throw new LionEngineException(exception, media, ERROR_OPEN_MEDIA);
         }
     }
 
@@ -174,18 +178,23 @@ public final class UtilityMedia
      */
     static synchronized boolean exists(Media media)
     {
+        final boolean exists;
         if (fromJar)
         {
             try (final InputStream stream = getInputStream(media))
             {
-                return true;
+                exists = true;
             }
-            catch (final LionEngineException | IOException exception)
+            catch (final IOException | LionEngineException exception)
             {
                 return false;
             }
         }
-        return media.getFile().exists();
+        else
+        {
+            exists = media.getFile().exists();
+        }
+        return exists;
     }
 
     /**
@@ -193,6 +202,6 @@ public final class UtilityMedia
      */
     private UtilityMedia()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

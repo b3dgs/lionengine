@@ -35,8 +35,7 @@ import com.b3dgs.lionengine.game.background.BackgroundGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Foreground
-        extends BackgroundGame
+class Foreground extends BackgroundGame
 {
     /** Screen width. */
     int screenWidth;
@@ -185,8 +184,7 @@ class Foreground
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private final class Primary
-            implements BackgroundComponent
+    private final class Primary implements BackgroundComponent
     {
         /** Water element. */
         private final BackgroundElement data;
@@ -249,8 +247,7 @@ class Foreground
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private final class Secondary
-            implements BackgroundComponent
+    private final class Secondary implements BackgroundComponent
     {
         /** Water element. */
         private final BackgroundElement data;

@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.game.Tiled;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ResourceLocation
-        implements Tiled
+final class ResourceLocation implements Tiled
 {
     /** The horizontal location. */
     private int tx;

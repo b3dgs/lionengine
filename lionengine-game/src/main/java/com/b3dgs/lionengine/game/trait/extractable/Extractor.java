@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Extractor
-        extends Trait, Updatable
+public interface Extractor extends Trait, Updatable
 {
     /**
      * Add an extractor listener.

@@ -48,8 +48,7 @@ import com.b3dgs.lionengine.core.Updatable;
  * @see Animation
  * @see AnimState
  */
-public interface Animator
-        extends Updatable
+public interface Animator extends Updatable
 {
     /**
      * Play the animation. Should be called only one time, as {@link #update(double)} does the animation update.

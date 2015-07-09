@@ -49,9 +49,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Mario
-        extends ObjectGame
-        implements Updatable, Renderable
+class Mario extends ObjectGame implements Updatable, Renderable
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Mario.xml");
@@ -89,7 +87,7 @@ class Mario
         camera = services.get(Camera.class);
         transformable.teleport(160, GROUND);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 

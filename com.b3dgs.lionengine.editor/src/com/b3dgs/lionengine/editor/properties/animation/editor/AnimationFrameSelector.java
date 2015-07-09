@@ -46,8 +46,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AnimationFrameSelector
-        implements PaintListener, MouseListener, MouseMoveListener
+public final class AnimationFrameSelector implements PaintListener, MouseListener, MouseMoveListener
 {
     /** Frame color. */
     private static final ColorRgba COLOR_FRAME = new ColorRgba(128, 128, 192, 255);

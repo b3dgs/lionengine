@@ -38,8 +38,16 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SurfaceSetHandler
+public final class SurfaceSetHandler
 {
+    /**
+     * Create handler.
+     */
+    public SurfaceSetHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */

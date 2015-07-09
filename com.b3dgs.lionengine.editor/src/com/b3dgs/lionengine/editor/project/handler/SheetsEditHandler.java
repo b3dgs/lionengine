@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.editor.project.dialog.SheetsEditDialog;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SheetsEditHandler
+public final class SheetsEditHandler
 {
     /**
      * Execute the handler.
@@ -41,6 +41,14 @@ public class SheetsEditHandler
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final SheetsEditDialog dialog = new SheetsEditDialog(parent, selection);
         dialog.open();
+    }
+
+    /**
+     * Create handler.
+     */
+    public SheetsEditHandler()
+    {
+        // Nothing to do
     }
 
     /**

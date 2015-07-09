@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core.android;
 
+import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.core.Transform;
 
 /**
@@ -24,8 +25,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TransformAndroid
-        implements Transform
+final class TransformAndroid implements Transform
 {
     /** Scale x. */
     private double sx;
@@ -56,7 +56,7 @@ final class TransformAndroid
     @Override
     public void setInterpolation(boolean bilinear)
     {
-        interpolation = bilinear ? 1 : 0;
+        interpolation = UtilConversion.boolToInt(bilinear);
     }
 
     @Override

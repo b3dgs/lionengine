@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.core.android;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.inputmethodservice.Keyboard;
 import android.view.SurfaceHolder;
 
 import com.b3dgs.lionengine.Check;
@@ -40,11 +40,8 @@ import com.b3dgs.lionengine.core.Sequence;
  * Screen implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Keyboard
- * @see Mouse
  */
-public final class ScreenAndroid
-        implements Screen, SurfaceHolder.Callback
+public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
 {
     /** View. */
     static volatile ViewAndroid view;
@@ -63,7 +60,7 @@ public final class ScreenAndroid
     }
 
     /** Input devices. */
-    private final HashMap<Class<? extends InputDevice>, InputDevice> devices;
+    private final Map<Class<? extends InputDevice>, InputDevice> devices;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
     /** Configuration reference. */

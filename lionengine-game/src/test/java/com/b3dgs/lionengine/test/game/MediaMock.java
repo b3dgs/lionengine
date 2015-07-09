@@ -34,8 +34,7 @@ import com.b3dgs.lionengine.core.Medias;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class MediaMock
-        implements Media
+public final class MediaMock implements Media
 {
     /** Media path. */
     private final String path;

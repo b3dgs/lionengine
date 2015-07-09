@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.core.Sequence;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Scene
-        extends Sequence
+final class Scene extends Sequence
 {
     /**
      * Constructor.

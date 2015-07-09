@@ -40,8 +40,8 @@ import com.b3dgs.lionengine.Nameable;
 /**
  * Represents the object list, allowing to add and remove objects.
  * 
- * @param <T> The object type handled by the list.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <T> The object type handled by the list.
  */
 public abstract class ObjectList<T extends Nameable>
 {
@@ -166,23 +166,7 @@ public abstract class ObjectList<T extends Nameable>
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                save();
-                final TreeItem[] items = objectsTree.getSelection();
-                if (items.length > 0)
-                {
-                    selectedItem = items[0];
-                    final Object data = selectedItem.getData();
-                    if (instanceOf(data))
-                    {
-                        setSelectedObject(cast(data));
-                    }
-                    else
-                    {
-                        final T object = createObject("default");
-                        selectedItem.setData(object);
-                        setSelectedObject(object);
-                    }
-                }
+                onSelection();
             }
         });
     }
@@ -356,6 +340,30 @@ public abstract class ObjectList<T extends Nameable>
         for (final ObjectListListener<T> listener : listeners)
         {
             listener.notifyObjectSelected(object);
+        }
+    }
+
+    /**
+     * Called on selection.
+     */
+    void onSelection()
+    {
+        save();
+        final TreeItem[] items = objectsTree.getSelection();
+        if (items.length > 0)
+        {
+            selectedItem = items[0];
+            final Object data = selectedItem.getData();
+            if (instanceOf(data))
+            {
+                setSelectedObject(cast(data));
+            }
+            else
+            {
+                final T object = createObject("default");
+                selectedItem.setData(object);
+                setSelectedObject(object);
+            }
         }
     }
 

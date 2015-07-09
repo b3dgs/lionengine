@@ -31,8 +31,7 @@ import java.util.Map;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class KeyboardAwt
-        implements Keyboard, KeyListener
+final class KeyboardAwt implements Keyboard, KeyListener
 {
     /** No key code. */
     private static final int NO_KEY_CODE = -1;
@@ -188,29 +187,39 @@ final class KeyboardAwt
     @Override
     public double getHorizontalDirection()
     {
+        final double direction;
         if (isPressed(left))
         {
-            return -1;
+            direction = -1;
         }
         else if (isPressed(right))
         {
-            return 1;
+            direction = 1;
         }
-        return 0;
+        else
+        {
+            direction = 0;
+        }
+        return direction;
     }
 
     @Override
     public double getVerticalDirection()
     {
+        final int direction;
         if (isPressed(down))
         {
-            return -1;
+            direction = -1;
         }
         else if (isPressed(up))
         {
-            return 1;
+            direction = 1;
         }
-        return 0;
+        else
+        {
+            direction = 0;
+        }
+        return direction;
     }
 
     /*

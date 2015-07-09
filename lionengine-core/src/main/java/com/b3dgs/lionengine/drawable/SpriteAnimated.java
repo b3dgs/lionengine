@@ -17,21 +17,20 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 
 /**
  * <p>
- * SpriteAnimated is an extended sprite that allows to play it using {@link Animation}. It works like a sprite excepted
- * that it renders only a part of it (current {@link Animator} frame).
+ * SpriteAnimated is an extended sprite that allows to play it using {@link com.b3dgs.lionengine.anim.Animation}. It
+ * works like a sprite excepted that it renders only a part of it (current {@link Animator} frame).
  * </p>
  * <p>
- * {@link Animation} contains the first/last frame and the animation speed, considering the main first frame is on the
- * top-left sprite surface, and the last frame is on the down-right sprite surface, reading it from left to right.
+ * {@link com.b3dgs.lionengine.anim.Animation} contains the first/last frame and the animation speed, considering the
+ * main first frame is on the top-left sprite surface, and the last frame is on the down-right sprite surface, reading
+ * it from left to right.
  * </p>
  * <p>
- * The first frame number is {@link Animation#MINIMUM_FRAME}.
+ * The first frame number is {@link com.b3dgs.lionengine.anim.Animation#MINIMUM_FRAME}.
  * </p>
  * <p>
  * Example:
@@ -54,11 +53,10 @@ import com.b3dgs.lionengine.anim.Animator;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Animator
- * @see Animation
- * @see AnimState
+ * @see com.b3dgs.lionengine.anim.Animation
+ * @see com.b3dgs.lionengine.anim.AnimState
  */
-public interface SpriteAnimated
-        extends Sprite, Animator
+public interface SpriteAnimated extends Sprite, Animator
 {
     /**
      * Set frame offsets (offsets on rendering).

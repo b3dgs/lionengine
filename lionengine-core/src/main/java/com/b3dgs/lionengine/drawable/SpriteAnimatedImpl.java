@@ -32,9 +32,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class SpriteAnimatedImpl
-        extends SpriteImpl
-        implements SpriteAnimated
+final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
 {
     /** Animator reference. */
     private final Animator animator;

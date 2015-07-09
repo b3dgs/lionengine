@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.trait.actionable;
 
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.configurer.ConfigAction;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.TraitModel;
@@ -29,7 +28,8 @@ import com.b3dgs.lionengine.geom.Rectangle;
 /**
  * Actionnable model implementation.
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigAction}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
+ * with {@link ConfigAction}.
  * </p>
  * <p>
  * The {@link Services} must provide the following services:
@@ -43,9 +43,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ActionableModel
-        extends TraitModel
-        implements Actionable
+public class ActionableModel extends TraitModel implements Actionable
 {
     /** Cursor reference. */
     private Cursor cursor;

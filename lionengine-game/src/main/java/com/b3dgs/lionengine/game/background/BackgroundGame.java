@@ -33,8 +33,7 @@ import com.b3dgs.lionengine.drawable.Sprite;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class BackgroundGame
-        implements Background
+public abstract class BackgroundGame implements Background
 {
     /**
      * Create an element from a name, plus its coordinates.
@@ -96,7 +95,7 @@ public abstract class BackgroundGame
     protected int totalHeight;
     /** Number of background components. */
     protected int componentsNumber;
-    /** Offset y; */
+    /** Offset y. */
     private int offsetY;
 
     /**

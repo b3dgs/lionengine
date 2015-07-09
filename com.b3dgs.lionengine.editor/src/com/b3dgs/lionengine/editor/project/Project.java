@@ -32,6 +32,7 @@ import java.util.Properties;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
@@ -129,7 +130,8 @@ public final class Project
         }
         if (fromPath.length() == path.length())
         {
-            return Medias.create(""); // Media folder itself
+            // Media folder itself
+            return Medias.create(Constant.EMPTY_STRING);
         }
         final int fromPrefix = fromPath.length() + 1;
         final String relativePath = path.substring(fromPrefix);
@@ -393,15 +395,29 @@ public final class Project
             final File[] files = librariesPath.listFiles();
             if (files != null)
             {
-                for (final File file : files)
-                {
-                    if (file.isFile() && file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jar"))
-                    {
-                        urls.add(file.toURI().toURL());
-                    }
-                }
+                urls.addAll(getJars(files));
             }
         }
         return new URLClassLoader(urls.toArray(new URL[urls.size()]), bundleClassLoader);
+    }
+
+    /**
+     * Get all jar files as URL.
+     * 
+     * @param files The files.
+     * @return The jars URL.
+     * @throws MalformedURLException If error on URL.
+     */
+    private static Collection<URL> getJars(File[] files) throws MalformedURLException
+    {
+        final Collection<URL> urls = new ArrayList<>();
+        for (final File file : files)
+        {
+            if (file.isFile() && file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jar"))
+            {
+                urls.add(file.toURI().toURL());
+            }
+        }
+        return urls;
     }
 }

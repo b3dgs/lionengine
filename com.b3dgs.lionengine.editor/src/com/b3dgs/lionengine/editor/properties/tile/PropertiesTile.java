@@ -48,21 +48,20 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesTile
-        implements PropertiesProviderTile
+public class PropertiesTile implements PropertiesProviderTile
 {
     /** Tile group icon. */
-    private static final Image ICON_GROUP = UtilEclipse.getIcon("properties", "tilegroup.png");
+    private static final Image ICON_GROUP = UtilEclipse.getIcon(FOLDER, "tilegroup.png");
     /** Tile sheet icon. */
-    private static final Image ICON_SHEET = UtilEclipse.getIcon("properties", "tilesheet.png");
+    private static final Image ICON_SHEET = UtilEclipse.getIcon(FOLDER, "tilesheet.png");
     /** Tile number icon. */
-    private static final Image ICON_NUMBER = UtilEclipse.getIcon("properties", "tilenumber.png");
+    private static final Image ICON_NUMBER = UtilEclipse.getIcon(FOLDER, "tilenumber.png");
     /** Tile size icon. */
-    private static final Image ICON_SIZE = UtilEclipse.getIcon("properties", "tilesize.png");
+    private static final Image ICON_SIZE = UtilEclipse.getIcon(FOLDER, "tilesize.png");
     /** Tile features icon. */
-    private static final Image ICON_FEATURES = UtilEclipse.getIcon("properties", "tilefeatures.png");
+    private static final Image ICON_FEATURES = UtilEclipse.getIcon(FOLDER, "tilefeatures.png");
     /** Tile feature icon. */
-    private static final Image ICON_FEATURE = UtilEclipse.getIcon("properties", "tilefeature.png");
+    private static final Image ICON_FEATURE = UtilEclipse.getIcon(FOLDER, "tilefeature.png");
 
     /**
      * Change tile group.
@@ -116,6 +115,40 @@ public class PropertiesTile
     }
 
     /**
+     * Called on double click.
+     * 
+     * @param properties The tree properties.
+     * @param selection The selected item.
+     * @param tile The selected tile.
+     */
+    static void onDoubleClick(Tree properties, TreeItem selection, Tile tile)
+    {
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final Collection<TileGroup> groups = map.getGroups();
+        final Collection<String> values = new ArrayList<>();
+        for (final TileGroup group : groups)
+        {
+            values.add(group.getName());
+        }
+        if (!values.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
+        {
+            values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
+        }
+        final GroupChooser chooser = new GroupChooser(properties.getShell(), values);
+        chooser.open();
+        final String oldGroup = tile.getGroup();
+        final String newGroup = chooser.getChoice();
+        if (newGroup != null)
+        {
+            changeTileGroup(map, oldGroup, newGroup, tile);
+            selection.setText(PropertiesPart.COLUMN_VALUE, newGroup);
+
+            final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+            part.update();
+        }
+    }
+
+    /**
      * Get the new node group.
      * 
      * @param node The node root.
@@ -159,29 +192,7 @@ public class PropertiesTile
                 final TreeItem selection = properties.getItem(point);
                 if (selection == item)
                 {
-                    final MapTile map = WorldViewModel.INSTANCE.getMap();
-                    final Collection<TileGroup> groups = map.getGroups();
-                    final Collection<String> values = new ArrayList<>();
-                    for (final TileGroup group : groups)
-                    {
-                        values.add(group.getName());
-                    }
-                    if (!values.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
-                    {
-                        values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
-                    }
-                    final GroupChooser chooser = new GroupChooser(properties.getShell(), values);
-                    chooser.open();
-                    final String oldGroup = tile.getGroup();
-                    final String newGroup = chooser.getChoice();
-                    if (newGroup != null)
-                    {
-                        changeTileGroup(map, oldGroup, newGroup, tile);
-                        item.setText(PropertiesPart.COLUMN_VALUE, newGroup);
-
-                        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-                        part.update();
-                    }
+                    onDoubleClick(properties, selection, tile);
                 }
             }
         });
@@ -256,6 +267,14 @@ public class PropertiesTile
                 }
             }
         }
+    }
+
+    /**
+     * Create properties.
+     */
+    public PropertiesTile()
+    {
+        // Nothing to do
     }
 
     /*

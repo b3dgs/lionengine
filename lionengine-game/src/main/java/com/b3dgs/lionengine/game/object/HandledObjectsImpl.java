@@ -34,8 +34,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class HandledObjectsImpl
-        implements HandledObjects
+final class HandledObjectsImpl implements HandledObjects
 {
     /** Free id error. */
     private static final String ERROR_FREE_ID = "No more free id available !";
@@ -44,7 +43,7 @@ final class HandledObjectsImpl
     /** Recycle id (reuse previous removed object id). */
     private static final Queue<Integer> RECYCLE = new LinkedList<>();
     /** Last id used (last maximum id value). */
-    private static int lastId = 0;
+    private static int lastId;
 
     /**
      * Get the next unused id.

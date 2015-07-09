@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.stream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 
 import org.junit.Assert;
@@ -48,7 +47,7 @@ public class XmlFactoryTest
      * 
      * @throws ReflectiveOperationException If error.
      */
-    @Test(expected = InvocationTargetException.class)
+    @Test(expected = InstantiationException.class)
     public void testClass() throws ReflectiveOperationException
     {
         final Constructor<XmlFactory> factory = XmlFactory.class.getDeclaredConstructor();

@@ -33,8 +33,7 @@ import com.b3dgs.lionengine.game.background.BackgroundGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-class Scene
-        extends Sequence
+class Scene extends Sequence
 {
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(320, 240, 60);

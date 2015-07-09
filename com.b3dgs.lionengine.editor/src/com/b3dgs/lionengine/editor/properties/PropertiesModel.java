@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.TreeItem;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesModel
+public final class PropertiesModel
 {
     /** Properties explorer model. */
     public static final PropertiesModel INSTANCE = new PropertiesModel();
@@ -40,7 +40,7 @@ public class PropertiesModel
     /**
      * Private constructor.
      */
-    protected PropertiesModel()
+    private PropertiesModel()
     {
         // Nothing to do
     }

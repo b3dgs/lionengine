@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Transformable
-        extends Trait, Localizable
+public interface Transformable extends Trait, Localizable
 {
     /**
      * Move location using different directions. Old location is stored before moving and the movement is updated after

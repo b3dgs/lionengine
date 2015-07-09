@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.geom;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Geometry factory.
  * 
@@ -175,6 +177,6 @@ public final class Geom
      */
     private Geom()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

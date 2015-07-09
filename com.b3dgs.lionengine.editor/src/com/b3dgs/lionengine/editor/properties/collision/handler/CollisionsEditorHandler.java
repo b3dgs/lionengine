@@ -30,8 +30,16 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsEditorHandler
+public final class CollisionsEditorHandler
 {
+    /**
+     * Create handler.
+     */
+    public CollisionsEditorHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

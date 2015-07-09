@@ -29,8 +29,16 @@ import com.b3dgs.lionengine.editor.world.dialog.MapImportDialog;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapImportHandler
+public final class MapImportHandler
 {
+    /**
+     * Create handler.
+     */
+    public MapImportHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

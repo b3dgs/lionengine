@@ -24,6 +24,7 @@ import java.nio.file.StandardCopyOption;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -31,9 +32,11 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Sc68Player
-        implements Sc68
+final class Sc68Player implements Sc68
 {
+    /** Max volume. */
+    private static final int MAX_VOLUME = 100;
+
     /** Binding reference. */
     private final Sc68Binding binding;
 
@@ -76,7 +79,7 @@ final class Sc68Player
     public void setVolume(int volume) throws LionEngineException
     {
         Check.superiorOrEqual(volume, 0);
-        Check.inferiorOrEqual(volume, 100);
+        Check.inferiorOrEqual(volume, MAX_VOLUME);
 
         binding.Sc68SetVolume(volume);
     }
@@ -84,7 +87,7 @@ final class Sc68Player
     @Override
     public void setConfig(boolean interpolation, boolean joinStereo)
     {
-        binding.Sc68Config(interpolation ? 1 : 0, joinStereo ? 1 : 0);
+        binding.Sc68Config(UtilConversion.boolToInt(interpolation), UtilConversion.boolToInt(joinStereo));
     }
 
     @Override

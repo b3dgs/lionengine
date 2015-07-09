@@ -60,7 +60,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ProjectsPart
+public final class ProjectsPart
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.projects";
@@ -85,12 +85,40 @@ public class ProjectsPart
         }
     }
 
+    /**
+     * Update tree selection item.
+     * 
+     * @param item The selected item.
+     */
+    private static void updateSelection(TreeItem item)
+    {
+        if (item.getData() instanceof Media)
+        {
+            final Media media = (Media) item.getData();
+            ProjectsModel.INSTANCE.setSelection(media);
+            updateProperties(media);
+        }
+        else
+        {
+            ProjectsModel.INSTANCE.setSelection(null);
+            updateProperties(null);
+        }
+    }
+
     /** Watcher. */
-    private final FolderModificationWatcher watcher = new FolderModificationWatcher();
+    private final FolderModificationWatcher watcher;
     /** Tree viewer. */
     Tree tree;
     /** Tree creator. */
     private ProjectTreeCreator projectTreeCreator;
+
+    /**
+     * Create the part.
+     */
+    public ProjectsPart()
+    {
+        watcher = new FolderModificationWatcher();
+    }
 
     /**
      * Create the composite.
@@ -275,17 +303,7 @@ public class ProjectsPart
             if (data instanceof TreeItem)
             {
                 final TreeItem item = (TreeItem) data;
-                if (item.getData() instanceof Media)
-                {
-                    final Media media = (Media) item.getData();
-                    ProjectsModel.INSTANCE.setSelection(media);
-                    updateProperties(media);
-                }
-                else
-                {
-                    ProjectsModel.INSTANCE.setSelection(null);
-                    updateProperties(null);
-                }
+                updateSelection(item);
             }
         }
     }

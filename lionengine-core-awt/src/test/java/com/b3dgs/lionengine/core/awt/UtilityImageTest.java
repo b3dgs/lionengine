@@ -183,8 +183,8 @@ public class UtilityImageTest
     @Test
     public void testSave()
     {
-        final ImageBuffer image = UtilityImage
-                .getImage(new MediaAwt(MediaAwt.class.getResource("image.png").getFile()));
+        final Media media = new MediaAwt(MediaAwt.class.getResource("image.png").getFile());
+        final ImageBuffer image = UtilityImage.getImage(media);
         Assert.assertNotNull(image);
 
         final MediaAwt save = new MediaAwt("test");

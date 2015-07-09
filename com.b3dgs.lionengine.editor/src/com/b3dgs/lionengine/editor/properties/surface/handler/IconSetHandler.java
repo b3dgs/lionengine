@@ -33,8 +33,16 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class IconSetHandler
+public final class IconSetHandler
 {
+    /**
+     * Create handler.
+     */
+    public IconSetHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */

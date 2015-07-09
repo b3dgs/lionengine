@@ -36,8 +36,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class GraphicAwt
-        implements Graphic
+final class GraphicAwt implements Graphic
 {
     /** The graphic output. */
     private Graphics2D g;

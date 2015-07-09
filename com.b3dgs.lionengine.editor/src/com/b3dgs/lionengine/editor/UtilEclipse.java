@@ -231,16 +231,29 @@ public final class UtilEclipse
             final File[] files = file.listFiles();
             if (files != null)
             {
-                for (final File current : files)
-                {
-                    if (isJar(current))
-                    {
-                        places.add(current);
-                    }
-                }
+                places.addAll(getJars(files));
             }
         }
         return places;
+    }
+
+    /**
+     * Get all jar in files.
+     * 
+     * @param files The files.
+     * @return The jars.
+     */
+    private static Collection<File> getJars(File[] files)
+    {
+        final Collection<File> jars = new HashSet<>();
+        for (final File current : files)
+        {
+            if (isJar(current))
+            {
+                jars.add(current);
+            }
+        }
+        return jars;
     }
 
     /**
@@ -506,6 +519,6 @@ public final class UtilEclipse
      */
     private UtilEclipse()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

@@ -39,8 +39,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AnimationEditor
-        extends AbstractEditor
+public class AnimationEditor extends AbstractEditor
 {
     /** Dialog icon. */
     public static final Image ICON = UtilEclipse.getIcon("animation-editor", "dialog.png");

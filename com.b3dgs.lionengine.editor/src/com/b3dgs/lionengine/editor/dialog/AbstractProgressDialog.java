@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.editor.UtilSwt;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class AbstractProgressDialog
-        extends AbstractDialog
+public abstract class AbstractProgressDialog extends AbstractDialog
 {
     /** Progress bar. */
     private ProgressBar progress;

@@ -32,8 +32,8 @@ import com.b3dgs.lionengine.Nameable;
 /**
  * Represents the object properties edition view.
  * 
- * @param <T> The object type handled by the properties.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <T> The object type handled by the properties.
  */
 public abstract class ObjectProperties<T extends Nameable>
 {

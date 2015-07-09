@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FileWritingImpl
-        implements FileWriting
+final class FileWritingImpl implements FileWriting
 {
     /** Output stream reference. */
     private final DataOutputStream out;

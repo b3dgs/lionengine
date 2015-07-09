@@ -37,16 +37,18 @@ import com.b3dgs.lionengine.editor.UtilSwt;
  */
 public class AnimationPlayer
 {
+    /** Animation editor folder. */
+    private static final String FOLDER = "animation-editor";
     /** Play icon. */
-    private static final Image ICON_ANIM_PLAY = UtilEclipse.getIcon("animation-editor", "anim-play.png");
+    private static final Image ICON_ANIM_PLAY = UtilEclipse.getIcon(FOLDER, "anim-play.png");
     /** Pause icon. */
-    private static final Image ICON_ANIM_PAUSE = UtilEclipse.getIcon("animation-editor", "anim-pause.png");
+    private static final Image ICON_ANIM_PAUSE = UtilEclipse.getIcon(FOLDER, "anim-pause.png");
     /** Stop icon. */
-    private static final Image ICON_ANIM_STOP = UtilEclipse.getIcon("animation-editor", "anim-stop.png");
+    private static final Image ICON_ANIM_STOP = UtilEclipse.getIcon(FOLDER, "anim-stop.png");
     /** Previous animation icon. */
-    private static final Image ICON_ANIM_PREVIOUS = UtilEclipse.getIcon("animation-editor", "anim-prev.png");
+    private static final Image ICON_ANIM_PREVIOUS = UtilEclipse.getIcon(FOLDER, "anim-prev.png");
     /** Next animation icon. */
-    private static final Image ICON_ANIM_NEXT = UtilEclipse.getIcon("animation-editor", "anim-next.png");
+    private static final Image ICON_ANIM_NEXT = UtilEclipse.getIcon(FOLDER, "anim-next.png");
 
     /** Animation list. */
     final AnimationList animationList;

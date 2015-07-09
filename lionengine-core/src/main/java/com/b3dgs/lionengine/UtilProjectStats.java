@@ -36,6 +36,8 @@ public final class UtilProjectStats
 {
     /** Java file extension. */
     private static final String JAVA_FILE_EXTENSION = "java";
+    /** Error directory. */
+    private static final String ERROR_DIR = "Not a directory: ";
 
     /** Number of files. */
     private static int numberOfFiles;
@@ -46,8 +48,9 @@ public final class UtilProjectStats
      * Start statistics analysis from input directory.
      * 
      * @param sourcesDir The specified directory to analyze.
+     * @throws LionEngineException If an error occurred on check.
      */
-    public static void start(String sourcesDir)
+    public static void start(String sourcesDir) throws LionEngineException
     {
         numberOfFiles = 0;
         numberOfLines = 0;
@@ -56,8 +59,8 @@ public final class UtilProjectStats
         exploreDir(mainDir.getAbsolutePath());
 
         final StringBuilder builder = new StringBuilder("Project statistics:\n");
-        builder.append("Number of files: ").append(numberOfFiles).append("\n");
-        builder.append("Number of lines: ").append(numberOfLines).append("\n");
+        builder.append("Number of files: ").append(numberOfFiles).append(Constant.NEW_LINE);
+        builder.append("Number of lines: ").append(numberOfLines).append(Constant.NEW_LINE);
         Verbose.info(builder.toString());
     }
 
@@ -97,27 +100,29 @@ public final class UtilProjectStats
      * Check each directory.
      * 
      * @param dirName The current directory.
+     * @throws LionEngineException If directory is not valid.
      */
-    private static void exploreDir(String dirName)
+    private static void exploreDir(String dirName) throws LionEngineException
     {
         final File dir = new File(dirName);
         final File[] files = dir.listFiles();
 
-        if (files != null)
+        if (files == null)
         {
-            for (final File current : files)
+            throw new LionEngineException(ERROR_DIR, dirName);
+        }
+        for (final File current : files)
+        {
+            if (current.isDirectory())
             {
-                if (current.isDirectory())
+                exploreDir(current.getAbsolutePath());
+            }
+            else if (current.isFile())
+            {
+                final String filename = current.getAbsolutePath();
+                if (JAVA_FILE_EXTENSION.equals(getExtension(filename)))
                 {
-                    exploreDir(current.getAbsolutePath());
-                }
-                else if (current.isFile())
-                {
-                    final String filename = current.getAbsolutePath();
-                    if (JAVA_FILE_EXTENSION.equals(getExtension(filename)))
-                    {
-                        countFileLines(filename);
-                    }
+                    countFileLines(filename);
                 }
             }
         }
@@ -139,6 +144,6 @@ public final class UtilProjectStats
      */
     private UtilProjectStats()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

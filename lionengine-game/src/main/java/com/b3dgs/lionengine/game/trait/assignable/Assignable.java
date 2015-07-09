@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait.assignable;
 
-import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.trait.Trait;
 
@@ -26,8 +25,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Assignable
-        extends Trait, Updatable
+public interface Assignable extends Trait, Updatable
 {
     /**
      * Set the executable assign.
@@ -40,7 +38,7 @@ public interface Assignable
      * Set the mouse click selection value to {@link Assign#assign()} the assign.
      * 
      * @param click The click number.
-     * @see InputDevicePointer
+     * @see com.b3dgs.lionengine.core.InputDevicePointer
      */
     void setClickAssign(int click);
 }

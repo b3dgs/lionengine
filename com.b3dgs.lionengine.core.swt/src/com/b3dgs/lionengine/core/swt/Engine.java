@@ -67,12 +67,11 @@ import com.b3dgs.lionengine.core.Verbose;
  * This class is Thread-Safe.
  * </p>
  * 
- * @since 13 June 2010
- * @version 8.1.0
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @version 8.1.0
+ * @since 13 June 2010
  */
-public final class Engine
-        extends EngineCore
+public final class Engine extends EngineCore
 {
     /**
      * Start engine. Has to be called before anything and only one time, in the main.
@@ -144,6 +143,6 @@ public final class Engine
      */
     private Engine()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

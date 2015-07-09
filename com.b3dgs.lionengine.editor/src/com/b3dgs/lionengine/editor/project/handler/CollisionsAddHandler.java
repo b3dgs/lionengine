@@ -30,6 +30,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
@@ -43,7 +44,7 @@ import com.b3dgs.lionengine.game.object.Factory;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsAddHandler
+public final class CollisionsAddHandler
 {
     /**
      * Create the collisions.
@@ -66,6 +67,14 @@ public class CollisionsAddHandler
     }
 
     /**
+     * Create handler.
+     */
+    public CollisionsAddHandler()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Execute the handler.
      * 
      * @param parent The shell parent.
@@ -76,7 +85,8 @@ public class CollisionsAddHandler
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final InputDialog inputDialog = new InputDialog(parent, Messages.AddCollisions_Title,
                 Messages.AddCollisions_Text,
-                MapTileCollision.DEFAULT_COLLISIONS_FILE.replace("." + Factory.FILE_DATA_EXTENSION, ""),
+                MapTileCollision.DEFAULT_COLLISIONS_FILE.replace(Constant.DOT + Factory.FILE_DATA_EXTENSION,
+                        Constant.EMPTY_STRING),
                 new InputValidator(InputValidator.NAME_MATCH,
                         com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         final int code = inputDialog.open();

@@ -22,8 +22,7 @@ package com.b3dgs.lionengine.core;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface InputDeviceDirectional
-        extends InputDevice
+public interface InputDeviceDirectional extends InputDevice
 {
     /**
      * Set the horizontal positive control code.

@@ -91,6 +91,6 @@ public final class Medias
      */
     private Medias()
     {
-        // Utility class
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

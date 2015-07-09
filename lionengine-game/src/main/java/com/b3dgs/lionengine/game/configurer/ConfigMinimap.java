@@ -23,14 +23,13 @@ import java.util.Map;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the minimap data from an XML node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Minimap
+ * @see com.b3dgs.lionengine.game.map.Minimap
  */
 public final class ConfigMinimap
 {

@@ -40,8 +40,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface XmlNode
-        extends XmlNodeReader
+public interface XmlNode extends XmlNodeReader
 {
     /** Null string (represents a string stored as <code>null</code>). */
     String NULL = "null";

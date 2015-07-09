@@ -30,6 +30,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
@@ -43,7 +44,7 @@ import com.b3dgs.lionengine.game.object.Factory;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulasAddHandler
+public final class FormulasAddHandler
 {
     /**
      * Create the formulas.
@@ -66,6 +67,14 @@ public class FormulasAddHandler
     }
 
     /**
+     * Create handler.
+     */
+    public FormulasAddHandler()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Execute the handler.
      * 
      * @param parent The shell parent.
@@ -75,7 +84,8 @@ public class FormulasAddHandler
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final InputDialog inputDialog = new InputDialog(parent, Messages.AddFormulas_Title, Messages.AddFormulas_Text,
-                MapTileCollision.DEFAULT_FORMULAS_FILE.replace("." + Factory.FILE_DATA_EXTENSION, ""),
+                MapTileCollision.DEFAULT_FORMULAS_FILE.replace(Constant.DOT + Factory.FILE_DATA_EXTENSION,
+                        Constant.EMPTY_STRING),
                 new InputValidator(InputValidator.NAME_MATCH,
                         com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         final int code = inputDialog.open();

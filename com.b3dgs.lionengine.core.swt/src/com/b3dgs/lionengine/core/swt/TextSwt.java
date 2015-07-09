@@ -34,8 +34,7 @@ import com.b3dgs.lionengine.core.Text;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TextSwt
-        implements Text
+final class TextSwt implements Text
 {
     /**
      * Get the style equivalence.
@@ -45,17 +44,22 @@ final class TextSwt
      */
     private static int getStyle(TextStyle style)
     {
+        final int value;
         switch (style)
         {
             case NORMAL:
-                return SWT.NORMAL;
+                value = SWT.NORMAL;
+                break;
             case BOLD:
-                return SWT.BOLD;
+                value = SWT.BOLD;
+                break;
             case ITALIC:
-                return SWT.ITALIC;
+                value = SWT.ITALIC;
+                break;
             default:
-                return SWT.NORMAL;
+                value = SWT.NORMAL;
         }
+        return value;
     }
 
     /** Text java font. */
@@ -89,7 +93,8 @@ final class TextSwt
     TextSwt(String fontName, int size, TextStyle style)
     {
         this.size = size;
-        font = new Font(ScreenSwt.display, fontName, (int) Math.round(size / 1.5), TextSwt.getStyle(style));
+        final double scale = 1.5;
+        font = new Font(ScreenSwt.display, fontName, (int) Math.round(size / scale), TextSwt.getStyle(style));
         align = Align.LEFT;
         color = ColorRgba.WHITE;
     }

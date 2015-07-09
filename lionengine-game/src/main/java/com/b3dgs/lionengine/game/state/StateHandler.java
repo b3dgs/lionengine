@@ -40,8 +40,7 @@ import com.b3dgs.lionengine.core.Updatable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class StateHandler
-        implements Updatable
+public class StateHandler implements Updatable
 {
     /** Inputs used. */
     private final Collection<InputDevice> inputs = new ArrayList<>();

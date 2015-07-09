@@ -36,9 +36,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AttackerModel
-        extends TraitModel
-        implements Attacker
+public class AttackerModel extends TraitModel implements Attacker
 {
     /** Listener list. */
     private final Collection<AttackerListener> listeners = new HashSet<>(1);
@@ -98,22 +96,30 @@ public class AttackerModel
             final double dist = UtilMath.getDistance(transformable.getX(), transformable.getY(),
                     transformable.getWidth(), transformable.getHeight(), target.getX(), target.getY(),
                     target.getWidth(), target.getHeight());
-            final boolean validRange = dist >= distAttack.getMin() && dist <= distAttack.getMax();
 
-            // Target distance is correct
-            if (validRange)
+            checkTargetDistance(dist);
+        }
+    }
+
+    /**
+     * Check the target distance and update the attack state.
+     * 
+     * @param dist The target distance.
+     */
+    private void checkTargetDistance(double dist)
+    {
+        if (dist >= distAttack.getMin() && dist <= distAttack.getMax())
+        {
+            if (checker.canAttack())
             {
-                if (checker.canAttack())
-                {
-                    state = AttackState.ATTACKING;
-                }
+                state = AttackState.ATTACKING;
             }
-            else if (timer.elapsed(attackPause))
+        }
+        else if (timer.elapsed(attackPause))
+        {
+            for (final AttackerListener listener : listeners)
             {
-                for (final AttackerListener listener : listeners)
-                {
-                    listener.notifyReachingTarget(target);
-                }
+                listener.notifyReachingTarget(target);
             }
         }
     }

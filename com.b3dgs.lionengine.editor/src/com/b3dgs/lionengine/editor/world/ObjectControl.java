@@ -258,8 +258,18 @@ public class ObjectControl
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        object.teleport(UtilMath.getRounded(x + (side == 1 ? 0 : 1) * object.getWidth() / 2 + tw / 2, tw)
-                + side * object.getWidth() / 2, UtilMath.getRounded(y + th / 2, th));
+        final int sideX;
+        if (side == 1)
+        {
+            sideX = 0;
+        }
+        else
+        {
+            sideX = 1;
+        }
+        object.teleport(
+                UtilMath.getRounded(x + sideX * object.getWidth() / 2 + tw / 2, tw) + side * object.getWidth() / 2,
+                UtilMath.getRounded(y + th / 2, th));
     }
 
     /**

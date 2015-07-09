@@ -36,8 +36,7 @@ import com.b3dgs.lionengine.game.Featurable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see MapTile
  */
-public interface Tile
-        extends Featurable<TileFeature>
+public interface Tile extends Featurable<TileFeature>
 {
     /**
      * Set sheet number.

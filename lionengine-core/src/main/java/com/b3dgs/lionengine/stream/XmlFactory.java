@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class XmlFactory
+public abstract class XmlFactory
 {
     /** Error when reading the file. */
     private static final String ERROR_READING = "An error occured while reading";
@@ -112,8 +112,9 @@ public final class XmlFactory
                 root.writeString(HEADER_ATTRIBUTE, HEADER_VALUE);
                 final DOMSource source = new DOMSource(node.getElement());
                 final StreamResult result = new StreamResult(outputStream);
-                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-                transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+                final String yes = "yes";
+                transformer.setOutputProperty(OutputKeys.INDENT, yes);
+                transformer.setOutputProperty(OutputKeys.STANDALONE, yes);
                 transformer.setOutputProperty(PROPERTY_INDENT, "4");
                 transformer.transform(source, result);
             }
@@ -172,6 +173,6 @@ public final class XmlFactory
      */
     private XmlFactory()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

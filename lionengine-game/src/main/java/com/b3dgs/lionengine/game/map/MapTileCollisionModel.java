@@ -55,8 +55,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapTileCollisionModel
-        implements MapTileCollision
+public class MapTileCollisionModel implements MapTileCollision
 {
     /** Info loading formulas. */
     private static final String INFO_LOAD_FORMULAS = "Loading collision formulas from: ";
@@ -99,6 +98,48 @@ public class MapTileCollisionModel
     }
 
     /**
+     * Get the horizontal collision from current location.
+     * 
+     * @param category The collision category.
+     * @param tileCollision The current tile collision.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @return The computed horizontal collision.
+     */
+    private static Double getCollisionX(CollisionCategory category, TileCollision tileCollision, double ox, double oy,
+            double x, double y)
+    {
+        if (category.getAxis() == Axis.X)
+        {
+            return tileCollision.getCollisionX(category, ox, oy, x, y);
+        }
+        return null;
+    }
+
+    /**
+     * Get the vertical collision from current location.
+     * 
+     * @param category The collision category.
+     * @param tileCollision The current tile collision.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @return The computed vertical collision.
+     */
+    private static Double getCollisionY(CollisionCategory category, TileCollision tileCollision, double ox, double oy,
+            double x, double y)
+    {
+        if (category.getAxis() == Axis.Y)
+        {
+            return tileCollision.getCollisionY(category, ox, oy, x, y);
+        }
+        return null;
+    }
+
+    /**
      * Get the rounded floor or ceil value depending of the speed.
      * 
      * @param speed The speed value.
@@ -123,7 +164,7 @@ public class MapTileCollisionModel
     /** Viewer reference. */
     private final Viewer viewer;
     /** Collision draw cache. */
-    private HashMap<CollisionFormula, ImageBuffer> collisionCache;
+    private Map<CollisionFormula, ImageBuffer> collisionCache;
     /** Formulas configuration media. */
     private Media formulasConfig;
     /** Groups configuration media. */
@@ -175,20 +216,30 @@ public class MapTileCollisionModel
      */
     private void createFunctionDraw(Graphic g, CollisionFormula formula)
     {
-        final CollisionFunction function = formula.getFunction();
-        final CollisionRange range = formula.getRange();
-
         for (int ox = 0; ox < map.getTileWidth(); ox++)
         {
             for (int oy = 0; oy < map.getTileHeight(); oy++)
             {
-                for (int x = 0; x < map.getTileWidth(); x++)
-                {
-                    for (int y = 0; y < map.getTileHeight(); y++)
-                    {
-                        renderCollision(g, range, function, ox, oy, x, y);
-                    }
-                }
+                createFunctionDrawFrom(g, formula, ox, oy);
+            }
+        }
+    }
+
+    /**
+     * Create the function draw to buffer by computing all possible locations.
+     * 
+     * @param g The graphic buffer.
+     * @param formula The collision formula.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     */
+    private void createFunctionDrawFrom(Graphic g, CollisionFormula formula, int ox, int oy)
+    {
+        for (int x = 0; x < map.getTileWidth(); x++)
+        {
+            for (int y = 0; y < map.getTileHeight(); y++)
+            {
+                renderCollision(g, formula, ox, oy, x, y);
             }
         }
     }
@@ -197,16 +248,16 @@ public class MapTileCollisionModel
      * Render collision from current vector.
      * 
      * @param g The graphic buffer.
-     * @param range The collision range reference.
-     * @param function The collision function reference.
+     * @param formula The collision formula.
      * @param ox The old horizontal location.
      * @param oy The old vertical location.
      * @param x The current horizontal location.
      * @param y The current vertical location.
      */
-    private void renderCollision(Graphic g, CollisionRange range, CollisionFunction function, int ox, int oy, int x,
-            int y)
+    private void renderCollision(Graphic g, CollisionFormula formula, int ox, int oy, int x, int y)
     {
+        final CollisionFunction function = formula.getFunction();
+        final CollisionRange range = formula.getRange();
         switch (range.getOutput())
         {
             case X:
@@ -394,11 +445,8 @@ public class MapTileCollisionModel
             final TileCollision tileCollision = tile.getFeature(TileCollision.class);
             if (containsCollisionFormula(tileCollision, category))
             {
-                final Double cx = category.getAxis() == Axis.X ? tileCollision.getCollisionX(category, ox, oy, x, y)
-                        : null;
-                final Double cy = category.getAxis() == Axis.Y ? tileCollision.getCollisionY(category, ox, oy, x, y)
-                        : null;
-
+                final Double cx = getCollisionX(category, tileCollision, ox, oy, x, y);
+                final Double cy = getCollisionY(category, tileCollision, ox, oy, x, y);
                 return new CollisionResult(cx, cy, tile);
             }
         }
@@ -516,9 +564,11 @@ public class MapTileCollisionModel
 
         double oh;
         double ov;
-        int count = 0;
+        double h = sh;
+        double v = sv;
 
-        for (double h = sh, v = sv; count < norm; count++)
+        CollisionResult found = null;
+        for (int count = 0; count < norm; count++)
         {
             oh = getRound(sx, h);
             ov = getRound(sy, v);
@@ -527,17 +577,19 @@ public class MapTileCollisionModel
             CollisionResult result = computeCollision(category, oh, ov, getRound(sx, h), getRound(sy, v));
             if (result != null)
             {
-                return result;
+                found = result;
+                break;
             }
 
             h += sx;
             result = computeCollision(category, oh, ov, getRound(sx, h), getRound(sy, v));
             if (result != null)
             {
-                return result;
+                found = result;
+                break;
             }
         }
-        return null;
+        return found;
     }
 
     @Override

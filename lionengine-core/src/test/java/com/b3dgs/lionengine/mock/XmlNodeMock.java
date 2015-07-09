@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class XmlNodeMock
-        implements XmlNode
+public final class XmlNodeMock implements XmlNode
 {
     /** Float precision. */
     public static final float FLOAT_PRECISION = 0.0001f;

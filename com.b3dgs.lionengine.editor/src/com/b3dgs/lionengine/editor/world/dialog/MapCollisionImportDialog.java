@@ -51,11 +51,12 @@ import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapCollisionImportDialog
-        extends AbstractDialog
+public class MapCollisionImportDialog extends AbstractDialog
 {
     /** Icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    /** Xml filter. */
+    private static final String XML = "*.xml";
 
     /** World view part reference. */
     private final WorldViewPart part;
@@ -132,10 +133,10 @@ public class MapCollisionImportDialog
     {
         final File file = Tools.selectResourceFile(dialog, true, new String[]
         {
-                Messages.ImportMapCollisionDialog_FormulasConfigFileFilter
+            Messages.ImportMapCollisionDialog_FormulasConfigFileFilter
         }, new String[]
         {
-                "*.xml"
+            XML
         });
         if (file != null)
         {
@@ -150,10 +151,10 @@ public class MapCollisionImportDialog
     {
         final File file = Tools.selectResourceFile(dialog, true, new String[]
         {
-                Messages.ImportMapCollisionDialog_CollisionsFileFilter
+            Messages.ImportMapCollisionDialog_CollisionsFileFilter
         }, new String[]
         {
-                "*.xml"
+            XML
         });
         if (file != null)
         {

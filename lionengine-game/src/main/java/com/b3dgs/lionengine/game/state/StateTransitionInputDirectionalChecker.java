@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface StateTransitionInputDirectionalChecker
-        extends StateTransitionInputChecker<InputDeviceDirectional>
+public interface StateTransitionInputDirectionalChecker extends StateTransitionInputChecker<InputDeviceDirectional>
 {
     // Marker interface
 }

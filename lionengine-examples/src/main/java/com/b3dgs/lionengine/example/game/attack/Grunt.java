@@ -43,9 +43,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Grunt
-        extends ObjectGame
-        implements Updatable, Renderable, AttackerChecker, AttackerListener
+class Grunt extends ObjectGame implements Updatable, Renderable, AttackerChecker, AttackerListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Grunt.xml");
@@ -77,7 +75,7 @@ class Grunt
         attacker.setAttackFrame(1);
         attacker.setAttackTimer(1000);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 8, 7);
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 8, 7);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
         addType(surface);

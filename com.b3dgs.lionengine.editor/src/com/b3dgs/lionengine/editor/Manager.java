@@ -34,6 +34,14 @@ import org.eclipse.swt.widgets.Monitor;
 public class Manager
 {
     /**
+     * Create manager.
+     */
+    public Manager()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Center the main trimmed window.
      * 
      * @param app The application.

@@ -32,8 +32,16 @@ import com.b3dgs.lionengine.editor.world.WorldViewPart;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetPointerTileHandler
+public final class SetPointerTileHandler
 {
+    /**
+     * Create handler.
+     */
+    public SetPointerTileHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

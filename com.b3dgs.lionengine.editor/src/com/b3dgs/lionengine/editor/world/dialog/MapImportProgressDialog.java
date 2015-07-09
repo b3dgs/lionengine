@@ -42,9 +42,8 @@ import com.b3dgs.lionengine.game.map.MapTile;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapImportProgressDialog
-        extends AbstractProgressDialog
-        implements LevelRipConverter.ProgressListener, LevelRipConverter.Canceler
+public class MapImportProgressDialog extends AbstractProgressDialog
+                                     implements LevelRipConverter.ProgressListener, LevelRipConverter.Canceler
 {
     /** Media level. */
     private final Media levelRip;
@@ -75,6 +74,26 @@ public class MapImportProgressDialog
         cancel.getParent().setLayout(new GridLayout(1, false));
         cancel.getParent().layout();
         dialog.setMinimumSize(128, 128);
+    }
+
+    /**
+     * Draw the map progress.
+     * 
+     * @param percent The progress percent.
+     * @param progressTileX The horizontal progress.
+     * @param progressTileY The vertical progress.
+     */
+    private void drawMap(int percent, int progressTileX, int progressTileY)
+    {
+        gc.drawImage(minimap, 0, 0);
+        if (percent < 100)
+        {
+            if (progressTileY < 100)
+            {
+                gc.fillRectangle(0, progressTileY + 1, width, height - progressTileY);
+            }
+            gc.fillRectangle(progressTileX, progressTileY, width - progressTileX, 1);
+        }
     }
 
     @Override
@@ -115,15 +134,7 @@ public class MapImportProgressDialog
         if (!isDisposed())
         {
             setProgress(percent);
-            gc.drawImage(minimap, 0, 0);
-            if (percent < 100)
-            {
-                if (progressTileY < 100)
-                {
-                    gc.fillRectangle(0, progressTileY + 1, width, height - progressTileY);
-                }
-                gc.fillRectangle(progressTileX, progressTileY, width - progressTileX, 1);
-            }
+            drawMap(percent, progressTileX, progressTileY);
             dialog.getDisplay().readAndDispatch();
         }
     }

@@ -25,11 +25,10 @@ import javax.swing.JComboBox;
 /**
  * Combo action listener.
  * 
- * @param <E> The object type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <E> The object type.
  */
-public final class ComboListener<E>
-        implements ActionListener
+public final class ComboListener<E> implements ActionListener
 {
     /** The combo reference. */
     private final JComboBox<E> combo;

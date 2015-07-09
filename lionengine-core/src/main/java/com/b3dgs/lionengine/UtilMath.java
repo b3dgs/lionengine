@@ -67,15 +67,20 @@ public final class UtilMath
      */
     public static int fixBetween(int value, int min, int max)
     {
+        final int fixed;
         if (value < min)
         {
-            return min;
+            fixed = min;
         }
         else if (value > max)
         {
-            return max;
+            fixed = max;
         }
-        return value;
+        else
+        {
+            fixed = value;
+        }
+        return fixed;
     }
 
     /**
@@ -88,15 +93,20 @@ public final class UtilMath
      */
     public static double fixBetween(double value, double min, double max)
     {
+        final double fixed;
         if (value < min)
         {
-            return min;
+            fixed = min;
         }
         else if (value > max)
         {
-            return max;
+            fixed = max;
         }
-        return value;
+        else
+        {
+            fixed = value;
+        }
+        return fixed;
     }
 
     /**
@@ -337,6 +347,6 @@ public final class UtilMath
      */
     private UtilMath()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

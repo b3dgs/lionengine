@@ -44,9 +44,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Peon
-        extends ObjectGame
-        implements Updatable, Renderable, SelectorListener
+class Peon extends ObjectGame implements Updatable, Renderable, SelectorListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
@@ -75,7 +73,7 @@ class Peon
         super(setup, services);
         viewer = services.get(Viewer.class);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 

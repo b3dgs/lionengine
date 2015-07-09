@@ -34,8 +34,16 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SurfaceRemoveHandler
+public final class SurfaceRemoveHandler
 {
+    /**
+     * Create handler.
+     */
+    public SurfaceRemoveHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */

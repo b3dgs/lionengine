@@ -12,10 +12,6 @@
             name="LionEngine Editor"
             application="org.eclipse.e4.ui.workbench.swt.E4Application">
          <property
-               name="applicationCSS"
-               value="platform:/plugin/com.b3dgs.lionengine.editor/css/default.css">
-         </property>
-         <property
                name="appName"
                value="LionEngine Editor">
          </property>
@@ -268,13 +264,6 @@
             id="com.b3dgs.lionengine.editor.collisionsTester"
             namespace="com.b3dgs.lionengine.editor.collisionsTester"
             properties="addCollisions,editCollisions"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.FolderTypeTester"
-            id="com.b3dgs.lionengine.editor.folderTypeTester"
-            namespace="com.b3dgs.lionengine.editor.folderTypeTester"
-            properties="category"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester

@@ -33,8 +33,16 @@ import com.b3dgs.lionengine.editor.project.ProjectsModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ObjectDeleteHandler
+public final class ObjectDeleteHandler
 {
+    /**
+     * Create handler.
+     */
+    public ObjectDeleteHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

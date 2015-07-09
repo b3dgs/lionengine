@@ -21,6 +21,7 @@
         <maven-javadoc.version>2.10.3</maven-javadoc.version>
         <maven-surfire.version>2.18.1</maven-surfire.version>
         <maven-checkstyle.version>2.15</maven-checkstyle.version>
+        <checkstyle.version>6.8.1</checkstyle.version>
         <maven-eclipse.version>2.10</maven-eclipse.version>
         <pde-target-maven.version>1.0.1</pde-target-maven.version>
     </properties>
@@ -295,7 +296,7 @@
                             <supportedProjectType>jar</supportedProjectType>
                         </supportedProjectTypes>
                         <instructions>
-                            <Import-Package>org.junit;resolution:=optional</Import-Package>
+                            <Import-Package>org.junit;resolution:=optional, *</Import-Package>
                         </instructions>
                     </configuration>
                     <executions>
@@ -358,6 +359,13 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>${maven-checkstyle.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
                     <configuration>
                         <propertiesLocation>../${build-tools-project}/checkstyle.properties</propertiesLocation>
                         <propertyExpansion>dir=${project.basedir}/../${build-tools-project}</propertyExpansion>

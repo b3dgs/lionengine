@@ -22,8 +22,7 @@ package com.b3dgs.lionengine.game.map.astar;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class HeuristicManhattan
-        implements Heuristic
+final class HeuristicManhattan implements Heuristic
 {
     /** Minimum cost value. */
     private final int minimumCost;

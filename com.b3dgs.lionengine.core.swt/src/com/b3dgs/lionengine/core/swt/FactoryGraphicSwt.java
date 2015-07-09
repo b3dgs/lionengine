@@ -40,8 +40,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryGraphicSwt
-        implements FactoryGraphic
+final class FactoryGraphicSwt implements FactoryGraphic
 {
     /**
      * Internal constructor.
@@ -141,21 +140,27 @@ final class FactoryGraphicSwt
     @Override
     public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter) throws LionEngineException
     {
+        final ImageBuffer filtered;
         switch (filter)
         {
             case NONE:
-                return imageBuffer;
+                filtered = imageBuffer;
+                break;
             case BILINEAR:
-                return UtilityImage.applyBilinearFilter(imageBuffer);
+                filtered = UtilityImage.applyBilinearFilter(imageBuffer);
+                break;
             case HQ2X:
                 final Hq2x hq2x = new Hq2x(imageBuffer);
-                return hq2x.getScaledImage();
+                filtered = hq2x.getScaledImage();
+                break;
             case HQ3X:
                 final Hq3x hq3x = new Hq3x(imageBuffer);
-                return hq3x.getScaledImage();
+                filtered = hq3x.getScaledImage();
+                break;
             default:
                 throw new RuntimeException();
         }
+        return filtered;
     }
 
     @Override

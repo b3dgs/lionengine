@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.core.Sequence;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceMock
-        extends Sequence
+public class SequenceMock extends Sequence
 {
     /**
      * Constructor.

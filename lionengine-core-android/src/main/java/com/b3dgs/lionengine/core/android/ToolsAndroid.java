@@ -192,9 +192,8 @@ public final class ToolsAndroid
             case BILINEAR:
             case HQ2X:
             case HQ3X:
-                throw new LionEngineException("Filter not supported !");
             default:
-                throw new RuntimeException();
+                throw new LionEngineException("Filter not supported !");
         }
     }
 
@@ -228,9 +227,13 @@ public final class ToolsAndroid
         final boolean method = true;
         final Bitmap raster = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
 
-        final double sr = -((er - fr) / 0x010000) / (double) refSize;
-        final double sg = -((eg - fg) / 0x000100) / (double) refSize;
-        final double sb = -((eb - fb) / 0x000001) / (double) refSize;
+        final int divisorRed = 0x010000;
+        final int divisorGreen = 0x000100;
+        final int divisorBlue = 0x000001;
+
+        final double sr = -((er - fr) / divisorRed) / (double) refSize;
+        final double sg = -((eg - fg) / divisorGreen) / (double) refSize;
+        final double sb = -((eb - fb) / divisorBlue) / (double) refSize;
 
         if (method)
         {
@@ -238,9 +241,9 @@ public final class ToolsAndroid
             {
                 for (int j = 0; j < raster.getHeight(); j++)
                 {
-                    final int r = (int) (sr * (j % refSize)) * 0x010000;
-                    final int g = (int) (sg * (j % refSize)) * 0x000100;
-                    final int b = (int) (sb * (j % refSize)) * 0x000001;
+                    final int r = (int) (sr * (j % refSize)) * divisorRed;
+                    final int g = (int) (sg * (j % refSize)) * divisorGreen;
+                    final int b = (int) (sb * (j % refSize)) * divisorBlue;
 
                     raster.setPixel(i, j, ColorRgba.filterRgb(image.getPixel(i, j), fr + r, fg + g, fb + b));
                 }
@@ -248,11 +251,12 @@ public final class ToolsAndroid
         }
         else
         {
-            final int[] org = new int[image.getWidth() * image.getHeight() * 4];
+            final int bitsPerPixel = 4;
+            final int[] org = new int[image.getWidth() * image.getHeight() * bitsPerPixel];
             image.getPixels(org, 0, 0, 0, 0, image.getWidth(), image.getHeight());
             final int width = raster.getWidth();
             final int height = raster.getHeight();
-            final int[] pixels = new int[width * height * 4];
+            final int[] pixels = new int[width * height * bitsPerPixel];
             raster.getPixels(org, 0, 0, 0, 0, width, height);
 
             for (int j = 0; j < height; j++)
@@ -272,6 +276,6 @@ public final class ToolsAndroid
      */
     private ToolsAndroid()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

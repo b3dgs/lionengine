@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
@@ -39,9 +40,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ServerImpl
-        extends NetworkModel<ClientListener>
-        implements Server
+final class ServerImpl extends NetworkModel<ClientListener> implements Server
 {
     /**
      * Send the id and the name to the client.
@@ -75,7 +74,7 @@ final class ServerImpl
     }
 
     /** Client list. */
-    private final HashMap<Byte, ClientSocket> clientsList;
+    private final Map<Byte, ClientSocket> clientsList;
     /** Remove list. */
     private final Collection<ClientSocket> removeList;
     /** Average bandwidth. */
@@ -135,7 +134,8 @@ final class ServerImpl
             {
                 lastId++;
                 secure++;
-                if (secure > 127)
+                final int max = 127;
+                if (secure > max)
                 {
                     break;
                 }
@@ -358,7 +358,8 @@ final class ServerImpl
                     decodeMessage(type, from, dest, clientBuffer);
                 }
             }
-            bandwidth += 4 + size;
+            final int headerSize = 4;
+            bandwidth += headerSize + size;
         }
     }
 
@@ -578,7 +579,9 @@ final class ServerImpl
                     client.getOut().writeInt(encoded.length);
                     client.getOut().write(encoded);
                     client.getOut().flush();
-                    bandwidth += 4 + encoded.length;
+
+                    final int headerSize = 4;
+                    bandwidth += headerSize + encoded.length;
                 }
                 catch (final IOException exception)
                 {
@@ -587,7 +590,8 @@ final class ServerImpl
                 }
             }
         }
-        if (bandwidthTimer.elapsed(1000L))
+        final long bandwidthMilli = 1000L;
+        if (bandwidthTimer.elapsed(bandwidthMilli))
         {
             bandwidthPerSecond = bandwidth;
             bandwidth = 0;

@@ -29,25 +29,24 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.configurer.ConfigLaunchable;
 import com.b3dgs.lionengine.game.configurer.ConfigLauncher;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Default launcher model implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.trait.Trait}:
  * </p>
  * <ul>
  * <li>{@link Localizable}</li>
  * </ul>
  * <p>
- * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigLauncher}.
+ * The {@link com.b3dgs.lionengine.game.configurer.Configurer} must provide a valid configuration compatible with
+ * {@link ConfigLauncher}.
  * </p>
  * <p>
  * The {@link Services} must provide the following services:
@@ -63,9 +62,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class LauncherModel
-        extends TraitModel
-        implements Launcher
+public class LauncherModel extends TraitModel implements Launcher
 {
     /** Launcher listeners. */
     private final Collection<LauncherListener> listeners = new HashSet<>();

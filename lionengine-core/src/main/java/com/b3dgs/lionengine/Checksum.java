@@ -41,6 +41,7 @@ import java.util.Arrays;
  * Assert.assertFalse(checksum.check(other, signature));
  * Assert.assertTrue(checksum.check(integer, test));
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

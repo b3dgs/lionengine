@@ -26,13 +26,13 @@ import com.b3dgs.lionengine.Transparency;
 /**
  * Represents the graphic factory.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Renderer
  * @see Screen
  * @see Graphic
  * @see Text
  * @see ImageBuffer
  * @see Transform
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface FactoryGraphic
 {

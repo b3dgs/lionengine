@@ -69,17 +69,22 @@ public final class UtilityImage
      */
     public static int getTransparency(Transparency transparency)
     {
+        final int value;
         switch (transparency)
         {
             case OPAQUE:
-                return SWT.TRANSPARENCY_NONE;
+                value = SWT.TRANSPARENCY_NONE;
+                break;
             case BITMASK:
-                return SWT.TRANSPARENCY_MASK;
+                value = SWT.TRANSPARENCY_MASK;
+                break;
             case TRANSLUCENT:
-                return SWT.TRANSPARENCY_ALPHA;
+                value = SWT.TRANSPARENCY_ALPHA;
+                break;
             default:
-                return 0;
+                value = 0;
         }
+        return value;
     }
 
     /**
@@ -265,6 +270,6 @@ public final class UtilityImage
      */
     private UtilityImage()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

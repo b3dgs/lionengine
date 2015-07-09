@@ -33,8 +33,7 @@ import com.b3dgs.lionengine.game.background.Parallax;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Swamp
-        extends BackgroundGame
+class Swamp extends BackgroundGame
 {
     /** Moon rasters. */
     private static final int MOON_RASTERS = 20;
@@ -100,8 +99,7 @@ class Swamp
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private final class Backdrop
-            implements BackgroundComponent
+    private final class Backdrop implements BackgroundComponent
     {
         /** Backdrop color. */
         private final BackgroundElement backcolor;
@@ -157,8 +155,8 @@ class Swamp
                 sprite.render(g);
             }
             // Render moon
-            final Sprite spriteMoon = moon
-                    .getRaster((int) ((mountain.getOffsetY() + (moonOffset - getOffsetY())) / 4 + Swamp.MOON_RASTERS));
+            final int id = (int) ((mountain.getOffsetY() + (moonOffset - getOffsetY())) / 4 + Swamp.MOON_RASTERS);
+            final Sprite spriteMoon = moon.getRaster(id);
             spriteMoon.setLocation(moon.getMainX(), moon.getOffsetY() + moon.getMainY());
             spriteMoon.render(g);
 

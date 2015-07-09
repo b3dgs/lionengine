@@ -18,13 +18,12 @@
 package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Renderable;
 
 /**
  * Describe the main component requirement, which is aimed to provide renderable feature for an object.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Renderable
+ * @see com.b3dgs.lionengine.core.Renderable
  */
 public interface ComponentRenderable
 {

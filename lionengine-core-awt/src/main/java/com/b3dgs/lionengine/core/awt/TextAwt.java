@@ -34,8 +34,7 @@ import com.b3dgs.lionengine.core.Text;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TextAwt
-        implements Text
+final class TextAwt implements Text
 {
     /**
      * Get the style equivalence.
@@ -45,17 +44,22 @@ final class TextAwt
      */
     private static int getStyle(TextStyle style)
     {
+        final int value;
         switch (style)
         {
             case NORMAL:
-                return Font.TRUETYPE_FONT;
+                value = Font.TRUETYPE_FONT;
+                break;
             case BOLD:
-                return Font.BOLD;
+                value = Font.BOLD;
+                break;
             case ITALIC:
-                return Font.ITALIC;
+                value = Font.ITALIC;
+                break;
             default:
                 throw new RuntimeException("Unsupported text style !");
         }
+        return value;
     }
 
     /** Text java font. */

@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FileReadingImpl
-        implements FileReading
+final class FileReadingImpl implements FileReading
 {
     /** Input stream reference. */
     private final DataInputStream in;

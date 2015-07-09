@@ -86,8 +86,8 @@ public final class ConfigTileGroup
         for (final TileRef ref : group.getTiles())
         {
             final XmlNode tileRef = node.createChild(TILE);
-            tileRef.writeInteger(SHEET, ref.sheet);
-            tileRef.writeInteger(NUMBER, ref.number);
+            tileRef.writeInteger(SHEET, ref.getSheet());
+            tileRef.writeInteger(NUMBER, ref.getNumber());
         }
     }
 

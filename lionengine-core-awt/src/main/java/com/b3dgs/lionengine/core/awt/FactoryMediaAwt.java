@@ -28,8 +28,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryMediaAwt
-        implements FactoryMedia
+final class FactoryMediaAwt implements FactoryMedia
 {
     /** Path separator. */
     private String separator = File.separator;

@@ -35,8 +35,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ImageBufferSwt
-        implements ImageBuffer
+final class ImageBufferSwt implements ImageBuffer
 {
     /**
      * Get the transparency equivalence.
@@ -46,17 +45,22 @@ final class ImageBufferSwt
      */
     static Transparency getTransparency(int transparency)
     {
+        final Transparency value;
         switch (transparency)
         {
             case SWT.TRANSPARENCY_NONE:
-                return Transparency.OPAQUE;
+                value = Transparency.OPAQUE;
+                break;
             case SWT.TRANSPARENCY_MASK:
-                return Transparency.BITMASK;
+                value = Transparency.BITMASK;
+                break;
             case SWT.TRANSPARENCY_ALPHA:
-                return Transparency.TRANSLUCENT;
+                value = Transparency.TRANSLUCENT;
+                break;
             default:
-                return Transparency.OPAQUE;
+                value = Transparency.OPAQUE;
         }
+        return value;
     }
 
     /** Transparency. */

@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
@@ -41,8 +40,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Camera
-        implements Viewer
+public class Camera implements Viewer
 {
     /** Current location. */
     private final Transformable transformable;
@@ -186,8 +184,8 @@ public class Camera
      * (screen top-left).</li>
      * </ul>
      * <p>
-     * It is also compatible with object rendering (by using an {@link Handler}). The object which is outside the camera
-     * view will not be rendered. This avoid useless rendering.
+     * It is also compatible with object rendering (by using an {@link com.b3dgs.lionengine.game.object.Handler}). The
+     * object which is outside the camera view will not be rendered. This avoid useless rendering.
      * </p>
      * <p>
      * Note: The rendering view is from the camera location. So <code>x</code> and <code>y</code> are an offset from
@@ -223,6 +221,26 @@ public class Camera
         mapRightLimit = map.getInTileWidth() * map.getTileWidth() - width;
         mapDownLimit = 0;
         moveLocation(1.0, 0.0, 0.0);
+    }
+
+    /**
+     * Get the horizontal movement.
+     * 
+     * @return Camera horizontal movement.
+     */
+    public double getMovementHorizontal()
+    {
+        return transformable.getX() - transformable.getOldX();
+    }
+
+    /**
+     * Get the horizontal movement.
+     * 
+     * @return Camera horizontal movement.
+     */
+    public double getMovementVertical()
+    {
+        return transformable.getY() - transformable.getOldY();
     }
 
     /**

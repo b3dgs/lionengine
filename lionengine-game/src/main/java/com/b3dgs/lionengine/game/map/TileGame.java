@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.game.Features;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileGame
-        implements Tile
+public class TileGame implements Tile
 {
     /** Tile width. */
     private final int width;

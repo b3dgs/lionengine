@@ -47,11 +47,12 @@ import com.b3dgs.lionengine.game.map.MapTile;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapImportDialog
-        extends AbstractDialog
+public class MapImportDialog extends AbstractDialog
 {
     /** Icon. */
     public static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    /** Xml filter. */
+    private static final String XML = "*.xml";
 
     /** Level rip location. */
     Text levelRipLocationText;
@@ -96,10 +97,10 @@ public class MapImportDialog
     {
         final File file = Tools.selectResourceFile(dialog, true, new String[]
         {
-                Messages.ImportMapDialog_LevelRipFileFilter
+            Messages.ImportMapDialog_LevelRipFileFilter
         }, new String[]
         {
-                "*.bmp;*.png"
+            "*.bmp;*.png"
         });
         if (file != null)
         {
@@ -114,10 +115,10 @@ public class MapImportDialog
     {
         final File file = Tools.selectResourceFile(dialog, true, new String[]
         {
-                Messages.ImportMapDialog_SheetsConfigFileFilter
+            Messages.ImportMapDialog_SheetsConfigFileFilter
         }, new String[]
         {
-                "*.xml"
+            XML
         });
         if (file != null)
         {
@@ -132,10 +133,10 @@ public class MapImportDialog
     {
         final File file = Tools.selectResourceFile(dialog, true, new String[]
         {
-                Messages.ImportMapDialog_GroupsConfigFileFilter
+            Messages.ImportMapDialog_GroupsConfigFileFilter
         }, new String[]
         {
-                "*.xml"
+            XML
         });
         if (file != null)
         {

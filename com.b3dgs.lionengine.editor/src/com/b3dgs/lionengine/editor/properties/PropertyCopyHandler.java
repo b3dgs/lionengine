@@ -25,8 +25,16 @@ import org.eclipse.swt.widgets.TreeItem;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertyCopyHandler
+public final class PropertyCopyHandler
 {
+    /**
+     * Create handler.
+     */
+    public PropertyCopyHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */

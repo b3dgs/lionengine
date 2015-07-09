@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.core.Applet;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AppletMock
-        implements Applet<AppletMock>
+public class AppletMock implements Applet<AppletMock>
 {
     @Override
     public AppletMock getApplet()

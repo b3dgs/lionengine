@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
@@ -90,7 +91,7 @@ public class AboutDialog
 
         final String vendor = Platform.getBundle(Activator.PLUGIN_ID).getHeaders().get("Bundle-Vendor");
         final StringBuilder text = new StringBuilder(Activator.PLUGIN_NAME).append(" ");
-        text.append(Activator.PLUGIN_VERSION + "\n");
+        text.append(Activator.PLUGIN_VERSION + Constant.NEW_LINE);
         text.append(vendor).append("\n");
         text.append(Activator.PLUGIN_WEBSITE);
 

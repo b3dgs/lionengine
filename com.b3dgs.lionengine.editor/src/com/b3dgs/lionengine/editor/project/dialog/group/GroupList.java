@@ -37,9 +37,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class GroupList
-        extends ObjectList<TileGroup>
-        implements ObjectListListener<TileGroup>
+public class GroupList extends ObjectList<TileGroup> implements ObjectListListener<TileGroup>
 {
     /**
      * Create the group list.

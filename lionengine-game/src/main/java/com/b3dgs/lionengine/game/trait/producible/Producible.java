@@ -28,8 +28,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Producible
-        extends Trait, Localizable
+public interface Producible extends Trait, Localizable
 {
     /**
      * Add a producible listener.

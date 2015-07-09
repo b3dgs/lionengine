@@ -18,47 +18,47 @@
 package com.b3dgs.lionengine.game.collision;
 
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 
 /**
  * Collision formula representation. It define the way of collision is computed, and its constraints compared to
  * adjacent tiles.
  * 
  * <pre>
- * {@code<lionengine:formulas xmlns:lionengine="http://lionengine.b3dgs.com">}
- *     {@code<lionengine:formula name="top">}
- *         {@code<lionengine:range output="Y" minX="0" maxX="15" minY="15" maxY="15"/>}
- *         {@code<lionengine:function type="LINEAR" a="0" b="16"/>}
- *         {@code<lionengine:constraint top="none"/>}
- *     {@code</lionengine:formula>}
- *     {@code<lionengine:formula name="bottom">}
- *         {@code<lionengine:range output="Y" minX="0" maxX="15" minY="0" maxY="0"/>}
- *         {@code<lionengine:function type="LINEAR" a="0" b="-1"/>}
- *         {@code<lionengine:constraint bottom="none"/>}
- *     {@code</lionengine:formula>}
- *     {@code<lionengine:formula name="left">}
- *         {@code<lionengine:range output="X" minX="0" maxX="0" minY="0" maxY="15"/>}
- *         {@code<lionengine:function type="LINEAR" a="0" b="-1"/>}
- *         {@code<lionengine:constraint left="none"/>}
- *     {@code</lionengine:formula>}
- *     {@code<lionengine:formula name="right">}
- *         {@code<lionengine:range output="X" minX="15" maxX="15" minY="0" maxY="15"/>}
- *         {@code<lionengine:function type="LINEAR" a="0" b="16"/>}
- *         {@code<lionengine:constraint right="none"/>}
- *     {@code</lionengine:formula>}
- * {@code</lionengine:formulas>}
- * 
- * This will create 4 formulas, defining a collision for each side.
+ * &lt;lionengine:formulas xmlns:lionengine="http://lionengine.b3dgs.com">
+ *     &lt;lionengine:formula name="top">
+ *         &lt;lionengine:range output="Y" minX="0" maxX="15" minY="15" maxY="15"/>
+ *         &lt;lionengine:function type="LINEAR" a="0" b="16"/>
+ *         &lt;lionengine:constraint top="none"/>
+ *     &lt;/lionengine:formula>
+ *     &lt;lionengine:formula name="bottom">
+ *         &lt;lionengine:range output="Y" minX="0" maxX="15" minY="0" maxY="0"/>
+ *         &lt;lionengine:function type="LINEAR" a="0" b="-1"/>
+ *         &lt;lionengine:constraint bottom="none"/>
+ *     &lt;/lionengine:formula>
+ *     &lt;lionengine:formula name="left">
+ *         &lt;lionengine:range output="X" minX="0" maxX="0" minY="0" maxY="15"/>
+ *         &lt;lionengine:function type="LINEAR" a="0" b="-1"/>
+ *         &lt;lionengine:constraint left="none"/>
+ *     &lt;/lionengine:formula>
+ *     &lt;lionengine:formula name="right">
+ *         &lt;lionengine:range output="X" minX="15" maxX="15" minY="0" maxY="15"/>
+ *         &lt;lionengine:function type="LINEAR" a="0" b="16"/>
+ *         &lt;lionengine:constraint right="none"/>
+ *     &lt;/lionengine:formula>
+ * &lt;/lionengine:formulas>
  * </pre>
  * 
+ * <p>
+ * This will create 4 formulas, defining a collision for each side.
+ * </p>
+ * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see ConfigCollisionFormula
+ * @see com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula
  * @see CollisionRange
  * @see CollisionFunction
  * @see CollisionConstraint
  */
-public class CollisionFormula
-        implements Nameable
+public class CollisionFormula implements Nameable
 {
     /** Formula name. */
     private final String name;

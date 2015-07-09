@@ -17,17 +17,15 @@
  */
 package com.b3dgs.lionengine.game.trait.assignable;
 
-import com.b3dgs.lionengine.game.trait.actionable.Action;
-import com.b3dgs.lionengine.game.trait.actionable.Actionable;
-
 /**
- * Represents something that can be assigned by an {@link Assignable} from an {@link Action}. Usually a consequence of a
+ * Represents something that can be assigned by an {@link Assignable} from an
+ * {@link com.b3dgs.lionengine.game.trait.actionable.Action}. Usually a consequence of a
  * click over a button, ready to assign on map (in other this is the second part of the action).
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Assignable
- * @see Actionable
- * @see Action
+ * @see com.b3dgs.lionengine.game.trait.actionable.Actionable
+ * @see com.b3dgs.lionengine.game.trait.actionable.Action
  */
 public interface Assign
 {

@@ -32,8 +32,16 @@ import com.b3dgs.lionengine.editor.world.WorldViewPart;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetHandHandler
+public final class SetHandHandler
 {
+    /**
+     * Create handler.
+     */
+    public SetHandHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

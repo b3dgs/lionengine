@@ -31,9 +31,7 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ExtractorModel
-        extends TraitModel
-        implements Extractor
+public class ExtractorModel extends TraitModel implements Extractor
 {
     /** Extractor listeners. */
     private final Collection<ExtractorListener> listeners = new ArrayList<>();

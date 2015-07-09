@@ -31,6 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -54,6 +55,7 @@ import com.b3dgs.lionengine.LionEngineException;
  *     Verbose.exception(MyClass.class, &quot;function&quot;, exception);
  * }
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -73,10 +75,20 @@ public enum Verbose
 
     /** Logger. */
     private static final Logger LOGGER = Logger.getLogger("");
+    /** One megabyte. */
+    private static final int MEGA_BYTE = 1048576;
     /** Log size. */
-    private static final int LOG_SIZE = 1048576 * 4;
+    private static final int LOG_SIZE = MEGA_BYTE * 4;
     /** Log count. */
     private static final int LOG_COUNT = 6;
+    /** Log file. */
+    private static final String LOG_FILE = "%t/lionengine-%g.log";
+    /** Separator date. */
+    private static final String SEPARATOR_DATE = " - ";
+    /** In. */
+    private static final String IN = "in ";
+    /** At. */
+    private static final String AT = " at ";
     /** Error formatter. */
     private static final String ERROR_FORMATTER = "Unable to set logger formatter due to security exception !";
     /** Error level. */
@@ -158,7 +170,7 @@ public enum Verbose
         try
         {
             final VerboseFormatter formatter = new VerboseFormatter();
-            final FileHandler fileHandler = new FileHandler("%t/lionengine-%g.log", LOG_SIZE, LOG_COUNT, true);
+            final FileHandler fileHandler = new FileHandler(LOG_FILE, LOG_SIZE, LOG_COUNT, true);
             LOGGER.addHandler(fileHandler);
 
             final Handler[] handlers = LOGGER.getHandlers();
@@ -220,8 +232,7 @@ public enum Verbose
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private static final class VerboseFormatter
-            extends Formatter
+    private static final class VerboseFormatter extends Formatter
     {
         /** Date formatter. */
         private final DateFormat format = DateFormat.getInstance();
@@ -240,19 +251,19 @@ public enum Verbose
             final String clazz = event.getSourceClassName();
             final String function = event.getSourceMethodName();
             final Throwable thrown = event.getThrown();
-            final StringBuilder message = new StringBuilder(event.getLevel().getName()).append(": ");
+            final StringBuilder message = new StringBuilder(event.getLevel().getName()).append(Constant.DOUBLE_DOT);
 
             message.append(format.format(Calendar.getInstance().getTime()));
-            message.append(" - ");
+            message.append(SEPARATOR_DATE);
             if (clazz != null)
             {
-                message.append("in ").append(clazz);
+                message.append(IN).append(clazz);
             }
             if (function != null)
             {
-                message.append(" at ").append(function).append(": ");
+                message.append(AT).append(function).append(Constant.DOUBLE_DOT);
             }
-            message.append(event.getMessage()).append("\n");
+            message.append(event.getMessage()).append(Constant.NEW_LINE);
             if (thrown != null)
             {
                 final StringWriter sw = new StringWriter();

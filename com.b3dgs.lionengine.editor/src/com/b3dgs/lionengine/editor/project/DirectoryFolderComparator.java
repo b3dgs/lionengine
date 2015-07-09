@@ -26,27 +26,43 @@ import java.util.Comparator;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class DirectoryFolderComparator
-        implements Comparator<File>, Serializable
+public final class DirectoryFolderComparator implements Comparator<File>, Serializable
 {
     /** Serial UID. */
     private static final long serialVersionUID = 5918350780715048779L;
 
+    /**
+     * Create comparator.
+     */
+    public DirectoryFolderComparator()
+    {
+        // Nothing to do
+    }
+
+    /*
+     * Comparator
+     */
+
     @Override
     public int compare(File file1, File file2)
     {
+        final int result;
         if (file1.isFile() && file2.isFile() || file1.isDirectory() && file2.isDirectory())
         {
-            return file1.compareTo(file2);
+            result = file1.compareTo(file2);
         }
-        if (file1.isFile() && file2.isDirectory())
+        else if (file1.isFile() && file2.isDirectory())
         {
-            return 1;
+            result = 1;
         }
         else if (file1.isDirectory() && file2.isFile())
         {
-            return -1;
+            result = -1;
         }
-        return 0;
+        else
+        {
+            result = 0;
+        }
+        return result;
     }
 }

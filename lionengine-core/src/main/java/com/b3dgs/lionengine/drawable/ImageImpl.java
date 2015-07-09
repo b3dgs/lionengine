@@ -33,8 +33,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class ImageImpl
-        implements Image
+class ImageImpl implements Image
 {
     /** Unsupported enum. */
     static final String ERROR_ENUM = "Unknown enum type: ";
@@ -204,7 +203,16 @@ class ImageImpl
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (media != null ? media.hashCode() : surface.hashCode());
+        final int code;
+        if (media != null)
+        {
+            code = media.hashCode();
+        }
+        else
+        {
+            code = surface.hashCode();
+        }
+        result = prime * result + code;
         return result;
     }
 }

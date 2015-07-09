@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TransformAwt
-        implements Transform
+final class TransformAwt implements Transform
 {
     /** Scale x. */
     private double sx;
@@ -60,7 +59,14 @@ final class TransformAwt
     @Override
     public void setInterpolation(boolean bilinear)
     {
-        interpolation = bilinear ? AffineTransformOp.TYPE_BILINEAR : AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
+        if (bilinear)
+        {
+            interpolation = AffineTransformOp.TYPE_BILINEAR;
+        }
+        else
+        {
+            interpolation = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
+        }
     }
 
     @Override

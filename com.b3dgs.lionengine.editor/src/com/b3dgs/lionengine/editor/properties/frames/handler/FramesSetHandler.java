@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Tree;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.editor.properties.frames.Messages;
 import com.b3dgs.lionengine.editor.properties.frames.PropertiesFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -38,6 +39,17 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class FramesSetHandler
 {
+    /** Default frames. */
+    private static final String DEFAULT_FRAMES = "1";
+
+    /**
+     * Create handler.
+     */
+    public FramesSetHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */
@@ -50,12 +62,14 @@ public class FramesSetHandler
         final Configurer configurer = (Configurer) properties.getData();
         final Shell shell = properties.getShell();
 
-        final InputDialog horizontalFrames = new InputDialog(shell, "Frames", "Number of horizontal frames", "1",
-                new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, "Invalid frames number !"));
+        final InputDialog horizontalFrames = new InputDialog(shell, Messages.Properties_Frames_Title,
+                Messages.Properties_Frames_NumberHorizontal, DEFAULT_FRAMES,
+                new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, Messages.Properties_Frames_Error));
         if (horizontalFrames.open() == Window.OK)
         {
-            final InputDialog verticalFrames = new InputDialog(shell, "Frames", "Number of vertical frames", "1",
-                    new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, "Invalid frames number !"));
+            final InputDialog verticalFrames = new InputDialog(shell, Messages.Properties_Frames_Title,
+                    Messages.Properties_Frames_NumberVertical, DEFAULT_FRAMES,
+                    new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, Messages.Properties_Frames_Error));
             if (verticalFrames.open() == Window.OK)
             {
                 final XmlNode root = configurer.getRoot();

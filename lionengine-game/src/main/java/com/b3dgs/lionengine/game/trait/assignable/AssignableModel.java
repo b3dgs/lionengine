@@ -39,9 +39,7 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AssignableModel
-        extends TraitModel
-        implements Assignable
+public class AssignableModel extends TraitModel implements Assignable
 {
     /** Cursor reference. */
     private Cursor cursor;

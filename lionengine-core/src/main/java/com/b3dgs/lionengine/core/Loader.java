@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * final Loader loader = new Loader(config);
  * loader.start(Scene.class);
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>

@@ -18,14 +18,13 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.trait.actionable.Actionable;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the action data from a configurer.
  *
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Actionable
+ * @see com.b3dgs.lionengine.game.trait.actionable.Actionable
  */
 public final class ConfigAction
 {

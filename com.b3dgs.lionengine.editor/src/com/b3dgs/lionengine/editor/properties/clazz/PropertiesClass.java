@@ -40,13 +40,12 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesClass
-        implements PropertiesProviderObject
+public class PropertiesClass implements PropertiesProviderObject
 {
     /** Class icon. */
-    private static final Image ICON_CLASS = UtilEclipse.getIcon("properties", "class.png");
+    private static final Image ICON_CLASS = UtilEclipse.getIcon(FOLDER, "class.png");
     /** Setup icon. */
-    private static final Image ICON_SETUP = UtilEclipse.getIcon("properties", "class.png");
+    private static final Image ICON_SETUP = UtilEclipse.getIcon(FOLDER, "setup.png");
 
     /**
      * Create the attribute class.
@@ -138,6 +137,14 @@ public class PropertiesClass
             return true;
         }
         return false;
+    }
+
+    /**
+     * Create properties.
+     */
+    public PropertiesClass()
+    {
+        // Nothing to do
     }
 
     /*

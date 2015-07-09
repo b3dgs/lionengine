@@ -25,8 +25,8 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * Feature representation.
  * 
- * @param <F> The feature type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <F> The feature type used.
  */
 public class Features<F>
 {
@@ -124,21 +124,29 @@ public class Features<F>
      */
     private <C> C getFeature(Class<C> feature)
     {
+        final C value;
         if (features.containsKey(feature))
         {
-            return feature.cast(features.get(feature));
+            value = feature.cast(features.get(feature));
         }
-        for (final Object current : features.values())
+        else
         {
-            if (feature.isAssignableFrom(current.getClass()))
+            for (final Object current : features.values())
             {
-                return feature.cast(current);
+                if (feature.isAssignableFrom(current.getClass()))
+                {
+                    return feature.cast(current);
+                }
+            }
+            if (feature.isAssignableFrom(getClass()))
+            {
+                value = feature.cast(this);
+            }
+            else
+            {
+                value = null;
             }
         }
-        if (feature.isAssignableFrom(getClass()))
-        {
-            return feature.cast(this);
-        }
-        return null;
+        return value;
     }
 }

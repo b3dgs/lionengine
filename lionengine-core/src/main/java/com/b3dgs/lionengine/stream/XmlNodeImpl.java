@@ -43,8 +43,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class XmlNodeImpl
-        implements XmlNode
+final class XmlNodeImpl implements XmlNode
 {
     /** Normalize. */
     private static final String NORMALIZE = "//text()[normalize-space()='']";

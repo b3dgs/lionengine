@@ -29,9 +29,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ExtractableModel
-        extends TraitModel
-        implements Extractable
+public class ExtractableModel extends TraitModel implements Extractable
 {
     /** Resources count. */
     private final Alterable resources = new Alterable(0);

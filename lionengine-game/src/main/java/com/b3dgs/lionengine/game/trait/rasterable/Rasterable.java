@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Rasterable
-        extends Trait, Updatable, Renderable
+public interface Rasterable extends Trait, Updatable, Renderable
 {
     /** Maximum rasters. */
     int MAX_RASTERS = 15;

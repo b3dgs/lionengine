@@ -36,8 +36,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FactoryGraphicMock
-        implements FactoryGraphic
+public class FactoryGraphicMock implements FactoryGraphic
 {
     @Override
     public Screen createScreen(Renderer renderer)

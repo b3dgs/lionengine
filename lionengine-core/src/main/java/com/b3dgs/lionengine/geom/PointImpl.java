@@ -18,12 +18,11 @@
 package com.b3dgs.lionengine.geom;
 
 /**
- * Point implementation
+ * Point implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class PointImpl
-        implements Point
+final class PointImpl implements Point
 {
     /** Point horizontal. */
     private int x;

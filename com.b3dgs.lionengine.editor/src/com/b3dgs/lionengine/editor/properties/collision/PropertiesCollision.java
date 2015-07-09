@@ -34,8 +34,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesCollision
-        implements PropertiesProviderObject
+public class PropertiesCollision implements PropertiesProviderObject
 {
     /** Collisions icon. */
     private static final Image ICON_COLLISIONS = UtilEclipse.getIcon("properties", "collisions.png");
@@ -51,6 +50,14 @@ public class PropertiesCollision
         animationsItem.setText(Messages.Properties_Collisions);
         animationsItem.setData(ConfigCollisions.COLLISION);
         animationsItem.setImage(PropertiesCollision.ICON_COLLISIONS);
+    }
+
+    /**
+     * Create properties.
+     */
+    public PropertiesCollision()
+    {
+        // Nothing to do
     }
 
     /*

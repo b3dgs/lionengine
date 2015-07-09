@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TransformMock
-        implements Transform
+public class TransformMock implements Transform
 {
     @Override
     public void scale(double sx, double sy)

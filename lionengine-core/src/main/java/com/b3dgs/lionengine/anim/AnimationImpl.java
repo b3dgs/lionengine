@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.Check;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class AnimationImpl
-        implements Animation
+final class AnimationImpl implements Animation
 {
     /** Animation name. */
     private final String name;

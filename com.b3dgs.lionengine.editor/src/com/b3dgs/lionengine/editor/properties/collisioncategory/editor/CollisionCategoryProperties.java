@@ -40,9 +40,8 @@ import com.b3dgs.lionengine.game.collision.CollisionGroup;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionCategoryProperties
-        extends ObjectProperties<CollisionCategory>
-        implements ObjectListListener<CollisionCategory>
+public class CollisionCategoryProperties extends ObjectProperties<CollisionCategory>
+                                         implements ObjectListListener<CollisionCategory>
 {
     /** Groups. */
     private final CollisionList groups;

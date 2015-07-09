@@ -22,20 +22,20 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.UtilConversion;
 
 /**
  * Standard entity message.
  * 
- * @param <M> The message entity element enum.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <M> The message entity element enum.
  */
-public abstract class NetworkMessageEntity<M extends Enum<M>>
-        extends NetworkMessage
+public abstract class NetworkMessageEntity<M extends Enum<M>> extends NetworkMessage
 {
     /** List of actions. */
-    private final HashMap<M, Object> actions = new HashMap<>(1);
+    private final Map<M, Object> actions = new HashMap<>(1);
     /** Entity number. */
     private short entityId;
 

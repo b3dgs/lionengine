@@ -51,6 +51,14 @@ public class CollisionRangeComposite
     private Text textRangeMaxY;
 
     /**
+     * Create composite.
+     */
+    public CollisionRangeComposite()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Load the collision range from data.
      * 
      * @param range The collision range reference.

@@ -52,9 +52,8 @@ import com.b3dgs.lionengine.game.collision.TileGroup;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulasProperties
-        extends ObjectProperties<CollisionFormula>
-        implements ObjectListListener<CollisionFormula>
+public class FormulasProperties extends ObjectProperties<CollisionFormula>
+                                implements ObjectListListener<CollisionFormula>
 {
     /** Unknown function type. */
     private static final String ERROR_TYPE = "Unknown collision function type: ";

@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.editor.project.dialog.collision.CollisionsEditDialog
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsEditHandler
+public final class CollisionsEditHandler
 {
     /**
      * Execute the handler.
@@ -41,6 +41,14 @@ public class CollisionsEditHandler
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final CollisionsEditDialog dialog = new CollisionsEditDialog(parent, selection);
         dialog.open();
+    }
+
+    /**
+     * Create handler.
+     */
+    public CollisionsEditHandler()
+    {
+        // Nothing to do
     }
 
     /**

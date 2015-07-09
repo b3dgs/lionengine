@@ -25,6 +25,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferStrategy;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
@@ -47,15 +48,10 @@ import com.b3dgs.lionengine.core.Verbose;
  * @see Keyboard
  * @see Mouse
  */
-abstract class ScreenAwt
-        implements Screen, FocusListener
+abstract class ScreenAwt implements Screen, FocusListener
 {
     /** Error message display. */
     private static final String ERROR_DISPLAY = "No available display !";
-    /** Error transversal keys. */
-    private static final String ERROR_TRANSVERSAL_KEYS = "Transversal keys are not available !";
-    /** Error mouse focus listener. */
-    private static final String ERROR_MOUSE_FOCUS_LISTENER = "Mouse focus listener can not be added !";
     /** Hidden cursor instance. */
     private static final Cursor CURSOR_HIDDEN = ToolsAwt.createHiddenCursor();
     /** Default cursor instance. */
@@ -71,15 +67,20 @@ abstract class ScreenAwt
     static Screen createScreen(Renderer renderer) throws LionEngineException
     {
         final Config config = renderer.getConfig();
+        final Screen screen;
         if (config.getApplet(AppletAwt.class) != null)
         {
-            return new ScreenAppletAwt(renderer);
+            screen = new ScreenAppletAwt(renderer);
         }
-        if (config.isWindowed())
+        else if (config.isWindowed())
         {
-            return new ScreenWindowedAwt(renderer);
+            screen = new ScreenWindowedAwt(renderer);
         }
-        return new ScreenFullAwt(renderer);
+        else
+        {
+            screen = new ScreenFullAwt(renderer);
+        }
+        return screen;
     }
 
     /** Active graphic buffer reference. */
@@ -87,7 +88,7 @@ abstract class ScreenAwt
     /** Configuration reference. */
     protected final Config config;
     /** Input devices. */
-    private final HashMap<Class<? extends InputDevice>, InputDevice> devices;
+    private final Map<Class<? extends InputDevice>, InputDevice> devices;
     /** Buffer strategy reference. */
     protected BufferStrategy buf;
     /** Component listener for keyboard inputs. */
@@ -142,14 +143,7 @@ abstract class ScreenAwt
     {
         componentForKeyboard.addKeyListener(keyboard);
         componentForKeyboard.requestFocus();
-        try
-        {
-            componentForKeyboard.setFocusTraversalKeysEnabled(false);
-        }
-        catch (final Exception exception)
-        {
-            Verbose.info(ScreenAwt.ERROR_TRANSVERSAL_KEYS);
-        }
+        componentForKeyboard.setFocusTraversalKeysEnabled(false);
     }
 
     /**
@@ -192,14 +186,7 @@ abstract class ScreenAwt
      */
     private void prepareFocusListener()
     {
-        try
-        {
-            componentForMouse.addFocusListener(this);
-        }
-        catch (final Exception exception)
-        {
-            Verbose.critical(Screen.class, "constructor", ScreenAwt.ERROR_MOUSE_FOCUS_LISTENER);
-        }
+        componentForMouse.addFocusListener(this);
     }
 
     /*

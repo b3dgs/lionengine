@@ -31,9 +31,11 @@ import com.b3dgs.lionengine.network.message.NetworkMessageChat;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class NetworkChat
-        implements Networkable, InputDeviceKeyListener
+public abstract class NetworkChat implements Networkable, InputDeviceKeyListener
 {
+    /** Default queue max. */
+    private static final int DEFAULT_QUEUE_MAX = 4;
+
     /** Networkable model. */
     private final NetworkableModel networkable;
     /** Message type. */
@@ -60,9 +62,9 @@ public abstract class NetworkChat
     {
         this.type = type;
         networkable = new NetworkableModel();
-        message = new StringBuilder(16);
+        message = new StringBuilder();
         messages = new ConcurrentLinkedQueue<>();
-        messageQueueMax = 4;
+        messageQueueMax = DEFAULT_QUEUE_MAX;
         display = "";
     }
 
@@ -162,6 +164,19 @@ public abstract class NetworkChat
         }
     }
 
+    /**
+     * Send validated message.
+     */
+    private void sendValidatedMessage()
+    {
+        final String msg = message.toString();
+        if (canSendMessage(msg))
+        {
+            addNetworkMessage(new NetworkMessageChat(type, getClientId().byteValue(), msg));
+        }
+        message.delete(0, message.length());
+    }
+
     /*
      * Networkable
      */
@@ -219,12 +234,7 @@ public abstract class NetworkChat
         {
             if (message.length() > 0)
             {
-                final String msg = message.toString();
-                if (canSendMessage(msg))
-                {
-                    addNetworkMessage(new NetworkMessageChat(type, getClientId().byteValue(), msg));
-                }
-                message.delete(0, message.length());
+                sendValidatedMessage();
             }
         }
         else if (keyCode == keyBackSpace)

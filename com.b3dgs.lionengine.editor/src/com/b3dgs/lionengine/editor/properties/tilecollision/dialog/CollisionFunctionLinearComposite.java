@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionFunctionLinearComposite
-        implements CollisionFunctionTypeComposite
+public class CollisionFunctionLinearComposite implements CollisionFunctionTypeComposite
 {
     /** Default function values. */
     private static final String DEFAULT_FUNCTION_VALUES = String.valueOf(0.0);
@@ -42,6 +41,14 @@ public class CollisionFunctionLinearComposite
     private Text textA;
     /** B value. */
     private Text textB;
+
+    /**
+     * Create composite.
+     */
+    public CollisionFunctionLinearComposite()
+    {
+        // Nothing to do
+    }
 
     /*
      * CollisionFunctionTypeComposite

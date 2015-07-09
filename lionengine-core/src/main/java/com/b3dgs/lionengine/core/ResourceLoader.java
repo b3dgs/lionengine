@@ -146,8 +146,7 @@ public class ResourceLoader
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private final class ResourceLoaderThread
-            extends Thread
+    private final class ResourceLoaderThread extends Thread
     {
         /**
          * Create the resource loader.

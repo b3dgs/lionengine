@@ -50,8 +50,7 @@ public class ResourceLoaderTest
     /**
      * Slow resource test case.
      */
-    private static class SlowResource
-            implements Resource
+    private static class SlowResource implements Resource
     {
         /**
          * Create resource.

@@ -44,8 +44,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see MapTile
  */
-public class Minimap
-        implements Image
+public class Minimap implements Image
 {
     /** Map reference. */
     private final MapTile map;
@@ -99,8 +98,16 @@ public class Minimap
     {
         if (minimap == null)
         {
-            minimap = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(),
-                    alpha ? Transparency.TRANSLUCENT : Transparency.OPAQUE);
+            final Transparency transparency;
+            if (alpha)
+            {
+                transparency = Transparency.TRANSLUCENT;
+            }
+            else
+            {
+                transparency = Transparency.OPAQUE;
+            }
+            minimap = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), transparency);
         }
         final Graphic g = minimap.createGraphic();
         final int vert = map.getInTileHeight();

@@ -50,8 +50,7 @@ import com.b3dgs.lionengine.geom.Point;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldViewUpdater
-        implements MouseListener, MouseMoveListener, KeyListener
+public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyListener
 {
     /** Extension ID. */
     public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldViewUpdater";

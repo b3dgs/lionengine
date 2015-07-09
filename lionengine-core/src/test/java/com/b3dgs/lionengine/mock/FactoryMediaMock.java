@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FactoryMediaMock
-        implements FactoryMedia
+public class FactoryMediaMock implements FactoryMedia
 {
     /** Separator. */
     private String separator = File.separator;

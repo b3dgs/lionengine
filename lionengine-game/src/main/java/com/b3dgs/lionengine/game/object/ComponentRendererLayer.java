@@ -33,8 +33,7 @@ import com.b3dgs.lionengine.game.trait.layerable.LayerableListener;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ComponentRendererLayer
-        implements ComponentRenderable, HandlerListener, LayerableListener
+public class ComponentRendererLayer implements ComponentRenderable, HandlerListener, LayerableListener
 {
     /** Layers to render. */
     private final Map<Integer, Set<Renderable>> layers;

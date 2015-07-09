@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryMediaAndroid
-        implements FactoryMedia
+final class FactoryMediaAndroid implements FactoryMedia
 {
     /** Path separator. */
     private String separator;

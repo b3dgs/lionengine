@@ -48,8 +48,7 @@ import com.b3dgs.lionengine.game.map.Tile;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class GroupChooser
-        extends AbstractDialog
+public class GroupChooser extends AbstractDialog
 {
     /** Groups values. */
     final String[] groups;
@@ -108,6 +107,30 @@ public class GroupChooser
         UtilSwt.registerDirty(combo, true);
     }
 
+    /**
+     * Add group action.
+     * 
+     * @param shell The shell reference.
+     */
+    void addGroup(Shell shell)
+    {
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final GroupsEditDialog dialog = new GroupsEditDialog(shell, map.getGroupsConfig());
+        dialog.open();
+
+        final Collection<TileGroup> groups = map.getGroups();
+        final Collection<String> values = new ArrayList<>();
+        for (final TileGroup group : groups)
+        {
+            values.add(group.getName());
+        }
+        if (!values.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
+        {
+            values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
+        }
+        loadGroups(values.toArray(new String[values.size()]));
+    }
+
     /*
      * AbstractDialog
      */
@@ -132,21 +155,7 @@ public class GroupChooser
             @Override
             public void widgetSelected(SelectionEvent event)
             {
-                final MapTile map = WorldViewModel.INSTANCE.getMap();
-                final GroupsEditDialog dialog = new GroupsEditDialog(add.getShell(), map.getGroupsConfig());
-                dialog.open();
-
-                final Collection<TileGroup> groups = map.getGroups();
-                final Collection<String> values = new ArrayList<>();
-                for (final TileGroup group : groups)
-                {
-                    values.add(group.getName());
-                }
-                if (!values.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
-                {
-                    values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
-                }
-                loadGroups(values.toArray(new String[values.size()]));
+                addGroup(add.getShell());
             }
         });
     }

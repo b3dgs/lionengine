@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.game.collision.CollisionRange;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileCollisionModel
-        implements TileCollision
+public class TileCollisionModel implements TileCollision
 {
     /** Error type. */
     private static final String ERROR_TYPE = "Unknown type: ";
@@ -115,11 +114,16 @@ public class TileCollisionModel
                         if (UtilMath.isBetween(current, range.getMinX(), range.getMaxX()))
                         {
                             final double coll = tile.getX() + result - category.getOffsetX();
+                            final Double collisionX;
                             if (x > ox)
                             {
-                                return Double.valueOf(coll - 1);
+                                collisionX = Double.valueOf(coll - 1);
                             }
-                            return Double.valueOf(coll + 1);
+                            else
+                            {
+                                collisionX = Double.valueOf(coll + 1);
+                            }
+                            return collisionX;
                         }
                     }
                 }
@@ -148,11 +152,16 @@ public class TileCollisionModel
                         if (UtilMath.isBetween(current, range.getMinY(), range.getMaxY()))
                         {
                             final double coll = tile.getY() + result - category.getOffsetY();
+                            final Double collisionY;
                             if (y > oy)
                             {
-                                return Double.valueOf(coll - 1);
+                                collisionY = Double.valueOf(coll - 1);
                             }
-                            return Double.valueOf(coll + 1);
+                            else
+                            {
+                                collisionY = Double.valueOf(coll + 1);
+                            }
+                            return collisionY;
                         }
                     }
                 }

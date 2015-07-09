@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait.actionable;
 
-import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -27,8 +26,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Actionable
-        extends Trait, Updatable
+public interface Actionable extends Trait, Updatable
 {
     /**
      * Set the executable action.
@@ -41,7 +39,7 @@ public interface Actionable
      * Set the mouse click selection value to {@link Action#execute()} the action.
      * 
      * @param click The click number.
-     * @see InputDevicePointer
+     * @see com.b3dgs.lionengine.core.InputDevicePointer
      */
     void setClickAction(int click);
 

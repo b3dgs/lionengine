@@ -38,8 +38,7 @@ import com.b3dgs.lionengine.UtilRandom;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Damages
-        extends Range
+public class Damages extends Range
 {
     /** Last damages. */
     private int last;

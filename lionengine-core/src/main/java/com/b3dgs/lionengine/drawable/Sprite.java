@@ -39,10 +39,10 @@ import com.b3dgs.lionengine.Mirror;
  * <li>Call {@link #load()} (this function will load the surface)</li>
  * </ul>
  * <p>
- * <p>
  * A non loaded sprite can be displayed (nothing will be displayed), but the sprite information are available (size).
  * However, sprite manipulation will throw an exception as the surface is not available.
  * </p>
+ * <p>
  * Example:
  * </p>
  * 
@@ -58,8 +58,7 @@ import com.b3dgs.lionengine.Mirror;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Sprite
-        extends Image
+public interface Sprite extends Image
 {
     /**
      * Stretch and resize the image to a different percent. Using different value, the ratio won't be kept,

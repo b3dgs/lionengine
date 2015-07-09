@@ -22,8 +22,7 @@ package com.b3dgs.lionengine;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Viewer
-        extends Localizable
+public interface Viewer extends Localizable
 {
     /**
      * Follow automatically the specified localizable. The viewer location will be adjusted to the followed localizable.

@@ -29,8 +29,8 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
  * This class allows to convert a map image to a map level format.
- * The color [0-128-128] ({@link TileExtractor#IGNORED_COLOR}) is ignored (can be used to skip tile, in order to improve
- * performance).
+ * The color [0-128-128] ({@link TileExtractor#IGNORED_COLOR_VALUE}) is ignored (can be used to skip tile, in order to
+ * improve performance).
  * <p>
  * Example:
  * </p>
@@ -52,34 +52,6 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  */
 public final class LevelRipConverter
 {
-    /**
-     * Listen to import progress.
-     */
-    public interface ProgressListener
-    {
-        /**
-         * Called once progress detected.
-         * 
-         * @param percent Progress percent.
-         * @param progressTileX Current progress on horizontal tile.
-         * @param progressTileY Current progress on vertical tile.
-         */
-        void notifyProgress(int percent, int progressTileX, int progressTileY);
-    }
-
-    /**
-     * Cancel controller.
-     */
-    public interface Canceler
-    {
-        /**
-         * Check if operation is canceled.
-         * 
-         * @return <code>true</code> if canceled, <code>false</code> else.
-         */
-        boolean isCanceled();
-    }
-
     /** Progress listener. */
     private final Collection<ProgressListener> listeners = new HashSet<>();
     /** Map reference. */
@@ -111,7 +83,7 @@ public final class LevelRipConverter
      * @param map The destination map reference.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public LevelRipConverter(Media levelrip, Media sheetsConfig, MapTile map)
+    public LevelRipConverter(Media levelrip, Media sheetsConfig, MapTile map) throws LionEngineException
     {
         this.map = map;
         map.loadSheets(sheetsConfig);
@@ -165,7 +137,7 @@ public final class LevelRipConverter
                 final int imageColor = tileRef.getRgb(progressTileX * map.getTileWidth(),
                         progressTileY * map.getTileHeight());
                 // Skip blank tile of image map
-                if (TileExtractor.IGNORED_COLOR != imageColor)
+                if (TileExtractor.IGNORED_COLOR_VALUE != imageColor)
                 {
                     // Search if tile is on sheet and get it
                     final Tile tile = searchForTile(tileRef, progressTileX, progressTileY);
@@ -207,44 +179,61 @@ public final class LevelRipConverter
      */
     private Tile searchForTile(ImageBuffer tileSprite, int x, int y)
     {
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-
         // Check each tile on each sheet
         for (final Integer sheet : map.getSheets())
         {
-            final SpriteTiled tileSheet = map.getSheet(sheet);
-            final ImageBuffer sheetImage = tileSheet.getSurface();
-            final int tilesInX = tileSheet.getWidth() / tw;
-            final int tilesInY = tileSheet.getHeight() / th;
-
-            // Check each tile of the tile sheet
-            for (int surfaceCurrentTileY = 0; surfaceCurrentTileY < tilesInY; surfaceCurrentTileY++)
+            final Tile tile = checkTile(tileSprite, sheet, x, y);
+            if (tile != null)
             {
-                for (int surfaceCurrentTileX = 0; surfaceCurrentTileX < tilesInX; surfaceCurrentTileX++)
-                {
-                    // Tile number on tile sheet
-                    final int number = surfaceCurrentTileX + surfaceCurrentTileY * tilesInX;
-
-                    // Compare tiles between sheet and image map
-                    final int xa = x * tw;
-                    final int ya = y * th;
-                    final int xb = surfaceCurrentTileX * tw;
-                    final int yb = surfaceCurrentTileY * th;
-
-                    if (TileExtractor.compareTile(tw, th, tileSprite, xa, ya, sheetImage, xb, yb))
-                    {
-                        final Tile tile = map.createTile();
-                        tile.setSheet(sheet);
-                        tile.setNumber(number);
-
-                        return tile;
-                    }
-                }
+                return tile;
             }
         }
 
         // No tile found
+        return null;
+    }
+
+    /**
+     * Check tile of sheet.
+     * 
+     * @param tileSprite The tiled sprite
+     * @param sheet The sheet number.
+     * @param x The location x.
+     * @param y The location y.
+     * @return The tile found.
+     */
+    private Tile checkTile(ImageBuffer tileSprite, Integer sheet, int x, int y)
+    {
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        final SpriteTiled tileSheet = map.getSheet(sheet);
+        final ImageBuffer sheetImage = tileSheet.getSurface();
+        final int tilesInX = tileSheet.getWidth() / tw;
+        final int tilesInY = tileSheet.getHeight() / th;
+
+        for (int surfaceCurrentTileY = 0; surfaceCurrentTileY < tilesInY; surfaceCurrentTileY++)
+        {
+            for (int surfaceCurrentTileX = 0; surfaceCurrentTileX < tilesInX; surfaceCurrentTileX++)
+            {
+                // Tile number on tile sheet
+                final int number = surfaceCurrentTileX + surfaceCurrentTileY * tilesInX;
+
+                // Compare tiles between sheet and image map
+                final int xa = x * tw;
+                final int ya = y * th;
+                final int xb = surfaceCurrentTileX * tw;
+                final int yb = surfaceCurrentTileY * th;
+
+                if (TileExtractor.compareTile(tw, th, tileSprite, xa, ya, sheetImage, xb, yb))
+                {
+                    final Tile tile = map.createTile();
+                    tile.setSheet(sheet);
+                    tile.setNumber(number);
+
+                    return tile;
+                }
+            }
+        }
         return null;
     }
 
@@ -273,5 +262,33 @@ public final class LevelRipConverter
     private int getProgressPercent()
     {
         return (int) Math.round(progress / progressMax * 100);
+    }
+
+    /**
+     * Listen to import progress.
+     */
+    public interface ProgressListener
+    {
+        /**
+         * Called once progress detected.
+         * 
+         * @param percent Progress percent.
+         * @param progressTileX Current progress on horizontal tile.
+         * @param progressTileY Current progress on vertical tile.
+         */
+        void notifyProgress(int percent, int progressTileX, int progressTileY);
+    }
+
+    /**
+     * Cancel controller.
+     */
+    public interface Canceler
+    {
+        /**
+         * Check if operation is canceled.
+         * 
+         * @return <code>true</code> if canceled, <code>false</code> else.
+         */
+        boolean isCanceled();
     }
 }

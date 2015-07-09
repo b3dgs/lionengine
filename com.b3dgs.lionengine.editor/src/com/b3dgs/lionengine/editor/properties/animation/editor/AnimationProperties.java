@@ -34,11 +34,9 @@ import com.b3dgs.lionengine.editor.ObjectProperties;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AnimationProperties
-        extends ObjectProperties<Animation>
-        implements ObjectListListener<Animation>
+public class AnimationProperties extends ObjectProperties<Animation> implements ObjectListListener<Animation>
 {
-    /** Maximum frame */
+    /** Maximum frame. */
     final int maxFrame;
     /** Animation frame selector. */
     AnimationFrameSelector animationFrameSelector;

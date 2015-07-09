@@ -27,7 +27,7 @@ package com.b3dgs.lionengine.game;
  * final Attribute vitality = new Attribute();
  * vitality.set(1);
  * vitality.increase(2);
- * System.out.println(vitality.get()); // print 3
+ * print(vitality.get()); // print 3
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)

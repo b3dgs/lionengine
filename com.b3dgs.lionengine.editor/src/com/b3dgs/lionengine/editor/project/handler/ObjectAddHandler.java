@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.game.object.Setup;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ObjectAddHandler
+public final class ObjectAddHandler
 {
     /** Default new object name. */
     private static final String DEFAULT_NEW_OBJECT_NAME = "object";
@@ -81,6 +81,14 @@ public class ObjectAddHandler
         Files.write(object.toPath(), dest, StandardCharsets.UTF_8);
         lines.clear();
         dest.clear();
+    }
+
+    /**
+     * Create handler.
+     */
+    public ObjectAddHandler()
+    {
+        // Nothing to do
     }
 
     /**

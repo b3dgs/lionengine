@@ -46,8 +46,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldViewRenderer
-        implements PaintListener, MouseListener, MouseMoveListener, KeyListener
+public class WorldViewRenderer implements PaintListener, MouseListener, MouseMoveListener, KeyListener
 {
     /** Extension ID. */
     public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldViewRenderer";
@@ -69,15 +68,20 @@ public class WorldViewRenderer
      */
     public static boolean groupEquals(String groupA, String groupB)
     {
+        final boolean result;
         if (groupA != null && groupB != null)
         {
-            return groupA.equals(groupB);
+            result = groupA.equals(groupB);
         }
         else if (groupA == null && groupB == null)
         {
-            return true;
+            result = true;
         }
-        return false;
+        else
+        {
+            result = false;
+        }
+        return result;
     }
 
     /**

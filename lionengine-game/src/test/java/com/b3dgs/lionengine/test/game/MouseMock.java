@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MouseMock
-        implements InputDevicePointer
+public class MouseMock implements InputDevicePointer
 {
     @Override
     public int getX()

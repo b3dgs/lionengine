@@ -43,8 +43,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulasEditDialog
-        extends AbstractDialog
+public class FormulasEditDialog extends AbstractDialog
 {
     /** Icon. */
     public static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");

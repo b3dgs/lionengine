@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Viewer;
@@ -56,6 +57,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * {@link #loadSheets(Media)} // load tile sheets
  * {@link #loadGroups(Media)} // load tile groups
  * </pre>
+ * 
  * <p>
  * Or import a map from a level rip with {@link #create(Media, Media, Media)}.
  * </p>
@@ -66,8 +68,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Tile
  */
-public class MapTileGame
-        implements MapTile
+public class MapTileGame implements MapTile
 {
     /** Info loading sheets. */
     private static final String INFO_LOAD_SHEETS = "Loading sheets from: ";
@@ -79,6 +80,25 @@ public class MapTileGame
     private static final String ERROR_GROUP_MISSING = "Group missing: ";
     /** Construction error. */
     private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
+
+    /**
+     * Find group for tile.
+     * 
+     * @param tile The tile reference.
+     * @param groups The groups list.
+     * @return The tile group, <code>null</code> if none.
+     */
+    private static String getGroup(Tile tile, Collection<TileGroup> groups)
+    {
+        for (final TileGroup group : groups)
+        {
+            if (group.contains(tile))
+            {
+                return group.getName();
+            }
+        }
+        return null;
+    }
 
     /** Sheets list. */
     private final Map<Integer, SpriteTiled> sheets = new HashMap<>();
@@ -165,14 +185,7 @@ public class MapTileGame
                     final int tx = h + (sx - offsetX) / tileWidth;
                     if (!(tx < 0 || tx >= widthInTile))
                     {
-                        // Get the tile and render it
-                        final Tile tile = getTile(tx, ty);
-                        if (tile != null)
-                        {
-                            final int x = tile.getX() - sx;
-                            final int y = -tile.getY() - tile.getHeight() + sy + screenHeight;
-                            renderer.renderTile(g, tile, x, y);
-                        }
+                        renderTile(g, tx, ty, sx, sy, screenHeight);
                     }
                 }
             }
@@ -215,9 +228,8 @@ public class MapTileGame
      * @param i The last loaded tile number.
      * @return The loaded tile.
      * @throws IOException If error on reading.
-     * @throws LionEngineException If error on creating tile.
      */
-    protected Tile loadTile(FileReading file, int i) throws IOException, LionEngineException
+    protected Tile loadTile(FileReading file, int i) throws IOException
     {
         Check.notNull(file);
 
@@ -233,6 +245,75 @@ public class MapTileGame
         tile.setY(y);
 
         return tile;
+    }
+
+    /**
+     * Get the tile at location and render it.
+     * 
+     * @param g The graphic output.
+     * @param tx The horizontal tile location.
+     * @param ty The vertical tile location.
+     * @param sx The starting horizontal location.
+     * @param sy The starting vertical location.
+     * @param screenHeight The view height (rendering start from bottom).
+     */
+    private void renderTile(Graphic g, int tx, int ty, int sx, int sy, int screenHeight)
+    {
+        final Tile tile = getTile(tx, ty);
+        if (tile != null)
+        {
+            final int x = tile.getX() - sx;
+            final int y = -tile.getY() - tile.getHeight() + sy + screenHeight;
+            renderer.renderTile(g, tile, x, y);
+        }
+    }
+
+    /**
+     * Count the active tiles.
+     * 
+     * @param widthInTile The horizontal tiles.
+     * @param step The step number.
+     * @param s The s value.
+     * @return The active tiles.
+     */
+    private int countTiles(int widthInTile, int step, int s)
+    {
+        int count = 0;
+        for (int tx = 0; tx < widthInTile; tx++)
+        {
+            for (int ty = 0; ty < heightInTile; ty++)
+            {
+                if (getTile(tx + s * step, ty) != null)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Save the active tiles.
+     * 
+     * @param file The output file.
+     * @param widthInTile The horizontal tiles.
+     * @param step The step number.
+     * @param s The s value.
+     * @throws IOException If error on saving.
+     */
+    private void saveTiles(FileWriting file, int widthInTile, int step, int s) throws IOException
+    {
+        for (int tx = 0; tx < widthInTile; tx++)
+        {
+            for (int ty = 0; ty < heightInTile; ty++)
+            {
+                final Tile tile = getTile(tx + s * step, ty);
+                if (tile != null)
+                {
+                    saveTile(file, tile);
+                }
+            }
+        }
     }
 
     /*
@@ -271,7 +352,7 @@ public class MapTileGame
     }
 
     @Override
-    public void load(FileReading file) throws IOException, LionEngineException
+    public void load(FileReading file) throws IOException
     {
         final Media sheetsConfig = Medias.create(file.readString());
         final Media groupsConfig = Medias.create(file.readString());
@@ -291,7 +372,7 @@ public class MapTileGame
                 final Tile tile = loadTile(file, v);
                 if (tile.getSheet().intValue() > getSheetsNumber())
                 {
-                    throw new LionEngineException(ERROR_SHEET_MISSING, tile.getSheet().toString());
+                    throw new IOException(ERROR_SHEET_MISSING + Constant.DOUBLE_DOT + tile.getSheet().toString());
                 }
                 final int tx = tile.getX() / getTileWidth();
                 final int ty = tile.getY() / getTileHeight();
@@ -317,29 +398,9 @@ public class MapTileGame
         file.writeShort((short) t);
         for (int s = 0; s < t; s++)
         {
-            int count = 0;
-            for (int tx = 0; tx < x; tx++)
-            {
-                for (int ty = 0; ty < heightInTile; ty++)
-                {
-                    if (getTile(tx + s * step, ty) != null)
-                    {
-                        count++;
-                    }
-                }
-            }
+            final int count = countTiles(x, step, s);
             file.writeShort((short) count);
-            for (int tx = 0; tx < x; tx++)
-            {
-                for (int ty = 0; ty < heightInTile; ty++)
-                {
-                    final Tile tile = getTile(tx + s * step, ty);
-                    if (tile != null)
-                    {
-                        saveTile(file, tile);
-                    }
-                }
-            }
+            saveTiles(file, t, step, s);
         }
     }
 
@@ -374,7 +435,7 @@ public class MapTileGame
         {
             final F instance = Factory.create(feature, new Class<?>[]
             {
-                    Services.class
+                Services.class
             }, services);
             services.add(instance);
             addFeature(instance);
@@ -443,14 +504,7 @@ public class MapTileGame
                 final Tile tile = getTile(tx, ty);
                 if (tile != null)
                 {
-                    tile.setGroup(null);
-                    for (final TileGroup group : groups)
-                    {
-                        if (group.contains(tile))
-                        {
-                            tile.setGroup(group.getName());
-                        }
-                    }
+                    tile.setGroup(getGroup(tile, groups));
                 }
             }
         }

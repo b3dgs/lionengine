@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.core.awt;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -43,11 +41,6 @@ public final class UtilityImage
     private static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
     /** Error image buffer implementation. */
     private static final String ERROR_IMAGE_BUFFER_IMPL = "Unsupported image buffer implementation !";
-    /** Bilinear filter. */
-    private static final float[] BILINEAR_FILTER = new float[]
-    {
-            1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f
-    };
 
     /**
      * Get the image buffer.
@@ -72,17 +65,22 @@ public final class UtilityImage
      */
     static int getTransparency(Transparency transparency)
     {
+        final int value;
         switch (transparency)
         {
             case OPAQUE:
-                return java.awt.Transparency.OPAQUE;
+                value = java.awt.Transparency.OPAQUE;
+                break;
             case BITMASK:
-                return java.awt.Transparency.BITMASK;
+                value = java.awt.Transparency.BITMASK;
+                break;
             case TRANSLUCENT:
-                return java.awt.Transparency.TRANSLUCENT;
+                value = java.awt.Transparency.TRANSLUCENT;
+                break;
             default:
-                return 0;
+                value = 0;
         }
+        return value;
     }
 
     /**
@@ -158,9 +156,7 @@ public final class UtilityImage
      */
     static ImageBuffer applyBilinearFilter(ImageBuffer image)
     {
-        final Kernel kernel = new Kernel(3, 3, BILINEAR_FILTER);
-        final ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
-        return new ImageBufferAwt(op.filter(getBuffer(image), null));
+        return new ImageBufferAwt(ToolsAwt.applyBilinearFilter(getBuffer(image)));
     }
 
     /**
@@ -264,6 +260,6 @@ public final class UtilityImage
      */
     private UtilityImage()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

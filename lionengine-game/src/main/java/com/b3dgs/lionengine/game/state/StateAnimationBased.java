@@ -127,7 +127,7 @@ public interface StateAnimationBased
          */
         private Util()
         {
-            // Utility class
+            throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
         }
     }
 }

@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class World
-        extends WorldGame
+public class World extends WorldGame
 {
     /**
      * Constructor.

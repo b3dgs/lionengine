@@ -62,6 +62,14 @@ public class CollisionFunctionComposite
     CollisionFunction old;
 
     /**
+     * Create composite.
+     */
+    public CollisionFunctionComposite()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Load an existing function and fill fields.
      * 
      * @param function The function to load.

@@ -31,8 +31,16 @@ import com.b3dgs.lionengine.editor.project.ProjectsPart;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ExitHandler
+public final class ExitHandler
 {
+    /**
+     * Create handler.
+     */
+    public ExitHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

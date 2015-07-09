@@ -22,8 +22,7 @@ package com.b3dgs.lionengine.geom;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class RectangleImpl
-        implements Rectangle
+final class RectangleImpl implements Rectangle
 {
     /** The coordinate X. */
     private double x;

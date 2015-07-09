@@ -28,8 +28,7 @@ import com.b3dgs.lionengine.core.Text;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TextMock
-        implements Text
+public class TextMock implements Text
 {
     /** Text size. */
     private final int size;

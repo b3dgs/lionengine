@@ -33,8 +33,16 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AnimationsEnableHandler
+public final class AnimationsEnableHandler
 {
+    /**
+     * Create handler.
+     */
+    public AnimationsEnableHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */

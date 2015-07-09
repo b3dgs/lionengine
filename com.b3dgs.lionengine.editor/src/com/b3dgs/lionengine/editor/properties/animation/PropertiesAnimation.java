@@ -34,8 +34,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesAnimation
-        implements PropertiesProviderObject
+public class PropertiesAnimation implements PropertiesProviderObject
 {
     /** Animations icon. */
     private static final Image ICON_ANIMATIONS = UtilEclipse.getIcon("properties", "animations.png");
@@ -51,6 +50,14 @@ public class PropertiesAnimation
         animationsItem.setText(Messages.Properties_Animations);
         animationsItem.setData(ConfigAnimations.ANIMATION);
         animationsItem.setImage(ICON_ANIMATIONS);
+    }
+
+    /**
+     * Create properties.
+     */
+    public PropertiesAnimation()
+    {
+        // Nothing to do
     }
 
     /*

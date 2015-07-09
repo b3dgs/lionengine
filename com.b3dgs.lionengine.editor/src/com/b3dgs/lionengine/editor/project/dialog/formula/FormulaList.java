@@ -42,9 +42,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulaList
-        extends ObjectList<CollisionFormula>
-        implements ObjectListListener<CollisionFormula>
+public class FormulaList extends ObjectList<CollisionFormula> implements ObjectListListener<CollisionFormula>
 {
     /**
      * Remove the formula from configuration.

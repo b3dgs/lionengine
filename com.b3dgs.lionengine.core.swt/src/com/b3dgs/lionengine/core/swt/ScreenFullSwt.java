@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.core.Renderer;
  * @see Keyboard
  * @see Mouse
  */
-final class ScreenFullSwt
-        extends ScreenSwt
+final class ScreenFullSwt extends ScreenSwt
 {
     /** Error message full screen. */
     private static final String ERROR_FULL_SCREEN = "Full screen mode initialization failed !";

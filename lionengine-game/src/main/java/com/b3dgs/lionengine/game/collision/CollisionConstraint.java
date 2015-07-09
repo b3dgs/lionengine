@@ -23,13 +23,12 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionConstraint;
 
 /**
  * Represents the collision constraints around a collision.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see ConfigCollisionConstraint
+ * @see com.b3dgs.lionengine.game.configurer.ConfigCollisionConstraint
  */
 public class CollisionConstraint
 {

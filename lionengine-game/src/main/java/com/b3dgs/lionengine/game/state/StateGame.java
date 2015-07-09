@@ -30,18 +30,17 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see State
  */
-public abstract class StateGame
-        implements State
+public abstract class StateGame implements State
 {
     /**
      * Check the next state depending of the input used.
      * 
+     * @param <I> The input device type.
      * @param checkerType The checker type.
      * @param inputType The input type.
      * @param input The input reference.
      * @param transition The state transition reference.
      * @return <code>true</code> if checker valid, <code>false</code> else.
-     * @param <I> The input device type.
      */
     private static <I extends InputDevice> boolean checkTransition(
             Class<? extends StateTransitionInputChecker<I>> checkerType, Class<I> inputType, InputDevice input,

@@ -36,8 +36,7 @@ import com.b3dgs.lionengine.game.collision.CollisionFormula;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileCollisionEditor
-        extends AbstractEditor
+public class TileCollisionEditor extends AbstractEditor
 {
     /** Tile collision icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");

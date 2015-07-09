@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.core.Transform;
 
 /**
@@ -24,8 +25,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TransformSwt
-        implements Transform
+final class TransformSwt implements Transform
 {
     /** Scale x. */
     private double sx;
@@ -56,7 +56,7 @@ final class TransformSwt
     @Override
     public void setInterpolation(boolean bilinear)
     {
-        interpolation = bilinear ? 0 : 1;
+        interpolation = UtilConversion.boolToInt(bilinear);
     }
 
     @Override

@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.object.Factory;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ProjectImportHandler
+public final class ProjectImportHandler
 {
     /**
      * Import the project and update the view.
@@ -57,6 +57,14 @@ public class ProjectImportHandler
         final ProjectsPart projectsPart = UtilEclipse.getPart(ProjectsPart.ID, ProjectsPart.class);
         ProjectsModel.INSTANCE.setRoot(project.getPath());
         projectsPart.setInput(project);
+    }
+
+    /**
+     * Create handler.
+     */
+    public ProjectImportHandler()
+    {
+        // Nothing to do
     }
 
     /**

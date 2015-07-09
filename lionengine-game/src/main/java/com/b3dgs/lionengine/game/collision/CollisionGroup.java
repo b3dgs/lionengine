@@ -20,32 +20,28 @@ package com.b3dgs.lionengine.game.collision;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
 
 /**
- * Represents the collision group, which can be applied to a {@link Tile}. It allows to reference easily a set of
- * {@link CollisionFormula} previously defined on the {@link MapTile}.
- * Here a definition example:
+ * Represents the collision group, which can be applied to a {@link com.b3dgs.lionengine.game.map.Tile}. It allows to
+ * reference easily a set of {@link CollisionFormula} previously defined on the
+ * {@link com.b3dgs.lionengine.game.map.MapTile}. Here a definition example:
  * 
  * <pre>
- * {@code<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">}
- *    {@code<lionengine:group name="block">}
- *       {@code<lionengine:formula>top</lionengine:formula>}
- *       {@code<lionengine:formula>bottom</lionengine:formula>}
- *       {@code<lionengine:formula>left</lionengine:formula>}
- *       {@code<lionengine:formula>right</lionengine:formula>}
- *    {@code</lionengine:group>}
- * {@code</lionengine:groups>}
+ * &lt;lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">
+ *    &lt;lionengine:group name="block">
+ *       &lt;lionengine:formula>top&lt;/lionengine:formula>
+ *       &lt;lionengine:formula>bottom&lt;/lionengine:formula>
+ *       &lt;lionengine:formula>left&lt;/lionengine:formula>
+ *       &lt;lionengine:formula>right&lt;/lionengine:formula>
+ *    &lt;/lionengine:group>
+ * &lt;/lionengine:groups>
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see ConfigCollisionGroup
+ * @see com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup
  * @see CollisionFormula
  */
-public class CollisionGroup
-        implements Nameable
+public class CollisionGroup implements Nameable
 {
     /** The group name. */
     private final String group;

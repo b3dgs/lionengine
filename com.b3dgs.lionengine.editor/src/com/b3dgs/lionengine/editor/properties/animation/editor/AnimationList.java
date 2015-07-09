@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AnimationList
-        extends ObjectList<Animation>
+public class AnimationList extends ObjectList<Animation>
 {
     /** Configurer reference. */
     private final Configurer configurer;

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.drawable;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Align;
@@ -39,75 +40,15 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class SpriteFontImpl
-        implements SpriteFont
+final class SpriteFontImpl implements SpriteFont
 {
     /** New line separator character. */
     private static final String NL_STR = "" + SpriteFont.NEW_LINE;
 
-    /**
-     * Character data.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
-     */
-    private static final class Data
-    {
-        /** Character id. */
-        private final int id;
-        /** Character width. */
-        private final int width;
-        /** Character height. */
-        private final int height;
-
-        /**
-         * Internal constructor.
-         * 
-         * @param id The character id.
-         * @param width The character width.
-         * @param height The character height.
-         */
-        Data(int id, int width, int height)
-        {
-            this.id = id;
-            this.width = width;
-            this.height = height;
-        }
-
-        /**
-         * Get the character id.
-         * 
-         * @return The character id.
-         */
-        int getId()
-        {
-            return id;
-        }
-
-        /**
-         * Get the character width.
-         * 
-         * @return THe character width.
-         */
-        int getWidth()
-        {
-            return width;
-        }
-
-        /**
-         * Get the character height.
-         * 
-         * @return THe character height.
-         */
-        int getHeight()
-        {
-            return height;
-        }
-    }
-
     /** Font surface. */
     private final SpriteTiled surface;
     /** Font data. */
-    private final TreeMap<Character, Data> fontData;
+    private final Map<Character, Data> fontData;
     /** Line height value. */
     private int lineHeight;
 
@@ -374,5 +315,64 @@ final class SpriteFontImpl
         result = prime * result + lineHeight;
         result = prime * result + surface.hashCode();
         return result;
+    }
+
+    /**
+     * Character data.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
+     */
+    private static final class Data
+    {
+        /** Character id. */
+        private final int id;
+        /** Character width. */
+        private final int width;
+        /** Character height. */
+        private final int height;
+
+        /**
+         * Internal constructor.
+         * 
+         * @param id The character id.
+         * @param width The character width.
+         * @param height The character height.
+         */
+        Data(int id, int width, int height)
+        {
+            this.id = id;
+            this.width = width;
+            this.height = height;
+        }
+
+        /**
+         * Get the character id.
+         * 
+         * @return The character id.
+         */
+        int getId()
+        {
+            return id;
+        }
+
+        /**
+         * Get the character width.
+         * 
+         * @return THe character width.
+         */
+        int getWidth()
+        {
+            return width;
+        }
+
+        /**
+         * Get the character height.
+         * 
+         * @return THe character height.
+         */
+        int getHeight()
+        {
+            return height;
+        }
     }
 }

@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapTester
-        extends PropertyTester
+public final class MapTester extends PropertyTester
 {
     /** Test if map defined. */
     private static final String PROPERTY_TEST = "test";
@@ -74,6 +73,14 @@ public class MapTester
         {
             return false;
         }
+    }
+
+    /**
+     * Create tester.
+     */
+    public MapTester()
+    {
+        // Nothing to do
     }
 
     /*

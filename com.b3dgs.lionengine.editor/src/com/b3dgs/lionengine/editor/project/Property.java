@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
@@ -85,7 +86,7 @@ public enum Property
         this.extensions = new ArrayList<>(extensions.length);
         for (final String extension : extensions)
         {
-            this.extensions.add(extension.replace(".", ""));
+            this.extensions.add(extension.replace(Constant.DOT, Constant.EMPTY_STRING));
         }
     }
 

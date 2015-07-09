@@ -41,8 +41,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class WavRoutine
-        extends Thread
+final class WavRoutine extends Thread
 {
     /** Sound buffer size. */
     static final int BUFFER = 128000;

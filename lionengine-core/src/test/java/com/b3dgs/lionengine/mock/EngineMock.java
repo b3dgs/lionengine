@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.core.EngineCore;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class EngineMock
-        extends EngineCore
+public class EngineMock extends EngineCore
 {
     /**
      * Constructor.

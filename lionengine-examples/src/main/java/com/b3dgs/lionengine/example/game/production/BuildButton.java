@@ -56,9 +56,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class BuildButton
-        extends ObjectGame
-        implements Action, Assign, Updatable, Renderable
+class BuildButton extends ObjectGame implements Action, Assign, Updatable, Renderable
 {
     /** Build farm media. */
     public static final Media FARM = Medias.create("BuildFarm.xml");
@@ -105,7 +103,7 @@ class BuildButton
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
 
-        image = Drawable.loadImage(setup.surface);
+        image = Drawable.loadImage(setup.getSurface());
         target = Medias.create(setup.getConfigurer().getText("media"));
 
         actionable.setClickAction(Mouse.LEFT);

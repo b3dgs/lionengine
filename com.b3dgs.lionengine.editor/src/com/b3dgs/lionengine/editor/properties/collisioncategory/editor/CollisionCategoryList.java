@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionCategoryList
-        extends ObjectList<CollisionCategory>
+public class CollisionCategoryList extends ObjectList<CollisionCategory>
 {
     /** Configurer reference. */
     private final Configurer configurer;

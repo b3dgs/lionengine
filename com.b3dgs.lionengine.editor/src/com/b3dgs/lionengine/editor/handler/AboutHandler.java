@@ -27,8 +27,16 @@ import com.b3dgs.lionengine.editor.dialog.AboutDialog;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AboutHandler
+public final class AboutHandler
 {
+    /**
+     * Create handler.
+     */
+    public AboutHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

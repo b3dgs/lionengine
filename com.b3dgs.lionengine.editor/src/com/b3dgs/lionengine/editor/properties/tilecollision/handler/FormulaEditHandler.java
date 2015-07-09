@@ -30,8 +30,16 @@ import com.b3dgs.lionengine.game.map.MapTileCollision;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulaEditHandler
+public final class FormulaEditHandler
 {
+    /**
+     * Create handler.
+     */
+    public FormulaEditHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

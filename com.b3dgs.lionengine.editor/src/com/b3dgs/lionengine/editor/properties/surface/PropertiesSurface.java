@@ -35,13 +35,12 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesSurface
-        implements PropertiesProviderObject
+public class PropertiesSurface implements PropertiesProviderObject
 {
     /** Surface icon. */
-    private static final Image ICON_SURFACE = UtilEclipse.getIcon("properties", "surface.png");
+    private static final Image ICON_SURFACE = UtilEclipse.getIcon(FOLDER, "surface.png");
     /** Icon icon. */
-    private static final Image ICON_ICON = UtilEclipse.getIcon("properties", "icon.png");
+    private static final Image ICON_ICON = UtilEclipse.getIcon(FOLDER, "icon.png");
 
     /**
      * Create the surface attribute.
@@ -118,6 +117,14 @@ public class PropertiesSurface
             return true;
         }
         return false;
+    }
+
+    /**
+     * Create properties.
+     */
+    public PropertiesSurface()
+    {
+        // Nothing to do
     }
 
     /*

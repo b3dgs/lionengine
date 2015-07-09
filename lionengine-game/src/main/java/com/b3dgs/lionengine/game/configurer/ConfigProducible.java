@@ -18,14 +18,13 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.trait.producible.Producible;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the producible data from a configurer.
  *
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Producible
+ * @see com.b3dgs.lionengine.game.trait.producible.Producible
  */
 public final class ConfigProducible
 {

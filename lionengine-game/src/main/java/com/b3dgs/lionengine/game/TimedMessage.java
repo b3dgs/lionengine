@@ -33,8 +33,7 @@ import com.b3dgs.lionengine.core.Updatable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class TimedMessage
-        implements Updatable, Renderable
+public final class TimedMessage implements Updatable, Renderable
 {
     /** List of active messages. */
     private final Collection<MessageData> messages;
@@ -122,49 +121,49 @@ public final class TimedMessage
             text.draw(g, messageData.x, messageData.y, messageData.message);
         }
     }
-}
-
-/**
- * Message data class.
- */
-final class MessageData
-{
-    /** The message content. */
-    final String message;
-    /** The vertical location. */
-    final int x;
-    /** The vertical location. */
-    final int y;
-    /** The timer. */
-    private final Timing timer;
-    /** Max time. */
-    private final int time;
 
     /**
-     * Internal constructor.
-     * 
-     * @param message The message string.
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @param time The remaining time.
+     * Message data class.
      */
-    MessageData(String message, int x, int y, int time)
+    private static final class MessageData
     {
-        this.message = message;
-        this.x = x;
-        this.y = y;
-        this.time = time;
-        timer = new Timing();
-        timer.start();
-    }
+        /** The message content. */
+        final String message;
+        /** The vertical location. */
+        final int x;
+        /** The vertical location. */
+        final int y;
+        /** The timer. */
+        private final Timing timer;
+        /** Max time. */
+        private final int time;
 
-    /**
-     * Check if the message is still alive.
-     * 
-     * @return <code>true</code> if elapsed, <code>false</code> else.
-     */
-    boolean elapsed()
-    {
-        return timer.elapsed(time);
+        /**
+         * Internal constructor.
+         * 
+         * @param message The message string.
+         * @param x The horizontal location.
+         * @param y The vertical location.
+         * @param time The remaining time.
+         */
+        MessageData(String message, int x, int y, int time)
+        {
+            this.message = message;
+            this.x = x;
+            this.y = y;
+            this.time = time;
+            timer = new Timing();
+            timer.start();
+        }
+
+        /**
+         * Check if the message is still alive.
+         * 
+         * @return <code>true</code> if elapsed, <code>false</code> else.
+         */
+        boolean elapsed()
+        {
+            return timer.elapsed(time);
+        }
     }
 }

@@ -53,9 +53,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Mario
-        extends ObjectGame
-        implements Updatable, Renderable, TileCollidableListener
+class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableListener
 {
     /** Object media. */
     public static final Media MEDIA = Medias.create("Mario.xml");
@@ -98,7 +96,7 @@ class Mario
         keyboard = services.get(Keyboard.class);
 
         final ConfigFrames frames = ConfigFrames.create(getConfigurer());
-        surface = Drawable.loadSpriteAnimated(setup.surface, frames.getHorizontal(), frames.getVertical());
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), frames.getHorizontal(), frames.getVertical());
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 

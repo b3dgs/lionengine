@@ -27,8 +27,16 @@ import com.b3dgs.lionengine.editor.world.dialog.SheetsImportDialog;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SheetsImportHandler
+public final class SheetsImportHandler
 {
+    /**
+     * Create handler.
+     */
+    public SheetsImportHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

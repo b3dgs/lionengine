@@ -30,6 +30,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
@@ -43,7 +44,7 @@ import com.b3dgs.lionengine.game.object.Factory;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class GroupsAddHandler
+public final class GroupsAddHandler
 {
     /**
      * Create the groups.
@@ -66,6 +67,14 @@ public class GroupsAddHandler
     }
 
     /**
+     * Create handler.
+     */
+    public GroupsAddHandler()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Execute the handler.
      * 
      * @param parent The shell parent.
@@ -75,8 +84,9 @@ public class GroupsAddHandler
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final InputDialog inputDialog = new InputDialog(parent, Messages.AddGroups_Title, Messages.AddGroups_Text,
-                MapTile.DEFAULT_GROUPS_FILE.replace("." + Factory.FILE_DATA_EXTENSION, ""), new InputValidator(
-                        InputValidator.NAME_MATCH, com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+                MapTile.DEFAULT_GROUPS_FILE.replace(Constant.DOT + Factory.FILE_DATA_EXTENSION, Constant.EMPTY_STRING),
+                new InputValidator(InputValidator.NAME_MATCH,
+                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         final int code = inputDialog.open();
         if (code == Window.OK)
         {

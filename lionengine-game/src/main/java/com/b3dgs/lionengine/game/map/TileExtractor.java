@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
  * This class allows to extract unique tiles from a level rip.
- * The color [0-128-128] ({@link #IGNORED_COLOR}) is ignored (can be used to skip tile, in order to improve
+ * The color [0-128-128] ({@link #IGNORED_COLOR_VALUE}) is ignored (can be used to skip tile, in order to improve
  * performance).
  * <p>
  * Example (will scan level.png, using a 16*16 tile size, and store result in sheet.png 256*256):
@@ -50,7 +50,9 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 public final class TileExtractor
 {
     /** Ignored color. */
-    public static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
+    public static final ColorRgba IGNORED_COLOR = new ColorRgba(0, 128, 128);
+    /** Ignored color. */
+    public static final int IGNORED_COLOR_VALUE = IGNORED_COLOR.getRgba();
 
     /**
      * Compare two tiles by checking all pixels.
@@ -84,40 +86,6 @@ public final class TileExtractor
         }
         // Tiles are equal
         return true;
-    }
-
-    /**
-     * Listen to extraction progress.
-     */
-    public interface ProgressListener
-    {
-        /**
-         * Called once progress detected.
-         * 
-         * @param percent Progress percent.
-         * @param current The current extracting sheet.
-         */
-        void notifyProgress(int percent, ImageBuffer current);
-
-        /**
-         * Called once sheet fully extracted.
-         * 
-         * @param sheet Last exported sheet (may be <code>null</code>).
-         */
-        void notifyExtracted(ImageBuffer sheet);
-    }
-
-    /**
-     * Cancel controller.
-     */
-    public interface Canceler
-    {
-        /**
-         * Check if operation is canceled.
-         * 
-         * @return <code>true</code> if canceled, <code>false</code> else.
-         */
-        boolean isCanceled();
     }
 
     /** Levels rip. */
@@ -304,7 +272,7 @@ public final class TileExtractor
             for (int ripH = 0; ripH < ripHorizontalTiles; ripH++)
             {
                 // Skip blank tile of image map (0, 128, 128)
-                if (IGNORED_COLOR != surface.getRgb(ripH * tileWidth, ripV * tileHeight))
+                if (IGNORED_COLOR_VALUE != surface.getRgb(ripH * tileWidth, ripV * tileHeight))
                 {
                     if (!isExtracted(surface, ripH, ripV))
                     {
@@ -465,5 +433,39 @@ public final class TileExtractor
         }
         // No tile found
         return false;
+    }
+
+    /**
+     * Listen to extraction progress.
+     */
+    public interface ProgressListener
+    {
+        /**
+         * Called once progress detected.
+         * 
+         * @param percent Progress percent.
+         * @param current The current extracting sheet.
+         */
+        void notifyProgress(int percent, ImageBuffer current);
+
+        /**
+         * Called once sheet fully extracted.
+         * 
+         * @param sheet Last exported sheet (may be <code>null</code>).
+         */
+        void notifyExtracted(ImageBuffer sheet);
+    }
+
+    /**
+     * Cancel controller.
+     */
+    public interface Canceler
+    {
+        /**
+         * Check if operation is canceled.
+         * 
+         * @return <code>true</code> if canceled, <code>false</code> else.
+         */
+        boolean isCanceled();
     }
 }

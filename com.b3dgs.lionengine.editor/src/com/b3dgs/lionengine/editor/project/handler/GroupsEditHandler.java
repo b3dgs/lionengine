@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.editor.project.dialog.group.GroupsEditDialog;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class GroupsEditHandler
+public final class GroupsEditHandler
 {
     /**
      * Execute the handler.
@@ -41,6 +41,14 @@ public class GroupsEditHandler
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final GroupsEditDialog dialog = new GroupsEditDialog(parent, selection);
         dialog.open();
+    }
+
+    /**
+     * Create handler.
+     */
+    public GroupsEditHandler()
+    {
+        // Nothing to do
     }
 
     /**

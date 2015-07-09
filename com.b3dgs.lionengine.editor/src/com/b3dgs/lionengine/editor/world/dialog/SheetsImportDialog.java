@@ -58,8 +58,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SheetsImportDialog
-        extends AbstractDialog
+public class SheetsImportDialog extends AbstractDialog
 {
     /** Icon. */
     static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
@@ -109,10 +108,10 @@ public class SheetsImportDialog
     {
         final File[] files = Tools.selectResourceFiles(dialog, new String[]
         {
-                com.b3dgs.lionengine.editor.world.dialog.Messages.ImportMapDialog_LevelRipFileFilter
+            com.b3dgs.lionengine.editor.world.dialog.Messages.ImportMapDialog_LevelRipFileFilter
         }, new String[]
         {
-                "*.bmp;*.png"
+            "*.bmp;*.png"
         });
         final Project project = Project.getActive();
         for (final File file : files)
@@ -306,13 +305,13 @@ public class SheetsImportDialog
         textCheckFinish(heightText);
 
         horizontalText = UtilSwt.createText(Messages.SheetsImportDialog_HorizontalTiles, config);
-        horizontalText
-                .addVerifyListener(UtilSwt.createVerify(horizontalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        horizontalText.addVerifyListener(
+                UtilSwt.createVerify(horizontalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         textCheckFinish(horizontalText);
 
         verticalText = UtilSwt.createText(Messages.SheetsImportDialog_VerticalTiles, config);
-        verticalText
-                .addVerifyListener(UtilSwt.createVerify(verticalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        verticalText.addVerifyListener(
+                UtilSwt.createVerify(verticalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         textCheckFinish(verticalText);
     }
 

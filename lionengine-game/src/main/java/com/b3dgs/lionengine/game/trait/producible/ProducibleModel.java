@@ -22,7 +22,6 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.configurer.ConfigProducible;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.TraitModel;
@@ -30,7 +29,8 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
 /**
  * Represents a producible object.
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigProducible}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
+ * with {@link ConfigProducible}.
  * </p>
  * <p>
  * If the {@link ObjectGame} is a {@link ProducibleListener}, it will automatically
@@ -39,9 +39,7 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ProducibleModel
-        extends TraitModel
-        implements Producible
+public class ProducibleModel extends TraitModel implements Producible
 {
     /** Producer listeners. */
     private final Collection<ProducibleListener> listeners = new ArrayList<>();

@@ -35,7 +35,7 @@ public enum OperatingSystem
     WINDOWS,
     /** Unix family. */
     UNIX,
-    /** Mac */
+    /** Mac. */
     MAC,
     /** Sun solaris. */
     SOLARIS,
@@ -54,7 +54,7 @@ public enum OperatingSystem
      */
     static
     {
-        OS = findOs(EngineCore.getSystemProperty("os.name", DEFAULT).toLowerCase(Locale.getDefault()));
+        OS = findOs(EngineCore.getSystemProperty("os.name", DEFAULT).toLowerCase(Locale.ENGLISH));
         ARCHI = findArchitecture(EngineCore.getSystemProperty("sun.arch.data.model", DEFAULT));
     }
 
@@ -67,27 +67,32 @@ public enum OperatingSystem
      */
     public static OperatingSystem findOs(String os)
     {
-        if (os != null)
+        final OperatingSystem found;
+        if (os == null)
         {
-            if (os.indexOf("win") >= 0)
-            {
-                return WINDOWS;
-            }
-            else if (os.indexOf("mac") >= 0)
-            {
-                return MAC;
-            }
-            else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("bsd") >= 0
-                    || os.indexOf("aix") >= 0)
-            {
-                return UNIX;
-            }
-            else if (os.indexOf("sunos") >= 0)
-            {
-                return SOLARIS;
-            }
+            return UNKNOWN;
         }
-        return UNKNOWN;
+        else if (os.indexOf("win") >= 0)
+        {
+            found = WINDOWS;
+        }
+        else if (os.indexOf("mac") >= 0)
+        {
+            found = MAC;
+        }
+        else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("bsd") >= 0 || os.indexOf("aix") >= 0)
+        {
+            found = UNIX;
+        }
+        else if (os.indexOf("sunos") >= 0)
+        {
+            found = SOLARIS;
+        }
+        else
+        {
+            found = UNKNOWN;
+        }
+        return found;
     }
 
     /**
@@ -98,18 +103,24 @@ public enum OperatingSystem
      */
     public static Architecture findArchitecture(String arch)
     {
-        if (arch != null)
+        final Architecture architecture;
+        if (arch == null)
         {
-            if (arch.contains("64"))
-            {
-                return Architecture.X64;
-            }
-            else if (arch.contains("32") || arch.contains("86"))
-            {
-                return Architecture.X86;
-            }
+            architecture = Architecture.UNKNOWN;
         }
-        return Architecture.UNKNOWN;
+        else if (arch.contains("64"))
+        {
+            architecture = Architecture.X64;
+        }
+        else if (arch.contains("32") || arch.contains("86"))
+        {
+            architecture = Architecture.X86;
+        }
+        else
+        {
+            architecture = Architecture.UNKNOWN;
+        }
+        return architecture;
     }
 
     /**

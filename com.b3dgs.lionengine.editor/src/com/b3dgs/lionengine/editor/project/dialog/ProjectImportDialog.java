@@ -43,8 +43,7 @@ import com.b3dgs.lionengine.editor.project.ProjectGenerator;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ProjectImportDialog
-        extends AbstractProjectDialog
+public class ProjectImportDialog extends AbstractProjectDialog
 {
     /** Project imported verbose. */
     private static final String VERBOSE_PROJECT_IMPORTED = "Project imported: ";

@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceArgumentsMock
-        extends Sequence
+public class SequenceArgumentsMock extends Sequence
 {
     /** Width. */
     private int width;

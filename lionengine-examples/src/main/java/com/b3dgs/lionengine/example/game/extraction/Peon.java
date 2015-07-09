@@ -47,9 +47,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Peon
-        extends ObjectGame
-        implements Updatable, Renderable, ExtractorChecker, ExtractorListener
+class Peon extends ObjectGame implements Updatable, Renderable, ExtractorChecker, ExtractorListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
@@ -82,7 +80,7 @@ class Peon
         transformable.teleport(208, 160);
         layerable.setLayer(Integer.valueOf(2));
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
         visible = true;

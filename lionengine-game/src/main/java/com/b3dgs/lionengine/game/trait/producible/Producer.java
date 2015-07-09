@@ -28,8 +28,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Producer
-        extends Trait, Updatable
+public interface Producer extends Trait, Updatable
 {
     /**
      * Add a producer listener.

@@ -28,6 +28,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Verbose;
@@ -39,9 +40,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ClientImpl
-        extends NetworkModel<ConnectionListener>
-        implements Client
+final class ClientImpl extends NetworkModel<ConnectionListener> implements Client
 {
     /** Ping timer. */
     private final Timing pingTimer;
@@ -338,7 +337,8 @@ final class ClientImpl
                 }
             }
         }
-        bandwidth += 4 + size;
+        final int headerSize = 4;
+        bandwidth += headerSize + size;
     }
 
     /*
@@ -350,7 +350,7 @@ final class ClientImpl
     {
         Check.notNull(ip);
         Check.superiorOrEqual(port, 0);
-        Check.inferiorOrEqual(port, 65535);
+        Check.inferiorOrEqual(port, Constant.MAX_PORT);
 
         try
         {
@@ -454,7 +454,8 @@ final class ClientImpl
             return;
         }
         // Ping
-        if (pingRequestTimer.elapsed(1000L))
+        final long pingMilli = 1000L;
+        if (pingRequestTimer.elapsed(pingMilli))
         {
             try
             {
@@ -487,7 +488,8 @@ final class ClientImpl
                 out.write(encoded);
                 out.flush();
 
-                bandwidth += 8 + encoded.length;
+                final int headerSize = 8;
+                bandwidth += headerSize + encoded.length;
             }
             catch (final IOException exception)
             {
@@ -495,7 +497,8 @@ final class ClientImpl
                         String.valueOf(clientId));
             }
         }
-        if (bandwidthTimer.elapsed(1000L))
+        final long bandwidthMilli = 1000L;
+        if (bandwidthTimer.elapsed(bandwidthMilli))
         {
             bandwidthPerSecond = bandwidth;
             bandwidth = 0;

@@ -27,6 +27,7 @@ import android.content.res.AssetManager;
 import android.net.Uri;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
@@ -42,7 +43,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * <pre>
  * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
  * final Media media = Media.get(&quot;img&quot;, &quot;image.png&quot;);
- * System.out.println(media.getPath()); // print: resources/img/image.png
+ * print(media.getPath()); // print: resources/img/image.png
  * </pre>
  * 
  * <p>
@@ -55,6 +56,8 @@ public final class UtilityMedia
 {
     /** System temp directory. */
     public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir", null);
+    /** Error get stream. */
+    private static final String ERROR_GET_STREAM = "Error on getting stream of: ";
     /** System separator. */
     private static volatile String separator = File.separator;
     /** Engine temporary directory. */
@@ -164,7 +167,7 @@ public final class UtilityMedia
         final String path = media.getPath();
         if (logger)
         {
-            Verbose.info("getStream from " + from, ": \"", path, "\"");
+            Verbose.info("getInputStream from " + from, Constant.DOUBLE_DOT + Constant.QUOTE, path, Constant.QUOTE);
         }
         try
         {
@@ -172,7 +175,7 @@ public final class UtilityMedia
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, "Error on getting stream of: \"", path, "\"");
+            throw new LionEngineException(exception, ERROR_GET_STREAM + Constant.QUOTE, path, Constant.QUOTE);
         }
     }
 
@@ -190,7 +193,7 @@ public final class UtilityMedia
         final String path = media.getPath();
         if (logger)
         {
-            Verbose.info("getOutputStream from " + from, ": \"", path, "\"");
+            Verbose.info("getOutputStream from " + from, Constant.DOUBLE_DOT + Constant.QUOTE, path, Constant.QUOTE);
         }
         try
         {
@@ -198,7 +201,7 @@ public final class UtilityMedia
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, "Error on getting stream of: \"", path, "\"");
+            throw new LionEngineException(exception, ERROR_GET_STREAM + Constant.QUOTE, path, Constant.QUOTE);
         }
     }
 
@@ -263,6 +266,6 @@ public final class UtilityMedia
      */
     private UtilityMedia()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

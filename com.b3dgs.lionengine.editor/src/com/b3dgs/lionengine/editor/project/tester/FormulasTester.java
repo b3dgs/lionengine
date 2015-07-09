@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulasTester
-        extends PropertyTester
+public final class FormulasTester extends PropertyTester
 {
     /** Can add formulas property. */
     private static final String PROPERTY_ADD_FORMULAS = "addFormulas";
@@ -59,6 +58,39 @@ public class FormulasTester
         }
     }
 
+    /**
+     * Check result depending of selection.
+     * 
+     * @param selection The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(Media selection, String property)
+    {
+        final boolean result;
+        if (PROPERTY_EDIT_FORMULAS.equals(property))
+        {
+            result = isFormulasFile(selection);
+        }
+        else if (PROPERTY_ADD_FORMULAS.equals(property))
+        {
+            result = selection.getFile().isDirectory();
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Create tester.
+     */
+    public FormulasTester()
+    {
+        // Nothing to do
+    }
+
     /*
      * PropertyTester
      */
@@ -72,14 +104,7 @@ public class FormulasTester
             final Media selection = ProjectsModel.INSTANCE.getSelection();
             if (selection != null)
             {
-                if (PROPERTY_EDIT_FORMULAS.equals(property))
-                {
-                    return isFormulasFile(selection);
-                }
-                if (PROPERTY_ADD_FORMULAS.equals(property))
-                {
-                    return selection.getFile().isDirectory();
-                }
+                return check(selection, property);
             }
         }
         return false;

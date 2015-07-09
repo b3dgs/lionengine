@@ -51,8 +51,7 @@ import com.b3dgs.lionengine.game.map.Tile;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesPart
-        implements PropertiesProviderObject, PropertiesProviderTile
+public class PropertiesPart implements PropertiesProviderObject, PropertiesProviderTile
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.properties";
@@ -74,7 +73,7 @@ public class PropertiesPart
     {
         item.setText(new String[]
         {
-                key, property
+            key, property
         });
     }
 
@@ -116,6 +115,14 @@ public class PropertiesPart
     private Collection<PropertiesProviderObject> providersObject;
     /** Extensions point tile. */
     private Collection<PropertiesProviderTile> providersTile;
+
+    /**
+     * Create part.
+     */
+    public PropertiesPart()
+    {
+        // Nothing to do
+    }
 
     /**
      * Create the composite.
@@ -217,6 +224,20 @@ public class PropertiesPart
     }
 
     /**
+     * Called on double click.
+     * 
+     * @param item The selected item.
+     * @param configurer The associated configurer.
+     */
+    void onDoubleClick(TreeItem item, Configurer configurer)
+    {
+        if (updateProperties(item, configurer))
+        {
+            configurer.save();
+        }
+    }
+
+    /**
      * Add mouse tree listener.
      * 
      * @param menuService The menu service reference.
@@ -226,7 +247,7 @@ public class PropertiesPart
         properties.addMouseListener(new MouseAdapter()
         {
             @Override
-            public void mouseDoubleClick(MouseEvent e)
+            public void mouseDoubleClick(MouseEvent event)
             {
                 final TreeItem[] items = properties.getSelection();
                 if (items.length > 0)
@@ -235,10 +256,7 @@ public class PropertiesPart
                     if (properties.getData() instanceof Configurer)
                     {
                         final Configurer configurer = (Configurer) properties.getData();
-                        if (updateProperties(item, configurer))
-                        {
-                            configurer.save();
-                        }
+                        onDoubleClick(item, configurer);
                     }
                 }
             }

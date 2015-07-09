@@ -37,8 +37,7 @@ import com.b3dgs.lionengine.editor.dialog.Messages;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ComboDialogChooser
-        extends Dialog
+public class ComboDialogChooser extends Dialog
 {
     /** Icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "browse.png");

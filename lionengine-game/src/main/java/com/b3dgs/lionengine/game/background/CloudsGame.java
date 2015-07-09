@@ -29,8 +29,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class CloudsGame
-        implements BackgroundComponent
+public abstract class CloudsGame implements BackgroundComponent
 {
     /** Clouds surface. */
     protected final SpriteTiled sprite;

@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ImageBufferAndroid
-        implements ImageBuffer
+final class ImageBufferAndroid implements ImageBuffer
 {
     /** Buffered image. */
     private final Bitmap bufferedImage;

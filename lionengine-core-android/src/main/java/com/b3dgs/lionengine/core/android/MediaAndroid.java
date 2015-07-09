@@ -31,8 +31,7 @@ import com.b3dgs.lionengine.core.Medias;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MediaAndroid
-        implements Media
+final class MediaAndroid implements Media
 {
     /** No parent. */
     private static final String NO_PARENT = "";
@@ -91,13 +90,13 @@ final class MediaAndroid
     @Override
     public InputStream getInputStream() throws LionEngineException
     {
-        return UtilityMedia.getStream(this, "MediaImpl", false);
+        return UtilityMedia.getStream(this, MediaAndroid.class.getName(), false);
     }
 
     @Override
     public OutputStream getOutputStream() throws LionEngineException
     {
-        return UtilityMedia.getOutputStream(this, "MediaImpl", false);
+        return UtilityMedia.getOutputStream(this, MediaAndroid.class.getName(), false);
     }
 
     @Override
@@ -111,7 +110,10 @@ final class MediaAndroid
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (path == null ? 0 : path.hashCode());
+        if (path != null)
+        {
+            result = prime * result + path.hashCode();
+        }
         return result;
     }
 

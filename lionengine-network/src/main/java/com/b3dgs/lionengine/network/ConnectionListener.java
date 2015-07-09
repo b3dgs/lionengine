@@ -22,8 +22,7 @@ package com.b3dgs.lionengine.network;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ConnectionListener
-        extends ClientListener
+public interface ConnectionListener extends ClientListener
 {
     /**
      * Notify when the connection to the server is established.

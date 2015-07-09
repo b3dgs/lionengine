@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.editor.project.dialog.formula.FormulasEditDialog;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulasEditHandler
+public final class FormulasEditHandler
 {
     /**
      * Execute the handler.
@@ -41,6 +41,14 @@ public class FormulasEditHandler
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final FormulasEditDialog dialog = new FormulasEditDialog(parent, selection);
         dialog.open();
+    }
+
+    /**
+     * Create handler.
+     */
+    public FormulasEditHandler()
+    {
+        // Nothing to do
     }
 
     /**

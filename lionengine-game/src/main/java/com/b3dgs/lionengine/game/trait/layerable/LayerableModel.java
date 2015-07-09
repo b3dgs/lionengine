@@ -29,9 +29,7 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class LayerableModel
-        extends TraitModel
-        implements Layerable
+public class LayerableModel extends TraitModel implements Layerable
 {
     /** Layers listener. */
     private final Collection<LayerableListener> listeners = new ArrayList<>();

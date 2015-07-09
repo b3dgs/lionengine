@@ -28,12 +28,10 @@ import javax.swing.border.EmptyBorder;
 /**
  * Combo renderer implementation.
  * 
- * @param <E> The object type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <E> The object type.
  */
-public final class ComboRenderer<E>
-        extends JLabel
-        implements ListCellRenderer<E>
+public final class ComboRenderer<E> extends JLabel implements ListCellRenderer<E>
 {
     /** Serial uid. */
     private static final long serialVersionUID = -3958632959558263178L;

@@ -135,7 +135,7 @@ public class Factory
         {
             final O object = create(type, new Class<?>[]
             {
-                    setup.getClass(), Services.class
+                setup.getClass(), Services.class
             }, setup, services);
             final Integer id = HandledObjectsImpl.getFreeId();
             object.setId(id);
@@ -207,7 +207,7 @@ public class Factory
             final Class<?> setupClass = classLoader.loadClass(configObject.getSetupName());
             return create(setupClass, new Class<?>[]
             {
-                    Media.class
+                Media.class
             }, media);
         }
         catch (final ClassNotFoundException exception)

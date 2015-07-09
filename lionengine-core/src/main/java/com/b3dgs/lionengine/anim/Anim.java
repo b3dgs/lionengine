@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.anim;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Anim factory. Can create the following elements:
  * <ul>
@@ -63,6 +65,6 @@ public final class Anim
      */
     private Anim()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

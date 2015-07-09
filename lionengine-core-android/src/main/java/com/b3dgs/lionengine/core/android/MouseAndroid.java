@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.Config;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class MouseAndroid
-        implements Mouse
+public final class MouseAndroid implements Mouse
 {
     /** Clicked flags. */
     private boolean click;

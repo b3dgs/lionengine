@@ -68,8 +68,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * @see InputDevicePointer
  * @see Image
  */
-public class Cursor
-        implements Resource, Localizable, Tiled, Updatable, Renderable
+public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderable
 {
     /** Surface ID not found error. */
     private static final String ERROR_SURFACE_ID = "Undefined surface id:";
@@ -426,7 +425,14 @@ public class Cursor
         x = UtilMath.fixBetween(x, minX, maxX);
         y = UtilMath.fixBetween(y, minY, maxY);
         viewX = x + offX;
-        viewY = (viewer != null ? viewer.getHeight() : 0) - y + offY;
+        if (viewer != null)
+        {
+            viewY = viewer.getHeight() - y + offY;
+        }
+        else
+        {
+            viewY = -y + offY;
+        }
         for (final Image current : surfaces.values())
         {
             current.setLocation(x + offsetX, y + offsetY);

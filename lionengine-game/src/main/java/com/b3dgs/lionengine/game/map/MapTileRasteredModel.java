@@ -21,10 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -32,6 +33,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurfaceRastered;
 import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
 
 /**
@@ -39,11 +41,10 @@ import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapTileRasteredModel
-        implements MapTileRastered
+public class MapTileRasteredModel implements MapTileRastered
 {
     /** List of rastered sheets. */
-    private final TreeMap<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<>();
+    private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<>();
     /** Map tile reference. */
     private final MapTile map;
     /** Rasters smooth flag. */
@@ -77,35 +78,13 @@ public class MapTileRasteredModel
     {
         final int[] color = new int[rasters.length];
         final int[] colorNext = new int[rasters.length];
-        final int max = smooth ? 2 : 1;
-        final int maxRasters = Rasterable.MAX_RASTERS;
+        final int max = UtilConversion.boolToInt(smooth) + 1;
 
         for (int m = 0; m < max; m++)
         {
-            for (int i = 1; i <= maxRasters; i++)
+            for (int i = 1; i <= Rasterable.MAX_RASTERS; i++)
             {
-                for (int c = 0; c < rasters.length; c++)
-                {
-                    final int[] data = rasters[c];
-                    if (smooth)
-                    {
-                        if (m == 0)
-                        {
-                            color[c] = ColorRgba.getRasterColor(i, data, maxRasters);
-                            colorNext[c] = ColorRgba.getRasterColor(i + 1, data, maxRasters);
-                        }
-                        else
-                        {
-                            color[c] = ColorRgba.getRasterColor(maxRasters - i, data, maxRasters);
-                            colorNext[c] = ColorRgba.getRasterColor(maxRasters - i - 1, data, maxRasters);
-                        }
-                    }
-                    else
-                    {
-                        color[c] = ColorRgba.getRasterColor(i, data, maxRasters);
-                        colorNext[c] = color[c];
-                    }
-                }
+                SetupSurfaceRastered.loadRaster(rasters, color, colorNext, m, i, smooth);
                 addRasterSheet(sheet, color[0], color[1], color[2], colorNext[0], colorNext[1], colorNext[2]);
             }
         }

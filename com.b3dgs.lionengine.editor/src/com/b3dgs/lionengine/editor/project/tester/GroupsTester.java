@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class GroupsTester
-        extends PropertyTester
+public final class GroupsTester extends PropertyTester
 {
     /** Can add groups property. */
     private static final String PROPERTY_ADD_GROUPS = "addGroups";
@@ -59,6 +58,39 @@ public class GroupsTester
         }
     }
 
+    /**
+     * Check result depending of selection.
+     * 
+     * @param selection The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(Media selection, String property)
+    {
+        final boolean result;
+        if (PROPERTY_EDIT_GROUPS.equals(property))
+        {
+            result = isGroupsFile(selection);
+        }
+        else if (PROPERTY_ADD_GROUPS.equals(property))
+        {
+            result = selection.getFile().isDirectory();
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Create tester.
+     */
+    public GroupsTester()
+    {
+        // Nothing to do
+    }
+
     /*
      * PropertyTester
      */
@@ -72,14 +104,7 @@ public class GroupsTester
             final Media selection = ProjectsModel.INSTANCE.getSelection();
             if (selection != null)
             {
-                if (PROPERTY_EDIT_GROUPS.equals(property))
-                {
-                    return isGroupsFile(selection);
-                }
-                if (PROPERTY_ADD_GROUPS.equals(property))
-                {
-                    return selection.getFile().isDirectory();
-                }
+                check(selection, property);
             }
         }
         return false;

@@ -38,9 +38,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionList
-        extends ObjectList<CollisionGroup>
-        implements ObjectListListener<CollisionGroup>
+public class CollisionList extends ObjectList<CollisionGroup> implements ObjectListListener<CollisionGroup>
 {
     /**
      * Remove the collision from configuration.

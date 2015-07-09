@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ImageBufferMock
-        implements ImageBuffer
+public class ImageBufferMock implements ImageBuffer
 {
     /** Width. */
     private final int width;

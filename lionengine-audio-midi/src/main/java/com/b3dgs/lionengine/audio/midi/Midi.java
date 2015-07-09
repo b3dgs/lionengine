@@ -209,6 +209,8 @@ public final class Midi
         Check.inferiorOrEqual(volume, Midi.VOLUME_MAX);
 
         final double maxChannelVolume = 127.0;
+        final int channelsNumber = 16;
+        final int controlChangeByte = 7;
         final int vol = (int) (volume * maxChannelVolume / Midi.VOLUME_MAX);
 
         if (synthesizer.getDefaultSoundbank() == null)
@@ -216,9 +218,9 @@ public final class Midi
             try
             {
                 final ShortMessage volumeMessage = new ShortMessage();
-                for (int i = 0; i < 16; i++)
+                for (int i = 0; i < channelsNumber; i++)
                 {
-                    volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, vol);
+                    volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i, controlChangeByte, vol);
                     MidiSystem.getReceiver().send(volumeMessage, -1);
                 }
             }
@@ -232,7 +234,7 @@ public final class Midi
             final MidiChannel[] channels = synthesizer.getChannels();
             for (int c = 0; channels != null && c < channels.length; c++)
             {
-                channels[c].controlChange(7, vol);
+                channels[c].controlChange(controlChangeByte, vol);
             }
         }
     }

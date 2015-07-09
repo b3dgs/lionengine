@@ -113,8 +113,7 @@ public final class FolderModificationWatcher
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private final class Watcher
-            implements Runnable
+    private final class Watcher implements Runnable
     {
         /** Tasks. */
         private final Set<Task> tasks = new HashSet<>();
@@ -286,6 +285,33 @@ public final class FolderModificationWatcher
         }
 
         /**
+         * Called on created element.
+         * 
+         * @param path The created element path.
+         * @param keyParent The parent key.
+         */
+        void onCreated(File path, String keyParent)
+        {
+            final Object data = tree.getData(keyParent);
+            if (data != null && data instanceof TreeItem)
+            {
+                final TreeItem parent = (TreeItem) data;
+                creator.checkPath(path, parent);
+                if (path.isDirectory())
+                {
+                    try
+                    {
+                        newTasks.add(new Task(root, path.toPath(), tree, creator));
+                    }
+                    catch (final IOException exception)
+                    {
+                        Verbose.exception(getClass(), "onCreated", exception);
+                    }
+                }
+            }
+        }
+
+        /**
          * Case of created item.
          * 
          * @param path The created item.
@@ -302,23 +328,7 @@ public final class FolderModificationWatcher
                     @Override
                     public void run()
                     {
-                        final Object data = tree.getData(keyParent);
-                        if (data != null && data instanceof TreeItem)
-                        {
-                            final TreeItem parent = (TreeItem) data;
-                            creator.checkPath(path, parent);
-                            if (path.isDirectory())
-                            {
-                                try
-                                {
-                                    newTasks.add(new Task(root, path.toPath(), tree, creator));
-                                }
-                                catch (final IOException exception)
-                                {
-                                    Verbose.exception(getClass(), "onCreated", exception);
-                                }
-                            }
-                        }
+                        onCreated(path, keyParent);
                     }
                 });
             }

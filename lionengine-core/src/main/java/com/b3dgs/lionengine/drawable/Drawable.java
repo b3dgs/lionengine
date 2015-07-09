@@ -215,6 +215,6 @@ public final class Drawable
      */
     private Drawable()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

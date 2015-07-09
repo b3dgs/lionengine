@@ -33,9 +33,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Goomba
-        extends Entity
-        implements InputDeviceDirectional, CollidableListener
+class Goomba extends Entity implements InputDeviceDirectional, CollidableListener
 {
     /** Goomba media. */
     public static final Media CONFIG = Medias.create("entity", "Goomba.xml");

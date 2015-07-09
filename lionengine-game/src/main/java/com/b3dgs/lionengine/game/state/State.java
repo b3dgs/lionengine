@@ -49,8 +49,7 @@ import com.b3dgs.lionengine.core.Updatable;
  * @see StateFactory
  * @see StateInputUpdater
  */
-public interface State
-        extends Updatable
+public interface State extends Updatable
 {
     /**
      * Add a transition with another state.

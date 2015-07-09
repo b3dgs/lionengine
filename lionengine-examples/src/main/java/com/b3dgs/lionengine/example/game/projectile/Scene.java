@@ -38,8 +38,7 @@ import com.b3dgs.lionengine.game.object.Services;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-class Scene
-        extends Sequence
+class Scene extends Sequence
 {
     /** Services reference. */
     private final Services services = new Services();

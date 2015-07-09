@@ -31,9 +31,20 @@ import com.b3dgs.lionengine.editor.project.Property;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ResourceExtensionTester
-        extends PropertyTester
+public final class ResourceExtensionTester extends PropertyTester
 {
+    /**
+     * Create tester.
+     */
+    public ResourceExtensionTester()
+    {
+        // Nothing to do
+    }
+
+    /*
+     * PropertyTester
+     */
+
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {

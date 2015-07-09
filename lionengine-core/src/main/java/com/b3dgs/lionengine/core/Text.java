@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.TextStyle;
 
 /**
  * The text allows to render any {@link String} on screen, at a specified location, using a specified font.
@@ -29,7 +28,8 @@ import com.b3dgs.lionengine.TextStyle;
  * <ul>
  * <li>name, as {@link String}</li>
  * <li>size, as <code>int</code>, in pixel</li>
- * <li>style, as <code>int</code> ({@link TextStyle#NORMAL}, {@link TextStyle#ITALIC}, {@link TextStyle#BOLD})</li>
+ * <li>style, as <code>int</code> ({@link com.b3dgs.lionengine.TextStyle#NORMAL},
+ * {@link com.b3dgs.lionengine.TextStyle#ITALIC}, {@link com.b3dgs.lionengine.TextStyle#BOLD})</li>
  * </ul>
  * Two ways are possible for text rendering:
  * <ul>
@@ -79,8 +79,7 @@ import com.b3dgs.lionengine.TextStyle;
  * @see Align
  * @see Graphics
  */
-public interface Text
-        extends Renderable
+public interface Text extends Renderable
 {
     /** Standard text font sans serif. */
     String SANS_SERIF = "SansSerif";

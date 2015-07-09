@@ -36,8 +36,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionCategoryEditor
-        extends AbstractEditor
+public class CollisionCategoryEditor extends AbstractEditor
 {
     /** Dialog icon. */
     public static final Image ICON = UtilEclipse.getIcon("collisioncategory-editor", "dialog.png");

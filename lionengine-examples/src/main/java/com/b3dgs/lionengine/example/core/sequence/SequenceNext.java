@@ -29,8 +29,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class SequenceNext
-        extends Sequence
+class SequenceNext extends Sequence
 {
     /**
      * Constructor.

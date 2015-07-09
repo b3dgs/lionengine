@@ -33,9 +33,7 @@ import com.b3dgs.lionengine.game.Collision;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class EntityCollisionProperties
-        extends ObjectProperties<Collision>
-        implements ObjectListListener<Collision>
+public class EntityCollisionProperties extends ObjectProperties<Collision> implements ObjectListListener<Collision>
 {
     /** Horizontal offset. */
     Text offsetX;

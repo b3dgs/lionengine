@@ -32,13 +32,37 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsTester
-        extends PropertyTester
+public final class CollisionsTester extends PropertyTester
 {
     /** Can add formulas property. */
     private static final String PROPERTY_ADD_COLLISIONS = "addCollisions";
     /** Can edit formulas property. */
     private static final String PROPERTY_EDIT_COLLISIONS = "editCollisions";
+
+    /**
+     * Check result depending of selection.
+     * 
+     * @param selection The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(Media selection, String property)
+    {
+        final boolean result;
+        if (PROPERTY_EDIT_COLLISIONS.equals(property))
+        {
+            result = isCollisionsFile(selection);
+        }
+        else if (PROPERTY_ADD_COLLISIONS.equals(property))
+        {
+            result = selection.getFile().isDirectory();
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
 
     /**
      * Check if the media is a collisions descriptor.
@@ -59,6 +83,14 @@ public class CollisionsTester
         }
     }
 
+    /**
+     * Create tester.
+     */
+    public CollisionsTester()
+    {
+        // Nothing to do
+    }
+
     /*
      * PropertyTester
      */
@@ -72,14 +104,7 @@ public class CollisionsTester
             final Media selection = ProjectsModel.INSTANCE.getSelection();
             if (selection != null)
             {
-                if (PROPERTY_EDIT_COLLISIONS.equals(property))
-                {
-                    return isCollisionsFile(selection);
-                }
-                if (PROPERTY_ADD_COLLISIONS.equals(property))
-                {
-                    return selection.getFile().isDirectory();
-                }
+                return check(selection, property);
             }
         }
         return false;

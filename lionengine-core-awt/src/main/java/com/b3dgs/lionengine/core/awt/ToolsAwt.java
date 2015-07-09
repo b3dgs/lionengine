@@ -42,6 +42,7 @@ import java.io.OutputStream;
 import javax.imageio.ImageIO;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -60,7 +61,7 @@ public final class ToolsAwt
     /** Bilinear filter. */
     private static final float[] BILINEAR_FILTER = new float[]
     {
-            1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f
+        1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f
     };
 
     /**
@@ -184,13 +185,14 @@ public final class ToolsAwt
      */
     static BufferedImage rotate(BufferedImage image, int angle)
     {
-        final int w = image.getWidth(), h = image.getHeight();
+        final int width = image.getWidth();
+        final int height = image.getHeight();
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage rotated = createImage(w, h, transparency);
+        final BufferedImage rotated = createImage(width, height, transparency);
         final Graphics2D g = rotated.createGraphics();
 
         optimizeGraphics(g);
-        g.rotate(Math.toRadians(angle), w / 2.0, h / 2.0);
+        g.rotate(Math.toRadians(angle), width / 2.0, height / 2.0);
         g.drawImage(image, null, 0, 0);
         g.dispose();
 
@@ -226,12 +228,13 @@ public final class ToolsAwt
      */
     static BufferedImage flipHorizontal(BufferedImage image)
     {
-        final int w = image.getWidth(), h = image.getHeight();
-        final BufferedImage flipped = createImage(w, h, image.getColorModel().getTransparency());
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        final BufferedImage flipped = createImage(width, height, image.getColorModel().getTransparency());
         final Graphics2D g = flipped.createGraphics();
 
         optimizeGraphics(g);
-        g.drawImage(image, 0, 0, w, h, w, 0, 0, h, null);
+        g.drawImage(image, 0, 0, width, height, width, 0, 0, height, null);
         g.dispose();
 
         return flipped;
@@ -245,12 +248,13 @@ public final class ToolsAwt
      */
     static BufferedImage flipVertical(BufferedImage image)
     {
-        final int w = image.getWidth(), h = image.getHeight();
-        final BufferedImage flipped = createImage(w, h, image.getColorModel().getTransparency());
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        final BufferedImage flipped = createImage(width, height, image.getColorModel().getTransparency());
         final Graphics2D g = flipped.createGraphics();
 
         optimizeGraphics(g);
-        g.drawImage(image, 0, 0, w, h, 0, h, w, 0, null);
+        g.drawImage(image, 0, 0, width, height, 0, height, width, 0, null);
         g.dispose();
 
         return flipped;
@@ -266,10 +270,10 @@ public final class ToolsAwt
      */
     static BufferedImage[] splitImage(BufferedImage image, int h, int v)
     {
-        final int total = h * v;
-        final int width = image.getWidth() / h, height = image.getHeight() / v;
+        final int width = image.getWidth() / h;
+        final int height = image.getHeight() / v;
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage[] images = new BufferedImage[total];
+        final BufferedImage[] images = new BufferedImage[h * v];
         int frame = 0;
 
         for (int y = 0; y < v; y++)
@@ -307,9 +311,13 @@ public final class ToolsAwt
         final boolean method = true;
         final BufferedImage raster = createImage(image.getWidth(), image.getHeight(), image.getTransparency());
 
-        final double sr = -((er - fr) / 0x010000) / (double) refSize;
-        final double sg = -((eg - fg) / 0x000100) / (double) refSize;
-        final double sb = -((eb - fb) / 0x000001) / (double) refSize;
+        final int divisorRed = 0x010000;
+        final int divisorGreen = 0x000100;
+        final int divisorBlue = 0x000001;
+
+        final double sr = -((er - fr) / divisorRed) / (double) refSize;
+        final double sg = -((eg - fg) / divisorGreen) / (double) refSize;
+        final double sb = -((eb - fb) / divisorBlue) / (double) refSize;
 
         if (method)
         {
@@ -317,9 +325,9 @@ public final class ToolsAwt
             {
                 for (int j = 0; j < raster.getHeight(); j++)
                 {
-                    final int r = (int) (sr * (j % refSize)) * 0x010000;
-                    final int g = (int) (sg * (j % refSize)) * 0x000100;
-                    final int b = (int) (sb * (j % refSize)) * 0x000001;
+                    final int r = (int) (sr * (j % refSize)) * divisorRed;
+                    final int g = (int) (sg * (j % refSize)) * divisorGreen;
+                    final int b = (int) (sb * (j % refSize)) * divisorBlue;
 
                     raster.setRGB(i, j, ColorRgba.filterRgb(image.getRGB(i, j), fr + r, fg + g, fb + b));
                 }
@@ -415,6 +423,6 @@ public final class ToolsAwt
      */
     private ToolsAwt()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

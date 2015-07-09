@@ -40,7 +40,8 @@ public final class UtilConversion
     {
         return new byte[]
         {
-                (byte) (value >>> 24), (byte) (value >>> 16), (byte) (value >>> 8), (byte) value
+            (byte) (value >>> Constant.BYTE_4), (byte) (value >>> Constant.BYTE_3), (byte) (value >>> Constant.BYTE_2),
+            (byte) value
         };
     }
 
@@ -65,7 +66,7 @@ public final class UtilConversion
     {
         return new byte[]
         {
-                (byte) (value >>> 8), (byte) value
+            (byte) (value >>> Constant.BYTE_2), (byte) value
         };
     }
 
@@ -125,6 +126,21 @@ public final class UtilConversion
     }
 
     /**
+     * Convert boolean to integer representation.
+     * 
+     * @param value The boolean value.
+     * @return <code>1</code> if <code>true</code>, <code>0</code> if <code>false</code>.
+     */
+    public static int boolToInt(boolean value)
+    {
+        if (value)
+        {
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
      * Convert a string to title case.
      * 
      * @param string The string to convert.
@@ -156,14 +172,14 @@ public final class UtilConversion
      */
     public static String toTitleCaseWord(String string)
     {
-        final String[] words = string.replaceAll("\\W|_", " ").split(" ");
+        final String[] words = string.replaceAll("\\W|_", Constant.SPACE).split(Constant.SPACE);
         final StringBuilder title = new StringBuilder();
         for (int i = 0; i < words.length; i++)
         {
             title.append(toTitleCase(words[i]));
             if (i < words.length - 1)
             {
-                title.append(" ");
+                title.append(Constant.SPACE);
             }
         }
         return title.toString();
@@ -174,6 +190,6 @@ public final class UtilConversion
      */
     private UtilConversion()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

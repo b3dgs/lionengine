@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.game.state.StateGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateDieMario
-        extends StateGame
+class StateDieMario extends StateGame
 {
     /** Entity reference. */
     private final Entity entity;

@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-interface Server
-        extends Networker<ClientListener>
+interface Server extends Networker<ClientListener>
 {
     /**
      * Set the message of the day (sent to a new connected client).

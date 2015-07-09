@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core.swt;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -44,7 +45,6 @@ import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Screen implementation.
@@ -53,8 +53,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * @see Keyboard
  * @see Mouse
  */
-abstract class ScreenSwt
-        implements Screen, FocusListener
+abstract class ScreenSwt implements Screen, FocusListener
 {
     /** Display. */
     static Display display;
@@ -70,7 +69,7 @@ abstract class ScreenSwt
     /** Default cursor instance. */
     private final Cursor cursorDefault;
     /** Input devices. */
-    private final HashMap<Class<? extends InputDevice>, InputDevice> devices;
+    private final Map<Class<? extends InputDevice>, InputDevice> devices;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
     /** Buffer reference. */
@@ -172,14 +171,7 @@ abstract class ScreenSwt
      */
     private void prepareFocusListener()
     {
-        try
-        {
-            frame.addFocusListener(this);
-        }
-        catch (final Exception exception)
-        {
-            Verbose.critical(Screen.class, "constructor", "Mouse focus listener can not be added !");
-        }
+        frame.addFocusListener(this);
     }
 
     /**

@@ -29,8 +29,16 @@ import com.b3dgs.lionengine.editor.world.dialog.MapCollisionImportDialog;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapCollisionImportHandler
+public final class MapCollisionImportHandler
 {
+    /**
+     * Create handler.
+     */
+    public MapCollisionImportHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

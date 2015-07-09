@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class NetworkedInput
-        implements Networkable, InputDeviceKeyListener
+public abstract class NetworkedInput implements Networkable, InputDeviceKeyListener
 {
     /** Model reference. */
     private final NetworkableModel networkable;

@@ -29,9 +29,7 @@ import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Mario
-        extends Entity
-        implements CollidableListener
+class Mario extends Entity implements CollidableListener
 {
     /** Mario media. */
     public static final Media CONFIG = Medias.create("entity", "Mario.xml");

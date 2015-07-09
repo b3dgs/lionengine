@@ -45,8 +45,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsEditDialog
-        extends AbstractDialog
+public class CollisionsEditDialog extends AbstractDialog
 {
     /** Icon. */
     public static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");

@@ -32,8 +32,16 @@ import com.b3dgs.lionengine.editor.world.WorldViewPart;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetPipetHandler
+public final class SetPipetHandler
 {
+    /**
+     * Create handler.
+     */
+    public SetPipetHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 

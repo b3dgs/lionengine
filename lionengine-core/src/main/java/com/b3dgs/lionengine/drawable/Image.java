@@ -42,8 +42,7 @@ import com.b3dgs.lionengine.core.Resource;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Image
-        extends Resource, Localizable, Renderable
+public interface Image extends Resource, Localizable, Renderable
 {
     /**
      * Load surface. This function must be called if the surface is loaded from a file, else the surface will never be

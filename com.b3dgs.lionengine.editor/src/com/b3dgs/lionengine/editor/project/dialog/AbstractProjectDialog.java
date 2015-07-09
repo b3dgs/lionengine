@@ -41,8 +41,7 @@ import com.b3dgs.lionengine.editor.project.Project;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class AbstractProjectDialog
-        extends AbstractDialog
+public abstract class AbstractProjectDialog extends AbstractDialog
 {
     /** Jar text. */
     private static final String JAR_TEXT = "JAR";

@@ -45,6 +45,6 @@ public final class AudioMidi
      */
     private AudioMidi()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

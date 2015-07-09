@@ -35,13 +35,12 @@ import com.b3dgs.lionengine.game.map.TileCollision;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesTileCollision
-        implements PropertiesProviderTile
+public class PropertiesTileCollision implements PropertiesProviderTile
 {
     /** Tile formulas icon. */
-    private static final Image ICON_FORMULAS = UtilEclipse.getIcon("properties", "tileformulas.png");
+    private static final Image ICON_FORMULAS = UtilEclipse.getIcon(FOLDER, "tileformulas.png");
     /** Tile formula icon. */
-    private static final Image ICON_FORMULA = UtilEclipse.getIcon("properties", "tileformula.png");
+    private static final Image ICON_FORMULA = UtilEclipse.getIcon(FOLDER, "tileformula.png");
 
     /**
      * Create the attribute formulas.
@@ -63,6 +62,14 @@ public class PropertiesTileCollision
             current.setData(ConfigCollisionFormula.FORMULA);
             current.setImage(PropertiesTileCollision.ICON_FORMULA);
         }
+    }
+
+    /**
+     * Create properties.
+     */
+    public PropertiesTileCollision()
+    {
+        // Nothing to do
     }
 
     /*

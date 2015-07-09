@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.core.Updatable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Force
-        implements Direction, Updatable
+public class Force implements Direction, Updatable
 {
     /** Horizontal force vector. */
     private double fh;

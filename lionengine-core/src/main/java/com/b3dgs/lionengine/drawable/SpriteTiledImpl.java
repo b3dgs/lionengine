@@ -28,9 +28,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class SpriteTiledImpl
-        extends SpriteImpl
-        implements SpriteTiled
+final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
 {
     /** Number of horizontal tiles. */
     private final int horizontalTiles;

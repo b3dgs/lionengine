@@ -121,8 +121,8 @@ public class UtilityFileTest
 
         try
         {
-            final String[] dirs = UtilFile
-                    .getDirsList(new File(new MediaMock("file").getPath()).getParentFile().getAbsolutePath());
+            final String path = new File(new MediaMock("file").getPath()).getParentFile().getAbsolutePath();
+            final String[] dirs = UtilFile.getDirsList(path);
             Assert.assertEquals(1, dirs.length);
             Assert.assertEquals("bis", dirs[0]);
             Assert.assertEquals(0, UtilFile.getDirsList(UtilFile.getPath("null")).length);

@@ -28,11 +28,10 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 /**
  * Network base implementation.
  * 
- * @param <L> Client listener type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <L> Client listener type used.
  */
-abstract class NetworkModel<L extends ClientListener>
-        implements Networker<L>
+abstract class NetworkModel<L extends ClientListener> implements Networker<L>
 {
     /** Messages list. */
     protected final Collection<NetworkMessage> messagesOut;
@@ -51,8 +50,8 @@ abstract class NetworkModel<L extends ClientListener>
     NetworkModel(NetworkMessageDecoder decoder)
     {
         this.decoder = decoder;
-        messagesOut = new ArrayList<>(4);
-        messagesIn = new ArrayList<>(4);
+        messagesOut = new ArrayList<>();
+        messagesIn = new ArrayList<>();
         listeners = new ArrayList<>(1);
     }
 

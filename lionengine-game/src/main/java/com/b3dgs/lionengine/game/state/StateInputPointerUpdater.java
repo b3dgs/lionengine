@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface StateInputPointerUpdater
-        extends StateInputUpdater<InputDevicePointer>
+public interface StateInputPointerUpdater extends StateInputUpdater<InputDevicePointer>
 {
     // Marker interface
 }

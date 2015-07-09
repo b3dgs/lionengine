@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.geom.Geom;
@@ -46,8 +45,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * @see Cursor
  * @see Viewer
  */
-public class Selector
-        implements Updatable, Renderable
+public class Selector implements Updatable, Renderable
 {
     /** List of listeners. */
     private final Collection<SelectorListener> listeners;
@@ -114,7 +112,7 @@ public class Selector
      * Set the mouse click selection value.
      * 
      * @param click The click number.
-     * @see InputDevicePointer
+     * @see com.b3dgs.lionengine.core.InputDevicePointer
      */
     public void setClickSelection(int click)
     {
@@ -192,18 +190,19 @@ public class Selector
 
         double selectX = startX;
         double selectY = startY;
-        double selectW = currentX - startX;
-        double selectH = currentY - startY;
 
         // Viewer Y axis is inverted compared to screen axis
         selectRawY = selectY;
         selectRawH = startY - currentY;
 
+        double selectW = currentX - startX;
         if (selectW < 0)
         {
             selectX += selectW;
             selectW = -selectW;
         }
+
+        double selectH = currentY - startY;
         if (selectH < 0)
         {
             selectY += selectH;

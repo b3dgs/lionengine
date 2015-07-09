@@ -31,6 +31,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
@@ -44,7 +45,7 @@ import com.b3dgs.lionengine.game.object.Factory;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SheetsAddHandler
+public final class SheetsAddHandler
 {
     /** Default tile size. */
     private static final String DEFAULT_TILE_SIZE = String.valueOf(16);
@@ -65,7 +66,7 @@ public class SheetsAddHandler
             if (line.contains(Tools.TEMPLATE_SHEETS_WIDTH) && line.contains(Tools.TEMPLATE_SHEETS_HEIGHT))
             {
                 dest.add(line.replace(Tools.TEMPLATE_SHEETS_WIDTH, DEFAULT_TILE_SIZE)
-                        .replace(Tools.TEMPLATE_SHEETS_HEIGHT, DEFAULT_TILE_SIZE));
+                             .replace(Tools.TEMPLATE_SHEETS_HEIGHT, DEFAULT_TILE_SIZE));
             }
             else
             {
@@ -75,6 +76,14 @@ public class SheetsAddHandler
         Files.write(sheets.toPath(), dest, StandardCharsets.UTF_8);
         lines.clear();
         dest.clear();
+    }
+
+    /**
+     * Create handler.
+     */
+    public SheetsAddHandler()
+    {
+        // Nothing to do
     }
 
     /**
@@ -88,8 +97,9 @@ public class SheetsAddHandler
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final InputDialog inputDialog = new InputDialog(parent, Messages.AddSheets_Title, Messages.AddSheets_Text,
-                MapTile.DEFAULT_SHEETS_FILE.replace("." + Factory.FILE_DATA_EXTENSION, ""), new InputValidator(
-                        InputValidator.NAME_MATCH, com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+                MapTile.DEFAULT_SHEETS_FILE.replace(Constant.DOT + Factory.FILE_DATA_EXTENSION, Constant.EMPTY_STRING),
+                new InputValidator(InputValidator.NAME_MATCH,
+                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         final int code = inputDialog.open();
         if (code == Window.OK)
         {

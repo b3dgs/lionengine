@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class GraphicMock
-        implements Graphic
+public class GraphicMock implements Graphic
 {
     @Override
     public void clear(int x, int y, int width, int height)

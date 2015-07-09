@@ -29,8 +29,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesCollisionTester
-        extends PropertyTester
+public final class PropertiesCollisionTester extends PropertyTester
 {
     /** Can enable collisions. */
     private static final String PROPERTY_COLLISIONS_ENABLE = "enableCollisions";
@@ -38,6 +37,44 @@ public class PropertiesCollisionTester
     private static final String PROPERTY_COLLISIONS_EDIT = "editCollisions";
     /** Can disable collisions. */
     private static final String PROPERTY_COLLISIONS_DISABLE = "disableCollisions";
+
+    /**
+     * Check result depending of selection.
+     * 
+     * @param model The properties model.
+     * @param data The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(PropertiesModel model, Object data, String property)
+    {
+        final boolean result;
+        if (PROPERTY_COLLISIONS_ENABLE.equals(property))
+        {
+            result = !model.hasProperty(ConfigCollisions.COLLISION);
+        }
+        else if (PROPERTY_COLLISIONS_EDIT.equals(property) && ConfigCollisions.COLLISION.equals(data))
+        {
+            result = model.hasProperty(ConfigCollisions.COLLISION);
+        }
+        else if (PROPERTY_COLLISIONS_DISABLE.equals(property) && ConfigCollisions.COLLISION.equals(data))
+        {
+            result = model.hasProperty(ConfigCollisions.COLLISION);
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Create tester.
+     */
+    public PropertiesCollisionTester()
+    {
+        // Nothing to do
+    }
 
     /*
      * PropertyTester
@@ -50,18 +87,7 @@ public class PropertiesCollisionTester
         if (!model.isEmpty() && ObjectsTester.isObjectFile(ProjectsModel.INSTANCE.getSelection()))
         {
             final Object data = model.getSelectedData();
-            if (PROPERTY_COLLISIONS_ENABLE.equals(property))
-            {
-                return !model.hasProperty(ConfigCollisions.COLLISION);
-            }
-            else if (PROPERTY_COLLISIONS_EDIT.equals(property) && ConfigCollisions.COLLISION.equals(data))
-            {
-                return model.hasProperty(ConfigCollisions.COLLISION);
-            }
-            else if (PROPERTY_COLLISIONS_DISABLE.equals(property) && ConfigCollisions.COLLISION.equals(data))
-            {
-                return model.hasProperty(ConfigCollisions.COLLISION);
-            }
+            return check(model, data, property);
         }
         return false;
     }

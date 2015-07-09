@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.map.astar.PathData;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Represents the pathfindable data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Collision
+ * @see com.b3dgs.lionengine.game.Collision
  */
 public final class ConfigPathfindable
 {

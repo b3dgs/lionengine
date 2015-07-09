@@ -36,9 +36,7 @@ import com.b3dgs.lionengine.network.purview.NetworkChat;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Chat
-        extends NetworkChat
-        implements ConnectionListener
+class Chat extends NetworkChat implements ConnectionListener
 {
     /** Background. */
     private static final ColorRgba BACKGROUND = new ColorRgba(128, 128, 128, 255);
@@ -96,8 +94,9 @@ class Chat
     @Override
     protected String getMessage(NetworkMessageChat message)
     {
-        return new StringBuilder(world.getClientName(message.getClientId())).append(" says: ")
-                .append(message.getMessage()).toString();
+        final StringBuilder builder = new StringBuilder(world.getClientName(message.getClientId()));
+        builder.append(" says: ").append(message.getMessage());
+        return builder.toString();
     }
 
     @Override

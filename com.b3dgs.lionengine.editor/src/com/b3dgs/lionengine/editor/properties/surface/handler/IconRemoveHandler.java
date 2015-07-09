@@ -32,8 +32,16 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class IconRemoveHandler
+public final class IconRemoveHandler
 {
+    /**
+     * Create handler.
+     */
+    public IconRemoveHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */

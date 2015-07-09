@@ -37,6 +37,8 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Set of functions around swing call, in order to create easily standard JObjects.
  * 
@@ -61,6 +63,7 @@ public final class UtilitySwing
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(filter);
+
         final int approve = fileChooser.showOpenDialog(parent);
         if (approve == JFileChooser.APPROVE_OPTION)
         {
@@ -270,6 +273,6 @@ public final class UtilitySwing
      */
     private UtilitySwing()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

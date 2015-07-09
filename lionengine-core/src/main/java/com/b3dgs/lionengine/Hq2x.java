@@ -30,6 +30,39 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  */
 public final class Hq2x
 {
+    /** Source data array. */
+    private final int[] srcData;
+    /** Width. */
+    private final int width;
+    /** Height. */
+    private final int height;
+
+    /**
+     * Create an Hq2x filter.
+     * 
+     * @param srcImage The buffer source.
+     */
+    public Hq2x(ImageBuffer srcImage)
+    {
+        width = srcImage.getWidth();
+        height = srcImage.getHeight();
+        srcData = new int[width * height];
+        srcImage.getRgb(0, 0, width, height, srcData, 0, width);
+    }
+
+    /**
+     * Filtered buffer.
+     * 
+     * @return The filtered buffer.
+     */
+    public ImageBuffer getScaledImage()
+    {
+        final RawScale2x scaler = new RawScale2x(srcData, width, height);
+        final ImageBuffer image = Graphics.createImageBuffer(width * 2, height * 2, Transparency.OPAQUE);
+        image.setRgb(0, 0, width * 2, height * 2, scaler.getScaledData(), 0, width * 2);
+        return image;
+    }
+
     /**
      * The raw scale implementation.
      * 
@@ -58,7 +91,8 @@ public final class Hq2x
             width = dataWidth;
             height = dataHeight;
             srcImage = imageData;
-            dstImage = new int[imageData.length * 4];
+            final int doubleSize = 2 * 2;
+            dstImage = new int[imageData.length * doubleSize];
         }
 
         /**
@@ -150,38 +184,5 @@ public final class Hq2x
 
             return dstImage;
         }
-    }
-
-    /** Source data array. */
-    private final int[] srcData;
-    /** Width. */
-    private final int width;
-    /** Height. */
-    private final int height;
-
-    /**
-     * Create an Hq2x filter.
-     * 
-     * @param srcImage The buffer source.
-     */
-    public Hq2x(ImageBuffer srcImage)
-    {
-        width = srcImage.getWidth();
-        height = srcImage.getHeight();
-        srcData = new int[width * height];
-        srcImage.getRgb(0, 0, width, height, srcData, 0, width);
-    }
-
-    /**
-     * Filtered buffer.
-     * 
-     * @return The filtered buffer.
-     */
-    public ImageBuffer getScaledImage()
-    {
-        final RawScale2x scaler = new RawScale2x(srcData, width, height);
-        final ImageBuffer image = Graphics.createImageBuffer(width * 2, height * 2, Transparency.OPAQUE);
-        image.setRgb(0, 0, width * 2, height * 2, scaler.getScaledData(), 0, width * 2);
-        return image;
     }
 }

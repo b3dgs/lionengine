@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -39,15 +38,17 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * must contains the files images. Example of a sheet configuration file:
  * 
  * <pre>
- * {@code<lionengine:sheets xmlns:lionengine="http://lionengine.b3dgs.com">}
- *    {@code<lionengine:tileSize width="16" height="16"/>}
- *    {@code<lionengine:sheet>ground.png</lionengine:sheet>}
- *    {@code<lionengine:sheet>wall.png</lionengine:sheet>}
- *    {@code<lionengine:sheet>water.png</lionengine:sheet>}
- * {@code</lionengine:sheets>}
- * 
- * Note: ground.png, wall.png and water.png are in the same directory of this configuration file.
+ * &lt;lionengine:sheets xmlns:lionengine="http://lionengine.b3dgs.com">
+ *    &lt;lionengine:tileSize width="16" height="16"/>
+ *    &lt;lionengine:sheet>ground.png&lt;/lionengine:sheet>
+ *    &lt;lionengine:sheet>wall.png&lt;/lionengine:sheet>
+ *    &lt;lionengine:sheet>water.png&lt;/lionengine:sheet>
+ * &lt;/lionengine:sheets>
  * </pre>
+ * 
+ * <p>
+ * Note: ground.png, wall.png and water.png are in the same directory of this configuration file.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see MapTileGame
@@ -55,8 +56,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * @see MapTileFeature
  * @see Tile
  */
-public interface MapTile
-        extends MapTileRenderer, Renderable, Featurable<MapTileFeature>
+public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTileFeature>
 {
     /** Default sheets config file. */
     String DEFAULT_SHEETS_FILE = "sheets.xml";
@@ -122,8 +122,9 @@ public interface MapTile
 
     /**
      * Create a feature from its type, and automatically {@link #addFeature(MapTileFeature)} it.
-     * The feature instance must provide a public constructor with {@link Services} as single argument, or the public
-     * default constructor. Else, create manually the instance and use {@link #addFeature(MapTileFeature)} on it.
+     * The feature instance must provide a public constructor with {@link com.b3dgs.lionengine.game.object.Services} as
+     * single argument, or the public default constructor. Else, create manually the instance and use
+     * {@link #addFeature(MapTileFeature)} on it.
      * 
      * @param <F> The feature type.
      * @param feature The feature class.
@@ -179,9 +180,8 @@ public interface MapTile
      * 
      * @param file The input level file.
      * @throws IOException If error on reading.
-     * @throws LionEngineException If error when reading map file.
      */
-    void load(FileReading file) throws IOException, LionEngineException;
+    void load(FileReading file) throws IOException;
 
     /**
      * Save map to specified file as binary data. Data are saved this way (using specific types to save space):

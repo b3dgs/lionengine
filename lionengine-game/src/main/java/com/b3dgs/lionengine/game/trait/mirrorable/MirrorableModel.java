@@ -25,9 +25,7 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MirrorableModel
-        extends TraitModel
-        implements Mirrorable
+public class MirrorableModel extends TraitModel implements Mirrorable
 {
     /** Mirror state. */
     private Mirror mirror;

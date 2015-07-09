@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.project.dialog;
 
 import org.eclipse.osgi.util.NLS;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.Activator;
 
 /**
@@ -26,8 +27,7 @@ import com.b3dgs.lionengine.editor.Activator;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Messages
-        extends NLS
+public final class Messages extends NLS
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".project.dialog.messages"; //$NON-NLS-1$
@@ -36,9 +36,9 @@ public final class Messages
     public static String AbstractProjectDialog_Project;
     /** Classes. */
     public static String AbstractProjectDialog_Classes;
-    /** Libraries */
+    /** Libraries. */
     public static String AbstractProjectDialog_Libraries;
-    /** Resources */
+    /** Resources. */
     public static String AbstractProjectDialog_Resources;
     /** Project name. */
     public static String AbstractProjectDialog_Name;
@@ -98,6 +98,6 @@ public final class Messages
      */
     private Messages()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

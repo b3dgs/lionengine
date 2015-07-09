@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.Nameable;
  * </ul>
  * </p>
  * <p>
- * Note: <code>reverse</code> and <code>repeat</code> can also be combined to play in loop an animation in reverse:<br/>
+ * Note: <code>reverse</code> and <code>repeat</code> can also be combined to play in loop an animation in reverse:
  * 1 -> 2 -> 3 -> 2 -> 1 -> 2 -> 3....
  * </p>
  * <p>
@@ -44,11 +44,11 @@ import com.b3dgs.lionengine.Nameable;
  * 
  * <pre>
  * final Animation animation = Anim.createAnimation(4, 6, 0.125, false, true);
- * System.out.println(animation.getFirst()); // 4
- * System.out.println(animation.getLast()); // 6
- * System.out.println(animation.getSpeed()); // 0.125
- * System.out.println(animation.getReverse()); // false
- * System.out.println(animation.getRepeat()); // true
+ * print(animation.getFirst()); // 4
+ * print(animation.getLast()); // 6
+ * print(animation.getSpeed()); // 0.125
+ * print(animation.getReverse()); // false
+ * print(animation.getRepeat()); // true
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -56,10 +56,9 @@ import com.b3dgs.lionengine.Nameable;
  * @see Animator
  * @see AnimState
  */
-public interface Animation
-        extends Nameable
+public interface Animation extends Nameable
 {
-    /** Animation default name; */
+    /** Animation default name. */
     String DEFAULT_NAME = "default_anim";
     /** The minimum frame number. */
     int MINIMUM_FRAME = 1;

@@ -22,8 +22,7 @@ package com.b3dgs.lionengine.core;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface InputDevicePointer
-        extends InputDevice
+public interface InputDevicePointer extends InputDevice
 {
     /**
      * Get the horizontal location.

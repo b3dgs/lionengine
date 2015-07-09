@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
@@ -43,24 +44,24 @@ import com.b3dgs.lionengine.editor.world.WorldViewPart;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class AbstractDialog
-        extends Dialog
-        implements MDirtyable
+public abstract class AbstractDialog extends Dialog implements MDirtyable
 {
+    /** Dialog folder. */
+    public static final String DIALOG_FOLDER = "dialog";
     /** Ok icon. */
-    public static final Image ICON_OK = UtilEclipse.getIcon("dialog", "ok.png");
+    public static final Image ICON_OK = UtilEclipse.getIcon(DIALOG_FOLDER, "ok.png");
     /** Cancel icon. */
-    public static final Image ICON_CANCEL = UtilEclipse.getIcon("dialog", "cancel.png");
+    public static final Image ICON_CANCEL = UtilEclipse.getIcon(DIALOG_FOLDER, "cancel.png");
     /** Exit icon. */
-    public static final Image ICON_EXIT = UtilEclipse.getIcon("dialog", "exit.png");
+    public static final Image ICON_EXIT = UtilEclipse.getIcon(DIALOG_FOLDER, "exit.png");
     /** Browse icon. */
-    public static final Image ICON_BROWSE = UtilEclipse.getIcon("dialog", "browse.png");
+    public static final Image ICON_BROWSE = UtilEclipse.getIcon(DIALOG_FOLDER, "browse.png");
     /** Info icon. */
-    protected static final Image ICON_INFO = UtilEclipse.getIcon("dialog", "info.png");
+    protected static final Image ICON_INFO = UtilEclipse.getIcon(DIALOG_FOLDER, "info.png");
     /** Warning icon. */
-    protected static final Image ICON_WARNING = UtilEclipse.getIcon("dialog", "warning.png");
+    protected static final Image ICON_WARNING = UtilEclipse.getIcon(DIALOG_FOLDER, "warning.png");
     /** Error icon. */
-    protected static final Image ICON_ERROR = UtilEclipse.getIcon("dialog", "error.png");
+    protected static final Image ICON_ERROR = UtilEclipse.getIcon(DIALOG_FOLDER, "error.png");
     /** Maximum characters input. */
     protected static final int MAX_CHAR = 64;
 
@@ -296,7 +297,7 @@ public abstract class AbstractDialog
             dirtyOld = dirty;
             if (dirty)
             {
-                dialog.setText("*" + title);
+                dialog.setText(Constant.STAR + title);
                 dialog.update();
             }
             else

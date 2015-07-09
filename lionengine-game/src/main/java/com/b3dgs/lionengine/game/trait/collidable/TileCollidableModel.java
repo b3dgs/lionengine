@@ -24,32 +24,30 @@ import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionResult;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Tile collidable model implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.trait.Trait}:
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>
  * </ul>
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigCollisionCategory}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
+ * with {@link ConfigCollisionCategory}.
  * </p>
  * <p>
  * The {@link Services} must provide the following services:
  * </p>
  * <ul>
- * <li>{@link MapTile}</li>
+ * <li>{@link com.b3dgs.lionengine.game.map.MapTile}</li>
  * </ul>
  * <p>
  * If the {@link ObjectGame} is a {@link TileCollidableListener}, it will automatically
@@ -58,9 +56,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileCollidableModel
-        extends TraitModel
-        implements TileCollidable
+public class TileCollidableModel extends TraitModel implements TileCollidable
 {
     /** Launcher listeners. */
     private final Collection<TileCollidableListener> listeners = new HashSet<>();

@@ -46,8 +46,7 @@ import com.b3dgs.lionengine.game.object.Services;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldViewPart
-        implements TileSelectionListener
+public class WorldViewPart implements TileSelectionListener
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.world-view";
@@ -65,6 +64,14 @@ public class WorldViewPart
     private WorldViewUpdater worldViewUpdater;
     /** Renderer. */
     private WorldViewRenderer worldViewRenderer;
+
+    /**
+     * Create part.
+     */
+    public WorldViewPart()
+    {
+        // Nothing to do
+    }
 
     /**
      * Create the composite.

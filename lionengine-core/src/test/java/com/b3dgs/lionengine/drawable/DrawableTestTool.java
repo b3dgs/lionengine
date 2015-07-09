@@ -245,8 +245,8 @@ public class DrawableTestTool
     {
         try
         {
-            final SpriteAnimated sprite = Drawable
-                    .loadSpriteAnimated(Graphics.createImageBuffer(16, 16, Transparency.OPAQUE), hf, vf);
+            final ImageBuffer buffer = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);
+            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(buffer, hf, vf);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }

@@ -25,8 +25,7 @@ import com.b3dgs.lionengine.Viewer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ViewerMock
-        implements Viewer
+public class ViewerMock implements Viewer
 {
     @Override
     public double getX()

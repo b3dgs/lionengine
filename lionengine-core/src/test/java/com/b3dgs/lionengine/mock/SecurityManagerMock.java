@@ -26,8 +26,7 @@ import java.security.Permission;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SecurityManagerMock
-        extends SecurityManager
+public class SecurityManagerMock extends SecurityManager
 {
     /** Allow state. */
     private final boolean allow;

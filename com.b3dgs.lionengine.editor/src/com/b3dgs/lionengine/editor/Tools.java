@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -37,10 +36,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
-import com.b3dgs.lionengine.editor.project.tester.FolderTypeTester;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -78,12 +75,8 @@ public final class Tools
     public static final String TEMPLATE_SHEETS_WIDTH = "%WIDTH%";
     /** Template sheets tile height area. */
     public static final String TEMPLATE_SHEETS_HEIGHT = "%HEIGHT%";
-    /** Folder type name node. */
-    private static final String NODE_FOLDER_TYPE_NAME = "lionengine:name";
     /** Create directory error. */
     private static final String ERROR_CREATE_DIRECTORY = "Unable to create the following directory: ";
-    /** Folder type directory error. */
-    private static final String ERROR_FOLDER_TYPE = "Path is not a folder type: ";
     /** Buffer size. */
     private static final int BUFFER_SIZE = 4096;
 
@@ -128,52 +121,6 @@ public final class Tools
     }
 
     /**
-     * Get the folder type file.
-     * 
-     * @param path The type folder.
-     * @return The type file.
-     * @throws FileNotFoundException If not a type folder.
-     */
-    public static File getFolderTypeFile(File path) throws FileNotFoundException
-    {
-        if (path.isDirectory())
-        {
-            final File[] files = path.listFiles();
-            if (files != null)
-            {
-                for (final File file : files)
-                {
-                    if (FolderTypeTester.isFolderTypeFile(file))
-                    {
-                        return file;
-                    }
-                }
-            }
-        }
-        throw new FileNotFoundException(Tools.ERROR_FOLDER_TYPE + path.getPath());
-    }
-
-    /**
-     * Get the folder type name.
-     * 
-     * @param path The type folder.
-     * @return The type name.
-     */
-    public static String getObjectsFolderTypeName(File path)
-    {
-        try
-        {
-            final File type = Tools.getFolderTypeFile(path);
-            final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(type));
-            return typeNode.getChild(Tools.NODE_FOLDER_TYPE_NAME).getText();
-        }
-        catch (final FileNotFoundException exception)
-        {
-            return path.getName();
-        }
-    }
-
-    /**
      * Get the tile location over the mouse.
      * 
      * @param map The map reference.
@@ -203,7 +150,15 @@ public final class Tools
      */
     public static String selectFile(Shell shell, String path, boolean openSave, String... extensions)
     {
-        final FileDialog fileDialog = new FileDialog(shell, openSave ? SWT.OPEN : SWT.SAVE);
+        final FileDialog fileDialog;
+        if (openSave)
+        {
+            fileDialog = new FileDialog(shell, SWT.OPEN);
+        }
+        else
+        {
+            fileDialog = new FileDialog(shell, SWT.SAVE);
+        }
         fileDialog.setFilterPath(path);
         fileDialog.setFilterExtensions(extensions);
         final String file = fileDialog.open();
@@ -228,7 +183,7 @@ public final class Tools
         fileDialog.setFilterPath(Project.getActive().getClassesPath().getAbsolutePath());
         fileDialog.setFilterExtensions(new String[]
         {
-                "*.class"
+            "*.class"
         });
         final String file = fileDialog.open();
         if (file != null)
@@ -267,7 +222,15 @@ public final class Tools
      */
     public static File selectResourceFile(Shell parent, boolean openSave, String[] extensionsName, String[] extensions)
     {
-        final FileDialog fileDialog = new FileDialog(parent, openSave ? SWT.OPEN : SWT.SAVE);
+        final FileDialog fileDialog;
+        if (openSave)
+        {
+            fileDialog = new FileDialog(parent, SWT.OPEN);
+        }
+        else
+        {
+            fileDialog = new FileDialog(parent, SWT.SAVE);
+        }
         fileDialog.setFilterPath(Project.getActive().getResourcesPath().getAbsolutePath());
         fileDialog.setFilterNames(extensionsName);
         fileDialog.setFilterExtensions(extensions);
@@ -370,6 +333,6 @@ public final class Tools
      */
     private Tools()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

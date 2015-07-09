@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Layerable
-        extends Trait
+public interface Layerable extends Trait
 {
     /**
      * Add a layer listener.

@@ -35,9 +35,8 @@ import com.b3dgs.lionengine.game.map.TileExtractor;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SheetsImportProgressDialog
-        extends AbstractProgressDialog
-        implements TileExtractor.ProgressListener, TileExtractor.Canceler
+public class SheetsImportProgressDialog extends AbstractProgressDialog
+                                        implements TileExtractor.ProgressListener, TileExtractor.Canceler
 {
     /** Image width. */
     private final int width;

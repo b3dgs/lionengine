@@ -42,8 +42,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MouseAwt
-        implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
+final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
 {
     /** Default button number. */
     private static final int DEFAULT_BUTTONS = 3;

@@ -19,11 +19,15 @@ package com.b3dgs.lionengine;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Verbose;
 
@@ -123,6 +127,23 @@ public final class UtilFile
     }
 
     /**
+     * Get extension from a string (search first dot).
+     * 
+     * @param file The filename.
+     * @return The extension.
+     */
+    public static String getExtension(String file)
+    {
+        String ext = "";
+        final int i = file.lastIndexOf('.');
+        if (i > 0 && i < file.length() - 1)
+        {
+            ext = file.substring(i + 1).toLowerCase(Locale.ENGLISH);
+        }
+        return ext;
+    }
+
+    /**
      * Get a file extension.
      * 
      * @param file The file.
@@ -143,23 +164,6 @@ public final class UtilFile
     public static boolean isType(File file, String extension)
     {
         return getExtension(file).equals(extension);
-    }
-
-    /**
-     * Get extension from a string (search first dot).
-     * 
-     * @param file The filename.
-     * @return The extension.
-     */
-    public static String getExtension(String file)
-    {
-        String ext = "";
-        final int i = file.lastIndexOf('.');
-        if (i > 0 && i < file.length() - 1)
-        {
-            ext = file.substring(i + 1).toLowerCase(Locale.getDefault());
-        }
-        return ext;
     }
 
     /**
@@ -198,11 +202,12 @@ public final class UtilFile
             }
         }
         final String[] dirsList = new String[numberOfDirs];
-        for (int i = 0, id = 0; i < files.length; i++)
+        int id = 0;
+        for (final File file2 : files)
         {
-            if (files[i].isDirectory())
+            if (file2.isDirectory())
             {
-                dirsList[id] = files[i].getName();
+                dirsList[id] = file2.getName();
                 id++;
             }
         }
@@ -234,11 +239,12 @@ public final class UtilFile
             }
         }
         final String[] filesList = new String[numberOfFiles];
-        for (int i = 0, id = 0; i < files.length; i++)
+        int id = 0;
+        for (final File file2 : files)
         {
-            if (files[i].isFile())
+            if (file2.isFile())
             {
-                filesList[id] = files[i].getName();
+                filesList[id] = file2.getName();
                 id++;
             }
         }
@@ -338,6 +344,29 @@ public final class UtilFile
     }
 
     /**
+     * Get of copy of media.
+     * 
+     * @param media The original media.
+     * @return The copied media.
+     * @throws LionEngineException If unable to get copy of media.
+     */
+    public static Media copyMedia(Media media) throws LionEngineException
+    {
+        try (final InputStream stream = media.getInputStream())
+        {
+            final File mediaFile = media.getFile();
+            final String ext = "." + UtilFile.getExtension(mediaFile);
+            final Path file = Files.createTempFile(mediaFile.getParentFile().toPath(), mediaFile.getName(), ext);
+            Files.copy(stream, file, StandardCopyOption.REPLACE_EXISTING);
+            return Medias.create(media.getParentPath(), file.toFile().getName());
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, media, "Unable to create temp file !");
+        }
+    }
+
+    /**
      * Get all files existing in the path considering the extension.
      * 
      * @param filesList The files list.
@@ -346,22 +375,18 @@ public final class UtilFile
      */
     private static void getFilesByExtensionRecursive(Collection<File> filesList, String path, String extension)
     {
-        final File file = new File(path);
-        if (file.exists())
+        final File[] files = new File(path).listFiles();
+        if (files != null)
         {
-            final File[] files = file.listFiles();
-            if (files != null)
+            for (final File content : files)
             {
-                for (final File content : files)
+                if (content.isDirectory())
                 {
-                    if (content.isDirectory())
-                    {
-                        getFilesByExtensionRecursive(filesList, content.getPath(), extension);
-                    }
-                    if (content.isFile() && extension.equals(getExtension(content)))
-                    {
-                        filesList.add(content);
-                    }
+                    getFilesByExtensionRecursive(filesList, content.getPath(), extension);
+                }
+                if (content.isFile() && extension.equals(getExtension(content)))
+                {
+                    filesList.add(content);
                 }
             }
         }
@@ -398,6 +423,6 @@ public final class UtilFile
      */
     private UtilFile()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

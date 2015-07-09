@@ -24,8 +24,8 @@ import java.util.List;
 /**
  * Sorted list implementation.
  * 
- * @param <E> The comparable type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <E> The comparable type.
  */
 final class SortedList<E extends Comparable<E>>
 {

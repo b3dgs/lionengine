@@ -49,8 +49,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SheetsEditDialog
-        extends AbstractDialog
+public class SheetsEditDialog extends AbstractDialog
 {
     /** Icon. */
     private static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
@@ -93,11 +92,11 @@ public class SheetsEditDialog
         tileSizeArea.setText(Messages.EditSheetsDialog_TileSize);
 
         tileWidthText = UtilSwt.createText(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
-        tileWidthText
-                .addVerifyListener(UtilSwt.createVerify(tileWidthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        tileWidthText.addVerifyListener(
+                UtilSwt.createVerify(tileWidthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         tileHeightText = UtilSwt.createText(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
-        tileHeightText
-                .addVerifyListener(UtilSwt.createVerify(tileHeightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        tileHeightText.addVerifyListener(
+                UtilSwt.createVerify(tileHeightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
     }
 
     /**

@@ -25,8 +25,7 @@ import com.b3dgs.lionengine.game.background.CloudsGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Clouds
-        extends CloudsGame
+class Clouds extends CloudsGame
 {
     /**
      * Constructor.

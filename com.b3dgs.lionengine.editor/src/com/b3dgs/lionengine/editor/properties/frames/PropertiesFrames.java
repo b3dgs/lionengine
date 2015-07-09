@@ -43,8 +43,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesFrames
-        implements PropertiesProviderObject
+public class PropertiesFrames implements PropertiesProviderObject
 {
     /** Icon frames. */
     private static final Image ICON_FRAMES = UtilEclipse.getIcon("properties", "frames.png");
@@ -127,6 +126,14 @@ public class PropertiesFrames
                 info.getWidth() / framesNode.readInteger(ConfigFrames.FRAMES_HORIZONTAL));
         size.writeInteger(ConfigSize.SIZE_HEIGHT,
                 info.getHeight() / framesNode.readInteger(ConfigFrames.FRAMES_VERTICAL));
+    }
+
+    /**
+     * Create properties.
+     */
+    public PropertiesFrames()
+    {
+        // Nothing to do
     }
 
     /*

@@ -256,18 +256,25 @@ public final class Graphics
         final XmlNode raster = Stream.loadXml(media);
         final String[] colors =
         {
-                "Red", "Green", "Blue"
+            "Red", "Green", "Blue"
         };
-        final int[][] rasters = new int[colors.length][6];
+        final int indexs = 6;
+        final int[][] rasters = new int[colors.length][indexs];
+        final int indexStart = 0;
+        final int indexStep = 1;
+        final int indexForce = 2;
+        final int indexAmplitude = 3;
+        final int indexOffset = 4;
+        final int indexType = 5;
         for (int c = 0; c < colors.length; c++)
         {
             final XmlNode color = raster.getChild(colors[c]);
-            rasters[c][0] = Integer.decode(color.readString("start")).intValue();
-            rasters[c][1] = Integer.decode(color.readString("step")).intValue();
-            rasters[c][2] = color.readInteger("force");
-            rasters[c][3] = color.readInteger("amplitude");
-            rasters[c][4] = color.readInteger("offset");
-            rasters[c][5] = color.readInteger("type");
+            rasters[c][indexStart] = Integer.decode(color.readString("start")).intValue();
+            rasters[c][indexStep] = Integer.decode(color.readString("step")).intValue();
+            rasters[c][indexForce] = color.readInteger("force");
+            rasters[c][indexAmplitude] = color.readInteger("amplitude");
+            rasters[c][indexOffset] = color.readInteger("offset");
+            rasters[c][indexType] = color.readInteger("type");
         }
         return rasters;
     }
@@ -277,6 +284,6 @@ public final class Graphics
      */
     private Graphics()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

@@ -22,14 +22,13 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Featurable;
 
 /**
  * Represents something designed to keep references on main types, such as {@link Factory}, {@link Handler},
- * {@link Camera}, {@link Cursor} ... in order to access to them from the object instance (created by a {@link Factory}
- * in constructor {@link ObjectGame#ObjectGame(Setup, Services)}).
+ * {@link com.b3dgs.lionengine.game.Camera}, {@link com.b3dgs.lionengine.game.Cursor} ... in order to access to them
+ * from the object instance (created by a {@link Factory} in constructor {@link ObjectGame#ObjectGame(Setup, Services)}
+ * ).
  * <p>
  * Ensure to add any required services before creating an object with the factory, else it will fail with a
  * {@link LionEngineException} when calling {@link Factory#create(com.b3dgs.lionengine.core.Media)}.
@@ -86,7 +85,9 @@ public class Services
      * private final Handler handler = services.create(Handler.class); // Already added !
      * </pre>
      * 
+     * <p>
      * An equivalent code could be:
+     * </p>
      * 
      * <pre>
      * private final Services services = new Services();
@@ -111,7 +112,7 @@ public class Services
         {
             final S instance = Factory.create(service, new Class<?>[]
             {
-                    Services.class
+                Services.class
             }, this);
             return add(instance);
         }
@@ -145,7 +146,9 @@ public class Services
      * private final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
      * </pre>
      * 
+     * <p>
      * An equivalent code could be:
+     * </p>
      * 
      * <pre>
      * private final Text text = Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL);

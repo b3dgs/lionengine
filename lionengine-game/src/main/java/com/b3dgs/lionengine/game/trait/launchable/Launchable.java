@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Launcher
  */
-public interface Launchable
-        extends Trait, Updatable
+public interface Launchable extends Trait, Updatable
 {
     /**
      * Initiate launch by using the defined vector with {@link #setVector(Force)} starting at the location defined by

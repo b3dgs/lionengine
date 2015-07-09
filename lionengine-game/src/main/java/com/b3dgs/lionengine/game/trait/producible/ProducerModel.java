@@ -49,9 +49,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ProducerModel
-        extends TraitModel
-        implements Producer
+public class ProducerModel extends TraitModel implements Producer
 {
     /** Producer listeners. */
     private final Collection<ProducerListener> listeners = new ArrayList<>();
@@ -249,16 +247,20 @@ public class ProducerModel
             case NONE:
                 progress = -1;
                 break;
-            case WILL_PRODUCE: // Before production
+            // Before production
+            case WILL_PRODUCE:
                 actionWillProduce();
                 break;
-            case PRODUCING: // During production
+            // During production
+            case PRODUCING:
                 actionProducing(extrp);
                 break;
-            case PRODUCED: // Production done
+            // Production done
+            case PRODUCED:
                 actionProduced();
                 break;
-            case CHECK: // Next production ?
+            // Next production ?
+            case CHECK:
                 actionCheck();
                 break;
             default:

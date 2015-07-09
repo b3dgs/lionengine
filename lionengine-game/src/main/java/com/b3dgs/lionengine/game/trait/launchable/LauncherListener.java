@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.trait.launchable;
 
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Notify events from the {@link Launcher}.
@@ -30,7 +29,7 @@ public interface LauncherListener
     /**
      * Notify when a fire occurred.
      * <p>
-     * The fired object has at least the following {@link Trait}:
+     * The fired object has at least the following {@link com.b3dgs.lionengine.game.trait.Trait}:
      * </p>
      * <ul>
      * <li>{@link Launchable}</li>

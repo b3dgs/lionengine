@@ -97,6 +97,6 @@ public final class UtilRandom
      */
     private UtilRandom()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.core.Medias;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MediaAwt
-        implements Media
+final class MediaAwt implements Media
 {
     /** No parent. */
     private static final String NO_PARENT = "";
@@ -112,7 +111,10 @@ final class MediaAwt
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (path == null ? 0 : path.hashCode());
+        if (path != null)
+        {
+            result = prime * result + path.hashCode();
+        }
         return result;
     }
 

@@ -241,6 +241,6 @@ public final class UtilityImage
      */
     private UtilityImage()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

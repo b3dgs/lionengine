@@ -35,8 +35,7 @@ import com.b3dgs.lionengine.core.Updatable;
  * @see ComponentUpdatable
  * @see ComponentRenderable
  */
-public class Handler
-        implements HandledObjects, Updatable, Renderable, ObjectGameListener
+public class Handler implements HandledObjects, Updatable, Renderable, ObjectGameListener
 {
     /** Handler listeners. */
     private final Collection<HandlerListener> listeners;

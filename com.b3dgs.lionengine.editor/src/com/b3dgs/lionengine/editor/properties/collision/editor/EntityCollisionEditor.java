@@ -35,8 +35,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class EntityCollisionEditor
-        extends AbstractEditor
+public class EntityCollisionEditor extends AbstractEditor
 {
     /** Dialog title. */
     public static final String DIALOG_TITLE = "Collisions Editor";

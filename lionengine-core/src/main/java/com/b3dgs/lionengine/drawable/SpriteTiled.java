@@ -37,8 +37,7 @@ package com.b3dgs.lionengine.drawable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface SpriteTiled
-        extends Sprite
+public interface SpriteTiled extends Sprite
 {
     /**
      * Set the active tile.

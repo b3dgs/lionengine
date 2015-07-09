@@ -23,19 +23,17 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Define a structure used to create multiple objects, sharing the same data and {@link ImageBuffer}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
+ * @see com.b3dgs.lionengine.game.configurer.Configurer
  */
-public class SetupSurface
-        extends Setup
+public class SetupSurface extends Setup
 {
     /** Surface reference. */
-    public final ImageBuffer surface;
+    protected final ImageBuffer surface;
     /** Surface file name. */
     private final Media surfaceFile;
 
@@ -65,4 +63,13 @@ public class SetupSurface
         return surfaceFile;
     }
 
+    /**
+     * Get the surface representation.
+     * 
+     * @return The surface buffer.
+     */
+    public final ImageBuffer getSurface()
+    {
+        return surface;
+    }
 }

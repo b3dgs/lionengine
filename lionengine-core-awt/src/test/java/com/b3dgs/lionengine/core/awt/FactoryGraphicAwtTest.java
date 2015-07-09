@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Text;
 
@@ -75,8 +76,8 @@ public class FactoryGraphicAwtTest
         Assert.assertNotNull(factory.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL));
         Assert.assertNotNull(factory.createTransform());
         Assert.assertNotNull(factory.loadRaster(new MediaAwt(MediaAwt.class.getResource("raster.xml").getFile())));
-        final ImageBuffer image = factory
-                .getImageBuffer(new MediaAwt(MediaAwt.class.getResource("image.png").getFile()));
+        final Media media = new MediaAwt(MediaAwt.class.getResource("image.png").getFile());
+        final ImageBuffer image = factory.getImageBuffer(media);
         Assert.assertNotNull(image);
         Assert.assertNotNull(factory.getImageBuffer(image));
         Assert.assertNotNull(factory.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));

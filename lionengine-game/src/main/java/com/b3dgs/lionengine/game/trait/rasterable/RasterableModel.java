@@ -29,14 +29,13 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurfaceRastered;
-import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 
 /**
  * Default rasterable implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.trait.Trait}:
  * </p>
  * <ul>
  * <li>{@link Localizable}</li>
@@ -46,9 +45,7 @@ import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class RasterableModel
-        extends TraitModel
-        implements Rasterable
+public class RasterableModel extends TraitModel implements Rasterable
 {
     /** List of rastered frames. */
     private final List<SpriteAnimated> rastersAnim;
@@ -82,9 +79,9 @@ public class RasterableModel
         Check.superiorStrict(tileHeight, 0);
         this.tileHeight = tileHeight;
 
-        rastersAnim = setup.rastersAnim;
-        rastered = setup.rasterFile != null;
-        smooth = setup.smoothRaster;
+        rastersAnim = setup.getRasters();
+        rastered = setup.getFile() != null;
+        smooth = setup.hasSmooth();
     }
 
     /*

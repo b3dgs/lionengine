@@ -26,8 +26,7 @@ import java.util.Set;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TilePathModel
-        implements TilePath
+public class TilePathModel implements TilePath
 {
     /** Tile reference. */
     private final Tile tile;

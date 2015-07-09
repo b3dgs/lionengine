@@ -32,8 +32,16 @@ import com.b3dgs.lionengine.editor.world.WorldViewPart;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetSelectionHandler
+public final class SetSelectionHandler
 {
+    /**
+     * Create handler.
+     */
+    public SetSelectionHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 
