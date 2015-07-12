@@ -17,13 +17,11 @@
  */
 package com.b3dgs.lionengine.anim;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test the animation package.
@@ -75,18 +73,14 @@ public class AnimTest
     }
 
     /**
-     * Test the factory.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testConstructor() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<Anim> constructor = Anim.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        final Anim anim = constructor.newInstance();
-        Assert.assertNotNull(anim);
-        Assert.fail();
+        UtilTests.testPrivateConstructor(Anim.class);
     }
 
     /**

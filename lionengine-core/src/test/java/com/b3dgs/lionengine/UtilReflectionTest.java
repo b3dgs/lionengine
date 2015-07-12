@@ -17,24 +17,45 @@
  */
 package com.b3dgs.lionengine;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test the mirror class.
+ * Test the utility reflection class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 @SuppressWarnings("static-method")
-public class MirrorTest
+public class UtilReflectionTest
 {
     /**
-     * Test the enum.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
+    {
+        UtilTests.testPrivateConstructor(UtilReflection.class);
+    }
+
+    /**
+     * Test the get parameters types.
      */
     @Test
-    public void testEnum() throws ReflectiveOperationException
+    public void testGetParamTypes()
     {
-        UtilTests.testEnum(Mirror.class);
+        final Collection<Object> params = new ArrayList<>();
+        params.add(Integer.valueOf(1));
+        params.add("test");
+        params.add(Double.valueOf(5.2));
+
+        final Class<?>[] types = UtilReflection.getParamTypes(params.toArray());
+        Assert.assertEquals(Integer.class, types[0]);
+        Assert.assertEquals(String.class, types[1]);
+        Assert.assertEquals(Double.class, types[2]);
     }
 }

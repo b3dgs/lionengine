@@ -166,11 +166,34 @@ public class LionEngineExceptionTest
     }
 
     /**
+     * Test the exception with a <code>null</code> reason.
+     * 
+     * @throws FileNotFoundException If error.
+     */
+    @Test
+    public void testLionEngineExceptionWithNullReason() throws FileNotFoundException
+    {
+        final File out = new File("out.txt");
+        try (PrintWriter writer = new PrintWriter(out))
+        {
+            try
+            {
+                throw new LionEngineException((Throwable) null);
+            }
+            catch (final LionEngineException exception)
+            {
+                exception.printStackTrace(writer);
+            }
+        }
+    }
+
+    /**
      * Test the exception with a throwable as argument without message.
      */
     @Test
     public void testLionEngineExceptionWithThrowableNoMessage()
     {
+        LionEngineException.setIgnoreEngineTrace(true);
         try
         {
             throw new LionEngineException(new IOException());
@@ -179,5 +202,6 @@ public class LionEngineExceptionTest
         {
             exception.printStackTrace();
         }
+        LionEngineException.setIgnoreEngineTrace(false);
     }
 }

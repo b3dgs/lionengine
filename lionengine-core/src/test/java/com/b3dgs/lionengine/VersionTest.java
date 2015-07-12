@@ -39,9 +39,10 @@ public class VersionTest
         Assert.assertEquals(2, version.getMinor());
         Assert.assertEquals(1, version.getMicro());
 
-        Assert.assertNotNull(version.toString());
+        Assert.assertEquals("3.2.1", version.toString());
 
         final Version version2 = Version.create(1, 3, 2);
         Assert.assertFalse(version.equals(version2));
+        Assert.assertNotEquals("3.2.1", version2.toString());
     }
 }

@@ -17,15 +17,13 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
@@ -236,17 +234,14 @@ public class DrawableTest
     }
 
     /**
-     * Test the drawable factory.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testDrawableFactory() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<Drawable> constructor = Drawable.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        final Drawable drawable = constructor.newInstance();
-        Assert.assertNotNull(drawable);
+        UtilTests.testPrivateConstructor(Drawable.class);
     }
 
     /**

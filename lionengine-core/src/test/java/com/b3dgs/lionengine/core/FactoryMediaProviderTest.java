@@ -22,6 +22,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 import com.b3dgs.lionengine.mock.MediaMock;
 
@@ -52,6 +54,17 @@ public class FactoryMediaProviderTest
     public static void cleanUp()
     {
         Medias.setFactoryMedia(null);
+    }
+
+    /**
+     * Test the constructor.
+     * 
+     * @throws Throwable If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
+    {
+        UtilTests.testPrivateConstructor(Medias.class);
     }
 
     /**

@@ -47,39 +47,6 @@ public class ResourceLoaderTest
         TEST;
     }
 
-    /**
-     * Slow resource test case.
-     */
-    private static class SlowResource implements Resource
-    {
-        /**
-         * Create resource.
-         */
-        SlowResource()
-        {
-            // Nothing to do
-        }
-
-        @Override
-        public void load() throws LionEngineException
-        {
-            try
-            {
-                Thread.sleep(1000);
-            }
-            catch (final InterruptedException exception)
-            {
-                throw new LionEngineException(exception);
-            }
-        }
-
-        @Override
-        public boolean isLoaded()
-        {
-            return true;
-        }
-    }
-
     /** Exception test. */
     volatile LionEngineException exception;
 
@@ -207,5 +174,38 @@ public class ResourceLoaderTest
             Thread.sleep(5);
         }
         throw exception;
+    }
+
+    /**
+     * Slow resource test case.
+     */
+    private static class SlowResource implements Resource
+    {
+        /**
+         * Create resource.
+         */
+        SlowResource()
+        {
+            // Nothing to do
+        }
+    
+        @Override
+        public void load() throws LionEngineException
+        {
+            try
+            {
+                Thread.sleep(1000);
+            }
+            catch (final InterruptedException exception)
+            {
+                throw new LionEngineException(exception);
+            }
+        }
+    
+        @Override
+        public boolean isLoaded()
+        {
+            return true;
+        }
     }
 }

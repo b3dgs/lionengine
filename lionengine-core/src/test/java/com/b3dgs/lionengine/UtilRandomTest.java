@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,20 +26,17 @@ import org.junit.Test;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 @SuppressWarnings("static-method")
-public class UtilityRandomTest
+public class UtilRandomTest
 {
     /**
-     * Test the core class.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testUtilityRandomClass() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<UtilRandom> utilityRandom = UtilRandom.class.getDeclaredConstructor();
-        utilityRandom.setAccessible(true);
-        final UtilRandom clazz = utilityRandom.newInstance();
-        Assert.assertNotNull(clazz);
+        UtilTests.testPrivateConstructor(UtilRandom.class);
     }
 
     /**

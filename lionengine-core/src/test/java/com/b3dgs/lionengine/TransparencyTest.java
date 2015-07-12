@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -29,39 +28,13 @@ import org.junit.Test;
 public class TransparencyTest
 {
     /**
-     * Test the anim state enum.
+     * Test the enum.
+     * 
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testTransparency()
+    public void testEnum() throws ReflectiveOperationException
     {
-        Assert.assertNotNull(Transparency.values());
-        Assert.assertEquals(Transparency.BITMASK, Transparency.valueOf(Transparency.BITMASK.name()));
-        Assert.assertEquals(Transparency.OPAQUE, Transparency.valueOf(Transparency.OPAQUE.name()));
-        Assert.assertEquals(Transparency.TRANSLUCENT, Transparency.valueOf(Transparency.TRANSLUCENT.name()));
-    }
-
-    /**
-     * Test the transparency enum switch.
-     */
-    @Test
-    public void testEnumSwitch()
-    {
-        for (final Transparency transparency : Transparency.values())
-        {
-            switch (transparency)
-            {
-                case BITMASK:
-                    // Success
-                    break;
-                case OPAQUE:
-                    // Success
-                    break;
-                case TRANSLUCENT:
-                    // Success
-                    break;
-                default:
-                    Assert.fail();
-            }
-        }
+        UtilTests.testEnum(Transparency.class);
     }
 }

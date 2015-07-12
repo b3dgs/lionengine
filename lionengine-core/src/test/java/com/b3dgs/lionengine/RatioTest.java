@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,17 +29,14 @@ import org.junit.Test;
 public class RatioTest
 {
     /**
-     * Test the core class.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testRatioClass() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<Ratio> constructor = Ratio.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        final Ratio ratio = constructor.newInstance();
-        Assert.assertNotNull(ratio);
+        UtilTests.testPrivateConstructor(Ratio.class);
     }
 
     /**

@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
 import com.b3dgs.lionengine.mock.SequenceArgumentsMock;
 import com.b3dgs.lionengine.mock.SequenceFailMock;
+import com.b3dgs.lionengine.mock.SequenceNextFailMock;
 import com.b3dgs.lionengine.mock.SequenceSingleMock;
 
 /**
@@ -57,7 +58,6 @@ public class LoaderTest
     public static void prepareTest()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
-        Verbose.info("*********************************** SEQUENCE VERBOSE ***********************************");
     }
 
     /**
@@ -66,7 +66,6 @@ public class LoaderTest
     @AfterClass
     public static void cleanUp()
     {
-        Verbose.info("****************************************************************************************");
         Graphics.setFactoryGraphic(null);
     }
 
@@ -114,6 +113,30 @@ public class LoaderTest
     {
         final Loader loader = new Loader(CONFIG);
         loader.start(SequenceFailMock.class);
+    }
+
+    /**
+     * Test the loader with fail next sequence.
+     */
+    @Test
+    public void testFailNextSequence()
+    {
+        final Loader loader = new Loader(CONFIG);
+        final Thread.UncaughtExceptionHandler old = loader.getRenderer().getUncaughtExceptionHandler();
+        final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
+        {
+            @Override
+            public void uncaughtException(Thread thread, Throwable exception)
+            {
+                old.uncaughtException(thread, exception);
+                uncaught = true;
+            }
+        };
+
+        loader.getRenderer().setUncaughtExceptionHandler(handler);
+        loader.start(SequenceNextFailMock.class);
+        waitEnd(loader);
+        Assert.assertTrue(uncaught);
     }
 
     /**

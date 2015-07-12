@@ -174,9 +174,12 @@ final class XmlNodeImpl implements XmlNode
     @Override
     public void add(XmlNode node) throws LionEngineException
     {
-        final Element element = XmlNodeImpl.class.cast(node).getElement();
-        document.adoptNode(element);
-        root.appendChild(element);
+        if (node instanceof XmlNodeImpl)
+        {
+            final Element element = XmlNodeImpl.class.cast(node).getElement();
+            document.adoptNode(element);
+            root.appendChild(element);
+        }
     }
 
     @Override
@@ -303,10 +306,7 @@ final class XmlNodeImpl implements XmlNode
     public void removeChild(String child) throws LionEngineException
     {
         final XmlNode node = getChild(child);
-        if (node instanceof XmlNodeImpl)
-        {
-            root.removeChild(((XmlNodeImpl) node).getElement());
-        }
+        root.removeChild(((XmlNodeImpl) node).getElement());
     }
 
     @Override
@@ -323,10 +323,7 @@ final class XmlNodeImpl implements XmlNode
     {
         for (final XmlNode child : getChildren(children))
         {
-            if (child instanceof XmlNodeImpl)
-            {
-                root.removeChild(((XmlNodeImpl) child).getElement());
-            }
+            root.removeChild(((XmlNodeImpl) child).getElement());
         }
     }
 

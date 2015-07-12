@@ -48,6 +48,8 @@ public abstract class EngineCore
     private static final String ERROR_STARTED_ALREADY = "The engine has already been started !";
     /** Error message engine not started. */
     private static final String ERROR_STARTED_NOT = "The engine has not been started !";
+    /** Error system property. */
+    private static final String ERROR_PROPERTY = "Unable to get system property: ";
     /** Engine starting. */
     private static final String ENGINE_STARTING = "Starting \"LionEngine ";
     /** Engine terminated. */
@@ -177,7 +179,8 @@ public abstract class EngineCore
         }
         catch (final SecurityException exception)
         {
-            Verbose.exception(EngineCore.class, "getSystemProperty", exception);
+            Verbose.critical(EngineCore.class, "getSystemProperty", ERROR_PROPERTY, property, " (",
+                    exception.getClass().getName(), ")");
             return def;
         }
     }

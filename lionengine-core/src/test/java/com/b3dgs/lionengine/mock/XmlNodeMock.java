@@ -201,7 +201,7 @@ public final class XmlNodeMock implements XmlNode
     @Override
     public String getNodeName()
     {
-        return null;
+        return "mock";
     }
 
     @Override

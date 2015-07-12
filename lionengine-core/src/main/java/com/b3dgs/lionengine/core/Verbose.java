@@ -64,8 +64,6 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public enum Verbose
 {
-    /** Verbose disabled. */
-    NONE,
     /** Only information messages. */
     INFORMATION,
     /** Information and warning messages. */
@@ -181,7 +179,7 @@ public enum Verbose
         }
         catch (final SecurityException | IOException exception)
         {
-            critical(Verbose.class, "start", ERROR_FORMATTER);
+            critical(Verbose.class, "prepareLogger", ERROR_FORMATTER);
         }
     }
 
@@ -206,19 +204,13 @@ public enum Verbose
             final String verbose = builder.toString();
             switch (level)
             {
-                case NONE:
-                    LOGGER.setLevel(Level.OFF);
-                    break;
                 case INFORMATION:
-                    LOGGER.setLevel(Level.INFO);
                     LOGGER.logp(Level.INFO, null, null, verbose, thrown);
                     break;
                 case WARNING:
-                    LOGGER.setLevel(Level.WARNING);
                     LOGGER.logp(Level.WARNING, clazz.getSimpleName(), function, verbose, thrown);
                     break;
                 case CRITICAL:
-                    LOGGER.setLevel(Level.SEVERE);
                     LOGGER.logp(Level.SEVERE, clazz.getSimpleName(), function, verbose, thrown);
                     break;
                 default:

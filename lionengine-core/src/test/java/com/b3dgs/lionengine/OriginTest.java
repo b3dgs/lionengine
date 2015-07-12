@@ -29,13 +29,14 @@ import org.junit.Test;
 public class OriginTest
 {
     /**
-     * Test the origin enum.
+     * Test the enum.
+     * 
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testOrigin()
+    public void testEnum() throws ReflectiveOperationException
     {
-        Assert.assertNotNull(Origin.values());
-        Assert.assertEquals(Origin.TOP_LEFT, Origin.valueOf(Origin.TOP_LEFT.name()));
+        UtilTests.testEnum(Origin.class);
     }
 
     /**

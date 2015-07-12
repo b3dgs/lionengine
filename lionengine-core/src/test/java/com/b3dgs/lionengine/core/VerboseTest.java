@@ -21,12 +21,12 @@ import java.lang.reflect.Method;
 
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.mock.SecurityManagerMock;
 
 /**
@@ -53,6 +53,7 @@ public class VerboseTest
     @AfterClass
     public static void cleanUp()
     {
+        Verbose.set(Verbose.INFORMATION);
         Verbose.info("****************************************************************************************");
     }
 
@@ -109,23 +110,31 @@ public class VerboseTest
     }
 
     /**
+     * Test the enum.
+     * 
+     * @throws ReflectiveOperationException If error.
+     */
+    @Test
+    public void testEnum() throws ReflectiveOperationException
+    {
+        UtilTests.testEnum(Verbose.class);
+    }
+
+    /**
      * Test the verbose class.
      */
     @Test
     public void testVerbose()
     {
-        testVerbose(Verbose.NONE);
         testVerbose(Verbose.INFORMATION);
         testVerbose(Verbose.WARNING);
         testVerbose(Verbose.CRITICAL);
-        Assert.assertNotNull(Verbose.values());
-        Assert.assertEquals(Verbose.NONE, Verbose.valueOf(Verbose.NONE.name()));
     }
 
     /**
      * Test the verbose security.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testVerboseSecurity()
     {
         System.setSecurityManager(new SecurityManagerMock(false));

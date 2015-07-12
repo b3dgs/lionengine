@@ -34,15 +34,15 @@ package com.b3dgs.lionengine;
  */
 public final class Resolution
 {
-    /** Size lock. */
-    private final Object lockSize = new Object();
+    /** Lock. */
+    private final Object lock = new Object();
     /** Display rate. */
     private volatile int rate;
-    /** Resolution width (locked by {@link #lockSize}). */
+    /** Resolution width (locked by {@link #lock}). */
     private int width;
-    /** Resolution height (locked by {@link #lockSize}). */
+    /** Resolution height (locked by {@link #lock}). */
     private int height;
-    /** Resolution ratio (locked by {@link #lockSize}). */
+    /** Resolution ratio (locked by {@link #lock}). */
     private double ratio;
 
     /**
@@ -67,7 +67,7 @@ public final class Resolution
      */
     public void setSize(int width, int height) throws LionEngineException
     {
-        synchronized (lockSize)
+        synchronized (lock)
         {
             set(width, height, rate);
         }
@@ -83,7 +83,7 @@ public final class Resolution
     {
         Check.superiorStrict(ratio, 0);
 
-        synchronized (lockSize)
+        synchronized (lock)
         {
             if (!Ratio.equals(this.ratio, ratio))
             {
@@ -114,7 +114,7 @@ public final class Resolution
      */
     public int getWidth()
     {
-        synchronized (lockSize)
+        synchronized (lock)
         {
             return width;
         }
@@ -127,7 +127,7 @@ public final class Resolution
      */
     public int getHeight()
     {
-        synchronized (lockSize)
+        synchronized (lock)
         {
             return height;
         }
@@ -140,7 +140,7 @@ public final class Resolution
      */
     public double getRatio()
     {
-        synchronized (lockSize)
+        synchronized (lock)
         {
             return ratio;
         }

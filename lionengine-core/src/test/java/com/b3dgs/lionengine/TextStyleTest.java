@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -29,37 +28,13 @@ import org.junit.Test;
 public class TextStyleTest
 {
     /**
-     * Test the text style enum.
+     * Test the enum.
+     * 
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testTextStyle()
+    public void testEnum() throws ReflectiveOperationException
     {
-        Assert.assertNotNull(TextStyle.values());
-        Assert.assertEquals(TextStyle.BOLD, TextStyle.valueOf(TextStyle.BOLD.name()));
-    }
-
-    /**
-     * Test the text style enum switch.
-     */
-    @Test
-    public void testEnumSwitch()
-    {
-        for (final TextStyle style : TextStyle.values())
-        {
-            switch (style)
-            {
-                case BOLD:
-                    // Success
-                    break;
-                case ITALIC:
-                    // Success
-                    break;
-                case NORMAL:
-                    // Success
-                    break;
-                default:
-                    Assert.fail();
-            }
-        }
+        UtilTests.testEnum(TextStyle.class);
     }
 }

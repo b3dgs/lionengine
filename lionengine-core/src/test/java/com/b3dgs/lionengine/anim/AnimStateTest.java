@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.anim;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test the anim state.
@@ -29,40 +30,13 @@ import org.junit.Test;
 public class AnimStateTest
 {
     /**
-     * Test the anim state enum.
+     * Test the enum.
+     * 
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testAnimState()
+    public void testEnum() throws ReflectiveOperationException
     {
-        Assert.assertNotNull(AnimState.values());
-        Assert.assertEquals(AnimState.valueOf(AnimState.FINISHED.name()), AnimState.FINISHED);
-    }
-
-    /**
-     * Test the anim state enum switch.
-     */
-    @Test
-    public void testEnumSwitch()
-    {
-        for (final AnimState animState : AnimState.values())
-        {
-            switch (animState)
-            {
-                case FINISHED:
-                    // Success
-                    break;
-                case PLAYING:
-                    // Success
-                    break;
-                case REVERSING:
-                    // Success
-                    break;
-                case STOPPED:
-                    // Success
-                    break;
-                default:
-                    Assert.fail();
-            }
-        }
+        UtilTests.testEnum(AnimState.class);
     }
 }

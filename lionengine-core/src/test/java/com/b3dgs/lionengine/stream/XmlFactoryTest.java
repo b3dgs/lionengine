@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.stream;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 
 import org.junit.Assert;
@@ -27,6 +26,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.MediaMock;
 import com.b3dgs.lionengine.mock.XmlNodeMock;
@@ -43,17 +43,14 @@ public class XmlFactoryTest
     private Media fileXml;
 
     /**
-     * Test the factory class.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InstantiationException.class)
-    public void testClass() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<XmlFactory> factory = XmlFactory.class.getDeclaredConstructor();
-        factory.setAccessible(true);
-        final XmlFactory clazz = factory.newInstance();
-        Assert.assertNotNull(clazz);
+        UtilTests.testPrivateConstructor(XmlFactory.class);
     }
 
     /**
@@ -96,7 +93,11 @@ public class XmlFactoryTest
 
         Stream.saveXml(root, fileXml);
 
-        root.add(Stream.createXmlNode("test"));
+        final XmlNode child2 = root.createChild("test");
+        root.add(child2);
+        Stream.saveXml(root, fileXml);
+
+        root.removeChild(child2);
         Stream.saveXml(root, fileXml);
     }
 

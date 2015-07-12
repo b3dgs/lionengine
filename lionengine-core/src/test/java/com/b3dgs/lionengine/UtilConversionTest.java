@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,20 +26,17 @@ import org.junit.Test;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 @SuppressWarnings("static-method")
-public class UtilityConversionTest
+public class UtilConversionTest
 {
     /**
      * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testConstructor() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<UtilConversion> utilityConversion = UtilConversion.class.getDeclaredConstructor();
-        utilityConversion.setAccessible(true);
-        final UtilConversion clazz = utilityConversion.newInstance();
-        Assert.assertNotNull(clazz);
+        UtilTests.testPrivateConstructor(UtilConversion.class);
     }
 
     /**
@@ -87,5 +81,15 @@ public class UtilityConversionTest
 
         final String word = UtilConversion.toTitleCaseWord("title toto");
         Assert.assertEquals("Title Toto", word);
+    }
+
+    /**
+     * Test the utility conversion byte.
+     */
+    @Test
+    public void testBool()
+    {
+        Assert.assertEquals(0, UtilConversion.boolToInt(false));
+        Assert.assertEquals(1, UtilConversion.boolToInt(true));
     }
 }

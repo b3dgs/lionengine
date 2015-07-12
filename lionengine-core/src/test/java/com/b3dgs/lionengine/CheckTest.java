@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -32,17 +28,14 @@ import org.junit.Test;
 public class CheckTest
 {
     /**
-     * Test check constructor.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testConstructor() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<Check> constructor = Check.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        final Check check = constructor.newInstance();
-        Assert.assertNotNull(check);
+        UtilTests.testPrivateConstructor(Check.class);
     }
 
     /**

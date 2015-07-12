@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -29,42 +28,13 @@ import org.junit.Test;
 public class FilterTest
 {
     /**
-     * Test the filter enum.
+     * Test the enum.
+     * 
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testEnum()
+    public void testEnum() throws ReflectiveOperationException
     {
-        Assert.assertEquals(Filter.BILINEAR, Filter.BILINEAR);
-        Assert.assertFalse(Filter.HQ2X.equals(Filter.HQ3X));
-        Assert.assertNotNull(Filter.values());
-        Assert.assertEquals(Filter.NONE, Filter.valueOf(Filter.NONE.name()));
-    }
-
-    /**
-     * Test the filter enum switch.
-     */
-    @Test
-    public void testEnumSwitch()
-    {
-        for (final Filter filter : Filter.values())
-        {
-            switch (filter)
-            {
-                case NONE:
-                    // Success
-                    break;
-                case BILINEAR:
-                    // Success
-                    break;
-                case HQ2X:
-                    // Success
-                    break;
-                case HQ3X:
-                    // Success
-                    break;
-                default:
-                    Assert.fail();
-            }
-        }
+        UtilTests.testEnum(Filter.class);
     }
 }

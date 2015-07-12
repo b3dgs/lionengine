@@ -29,6 +29,17 @@ import org.junit.Test;
 public class OperatingSystemTest
 {
     /**
+     * Test the enum.
+     * 
+     * @throws ReflectiveOperationException If error.
+     */
+    @Test
+    public void testEnum() throws ReflectiveOperationException
+    {
+        UtilTests.testEnum(OperatingSystem.class);
+    }
+
+    /**
      * Test the operating system class.
      */
     @Test
@@ -54,36 +65,11 @@ public class OperatingSystemTest
         Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("bsd"));
         Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("aix"));
         Assert.assertEquals(OperatingSystem.SOLARIS, OperatingSystem.findOs("sunos"));
-    }
 
-    /**
-     * Test the filter enum switch.
-     */
-    @Test
-    public void testEnumSwitch()
-    {
-        for (final OperatingSystem os : OperatingSystem.values())
-        {
-            switch (os)
-            {
-                case WINDOWS:
-                    // Success
-                    break;
-                case UNIX:
-                    // Success
-                    break;
-                case MAC:
-                    // Success
-                    break;
-                case SOLARIS:
-                    // Success
-                    break;
-                case UNKNOWN:
-                    // Success
-                    break;
-                default:
-                    Assert.fail();
-            }
-        }
+        Assert.assertEquals(Architecture.UNKNOWN, OperatingSystem.findArchitecture(null));
+        Assert.assertEquals(Architecture.UNKNOWN, OperatingSystem.findArchitecture("0"));
+        Assert.assertEquals(Architecture.X86, OperatingSystem.findArchitecture("86"));
+        Assert.assertEquals(Architecture.X86, OperatingSystem.findArchitecture("32"));
+        Assert.assertEquals(Architecture.X64, OperatingSystem.findArchitecture("64"));
     }
 }

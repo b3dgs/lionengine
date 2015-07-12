@@ -17,6 +17,10 @@
  */
 package com.b3dgs.lionengine;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -111,5 +115,30 @@ public class ImageInfoTest
 
         final ImageInfo info2 = ImageInfo.get(new MediaMock("image2.tiff"));
         Assert.assertNotNull(info2);
+    }
+
+    /**
+     * Test skipped error tool.
+     * 
+     * @throws Throwable If error.
+     */
+    @Test(expected = IOException.class)
+    public void testSkippedError() throws Throwable
+    {
+        final Method method = ImageInfo.class.getDeclaredMethod("checkSkippedError", Long.TYPE, Integer.TYPE);
+        final boolean back = method.isAccessible();
+        method.setAccessible(true);
+        try
+        {
+            method.invoke(ImageInfo.class, Long.valueOf(1), Integer.valueOf(0));
+        }
+        catch (final InvocationTargetException exception)
+        {
+            throw exception.getCause();
+        }
+        finally
+        {
+            method.setAccessible(back);
+        }
     }
 }

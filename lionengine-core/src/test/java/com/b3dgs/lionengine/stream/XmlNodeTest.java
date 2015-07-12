@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.mock.XmlNodeMock;
 
 /**
  * Test the XML node.
@@ -59,8 +60,8 @@ public class XmlNodeTest
     public void testXmlnode()
     {
         final XmlNode root = Stream.createXmlNode("root");
-        final XmlNode child1 = Stream.createXmlNode("child1");
-        final XmlNode child2 = Stream.createXmlNode("child2");
+        final XmlNode child1 = root.createChild("child1");
+        final XmlNode child2 = root.createChild("child2");
 
         child1.writeString("str", "str");
 
@@ -103,8 +104,8 @@ public class XmlNodeTest
     public void testXmlNodeRemove()
     {
         final XmlNode root = Stream.createXmlNode("root");
-        final XmlNode child1 = Stream.createXmlNode("child1");
-        final XmlNode child2 = Stream.createXmlNode("child2");
+        final XmlNode child1 = root.createChild("child1");
+        final XmlNode child2 = root.createChild("child2");
 
         child1.writeString("str", "str");
 
@@ -200,5 +201,18 @@ public class XmlNodeTest
         Assert.assertTrue(node.hasChild("child"));
         Assert.assertFalse(node.hasAttribute("test"));
         Assert.assertFalse(node.hasChild("attribute"));
+    }
+
+    /**
+     * Test the node with bad implementation.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testXmlBadImpl()
+    {
+        final XmlNode node = Stream.createXmlNode("test");
+        node.removeChild(new XmlNodeMock());
+        final XmlNode child = new XmlNodeMock();
+        node.add(child);
+        node.removeChild("mock");
     }
 }

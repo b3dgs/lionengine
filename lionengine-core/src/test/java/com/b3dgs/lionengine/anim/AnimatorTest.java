@@ -55,11 +55,9 @@ public class AnimatorTest
         final int last = 4;
         final Animation animation = Anim.createAnimation(null, first, last, 1.0, false, false);
         final Animator animator = Anim.createAnimator();
-
         testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animator.play(animation);
-
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
         animator.update(1.0);
@@ -85,9 +83,9 @@ public class AnimatorTest
         final int last = 4;
         final Animation animation = Anim.createAnimation(null, first, last, 1.0, true, false);
         final Animator animator = Anim.createAnimator();
+        testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animator.play(animation);
-
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
         animator.update(1.0);
@@ -116,6 +114,7 @@ public class AnimatorTest
         final int last = 3;
         final Animation animation = Anim.createAnimation(null, first, last, 1.0, false, true);
         final Animator animator = Anim.createAnimator();
+        testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animator.play(animation);
 
@@ -141,9 +140,9 @@ public class AnimatorTest
         final int last = 3;
         final Animation animation = Anim.createAnimation(null, first, last, 1.0, true, true);
         final Animator animator = Anim.createAnimator();
+        testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animator.play(animation);
-
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
         animator.update(1.0);
@@ -170,16 +169,16 @@ public class AnimatorTest
         final double speed = 2.0;
         final Animation animation = Anim.createAnimation(null, first, last, speed, false, false);
         final Animator animator = Anim.createAnimator();
+        testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
 
         animator.play(animation);
-
+        testAnimatorState(animator, first, first, AnimState.PLAYING);
         animator.setAnimSpeed(speed - 1.0);
 
         animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
         animator.update(1.0);
-
         animator.setFrame(1);
 
         testAnimatorState(animator, first, 1, AnimState.PLAYING);

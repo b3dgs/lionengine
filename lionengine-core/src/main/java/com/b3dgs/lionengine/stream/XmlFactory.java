@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class XmlFactory
+public final class XmlFactory
 {
     /** Error when reading the file. */
     private static final String ERROR_READING = "An error occured while reading";

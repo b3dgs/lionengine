@@ -145,7 +145,7 @@ public class EngineCoreTest
     /**
      * Test the engine system property.
      */
-    @Test(expected = SecurityException.class)
+    @Test
     public void testSystemProperty()
     {
         Assert.assertEquals(null, EngineCore.getSystemProperty("null", null));

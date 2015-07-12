@@ -15,26 +15,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.mock;
 
-import org.junit.Test;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
- * Test the mirror class.
+ * Mock sequence.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-@SuppressWarnings("static-method")
-public class MirrorTest
+public class SequenceNextFailMock extends Sequence
 {
     /**
-     * Test the enum.
+     * Constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @param loader The loader reference;
      */
-    @Test
-    public void testEnum() throws ReflectiveOperationException
+    public SequenceNextFailMock(Loader loader)
     {
-        UtilTests.testEnum(Mirror.class);
+        super(loader, new Resolution(320, 240, 60));
+    }
+
+    @Override
+    protected void load()
+    {
+        // Mock
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        end(SequenceFailMock.class);
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        // Mock
     }
 }

@@ -19,14 +19,13 @@ package com.b3dgs.lionengine.stream;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.MediaMock;
 
@@ -77,18 +76,14 @@ public class StreamTest
     }
 
     /**
-     * Test constructor.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testConstructor() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<Stream> constructor = Stream.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        final Stream file = constructor.newInstance();
-        Assert.assertNotNull(file);
-        Assert.fail();
+        UtilTests.testPrivateConstructor(Stream.class);
     }
 
     /**

@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.MediaMock;
 
@@ -81,6 +82,17 @@ public class FactoryGraphicProviderTest
     public static void cleanUp()
     {
         Graphics.setFactoryGraphic(null);
+    }
+
+    /**
+     * Test the constructor.
+     * 
+     * @throws Throwable If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
+    {
+        UtilTests.testPrivateConstructor(Graphics.class);
     }
 
     /**

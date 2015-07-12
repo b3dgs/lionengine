@@ -43,9 +43,10 @@ public final class Anim
      * @param reverse <code>true</code> to reverse animation play (play it from first to last, and last to first).
      * @param repeat The repeat state (<code>true</code> will play in loop, <code>false</code> will play once only).
      * @return The created animation.
+     * @throws LionEngineException If invalid animation.
      */
     public static Animation createAnimation(String name, int firstFrame, int lastFrame, double speed, boolean reverse,
-            boolean repeat)
+            boolean repeat) throws LionEngineException
     {
         return new AnimationImpl(name, firstFrame, lastFrame, speed, reverse, repeat);
     }

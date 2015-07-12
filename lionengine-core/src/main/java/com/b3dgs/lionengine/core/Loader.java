@@ -26,6 +26,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilReflection;
 
 /**
  * Engine starter, need to be called only one time with the first {@link Sequence} to start, by using
@@ -102,16 +103,10 @@ public final class Loader
      */
     private static Class<?>[] getParamTypes(Loader loader, Object... arguments)
     {
-        final Collection<Object> types = new ArrayList<>(1);
-        types.add(loader.getClass());
-
-        for (final Object argument : arguments)
-        {
-            types.add(argument.getClass());
-        }
-
-        final Class<?>[] typesArray = new Class<?>[types.size()];
-        return types.toArray(typesArray);
+        final Collection<Object> params = new ArrayList<>();
+        params.add(loader);
+        params.addAll(Arrays.asList(arguments));
+        return UtilReflection.getParamTypes(params.toArray());
     }
 
     /**
@@ -126,9 +121,7 @@ public final class Loader
         final Collection<Object> params = new ArrayList<>(1);
         params.add(loader);
         params.addAll(Arrays.asList(arguments));
-
-        final Object[] paramsArray = new Object[params.size()];
-        return params.toArray(paramsArray);
+        return params.toArray();
     }
 
     /** Renderer instance. */

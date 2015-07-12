@@ -19,8 +19,6 @@ package com.b3dgs.lionengine;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 
 import javax.xml.bind.ValidationException;
@@ -41,7 +39,7 @@ import com.b3dgs.lionengine.mock.MediaMock;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 @SuppressWarnings("static-method")
-public class UtilityFileTest
+public class UtilFileTest
 {
     /** Mock media. */
     private static final FactoryMediaMock MOCK = new FactoryMediaMock();
@@ -67,15 +65,12 @@ public class UtilityFileTest
     /**
      * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testConstructor() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<UtilFile> utilityFile = UtilFile.class.getDeclaredConstructor();
-        utilityFile.setAccessible(true);
-        final UtilFile clazz = utilityFile.newInstance();
-        Assert.assertNotNull(clazz);
+        UtilTests.testPrivateConstructor(UtilFile.class);
     }
 
     /**

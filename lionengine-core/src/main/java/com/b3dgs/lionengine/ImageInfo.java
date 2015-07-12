@@ -86,7 +86,8 @@ public final class ImageInfo
     {
         try
         {
-            return get(media).getFormat() != null;
+            get(media);
+            return true;
         }
         catch (final LionEngineException exception)
         {

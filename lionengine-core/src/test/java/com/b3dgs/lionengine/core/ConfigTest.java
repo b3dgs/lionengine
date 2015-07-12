@@ -40,6 +40,8 @@ public class ConfigTest
     private static final Resolution OUTPUT = new Resolution(320, 240, 60);
     /** Config. */
     private static final Config CONFIG = new Config(OUTPUT, 32, true);
+    /** Icon test. */
+    private final String ICON = "image.png";
 
     /**
      * Test the config failure resolution.
@@ -136,7 +138,7 @@ public class ConfigTest
     @Test
     public void testIcon()
     {
-        final Media icon = new MediaMock("image.png");
+        final Media icon = new MediaMock(ICON);
         CONFIG.setIcon(icon);
         Assert.assertEquals(icon, CONFIG.getIcon());
     }

@@ -25,11 +25,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 import com.b3dgs.lionengine.mock.ScreenMock;
 import com.b3dgs.lionengine.mock.SequenceInterruptMock;
+import com.b3dgs.lionengine.mock.SequenceLoopMock;
 import com.b3dgs.lionengine.mock.SequenceSingleMock;
 
 /**
@@ -55,7 +59,7 @@ public class RendererTest
     @BeforeClass
     public static void prepareTest()
     {
-        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        EngineCore.start("RendererTest", Version.create(1, 0, 0), new FactoryGraphicMock(), new FactoryMediaMock());
         Verbose.info("*********************************** SEQUENCE VERBOSE ***********************************");
     }
 
@@ -67,7 +71,7 @@ public class RendererTest
     {
         Verbose.info("****************************************************************************************");
         ScreenMock.wait = false;
-        Graphics.setFactoryGraphic(null);
+        EngineCore.terminate();
     }
 
     /**
@@ -78,9 +82,51 @@ public class RendererTest
     @Test
     public void testStartFirstSequence() throws InterruptedException
     {
-        final Loader loader = new Loader(CONFIG);
+        final Loader loader = new Loader(new Config(new Resolution(320, 240, 60), 16, true, Filter.NONE));
         final Renderer renderer = loader.getRenderer();
         renderer.startFirstSequence(loader, SequenceSingleMock.class);
+        renderer.join();
+    }
+
+    /**
+     * Test the renderer with a simple sequence.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test
+    public void testStartFirstSequenceBilinear() throws InterruptedException
+    {
+        final Loader loader = new Loader(new Config(new Resolution(640, 480, 120), 16, true, Filter.BILINEAR));
+        final Renderer renderer = loader.getRenderer();
+        renderer.startFirstSequence(loader, SequenceLoopMock.class);
+        renderer.join();
+    }
+
+    /**
+     * Test the renderer with a simple sequence.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test
+    public void testStartFirstSequenceHq2x() throws InterruptedException
+    {
+        final Loader loader = new Loader(new Config(new Resolution(640, 480, 10), 16, true, Filter.HQ2X));
+        final Renderer renderer = loader.getRenderer();
+        renderer.startFirstSequence(loader, SequenceLoopMock.class);
+        renderer.join();
+    }
+
+    /**
+     * Test the renderer with a simple sequence.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test
+    public void testStartFirstSequenceHq3x() throws InterruptedException
+    {
+        final Loader loader = new Loader(new Config(new Resolution(960, 640, 0), 16, true, Filter.HQ3X));
+        final Renderer renderer = loader.getRenderer();
+        renderer.startFirstSequence(loader, SequenceLoopMock.class);
         renderer.join();
     }
 
@@ -94,11 +140,13 @@ public class RendererTest
     {
         final Loader loader = new Loader(CONFIG);
         final Renderer renderer = loader.getRenderer();
+        final Thread.UncaughtExceptionHandler old = renderer.getUncaughtExceptionHandler();
         final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
         {
             @Override
-            public void uncaughtException(Thread t, Throwable exception)
+            public void uncaughtException(Thread thread, Throwable exception)
             {
+                old.uncaughtException(thread, exception);
                 uncaught = true;
             }
         };
@@ -152,7 +200,7 @@ public class RendererTest
     @Test(timeout = TIME_OUT + 1000)
     public void testWaitScreenTimeout() throws InterruptedException
     {
-        final Loader loader = new Loader(CONFIG);
+        final Loader loader = new Loader(new Config(new Resolution(320, 240, 0), 16, true));
         final Renderer renderer = loader.getRenderer();
         ScreenMock.wait = true;
         loader.start(SequenceSingleMock.class);
@@ -168,7 +216,7 @@ public class RendererTest
     @Test(timeout = 500)
     public void testWaitScreenInterrupt() throws InterruptedException
     {
-        final Loader loader = new Loader(CONFIG);
+        final Loader loader = new Loader(new Config(new Resolution(320, 240, 0), 16, false));
         final Renderer renderer = loader.getRenderer();
         ScreenMock.wait = true;
         loader.start(SequenceSingleMock.class);
@@ -180,5 +228,37 @@ public class RendererTest
         renderer.interrupt();
         renderer.join();
         ScreenMock.wait = false;
+    }
+
+    /**
+     * Test the screen <code>null</code> terminate.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test
+    public void testTerminateScreenNull() throws InterruptedException
+    {
+        final Loader loader = new Loader(new Config(new Resolution(320, 240, 0), 16, false));
+        final Renderer renderer = loader.getRenderer();
+        renderer.terminate();
+        renderer.join();
+    }
+
+    /**
+     * Test the renderer with no started engine.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test
+    public void testEngineNotStarted() throws InterruptedException
+    {
+        final Loader loader = new Loader(CONFIG);
+        final Renderer renderer = loader.getRenderer();
+        EngineCore.terminate();
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        renderer.startFirstSequence(loader, SequenceLoopMock.class);
+        renderer.join();
+        Graphics.setFactoryGraphic(null);
+        EngineCore.start("RendererTest", Version.create(1, 0, 0), new FactoryGraphicMock(), new FactoryMediaMock());
     }
 }

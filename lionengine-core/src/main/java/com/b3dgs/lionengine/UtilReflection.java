@@ -17,24 +17,38 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
- * Test the mirror class.
+ * Utility class related to java reflection.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-@SuppressWarnings("static-method")
-public class MirrorTest
+public final class UtilReflection
 {
     /**
-     * Test the enum.
+     * Get the parameter types as array.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @param arguments The arguments list.
+     * @return The arguments type array.
      */
-    @Test
-    public void testEnum() throws ReflectiveOperationException
+    public static Class<?>[] getParamTypes(Object... arguments)
     {
-        UtilTests.testEnum(Mirror.class);
+        final Collection<Object> types = new ArrayList<>();
+        for (final Object argument : arguments)
+        {
+            types.add(argument.getClass());
+        }
+        final Class<?>[] typesArray = new Class<?>[types.size()];
+        return types.toArray(typesArray);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private UtilReflection()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

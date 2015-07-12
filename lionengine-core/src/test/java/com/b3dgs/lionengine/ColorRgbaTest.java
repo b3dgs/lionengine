@@ -158,6 +158,46 @@ public class ColorRgbaTest
     }
 
     /**
+     * Test the color opaque and transparent exclusive.
+     */
+    @Test
+    public void testColorOpaqueTransparentExclusive()
+    {
+        Assert.assertFalse(ColorRgba.isOpaqueTransparentExclusive(ColorRgba.BLACK, ColorRgba.WHITE));
+        Assert.assertFalse(ColorRgba.isOpaqueTransparentExclusive(ColorRgba.BLUE.getRgba(), ColorRgba.RED.getRgba()));
+
+        Assert.assertTrue(ColorRgba.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.BLACK));
+        Assert.assertTrue(ColorRgba.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.OPAQUE));
+        Assert.assertTrue(ColorRgba.isOpaqueTransparentExclusive(ColorRgba.OPAQUE, ColorRgba.TRANSPARENT));
+
+        Assert.assertFalse(ColorRgba.isOpaqueTransparentExclusive(ColorRgba.OPAQUE, ColorRgba.BLACK));
+        Assert.assertFalse(ColorRgba.isOpaqueTransparentExclusive(ColorRgba.TRANSPARENT, ColorRgba.TRANSPARENT));
+        Assert.assertFalse(ColorRgba.isOpaqueTransparentExclusive(ColorRgba.OPAQUE, ColorRgba.OPAQUE));
+    }
+
+    /**
+     * Test the color equality.
+     */
+    @Test
+    public void testColorHashCode()
+    {
+        Assert.assertEquals(ColorRgba.BLACK.hashCode(), ColorRgba.BLACK.hashCode());
+        Assert.assertNotEquals(ColorRgba.WHITE.hashCode(), ColorRgba.BLACK.hashCode());
+        Assert.assertNotEquals(ColorRgba.WHITE.hashCode(), ColorRgba.class.hashCode());
+    }
+
+    /**
+     * Test the color equality.
+     */
+    @Test
+    public void testColorEquals()
+    {
+        Assert.assertEquals(ColorRgba.BLACK, ColorRgba.BLACK);
+        Assert.assertNotEquals(ColorRgba.WHITE, ColorRgba.BLACK);
+        Assert.assertNotEquals(ColorRgba.WHITE, ColorRgba.class);
+    }
+
+    /**
      * Test the color utility.
      */
     @Test

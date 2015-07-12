@@ -225,7 +225,7 @@ public class Renderer extends Thread implements Sequencable
                 transform.scale(scaleX / scale3x, scaleY / scale3x);
                 break;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException("Unknown filter: ", filter.name());
         }
         return transform;
     }
@@ -267,11 +267,7 @@ public class Renderer extends Thread implements Sequencable
         this.sequence = sequence;
         nextSequence = null;
         screen.setSequence(sequence);
-        // Sequence may have already been loaded in case of async load or if started from another sequence
-        if (!sequence.isLoaded())
-        {
-            sequence.start();
-        }
+        sequence.start();
         setResolution(sequence.resolution);
 
         // Prepare sequence to be started

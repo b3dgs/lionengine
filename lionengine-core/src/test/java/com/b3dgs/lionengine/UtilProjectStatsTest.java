@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Verbose;
@@ -31,20 +27,17 @@ import com.b3dgs.lionengine.core.Verbose;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 @SuppressWarnings("static-method")
-public class UtilityProjectStatsTest
+public class UtilProjectStatsTest
 {
     /**
-     * Test the core class.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testProjectStatsClass() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<UtilProjectStats> utilityProjectStats = UtilProjectStats.class.getDeclaredConstructor();
-        utilityProjectStats.setAccessible(true);
-        final UtilProjectStats clazz = utilityProjectStats.newInstance();
-        Assert.assertNotNull(clazz);
+        UtilTests.testPrivateConstructor(UtilProjectStats.class);
     }
 
     /**

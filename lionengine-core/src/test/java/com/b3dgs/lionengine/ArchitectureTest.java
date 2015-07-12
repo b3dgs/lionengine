@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -29,47 +28,13 @@ import org.junit.Test;
 public class ArchitectureTest
 {
     /**
-     * Test the architecture enum.
+     * Test the enum.
+     * 
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testEnum()
+    public void testEnum() throws ReflectiveOperationException
     {
-        Assert.assertNotNull(Architecture.X64);
-        Assert.assertNotNull(Architecture.X86);
-        Assert.assertNotNull(Architecture.UNKNOWN);
-
-        Assert.assertNotNull(Architecture.values());
-        Assert.assertEquals(Architecture.X64, Architecture.valueOf(Architecture.X64.name()));
-
-        Assert.assertEquals(Architecture.UNKNOWN, OperatingSystem.findArchitecture(null));
-        Assert.assertEquals(Architecture.UNKNOWN, OperatingSystem.findArchitecture("0"));
-        Assert.assertEquals(Architecture.X86, OperatingSystem.findArchitecture("86"));
-        Assert.assertEquals(Architecture.X86, OperatingSystem.findArchitecture("32"));
-        Assert.assertEquals(Architecture.X64, OperatingSystem.findArchitecture("64"));
-    }
-
-    /**
-     * Test the architecture enum switch.
-     */
-    @Test
-    public void testEnumSwitch()
-    {
-        for (final Architecture architecture : Architecture.values())
-        {
-            switch (architecture)
-            {
-                case X64:
-                    // Success
-                    break;
-                case X86:
-                    // Success
-                    break;
-                case UNKNOWN:
-                    // Success
-                    break;
-                default:
-                    Assert.fail();
-            }
-        }
+        UtilTests.testEnum(Architecture.class);
     }
 }

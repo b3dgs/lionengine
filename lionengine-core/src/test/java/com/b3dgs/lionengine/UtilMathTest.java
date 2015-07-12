@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,23 +30,17 @@ import com.b3dgs.lionengine.geom.Line;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 @SuppressWarnings("static-method")
-public class UtilityMathTest
+public class UtilMathTest
 {
-    /** Precision value. */
-    private static final double PRECISION = 0.000001;
-
     /**
-     * Test the core class.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testUtilityMathClass() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<UtilMath> utilityMath = UtilMath.class.getDeclaredConstructor();
-        utilityMath.setAccessible(true);
-        final UtilMath clazz = utilityMath.newInstance();
-        Assert.assertNotNull(clazz);
+        UtilTests.testPrivateConstructor(UtilMath.class);
     }
 
     /**
@@ -88,10 +79,10 @@ public class UtilityMathTest
         Assert.assertEquals(10, UtilMath.fixBetween(10, 0, 10));
         Assert.assertEquals(0, UtilMath.fixBetween(0, 0, 10));
 
-        Assert.assertEquals(0.0, UtilMath.fixBetween(-10.0, 0.0, 10.0), PRECISION);
-        Assert.assertEquals(10.0, UtilMath.fixBetween(50.0, 0.0, 10.0), PRECISION);
-        Assert.assertEquals(10.0, UtilMath.fixBetween(10.0, 0.0, 10.0), PRECISION);
-        Assert.assertEquals(0.0, UtilMath.fixBetween(0.0, 0.0, 10.0), PRECISION);
+        Assert.assertEquals(0.0, UtilMath.fixBetween(-10.0, 0.0, 10.0), UtilTests.PRECISION);
+        Assert.assertEquals(10.0, UtilMath.fixBetween(50.0, 0.0, 10.0), UtilTests.PRECISION);
+        Assert.assertEquals(10.0, UtilMath.fixBetween(10.0, 0.0, 10.0), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.fixBetween(0.0, 0.0, 10.0), UtilTests.PRECISION);
     }
 
     /**
@@ -119,10 +110,10 @@ public class UtilityMathTest
     @Test
     public void testDistance()
     {
-        Assert.assertEquals(2.0, UtilMath.getDistance(4, 6, 6, 6), PRECISION);
-        Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0), PRECISION);
-        Assert.assertEquals(2.0, UtilMath.getDistance(4, 6, 2, 2, 6, 6, 2, 2), PRECISION);
-        Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 2, 2, 6.0, 6.0, 2, 2), PRECISION);
+        Assert.assertEquals(2.0, UtilMath.getDistance(4, 6, 6, 6), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, UtilMath.getDistance(4, 6, 2, 2, 6, 6, 2, 2), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 2, 2, 6.0, 6.0, 2, 2), UtilTests.PRECISION);
     }
 
     /**
@@ -131,9 +122,9 @@ public class UtilityMathTest
     @Test
     public void testWrapDouble()
     {
-        Assert.assertEquals(0.0, UtilMath.wrapDouble(360.0, 0.0, 360.0), PRECISION);
-        Assert.assertEquals(359.0, UtilMath.wrapDouble(-1.0, 0.0, 360.0), PRECISION);
-        Assert.assertEquals(180.0, UtilMath.wrapDouble(180.0, 0.0, 360.0), PRECISION);
+        Assert.assertEquals(0.0, UtilMath.wrapDouble(360.0, 0.0, 360.0), UtilTests.PRECISION);
+        Assert.assertEquals(359.0, UtilMath.wrapDouble(-1.0, 0.0, 360.0), UtilTests.PRECISION);
+        Assert.assertEquals(180.0, UtilMath.wrapDouble(180.0, 0.0, 360.0), UtilTests.PRECISION);
     }
 
     /**
@@ -142,8 +133,8 @@ public class UtilityMathTest
     @Test
     public void testSinCos()
     {
-        Assert.assertEquals(-1.0, UtilMath.cos(180), PRECISION);
-        Assert.assertEquals(0.0, UtilMath.sin(180), PRECISION);
+        Assert.assertEquals(-1.0, UtilMath.cos(180), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.sin(180), UtilTests.PRECISION);
     }
 
     /**

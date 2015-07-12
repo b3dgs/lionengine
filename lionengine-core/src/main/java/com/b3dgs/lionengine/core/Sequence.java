@@ -75,8 +75,6 @@ public abstract class Sequence implements Sequencable
     final Resolution resolution;
     /** Renderer. */
     private final Renderer renderer;
-    /** Loaded state. */
-    private volatile boolean loaded;
     /** Rendering width. */
     private volatile int width;
     /** Rendering height. */
@@ -193,22 +191,11 @@ public abstract class Sequence implements Sequencable
     }
 
     /**
-     * Check if the sequence has been loaded.
-     * 
-     * @return <code>true</code> if loaded, <code>false</code> else.
-     */
-    final boolean isLoaded()
-    {
-        return loaded;
-    }
-
-    /**
      * Start the sequence and load it.
      */
     final synchronized void start()
     {
         load();
-        loaded = true;
     }
 
     /**

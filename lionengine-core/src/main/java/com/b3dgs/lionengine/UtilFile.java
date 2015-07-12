@@ -19,15 +19,11 @@ package com.b3dgs.lionengine;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Verbose;
 
@@ -340,29 +336,6 @@ public final class UtilFile
         catch (final IOException exception)
         {
             Verbose.warning(UtilFile.class, "deleteFile", "File not deleted: " + file);
-        }
-    }
-
-    /**
-     * Get of copy of media.
-     * 
-     * @param media The original media.
-     * @return The copied media.
-     * @throws LionEngineException If unable to get copy of media.
-     */
-    public static Media copyMedia(Media media) throws LionEngineException
-    {
-        try (final InputStream stream = media.getInputStream())
-        {
-            final File mediaFile = media.getFile();
-            final String ext = "." + UtilFile.getExtension(mediaFile);
-            final Path file = Files.createTempFile(mediaFile.getParentFile().toPath(), mediaFile.getName(), ext);
-            Files.copy(stream, file, StandardCopyOption.REPLACE_EXISTING);
-            return Medias.create(media.getParentPath(), file.toFile().getName());
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, media, "Unable to create temp file !");
         }
     }
 

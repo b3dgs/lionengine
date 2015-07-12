@@ -19,23 +19,27 @@ package com.b3dgs.lionengine.mock;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 
 /**
- * Interrupt sequence mock.
+ * Loop sequence mock.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceInterruptMock extends Sequence
+public class SequenceLoopMock extends Sequence
 {
+    /** Timing. */
+    private final Timing timing = new Timing();
+
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    public SequenceInterruptMock(Loader loader)
+    public SequenceLoopMock(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
     }
@@ -43,13 +47,16 @@ public class SequenceInterruptMock extends Sequence
     @Override
     protected void load()
     {
-        // Mock
+        timing.start();
     }
 
     @Override
     public void update(double extrp)
     {
-        // Mock
+        if (timing.elapsed(200))
+        {
+            end();
+        }
     }
 
     @Override
@@ -57,7 +64,7 @@ public class SequenceInterruptMock extends Sequence
     {
         try
         {
-            Thread.sleep(250);
+            Thread.sleep(10);
         }
         catch (final InterruptedException exception)
         {

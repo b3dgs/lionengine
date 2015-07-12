@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,17 +36,14 @@ public class ChecksumTest
     private static final int VALUE = 489464795;
 
     /**
-     * Test the core class.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testConstructor() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<Checksum> checksum = Checksum.class.getDeclaredConstructor(String.class);
-        checksum.setAccessible(true);
-        final Checksum clazz = checksum.newInstance("null");
-        Assert.assertNotNull(clazz);
+        UtilTests.testPrivateConstructor(Checksum.class, "null");
     }
 
     /**
@@ -75,5 +69,27 @@ public class ChecksumTest
         Assert.assertTrue(checksum.check(STRING, signature));
         Assert.assertFalse(checksum.check(OTHER, signature));
         Assert.assertTrue(checksum.check(VALUE, test));
+    }
+
+    /**
+     * Test checksum encoding null string.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testEncodingEmptyNullString()
+    {
+        final Checksum checksum = Checksum.createSha256();
+        final String signature = checksum.getSha256((String) null);
+        Assert.assertNull(signature);
+    }
+
+    /**
+     * Test checksum encoding bytes.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testEncodingEmptyNullBytes()
+    {
+        final Checksum checksum = Checksum.createSha256();
+        final String signature = checksum.getSha256((byte[]) null);
+        Assert.assertNull(signature);
     }
 }
