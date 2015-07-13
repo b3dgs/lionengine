@@ -15,7 +15,7 @@
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="317, 321, 325" />
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.ScreenAwt" lines="155, 205" />
-	<suppress checks="MagicNumber" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="64" />
+	<suppress checks="MagicNumber" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="65" />
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.swing.UtilitySwing" />
     
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ScreenSwt" />
@@ -54,6 +54,7 @@
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.editor.UtilEclipse" lines="317" />
 	<suppress checks="FanOut" files="com.b3dgs.lionengine.editor.UtilSwt" />
 	<suppress checks="EmptyBlock" files="com.b3dgs.lionengine.editor.project.ProjectsPart" lines="261" />
+    <suppress checks="FanOut" files="com.b3dgs.lionengine.editor.project.dialog.formula.FormulasProperties" />
     <suppress checks="StaticVariableName" files="[\\/]com.b3dgs.lionengine.editor.*.Messages" />
     <suppress checks="VisibilityModifier" files="[\\/]com.b3dgs.lionengine.editor.*.Messages" />
     <suppress checks="LineLength" files="[\\/]com.b3dgs.lionengine.editor.*.Messages" />
