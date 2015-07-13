@@ -41,6 +41,7 @@ import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Verbose;
@@ -71,9 +72,12 @@ public final class ToolsAwt
      * @param height The image height.
      * @param transparency The image transparency.
      * @return The image instance.
+     * @throws LionEngineException If negative size.
      */
-    static BufferedImage createImage(int width, int height, int transparency)
+    static BufferedImage createImage(int width, int height, int transparency) throws LionEngineException
     {
+        Check.superiorOrEqual(width, 0);
+        Check.superiorOrEqual(height, 0);
         return CONFIG.createCompatibleImage(width, height, transparency);
     }
 

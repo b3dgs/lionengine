@@ -111,10 +111,7 @@ final class MediaAwt implements Media
     {
         final int prime = 31;
         int result = 1;
-        if (path != null)
-        {
-            result = prime * result + path.hashCode();
-        }
+        result = prime * result + path.hashCode();
         return result;
     }
 

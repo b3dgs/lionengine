@@ -21,8 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -30,6 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 
@@ -64,16 +63,12 @@ public class UtilityMediaTest
     /**
      * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testConstructor() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<UtilityMedia> constructor = UtilityMedia.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        final UtilityMedia utility = constructor.newInstance();
-        Assert.assertNotNull(utility);
-        Assert.fail();
+        UtilTests.testPrivateConstructor(UtilityMedia.class);
     }
 
     /**

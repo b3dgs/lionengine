@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.core.awt;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.UtilTests;
 
 /**
  * Test the theme class.
@@ -30,12 +32,14 @@ import com.b3dgs.lionengine.LionEngineException;
 public class ThemeTest
 {
     /**
-     * Test the fail case.
+     * Test the enum.
+     * 
+     * @throws ReflectiveOperationException If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testFail()
+    @Test
+    public void testEnum() throws ReflectiveOperationException
     {
-        Theme.set(null);
+        UtilTests.testEnum(Mirror.class);
     }
 
     /**
@@ -47,5 +51,14 @@ public class ThemeTest
         Theme.set(Theme.MOTIF);
         Theme.set(Theme.SYSTEM);
         Theme.set(Theme.METAL);
+    }
+
+    /**
+     * Test the fail case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFail()
+    {
+        Theme.set(null);
     }
 }

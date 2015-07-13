@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
@@ -62,11 +63,11 @@ final class Sc68Player implements Sc68
     {
         Check.notNull(media);
 
-        try
+        try (InputStream input = media.getInputStream())
         {
             final File music = Files.createTempFile(null, null).toFile();
             music.deleteOnExit();
-            Files.copy(media.getInputStream(), music.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(input, music.toPath(), StandardCopyOption.REPLACE_EXISTING);
             binding.Sc68Play(music.getPath());
         }
         catch (final IOException exception)

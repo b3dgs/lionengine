@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.audio.sc68;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -33,19 +32,9 @@ import com.b3dgs.lionengine.core.Media;
 public class Sc68Test
 {
     /** Media music. */
-    private static Media MUSIC;
+    private static final Media MUSIC = new MediaMock("music.sc68");
     /** Binding. */
-    private static Sc68 sc68;
-
-    /**
-     * Prepare the test.
-     */
-    @BeforeClass
-    public static void prepareTest()
-    {
-        MUSIC = new MediaMock("music.sc68");
-        sc68 = AudioSc68.createSc68Player();
-    }
+    private static final Sc68 SC68 = AudioSc68.createSc68Player();
 
     /**
      * Test with <code>null</code> argument.
@@ -53,7 +42,7 @@ public class Sc68Test
     @Test(expected = LionEngineException.class)
     public void testNullArgument()
     {
-        sc68.play(null);
+        SC68.play(null);
         Assert.fail();
     }
 
@@ -63,7 +52,7 @@ public class Sc68Test
     @Test(expected = LionEngineException.class)
     public void testNegativeVolume()
     {
-        sc68.setVolume(-1);
+        SC68.setVolume(-1);
         Assert.fail();
     }
 
@@ -73,7 +62,7 @@ public class Sc68Test
     @Test(expected = LionEngineException.class)
     public void testOutOfRangeVolume()
     {
-        sc68.setVolume(101);
+        SC68.setVolume(101);
         Assert.fail();
     }
 
@@ -85,20 +74,20 @@ public class Sc68Test
     @Test
     public void testSc68() throws InterruptedException
     {
-        sc68.setVolume(15);
-        sc68.setConfig(true, false);
-        Sc68Test.sc68.play(MUSIC);
+        SC68.setVolume(15);
+        SC68.setConfig(true, false);
+        Sc68Test.SC68.play(MUSIC);
         Thread.sleep(500);
-        sc68.setConfig(false, false);
-        sc68.pause();
+        SC68.setConfig(false, false);
+        SC68.pause();
         Thread.sleep(500);
-        sc68.setConfig(false, true);
-        sc68.setVolume(30);
-        sc68.resume();
+        SC68.setConfig(false, true);
+        SC68.setVolume(30);
+        SC68.resume();
         Thread.sleep(500);
-        sc68.setConfig(true, true);
-        Assert.assertTrue(sc68.seek() >= 0);
-        sc68.stop();
+        SC68.setConfig(true, true);
+        Assert.assertTrue(SC68.seek() >= 0);
+        SC68.stop();
     }
 
     /**

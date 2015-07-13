@@ -78,7 +78,7 @@ public final class UtilityImage
                 value = java.awt.Transparency.TRANSLUCENT;
                 break;
             default:
-                value = 0;
+                throw new LionEngineException("Unknown transparency: ", transparency.name());
         }
         return value;
     }
@@ -90,8 +90,9 @@ public final class UtilityImage
      * @param height The image height.
      * @param transparency The image transparency.
      * @return The image instance.
+     * @throws LionEngineException If negative size.
      */
-    static ImageBuffer createImage(int width, int height, Transparency transparency)
+    static ImageBuffer createImage(int width, int height, Transparency transparency) throws LionEngineException
     {
         return new ImageBufferAwt(ToolsAwt.createImage(width, height, getTransparency(transparency)));
     }

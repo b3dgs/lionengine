@@ -39,7 +39,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Screen base implementation.
@@ -171,10 +170,8 @@ abstract class ScreenAwt implements Screen, FocusListener
 
     /**
      * Add a keyboard device.
-     * 
-     * @throws LionEngineException If mouse is not supported.
      */
-    private void addDeviceMouse() throws LionEngineException
+    private void addDeviceMouse()
     {
         final MouseAwt mouse = new MouseAwt();
         addMouseListener(mouse);
@@ -199,14 +196,7 @@ abstract class ScreenAwt implements Screen, FocusListener
         setResolution(config.getOutput());
         prepareFocusListener();
         addDeviceKeyboard();
-        try
-        {
-            addDeviceMouse();
-        }
-        catch (final LionEngineException exception)
-        {
-            Verbose.exception(ScreenAwt.class, "start", exception);
-        }
+        addDeviceMouse();
         if (!config.hasApplet())
         {
             buf.show();

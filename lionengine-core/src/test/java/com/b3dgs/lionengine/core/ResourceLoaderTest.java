@@ -188,7 +188,7 @@ public class ResourceLoaderTest
         {
             // Nothing to do
         }
-    
+
         @Override
         public void load() throws LionEngineException
         {
@@ -201,7 +201,7 @@ public class ResourceLoaderTest
                 throw new LionEngineException(exception);
             }
         }
-    
+
         @Override
         public boolean isLoaded()
         {

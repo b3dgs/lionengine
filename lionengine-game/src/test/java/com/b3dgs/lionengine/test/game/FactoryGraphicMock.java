@@ -134,10 +134,4 @@ public class FactoryGraphicMock implements FactoryGraphic
     {
         return null;
     }
-
-    @Override
-    public int[][] loadRaster(Media media)
-    {
-        return new int[0][0];
-    }
 }

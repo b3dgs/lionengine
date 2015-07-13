@@ -42,6 +42,7 @@ public class ImageBufferAwtTest
         final BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
         final ImageBufferAwt image = new ImageBufferAwt(buffer);
         Assert.assertNotNull(image.createGraphic());
+        image.prepare();
         Assert.assertEquals(buffer, image.getBuffer());
         Assert.assertEquals(ColorRgba.BLACK.getRgba(), image.getRgb(0, 0));
         Assert.assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
@@ -57,5 +58,6 @@ public class ImageBufferAwtTest
         Assert.assertEquals(Transparency.BITMASK, ImageBufferAwt.getTransparency(java.awt.Transparency.BITMASK));
         Assert.assertEquals(Transparency.TRANSLUCENT,
                 ImageBufferAwt.getTransparency(java.awt.Transparency.TRANSLUCENT));
+        Assert.assertEquals(Transparency.OPAQUE, ImageBufferAwt.getTransparency(465546));
     }
 }

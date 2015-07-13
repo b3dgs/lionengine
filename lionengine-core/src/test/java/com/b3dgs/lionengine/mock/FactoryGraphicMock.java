@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.FactoryGraphic;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderer;
@@ -129,18 +128,24 @@ public class FactoryGraphicMock implements FactoryGraphic
     @Override
     public ImageBuffer applyFilter(ImageBuffer image, Filter filter)
     {
+        final int scale;
         switch (filter)
         {
             case NONE:
+                return image;
             case BILINEAR:
+                scale = 1;
+                break;
             case HQ2X:
+                scale = 2;
+                break;
             case HQ3X:
-                // Nothing
+                scale = 3;
                 break;
             default:
                 throw new RuntimeException();
         }
-        return new ImageBufferMock(image.getWidth(), image.getHeight(), image.getTransparency());
+        return new ImageBufferMock(image.getWidth() * scale, image.getHeight() * scale, image.getTransparency());
     }
 
     @Override
@@ -160,11 +165,5 @@ public class FactoryGraphicMock implements FactoryGraphic
     public ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
         return new ImageBufferMock(image.getWidth(), image.getHeight(), image.getTransparency());
-    }
-
-    @Override
-    public int[][] loadRaster(Media media)
-    {
-        return Graphics.loadRaster(media);
     }
 }

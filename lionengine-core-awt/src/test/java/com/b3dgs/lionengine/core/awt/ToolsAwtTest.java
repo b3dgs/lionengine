@@ -20,9 +20,8 @@ package com.b3dgs.lionengine.core.awt;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -31,6 +30,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 
@@ -63,16 +63,12 @@ public class ToolsAwtTest
     /**
      * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testConstructor() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<ToolsAwt> constructor = ToolsAwt.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        final ToolsAwt utility = constructor.newInstance();
-        Assert.assertNotNull(utility);
-        Assert.fail();
+        UtilTests.testPrivateConstructor(ToolsAwt.class);
     }
 
     /**
@@ -96,11 +92,14 @@ public class ToolsAwtTest
         Assert.assertNotNull(ToolsAwt.applyMask(image, ColorRgba.BLACK.getRgba()));
         Assert.assertNotNull(ToolsAwt.applyMask(image, ColorRgba.WHITE.getRgba()));
 
-        final Media media = new MediaAwt(MediaAwt.class.getResource("image.png").getFile());
-        final BufferedImage buffer = ToolsAwt.getImage(media.getInputStream());
-        Assert.assertNotNull(buffer);
-        Assert.assertNotNull(ToolsAwt.getImageData(image));
-        ToolsAwt.optimizeGraphicsQuality(buffer.createGraphics());
+        final Media media = Medias.create("image.png");
+        try (InputStream input = media.getInputStream())
+        {
+            final BufferedImage buffer = ToolsAwt.getImage(input);
+            Assert.assertNotNull(buffer);
+            Assert.assertNotNull(ToolsAwt.getImageData(image));
+            ToolsAwt.optimizeGraphicsQuality(buffer.createGraphics());
+        }
 
         Assert.assertNotNull(ToolsAwt.createHiddenCursor());
     }
@@ -125,18 +124,21 @@ public class ToolsAwtTest
     @Test
     public void testSave() throws LionEngineException, IOException
     {
-        final Media media = new MediaAwt(MediaAwt.class.getResource("image.png").getFile());
-        final BufferedImage image = ToolsAwt.getImage(media.getInputStream());
-        Assert.assertNotNull(image);
-
-        final MediaAwt save = new MediaAwt("test");
-        try (OutputStream output = save.getOutputStream())
+        final Media media = Medias.create("image.png");
+        try (InputStream input = media.getInputStream())
         {
-            ToolsAwt.saveImage(image, output);
+            final BufferedImage image = ToolsAwt.getImage(input);
+            Assert.assertNotNull(image);
+
+            final Media save = Medias.create("test");
+            try (OutputStream output = save.getOutputStream())
+            {
+                ToolsAwt.saveImage(image, output);
+            }
+            Assert.assertTrue(save.getFile().exists());
+            Assert.assertTrue(save.getFile().delete());
+            Assert.assertFalse(save.getFile().exists());
         }
-        Assert.assertTrue(save.getFile().exists());
-        Assert.assertTrue(save.getFile().delete());
-        Assert.assertFalse(save.getFile().exists());
     }
 
     /**
@@ -148,8 +150,12 @@ public class ToolsAwtTest
     @Test(expected = LionEngineException.class)
     public void testGetFail() throws LionEngineException, IOException
     {
-        final BufferedImage image = ToolsAwt.getImage(new MediaAwt("image.png").getInputStream());
-        Assert.assertNotNull(image);
+        final Media media = Medias.create("image.xml");
+        try (InputStream input = media.getInputStream())
+        {
+            final BufferedImage image = ToolsAwt.getImage(input);
+            Assert.assertNotNull(image);
+        }
     }
 
     /**
@@ -161,8 +167,11 @@ public class ToolsAwtTest
     @Test(expected = IOException.class)
     public void testGetIoFail() throws LionEngineException, IOException
     {
-        final Media media = new MediaAwt(MediaAwt.class.getResource("raster.xml").getFile());
-        final BufferedImage image = ToolsAwt.getImage(media.getInputStream());
-        Assert.assertNotNull(image);
+        final Media media = Medias.create("raster.xml");
+        try (InputStream input = media.getInputStream())
+        {
+            final BufferedImage image = ToolsAwt.getImage(input);
+            Assert.assertNotNull(image);
+        }
     }
 }

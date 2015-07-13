@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -28,6 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -62,16 +60,12 @@ public class UtilityImageTest
     /**
      * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testConstructor() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<UtilityImage> constructor = UtilityImage.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        final UtilityImage utility = constructor.newInstance();
-        Assert.assertNotNull(utility);
-        Assert.fail();
+        UtilTests.testPrivateConstructor(UtilityImage.class);
     }
 
     /**
@@ -84,6 +78,7 @@ public class UtilityImageTest
         Assert.assertNotNull(image);
         Assert.assertNotNull(UtilityImage.getBuffer(image));
         Assert.assertEquals(java.awt.Transparency.OPAQUE, UtilityImage.getTransparency(image.getTransparency()));
+        Assert.assertEquals(java.awt.Transparency.BITMASK, UtilityImage.getTransparency(Transparency.BITMASK));
         Assert.assertNotNull(UtilityImage.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));
         Assert.assertNotNull(UtilityImage.flipHorizontal(image));
         Assert.assertNotNull(UtilityImage.flipVertical(image));

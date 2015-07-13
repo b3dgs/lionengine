@@ -76,7 +76,7 @@ public class ImageTest
             Graphics.createImageBuffer(-16, 16, Transparency.OPAQUE);
             Assert.fail();
         }
-        catch (final NegativeArraySizeException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -85,7 +85,7 @@ public class ImageTest
             Graphics.createImageBuffer(16, -16, Transparency.OPAQUE);
             Assert.fail();
         }
-        catch (final NegativeArraySizeException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }

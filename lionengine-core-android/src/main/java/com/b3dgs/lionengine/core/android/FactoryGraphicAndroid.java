@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.FactoryGraphic;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderer;
@@ -146,11 +145,5 @@ final class FactoryGraphicAndroid implements FactoryGraphic
             int refSize)
     {
         return UtilityImage.getRasterBuffer(imageBuffer, fr, fg, fb, er, eg, eb, refSize);
-    }
-
-    @Override
-    public int[][] loadRaster(Media media)
-    {
-        return Graphics.loadRaster(media);
     }
 }

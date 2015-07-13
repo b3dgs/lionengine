@@ -17,14 +17,12 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.EngineCore;
 
@@ -39,25 +37,22 @@ public class EngineAwtTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @After
+    public void cleanUp()
     {
         Engine.terminate();
     }
 
     /**
-     * Test the engine.
+     * Test the constructor.
      * 
-     * @throws ReflectiveOperationException If error.
+     * @throws Throwable If error.
      */
-    @Test(expected = InvocationTargetException.class)
-    public void testConstructor() throws ReflectiveOperationException
+    @Test(expected = LionEngineException.class)
+    public void testConstructor() throws Throwable
     {
-        final Constructor<Engine> constructor = Engine.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        final Engine engine = constructor.newInstance();
-        Assert.assertNotNull(engine);
-        Assert.fail();
+        Engine.start("EngineTest", Version.create(0, 0, 0), "resources");
+        UtilTests.testPrivateConstructor(Engine.class);
     }
 
     /**
@@ -69,5 +64,16 @@ public class EngineAwtTest
         Engine.start("EngineTest", Version.create(0, 0, 0), (String) null);
         Assert.assertTrue(EngineCore.isStarted());
         Engine.start("EngineTest", Version.create(0, 1, 0), (String) null);
+    }
+
+    /**
+     * Test the engine start with class.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testEngineClass()
+    {
+        Engine.start("EngineTest", Version.create(0, 0, 0), EngineAwtTest.class);
+        Assert.assertTrue(EngineCore.isStarted());
+        Engine.start("EngineTest", Version.create(0, 1, 0), EngineAwtTest.class);
     }
 }

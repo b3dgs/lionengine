@@ -182,13 +182,4 @@ public interface FactoryGraphic
      * @return The rastered image.
      */
     ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize);
-
-    /**
-     * Load a raster data from a file.
-     * 
-     * @param media The raster media.
-     * @return The raster data (can not be empty).
-     * @throws LionEngineException If the raster data from the media are invalid.
-     */
-    int[][] loadRaster(Media media) throws LionEngineException;
 }

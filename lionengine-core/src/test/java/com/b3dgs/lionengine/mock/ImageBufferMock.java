@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.mock;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
@@ -47,6 +48,8 @@ public class ImageBufferMock implements ImageBuffer
      */
     public ImageBufferMock(int width, int height, Transparency transparency)
     {
+        Check.superiorOrEqual(width, 0);
+        Check.superiorOrEqual(height, 0);
         this.width = width;
         this.height = height;
         this.transparency = transparency;

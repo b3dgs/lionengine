@@ -93,6 +93,16 @@ public class MediaAwtTest
     }
 
     /**
+     * Test the path getter.
+     */
+    @Test
+    public void testParentPath()
+    {
+        final String path = "path";
+        Assert.assertEquals("", create(path).getParentPath());
+    }
+
+    /**
      * Test the input stream.
      * 
      * @throws IOException If error.
@@ -101,6 +111,7 @@ public class MediaAwtTest
     public void testInputStream() throws IOException
     {
         final Media media = create("image.png");
+        Assert.assertTrue(media.exists());
         try (InputStream input = media.getInputStream())
         {
             Assert.assertNotNull(input);

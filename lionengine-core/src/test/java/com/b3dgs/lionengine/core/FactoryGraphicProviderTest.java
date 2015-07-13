@@ -49,15 +49,15 @@ public class FactoryGraphicProviderTest
     private static final Config CONFIG = new Config(new Resolution(320, 240, 60), 32, true);
 
     /** Image. */
-    private static final Media MEDIA_IMAGE = new MediaMock("image.png");
+    protected static final Media MEDIA_IMAGE = new MediaMock("image.png");
     /** Raster. */
-    private static final Media MEDIA_RASTER = new MediaMock("raster.xml");
+    protected static final Media MEDIA_RASTER = new MediaMock("raster.xml");
     /** Raster error. */
-    private static final Media RASTER_ERROR = new MediaMock("raster_error.xml");
+    protected static final Media RASTER_ERROR = new MediaMock("raster_error.xml");
     /** Save image. */
-    private static Media mediaSave;
+    protected static Media mediaSave;
     /** Image. */
-    private static ImageBuffer image;
+    protected static ImageBuffer image;
 
     /**
      * Prepare test.
@@ -98,7 +98,7 @@ public class FactoryGraphicProviderTest
     /**
      * Test negative image width.
      */
-    @Test(expected = NegativeArraySizeException.class)
+    @Test(expected = LionEngineException.class)
     public void testNegativeImageWidth()
     {
         Graphics.createImageBuffer(-1, 1, Transparency.OPAQUE);
@@ -107,7 +107,7 @@ public class FactoryGraphicProviderTest
     /**
      * Test negative image height.
      */
-    @Test(expected = NegativeArraySizeException.class)
+    @Test(expected = LionEngineException.class)
     public void testNegativeImageHeight()
     {
         Graphics.createImageBuffer(1, -1, Transparency.OPAQUE);
@@ -302,10 +302,36 @@ public class FactoryGraphicProviderTest
     @Test
     public void testApplyFilter()
     {
-        final ImageBuffer filtered = Graphics.applyFilter(image, Filter.BILINEAR);
-        Assert.assertNotEquals(image, filtered);
-        Assert.assertEquals(image.getWidth(), filtered.getWidth());
-        Assert.assertEquals(image.getHeight(), filtered.getHeight());
+        for (final Filter filter : Filter.values())
+        {
+            final ImageBuffer filtered = Graphics.applyFilter(image, filter);
+            final int scale;
+            switch (filter)
+            {
+                case NONE:
+                    Assert.assertEquals(image, filtered);
+                    scale = 1;
+                    break;
+                case BILINEAR:
+                    Assert.assertNotEquals(image, filtered);
+                    scale = 1;
+                    break;
+                case HQ2X:
+                    Assert.assertNotEquals(image, filtered);
+                    scale = 2;
+                    break;
+                case HQ3X:
+                    Assert.assertNotEquals(image, filtered);
+                    scale = 3;
+                    break;
+                default:
+                    scale = 0;
+                    Assert.fail();
+            }
+            Assert.assertEquals(image.getWidth() * scale, filtered.getWidth());
+            Assert.assertEquals(image.getHeight() * scale, filtered.getHeight());
+
+        }
     }
 
     /**
