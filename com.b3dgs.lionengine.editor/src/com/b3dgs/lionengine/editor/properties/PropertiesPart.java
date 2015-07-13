@@ -80,16 +80,16 @@ public class PropertiesPart implements PropertiesProviderObject, PropertiesProvi
     /**
      * Check the properties extension point object.
      * 
-     * @param <P> The properties type.
+     * @param <T> The properties type.
      * @param clazz The class type.
      * @param id The extension id.
      * @param extension The extension attribute.
      * @return The properties instance from extension point or default one.
      */
-    private static <P> Collection<P> checkPropertiesExtensionPoint(Class<P> clazz, String id, String extension)
+    private static <T> Collection<T> checkPropertiesExtensionPoint(Class<T> clazz, String id, String extension)
     {
         final IConfigurationElement[] nodes = Platform.getExtensionRegistry().getConfigurationElementsFor(id);
-        final Collection<P> extensions = new ArrayList<>();
+        final Collection<T> extensions = new ArrayList<>();
         for (final IConfigurationElement node : nodes)
         {
             final String properties = node.getAttribute(extension);
@@ -97,7 +97,7 @@ public class PropertiesPart implements PropertiesProviderObject, PropertiesProvi
             {
                 try
                 {
-                    final P provider = UtilEclipse.createClass(properties, clazz);
+                    final T provider = UtilEclipse.createClass(properties, clazz);
                     extensions.add(provider);
                 }
                 catch (final ReflectiveOperationException exception)
