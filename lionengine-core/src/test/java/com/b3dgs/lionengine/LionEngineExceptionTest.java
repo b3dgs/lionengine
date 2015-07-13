@@ -185,6 +185,10 @@ public class LionEngineExceptionTest
                 exception.printStackTrace(writer);
             }
         }
+        if (out.isFile())
+        {
+            UtilFile.deleteFile(out);
+        }
     }
 
     /**
