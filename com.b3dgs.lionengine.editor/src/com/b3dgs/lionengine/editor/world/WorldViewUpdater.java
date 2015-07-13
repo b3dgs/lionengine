@@ -388,8 +388,8 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
      */
     private void updateHand()
     {
-        camera.teleport(UtilMath.getRounded(camera.getX(), map.getTileWidth()),
-                UtilMath.getRounded(camera.getY(), map.getTileHeight()));
+        camera.teleport(UtilMath.getRounded(camera.getX() + map.getTileWidth() / 2.0, map.getTileWidth()),
+                UtilMath.getRounded(camera.getY() + map.getTileHeight() / 2.0, map.getTileHeight()));
     }
 
     /**
