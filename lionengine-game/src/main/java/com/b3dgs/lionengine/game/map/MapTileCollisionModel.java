@@ -65,6 +65,81 @@ public class MapTileCollisionModel implements MapTileCollision
     private static final String ERROR_FORMULA = "Formula not found (may not have been loaded): ";
 
     /**
+     * Create the function draw to buffer.
+     * 
+     * @param collision The collision reference.
+     * @param tw The tile width.
+     * @param th The tile height.
+     * @return The created collision representation buffer.
+     */
+    public static ImageBuffer createFunctionDraw(CollisionFormula collision, int tw, int th)
+    {
+        final ImageBuffer buffer = Graphics.createImageBuffer(tw + 2, th + 2, Transparency.TRANSLUCENT);
+        final Graphic g = buffer.createGraphic();
+        g.setColor(ColorRgba.PURPLE);
+
+        createFunctionDraw(g, collision, tw, th);
+
+        g.dispose();
+        return buffer;
+    }
+
+    /**
+     * Create the function draw to buffer by computing all possible locations.
+     * 
+     * @param g The graphic buffer.
+     * @param formula The collision formula.
+     * @param tw The tile width.
+     * @param th The tile height.
+     */
+    private static void createFunctionDraw(Graphic g, CollisionFormula formula, int tw, int th)
+    {
+        for (int x = 0; x < tw; x++)
+        {
+            for (int y = 0; y < th; y++)
+            {
+                renderCollision(g, formula, th, x, y);
+            }
+        }
+    }
+
+    /**
+     * Render collision from current vector.
+     * 
+     * @param g The graphic buffer.
+     * @param formula The collision formula.
+     * @param th The tile height.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     */
+    private static void renderCollision(Graphic g, CollisionFormula formula, int th, int x, int y)
+    {
+        final CollisionFunction function = formula.getFunction();
+        final CollisionRange range = formula.getRange();
+        switch (range.getOutput())
+        {
+            case X:
+                final double fx = function.compute(y);
+                if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX())
+                        && UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
+                {
+                    g.drawRect((int) fx + 1, th - y - 1, 0, 0, false);
+                }
+                break;
+            case Y:
+                final double fy = function.compute(x);
+                if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY())
+                        && UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
+                {
+                    g.drawRect(x + 1, th - (int) fy - 1, 0, 0, false);
+                }
+                break;
+            default:
+                throw new RuntimeException("Unknown type: " + range.getOutput());
+        }
+    }
+
+    /**
      * Check the constraint with the specified tile.
      * 
      * @param constraints The constraint groups to check.
@@ -187,96 +262,6 @@ public class MapTileCollisionModel implements MapTileCollision
     {
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
-    }
-
-    /**
-     * Create the function draw to buffer.
-     * 
-     * @param collision The collision reference.
-     * @return The created collision representation buffer.
-     */
-    private ImageBuffer createFunctionDraw(CollisionFormula collision)
-    {
-        final ImageBuffer buffer = Graphics.createImageBuffer(map.getTileWidth() + 2, map.getTileHeight() + 2,
-                Transparency.TRANSLUCENT);
-        final Graphic g = buffer.createGraphic();
-        g.setColor(ColorRgba.PURPLE);
-
-        createFunctionDraw(g, collision);
-
-        g.dispose();
-        return buffer;
-    }
-
-    /**
-     * Create the function draw to buffer.
-     * 
-     * @param g The graphic buffer.
-     * @param formula The collision formula to draw.
-     */
-    private void createFunctionDraw(Graphic g, CollisionFormula formula)
-    {
-        for (int ox = 0; ox < map.getTileWidth(); ox++)
-        {
-            for (int oy = 0; oy < map.getTileHeight(); oy++)
-            {
-                createFunctionDrawFrom(g, formula, ox, oy);
-            }
-        }
-    }
-
-    /**
-     * Create the function draw to buffer by computing all possible locations.
-     * 
-     * @param g The graphic buffer.
-     * @param formula The collision formula.
-     * @param ox The old horizontal location.
-     * @param oy The old vertical location.
-     */
-    private void createFunctionDrawFrom(Graphic g, CollisionFormula formula, int ox, int oy)
-    {
-        for (int x = 0; x < map.getTileWidth(); x++)
-        {
-            for (int y = 0; y < map.getTileHeight(); y++)
-            {
-                renderCollision(g, formula, ox, oy, x, y);
-            }
-        }
-    }
-
-    /**
-     * Render collision from current vector.
-     * 
-     * @param g The graphic buffer.
-     * @param formula The collision formula.
-     * @param ox The old horizontal location.
-     * @param oy The old vertical location.
-     * @param x The current horizontal location.
-     * @param y The current vertical location.
-     */
-    private void renderCollision(Graphic g, CollisionFormula formula, int ox, int oy, int x, int y)
-    {
-        final CollisionFunction function = formula.getFunction();
-        final CollisionRange range = formula.getRange();
-        switch (range.getOutput())
-        {
-            case X:
-                final double fx = function.compute(oy);
-                if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
-                {
-                    g.drawRect((int) fx + 1, map.getTileHeight() - y - 1, 0, 0, false);
-                }
-                break;
-            case Y:
-                final double fy = function.compute(ox);
-                if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
-                {
-                    g.drawRect(ox + 1, map.getTileHeight() - (int) fy - 1, 0, 0, false);
-                }
-                break;
-            default:
-                throw new RuntimeException("Unknown type: " + range.getOutput());
-        }
     }
 
     /**
@@ -528,7 +513,7 @@ public class MapTileCollisionModel implements MapTileCollision
 
         for (final CollisionFormula collision : formulas.values())
         {
-            final ImageBuffer buffer = createFunctionDraw(collision);
+            final ImageBuffer buffer = createFunctionDraw(collision, map.getTileWidth(), map.getTileHeight());
             collisionCache.put(collision, buffer);
         }
     }
