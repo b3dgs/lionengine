@@ -20,19 +20,20 @@ package com.b3dgs.lionengine.editor.world.handler;
 import org.eclipse.e4.core.di.annotations.Execute;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 
 /**
- * Set grid handler.
+ * Zoom in handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class SetGridHandler
+public final class ZoomInHandler
 {
     /**
      * Create handler.
      */
-    public SetGridHandler()
+    public ZoomInHandler()
     {
         // Nothing to do
     }
@@ -45,7 +46,11 @@ public final class SetGridHandler
     public void execute()
     {
         final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-        part.getUpdater().switchGridEnabled();
+        final int tw = WorldViewModel.INSTANCE.getMap().getTileWidth();
+        final double scale = part.getUpdater().getZoomPercent() / 100.0;
+        final int step = (int) Math.ceil((tw * scale + 1) / tw * 100.0);
+        part.getUpdater().setZoomPercent(step);
+        part.setToolItemText("zoom-item", String.valueOf(step));
         part.update();
     }
 }

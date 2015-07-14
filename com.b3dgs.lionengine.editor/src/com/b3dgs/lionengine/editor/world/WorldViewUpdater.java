@@ -27,11 +27,13 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseWheelListener;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.game.Camera;
@@ -50,10 +52,16 @@ import com.b3dgs.lionengine.geom.Point;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyListener
+public class WorldViewUpdater implements MouseListener, MouseMoveListener, MouseWheelListener, KeyListener
 {
     /** Extension ID. */
     public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldViewUpdater";
+    /** Default zoom value. */
+    public static final int ZOOM_DEFAULT = 100;
+    /** Maximum zoom value. */
+    public static final int ZOOM_MAX = 500;
+    /** Minimum zoom value. */
+    public static final int ZOOM_MIN = 20;
     /** Grid movement sensibility. */
     private static final int GRID_MOVEMENT_SENSIBILITY = 8;
 
@@ -85,6 +93,8 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
     private int mouseY;
     /** Mouse click. */
     private int click;
+    /** Zoom level in percent. */
+    private int zoom = ZOOM_DEFAULT;
 
     /**
      * Create a world view renderer with grid enabled.
@@ -173,6 +183,16 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
     }
 
     /**
+     * Set the zoom percent value.
+     * 
+     * @param percent The new zoom percent value.
+     */
+    public void setZoomPercent(int percent)
+    {
+        zoom = UtilMath.fixBetween(percent, ZOOM_MIN, ZOOM_MAX);
+    }
+
+    /**
      * Get the handler object.
      * 
      * @return The handler object.
@@ -199,7 +219,7 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
      */
     public int getMouseX()
     {
-        return mouseX;
+        return (int) (mouseX / getZoomScale());
     }
 
     /**
@@ -209,7 +229,7 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
      */
     public int getMouseY()
     {
-        return mouseY;
+        return (int) (mouseY / getZoomScale()) - camera.getViewY();
     }
 
     /**
@@ -220,6 +240,28 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
     public Tile getSelectedTile()
     {
         return selectedTile;
+    }
+
+    /**
+     * Get the zoom percent value.
+     * 
+     * @return The zoom percent value.
+     */
+    public int getZoomPercent()
+    {
+        return zoom;
+    }
+
+    /**
+     * Get the zoom scale.
+     * 
+     * @return The zoom scale.
+     */
+    public double getZoomScale()
+    {
+        final double realScale = zoom / 100.0;
+        final double scale = Math.round(map.getTileWidth() * realScale) / (double) map.getTileWidth();
+        return scale;
     }
 
     /**
@@ -246,23 +288,21 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
      * Update the palette action on click down.
      * 
      * @param palette The palette type.
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
      */
-    protected void updatePaletteBefore(Enum<?> palette, int mx, int my)
+    protected void updatePaletteBefore(Enum<?> palette)
     {
         if (palette == PaletteType.POINTER_OBJECT)
         {
-            updatePointerFactory(mx, my);
-            updateSingleEntitySelection(mx, my);
+            updatePointerFactory();
+            updateSingleEntitySelection();
         }
         else if (palette == PaletteType.POINTER_TILE)
         {
-            updatePointerMap(mx, my);
+            updatePointerMap();
         }
         else if (palette == PaletteType.SELECTION)
         {
-            updateSelectionBefore(mx, my);
+            updateSelectionBefore();
         }
     }
 
@@ -270,17 +310,19 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
      * Update the palette action when moving mouse.
      * 
      * @param palette The palette type.
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
+     * @param oldMx The mouse old x.
+     * @param oldMy The mouse old y.
      */
-    protected void updatePaletteMoving(Enum<?> palette, int mx, int my)
+    protected void updatePaletteMoving(Enum<?> palette, int oldMx, int oldMy)
     {
+        final int mx = getMouseX();
+        final int my = getMouseY();
         if (palette == PaletteType.POINTER_OBJECT)
         {
             objectControl.updateMouseOver(mx, my);
             if (getClick() == Mouse.LEFT)
             {
-                objectControl.updateDragging(mouseX, mouseY, mx, my);
+                objectControl.updateDragging(oldMx, oldMy, mx, my);
             }
         }
         else if (palette == PaletteType.SELECTION && click == Mouse.LEFT)
@@ -291,12 +333,12 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
             }
             else
             {
-                objectControl.updateDragging(mouseX, mouseY, mx, my);
+                objectControl.updateDragging(oldMx, oldMy, mx, my);
             }
         }
         else if (palette == PaletteType.HAND && click > 0)
         {
-            updateCamera(mouseX - mx, my - mouseY, 0);
+            updateCamera(oldMx - mx, my - oldMy, 0);
         }
     }
 
@@ -304,14 +346,12 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
      * Update the palette action on click up.
      * 
      * @param palette The palette type.
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
      */
-    protected void updatePaletteAfter(Enum<?> palette, int mx, int my)
+    protected void updatePaletteAfter(Enum<?> palette)
     {
         if (palette == PaletteType.SELECTION)
         {
-            updateSelectionAfter(mx, my);
+            updateSelectionAfter();
         }
         else if (palette == PaletteType.HAND)
         {
@@ -321,14 +361,11 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
 
     /**
      * Update the object selection with pointer.
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
      */
-    protected void updateSingleEntitySelection(int mx, int my)
+    protected void updateSingleEntitySelection()
     {
         objectControl.unSelectEntities();
-        final ObjectGame object = objectControl.getObject(mx, my);
+        final ObjectGame object = objectControl.getObject(getMouseX(), getMouseY());
         if (object != null)
         {
             objectControl.setObjectSelection(object, true);
@@ -341,15 +378,12 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
 
     /**
      * Update the pointer in map case.
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
      */
-    private void updatePointerMap(int mx, int my)
+    private void updatePointerMap()
     {
         if (map.isCreated())
         {
-            final Point point = Tools.getMouseTile(map, camera, mx, my);
+            final Point point = Tools.getMouseTile(map, camera, getMouseX(), getMouseY());
             selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
         }
         else
@@ -364,12 +398,11 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
 
     /**
      * Update the pointer in factory case.
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
      */
-    private void updatePointerFactory(int mx, int my)
+    private void updatePointerFactory()
     {
+        final int mx = getMouseX();
+        final int my = getMouseY();
         if (!objectControl.isDragging())
         {
             if (click == Mouse.LEFT && !objectControl.hasOver() && !objectControl.hasSelection())
@@ -388,8 +421,10 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
      */
     private void updateHand()
     {
-        camera.teleport(UtilMath.getRounded(camera.getX() + map.getTileWidth() / 2.0, map.getTileWidth()),
-                UtilMath.getRounded(camera.getY() + map.getTileHeight() / 2.0, map.getTileHeight()));
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        camera.teleport(UtilMath.getRounded(camera.getX() + tw / 2.0, tw),
+                UtilMath.getRounded(camera.getY() - th / 2.0, th));
     }
 
     /**
@@ -411,7 +446,7 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
      * @param vy The keyboard vertical movement.
      * @param step The movement sensibility.
      */
-    private void updateCamera(int vx, int vy, int step)
+    private void updateCamera(double vx, double vy, int step)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
@@ -427,12 +462,11 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
 
     /**
      * Update the selection when clicking (select single object, or unselect all previous).
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
      */
-    private void updateSelectionBefore(int mx, int my)
+    private void updateSelectionBefore()
     {
+        final int mx = getMouseX();
+        final int my = getMouseY();
         final ObjectGame object = objectControl.getObject(mx, my);
         selection.reset();
 
@@ -449,13 +483,10 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
 
     /**
      * Update the selection when releasing click (update the objects flags).
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
      */
-    private void updateSelectionAfter(int mx, int my)
+    private void updateSelectionAfter()
     {
-        selection.end(mx, my);
+        selection.end(getMouseX(), getMouseY());
         if (selection.isSelected())
         {
             objectControl.selectEntities(selection.getArea());
@@ -500,11 +531,11 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
     {
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
-        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
         click = mouseEvent.button;
-
-        updatePaletteBefore(palette, mx, my);
         updateMouse(mx, my);
+
+        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
+        updatePaletteBefore(palette);
 
         if (mouseEvent.button == Mouse.MIDDLE)
         {
@@ -517,10 +548,10 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
     {
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
-        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
-
-        updatePaletteAfter(palette, mx, my);
         updateMouse(mx, my);
+
+        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
+        updatePaletteAfter(palette);
 
         objectControl.stopDragging();
         for (final ObjectGame object : objectControl.getSelectedEnties())
@@ -528,8 +559,9 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
             if (object.hasTrait(Transformable.class))
             {
                 final Transformable transformable = object.getTrait(Transformable.class);
-                objectControl.setObjectLocation(transformable, (int) transformable.getX(), (int) transformable.getY(),
-                        -1);
+                final int x = (int) transformable.getX();
+                final int y = (int) transformable.getY();
+                objectControl.setObjectLocation(transformable, x, y, -1);
             }
         }
         click = 0;
@@ -550,10 +582,24 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
     {
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
+        final int oldMx = getMouseX();
+        final int oldMy = getMouseY();
+        updateMouse(mx, my);
 
         final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
-        updatePaletteMoving(palette, mx, my);
-        updateMouse(mx, my);
+        updatePaletteMoving(palette, oldMx, oldMy);
+    }
+
+    /*
+     * MouseWheelListener
+     */
+
+    @Override
+    public void mouseScrolled(MouseEvent event)
+    {
+        zoom = UtilMath.fixBetween(zoom + (int) Math.ceil(zoom * event.count / 100.0), ZOOM_MIN, ZOOM_MAX);
+        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        part.setToolItemText("zoom-item", String.valueOf(zoom));
     }
 
     /*
@@ -563,9 +609,9 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
     @Override
     public void keyPressed(KeyEvent keyEvent)
     {
-        final int vx;
-        final int vy;
         final int code = keyEvent.keyCode;
+
+        final int vx;
         if (code == SWT.ARROW_LEFT)
         {
             vx = -1;
@@ -578,6 +624,8 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
         {
             vx = 0;
         }
+
+        final int vy;
         if (code == SWT.ARROW_DOWN)
         {
             vy = -1;
@@ -590,7 +638,9 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, KeyLi
         {
             vy = 0;
         }
-        updateCamera(vx, vy, GRID_MOVEMENT_SENSIBILITY);
+
+        final double scale = zoom / 100.0;
+        updateCamera(vx / scale, vy / scale, GRID_MOVEMENT_SENSIBILITY);
     }
 
     @Override

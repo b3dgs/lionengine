@@ -42,6 +42,8 @@ public final class Constant
     public static final String STAR = "*";
     /** At string. */
     public static final String AT = "@";
+    /** Percent string. */
+    public static final String PERCENT = "%";
     /** Rate unit. */
     public static final String UNIT_RATE = "Hz";
     /** Maximum port value. */

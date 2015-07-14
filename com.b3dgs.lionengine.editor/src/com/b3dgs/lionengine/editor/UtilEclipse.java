@@ -39,7 +39,10 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.osgi.framework.Bundle;
 
@@ -489,6 +492,33 @@ public final class UtilEclipse
                 if (element.getWidget() instanceof ToolItem)
                 {
                     ((ToolItem) element.getWidget()).setEnabled(enabled);
+                }
+            }
+        }
+    }
+
+    /**
+     * Set the tool item text.
+     * 
+     * @param toolbar The tool bar reference.
+     * @param name The element name (relative to the tool bar ID).
+     * @param text The text value.
+     */
+    public static void setToolItemText(MToolBar toolbar, String name, String text)
+    {
+        for (final MToolBarElement element : toolbar.getChildren())
+        {
+            if (element.getElementId().contains(name))
+            {
+                if (element.getWidget() instanceof Composite)
+                {
+                    for (final Control control : ((Composite) element.getWidget()).getChildren())
+                    {
+                        if (control instanceof Text)
+                        {
+                            ((Text) control).setText(text);
+                        }
+                    }
                 }
             }
         }

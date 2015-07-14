@@ -95,6 +95,7 @@ public class WorldViewPart implements TileSelectionListener
         worldViewUpdater.addListenerTile(this);
         composite.addMouseListener(worldViewUpdater);
         composite.addMouseMoveListener(worldViewUpdater);
+        composite.addMouseWheelListener(worldViewUpdater);
         composite.addKeyListener(worldViewUpdater);
         services.add(worldViewUpdater);
 
@@ -102,6 +103,7 @@ public class WorldViewPart implements TileSelectionListener
         composite.addPaintListener(worldViewRenderer);
         composite.addMouseListener(worldViewRenderer);
         composite.addMouseMoveListener(worldViewRenderer);
+        composite.addMouseWheelListener(worldViewRenderer);
         composite.addKeyListener(worldViewRenderer);
 
         Display.getDefault().asyncExec(new Runnable()
@@ -163,19 +165,22 @@ public class WorldViewPart implements TileSelectionListener
     }
 
     /**
-     * Switch the grid enabled state.
+     * Set the tool item text.
+     * 
+     * @param item The item id extract.
+     * @param text The item text.
      */
-    public void switchGridEnabled()
+    public void setToolItemText(String item, String text)
     {
-        worldViewUpdater.switchGridEnabled();
-    }
-
-    /**
-     * Switch the collisions enabled state.
-     */
-    public void switchCollisionsEnabled()
-    {
-        worldViewUpdater.switchCollisionsEnabled();
+        final MPart part = partService.findPart(WorldViewPart.ID);
+        if (part != null)
+        {
+            final MToolBar toolBar = part.getToolbar();
+            if (toolBar != null)
+            {
+                UtilEclipse.setToolItemText(toolBar, item, text);
+            }
+        }
     }
 
     /**

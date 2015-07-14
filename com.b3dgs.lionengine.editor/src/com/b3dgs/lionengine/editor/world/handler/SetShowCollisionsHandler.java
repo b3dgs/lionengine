@@ -48,7 +48,7 @@ public final class SetShowCollisionsHandler
     public void execute()
     {
         final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-        part.switchCollisionsEnabled();
+        part.getUpdater().switchCollisionsEnabled();
         part.update();
     }
 }

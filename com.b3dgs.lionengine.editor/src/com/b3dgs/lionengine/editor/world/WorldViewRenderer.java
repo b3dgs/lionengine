@@ -23,15 +23,19 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Transform;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -46,7 +50,8 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldViewRenderer implements PaintListener, MouseListener, MouseMoveListener, KeyListener
+public class WorldViewRenderer implements PaintListener, MouseListener, MouseMoveListener, MouseWheelListener,
+                               KeyListener
 {
     /** Extension ID. */
     public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldViewRenderer";
@@ -85,30 +90,38 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
     }
 
     /**
-     * Draw the grid.
+     * Render world background.
      * 
      * @param g The graphic output.
-     * @param tw Horizontal grid spacing (width).
-     * @param th Vertical grid spacing (height).
-     * @param areaX Horizontal global grid size.
-     * @param areaY Vertical global grid size.
-     * @param color Grid color.
+     * @param width The world width.
+     * @param height The world height.
      */
-    private static void drawGrid(Graphic g, int tw, int th, int areaX, int areaY, ColorRgba color)
+    private static void renderBackground(Graphic g, int width, int height)
     {
-        g.setColor(color);
-        for (int v = 0; v <= areaY; v += tw)
-        {
-            g.drawLine(0, v, areaX, v);
-        }
-        for (int h = 0; h <= areaX; h += th)
-        {
-            g.drawLine(h, 0, h, areaY);
-        }
+        g.setColor(ColorRgba.GRAY_LIGHT);
+        g.drawRect(0, 0, width, height, true);
+    }
+
+    /**
+     * Render the world borders (to keep only map visibility area).
+     * 
+     * @param g The graphic output.
+     * @param width The world width.
+     * @param height The world height.
+     * @param areaX The rendering width.
+     * @param areaY The rendering height.
+     */
+    private static void renderBorders(Graphic g, int width, int height, int areaX, int areaY)
+    {
+        g.setColor(ColorRgba.GRAY_LIGHT);
+        g.drawRect(areaX, 0, width - areaX, height, true);
+        g.drawRect(0, 0, width, height - areaY, true);
     }
 
     /** Part service. */
     protected final EPartService partService;
+    /** Scale transform. */
+    private final Transform transform = Graphics.createTransform();
     /** The parent. */
     private final Composite parent;
     /** Camera reference. */
@@ -147,12 +160,23 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
      * Render the world and its components.
      * 
      * @param g The graphic output.
-     * @param areaX The horizontal rendering area.
-     * @param areaY The vertical rendering area.
+     * @param width The buffer width.
+     * @param height The buffer height.
      */
-    protected void render(Graphic g, int areaX, int areaY)
+    protected void render(Graphic g, int width, int height)
     {
-        renderMap(g, areaX, areaY);
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        final int areaX = UtilMath.getRounded(width, tw);
+        final int areaY = UtilMath.getRounded(height, th);
+        final int offsetY = height - areaY;
+
+        camera.setView(0, offsetY, areaX, areaY);
+        camera.setLimits(map);
+
+        renderBackground(g, width, height);
+
+        renderMap(g, areaX, areaY, offsetY);
         renderEntities(g);
         renderOverAndSelectedEntities(g);
 
@@ -160,8 +184,16 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
         if (selectedTile != null)
         {
             renderSelectedGroup(g, selectedTile);
+            renderSelectedTile(g, selectedTile);
         }
         renderSelection(g);
+
+        if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT)
+        {
+            renderCursor(g, tw, th, areaX, areaY, offsetY);
+        }
+
+        renderBorders(g, width, height, areaX, areaY);
     }
 
     /**
@@ -170,11 +202,12 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
      * @param g The graphic output.
      * @param areaX The horizontal rendering area.
      * @param areaY The vertical rendering area.
+     * @param offsetY The vertical offset.
      */
-    protected void renderMap(Graphic g, int areaX, int areaY)
+    protected void renderMap(Graphic g, int areaX, int areaY, int offsetY)
     {
         g.setColor(ColorRgba.BLUE);
-        g.drawRect(0, 0, areaX, areaY, true);
+        g.drawRect(0, offsetY, areaX, areaY + offsetY, true);
 
         if (map.getSheetsNumber() > 0)
         {
@@ -226,9 +259,7 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
      */
     private void renderSelectedGroup(Graphic g, Tile selectedTile)
     {
-        // Render selected group
         g.setColor(COLOR_MOUSE_SELECTION);
-        final int th = map.getTileHeight();
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
             for (int tx = 0; tx < map.getInTileWidth(); tx++)
@@ -236,17 +267,26 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null && groupEquals(selectedTile.getGroup(), tile.getGroup()))
                 {
-                    g.drawRect((int) camera.getViewpointX(tile.getX()), (int) camera.getViewpointY(tile.getY()) - th,
-                            tile.getWidth(), tile.getHeight(), true);
+                    final int x = (int) camera.getViewpointX(tile.getX());
+                    final int y = (int) camera.getViewpointY(tile.getY()) - map.getTileHeight();
+                    g.drawRect(x, y, tile.getWidth(), tile.getHeight(), true);
                 }
             }
         }
+    }
 
-        // Render selected tile
+    /**
+     * Render the selected tile.
+     * 
+     * @param g The graphic output.
+     * @param selectedTile The selected tile reference.
+     */
+    private void renderSelectedTile(Graphic g, Tile selectedTile)
+    {
         g.setColor(COLOR_TILE_SELECTED);
-        g.drawRect((int) camera.getViewpointX(selectedTile.getX()),
-                (int) camera.getViewpointY(selectedTile.getY()) - th, selectedTile.getWidth(), selectedTile.getHeight(),
-                true);
+        final int x = (int) camera.getViewpointX(selectedTile.getX());
+        final int y = (int) camera.getViewpointY(selectedTile.getY()) - map.getTileHeight();
+        g.drawRect(x, y, selectedTile.getWidth(), selectedTile.getHeight(), true);
     }
 
     /**
@@ -257,7 +297,6 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
     private void renderOverAndSelectedEntities(Graphic g)
     {
         final int th = map.getTileHeight();
-
         for (final Transformable object : handlerObject.get(Transformable.class))
         {
             final int sx = (int) object.getX();
@@ -275,6 +314,33 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
     }
 
     /**
+     * Draw the grid.
+     * 
+     * @param g The graphic output.
+     * @param scale The scale factor.
+     * @param width Horizontal global grid size.
+     * @param height Vertical global grid size.
+     */
+    private void renderGrid(Graphic g, double scale, int width, int height)
+    {
+        final int tw = (int) (map.getTileWidth() * scale);
+        final int th = (int) (map.getTileHeight() * scale);
+        final int gridX = UtilMath.getRounded(width, tw);
+        final int gridY = UtilMath.getRounded(height, th);
+        final int offsetY = height - gridY - (int) Math.floor(1 * scale);
+
+        g.setColor(COLOR_GRID);
+        for (int v = 0; v <= gridY; v += tw)
+        {
+            g.drawLine(0, v + offsetY, gridX, v + offsetY);
+        }
+        for (int h = 0; h <= gridX; h += th)
+        {
+            g.drawLine(h, offsetY, h, gridY + offsetY);
+        }
+    }
+
+    /**
      * Render the cursor.
      * 
      * @param g The graphic output.
@@ -282,8 +348,9 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
      * @param th The tile height.
      * @param areaX Maximum width.
      * @param areaY Maximum height.
+     * @param offsetY The vertical offset.
      */
-    private void renderCursor(Graphic g, int tw, int th, int areaX, int areaY)
+    private void renderCursor(Graphic g, int tw, int th, int areaX, int areaY, int offsetY)
     {
         if (!selection.isSelecting() && !objectControl.isDragging() && !objectControl.hasOver())
         {
@@ -292,7 +359,7 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
             if (mouseX >= 0 && mouseY >= 0 && mouseX < areaX && mouseY < areaY)
             {
                 final int mx = UtilMath.getRounded(mouseX, tw);
-                final int my = UtilMath.getRounded(mouseY, th);
+                final int my = UtilMath.getRounded(mouseY, th) + offsetY;
 
                 g.setColor(COLOR_MOUSE_SELECTION);
                 g.drawRect(mx, my, tw, th, true);
@@ -307,38 +374,28 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
     @Override
     public void paintControl(PaintEvent paintEvent)
     {
-        final int width = paintEvent.width;
-        final int height = paintEvent.height;
-        final GC gc = paintEvent.gc;
-        final Graphic g = Graphics.createGraphic();
-        g.setGraphic(gc);
-
         if (map.isCreated())
         {
-            final int tw = map.getTileWidth();
-            final int th = map.getTileHeight();
-            final int areaX = UtilMath.getRounded(width, tw);
-            final int areaY = UtilMath.getRounded(height, th);
+            final double scale = worldViewUpdater.getZoomScale();
+            final int width = (int) (paintEvent.width / scale);
+            final int height = (int) (paintEvent.height / scale);
 
-            camera.setView(0, 0, areaX, areaY);
-            camera.setLimits(map);
+            final ImageBuffer buffer = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
+            final Graphic g = buffer.createGraphic();
+            render(g, width, height);
+            g.dispose();
 
-            g.setColor(ColorRgba.GRAY_LIGHT);
-            g.drawRect(0, 0, width, height, true);
+            final GC gc = paintEvent.gc;
+            final Graphic graphic = Graphics.createGraphic();
+            graphic.setGraphic(gc);
 
-            render(g, areaX, areaY);
-            if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT)
-            {
-                renderCursor(g, tw, th, areaX, areaY);
-            }
+            transform.scale(scale, scale);
+            graphic.drawImage(buffer, transform, 0, 0);
+
             if (worldViewUpdater.isGridEnabled())
             {
-                drawGrid(g, tw, th, areaX, areaY, COLOR_GRID);
+                renderGrid(graphic, scale, paintEvent.width, paintEvent.height);
             }
-
-            g.setColor(ColorRgba.GRAY_LIGHT);
-            g.drawRect(areaX, 0, width - areaX, height, true);
-            g.drawRect(0, areaY, width, height - areaY, true);
         }
     }
 
@@ -375,17 +432,27 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
     }
 
     /*
+     * MouseWheelListener
+     */
+
+    @Override
+    public void mouseScrolled(MouseEvent event)
+    {
+        updateRender();
+    }
+
+    /*
      * KeyListener
      */
 
     @Override
-    public void keyPressed(KeyEvent e)
+    public void keyPressed(KeyEvent event)
     {
         updateRender();
     }
 
     @Override
-    public void keyReleased(KeyEvent e)
+    public void keyReleased(KeyEvent event)
     {
         // Nothing to do
     }

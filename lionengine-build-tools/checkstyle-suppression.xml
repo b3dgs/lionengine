@@ -51,7 +51,8 @@
     
     <suppress checks="MagicNumber" files="[\\/]com.b3dgs.lionengine.editor[\\/]" />
     <suppress checks="ClassDataAbstractionCoupling" files="[\\/]com.b3dgs.lionengine.editor[\\/]" />
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.editor.UtilEclipse" lines="317" />
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.editor.UtilEclipse" lines="320, 517" />
+    <suppress checks="FanOut" files="com.b3dgs.lionengine.editor.UtilEclipse" />
 	<suppress checks="FanOut" files="com.b3dgs.lionengine.editor.UtilSwt" />
 	<suppress checks="EmptyBlock" files="com.b3dgs.lionengine.editor.project.ProjectsPart" lines="261" />
     <suppress checks="FanOut" files="com.b3dgs.lionengine.editor.project.dialog.formula.FormulasProperties" />
