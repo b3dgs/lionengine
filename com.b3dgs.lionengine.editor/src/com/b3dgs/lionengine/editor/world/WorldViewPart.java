@@ -36,7 +36,9 @@ import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
@@ -46,7 +48,7 @@ import com.b3dgs.lionengine.game.object.Services;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldViewPart implements TileSelectionListener
+public class WorldViewPart implements Focusable, TileSelectionListener
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.world-view";
@@ -88,6 +90,7 @@ public class WorldViewPart implements TileSelectionListener
 
         composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        composite.addMouseTrackListener(UtilSwt.createFocusListener(this));
 
         final Services services = WorldViewModel.INSTANCE.getServices();
 
@@ -216,6 +219,7 @@ public class WorldViewPart implements TileSelectionListener
     /**
      * Force focus.
      */
+    @Override
     @Focus
     public void focus()
     {

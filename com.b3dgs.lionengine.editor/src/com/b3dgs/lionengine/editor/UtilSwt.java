@@ -26,6 +26,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -415,6 +416,36 @@ public final class UtilSwt
         registerDirty(combo, false);
         combo.setText(value);
         registerDirty(combo, true);
+    }
+
+    /**
+     * Create the focusable listener.
+     * 
+     * @param focusable The focusable element.
+     * @return The listener instance.
+     */
+    public static MouseTrackListener createFocusListener(final Focusable focusable)
+    {
+        return new MouseTrackListener()
+        {
+            @Override
+            public void mouseEnter(MouseEvent event)
+            {
+                focusable.focus();
+            }
+
+            @Override
+            public void mouseExit(MouseEvent event)
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void mouseHover(MouseEvent event)
+            {
+                // Nothing to do
+            }
+        };
     }
 
     /**

@@ -42,7 +42,9 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.project.handler.CollisionsEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.FormulasEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler;
@@ -60,7 +62,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ProjectsPart
+public final class ProjectsPart implements Focusable
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.projects";
@@ -136,6 +138,7 @@ public final class ProjectsPart
 
         tree = new Tree(parent, SWT.NONE);
         tree.setLayoutData(new GridData(GridData.FILL_BOTH));
+        tree.addMouseTrackListener(UtilSwt.createFocusListener(this));
         tree.addMouseListener(new MouseAdapter()
         {
             @Override
@@ -234,8 +237,9 @@ public final class ProjectsPart
     /**
      * Set the focus.
      */
+    @Override
     @Focus
-    public void setFocus()
+    public void focus()
     {
         tree.setFocus();
     }

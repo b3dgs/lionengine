@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -51,7 +52,7 @@ import com.b3dgs.lionengine.game.map.Tile;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesPart implements PropertiesProviderObject, PropertiesProviderTile
+public class PropertiesPart implements Focusable, PropertiesProviderObject, PropertiesProviderTile
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.properties";
@@ -140,6 +141,7 @@ public class PropertiesPart implements PropertiesProviderObject, PropertiesProvi
         properties.setHeaderVisible(true);
         properties.addListener(SWT.Collapse, listener);
         properties.addListener(SWT.Expand, listener);
+        properties.addMouseTrackListener(UtilSwt.createFocusListener(this));
 
         final TreeColumn key = new TreeColumn(properties, SWT.LEFT);
         key.setText(Messages.Properties_Key);
@@ -217,8 +219,9 @@ public class PropertiesPart implements PropertiesProviderObject, PropertiesProvi
     /**
      * Set the focus.
      */
+    @Override
     @Focus
-    public void setFocus()
+    public void focus()
     {
         properties.setFocus();
     }
