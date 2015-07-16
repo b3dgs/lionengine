@@ -29,6 +29,10 @@ public enum Origin
 {
     /** Top left origin point. */
     TOP_LEFT,
+    /** Bottom left origin point. */
+    BOTTOM_LEFT,
+    /** Bottom right origin point. */
+    BOTTOM_RIGHT,
     /** Center center origin point. */
     MIDDLE,
     /** Center bottom origin point. */
@@ -52,7 +56,11 @@ public enum Origin
         switch (this)
         {
             case TOP_LEFT:
+            case BOTTOM_LEFT:
                 result = x;
+                break;
+            case BOTTOM_RIGHT:
+                result = x - width;
                 break;
             case MIDDLE:
             case CENTER_TOP:
@@ -100,6 +108,8 @@ public enum Origin
             case CENTER_TOP:
                 result = y;
                 break;
+            case BOTTOM_LEFT:
+            case BOTTOM_RIGHT:
             case CENTER_BOTTOM:
                 result = y - height;
                 break;

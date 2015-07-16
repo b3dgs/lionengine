@@ -29,6 +29,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.Activator;
@@ -95,6 +96,10 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
     private int click;
     /** Zoom level in percent. */
     private int zoom = ZOOM_DEFAULT;
+    /** Vertical offset. */
+    private int offsetY;
+    /** Old scale. */
+    private double oldScale;
 
     /**
      * Create a world view renderer with grid enabled.
@@ -193,6 +198,16 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
     }
 
     /**
+     * Set the vertical offset.
+     * 
+     * @param offsetY The vertical offset.
+     */
+    public void setOffsetY(int offsetY)
+    {
+        this.offsetY = offsetY;
+    }
+
+    /**
      * Get the handler object.
      * 
      * @return The handler object.
@@ -229,7 +244,27 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
      */
     public int getMouseY()
     {
-        return (int) (mouseY / getZoomScale()) - camera.getViewY();
+        return (int) (mouseY / getZoomScale()) - offsetY;
+    }
+
+    /**
+     * Get the real horizontal mouse location.
+     * 
+     * @return The real horizontal mouse location.
+     */
+    public int getMx()
+    {
+        return mouseX;
+    }
+
+    /**
+     * Get the real vertical mouse location.
+     * 
+     * @return The real vertical mouse location.
+     */
+    public int getMy()
+    {
+        return mouseY;
     }
 
     /**
@@ -510,6 +545,31 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
     }
 
     /**
+     * Lock scroll to cursor.
+     */
+    private void updateScrollToCursor()
+    {
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+
+        final double scaleDiff = getZoomScale() - oldScale;
+
+        final double ox;
+        final double oy;
+        if (scaleDiff > 0)
+        {
+            ox = Origin.BOTTOM_LEFT.getX(getMouseX(), camera.getWidth()) * scaleDiff;
+            oy = Origin.BOTTOM_LEFT.getY(getMouseY(), camera.getHeight()) * scaleDiff;
+        }
+        else
+        {
+            ox = Origin.MIDDLE.getX(getMouseX(), camera.getWidth()) * scaleDiff;
+            oy = Origin.MIDDLE.getY(getMouseY(), camera.getHeight()) * scaleDiff;
+        }
+        camera.teleport(UtilMath.getRounded(camera.getX() + ox, tw), UtilMath.getRounded(camera.getY() - oy, th));
+    }
+
+    /**
      * Check if property can be past from middle click.
      */
     private void checkPastProperty()
@@ -597,9 +657,11 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
     @Override
     public void mouseScrolled(MouseEvent event)
     {
+        oldScale = getZoomScale();
         zoom = UtilMath.fixBetween(zoom + (int) Math.ceil(zoom * event.count / 100.0), ZOOM_MIN, ZOOM_MAX);
         final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         part.setToolItemText("zoom-item", String.valueOf(zoom));
+        updateScrollToCursor();
     }
 
     /*

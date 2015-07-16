@@ -56,6 +56,20 @@ public class OriginTest
                     Assert.assertEquals(3.0, origin.getX(3, 0), 0.001);
                     Assert.assertEquals(3.0, origin.getY(3, 0), 0.001);
                     break;
+                case BOTTOM_LEFT:
+                    Assert.assertEquals(3.0, origin.getX(3, 2), 0.001);
+                    Assert.assertEquals(1.0, origin.getY(3, 2), 0.001);
+
+                    Assert.assertEquals(3.0, origin.getX(3, 0), 0.001);
+                    Assert.assertEquals(3.0, origin.getY(3, 0), 0.001);
+                    break;
+                case BOTTOM_RIGHT:
+                    Assert.assertEquals(1.0, origin.getX(3, 2), 0.001);
+                    Assert.assertEquals(1.0, origin.getY(3, 2), 0.001);
+
+                    Assert.assertEquals(3.0, origin.getX(3, 0), 0.001);
+                    Assert.assertEquals(3.0, origin.getY(3, 0), 0.001);
+                    break;
                 case CENTER_TOP:
                     Assert.assertEquals(2.0, origin.getX(3, 2), 0.001);
                     Assert.assertEquals(3.0, origin.getY(3, 2), 0.001);
