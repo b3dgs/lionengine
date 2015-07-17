@@ -357,6 +357,7 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
 
             transform.scale(scale, scale);
             g.drawImage(buffer, transform, 0, 0);
+            buffer.dispose();
 
             final int tw = (int) Math.ceil(map.getTileWidth() * scale);
             final int th = (int) Math.ceil(map.getTileHeight() * scale);
