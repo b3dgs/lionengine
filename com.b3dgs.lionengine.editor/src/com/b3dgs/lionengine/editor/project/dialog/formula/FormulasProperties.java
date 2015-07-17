@@ -247,6 +247,27 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
     }
 
     /**
+     * Create the template chooser.
+     * 
+     * @param parent The parent composite.
+     */
+    private void createTemplate(Composite parent)
+    {
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final Combo template = UtilSwt.createCombo(Messages.EditFormulasDialog_Template, parent,
+                FormulaTemplate.values());
+        template.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent event)
+            {
+                final CollisionFormula formula = ((FormulaTemplate) template.getData()).getFormula(map);
+                notifyObjectSelected(formula);
+            }
+        });
+    }
+
+    /**
      * Create the range properties.
      * 
      * @param parent The parent composite.
@@ -402,8 +423,9 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         final Group preview = new Group(composite, SWT.NONE);
         preview.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         preview.setLayout(new GridLayout(1, false));
-        preview.setText(Messages.EditFormulasDialog_Range);
+        preview.setText(Messages.EditFormulasDialog_Preview);
         createPreview(preview);
+        createTemplate(preview);
 
         final Group range = new Group(composite, SWT.NONE);
         range.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));

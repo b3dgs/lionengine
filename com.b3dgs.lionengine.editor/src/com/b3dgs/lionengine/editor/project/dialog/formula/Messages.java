@@ -38,6 +38,10 @@ public final class Messages extends NLS
     public static String EditFormulasDialog_HeaderTitle;
     /** Edit formulas dialog description header. */
     public static String EditFormulasDialog_HeaderDesc;
+    /** Edit formulas preview. */
+    public static String EditFormulasDialog_Preview;
+    /** Edit formulas template. */
+    public static String EditFormulasDialog_Template;
     /** Edit formulas range. */
     public static String EditFormulasDialog_Range;
     /** Range output. */

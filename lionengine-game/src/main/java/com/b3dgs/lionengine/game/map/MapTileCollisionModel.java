@@ -74,7 +74,7 @@ public class MapTileCollisionModel implements MapTileCollision
      */
     public static ImageBuffer createFunctionDraw(CollisionFormula collision, int tw, int th)
     {
-        final ImageBuffer buffer = Graphics.createImageBuffer(tw + 2, th + 2, Transparency.TRANSLUCENT);
+        final ImageBuffer buffer = Graphics.createImageBuffer(tw, th, Transparency.TRANSLUCENT);
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.PURPLE);
 
@@ -123,7 +123,7 @@ public class MapTileCollisionModel implements MapTileCollision
                 if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX())
                         && UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
                 {
-                    g.drawRect((int) fx + 1, th - y - 1, 0, 0, false);
+                    g.drawRect((int) fx, th - y - 1, 0, 0, false);
                 }
                 break;
             case Y:
@@ -131,7 +131,7 @@ public class MapTileCollisionModel implements MapTileCollision
                 if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY())
                         && UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
                 {
-                    g.drawRect(x + 1, th - (int) fy - 1, 0, 0, false);
+                    g.drawRect(x, th - (int) fy - 1, 0, 0, false);
                 }
                 break;
             default:
