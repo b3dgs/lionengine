@@ -34,6 +34,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
@@ -184,6 +185,29 @@ public class WorldViewPart implements Focusable, TileSelectionListener
                 UtilEclipse.setToolItemText(toolBar, item, text);
             }
         }
+    }
+
+    /**
+     * Get the tool item.
+     * 
+     * @param <T> The element type.
+     * @param item The item id extract.
+     * @param clazz The element class.
+     * @return The composite found.
+     * @throws LionEngineException If not found.
+     */
+    public <T> T getToolItem(String item, Class<T> clazz) throws LionEngineException
+    {
+        final MPart part = partService.findPart(WorldViewPart.ID);
+        if (part != null)
+        {
+            final MToolBar toolBar = part.getToolbar();
+            if (toolBar != null)
+            {
+                return UtilEclipse.getToolItem(toolBar, item, clazz);
+            }
+        }
+        throw new LionEngineException(UtilEclipse.ERROR_ITEM, item);
     }
 
     /**

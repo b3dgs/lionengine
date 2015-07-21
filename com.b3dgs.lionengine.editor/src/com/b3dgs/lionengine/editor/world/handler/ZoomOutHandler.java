@@ -22,6 +22,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.ZoomItem;
 
 /**
  * Zoom out handler.
@@ -30,6 +31,9 @@ import com.b3dgs.lionengine.editor.world.WorldViewPart;
  */
 public final class ZoomOutHandler
 {
+    /** Element ID. */
+    public static final String ID = "zoom-out";
+
     /**
      * Create handler.
      */
@@ -50,7 +54,7 @@ public final class ZoomOutHandler
         final double scale = part.getUpdater().getZoomPercent() / 100.0;
         final int step = (int) Math.ceil((tw * scale - 1) / tw * 100.0);
         part.getUpdater().setZoomPercent(step);
-        part.setToolItemText("zoom-item", String.valueOf(step));
+        part.setToolItemText(ZoomItem.ID, String.valueOf(step));
         part.update();
     }
 }

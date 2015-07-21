@@ -29,6 +29,9 @@ import com.b3dgs.lionengine.editor.world.WorldViewPart;
  */
 public final class SetGridHandler
 {
+    /** Element ID. */
+    public static final String ID = "grid";
+
     /**
      * Create handler.
      */

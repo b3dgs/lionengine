@@ -34,6 +34,8 @@ public enum PaletteType
     POINTER_OBJECT(SWT.CURSOR_ARROW),
     /** Tile pointer. Allows to interact with map. */
     POINTER_TILE(SWT.CURSOR_ARROW),
+    /** Collision pointer. Allows to place collisions. */
+    POINTER_COLLISION(SWT.CURSOR_ARROW),
     /** Hand. Allows to navigate on map with mouse. */
     HAND(SWT.CURSOR_HAND),
     /** Selection. Allows to select many objects. */

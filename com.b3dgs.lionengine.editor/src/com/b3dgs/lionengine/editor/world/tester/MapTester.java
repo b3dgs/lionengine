@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -36,6 +38,8 @@ public final class MapTester extends PropertyTester
 {
     /** Test if map defined. */
     private static final String PROPERTY_TEST = "test";
+    /** Test if map collisions are defined. */
+    private static final String PROPERTY_COLLISION = "collision";
 
     /**
      * Check if media is a formulas configuration file.
@@ -90,10 +94,20 @@ public final class MapTester extends PropertyTester
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
+        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final boolean result;
         if (PROPERTY_TEST.equals(property))
         {
-            return WorldViewModel.INSTANCE.getMap().isCreated();
+            result = map.isCreated();
         }
-        return false;
+        else if (PROPERTY_COLLISION.equals(property))
+        {
+            result = map.isCreated() && map.hasFeature(MapTileCollision.class);
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
     }
 }

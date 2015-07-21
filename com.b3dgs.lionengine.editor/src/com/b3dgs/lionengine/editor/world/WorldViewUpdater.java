@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
@@ -333,7 +334,11 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
         }
         else if (palette == PaletteType.POINTER_TILE)
         {
-            updatePointerMap();
+            updatePointerTile();
+        }
+        else if (palette == PaletteType.POINTER_COLLISION)
+        {
+            updatePointerCollision();
         }
         else if (palette == PaletteType.SELECTION)
         {
@@ -412,9 +417,9 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
     }
 
     /**
-     * Update the pointer in map case.
+     * Update the pointer in tile case.
      */
-    private void updatePointerMap()
+    private void updatePointerTile()
     {
         if (map.isCreated())
         {
@@ -429,6 +434,18 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
         {
             listener.notifyTileSelected(selectedTile);
         }
+    }
+
+    /**
+     * Update the pointer in collision case.
+     */
+    private void updatePointerCollision()
+    {
+        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        final FormulaItem item = part.getToolItem(FormulaItem.ID, FormulaItem.class);
+        final CollisionFunction function = item.getFunction();
+
+        // TODO apply collision function here to trace line, and then check hit tiles to apply collision
     }
 
     /**
@@ -660,7 +677,7 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
         oldScale = getZoomScale();
         zoom = UtilMath.fixBetween(zoom + (int) Math.ceil(zoom * event.count / 100.0), ZOOM_MIN, ZOOM_MAX);
         final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-        part.setToolItemText("zoom-item", String.valueOf(zoom));
+        part.setToolItemText(ZoomItem.ID, String.valueOf(zoom));
         updateScrollToCursor();
     }
 

@@ -41,6 +41,9 @@ import com.b3dgs.lionengine.editor.UtilSwt;
  */
 public class ZoomItem
 {
+    /** Element ID. */
+    public static final String ID = "zoom-item";
+
     /** Current zoom value. */
     private Text zoom;
 

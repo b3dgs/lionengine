@@ -35,6 +35,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MDirectToolItem;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBarElement;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolControl;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -59,6 +60,8 @@ import com.b3dgs.lionengine.editor.project.Property;
  */
 public final class UtilEclipse
 {
+    /** Item not found. */
+    public static final String ERROR_ITEM = "Item not found: ";
     /** Icon folder. */
     private static final String ICON_FOLDER = "icons";
     /** Part error. */
@@ -457,7 +460,7 @@ public final class UtilEclipse
      * 
      * @param toolbar The tool bar reference.
      * @param selected The selection state.
-     * @param names The elements names (relative to the tool bar ID).
+     * @param names The elements names (relative to the tool bar ID). None for all.
      */
     public static void setToolItemSelection(MToolBar toolbar, boolean selected, String... names)
     {
@@ -522,6 +525,28 @@ public final class UtilEclipse
                 }
             }
         }
+    }
+
+    /**
+     * Get the tool item.
+     * 
+     * @param <T> The element type.
+     * @param toolbar The tool bar reference.
+     * @param name The element name (relative to the tool bar ID).
+     * @param clazz The element class.
+     * @return The composite found.
+     * @throws LionEngineException If not found.
+     */
+    public static <T> T getToolItem(MToolBar toolbar, String name, Class<T> clazz) throws LionEngineException
+    {
+        for (final MToolBarElement element : toolbar.getChildren())
+        {
+            if (element.getElementId().contains(name) && element instanceof MToolControl)
+            {
+                return clazz.cast(((MToolControl) element).getObject());
+            }
+        }
+        throw new LionEngineException(ERROR_ITEM, name);
     }
 
     /**

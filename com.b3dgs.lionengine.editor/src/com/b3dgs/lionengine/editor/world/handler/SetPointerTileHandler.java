@@ -34,6 +34,15 @@ import com.b3dgs.lionengine.editor.world.WorldViewPart;
  */
 public final class SetPointerTileHandler
 {
+    /** Element ID. */
+    public static final String ID = "pointer-tile";
+    /** Excluded elements. */
+    private static final String[] EXCLUDED =
+    {
+        SetPointerObjectHandler.ID, SetSelectionHandler.ID, SetHandHandler.ID, SetPipetHandler.ID,
+        SetPointerCollisionHandler.ID
+    };
+
     /**
      * Create handler.
      */
@@ -57,8 +66,8 @@ public final class SetPointerTileHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemSelection(toolBar, false, "hand", "selection", "pipet", "pointer-object");
-                UtilEclipse.setToolItemSelection(toolBar, true, "pointer-tile");
+                UtilEclipse.setToolItemSelection(toolBar, false, EXCLUDED);
+                UtilEclipse.setToolItemSelection(toolBar, true, ID);
             }
         }
         final PaletteType type = PaletteType.POINTER_TILE;

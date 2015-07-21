@@ -28,25 +28,25 @@ import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 
 /**
- * Set pipet handler.
+ * Set pointer collision handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class SetPipetHandler
+public final class SetPointerCollisionHandler
 {
     /** Element ID. */
-    public static final String ID = "pipet";
+    public static final String ID = "pointer-collision";
     /** Excluded elements. */
     private static final String[] EXCLUDED =
     {
-        SetPointerObjectHandler.ID, SetPointerTileHandler.ID, SetHandHandler.ID, SetSelectionHandler.ID,
-        SetPointerCollisionHandler.ID
+        SetPointerObjectHandler.ID, SetPointerTileHandler.ID, SetHandHandler.ID, SetPipetHandler.ID,
+        SetSelectionHandler.ID
     };
 
     /**
      * Create handler.
      */
-    public SetPipetHandler()
+    public SetPointerCollisionHandler()
     {
         // Nothing to do
     }
@@ -70,7 +70,7 @@ public final class SetPipetHandler
                 UtilEclipse.setToolItemSelection(toolBar, true, ID);
             }
         }
-        final PaletteType type = PaletteType.PIPET;
+        final PaletteType type = PaletteType.POINTER_COLLISION;
         WorldViewModel.INSTANCE.setSelectedPalette(type);
         final WorldViewPart view = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         view.setCursor(type.getCursor());

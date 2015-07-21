@@ -31,6 +31,9 @@ import com.b3dgs.lionengine.editor.world.dialog.MapImportDialog;
  */
 public final class MapImportHandler
 {
+    /** Element ID. */
+    public static final String ID = "import-map";
+
     /**
      * Create handler.
      */

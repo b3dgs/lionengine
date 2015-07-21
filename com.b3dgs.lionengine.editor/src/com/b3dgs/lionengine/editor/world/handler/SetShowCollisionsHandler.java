@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.editor.world.WorldViewPart;
 public final class SetShowCollisionsHandler
 {
     /** Short id. */
-    public static final String SHORT_ID = "collisions";
+    public static final String ID = "collisions";
 
     /**
      * Create handler.

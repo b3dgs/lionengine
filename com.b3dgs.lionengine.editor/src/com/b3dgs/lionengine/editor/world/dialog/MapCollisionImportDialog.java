@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
 import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.editor.world.tester.MapTester;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -323,7 +324,8 @@ public class MapCollisionImportDialog extends AbstractDialog
             mapCollision.loadCollisions(formulasConfig, collisionsConfig);
             mapCollision.createCollisionDraw();
 
-            part.setToolItemEnabled(SetShowCollisionsHandler.SHORT_ID, true);
+            part.setToolItemEnabled(SetShowCollisionsHandler.ID, true);
+            part.setToolItemEnabled(SetPointerCollisionHandler.ID, true);
         }
     }
 }

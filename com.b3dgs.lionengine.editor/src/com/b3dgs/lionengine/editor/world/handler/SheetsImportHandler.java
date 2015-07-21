@@ -29,6 +29,9 @@ import com.b3dgs.lionengine.editor.world.dialog.SheetsImportDialog;
  */
 public final class SheetsImportHandler
 {
+    /** Element ID. */
+    public static final String ID = "import-sheets";
+
     /**
      * Create handler.
      */

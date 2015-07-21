@@ -60,6 +60,12 @@
          </test>
       </definition>
       <definition
+            id="com.b3dgs.lionengine.editor.map.collision">
+         <test
+               property="com.b3dgs.lionengine.editor.mapTester.collision">
+         </test>
+      </definition>
+      <definition
             id="com.b3dgs.lionengine.editor.folder-type.category">
          <test
                property="com.b3dgs.lionengine.editor.folderTypeTester.category">
@@ -235,7 +241,7 @@
             class="com.b3dgs.lionengine.editor.world.tester.MapTester"
             id="com.b3dgs.lionengine.editor.mapTester"
             namespace="com.b3dgs.lionengine.editor.mapTester"
-            properties="test"
+            properties="test,collision"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
