@@ -101,6 +101,10 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
     private int offsetY;
     /** Old scale. */
     private double oldScale;
+    /** First x. */
+    private int firstX;
+    /** First y. */
+    private int firstY;
 
     /**
      * Create a world view renderer with grid enabled.
@@ -336,10 +340,6 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
         {
             updatePointerTile();
         }
-        else if (palette == PaletteType.POINTER_COLLISION)
-        {
-            updatePointerCollision();
-        }
         else if (palette == PaletteType.SELECTION)
         {
             updateSelectionBefore();
@@ -375,6 +375,10 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
             {
                 objectControl.updateDragging(oldMx, oldMy, mx, my);
             }
+        }
+        else if (palette == PaletteType.POINTER_COLLISION)
+        {
+            updatePointerCollision();
         }
         else if (palette == PaletteType.HAND && click > 0)
         {
@@ -444,8 +448,15 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
         final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         final FormulaItem item = part.getToolItem(FormulaItem.ID, FormulaItem.class);
         final CollisionFunction function = item.getFunction();
-
-        // TODO apply collision function here to trace line, and then check hit tiles to apply collision
+        if (function != null)
+        {
+            // TODO apply function depending of the axis
+            final Point old = Tools.getMouseTile(map, camera, firstX, firstY);
+            final Point point = Tools.getMouseTile(map, camera, getMouseX(), getMouseY());
+            final Collection<Tile> tiles = map.getTilesHit(old.getX(), old.getY(), point.getX(), point.getY());
+            // TODO assign collision to tiles
+            // TODO render current line
+        }
     }
 
     /**
@@ -610,6 +621,11 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
         final int my = mouseEvent.y;
         click = mouseEvent.button;
         updateMouse(mx, my);
+        if (firstX == -1)
+        {
+            firstX = mouseX;
+            firstY = mouseY;
+        }
 
         final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
         updatePaletteBefore(palette);
@@ -642,6 +658,8 @@ public class WorldViewUpdater implements MouseListener, MouseMoveListener, Mouse
             }
         }
         click = 0;
+        firstX = -1;
+        firstY = -1;
     }
 
     @Override

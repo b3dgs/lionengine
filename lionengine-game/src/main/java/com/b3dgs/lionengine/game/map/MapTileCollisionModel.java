@@ -214,22 +214,6 @@ public class MapTileCollisionModel implements MapTileCollision
         return null;
     }
 
-    /**
-     * Get the rounded floor or ceil value depending of the speed.
-     * 
-     * @param speed The speed value.
-     * @param value The value to round.
-     * @return The rounded value.
-     */
-    private static double getRound(double speed, double value)
-    {
-        if (speed < 0)
-        {
-            return Math.floor(value);
-        }
-        return Math.ceil(value);
-    }
-
     /** Collision formulas list. */
     private final Map<String, CollisionFormula> formulas = new HashMap<>();
     /** Collisions groups list. */
@@ -555,11 +539,12 @@ public class MapTileCollisionModel implements MapTileCollision
         CollisionResult found = null;
         for (int count = 0; count < norm; count++)
         {
-            oh = getRound(sx, h);
-            ov = getRound(sy, v);
+            oh = UtilMath.getRound(sx, h);
+            ov = UtilMath.getRound(sy, v);
 
             v += sy;
-            CollisionResult result = computeCollision(category, oh, ov, getRound(sx, h), getRound(sy, v));
+            CollisionResult result = computeCollision(category, oh, ov, UtilMath.getRound(sx, h),
+                    UtilMath.getRound(sy, v));
             if (result != null)
             {
                 found = result;
@@ -567,7 +552,7 @@ public class MapTileCollisionModel implements MapTileCollision
             }
 
             h += sx;
-            result = computeCollision(category, oh, ov, getRound(sx, h), getRound(sy, v));
+            result = computeCollision(category, oh, ov, UtilMath.getRound(sx, h), UtilMath.getRound(sy, v));
             if (result != null)
             {
                 found = result;

@@ -32,6 +32,22 @@ import com.b3dgs.lionengine.geom.Line;
 public final class UtilMath
 {
     /**
+     * Get the rounded floor or ceil value depending of the speed.
+     * 
+     * @param speed The speed value.
+     * @param value The value to round.
+     * @return The rounded value.
+     */
+    public static double getRound(double speed, double value)
+    {
+        if (speed < 0)
+        {
+            return Math.floor(value);
+        }
+        return Math.ceil(value);
+    }
+
+    /**
      * Check if value is between an interval.
      * 
      * @param value The value to check.

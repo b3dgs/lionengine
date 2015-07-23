@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
@@ -290,6 +291,18 @@ public class MapTileGame implements MapTile
             }
         }
         return count;
+    }
+
+    /**
+     * Get the tile at the specified location.
+     * 
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @return The tile found, <code>null</code> if none.
+     */
+    private Tile getTileAt(double x, double y)
+    {
+        return getTile((int) Math.floor(x / getTileWidth()), (int) Math.floor(y / getTileHeight()));
     }
 
     /**
@@ -630,6 +643,41 @@ public class MapTileGame implements MapTile
         final int tx = (int) Math.floor((localizable.getX() + offsetX) / getTileWidth());
         final int ty = (int) Math.floor((localizable.getY() + offsetY) / getTileHeight());
         return getTile(tx, ty);
+    }
+
+    @Override
+    public Collection<Tile> getTilesHit(double ox, double oy, double x, double y)
+    {
+        // Distance calculation
+        final double dh = x - ox;
+        final double dv = y - oy;
+
+        // Search vector and number of search steps
+        final double norm = Math.sqrt(dh * dh + dv * dv);
+        final double sx = dh / norm;
+        final double sy = dv / norm;
+
+        double h = ox;
+        double v = oy;
+
+        final Collection<Tile> found = new ArrayList<>();
+        for (int count = 0; count < norm; count++)
+        {
+            v += sy;
+            Tile tile = getTileAt(UtilMath.getRound(sx, h), UtilMath.getRound(sy, v));
+            if (tile != null && !found.contains(tile))
+            {
+                found.add(tile);
+            }
+
+            h += sx;
+            tile = getTileAt(UtilMath.getRound(sx, h), UtilMath.getRound(sy, v));
+            if (tile != null && !found.contains(tile))
+            {
+                found.add(tile);
+            }
+        }
+        return found;
     }
 
     @Override
