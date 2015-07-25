@@ -15,10 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+package com.b3dgs.lionengine.editor.world;
 
 /**
- * World area package, where world is updated and rendered.
+ * Listener to keyboard event.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-package com.b3dgs.lionengine.editor.world;
+public interface WorldKeyboardListener
+{
+    /**
+     * Called when a key has been pressed.
+     * 
+     * @param key The key number.
+     * @see com.b3dgs.lionengine.core.swt.Keyboard
+     */
+    void onKeyPushed(Integer key);
+}

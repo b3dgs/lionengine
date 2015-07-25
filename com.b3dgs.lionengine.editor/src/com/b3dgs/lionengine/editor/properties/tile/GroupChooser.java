@@ -32,12 +32,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupsEditDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -94,8 +93,8 @@ public class GroupChooser extends AbstractDialog
         Arrays.sort(groups);
         combo.setItems(groups);
 
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-        final Tile tile = part.getUpdater().getSelectedTile();
+        final WorldInteractionTile interaction = WorldViewModel.INSTANCE.getServices().get(WorldInteractionTile.class);
+        final Tile tile = interaction.getSelection();
         if (tile != null && tile.getGroup() != null)
         {
             combo.setText(tile.getGroup());

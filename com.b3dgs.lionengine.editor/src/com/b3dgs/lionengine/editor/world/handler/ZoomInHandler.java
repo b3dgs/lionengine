@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.editor.world.ZoomItem;
+import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
 
 /**
  * Zoom in handler.
@@ -49,11 +50,14 @@ public final class ZoomInHandler
     @SuppressWarnings("static-method")
     public void execute()
     {
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        final WorldZoom zoom = WorldViewModel.INSTANCE.getServices().get(WorldZoom.class);
+        final double scale = zoom.getPercent() / 100.0;
+
         final int tw = WorldViewModel.INSTANCE.getMap().getTileWidth();
-        final double scale = part.getUpdater().getZoomPercent() / 100.0;
         final int step = (int) Math.ceil((tw * scale + 1) / tw * 100.0);
-        part.getUpdater().setZoomPercent(step);
+        zoom.setPercent(step);
+
+        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         part.setToolItemText(ZoomItem.ID, String.valueOf(step));
         part.update();
     }

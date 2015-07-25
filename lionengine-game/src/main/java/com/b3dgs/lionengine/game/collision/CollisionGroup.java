@@ -43,6 +43,31 @@ import com.b3dgs.lionengine.Nameable;
  */
 public class CollisionGroup implements Nameable
 {
+    /**
+     * Check if tiles groups are same.
+     * 
+     * @param groupA The first group.
+     * @param groupB The second group.
+     * @return <code>true</code> if groups are same (<code>null</code> included).
+     */
+    public static boolean equals(String groupA, String groupB)
+    {
+        final boolean result;
+        if (groupA != null && groupB != null)
+        {
+            result = groupA.equals(groupB);
+        }
+        else if (groupA == null && groupB == null)
+        {
+            result = true;
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
     /** The group name. */
     private final String group;
     /** The collision formulas used. */

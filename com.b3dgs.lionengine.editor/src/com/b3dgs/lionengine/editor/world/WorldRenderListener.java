@@ -15,10 +15,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+package com.b3dgs.lionengine.editor.world;
+
+import com.b3dgs.lionengine.core.Graphic;
 
 /**
- * World area package, where world is updated and rendered.
+ * Listener to rendering event.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-package com.b3dgs.lionengine.editor.world;
+public interface WorldRenderListener
+{
+    /**
+     * Called when rendering is requested.
+     * 
+     * @param g The graphic output.
+     * @param width The rendering width.
+     * @param height The rendering height.
+     * @param scale The current world scaling.
+     * @param tw The current tile width.
+     * @param th The current tile height.
+     * @param offsetY The vertical offset.
+     */
+    void onRender(Graphic g, int width, int height, double scale, int tw, int th, int offsetY);
+}

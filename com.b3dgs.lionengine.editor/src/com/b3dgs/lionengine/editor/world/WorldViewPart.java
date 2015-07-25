@@ -41,6 +41,9 @@ import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.editor.world.renderer.WorldViewRenderer;
+import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
+import com.b3dgs.lionengine.editor.world.updater.WorldViewUpdater;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
 
@@ -96,12 +99,14 @@ public class WorldViewPart implements Focusable, TileSelectionListener
         final Services services = WorldViewModel.INSTANCE.getServices();
 
         worldViewUpdater = checkUpdaterExtensionPoint(services);
-        worldViewUpdater.addListenerTile(this);
         composite.addMouseListener(worldViewUpdater);
         composite.addMouseMoveListener(worldViewUpdater);
         composite.addMouseWheelListener(worldViewUpdater);
         composite.addKeyListener(worldViewUpdater);
         services.add(worldViewUpdater);
+
+        final WorldInteractionTile tileInteraction = services.get(WorldInteractionTile.class);
+        tileInteraction.addListener(this);
 
         worldViewRenderer = checkRendererExtensionPoint(services);
         composite.addPaintListener(worldViewRenderer);

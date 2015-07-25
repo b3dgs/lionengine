@@ -24,11 +24,11 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewRenderer;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
@@ -56,7 +56,7 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
         final Collection<XmlNode> toRemove = new ArrayList<>();
         for (final XmlNode nodeFormula : node.getChildren(ConfigCollisionFormula.FORMULA))
         {
-            if (WorldViewRenderer.groupEquals(nodeFormula.readString(ConfigTileGroup.NAME), formula.getName()))
+            if (CollisionGroup.equals(nodeFormula.readString(ConfigTileGroup.NAME), formula.getName()))
             {
                 toRemove.add(nodeFormula);
             }

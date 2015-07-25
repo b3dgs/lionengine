@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewRenderer;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
@@ -52,7 +51,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
         final Collection<XmlNode> toRemove = new ArrayList<>();
         for (final XmlNode nodeFormula : node.getChildren(ConfigCollisionGroup.COLLISION))
         {
-            if (WorldViewRenderer.groupEquals(nodeFormula.readString(ConfigCollisionGroup.GROUP), collision.getName()))
+            if (CollisionGroup.equals(nodeFormula.readString(ConfigCollisionGroup.GROUP), collision.getName()))
             {
                 toRemove.add(nodeFormula);
             }

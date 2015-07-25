@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
 
 /**
  * Represents the zoom item label with its current value.
@@ -64,9 +65,9 @@ public class ZoomItem
     {
         final int value = Integer.parseInt(zoom.getText());
         final int percent;
-        if (value < WorldViewUpdater.ZOOM_MIN || value > WorldViewUpdater.ZOOM_MAX)
+        if (value < WorldZoom.ZOOM_MIN || value > WorldZoom.ZOOM_MAX)
         {
-            percent = UtilMath.fixBetween(value, WorldViewUpdater.ZOOM_MIN, WorldViewUpdater.ZOOM_MAX);
+            percent = UtilMath.fixBetween(value, WorldZoom.ZOOM_MIN, WorldZoom.ZOOM_MAX);
             zoom.setText(String.valueOf(percent));
         }
         else
@@ -81,9 +82,11 @@ public class ZoomItem
      */
     void chooseZoom()
     {
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        final WorldZoom zoom = WorldViewModel.INSTANCE.getServices().get(WorldZoom.class);
         final int percent = validateZoomValue();
-        part.getUpdater().setZoomPercent(percent);
+        zoom.setPercent(percent);
+
+        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
         part.update();
     }
 
@@ -102,7 +105,7 @@ public class ZoomItem
         zoom = new Text(parent, SWT.SINGLE | SWT.CENTER | SWT.BORDER);
         zoom.setLayoutData(new GridData(20, 13));
         UtilSwt.createVerify(zoom, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
-        zoom.setText(String.valueOf(WorldViewUpdater.ZOOM_DEFAULT));
+        zoom.setText(String.valueOf(WorldZoom.ZOOM_DEFAULT));
         zoom.addTraverseListener(new TraverseListener()
         {
             @Override

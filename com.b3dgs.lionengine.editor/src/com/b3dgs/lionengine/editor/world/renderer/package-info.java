@@ -17,8 +17,8 @@
  */
 
 /**
- * World area package, where world is updated and rendered.
+ * World rendering package, where world is rendered.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.world.renderer;

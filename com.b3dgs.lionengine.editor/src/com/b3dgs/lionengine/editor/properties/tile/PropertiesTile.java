@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderTile;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
-import com.b3dgs.lionengine.editor.world.WorldViewRenderer;
+import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -79,7 +79,7 @@ public class PropertiesTile implements PropertiesProviderTile
         for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroup.GROUP))
         {
             final Collection<XmlNode> toRemove = new ArrayList<>();
-            if (WorldViewRenderer.groupEquals(nodeGroup.readString(ConfigTileGroup.NAME), oldGroup))
+            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), oldGroup))
             {
                 for (final XmlNode nodeTile : nodeGroup.getChildren(ConfigTileGroup.TILE))
                 {
@@ -94,7 +94,7 @@ public class PropertiesTile implements PropertiesProviderTile
                     nodeGroup.removeChild(remove);
                 }
             }
-            if (WorldViewRenderer.groupEquals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
+            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
             {
                 final XmlNode tileRef = Stream.createXmlNode(ConfigTileGroup.TILE);
                 tileRef.writeInteger(ConfigTileGroup.SHEET, tile.getSheet().intValue());

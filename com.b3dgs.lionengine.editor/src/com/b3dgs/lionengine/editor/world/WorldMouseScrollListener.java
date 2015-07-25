@@ -15,10 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+package com.b3dgs.lionengine.editor.world;
 
 /**
- * World area package, where world is updated and rendered.
+ * Listen to world mouse scroll event.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-package com.b3dgs.lionengine.editor.world;
+public interface WorldMouseScrollListener
+{
+    /**
+     * Called when a mouse click occurred.
+     * 
+     * @param value The scroll value.
+     * @param mx The current horizontal location.
+     * @param my The current vertical location.
+     */
+    void onMouseScroll(int value, int mx, int my);
+}

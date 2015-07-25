@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewRenderer;
+import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
@@ -93,7 +93,7 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
         final Collection<XmlNode> toRemove = new ArrayList<>();
         for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroup.GROUP))
         {
-            if (WorldViewRenderer.groupEquals(nodeGroup.readString(ConfigTileGroup.NAME), group.getName()))
+            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), group.getName()))
             {
                 toRemove.add(nodeGroup);
             }

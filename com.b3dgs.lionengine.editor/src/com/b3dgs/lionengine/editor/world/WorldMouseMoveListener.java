@@ -15,10 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+package com.b3dgs.lionengine.editor.world;
 
 /**
- * World area package, where world is updated and rendered.
+ * Listen to world mouse mouse event.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-package com.b3dgs.lionengine.editor.world;
+public interface WorldMouseMoveListener
+{
+    /**
+     * Called when the mouse moved.
+     * 
+     * @param click The click number ({@link com.b3dgs.lionengine.core.swt.Mouse#LEFT},
+     *            {@link com.b3dgs.lionengine.core.swt.Mouse#RIGHT}, {@link com.b3dgs.lionengine.core.swt.Mouse#MIDDLE}.
+     * @param oldMx The old horizontal location.
+     * @param oldMy The old vertical location.
+     * @param mx The current horizontal location.
+     * @param my The current vertical location.
+     */
+    void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my);
+}
