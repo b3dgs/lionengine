@@ -62,12 +62,12 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ProjectsPart implements Focusable
+public final class ProjectPart implements Focusable
 {
     /** ID. */
-    public static final String ID = Activator.PLUGIN_ID + ".part.projects";
+    public static final String ID = Activator.PLUGIN_ID + ".part.project";
     /** Menu ID. */
-    public static final String MENU_ID = ProjectsPart.ID + ".menu";
+    public static final String MENU_ID = ProjectPart.ID + ".menu";
 
     /**
      * Update the properties view with the selected media.
@@ -97,12 +97,12 @@ public final class ProjectsPart implements Focusable
         if (item.getData() instanceof Media)
         {
             final Media media = (Media) item.getData();
-            ProjectsModel.INSTANCE.setSelection(media);
+            ProjectModel.INSTANCE.setSelection(media);
             updateProperties(media);
         }
         else
         {
-            ProjectsModel.INSTANCE.setSelection(null);
+            ProjectModel.INSTANCE.setSelection(null);
             updateProperties(null);
         }
     }
@@ -117,7 +117,7 @@ public final class ProjectsPart implements Focusable
     /**
      * Create the part.
      */
-    public ProjectsPart()
+    public ProjectPart()
     {
         watcher = new FolderModificationWatcher();
     }
@@ -164,7 +164,7 @@ public final class ProjectsPart implements Focusable
                 updateMenu();
             }
         });
-        menuService.registerContextMenu(tree, ProjectsPart.MENU_ID);
+        menuService.registerContextMenu(tree, ProjectPart.MENU_ID);
     }
 
     /**
@@ -263,7 +263,7 @@ public final class ProjectsPart implements Focusable
      */
     void checkOpenFile()
     {
-        final Media media = ProjectsModel.INSTANCE.getSelection();
+        final Media media = ProjectModel.INSTANCE.getSelection();
         if (media != null)
         {
             if (SheetsTester.isSheetsFile(media))

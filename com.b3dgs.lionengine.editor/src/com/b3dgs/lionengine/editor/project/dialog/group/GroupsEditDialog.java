@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -95,7 +95,7 @@ public class GroupsEditDialog extends AbstractDialog
         }
         Stream.saveXml(root, groups);
 
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTile map = WorldModel.INSTANCE.getMap();
         map.loadGroups(groups);
     }
 }

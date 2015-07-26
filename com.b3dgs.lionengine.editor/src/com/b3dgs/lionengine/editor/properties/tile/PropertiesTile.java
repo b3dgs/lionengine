@@ -32,8 +32,8 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderTile;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
@@ -123,7 +123,7 @@ public class PropertiesTile implements PropertiesProviderTile
      */
     static void onDoubleClick(Tree properties, TreeItem selection, Tile tile)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTile map = WorldModel.INSTANCE.getMap();
         final Collection<TileGroup> groups = map.getGroups();
         final Collection<String> values = new ArrayList<>();
         for (final TileGroup group : groups)
@@ -143,7 +143,7 @@ public class PropertiesTile implements PropertiesProviderTile
             changeTileGroup(map, oldGroup, newGroup, tile);
             selection.setText(PropertiesPart.COLUMN_VALUE, newGroup);
 
-            final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+            final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
             part.update();
         }
     }

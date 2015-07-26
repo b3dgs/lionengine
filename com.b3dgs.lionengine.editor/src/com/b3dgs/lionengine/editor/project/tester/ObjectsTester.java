@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
@@ -103,7 +103,7 @@ public final class ObjectsTester extends PropertyTester
         final Project project = Project.getActive();
         if (project != null)
         {
-            final Media selection = ProjectsModel.INSTANCE.getSelection();
+            final Media selection = ProjectModel.INSTANCE.getSelection();
             if (selection != null)
             {
                 return check(selection, property);

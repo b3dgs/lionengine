@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.editor.world.handler;
 import org.eclipse.e4.core.di.annotations.Execute;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.ZoomItem;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
 
@@ -50,10 +50,10 @@ public final class ZoomInHandler
     @SuppressWarnings("static-method")
     public void execute()
     {
-        final WorldZoom zoom = WorldViewModel.INSTANCE.getServices().get(WorldZoom.class);
+        final WorldZoom zoom = WorldModel.INSTANCE.getServices().get(WorldZoom.class);
         zoom.zoomIn();
 
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
         part.setToolItemText(ZoomItem.ID, String.valueOf(zoom.getPercent()));
         part.update();
     }

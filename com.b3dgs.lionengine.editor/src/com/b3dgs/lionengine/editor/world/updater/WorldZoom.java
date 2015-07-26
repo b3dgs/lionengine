@@ -19,8 +19,7 @@ package com.b3dgs.lionengine.editor.world.updater;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.world.WorldMouseScrollListener;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.ZoomItem;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -164,7 +163,7 @@ public class WorldZoom implements WorldMouseScrollListener
             zoomOut();
         }
 
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
         part.setToolItemText(ZoomItem.ID, String.valueOf(zoomPercent));
         updateScrollToCursor(mx, my);
     }

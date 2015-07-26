@@ -15,20 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.world.updater;
 
 /**
- * Listener to keyboard event.
+ * Listen to world mouse scroll event.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface WorldKeyboardListener
+public interface WorldMouseScrollListener
 {
     /**
-     * Called when a key has been pressed.
+     * Called when a mouse click occurred.
      * 
-     * @param key The key number.
-     * @see com.b3dgs.lionengine.core.swt.Keyboard
+     * @param value The scroll value.
+     * @param mx The current horizontal location.
+     * @param my The current vertical location.
      */
-    void onKeyPushed(Integer key);
+    void onMouseScroll(int value, int mx, int my);
 }

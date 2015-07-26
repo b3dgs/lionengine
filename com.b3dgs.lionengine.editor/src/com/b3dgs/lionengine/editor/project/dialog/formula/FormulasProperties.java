@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupList;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
@@ -160,9 +160,9 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
      */
     void updatePreview()
     {
-        if (isFieldsFilled() && !linearB.getText().isEmpty())
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        if (map.isCreated() && isFieldsFilled() && !linearB.getText().isEmpty())
         {
-            final MapTile map = WorldViewModel.INSTANCE.getMap();
             final CollisionFormula formula = createObject("preview");
             final ImageBuffer buffer = MapTileCollisionModel.createFunctionDraw(formula, map.getTileWidth(),
                     map.getTileHeight());
@@ -238,7 +238,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
      */
     private void createPreview(Composite parent)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTile map = WorldModel.INSTANCE.getMap();
         final Label preview = new Label(parent, SWT.BORDER);
         final GridData data = new GridData(map.getTileWidth(), map.getTileHeight());
         data.horizontalAlignment = SWT.CENTER;
@@ -253,7 +253,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
      */
     private void createTemplate(Composite parent)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTile map = WorldModel.INSTANCE.getMap();
         final Combo template = UtilSwt.createCombo(Messages.EditFormulasDialog_Template, parent,
                 FormulaTemplate.values());
         template.addSelectionListener(new SelectionAdapter()

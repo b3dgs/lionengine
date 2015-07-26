@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
  * Represents the abstract dialog.
@@ -263,7 +263,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
                 onFinish();
                 dialog.dispose();
 
-                final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+                final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
                 part.update();
             }
         });
@@ -278,7 +278,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
                 onCanceled();
                 dialog.dispose();
 
-                final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+                final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
                 part.update();
             }
         });

@@ -21,7 +21,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.project.dialog.formula.FormulasEditDialog;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 
@@ -49,7 +49,7 @@ public final class FormulaAddHandler
     @SuppressWarnings("static-method")
     public void execute(Shell parent)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTile map = WorldModel.INSTANCE.getMap();
         final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
         final FormulasEditDialog dialog = new FormulasEditDialog(parent, mapCollision.getFormulasConfig());
         dialog.open();

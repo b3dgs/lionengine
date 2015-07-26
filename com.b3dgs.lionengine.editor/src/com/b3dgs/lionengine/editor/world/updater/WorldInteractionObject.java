@@ -25,9 +25,7 @@ import com.b3dgs.lionengine.editor.world.ObjectControl;
 import com.b3dgs.lionengine.editor.world.ObjectSelectionListener;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.Selection;
-import com.b3dgs.lionengine.editor.world.WorldMouseClickListener;
-import com.b3dgs.lionengine.editor.world.WorldMouseMoveListener;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
@@ -236,7 +234,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     @Override
     public void onMousePressed(int click, int mx, int my)
     {
-        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
+        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
         if (palette == PaletteType.POINTER_OBJECT)
         {
             controlObject(click, mx, my);
@@ -251,7 +249,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     @Override
     public void onMouseReleased(int click, int mx, int my)
     {
-        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
+        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
         if (palette == PaletteType.POINTER_OBJECT)
         {
             endDragging();
@@ -270,7 +268,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
+        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
         if (palette == PaletteType.POINTER_OBJECT)
         {
             updateDragging(click, oldMx, oldMy, mx, my);

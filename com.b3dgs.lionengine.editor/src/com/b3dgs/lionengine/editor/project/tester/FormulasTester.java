@@ -22,7 +22,7 @@ import org.eclipse.core.expressions.PropertyTester;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -101,7 +101,7 @@ public final class FormulasTester extends PropertyTester
         final Project project = Project.getActive();
         if (project != null)
         {
-            final Media selection = ProjectsModel.INSTANCE.getSelection();
+            final Media selection = ProjectModel.INSTANCE.getSelection();
             if (selection != null)
             {
                 return check(selection, property);

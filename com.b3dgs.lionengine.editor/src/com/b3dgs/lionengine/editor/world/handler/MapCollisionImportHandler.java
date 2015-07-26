@@ -21,7 +21,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.dialog.MapCollisionImportDialog;
 
 /**
@@ -51,7 +51,7 @@ public final class MapCollisionImportHandler
         final MapCollisionImportDialog dialog = new MapCollisionImportDialog(shell);
         dialog.open();
 
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
         part.update();
     }
 }

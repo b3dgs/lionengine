@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 
 /**
  * Remove an object in the selected folder.
@@ -53,7 +53,7 @@ public final class ObjectDeleteHandler
     @SuppressWarnings("static-method")
     public void execute(EPartService partService, Shell parent)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
+        final Media selection = ProjectModel.INSTANCE.getSelection();
         final File file = selection.getFile();
         if (file.isFile())
         {

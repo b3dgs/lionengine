@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.world.handler;
 import org.eclipse.e4.core.di.annotations.Execute;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
  * Set grid handler.
@@ -47,7 +47,7 @@ public final class SetGridHandler
     @SuppressWarnings("static-method")
     public void execute()
     {
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
         part.getUpdater().switchGridEnabled();
         part.update();
     }

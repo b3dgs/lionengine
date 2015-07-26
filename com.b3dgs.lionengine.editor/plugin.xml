@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
-   <extension-point id="worldViewUpdater" name="World View Updater" schema="schema/worldViewUpdater.exsd"/>
-   <extension-point id="worldViewRenderer" name="World View Renderer" schema="schema/worldViewRenderer.exsd"/>
+   <extension-point id="worldUpdater" name="World Updater" schema="schema/worldUpdater.exsd"/>
+   <extension-point id="worldRenderer" name="World Renderer" schema="schema/worldRenderer.exsd"/>
    <extension-point id="propertiesObject" name="Properties Object" schema="schema/propertiesObject.exsd"/>
    <extension-point id="propertiesTile" name="Properties Tile" schema="schema/propertiesTile.exsd"/>
 

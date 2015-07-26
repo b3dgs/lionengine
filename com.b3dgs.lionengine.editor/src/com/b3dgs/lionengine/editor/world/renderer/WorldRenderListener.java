@@ -15,24 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.world.renderer;
+
+import com.b3dgs.lionengine.core.Graphic;
 
 /**
- * Listen to world mouse mouse event.
+ * Listener to rendering event.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface WorldMouseMoveListener
+public interface WorldRenderListener
 {
     /**
-     * Called when the mouse moved.
+     * Called when rendering is requested.
      * 
-     * @param click The click number ({@link com.b3dgs.lionengine.core.swt.Mouse#LEFT},
-     *            {@link com.b3dgs.lionengine.core.swt.Mouse#RIGHT}, {@link com.b3dgs.lionengine.core.swt.Mouse#MIDDLE}.
-     * @param oldMx The old horizontal location.
-     * @param oldMy The old vertical location.
-     * @param mx The current horizontal location.
-     * @param my The current vertical location.
+     * @param g The graphic output.
+     * @param width The rendering width.
+     * @param height The rendering height.
+     * @param scale The current world scaling.
+     * @param tw The current tile width.
+     * @param th The current tile height.
      */
-    void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my);
+    void onRender(Graphic g, int width, int height, double scale, int tw, int th);
 }

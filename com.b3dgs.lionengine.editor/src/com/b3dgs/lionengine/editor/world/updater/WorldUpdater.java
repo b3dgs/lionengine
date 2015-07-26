@@ -31,14 +31,14 @@ import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
- * World view updater, update the current world.
+ * World updater, update the current world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldViewUpdater implements KeyListener, MouseListener, MouseMoveListener, MouseWheelListener
+public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListener, MouseWheelListener
 {
     /** Extension ID. */
-    public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldViewUpdater";
+    public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldUpdater";
 
     /** Part service. */
     protected final EPartService partService;
@@ -64,12 +64,12 @@ public class WorldViewUpdater implements KeyListener, MouseListener, MouseMoveLi
     private int click;
 
     /**
-     * Create a world view renderer with grid enabled.
+     * Create a world updater with grid enabled.
      * 
      * @param partService The part services reference.
      * @param services The services reference.
      */
-    public WorldViewUpdater(EPartService partService, Services services)
+    public WorldUpdater(EPartService partService, Services services)
     {
         this.partService = partService;
         zoom = services.create(WorldZoom.class);

@@ -23,11 +23,11 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.ProjectsPart;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.project.ProjectPart;
 import com.b3dgs.lionengine.editor.project.dialog.ProjectImportDialog;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
 import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -46,19 +46,19 @@ public final class ProjectImportHandler
      */
     public static void importProject(Project project)
     {
-        final Factory factory = WorldViewModel.INSTANCE.getFactory();
+        final Factory factory = WorldModel.INSTANCE.getFactory();
         factory.setClassLoader(project.getClassLoader());
 
-        final WorldViewPart worldViewPart = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-        worldViewPart.setToolBarEnabled(true);
-        worldViewPart.setToolItemEnabled(SetShowCollisionsHandler.ID, false);
-        worldViewPart.setToolItemEnabled(SetPointerCollisionHandler.ID, false);
+        final WorldPart worldPart = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
+        worldPart.setToolBarEnabled(true);
+        worldPart.setToolItemEnabled(SetShowCollisionsHandler.ID, false);
+        worldPart.setToolItemEnabled(SetPointerCollisionHandler.ID, false);
 
         UtilityMedia.setResourcesDirectory(project.getResourcesPath().getPath());
 
-        final ProjectsPart projectsPart = UtilEclipse.getPart(ProjectsPart.ID, ProjectsPart.class);
-        ProjectsModel.INSTANCE.setRoot(project.getPath());
-        projectsPart.setInput(project);
+        final ProjectPart projectPart = UtilEclipse.getPart(ProjectPart.ID, ProjectPart.class);
+        ProjectModel.INSTANCE.setRoot(project.getPath());
+        projectPart.setInput(project);
     }
 
     /**

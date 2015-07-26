@@ -19,8 +19,7 @@ package com.b3dgs.lionengine.editor.world.renderer;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.editor.world.WorldRenderListener;
-import com.b3dgs.lionengine.editor.world.updater.WorldViewUpdater;
+import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
@@ -41,10 +40,10 @@ public class WorldGrid implements WorldRenderListener
     /** Camera. */
     private final Camera camera;
     /** Updater. */
-    private final WorldViewUpdater world;
+    private final WorldUpdater world;
 
     /**
-     * Create a world view renderer with grid enabled.
+     * Create a world renderer with grid enabled.
      * 
      * @param services The services reference.
      */
@@ -52,7 +51,7 @@ public class WorldGrid implements WorldRenderListener
     {
         map = services.get(MapTile.class);
         camera = services.get(Camera.class);
-        world = services.get(WorldViewUpdater.class);
+        world = services.get(WorldUpdater.class);
     }
 
     /*

@@ -26,10 +26,10 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ProjectsModel
+public final class ProjectModel
 {
     /** Project model. */
-    public static final ProjectsModel INSTANCE = new ProjectsModel();
+    public static final ProjectModel INSTANCE = new ProjectModel();
 
     /** Project root (resources folder). */
     private File root;
@@ -39,7 +39,7 @@ public final class ProjectsModel
     /**
      * Private constructor.
      */
-    private ProjectsModel()
+    private ProjectModel()
     {
         // Nothing to do
     }

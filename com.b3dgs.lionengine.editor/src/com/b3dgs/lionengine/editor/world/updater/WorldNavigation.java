@@ -19,9 +19,7 @@ package com.b3dgs.lionengine.editor.world.updater;
 
 import com.b3dgs.lionengine.core.swt.Keyboard;
 import com.b3dgs.lionengine.editor.world.PaletteType;
-import com.b3dgs.lionengine.editor.world.WorldKeyboardListener;
-import com.b3dgs.lionengine.editor.world.WorldMouseMoveListener;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Services;
@@ -88,7 +86,7 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
+        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
         if (palette == PaletteType.HAND && click > 0)
         {
             camera.moveLocation(1.0, oldMx - mx, my - oldMy);

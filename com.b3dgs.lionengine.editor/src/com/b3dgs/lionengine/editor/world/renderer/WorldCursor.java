@@ -23,9 +23,8 @@ import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.world.ObjectControl;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.Selection;
-import com.b3dgs.lionengine.editor.world.WorldRenderListener;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.updater.WorldViewUpdater;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
@@ -46,7 +45,7 @@ public class WorldCursor implements WorldRenderListener
     /** Camera. */
     private final Camera camera;
     /** Updater. */
-    private final WorldViewUpdater world;
+    private final WorldUpdater world;
     /** Selection handler. */
     private final Selection selection;
     /** Object control. */
@@ -61,7 +60,7 @@ public class WorldCursor implements WorldRenderListener
     {
         map = services.get(MapTile.class);
         camera = services.get(Camera.class);
-        world = services.get(WorldViewUpdater.class);
+        world = services.get(WorldUpdater.class);
         selection = services.get(Selection.class);
         objectControl = services.get(ObjectControl.class);
     }
@@ -73,7 +72,7 @@ public class WorldCursor implements WorldRenderListener
     @Override
     public void onRender(Graphic g, int width, int height, double scale, int tw, int th)
     {
-        if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT && !selection.isSelecting()
+        if (WorldModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT && !selection.isSelecting()
                 && !objectControl.isDragging() && !objectControl.hasOver())
         {
             final Tile tile = Tools.getTile(map, camera, world.getMouseX(), world.getMouseY());

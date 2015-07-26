@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 
@@ -357,7 +357,7 @@ public class MapImportDialog extends AbstractDialog
     @Override
     protected void onFinish()
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTile map = WorldModel.INSTANCE.getMap();
         final LevelRipConverter levelRipConverter = new LevelRipConverter(levelRip, sheetsConfig, map);
         final MapImportProgressDialog progress = new MapImportProgressDialog(dialog, levelRip);
 

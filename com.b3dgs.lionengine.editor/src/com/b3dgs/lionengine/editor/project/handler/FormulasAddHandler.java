@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.object.Factory;
 
@@ -82,7 +82,7 @@ public final class FormulasAddHandler
     @Execute
     public void execute(Shell parent)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
+        final Media selection = ProjectModel.INSTANCE.getSelection();
         final InputDialog inputDialog = new InputDialog(parent, Messages.AddFormulas_Title, Messages.AddFormulas_Text,
                 MapTileCollision.DEFAULT_FORMULAS_FILE.replace(Constant.DOT + Factory.FILE_DATA_EXTENSION,
                         Constant.EMPTY_STRING),

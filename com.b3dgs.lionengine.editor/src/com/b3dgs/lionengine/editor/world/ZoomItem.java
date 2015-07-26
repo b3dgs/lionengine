@@ -82,11 +82,11 @@ public class ZoomItem
      */
     void chooseZoom()
     {
-        final WorldZoom zoom = WorldViewModel.INSTANCE.getServices().get(WorldZoom.class);
+        final WorldZoom zoom = WorldModel.INSTANCE.getServices().get(WorldZoom.class);
         final int percent = validateZoomValue();
         zoom.setPercent(percent);
 
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
         part.update();
     }
 

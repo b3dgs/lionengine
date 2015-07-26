@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.properties.collisioncategory;
 
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
@@ -62,7 +62,7 @@ public final class PropertiesCollisionCategoryTester extends PropertyTester
         {
             result = ConfigCollisionFormula.FORMULA.equals(data);
         }
-        else if (ObjectsTester.isObjectFile(ProjectsModel.INSTANCE.getSelection()))
+        else if (ObjectsTester.isObjectFile(ProjectModel.INSTANCE.getSelection()))
         {
             if (PROPERTY_FORMULA_ADD.equals(property))
             {

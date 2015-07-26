@@ -38,8 +38,8 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
 import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.editor.world.tester.MapTester;
@@ -59,8 +59,8 @@ public class MapCollisionImportDialog extends AbstractDialog
     /** Xml filter. */
     private static final String XML = "*.xml";
 
-    /** World view part reference. */
-    private final WorldViewPart part;
+    /** World part reference. */
+    private final WorldPart part;
     /** Formulas config file location. */
     Text formulasText;
     /** Collisions config file location. */
@@ -83,7 +83,7 @@ public class MapCollisionImportDialog extends AbstractDialog
                 Messages.ImportMapCollisionDialog_HeaderDesc, MapCollisionImportDialog.ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
-        part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
         finish.setEnabled(false);
         finish.forceFocus();
         loadDefaults();
@@ -282,7 +282,7 @@ public class MapCollisionImportDialog extends AbstractDialog
     private void loadDefaults()
     {
         final Project project = Project.getActive();
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTile map = WorldModel.INSTANCE.getMap();
         final File parentFile = map.getGroupsConfig().getFile().getParentFile();
 
         final File formulas = new File(parentFile, MapTileCollision.DEFAULT_FORMULAS_FILE);
@@ -315,7 +315,7 @@ public class MapCollisionImportDialog extends AbstractDialog
         found = formulasConfig != null && collisionsConfig != null;
         if (found)
         {
-            final MapTile map = WorldViewModel.INSTANCE.getMap();
+            final MapTile map = WorldModel.INSTANCE.getMap();
             if (!map.hasFeature(MapTileCollision.class))
             {
                 map.createFeature(MapTileCollisionModel.class);

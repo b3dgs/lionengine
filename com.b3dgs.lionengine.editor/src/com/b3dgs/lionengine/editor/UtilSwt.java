@@ -51,6 +51,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
 
@@ -401,7 +402,14 @@ public final class UtilSwt
     public static void setDefaultValue(Text text, String value)
     {
         registerDirty(text, false);
-        text.setText(value);
+        if (value == null)
+        {
+            text.setText(Constant.EMPTY_STRING);
+        }
+        else
+        {
+            text.setText(value);
+        }
         registerDirty(text, true);
     }
 

@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Transform;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.world.Selection;
-import com.b3dgs.lionengine.editor.world.updater.WorldViewUpdater;
+import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -46,15 +46,14 @@ import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
- * World view paint listener, rendering the current world.
+ * World paint listener, rendering the current world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldViewRenderer implements PaintListener, MouseListener, MouseMoveListener, MouseWheelListener,
-                               KeyListener
+public class WorldRenderer implements PaintListener, MouseListener, MouseMoveListener, MouseWheelListener, KeyListener
 {
     /** Extension ID. */
-    public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldViewRenderer";
+    public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldRenderer";
     /** Color of the selection area. */
     private static final ColorRgba COLOR_MOUSE_SELECTION = new ColorRgba(240, 240, 240, 96);
 
@@ -86,7 +85,7 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
     /** Selection handler. */
     private final Selection selection;
     /** World updater. */
-    private final WorldViewUpdater worldViewUpdater;
+    private final WorldUpdater worldUpdater;
     /** World zoom. */
     private final WorldZoom zoom;
     /** Grid renderer. */
@@ -99,13 +98,13 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
     private final WorldSelectedObjects selectedObjects;
 
     /**
-     * Create a world view renderer with grid enabled.
+     * Create a world renderer with grid enabled.
      * 
      * @param parent The parent container.
      * @param partService The part services reference.
      * @param services The services reference.
      */
-    public WorldViewRenderer(Composite parent, EPartService partService, Services services)
+    public WorldRenderer(Composite parent, EPartService partService, Services services)
     {
         this.parent = parent;
         this.partService = partService;
@@ -117,7 +116,7 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
         map = services.get(MapTile.class);
         handlerObject = services.get(Handler.class);
         selection = services.get(Selection.class);
-        worldViewUpdater = services.get(WorldViewUpdater.class);
+        worldUpdater = services.get(WorldUpdater.class);
         zoom = services.get(WorldZoom.class);
     }
 
@@ -156,7 +155,7 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
         if (map.getSheetsNumber() > 0)
         {
             map.render(g);
-            if (worldViewUpdater.isCollisionsEnabled() && map.hasFeature(MapTileCollision.class))
+            if (worldUpdater.isCollisionsEnabled() && map.hasFeature(MapTileCollision.class))
             {
                 map.getFeature(MapTileCollision.class).render(g);
             }

@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractProgressDialog;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 
@@ -102,7 +102,7 @@ public class MapImportProgressDialog extends AbstractProgressDialog
         try (final InputStream stream = levelRip.getInputStream())
         {
             final ImageData data = new ImageData(stream);
-            final MapTile map = WorldViewModel.INSTANCE.getMap();
+            final MapTile map = WorldModel.INSTANCE.getMap();
 
             width = data.width / map.getTileWidth();
             height = data.height / map.getTileHeight();

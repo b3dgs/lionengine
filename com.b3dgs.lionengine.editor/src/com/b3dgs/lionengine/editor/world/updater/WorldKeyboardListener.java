@@ -15,32 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.world.updater;
 
 /**
- * Listen to world mouse click events.
+ * Listener to keyboard event.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface WorldMouseClickListener
+public interface WorldKeyboardListener
 {
     /**
-     * Called when a mouse click started.
+     * Called when a key has been pressed.
      * 
-     * @param click The click pressed number.
-     * @param mx The current horizontal location.
-     * @param my The current vertical location.
-     * @see com.b3dgs.lionengine.core.swt.Mouse
+     * @param key The key number.
+     * @see com.b3dgs.lionengine.core.swt.Keyboard
      */
-    void onMousePressed(int click, int mx, int my);
-
-    /**
-     * Called when a mouse click ended.
-     * 
-     * @param click The click released number.
-     * @param mx The current horizontal location.
-     * @param my The current vertical location.
-     * @see com.b3dgs.lionengine.core.swt.Mouse
-     */
-    void onMouseReleased(int click, int mx, int my);
+    void onKeyPushed(Integer key);
 }

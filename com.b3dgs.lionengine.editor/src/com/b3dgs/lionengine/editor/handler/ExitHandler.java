@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.Messages;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.ProjectsPart;
+import com.b3dgs.lionengine.editor.project.ProjectPart;
 
 /**
  * Exit handler implementation.
@@ -53,7 +53,7 @@ public final class ExitHandler
     {
         if (MessageDialog.openConfirm(shell, Messages.ExitHandler_Title, Messages.ExitHandler_Text))
         {
-            final ProjectsPart part = UtilEclipse.getPart(ProjectsPart.ID, ProjectsPart.class);
+            final ProjectPart part = UtilEclipse.getPart(ProjectPart.ID, ProjectPart.class);
             part.close();
             workbench.close();
         }

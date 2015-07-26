@@ -24,8 +24,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.world.PaletteType;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
  * Set pointer tile handler.
@@ -60,7 +60,7 @@ public final class SetPointerTileHandler
     @SuppressWarnings("static-method")
     public void execute(EPartService partService)
     {
-        final MPart part = partService.findPart(WorldViewPart.ID);
+        final MPart part = partService.findPart(WorldPart.ID);
         if (part != null)
         {
             final MToolBar toolBar = part.getToolbar();
@@ -71,8 +71,8 @@ public final class SetPointerTileHandler
             }
         }
         final PaletteType type = PaletteType.POINTER_TILE;
-        WorldViewModel.INSTANCE.setSelectedPalette(type);
-        final WorldViewPart view = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        WorldModel.INSTANCE.setSelectedPalette(type);
+        final WorldPart view = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
         view.setCursor(type.getCursor());
     }
 }

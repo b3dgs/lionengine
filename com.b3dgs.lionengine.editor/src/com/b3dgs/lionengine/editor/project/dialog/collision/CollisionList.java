@@ -23,7 +23,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
@@ -126,7 +126,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
     @Override
     public void notifyObjectDeleted(CollisionGroup collision)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTile map = WorldModel.INSTANCE.getMap();
         if (map.hasFeature(MapTileCollision.class))
         {
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);

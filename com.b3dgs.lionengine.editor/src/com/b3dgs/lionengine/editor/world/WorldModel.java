@@ -30,10 +30,10 @@ import com.b3dgs.lionengine.game.object.Services;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldViewModel
+public class WorldModel
 {
-    /** World view model. */
-    public static final WorldViewModel INSTANCE = new WorldViewModel();
+    /** World model. */
+    public static final WorldModel INSTANCE = new WorldModel();
 
     /** Services reference. */
     private final Services services = new Services();
@@ -49,7 +49,7 @@ public class WorldViewModel
     /**
      * Constructor.
      */
-    protected WorldViewModel()
+    protected WorldModel()
     {
         final Handler handlerObject = new Handler();
         handlerObject.addRenderable(new ComponentRenderer());

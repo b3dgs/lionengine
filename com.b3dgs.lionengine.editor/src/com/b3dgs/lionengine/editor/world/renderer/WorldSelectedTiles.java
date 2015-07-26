@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.editor.world.renderer;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.editor.world.WorldRenderListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;

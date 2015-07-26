@@ -3,7 +3,7 @@
 <schema targetNamespace="com.b3dgs.lionengine.editor" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="com.b3dgs.lionengine.editor" id="worldViewUpdater" name="World View Updater"/>
+         <meta.schema plugin="com.b3dgs.lionengine.editor" id="worldUpdater" name="World Updater"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -60,7 +60,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="com.b3dgs.lionengine.editor.world.WorldViewUpdater:"/>
+                  <meta.attribute kind="java" basedOn="com.b3dgs.lionengine.editor.world.WorldUpdater:"/>
                </appinfo>
             </annotation>
          </attribute>

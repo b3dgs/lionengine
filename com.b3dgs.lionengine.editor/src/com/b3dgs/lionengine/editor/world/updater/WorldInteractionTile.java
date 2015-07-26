@@ -28,10 +28,8 @@ import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.editor.world.FormulaItem;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.TileSelectionListener;
-import com.b3dgs.lionengine.editor.world.WorldMouseClickListener;
-import com.b3dgs.lionengine.editor.world.WorldMouseMoveListener;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
@@ -132,7 +130,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void updatePointerCollision(int mx, int my)
     {
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
         final FormulaItem item = part.getToolItem(FormulaItem.ID, FormulaItem.class);
         final CollisionFunction function = item.getFunction();
         if (function != null)
@@ -168,7 +166,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         firstX = mx;
         firstY = my;
-        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
+        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
         if (palette == PaletteType.POINTER_TILE)
         {
             updatePointerTile(mx, my);
@@ -182,7 +180,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     @Override
     public void onMouseReleased(int click, int mx, int my)
     {
-        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
+        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
         if (palette == PaletteType.POINTER_COLLISION)
         {
             updatePointerCollision(mx, my);
@@ -196,7 +194,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
+        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
         if (palette == PaletteType.POINTER_COLLISION)
         {
             updatePointerCollision(mx, my);

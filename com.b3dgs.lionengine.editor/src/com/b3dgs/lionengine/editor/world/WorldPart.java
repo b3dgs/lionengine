@@ -41,21 +41,21 @@ import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
-import com.b3dgs.lionengine.editor.world.renderer.WorldViewRenderer;
+import com.b3dgs.lionengine.editor.world.renderer.WorldRenderer;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
-import com.b3dgs.lionengine.editor.world.updater.WorldViewUpdater;
+import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
- * Represents the world view, where the global map is displayed.
+ * Represents the world, where the global map is displayed.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldViewPart implements Focusable, TileSelectionListener
+public class WorldPart implements Focusable, TileSelectionListener
 {
     /** ID. */
-    public static final String ID = Activator.PLUGIN_ID + ".part.world-view";
+    public static final String ID = Activator.PLUGIN_ID + ".part.world";
     /** Extension point attribute updater. */
     private static final String EXTENSION_UPDATER = "updater";
     /** Extension point attribute renderer. */
@@ -67,14 +67,14 @@ public class WorldViewPart implements Focusable, TileSelectionListener
     /** Composite. */
     private Composite composite;
     /** Updater. */
-    private WorldViewUpdater worldViewUpdater;
+    private WorldUpdater updater;
     /** Renderer. */
-    private WorldViewRenderer worldViewRenderer;
+    private WorldRenderer renderer;
 
     /**
      * Create part.
      */
-    public WorldViewPart()
+    public WorldPart()
     {
         // Nothing to do
     }
@@ -96,24 +96,24 @@ public class WorldViewPart implements Focusable, TileSelectionListener
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         composite.addMouseTrackListener(UtilSwt.createFocusListener(this));
 
-        final Services services = WorldViewModel.INSTANCE.getServices();
+        final Services services = WorldModel.INSTANCE.getServices();
 
-        worldViewUpdater = checkUpdaterExtensionPoint(services);
-        composite.addMouseListener(worldViewUpdater);
-        composite.addMouseMoveListener(worldViewUpdater);
-        composite.addMouseWheelListener(worldViewUpdater);
-        composite.addKeyListener(worldViewUpdater);
-        services.add(worldViewUpdater);
+        updater = checkUpdaterExtensionPoint(services);
+        composite.addMouseListener(updater);
+        composite.addMouseMoveListener(updater);
+        composite.addMouseWheelListener(updater);
+        composite.addKeyListener(updater);
+        services.add(updater);
 
         final WorldInteractionTile tileInteraction = services.get(WorldInteractionTile.class);
         tileInteraction.addListener(this);
 
-        worldViewRenderer = checkRendererExtensionPoint(services);
-        composite.addPaintListener(worldViewRenderer);
-        composite.addMouseListener(worldViewRenderer);
-        composite.addMouseMoveListener(worldViewRenderer);
-        composite.addMouseWheelListener(worldViewRenderer);
-        composite.addKeyListener(worldViewRenderer);
+        renderer = checkRendererExtensionPoint(services);
+        composite.addPaintListener(renderer);
+        composite.addMouseListener(renderer);
+        composite.addMouseMoveListener(renderer);
+        composite.addMouseWheelListener(renderer);
+        composite.addKeyListener(renderer);
 
         Display.getDefault().asyncExec(new Runnable()
         {
@@ -143,7 +143,7 @@ public class WorldViewPart implements Focusable, TileSelectionListener
      */
     public void setToolBarEnabled(boolean enabled)
     {
-        final MPart part = partService.findPart(WorldViewPart.ID);
+        final MPart part = partService.findPart(WorldPart.ID);
         if (part != null)
         {
             final MToolBar toolBar = part.getToolbar();
@@ -162,7 +162,7 @@ public class WorldViewPart implements Focusable, TileSelectionListener
      */
     public void setToolItemEnabled(String item, boolean enabled)
     {
-        final MPart part = partService.findPart(WorldViewPart.ID);
+        final MPart part = partService.findPart(WorldPart.ID);
         if (part != null)
         {
             final MToolBar toolBar = part.getToolbar();
@@ -181,7 +181,7 @@ public class WorldViewPart implements Focusable, TileSelectionListener
      */
     public void setToolItemText(String item, String text)
     {
-        final MPart part = partService.findPart(WorldViewPart.ID);
+        final MPart part = partService.findPart(WorldPart.ID);
         if (part != null)
         {
             final MToolBar toolBar = part.getToolbar();
@@ -203,7 +203,7 @@ public class WorldViewPart implements Focusable, TileSelectionListener
      */
     public <T> T getToolItem(String item, Class<T> clazz) throws LionEngineException
     {
-        final MPart part = partService.findPart(WorldViewPart.ID);
+        final MPart part = partService.findPart(WorldPart.ID);
         if (part != null)
         {
             final MToolBar toolBar = part.getToolbar();
@@ -230,9 +230,9 @@ public class WorldViewPart implements Focusable, TileSelectionListener
      * 
      * @return The world updater.
      */
-    public WorldViewUpdater getUpdater()
+    public WorldUpdater getUpdater()
     {
-        return worldViewUpdater;
+        return updater;
     }
 
     /**
@@ -240,9 +240,9 @@ public class WorldViewPart implements Focusable, TileSelectionListener
      * 
      * @return The world renderer.
      */
-    public WorldViewRenderer getRenderer()
+    public WorldRenderer getRenderer()
     {
-        return worldViewRenderer;
+        return renderer;
     }
 
     /**
@@ -261,10 +261,10 @@ public class WorldViewPart implements Focusable, TileSelectionListener
      * @param services The services reference.
      * @return renderer instance from extension point or default one.
      */
-    private WorldViewUpdater checkUpdaterExtensionPoint(Services services)
+    private WorldUpdater checkUpdaterExtensionPoint(Services services)
     {
         final IExtensionRegistry registry = Platform.getExtensionRegistry();
-        final IConfigurationElement[] elements = registry.getConfigurationElementsFor(WorldViewUpdater.EXTENSION_ID);
+        final IConfigurationElement[] elements = registry.getConfigurationElementsFor(WorldUpdater.EXTENSION_ID);
         if (elements.length > 0)
         {
             final String renderer = elements[0].getAttribute(EXTENSION_UPDATER);
@@ -272,7 +272,7 @@ public class WorldViewPart implements Focusable, TileSelectionListener
             {
                 try
                 {
-                    return UtilEclipse.createClass(renderer, WorldViewUpdater.class, partService);
+                    return UtilEclipse.createClass(renderer, WorldUpdater.class, partService);
                 }
                 catch (final ReflectiveOperationException exception)
                 {
@@ -280,7 +280,7 @@ public class WorldViewPart implements Focusable, TileSelectionListener
                 }
             }
         }
-        return new WorldViewUpdater(partService, services);
+        return new WorldUpdater(partService, services);
     }
 
     /**
@@ -289,10 +289,10 @@ public class WorldViewPart implements Focusable, TileSelectionListener
      * @param services The services reference.
      * @return renderer instance from extension point or default one.
      */
-    private WorldViewRenderer checkRendererExtensionPoint(Services services)
+    private WorldRenderer checkRendererExtensionPoint(Services services)
     {
         final IExtensionRegistry registry = Platform.getExtensionRegistry();
-        final IConfigurationElement[] elements = registry.getConfigurationElementsFor(WorldViewRenderer.EXTENSION_ID);
+        final IConfigurationElement[] elements = registry.getConfigurationElementsFor(WorldRenderer.EXTENSION_ID);
         if (elements.length > 0)
         {
             final String renderer = elements[0].getAttribute(EXTENSION_RENDERER);
@@ -300,7 +300,7 @@ public class WorldViewPart implements Focusable, TileSelectionListener
             {
                 try
                 {
-                    return UtilEclipse.createClass(renderer, WorldViewRenderer.class, composite, partService);
+                    return UtilEclipse.createClass(renderer, WorldRenderer.class, composite, partService);
                 }
                 catch (final ReflectiveOperationException exception)
                 {
@@ -308,7 +308,7 @@ public class WorldViewPart implements Focusable, TileSelectionListener
                 }
             }
         }
-        return new WorldViewRenderer(composite, partService, services);
+        return new WorldRenderer(composite, partService, services);
     }
 
     @Override
