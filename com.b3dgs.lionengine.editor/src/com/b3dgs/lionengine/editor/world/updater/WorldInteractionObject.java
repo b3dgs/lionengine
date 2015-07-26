@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.editor.world.Selection;
 import com.b3dgs.lionengine.editor.world.WorldMouseClickListener;
 import com.b3dgs.lionengine.editor.world.WorldMouseMoveListener;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
@@ -42,8 +41,6 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
 {
     /** Object selection listener. */
     private final Collection<ObjectSelectionListener> objectSelectionListeners = new ArrayList<>();
-    /** Handler object. */
-    private final Handler handlerObject;
     /** Selection handler. */
     private final Selection selection;
     /** Object controller. */
@@ -56,7 +53,6 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
      */
     public WorldInteractionObject(Services services)
     {
-        handlerObject = services.get(Handler.class);
         objectControl = services.get(ObjectControl.class);
         selection = services.get(Selection.class);
     }
@@ -79,16 +75,6 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     public void removeListener(ObjectSelectionListener listener)
     {
         objectSelectionListeners.remove(listener);
-    }
-
-    /**
-     * Get the handler object.
-     * 
-     * @return The handler object.
-     */
-    public Handler getHandler()
-    {
-        return handlerObject;
     }
 
     /**

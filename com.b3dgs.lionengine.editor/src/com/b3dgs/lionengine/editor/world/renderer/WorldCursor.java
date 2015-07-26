@@ -18,14 +18,17 @@
 package com.b3dgs.lionengine.editor.world.renderer;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.world.ObjectControl;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.Selection;
 import com.b3dgs.lionengine.editor.world.WorldRenderListener;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldViewUpdater;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -38,6 +41,10 @@ public class WorldCursor implements WorldRenderListener
     /** Color of the selection area. */
     private static final ColorRgba COLOR_CURSOR_SELECTION = new ColorRgba(240, 240, 240, 96);
 
+    /** Map. */
+    private final MapTile map;
+    /** Camera. */
+    private final Camera camera;
     /** Updater. */
     private final WorldViewUpdater world;
     /** Selection handler. */
@@ -52,6 +59,8 @@ public class WorldCursor implements WorldRenderListener
      */
     public WorldCursor(Services services)
     {
+        map = services.get(MapTile.class);
+        camera = services.get(Camera.class);
         world = services.get(WorldViewUpdater.class);
         selection = services.get(Selection.class);
         objectControl = services.get(ObjectControl.class);
@@ -62,20 +71,18 @@ public class WorldCursor implements WorldRenderListener
      */
 
     @Override
-    public void onRender(Graphic g, int width, int height, double scale, int tw, int th, int offsetY)
+    public void onRender(Graphic g, int width, int height, double scale, int tw, int th)
     {
         if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT && !selection.isSelecting()
                 && !objectControl.isDragging() && !objectControl.hasOver())
         {
-            final int mouseX = world.getMx();
-            final int mouseY = world.getMy() - offsetY;
-            if (mouseX >= 0 && mouseY >= 0 && mouseX < width && mouseY < height)
+            final Tile tile = Tools.getTile(map, camera, world.getMouseX(), world.getMouseY());
+            if (tile != null)
             {
-                final int mx = UtilMath.getRounded(mouseX, tw);
-                final int my = UtilMath.getRounded(mouseY, th) + offsetY;
-
                 g.setColor(COLOR_CURSOR_SELECTION);
-                g.drawRect(mx, my, tw, th, true);
+                final int x = (int) (camera.getViewpointX(tile.getX()) * scale);
+                final int y = (int) (camera.getViewpointY(tile.getY()) * scale) - th;
+                g.drawRect(x, y, tw, th, true);
             }
         }
     }

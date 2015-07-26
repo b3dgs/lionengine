@@ -18,9 +18,7 @@
 package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -34,8 +32,6 @@ public class Selection
 {
     /** Last selection area. */
     private final Rectangle selectionArea;
-    /** Map reference. */
-    private final MapTile map;
     /** Selection starting horizontal location. */
     private int startX;
     /** Selection starting vertical location. */
@@ -59,7 +55,6 @@ public class Selection
     public Selection(Services services)
     {
         selectionArea = Geom.createRectangle();
-        map = services.get(MapTile.class);
     }
 
     /**
@@ -72,12 +67,10 @@ public class Selection
     {
         if (!isStarted())
         {
-            final int sx = UtilMath.getRounded(mx, map.getTileWidth());
-            final int sy = UtilMath.getRounded(my, map.getTileHeight());
-            startX = sx;
-            startY = sy;
-            endX = sx;
-            endY = sy;
+            startX = mx;
+            startY = my;
+            endX = mx;
+            endY = my;
             started = true;
             selecting = false;
             selected = false;
@@ -94,8 +87,8 @@ public class Selection
     {
         if (isStarted())
         {
-            endX = UtilMath.getRounded(mx + map.getTileWidth() / 2, map.getTileWidth());
-            endY = UtilMath.getRounded(my + map.getTileHeight() / 2, map.getTileHeight());
+            endX = mx;
+            endY = my;
             started = true;
             selecting = true;
             selected = false;
@@ -114,8 +107,8 @@ public class Selection
         {
             int sx = startX;
             int sy = startY;
-            int ex = UtilMath.getRounded(mx, map.getTileWidth());
-            int ey = UtilMath.getRounded(my, map.getTileHeight());
+            int ex = mx;
+            int ey = my;
 
             // Ensure selection is positive
             if (ex < sx)

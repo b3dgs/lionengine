@@ -259,6 +259,15 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
     Tile getTile(Localizable localizable, int offsetX, int offsetY);
 
     /**
+     * Get the tile at the location.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @return The tile found at the location, <code>null</code> if none.
+     */
+    Tile getTileAt(double x, double y);
+
+    /**
      * Get the list of tiles from old location to current.
      * 
      * @param ox The old horizontal location.

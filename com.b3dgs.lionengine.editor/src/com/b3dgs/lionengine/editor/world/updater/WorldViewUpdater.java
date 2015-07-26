@@ -62,8 +62,6 @@ public class WorldViewUpdater implements KeyListener, MouseListener, MouseMoveLi
     private int mouseY;
     /** Mouse click. */
     private int click;
-    /** Vertical offset. */
-    private int offsetY;
 
     /**
      * Create a world view renderer with grid enabled.
@@ -112,16 +110,6 @@ public class WorldViewUpdater implements KeyListener, MouseListener, MouseMoveLi
     }
 
     /**
-     * Set the vertical offset.
-     * 
-     * @param offsetY The vertical offset.
-     */
-    public void setOffsetY(int offsetY)
-    {
-        this.offsetY = offsetY;
-    }
-
-    /**
      * Get the mouse click.
      * 
      * @return The mouse click.
@@ -148,7 +136,7 @@ public class WorldViewUpdater implements KeyListener, MouseListener, MouseMoveLi
      */
     public int getMouseY()
     {
-        return (int) (mouseY / zoom.getScale()) - offsetY;
+        return (int) (mouseY / zoom.getScale());
     }
 
     /**
@@ -204,7 +192,6 @@ public class WorldViewUpdater implements KeyListener, MouseListener, MouseMoveLi
 
         final int mx = getMouseX();
         final int my = getMouseY();
-        navigation.onMousePressed(click, mx, my);
         interactionObject.onMousePressed(click, mx, my);
         interactionTile.onMousePressed(click, mx, my);
     }
@@ -217,7 +204,6 @@ public class WorldViewUpdater implements KeyListener, MouseListener, MouseMoveLi
 
         final int mx = getMouseX();
         final int my = getMouseY();
-        navigation.onMouseReleased(click, mx, my);
         interactionObject.onMouseReleased(click, mx, my);
         interactionTile.onMouseReleased(click, mx, my);
 

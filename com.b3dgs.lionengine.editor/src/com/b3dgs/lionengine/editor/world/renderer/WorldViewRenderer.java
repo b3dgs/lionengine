@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -131,9 +130,6 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
      */
     protected void render(Graphic g, int width, int height)
     {
-        final int offsetY = height - UtilMath.getRounded(height, map.getTileHeight());
-        worldViewUpdater.setOffsetY(offsetY);
-
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
 
@@ -142,7 +138,7 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
         renderMap(g, width, height);
         renderEntities(g);
 
-        renderSelection(g);
+        selection.render(g, COLOR_MOUSE_SELECTION);
     }
 
     /**
@@ -176,16 +172,6 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
     {
         handlerObject.update(1.0);
         handlerObject.render(g);
-    }
-
-    /**
-     * Render the current selection.
-     * 
-     * @param g The graphic output.
-     */
-    protected void renderSelection(Graphic g)
-    {
-        selection.render(g, COLOR_MOUSE_SELECTION);
     }
 
     /**
@@ -227,12 +213,10 @@ public class WorldViewRenderer implements PaintListener, MouseListener, MouseMov
 
             final int tw = (int) Math.ceil(map.getTileWidth() * scale);
             final int th = (int) Math.ceil(map.getTileHeight() * scale);
-            final int offsetY = paintEvent.height - UtilMath.getRounded(paintEvent.height, th);
-
-            selectedObjects.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th, offsetY);
-            selectedTiles.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th, offsetY);
-            cursor.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th, offsetY);
-            grid.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th, offsetY);
+            selectedObjects.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
+            selectedTiles.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
+            cursor.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
+            grid.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
         }
     }
 

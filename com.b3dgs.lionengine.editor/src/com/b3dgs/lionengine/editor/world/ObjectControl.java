@@ -155,7 +155,7 @@ public class ObjectControl
         final Media media = ProjectsModel.INSTANCE.getSelection();
         if (ObjectsTester.isObjectFile(media))
         {
-            final Point tile = Tools.getMouseTile(map, camera, mx, my);
+            final Point tile = Tools.getPoint(map, camera, mx, my);
             try
             {
                 final ObjectGame object = factory.create(media);

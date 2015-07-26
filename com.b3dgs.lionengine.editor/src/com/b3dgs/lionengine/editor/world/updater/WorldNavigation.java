@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.world.updater;
 
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.swt.Keyboard;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.WorldKeyboardListener;
-import com.b3dgs.lionengine.editor.world.WorldMouseClickListener;
 import com.b3dgs.lionengine.editor.world.WorldMouseMoveListener;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.Camera;
@@ -33,10 +31,36 @@ import com.b3dgs.lionengine.game.object.Services;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldNavigation implements WorldMouseClickListener, WorldMouseMoveListener, WorldKeyboardListener
+public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardListener
 {
     /** Grid movement sensibility. */
     private static final int GRID_MOVEMENT_SENSIBILITY = 8;
+
+    /**
+     * Get the speed.
+     * 
+     * @param axisPositive The positive axis key.
+     * @param axisNegative The negative axis key.
+     * @param key The key value.
+     * @return The speed (-1 if negative, 1 if positive, 0 if none).
+     */
+    private static int getSpeed(Integer axisPositive, Integer axisNegative, Integer key)
+    {
+        final int speed;
+        if (axisPositive.equals(key))
+        {
+            speed = -1;
+        }
+        else if (axisNegative.equals(key))
+        {
+            speed = 1;
+        }
+        else
+        {
+            speed = 0;
+        }
+        return speed;
+    }
 
     /** Camera reference. */
     private final Camera camera;
@@ -57,51 +81,6 @@ public class WorldNavigation implements WorldMouseClickListener, WorldMouseMoveL
         zoom = services.get(WorldZoom.class);
     }
 
-    /**
-     * Update the keyboard.
-     * 
-     * @param vx The keyboard horizontal movement.
-     * @param vy The keyboard vertical movement.
-     * @param step The movement sensibility.
-     */
-    private void updateCamera(double vx, double vy, int step)
-    {
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-        if (step > 0)
-        {
-            camera.moveLocation(1.0, UtilMath.getRounded(vx * tw * step, tw), UtilMath.getRounded(vy * th * step, th));
-        }
-        else
-        {
-            camera.moveLocation(1.0, vx, vy);
-        }
-    }
-
-    /*
-     * WorldMouseClickListener
-     */
-
-    @Override
-    public void onMousePressed(int click, int mx, int my)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void onMouseReleased(int click, int mx, int my)
-    {
-        final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
-        if (palette == PaletteType.HAND)
-        {
-            final int tw = map.getTileWidth();
-            final int th = map.getTileHeight();
-            final int x = UtilMath.getRounded(camera.getX() + tw / 2.0, tw);
-            final int y = UtilMath.getRounded(camera.getY() - th / 2.0, th);
-            camera.teleport(x, y);
-        }
-    }
-
     /*
      * WorldMouseMoveListener
      */
@@ -112,7 +91,7 @@ public class WorldNavigation implements WorldMouseClickListener, WorldMouseMoveL
         final Enum<?> palette = WorldViewModel.INSTANCE.getSelectedPalette();
         if (palette == PaletteType.HAND && click > 0)
         {
-            updateCamera(oldMx - mx, my - oldMy, 0);
+            camera.moveLocation(1.0, oldMx - mx, my - oldMy);
         }
     }
 
@@ -123,35 +102,11 @@ public class WorldNavigation implements WorldMouseClickListener, WorldMouseMoveL
     @Override
     public void onKeyPushed(Integer key)
     {
-        final int vx;
-        if (Keyboard.LEFT.equals(key))
-        {
-            vx = -1;
-        }
-        else if (Keyboard.RIGHT.equals(key))
-        {
-            vx = 1;
-        }
-        else
-        {
-            vx = 0;
-        }
-
-        final int vy;
-        if (Keyboard.DOWN.equals(key))
-        {
-            vy = -1;
-        }
-        else if (Keyboard.UP.equals(key))
-        {
-            vy = 1;
-        }
-        else
-        {
-            vy = 0;
-        }
-
+        final double vx = getSpeed(Keyboard.LEFT, Keyboard.RIGHT, key);
+        final double vy = getSpeed(Keyboard.DOWN, Keyboard.UP, key);
         final double scale = zoom.getScale();
-        updateCamera(vx / scale, vy / scale, GRID_MOVEMENT_SENSIBILITY);
+        final int speedX = map.getTileWidth() * GRID_MOVEMENT_SENSIBILITY;
+        final int speedY = map.getTileHeight() * GRID_MOVEMENT_SENSIBILITY;
+        camera.moveLocation(1.0, vx * speedX / scale, vy * speedY / scale);
     }
 }

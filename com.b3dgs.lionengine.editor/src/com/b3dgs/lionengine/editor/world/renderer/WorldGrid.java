@@ -21,6 +21,9 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.editor.world.WorldRenderListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldViewUpdater;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -31,8 +34,12 @@ import com.b3dgs.lionengine.game.object.Services;
 public class WorldGrid implements WorldRenderListener
 {
     /** Color of the grid. */
-    private static final ColorRgba COLOR_GRID = new ColorRgba(128, 128, 128, 128);
+    private static final ColorRgba COLOR_GRID = new ColorRgba(96, 96, 96);
 
+    /** Map. */
+    private final MapTile map;
+    /** Camera. */
+    private final Camera camera;
     /** Updater. */
     private final WorldViewUpdater world;
 
@@ -43,6 +50,8 @@ public class WorldGrid implements WorldRenderListener
      */
     public WorldGrid(Services services)
     {
+        map = services.get(MapTile.class);
+        camera = services.get(Camera.class);
         world = services.get(WorldViewUpdater.class);
     }
 
@@ -51,21 +60,29 @@ public class WorldGrid implements WorldRenderListener
      */
 
     @Override
-    public void onRender(Graphic g, int width, int height, double scale, int tw, int th, int offsetY)
+    public void onRender(Graphic g, int width, int height, double scale, int ctw, int cth)
     {
         if (world.isGridEnabled())
         {
             g.setColor(COLOR_GRID);
 
-            // Render horizontal lines
-            for (int v = height - offsetY; v > -offsetY; v -= th)
+            final int tw = map.getTileWidth();
+            final int th = map.getTileHeight();
+            final int sx = (int) Math.floor(camera.getX()) / th;
+            final int sy = (int) Math.floor(camera.getY()) / tw;
+
+            for (int ty = 0; ty <= camera.getHeight() / th + 1; ty++)
             {
-                g.drawLine(0, v + offsetY, width - 1, v + offsetY);
-            }
-            // Render vertical lines
-            for (int h = 0; h < width; h += tw)
-            {
-                g.drawLine(h, 0, h, height - 1);
+                for (int tx = 0; tx <= camera.getWidth() / tw + 1; tx++)
+                {
+                    final Tile tile = map.getTile(sx + tx, sy + ty);
+                    if (tile != null)
+                    {
+                        final int x = (int) Math.floor(camera.getViewpointX(tile.getX()) * scale);
+                        final int y = (int) Math.floor(camera.getViewpointY(tile.getY()) * scale) - cth;
+                        g.drawRect(x, y, ctw, cth, false);
+                    }
+                }
             }
         }
     }

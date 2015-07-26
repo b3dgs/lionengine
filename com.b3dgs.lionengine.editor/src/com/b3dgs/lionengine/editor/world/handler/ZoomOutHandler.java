@@ -51,14 +51,10 @@ public final class ZoomOutHandler
     public void execute()
     {
         final WorldZoom zoom = WorldViewModel.INSTANCE.getServices().get(WorldZoom.class);
-        final double scale = zoom.getPercent() / 100.0;
-
-        final int tw = WorldViewModel.INSTANCE.getMap().getTileWidth();
-        final int step = (int) Math.ceil((tw * scale - 1) / tw * 100.0);
-        zoom.setPercent(step);
+        zoom.zoomOut();
 
         final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-        part.setToolItemText(ZoomItem.ID, String.valueOf(step));
+        part.setToolItemText(ZoomItem.ID, String.valueOf(zoom.getPercent()));
         part.update();
     }
 }

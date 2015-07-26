@@ -294,18 +294,6 @@ public class MapTileGame implements MapTile
     }
 
     /**
-     * Get the tile at the specified location.
-     * 
-     * @param x The current horizontal location.
-     * @param y The current vertical location.
-     * @return The tile found, <code>null</code> if none.
-     */
-    private Tile getTileAt(double x, double y)
-    {
-        return getTile((int) Math.floor(x / getTileWidth()), (int) Math.floor(y / getTileHeight()));
-    }
-
-    /**
      * Save the active tiles.
      * 
      * @param file The output file.
@@ -640,8 +628,14 @@ public class MapTileGame implements MapTile
     @Override
     public Tile getTile(Localizable localizable, int offsetX, int offsetY)
     {
-        final int tx = (int) Math.floor((localizable.getX() + offsetX) / getTileWidth());
-        final int ty = (int) Math.floor((localizable.getY() + offsetY) / getTileHeight());
+        return getTileAt(localizable.getX() + offsetX, localizable.getY() + offsetY);
+    }
+
+    @Override
+    public Tile getTileAt(double x, double y)
+    {
+        final int tx = (int) Math.floor(x / getTileWidth());
+        final int ty = (int) Math.floor(y / getTileHeight());
         return getTile(tx, ty);
     }
 

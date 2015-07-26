@@ -60,7 +60,7 @@ public class WorldSelectedObjects implements WorldRenderListener
      */
 
     @Override
-    public void onRender(Graphic g, int width, int height, double scale, int tw, int th, int offsetY)
+    public void onRender(Graphic g, int width, int height, double scale, int tw, int th)
     {
         g.setColor(COLOR_ENTITY_SELECTION);
 

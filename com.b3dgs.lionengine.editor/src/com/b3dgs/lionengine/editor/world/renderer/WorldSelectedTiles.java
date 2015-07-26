@@ -105,7 +105,7 @@ public class WorldSelectedTiles implements WorldRenderListener
      */
 
     @Override
-    public void onRender(Graphic g, int width, int height, double scale, int tw, int th, int offsetY)
+    public void onRender(Graphic g, int width, int height, double scale, int tw, int th)
     {
         final Tile selectedTile = interactionTile.getSelection();
         if (selectedTile != null)

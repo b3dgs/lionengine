@@ -34,13 +34,13 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.stream.Stream;
@@ -121,22 +121,35 @@ public final class Tools
     }
 
     /**
+     * Get the location over the mouse.
+     * 
+     * @param map The map reference.
+     * @param camera The camera reference.
+     * @param mx The mouse X.
+     * @param my The mouse Y.
+     * @return The location found.
+     */
+    public static Point getPoint(MapTile map, Camera camera, int mx, int my)
+    {
+        final int x = (int) camera.getX() + mx;
+        final int y = (int) camera.getY() - my + camera.getHeight();
+        return Geom.createPoint(x, y);
+    }
+
+    /**
      * Get the tile location over the mouse.
      * 
      * @param map The map reference.
      * @param camera The camera reference.
      * @param mx The mouse X.
      * @param my The mouse Y.
-     * @return The tile location in absolute location.
+     * @return The tile found, <code>null</code> if none.
      */
-    public static Point getMouseTile(MapTile map, Camera camera, int mx, int my)
+    public static Tile getTile(MapTile map, Camera camera, int mx, int my)
     {
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-        final int h = UtilMath.getRounded(camera.getHeight(), th) - map.getTileHeight();
-        final int x = (int) camera.getX() + UtilMath.getRounded(mx, tw);
-        final int y = (int) camera.getY() - UtilMath.getRounded(my, th) + h;
-        return Geom.createPoint(x, y);
+        final int x = (int) camera.getX() + mx;
+        final int y = (int) camera.getY() - my + camera.getHeight();
+        return map.getTileAt(x, y);
     }
 
     /**

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.editor.world.updater;
 
-import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.world.WorldMouseScrollListener;
@@ -37,16 +36,16 @@ public class WorldZoom implements WorldMouseScrollListener
     /** Default zoom value. */
     public static final int ZOOM_DEFAULT = 100;
     /** Maximum zoom value. */
-    public static final int ZOOM_MAX = 500;
+    public static final int ZOOM_MAX = 900;
     /** Minimum zoom value. */
-    public static final int ZOOM_MIN = 20;
+    public static final int ZOOM_MIN = 25;
 
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
     private final MapTile map;
     /** Zoom level in percent. */
-    private int zoom = ZOOM_DEFAULT;
+    private int zoomPercent;
     /** Old scale. */
     private double oldScale;
 
@@ -59,6 +58,45 @@ public class WorldZoom implements WorldMouseScrollListener
     {
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
+        zoomPercent = ZOOM_DEFAULT;
+    }
+
+    /**
+     * Perform a single zoom in.
+     */
+    public void zoomIn()
+    {
+        zoom(1);
+    }
+
+    /**
+     * Perform a single zoom out.
+     */
+    public void zoomOut()
+    {
+        zoom(-1);
+    }
+
+    /**
+     * Perform a zoom.
+     * 
+     * @param step The number of zoom.
+     */
+    public void zoom(int step)
+    {
+        final int tw = map.getTileWidth();
+        final double scale = getScale();
+        final double next;
+        if (zoomPercent < 100)
+        {
+            next = step;
+        }
+        else
+        {
+            next = step * scale;
+        }
+        final int percent = (int) Math.ceil((tw * scale + next) / tw * 100.0);
+        setPercent(percent);
     }
 
     /**
@@ -68,7 +106,7 @@ public class WorldZoom implements WorldMouseScrollListener
      */
     public void setPercent(int percent)
     {
-        zoom = UtilMath.fixBetween(percent, ZOOM_MIN, ZOOM_MAX);
+        zoomPercent = UtilMath.fixBetween(percent, ZOOM_MIN, ZOOM_MAX);
     }
 
     /**
@@ -78,7 +116,7 @@ public class WorldZoom implements WorldMouseScrollListener
      */
     public int getPercent()
     {
-        return zoom;
+        return zoomPercent;
     }
 
     /**
@@ -88,9 +126,7 @@ public class WorldZoom implements WorldMouseScrollListener
      */
     public double getScale()
     {
-        final double realScale = zoom / 100.0;
-        final double scale = Math.round(map.getTileWidth() * realScale) / (double) map.getTileWidth();
-        return scale;
+        return zoomPercent / 100.0;
     }
 
     /**
@@ -101,24 +137,14 @@ public class WorldZoom implements WorldMouseScrollListener
      */
     private void updateScrollToCursor(int mx, int my)
     {
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-
-        final double scaleDiff = getScale() - oldScale;
-
         final double ox;
         final double oy;
-        if (scaleDiff > 0)
-        {
-            ox = Origin.BOTTOM_LEFT.getX(mx, camera.getWidth()) * scaleDiff;
-            oy = Origin.BOTTOM_LEFT.getY(my, camera.getHeight()) * scaleDiff;
-        }
-        else
-        {
-            ox = Origin.MIDDLE.getX(mx, camera.getWidth()) * scaleDiff;
-            oy = Origin.MIDDLE.getY(my, camera.getHeight()) * scaleDiff;
-        }
-        camera.teleport(UtilMath.getRounded(camera.getX() + ox, tw), UtilMath.getRounded(camera.getY() - oy, th));
+        final double scale = getScale();
+        final double scaleDiff = scale - oldScale;
+
+        ox = mx / scale * scaleDiff;
+        oy = (camera.getHeight() - my) / scale * scaleDiff;
+        camera.teleport(camera.getX() + ox, camera.getY() + oy);
     }
 
     /*
@@ -129,10 +155,17 @@ public class WorldZoom implements WorldMouseScrollListener
     public void onMouseScroll(int value, int mx, int my)
     {
         oldScale = getScale();
-        zoom = UtilMath.fixBetween(zoom + (int) Math.ceil(zoom * value / 100.0), ZOOM_MIN, ZOOM_MAX);
+        if (UtilMath.getSign(value) > 0)
+        {
+            zoomIn();
+        }
+        else
+        {
+            zoomOut();
+        }
 
         final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-        part.setToolItemText(ZoomItem.ID, String.valueOf(zoom));
+        part.setToolItemText(ZoomItem.ID, String.valueOf(zoomPercent));
         updateScrollToCursor(mx, my);
     }
 }

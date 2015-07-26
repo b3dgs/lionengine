@@ -35,7 +35,6 @@ public interface WorldRenderListener
      * @param scale The current world scaling.
      * @param tw The current tile width.
      * @param th The current tile height.
-     * @param offsetY The vertical offset.
      */
-    void onRender(Graphic g, int width, int height, double scale, int tw, int th, int offsetY);
+    void onRender(Graphic g, int width, int height, double scale, int tw, int th);
 }

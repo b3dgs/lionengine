@@ -112,8 +112,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         if (map.isCreated())
         {
-            final Point point = Tools.getMouseTile(map, camera, mx, my);
-            selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
+            selectedTile = Tools.getTile(map, camera, mx, my);
         }
         else
         {
@@ -139,8 +138,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         if (function != null)
         {
             // TODO apply function depending of the axis
-            final Point old = Tools.getMouseTile(map, camera, firstX, firstY);
-            final Point point = Tools.getMouseTile(map, camera, mx, my);
+            final Point old = Tools.getPoint(map, camera, firstX, firstY);
+            final Point point = Tools.getPoint(map, camera, mx, my);
             final Collection<Tile> tiles = map.getTilesHit(old.getX(), old.getY(), point.getX(), point.getY());
             // TODO assign collision to tiles
             // TODO render current line
