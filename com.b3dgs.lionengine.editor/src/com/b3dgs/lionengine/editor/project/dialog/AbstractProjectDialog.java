@@ -32,9 +32,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
 
 /**
  * Represents the abstract project dialog.
@@ -133,7 +133,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
         projectLocationText = new Text(nameArea, SWT.BORDER);
         projectLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-        final Button browse = UtilSwt.createButton(nameArea,
+        final Button browse = UtilButton.create(nameArea,
                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
@@ -259,7 +259,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
     private Button createBrowseButton(Composite parent, String title, final Text text, final boolean folder,
             final String... extensions)
     {
-        final Button browse = UtilSwt.createButton(parent, title, AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.create(parent, title, AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
         browse.addSelectionListener(new SelectionAdapter()
         {

@@ -42,11 +42,12 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilDialog;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileExtractor;
@@ -61,7 +62,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class SheetsImportDialog extends AbstractDialog
 {
     /** Icon. */
-    static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    static final Image ICON = UtilIcon.get("dialog", "import.png");
     /** Error on config file generation. */
     private static final String ERROR_GENERATE = "Unable to generate sheets config file !";
 
@@ -106,7 +107,7 @@ public class SheetsImportDialog extends AbstractDialog
      */
     void onAddLevelRip()
     {
-        final File[] files = Tools.selectResourceFiles(dialog, new String[]
+        final File[] files = UtilDialog.selectResourceFiles(dialog, new String[]
         {
             com.b3dgs.lionengine.editor.world.dialog.Messages.ImportMapDialog_LevelRipFileFilter
         }, new String[]
@@ -158,7 +159,7 @@ public class SheetsImportDialog extends AbstractDialog
      */
     void onBrowseExtractionLocation()
     {
-        final File file = Tools.selectResourceFolder(dialog);
+        final File file = UtilDialog.selectResourceFolder(dialog);
         if (file != null)
         {
             folderText.setText(file.getPath());
@@ -271,8 +272,8 @@ public class SheetsImportDialog extends AbstractDialog
         folderText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textCheckFinish(folderText);
 
-        final Button browse = UtilSwt.createButton(area,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.create(area, com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                AbstractDialog.ICON_BROWSE);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
         browse.addSelectionListener(new SelectionAdapter()
@@ -296,22 +297,22 @@ public class SheetsImportDialog extends AbstractDialog
         config.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         config.setLayout(new GridLayout(2, true));
 
-        widthText = UtilSwt.createText(Messages.SheetsImportDialog_TileWidth, config);
-        widthText.addVerifyListener(UtilSwt.createVerify(widthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        widthText = UtilText.create(Messages.SheetsImportDialog_TileWidth, config);
+        widthText.addVerifyListener(UtilText.createVerify(widthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         textCheckFinish(widthText);
 
-        heightText = UtilSwt.createText(Messages.SheetsImportDialog_TileHeight, config);
-        heightText.addVerifyListener(UtilSwt.createVerify(heightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        heightText = UtilText.create(Messages.SheetsImportDialog_TileHeight, config);
+        heightText.addVerifyListener(UtilText.createVerify(heightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         textCheckFinish(heightText);
 
-        horizontalText = UtilSwt.createText(Messages.SheetsImportDialog_HorizontalTiles, config);
+        horizontalText = UtilText.create(Messages.SheetsImportDialog_HorizontalTiles, config);
         horizontalText.addVerifyListener(
-                UtilSwt.createVerify(horizontalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+                UtilText.createVerify(horizontalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         textCheckFinish(horizontalText);
 
-        verticalText = UtilSwt.createText(Messages.SheetsImportDialog_VerticalTiles, config);
+        verticalText = UtilText.create(Messages.SheetsImportDialog_VerticalTiles, config);
         verticalText.addVerifyListener(
-                UtilSwt.createVerify(verticalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+                UtilText.createVerify(verticalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         textCheckFinish(verticalText);
     }
 
@@ -364,7 +365,7 @@ public class SheetsImportDialog extends AbstractDialog
         createExtractLocationArea(config);
         createTextConfig(config);
 
-        generate = UtilSwt.createCheck(Messages.SheetsImportDialog_GenerateSheetsConfig, config);
+        generate = UtilButton.create(Messages.SheetsImportDialog_GenerateSheetsConfig, config);
     }
 
     @Override
@@ -394,7 +395,7 @@ public class SheetsImportDialog extends AbstractDialog
             {
                 generateConfig(tw, th, extractFolder);
             }
-            UtilEclipse.showInfo(Messages.SheetsImportDialog_Title, Messages.SheetsImportDialog_Finished);
+            UtilDialog.info(Messages.SheetsImportDialog_Title, Messages.SheetsImportDialog_Finished);
         }
     }
 }

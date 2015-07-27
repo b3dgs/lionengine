@@ -31,8 +31,8 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
 
 /**
@@ -86,7 +86,7 @@ public class ZoomItem
         final int percent = validateZoomValue();
         zoom.setPercent(percent);
 
-        final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
+        final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
         part.update();
     }
 
@@ -104,7 +104,7 @@ public class ZoomItem
 
         zoom = new Text(parent, SWT.SINGLE | SWT.CENTER | SWT.BORDER);
         zoom.setLayoutData(new GridData(20, 13));
-        UtilSwt.createVerify(zoom, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
+        UtilText.createVerify(zoom, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
         zoom.setText(String.valueOf(WorldZoom.ZOOM_DEFAULT));
         zoom.addTraverseListener(new TraverseListener()
         {

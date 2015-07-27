@@ -43,8 +43,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.project.handler.CollisionsEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.FormulasEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler;
@@ -55,6 +53,8 @@ import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
@@ -76,7 +76,7 @@ public final class ProjectPart implements Focusable
      */
     static void updateProperties(Media media)
     {
-        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         if (ObjectsTester.isObjectFile(media))
         {
             part.setInput(part.getTree(), new Configurer(media));

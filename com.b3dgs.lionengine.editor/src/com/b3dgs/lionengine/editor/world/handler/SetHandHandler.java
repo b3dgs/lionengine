@@ -22,7 +22,8 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
+import com.b3dgs.lionengine.editor.utility.UtilToolbar;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
@@ -66,13 +67,13 @@ public final class SetHandHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemSelection(toolBar, false, EXCLUDED);
-                UtilEclipse.setToolItemSelection(toolBar, true, ID);
+                UtilToolbar.setToolItemSelection(toolBar, false, EXCLUDED);
+                UtilToolbar.setToolItemSelection(toolBar, true, ID);
             }
         }
         final PaletteType type = PaletteType.HAND;
         WorldModel.INSTANCE.setSelectedPalette(type);
-        final WorldPart view = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
+        final WorldPart view = UtilPart.getPart(WorldPart.ID, WorldPart.class);
         view.setCursor(type.getCursor());
     }
 }

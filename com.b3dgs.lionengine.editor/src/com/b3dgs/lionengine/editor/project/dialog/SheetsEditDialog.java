@@ -32,13 +32,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.Stream;
@@ -52,7 +54,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class SheetsEditDialog extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
+    private static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
     /** Sheets media. */
     final Media sheets;
@@ -91,12 +93,12 @@ public class SheetsEditDialog extends AbstractDialog
         tileSizeArea.setLayout(new GridLayout(1, false));
         tileSizeArea.setText(Messages.EditSheetsDialog_TileSize);
 
-        tileWidthText = UtilSwt.createText(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
+        tileWidthText = UtilText.create(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
         tileWidthText.addVerifyListener(
-                UtilSwt.createVerify(tileWidthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
-        tileHeightText = UtilSwt.createText(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
+                UtilText.createVerify(tileWidthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        tileHeightText = UtilText.create(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
         tileHeightText.addVerifyListener(
-                UtilSwt.createVerify(tileHeightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+                UtilText.createVerify(tileHeightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
     }
 
     /**
@@ -111,21 +113,17 @@ public class SheetsEditDialog extends AbstractDialog
         tileSheetsArea.setLayout(new GridLayout(1, false));
         tileSheetsArea.setText(Messages.EditSheetsDialog_TileSheets);
 
-        final File[] files = sheets.getFile().getParentFile().listFiles();
-        if (files != null)
+        for (final File file : UtilFile.getFiles(sheets.getFile().getParentFile()))
         {
-            for (final File file : files)
+            final Media media = UtilityMedia.get(file);
+            if (ImageInfo.isImage(media))
             {
-                final Media media = UtilityMedia.get(file);
-                if (ImageInfo.isImage(media))
-                {
-                    final Button check = new Button(tileSheetsArea, SWT.CHECK);
-                    check.setText(file.getName());
-                    check.setSelection(false);
-                    UtilSwt.registerDirty(check, true);
+                final Button check = new Button(tileSheetsArea, SWT.CHECK);
+                check.setText(file.getName());
+                check.setSelection(false);
+                UtilButton.registerDirty(check, true);
 
-                    buttons.add(check);
-                }
+                buttons.add(check);
             }
         }
     }
@@ -140,8 +138,8 @@ public class SheetsEditDialog extends AbstractDialog
         tileWidthText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_WIDTH));
         tileHeightText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_HEIGHT));
 
-        UtilSwt.registerDirty(tileWidthText, true);
-        UtilSwt.registerDirty(tileHeightText, true);
+        UtilText.registerDirty(tileWidthText, true);
+        UtilText.registerDirty(tileHeightText, true);
 
         final Collection<XmlNode> sheets = node.getChildren();
         for (final Button button : buttons)

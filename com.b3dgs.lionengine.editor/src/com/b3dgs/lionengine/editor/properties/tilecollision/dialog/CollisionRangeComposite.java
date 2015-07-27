@@ -25,7 +25,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilCombo;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
 
@@ -86,19 +87,19 @@ public class CollisionRangeComposite
         group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         group.setText(Messages.Dialog_TileCollision_Range);
 
-        comboRange = UtilSwt.createCombo(Messages.Dialog_TileCollision_Axis, group, Axis.values());
+        comboRange = UtilCombo.create(Messages.Dialog_TileCollision_Axis, group, Axis.values());
 
         final Composite range = new Composite(group, SWT.BORDER);
         range.setLayout(new GridLayout(2, true));
         range.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-        textRangeMinX = UtilSwt.createText(Messages.Dialog_TileCollision_MinX, range);
+        textRangeMinX = UtilText.create(Messages.Dialog_TileCollision_MinX, range);
         textRangeMinX.setText(DEFAULT_RANGE_VALUE);
-        textRangeMaxX = UtilSwt.createText(Messages.Dialog_TileCollision_MaxX, range);
+        textRangeMaxX = UtilText.create(Messages.Dialog_TileCollision_MaxX, range);
         textRangeMaxX.setText(DEFAULT_RANGE_VALUE);
-        textRangeMinY = UtilSwt.createText(Messages.Dialog_TileCollision_MinY, range);
+        textRangeMinY = UtilText.create(Messages.Dialog_TileCollision_MinY, range);
         textRangeMinY.setText(DEFAULT_RANGE_VALUE);
-        textRangeMaxY = UtilSwt.createText(Messages.Dialog_TileCollision_MaxY, range);
+        textRangeMaxY = UtilText.create(Messages.Dialog_TileCollision_MaxY, range);
         textRangeMaxY.setText(DEFAULT_RANGE_VALUE);
     }
 

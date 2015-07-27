@@ -32,9 +32,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupsEditDialog;
+import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.game.collision.TileGroup;
@@ -89,7 +89,7 @@ public class GroupChooser extends AbstractDialog
      */
     void loadGroups(String[] groups)
     {
-        UtilSwt.registerDirty(combo, false);
+        UtilCombo.registerDirty(combo, false);
         Arrays.sort(groups);
         combo.setItems(groups);
 
@@ -103,7 +103,7 @@ public class GroupChooser extends AbstractDialog
         {
             combo.setText(groups[0]);
         }
-        UtilSwt.registerDirty(combo, true);
+        UtilCombo.registerDirty(combo, true);
     }
 
     /**

@@ -25,6 +25,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Monitor;
 
+import com.b3dgs.lionengine.editor.utility.UtilPart;
+
 /**
  * Manage the product life cycle.
  * 
@@ -52,7 +54,7 @@ public class Manager
     @SuppressWarnings("static-method")
     public void processAdditions(MApplication app, EModelService modelService, Display display)
     {
-        UtilEclipse.setApplication(app);
+        UtilPart.setApplication(app);
 
         final Monitor monitor = display.getPrimaryMonitor();
         final Rectangle monitorRect = monitor.getBounds();

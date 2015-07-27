@@ -22,10 +22,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
+import com.b3dgs.lionengine.editor.utility.UtilDialog;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -38,9 +38,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class PropertiesSurface implements PropertiesProviderObject
 {
     /** Surface icon. */
-    private static final Image ICON_SURFACE = UtilEclipse.getIcon(FOLDER, "surface.png");
+    private static final Image ICON_SURFACE = UtilIcon.get(FOLDER, "surface.png");
     /** Icon icon. */
-    private static final Image ICON_ICON = UtilEclipse.getIcon(FOLDER, "icon.png");
+    private static final Image ICON_ICON = UtilIcon.get(FOLDER, "icon.png");
 
     /**
      * Create the surface attribute.
@@ -86,7 +86,7 @@ public class PropertiesSurface implements PropertiesProviderObject
      */
     private static boolean updateSurface(TreeItem item, Configurer configurer)
     {
-        final String file = Tools.selectFile(item.getParent().getShell(), configurer.getPath(), true);
+        final String file = UtilDialog.selectFile(item.getParent().getShell(), configurer.getPath(), true);
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
@@ -107,7 +107,7 @@ public class PropertiesSurface implements PropertiesProviderObject
      */
     private static boolean updateIcon(TreeItem item, Configurer configurer)
     {
-        final String file = Tools.selectFile(item.getParent().getShell(), configurer.getPath(), true);
+        final String file = UtilDialog.selectFile(item.getParent().getShell(), configurer.getPath(), true);
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();

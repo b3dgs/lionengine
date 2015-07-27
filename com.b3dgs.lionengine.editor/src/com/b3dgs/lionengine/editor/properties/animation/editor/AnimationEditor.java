@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class AnimationEditor extends AbstractEditor
 {
     /** Dialog icon. */
-    public static final Image ICON = UtilEclipse.getIcon("animation-editor", "dialog.png");
+    public static final Image ICON = UtilIcon.get("animation-editor", "dialog.png");
 
     /** Configurer reference. */
     private final Configurer configurer;

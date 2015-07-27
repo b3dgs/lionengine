@@ -24,8 +24,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class CollisionCategoryEditor extends AbstractEditor
 {
     /** Dialog icon. */
-    public static final Image ICON = UtilEclipse.getIcon("collisioncategory-editor", "dialog.png");
+    public static final Image ICON = UtilIcon.get("collisioncategory-editor", "dialog.png");
 
     /** Configurer reference. */
     private final Configurer configurer;

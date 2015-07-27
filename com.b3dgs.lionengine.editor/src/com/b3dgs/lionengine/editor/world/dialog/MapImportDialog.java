@@ -33,11 +33,11 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilDialog;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 public class MapImportDialog extends AbstractDialog
 {
     /** Icon. */
-    public static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    public static final Image ICON = UtilIcon.get("dialog", "import.png");
     /** Xml filter. */
     private static final String XML = "*.xml";
 
@@ -95,7 +95,7 @@ public class MapImportDialog extends AbstractDialog
      */
     void browseLevelRipLocation()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
             Messages.ImportMapDialog_LevelRipFileFilter
         }, new String[]
@@ -113,7 +113,7 @@ public class MapImportDialog extends AbstractDialog
      */
     void browseSheetsLocation()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
             Messages.ImportMapDialog_SheetsConfigFileFilter
         }, new String[]
@@ -131,7 +131,7 @@ public class MapImportDialog extends AbstractDialog
      */
     void browseGroupsLocation()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
             Messages.ImportMapDialog_GroupsConfigFileFilter
         }, new String[]
@@ -244,7 +244,7 @@ public class MapImportDialog extends AbstractDialog
         levelRipLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         levelRipLocationText.setEditable(false);
 
-        final Button browse = UtilSwt.createButton(levelRipArea,
+        final Button browse = UtilButton.create(levelRipArea,
                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
@@ -275,7 +275,7 @@ public class MapImportDialog extends AbstractDialog
         sheetsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         sheetsLocationText.setEditable(false);
 
-        final Button browse = UtilSwt.createButton(sheetArea,
+        final Button browse = UtilButton.create(sheetArea,
                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
@@ -306,7 +306,7 @@ public class MapImportDialog extends AbstractDialog
         groupsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         groupsLocationText.setEditable(false);
 
-        final Button browse = UtilSwt.createButton(groupArea,
+        final Button browse = UtilButton.create(groupArea,
                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()

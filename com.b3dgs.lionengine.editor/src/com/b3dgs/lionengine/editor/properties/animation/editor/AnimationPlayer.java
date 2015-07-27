@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Represents the animation player view, where the animation can be controlled.
@@ -40,15 +40,15 @@ public class AnimationPlayer
     /** Animation editor folder. */
     private static final String FOLDER = "animation-editor";
     /** Play icon. */
-    private static final Image ICON_ANIM_PLAY = UtilEclipse.getIcon(FOLDER, "anim-play.png");
+    private static final Image ICON_ANIM_PLAY = UtilIcon.get(FOLDER, "anim-play.png");
     /** Pause icon. */
-    private static final Image ICON_ANIM_PAUSE = UtilEclipse.getIcon(FOLDER, "anim-pause.png");
+    private static final Image ICON_ANIM_PAUSE = UtilIcon.get(FOLDER, "anim-pause.png");
     /** Stop icon. */
-    private static final Image ICON_ANIM_STOP = UtilEclipse.getIcon(FOLDER, "anim-stop.png");
+    private static final Image ICON_ANIM_STOP = UtilIcon.get(FOLDER, "anim-stop.png");
     /** Previous animation icon. */
-    private static final Image ICON_ANIM_PREVIOUS = UtilEclipse.getIcon(FOLDER, "anim-prev.png");
+    private static final Image ICON_ANIM_PREVIOUS = UtilIcon.get(FOLDER, "anim-prev.png");
     /** Next animation icon. */
-    private static final Image ICON_ANIM_NEXT = UtilEclipse.getIcon(FOLDER, "anim-next.png");
+    private static final Image ICON_ANIM_NEXT = UtilIcon.get(FOLDER, "anim-next.png");
 
     /** Animation list. */
     final AnimationList animationList;
@@ -114,7 +114,7 @@ public class AnimationPlayer
      */
     private void createButtonPreviousAnim(Composite parent)
     {
-        previousAnim = UtilSwt.createButton(parent, null, AnimationPlayer.ICON_ANIM_PREVIOUS);
+        previousAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_PREVIOUS);
         previousAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -132,7 +132,7 @@ public class AnimationPlayer
      */
     private void createButtonPlayAnim(Composite parent)
     {
-        playAnim = UtilSwt.createButton(parent, null, AnimationPlayer.ICON_ANIM_PLAY);
+        playAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_PLAY);
         playAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -160,7 +160,7 @@ public class AnimationPlayer
      */
     private void createButtonPauseAnim(Composite parent)
     {
-        pauseAnim = UtilSwt.createButton(parent, null, AnimationPlayer.ICON_ANIM_PAUSE);
+        pauseAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_PAUSE);
         pauseAnim.setEnabled(false);
         pauseAnim.addSelectionListener(new SelectionAdapter()
         {
@@ -183,7 +183,7 @@ public class AnimationPlayer
      */
     private void createButtonStopAnim(Composite parent)
     {
-        stopAnim = UtilSwt.createButton(parent, null, AnimationPlayer.ICON_ANIM_STOP);
+        stopAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_STOP);
         stopAnim.setEnabled(false);
         stopAnim.addSelectionListener(new SelectionAdapter()
         {
@@ -207,7 +207,7 @@ public class AnimationPlayer
      */
     private void createButtonNextAnim(Composite parent)
     {
-        nextAnim = UtilSwt.createButton(parent, null, AnimationPlayer.ICON_ANIM_NEXT);
+        nextAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_NEXT);
         nextAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override

@@ -23,9 +23,9 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.utility.UtilClass;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
@@ -50,7 +50,7 @@ public final class ObjectsTester extends PropertyTester
     {
         try
         {
-            final Class<?> clazz = Tools.getClass(media);
+            final Class<?> clazz = UtilClass.get(media);
             return ObjectGame.class.isAssignableFrom(clazz);
         }
         catch (final LionEngineException exception)

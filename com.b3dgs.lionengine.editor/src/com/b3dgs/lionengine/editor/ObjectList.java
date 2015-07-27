@@ -36,6 +36,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilTree;
 
 /**
  * Represents the object list, allowing to add and remove objects.
@@ -46,11 +49,11 @@ import com.b3dgs.lionengine.Nameable;
 public abstract class ObjectList<T extends Nameable>
 {
     /** Icon add. */
-    public static final Image ICON_ADD = UtilEclipse.getIcon("add.png");
+    public static final Image ICON_ADD = UtilIcon.get("add.png");
     /** Icon remove. */
-    public static final Image ICON_REMOVE = UtilEclipse.getIcon("remove.png");
+    public static final Image ICON_REMOVE = UtilIcon.get("remove.png");
     /** Icon save. */
-    public static final Image ICON_SAVE = UtilEclipse.getIcon("save.png");
+    public static final Image ICON_SAVE = UtilIcon.get("save.png");
     /** Default new object name. */
     private static final String DEFAULT_NEW_OBJECT_NAME = "new";
 
@@ -211,7 +214,7 @@ public abstract class ObjectList<T extends Nameable>
         items = objectsTree.getSelection();
         if (items.length > 0)
         {
-            final int index = UtilSwt.getItemIndex(objectsTree, items[0]) + side;
+            final int index = UtilTree.getItemIndex(objectsTree, items[0]) + side;
             final int next = Math.max(0, Math.min(index, objectsTree.getItemCount() - 1));
             final TreeItem previous = objectsTree.getItem(next);
             objectsTree.setSelection(previous);

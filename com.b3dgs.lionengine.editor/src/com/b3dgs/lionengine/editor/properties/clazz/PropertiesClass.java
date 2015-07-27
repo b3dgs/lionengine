@@ -26,9 +26,10 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.ComboDialogChooser;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
+import com.b3dgs.lionengine.editor.utility.UtilClass;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -43,9 +44,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class PropertiesClass implements PropertiesProviderObject
 {
     /** Class icon. */
-    private static final Image ICON_CLASS = UtilEclipse.getIcon(FOLDER, "class.png");
+    private static final Image ICON_CLASS = UtilIcon.get(FOLDER, "class.png");
     /** Setup icon. */
-    private static final Image ICON_SETUP = UtilEclipse.getIcon(FOLDER, "setup.png");
+    private static final Image ICON_SETUP = UtilIcon.get(FOLDER, "setup.png");
 
     /**
      * Create the attribute class.
@@ -85,7 +86,7 @@ public class PropertiesClass implements PropertiesProviderObject
     private static boolean updateClass(TreeItem item, Configurer configurer)
     {
         final ComboDialogChooser chooser = new ComboDialogChooser(item.getParent().getShell());
-        final Collection<Class<? extends ObjectGame>> objects = UtilEclipse.getImplementing(ObjectGame.class);
+        final Collection<Class<? extends ObjectGame>> objects = UtilClass.getImplementing(ObjectGame.class);
         objects.add(ObjectGame.class);
         final String[] items = new String[objects.size()];
         int i = 0;
@@ -117,7 +118,7 @@ public class PropertiesClass implements PropertiesProviderObject
     private static boolean updateSetup(TreeItem item, Configurer configurer)
     {
         final ComboDialogChooser chooser = new ComboDialogChooser(item.getParent().getShell());
-        final Collection<Class<? extends Setup>> setups = UtilEclipse.getImplementing(Setup.class);
+        final Collection<Class<? extends Setup>> setups = UtilClass.getImplementing(Setup.class);
         setups.add(Setup.class);
         final String[] items = new String[setups.size()];
         int i = 0;

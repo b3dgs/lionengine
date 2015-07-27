@@ -33,11 +33,12 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilDialog;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
@@ -55,7 +56,7 @@ import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 public class MapCollisionImportDialog extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    private static final Image ICON = UtilIcon.get("dialog", "import.png");
     /** Xml filter. */
     private static final String XML = "*.xml";
 
@@ -83,7 +84,7 @@ public class MapCollisionImportDialog extends AbstractDialog
                 Messages.ImportMapCollisionDialog_HeaderDesc, MapCollisionImportDialog.ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
-        part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
+        part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
         finish.setEnabled(false);
         finish.forceFocus();
         loadDefaults();
@@ -132,7 +133,7 @@ public class MapCollisionImportDialog extends AbstractDialog
      */
     void browseFormulasLocation()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
             Messages.ImportMapCollisionDialog_FormulasConfigFileFilter
         }, new String[]
@@ -150,7 +151,7 @@ public class MapCollisionImportDialog extends AbstractDialog
      */
     void browseCollisionLocation()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
             Messages.ImportMapCollisionDialog_CollisionsFileFilter
         }, new String[]
@@ -232,7 +233,7 @@ public class MapCollisionImportDialog extends AbstractDialog
         formulasText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         formulasText.setEditable(false);
 
-        final Button browse = UtilSwt.createButton(sheetArea,
+        final Button browse = UtilButton.create(sheetArea,
                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
@@ -263,7 +264,7 @@ public class MapCollisionImportDialog extends AbstractDialog
         collisionsText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         collisionsText.setEditable(false);
 
-        final Button browse = UtilSwt.createButton(collisionArea,
+        final Button browse = UtilButton.create(collisionArea,
                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()

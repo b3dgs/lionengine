@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
@@ -46,7 +46,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class FormulasEditDialog extends AbstractDialog
 {
     /** Icon. */
-    public static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
+    public static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
     /** Formulas media. */
     final Media formulas;

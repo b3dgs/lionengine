@@ -21,7 +21,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Display;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Represents the different standard palette types.
@@ -41,7 +41,7 @@ public enum PaletteType
     /** Selection. Allows to select many objects. */
     SELECTION(SWT.CURSOR_CROSS),
     /** Pipet. Allows to pick an element (duplicate). */
-    PIPET(new Cursor(Display.getDefault(), UtilEclipse.getIcon("toolbar", "pipet.png").getImageData(), 0, 15));
+    PIPET(new Cursor(Display.getDefault(), UtilIcon.get("toolbar", "pipet.png").getImageData(), 0, 15));
 
     /** The associated cursor. */
     private final Cursor cursor;

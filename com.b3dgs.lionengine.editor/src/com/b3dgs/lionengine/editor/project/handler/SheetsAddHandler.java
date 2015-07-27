@@ -35,8 +35,8 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.utility.UtilTemplate;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
 
@@ -58,15 +58,15 @@ public final class SheetsAddHandler
      */
     private static void createSheets(File sheets) throws IOException
     {
-        final File template = Tools.getTemplate(Tools.TEMPLATE_SHEETS);
+        final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_SHEETS);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
         final Collection<String> dest = new ArrayList<>();
         for (final String line : lines)
         {
-            if (line.contains(Tools.TEMPLATE_SHEETS_WIDTH) && line.contains(Tools.TEMPLATE_SHEETS_HEIGHT))
+            if (line.contains(UtilTemplate.TEMPLATE_SHEETS_WIDTH) && line.contains(UtilTemplate.TEMPLATE_SHEETS_HEIGHT))
             {
-                dest.add(line.replace(Tools.TEMPLATE_SHEETS_WIDTH, DEFAULT_TILE_SIZE)
-                             .replace(Tools.TEMPLATE_SHEETS_HEIGHT, DEFAULT_TILE_SIZE));
+                dest.add(line.replace(UtilTemplate.TEMPLATE_SHEETS_WIDTH, DEFAULT_TILE_SIZE)
+                             .replace(UtilTemplate.TEMPLATE_SHEETS_HEIGHT, DEFAULT_TILE_SIZE));
             }
             else
             {
@@ -104,7 +104,7 @@ public final class SheetsAddHandler
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File sheets = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
+            final File sheets = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
             if (sheets.exists())
             {

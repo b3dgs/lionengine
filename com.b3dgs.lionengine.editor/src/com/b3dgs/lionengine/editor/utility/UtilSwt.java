@@ -1,0 +1,165 @@
+/*
+ * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+package com.b3dgs.lionengine.editor.utility;
+
+import org.eclipse.e4.ui.model.application.ui.MDirtyable;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Monitor;
+import org.eclipse.swt.widgets.Shell;
+
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.editor.Focusable;
+
+/**
+ * Series of tool functions around the editor related to SWT.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ */
+public final class UtilSwt
+{
+    /** Dirty key. */
+    static final String KEY_DIRTY = "dirty";
+
+    /**
+     * Center the shell on screen.
+     * 
+     * @param shell The shell to center.
+     */
+    public static void center(Shell shell)
+    {
+        final Monitor primary = shell.getMonitor();
+        final Rectangle bounds = primary.getBounds();
+        final Rectangle rect = shell.getBounds();
+        final int x = bounds.x + (bounds.width - rect.width) / 2;
+        final int y = bounds.y + (bounds.height - rect.height) / 2;
+        shell.setLocation(x, y);
+    }
+
+    /**
+     * Create the focusable listener.
+     * 
+     * @param focusable The focusable element.
+     * @return The listener instance.
+     */
+    public static MouseTrackListener createFocusListener(final Focusable focusable)
+    {
+        return new MouseTrackListener()
+        {
+            @Override
+            public void mouseEnter(MouseEvent event)
+            {
+                focusable.focus();
+            }
+
+            @Override
+            public void mouseExit(MouseEvent event)
+            {
+                // Nothing to do
+            }
+
+            @Override
+            public void mouseHover(MouseEvent event)
+            {
+                // Nothing to do
+            }
+        };
+    }
+
+    /**
+     * Install the mouse wheel scroll.
+     * 
+     * @param scrollable The scrollable component.
+     */
+    public static void installMouseWheelScroll(final ScrolledComposite scrollable)
+    {
+        final MouseWheelListener scroller = createMouseWheelScroller(scrollable);
+        if (scrollable.getParent() != null)
+        {
+            scrollable.getParent().addMouseWheelListener(scroller);
+        }
+        installMouseWheelScrollRecursively(scroller, scrollable);
+    }
+
+    /**
+     * Set the dirty flag.
+     * 
+     * @param shell The shell reference.
+     * @param dirty <code>true</code> if dirty, <code>false</code> else.
+     */
+    public static void setDirty(Shell shell, boolean dirty)
+    {
+        final Object data = shell.getData();
+        if (data instanceof MDirtyable)
+        {
+            ((MDirtyable) data).setDirty(dirty);
+        }
+    }
+
+    /**
+     * Create the mouse wheel scroller.
+     * 
+     * @param scrollable The scrollable component.
+     * @return The scroller instance.
+     */
+    private static MouseWheelListener createMouseWheelScroller(final ScrolledComposite scrollable)
+    {
+        return new MouseWheelListener()
+        {
+            @Override
+            public void mouseScrolled(MouseEvent e)
+            {
+                final Point currentScroll = scrollable.getOrigin();
+                scrollable.setOrigin(currentScroll.x, currentScroll.y - e.count * 5);
+            }
+        };
+    }
+
+    /**
+     * Install the mouse wheel scroller for each sub component.
+     * 
+     * @param scroller The scroller listener.
+     * @param control The control reference.
+     */
+    private static void installMouseWheelScrollRecursively(MouseWheelListener scroller, Control control)
+    {
+        control.addMouseWheelListener(scroller);
+        if (control instanceof Composite)
+        {
+            final Composite comp = (Composite) control;
+            for (final Control child : comp.getChildren())
+            {
+                installMouseWheelScrollRecursively(scroller, child);
+            }
+        }
+    }
+
+    /**
+     * Private constructor.
+     */
+    private UtilSwt()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+    }
+}

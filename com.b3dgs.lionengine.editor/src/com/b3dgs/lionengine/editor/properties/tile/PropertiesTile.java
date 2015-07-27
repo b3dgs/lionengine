@@ -29,9 +29,10 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderTile;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
@@ -51,17 +52,17 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class PropertiesTile implements PropertiesProviderTile
 {
     /** Tile group icon. */
-    private static final Image ICON_GROUP = UtilEclipse.getIcon(FOLDER, "tilegroup.png");
+    private static final Image ICON_GROUP = UtilIcon.get(FOLDER, "tilegroup.png");
     /** Tile sheet icon. */
-    private static final Image ICON_SHEET = UtilEclipse.getIcon(FOLDER, "tilesheet.png");
+    private static final Image ICON_SHEET = UtilIcon.get(FOLDER, "tilesheet.png");
     /** Tile number icon. */
-    private static final Image ICON_NUMBER = UtilEclipse.getIcon(FOLDER, "tilenumber.png");
+    private static final Image ICON_NUMBER = UtilIcon.get(FOLDER, "tilenumber.png");
     /** Tile size icon. */
-    private static final Image ICON_SIZE = UtilEclipse.getIcon(FOLDER, "tilesize.png");
+    private static final Image ICON_SIZE = UtilIcon.get(FOLDER, "tilesize.png");
     /** Tile features icon. */
-    private static final Image ICON_FEATURES = UtilEclipse.getIcon(FOLDER, "tilefeatures.png");
+    private static final Image ICON_FEATURES = UtilIcon.get(FOLDER, "tilefeatures.png");
     /** Tile feature icon. */
-    private static final Image ICON_FEATURE = UtilEclipse.getIcon(FOLDER, "tilefeature.png");
+    private static final Image ICON_FEATURE = UtilIcon.get(FOLDER, "tilefeature.png");
 
     /**
      * Change tile group.
@@ -143,7 +144,7 @@ public class PropertiesTile implements PropertiesProviderTile
             changeTileGroup(map, oldGroup, newGroup, tile);
             selection.setText(PropertiesPart.COLUMN_VALUE, newGroup);
 
-            final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
+            final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
             part.update();
         }
     }

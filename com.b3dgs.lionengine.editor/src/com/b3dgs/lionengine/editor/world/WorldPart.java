@@ -38,9 +38,11 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.editor.utility.UtilClass;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilToolbar;
 import com.b3dgs.lionengine.editor.world.renderer.WorldRenderer;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
@@ -60,6 +62,8 @@ public class WorldPart implements Focusable, TileSelectionListener
     private static final String EXTENSION_UPDATER = "updater";
     /** Extension point attribute renderer. */
     private static final String EXTENSION_RENDERER = "renderer";
+    /** Item not found. */
+    private static final String ERROR_ITEM = "Item not found: ";
 
     /** Part service. */
     @Inject
@@ -149,7 +153,7 @@ public class WorldPart implements Focusable, TileSelectionListener
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemEnabled(toolBar, enabled);
+                UtilToolbar.setToolItemEnabled(toolBar, enabled);
             }
         }
     }
@@ -168,7 +172,7 @@ public class WorldPart implements Focusable, TileSelectionListener
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemEnabled(toolBar, enabled, item);
+                UtilToolbar.setToolItemEnabled(toolBar, enabled, item);
             }
         }
     }
@@ -187,7 +191,7 @@ public class WorldPart implements Focusable, TileSelectionListener
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemText(toolBar, item, text);
+                UtilToolbar.setToolItemText(toolBar, item, text);
             }
         }
     }
@@ -209,10 +213,10 @@ public class WorldPart implements Focusable, TileSelectionListener
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                return UtilEclipse.getToolItem(toolBar, item, clazz);
+                return UtilToolbar.getToolItem(toolBar, item, clazz);
             }
         }
-        throw new LionEngineException(UtilEclipse.ERROR_ITEM, item);
+        throw new LionEngineException(ERROR_ITEM, item);
     }
 
     /**
@@ -272,7 +276,7 @@ public class WorldPart implements Focusable, TileSelectionListener
             {
                 try
                 {
-                    return UtilEclipse.createClass(renderer, WorldUpdater.class, partService);
+                    return UtilClass.createClass(renderer, WorldUpdater.class, partService);
                 }
                 catch (final ReflectiveOperationException exception)
                 {
@@ -300,7 +304,7 @@ public class WorldPart implements Focusable, TileSelectionListener
             {
                 try
                 {
-                    return UtilEclipse.createClass(renderer, WorldRenderer.class, composite, partService);
+                    return UtilClass.createClass(renderer, WorldRenderer.class, composite, partService);
                 }
                 catch (final ReflectiveOperationException exception)
                 {
@@ -314,7 +318,7 @@ public class WorldPart implements Focusable, TileSelectionListener
     @Override
     public void notifyTileSelected(Tile tile)
     {
-        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         if (tile != null)
         {
             part.setInput(part.getTree(), tile);

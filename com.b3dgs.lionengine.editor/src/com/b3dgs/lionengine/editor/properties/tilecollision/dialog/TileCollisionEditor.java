@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 
@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.collision.CollisionFormula;
 public class TileCollisionEditor extends AbstractEditor
 {
     /** Tile collision icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
+    private static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
     /** Default collision name. */
     private static final String DEFAULT_NAME = "default";
@@ -100,7 +100,7 @@ public class TileCollisionEditor extends AbstractEditor
         composite.setLayout(new GridLayout(1, true));
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-        textName = UtilSwt.createText(Messages.Dialog_TileCollision_Name, composite);
+        textName = UtilText.create(Messages.Dialog_TileCollision_Name, composite);
         textName.setText(DEFAULT_NAME);
 
         range.create(composite);

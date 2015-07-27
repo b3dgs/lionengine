@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.world.renderer;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.ObjectControl;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.Selection;
@@ -75,7 +75,7 @@ public class WorldCursor implements WorldRenderListener
         if (WorldModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT && !selection.isSelecting()
                 && !objectControl.isDragging() && !objectControl.hasOver())
         {
-            final Tile tile = Tools.getTile(map, camera, world.getMouseX(), world.getMouseY());
+            final Tile tile = UtilWorld.getTile(map, camera, world.getMouseX(), world.getMouseY());
             if (tile != null)
             {
                 g.setColor(COLOR_CURSOR_SELECTION);

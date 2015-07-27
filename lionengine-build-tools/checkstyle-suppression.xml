@@ -50,17 +50,14 @@
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ServerImpl" lines="429, 508" />
     
     <suppress checks="MagicNumber" files="[\\/]com.b3dgs.lionengine.editor[\\/]" />
-    <suppress checks="ClassDataAbstractionCoupling" files="[\\/]com.b3dgs.lionengine.editor[\\/]" />
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.editor.UtilEclipse" lines="323, 520" />
-    <suppress checks="FanOut" files="com.b3dgs.lionengine.editor.UtilEclipse" />
-	<suppress checks="FanOut" files="com.b3dgs.lionengine.editor.UtilSwt" />
+
 	<suppress checks="EmptyBlock" files="com.b3dgs.lionengine.editor.project.ProjectsPart" lines="261" />
     <suppress checks="FanOut" files="com.b3dgs.lionengine.editor.project.dialog.formula.FormulasProperties" />
     <suppress checks="StaticVariableName" files="[\\/]com.b3dgs.lionengine.editor.*.Messages" />
     <suppress checks="VisibilityModifier" files="[\\/]com.b3dgs.lionengine.editor.*.Messages" />
     <suppress checks="LineLength" files="[\\/]com.b3dgs.lionengine.editor.*.Messages" />
     <suppress checks="TrailingComment" files="[\\/]com.b3dgs.lionengine.editor.*.Messages" />
-    
+    <suppress checks="ClassDataAbstractionCoupling" files="[\\/]com.b3dgs.lionengine.editor[\\/]" />
     <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.example[\\/]" />
     <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.tutorials[\\/]" />
 </suppressions>

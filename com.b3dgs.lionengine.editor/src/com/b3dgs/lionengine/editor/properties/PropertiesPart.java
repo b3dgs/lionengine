@@ -42,8 +42,9 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilClass;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilTree;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.Tile;
 
@@ -98,7 +99,7 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
             {
                 try
                 {
-                    final T provider = UtilEclipse.createClass(properties, clazz);
+                    final T provider = UtilClass.createClass(properties, clazz);
                     extensions.add(provider);
                 }
                 catch (final ReflectiveOperationException exception)
@@ -134,14 +135,15 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
     @PostConstruct
     public void createComposite(Composite parent, EMenuService menuService)
     {
-        final Listener listener = UtilSwt.createAutosizeListener();
         properties = new Tree(parent, SWT.H_SCROLL | SWT.V_SCROLL);
         properties.setLayout(new FillLayout());
         properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         properties.setHeaderVisible(true);
+        properties.addMouseTrackListener(UtilSwt.createFocusListener(this));
+
+        final Listener listener = UtilTree.createAutosizeListener();
         properties.addListener(SWT.Collapse, listener);
         properties.addListener(SWT.Expand, listener);
-        properties.addMouseTrackListener(UtilSwt.createFocusListener(this));
 
         final TreeColumn key = new TreeColumn(properties, SWT.LEFT);
         key.setText(Messages.Properties_Key);
@@ -297,7 +299,7 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
         }
         for (final TreeItem item : properties.getItems())
         {
-            UtilSwt.autoSize(item);
+            UtilTree.autoSize(item);
         }
     }
 
@@ -333,7 +335,7 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
         }
         for (final TreeItem item : properties.getItems())
         {
-            UtilSwt.autoSize(item);
+            UtilTree.autoSize(item);
         }
     }
 }

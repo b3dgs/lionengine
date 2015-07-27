@@ -36,6 +36,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -145,23 +146,19 @@ public final class FolderModificationWatcher
          */
         private void createWatchers(File current)
         {
-            final File[] files = current.listFiles();
-            if (files != null)
+            for (final File file : UtilFile.getFiles(current))
             {
-                for (final File file : files)
+                if (file.isDirectory())
                 {
-                    if (file.isDirectory())
+                    try
                     {
-                        try
-                        {
-                            tasks.add(new Task(root, file.toPath(), tree, creator));
-                        }
-                        catch (final IOException exception)
-                        {
-                            continue;
-                        }
-                        createWatchers(file);
+                        tasks.add(new Task(root, file.toPath(), tree, creator));
                     }
+                    catch (final IOException exception)
+                    {
+                        continue;
+                    }
+                    createWatchers(file);
                 }
             }
         }

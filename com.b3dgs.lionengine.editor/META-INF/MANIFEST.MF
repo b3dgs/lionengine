@@ -54,8 +54,12 @@ Export-Package: com.b3dgs.lionengine.editor,
  com.b3dgs.lionengine.editor.properties.tilecollision,
  com.b3dgs.lionengine.editor.properties.tilecollision.dialog,
  com.b3dgs.lionengine.editor.properties.tilecollision.handler,
+ com.b3dgs.lionengine.editor.utility,
  com.b3dgs.lionengine.editor.world,
  com.b3dgs.lionengine.editor.world.dialog,
- com.b3dgs.lionengine.editor.world.handler
+ com.b3dgs.lionengine.editor.world.handler,
+ com.b3dgs.lionengine.editor.world.renderer,
+ com.b3dgs.lionengine.editor.world.tester,
+ com.b3dgs.lionengine.editor.world.updater
 Bundle-ClassPath: .
 Bundle-Localization: OSGI-INF/l10n/bundle

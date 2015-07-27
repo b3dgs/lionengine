@@ -35,14 +35,16 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.swt.UtilityImage;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupList;
+import com.b3dgs.lionengine.editor.utility.UtilCombo;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Orientation;
@@ -220,12 +222,12 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         final Composite linearArea = new Composite(parent, SWT.NONE);
         linearArea.setLayout(new GridLayout(2, false));
 
-        linearA = UtilSwt.createText(Messages.EditFormulasDialog_FunctionLinearA, linearArea);
-        linearA.addVerifyListener(UtilSwt.createVerify(linearA, InputValidator.DOUBLE_MATCH));
+        linearA = UtilText.create(Messages.EditFormulasDialog_FunctionLinearA, linearArea);
+        linearA.addVerifyListener(UtilText.createVerify(linearA, InputValidator.DOUBLE_MATCH));
         updatePreviewOnModify(linearA);
 
-        linearB = UtilSwt.createText(Messages.EditFormulasDialog_FunctionLinearB, linearArea);
-        linearB.addVerifyListener(UtilSwt.createVerify(linearB, InputValidator.DOUBLE_MATCH));
+        linearB = UtilText.create(Messages.EditFormulasDialog_FunctionLinearB, linearArea);
+        linearB.addVerifyListener(UtilText.createVerify(linearB, InputValidator.DOUBLE_MATCH));
         updatePreviewOnModify(linearB);
 
         lastFunctionPanel = linearArea;
@@ -254,8 +256,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
     private void createTemplate(Composite parent)
     {
         final MapTile map = WorldModel.INSTANCE.getMap();
-        final Combo template = UtilSwt.createCombo(Messages.EditFormulasDialog_Template, parent,
-                FormulaTemplate.values());
+        final Combo template = UtilCombo.create(Messages.EditFormulasDialog_Template, parent, FormulaTemplate.values());
         template.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -278,28 +279,28 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         final GridLayout outputAreaLayout = new GridLayout(1, false);
         outputAreaLayout.marginHeight = 0;
         outputArea.setLayout(outputAreaLayout);
-        output = UtilSwt.createCombo(Messages.EditFormulasDialog_RangeOutput, outputArea, Axis.values());
+        output = UtilCombo.create(Messages.EditFormulasDialog_RangeOutput, outputArea, Axis.values());
 
         final Composite xArea = new Composite(parent, SWT.NONE);
         final GridLayout xAreaLayout = new GridLayout(2, false);
         xAreaLayout.marginHeight = 0;
         xArea.setLayout(xAreaLayout);
-        minX = UtilSwt.createText(Messages.EditFormulasDialog_RangeMinX, xArea);
-        minX.addVerifyListener(UtilSwt.createVerify(minX, InputValidator.INTEGER_POSITIVE_MATCH));
+        minX = UtilText.create(Messages.EditFormulasDialog_RangeMinX, xArea);
+        minX.addVerifyListener(UtilText.createVerify(minX, InputValidator.INTEGER_POSITIVE_MATCH));
         updatePreviewOnModify(minX);
-        maxX = UtilSwt.createText(Messages.EditFormulasDialog_RangeMaxX, xArea);
-        maxX.addVerifyListener(UtilSwt.createVerify(maxX, InputValidator.INTEGER_POSITIVE_MATCH));
+        maxX = UtilText.create(Messages.EditFormulasDialog_RangeMaxX, xArea);
+        maxX.addVerifyListener(UtilText.createVerify(maxX, InputValidator.INTEGER_POSITIVE_MATCH));
         updatePreviewOnModify(maxX);
 
         final Composite yArea = new Composite(parent, SWT.NONE);
         final GridLayout yAreaLayout = new GridLayout(2, false);
         yAreaLayout.marginHeight = 0;
         yArea.setLayout(yAreaLayout);
-        minY = UtilSwt.createText(Messages.EditFormulasDialog_RangeMinY, yArea);
-        minY.addVerifyListener(UtilSwt.createVerify(minY, InputValidator.INTEGER_POSITIVE_MATCH));
+        minY = UtilText.create(Messages.EditFormulasDialog_RangeMinY, yArea);
+        minY.addVerifyListener(UtilText.createVerify(minY, InputValidator.INTEGER_POSITIVE_MATCH));
         updatePreviewOnModify(minY);
-        maxY = UtilSwt.createText(Messages.EditFormulasDialog_RangeMaxY, yArea);
-        maxY.addVerifyListener(UtilSwt.createVerify(maxY, InputValidator.INTEGER_POSITIVE_MATCH));
+        maxY = UtilText.create(Messages.EditFormulasDialog_RangeMaxY, yArea);
+        maxY.addVerifyListener(UtilText.createVerify(maxY, InputValidator.INTEGER_POSITIVE_MATCH));
         updatePreviewOnModify(maxY);
     }
 
@@ -314,7 +315,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         final GridLayout typeAreaLayout = new GridLayout(1, false);
         typeAreaLayout.marginHeight = 0;
         typeArea.setLayout(typeAreaLayout);
-        type = UtilSwt.createCombo(Messages.EditFormulasDialog_FunctionType, typeArea, CollisionFunctionType.values());
+        type = UtilCombo.create(Messages.EditFormulasDialog_FunctionType, typeArea, CollisionFunctionType.values());
         selectFunctionType(parent);
         type.addSelectionListener(new SelectionAdapter()
         {
@@ -497,7 +498,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         setValueDefault(maxY, Integer.toString(range.getMaxY()));
 
         final CollisionFunction function = formula.getFunction();
-        UtilSwt.setDefaultValue(type, function.getType().name());
+        UtilCombo.setDefaultValue(type, function.getType().name());
         type.setData(function.getType());
         loadFunction(function);
 
@@ -511,15 +512,15 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
     @Override
     public void notifyObjectDeleted(CollisionFormula formula)
     {
-        setValueDefault(output, "");
-        setValueDefault(minX, "");
-        setValueDefault(maxX, "");
-        setValueDefault(minY, "");
-        setValueDefault(maxY, "");
-        setValueDefault(type, "");
+        setValueDefault(output, Constant.EMPTY_STRING);
+        setValueDefault(minX, Constant.EMPTY_STRING);
+        setValueDefault(maxX, Constant.EMPTY_STRING);
+        setValueDefault(minY, Constant.EMPTY_STRING);
+        setValueDefault(maxY, Constant.EMPTY_STRING);
+        setValueDefault(type, Constant.EMPTY_STRING);
 
-        setValueDefault(linearA, "");
-        setValueDefault(linearB, "");
+        setValueDefault(linearA, Constant.EMPTY_STRING);
+        setValueDefault(linearB, Constant.EMPTY_STRING);
 
         output.setData(null);
         type.setData(null);

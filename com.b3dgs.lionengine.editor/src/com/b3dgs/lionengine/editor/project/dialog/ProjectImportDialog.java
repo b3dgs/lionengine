@@ -30,13 +30,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectGenerator;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Represents the new project dialog.
@@ -50,7 +51,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     /** From verbose. */
     private static final String VERBOSE_FROM = " from ";
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    private static final Image ICON = UtilIcon.get("dialog", "import.png");
 
     /** Already exists. */
     private boolean hasProject;
@@ -247,9 +248,9 @@ public class ProjectImportDialog extends AbstractProjectDialog
             final Properties properties = new Properties();
             properties.load(inputStream);
 
-            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES, "");
-            final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES, "");
-            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES, "");
+            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES, Constant.EMPTY_STRING);
+            final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES, Constant.EMPTY_STRING);
+            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES, Constant.EMPTY_STRING);
             projectClassesText.setText(classes);
             projectLibrariesText.setText(libraries);
             projectResourcesText.setText(resources);

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.world.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
@@ -47,7 +47,7 @@ public final class SetGridHandler
     @SuppressWarnings("static-method")
     public void execute()
     {
-        final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
+        final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
         part.getUpdater().switchGridEnabled();
         part.update();
     }

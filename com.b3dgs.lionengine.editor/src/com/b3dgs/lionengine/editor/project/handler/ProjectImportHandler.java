@@ -21,11 +21,11 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.ProjectPart;
 import com.b3dgs.lionengine.editor.project.dialog.ProjectImportDialog;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
@@ -49,14 +49,14 @@ public final class ProjectImportHandler
         final Factory factory = WorldModel.INSTANCE.getFactory();
         factory.setClassLoader(project.getClassLoader());
 
-        final WorldPart worldPart = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
+        final WorldPart worldPart = UtilPart.getPart(WorldPart.ID, WorldPart.class);
         worldPart.setToolBarEnabled(true);
         worldPart.setToolItemEnabled(SetShowCollisionsHandler.ID, false);
         worldPart.setToolItemEnabled(SetPointerCollisionHandler.ID, false);
 
         UtilityMedia.setResourcesDirectory(project.getResourcesPath().getPath());
 
-        final ProjectPart projectPart = UtilEclipse.getPart(ProjectPart.ID, ProjectPart.class);
+        final ProjectPart projectPart = UtilPart.getPart(ProjectPart.ID, ProjectPart.class);
         ProjectModel.INSTANCE.setRoot(project.getPath());
         projectPart.setInput(project);
     }

@@ -34,8 +34,8 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.utility.UtilTemplate;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.object.Factory;
 
@@ -54,7 +54,7 @@ public final class FormulasAddHandler
      */
     private static void createFormulas(File formulas) throws IOException
     {
-        final File template = Tools.getTemplate(Tools.TEMPLATE_FORMULAS);
+        final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_FORMULAS);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
         final Collection<String> dest = new ArrayList<>();
         for (final String line : lines)
@@ -92,7 +92,7 @@ public final class FormulasAddHandler
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File formulas = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
+            final File formulas = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
             if (formulas.exists())
             {

@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.core.swt.Mouse;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
+import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.FormulaItem;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.TileSelectionListener;
@@ -110,7 +110,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         if (map.isCreated())
         {
-            selectedTile = Tools.getTile(map, camera, mx, my);
+            selectedTile = UtilWorld.getTile(map, camera, mx, my);
         }
         else
         {
@@ -130,14 +130,14 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void updatePointerCollision(int mx, int my)
     {
-        final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
+        final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
         final FormulaItem item = part.getToolItem(FormulaItem.ID, FormulaItem.class);
         final CollisionFunction function = item.getFunction();
         if (function != null)
         {
             // TODO apply function depending of the axis
-            final Point old = Tools.getPoint(map, camera, firstX, firstY);
-            final Point point = Tools.getPoint(map, camera, mx, my);
+            final Point old = UtilWorld.getPoint(map, camera, firstX, firstY);
+            final Point point = UtilWorld.getPoint(map, camera, mx, my);
             final Collection<Tile> tiles = map.getTilesHit(old.getX(), old.getY(), point.getX(), point.getY());
             // TODO assign collision to tiles
             // TODO render current line

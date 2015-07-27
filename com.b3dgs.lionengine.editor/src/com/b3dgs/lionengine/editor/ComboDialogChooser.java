@@ -31,6 +31,9 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.Messages;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
 
 /**
  * Represents a combo dialog chooser.
@@ -40,7 +43,7 @@ import com.b3dgs.lionengine.editor.dialog.Messages;
 public class ComboDialogChooser extends Dialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "browse.png");
+    private static final Image ICON = UtilIcon.get("dialog", "browse.png");
 
     /** Choice. */
     String choice;
@@ -83,7 +86,7 @@ public class ComboDialogChooser extends Dialog
             combo.setText(items[0]);
         }
 
-        final Button finish = UtilSwt.createButton(area, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
+        final Button finish = UtilButton.create(area, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
         finish.addSelectionListener(new SelectionAdapter()
         {
             @Override

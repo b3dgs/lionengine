@@ -35,8 +35,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
@@ -49,19 +51,19 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
     /** Dialog folder. */
     public static final String DIALOG_FOLDER = "dialog";
     /** Ok icon. */
-    public static final Image ICON_OK = UtilEclipse.getIcon(DIALOG_FOLDER, "ok.png");
+    public static final Image ICON_OK = UtilIcon.get(DIALOG_FOLDER, "ok.png");
     /** Cancel icon. */
-    public static final Image ICON_CANCEL = UtilEclipse.getIcon(DIALOG_FOLDER, "cancel.png");
+    public static final Image ICON_CANCEL = UtilIcon.get(DIALOG_FOLDER, "cancel.png");
     /** Exit icon. */
-    public static final Image ICON_EXIT = UtilEclipse.getIcon(DIALOG_FOLDER, "exit.png");
+    public static final Image ICON_EXIT = UtilIcon.get(DIALOG_FOLDER, "exit.png");
     /** Browse icon. */
-    public static final Image ICON_BROWSE = UtilEclipse.getIcon(DIALOG_FOLDER, "browse.png");
+    public static final Image ICON_BROWSE = UtilIcon.get(DIALOG_FOLDER, "browse.png");
     /** Info icon. */
-    protected static final Image ICON_INFO = UtilEclipse.getIcon(DIALOG_FOLDER, "info.png");
+    protected static final Image ICON_INFO = UtilIcon.get(DIALOG_FOLDER, "info.png");
     /** Warning icon. */
-    protected static final Image ICON_WARNING = UtilEclipse.getIcon(DIALOG_FOLDER, "warning.png");
+    protected static final Image ICON_WARNING = UtilIcon.get(DIALOG_FOLDER, "warning.png");
     /** Error icon. */
-    protected static final Image ICON_ERROR = UtilEclipse.getIcon(DIALOG_FOLDER, "error.png");
+    protected static final Image ICON_ERROR = UtilIcon.get(DIALOG_FOLDER, "error.png");
     /** Maximum characters input. */
     protected static final int MAX_CHAR = 64;
 
@@ -253,7 +255,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
         buttonArea.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         buttonArea.setLayout(new GridLayout(2, true));
 
-        finish = UtilSwt.createButton(buttonArea, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
+        finish = UtilButton.create(buttonArea, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
         finish.setEnabled(false);
         finish.addSelectionListener(new SelectionAdapter()
         {
@@ -263,12 +265,12 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
                 onFinish();
                 dialog.dispose();
 
-                final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
+                final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
                 part.update();
             }
         });
 
-        cancel = UtilSwt.createButton(buttonArea, Messages.AbstractDialog_Cancel, AbstractDialog.ICON_CANCEL);
+        cancel = UtilButton.create(buttonArea, Messages.AbstractDialog_Cancel, AbstractDialog.ICON_CANCEL);
         cancel.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -278,7 +280,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
                 onCanceled();
                 dialog.dispose();
 
-                final WorldPart part = UtilEclipse.getPart(WorldPart.ID, WorldPart.class);
+                final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
                 part.update();
             }
         });

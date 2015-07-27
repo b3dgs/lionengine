@@ -29,7 +29,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
 
 /**
  * Abstract editor.
@@ -129,7 +130,7 @@ public abstract class AbstractEditor implements MDirtyable
         bottom.setLayout(new GridLayout(1, false));
         bottom.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
-        final Button exit = UtilSwt.createButton(bottom, "Exit", null);
+        final Button exit = UtilButton.create(bottom, "Exit", null);
         exit.setImage(AbstractDialog.ICON_EXIT);
         exit.addSelectionListener(new SelectionAdapter()
         {

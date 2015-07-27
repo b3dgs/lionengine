@@ -28,6 +28,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.editor.utility.UtilCombo;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 
 /**
  * Represents the object properties edition view.
@@ -100,7 +102,7 @@ public abstract class ObjectProperties<T extends Nameable>
     {
         if (!text.isDisposed())
         {
-            UtilSwt.setDefaultValue(text, value);
+            UtilText.setDefaultValue(text, value);
         }
     }
 
@@ -114,7 +116,7 @@ public abstract class ObjectProperties<T extends Nameable>
     {
         if (!combo.isDisposed())
         {
-            UtilSwt.setDefaultValue(combo, value);
+            UtilCombo.setDefaultValue(combo, value);
         }
     }
 

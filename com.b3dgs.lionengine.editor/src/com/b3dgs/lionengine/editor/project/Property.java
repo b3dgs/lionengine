@@ -152,7 +152,8 @@ public enum Property
      */
     private boolean isParent(Media file)
     {
-        final String name = file.getPath().replace(Property.EXTENSION_CLASS, "").replace(File.separator, ".");
+        final String name = file.getPath().replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
+                                .replace(File.separator, Constant.DOT);
         try
         {
             final Class<?> clazz = Project.getActive().getClass(name);
