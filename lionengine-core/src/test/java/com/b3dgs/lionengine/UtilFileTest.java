@@ -191,7 +191,8 @@ public class UtilFileTest
     @Test
     public void testType()
     {
-        Assert.assertTrue(UtilFile.isType(new File("temp"), Constant.EMPTY_STRING));
-        Assert.assertTrue(UtilFile.isType(new File("temp.tmp"), "tmp"));
+        Assert.assertFalse(UtilFile.isType(new File("null"), Constant.EMPTY_STRING));
+        Assert.assertTrue(UtilFile.isType(new MediaMock("file").getFile(), Constant.EMPTY_STRING));
+        Assert.assertTrue(UtilFile.isType(new MediaMock("file1.txt").getFile(), "txt"));
     }
 }

@@ -166,7 +166,7 @@ public final class UtilFile
         if (file.isFile())
         {
             final String current = getExtension(file);
-            return current.equals(getExtension(extension));
+            return current.equals(extension.replace(Constant.DOT, Constant.EMPTY_STRING));
         }
         return false;
     }
