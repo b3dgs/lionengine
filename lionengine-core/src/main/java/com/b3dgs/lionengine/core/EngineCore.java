@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 
@@ -89,9 +90,9 @@ public abstract class EngineCore
         programVersion = version;
 
         final StringBuilder message = new StringBuilder(ENGINE_STARTING);
-        message.append(VERSION).append("\" for \"");
-        message.append(programName).append(" ");
-        message.append(programVersion).append("\"");
+        message.append(VERSION).append(Constant.QUOTE).append(" for ").append(Constant.QUOTE);
+        message.append(programName).append(Constant.SPACE);
+        message.append(programVersion).append(Constant.QUOTE);
         Verbose.info(message.toString());
 
         Graphics.setFactoryGraphic(factoryGraphic);

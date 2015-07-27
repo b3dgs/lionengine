@@ -95,7 +95,7 @@ public final class UtilityMedia
         if (fromJar)
         {
             loader = clazz;
-            Medias.setSeparator("/");
+            Medias.setSeparator(Constant.SLASH);
         }
         else
         {

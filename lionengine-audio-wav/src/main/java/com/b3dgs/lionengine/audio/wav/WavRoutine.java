@@ -31,6 +31,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
@@ -314,11 +315,13 @@ final class WavRoutine extends Thread
                 }
                 catch (final UnsupportedAudioFileException exception)
                 {
-                    Verbose.critical(WavRoutine.class, "run", "Unsupported audio format: \"", filename, "\"");
+                    Verbose.critical(WavRoutine.class, "run", "Unsupported audio format: ", Constant.QUOTE, filename,
+                            Constant.QUOTE);
                 }
                 catch (final LineUnavailableException exception)
                 {
-                    Verbose.critical(WavRoutine.class, "run", "Unavailable audio line: \"", filename, "\"");
+                    Verbose.critical(WavRoutine.class, "run", "Unavailable audio line: ", Constant.QUOTE, filename,
+                            Constant.QUOTE);
                 }
                 catch (final IOException exception)
                 {

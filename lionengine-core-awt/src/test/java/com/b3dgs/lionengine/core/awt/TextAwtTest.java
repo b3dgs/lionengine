@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Text;
 
@@ -62,7 +63,7 @@ public class TextAwtTest
         Assert.assertEquals(20, textIta.getLocationY());
         Assert.assertEquals(10, textIta.getSize());
 
-        Assert.assertEquals(3, text.getStringWidth(g, " "));
+        Assert.assertEquals(3, text.getStringWidth(g, Constant.SPACE));
         Assert.assertEquals(12, text.getStringHeight(g, "test"));
 
         Assert.assertEquals(18, textIta.getWidth());

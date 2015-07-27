@@ -93,7 +93,7 @@ public class UtilFileTest
         Assert.assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension("noextension"));
         Assert.assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension("noextension."));
         final String old = MOCK.getSeparator();
-        MOCK.setSeparator("/");
+        MOCK.setSeparator(Constant.SLASH);
         Assert.assertEquals(file, UtilFile.getFilenameFromPath(path));
         MOCK.setSeparator(old);
         Assert.assertTrue(UtilFile.isFile(path));
@@ -151,8 +151,8 @@ public class UtilFileTest
     public void testPath()
     {
         Assert.assertEquals(Constant.EMPTY_STRING,
-                UtilFile.getPathSeparator(".", Constant.EMPTY_STRING, Constant.EMPTY_STRING));
-        Assert.assertEquals("null", UtilFile.getPathSeparator(".", (String) null, (String) null));
+                UtilFile.getPathSeparator(Constant.DOT, Constant.EMPTY_STRING, Constant.EMPTY_STRING));
+        Assert.assertEquals("null", UtilFile.getPathSeparator(Constant.DOT, (String) null, (String) null));
     }
 
     /**

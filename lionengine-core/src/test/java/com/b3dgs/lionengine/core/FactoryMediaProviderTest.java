@@ -22,6 +22,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
@@ -93,7 +94,7 @@ public class FactoryMediaProviderTest
     public void testSeparator()
     {
         final String old = Medias.getSeparator();
-        Medias.setSeparator("%");
+        Medias.setSeparator(Constant.PERCENT);
         Assert.assertEquals("test%toto", Medias.create("test", "toto").getPath());
         Medias.setSeparator(old);
     }

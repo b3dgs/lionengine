@@ -91,9 +91,9 @@ public class AboutDialog
         aboutText.setFont(new Font(aboutText.getDisplay(), aboutTextdata));
 
         final String vendor = Platform.getBundle(Activator.PLUGIN_ID).getHeaders().get("Bundle-Vendor");
-        final StringBuilder text = new StringBuilder(Activator.PLUGIN_NAME).append(" ");
+        final StringBuilder text = new StringBuilder(Activator.PLUGIN_NAME).append(Constant.SPACE);
         text.append(Activator.PLUGIN_VERSION + Constant.NEW_LINE);
-        text.append(vendor).append("\n");
+        text.append(vendor).append(Constant.NEW_LINE);
         text.append(Activator.PLUGIN_WEBSITE);
 
         aboutText.setText(text.toString());

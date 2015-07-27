@@ -27,9 +27,6 @@ package com.b3dgs.lionengine;
  */
 public final class Version
 {
-    /** Version separator. */
-    private static final String SEPARATOR = ".";
-
     /**
      * Create a new version descriptor.
      * 
@@ -102,8 +99,8 @@ public final class Version
     public String toString()
     {
         final StringBuilder builder = new StringBuilder(String.valueOf(major));
-        builder.append(SEPARATOR).append(minor);
-        builder.append(SEPARATOR).append(micro);
+        builder.append(Constant.DOT).append(minor);
+        builder.append(Constant.DOT).append(micro);
         return builder.toString();
     }
 }

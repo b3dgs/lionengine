@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.EngineCore;
@@ -134,7 +135,7 @@ abstract class ScreenSwt implements Screen, FocusListener
             shell = new Shell(ScreenSwt.display, SWT.NO_TRIM | SWT.ON_TOP);
             shell.setBounds(ScreenSwt.display.getPrimaryMonitor().getBounds());
         }
-        shell.setText(EngineCore.getProgramName() + " " + EngineCore.getProgramVersion());
+        shell.setText(EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion());
         shell.addDisposeListener(new DisposeListener()
         {
             @Override

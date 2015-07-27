@@ -62,8 +62,6 @@ public final class LionEngineException extends RuntimeException
     private static final AtomicBoolean IGNORE_ENGINE_TRACE = new AtomicBoolean(true);
     /** Trace reason. */
     private static final String TRACE_REASON = "\n\tReason: ";
-    /** Trace description. */
-    private static final String TRACE_DESCRIPTION = ": ";
     /** Trace at. */
     private static final String TRACE_AT = "\tat ";
 
@@ -299,7 +297,7 @@ public final class LionEngineException extends RuntimeException
                     {
                         reasonDesc = Constant.EMPTY_STRING;
                     }
-                    stream.println(TRACE_DESCRIPTION + message + reasonDesc + Constant.NEW_LINE + TRACE_AT + element);
+                    stream.println(Constant.DOUBLE_DOT + message + reasonDesc + Constant.NEW_LINE + TRACE_AT + element);
                 }
                 else
                 {
@@ -339,7 +337,7 @@ public final class LionEngineException extends RuntimeException
                     {
                         reasonDesc = Constant.EMPTY_STRING;
                     }
-                    writer.println(TRACE_DESCRIPTION + message + reasonDesc + Constant.NEW_LINE + TRACE_AT + element);
+                    writer.println(Constant.DOUBLE_DOT + message + reasonDesc + Constant.NEW_LINE + TRACE_AT + element);
                 }
                 else
                 {
