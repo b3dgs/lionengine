@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.assign;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Graphic;
@@ -132,7 +133,7 @@ class Scene extends Sequence
     @Override
     public void update(double extrp)
     {
-        text.setText("");
+        text.setText(Constant.EMPTY_STRING);
         mouse.update(extrp);
         cursor.update(extrp);
         handler.update(extrp);

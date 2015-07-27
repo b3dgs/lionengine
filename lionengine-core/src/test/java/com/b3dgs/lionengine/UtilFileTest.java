@@ -90,8 +90,8 @@ public class UtilFileTest
         Assert.assertTrue(UtilFile.isFile(path));
         Assert.assertEquals("txt", UtilFile.getExtension(path));
         Assert.assertEquals("txt", UtilFile.getExtension(descriptor));
-        Assert.assertEquals("", UtilFile.getExtension("noextension"));
-        Assert.assertEquals("", UtilFile.getExtension("noextension."));
+        Assert.assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension("noextension"));
+        Assert.assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension("noextension."));
         final String old = MOCK.getSeparator();
         MOCK.setSeparator("/");
         Assert.assertEquals(file, UtilFile.getFilenameFromPath(path));
@@ -150,7 +150,8 @@ public class UtilFileTest
     @Test
     public void testPath()
     {
-        Assert.assertEquals("", UtilFile.getPathSeparator(".", "", ""));
+        Assert.assertEquals(Constant.EMPTY_STRING,
+                UtilFile.getPathSeparator(".", Constant.EMPTY_STRING, Constant.EMPTY_STRING));
         Assert.assertEquals("null", UtilFile.getPathSeparator(".", (String) null, (String) null));
     }
 
@@ -190,7 +191,7 @@ public class UtilFileTest
     @Test
     public void testType()
     {
-        Assert.assertTrue(UtilFile.isType(new File("temp"), ""));
+        Assert.assertTrue(UtilFile.isType(new File("temp"), Constant.EMPTY_STRING));
         Assert.assertTrue(UtilFile.isType(new File("temp.tmp"), "tmp"));
     }
 }

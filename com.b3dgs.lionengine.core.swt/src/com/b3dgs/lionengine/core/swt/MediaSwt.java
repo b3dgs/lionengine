@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
@@ -35,7 +36,7 @@ import com.b3dgs.lionengine.core.Medias;
 final class MediaSwt implements Media
 {
     /** No parent. */
-    private static final String NO_PARENT = "";
+    private static final String NO_PARENT = Constant.EMPTY_STRING;
 
     /** Media path. */
     private final String path;

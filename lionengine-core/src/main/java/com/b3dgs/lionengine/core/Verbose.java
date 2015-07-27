@@ -72,7 +72,7 @@ public enum Verbose
     CRITICAL;
 
     /** Logger. */
-    private static final Logger LOGGER = Logger.getLogger("");
+    private static final Logger LOGGER = Logger.getLogger(Constant.EMPTY_STRING);
     /** One megabyte. */
     private static final int MEGA_BYTE = 1048576;
     /** Log size. */

@@ -32,6 +32,8 @@ public final class Constant
     public static final String TAB = "\t";
     /** Quote. */
     public static final String QUOTE = "\"";
+    /** Slash. */
+    public static final String SLASH = "/";
     /** Dot. */
     public static final String DOT = ".";
     /** Double dot. */
@@ -46,6 +48,8 @@ public final class Constant
     public static final String PERCENT = "%";
     /** Rate unit. */
     public static final String UNIT_RATE = "Hz";
+    /** Jar type. */
+    public static final String TYPE_JAR = ".jar";
     /** Maximum port value. */
     public static final int MAX_PORT = 65535;
     /** Thousand. */

@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
@@ -140,7 +141,7 @@ public final class TileExtractor
      */
     public TileExtractor(Media folder, int tileWidth, int tileHeight, int horizontal, int vertical)
     {
-        this(folder, "", tileWidth, tileHeight, horizontal, vertical);
+        this(folder, Constant.EMPTY_STRING, tileWidth, tileHeight, horizontal, vertical);
     }
 
     /**

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.configurer;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
@@ -46,7 +47,7 @@ public final class ConfigTileGroup
     /** Tile number attribute. */
     public static final String NUMBER = "number";
     /** Remove group. */
-    public static final String REMOVE_GROUP_NAME = "";
+    public static final String REMOVE_GROUP_NAME = Constant.EMPTY_STRING;
 
     /**
      * Create the group data from node.

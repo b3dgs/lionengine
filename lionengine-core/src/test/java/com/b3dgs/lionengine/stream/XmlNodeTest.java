@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.stream;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.mock.XmlNodeMock;
 
@@ -90,7 +91,7 @@ public class XmlNodeTest
             Assert.assertNotNull(child);
         }
         Assert.assertEquals("str", child1.getAttributes().get("str"));
-        Assert.assertEquals("", child1.getText());
+        Assert.assertEquals(Constant.EMPTY_STRING, child1.getText());
 
         final String text = "text";
         root.setText(text);

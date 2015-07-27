@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
@@ -56,7 +57,7 @@ public final class UtilityMedia
     /** From jar flag. */
     private static volatile boolean fromJar;
     /** Resources directory. */
-    private static volatile String resourcesDir = "";
+    private static volatile String resourcesDir = Constant.EMPTY_STRING;
     /** Class loader. */
     private static volatile Class<?> loader;
 
@@ -112,7 +113,7 @@ public final class UtilityMedia
     {
         if (dir == null)
         {
-            resourcesDir = "";
+            resourcesDir = Constant.EMPTY_STRING;
         }
         else
         {

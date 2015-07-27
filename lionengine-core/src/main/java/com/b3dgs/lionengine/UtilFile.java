@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -37,6 +38,9 @@ import com.b3dgs.lionengine.core.Verbose;
  */
 public final class UtilFile
 {
+    /** Error folder. */
+    private static final String ERROR_FOLDER = "Not a folder: ";
+
     /**
      * Check if the path is a directory.
      * 
@@ -130,8 +134,8 @@ public final class UtilFile
      */
     public static String getExtension(String file)
     {
-        String ext = "";
-        final int i = file.lastIndexOf('.');
+        String ext = Constant.EMPTY_STRING;
+        final int i = file.lastIndexOf(Constant.DOT);
         if (i > 0 && i < file.length() - 1)
         {
             ext = file.substring(i + 1).toLowerCase(Locale.ENGLISH);
@@ -159,7 +163,12 @@ public final class UtilFile
      */
     public static boolean isType(File file, String extension)
     {
-        return getExtension(file).equals(extension);
+        if (file.isFile())
+        {
+            final String current = getExtension(file);
+            return current.equals(getExtension(extension));
+        }
+        return false;
     }
 
     /**
@@ -273,6 +282,26 @@ public final class UtilFile
         final Collection<File> filesList = new ArrayList<>(1);
         getFilesByNameRecursive(filesList, path, name);
         return filesList;
+    }
+
+    /**
+     * Get the files list from folder.
+     * 
+     * @param folder The folder reference.
+     * @return The folder content.
+     * @throws LionEngineException If not a folder.
+     */
+    public static Collection<File> getFiles(File folder) throws LionEngineException
+    {
+        if (folder.isDirectory())
+        {
+            final File[] files = folder.listFiles();
+            if (files != null)
+            {
+                return Arrays.asList(files);
+            }
+        }
+        throw new LionEngineException(ERROR_FOLDER, folder.getPath());
     }
 
     /**

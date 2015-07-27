@@ -75,7 +75,7 @@ public class ImageInfoTest
     public void testImageFailure()
     {
         testImageInfoFailure(null);
-        testImageInfoFailure(new MediaMock(""));
+        testImageInfoFailure(new MediaMock(Constant.EMPTY_STRING));
         testImageInfoFailure(new MediaMock("image_error"));
         testImageInfoFailure(new MediaMock("image.tga"));
         testImageInfoFailure(new MediaMock("image_error1.gif"));

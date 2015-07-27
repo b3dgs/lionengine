@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilTests;
@@ -110,7 +111,7 @@ public class XmlFactoryTest
     {
         try
         {
-            Stream.saveXml(Stream.createXmlNode("child"), new MediaMock(""));
+            Stream.saveXml(Stream.createXmlNode("child"), new MediaMock(Constant.EMPTY_STRING));
             Assert.fail();
         }
         catch (final LionEngineException exception)

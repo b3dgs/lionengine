@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
@@ -65,7 +66,7 @@ public abstract class NetworkChat implements Networkable, InputDeviceKeyListener
         message = new StringBuilder();
         messages = new ConcurrentLinkedQueue<>();
         messageQueueMax = DEFAULT_QUEUE_MAX;
-        display = "";
+        display = Constant.EMPTY_STRING;
     }
 
     /**

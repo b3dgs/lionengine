@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
@@ -97,7 +98,7 @@ public class MidiTest
     @Test(expected = LionEngineException.class)
     public void testInvalidMedia()
     {
-        AudioMidi.loadMidi(new MediaMock(""));
+        AudioMidi.loadMidi(new MediaMock(Constant.EMPTY_STRING));
         Assert.fail();
     }
 

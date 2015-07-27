@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 
@@ -99,7 +100,7 @@ public class MediaAwtTest
     public void testParentPath()
     {
         final String path = "path";
-        Assert.assertEquals("", create(path).getParentPath());
+        Assert.assertEquals(Constant.EMPTY_STRING, create(path).getParentPath());
     }
 
     /**

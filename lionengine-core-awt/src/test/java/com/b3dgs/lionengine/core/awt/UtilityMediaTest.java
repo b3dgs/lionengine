@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilTests;
 import com.b3dgs.lionengine.core.Media;
@@ -80,7 +81,7 @@ public class UtilityMediaTest
         UtilityMedia.setLoadFromJar(UtilityMediaTest.class);
 
         UtilityMedia.setResourcesDirectory(null);
-        Assert.assertEquals("", UtilityMedia.getRessourcesDir());
+        Assert.assertEquals(Constant.EMPTY_STRING, UtilityMedia.getRessourcesDir());
         UtilityMedia.setResourcesDirectory("test");
         Assert.assertEquals("test/", UtilityMedia.getRessourcesDir());
 
@@ -96,7 +97,7 @@ public class UtilityMediaTest
     @Test
     public void testInputStream() throws LionEngineException, IOException
     {
-        UtilityMedia.setResourcesDirectory("");
+        UtilityMedia.setResourcesDirectory(Constant.EMPTY_STRING);
         UtilityMedia.setLoadFromJar(UtilityMediaTest.class);
         final File file = new File("raster.xml");
         final Media media = UtilityMedia.get(file);
@@ -135,7 +136,7 @@ public class UtilityMediaTest
     public void testOutputStream() throws LionEngineException, IOException
     {
         UtilityMedia.setLoadFromJar(null);
-        UtilityMedia.setResourcesDirectory("");
+        UtilityMedia.setResourcesDirectory(Constant.EMPTY_STRING);
         final File file = new File("test.xml");
         file.deleteOnExit();
         final Media media = UtilityMedia.get(file);

@@ -21,6 +21,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.mock.EngineMock;
@@ -151,7 +152,7 @@ public class EngineCoreTest
         Assert.assertEquals(null, EngineCore.getSystemProperty("null", null));
         System.setSecurityManager(new SecurityManagerMock(false));
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        Assert.assertNull("", EngineCore.getSystemProperty("security", null));
+        Assert.assertNull(Constant.EMPTY_STRING, EngineCore.getSystemProperty("security", null));
         Verbose.info("****************************************************************************************");
     }
 }

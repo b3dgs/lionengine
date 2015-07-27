@@ -23,6 +23,7 @@ import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
@@ -43,7 +44,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 final class SpriteFontImpl implements SpriteFont
 {
     /** New line separator character. */
-    private static final String NL_STR = "" + SpriteFont.NEW_LINE;
+    private static final String NL_STR = Constant.EMPTY_STRING + SpriteFont.NEW_LINE;
 
     /** Font surface. */
     private final SpriteTiled surface;
