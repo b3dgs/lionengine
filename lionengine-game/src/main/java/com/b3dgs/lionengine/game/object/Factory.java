@@ -149,6 +149,38 @@ public class Factory
     }
 
     /**
+     * Create an object from its {@link Media} using a generic way. The concerned classes to instantiate and its
+     * constructor must be public, and must have the following parameters: ({@link Setup}, {@link Services}).
+     * 
+     * @param <O> The object type.
+     * @param media The object media.
+     * @param type The specific class to use (override the one in the media).
+     * @return The object instance.
+     * @throws LionEngineException If {@link Media} is <code>null</code>, {@link Setup} not found, or {@link Services}
+     *             missing service.
+     * @see ObjectGame#ObjectGame(Setup, Services)
+     */
+    public <O extends ObjectGame> O create(Media media, Class<O> type) throws LionEngineException
+    {
+        final Setup setup = getSetup(media);
+        try
+        {
+            final O object = create(type, new Class<?>[]
+            {
+                setup.getClass(), Services.class
+            }, setup, services);
+            final Integer id = HandledObjectsImpl.getFreeId();
+            object.setId(id);
+            object.prepareTraits(setup, services);
+            return object;
+        }
+        catch (final NoSuchMethodException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + media);
+        }
+    }
+
+    /**
      * Clear all loaded setup and their configuration.
      */
     public void clear()

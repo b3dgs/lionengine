@@ -88,11 +88,11 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
         {
             if (click == Mouse.LEFT && !objectControl.hasOver() && !objectControl.hasSelection())
             {
-                objectControl.addEntity(mx, my);
+                objectControl.addAt(mx, my);
             }
             else if (click == Mouse.RIGHT)
             {
-                objectControl.removeEntity(mx, my);
+                objectControl.removeFrom(mx, my);
             }
         }
     }
@@ -105,7 +105,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
      */
     private void selectObject(int mx, int my)
     {
-        objectControl.unSelectEntities();
+        objectControl.unselectObjects();
         final ObjectGame object = objectControl.getObject(mx, my);
         if (object != null)
         {
@@ -130,7 +130,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
 
         if (objectControl.hasSelection() && object == null)
         {
-            objectControl.unSelectEntities();
+            objectControl.unselectObjects();
             selection.start(mx, my);
         }
         else
@@ -163,7 +163,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     private void endDragging()
     {
         objectControl.stopDragging();
-        for (final ObjectGame object : objectControl.getSelectedEnties())
+        for (final ObjectGame object : objectControl.getSelectedObjects())
         {
             if (object.hasTrait(Transformable.class))
             {
@@ -207,9 +207,9 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
         selection.end(mx, my);
         if (selection.isSelected())
         {
-            objectControl.selectEntities(selection.getArea());
+            objectControl.selectObjects(selection.getArea());
         }
-        final Collection<ObjectGame> selections = objectControl.getSelectedEnties();
+        final Collection<ObjectGame> selections = objectControl.getSelectedObjects();
         if (selections.size() == 1)
         {
             final ObjectGame object = selections.toArray(new ObjectGame[1])[0];

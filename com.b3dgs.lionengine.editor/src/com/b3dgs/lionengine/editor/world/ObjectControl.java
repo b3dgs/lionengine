@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.editor.ObjectRepresentation;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
@@ -35,6 +36,8 @@ import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
@@ -58,11 +61,7 @@ public class ObjectControl
     /** Map reference. */
     private final MapTile map;
     /** Handler object. */
-    private final Handler handlerObject;
-    /** Moving offset x. */
-    private int movingOffsetX;
-    /** Moving offset y. */
-    private int movingOffsetY;
+    private final Handler handler;
     /** Moving object flag. */
     private boolean dragging;
 
@@ -76,7 +75,7 @@ public class ObjectControl
         camera = services.get(Camera.class);
         factory = services.get(Factory.class);
         map = services.get(MapTile.class);
-        handlerObject = services.get(Handler.class);
+        handler = services.get(Handler.class);
     }
 
     /**
@@ -107,19 +106,16 @@ public class ObjectControl
     {
         if (!dragging)
         {
-            final int th = map.getTileHeight();
-            movingOffsetX = UtilMath.getRounded(my, map.getTileWidth()) - mx;
-            movingOffsetY = my - UtilMath.getRounded(my, th) - th;
             dragging = true;
         }
         final int th = map.getTileHeight();
         final int areaY = UtilMath.getRounded(camera.getHeight(), th);
-        final double ox = oldMx + camera.getX() + getMovingOffsetX();
-        final double oy = areaY - oldMy + camera.getY() - 1 + getMovingOffsetY();
-        final double x = mx + camera.getX() + getMovingOffsetX();
-        final double y = areaY - my + camera.getY() - 1 + getMovingOffsetY();
+        final double ox = oldMx + camera.getX();
+        final double oy = areaY - oldMy + camera.getY() - 1;
+        final double x = mx + camera.getX();
+        final double y = areaY - my + camera.getY() - 1;
 
-        for (final Transformable object : handlerObject.get(Transformable.class))
+        for (final Transformable object : handler.get(Transformable.class))
         {
             if (isSelected(object.getOwner()))
             {
@@ -150,26 +146,26 @@ public class ObjectControl
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
      */
-    public void addEntity(int mx, int my)
+    public void addAt(int mx, int my)
     {
         final Media media = ProjectModel.INSTANCE.getSelection();
         if (ObjectsTester.isObjectFile(media))
         {
-            final Point tile = UtilWorld.getPoint(map, camera, mx, my);
             try
             {
-                final ObjectGame object = factory.create(media);
-
-                if (object.hasTrait(Transformable.class))
+                final Setup setup = factory.getSetup(media);
+                if (setup instanceof SetupSurface)
                 {
-                    setObjectLocation(object.getTrait(Transformable.class), tile.getX(), tile.getY(), 1);
+                    final ObjectRepresentation object = factory.create(media, ObjectRepresentation.class);
+                    final Point point = UtilWorld.getPoint(map, camera, mx, my);
+                    object.place(UtilMath.getRounded(point.getX(), map.getTileWidth()),
+                            UtilMath.getRounded(point.getY(), map.getTileHeight()));
+                    handler.add(object);
                 }
-                handlerObject.add(object);
             }
             catch (final LionEngineException exception)
             {
-                Verbose.warning(ObjectControl.class, "addEntity", exception.getMessage());
-                // TODO Handle the case when trait are missing
+                Verbose.exception(ObjectControl.class, "addAt", exception, media.getPath());
             }
         }
     }
@@ -180,7 +176,7 @@ public class ObjectControl
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
      */
-    public void removeEntity(int mx, int my)
+    public void removeFrom(int mx, int my)
     {
         final ObjectGame object = getObject(mx, my);
         if (object != null)
@@ -194,19 +190,17 @@ public class ObjectControl
      * 
      * @param selectionArea The selection area.
      */
-    public void selectEntities(Rectangle selectionArea)
+    public void selectObjects(Rectangle selectionArea)
     {
-        for (final Transformable object : handlerObject.get(Transformable.class))
+        for (final Transformable object : handler.get(Transformable.class))
         {
             final int th = map.getTileHeight();
             final int height = camera.getHeight();
             final int offy = height - UtilMath.getRounded(height, th);
             final int sx = UtilMath.getRounded((int) selectionArea.getMinX(), map.getTileWidth());
             final int sy = UtilMath.getRounded(height - (int) selectionArea.getMinY() - offy, th);
-            final int ex = UtilMath.getRounded((int) selectionArea.getMaxX(), map.getTileWidth());
-            final int ey = UtilMath.getRounded(height - (int) selectionArea.getMaxY() - offy, th);
 
-            if (hitObject(object, sx, sy, ex, ey))
+            if (hitObject(object, sx, sy))
             {
                 setObjectSelection(object.getOwner(), true);
             }
@@ -216,9 +210,9 @@ public class ObjectControl
     /**
      * Unselect objects.
      */
-    public void unSelectEntities()
+    public void unselectObjects()
     {
-        for (final ObjectGame object : handlerObject.values())
+        for (final ObjectGame object : handler.values())
         {
             setObjectSelection(object, false);
         }
@@ -258,18 +252,7 @@ public class ObjectControl
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        final int sideX;
-        if (side == 1)
-        {
-            sideX = 0;
-        }
-        else
-        {
-            sideX = 1;
-        }
-        object.teleport(
-                UtilMath.getRounded(x + sideX * object.getWidth() / 2 + tw / 2, tw) + side * object.getWidth() / 2,
-                UtilMath.getRounded(y + th / 2, th));
+        object.teleport(UtilMath.getRounded(x + tw / 2, tw), UtilMath.getRounded(y + th / 2, th));
     }
 
     /**
@@ -281,11 +264,12 @@ public class ObjectControl
      */
     public ObjectGame getObject(int mx, int my)
     {
-        final int x = UtilMath.getRounded(mx, map.getTileWidth());
-        final int y = UtilMath.getRounded(camera.getHeight() - my - 1, map.getTileHeight());
-        for (final Transformable object : handlerObject.get(Transformable.class))
+        final Point tile = UtilWorld.getPoint(map, camera, mx, my);
+        final int x = tile.getX();
+        final int y = tile.getY();
+        for (final Transformable object : handler.get(Transformable.class))
         {
-            if (hitObject(object, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
+            if (hitObject(object, x, y))
             {
                 return object.getOwner();
             }
@@ -298,10 +282,10 @@ public class ObjectControl
      * 
      * @return The selected objects.
      */
-    public Collection<ObjectGame> getSelectedEnties()
+    public Collection<ObjectGame> getSelectedObjects()
     {
         final Collection<ObjectGame> list = new ArrayList<>(0);
-        for (final ObjectGame object : handlerObject.values())
+        for (final ObjectGame object : handler.values())
         {
             if (isSelected(object))
             {
@@ -309,26 +293,6 @@ public class ObjectControl
             }
         }
         return list;
-    }
-
-    /**
-     * Get the horizontal moving offset.
-     * 
-     * @return The horizontal moving offset.
-     */
-    public int getMovingOffsetX()
-    {
-        return movingOffsetX;
-    }
-
-    /**
-     * Get the vertical moving offset.
-     * 
-     * @return The vertical moving offset.
-     */
-    public int getMovingOffsetY()
-    {
-        return movingOffsetY;
     }
 
     /**
@@ -388,7 +352,7 @@ public class ObjectControl
      */
     public boolean hasSelection()
     {
-        for (final ObjectGame object : handlerObject.values())
+        for (final ObjectGame object : handler.values())
         {
             if (isSelected(object))
             {
@@ -402,26 +366,13 @@ public class ObjectControl
      * Check if object is hit.
      * 
      * @param object The object to check.
-     * @param x1 First point x.
-     * @param y1 First point y.
-     * @param x2 Second point x.
-     * @param y2 Second point y.
+     * @param x The point x.
+     * @param y The point y.
      * @return <code>true</code> if hit, <code>false</code> else.
      */
-    private boolean hitObject(Transformable object, int x1, int y1, int x2, int y2)
+    private static boolean hitObject(Transformable object, int x, int y)
     {
-        if (object != null)
-        {
-            final int x = UtilMath.getRounded((int) object.getX() - object.getWidth() / 2, map.getTileWidth())
-                    - (int) camera.getX();
-            final int y = UtilMath.getRounded((int) object.getY(), map.getTileHeight()) - (int) camera.getY();
-            final Rectangle r1 = Geom.createRectangle(x1, y1, x2 - x1, y2 - y1);
-            final Rectangle r2 = Geom.createRectangle(x, y, object.getWidth(), object.getHeight());
-            if (r1.intersects(r2))
-            {
-                return true;
-            }
-        }
-        return false;
+        final Rectangle r = Geom.createRectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight());
+        return r.contains(x, y);
     }
 }

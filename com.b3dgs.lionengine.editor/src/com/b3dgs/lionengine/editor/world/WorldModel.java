@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
+import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
@@ -37,7 +38,7 @@ public class WorldModel
 
     /** Services reference. */
     private final Services services = new Services();
-    /** Game factory. */
+    /** Factory reference. */
     private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
     private final Camera camera = services.create(Camera.class);
@@ -51,9 +52,10 @@ public class WorldModel
      */
     protected WorldModel()
     {
-        final Handler handlerObject = new Handler();
-        handlerObject.addRenderable(new ComponentRenderer());
-        services.add(handlerObject);
+        final Handler handler = new Handler();
+        handler.addUpdatable(new ComponentUpdater());
+        handler.addRenderable(new ComponentRenderer());
+        services.add(handler);
 
         final Selection selection = new Selection(services);
         services.add(selection);
@@ -83,6 +85,16 @@ public class WorldModel
     }
 
     /**
+     * Get the factory reference.
+     * 
+     * @return The factory reference.
+     */
+    public Factory getFactory()
+    {
+        return factory;
+    }
+
+    /**
      * Get the camera reference.
      * 
      * @return The camera reference.
@@ -100,16 +112,6 @@ public class WorldModel
     public MapTile getMap()
     {
         return map;
-    }
-
-    /**
-     * Get the factory object reference.
-     * 
-     * @return The factory object reference.
-     */
-    public Factory getFactory()
-    {
-        return factory;
     }
 
     /**

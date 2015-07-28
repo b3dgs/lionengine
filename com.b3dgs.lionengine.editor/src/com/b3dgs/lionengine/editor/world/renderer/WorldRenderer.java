@@ -81,7 +81,7 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     /** Map reference. */
     private final MapTile map;
     /** Handler object. */
-    private final Handler handlerObject;
+    private final Handler handler;
     /** Selection handler. */
     private final Selection selection;
     /** World updater. */
@@ -114,7 +114,7 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
         selectedObjects = new WorldSelectedObjects(services);
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
-        handlerObject = services.get(Handler.class);
+        handler = services.get(Handler.class);
         selection = services.get(Selection.class);
         worldUpdater = services.get(WorldUpdater.class);
         zoom = services.get(WorldZoom.class);
@@ -135,7 +135,7 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
         renderBackground(g, width, height);
 
         renderMap(g, width, height);
-        renderEntities(g);
+        renderObjects(g);
 
         selection.render(g, COLOR_MOUSE_SELECTION);
     }
@@ -167,10 +167,10 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
      * 
      * @param g The graphic output.
      */
-    protected void renderEntities(Graphic g)
+    protected void renderObjects(Graphic g)
     {
-        handlerObject.update(1.0);
-        handlerObject.render(g);
+        handler.update(1.0);
+        handler.render(g);
     }
 
     /**
@@ -193,6 +193,8 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     {
         if (map.isCreated())
         {
+            handler.update(1.0);
+
             final double scale = zoom.getScale();
             final int width = (int) Math.ceil(paintEvent.width / scale);
             final int height = (int) Math.ceil(paintEvent.height / scale);
