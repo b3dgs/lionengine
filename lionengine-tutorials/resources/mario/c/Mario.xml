@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:object xmlns:lionengine="http://lionengine.b3dgs.com">
     <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
     <lionengine:class>com.b3dgs.lionengine.tutorials.mario.c.Mario</lionengine:class>
     <lionengine:surface image="Mario.png"/>
@@ -21,4 +21,4 @@
     <lionengine:category name="knee_left" axis="X" x="-6" y="0">
         <lionengine:group>block</lionengine:group>
     </lionengine:category>
-</lionengine:entity>
+</lionengine:object>
