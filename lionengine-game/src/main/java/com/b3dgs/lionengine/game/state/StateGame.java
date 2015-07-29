@@ -42,9 +42,10 @@ public abstract class StateGame implements State
      * @param transition The state transition reference.
      * @return <code>true</code> if checker valid, <code>false</code> else.
      */
-    private static <I extends InputDevice> boolean checkTransition(
-            Class<? extends StateTransitionInputChecker<I>> checkerType, Class<I> inputType, InputDevice input,
-            StateTransition transition)
+    private static <I extends InputDevice> boolean check(Class<? extends StateTransitionInputChecker<I>> checkerType,
+                                                         Class<I> inputType,
+                                                         InputDevice input,
+                                                         StateTransition transition)
     {
         if (checkerType.isAssignableFrom(transition.getClass()) && inputType.isAssignableFrom(input.getClass()))
         {
@@ -101,10 +102,8 @@ public abstract class StateGame implements State
     {
         for (final StateTransition transition : transitions)
         {
-            if (checkTransition(StateTransitionInputDirectionalChecker.class, InputDeviceDirectional.class, input,
-                    transition)
-                    || checkTransition(StateTransitionInputPointerChecker.class, InputDevicePointer.class, input,
-                            transition))
+            if (check(StateTransitionInputDirectionalChecker.class, InputDeviceDirectional.class, input, transition)
+                || check(StateTransitionInputPointerChecker.class, InputDevicePointer.class, input, transition))
             {
                 transition.exit();
                 return factory.getState(transition.getNext());

@@ -158,8 +158,10 @@ public class LauncherModel extends TraitModel implements Launcher
         if (target instanceof Transformable)
         {
             final Transformable transformable = (Transformable) target;
-            final double ray = UtilMath.getDistance(localizable.getX(), localizable.getY(), target.getX(),
-                    target.getY());
+            final double ray = UtilMath.getDistance(localizable.getX(),
+                                                    localizable.getY(),
+                                                    target.getX(),
+                                                    target.getY());
             dx += (int) ((target.getX() - transformable.getOldX()) / vector.getDirectionHorizontal() * ray);
             dy += (int) ((target.getY() - transformable.getOldY()) / vector.getDirectionVertical() * ray);
         }

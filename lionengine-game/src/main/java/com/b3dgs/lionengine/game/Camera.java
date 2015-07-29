@@ -133,8 +133,9 @@ public class Camera implements Viewer
      */
     public void setLocation(double x, double y)
     {
-        moveLocation(1, x - width / 2.0 - (transformable.getX() + offset.getX()),
-                y - height / 2.0 - (transformable.getY() + offset.getY()));
+        final double dx = x - width / 2.0 - (transformable.getX() + offset.getX());
+        final double dy = y - height / 2.0 - (transformable.getY() + offset.getY());
+        moveLocation(1, dx, dy);
     }
 
     /**
@@ -251,8 +252,10 @@ public class Camera implements Viewer
     private void checkHorizontalLimit(double vx)
     {
         // Inside interval
-        if (transformable.getX() >= mapLeftLimit && transformable.getX() <= mapRightLimit
-                && mapLeftLimit != Integer.MIN_VALUE && mapRightLimit != Integer.MAX_VALUE)
+        if (transformable.getX() >= mapLeftLimit
+            && transformable.getX() <= mapRightLimit
+            && mapLeftLimit != Integer.MIN_VALUE
+            && mapRightLimit != Integer.MAX_VALUE)
         {
             offset.moveLocation(1, vx, 0);
 
@@ -282,8 +285,10 @@ public class Camera implements Viewer
     private void checkVerticalLimit(double vy)
     {
         // Inside interval
-        if (transformable.getY() >= mapDownLimit && transformable.getY() <= mapUpLimit
-                && mapDownLimit != Integer.MIN_VALUE && mapUpLimit != Integer.MAX_VALUE)
+        if (transformable.getY() >= mapDownLimit
+            && transformable.getY() <= mapUpLimit
+            && mapDownLimit != Integer.MIN_VALUE
+            && mapUpLimit != Integer.MAX_VALUE)
         {
             offset.moveLocation(1, 0, vy);
 
@@ -406,8 +411,8 @@ public class Camera implements Viewer
     public boolean isViewable(Localizable localizable, int radiusX, int radiusY)
     {
         return localizable.getX() + localizable.getWidth() + radiusX >= getX()
-                && localizable.getX() - localizable.getWidth() - radiusX <= getX() + width
-                && localizable.getY() + localizable.getHeight() + radiusY >= getY()
-                && localizable.getY() - localizable.getHeight() * 2 - radiusY <= getY() + height;
+               && localizable.getX() - localizable.getWidth() - radiusX <= getX() + width
+               && localizable.getY() + localizable.getHeight() + radiusY >= getY()
+               && localizable.getY() - localizable.getHeight() * 2 - radiusY <= getY() + height;
     }
 }

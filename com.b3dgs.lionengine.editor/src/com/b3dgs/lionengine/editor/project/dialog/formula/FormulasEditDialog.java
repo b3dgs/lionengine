@@ -63,8 +63,11 @@ public class FormulasEditDialog extends AbstractDialog
      */
     public FormulasEditDialog(Shell parent, Media formulas)
     {
-        super(parent, Messages.EditFormulasDialog_Title, Messages.EditFormulasDialog_HeaderTitle,
-                Messages.EditFormulasDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.EditFormulasDialog_Title,
+              Messages.EditFormulasDialog_HeaderTitle,
+              Messages.EditFormulasDialog_HeaderDesc,
+              ICON);
         this.formulas = formulas;
         dialog.setMinimumSize(128, 320);
         createDialog();

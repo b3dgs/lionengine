@@ -71,8 +71,10 @@ public abstract class EngineCore
      * @param factoryMedia The media factory (must not be <code>null</code>).
      * @throws LionEngineException If the engine has already been started.
      */
-    public static synchronized void start(String name, Version version, FactoryGraphic factoryGraphic,
-            FactoryMedia factoryMedia) throws LionEngineException
+    public static synchronized void start(String name,
+                                          Version version,
+                                          FactoryGraphic factoryGraphic,
+                                          FactoryMedia factoryMedia) throws LionEngineException
     {
         if (started)
         {
@@ -180,8 +182,9 @@ public abstract class EngineCore
         }
         catch (final SecurityException exception)
         {
-            Verbose.critical(EngineCore.class, "getSystemProperty", ERROR_PROPERTY, property, " (",
-                    exception.getClass().getName(), ")");
+            final StringBuilder builder = new StringBuilder(ERROR_PROPERTY);
+            builder.append(property).append(" (").append(exception.getClass().getName()).append(")");
+            Verbose.critical(EngineCore.class, "getSystemProperty", builder.toString());
             return def;
         }
     }

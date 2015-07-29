@@ -29,11 +29,10 @@ public final class AudioMidi
 {
     /**
      * Load a midi file <code>(.mid, .midi)</code> and prepare it to be played.
-     * A {@link LionEngineException} is thrown if no midi player is available.
      * 
      * @param media The audio midi media.
      * @return The loaded midi.
-     * @throws LionEngineException If media is <code>null</code> or invalid midi.
+     * @throws LionEngineException If media is <code>null</code> or invalid midi or no midi player is available.
      */
     public static Midi loadMidi(Media media) throws LionEngineException
     {

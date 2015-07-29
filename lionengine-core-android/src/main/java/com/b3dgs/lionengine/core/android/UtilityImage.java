@@ -232,8 +232,8 @@ public final class UtilityImage
      */
     static ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
-        return new ImageBufferAndroid(
-                ToolsAndroid.getRasterBuffer(UtilityImage.getBuffer(image), fr, fg, fb, er, eg, eb, refSize));
+        final Bitmap bitmap = UtilityImage.getBuffer(image);
+        return new ImageBufferAndroid(ToolsAndroid.getRasterBuffer(bitmap, fr, fg, fb, er, eg, eb, refSize));
     }
 
     /**

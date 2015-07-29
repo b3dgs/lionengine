@@ -73,8 +73,16 @@ public class MapTilePathModel implements MapTilePath
      * @param radius The search radius.
      * @return The closest tile found.
      */
-    private CoordTile getClosestAvailableTile(Pathfindable mover, int stx, int sty, int stw, int sth, int dtx, int dty,
-            int dtw, int dth, int radius)
+    private CoordTile getClosestAvailableTile(Pathfindable mover,
+                                              int stx,
+                                              int sty,
+                                              int stw,
+                                              int sth,
+                                              int dtx,
+                                              int dty,
+                                              int dtw,
+                                              int dth,
+                                              int radius)
     {
         int closestX = 0;
         int closestY = 0;
@@ -228,8 +236,12 @@ public class MapTilePathModel implements MapTilePath
     @Override
     public CoordTile getFreeTileAround(Pathfindable mover, Tiled tiled, int radius)
     {
-        return getFreeTileAround(mover, tiled.getInTileX(), tiled.getInTileY(), tiled.getInTileWidth(),
-                tiled.getInTileHeight(), radius);
+        return getFreeTileAround(mover,
+                                 tiled.getInTileX(),
+                                 tiled.getInTileY(),
+                                 tiled.getInTileWidth(),
+                                 tiled.getInTileHeight(),
+                                 radius);
     }
 
     @Override
@@ -261,9 +273,16 @@ public class MapTilePathModel implements MapTilePath
     @Override
     public CoordTile getClosestAvailableTile(Pathfindable mover, Tiled to, int radius)
     {
-        return getClosestAvailableTile(mover, mover.getInTileX(), mover.getInTileY(), mover.getInTileWidth(),
-                mover.getInTileHeight(), to.getInTileX(), to.getInTileY(), to.getInTileWidth(), to.getInTileHeight(),
-                radius);
+        return getClosestAvailableTile(mover,
+                                       mover.getInTileX(),
+                                       mover.getInTileY(),
+                                       mover.getInTileWidth(),
+                                       mover.getInTileHeight(),
+                                       to.getInTileX(),
+                                       to.getInTileY(),
+                                       to.getInTileWidth(),
+                                       to.getInTileHeight(),
+                                       radius);
     }
 
     @Override
@@ -287,7 +306,7 @@ public class MapTilePathModel implements MapTilePath
                     try
                     {
                         if (mover.isBlocking(tilePath.getCategory())
-                                || ignoreObjectId != null && ids.size() > 0 && !ids.contains(ignoreObjectId))
+                            || ignoreObjectId != null && ids.size() > 0 && !ids.contains(ignoreObjectId))
                         {
                             return false;
                         }

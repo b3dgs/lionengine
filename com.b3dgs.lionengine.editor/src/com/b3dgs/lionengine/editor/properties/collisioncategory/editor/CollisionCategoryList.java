@@ -65,8 +65,11 @@ public class CollisionCategoryList extends ObjectList<CollisionCategory>
     @Override
     protected CollisionCategory copyObject(CollisionCategory category)
     {
-        return new CollisionCategory(category.getName(), category.getAxis(), category.getOffsetX(),
-                category.getOffsetY(), category.getGroups());
+        return new CollisionCategory(category.getName(),
+                                     category.getAxis(),
+                                     category.getOffsetX(),
+                                     category.getOffsetY(),
+                                     category.getGroups());
     }
 
     @Override

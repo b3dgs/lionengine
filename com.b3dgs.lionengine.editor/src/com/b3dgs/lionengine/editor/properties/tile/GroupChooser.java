@@ -64,8 +64,11 @@ public class GroupChooser extends AbstractDialog
      */
     public GroupChooser(Shell parent, Collection<String> groups)
     {
-        super(parent, Messages.GroupChooser_Title, Messages.GroupChooser_HeaderTitle, Messages.GroupChooser_HeaderDesc,
-                GroupsEditDialog.ICON);
+        super(parent,
+              Messages.GroupChooser_Title,
+              Messages.GroupChooser_HeaderTitle,
+              Messages.GroupChooser_HeaderDesc,
+              GroupsEditDialog.ICON);
         this.groups = groups.toArray(new String[groups.size()]);
         createDialog();
         dialog.setMinimumSize(256, 64);

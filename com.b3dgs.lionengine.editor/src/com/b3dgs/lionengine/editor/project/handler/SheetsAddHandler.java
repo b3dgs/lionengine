@@ -96,10 +96,16 @@ public final class SheetsAddHandler
     public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, Messages.AddSheets_Title, Messages.AddSheets_Text,
-                MapTile.DEFAULT_SHEETS_FILE.replace(Constant.DOT + Factory.FILE_DATA_EXTENSION, Constant.EMPTY_STRING),
-                new InputValidator(InputValidator.NAME_MATCH,
-                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+        final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
+        final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
+        final String value = MapTile.DEFAULT_SHEETS_FILE.replace(Constant.DOT
+                                                                 + Factory.FILE_DATA_EXTENSION,
+                                                                 Constant.EMPTY_STRING);
+        final InputDialog inputDialog = new InputDialog(parent,
+                                                        Messages.AddSheets_Title,
+                                                        Messages.AddSheets_Text,
+                                                        value,
+                                                        validator);
         final int code = inputDialog.open();
         if (code == Window.OK)
         {

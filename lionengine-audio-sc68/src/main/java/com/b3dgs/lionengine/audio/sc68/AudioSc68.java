@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
@@ -73,12 +74,11 @@ public final class AudioSc68
      */
     private static Sc68Binding loadLibrary(String name, String ext, String library) throws LionEngineException
     {
-        try
+        try (InputStream input = AudioSc68.class.getResourceAsStream(library))
         {
             final File tempLib = File.createTempFile(name, ext);
             tempLib.deleteOnExit();
-            Files.copy(AudioSc68.class.getResourceAsStream(library), tempLib.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(input, tempLib.toPath(), StandardCopyOption.REPLACE_EXISTING);
             final Sc68Binding bind = (Sc68Binding) Native.loadLibrary(tempLib.getCanonicalPath(), Sc68Binding.class);
             Verbose.info("Library ", library, " loaded");
             return bind;

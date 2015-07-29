@@ -62,14 +62,21 @@ public class FramesSetHandler
         final Configurer configurer = (Configurer) properties.getData();
         final Shell shell = properties.getShell();
 
-        final InputDialog horizontalFrames = new InputDialog(shell, Messages.Properties_Frames_Title,
-                Messages.Properties_Frames_NumberHorizontal, DEFAULT_FRAMES,
-                new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, Messages.Properties_Frames_Error));
+        final InputValidator validator = new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH,
+                                                            Messages.Properties_Frames_Error);
+
+        final InputDialog horizontalFrames = new InputDialog(shell,
+                                                             Messages.Properties_Frames_Title,
+                                                             Messages.Properties_Frames_NumberHorizontal,
+                                                             DEFAULT_FRAMES,
+                                                             validator);
         if (horizontalFrames.open() == Window.OK)
         {
-            final InputDialog verticalFrames = new InputDialog(shell, Messages.Properties_Frames_Title,
-                    Messages.Properties_Frames_NumberVertical, DEFAULT_FRAMES,
-                    new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, Messages.Properties_Frames_Error));
+            final InputDialog verticalFrames = new InputDialog(shell,
+                                                               Messages.Properties_Frames_Title,
+                                                               Messages.Properties_Frames_NumberVertical,
+                                                               DEFAULT_FRAMES,
+                                                               validator);
             if (verticalFrames.open() == Window.OK)
             {
                 final XmlNode root = configurer.getRoot();

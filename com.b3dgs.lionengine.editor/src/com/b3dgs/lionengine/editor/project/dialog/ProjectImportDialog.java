@@ -69,8 +69,11 @@ public class ProjectImportDialog extends AbstractProjectDialog
      */
     public ProjectImportDialog(Shell parent)
     {
-        super(parent, Messages.ImportProjectDialog_Title, Messages.ImportProjectDialog_HeaderTitle,
-                Messages.ImportProjectDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.ImportProjectDialog_Title,
+              Messages.ImportProjectDialog_HeaderTitle,
+              Messages.ImportProjectDialog_HeaderDesc,
+              ICON);
 
         createDialog();
         dialog.setMinimumSize(512, 100);
@@ -189,8 +192,9 @@ public class ProjectImportDialog extends AbstractProjectDialog
         catch (final IOException exception)
         {
             Verbose.exception(getClass(), "generateProperties", exception);
-            MessageDialog.openError(dialog, Messages.ImportProjectDialog_ErrorTitle,
-                    Messages.ImportProjectDialog_ErrorText);
+            MessageDialog.openError(dialog,
+                                    Messages.ImportProjectDialog_ErrorTitle,
+                                    Messages.ImportProjectDialog_ErrorText);
         }
     }
 
@@ -210,8 +214,9 @@ public class ProjectImportDialog extends AbstractProjectDialog
         catch (final IOException exception)
         {
             Verbose.exception(getClass(), "createProject", exception);
-            MessageDialog.openError(dialog, Messages.ImportProjectDialog_ErrorTitle,
-                    Messages.ImportProjectDialog_ErrorText);
+            MessageDialog.openError(dialog,
+                                    Messages.ImportProjectDialog_ErrorTitle,
+                                    Messages.ImportProjectDialog_ErrorText);
         }
     }
 

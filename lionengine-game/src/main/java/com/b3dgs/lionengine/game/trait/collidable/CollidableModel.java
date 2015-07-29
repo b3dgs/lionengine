@@ -217,7 +217,7 @@ public class CollidableModel extends TraitModel implements Collidable
                 final double sv = rectangle.getY();
                 final double dh = origin.getX(transformable.getX() + collision.getOffsetX(), rectangle.getWidth()) - sh;
                 final double dv = origin.getY(transformable.getY() + collision.getOffsetY(), rectangle.getHeight())
-                        - sv;
+                                  - sv;
                 final double norm = Math.sqrt(dh * dh + dv * dv);
                 final double sx = dh / norm;
                 final double sy = dv / norm;
@@ -245,9 +245,9 @@ public class CollidableModel extends TraitModel implements Collidable
                 final Collision collision = current.getKey();
 
                 final int x = (int) origin.getX(viewer.getViewpointX(transformable.getX() + collision.getOffsetX()),
-                        collision.getWidth());
+                                                collision.getWidth());
                 final int y = (int) origin.getY(viewer.getViewpointY(transformable.getY() + collision.getOffsetY()),
-                        collision.getHeight());
+                                                collision.getHeight());
                 g.drawRect(x, y, collision.getWidth(), collision.getHeight(), false);
             }
         }

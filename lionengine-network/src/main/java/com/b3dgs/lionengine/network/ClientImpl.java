@@ -468,8 +468,10 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
             }
             catch (final IOException exception)
             {
-                Verbose.warning(Client.class, "sendMessage", "Unable to send the messages for client: ",
-                        String.valueOf(clientId));
+                Verbose.warning(Client.class,
+                                "sendMessage",
+                                "Unable to send the messages for client: ",
+                                String.valueOf(clientId));
             }
         }
         // Send messages
@@ -493,8 +495,10 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
             }
             catch (final IOException exception)
             {
-                Verbose.warning(Client.class, "sendMessage", "Unable to send the messages for client: ",
-                        String.valueOf(clientId));
+                Verbose.warning(Client.class,
+                                "sendMessage",
+                                "Unable to send the messages for client: ",
+                                String.valueOf(clientId));
             }
         }
         final long bandwidthMilli = 1000L;
@@ -527,8 +531,10 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         catch (final IOException exception)
         {
-            Verbose.warning(Client.class, "receiveMessages", "Unable to receive the messages for client: ",
-                    String.valueOf(clientId));
+            Verbose.warning(Client.class,
+                            "receiveMessages",
+                            "Unable to receive the messages for client: ",
+                            String.valueOf(clientId));
         }
     }
 }

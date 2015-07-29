@@ -100,8 +100,11 @@ public class CollisionCategoryProperties extends ObjectProperties<CollisionCateg
     @Override
     protected CollisionCategory createObject(String name)
     {
-        return new CollisionCategory(name, (Axis) axis.getData(), Integer.parseInt(offsetX.getText()),
-                Integer.parseInt(offsetY.getText()), groups.getObjects());
+        return new CollisionCategory(name,
+                                     (Axis) axis.getData(),
+                                     Integer.parseInt(offsetX.getText()),
+                                     Integer.parseInt(offsetY.getText()),
+                                     groups.getObjects());
     }
 
     /*

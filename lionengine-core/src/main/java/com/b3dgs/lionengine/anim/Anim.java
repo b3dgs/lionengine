@@ -45,8 +45,12 @@ public final class Anim
      * @return The created animation.
      * @throws LionEngineException If invalid animation.
      */
-    public static Animation createAnimation(String name, int firstFrame, int lastFrame, double speed, boolean reverse,
-            boolean repeat) throws LionEngineException
+    public static Animation createAnimation(String name,
+                                            int firstFrame,
+                                            int lastFrame,
+                                            double speed,
+                                            boolean reverse,
+                                            boolean repeat) throws LionEngineException
     {
         return new AnimationImpl(name, firstFrame, lastFrame, speed, reverse, repeat);
     }

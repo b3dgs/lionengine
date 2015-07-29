@@ -63,8 +63,12 @@ public class EntityCollisionList extends ObjectList<Collision>
     @Override
     protected Collision copyObject(Collision collision)
     {
-        return new Collision(collision.getName(), collision.getOffsetX(), collision.getOffsetY(), collision.getWidth(),
-                collision.getHeight(), collision.hasMirror());
+        return new Collision(collision.getName(),
+                             collision.getOffsetX(),
+                             collision.getOffsetY(),
+                             collision.getWidth(),
+                             collision.getHeight(),
+                             collision.hasMirror());
     }
 
     @Override

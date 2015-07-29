@@ -60,8 +60,11 @@ public class GroupsEditDialog extends AbstractDialog
      */
     public GroupsEditDialog(Shell parent, Media groups)
     {
-        super(parent, Messages.EditGroupsDialog_Title, Messages.EditGroupsDialog_HeaderTitle,
-                Messages.EditGroupsDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.EditGroupsDialog_Title,
+              Messages.EditGroupsDialog_HeaderTitle,
+              Messages.EditGroupsDialog_HeaderDesc,
+              ICON);
         this.groups = groups;
         dialog.setMinimumSize(128, 320);
         createDialog();

@@ -74,8 +74,11 @@ public class MapImportDialog extends AbstractDialog
      */
     public MapImportDialog(Shell parent)
     {
-        super(parent, Messages.ImportMapDialog_Title, Messages.ImportMapDialog_HeaderTitle,
-                Messages.ImportMapDialog_HeaderDesc, MapImportDialog.ICON);
+        super(parent,
+              Messages.ImportMapDialog_Title,
+              Messages.ImportMapDialog_HeaderTitle,
+              Messages.ImportMapDialog_HeaderDesc,
+              MapImportDialog.ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
         finish.setEnabled(false);
@@ -245,7 +248,8 @@ public class MapImportDialog extends AbstractDialog
         levelRipLocationText.setEditable(false);
 
         final Button browse = UtilButton.create(levelRipArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
@@ -276,7 +280,8 @@ public class MapImportDialog extends AbstractDialog
         sheetsLocationText.setEditable(false);
 
         final Button browse = UtilButton.create(sheetArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
@@ -307,7 +312,8 @@ public class MapImportDialog extends AbstractDialog
         groupsLocationText.setEditable(false);
 
         final Button browse = UtilButton.create(groupArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {

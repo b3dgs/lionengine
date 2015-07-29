@@ -166,8 +166,9 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         if (map.isCreated() && isFieldsFilled() && !linearB.getText().isEmpty())
         {
             final CollisionFormula formula = createObject("preview");
-            final ImageBuffer buffer = MapTileCollisionModel.createFunctionDraw(formula, map.getTileWidth(),
-                    map.getTileHeight());
+            final ImageBuffer buffer = MapTileCollisionModel.createFunctionDraw(formula,
+                                                                                map.getTileWidth(),
+                                                                                map.getTileHeight());
             gc.fillRectangle(0, 0, map.getTileWidth(), map.getTileHeight());
             gc.drawImage(UtilityImage.getBuffer(buffer), 0, 0);
         }
@@ -405,8 +406,10 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
      */
     private boolean isFieldsFilled()
     {
-        final boolean range = !minX.getText().isEmpty() && !maxX.getText().isEmpty() && !minY.getText().isEmpty()
-                && !maxY.getText().isEmpty();
+        final boolean range = !minX.getText().isEmpty()
+                              && !maxX.getText().isEmpty()
+                              && !minY.getText().isEmpty()
+                              && !maxY.getText().isEmpty();
         final boolean linear = !linearA.getText().isEmpty() && !linearB.getText().isEmpty();
         return !type.getText().isEmpty() && !output.getText().isEmpty() && range && linear;
     }

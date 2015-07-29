@@ -150,8 +150,8 @@ final class GraphicAndroid implements Graphic
         final Rect src = new Rect(sx1, sy1, sx2, sy2);
         if (sx1 > sx2)
         {
-            final Bitmap part = Bitmap.createBitmap(GraphicAndroid.getBuffer(image), sx2, sy1, sx1 - sx2, sy2 - sy1,
-                    flip, false);
+            final Bitmap bitmap = GraphicAndroid.getBuffer(image);
+            final Bitmap part = Bitmap.createBitmap(bitmap, sx2, sy1, sx1 - sx2, sy2 - sy1, flip, false);
             g.drawBitmap(part, dx1, dy1, paint);
         }
         else
@@ -178,8 +178,9 @@ final class GraphicAndroid implements Graphic
     @Override
     public void drawRect(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
-        drawRect((int) origin.getX(viewer.getViewpointX(x), width), (int) origin.getY(viewer.getViewpointY(y), height),
-                width, height, fill);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawRect(px, py, width, height, fill);
     }
 
     @Override
@@ -193,8 +194,9 @@ final class GraphicAndroid implements Graphic
     @Override
     public void drawGradient(Viewer viewer, Origin origin, double x, double y, int width, int height)
     {
-        drawGradient((int) origin.getX(viewer.getViewpointX(x), width),
-                (int) origin.getY(viewer.getViewpointY(y), height), width, height);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawGradient(px, py, width, height);
     }
 
     @Override
@@ -206,8 +208,11 @@ final class GraphicAndroid implements Graphic
     @Override
     public void drawLine(Viewer viewer, double x1, double y1, double x2, double y2)
     {
-        g.drawLine((int) viewer.getViewpointX(x1), (int) viewer.getViewpointY(y1), (int) viewer.getViewpointX(x2),
-                (int) viewer.getViewpointY(y2), paint);
+        g.drawLine((int) viewer.getViewpointX(x1),
+                   (int) viewer.getViewpointY(y1),
+                   (int) viewer.getViewpointX(x2),
+                   (int) viewer.getViewpointY(y2),
+                   paint);
     }
 
     @Override
@@ -227,8 +232,9 @@ final class GraphicAndroid implements Graphic
     @Override
     public void drawOval(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
-        drawOval((int) origin.getX(viewer.getViewpointX(x), width), (int) origin.getY(viewer.getViewpointY(y), height),
-                width, height, fill);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawOval(px, py, width, height, fill);
     }
 
     @Override
@@ -242,8 +248,9 @@ final class GraphicAndroid implements Graphic
     {
         if (gc != gradientColor)
         {
-            linearGradient = new LinearGradient(gc.getX1(), gc.getY1(), gc.getX2(), gc.getY2(),
-                    gc.getColor1().getRgba(), gc.getColor2().getRgba(), TileMode.CLAMP);
+            final int c1 = gc.getColor1().getRgba();
+            final int c2 = gc.getColor2().getRgba();
+            linearGradient = new LinearGradient(gc.getX1(), gc.getY1(), gc.getX2(), gc.getY2(), c1, c2, TileMode.CLAMP);
         }
     }
 

@@ -122,15 +122,15 @@ public class UtilFileTest
             Assert.assertEquals("bis", dirs[0]);
             Assert.assertEquals(0, UtilFile.getDirsList(UtilFile.getPath("null")).length);
 
-            final String[] files = UtilFile.getFilesList(
-                    new File(new MediaMock("file").getPath()).getParentFile().getParentFile().getAbsolutePath());
+            final File file = new File(new MediaMock("file").getPath());
+            final String[] files = UtilFile.getFilesList(file.getParentFile().getParentFile().getAbsolutePath());
             Assert.assertTrue("Count = " + files.length, files.length >= 25);
             Assert.assertEquals(0, UtilFile.getFilesList(UtilFile.getPath("null")).length);
             Assert.assertEquals(0, UtilFile.getFilesByExtension(UtilFile.getPath("null"), "txt").size());
 
             final File parent = new File(new MediaMock("file").getPath());
-            Assert.assertEquals(2,
-                    UtilFile.getFilesByExtension(parent.getParentFile().getAbsolutePath(), "txt").size());
+            final int count = UtilFile.getFilesByExtension(parent.getParentFile().getAbsolutePath(), "txt").size();
+            Assert.assertEquals(2, count);
             Assert.assertFalse(UtilFile.getFilesByName(parent.getParentFile(), "file").isEmpty());
         }
         catch (final LionEngineException exception)
@@ -151,7 +151,7 @@ public class UtilFileTest
     public void testPath()
     {
         Assert.assertEquals(Constant.EMPTY_STRING,
-                UtilFile.getPathSeparator(Constant.DOT, Constant.EMPTY_STRING, Constant.EMPTY_STRING));
+                            UtilFile.getPathSeparator(Constant.DOT, Constant.EMPTY_STRING, Constant.EMPTY_STRING));
         Assert.assertEquals("null", UtilFile.getPathSeparator(Constant.DOT, (String) null, (String) null));
     }
 

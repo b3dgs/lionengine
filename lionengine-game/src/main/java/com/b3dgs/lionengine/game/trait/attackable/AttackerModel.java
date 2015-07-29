@@ -93,9 +93,14 @@ public class AttackerModel extends TraitModel implements Attacker
         }
         else
         {
-            final double dist = UtilMath.getDistance(transformable.getX(), transformable.getY(),
-                    transformable.getWidth(), transformable.getHeight(), target.getX(), target.getY(),
-                    target.getWidth(), target.getHeight());
+            final double dist = UtilMath.getDistance(transformable.getX(),
+                                                     transformable.getY(),
+                                                     transformable.getWidth(),
+                                                     transformable.getHeight(),
+                                                     target.getX(),
+                                                     target.getY(),
+                                                     target.getWidth(),
+                                                     target.getHeight());
 
             checkTargetDistance(dist);
         }

@@ -111,8 +111,11 @@ class Scene extends Sequence
         map.render(g);
         minimap.render(g);
         g.setColor(ColorRgba.RED);
-        g.drawRect((int) (camera.getX() / map.getTileWidth()), (int) (camera.getY() / map.getTileHeight()),
-                camera.getWidth() / map.getTileWidth(), camera.getHeight() / map.getTileWidth(), false);
+        g.drawRect((int) (camera.getX() / map.getTileWidth()),
+                   (int) (camera.getY() / map.getTileHeight()),
+                   camera.getWidth() / map.getTileWidth(),
+                   camera.getHeight() / map.getTileWidth(),
+                   false);
     }
 
     @Override

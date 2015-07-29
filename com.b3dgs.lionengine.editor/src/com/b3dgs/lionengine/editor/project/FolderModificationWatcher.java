@@ -244,8 +244,9 @@ public final class FolderModificationWatcher
             this.creator = creator;
 
             service = folder.getFileSystem().newWatchService();
-            watcher = folder.register(service, StandardWatchEventKinds.ENTRY_CREATE,
-                    StandardWatchEventKinds.ENTRY_DELETE);
+            watcher = folder.register(service,
+                                      StandardWatchEventKinds.ENTRY_CREATE,
+                                      StandardWatchEventKinds.ENTRY_DELETE);
         }
 
         /**

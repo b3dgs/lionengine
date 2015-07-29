@@ -124,8 +124,11 @@ class BuildButton extends ObjectGame implements Action, Assign, Updatable, Rende
     {
         state = assignable;
         final ConfigSize size = ConfigSize.create(new Configurer(target));
-        area = Geom.createRectangle(cursor.getInTileX() * cursor.getWidth(), cursor.getInTileY() * cursor.getHeight(),
-                size.getWidth(), size.getHeight());
+        area = Geom.createRectangle(cursor.getInTileX()
+                                    * cursor.getWidth(),
+                                    cursor.getInTileY() * cursor.getHeight(),
+                                    size.getWidth(),
+                                    size.getHeight());
     }
 
     @Override
@@ -157,8 +160,11 @@ class BuildButton extends ObjectGame implements Action, Assign, Updatable, Rende
         state.update(extrp);
         if (area != null)
         {
-            area.set(cursor.getInTileX() * cursor.getWidth(), cursor.getInTileY() * cursor.getHeight(), area.getWidth(),
-                    area.getHeight());
+            area.set(cursor.getInTileX()
+                     * cursor.getWidth(),
+                     cursor.getInTileY() * cursor.getHeight(),
+                     area.getWidth(),
+                     area.getHeight());
         }
     }
 
@@ -169,8 +175,13 @@ class BuildButton extends ObjectGame implements Action, Assign, Updatable, Rende
         if (area != null)
         {
             g.setColor(ColorRgba.GREEN);
-            g.drawRect(viewer, Origin.TOP_LEFT, area.getX(), area.getY(), (int) area.getWidth(), (int) area.getHeight(),
-                    false);
+            g.drawRect(viewer,
+                       Origin.TOP_LEFT,
+                       area.getX(),
+                       area.getY(),
+                       (int) area.getWidth(),
+                       (int) area.getHeight(),
+                       false);
         }
     }
 }

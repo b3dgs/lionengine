@@ -171,7 +171,7 @@ public final class ColorRgba
     public static boolean isOpaqueTransparentExclusive(int colorA, int colorB)
     {
         return colorA == ColorRgba.TRANSPARENT.getRgba() && colorB == ColorRgba.OPAQUE.getRgba()
-                || colorA == ColorRgba.OPAQUE.getRgba() && colorB == ColorRgba.TRANSPARENT.getRgba();
+               || colorA == ColorRgba.OPAQUE.getRgba() && colorB == ColorRgba.TRANSPARENT.getRgba();
     }
 
     /**
@@ -232,7 +232,9 @@ public final class ColorRgba
         Check.superiorOrEqual(a, 0);
         Check.inferiorOrEqual(a, 255);
 
-        value = mask(a) << Constant.BYTE_4 | mask(r) << Constant.BYTE_3 | mask(g) << Constant.BYTE_2
+        value = mask(a) << Constant.BYTE_4
+                | mask(r) << Constant.BYTE_3
+                | mask(g) << Constant.BYTE_2
                 | mask(b) << Constant.BYTE_1;
         alpha = a;
         red = r;

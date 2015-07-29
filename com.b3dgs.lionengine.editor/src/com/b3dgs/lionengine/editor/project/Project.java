@@ -339,7 +339,8 @@ public final class Project
      */
     public <C> Class<? extends C> getClass(Media media, Class<C> clazz) throws LionEngineException
     {
-        final String name = media.getPath().replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
+        final String name = media.getPath()
+                                 .replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
                                  .replace(File.separator, Constant.DOT);
         final Class<?> clazzRef = getClass(name);
         try

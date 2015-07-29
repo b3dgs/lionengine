@@ -72,8 +72,10 @@ public class WorldCursor implements WorldRenderListener
     @Override
     public void onRender(Graphic g, int width, int height, double scale, int tw, int th)
     {
-        if (WorldModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT && !selection.isSelecting()
-                && !objectControl.isDragging() && !objectControl.hasOver())
+        if (WorldModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT
+            && !selection.isSelecting()
+            && !objectControl.isDragging()
+            && !objectControl.hasOver())
         {
             final Tile tile = UtilWorld.getTile(map, camera, world.getMouseX(), world.getMouseY());
             if (tile != null)

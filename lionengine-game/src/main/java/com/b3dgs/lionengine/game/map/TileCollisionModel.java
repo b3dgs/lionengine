@@ -140,8 +140,9 @@ public class TileCollisionModel implements TileCollision
             if (formulas.contains(formula) && category.getAxis() == formula.getRange().getOutput())
             {
                 final CollisionRange range = formula.getRange();
-                if (range.getOutput() == Axis.Y && ox >= tile.getX() + range.getMinX()
-                        && ox <= tile.getX() + range.getMaxX())
+                if (range.getOutput() == Axis.Y
+                    && ox >= tile.getX() + range.getMinX()
+                    && ox <= tile.getX() + range.getMaxX())
                 {
                     final int value = getInputValue(Axis.X, x, y);
                     if (UtilMath.isBetween(value, range.getMinX(), range.getMaxX()))

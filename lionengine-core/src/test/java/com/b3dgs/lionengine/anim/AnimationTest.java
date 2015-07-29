@@ -30,6 +30,9 @@ import com.b3dgs.lionengine.LionEngineException;
 @SuppressWarnings("static-method")
 public class AnimationTest
 {
+    /** Minimum frame value. */
+    private static final int MIN = Animation.MINIMUM_FRAME;
+
     /**
      * Test the animation getter.
      */
@@ -58,7 +61,7 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureMinimumFrame()
     {
-        Assert.assertNotNull(Anim.createAnimation(null, Animation.MINIMUM_FRAME - 1, 0, 0.0, false, false));
+        Assert.assertNotNull(Anim.createAnimation(null, MIN - 1, 0, 0.0, false, false));
     }
 
     /**
@@ -67,8 +70,7 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureMaximumFrame()
     {
-        Assert.assertNotNull(
-                Anim.createAnimation(null, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME - 1, 0.0, false, false));
+        Assert.assertNotNull(Anim.createAnimation(null, MIN, MIN - 1, 0.0, false, false));
     }
 
     /**
@@ -77,7 +79,6 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureSpeed()
     {
-        Assert.assertNotNull(
-                Anim.createAnimation(null, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, -1.0, false, false));
+        Assert.assertNotNull(Anim.createAnimation(null, MIN, MIN + 1, -1.0, false, false));
     }
 }

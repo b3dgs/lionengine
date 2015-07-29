@@ -111,8 +111,10 @@ public class CollisionRangeComposite
     public CollisionRange get()
     {
         final CollisionRange range = new CollisionRange(Axis.valueOf(comboRange.getText()),
-                Integer.parseInt(textRangeMinX.getText()), Integer.parseInt(textRangeMaxX.getText()),
-                Integer.parseInt(textRangeMinY.getText()), Integer.parseInt(textRangeMaxY.getText()));
+                                                        Integer.parseInt(textRangeMinX.getText()),
+                                                        Integer.parseInt(textRangeMaxX.getText()),
+                                                        Integer.parseInt(textRangeMinY.getText()),
+                                                        Integer.parseInt(textRangeMaxY.getText()));
         return range;
     }
 }

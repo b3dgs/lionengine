@@ -181,8 +181,12 @@ public final class UtilClass
      * @param root The folder or jar to search.
      * @param packageStart The starting package (<code>null</code> if none).
      */
-    private static <C> void checkImplementing(File folder, Collection<Class<? extends C>> found,
-            Collection<File> foldersToDo, Class<C> type, File root, String packageStart)
+    private static <C> void checkImplementing(File folder,
+                                              Collection<Class<? extends C>> found,
+                                              Collection<File> foldersToDo,
+                                              Class<C> type,
+                                              File root,
+                                              String packageStart)
     {
         for (final File current : UtilFile.getFiles(folder))
         {
@@ -276,7 +280,8 @@ public final class UtilClass
     private static <C> Class<? extends C> getImplementing(Class<C> type, File root, String packageStart, String current)
     {
         String name = current.replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
-                             .replace(File.separator, Constant.DOT).replace(Constant.SLASH, Constant.DOT);
+                             .replace(File.separator, Constant.DOT)
+                             .replace(Constant.SLASH, Constant.DOT);
         if (root != null)
         {
             name = name.replace(root.getPath(), Constant.EMPTY_STRING);
@@ -308,8 +313,11 @@ public final class UtilClass
      * @param packageStart The starting package (<code>null</code> if none).
      * @param name The class name.
      */
-    private static <C> void checkAddClass(Collection<Class<? extends C>> found, Class<C> type, File root,
-            String packageStart, String name)
+    private static <C> void checkAddClass(Collection<Class<? extends C>> found,
+                                          Class<C> type,
+                                          File root,
+                                          String packageStart,
+                                          String name)
     {
         if (name.endsWith(Property.EXTENSION_CLASS))
         {

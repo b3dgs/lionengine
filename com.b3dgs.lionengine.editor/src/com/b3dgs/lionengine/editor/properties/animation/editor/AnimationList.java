@@ -64,8 +64,12 @@ public class AnimationList extends ObjectList<Animation>
     @Override
     protected Animation copyObject(Animation animation)
     {
-        return Anim.createAnimation(animation.getName(), animation.getFirst(), animation.getLast(),
-                animation.getSpeed(), animation.getReverse(), animation.getRepeat());
+        return Anim.createAnimation(animation.getName(),
+                                    animation.getFirst(),
+                                    animation.getLast(),
+                                    animation.getSpeed(),
+                                    animation.getReverse(),
+                                    animation.getRepeat());
     }
 
     @Override

@@ -102,8 +102,9 @@ class Scene extends Sequence
     @Override
     protected void load()
     {
-        map.create(Medias.create("map", "level.png"), Medias.create("map", "sheets.xml"),
-                Medias.create("map", "groups.xml"));
+        map.create(Medias.create("map", "level.png"),
+                   Medias.create("map", "sheets.xml"),
+                   Medias.create("map", "groups.xml"));
         mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
 
         hud.load();

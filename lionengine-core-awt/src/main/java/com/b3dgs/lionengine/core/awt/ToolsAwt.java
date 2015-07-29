@@ -59,10 +59,12 @@ public final class ToolsAwt
     private static final GraphicsDevice DEV = ENV.getDefaultScreenDevice();
     /** Graphics configuration. */
     private static final GraphicsConfiguration CONFIG = DEV.getDefaultConfiguration();
+    /** Fraction. */
+    private static final float DIV = 1 / 9f;
     /** Bilinear filter. */
     private static final float[] BILINEAR_FILTER = new float[]
     {
-        1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f
+        DIV, DIV, DIV, DIV, DIV, DIV, DIV, DIV, DIV
     };
 
     /**
@@ -306,11 +308,10 @@ public final class ToolsAwt
      * @param er The end red.
      * @param eg The end green.
      * @param eb The end blue.
-     * @param refSize The reference size.
+     * @param size The reference size.
      * @return The rastered image.
      */
-    static BufferedImage getRasterBuffer(BufferedImage image, int fr, int fg, int fb, int er, int eg, int eb,
-            int refSize)
+    static BufferedImage getRasterBuffer(BufferedImage image, int fr, int fg, int fb, int er, int eg, int eb, int size)
     {
         final boolean method = true;
         final BufferedImage raster = createImage(image.getWidth(), image.getHeight(), image.getTransparency());
@@ -319,9 +320,9 @@ public final class ToolsAwt
         final int divisorGreen = 0x000100;
         final int divisorBlue = 0x000001;
 
-        final double sr = -((er - fr) / divisorRed) / (double) refSize;
-        final double sg = -((eg - fg) / divisorGreen) / (double) refSize;
-        final double sb = -((eb - fb) / divisorBlue) / (double) refSize;
+        final double sr = -((er - fr) / divisorRed) / (double) size;
+        final double sg = -((eg - fg) / divisorGreen) / (double) size;
+        final double sb = -((eb - fb) / divisorBlue) / (double) size;
 
         if (method)
         {
@@ -329,9 +330,9 @@ public final class ToolsAwt
             {
                 for (int j = 0; j < raster.getHeight(); j++)
                 {
-                    final int r = (int) (sr * (j % refSize)) * divisorRed;
-                    final int g = (int) (sg * (j % refSize)) * divisorGreen;
-                    final int b = (int) (sb * (j % refSize)) * divisorBlue;
+                    final int r = (int) (sr * (j % size)) * divisorRed;
+                    final int g = (int) (sg * (j % size)) * divisorGreen;
+                    final int b = (int) (sb * (j % size)) * divisorBlue;
 
                     raster.setRGB(i, j, ColorRgba.filterRgb(image.getRGB(i, j), fr + r, fg + g, fb + b));
                 }

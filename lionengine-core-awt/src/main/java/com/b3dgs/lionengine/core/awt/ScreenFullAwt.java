@@ -86,8 +86,6 @@ final class ScreenFullAwt extends ScreenAwt
     ScreenFullAwt(Renderer renderer) throws LionEngineException
     {
         super(renderer);
-
-        // Initialize environment
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         dev = env.getDefaultScreenDevice();
         conf = dev.getDefaultConfiguration();
@@ -103,8 +101,8 @@ final class ScreenFullAwt extends ScreenAwt
      */
     private JFrame initMainFrame(final Renderer renderer) throws LionEngineException
     {
-        final JFrame frame = new JFrame(EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion(),
-                conf);
+        final String title = EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion();
+        final JFrame frame = new JFrame(title, conf);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter()
         {
@@ -139,8 +137,9 @@ final class ScreenFullAwt extends ScreenAwt
         final DisplayMode disp = new DisplayMode(output.getWidth(), output.getHeight(), depth, output.getRate());
         if (!isSupported(disp))
         {
-            throw new LionEngineException(ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN, formatResolution(output, depth),
-                    getSupportedResolutions());
+            throw new LionEngineException(ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN,
+                                          formatResolution(output, depth),
+                                          getSupportedResolutions());
         }
         if (!dev.isDisplayChangeSupported())
         {

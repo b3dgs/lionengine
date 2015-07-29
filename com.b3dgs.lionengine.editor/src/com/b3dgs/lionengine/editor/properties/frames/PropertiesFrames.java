@@ -64,13 +64,15 @@ public class PropertiesFrames implements PropertiesProviderObject
         final ConfigFrames configFrames = ConfigFrames.create(configurer);
 
         final TreeItem framesHorizontal = new TreeItem(iconItem, SWT.NONE);
-        PropertiesPart.createLine(framesHorizontal, Messages.Properties_Frames_Horizontal,
-                String.valueOf(configFrames.getHorizontal()));
+        PropertiesPart.createLine(framesHorizontal,
+                                  Messages.Properties_Frames_Horizontal,
+                                  String.valueOf(configFrames.getHorizontal()));
         framesHorizontal.setData(ConfigFrames.FRAMES_HORIZONTAL);
 
         final TreeItem framesVertical = new TreeItem(iconItem, SWT.NONE);
-        PropertiesPart.createLine(framesVertical, Messages.Properties_Frames_Vertical,
-                String.valueOf(configFrames.getVertical()));
+        PropertiesPart.createLine(framesVertical,
+                                  Messages.Properties_Frames_Vertical,
+                                  String.valueOf(configFrames.getVertical()));
         framesVertical.setData(ConfigFrames.FRAMES_VERTICAL);
     }
 
@@ -83,9 +85,12 @@ public class PropertiesFrames implements PropertiesProviderObject
      */
     private static boolean updateFrames(TreeItem item, Configurer configurer)
     {
-        final InputDialog frames = new InputDialog(item.getParent().getShell(), Messages.Properties_Frames_Title,
-                Messages.Properties_Frames_Message, item.getText(1),
-                new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH, Messages.Properties_Frames_Error));
+        final InputDialog frames = new InputDialog(item.getParent().getShell(),
+                                                   Messages.Properties_Frames_Title,
+                                                   Messages.Properties_Frames_Message,
+                                                   item.getText(1),
+                                                   new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH,
+                                                                      Messages.Properties_Frames_Error));
         if (frames.open() == Window.OK)
         {
             final XmlNode root = configurer.getRoot();
@@ -110,7 +115,7 @@ public class PropertiesFrames implements PropertiesProviderObject
     {
         final XmlNode size;
         final File file = new File(configurer.getPath(),
-                root.getChild(ConfigSurface.SURFACE).readString(ConfigSurface.SURFACE_IMAGE));
+                                   root.getChild(ConfigSurface.SURFACE).readString(ConfigSurface.SURFACE_IMAGE));
         final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(file));
         if (!root.hasChild(ConfigSize.SIZE))
         {
@@ -123,9 +128,9 @@ public class PropertiesFrames implements PropertiesProviderObject
             size = root.getChild(ConfigSize.SIZE);
         }
         size.writeInteger(ConfigSize.SIZE_WIDTH,
-                info.getWidth() / framesNode.readInteger(ConfigFrames.FRAMES_HORIZONTAL));
+                          info.getWidth() / framesNode.readInteger(ConfigFrames.FRAMES_HORIZONTAL));
         size.writeInteger(ConfigSize.SIZE_HEIGHT,
-                info.getHeight() / framesNode.readInteger(ConfigFrames.FRAMES_VERTICAL));
+                          info.getHeight() / framesNode.readInteger(ConfigFrames.FRAMES_VERTICAL));
     }
 
     /**

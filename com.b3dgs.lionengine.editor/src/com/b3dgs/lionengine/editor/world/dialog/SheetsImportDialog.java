@@ -94,8 +94,11 @@ public class SheetsImportDialog extends AbstractDialog
      */
     public SheetsImportDialog(Shell parent)
     {
-        super(parent, Messages.SheetsImportDialog_Title, Messages.SheetsImportDialog_HeaderTitle,
-                Messages.SheetsImportDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.SheetsImportDialog_Title,
+              Messages.SheetsImportDialog_HeaderTitle,
+              Messages.SheetsImportDialog_HeaderDesc,
+              ICON);
 
         createDialog();
         setTipsMessage(ICON_ERROR, Messages.SheetsImportDialog_NoLevelRipDefined);
@@ -272,8 +275,9 @@ public class SheetsImportDialog extends AbstractDialog
         folderText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textCheckFinish(folderText);
 
-        final Button browse = UtilButton.create(area, com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
-                AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.create(area,
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                AbstractDialog.ICON_BROWSE);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
         browse.addSelectionListener(new SelectionAdapter()
@@ -306,13 +310,13 @@ public class SheetsImportDialog extends AbstractDialog
         textCheckFinish(heightText);
 
         horizontalText = UtilText.create(Messages.SheetsImportDialog_HorizontalTiles, config);
-        horizontalText.addVerifyListener(
-                UtilText.createVerify(horizontalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        horizontalText.addVerifyListener(UtilText.createVerify(horizontalText,
+                                                               InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         textCheckFinish(horizontalText);
 
         verticalText = UtilText.create(Messages.SheetsImportDialog_VerticalTiles, config);
-        verticalText.addVerifyListener(
-                UtilText.createVerify(verticalText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        verticalText.addVerifyListener(UtilText.createVerify(verticalText,
+                                                             InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         textCheckFinish(verticalText);
     }
 

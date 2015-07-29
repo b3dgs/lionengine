@@ -110,8 +110,10 @@ class Peon extends ObjectGame implements Updatable, Renderable, ExtractorChecker
     @Override
     public boolean canExtract()
     {
-        return UtilMath.getDistance(pathfindable.getInTileX(), pathfindable.getInTileY(),
-                extractor.getResourceLocation().getInTileX(), extractor.getResourceLocation().getInTileY()) < 2;
+        return UtilMath.getDistance(pathfindable.getInTileX(),
+                                    pathfindable.getInTileY(),
+                                    extractor.getResourceLocation().getInTileX(),
+                                    extractor.getResourceLocation().getInTileY()) < 2;
     }
 
     @Override

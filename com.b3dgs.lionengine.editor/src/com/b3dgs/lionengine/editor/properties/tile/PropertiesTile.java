@@ -85,7 +85,7 @@ public class PropertiesTile implements PropertiesProviderTile
                 for (final XmlNode nodeTile : nodeGroup.getChildren(ConfigTileGroup.TILE))
                 {
                     if (nodeTile.readInteger(ConfigTileGroup.SHEET) == tile.getSheet().intValue()
-                            && nodeTile.readInteger(ConfigTileGroup.NUMBER) == tile.getNumber())
+                        && nodeTile.readInteger(ConfigTileGroup.NUMBER) == tile.getNumber())
                     {
                         toRemove.add(nodeTile);
                     }

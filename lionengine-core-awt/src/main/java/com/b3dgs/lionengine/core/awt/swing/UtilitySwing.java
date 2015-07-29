@@ -35,6 +35,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import javax.swing.border.Border;
 import javax.swing.filechooser.FileFilter;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -107,8 +108,9 @@ public final class UtilitySwing
     public static JPanel createBorderedPanel(String title, int margin)
     {
         final JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(title),
-                BorderFactory.createEmptyBorder(margin, margin, margin, margin)));
+        final Border outside = BorderFactory.createTitledBorder(title);
+        final Border inside = BorderFactory.createEmptyBorder(margin, margin, margin, margin);
+        panel.setBorder(BorderFactory.createCompoundBorder(outside, inside));
 
         return panel;
     }
@@ -122,8 +124,9 @@ public final class UtilitySwing
      */
     public static void setBorderedPanel(JPanel panel, String title, int margin)
     {
-        panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(title),
-                BorderFactory.createEmptyBorder(margin, margin, margin, margin)));
+        final Border outside = BorderFactory.createTitledBorder(title);
+        final Border inside = BorderFactory.createEmptyBorder(margin, margin, margin, margin);
+        panel.setBorder(BorderFactory.createCompoundBorder(outside, inside));
     }
 
     /**

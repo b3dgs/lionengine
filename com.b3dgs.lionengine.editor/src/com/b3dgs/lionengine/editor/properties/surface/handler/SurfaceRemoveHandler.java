@@ -61,8 +61,10 @@ public final class SurfaceRemoveHandler
         for (final TreeItem item : properties.getItems())
         {
             final Object data = item.getData();
-            if (ConfigSurface.SURFACE_IMAGE.equals(data) || ConfigSurface.SURFACE_ICON.equals(data)
-                    || ConfigFrames.FRAMES.equals(data) || ConfigAnimations.ANIMATION.equals(data))
+            if (ConfigSurface.SURFACE_IMAGE.equals(data)
+                || ConfigSurface.SURFACE_ICON.equals(data)
+                || ConfigFrames.FRAMES.equals(data)
+                || ConfigAnimations.ANIMATION.equals(data))
             {
                 part.clear(item);
             }

@@ -36,8 +36,10 @@ public final class Astar
      * @param heuristic The heuristic used to determine the search order of the map.
      * @return The path finder instance.
      */
-    public static PathFinder createPathFinder(MapTile map, int maxSearchDistance, boolean allowDiagMovement,
-            Heuristic heuristic)
+    public static PathFinder createPathFinder(MapTile map,
+                                              int maxSearchDistance,
+                                              boolean allowDiagMovement,
+                                              Heuristic heuristic)
     {
         return new PathFinderImpl(map, maxSearchDistance, allowDiagMovement, heuristic);
     }

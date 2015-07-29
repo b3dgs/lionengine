@@ -171,8 +171,14 @@ public class MapTileGame implements MapTile
      * @param offsetX The horizontal map offset.
      * @param offsetY The vertical map offset.
      */
-    protected void render(Graphic g, int screenHeight, int sx, int sy, int inTileWidth, int inTileHeight, int offsetX,
-            int offsetY)
+    protected void render(Graphic g,
+                          int screenHeight,
+                          int sx,
+                          int sy,
+                          int inTileWidth,
+                          int inTileHeight,
+                          int offsetX,
+                          int offsetY)
     {
         // Each vertical tiles
         for (int v = 0; v <= inTileHeight; v++)
@@ -408,8 +414,9 @@ public class MapTileGame implements MapTile
     @Override
     public void create(Media levelrip) throws LionEngineException
     {
-        create(levelrip, Medias.create(levelrip.getParentPath(), DEFAULT_SHEETS_FILE),
-                Medias.create(levelrip.getParentPath(), DEFAULT_GROUPS_FILE));
+        create(levelrip,
+               Medias.create(levelrip.getParentPath(), DEFAULT_SHEETS_FILE),
+               Medias.create(levelrip.getParentPath(), DEFAULT_GROUPS_FILE));
     }
 
     @Override
@@ -580,9 +587,14 @@ public class MapTileGame implements MapTile
     @Override
     public void render(Graphic g)
     {
-        render(g, viewer.getHeight(), (int) Math.ceil(viewer.getX()), (int) Math.ceil(viewer.getY()),
-                (int) Math.ceil(viewer.getWidth() / (double) tileWidth),
-                (int) Math.ceil(viewer.getHeight() / (double) tileHeight), -viewer.getViewX(), viewer.getViewY());
+        render(g,
+               viewer.getHeight(),
+               (int) Math.ceil(viewer.getX()),
+               (int) Math.ceil(viewer.getY()),
+               (int) Math.ceil(viewer.getWidth() / (double) tileWidth),
+               (int) Math.ceil(viewer.getHeight() / (double) tileHeight),
+               -viewer.getViewX(),
+               viewer.getViewY());
     }
 
     @Override

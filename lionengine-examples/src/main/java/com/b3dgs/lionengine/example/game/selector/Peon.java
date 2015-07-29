@@ -96,8 +96,13 @@ class Peon extends ObjectGame implements Updatable, Renderable, SelectorListener
         if (selected)
         {
             g.setColor(ColorRgba.GREEN);
-            g.drawRect(viewer, Origin.MIDDLE, transformable.getX() + 8, transformable.getY() + 8,
-                    transformable.getWidth(), transformable.getHeight(), false);
+            g.drawRect(viewer,
+                       Origin.MIDDLE,
+                       transformable.getX() + 8,
+                       transformable.getY() + 8,
+                       transformable.getWidth(),
+                       transformable.getHeight(),
+                       false);
         }
     }
 

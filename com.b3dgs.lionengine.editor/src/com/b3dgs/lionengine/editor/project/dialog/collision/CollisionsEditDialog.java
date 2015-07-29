@@ -65,8 +65,11 @@ public class CollisionsEditDialog extends AbstractDialog
      */
     public CollisionsEditDialog(Shell parent, Media collisions)
     {
-        super(parent, Messages.EditCollisionsDialog_Title, Messages.EditCollisionsDialog_HeaderTitle,
-                Messages.EditCollisionsDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.EditCollisionsDialog_Title,
+              Messages.EditCollisionsDialog_HeaderTitle,
+              Messages.EditCollisionsDialog_HeaderDesc,
+              ICON);
         this.collisions = collisions;
         dialog.setMinimumSize(128, 320);
         createDialog();

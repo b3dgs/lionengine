@@ -50,8 +50,11 @@ public final class ComboRenderer<E> extends JLabel implements ListCellRenderer<E
      */
 
     @Override
-    public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected,
-            boolean cellHasFocus)
+    public Component getListCellRendererComponent(JList<? extends E> list,
+                                                  E value,
+                                                  int index,
+                                                  boolean isSelected,
+                                                  boolean cellHasFocus)
     {
         if (isSelected)
         {

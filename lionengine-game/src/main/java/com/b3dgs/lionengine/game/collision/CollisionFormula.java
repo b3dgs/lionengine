@@ -77,8 +77,10 @@ public class CollisionFormula implements Nameable
      * @param function The function used.
      * @param constraint The constraint used.
      */
-    public CollisionFormula(String name, CollisionRange range, CollisionFunction function,
-            CollisionConstraint constraint)
+    public CollisionFormula(String name,
+                            CollisionRange range,
+                            CollisionFunction function,
+                            CollisionConstraint constraint)
     {
         this.name = name;
         this.range = range;

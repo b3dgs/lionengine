@@ -119,8 +119,13 @@ class Racket extends ObjectGame implements Updatable, Renderable, CollidableList
     public void render(Graphic g)
     {
         g.setColor(COLOR);
-        g.drawRect(viewer, Origin.MIDDLE, (int) transformable.getX(), (int) transformable.getY(),
-                transformable.getWidth(), transformable.getHeight(), true);
+        g.drawRect(viewer,
+                   Origin.MIDDLE,
+                   (int) transformable.getX(),
+                   (int) transformable.getY(),
+                   transformable.getWidth(),
+                   transformable.getHeight(),
+                   true);
         collidable.render(g);
     }
 

@@ -134,8 +134,10 @@ public final class LevelRipConverter
         {
             for (progressTileX = 0; progressTileX < imageMapTilesInX; progressTileX++)
             {
-                final int imageColor = tileRef.getRgb(progressTileX * map.getTileWidth(),
-                        progressTileY * map.getTileHeight());
+                final int x = progressTileX * map.getTileWidth();
+                final int y = progressTileY * map.getTileHeight();
+                final int imageColor = tileRef.getRgb(x, y);
+
                 // Skip blank tile of image map
                 if (TileExtractor.IGNORED_COLOR_VALUE != imageColor)
                 {

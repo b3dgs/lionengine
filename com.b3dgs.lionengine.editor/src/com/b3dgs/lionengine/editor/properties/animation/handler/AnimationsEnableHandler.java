@@ -55,8 +55,8 @@ public final class AnimationsEnableHandler
 
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
-        final Animation animation = Anim.createAnimation(Animation.DEFAULT_NAME, Animation.MINIMUM_FRAME,
-                Animation.MINIMUM_FRAME + 1, 0.1, false, false);
+        final int min = Animation.MINIMUM_FRAME;
+        final Animation animation = Anim.createAnimation(Animation.DEFAULT_NAME, min, min + 1, 0.1, false, false);
         ConfigAnimations.export(configurer.getRoot(), animation);
 
         configurer.save();

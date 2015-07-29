@@ -115,8 +115,9 @@ class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker,
     public boolean checkProduction(Producible producible)
     {
         return UtilMath.isBetween(transformable.getX(), producible.getX(), producible.getX() + producible.getWidth())
-                && UtilMath.isBetween(transformable.getY(), producible.getY() - producible.getHeight(),
-                        producible.getY());
+               && UtilMath.isBetween(transformable.getY(),
+                                     producible.getY() - producible.getHeight(),
+                                     producible.getY());
     }
 
     @Override
@@ -141,9 +142,12 @@ class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker,
     public void notifyProduced(Producible producible, ObjectGame object)
     {
         final MapTile map = mapPath.getMap();
-        final CoordTile coord = mapPath.getFreeTileAround(pathfindable, (int) producible.getX() / map.getTileWidth(),
-                (int) producible.getY() / map.getTileHeight(), producible.getWidth() / map.getTileWidth(),
-                producible.getHeight() / map.getTileHeight(), map.getInTileRadius());
+        final CoordTile coord = mapPath.getFreeTileAround(pathfindable,
+                                                          (int) producible.getX() / map.getTileWidth(),
+                                                          (int) producible.getY() / map.getTileHeight(),
+                                                          producible.getWidth() / map.getTileWidth(),
+                                                          producible.getHeight() / map.getTileHeight(),
+                                                          map.getInTileRadius());
         if (coord != null)
         {
             pathfindable.setLocation(coord.getX(), coord.getY());

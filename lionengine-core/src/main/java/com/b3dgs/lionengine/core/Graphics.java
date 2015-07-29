@@ -228,20 +228,19 @@ public final class Graphics
     /**
      * Get raster buffer from data.
      * 
-     * @param image The image buffer.
+     * @param img The image buffer.
      * @param fr The first red.
      * @param fg The first green.
      * @param fb The first blue.
      * @param er The end red.
      * @param eg The end green.
      * @param eb The end blue.
-     * @param refSize The reference size.
+     * @param size The reference size.
      * @return The rastered image.
      */
-    public static ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb,
-            int refSize)
+    public static ImageBuffer getRasterBuffer(ImageBuffer img, int fr, int fg, int fb, int er, int eg, int eb, int size)
     {
-        return factoryGraphic.getRasterBuffer(image, fr, fg, fb, er, eg, eb, refSize);
+        return factoryGraphic.getRasterBuffer(img, fr, fg, fb, er, eg, eb, size);
     }
 
     /**

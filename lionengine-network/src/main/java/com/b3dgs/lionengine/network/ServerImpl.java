@@ -585,8 +585,10 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 }
                 catch (final IOException exception)
                 {
-                    Verbose.warning(Server.class, "sendMessage", "Unable to send the messages for client: ",
-                            String.valueOf(client.getId()));
+                    Verbose.warning(Server.class,
+                                    "sendMessage",
+                                    "Unable to send the messages for client: ",
+                                    String.valueOf(client.getId()));
                 }
             }
         }

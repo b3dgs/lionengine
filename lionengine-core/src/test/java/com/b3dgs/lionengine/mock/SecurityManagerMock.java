@@ -48,8 +48,10 @@ public class SecurityManagerMock extends SecurityManager
     @Override
     public void checkPropertyAccess(String key)
     {
-        if (!allow && !"line.separator".equals(key) && !"sun.util.logging.disableCallerCheck".equals(key)
-                && !"jdk.logging.allowStackWalkSearch".equals(key))
+        if (!allow
+            && !"line.separator".equals(key)
+            && !"sun.util.logging.disableCallerCheck".equals(key)
+            && !"jdk.logging.allowStackWalkSearch".equals(key))
         {
             throw new SecurityException();
         }

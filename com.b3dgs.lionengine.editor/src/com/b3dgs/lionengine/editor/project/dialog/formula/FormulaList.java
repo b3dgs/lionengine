@@ -110,15 +110,19 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
     @Override
     protected CollisionFormula copyObject(CollisionFormula formula)
     {
-        return new CollisionFormula(formula.getName(), formula.getRange(), formula.getFunction(),
-                formula.getConstraint());
+        return new CollisionFormula(formula.getName(),
+                                    formula.getRange(),
+                                    formula.getFunction(),
+                                    formula.getConstraint());
     }
 
     @Override
     protected CollisionFormula createObject(String name)
     {
-        return new CollisionFormula(name, new CollisionRange(Axis.Y, 0, 0, 0, 0), new CollisionFunctionLinear(0, 0),
-                new CollisionConstraint());
+        return new CollisionFormula(name,
+                                    new CollisionRange(Axis.Y, 0, 0, 0, 0),
+                                    new CollisionFunctionLinear(0, 0),
+                                    new CollisionConstraint());
     }
 
     /*

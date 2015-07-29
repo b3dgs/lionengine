@@ -80,8 +80,11 @@ public class MapCollisionImportDialog extends AbstractDialog
      */
     public MapCollisionImportDialog(Shell parent)
     {
-        super(parent, Messages.ImportMapCollisionDialog_Title, Messages.ImportMapCollisionDialog_HeaderTitle,
-                Messages.ImportMapCollisionDialog_HeaderDesc, MapCollisionImportDialog.ICON);
+        super(parent,
+              Messages.ImportMapCollisionDialog_Title,
+              Messages.ImportMapCollisionDialog_HeaderTitle,
+              Messages.ImportMapCollisionDialog_HeaderDesc,
+              MapCollisionImportDialog.ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
         part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
@@ -234,7 +237,8 @@ public class MapCollisionImportDialog extends AbstractDialog
         formulasText.setEditable(false);
 
         final Button browse = UtilButton.create(sheetArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
@@ -265,7 +269,8 @@ public class MapCollisionImportDialog extends AbstractDialog
         collisionsText.setEditable(false);
 
         final Button browse = UtilButton.create(collisionArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {

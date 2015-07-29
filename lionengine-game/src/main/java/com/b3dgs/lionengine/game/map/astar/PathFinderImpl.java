@@ -211,8 +211,14 @@ final class PathFinderImpl implements PathFinder
      * @param maxDepth The last max depth.
      * @return The next max depth.
      */
-    private int updateList(Pathfindable mover, int stx, int sty, int dtx, int dty, boolean ignoreRef, Node current,
-            int maxDepth)
+    private int updateList(Pathfindable mover,
+                           int stx,
+                           int sty,
+                           int dtx,
+                           int dty,
+                           boolean ignoreRef,
+                           Node current,
+                           int maxDepth)
     {
         int nextDepth = maxDepth;
         for (int y = -1; y < 2; y++)

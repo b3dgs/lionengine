@@ -97,8 +97,8 @@ public final class UtilityImage
      */
     public static ImageBuffer createImage(int width, int height, Transparency transparency)
     {
-        final ImageBufferSwt buffer = new ImageBufferSwt(
-                ToolsSwt.createImage(width, height, getTransparency(transparency)));
+        final Image image = ToolsSwt.createImage(width, height, getTransparency(transparency));
+        final ImageBufferSwt buffer = new ImageBufferSwt(image);
 
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.BLACK);
@@ -249,20 +249,19 @@ public final class UtilityImage
     /**
      * Get raster buffer from data.
      * 
-     * @param image The image.
+     * @param img The image.
      * @param fr The first red.
      * @param fg The first green.
      * @param fb The first blue.
      * @param er The end red.
      * @param eg The end green.
      * @param eb The end blue.
-     * @param refSize The reference size.
+     * @param ref The reference size.
      * @return The rastered image.
      */
-    public static ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb,
-            int refSize)
+    public static ImageBuffer getRasterBuffer(ImageBuffer img, int fr, int fg, int fb, int er, int eg, int eb, int ref)
     {
-        return new ImageBufferSwt(ToolsSwt.getRasterBuffer(getBuffer(image), fr, fg, fb, er, eg, eb, refSize));
+        return new ImageBufferSwt(ToolsSwt.getRasterBuffer(getBuffer(img), fr, fg, fb, er, eg, eb, ref));
     }
 
     /**

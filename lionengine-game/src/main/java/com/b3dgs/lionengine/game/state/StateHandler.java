@@ -145,7 +145,8 @@ public class StateHandler implements Updatable
      * @param <I> The input device type.
      */
     private <I extends InputDevice> void updateInput(Class<? extends StateInputUpdater<I>> updaterType,
-            Class<I> inputType, InputDevice input)
+                                                     Class<I> inputType,
+                                                     InputDevice input)
     {
         if (updaterType.isAssignableFrom(current.getClass()) && inputType.isAssignableFrom(input.getClass()))
         {

@@ -119,8 +119,10 @@ final class GraphicSwt implements Graphic
     @Override
     public void drawImage(ImageBuffer image, Transform transform, int x, int y)
     {
-        gc.drawImage(GraphicSwt.getBuffer(image), x, y, image.getWidth(), image.getHeight(), x, y,
-                (int) (image.getWidth() * transform.getScaleX()), (int) (image.getHeight() * transform.getScaleY()));
+        final Image buffer = GraphicSwt.getBuffer(image);
+        final int width = (int) (image.getWidth() * transform.getScaleX());
+        final int height = (int) (image.getHeight() * transform.getScaleY());
+        gc.drawImage(buffer, x, y, image.getWidth(), image.getHeight(), x, y, width, height);
     }
 
     @Override
@@ -164,8 +166,9 @@ final class GraphicSwt implements Graphic
     @Override
     public void drawRect(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
-        drawRect((int) origin.getX(viewer.getViewpointX(x), width), (int) origin.getY(viewer.getViewpointY(y), height),
-                width, height, fill);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawRect(px, py, width, height, fill);
     }
 
     @Override
@@ -179,8 +182,9 @@ final class GraphicSwt implements Graphic
     @Override
     public void drawGradient(Viewer viewer, Origin origin, double x, double y, int width, int height)
     {
-        drawGradient((int) origin.getX(viewer.getViewpointX(x), width),
-                (int) origin.getY(viewer.getViewpointY(y), height), width, height);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawGradient(px, py, width, height);
     }
 
     @Override
@@ -192,8 +196,10 @@ final class GraphicSwt implements Graphic
     @Override
     public void drawLine(Viewer viewer, double x1, double y1, double x2, double y2)
     {
-        gc.drawLine((int) viewer.getViewpointX(x1), (int) viewer.getViewpointY(y1), (int) viewer.getViewpointX(x2),
-                (int) viewer.getViewpointY(y2));
+        gc.drawLine((int) viewer.getViewpointX(x1),
+                    (int) viewer.getViewpointY(y1),
+                    (int) viewer.getViewpointX(x2),
+                    (int) viewer.getViewpointY(y2));
     }
 
     @Override
@@ -212,8 +218,9 @@ final class GraphicSwt implements Graphic
     @Override
     public void drawOval(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
-        drawOval((int) origin.getX(viewer.getViewpointX(x), width), (int) origin.getY(viewer.getViewpointY(y), height),
-                width, height, fill);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawOval(px, py, width, height, fill);
     }
 
     @Override

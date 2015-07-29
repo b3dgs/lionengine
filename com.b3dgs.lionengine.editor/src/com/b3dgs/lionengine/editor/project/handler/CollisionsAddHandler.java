@@ -83,12 +83,16 @@ public final class CollisionsAddHandler
     public void execute(Shell parent)
     {
         final Media selection = ProjectModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, Messages.AddCollisions_Title,
-                Messages.AddCollisions_Text,
-                MapTileCollision.DEFAULT_COLLISIONS_FILE.replace(Constant.DOT + Factory.FILE_DATA_EXTENSION,
-                        Constant.EMPTY_STRING),
-                new InputValidator(InputValidator.NAME_MATCH,
-                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+        final String value = MapTileCollision.DEFAULT_COLLISIONS_FILE.replace(Constant.DOT
+                                                                              + Factory.FILE_DATA_EXTENSION,
+                                                                              Constant.EMPTY_STRING);
+        final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
+        final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
+        final InputDialog inputDialog = new InputDialog(parent,
+                                                        Messages.AddCollisions_Title,
+                                                        Messages.AddCollisions_Text,
+                                                        value,
+                                                        validator);
         final int code = inputDialog.open();
         if (code == Window.OK)
         {

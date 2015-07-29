@@ -128,8 +128,9 @@ final class GraphicAwt implements Graphic
     @Override
     public void drawRect(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
-        drawRect((int) origin.getX(viewer.getViewpointX(x), width), (int) origin.getY(viewer.getViewpointY(y), height),
-                width, height, fill);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawRect(px, py, width, height, fill);
     }
 
     @Override
@@ -143,8 +144,9 @@ final class GraphicAwt implements Graphic
     @Override
     public void drawGradient(Viewer viewer, Origin origin, double x, double y, int width, int height)
     {
-        drawGradient((int) origin.getX(viewer.getViewpointX(x), width),
-                (int) origin.getY(viewer.getViewpointY(y), height), width, height);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawGradient(px, py, width, height);
     }
 
     @Override
@@ -156,8 +158,10 @@ final class GraphicAwt implements Graphic
     @Override
     public void drawLine(Viewer viewer, double x1, double y1, double x2, double y2)
     {
-        g.drawLine((int) viewer.getViewpointX(x1), (int) viewer.getViewpointY(y1), (int) viewer.getViewpointX(x2),
-                (int) viewer.getViewpointY(y2));
+        g.drawLine((int) viewer.getViewpointX(x1),
+                   (int) viewer.getViewpointY(y1),
+                   (int) viewer.getViewpointX(x2),
+                   (int) viewer.getViewpointY(y2));
     }
 
     @Override
@@ -176,8 +180,9 @@ final class GraphicAwt implements Graphic
     @Override
     public void drawOval(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
-        drawOval((int) origin.getX(viewer.getViewpointX(x), width), (int) origin.getY(viewer.getViewpointY(y), height),
-                width, height, fill);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawOval(px, py, width, height, fill);
     }
 
     @Override
@@ -189,8 +194,9 @@ final class GraphicAwt implements Graphic
     @Override
     public void setColorGradient(ColorGradient gc)
     {
-        gradientPaint = new GradientPaint(gc.getX1(), gc.getY1(), new Color(gc.getColor1().getRgba()), gc.getX2(),
-                gc.getY2(), new Color(gc.getColor2().getRgba()));
+        final Color color1 = new Color(gc.getColor1().getRgba());
+        final Color color2 = new Color(gc.getColor2().getRgba());
+        gradientPaint = new GradientPaint(gc.getX1(), gc.getY1(), color1, gc.getX2(), gc.getY2(), color2);
     }
 
     @Override

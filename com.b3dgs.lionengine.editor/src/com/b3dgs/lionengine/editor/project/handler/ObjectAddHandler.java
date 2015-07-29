@@ -102,9 +102,13 @@ public final class ObjectAddHandler
     public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, Messages.AddObject_Title, Messages.AddObject_Text,
-                DEFAULT_NEW_OBJECT_NAME, new InputValidator(InputValidator.NAME_MATCH,
-                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+        final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
+        final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
+        final InputDialog inputDialog = new InputDialog(parent,
+                                                        Messages.AddObject_Title,
+                                                        Messages.AddObject_Text,
+                                                        DEFAULT_NEW_OBJECT_NAME,
+                                                        validator);
         final int code = inputDialog.open();
         if (code == Window.OK)
         {

@@ -131,7 +131,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater
         public boolean check(InputDeviceDirectional input)
         {
             return input.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() > 0
-                    || input.getHorizontalDirection() > 0 && movement.getDirectionHorizontal() < 0;
+                   || input.getHorizontalDirection() > 0 && movement.getDirectionHorizontal() < 0;
         }
     }
 

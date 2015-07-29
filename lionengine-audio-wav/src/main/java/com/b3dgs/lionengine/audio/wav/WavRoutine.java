@@ -315,13 +315,21 @@ final class WavRoutine extends Thread
                 }
                 catch (final UnsupportedAudioFileException exception)
                 {
-                    Verbose.critical(WavRoutine.class, "run", "Unsupported audio format: ", Constant.QUOTE, filename,
-                            Constant.QUOTE);
+                    Verbose.critical(WavRoutine.class,
+                                     "run",
+                                     "Unsupported audio format: ",
+                                     Constant.QUOTE,
+                                     filename,
+                                     Constant.QUOTE);
                 }
                 catch (final LineUnavailableException exception)
                 {
-                    Verbose.critical(WavRoutine.class, "run", "Unavailable audio line: ", Constant.QUOTE, filename,
-                            Constant.QUOTE);
+                    Verbose.critical(WavRoutine.class,
+                                     "run",
+                                     "Unavailable audio line: ",
+                                     Constant.QUOTE,
+                                     filename,
+                                     Constant.QUOTE);
                 }
                 catch (final IOException exception)
                 {

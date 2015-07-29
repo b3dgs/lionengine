@@ -101,8 +101,9 @@ class StateTurn extends StateGame implements StateInputDirectionalUpdater
         @Override
         public boolean check(InputDeviceDirectional input)
         {
-            return input.getHorizontalDirection() == 0 && movement.getDirectionHorizontal() == 0
-                    && input.getVerticalDirection() == 0;
+            return input.getHorizontalDirection() == 0
+                   && movement.getDirectionHorizontal() == 0
+                   && input.getVerticalDirection() == 0;
         }
 
         @Override
@@ -130,7 +131,7 @@ class StateTurn extends StateGame implements StateInputDirectionalUpdater
         {
             return (input.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() < 0
                     || input.getHorizontalDirection() > 0 && movement.getDirectionHorizontal() > 0)
-                    && input.getVerticalDirection() == 0;
+                   && input.getVerticalDirection() == 0;
         }
     }
 

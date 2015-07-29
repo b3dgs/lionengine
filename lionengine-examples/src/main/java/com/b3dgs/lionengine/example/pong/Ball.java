@@ -100,8 +100,13 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
     public void render(Graphic g)
     {
         g.setColor(COLOR);
-        g.drawOval(viewer, Origin.MIDDLE, (int) transformable.getX(), (int) transformable.getY(),
-                transformable.getWidth(), transformable.getHeight(), true);
+        g.drawOval(viewer,
+                   Origin.MIDDLE,
+                   (int) transformable.getX(),
+                   (int) transformable.getY(),
+                   transformable.getWidth(),
+                   transformable.getHeight(),
+                   true);
         collidable.render(g);
     }
 

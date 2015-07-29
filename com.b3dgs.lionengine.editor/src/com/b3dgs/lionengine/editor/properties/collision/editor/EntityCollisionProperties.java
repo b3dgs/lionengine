@@ -90,9 +90,12 @@ public class EntityCollisionProperties extends ObjectProperties<Collision> imple
     @Override
     protected Collision createObject(String name)
     {
-        final Collision collision = new Collision(name, Integer.parseInt(offsetX.getText()),
-                Integer.parseInt(offsetY.getText()), Integer.parseInt(width.getText()),
-                Integer.parseInt(height.getText()), mirror.getSelection());
+        final Collision collision = new Collision(name,
+                                                  Integer.parseInt(offsetX.getText()),
+                                                  Integer.parseInt(offsetY.getText()),
+                                                  Integer.parseInt(width.getText()),
+                                                  Integer.parseInt(height.getText()),
+                                                  mirror.getSelection());
         return collision;
     }
 

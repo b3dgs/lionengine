@@ -223,8 +223,9 @@ public class ExtractorModel extends TraitModel implements Extractor
     @Override
     public boolean isExtracting()
     {
-        return ExtractorState.EXTRACTING == state || ExtractorState.DROPOFF == state
-                || ExtractorState.GOTO_WAREHOUSE == state;
+        return ExtractorState.EXTRACTING == state
+               || ExtractorState.DROPOFF == state
+               || ExtractorState.GOTO_WAREHOUSE == state;
     }
 
     @Override

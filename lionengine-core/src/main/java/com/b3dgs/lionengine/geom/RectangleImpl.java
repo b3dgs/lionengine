@@ -60,8 +60,10 @@ final class RectangleImpl implements Rectangle
         {
             return false;
         }
-        return rectangle.getX() + rectangle.getWidth() > x && rectangle.getY() + rectangle.getHeight() > y
-                && rectangle.getX() < x + width && rectangle.getY() < y + height;
+        return rectangle.getX() + rectangle.getWidth() > x
+               && rectangle.getY() + rectangle.getHeight() > y
+               && rectangle.getX() < x + width
+               && rectangle.getY() < y + height;
     }
 
     @Override
@@ -71,8 +73,10 @@ final class RectangleImpl implements Rectangle
         {
             return false;
         }
-        return rectangle.getX() >= x && rectangle.getY() >= y && rectangle.getX() + rectangle.getWidth() <= x + width
-                && rectangle.getY() + rectangle.getHeight() <= y + height;
+        return rectangle.getX() >= x
+               && rectangle.getY() >= y
+               && rectangle.getX() + rectangle.getWidth() <= x + width
+               && rectangle.getY() + rectangle.getHeight() <= y + height;
     }
 
     @Override

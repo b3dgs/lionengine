@@ -138,8 +138,8 @@ class Swamp extends BackgroundGame
         {
             backcolor.setOffsetY(y);
             moon.setOffsetY(-20 - moonOffset + getOffsetY());
-            mountain.setOffsetX(
-                    UtilMath.wrapDouble(mountain.getOffsetX() + speed * 0.24, 0.0, mountainSprite.getWidth()));
+            final double mx = mountain.getOffsetX() + speed * 0.24;
+            mountain.setOffsetX(UtilMath.wrapDouble(mx, 0.0, mountainSprite.getWidth()));
             mountain.setOffsetY(y);
         }
 
@@ -150,8 +150,9 @@ class Swamp extends BackgroundGame
             final Sprite sprite = (Sprite) backcolor.getRenderable();
             for (int i = 0; i < Math.ceil(screenWidth / (double) sprite.getWidth()); i++)
             {
-                sprite.setLocation(backcolor.getMainX() + i * sprite.getWidth(),
-                        backcolor.getOffsetY() + backcolor.getMainY());
+                final int x = backcolor.getMainX() + i * sprite.getWidth();
+                final double y = backcolor.getOffsetY() + backcolor.getMainY();
+                sprite.setLocation(x, y);
                 sprite.render(g);
             }
             // Render moon

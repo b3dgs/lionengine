@@ -121,7 +121,7 @@ public class MapTileCollisionModel implements MapTileCollision
             case X:
                 final double fx = function.compute(y);
                 if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX())
-                        && UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
+                    && UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
                 {
                     g.drawRect((int) fx, th - y - 1, 0, 0, false);
                 }
@@ -129,7 +129,7 @@ public class MapTileCollisionModel implements MapTileCollision
             case Y:
                 final double fy = function.compute(x);
                 if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY())
-                        && UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
+                    && UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
                 {
                     g.drawRect(x, th - (int) fy - 1, 0, 0, false);
                 }
@@ -148,8 +148,9 @@ public class MapTileCollisionModel implements MapTileCollision
      */
     private static boolean checkConstraint(Collection<String> constraints, Tile tile)
     {
-        return tile != null && constraints.contains(tile.getGroup())
-                && !tile.getFeature(TileCollision.class).getCollisionFormulas().isEmpty();
+        return tile != null
+               && constraints.contains(tile.getGroup())
+               && !tile.getFeature(TileCollision.class).getCollisionFormulas().isEmpty();
     }
 
     /**
@@ -183,8 +184,12 @@ public class MapTileCollisionModel implements MapTileCollision
      * @param y The current vertical location.
      * @return The computed horizontal collision.
      */
-    private static Double getCollisionX(CollisionCategory category, TileCollision tileCollision, double ox, double oy,
-            double x, double y)
+    private static Double getCollisionX(CollisionCategory category,
+                                        TileCollision tileCollision,
+                                        double ox,
+                                        double oy,
+                                        double x,
+                                        double y)
     {
         if (category.getAxis() == Axis.X)
         {
@@ -204,8 +209,12 @@ public class MapTileCollisionModel implements MapTileCollision
      * @param y The current vertical location.
      * @return The computed vertical collision.
      */
-    private static Double getCollisionY(CollisionCategory category, TileCollision tileCollision, double ox, double oy,
-            double x, double y)
+    private static Double getCollisionY(CollisionCategory category,
+                                        TileCollision tileCollision,
+                                        double ox,
+                                        double oy,
+                                        double x,
+                                        double y)
     {
         if (category.getAxis() == Axis.Y)
         {
@@ -385,9 +394,9 @@ public class MapTileCollisionModel implements MapTileCollision
         {
             final CollisionConstraint constraint = formula.getConstraint();
             if (checkConstraint(constraint.getConstraints(Orientation.NORTH), top)
-                    || checkConstraint(constraint.getConstraints(Orientation.SOUTH), bottom)
-                    || checkConstraint(constraint.getConstraints(Orientation.WEST), left)
-                    || checkConstraint(constraint.getConstraints(Orientation.EAST), right))
+                || checkConstraint(constraint.getConstraints(Orientation.SOUTH), bottom)
+                || checkConstraint(constraint.getConstraints(Orientation.WEST), left)
+                || checkConstraint(constraint.getConstraints(Orientation.EAST), right))
             {
                 toRemove.add(formula);
             }
@@ -408,7 +417,7 @@ public class MapTileCollisionModel implements MapTileCollision
     private CollisionResult computeCollision(CollisionCategory category, double ox, double oy, double x, double y)
     {
         final Tile tile = map.getTile((int) Math.floor(x / map.getTileWidth()),
-                (int) Math.floor(y / map.getTileHeight()));
+                                      (int) Math.floor(y / map.getTileHeight()));
         if (tile != null)
         {
             final TileCollision tileCollision = tile.getFeature(TileCollision.class);
@@ -543,8 +552,11 @@ public class MapTileCollisionModel implements MapTileCollision
             ov = UtilMath.getRound(sy, v);
 
             v += sy;
-            CollisionResult result = computeCollision(category, oh, ov, UtilMath.getRound(sx, h),
-                    UtilMath.getRound(sy, v));
+            CollisionResult result = computeCollision(category,
+                                                      oh,
+                                                      ov,
+                                                      UtilMath.getRound(sx, h),
+                                                      UtilMath.getRound(sy, v));
             if (result != null)
             {
                 found = result;

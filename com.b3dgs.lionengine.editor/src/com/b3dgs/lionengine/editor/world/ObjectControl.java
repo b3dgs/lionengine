@@ -159,7 +159,7 @@ public class ObjectControl
                     final ObjectRepresentation object = factory.create(media, ObjectRepresentation.class);
                     final Point point = UtilWorld.getPoint(map, camera, mx, my);
                     object.place(UtilMath.getRounded(point.getX(), map.getTileWidth()),
-                            UtilMath.getRounded(point.getY(), map.getTileHeight()));
+                                 UtilMath.getRounded(point.getY(), map.getTileHeight()));
                     handler.add(object);
                 }
             }

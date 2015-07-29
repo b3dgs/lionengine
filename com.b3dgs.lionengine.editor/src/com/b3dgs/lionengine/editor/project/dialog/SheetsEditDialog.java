@@ -73,8 +73,11 @@ public class SheetsEditDialog extends AbstractDialog
      */
     public SheetsEditDialog(Shell parent, Media sheets)
     {
-        super(parent, Messages.EditSheetsDialog_Title, Messages.EditSheetsDialog_HeaderTitle,
-                Messages.EditSheetsDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.EditSheetsDialog_Title,
+              Messages.EditSheetsDialog_HeaderTitle,
+              Messages.EditSheetsDialog_HeaderDesc,
+              ICON);
         this.sheets = sheets;
         dialog.setMinimumSize(100, 100);
         createDialog();
@@ -94,11 +97,11 @@ public class SheetsEditDialog extends AbstractDialog
         tileSizeArea.setText(Messages.EditSheetsDialog_TileSize);
 
         tileWidthText = UtilText.create(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
-        tileWidthText.addVerifyListener(
-                UtilText.createVerify(tileWidthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        tileWidthText.addVerifyListener(UtilText.createVerify(tileWidthText,
+                                                              InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
         tileHeightText = UtilText.create(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
-        tileHeightText.addVerifyListener(
-                UtilText.createVerify(tileHeightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        tileHeightText.addVerifyListener(UtilText.createVerify(tileHeightText,
+                                                               InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
     }
 
     /**

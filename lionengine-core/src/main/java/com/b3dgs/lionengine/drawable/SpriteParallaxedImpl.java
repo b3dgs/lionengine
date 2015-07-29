@@ -86,8 +86,9 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
 
         if (0 != Double.compare(factorH, 1.0) || 0 != Double.compare(factorV, 1.0))
         {
-            surface = Graphics.resize(surface, (int) (surface.getWidth() * factorH),
-                    (int) (surface.getHeight() * factorV));
+            final int x = (int) (surface.getWidth() * factorH);
+            final int y = (int) (surface.getHeight() * factorV);
+            surface = Graphics.resize(surface, x, y);
         }
 
         lineWidth = (int) Math.floor(surface.getWidth() * sx / 100.0);
