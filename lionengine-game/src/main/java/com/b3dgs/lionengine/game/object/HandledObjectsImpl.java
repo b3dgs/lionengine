@@ -100,6 +100,7 @@ final class HandledObjectsImpl implements HandledObjects
         {
             addType(trait, object.getTrait(trait));
         }
+        addType(object.getClass(), object);
         addSuperClass(object, object.getClass());
     }
 
