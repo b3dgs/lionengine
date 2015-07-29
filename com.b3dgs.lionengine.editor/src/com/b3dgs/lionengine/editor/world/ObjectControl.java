@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -87,7 +85,7 @@ public class ObjectControl
     public void updateMouseOver(int mx, int my)
     {
         resetMouseOver();
-        final ObjectGame object = getObject(mx, my);
+        final ObjectRepresentation object = getObject(mx, my);
         if (object != null)
         {
             setMouseOver(object, true);
@@ -108,18 +106,11 @@ public class ObjectControl
         {
             dragging = true;
         }
-        final int th = map.getTileHeight();
-        final int areaY = UtilMath.getRounded(camera.getHeight(), th);
-        final double ox = oldMx + camera.getX();
-        final double oy = areaY - oldMy + camera.getY() - 1;
-        final double x = mx + camera.getX();
-        final double y = areaY - my + camera.getY() - 1;
-
-        for (final Transformable object : handler.get(Transformable.class))
+        for (final ObjectRepresentation object : handler.get(ObjectRepresentation.class))
         {
-            if (isSelected(object.getOwner()))
+            if (isSelected(object))
             {
-                object.teleport(object.getX() + x - ox, object.getY() + y - oy);
+                object.move(mx - oldMx, my - oldMy);
             }
         }
     }
@@ -160,6 +151,7 @@ public class ObjectControl
                     final Point point = UtilWorld.getPoint(map, camera, mx, my);
                     object.place(UtilMath.getRounded(point.getX(), map.getTileWidth()),
                                  UtilMath.getRounded(point.getY(), map.getTileHeight()));
+                    object.alignToGrid();
                     handler.add(object);
                 }
             }
@@ -192,17 +184,12 @@ public class ObjectControl
      */
     public void selectObjects(Rectangle selectionArea)
     {
-        for (final Transformable object : handler.get(Transformable.class))
+        for (final ObjectRepresentation object : handler.get(ObjectRepresentation.class))
         {
-            final int th = map.getTileHeight();
-            final int height = camera.getHeight();
-            final int offy = height - UtilMath.getRounded(height, th);
-            final int sx = UtilMath.getRounded((int) selectionArea.getMinX(), map.getTileWidth());
-            final int sy = UtilMath.getRounded(height - (int) selectionArea.getMinY() - offy, th);
-
-            if (hitObject(object, sx, sy))
+            final Rectangle rectangle = object.getRectangle();
+            if (selectionArea.contains(rectangle) || selectionArea.intersects(rectangle))
             {
-                setObjectSelection(object.getOwner(), true);
+                setObjectSelection(object, true);
             }
         }
     }
@@ -212,7 +199,7 @@ public class ObjectControl
      */
     public void unselectObjects()
     {
-        for (final ObjectGame object : handler.values())
+        for (final ObjectRepresentation object : handler.get(ObjectRepresentation.class))
         {
             setObjectSelection(object, false);
         }
@@ -224,7 +211,7 @@ public class ObjectControl
      * @param object The object reference.
      * @param over <code>true</code> if mouse if over, <code>false</code> else.
      */
-    public void setMouseOver(ObjectGame object, boolean over)
+    public void setMouseOver(ObjectRepresentation object, boolean over)
     {
         objectsOver.put(object, Boolean.valueOf(over));
     }
@@ -235,24 +222,9 @@ public class ObjectControl
      * @param object The object reference.
      * @param selected <code>true</code> if selected, <code>false</code> else.
      */
-    public void setObjectSelection(ObjectGame object, boolean selected)
+    public void setObjectSelection(ObjectRepresentation object, boolean selected)
     {
         objectsSelection.put(object, Boolean.valueOf(selected));
-    }
-
-    /**
-     * Set the object location.
-     * 
-     * @param object The object reference.
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @param side 1 for place, -1 for move.
-     */
-    public void setObjectLocation(Transformable object, int x, int y, int side)
-    {
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-        object.teleport(UtilMath.getRounded(x + tw / 2, tw), UtilMath.getRounded(y + th / 2, th));
     }
 
     /**
@@ -262,16 +234,13 @@ public class ObjectControl
      * @param my The mouse vertical location.
      * @return The object reference, <code>null</code> if none.
      */
-    public ObjectGame getObject(int mx, int my)
+    public ObjectRepresentation getObject(int mx, int my)
     {
-        final Point tile = UtilWorld.getPoint(map, camera, mx, my);
-        final int x = tile.getX();
-        final int y = tile.getY();
-        for (final Transformable object : handler.get(Transformable.class))
+        for (final ObjectRepresentation object : handler.get(ObjectRepresentation.class))
         {
-            if (hitObject(object, x, y))
+            if (object.getRectangle().contains(mx, my))
             {
-                return object.getOwner();
+                return object;
             }
         }
         return null;
@@ -282,10 +251,10 @@ public class ObjectControl
      * 
      * @return The selected objects.
      */
-    public Collection<ObjectGame> getSelectedObjects()
+    public Collection<ObjectRepresentation> getSelectedObjects()
     {
-        final Collection<ObjectGame> list = new ArrayList<>(0);
-        for (final ObjectGame object : handler.values())
+        final Collection<ObjectRepresentation> list = new ArrayList<>(0);
+        for (final ObjectRepresentation object : handler.get(ObjectRepresentation.class))
         {
             if (isSelected(object))
             {
@@ -360,19 +329,5 @@ public class ObjectControl
             }
         }
         return false;
-    }
-
-    /**
-     * Check if object is hit.
-     * 
-     * @param object The object to check.
-     * @param x The point x.
-     * @param y The point y.
-     * @return <code>true</code> if hit, <code>false</code> else.
-     */
-    private static boolean hitObject(Transformable object, int x, int y)
-    {
-        final Rectangle r = Geom.createRectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight());
-        return r.contains(x, y);
     }
 }

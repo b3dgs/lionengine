@@ -82,7 +82,7 @@ final class RectangleImpl implements Rectangle
     @Override
     public boolean contains(double x, double y)
     {
-        return x >= this.x && y >= this.y && x < this.x + width && y < this.y + height;
+        return x >= this.x && y >= this.y && x <= this.x + width && y <= this.y + height;
     }
 
     @Override

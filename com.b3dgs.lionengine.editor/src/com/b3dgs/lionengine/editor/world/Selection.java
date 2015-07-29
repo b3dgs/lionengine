@@ -117,7 +117,7 @@ public class Selection
                 sx = ex;
                 ex = tmp;
             }
-            if (ey > sy)
+            if (ey < sy)
             {
                 final int tmp = sy;
                 sy = ey;

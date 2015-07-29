@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Renderable;
@@ -28,11 +29,14 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Object representation of any user object. This allows to avoid constructor error, especially with traits.
@@ -61,12 +65,16 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
         }
     }
 
+    /** Rectangle. */
+    private final Rectangle rectangle = Geom.createRectangle();
     /** Transformable trait. */
     private final Transformable transformable = addTrait(new TransformableModel());
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Camera reference. */
     private final Camera camera;
+    /** Map reference. */
+    private final MapTile map;
 
     /**
      * Create the object.
@@ -83,6 +91,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
         surface.prepare();
         transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
         camera = services.get(Camera.class);
+        map = services.get(MapTile.class);
     }
 
     /**
@@ -94,6 +103,38 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     public void place(int x, int y)
     {
         transformable.teleport(x, y);
+        update(1.0);
+    }
+
+    /**
+     * Move the object.
+     * 
+     * @param vx The horizontal vector.
+     * @param vy The vertical vector.
+     */
+    public void move(double vx, double vy)
+    {
+        transformable.moveLocation(1.0, vx, -vy);
+        update(1.0);
+    }
+
+    /**
+     * Align position to grid.
+     */
+    public void alignToGrid()
+    {
+        place(UtilMath.getRounded(transformable.getX() + transformable.getWidth() / 2, map.getTileWidth()),
+              UtilMath.getRounded(transformable.getY() + transformable.getHeight() / 2, map.getTileHeight()));
+    }
+
+    /**
+     * Get the rectangle representation on screen.
+     * 
+     * @return The rectangle representation on screen.
+     */
+    public Rectangle getRectangle()
+    {
+        return rectangle;
     }
 
     /*
@@ -103,6 +144,10 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     @Override
     public void update(double extrp)
     {
+        rectangle.set(camera.getViewpointX(transformable.getX()),
+                      camera.getViewpointY(transformable.getY()) - transformable.getHeight(),
+                      transformable.getWidth(),
+                      transformable.getHeight());
         surface.setLocation(camera, transformable);
     }
 

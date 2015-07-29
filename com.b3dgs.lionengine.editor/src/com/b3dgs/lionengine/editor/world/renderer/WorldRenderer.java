@@ -133,9 +133,8 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
         camera.setLimits(map);
 
         renderBackground(g, width, height);
-
         renderMap(g, width, height);
-        renderObjects(g);
+        handler.render(g);
 
         selection.render(g, COLOR_MOUSE_SELECTION);
     }
@@ -160,17 +159,6 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
                 map.getFeature(MapTileCollision.class).render(g);
             }
         }
-    }
-
-    /**
-     * Render the handled objects.
-     * 
-     * @param g The graphic output.
-     */
-    protected void renderObjects(Graphic g)
-    {
-        handler.update(1.0);
-        handler.render(g);
     }
 
     /**

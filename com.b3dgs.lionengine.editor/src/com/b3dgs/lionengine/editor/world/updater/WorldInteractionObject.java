@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.core.swt.Mouse;
+import com.b3dgs.lionengine.editor.ObjectRepresentation;
 import com.b3dgs.lionengine.editor.world.ObjectControl;
 import com.b3dgs.lionengine.editor.world.ObjectSelectionListener;
 import com.b3dgs.lionengine.editor.world.PaletteType;
@@ -28,7 +29,6 @@ import com.b3dgs.lionengine.editor.world.Selection;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Handle the interaction with objects.
@@ -106,7 +106,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     private void selectObject(int mx, int my)
     {
         objectControl.unselectObjects();
-        final ObjectGame object = objectControl.getObject(mx, my);
+        final ObjectRepresentation object = objectControl.getObject(mx, my);
         if (object != null)
         {
             objectControl.setObjectSelection(object, true);
@@ -163,15 +163,9 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     private void endDragging()
     {
         objectControl.stopDragging();
-        for (final ObjectGame object : objectControl.getSelectedObjects())
+        for (final ObjectRepresentation object : objectControl.getSelectedObjects())
         {
-            if (object.hasTrait(Transformable.class))
-            {
-                final Transformable transformable = object.getTrait(Transformable.class);
-                final int x = (int) transformable.getX();
-                final int y = (int) transformable.getY();
-                objectControl.setObjectLocation(transformable, x, y, -1);
-            }
+            object.alignToGrid();
         }
     }
 
@@ -209,10 +203,14 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
         {
             objectControl.selectObjects(selection.getArea());
         }
-        final Collection<ObjectGame> selections = objectControl.getSelectedObjects();
+        final Collection<ObjectRepresentation> selections = objectControl.getSelectedObjects();
+        for (final ObjectRepresentation object : selections)
+        {
+            object.alignToGrid();
+        }
         if (selections.size() == 1)
         {
-            final ObjectGame object = selections.toArray(new ObjectGame[1])[0];
+            final ObjectRepresentation object = selections.toArray(new ObjectRepresentation[1])[0];
             for (final ObjectSelectionListener listener : objectSelectionListeners)
             {
                 listener.notifyObjectSelected(object);
