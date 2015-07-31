@@ -47,7 +47,6 @@ public final class ZoomOutHandler
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
         final WorldZoom zoom = WorldModel.INSTANCE.getServices().get(WorldZoom.class);

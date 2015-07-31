@@ -44,7 +44,6 @@ public final class SetGridHandler
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
         final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);

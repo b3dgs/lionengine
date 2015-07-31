@@ -46,7 +46,6 @@ public final class FormulaAddHandler
      * @param parent The parent reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(Shell parent)
     {
         final MapTile map = WorldModel.INSTANCE.getMap();

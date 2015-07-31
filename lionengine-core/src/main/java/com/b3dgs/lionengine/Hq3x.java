@@ -30,6 +30,9 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  */
 public final class Hq3x
 {
+    /** Scale factor. */
+    public static final int SCALE = 3;
+
     /** Source data array. */
     private final int[] srcData;
     /** Width. */
@@ -58,8 +61,8 @@ public final class Hq3x
     public ImageBuffer getScaledImage()
     {
         final RawScale3x scaler = new RawScale3x(srcData, width, height);
-        final ImageBuffer image = Graphics.createImageBuffer(width * 3, height * 3, Transparency.OPAQUE);
-        image.setRgb(0, 0, width * 3, height * 3, scaler.getScaledData(), 0, width * 3);
+        final ImageBuffer image = Graphics.createImageBuffer(width * SCALE, height * SCALE, Transparency.OPAQUE);
+        image.setRgb(0, 0, width * SCALE, height * SCALE, scaler.getScaledData(), 0, width * SCALE);
         return image;
     }
 
@@ -243,7 +246,7 @@ public final class Hq3x
             width = dataWidth;
             height = dataHeight;
             srcImage = imageData;
-            final int tripleSize = 3 * 3;
+            final int tripleSize = SCALE * SCALE;
             dstImage = new int[imageData.length * tripleSize];
         }
 
@@ -268,7 +271,7 @@ public final class Hq3x
          */
         private void setDestPixel(int x, int y, int p)
         {
-            dstImage[x + y * width * 3] = p;
+            dstImage[x + y * width * SCALE] = p;
         }
 
         /**
@@ -328,15 +331,15 @@ public final class Hq3x
                 e8 = RawScale3x.computeE8(e, f, h);
             }
 
-            setDestPixel(x * 3, y * 3, e0);
-            setDestPixel(x * 3 + 1, y * 3, e1);
-            setDestPixel(x * 3 + 2, y * 3, e2);
-            setDestPixel(x * 3, y * 3 + 1, e3);
-            setDestPixel(x * 3 + 1, y * 3 + 1, e4);
-            setDestPixel(x * 3 + 2, y * 3 + 1, e5);
-            setDestPixel(x * 3, y * 3 + 2, e6);
-            setDestPixel(x * 3 + 1, y * 3 + 2, e7);
-            setDestPixel(x * 3 + 2, y * 3 + 2, e8);
+            setDestPixel(x * SCALE, y * SCALE, e0);
+            setDestPixel(x * SCALE + 1, y * SCALE, e1);
+            setDestPixel(x * SCALE + 2, y * SCALE, e2);
+            setDestPixel(x * SCALE, y * SCALE + 1, e3);
+            setDestPixel(x * SCALE + 1, y * SCALE + 1, e4);
+            setDestPixel(x * SCALE + 2, y * SCALE + 1, e5);
+            setDestPixel(x * SCALE, y * SCALE + 2, e6);
+            setDestPixel(x * SCALE + 1, y * SCALE + 2, e7);
+            setDestPixel(x * SCALE + 2, y * SCALE + 2, e8);
         }
 
         /**

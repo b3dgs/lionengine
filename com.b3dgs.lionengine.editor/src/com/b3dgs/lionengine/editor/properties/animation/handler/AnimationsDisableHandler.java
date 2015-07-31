@@ -46,7 +46,6 @@ public final class AnimationsDisableHandler
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();

@@ -39,7 +39,6 @@ public final class PropertyCopyHandler
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
         PropertiesModel.INSTANCE.setCopyData(null);

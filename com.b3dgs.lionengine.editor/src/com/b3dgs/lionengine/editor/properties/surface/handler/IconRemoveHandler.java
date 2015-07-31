@@ -46,7 +46,6 @@ public final class IconRemoveHandler
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
         final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);

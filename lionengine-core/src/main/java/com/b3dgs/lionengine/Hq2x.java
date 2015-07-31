@@ -30,6 +30,9 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  */
 public final class Hq2x
 {
+    /** Scale factor. */
+    public static final int SCALE = 2;
+
     /** Source data array. */
     private final int[] srcData;
     /** Width. */
@@ -58,8 +61,8 @@ public final class Hq2x
     public ImageBuffer getScaledImage()
     {
         final RawScale2x scaler = new RawScale2x(srcData, width, height);
-        final ImageBuffer image = Graphics.createImageBuffer(width * 2, height * 2, Transparency.OPAQUE);
-        image.setRgb(0, 0, width * 2, height * 2, scaler.getScaledData(), 0, width * 2);
+        final ImageBuffer image = Graphics.createImageBuffer(width * SCALE, height * SCALE, Transparency.OPAQUE);
+        image.setRgb(0, 0, width * SCALE, height * SCALE, scaler.getScaledData(), 0, width * SCALE);
         return image;
     }
 
@@ -91,7 +94,7 @@ public final class Hq2x
             width = dataWidth;
             height = dataHeight;
             srcImage = imageData;
-            final int doubleSize = 2 * 2;
+            final int doubleSize = SCALE * SCALE;
             dstImage = new int[imageData.length * doubleSize];
         }
 
@@ -116,7 +119,7 @@ public final class Hq2x
          */
         private void setDestPixel(int x, int y, int p)
         {
-            dstImage[x + y * width * 2] = p;
+            dstImage[x + y * width * SCALE] = p;
         }
 
         /**
@@ -161,10 +164,10 @@ public final class Hq2x
                 e3 = !RawScale2x.different(h, f) ? f : e;
             }
 
-            setDestPixel(x * 2, y * 2, e0);
-            setDestPixel(x * 2 + 1, y * 2, e1);
-            setDestPixel(x * 2, y * 2 + 1, e2);
-            setDestPixel(x * 2 + 1, y * 2 + 1, e3);
+            setDestPixel(x * SCALE, y * SCALE, e0);
+            setDestPixel(x * SCALE + 1, y * SCALE, e1);
+            setDestPixel(x * SCALE, y * SCALE + 1, e2);
+            setDestPixel(x * SCALE + 1, y * SCALE + 1, e3);
         }
 
         /**

@@ -3,15 +3,17 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <main-group-id>com.b3dgs.lionengine</main-group-id>
-        <build-tools-project>lionengine-build-tools</build-tools-project>
+        <project-name>lionengine</project-name>
+        <jdk.version>1.7</jdk.version>
+        <java.home>${JDK_7_HOME}</java.home>
+        <main-group-id>com.b3dgs.${project-name}</main-group-id>
+        <build-tools-project>${project-name}-buildtools</build-tools-project>
         <encoding.type>UTF-8</encoding.type>
         <working.dir>${project.basedir}</working.dir>
         <project.build.sourceEncoding>${encoding.type}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${encoding.type}</project.reporting.outputEncoding>
         <maven.version>3.3.3</maven.version>
-        <jdk.version>1.7</jdk.version>
-        <tycho.version>0.23.0</tycho.version>
+        <tycho.version>0.23.1</tycho.version>
         <junit.version>4.12</junit.version>
         <maven-bundle.version>2.5.4</maven-bundle.version>
         <maven-compiler.version>3.3</maven-compiler.version>
@@ -26,7 +28,7 @@
         <pde-target-maven.version>1.0.1</pde-target-maven.version>
     </properties>
     <groupId>com.b3dgs.lionengine</groupId>
-    <artifactId>lionengine</artifactId>
+    <artifactId>lionengine-parent</artifactId>
     <packaging>pom</packaging>
     <version>8.1.0-SNAPSHOT</version>
     <name>LionEngine</name>
@@ -70,15 +72,21 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
-                <module>../lionengine-build-tools</module>
+                <module>../lionengine-buildtools</module>
                 <module>../lionengine-core</module>
+                <module>../lionengine-core-test</module>
                 <module>../lionengine-core-awt</module>
+                <module>../lionengine-core-awt-test</module>
                 <module>../lionengine-core-android</module>
                 <module>../lionengine-game</module>
+                <module>../lionengine-game-test</module>
                 <module>../lionengine-network</module>
                 <module>../lionengine-audio-wav</module>
+                <module>../lionengine-audio-wav-test</module>
                 <module>../lionengine-audio-midi</module>
+                <module>../lionengine-audio-midi-test</module>
                 <module>../lionengine-audio-sc68</module>
+                <module>../lionengine-audio-sc68-test</module>
             </modules>
         </profile>
         <profile>
@@ -125,7 +133,7 @@
         <dependencies>
             <dependency>
                 <groupId>${main-group-id}</groupId>
-                <artifactId>lionengine-build-tools</artifactId>
+                <artifactId>lionengine-buildtools</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -278,11 +286,11 @@
                     <configuration>
                         <source>${jdk.version}</source>
                         <target>${jdk.version}</target>
+                        <executable>${java.home}/bin/javac</executable>
                         <encoding>${encoding.type}</encoding>
                         <showDeprecation>true</showDeprecation>
                         <showWarnings>true</showWarnings>
-                        <executable>${java.home}/../bin/javac</executable>
-                        <fork>false</fork>
+                        <fork>true</fork>
                     </configuration>
                 </plugin>
                 <plugin>

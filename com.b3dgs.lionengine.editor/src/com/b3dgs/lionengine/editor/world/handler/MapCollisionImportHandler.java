@@ -45,7 +45,6 @@ public final class MapCollisionImportHandler
      * @param shell The shell reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(Shell shell)
     {
         final MapCollisionImportDialog dialog = new MapCollisionImportDialog(shell);

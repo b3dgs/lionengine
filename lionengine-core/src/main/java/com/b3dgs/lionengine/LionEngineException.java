@@ -202,7 +202,7 @@ public final class LionEngineException extends RuntimeException
      */
     public LionEngineException(Throwable exception, Media media, String... messages)
     {
-        super();
+        super(exception);
         final StringBuilder buffer = new StringBuilder(16);
         if (media != null && media.getPath() != null)
         {

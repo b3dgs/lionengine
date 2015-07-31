@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<bundle id="com.b3dgs.lionengine.core">
+   <bundle id="com.b3dgs.lionengine.audio.midi">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
-   <bundle id="com.b3dgs.lionengine.game">
+   <bundle id="com.b3dgs.lionengine.audio.sc68">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
-   <bundle id="com.b3dgs.lionengine.network">
+   <bundle id="com.b3dgs.lionengine.audio.wav">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
-   <bundle id="com.b3dgs.lionengine.audio-midi">
+   <bundle id="com.b3dgs.lionengine.core">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
-   <bundle id="com.b3dgs.lionengine.audio-sc68">
-      <category name="com.b3dgs.lionengine"/>
-   </bundle>
-   <bundle id="com.b3dgs.lionengine.audio-wav">
+   <bundle id="com.b3dgs.lionengine.core.awt">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
    <bundle id="com.b3dgs.lionengine.core.swt">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
    <bundle id="com.b3dgs.lionengine.editor">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.game">
+      <category name="com.b3dgs.lionengine"/>
+   </bundle>
+   <bundle id="com.b3dgs.lionengine.network">
       <category name="com.b3dgs.lionengine"/>
    </bundle>
    <category-def name="com.b3dgs.lionengine" label="LionEngine Plugins">

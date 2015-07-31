@@ -52,12 +52,16 @@ public final class Constant
     public static final String TYPE_JAR = ".jar";
     /** Maximum port value. */
     public static final int MAX_PORT = 65535;
+    /** Maximum degree value (excluded). */
+    public static final int MAX_DEGREE = 360;
     /** Thousand. */
     public static final int THOUSAND = 1000;
     /** Hundred. */
     public static final int HUNDRED = 100;
     /** Decade. */
     public static final int DECADE = 10;
+    /** Unsigned byte max value (excluded). */
+    public static final int UNSIGNED_BYTE = 256;
     /** Byte 4. */
     public static final int BYTE_4 = 24;
     /** Byte 3. */

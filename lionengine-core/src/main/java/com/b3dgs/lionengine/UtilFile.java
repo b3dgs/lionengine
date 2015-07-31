@@ -354,8 +354,9 @@ public final class UtilFile
      * Delete a file.
      * 
      * @param file The file to delete.
+     * @throws LionEngineException If unable to remove file.
      */
-    public static void deleteFile(File file)
+    public static void deleteFile(File file) throws LionEngineException
     {
         Check.notNull(file);
         try
@@ -364,7 +365,7 @@ public final class UtilFile
         }
         catch (final IOException exception)
         {
-            Verbose.warning(UtilFile.class, "deleteFile", "File not deleted: " + file);
+            throw new LionEngineException(exception, "File not deleted: " + file);
         }
     }
 

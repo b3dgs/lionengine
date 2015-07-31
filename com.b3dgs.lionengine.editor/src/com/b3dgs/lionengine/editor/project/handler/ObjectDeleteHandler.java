@@ -50,7 +50,6 @@ public final class ObjectDeleteHandler
      * @param parent The shell parent.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectModel.INSTANCE.getSelection();

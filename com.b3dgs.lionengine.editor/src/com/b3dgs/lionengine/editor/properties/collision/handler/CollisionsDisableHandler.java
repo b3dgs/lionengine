@@ -46,7 +46,6 @@ public final class CollisionsDisableHandler
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();

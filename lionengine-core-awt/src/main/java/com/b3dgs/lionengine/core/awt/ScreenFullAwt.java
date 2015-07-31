@@ -113,6 +113,7 @@ final class ScreenFullAwt extends ScreenAwt
             }
         });
         frame.setResizable(false);
+        frame.setUndecorated(true);
         frame.setIgnoreRepaint(true);
 
         return frame;
@@ -130,7 +131,6 @@ final class ScreenFullAwt extends ScreenAwt
         window = new java.awt.Window(frame, conf);
         window.setBackground(Color.BLACK);
         window.setIgnoreRepaint(true);
-        frame.setUndecorated(true);
         window.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
         dev.setFullScreenWindow(window);
 

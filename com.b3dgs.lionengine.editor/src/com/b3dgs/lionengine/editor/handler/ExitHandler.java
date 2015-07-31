@@ -48,7 +48,6 @@ public final class ExitHandler
      * @param shell The shell reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(IWorkbench workbench, Shell shell)
     {
         if (MessageDialog.openConfirm(shell, Messages.ExitHandler_Title, Messages.ExitHandler_Text))

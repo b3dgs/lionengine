@@ -46,7 +46,6 @@ public final class SheetsImportHandler
      * @param shell The shell reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(Shell shell)
     {
         final SheetsImportDialog importSheetsDialog = new SheetsImportDialog(shell);

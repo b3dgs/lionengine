@@ -57,7 +57,6 @@ public final class GroupsEditHandler
      * @param parent The shell parent.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(Shell parent)
     {
         executeHandler(parent);

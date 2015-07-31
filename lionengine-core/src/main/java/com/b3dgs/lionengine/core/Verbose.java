@@ -95,6 +95,17 @@ public enum Verbose
     private static final Collection<Verbose> LEVELS = new HashSet<>();
 
     /**
+     * Set default verbose values.
+     */
+    static
+    {
+        for (final Verbose verbose : Verbose.values())
+        {
+            LEVELS.add(verbose);
+        }
+    }
+
+    /**
      * Display an informative verbose message to standard output.
      * 
      * @param message The list of messages.
@@ -164,7 +175,6 @@ public enum Verbose
      */
     static synchronized void prepareLogger()
     {
-        set(Verbose.values());
         try
         {
             final VerboseFormatter formatter = new VerboseFormatter();

@@ -75,7 +75,6 @@ public final class ProjectImportHandler
      * @param shell The shell reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(Shell shell)
     {
         final ProjectImportDialog importProjectDialog = new ProjectImportDialog(shell);

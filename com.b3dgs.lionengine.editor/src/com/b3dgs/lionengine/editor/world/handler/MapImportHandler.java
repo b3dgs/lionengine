@@ -48,7 +48,6 @@ public final class MapImportHandler
      * @param shell The shell reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(Shell shell)
     {
         final MapImportDialog importMapDialog = new MapImportDialog(shell);
