@@ -24,8 +24,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -248,10 +246,10 @@ public class ProjectImportDialog extends AbstractProjectDialog
     private void fillProjectProperties() throws IOException
     {
         final File file = new File(projectLocationText.getText(), Project.PROPERTIES_FILE);
-        try (InputStream inputStream = new FileInputStream(file))
+        try (InputStream input = new FileInputStream(file))
         {
             final Properties properties = new Properties();
-            properties.load(inputStream);
+            properties.load(input);
 
             final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES, Constant.EMPTY_STRING);
             final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES, Constant.EMPTY_STRING);
@@ -306,14 +304,10 @@ public class ProjectImportDialog extends AbstractProjectDialog
     {
         super.createProjectClassesArea(content);
 
-        projectClassesText.addModifyListener(new ModifyListener()
+        projectClassesText.addModifyListener(modifyEvent ->
         {
-            @Override
-            public void modifyText(ModifyEvent modifyEvent)
-            {
-                checkClassesExistence();
-                updateTipsLabel();
-            }
+            checkClassesExistence();
+            updateTipsLabel();
         });
     }
 
@@ -322,14 +316,10 @@ public class ProjectImportDialog extends AbstractProjectDialog
     {
         super.createProjectLibrariesArea(content);
 
-        projectLibrariesText.addModifyListener(new ModifyListener()
+        projectLibrariesText.addModifyListener(modifyEvent ->
         {
-            @Override
-            public void modifyText(ModifyEvent modifyEvent)
-            {
-                checkLibrariesExistence();
-                updateTipsLabel();
-            }
+            checkLibrariesExistence();
+            updateTipsLabel();
         });
     }
 
@@ -338,14 +328,10 @@ public class ProjectImportDialog extends AbstractProjectDialog
     {
         super.createProjectResourcesArea(content);
 
-        projectResourcesText.addModifyListener(new ModifyListener()
+        projectResourcesText.addModifyListener(modifyEvent ->
         {
-            @Override
-            public void modifyText(ModifyEvent modifyEvent)
-            {
-                checkResourcesExistence();
-                updateTipsLabel();
-            }
+            checkResourcesExistence();
+            updateTipsLabel();
         });
     }
 

@@ -27,8 +27,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MenuDetectEvent;
-import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -268,14 +266,10 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
                 }
             }
         });
-        properties.addMenuDetectListener(new MenuDetectListener()
+        properties.addMenuDetectListener(menuDetectEvent ->
         {
-            @Override
-            public void menuDetected(MenuDetectEvent menuDetectEvent)
-            {
-                properties.getMenu().setVisible(false);
-                properties.update();
-            }
+            properties.getMenu().setVisible(false);
+            properties.update();
         });
         menuService.registerContextMenu(properties, MENU_ID);
     }

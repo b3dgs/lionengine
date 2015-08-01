@@ -44,7 +44,7 @@ class StateDieGoomba extends StateGame
      */
     public StateDieGoomba(Entity entity, Animation animation)
     {
-        super(EntityState.DEATH_GOOMBA);
+        super(GoombaState.DEATH);
         this.entity = entity;
         this.animation = animation;
         animator = entity.surface;

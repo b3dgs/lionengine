@@ -59,12 +59,12 @@ public class Handler implements HandledObjects, Updatable, Renderable, ObjectGam
      */
     public Handler()
     {
-        listeners = new ArrayList<>();
-        updatables = new HashSet<>();
-        renderables = new HashSet<>();
+        listeners = new ArrayList<HandlerListener>();
+        updatables = new HashSet<ComponentUpdatable>();
+        renderables = new HashSet<ComponentRenderable>();
         objects = new HandledObjectsImpl();
-        toDelete = new ArrayList<>();
-        toAdd = new ArrayList<>();
+        toDelete = new ArrayList<Integer>();
+        toAdd = new ArrayList<ObjectGame>();
         willDelete = false;
         willAdd = false;
     }

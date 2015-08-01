@@ -321,14 +321,7 @@ public final class FolderModificationWatcher
             if (full.length() > prefix)
             {
                 final String keyParent = full.substring(prefix);
-                tree.getDisplay().asyncExec(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        onCreated(path, keyParent);
-                    }
-                });
+                tree.getDisplay().asyncExec(() -> onCreated(path, keyParent));
             }
         }
 
@@ -345,17 +338,13 @@ public final class FolderModificationWatcher
             if (full.length() > prefix)
             {
                 final String simple = full.substring(prefix);
-                tree.getDisplay().asyncExec(new Runnable()
+                tree.getDisplay().asyncExec(() ->
                 {
-                    @Override
-                    public void run()
+                    final Object data = tree.getData(simple);
+                    if (data != null && data instanceof TreeItem)
                     {
-                        final Object data = tree.getData(simple);
-                        if (data != null && data instanceof TreeItem)
-                        {
-                            final TreeItem item = (TreeItem) data;
-                            item.dispose();
-                        }
+                        final TreeItem item = (TreeItem) data;
+                        item.dispose();
                     }
                 });
             }

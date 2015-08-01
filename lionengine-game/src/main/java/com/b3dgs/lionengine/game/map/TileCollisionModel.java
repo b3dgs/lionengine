@@ -38,7 +38,7 @@ public class TileCollisionModel implements TileCollision
     private static final String ERROR_TYPE = "Unknown type: ";
 
     /** The collision formulas used. */
-    private final Collection<CollisionFormula> formulas = new HashSet<>();
+    private final Collection<CollisionFormula> formulas = new HashSet<CollisionFormula>();
     /** Tile reference. */
     private final Tile tile;
 

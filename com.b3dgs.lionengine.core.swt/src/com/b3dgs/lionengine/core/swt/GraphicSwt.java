@@ -52,7 +52,7 @@ final class GraphicSwt implements Graphic
     }
 
     /** Flip image cache. */
-    private final Map<ImageBuffer, Image> cacheFlip = new HashMap<>();
+    private final Map<ImageBuffer, Image> cacheFlip = new HashMap<ImageBuffer, Image>();
     /** The graphic output. */
     private GC gc;
     /** Gradient paint. */

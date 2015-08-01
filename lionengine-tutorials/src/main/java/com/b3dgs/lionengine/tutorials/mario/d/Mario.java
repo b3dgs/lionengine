@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.trait.collidable.Collidable;
 import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
 
@@ -46,6 +47,13 @@ class Mario extends Entity implements CollidableListener
     }
 
     @Override
+    protected void onPrepared()
+    {
+        StateAnimationBased.Util.loadStates(MarioState.values(), factory, this);
+        super.onPrepared();
+    }
+
+    @Override
     public void update(double extrp)
     {
         if (transformable.getY() < 0)
@@ -59,11 +67,11 @@ class Mario extends Entity implements CollidableListener
     public void notifyCollided(Collidable collidable)
     {
         final Entity entity = collidable.getOwner();
-        if (transformable.getY() >= transformable.getOldY() && !entity.isState(EntityState.DEATH_GOOMBA))
+        if (transformable.getY() >= transformable.getOldY() && !entity.isState(GoombaState.DEATH))
         {
             this.collidable.setEnabled(false);
             tileCollidable.setEnabled(false);
-            changeState(EntityState.DEATH_MARIO);
+            changeState(MarioState.DEATH);
         }
     }
 }

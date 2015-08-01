@@ -81,9 +81,9 @@ public final class UtilityImage
     {
         try
         {
-            final InputStream inputStream = media.getInputStream();
-            final Bitmap image = ToolsAndroid.getImage(inputStream);
-            inputStream.close();
+            final InputStream input = media.getInputStream();
+            final Bitmap image = ToolsAndroid.getImage(input);
+            input.close();
             return new ImageBufferAndroid(image);
         }
         catch (final IOException exception)
@@ -202,12 +202,12 @@ public final class UtilityImage
      */
     static void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
-        final OutputStream outputStream = media.getOutputStream();
-        if (ToolsAndroid.saveImage(UtilityImage.getBuffer(image), outputStream))
+        final OutputStream output = media.getOutputStream();
+        if (ToolsAndroid.saveImage(UtilityImage.getBuffer(image), output))
         {
             try
             {
-                outputStream.close();
+                output.close();
             }
             catch (final IOException exception)
             {

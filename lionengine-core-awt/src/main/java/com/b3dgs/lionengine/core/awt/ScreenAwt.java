@@ -118,7 +118,7 @@ abstract class ScreenAwt implements Screen, FocusListener
         }
         config = renderer.getConfig();
         graphics = Graphics.createGraphic();
-        devices = new HashMap<>(2);
+        devices = new HashMap<Class<? extends InputDevice>, InputDevice>(2);
     }
 
     /**

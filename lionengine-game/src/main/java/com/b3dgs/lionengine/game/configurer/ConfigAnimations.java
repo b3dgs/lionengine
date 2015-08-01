@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
@@ -59,7 +58,7 @@ public final class ConfigAnimations
      */
     public static ConfigAnimations create(Configurer configurer) throws LionEngineException
     {
-        final Map<String, Animation> animations = new HashMap<>(0);
+        final Map<String, Animation> animations = new HashMap<String, Animation>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(ANIMATION))
         {
             final String anim = node.readString(ANIMATION_NAME);
@@ -151,7 +150,10 @@ public final class ConfigAnimations
     public Animation getAnimation(String name) throws LionEngineException
     {
         final Animation animation = animations.get(name);
-        Check.notNull(animation);
+        if (animation == null)
+        {
+            throw new LionEngineException("Animation not found: ", name);
+        }
         return animation;
     }
 

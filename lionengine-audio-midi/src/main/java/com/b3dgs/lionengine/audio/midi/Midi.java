@@ -69,6 +69,12 @@ public final class Midi
     public static final int VOLUME_MIN = 0;
     /** Maximum volume value. */
     public static final int VOLUME_MAX = 100;
+    /** Error midi. */
+    private static final String ERROR_MIDI = "No midi output available !";
+    /** Error midi data. */
+    private static final String ERROR_MIDI_DATA = "Invalid midi data !";
+    /** Error midi sequence. */
+    private static final String ERROR_MIDI_SEQUENCE = "Error on reading sequence !";
 
     /**
      * Open the sequence from the media.
@@ -87,11 +93,11 @@ public final class Midi
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, media, "Error on reading sequence !");
+            throw new LionEngineException(exception, media, ERROR_MIDI_SEQUENCE);
         }
         catch (final InvalidMidiDataException exception)
         {
-            throw new LionEngineException(exception, media, "Invalid midi data !");
+            throw new LionEngineException(exception, media, ERROR_MIDI_DATA);
         }
     }
 
@@ -133,9 +139,13 @@ public final class Midi
                 sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
             }
         }
-        catch (final InvalidMidiDataException | MidiUnavailableException exception)
+        catch (final InvalidMidiDataException exception)
         {
-            throw new LionEngineException(exception, "No midi output available !");
+            throw new LionEngineException(exception, ERROR_MIDI);
+        }
+        catch (final MidiUnavailableException exception)
+        {
+            throw new LionEngineException(exception, ERROR_MIDI);
         }
 
         ticks = sequence.getTickLength();
@@ -224,7 +234,11 @@ public final class Midi
                     MidiSystem.getReceiver().send(volumeMessage, -1);
                 }
             }
-            catch (final MidiUnavailableException | InvalidMidiDataException exception)
+            catch (final MidiUnavailableException exception)
+            {
+                return;
+            }
+            catch (final InvalidMidiDataException exception)
             {
                 return;
             }

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.editor.utility;
 
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
@@ -73,21 +72,10 @@ public final class UtilTree
      */
     public static Listener createAutosizeListener()
     {
-        return new Listener()
+        return e ->
         {
-            @Override
-            public void handleEvent(Event e)
-            {
-                final TreeItem item = (TreeItem) e.item;
-                item.getDisplay().asyncExec(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        autoSize(item);
-                    }
-                });
-            }
+            final TreeItem item = (TreeItem) e.item;
+            item.getDisplay().asyncExec(() -> autoSize(item));
         };
     }
 

@@ -64,7 +64,7 @@ public abstract class NetworkChat implements Networkable, InputDeviceKeyListener
         this.type = type;
         networkable = new NetworkableModel();
         message = new StringBuilder();
-        messages = new ConcurrentLinkedQueue<>();
+        messages = new ConcurrentLinkedQueue<String>();
         messageQueueMax = DEFAULT_QUEUE_MAX;
         display = Constant.EMPTY_STRING;
     }

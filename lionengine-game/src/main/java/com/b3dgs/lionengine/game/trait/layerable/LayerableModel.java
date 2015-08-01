@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
 public class LayerableModel extends TraitModel implements Layerable
 {
     /** Layers listener. */
-    private final Collection<LayerableListener> listeners = new ArrayList<>();
+    private final Collection<LayerableListener> listeners = new ArrayList<LayerableListener>();
     /** Layer value. */
     private Integer layer;
 

@@ -59,7 +59,7 @@ public class TileGame implements Tile
 
         this.width = width;
         this.height = height;
-        features = new Features<>(TileFeature.class);
+        features = new Features<TileFeature>(TileFeature.class);
         sheet = Integer.valueOf(0);
         x = 0;
         y = 0;

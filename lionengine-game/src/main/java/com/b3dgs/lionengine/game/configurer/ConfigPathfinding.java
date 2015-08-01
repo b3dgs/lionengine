@@ -69,7 +69,7 @@ public final class ConfigPathfinding
      */
     private ConfigPathfinding()
     {
-        categories = new HashMap<>();
+        categories = new HashMap<String, Collection<String>>();
     }
 
     /**
@@ -113,7 +113,7 @@ public final class ConfigPathfinding
         }
         else
         {
-            category = new ArrayList<>();
+            category = new ArrayList<String>();
             categories.put(categoryName, category);
         }
         category.add(groupName);

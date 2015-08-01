@@ -4,8 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <project-name>lionengine</project-name>
-        <jdk.version>1.7</jdk.version>
-        <java.home>${JDK_7_HOME}</java.home>
+        <jdk.version>1.6</jdk.version>
+        <java.home>${JDK_6_HOME}</java.home>
+        <maven.compiler.source>${jdk.version}</maven.compiler.source>
+        <maven.compiler.target>${jdk.version}</maven.compiler.target>
         <main-group-id>com.b3dgs.${project-name}</main-group-id>
         <build-tools-project>${project-name}-buildtools</build-tools-project>
         <encoding.type>UTF-8</encoding.type>
@@ -22,7 +24,7 @@
         <maven-clean.version>2.6.1</maven-clean.version>
         <maven-javadoc.version>2.10.3</maven-javadoc.version>
         <maven-surfire.version>2.18.1</maven-surfire.version>
-        <maven-checkstyle.version>2.15</maven-checkstyle.version>
+        <maven-checkstyle.version>2.16</maven-checkstyle.version>
         <checkstyle.version>6.8.1</checkstyle.version>
         <maven-eclipse.version>2.10</maven-eclipse.version>
         <pde-target-maven.version>1.0.1</pde-target-maven.version>
@@ -305,6 +307,11 @@
                         </supportedProjectTypes>
                         <instructions>
                             <Import-Package>org.junit;resolution:=optional, *</Import-Package>
+                            <Bundle-RequiredExecutionEnvironment>JavaSE-${jdk.version}</Bundle-RequiredExecutionEnvironment>
+                            <_removeheaders>
+                                Build-Jdk,Built-By,Bnd-LastModified,Created-By,Private-Package,Tool,Require-Capability,
+                                JDK_5_HOME,JDK_6_HOME,JDK_7_HOME,JDK_8_HOME 
+                            </_removeheaders>
                         </instructions>
                     </configuration>
                     <executions>

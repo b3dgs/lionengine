@@ -71,12 +71,12 @@ class Entity extends ObjectGame implements Updatable, Renderable, TileCollidable
     protected final TileCollidable tileCollidable = addTrait(new TileCollidableModel());
     /** Collidable reference. */
     protected final Collidable collidable = addTrait(new CollidableModel());
+    /** State factory. */
+    protected final StateFactory factory = new StateFactory();
     /** Mirrorable model. */
     private final Mirrorable mirrorable = addTrait(new MirrorableModel());
     /** Body model. */
     private final Body body = addTrait(new BodyModel());
-    /** State factory. */
-    private final StateFactory factory = new StateFactory();
     /** State handler. */
     private final StateHandler handler = new StateHandler(factory);
     /** Camera reference. */
@@ -120,7 +120,7 @@ class Entity extends ObjectGame implements Updatable, Renderable, TileCollidable
      * @param state The state to check.
      * @return <code>true</code> if it is this state, <code>false</code> else.
      */
-    public boolean isState(EntityState state)
+    public boolean isState(Enum<? extends StateAnimationBased> state)
     {
         return handler.isState(state);
     }

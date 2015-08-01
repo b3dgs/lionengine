@@ -52,9 +52,9 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 public class ProducerModel extends TraitModel implements Producer
 {
     /** Producer listeners. */
-    private final Collection<ProducerListener> listeners = new ArrayList<>();
+    private final Collection<ProducerListener> listeners = new ArrayList<ProducerListener>();
     /** Production queue. */
-    private final Queue<Producible> productions = new LinkedList<>();
+    private final Queue<Producible> productions = new LinkedList<Producible>();
     /** Handler reference. */
     private Handler handler;
     /** Tick timer rate. */

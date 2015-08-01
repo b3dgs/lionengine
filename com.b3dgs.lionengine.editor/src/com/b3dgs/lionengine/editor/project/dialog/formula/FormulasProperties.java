@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.editor.project.dialog.formula;
 import java.util.Collections;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
@@ -370,14 +368,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
      */
     private void updatePreviewOnModify(Text text)
     {
-        text.addModifyListener(new ModifyListener()
-        {
-            @Override
-            public void modifyText(ModifyEvent event)
-            {
-                updatePreview();
-            }
-        });
+        text.addModifyListener(event -> updatePreview());
     }
 
     /**

@@ -38,9 +38,9 @@ import com.b3dgs.lionengine.Config;
 public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, MouseWheelListener
 {
     /** Actions pressed listeners. */
-    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
+    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<Integer, List<EventAction>>();
     /** Actions released listeners. */
-    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
+    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<Integer, List<EventAction>>();
     /** Clicks flags. */
     private final boolean[] clicks;
     /** Clicked flags. */
@@ -131,7 +131,7 @@ public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, 
         final Integer key = Integer.valueOf(click);
         if (actionsPressed.get(key) == null)
         {
-            list = new ArrayList<>();
+            list = new ArrayList<EventAction>();
             actionsPressed.put(key, list);
         }
         else
@@ -148,7 +148,7 @@ public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, 
         final List<EventAction> list;
         if (actionsReleased.get(key) == null)
         {
-            list = new ArrayList<>();
+            list = new ArrayList<EventAction>();
             actionsReleased.put(key, list);
         }
         else

@@ -224,9 +224,9 @@ public class MapTileCollisionModel implements MapTileCollision
     }
 
     /** Collision formulas list. */
-    private final Map<String, CollisionFormula> formulas = new HashMap<>();
+    private final Map<String, CollisionFormula> formulas = new HashMap<String, CollisionFormula>();
     /** Collisions groups list. */
-    private final Map<String, CollisionGroup> groups = new HashMap<>();
+    private final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>();
     /** Map reference. */
     private final MapTile map;
     /** Viewer reference. */
@@ -350,7 +350,7 @@ public class MapTileCollisionModel implements MapTileCollision
      */
     private void applyConstraints()
     {
-        final Map<Tile, Collection<CollisionFormula>> toRemove = new HashMap<>();
+        final Map<Tile, Collection<CollisionFormula>> toRemove = new HashMap<Tile, Collection<CollisionFormula>>();
         for (int v = 0; v < map.getInTileHeight(); v++)
         {
             for (int h = 0; h < map.getInTileWidth(); h++)
@@ -389,7 +389,7 @@ public class MapTileCollisionModel implements MapTileCollision
         final Tile left = map.getTile(h - 1, v);
         final Tile right = map.getTile(h + 1, v);
 
-        final Collection<CollisionFormula> toRemove = new ArrayList<>();
+        final Collection<CollisionFormula> toRemove = new ArrayList<CollisionFormula>();
         for (final CollisionFormula formula : tile.getCollisionFormulas())
         {
             final CollisionConstraint constraint = formula.getConstraint();
@@ -502,7 +502,7 @@ public class MapTileCollisionModel implements MapTileCollision
     public void createCollisionDraw()
     {
         clearCollisionDraw();
-        collisionCache = new HashMap<>(formulas.size());
+        collisionCache = new HashMap<CollisionFormula, ImageBuffer>(formulas.size());
 
         for (final CollisionFormula collision : formulas.values())
         {

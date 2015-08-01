@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -73,14 +72,7 @@ public final class UtilCombo
                 combo.setData(links.get(combo.getText()));
             }
         });
-        combo.addModifyListener(new ModifyListener()
-        {
-            @Override
-            public void modifyText(ModifyEvent e)
-            {
-                combo.setData(links.get(combo.getText()));
-            }
-        });
+        combo.addModifyListener(e -> combo.setData(links.get(combo.getText())));
         return combo;
     }
 
@@ -123,14 +115,7 @@ public final class UtilCombo
         }
         if (enable)
         {
-            final ModifyListener listener = new ModifyListener()
-            {
-                @Override
-                public void modifyText(ModifyEvent event)
-                {
-                    UtilSwt.setDirty(combo.getShell(), true);
-                }
-            };
+            final ModifyListener listener = event -> UtilSwt.setDirty(combo.getShell(), true);
             combo.setData(UtilSwt.KEY_DIRTY, listener);
             combo.addModifyListener(listener);
         }

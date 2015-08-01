@@ -59,7 +59,7 @@ public final class ConfigCollisions
      */
     public static ConfigCollisions create(Configurer configurer) throws LionEngineException
     {
-        final Map<String, Collision> collisions = new HashMap<>(0);
+        final Map<String, Collision> collisions = new HashMap<String, Collision>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(COLLISION))
         {
             final String coll = node.readString(COLLISION_NAME);

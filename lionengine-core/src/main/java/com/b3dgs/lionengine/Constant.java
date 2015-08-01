@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
+import java.nio.charset.Charset;
+
 /**
  * List of common constants.
  * 
@@ -24,6 +26,8 @@ package com.b3dgs.lionengine;
  */
 public final class Constant
 {
+    /** Charset UTF-8. */
+    public static final Charset UTF_8 = Charset.forName("UTF-8");
     /** Empty string. */
     public static final String EMPTY_STRING = "";
     /** New line. */

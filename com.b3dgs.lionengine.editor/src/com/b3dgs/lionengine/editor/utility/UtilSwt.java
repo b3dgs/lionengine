@@ -125,14 +125,10 @@ public final class UtilSwt
      */
     private static MouseWheelListener createMouseWheelScroller(final ScrolledComposite scrollable)
     {
-        return new MouseWheelListener()
+        return e ->
         {
-            @Override
-            public void mouseScrolled(MouseEvent e)
-            {
-                final Point currentScroll = scrollable.getOrigin();
-                scrollable.setOrigin(currentScroll.x, currentScroll.y - e.count * 5);
-            }
+            final Point currentScroll = scrollable.getOrigin();
+            scrollable.setOrigin(currentScroll.x, currentScroll.y - e.count * 5);
         };
     }
 

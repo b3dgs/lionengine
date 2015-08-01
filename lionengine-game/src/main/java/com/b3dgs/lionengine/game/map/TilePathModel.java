@@ -43,7 +43,7 @@ public class TilePathModel implements TilePath
     public TilePathModel(Tile tile)
     {
         this.tile = tile;
-        objectsId = new HashSet<>();
+        objectsId = new HashSet<Integer>();
     }
 
     /*

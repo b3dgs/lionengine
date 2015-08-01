@@ -49,7 +49,7 @@ public abstract class BackgroundElementRastered extends BackgroundElement
     public BackgroundElementRastered(int mainX, int mainY, Sprite sprite, int rastersNumber)
     {
         super(mainX, mainY, sprite);
-        rasters = new ArrayList<>(rastersNumber);
+        rasters = new ArrayList<Sprite>(rastersNumber);
         initialize(sprite, rastersNumber);
     }
 

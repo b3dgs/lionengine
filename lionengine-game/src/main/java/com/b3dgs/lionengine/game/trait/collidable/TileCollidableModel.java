@@ -59,7 +59,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 public class TileCollidableModel extends TraitModel implements TileCollidable
 {
     /** Launcher listeners. */
-    private final Collection<TileCollidableListener> listeners = new HashSet<>();
+    private final Collection<TileCollidableListener> listeners = new HashSet<TileCollidableListener>();
     /** Transformable owning this model. */
     private Transformable transformable;
     /** The collisions used. */

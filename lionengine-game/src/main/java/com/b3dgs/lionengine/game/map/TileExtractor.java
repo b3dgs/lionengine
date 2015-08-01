@@ -90,13 +90,13 @@ public final class TileExtractor
     }
 
     /** Levels rip. */
-    private final Collection<Media> rips = new ArrayList<>();
+    private final Collection<Media> rips = new ArrayList<Media>();
     /** Extracted tile sheets. */
-    private final Collection<ImageBuffer> extractions = new ArrayList<>();
+    private final Collection<ImageBuffer> extractions = new ArrayList<ImageBuffer>();
     /** Progress listener. */
-    private final Collection<ProgressListener> listeners = new HashSet<>();
+    private final Collection<ProgressListener> listeners = new HashSet<ProgressListener>();
     /** Generated sheets. */
-    private final Collection<Media> generatedSheets = new ArrayList<>();
+    private final Collection<Media> generatedSheets = new ArrayList<Media>();
     /** Extraction folder. */
     private final Media folder;
     /** Extracted tile sheet prefix. */
@@ -384,7 +384,7 @@ public final class TileExtractor
      */
     private boolean isExtracted(ImageBuffer rip, int ripH, int ripV)
     {
-        final Collection<ImageBuffer> checks = new ArrayList<>(extractions);
+        final Collection<ImageBuffer> checks = new ArrayList<ImageBuffer>(extractions);
         g.dispose();
 
         final ImageBuffer buffer = Graphics.getImageBuffer(sheet);

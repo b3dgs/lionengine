@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -139,13 +140,25 @@ public abstract class WorldGame implements Updatable, Renderable
      */
     public final void saveToFile(Media media) throws LionEngineException
     {
-        try (FileWriting writing = Stream.createFileWriting(media))
+        final FileWriting writing = Stream.createFileWriting(media);
+        try
         {
             saving(writing);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, media, "Error on saving to file !");
+        }
+        finally
+        {
+            try
+            {
+                writing.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(getClass(), "saveToFile", exception2);
+            }
         }
     }
 
@@ -157,13 +170,25 @@ public abstract class WorldGame implements Updatable, Renderable
      */
     public final void loadFromFile(Media media) throws LionEngineException
     {
-        try (FileReading reading = Stream.createFileReading(media))
+        final FileReading reading = Stream.createFileReading(media);
+        try
         {
             loading(reading);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, media, "Error on loading from file !");
+        }
+        finally
+        {
+            try
+            {
+                reading.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(getClass(), "loadFromFile", exception2);
+            }
         }
     }
 }

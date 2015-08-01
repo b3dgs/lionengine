@@ -22,6 +22,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.Featurable;
 
 /**
@@ -58,7 +59,7 @@ public class Services
     private static final String ERROR_SERVICE_GET = "Service not found: ";
 
     /** Services list. */
-    private final Collection<Object> services = new ArrayList<>();
+    private final Collection<Object> services = new ArrayList<Object>();
 
     /**
      * Create a services container.
@@ -110,7 +111,7 @@ public class Services
         Check.notNull(service);
         try
         {
-            final S instance = Factory.create(service, new Class<?>[]
+            final S instance = UtilReflection.create(service, new Class<?>[]
             {
                 Services.class
             }, this);

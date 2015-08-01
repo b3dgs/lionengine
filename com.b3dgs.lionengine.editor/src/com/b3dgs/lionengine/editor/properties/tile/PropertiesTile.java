@@ -23,8 +23,6 @@ import java.util.Collection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -184,17 +182,13 @@ public class PropertiesTile implements PropertiesProviderTile
         item.setData(ConfigTileGroup.GROUP);
         item.setImage(PropertiesTile.ICON_GROUP);
 
-        properties.addListener(SWT.MouseDoubleClick, new Listener()
+        properties.addListener(SWT.MouseDoubleClick, event ->
         {
-            @Override
-            public void handleEvent(Event event)
+            final Point point = new Point(event.x, event.y);
+            final TreeItem selection = properties.getItem(point);
+            if (selection == item)
             {
-                final Point point = new Point(event.x, event.y);
-                final TreeItem selection = properties.getItem(point);
-                if (selection == item)
-                {
-                    onDoubleClick(properties, selection, tile);
-                }
+                onDoubleClick(properties, selection, tile);
             }
         });
     }

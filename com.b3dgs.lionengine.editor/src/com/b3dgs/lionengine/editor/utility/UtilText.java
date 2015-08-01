@@ -18,9 +18,7 @@
 package com.b3dgs.lionengine.editor.utility;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -73,15 +71,11 @@ public final class UtilText
      */
     public static VerifyListener createVerify(final Text text, final String match)
     {
-        return new VerifyListener()
+        return event ->
         {
-            @Override
-            public void verifyText(VerifyEvent event)
-            {
-                final String init = text.getText();
-                final String newText = init.substring(0, event.start) + event.text + init.substring(event.end);
-                event.doit = newText.matches(match) || newText.isEmpty();
-            }
+            final String init = text.getText();
+            final String newText = init.substring(0, event.start) + event.text + init.substring(event.end);
+            event.doit = newText.matches(match) || newText.isEmpty();
         };
     }
 
@@ -100,14 +94,7 @@ public final class UtilText
         }
         if (enable)
         {
-            final ModifyListener listener = new ModifyListener()
-            {
-                @Override
-                public void modifyText(ModifyEvent event)
-                {
-                    UtilSwt.setDirty(text.getShell(), true);
-                }
-            };
+            final ModifyListener listener = event -> UtilSwt.setDirty(text.getShell(), true);
             text.setData(UtilSwt.KEY_DIRTY, listener);
             text.addModifyListener(listener);
         }

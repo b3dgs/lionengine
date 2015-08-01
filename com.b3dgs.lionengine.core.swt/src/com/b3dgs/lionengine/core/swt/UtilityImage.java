@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Misc tools for engine image creation.
@@ -117,13 +118,25 @@ public final class UtilityImage
      */
     public static ImageBuffer getImage(Media media) throws LionEngineException
     {
-        try (InputStream inputStream = media.getInputStream())
+        final InputStream input = media.getInputStream();
+        try
         {
-            return new ImageBufferSwt(ToolsSwt.getImageData(inputStream));
+            return new ImageBufferSwt(ToolsSwt.getImageData(input));
         }
-        catch (final IOException | SWTException exception)
+        catch (final SWTException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_READING);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(UtilityImage.class, "getImage", exception2);
+            }
         }
     }
 
@@ -236,13 +249,25 @@ public final class UtilityImage
      */
     public static void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
-        try (OutputStream outputStream = media.getOutputStream())
+        final OutputStream output = media.getOutputStream();
+        try
         {
-            ToolsSwt.saveImage(getBuffer(image), outputStream);
+            ToolsSwt.saveImage(getBuffer(image), output);
         }
-        catch (final IOException | SWTException exception)
+        catch (final SWTException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
+        }
+        finally
+        {
+            try
+            {
+                output.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(UtilityImage.class, "saveImage", exception2);
+            }
         }
     }
 

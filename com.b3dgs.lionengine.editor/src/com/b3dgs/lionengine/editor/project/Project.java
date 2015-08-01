@@ -92,10 +92,10 @@ public final class Project
     public static Project create(File projectPath) throws IOException
     {
         Verbose.info(Project.VERBOSE_READ_PROJECT_PROPERTIES, projectPath.getAbsolutePath());
-        try (InputStream inputStream = new FileInputStream(new File(projectPath, Project.PROPERTIES_FILE)))
+        try (InputStream input = new FileInputStream(new File(projectPath, Project.PROPERTIES_FILE)))
         {
             final Properties properties = new Properties();
-            properties.load(inputStream);
+            properties.load(input);
 
             final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES);
             final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES);

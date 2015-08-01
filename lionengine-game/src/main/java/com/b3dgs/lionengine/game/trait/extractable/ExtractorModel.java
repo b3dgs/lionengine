@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
 public class ExtractorModel extends TraitModel implements Extractor
 {
     /** Extractor listeners. */
-    private final Collection<ExtractorListener> listeners = new ArrayList<>();
+    private final Collection<ExtractorListener> listeners = new ArrayList<ExtractorListener>();
     /** Resources location. */
     private final ResourceLocation resourceLocation = new ResourceLocation();
     /** Tick timer rate. */

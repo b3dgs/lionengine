@@ -17,7 +17,10 @@
  */
 package com.b3dgs.lionengine;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -27,6 +30,99 @@ import java.util.Collection;
  */
 public final class UtilReflection
 {
+    /** Constructor error. */
+    private static final String ERROR_CONSTRUCTOR = "Unable to create the following type: ";
+
+    /**
+     * Create a class instance with its parameters.
+     * 
+     * @param <T> The element type used.
+     * @param type The class type to instantiate.
+     * @param paramTypes The class base type for each parameter.
+     * @param params The constructor parameters.
+     * @return The class instance.
+     * @throws NoSuchMethodException If no constructor found.
+     * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
+     */
+    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params)
+            throws NoSuchMethodException, LionEngineException
+    {
+        Check.notNull(type);
+        try
+        {
+            final Constructor<?> constructor = getCompatibleConstructor(type, paramTypes);
+            final boolean accessible = constructor.isAccessible();
+            if (!accessible)
+            {
+                constructor.setAccessible(true);
+            }
+            @SuppressWarnings("unchecked")
+            final T object = (T) constructor.newInstance(params);
+            if (constructor.isAccessible() != accessible)
+            {
+                constructor.setAccessible(accessible);
+            }
+            return object;
+        }
+        catch (final NoSuchMethodException exception)
+        {
+            throw exception;
+        }
+        catch (final IllegalArgumentException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
+        }
+        catch (final InstantiationException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
+        }
+        catch (final IllegalAccessException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
+        }
+        catch (final InvocationTargetException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
+        }
+    }
+
+    /**
+     * Get a compatible constructor with the following parameters.
+     * 
+     * @param type The class type.
+     * @param paramTypes The parameters types.
+     * @return The constructor found.
+     * @throws NoSuchMethodException If no constructor found.
+     */
+    private static Constructor<?> getCompatibleConstructor(Class<?> type, Class<?>[] paramTypes)
+            throws NoSuchMethodException
+    {
+        for (final Constructor<?> current : type.getDeclaredConstructors())
+        {
+            final Class<?>[] constructorTypes = current.getParameterTypes();
+            if (constructorTypes.length == paramTypes.length)
+            {
+                boolean found = true;
+                for (int i = 0; i < paramTypes.length; i++)
+                {
+                    if (!constructorTypes[i].isAssignableFrom(paramTypes[i]))
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    return current;
+                }
+            }
+        }
+        throw new NoSuchMethodException("No compatible constructor found for "
+                                        + type.getName()
+                                        + " with: "
+                                        + Arrays.asList(paramTypes));
+    }
+
     /**
      * Get the parameter types as array.
      * 
@@ -35,7 +131,7 @@ public final class UtilReflection
      */
     public static Class<?>[] getParamTypes(Object... arguments)
     {
-        final Collection<Object> types = new ArrayList<>();
+        final Collection<Object> types = new ArrayList<Object>();
         for (final Object argument : arguments)
         {
             types.add(argument.getClass());

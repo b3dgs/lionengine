@@ -54,8 +54,8 @@ public final class TimedMessage implements Updatable, Renderable
     public TimedMessage(Text text)
     {
         this.text = text;
-        messages = new HashSet<>(1);
-        delete = new ArrayList<>(1);
+        messages = new HashSet<MessageData>(1);
+        delete = new ArrayList<MessageData>(1);
         deleted = false;
     }
 

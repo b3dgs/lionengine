@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -92,7 +91,7 @@ public enum Verbose
     /** Error level. */
     private static final String ERROR_LEVEL = "Unknown level: ";
     /** Verbose flag. */
-    private static final Collection<Verbose> LEVELS = new HashSet<>();
+    private static final Collection<Verbose> LEVELS = new HashSet<Verbose>();
 
     /**
      * Set default verbose values.
@@ -187,9 +186,9 @@ public enum Verbose
                 handler.setFormatter(formatter);
             }
         }
-        catch (final SecurityException | IOException exception)
+        catch (final Exception exception)
         {
-            critical(Verbose.class, "prepareLogger", ERROR_FORMATTER);
+            exception(Verbose.class, "prepareLogger", exception, ERROR_FORMATTER);
         }
     }
 

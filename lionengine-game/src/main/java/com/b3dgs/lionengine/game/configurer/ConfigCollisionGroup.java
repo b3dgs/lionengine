@@ -51,10 +51,10 @@ public final class ConfigCollisionGroup
      */
     public static Collection<CollisionGroup> create(XmlNode root) throws LionEngineException
     {
-        final Collection<CollisionGroup> collisions = new ArrayList<>();
+        final Collection<CollisionGroup> collisions = new ArrayList<CollisionGroup>();
         for (final XmlNode node : root.getChildren(COLLISION))
         {
-            final Collection<CollisionFormula> formulas = new ArrayList<>();
+            final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>();
             for (final XmlNode formula : node.getChildren(ConfigCollisionFormula.FORMULA))
             {
                 final String name = formula.getText();
@@ -76,10 +76,10 @@ public final class ConfigCollisionGroup
      */
     public static Collection<CollisionGroup> create(XmlNode root, MapTileCollision map) throws LionEngineException
     {
-        final Collection<CollisionGroup> collisions = new ArrayList<>();
+        final Collection<CollisionGroup> collisions = new ArrayList<CollisionGroup>();
         for (final XmlNode node : root.getChildren(COLLISION))
         {
-            final Collection<CollisionFormula> formulas = new ArrayList<>();
+            final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>();
             for (final XmlNode formula : node.getChildren(ConfigCollisionFormula.FORMULA))
             {
                 final String name = formula.getText();

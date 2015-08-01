@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
-import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.background.BackgroundGame;
 
@@ -57,14 +56,7 @@ class Scene extends Sequence
         super(loader, NATIVE);
         background = new Swamp(getConfig().getSource(), 1.0, 1.0);
         foreground = new Foreground(getConfig().getSource(), 1.0, 1.0);
-        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                end();
-            }
-        });
+        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     /*

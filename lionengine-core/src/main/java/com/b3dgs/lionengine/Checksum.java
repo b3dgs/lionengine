@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -48,8 +46,6 @@ public final class Checksum
 {
     /** Instance error message. */
     private static final String ERROR_SHA_INSTANCE = "SHA-256 can not be instantiated !";
-    /** UTF8. */
-    private static final Charset UTF8 = StandardCharsets.UTF_8;
     /** SHA Mode. */
     private static final String SHA = "SHA-256";
 
@@ -95,7 +91,7 @@ public final class Checksum
      */
     public boolean check(String value, String signature)
     {
-        return Arrays.equals(getSha256(value).getBytes(UTF8), signature.getBytes(UTF8));
+        return Arrays.equals(getSha256(value).getBytes(Constant.UTF_8), signature.getBytes(Constant.UTF_8));
     }
 
     /**
@@ -108,7 +104,7 @@ public final class Checksum
      */
     public boolean check(int value, String signature)
     {
-        return Arrays.equals(getSha256(value).getBytes(UTF8), signature.getBytes(UTF8));
+        return Arrays.equals(getSha256(value).getBytes(Constant.UTF_8), signature.getBytes(Constant.UTF_8));
     }
 
     /**
@@ -147,6 +143,6 @@ public final class Checksum
      */
     public String getSha256(String str)
     {
-        return getSha256(str.getBytes(UTF8));
+        return getSha256(str.getBytes(Constant.UTF_8));
     }
 }

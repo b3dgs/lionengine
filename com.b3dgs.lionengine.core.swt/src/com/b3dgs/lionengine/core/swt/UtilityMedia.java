@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
@@ -135,12 +136,12 @@ public final class UtilityMedia
         {
             if (fromJar)
             {
-                final InputStream inputStream = loader.getResourceAsStream(path);
-                if (inputStream == null)
+                final InputStream input = loader.getResourceAsStream(path);
+                if (input == null)
                 {
                     throw new LionEngineException(media, "Resource in JAR not found");
                 }
-                return inputStream;
+                return input;
             }
             return new FileInputStream(path);
         }
@@ -181,13 +182,25 @@ public final class UtilityMedia
         final boolean exists;
         if (fromJar)
         {
-            try (final InputStream stream = getInputStream(media))
+            final InputStream input = getInputStream(media);
+            try
             {
                 exists = true;
             }
-            catch (final IOException | LionEngineException exception)
+            catch (final LionEngineException exception)
             {
                 return false;
+            }
+            finally
+            {
+                try
+                {
+                    input.close();
+                }
+                catch (final IOException exception2)
+                {
+                    Verbose.exception(UtilityMedia.class, "exists", exception2);
+                }
             }
         }
         else

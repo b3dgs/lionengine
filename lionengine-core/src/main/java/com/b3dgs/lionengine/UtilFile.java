@@ -17,9 +17,12 @@
  */
 package com.b3dgs.lionengine;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -265,7 +268,7 @@ public final class UtilFile
      */
     public static Collection<File> getFilesByExtension(String path, String extension)
     {
-        final Collection<File> filesList = new ArrayList<>(1);
+        final Collection<File> filesList = new ArrayList<File>(1);
         getFilesByExtensionRecursive(filesList, path, extension);
         return filesList;
     }
@@ -279,7 +282,7 @@ public final class UtilFile
      */
     public static Collection<File> getFilesByName(File path, String name)
     {
-        final Collection<File> filesList = new ArrayList<>(1);
+        final Collection<File> filesList = new ArrayList<File>(1);
         getFilesByNameRecursive(filesList, path, name);
         return filesList;
     }
@@ -302,6 +305,81 @@ public final class UtilFile
             }
         }
         throw new LionEngineException(ERROR_FOLDER, folder.getPath());
+    }
+
+    /**
+     * Get of full copy of the input stream stored in a temporary file.
+     * 
+     * @param name The file name reference (to have a similar temporary file name).
+     * @param input The input stream reference.
+     * @return The temporary file created with copied content from stream.
+     */
+    public static File getCopy(String name, InputStream input)
+    {
+        final String prefix;
+        final String suffix;
+        final int minimumPrefix = 3;
+        final int i = name.lastIndexOf(Constant.DOT);
+        if (i > minimumPrefix)
+        {
+            prefix = name.substring(i);
+            suffix = name.substring(i + 1);
+        }
+        else
+        {
+            if (name.length() > minimumPrefix)
+            {
+                prefix = name;
+            }
+            else
+            {
+                prefix = "temp";
+            }
+            suffix = null;
+        }
+        try
+        {
+            final File temp = File.createTempFile(prefix, suffix);
+            final OutputStream output = new BufferedOutputStream(new FileOutputStream(temp));
+            try
+            {
+                copy(input, output);
+            }
+            finally
+            {
+                output.close();
+            }
+            return temp;
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, "Unable to create temporary file for: ", name);
+        }
+    }
+
+    /**
+     * Copy a stream onto another.
+     * 
+     * @param source The source stream.
+     * @param destination The destination stream.
+     * @throws IOException If error.
+     */
+    public static void copy(InputStream source, OutputStream destination) throws IOException
+    {
+        Check.notNull(source);
+        Check.notNull(destination);
+
+        final int bufferSize = 65535;
+        final byte[] buffer = new byte[bufferSize];
+        while (true)
+        {
+            final int read = source.read(buffer);
+            if (read == -1)
+            {
+                break;
+            }
+            destination.write(buffer, 0, read);
+        }
     }
 
     /**
@@ -334,13 +412,9 @@ public final class UtilFile
                     deleteDirectory(new File(directory, element));
                 }
             }
-            try
+            if (!directory.delete())
             {
-                Files.delete(directory.toPath());
-            }
-            catch (final IOException exception)
-            {
-                Verbose.exception(UtilFile.class, "deleteDirectory", exception, "Directory not deleted: " + directory);
+                Verbose.warning(UtilFile.class, "deleteDirectory", "Directory not deleted: " + directory);
             }
         }
         else if (directory.isFile())
@@ -359,13 +433,9 @@ public final class UtilFile
     public static void deleteFile(File file) throws LionEngineException
     {
         Check.notNull(file);
-        try
+        if (!file.delete())
         {
-            Files.delete(file.toPath());
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, "File not deleted: " + file);
+            throw new LionEngineException("File not deleted: " + file);
         }
     }
 

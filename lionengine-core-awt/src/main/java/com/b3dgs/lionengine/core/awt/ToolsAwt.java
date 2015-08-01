@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
-import java.awt.AWTError;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -26,7 +25,6 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
@@ -86,13 +84,13 @@ public final class ToolsAwt
     /**
      * Get an image from an input stream.
      * 
-     * @param inputStream The image input stream.
+     * @param input The image input stream.
      * @return The loaded image.
      * @throws IOException If error when reading image.
      */
-    static BufferedImage getImage(InputStream inputStream) throws IOException
+    static BufferedImage getImage(InputStream input) throws IOException
     {
-        final BufferedImage buffer = ImageIO.read(inputStream);
+        final BufferedImage buffer = ImageIO.read(input);
         if (buffer == null)
         {
             throw new IOException("Invalid image !");
@@ -105,12 +103,12 @@ public final class ToolsAwt
      * Save image to output stream.
      * 
      * @param image The image to save.
-     * @param outputStream The output stream.
+     * @param output The output stream.
      * @throws IOException If error when saving image.
      */
-    static void saveImage(BufferedImage image, OutputStream outputStream) throws IOException
+    static void saveImage(BufferedImage image, OutputStream output) throws IOException
     {
-        ImageIO.write(image, "png", outputStream);
+        ImageIO.write(image, "png", output);
     }
 
     /**
@@ -372,7 +370,7 @@ public final class ToolsAwt
             final BufferedImage buffer = applyMask(cursor, Color.BLACK.getRGB());
             return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
         }
-        catch (final AWTError | HeadlessException exception)
+        catch (final Throwable exception)
         {
             Verbose.exception(ToolsAwt.class, "createHiddenCursor", exception);
             return Cursor.getDefaultCursor();

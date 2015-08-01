@@ -442,7 +442,8 @@
       <property name="severity" value="error"/>
     </module>
     <module name="Indentation">
-      <property name="severity" value="error"/>
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="error"/>
     </module>
     <module name="TrailingComment">
       <property name="severity" value="error"/>

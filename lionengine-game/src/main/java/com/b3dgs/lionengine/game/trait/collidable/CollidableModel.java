@@ -84,13 +84,13 @@ public class CollidableModel extends TraitModel implements Collidable
     }
 
     /** The collision listener reference. */
-    private final Collection<CollidableListener> listeners = new ArrayList<>();
+    private final Collection<CollidableListener> listeners = new ArrayList<CollidableListener>();
     /** The collisions used. */
-    private final Collection<Collision> collisions = new ArrayList<>();
+    private final Collection<Collision> collisions = new ArrayList<Collision>();
     /** The ignored collidables. */
-    private final Collection<Collidable> ignored = new HashSet<>();
+    private final Collection<Collidable> ignored = new HashSet<Collidable>();
     /** Temp bounding box from polygon. */
-    private final Map<Collision, Rectangle> boxs = new HashMap<>();
+    private final Map<Collision, Rectangle> boxs = new HashMap<Collision, Rectangle>();
     /** Transformable owning this model. */
     private Transformable transformable;
     /** The viewer reference. */

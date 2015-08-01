@@ -54,7 +54,7 @@ public final class ConfigMinimap
      */
     public static Map<String, ColorRgba> create(XmlNode root, MapTile map) throws LionEngineException
     {
-        final Map<String, ColorRgba> colors = new HashMap<>();
+        final Map<String, ColorRgba> colors = new HashMap<String, ColorRgba>();
         for (final XmlNode node : root.getChildren(MINIMAP))
         {
             final ColorRgba color = new ColorRgba(node.readInteger(R), node.readInteger(G), node.readInteger(B));

@@ -22,8 +22,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 import com.b3dgs.lionengine.core.Verbose;
 
@@ -71,9 +69,11 @@ public final class UtilProjectStats
      */
     public static void countFileLines(String fileName)
     {
-        final Charset charset = StandardCharsets.UTF_8;
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), charset)))
+        final String name = "countFileLines";
+        BufferedReader in = null;
+        try
         {
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), Constant.UTF_8));
             String s;
             boolean stop = false;
             while (!stop)
@@ -92,7 +92,21 @@ public final class UtilProjectStats
         }
         catch (final IOException exception)
         {
-            Verbose.exception(UtilProjectStats.class, "countFileLines", exception);
+            Verbose.exception(UtilProjectStats.class, name, exception);
+        }
+        finally
+        {
+            if (in != null)
+            {
+                try
+                {
+                    in.close();
+                }
+                catch (final IOException exception2)
+                {
+                    Verbose.exception(UtilProjectStats.class, name, exception2);
+                }
+            }
         }
     }
 

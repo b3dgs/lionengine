@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 public class AttackerModel extends TraitModel implements Attacker
 {
     /** Listener list. */
-    private final Collection<AttackerListener> listeners = new HashSet<>(1);
+    private final Collection<AttackerListener> listeners = new HashSet<AttackerListener>(1);
     /** Attack timer. */
     private final Timing timer = new Timing();
     /** Damages. */

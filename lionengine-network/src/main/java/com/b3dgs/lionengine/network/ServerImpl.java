@@ -108,8 +108,8 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
     ServerImpl(NetworkMessageDecoder decoder)
     {
         super(decoder);
-        clientsList = new HashMap<>(1);
-        removeList = new HashSet<>(1);
+        clientsList = new HashMap<Byte, ClientSocket>(1);
+        removeList = new HashSet<ClientSocket>(1);
         bandwidthTimer = new Timing();
         willRemove = false;
         clientsNumber = 0;
@@ -151,13 +151,13 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             clientsList.put(Byte.valueOf(client.getId()), client);
             clientsNumber++;
         }
-        catch (final IOException | LionEngineException exception)
+        catch (final IOException exception)
         {
-            Verbose.warning(Server.class, "addClient", "Error on adding client: ", exception.getMessage());
-            if (clientsList.remove(Byte.valueOf(lastId)) != null)
-            {
-                clientsNumber--;
-            }
+            errorNewClientConnected(exception);
+        }
+        catch (final LionEngineException exception)
+        {
+            errorNewClientConnected(exception);
         }
     }
 
@@ -175,6 +175,20 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             clientsNumber--;
             willRemove = true;
             Verbose.info("Server: ", client.getName() + " disconnected");
+        }
+    }
+
+    /**
+     * Error on new client connection.
+     * 
+     * @param exception The associated exception.
+     */
+    private void errorNewClientConnected(Exception exception)
+    {
+        Verbose.warning(Server.class, "addClient", "Error on adding client: ", exception.getMessage());
+        if (clientsList.remove(Byte.valueOf(lastId)) != null)
+        {
+            clientsNumber--;
         }
     }
 
@@ -472,7 +486,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         clientConnectionListener.terminate();
 
         // Disconnect all clients
-        final Collection<ClientSocket> delete = new ArrayList<>(clientsList.size());
+        final Collection<ClientSocket> delete = new ArrayList<ClientSocket>(clientsList.size());
         for (final ClientSocket client : clientsList.values())
         {
             for (final ClientSocket other : clientsList.values())
@@ -524,7 +538,8 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             {
                 continue;
             }
-            try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data)))
+            final DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));
+            try
             {
                 final byte messageSystemId = buffer.readByte();
                 final byte from = buffer.readByte();
@@ -540,6 +555,17 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             catch (final IOException exception)
             {
                 Verbose.warning(Server.class, "update", "Error on updating server: ", exception.getMessage());
+            }
+            finally
+            {
+                try
+                {
+                    buffer.close();
+                }
+                catch (final IOException exception2)
+                {
+                    Verbose.exception(getClass(), "receiveMessages", exception2);
+                }
             }
         }
         // Remove deleted clients
@@ -567,8 +593,10 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 {
                     continue;
                 }
-                try (ByteArrayOutputStream encode = message.encode())
+                ByteArrayOutputStream encode = null;
+                try
                 {
+                    encode = message.encode();
                     final byte[] encoded = encode.toByteArray();
                     // Message header
                     client.getOut().writeByte(NetworkMessageSystemId.USER_MESSAGE);
@@ -589,6 +617,20 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                                     "sendMessage",
                                     "Unable to send the messages for client: ",
                                     String.valueOf(client.getId()));
+                }
+                finally
+                {
+                    if (encode != null)
+                    {
+                        try
+                        {
+                            encode.close();
+                        }
+                        catch (final IOException exception2)
+                        {
+                            Verbose.exception(getClass(), "sendMessages", exception2);
+                        }
+                    }
                 }
             }
         }

@@ -149,14 +149,7 @@ public class ScreenAwtTest
         loader.start(SequenceMock.class);
         final Renderer renderer = getRenderer(loader);
 
-        final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
-        {
-            @Override
-            public void uncaughtException(Thread t, Throwable exception)
-            {
-                uncaught = true;
-            }
-        };
+        final Thread.UncaughtExceptionHandler handler = (t, exception) -> uncaught = true;
         renderer.setUncaughtExceptionHandler(handler);
 
         while (renderer.getState() == State.RUNNABLE)
@@ -212,14 +205,7 @@ public class ScreenAwtTest
         loader.start(SequenceMock.class);
         final Renderer renderer = getRenderer(loader);
 
-        final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
-        {
-            @Override
-            public void uncaughtException(Thread t, Throwable exception)
-            {
-                uncaught = true;
-            }
-        };
+        final Thread.UncaughtExceptionHandler handler = (t, exception) -> uncaught = true;
         renderer.setUncaughtExceptionHandler(handler);
 
         while (renderer.getState() == State.RUNNABLE)

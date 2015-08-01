@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Misc tools for engine image creation.
@@ -107,13 +108,25 @@ public final class UtilityImage
     static ImageBuffer getImage(Media media) throws LionEngineException
     {
         Check.notNull(media);
-        try (InputStream inputStream = media.getInputStream())
+        final InputStream input = media.getInputStream();
+        try
         {
-            return new ImageBufferAwt(ToolsAwt.getImage(inputStream));
+            return new ImageBufferAwt(ToolsAwt.getImage(input));
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_READING);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(UtilityImage.class, "getImage", exception2);
+            }
         }
     }
 
@@ -127,13 +140,25 @@ public final class UtilityImage
     static void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
         Check.notNull(media);
-        try (OutputStream outputStream = media.getOutputStream())
+        final OutputStream output = media.getOutputStream();
+        try
         {
-            ToolsAwt.saveImage(getBuffer(image), outputStream);
+            ToolsAwt.saveImage(getBuffer(image), output);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
+        }
+        finally
+        {
+            try
+            {
+                output.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(UtilityImage.class, "saveImage", exception2);
+            }
         }
     }
 

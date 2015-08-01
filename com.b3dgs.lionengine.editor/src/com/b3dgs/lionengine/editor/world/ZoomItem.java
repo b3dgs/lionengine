@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.editor.world;
 import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -106,15 +104,11 @@ public class ZoomItem
         zoom.setLayoutData(new GridData(20, 13));
         UtilText.createVerify(zoom, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
         zoom.setText(String.valueOf(WorldZoom.ZOOM_DEFAULT));
-        zoom.addTraverseListener(new TraverseListener()
+        zoom.addTraverseListener(event ->
         {
-            @Override
-            public void keyTraversed(TraverseEvent event)
+            if (event.detail == SWT.TRAVERSE_RETURN)
             {
-                if (event.detail == SWT.TRAVERSE_RETURN)
-                {
-                    chooseZoom();
-                }
+                chooseZoom();
             }
         });
 

@@ -52,7 +52,7 @@ public final class ConfigCollisionFormula
      */
     public static ConfigCollisionFormula create(XmlNode root) throws LionEngineException
     {
-        final Map<String, CollisionFormula> collisions = new HashMap<>(0);
+        final Map<String, CollisionFormula> collisions = new HashMap<String, CollisionFormula>(0);
         for (final XmlNode node : root.getChildren(FORMULA))
         {
             final String name = node.readString(NAME);

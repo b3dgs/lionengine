@@ -37,7 +37,7 @@ final class SortedList<E extends Comparable<E>>
      */
     public SortedList()
     {
-        list = new ArrayList<>();
+        list = new ArrayList<E>();
     }
 
     /**

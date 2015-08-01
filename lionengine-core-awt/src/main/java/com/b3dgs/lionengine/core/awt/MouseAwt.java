@@ -50,9 +50,9 @@ final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, Mouse
     private static final String ERROR_ROBOT = "No mouse robot available !";
 
     /** Actions pressed listeners. */
-    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
+    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<Integer, List<EventAction>>();
     /** Actions released listeners. */
-    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
+    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<Integer, List<EventAction>>();
     /** Clicks flags. */
     private final boolean[] clicks;
     /** Clicked flags. */
@@ -177,7 +177,7 @@ final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, Mouse
         final Integer key = Integer.valueOf(click);
         if (actionsPressed.get(key) == null)
         {
-            list = new ArrayList<>();
+            list = new ArrayList<EventAction>();
             actionsPressed.put(key, list);
         }
         else
@@ -194,7 +194,7 @@ final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, Mouse
         final List<EventAction> list;
         if (actionsReleased.get(key) == null)
         {
-            list = new ArrayList<>();
+            list = new ArrayList<EventAction>();
             actionsReleased.put(key, list);
         }
         else

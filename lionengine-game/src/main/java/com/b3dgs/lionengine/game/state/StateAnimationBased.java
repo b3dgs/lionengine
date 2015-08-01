@@ -17,9 +17,8 @@
  */
 package com.b3dgs.lionengine.game.state;
 
-import java.lang.reflect.Constructor;
-
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -72,53 +71,16 @@ public interface StateAnimationBased
                 try
                 {
                     final Animation animation = configAnimations.getAnimation(type.getAnimationName());
-                    final State state = create(type, object, animation);
+                    final State state = UtilReflection.create(type.getStateClass(),
+                                                              UtilReflection.getParamTypes(object, animation),
+                                                              object,
+                                                              animation);
                     factory.addState(state);
                 }
-                catch (final LionEngineException exception)
+                catch (final NoSuchMethodException exception)
                 {
-                    continue;
+                    throw new LionEngineException(exception);
                 }
-            }
-        }
-
-        /**
-         * Create the state from its parameters.
-         * 
-         * @param state The state reference.
-         * @param object The object reference.
-         * @param animation The associated animation reference.
-         * @return The state instance.
-         * @throws LionEngineException If error when creating the state.
-         */
-        private static State create(StateAnimationBased state, ObjectGame object, Animation animation)
-                throws LionEngineException
-        {
-            try
-            {
-                final Constructor<?> constructor = state.getStateClass().getConstructors()[0];
-                final boolean accessible = constructor.isAccessible();
-                if (!accessible)
-                {
-                    try
-                    {
-                        constructor.setAccessible(true);
-                    }
-                    catch (final SecurityException exception)
-                    {
-                        // Skip
-                    }
-                }
-                final State instance = State.class.cast(constructor.newInstance(object, animation));
-                if (constructor.isAccessible() != accessible)
-                {
-                    constructor.setAccessible(accessible);
-                }
-                return instance;
-            }
-            catch (final ReflectiveOperationException exception)
-            {
-                throw new LionEngineException(exception);
             }
         }
 

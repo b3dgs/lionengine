@@ -151,20 +151,19 @@ public final class UtilitySwing
     /**
      * Create a menu combo.
      * 
-     * @param <T> The object type.
      * @param name The combo name.
      * @param panel The panel owner.
      * @param tab The combo list.
      * @param actionCombo The combo action.
      * @return The created combo.
      */
-    public static <T> JComboBox<T> addMenuCombo(String name, JPanel panel, T[] tab, ActionCombo actionCombo)
+    public static JComboBox addMenuCombo(String name, JPanel panel, Object[] tab, ActionCombo actionCombo)
     {
-        final JComboBox<T> combo = new JComboBox<>(tab);
-        combo.setRenderer(new ComboRenderer<>());
+        final JComboBox combo = new JComboBox(tab);
+        combo.setRenderer(new ComboRenderer());
         if (actionCombo != null)
         {
-            combo.addActionListener(new ComboListener<>(combo, actionCombo));
+            combo.addActionListener(new ComboListener(combo, actionCombo));
         }
         if (name != null)
         {

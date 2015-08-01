@@ -107,7 +107,7 @@ abstract class ScreenSwt implements Screen, FocusListener
         cursorHidden = ToolsSwt.createHiddenCursor();
         cursorDefault = ScreenSwt.display.getSystemCursor(0);
         graphics = Graphics.createGraphic();
-        devices = new HashMap<>(2);
+        devices = new HashMap<Class<? extends InputDevice>, InputDevice>(2);
         frame = initMainFrame(config.isWindowed());
 
         setResolution(config.getOutput());

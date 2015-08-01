@@ -59,13 +59,13 @@ import com.b3dgs.lionengine.game.trait.Trait;
 public class ObjectGame
 {
     /** Features provider. */
-    private final Features<Trait> features = new Features<>(Trait.class);
+    private final Features<Trait> features = new Features<Trait>(Trait.class);
     /** Types provided. */
-    private final Map<Class<?>, Object> types = new HashMap<>();
+    private final Map<Class<?>, Object> types = new HashMap<Class<?>, Object>();
     /** Trait to prepare. */
-    private final Collection<Trait> traitToPrepare = new ArrayList<>();
+    private final Collection<Trait> traitToPrepare = new ArrayList<Trait>();
     /** Listeners. */
-    private final Collection<ObjectGameListener> listeners = new HashSet<>(1);
+    private final Collection<ObjectGameListener> listeners = new HashSet<ObjectGameListener>(1);
     /** Media representation. */
     private final Media media;
     /** Configurer reference. */

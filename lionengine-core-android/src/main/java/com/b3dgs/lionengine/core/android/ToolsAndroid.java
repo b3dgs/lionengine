@@ -55,12 +55,12 @@ public final class ToolsAndroid
     /**
      * Get an image from an image file.
      * 
-     * @param inputStream The image input stream.
+     * @param input The image input stream.
      * @return The created image from file.
      */
-    static Bitmap getImage(InputStream inputStream)
+    static Bitmap getImage(InputStream input)
     {
-        return BitmapFactory.decodeStream(inputStream);
+        return BitmapFactory.decodeStream(input);
     }
 
     /**
@@ -201,12 +201,12 @@ public final class ToolsAndroid
      * Save an image into a file.
      * 
      * @param image The image to save.
-     * @param outputStream The output stream.
+     * @param output The output stream.
      * @return <code>true</code> if saved, <code>false</code> else.
      */
-    static boolean saveImage(Bitmap image, OutputStream outputStream)
+    static boolean saveImage(Bitmap image, OutputStream output)
     {
-        return image.compress(CompressFormat.PNG, 100, outputStream);
+        return image.compress(CompressFormat.PNG, 100, output);
     }
 
     /**

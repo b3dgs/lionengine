@@ -55,7 +55,7 @@ public abstract class StateGame implements State
     }
 
     /** Transitions list. */
-    private final Collection<StateTransition> transitions = new ArrayList<>();
+    private final Collection<StateTransition> transitions = new ArrayList<StateTransition>();
     /** The enum state. */
     private final Enum<?> state;
 

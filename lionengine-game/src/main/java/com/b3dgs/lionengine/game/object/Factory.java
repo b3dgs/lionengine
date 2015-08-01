@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.game.object;
 
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -51,54 +51,11 @@ public class Factory
     private static final String ERROR_SETUP_CLASS = "Setup class not found !";
     /** Setup error. */
     private static final String ERROR_SETUP = "Setup not found for: ";
-    /** Constructor error. */
-    private static final String ERROR_CONSTRUCTOR = "Unable to create the following type: ";
     /** Construction error. */
     private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
 
-    /**
-     * Create a class instance with its parameters.
-     * 
-     * @param <T> The element type used.
-     * @param type The class type to instantiate.
-     * @param paramTypes The class base type for each parameter.
-     * @param params The constructor parameters.
-     * @return The class instance.
-     * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
-     * @throws NoSuchMethodException If constructor has not been found.
-     */
-    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params)
-            throws LionEngineException, NoSuchMethodException
-    {
-        Check.notNull(type);
-        try
-        {
-            final Constructor<?> constructor = type.getDeclaredConstructor(paramTypes);
-            final boolean accessible = constructor.isAccessible();
-            if (!accessible)
-            {
-                constructor.setAccessible(true);
-            }
-            @SuppressWarnings("unchecked")
-            final T object = (T) constructor.newInstance(params);
-            if (constructor.isAccessible() != accessible)
-            {
-                constructor.setAccessible(accessible);
-            }
-            return object;
-        }
-        catch (final NoSuchMethodException exception)
-        {
-            throw exception;
-        }
-        catch (final ReflectiveOperationException | IllegalArgumentException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CONSTRUCTOR + type);
-        }
-    }
-
     /** Setups list. */
-    private final Map<Media, Setup> setups = new HashMap<>();
+    private final Map<Media, Setup> setups = new HashMap<Media, Setup>();
     /** Services reference. */
     private final Services services;
     /** Class loader. */
@@ -133,7 +90,7 @@ public class Factory
         final Class<?> type = setup.getConfigClass(classLoader);
         try
         {
-            final O object = create(type, new Class<?>[]
+            final O object = UtilReflection.create(type, new Class<?>[]
             {
                 setup.getClass(), Services.class
             }, setup, services);
@@ -165,7 +122,7 @@ public class Factory
         final Setup setup = getSetup(media);
         try
         {
-            final O object = create(type, new Class<?>[]
+            final O object = UtilReflection.create(type, new Class<?>[]
             {
                 setup.getClass(), Services.class
             }, setup, services);
@@ -237,7 +194,7 @@ public class Factory
         {
             final ConfigObject configObject = ConfigObject.create(configurer);
             final Class<?> setupClass = classLoader.loadClass(configObject.getSetupName());
-            return create(setupClass, new Class<?>[]
+            return UtilReflection.create(setupClass, new Class<?>[]
             {
                 Media.class
             }, media);

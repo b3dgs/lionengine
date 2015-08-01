@@ -20,7 +20,6 @@ package com.b3dgs.lionengine;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 
 import javax.xml.bind.ValidationException;
 
@@ -189,7 +188,7 @@ public class UtilFileTest
         }
         catch (final LionEngineException exception)
         {
-            Assert.assertEquals(NoSuchFileException.class, exception.getCause().getClass());
+            // Success
         }
         Verbose.info("****************************************************************************************");
     }

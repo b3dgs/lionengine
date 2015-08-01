@@ -123,7 +123,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      */
     public Cursor()
     {
-        surfaces = new HashMap<>();
+        surfaces = new HashMap<Integer, Image>();
         x = 0.0;
         y = 0.0;
         sensibilityHorizontal = 1.0;

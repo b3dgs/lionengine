@@ -65,7 +65,7 @@ final class SpriteFontImpl implements SpriteFont
     SpriteFontImpl(Media media, Media mediaData, int tw, int th) throws LionEngineException
     {
         surface = Drawable.loadSpriteTiled(media, tw, th);
-        fontData = new TreeMap<>();
+        fontData = new TreeMap<Character, Data>();
         lineHeight = surface.getTileHeight();
 
         // Load data for each characters

@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -73,22 +72,10 @@ public final class Loader
         try
         {
             final Class<?>[] params = Loader.getParamTypes(loader, arguments);
-            final Constructor<? extends Sequence> constructor = nextSequence.getDeclaredConstructor(params);
-            final boolean accessible = constructor.isAccessible();
-            if (!accessible)
-            {
-                constructor.setAccessible(true);
-            }
-
-            final Sequence sequence = constructor.newInstance(getParams(loader, arguments));
-            if (constructor.isAccessible() != accessible)
-            {
-                constructor.setAccessible(accessible);
-            }
-
+            final Sequence sequence = UtilReflection.create(nextSequence, params, getParams(loader, arguments));
             return sequence;
         }
-        catch (final ReflectiveOperationException exception)
+        catch (final NoSuchMethodException exception)
         {
             throw new LionEngineException(exception);
         }
@@ -103,7 +90,7 @@ public final class Loader
      */
     private static Class<?>[] getParamTypes(Loader loader, Object... arguments)
     {
-        final Collection<Object> params = new ArrayList<>();
+        final Collection<Object> params = new ArrayList<Object>();
         params.add(loader);
         params.addAll(Arrays.asList(arguments));
         return UtilReflection.getParamTypes(params.toArray());
@@ -118,7 +105,7 @@ public final class Loader
      */
     private static Object[] getParams(Loader loader, Object... arguments)
     {
-        final Collection<Object> params = new ArrayList<>(1);
+        final Collection<Object> params = new ArrayList<Object>(1);
         params.add(loader);
         params.addAll(Arrays.asList(arguments));
         return params.toArray();

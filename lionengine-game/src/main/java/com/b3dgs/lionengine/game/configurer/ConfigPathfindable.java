@@ -50,7 +50,7 @@ public final class ConfigPathfindable
      */
     public static Map<String, PathData> create(Configurer configurer) throws LionEngineException
     {
-        final Map<String, PathData> categories = new HashMap<>(0);
+        final Map<String, PathData> categories = new HashMap<String, PathData>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(PATHFINDABLE))
         {
             final PathData data = createPathData(node);

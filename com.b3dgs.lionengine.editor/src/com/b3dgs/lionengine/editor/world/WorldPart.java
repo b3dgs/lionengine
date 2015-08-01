@@ -119,14 +119,7 @@ public class WorldPart implements Focusable, TileSelectionListener
         composite.addMouseWheelListener(renderer);
         composite.addKeyListener(renderer);
 
-        Display.getDefault().asyncExec(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                setToolBarEnabled(false);
-            }
-        });
+        Display.getDefault().asyncExec(() -> setToolBarEnabled(false));
     }
 
     /**

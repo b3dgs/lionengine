@@ -140,14 +140,10 @@ public class RendererTest
         final Loader loader = new Loader(CONFIG);
         final Renderer renderer = loader.getRenderer();
         final Thread.UncaughtExceptionHandler old = renderer.getUncaughtExceptionHandler();
-        final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
+        final Thread.UncaughtExceptionHandler handler = (thread, exception) ->
         {
-            @Override
-            public void uncaughtException(Thread thread, Throwable exception)
-            {
-                old.uncaughtException(thread, exception);
-                uncaught = true;
-            }
+            old.uncaughtException(thread, exception);
+            uncaught = true;
         };
         renderer.setUncaughtExceptionHandler(handler);
         renderer.startFirstSequence(loader, SequenceSingleMock.class);
@@ -169,14 +165,7 @@ public class RendererTest
     {
         final Loader loader = new Loader(CONFIG);
         final Renderer renderer = loader.getRenderer();
-        final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
-        {
-            @Override
-            public void uncaughtException(Thread t, Throwable exception)
-            {
-                uncaught = true;
-            }
-        };
+        final Thread.UncaughtExceptionHandler handler = (t, exception) -> uncaught = true;
         renderer.setUncaughtExceptionHandler(handler);
         loader.start(SequenceInterruptMock.class);
         while (renderer.getState() != State.TIMED_WAITING)

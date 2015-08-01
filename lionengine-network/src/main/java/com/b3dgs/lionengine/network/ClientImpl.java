@@ -331,14 +331,74 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
             final byte[] data = new byte[size];
             if (in.read(data) != -1)
             {
-                try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data)))
+                final DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));
+                try
                 {
                     decodeMessage(type, from, dest, buffer);
+                }
+                finally
+                {
+                    try
+                    {
+                        buffer.close();
+                    }
+                    catch (final IOException exception)
+                    {
+                        Verbose.exception(getClass(), "updateUserMessage", exception);
+                    }
                 }
             }
         }
         final int headerSize = 4;
         bandwidth += headerSize + size;
+    }
+
+    /**
+     * Send message over the network.
+     * 
+     * @param message The message to send.
+     */
+    private void sendMessage(NetworkMessage message)
+    {
+        ByteArrayOutputStream encode = null;
+        try
+        {
+            encode = message.encode();
+            final byte[] encoded = encode.toByteArray();
+            // Message header
+            out.writeByte(NetworkMessageSystemId.USER_MESSAGE);
+            out.writeByte(message.getClientId());
+            out.writeByte(message.getClientDestId());
+            out.writeByte(message.getType());
+            // Message content
+            out.writeInt(encoded.length);
+            out.write(encoded);
+            out.flush();
+
+            final int headerSize = 8;
+            bandwidth += headerSize + encoded.length;
+        }
+        catch (final IOException exception)
+        {
+            Verbose.warning(Client.class,
+                            "sendMessage",
+                            "Unable to send the message for client: ",
+                            String.valueOf(clientId));
+        }
+        finally
+        {
+            try
+            {
+                if (encode != null)
+                {
+                    encode.close();
+                }
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(getClass(), "sendMessage finally", exception);
+            }
+        }
     }
 
     /*
@@ -469,7 +529,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
             catch (final IOException exception)
             {
                 Verbose.warning(Client.class,
-                                "sendMessage",
+                                "sendMessages",
                                 "Unable to send the messages for client: ",
                                 String.valueOf(clientId));
             }
@@ -477,29 +537,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         // Send messages
         for (final NetworkMessage message : messagesOut)
         {
-            try (ByteArrayOutputStream encode = message.encode())
-            {
-                final byte[] encoded = encode.toByteArray();
-                // Message header
-                out.writeByte(NetworkMessageSystemId.USER_MESSAGE);
-                out.writeByte(message.getClientId());
-                out.writeByte(message.getClientDestId());
-                out.writeByte(message.getType());
-                // Message content
-                out.writeInt(encoded.length);
-                out.write(encoded);
-                out.flush();
-
-                final int headerSize = 8;
-                bandwidth += headerSize + encoded.length;
-            }
-            catch (final IOException exception)
-            {
-                Verbose.warning(Client.class,
-                                "sendMessage",
-                                "Unable to send the messages for client: ",
-                                String.valueOf(clientId));
-            }
+            sendMessage(message);
         }
         final long bandwidthMilli = 1000L;
         if (bandwidthTimer.elapsed(bandwidthMilli))

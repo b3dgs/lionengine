@@ -34,9 +34,9 @@ import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 final class PathFinderImpl implements PathFinder
 {
     /** Closed list. */
-    private final Collection<Node> closed = new ArrayList<>(8);
+    private final Collection<Node> closed = new ArrayList<Node>(8);
     /** Open list. */
-    private final SortedList<Node> open = new SortedList<>();
+    private final SortedList<Node> open = new SortedList<Node>();
     /** Map reference. */
     private final MapTile map;
     /** Map path reference. */

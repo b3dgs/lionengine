@@ -39,9 +39,9 @@ final class HandledObjectsImpl implements HandledObjects
     /** Free id error. */
     private static final String ERROR_FREE_ID = "No more free id available !";
     /** Id used (list of active id used). */
-    private static final Collection<Integer> IDS = new HashSet<>(16);
+    private static final Collection<Integer> IDS = new HashSet<Integer>(16);
     /** Recycle id (reuse previous removed object id). */
-    private static final Queue<Integer> RECYCLE = new LinkedList<>();
+    private static final Queue<Integer> RECYCLE = new LinkedList<Integer>();
     /** Last id used (last maximum id value). */
     private static int lastId;
 
@@ -82,8 +82,8 @@ final class HandledObjectsImpl implements HandledObjects
      */
     public HandledObjectsImpl()
     {
-        objects = new HashMap<>();
-        items = new HashMap<>();
+        objects = new HashMap<Integer, ObjectGame>();
+        items = new HashMap<Class<?>, Set<Object>>();
     }
 
     /**
@@ -141,7 +141,7 @@ final class HandledObjectsImpl implements HandledObjects
     {
         if (!items.containsKey(type))
         {
-            items.put(type, new HashSet<>());
+            items.put(type, new HashSet<Object>());
         }
         items.get(type).add(object);
     }

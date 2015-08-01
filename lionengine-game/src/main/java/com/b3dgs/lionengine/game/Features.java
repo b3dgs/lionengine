@@ -46,7 +46,7 @@ public class Features<F>
     public Features(Class<F> base)
     {
         this.base = base;
-        features = new HashMap<>();
+        features = new HashMap<Class<? extends F>, F>();
     }
 
     /**

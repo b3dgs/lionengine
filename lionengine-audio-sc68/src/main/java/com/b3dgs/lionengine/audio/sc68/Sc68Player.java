@@ -20,13 +20,13 @@ package com.b3dgs.lionengine.audio.sc68;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * SC68 player implementation.
@@ -63,16 +63,26 @@ final class Sc68Player implements Sc68
     {
         Check.notNull(media);
 
-        try (InputStream input = media.getInputStream())
+        final InputStream input = media.getInputStream();
+        try
         {
-            final File music = Files.createTempFile(null, null).toFile();
-            music.deleteOnExit();
-            Files.copy(input, music.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            binding.Sc68Play(music.getPath());
+            final File music = UtilFile.getCopy(media.getFile().getName(), input);
+            binding.Sc68Play(music.getCanonicalPath());
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, media);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(Sc68Player.class, "play", exception2);
+            }
         }
     }
 

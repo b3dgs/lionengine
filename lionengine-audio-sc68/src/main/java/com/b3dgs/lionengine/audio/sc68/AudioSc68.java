@@ -18,12 +18,12 @@
 package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.OperatingSystem;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Verbose;
 import com.sun.jna.Native;
 
@@ -66,26 +66,34 @@ public final class AudioSc68
     /**
      * Load the library.
      * 
-     * @param name The library name.
-     * @param ext The library extension.
      * @param library The library path.
      * @return The library binding.
      * @throws LionEngineException If error on loading.
      */
-    private static Sc68Binding loadLibrary(String name, String ext, String library) throws LionEngineException
+    private static Sc68Binding loadLibrary(String library) throws LionEngineException
     {
-        try (InputStream input = AudioSc68.class.getResourceAsStream(library))
+        final InputStream input = AudioSc68.class.getResourceAsStream(library);
+        try
         {
-            final File tempLib = File.createTempFile(name, ext);
-            tempLib.deleteOnExit();
-            Files.copy(input, tempLib.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            final Sc68Binding bind = (Sc68Binding) Native.loadLibrary(tempLib.getCanonicalPath(), Sc68Binding.class);
+            final File tempLib = UtilFile.getCopy(library, input);
+            final Sc68Binding binding = (Sc68Binding) Native.loadLibrary(tempLib.getCanonicalPath(), Sc68Binding.class);
             Verbose.info("Library ", library, " loaded");
-            return bind;
+            return binding;
         }
         catch (final Throwable exception)
         {
-            throw new LionEngineException(exception, AudioSc68.ERROR_LOAD_LIBRARY, name);
+            throw new LionEngineException(exception, AudioSc68.ERROR_LOAD_LIBRARY, library);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(Sc68Binding.class, "loadLibrary", exception2);
+            }
         }
     }
 
@@ -166,7 +174,7 @@ public final class AudioSc68
 
         final String name = AudioSc68.LIBRARY_NAME + ext;
         final String library = sys + arch + '/' + name;
-        bind = AudioSc68.loadLibrary(name, ext, library);
+        bind = AudioSc68.loadLibrary(library);
     }
 
     /**

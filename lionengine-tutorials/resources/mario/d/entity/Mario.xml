@@ -32,7 +32,7 @@
     <lionengine:animation end="7" name="turn" repeat="false" reversed="false" speed="0.125" start="7"/>
     <lionengine:animation end="1" name="idle" repeat="false" reversed="false" speed="0.125" start="1"/>
     <lionengine:animation end="6" name="walk" repeat="true" reversed="false" speed="0.25" start="4"/>
-    <lionengine:animation end="2" name="death_mario" repeat="false" reversed="false" speed="0.25" start="2"/>
+    <lionengine:animation end="2" name="death" repeat="false" reversed="false" speed="0.25" start="2"/>
     <lionengine:animation end="3" name="jump" repeat="false" reversed="false" speed="0.25" start="3"/>
     <lionengine:collision height="15" mirror="false" name="default" offsetX="0" offsetY="0" width="12"/>
 </lionengine:object>

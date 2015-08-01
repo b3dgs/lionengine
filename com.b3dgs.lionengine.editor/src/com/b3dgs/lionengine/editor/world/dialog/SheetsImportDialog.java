@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.editor.world.dialog;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -327,14 +325,7 @@ public class SheetsImportDialog extends AbstractDialog
      */
     private void textCheckFinish(Text text)
     {
-        text.addModifyListener(new ModifyListener()
-        {
-            @Override
-            public void modifyText(ModifyEvent event)
-            {
-                checkFinish();
-            }
-        });
+        text.addModifyListener(event -> checkFinish());
     }
 
     /*

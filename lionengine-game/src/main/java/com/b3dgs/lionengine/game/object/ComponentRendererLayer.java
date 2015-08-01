@@ -43,7 +43,7 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
      */
     public ComponentRendererLayer()
     {
-        layers = new TreeMap<>();
+        layers = new TreeMap<Integer, Set<Renderable>>();
     }
 
     /**
@@ -57,7 +57,7 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
         final Set<Renderable> objects;
         if (!layers.containsKey(layer))
         {
-            objects = new HashSet<>();
+            objects = new HashSet<Renderable>();
             layers.put(layer, objects);
         }
         else

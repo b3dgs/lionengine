@@ -59,10 +59,10 @@ public final class ConfigCollisionCategory
      */
     public static Collection<CollisionCategory> create(XmlNode root) throws LionEngineException
     {
-        final Collection<CollisionCategory> categories = new ArrayList<>();
+        final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
         for (final XmlNode node : root.getChildren(CATEGORY))
         {
-            final Collection<CollisionGroup> groups = new ArrayList<>();
+            final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>();
             for (final XmlNode group : node.getChildren(ConfigTileGroup.GROUP))
             {
                 final String name = group.getText();
@@ -91,7 +91,7 @@ public final class ConfigCollisionCategory
     public static Collection<CollisionCategory> create(Configurer configurer, MapTileCollision map)
             throws LionEngineException
     {
-        final Collection<CollisionCategory> categories = new ArrayList<>();
+        final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
         for (final XmlNode node : configurer.getRoot().getChildren(CATEGORY))
         {
             final CollisionCategory category = create(node, map);
@@ -110,7 +110,7 @@ public final class ConfigCollisionCategory
      */
     public static CollisionCategory create(XmlNode root, MapTileCollision map) throws LionEngineException
     {
-        final Collection<CollisionGroup> groups = new ArrayList<>();
+        final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>();
         for (final XmlNode groupNode : root.getChildren(ConfigTileGroup.GROUP))
         {
             final String groupName = groupNode.getText();

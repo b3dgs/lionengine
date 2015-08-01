@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
@@ -48,8 +49,9 @@ public final class ToolsSwt
      * Create a hidden cursor.
      * 
      * @return Hidden cursor.
+     * @throws SWTException If error on getting data.
      */
-    public static Cursor createHiddenCursor()
+    public static Cursor createHiddenCursor() throws SWTException
     {
         final Color white = ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE);
         final Color black = ScreenSwt.display.getSystemColor(SWT.COLOR_BLACK);
@@ -70,8 +72,9 @@ public final class ToolsSwt
      * @param height The image height.
      * @param transparency The image transparency.
      * @return The image.
+     * @throws SWTException If error on getting data.
      */
-    public static Image createImage(int width, int height, int transparency)
+    public static Image createImage(int width, int height, int transparency) throws SWTException
     {
         final Image image = new Image(ScreenSwt.display, width, height);
         if (transparency != SWT.TRANSPARENCY_NONE)
@@ -86,23 +89,25 @@ public final class ToolsSwt
     /**
      * Get an image data from an image file.
      * 
-     * @param inputStream The image input stream.
+     * @param input The image input stream.
      * @return The created image from file.
+     * @throws SWTException If error on getting data.
      */
-    public static ImageData getImageData(InputStream inputStream)
+    public static ImageData getImageData(InputStream input) throws SWTException
     {
-        return new ImageData(inputStream);
+        return new ImageData(input);
     }
 
     /**
      * Get an image from an image file.
      * 
-     * @param inputStream The image input stream.
+     * @param input The image input stream.
      * @return The created image from file.
+     * @throws SWTException If error on getting data.
      */
-    public static Image getImage(InputStream inputStream)
+    public static Image getImage(InputStream input) throws SWTException
     {
-        return new Image(ScreenSwt.display, inputStream);
+        return new Image(ScreenSwt.display, input);
     }
 
     /**
@@ -110,8 +115,9 @@ public final class ToolsSwt
      * 
      * @param image The image.
      * @return The created image from file.
+     * @throws SWTException If error on getting data.
      */
-    public static Image getImage(Image image)
+    public static Image getImage(Image image) throws SWTException
     {
         return new Image(ScreenSwt.display, image, SWT.IMAGE_COPY);
     }
@@ -122,8 +128,9 @@ public final class ToolsSwt
      * @param image The image reference.
      * @param maskColor The color mask.
      * @return The masked image.
+     * @throws SWTException If error on getting data.
      */
-    public static Image applyMask(Image image, int maskColor)
+    public static Image applyMask(Image image, int maskColor) throws SWTException
     {
         final ImageData sourceData = image.getImageData();
         final int width = sourceData.width;
@@ -143,8 +150,9 @@ public final class ToolsSwt
      * @param h The number of horizontal divisions (> 0).
      * @param v The number of vertical divisions (> 0).
      * @return The splited images array (can not be empty).
+     * @throws SWTException If error on getting data.
      */
-    public static Image[] splitImage(Image image, int h, int v)
+    public static Image[] splitImage(Image image, int h, int v) throws SWTException
     {
         final int total = h * v;
         final ImageData data = image.getImageData();
@@ -174,8 +182,9 @@ public final class ToolsSwt
      * @param image The input image.
      * @param angle The angle to apply in degree (0-359)
      * @return The new image with angle applied.
+     * @throws SWTException If error on getting data.
      */
-    public static Image rotate(Image image, int angle)
+    public static Image rotate(Image image, int angle) throws SWTException
     {
         final ImageData sourceData = image.getImageData();
         final int width = sourceData.width;
@@ -205,8 +214,9 @@ public final class ToolsSwt
      * @param width The new width.
      * @param height The new height.
      * @return The new image with new size.
+     * @throws SWTException If error on getting data.
      */
-    public static Image resize(Image image, int width, int height)
+    public static Image resize(Image image, int width, int height) throws SWTException
     {
         return new Image(ScreenSwt.display, image.getImageData().scaledTo(width, height));
     }
@@ -216,8 +226,9 @@ public final class ToolsSwt
      * 
      * @param image The input image.
      * @return The flipped image as a new instance.
+     * @throws SWTException If error on getting data.
      */
-    public static Image flipHorizontal(Image image)
+    public static Image flipHorizontal(Image image) throws SWTException
     {
         return flip(image, false);
     }
@@ -227,8 +238,9 @@ public final class ToolsSwt
      * 
      * @param image The input image.
      * @return The flipped image as a new instance.
+     * @throws SWTException If error on getting data.
      */
-    public static Image flipVertical(Image image)
+    public static Image flipVertical(Image image) throws SWTException
     {
         return flip(image, true);
     }
@@ -238,8 +250,9 @@ public final class ToolsSwt
      * 
      * @param image The input image.
      * @return The filtered image as a new instance.
+     * @throws SWTException If error on getting data.
      */
-    public static Image applyBilinearFilter(Image image)
+    public static Image applyBilinearFilter(Image image) throws SWTException
     {
         final ImageData data = image.getImageData();
         final int width = data.width;
@@ -270,16 +283,17 @@ public final class ToolsSwt
      * Save an image into a file.
      * 
      * @param image The image to save.
-     * @param outputStream The output stream.
+     * @param output The output stream.
+     * @throws SWTException If error on getting data.
      */
-    public static void saveImage(Image image, OutputStream outputStream)
+    public static void saveImage(Image image, OutputStream output) throws SWTException
     {
         final ImageLoader imageLoader = new ImageLoader();
         imageLoader.data = new ImageData[]
         {
             image.getImageData()
         };
-        imageLoader.save(outputStream, SWT.IMAGE_PNG);
+        imageLoader.save(output, SWT.IMAGE_PNG);
     }
 
     /**
@@ -294,14 +308,16 @@ public final class ToolsSwt
      * @param eb The end blue.
      * @param refSize The reference size.
      * @return The rastered image.
+     * @throws SWTException If error on getting data.
      */
     public static Image getRasterBuffer(Image image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
+            throws SWTException
     {
         final ImageData data = image.getImageData();
         final PaletteData palette = data.palette;
         final RGB[] colors = palette.getRGBs();
-        final Map<Integer, RGB> newColors = new TreeMap<>();
-        final Map<RGB, Integer> newColorsPixel = new HashMap<>();
+        final Map<Integer, RGB> newColors = new TreeMap<Integer, RGB>();
+        final Map<RGB, Integer> newColorsPixel = new HashMap<RGB, Integer>();
         for (final RGB color : colors)
         {
             final ColorRgba colorRgba = new ColorRgba(color.red, color.green, color.blue);
@@ -365,8 +381,9 @@ public final class ToolsSwt
      * @param image The image source.
      * @param vertical <code>true</code> if vertical, <code>false</code> if horizontal.
      * @return The flipped image data.
+     * @throws SWTException If error on getting data.
      */
-    public static Image flip(Image image, boolean vertical)
+    public static Image flip(Image image, boolean vertical) throws SWTException
     {
         final ImageData data = image.getImageData();
         final ImageData flip = image.getImageData();

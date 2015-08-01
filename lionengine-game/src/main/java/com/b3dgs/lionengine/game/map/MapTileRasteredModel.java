@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
 public class MapTileRasteredModel implements MapTileRastered
 {
     /** List of rastered sheets. */
-    private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<>();
+    private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<Integer, List<SpriteTiled>>();
     /** Map tile reference. */
     private final MapTile map;
     /** Rasters smooth flag. */
@@ -112,7 +112,7 @@ public class MapTileRasteredModel implements MapTileRastered
         List<SpriteTiled> rasters = rasterSheets.get(sheet);
         if (rasters == null)
         {
-            rasters = new ArrayList<>(Rasterable.MAX_RASTERS);
+            rasters = new ArrayList<SpriteTiled>(Rasterable.MAX_RASTERS);
             rasterSheets.put(sheet, rasters);
         }
         final SpriteTiled raster = Drawable.loadSpriteTiled(rasterBuf, map.getTileWidth(), map.getTileHeight());

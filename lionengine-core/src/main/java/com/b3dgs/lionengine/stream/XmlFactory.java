@@ -74,19 +74,33 @@ public final class XmlFactory
     {
         Check.notNull(media);
 
-        try (InputStream inputStream = media.getInputStream())
+        final InputStream input = media.getInputStream();
+        try
         {
-            Check.notNull(inputStream);
-
             final DocumentBuilder builder = getDocumentFactory();
             builder.setErrorHandler(null);
-            final Document document = builder.parse(inputStream);
+            final Document document = builder.parse(input);
             final Element root = document.getDocumentElement();
             return new XmlNodeImpl(document, root);
         }
-        catch (final IOException | SAXException exception)
+        catch (final IOException exception)
         {
             throw new LionEngineException(exception, media, ERROR_READING);
+        }
+        catch (final SAXException exception)
+        {
+            throw new LionEngineException(exception, media, ERROR_READING);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(XmlNode.class, "load", exception2);
+            }
         }
     }
 
@@ -102,7 +116,8 @@ public final class XmlFactory
         Check.notNull(root);
         Check.notNull(media);
 
-        try (OutputStream outputStream = media.getOutputStream())
+        final OutputStream output = media.getOutputStream();
+        try
         {
             final Transformer transformer = getTransformerFactory().newTransformer();
             if (root instanceof XmlNodeImpl)
@@ -111,7 +126,7 @@ public final class XmlFactory
                 node.normalize();
                 root.writeString(HEADER_ATTRIBUTE, HEADER_VALUE);
                 final DOMSource source = new DOMSource(node.getElement());
-                final StreamResult result = new StreamResult(outputStream);
+                final StreamResult result = new StreamResult(output);
                 final String yes = "yes";
                 transformer.setOutputProperty(OutputKeys.INDENT, yes);
                 transformer.setOutputProperty(OutputKeys.STANDALONE, yes);
@@ -119,9 +134,20 @@ public final class XmlFactory
                 transformer.transform(source, result);
             }
         }
-        catch (final IOException | TransformerException exception)
+        catch (final TransformerException exception)
         {
             throw new LionEngineException(exception, media, ERROR_WRITING);
+        }
+        finally
+        {
+            try
+            {
+                output.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(XmlNode.class, "save", exception2);
+            }
         }
     }
 

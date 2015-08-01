@@ -47,7 +47,7 @@ public class ResourceLoader
     private static final String ERROR_SKIPPED = "Resource loader interrupted !";
 
     /** Handled resources. */
-    final Map<Enum<?>, Resource> resources = new HashMap<>();
+    final Map<Enum<?>, Resource> resources = new HashMap<Enum<?>, Resource>();
     /** Done. */
     final AtomicBoolean done = new AtomicBoolean(false);
     /** Started. */

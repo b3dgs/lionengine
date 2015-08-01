@@ -58,10 +58,10 @@ public final class ConfigTileGroup
      */
     public static Collection<TileGroup> create(XmlNode root) throws LionEngineException
     {
-        final Collection<TileGroup> groups = new ArrayList<>();
+        final Collection<TileGroup> groups = new ArrayList<TileGroup>();
         for (final XmlNode node : root.getChildren(GROUP))
         {
-            final Collection<TileRef> tiles = new ArrayList<>();
+            final Collection<TileRef> tiles = new ArrayList<TileRef>();
             for (final XmlNode ref : node.getChildren(TILE))
             {
                 tiles.add(new TileRef(ref.readInteger(SHEET), ref.readInteger(NUMBER)));

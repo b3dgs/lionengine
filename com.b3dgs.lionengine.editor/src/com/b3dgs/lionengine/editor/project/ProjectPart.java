@@ -25,8 +25,6 @@ import javax.annotation.PostConstruct;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MenuDetectEvent;
-import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -156,14 +154,7 @@ public final class ProjectPart implements Focusable
                 updateSelection();
             }
         });
-        tree.addMenuDetectListener(new MenuDetectListener()
-        {
-            @Override
-            public void menuDetected(MenuDetectEvent menuDetectEvent)
-            {
-                updateMenu();
-            }
-        });
+        tree.addMenuDetectListener(menuDetectEvent -> updateMenu());
         menuService.registerContextMenu(tree, ProjectPart.MENU_ID);
     }
 
@@ -209,18 +200,14 @@ public final class ProjectPart implements Focusable
 
         tree.layout();
 
-        tree.getDisplay().asyncExec(new Runnable()
+        tree.getDisplay().asyncExec(() ->
         {
-            @Override
-            public void run()
+            for (final TreeItem item : tree.getItems())
             {
-                for (final TreeItem item : tree.getItems())
+                item.setExpanded(true);
+                for (final TreeItem child : item.getItems())
                 {
-                    item.setExpanded(true);
-                    for (final TreeItem child : item.getItems())
-                    {
-                        child.setExpanded(true);
-                    }
+                    child.setExpanded(true);
                 }
             }
         });

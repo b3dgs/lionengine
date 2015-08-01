@@ -357,7 +357,7 @@ final class XmlNodeImpl implements XmlNode
     @Override
     public Collection<XmlNode> getChildren(String name)
     {
-        final Collection<XmlNode> nodes = new ArrayList<>(1);
+        final Collection<XmlNode> nodes = new ArrayList<XmlNode>(1);
         final NodeList list = root.getElementsByTagName(name);
         for (int i = 0; i < list.getLength(); i++)
         {
@@ -373,7 +373,7 @@ final class XmlNodeImpl implements XmlNode
     @Override
     public Collection<XmlNode> getChildren()
     {
-        final Collection<XmlNode> nodes = new ArrayList<>(1);
+        final Collection<XmlNode> nodes = new ArrayList<XmlNode>(1);
         final NodeList list = root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {
@@ -389,7 +389,7 @@ final class XmlNodeImpl implements XmlNode
     @Override
     public Map<String, String> getAttributes()
     {
-        final Map<String, String> attributes = new HashMap<>();
+        final Map<String, String> attributes = new HashMap<String, String>();
         final NamedNodeMap map = root.getAttributes();
         for (int i = 0; i < map.getLength(); i++)
         {

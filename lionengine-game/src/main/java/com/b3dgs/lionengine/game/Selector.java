@@ -82,7 +82,7 @@ public class Selector implements Updatable, Renderable
     {
         this.viewer = viewer;
         this.cursor = cursor;
-        listeners = new HashSet<>(1);
+        listeners = new HashSet<SelectorListener>(1);
         selectionArea = Geom.createRectangle();
         clickableArea = Geom.createRectangle();
         colorSelection = ColorRgba.GRAY;

@@ -53,7 +53,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 public final class LevelRipConverter
 {
     /** Progress listener. */
-    private final Collection<ProgressListener> listeners = new HashSet<>();
+    private final Collection<ProgressListener> listeners = new HashSet<ProgressListener>();
     /** Map reference. */
     private final MapTile map;
     /** Level rip image. */

@@ -122,14 +122,10 @@ public class LoaderTest
     {
         final Loader loader = new Loader(CONFIG);
         final Thread.UncaughtExceptionHandler old = loader.getRenderer().getUncaughtExceptionHandler();
-        final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
+        final Thread.UncaughtExceptionHandler handler = (thread, exception) ->
         {
-            @Override
-            public void uncaughtException(Thread thread, Throwable exception)
-            {
-                old.uncaughtException(thread, exception);
-                uncaught = true;
-            }
+            old.uncaughtException(thread, exception);
+            uncaught = true;
         };
 
         loader.getRenderer().setUncaughtExceptionHandler(handler);

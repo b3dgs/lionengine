@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
@@ -39,7 +40,6 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
-import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -102,11 +102,11 @@ public class MapTileGame implements MapTile
     }
 
     /** Sheets list. */
-    private final Map<Integer, SpriteTiled> sheets = new HashMap<>();
+    private final Map<Integer, SpriteTiled> sheets = new HashMap<Integer, SpriteTiled>();
     /** Features list. */
-    private final Features<MapTileFeature> features = new Features<>(MapTileFeature.class);
+    private final Features<MapTileFeature> features = new Features<MapTileFeature>(MapTileFeature.class);
     /** Tile groups list. */
-    private final Map<String, TileGroup> groups = new HashMap<>();
+    private final Map<String, TileGroup> groups = new HashMap<String, TileGroup>();
     /** Viewer reference. */
     private final Viewer viewer;
     /** Services reference. */
@@ -336,7 +336,7 @@ public class MapTileGame implements MapTile
         this.widthInTile = widthInTile;
         this.heightInTile = heightInTile;
         radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * heightInTile));
-        tiles = new ArrayList<>(heightInTile);
+        tiles = new ArrayList<List<Tile>>(heightInTile);
 
         for (int v = 0; v < heightInTile; v++)
         {
@@ -441,7 +441,7 @@ public class MapTileGame implements MapTile
     {
         try
         {
-            final F instance = Factory.create(feature, new Class<?>[]
+            final F instance = UtilReflection.create(feature, new Class<?>[]
             {
                 Services.class
             }, services);
@@ -666,7 +666,7 @@ public class MapTileGame implements MapTile
         double h = ox;
         double v = oy;
 
-        final Collection<Tile> found = new ArrayList<>();
+        final Collection<Tile> found = new ArrayList<Tile>();
         for (int count = 0; count < norm; count++)
         {
             v += sy;

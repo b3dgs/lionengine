@@ -43,7 +43,7 @@ class StateDieMario extends StateGame
      */
     public StateDieMario(Entity entity, Animation animation)
     {
-        super(EntityState.DEATH_MARIO);
+        super(MarioState.DEATH);
         this.entity = entity;
         this.animation = animation;
         animator = entity.surface;

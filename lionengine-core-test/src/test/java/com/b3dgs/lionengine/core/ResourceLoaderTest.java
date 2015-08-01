@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.lang.Thread.UncaughtExceptionHandler;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -154,15 +152,11 @@ public class ResourceLoaderTest
                 resourceLoader.await();
             }
         };
-        thread.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
+        thread.setUncaughtExceptionHandler((thread1, throwable) ->
         {
-            @Override
-            public void uncaughtException(Thread thread, Throwable throwable)
+            if (throwable instanceof LionEngineException)
             {
-                if (throwable instanceof LionEngineException)
-                {
-                    exception = (LionEngineException) throwable;
-                }
+                exception = (LionEngineException) throwable;
             }
         });
         thread.start();

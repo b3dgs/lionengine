@@ -65,7 +65,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 public class LauncherModel extends TraitModel implements Launcher
 {
     /** Launcher listeners. */
-    private final Collection<LauncherListener> listeners = new HashSet<>();
+    private final Collection<LauncherListener> listeners = new HashSet<LauncherListener>();
     /** Fire timer. */
     private final Timing fire = new Timing();
     /** Launchable configuration. */

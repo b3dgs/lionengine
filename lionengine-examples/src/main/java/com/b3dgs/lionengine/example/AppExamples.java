@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.example;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -60,6 +60,8 @@ public class AppExamples
 {
     /** Application name. */
     public static final String NAME = "LionEngine Examples";
+    /** Executor. */
+    private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
     /**
      * Main function.
@@ -95,14 +97,7 @@ public class AppExamples
         addExample(panel, "Pong", AppPong.class);
 
         final JButton exit = new JButton("Exit");
-        exit.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent event)
-            {
-                frame.dispose();
-            }
-        });
+        exit.addActionListener(event -> terminate(frame));
         panel.add(exit);
 
         frame.addWindowListener(new WindowAdapter()
@@ -110,22 +105,29 @@ public class AppExamples
             @Override
             public void windowClosing(WindowEvent event)
             {
-                frame.dispose();
+                terminate(frame);
             }
         });
 
-        SwingUtilities.invokeLater(new Runnable()
+        SwingUtilities.invokeLater(() ->
         {
-            @Override
-            public void run()
-            {
-                frame.add(panel);
-                frame.setResizable(false);
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
+            frame.add(panel);
+            frame.setResizable(false);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
+    }
+
+    /**
+     * Terminate example.
+     * 
+     * @param frame The main frame reference.
+     */
+    static void terminate(JFrame frame)
+    {
+        EXECUTOR.shutdownNow();
+        frame.dispose();
     }
 
     /**
@@ -138,49 +140,34 @@ public class AppExamples
     private static void addExample(final JPanel panel, String name, final Class<?> example)
     {
         final JButton drawable = new JButton(name);
-        drawable.addActionListener(new ActionListener()
+        drawable.addActionListener(event ->
         {
-            @Override
-            public void actionPerformed(ActionEvent event)
+            UtilitySwing.setEnabled(panel.getComponents(), false);
+            try
             {
-                UtilitySwing.setEnabled(panel.getComponents(), false);
-                try
-                {
-                    example.getDeclaredMethod("main", String[].class).invoke(example, (Object[]) new String[1]);
-                }
-                catch (final ReflectiveOperationException exception)
-                {
-                    Verbose.exception(AppExamples.class, "addExample", exception);
-                }
-                final Thread thread = new Thread()
-                {
-                    @Override
-                    public void run()
-                    {
-                        while (EngineCore.isStarted())
-                        {
-                            try
-                            {
-                                Thread.sleep(250);
-                            }
-                            catch (final InterruptedException exception)
-                            {
-                                Thread.currentThread().interrupt();
-                                break;
-                            }
-                        }
-                        SwingUtilities.invokeLater(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                UtilitySwing.setEnabled(panel.getComponents(), true);
-                            }
-                        });
-                    }
-                };
-                thread.start();
+                example.getDeclaredMethod("main", String[].class).invoke(example, (Object[]) new String[1]);
             }
+            catch (final ReflectiveOperationException exception)
+            {
+                Verbose.exception(AppExamples.class, "addExample", exception);
+            }
+            final Runnable runnable = () ->
+            {
+                while (EngineCore.isStarted())
+                {
+                    try
+                    {
+                        Thread.sleep(250);
+                    }
+                    catch (final InterruptedException exception)
+                    {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+                SwingUtilities.invokeLater(() -> UtilitySwing.setEnabled(panel.getComponents(), true));
+            };
+            EXECUTOR.execute(runnable);
         });
         panel.add(drawable);
     }

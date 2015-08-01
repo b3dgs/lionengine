@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
 public class ProducibleModel extends TraitModel implements Producible
 {
     /** Producer listeners. */
-    private final Collection<ProducibleListener> listeners = new ArrayList<>();
+    private final Collection<ProducibleListener> listeners = new ArrayList<ProducibleListener>();
     /** Producible media. */
     private Media media;
     /** Production steps needed. */

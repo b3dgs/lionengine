@@ -103,7 +103,7 @@ public class SetupSurfaceRastered extends SetupSurface
         this.smoothRaster = smoothRaster;
         if (rasterFile != null)
         {
-            rastersAnim = new ArrayList<>(Rasterable.MAX_RASTERS);
+            rastersAnim = new ArrayList<SpriteAnimated>(Rasterable.MAX_RASTERS);
             final ConfigFrames framesData = ConfigFrames.create(getConfigurer());
             hf = framesData.getHorizontal();
             vf = framesData.getVertical();

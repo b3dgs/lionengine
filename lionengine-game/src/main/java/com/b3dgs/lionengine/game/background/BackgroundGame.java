@@ -108,7 +108,7 @@ public abstract class BackgroundGame implements Background
     public BackgroundGame(String theme, int min, int max)
     {
         this.theme = theme;
-        components = new ArrayList<>(1);
+        components = new ArrayList<BackgroundComponent>(1);
         maxY = max;
         minY = min;
     }

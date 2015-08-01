@@ -55,7 +55,7 @@ public final class LionEngineException extends RuntimeException
         "UtilProjectStats", "UtilRandom", "Version"
     };
     /** The list of all ignored packages and classes. */
-    private static final Collection<String> IGNORED = new ArrayList<>();
+    private static final Collection<String> IGNORED = new ArrayList<String>();
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599464L;
     /** Activate the ignore flag. */
@@ -131,7 +131,7 @@ public final class LionEngineException extends RuntimeException
      */
     private static StackTraceElement[] getFilteredTraces(StackTraceElement[] allTrace)
     {
-        final Collection<StackTraceElement> neededTrace = new ArrayList<>(4);
+        final Collection<StackTraceElement> neededTrace = new ArrayList<StackTraceElement>(4);
         for (final StackTraceElement element : allTrace)
         {
             final boolean add;
@@ -237,7 +237,7 @@ public final class LionEngineException extends RuntimeException
     private StackTraceElement[] getFilteredStackTrace(Throwable exception, StringBuilder buffer)
     {
         Throwable current = exception;
-        final LinkedList<StackTraceElement> traces = new LinkedList<>();
+        final LinkedList<StackTraceElement> traces = new LinkedList<StackTraceElement>();
         for (final StackTraceElement element : getFilteredTraces(getStackTrace()))
         {
             traces.add(element);
