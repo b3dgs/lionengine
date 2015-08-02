@@ -81,6 +81,7 @@ public final class ToolsSwt
         {
             final ImageData data = image.getImageData();
             data.transparentPixel = ColorRgba.TRANSPARENT.getRgba();
+            image.dispose();
             return new Image(ScreenSwt.display, data);
         }
         return image;
@@ -318,11 +319,14 @@ public final class ToolsSwt
         final RGB[] colors = palette.getRGBs();
         final Map<Integer, RGB> newColors = new TreeMap<Integer, RGB>();
         final Map<RGB, Integer> newColorsPixel = new HashMap<RGB, Integer>();
-        for (final RGB color : colors)
+        if (colors != null)
         {
-            final ColorRgba colorRgba = new ColorRgba(color.red, color.green, color.blue);
-            newColors.put(Integer.valueOf(colorRgba.getRgba()), color);
-            newColorsPixel.put(color, Integer.valueOf(palette.getPixel(color)));
+            for (final RGB color : colors)
+            {
+                final ColorRgba colorRgba = new ColorRgba(color.red, color.green, color.blue);
+                newColors.put(Integer.valueOf(colorRgba.getRgba()), color);
+                newColorsPixel.put(color, Integer.valueOf(palette.getPixel(color)));
+            }
         }
 
         final int divisorRed = 0x010000;

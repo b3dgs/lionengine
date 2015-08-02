@@ -101,11 +101,11 @@ abstract class ScreenSwt implements Screen, FocusListener
     {
         Check.notNull(renderer);
 
-        ScreenSwt.display = new Display();
+        display = new Display();
         this.renderer = renderer;
         config = renderer.getConfig();
         cursorHidden = ToolsSwt.createHiddenCursor();
-        cursorDefault = ScreenSwt.display.getSystemCursor(0);
+        cursorDefault = display.getSystemCursor(0);
         graphics = Graphics.createGraphic();
         devices = new HashMap<Class<? extends InputDevice>, InputDevice>(2);
         frame = initMainFrame(config.isWindowed());
@@ -128,12 +128,12 @@ abstract class ScreenSwt implements Screen, FocusListener
         final Shell shell;
         if (windowed)
         {
-            shell = new Shell(ScreenSwt.display, SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.NO_BACKGROUND);
+            shell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.NO_BACKGROUND);
         }
         else
         {
-            shell = new Shell(ScreenSwt.display, SWT.NO_TRIM | SWT.ON_TOP);
-            shell.setBounds(ScreenSwt.display.getPrimaryMonitor().getBounds());
+            shell = new Shell(display, SWT.NO_TRIM | SWT.ON_TOP);
+            shell.setBounds(display.getPrimaryMonitor().getBounds());
         }
         shell.setText(EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion());
         shell.addDisposeListener(new DisposeListener()
@@ -162,7 +162,7 @@ abstract class ScreenSwt implements Screen, FocusListener
      */
     private void addDeviceMouse()
     {
-        final MouseSwt mouse = new MouseSwt(ScreenSwt.display);
+        final MouseSwt mouse = new MouseSwt(display);
         addMouseListener(mouse);
         devices.put(Mouse.class, mouse);
     }
@@ -237,7 +237,7 @@ abstract class ScreenSwt implements Screen, FocusListener
     @Override
     public void update()
     {
-        ScreenSwt.display.readAndDispatch();
+        display.readAndDispatch();
         if (!canvas.isDisposed())
         {
             final GC gc = new GC(canvas);
@@ -260,7 +260,8 @@ abstract class ScreenSwt implements Screen, FocusListener
         update();
         buf.dispose();
         frame.dispose();
-        ScreenSwt.display.dispose();
+        display.dispose();
+        display = null;
     }
 
     @Override
@@ -307,7 +308,7 @@ abstract class ScreenSwt implements Screen, FocusListener
     {
         if (!frame.isDisposed())
         {
-            final Image icon = new Image(ScreenSwt.display, filename);
+            final Image icon = new Image(display, filename);
             frame.setImage(icon);
         }
     }

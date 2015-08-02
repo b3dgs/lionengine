@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.io.File;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.FactoryMedia;
 import com.b3dgs.lionengine.core.Media;
@@ -29,7 +31,7 @@ import com.b3dgs.lionengine.core.Media;
 final class FactoryMediaSwt implements FactoryMedia
 {
     /** Path separator. */
-    private String separator;
+    private String separator = File.separator;
 
     /**
      * Internal constructor.

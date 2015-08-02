@@ -48,15 +48,15 @@ public class FactoryGraphicProviderTest
     private static final Config CONFIG = new Config(new Resolution(320, 240, 60), 32, true);
 
     /** Image. */
-    protected static final Media MEDIA_IMAGE = new MediaMock("image.png");
+    private static final Media MEDIA_IMAGE = new MediaMock("image.png");
     /** Raster. */
-    protected static final Media MEDIA_RASTER = new MediaMock("raster.xml");
+    private static final Media MEDIA_RASTER = new MediaMock("raster.xml");
     /** Raster error. */
-    protected static final Media RASTER_ERROR = new MediaMock("raster_error.xml");
+    private static final Media RASTER_ERROR = new MediaMock("raster_error.xml");
     /** Save image. */
-    protected static Media mediaSave;
+    private static Media mediaSave;
     /** Image. */
-    protected static ImageBuffer image;
+    private static ImageBuffer image;
 
     /**
      * Prepare test.

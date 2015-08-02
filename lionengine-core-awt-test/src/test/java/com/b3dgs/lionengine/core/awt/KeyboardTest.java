@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.Label;
 import java.awt.event.KeyEvent;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -111,5 +112,35 @@ public class KeyboardTest
         Assert.assertEquals(-1.0, KEYBOARD.getVerticalDirection(), 0.0001);
         KEYBOARD.keyReleased(createEvent(Keyboard.DOWN));
         Assert.assertEquals(0.0, KEYBOARD.getVerticalDirection(), 0.0001);
+    }
+
+    /**
+     * Test the keyboard events.
+     */
+    @Test
+    public void testEvents()
+    {
+        final AtomicBoolean left = new AtomicBoolean(false);
+
+        KEYBOARD.addActionPressed(Keyboard.LEFT, () -> left.set(true));
+        KEYBOARD.addActionPressed(Keyboard.LEFT, () -> left.set(true));
+        KEYBOARD.addActionReleased(Keyboard.LEFT, () -> left.set(false));
+        KEYBOARD.addActionReleased(Keyboard.LEFT, () -> left.set(false));
+        Assert.assertFalse(left.get());
+
+        KEYBOARD.keyPressed(createEvent(Keyboard.LEFT));
+        Assert.assertTrue(left.get());
+
+        KEYBOARD.keyReleased(createEvent(Keyboard.LEFT));
+        Assert.assertFalse(left.get());
+
+        KEYBOARD.removeActionsPressed();
+        KEYBOARD.removeActionsReleased();
+
+        KEYBOARD.keyPressed(createEvent(Keyboard.LEFT));
+        Assert.assertFalse(left.get());
+
+        KEYBOARD.keyReleased(createEvent(Keyboard.LEFT));
+        Assert.assertFalse(left.get());
     }
 }

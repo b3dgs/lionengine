@@ -24,7 +24,9 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.test.ViewerMock;
 
 /**
  * Test the graphic class.
@@ -53,8 +55,8 @@ public class GraphicAwtTest
         final GraphicAwt g = new GraphicAwt(buffer.createGraphics());
 
         Assert.assertNotNull(g.getGraphic());
-        g.clear(0, 0, buffer.getWidth(), buffer.getWidth());
-        g.copyArea(0, 0, buffer.getWidth(), buffer.getWidth(), 0, 0);
+        g.clear(0, 0, buffer.getWidth(), buffer.getHeight());
+        g.copyArea(0, 0, buffer.getWidth(), buffer.getHeight(), 0, 0);
 
         final ImageBuffer image = new ImageBufferAwt(buffer);
         g.drawImage(image, 0, 0);
@@ -64,10 +66,10 @@ public class GraphicAwtTest
         g.drawImage(image, 0, 0, 0, 0, 0, 0, 0, 0);
 
         g.drawLine(0, 0, 0, 0);
-        g.drawOval(0, 0, buffer.getWidth(), buffer.getWidth(), true);
-        g.drawOval(0, 0, buffer.getWidth(), buffer.getWidth(), false);
-        g.drawRect(0, 0, buffer.getWidth(), buffer.getWidth(), true);
-        g.drawRect(0, 0, buffer.getWidth(), buffer.getWidth(), false);
+        g.drawOval(0, 0, buffer.getWidth(), buffer.getHeight(), true);
+        g.drawOval(0, 0, buffer.getWidth(), buffer.getHeight(), false);
+        g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), true);
+        g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), false);
 
         Assert.assertEquals(ColorRgba.WHITE.getRgba(), g.getColor().getRgba());
         g.setColor(ColorRgba.BLUE);
@@ -75,6 +77,11 @@ public class GraphicAwtTest
 
         g.setColorGradient(new ColorGradient(0, 0, ColorRgba.CYAN, 100, 100, ColorRgba.RED));
         g.drawGradient(0, 0, 100, 100);
+
+        g.drawLine(new ViewerMock(), 0, 0, 0, 0);
+        g.drawOval(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, buffer.getWidth(), buffer.getHeight(), true);
+        g.drawRect(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, buffer.getWidth(), buffer.getHeight(), true);
+        g.drawGradient(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, 100, 100);
 
         g.dispose();
 

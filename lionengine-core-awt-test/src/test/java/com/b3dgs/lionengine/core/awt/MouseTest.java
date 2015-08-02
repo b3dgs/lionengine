@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.Label;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -35,7 +36,7 @@ import com.b3dgs.lionengine.Resolution;
 public class MouseTest
 {
     /** Mouse instance. */
-    private static final MouseAwt MOUSE = new MouseAwt();
+    static final MouseAwt MOUSE = new MouseAwt();
 
     /**
      * Prepare test.
@@ -153,5 +154,26 @@ public class MouseTest
         MOUSE.mouseExited(null);
         MOUSE.mouseWheelMoved(null);
         MOUSE.mouseClicked(null);
+    }
+
+    /**
+     * Test the mouse event.
+     */
+    @Test
+    public void testEvent()
+    {
+        final AtomicBoolean left = new AtomicBoolean(false);
+
+        MOUSE.addActionPressed(Mouse.LEFT, () -> left.set(true));
+        MOUSE.addActionPressed(Mouse.LEFT, () -> left.set(true));
+        MOUSE.addActionReleased(Mouse.LEFT, () -> left.set(false));
+        MOUSE.addActionReleased(Mouse.LEFT, () -> left.set(false));
+        Assert.assertFalse(left.get());
+
+        MOUSE.mousePressed(createEvent(Mouse.LEFT, 0, 0));
+        Assert.assertTrue(left.get());
+
+        MOUSE.mouseReleased(createEvent(Mouse.LEFT, 0, 0));
+        Assert.assertFalse(left.get());
     }
 }

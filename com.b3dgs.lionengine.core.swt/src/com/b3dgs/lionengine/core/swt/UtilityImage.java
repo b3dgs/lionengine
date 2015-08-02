@@ -25,6 +25,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
@@ -98,6 +99,9 @@ public final class UtilityImage
      */
     public static ImageBuffer createImage(int width, int height, Transparency transparency)
     {
+        Check.superiorOrEqual(width, 0);
+        Check.superiorOrEqual(height, 0);
+
         final Image image = ToolsSwt.createImage(width, height, getTransparency(transparency));
         final ImageBufferSwt buffer = new ImageBufferSwt(image);
 

@@ -207,4 +207,50 @@ public class UtilityMediaTest
             Assert.assertNotNull(input);
         }
     }
+
+    /**
+     * Test is exists.
+     */
+    @Test
+    public void testExists()
+    {
+        UtilityMedia.setLoadFromJar(null);
+        UtilityMedia.setResourcesDirectory(Constant.EMPTY_STRING);
+        final Media media = new MediaAwt(MediaAwtTest.class.getResource("raster.xml").getFile());
+        Assert.assertTrue(media.exists());
+    }
+
+    /**
+     * Test is exists from jar.
+     */
+    @Test
+    public void testExistsFromJar()
+    {
+        UtilityMedia.setLoadFromJar(UtilityMediaTest.class);
+        final Media media = new MediaAwt("raster.xml");
+        Assert.assertTrue(media.exists());
+    }
+
+    /**
+     * Test if not exists.
+     */
+    @Test
+    public void testNotExists()
+    {
+        UtilityMedia.setLoadFromJar(null);
+        UtilityMedia.setResourcesDirectory(Constant.EMPTY_STRING);
+        final Media media = new MediaAwt("void");
+        Assert.assertFalse(UtilityMedia.exists(media));
+    }
+
+    /**
+     * Test if not exists.
+     */
+    @Test
+    public void testNotExistsFromJar()
+    {
+        UtilityMedia.setLoadFromJar(UtilityMediaTest.class);
+        final Media media = new MediaAwt("void");
+        Assert.assertFalse(UtilityMedia.exists(media));
+    }
 }

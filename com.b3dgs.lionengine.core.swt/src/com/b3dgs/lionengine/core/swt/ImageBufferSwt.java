@@ -54,6 +54,7 @@ final class ImageBufferSwt implements ImageBuffer
             case SWT.TRANSPARENCY_MASK:
                 value = Transparency.BITMASK;
                 break;
+            case SWT.TRANSPARENCY_PIXEL:
             case SWT.TRANSPARENCY_ALPHA:
                 value = Transparency.TRANSLUCENT;
                 break;

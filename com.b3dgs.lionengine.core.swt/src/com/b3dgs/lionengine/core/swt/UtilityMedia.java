@@ -179,35 +179,38 @@ public final class UtilityMedia
      */
     static synchronized boolean exists(Media media)
     {
-        final boolean exists;
         if (fromJar)
+        {
+            return existsFromJar(media);
+        }
+        return media.getFile().exists();
+    }
+
+    /**
+     * Check if media exists from jar.
+     * 
+     * @param media The media to check.
+     * @return <code>true</code> if exists, <code>false</code> else.
+     */
+    private static boolean existsFromJar(Media media)
+    {
+        try
         {
             final InputStream input = getInputStream(media);
             try
             {
-                exists = true;
+                input.close();
             }
-            catch (final LionEngineException exception)
+            catch (final IOException exception2)
             {
-                return false;
+                Verbose.exception(UtilityMedia.class, "exists", exception2);
             }
-            finally
-            {
-                try
-                {
-                    input.close();
-                }
-                catch (final IOException exception2)
-                {
-                    Verbose.exception(UtilityMedia.class, "exists", exception2);
-                }
-            }
+            return true;
         }
-        else
+        catch (final LionEngineException exception)
         {
-            exists = media.getFile().exists();
+            return false;
         }
-        return exists;
     }
 
     /**
