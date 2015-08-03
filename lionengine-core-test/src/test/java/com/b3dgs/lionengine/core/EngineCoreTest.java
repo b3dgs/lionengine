@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.test.SecurityManagerMock;
 public class EngineCoreTest
 {
     /** Test name. */
-    private static final String NAME = "EngineCoreTest";
+    private static final String NAME = EngineCoreTest.class.getName();
 
     /**
      * Reestablish the engine start state.
@@ -85,8 +85,8 @@ public class EngineCoreTest
     @Test(expected = LionEngineException.class)
     public void testAlreadyStarted()
     {
-        EngineCore.start(NAME, Version.create(0, 0, 0), new FactoryGraphicMock(), new FactoryMediaMock());
-        EngineCore.start(NAME, Version.create(0, 1, 0), new FactoryGraphicMock(), new FactoryMediaMock());
+        EngineCore.start(NAME, Version.DEFAULT, new FactoryGraphicMock(), new FactoryMediaMock());
+        EngineCore.start(NAME, Version.DEFAULT, new FactoryGraphicMock(), new FactoryMediaMock());
         EngineCore.terminate();
     }
 
@@ -150,6 +150,7 @@ public class EngineCoreTest
     {
         Assert.assertEquals(null, EngineCore.getSystemProperty("null", null));
         System.setSecurityManager(new SecurityManagerMock(false));
+
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         Assert.assertNull(Constant.EMPTY_STRING, EngineCore.getSystemProperty("security", null));
         Verbose.info("****************************************************************************************");

@@ -29,6 +29,8 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Hq2x;
+import com.b3dgs.lionengine.Hq3x;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
@@ -68,7 +70,7 @@ public class FactoryGraphicAwtTest
     @BeforeClass
     public static void setUp() throws IOException
     {
-        Engine.start("FactoryGraphicAwtTest", Version.create(1, 0, 0), FactoryGraphicAwtTest.class);
+        Engine.start(FactoryGraphicAwtTest.class.getName(), Version.DEFAULT, FactoryGraphicAwtTest.class);
 
         final File temp = Files.createTempFile("save", "png").toFile();
         temp.deleteOnExit();
@@ -77,6 +79,7 @@ public class FactoryGraphicAwtTest
         mediaSave = new MediaAwt(temp.getAbsolutePath());
         mediaRasterError = new MediaAwt("raster_error.xml");
         image = Graphics.getImageBuffer(mediaImage);
+        image.prepare();
     }
 
     /**
@@ -85,6 +88,7 @@ public class FactoryGraphicAwtTest
     @AfterClass
     public static void cleanUp()
     {
+        image.dispose();
         Engine.terminate();
     }
 
@@ -94,7 +98,7 @@ public class FactoryGraphicAwtTest
     @Test(expected = LionEngineException.class)
     public void testNegativeImageWidth()
     {
-        Graphics.createImageBuffer(-1, 1, Transparency.OPAQUE);
+        Assert.assertNull(Graphics.createImageBuffer(-1, 1, Transparency.OPAQUE));
     }
 
     /**
@@ -103,7 +107,7 @@ public class FactoryGraphicAwtTest
     @Test(expected = LionEngineException.class)
     public void testNegativeImageHeight()
     {
-        Graphics.createImageBuffer(1, -1, Transparency.OPAQUE);
+        Assert.assertNull(Graphics.createImageBuffer(1, -1, Transparency.OPAQUE));
     }
 
     /**
@@ -190,6 +194,9 @@ public class FactoryGraphicAwtTest
         Assert.assertNotEquals(imageA, imageB);
         Assert.assertEquals(imageB.getWidth(), imageA.getWidth());
         Assert.assertEquals(imageB.getHeight(), imageA.getHeight());
+
+        imageA.dispose();
+        imageB.dispose();
     }
 
     /**
@@ -217,9 +224,12 @@ public class FactoryGraphicAwtTest
     public void testApplyMask()
     {
         final ImageBuffer mask = Graphics.applyMask(image, ColorRgba.BLACK);
+
         Assert.assertNotEquals(image, mask);
         Assert.assertEquals(image.getWidth(), mask.getWidth());
         Assert.assertEquals(image.getHeight(), mask.getHeight());
+
+        mask.dispose();
     }
 
     /**
@@ -229,9 +239,12 @@ public class FactoryGraphicAwtTest
     public void testRotate()
     {
         final ImageBuffer rotate = Graphics.rotate(image, 90);
+
         Assert.assertNotEquals(image, rotate);
         Assert.assertEquals(image.getWidth(), rotate.getWidth());
         Assert.assertEquals(image.getHeight(), rotate.getHeight());
+
+        rotate.dispose();
     }
 
     /**
@@ -241,9 +254,12 @@ public class FactoryGraphicAwtTest
     public void testResize()
     {
         final ImageBuffer resized = Graphics.resize(image, 1, 2);
+
         Assert.assertNotEquals(image, resized);
         Assert.assertEquals(1, resized.getWidth());
         Assert.assertEquals(2, resized.getHeight());
+
+        resized.dispose();
     }
 
     /**
@@ -253,9 +269,12 @@ public class FactoryGraphicAwtTest
     public void testFlipHorizontal()
     {
         final ImageBuffer horizontal = Graphics.flipHorizontal(image);
+
         Assert.assertNotEquals(image, horizontal);
         Assert.assertEquals(image.getWidth(), horizontal.getWidth());
         Assert.assertEquals(image.getHeight(), horizontal.getHeight());
+
+        horizontal.dispose();
     }
 
     /**
@@ -265,9 +284,12 @@ public class FactoryGraphicAwtTest
     public void testFlipVertical()
     {
         final ImageBuffer vertical = Graphics.flipVertical(image);
+
         Assert.assertNotEquals(image, vertical);
         Assert.assertEquals(image.getWidth(), vertical.getWidth());
         Assert.assertEquals(image.getHeight(), vertical.getHeight());
+
+        vertical.dispose();
     }
 
     /**
@@ -277,6 +299,7 @@ public class FactoryGraphicAwtTest
     public void testSplitImage()
     {
         final ImageBuffer[] split = Graphics.splitImage(image, 2, 2);
+
         for (final ImageBuffer img1 : split)
         {
             for (final ImageBuffer img2 : split)
@@ -285,8 +308,14 @@ public class FactoryGraphicAwtTest
                 Assert.assertEquals(img1.getHeight(), img2.getHeight());
             }
         }
+
         Assert.assertEquals(image.getWidth() / 2, split[0].getWidth());
         Assert.assertEquals(image.getHeight() / 2, split[0].getHeight());
+
+        for (final ImageBuffer image : split)
+        {
+            image.dispose();
+        }
     }
 
     /**
@@ -311,11 +340,11 @@ public class FactoryGraphicAwtTest
                     break;
                 case HQ2X:
                     Assert.assertNotEquals(image, filtered);
-                    scale = 2;
+                    scale = Hq2x.SCALE;
                     break;
                 case HQ3X:
                     Assert.assertNotEquals(image, filtered);
-                    scale = 3;
+                    scale = Hq3x.SCALE;
                     break;
                 default:
                     scale = 0;
@@ -324,6 +353,7 @@ public class FactoryGraphicAwtTest
             Assert.assertEquals(image.getWidth() * scale, filtered.getWidth());
             Assert.assertEquals(image.getHeight() * scale, filtered.getHeight());
 
+            filtered.dispose();
         }
     }
 
@@ -343,9 +373,12 @@ public class FactoryGraphicAwtTest
     public void testGetRasterBuffer()
     {
         final ImageBuffer raster = Graphics.getRasterBuffer(image, 0, 0, 0, 255, 255, 255, 5);
+
         Assert.assertNotEquals(image, raster);
         Assert.assertEquals(image.getWidth(), raster.getWidth());
         Assert.assertEquals(image.getHeight(), raster.getHeight());
+
+        raster.dispose();
     }
 
     /**

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core.swt;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -145,16 +146,18 @@ final class ImageBufferSwt implements ImageBuffer
         final RGB color = new RGB(rgba.getRed(), rgba.getGreen(), rgba.getBlue());
         final int pixel = data.palette.getPixel(color);
         data.setPixel(x, y, pixel);
+        final Device device = image.getDevice();
         image.dispose();
-        image = new Image(ScreenSwt.display, data);
+        image = new Image(device, data);
     }
 
     @Override
     public void setRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
         data.setPixels(startX, startY, w, rgbArray, offset);
+        final Device device = image.getDevice();
         image.dispose();
-        image = new Image(ScreenSwt.display, data);
+        image = new Image(device, data);
     }
 
     @Override

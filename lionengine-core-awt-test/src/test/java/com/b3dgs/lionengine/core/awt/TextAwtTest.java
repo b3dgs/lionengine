@@ -67,5 +67,7 @@ public class TextAwtTest
 
         Assert.assertEquals(18, textIta.getWidth());
         Assert.assertEquals(12, textIta.getHeight());
+
+        g.dispose();
     }
 }

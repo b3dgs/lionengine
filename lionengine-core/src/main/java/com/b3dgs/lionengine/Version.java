@@ -27,6 +27,9 @@ package com.b3dgs.lionengine;
  */
 public final class Version
 {
+    /** Create the default version (1.0.0). */
+    public static final Version DEFAULT = create(1, 0, 0);
+
     /**
      * Create a new version descriptor.
      * 

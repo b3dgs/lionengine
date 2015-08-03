@@ -133,6 +133,10 @@ public final class Engine extends EngineCore
      */
     public static synchronized void terminate() throws LionEngineException
     {
+        if (!isStarted())
+        {
+            throw new LionEngineException(ERROR_STARTED_NOT);
+        }
         UtilityMedia.setResourcesDirectory(null);
         UtilityMedia.setLoadFromJar(null);
         EngineCore.terminate();

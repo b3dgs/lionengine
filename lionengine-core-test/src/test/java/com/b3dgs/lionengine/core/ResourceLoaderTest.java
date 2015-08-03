@@ -17,11 +17,14 @@
  */
 package com.b3dgs.lionengine.core;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
@@ -43,9 +46,6 @@ public class ResourceLoaderTest
         /** Test type. */
         TEST;
     }
-
-    /** Exception test. */
-    volatile LionEngineException exception;
 
     /**
      * Prepare test.
@@ -152,21 +152,23 @@ public class ResourceLoaderTest
                 resourceLoader.await();
             }
         };
+
+        final AtomicReference<LionEngineException> exception = new AtomicReference<>();
         thread.setUncaughtExceptionHandler((thread1, throwable) ->
         {
             if (throwable instanceof LionEngineException)
             {
-                exception = (LionEngineException) throwable;
+                exception.set((LionEngineException) throwable);
             }
         });
         thread.start();
-        Thread.sleep(100);
+        Thread.sleep(Constant.HUNDRED);
         thread.interrupt();
-        while (exception == null)
+        while (exception.get() == null)
         {
-            Thread.sleep(5);
+            Thread.sleep(Constant.DECADE);
         }
-        throw exception;
+        throw exception.get();
     }
 
     /**
@@ -187,7 +189,7 @@ public class ResourceLoaderTest
         {
             try
             {
-                Thread.sleep(1000);
+                Thread.sleep(Constant.THOUSAND);
             }
             catch (final InterruptedException exception)
             {

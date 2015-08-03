@@ -45,10 +45,10 @@ public abstract class EngineCore
     public static final String AUTHOR = "Pierre-Alexandre";
     /** Engine website. */
     public static final String WEBSITE = "http://lionengine.b3dgs.com";
+    /** Error message engine not started. */
+    protected static final String ERROR_STARTED_NOT = "The engine has not been started !";
     /** Error message engine already started. */
     private static final String ERROR_STARTED_ALREADY = "The engine has already been started !";
-    /** Error message engine not started. */
-    private static final String ERROR_STARTED_NOT = "The engine has not been started !";
     /** Error system property. */
     private static final String ERROR_PROPERTY = "Unable to get system property: ";
     /** Engine starting. */

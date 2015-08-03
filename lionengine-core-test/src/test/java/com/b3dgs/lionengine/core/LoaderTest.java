@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.core;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -46,9 +48,6 @@ public class LoaderTest
     private static final Config CONFIG = new Config(OUTPUT, 16, true);
     /** Icon. */
     private static final Media ICON = new MediaMock("image.png");
-
-    /** Uncaught flag. */
-    static boolean uncaught = false;
 
     /**
      * Prepare the test.
@@ -121,17 +120,12 @@ public class LoaderTest
     public void testFailNextSequence()
     {
         final Loader loader = new Loader(CONFIG);
-        final Thread.UncaughtExceptionHandler old = loader.getRenderer().getUncaughtExceptionHandler();
-        final Thread.UncaughtExceptionHandler handler = (thread, exception) ->
-        {
-            old.uncaughtException(thread, exception);
-            uncaught = true;
-        };
-
+        final AtomicBoolean uncaught = new AtomicBoolean(false);
+        final Thread.UncaughtExceptionHandler handler = (thread, exception) -> uncaught.set(true);
         loader.getRenderer().setUncaughtExceptionHandler(handler);
         loader.start(SequenceNextFailMock.class);
         waitEnd(loader);
-        Assert.assertTrue(uncaught);
+        Assert.assertTrue(uncaught.get());
     }
 
     /**

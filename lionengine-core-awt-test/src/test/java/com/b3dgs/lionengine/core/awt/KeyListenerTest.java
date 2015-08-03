@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,9 +32,9 @@ import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 public class KeyListenerTest
 {
     /** Pressed flag. */
-    boolean reachedPressed = false;
+    final AtomicBoolean reachedPressed = new AtomicBoolean(false);
     /** Released flag. */
-    boolean reachedReleased = false;
+    final AtomicBoolean reachedReleased = new AtomicBoolean(false);
 
     /**
      * Test key listener.
@@ -45,20 +47,19 @@ public class KeyListenerTest
             @Override
             public void keyPressed(int keyCode, char keyChar)
             {
-                reachedPressed = true;
+                reachedPressed.set(true);
             }
 
             @Override
             public void keyReleased(int keyCode, char keyChar)
             {
-                reachedReleased = true;
+                reachedReleased.set(true);
             }
         });
         listener.keyPressed(KeyboardTest.createEvent(Keyboard.UP));
         listener.keyReleased(KeyboardTest.createEvent(Keyboard.UP));
-        listener.keyTyped(KeyboardTest.createEvent(Keyboard.UP));
 
-        Assert.assertTrue(reachedPressed);
-        Assert.assertTrue(reachedReleased);
+        Assert.assertTrue(reachedPressed.get());
+        Assert.assertTrue(reachedReleased.get());
     }
 }

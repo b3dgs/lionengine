@@ -60,6 +60,7 @@ public class GraphicAwtTest
 
         final ImageBuffer image = new ImageBufferAwt(buffer);
         g.drawImage(image, 0, 0);
+
         final TransformAwt transform = new TransformAwt();
         g.drawImage(image, transform, 0, 0);
         g.drawImage(image, transform, 0, 0);

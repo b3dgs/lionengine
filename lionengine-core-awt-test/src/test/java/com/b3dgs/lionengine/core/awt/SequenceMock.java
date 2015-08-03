@@ -20,10 +20,10 @@ package com.b3dgs.lionengine.core.awt;
 import org.junit.Assert;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.test.Constant;
 
 /**
  * Single sequence mock.
@@ -39,7 +39,7 @@ public class SequenceMock extends Sequence
      */
     public SequenceMock(Loader loader)
     {
-        super(loader, new Resolution(320, 240, 60));
+        super(loader, Constant.RESOLUTION_320_240);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class SequenceMock extends Sequence
         setSystemCursorVisible(true);
         try
         {
-            Thread.sleep(750);
+            Thread.sleep(com.b3dgs.lionengine.Constant.THOUSAND);
         }
         catch (final InterruptedException exception)
         {

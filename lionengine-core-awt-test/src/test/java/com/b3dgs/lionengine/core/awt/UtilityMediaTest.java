@@ -79,9 +79,10 @@ public class UtilityMediaTest
     public void testUtility()
     {
         UtilityMedia.setLoadFromJar(UtilityMediaTest.class);
-
         UtilityMedia.setResourcesDirectory(null);
+
         Assert.assertEquals(Constant.EMPTY_STRING, UtilityMedia.getRessourcesDir());
+
         UtilityMedia.setResourcesDirectory("test");
         Assert.assertEquals("test/", UtilityMedia.getRessourcesDir());
 
@@ -99,6 +100,7 @@ public class UtilityMediaTest
     {
         UtilityMedia.setResourcesDirectory(Constant.EMPTY_STRING);
         UtilityMedia.setLoadFromJar(UtilityMediaTest.class);
+
         final File file = new File("raster.xml");
         final Media media = UtilityMedia.get(file);
         try (InputStream input = UtilityMedia.getInputStream(media))
@@ -118,6 +120,7 @@ public class UtilityMediaTest
     {
         UtilityMedia.setLoadFromJar(null);
         UtilityMedia.setResourcesDirectory("META-INF");
+
         final File file = new File("MANIFEST.MF");
         final Media media = new MediaAwt(file.getPath());
         try (InputStream input = UtilityMedia.getInputStream(media))
@@ -137,6 +140,7 @@ public class UtilityMediaTest
     {
         UtilityMedia.setLoadFromJar(null);
         UtilityMedia.setResourcesDirectory(Constant.EMPTY_STRING);
+
         final File file = new File("test.xml");
         final Media media = UtilityMedia.get(file);
         try (OutputStream output = UtilityMedia.getOutputStream(media))
@@ -159,6 +163,7 @@ public class UtilityMediaTest
     public void testInputStreamFail() throws LionEngineException, IOException
     {
         UtilityMedia.setLoadFromJar(UtilityMediaTest.class);
+
         final File file = new File("none");
         final Media media = UtilityMedia.get(file);
         try (InputStream input = UtilityMedia.getInputStream(media))
@@ -178,6 +183,7 @@ public class UtilityMediaTest
     {
         UtilityMedia.setResourcesDirectory(null);
         UtilityMedia.setLoadFromJar(null);
+
         final File file = new File("test.xml");
         final Media media = UtilityMedia.get(file);
         try (OutputStream output = UtilityMedia.getOutputStream(media))
@@ -200,6 +206,7 @@ public class UtilityMediaTest
     public void testInputStreamJarFail() throws LionEngineException, IOException
     {
         UtilityMedia.setLoadFromJar(null);
+
         final File file = new File("none");
         final Media media = UtilityMedia.get(file);
         try (InputStream input = UtilityMedia.getInputStream(media))
@@ -216,6 +223,7 @@ public class UtilityMediaTest
     {
         UtilityMedia.setLoadFromJar(null);
         UtilityMedia.setResourcesDirectory(Constant.EMPTY_STRING);
+
         final Media media = new MediaAwt(MediaAwtTest.class.getResource("raster.xml").getFile());
         Assert.assertTrue(media.exists());
     }
@@ -227,6 +235,7 @@ public class UtilityMediaTest
     public void testExistsFromJar()
     {
         UtilityMedia.setLoadFromJar(UtilityMediaTest.class);
+
         final Media media = new MediaAwt("raster.xml");
         Assert.assertTrue(media.exists());
     }
@@ -239,6 +248,7 @@ public class UtilityMediaTest
     {
         UtilityMedia.setLoadFromJar(null);
         UtilityMedia.setResourcesDirectory(Constant.EMPTY_STRING);
+
         final Media media = new MediaAwt("void");
         Assert.assertFalse(UtilityMedia.exists(media));
     }
@@ -250,6 +260,7 @@ public class UtilityMediaTest
     public void testNotExistsFromJar()
     {
         UtilityMedia.setLoadFromJar(UtilityMediaTest.class);
+
         final Media media = new MediaAwt("void");
         Assert.assertFalse(UtilityMedia.exists(media));
     }

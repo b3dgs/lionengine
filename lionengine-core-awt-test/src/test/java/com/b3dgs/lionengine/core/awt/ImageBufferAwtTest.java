@@ -40,17 +40,21 @@ public class ImageBufferAwtTest
     {
         final BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
         final ImageBufferAwt image = new ImageBufferAwt(buffer);
+
         Assert.assertNotNull(image.createGraphic());
         image.prepare();
         Assert.assertEquals(buffer, image.getBuffer());
+
         Assert.assertEquals(ColorRgba.BLACK.getRgba(), image.getRgb(0, 0));
         Assert.assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
         Assert.assertEquals(Transparency.OPAQUE, image.getTransparency());
         Assert.assertEquals(buffer.getWidth(), image.getWidth());
         Assert.assertEquals(buffer.getHeight(), image.getHeight());
+
         image.setRgb(0, 0, ColorRgba.BLUE.getRgba());
         Assert.assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(0, 0));
         image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
+
         image.dispose();
 
         Assert.assertEquals(Transparency.OPAQUE, ImageBufferAwt.getTransparency(java.awt.Transparency.OPAQUE));

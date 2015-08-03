@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.audio.sc68;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 
@@ -101,7 +102,7 @@ public class Sc68Test
         sc68.play(MUSIC);
         sc68.stop();
         sc68.play(MUSIC);
-        Thread.sleep(100);
+        Thread.sleep(Constant.HUNDRED);
         sc68.stop();
         sc68.play(MUSIC);
         sc68.pause();
@@ -109,7 +110,7 @@ public class Sc68Test
         for (int i = 0; i < 5; i++)
         {
             sc68.play(MUSIC);
-            Thread.sleep(100);
+            Thread.sleep(Constant.HUNDRED);
         }
         Thread.sleep(250);
         sc68.stop();

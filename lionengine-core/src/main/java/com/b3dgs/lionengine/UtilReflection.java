@@ -18,7 +18,9 @@
 package com.b3dgs.lionengine;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,6 +34,10 @@ public final class UtilReflection
 {
     /** Constructor error. */
     private static final String ERROR_CONSTRUCTOR = "Unable to create the following type: ";
+    /** Field error. */
+    private static final String ERROR_FIELD = "Unable to access to the following field: ";
+    /** Method error. */
+    private static final String ERROR_METHOD = "Unable to access to the following method: ";
 
     /**
      * Create a class instance with its parameters.
@@ -87,6 +93,23 @@ public final class UtilReflection
     }
 
     /**
+     * Get the parameter types as array.
+     * 
+     * @param arguments The arguments list.
+     * @return The arguments type array.
+     */
+    public static Class<?>[] getParamTypes(Object... arguments)
+    {
+        final Collection<Object> types = new ArrayList<Object>();
+        for (final Object argument : arguments)
+        {
+            types.add(argument.getClass());
+        }
+        final Class<?>[] typesArray = new Class<?>[types.size()];
+        return types.toArray(typesArray);
+    }
+
+    /**
      * Get a compatible constructor with the following parameters.
      * 
      * @param type The class type.
@@ -94,7 +117,7 @@ public final class UtilReflection
      * @return The constructor found.
      * @throws NoSuchMethodException If no constructor found.
      */
-    private static Constructor<?> getCompatibleConstructor(Class<?> type, Class<?>[] paramTypes)
+    public static Constructor<?> getCompatibleConstructor(Class<?> type, Class<?>[] paramTypes)
             throws NoSuchMethodException
     {
         for (final Constructor<?> current : type.getDeclaredConstructors())
@@ -124,20 +147,111 @@ public final class UtilReflection
     }
 
     /**
-     * Get the parameter types as array.
+     * Get method and call its return value with parameters.
      * 
-     * @param arguments The arguments list.
-     * @return The arguments type array.
+     * @param <T> The object type.
+     * @param object The object caller.
+     * @param name The method name.
+     * @param params The method parameters.
+     * @return The value returned.
      */
-    public static Class<?>[] getParamTypes(Object... arguments)
+    public static <T> T getMethod(Object object, String name, Object... params)
     {
-        final Collection<Object> types = new ArrayList<Object>();
-        for (final Object argument : arguments)
+        Check.notNull(object);
+        Check.notNull(name);
+        try
         {
-            types.add(argument.getClass());
+            final Class<?> clazz;
+            if (object instanceof Class)
+            {
+                clazz = (Class<?>) object;
+            }
+            else
+            {
+                clazz = object.getClass();
+            }
+            final Method method = clazz.getDeclaredMethod(name, getParamTypes(params));
+            final boolean accessible = method.isAccessible();
+            if (!accessible)
+            {
+                method.setAccessible(true);
+            }
+            @SuppressWarnings("unchecked")
+            final T value = (T) method.invoke(object, params);
+            if (method.isAccessible() != accessible)
+            {
+                method.setAccessible(accessible);
+            }
+            return value;
         }
-        final Class<?>[] typesArray = new Class<?>[types.size()];
-        return types.toArray(typesArray);
+        catch (final NoSuchMethodException exception)
+        {
+            throw new LionEngineException(exception, ERROR_METHOD, name);
+        }
+        catch (final IllegalArgumentException exception)
+        {
+            throw new LionEngineException(exception, ERROR_METHOD, name);
+        }
+        catch (final IllegalAccessException exception)
+        {
+            throw new LionEngineException(exception, ERROR_METHOD, name);
+        }
+        catch (final InvocationTargetException exception)
+        {
+            throw new LionEngineException(exception, ERROR_METHOD, name);
+        }
+    }
+
+    /**
+     * Get the field by reflection.
+     * 
+     * @param <T> The field type.
+     * @param object The object to use.
+     * @param name The field name.
+     * @return The field found.
+     * @throws LionEngineException If field not found.
+     */
+    public static <T> T getField(Object object, String name) throws LionEngineException
+    {
+        Check.notNull(object);
+        Check.notNull(name);
+        try
+        {
+            final Class<?> clazz;
+            if (object instanceof Class)
+            {
+                clazz = (Class<?>) object;
+            }
+            else
+            {
+                clazz = object.getClass();
+            }
+            final Field field = clazz.getDeclaredField(name);
+            final boolean accessible = field.isAccessible();
+            if (!accessible)
+            {
+                field.setAccessible(true);
+            }
+            @SuppressWarnings("unchecked")
+            final T value = (T) field.get(object);
+            if (field.isAccessible() != accessible)
+            {
+                field.setAccessible(accessible);
+            }
+            return value;
+        }
+        catch (final NoSuchFieldException exception)
+        {
+            throw new LionEngineException(exception, ERROR_FIELD, name);
+        }
+        catch (final IllegalArgumentException exception)
+        {
+            throw new LionEngineException(exception, ERROR_FIELD, name);
+        }
+        catch (final IllegalAccessException exception)
+        {
+            throw new LionEngineException(exception, ERROR_FIELD, name);
+        }
     }
 
     /**

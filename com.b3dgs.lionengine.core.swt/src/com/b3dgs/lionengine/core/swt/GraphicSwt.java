@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 
@@ -55,6 +56,8 @@ final class GraphicSwt implements Graphic
     private final Map<ImageBuffer, Image> cacheFlip = new HashMap<ImageBuffer, Image>();
     /** The graphic output. */
     private GC gc;
+    /** Device used. */
+    private Device device;
     /** Gradient paint. */
     private Color gradientColor1;
     /** Gradient paint. */
@@ -78,6 +81,7 @@ final class GraphicSwt implements Graphic
     GraphicSwt(GC g)
     {
         gc = g;
+        device = g.getDevice();
     }
 
     /*
@@ -87,10 +91,10 @@ final class GraphicSwt implements Graphic
     @Override
     public void clear(int x, int y, int width, int height)
     {
-        gc.setBackground(ScreenSwt.display.getSystemColor(SWT.COLOR_BLACK));
+        gc.setBackground(device.getSystemColor(SWT.COLOR_BLACK));
         gc.fillRectangle(0, 0, width, height);
-        gc.setBackground(ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE));
-        gc.setForeground(ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE));
+        gc.setBackground(device.getSystemColor(SWT.COLOR_WHITE));
+        gc.setForeground(device.getSystemColor(SWT.COLOR_WHITE));
     }
 
     @Override
@@ -230,7 +234,7 @@ final class GraphicSwt implements Graphic
         {
             lastColor.dispose();
         }
-        lastColor = new Color(ScreenSwt.display, color.getRed(), color.getGreen(), color.getBlue());
+        lastColor = new Color(device, color.getRed(), color.getGreen(), color.getBlue());
         gc.setAlpha(color.getAlpha());
         gc.setBackground(lastColor);
         gc.setForeground(lastColor);
@@ -249,8 +253,8 @@ final class GraphicSwt implements Graphic
         {
             gradientColor1.dispose();
         }
-        gradientColor1 = new Color(ScreenSwt.display, color1.getRed(), color1.getGreen(), color1.getBlue());
-        gradientColor2 = new Color(ScreenSwt.display, color2.getRed(), color2.getGreen(), color2.getBlue());
+        gradientColor1 = new Color(device, color1.getRed(), color1.getGreen(), color1.getBlue());
+        gradientColor2 = new Color(device, color2.getRed(), color2.getGreen(), color2.getBlue());
     }
 
     @Override
@@ -261,6 +265,10 @@ final class GraphicSwt implements Graphic
             gc.dispose();
         }
         gc = (GC) graphic;
+        if (gc != null)
+        {
+            device = gc.getDevice();
+        }
     }
 
     @Override

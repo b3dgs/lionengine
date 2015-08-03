@@ -136,7 +136,7 @@ final class TextSwt implements Text
             default:
                 throw new RuntimeException();
         }
-        final Color c = new Color(ScreenSwt.display, color.getRed(), color.getGreen(), color.getBlue());
+        final Color c = new Color(gc.getDevice(), color.getRed(), color.getGreen(), color.getBlue());
         gc.setForeground(c);
         gc.drawString(text, tx, ty, true);
         c.dispose();

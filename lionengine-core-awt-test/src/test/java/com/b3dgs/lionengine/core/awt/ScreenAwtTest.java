@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.core.awt;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.lang.Thread.State;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.After;
@@ -30,14 +28,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * Test the screen class.
@@ -46,6 +44,17 @@ import com.b3dgs.lionengine.core.Sequence;
  */
 public class ScreenAwtTest
 {
+    /** Test timeout in milliseconds. */
+    private static final long TIMEOUT = 5000;
+    /** Get renderer function. */
+    private static final String GET_RENDERER = "getRenderer";
+    /** Sequence field. */
+    private static final String SEQUENCE = "sequence";
+    /** Screen field. */
+    private static final String SCREEN = "screen";
+    /** Image media. */
+    private static final String IMAGE = "image.png";
+
     /**
      * Prepare test.
      * 
@@ -54,7 +63,7 @@ public class ScreenAwtTest
     @Before
     public void setUp() throws ReflectiveOperationException
     {
-        Engine.start("screen", Version.create(0, 0, 0), ScreenAwtTest.class);
+        Engine.start(ScreenAwtTest.class.getName(), Version.DEFAULT, ScreenAwtTest.class);
     }
 
     /**
@@ -67,87 +76,26 @@ public class ScreenAwtTest
     }
 
     /**
-     * Get the loader renderer by reflection.
-     * 
-     * @param loader The loader to use.
-     * @return The renderer found.
-     * @throws LionEngineException If reflection error.
-     */
-    private static Renderer getRenderer(Loader loader) throws LionEngineException
-    {
-        try
-        {
-            final Method method = loader.getClass().getDeclaredMethod("getRenderer");
-            method.setAccessible(true);
-            return (Renderer) method.invoke(loader);
-        }
-        catch (final ReflectiveOperationException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Get the screen by reflection.
-     * 
-     * @param renderer The loader to use.
-     * @return The screen found.
-     * @throws LionEngineException If reflection error.
-     */
-    private static Screen getScreen(Renderer renderer) throws LionEngineException
-    {
-        try
-        {
-            final Field field = Renderer.class.getDeclaredField("screen");
-            field.setAccessible(true);
-            return (Screen) field.get(renderer);
-        }
-        catch (final ReflectiveOperationException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Get the sequence by reflection.
-     * 
-     * @param renderer The renderer to use.
-     * @return The screen found.
-     * @throws LionEngineException If reflection error.
-     */
-    private static Sequence getSequence(Renderer renderer) throws LionEngineException
-    {
-        try
-        {
-            final Field field = Renderer.class.getDeclaredField("sequence");
-            field.setAccessible(true);
-            return (Sequence) field.get(renderer);
-        }
-        catch (final ReflectiveOperationException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
      * Test the windowed screen.
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = TIMEOUT)
     public void testWindowed() throws InterruptedException
     {
-        final Resolution resolution = new Resolution(320, 240, 60);
-        final Config config = new Config(resolution, 32, true);
-        config.setIcon(Medias.create("image.png"));
+        final Config config = new Config(com.b3dgs.lionengine.test.Constant.RESOLUTION_320_240, 32, true);
+        config.setIcon(Medias.create(IMAGE));
+
         final Loader loader = new Loader(config);
+        final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
+
         loader.start(SequenceMock.class);
-        final Renderer renderer = getRenderer(loader);
-        while (renderer.getState() == State.RUNNABLE || getSequence(renderer) == null)
+        while (renderer.getState() == State.RUNNABLE || UtilReflection.getField(renderer, SEQUENCE) == null)
         {
-            Thread.sleep(10);
+            Thread.sleep(Constant.DECADE);
         }
-        final Screen screen = getScreen(renderer);
+
+        final Screen screen = UtilReflection.getField(renderer, SCREEN);
         screen.requestFocus();
         renderer.join();
     }
@@ -157,26 +105,27 @@ public class ScreenAwtTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = TIMEOUT)
     public void testApplet() throws InterruptedException
     {
-        final Resolution resolution = new Resolution(320, 240, 60);
-        final Config config = new Config(resolution, 32, false);
-        config.setIcon(Medias.create("image.png"));
+        final Config config = new Config(com.b3dgs.lionengine.test.Constant.RESOLUTION_320_240, 32, false);
+        config.setIcon(Medias.create(IMAGE));
         config.setApplet(new AppletAwt());
+
         final Loader loader = new Loader(config);
-        loader.start(SequenceMock.class);
-        final Renderer renderer = getRenderer(loader);
+        final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
 
         final AtomicBoolean uncaught = new AtomicBoolean(false);
         final Thread.UncaughtExceptionHandler handler = (t, exception) -> uncaught.set(true);
         renderer.setUncaughtExceptionHandler(handler);
 
-        while (renderer.getState() == State.RUNNABLE || getSequence(renderer) == null)
+        loader.start(SequenceMock.class);
+        while (renderer.getState() == State.RUNNABLE || UtilReflection.getField(renderer, SEQUENCE) == null)
         {
-            Thread.sleep(10);
+            Thread.sleep(Constant.DECADE);
         }
-        final Screen screen = getScreen(renderer);
+
+        final Screen screen = UtilReflection.getField(renderer, SCREEN);
         screen.requestFocus();
         renderer.join();
         Assert.assertTrue(uncaught.get());
@@ -187,7 +136,7 @@ public class ScreenAwtTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 5000)
+    @Test(timeout = TIMEOUT)
     public void testFullscreen() throws InterruptedException
     {
         final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -196,15 +145,18 @@ public class ScreenAwtTest
 
         final Resolution resolution = new Resolution(width, height, 60);
         final Config config = new Config(resolution, 32, false);
-        config.setIcon(Medias.create("image.png"));
+        config.setIcon(Medias.create(IMAGE));
+
         final Loader loader = new Loader(config);
+        final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
+
         loader.start(SequenceMock.class);
-        final Renderer renderer = getRenderer(loader);
-        while (renderer.getState() == State.RUNNABLE || getSequence(renderer) == null)
+        while (renderer.getState() == State.RUNNABLE || UtilReflection.getField(renderer, SEQUENCE) == null)
         {
-            Thread.sleep(10);
+            Thread.sleep(Constant.DECADE);
         }
-        final Screen screen = getScreen(renderer);
+
+        final Screen screen = UtilReflection.getField(renderer, SCREEN);
         screen.requestFocus();
         renderer.join();
     }
@@ -214,24 +166,24 @@ public class ScreenAwtTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 1000)
+    @Test(timeout = TIMEOUT)
     public void testFullscreenFail() throws InterruptedException
     {
         final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         final Config config = new Config(resolution, 32, false);
         final Loader loader = new Loader(config);
-        final Renderer renderer = getRenderer(loader);
+        final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
 
         final AtomicBoolean uncaught = new AtomicBoolean(false);
-        final Thread.UncaughtExceptionHandler handler = (t, exception) -> uncaught.set(true);
+        final Thread.UncaughtExceptionHandler handler = (thread, exception) -> uncaught.set(true);
         renderer.setUncaughtExceptionHandler(handler);
 
         loader.start(SequenceMock.class);
-
         while (renderer.getState() == State.RUNNABLE)
         {
-            Thread.sleep(10);
+            Thread.sleep(Constant.DECADE);
         }
+
         renderer.join();
         Assert.assertTrue(uncaught.get());
     }

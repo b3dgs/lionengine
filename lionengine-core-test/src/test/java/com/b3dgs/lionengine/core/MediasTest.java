@@ -29,11 +29,11 @@ import com.b3dgs.lionengine.test.MediaMock;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
- * Test the factory media provider class.
+ * Test the medias factory class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FactoryMediaProviderTest
+public class MediasTest
 {
     /** Resources path. */
     private static final String PATH = "graphic";

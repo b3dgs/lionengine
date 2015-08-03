@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import java.lang.Thread.State;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -25,6 +26,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
@@ -49,8 +51,6 @@ public class RendererTest
     private static final Config CONFIG = new Config(OUTPUT, 16, true);
     /** Time out. */
     private static final int TIME_OUT = 5000;
-    /** Uncaught flag. */
-    static volatile boolean uncaught = false;
 
     /**
      * Prepare the test.
@@ -58,7 +58,10 @@ public class RendererTest
     @BeforeClass
     public static void prepareTest()
     {
-        EngineCore.start("RendererTest", Version.create(1, 0, 0), new FactoryGraphicMock(), new FactoryMediaMock());
+        EngineCore.start(RendererTest.class.getName(),
+                         Version.DEFAULT,
+                         new FactoryGraphicMock(),
+                         new FactoryMediaMock());
         Verbose.info("*********************************** SEQUENCE VERBOSE ***********************************");
     }
 
@@ -139,20 +142,20 @@ public class RendererTest
     {
         final Loader loader = new Loader(CONFIG);
         final Renderer renderer = loader.getRenderer();
-        final Thread.UncaughtExceptionHandler old = renderer.getUncaughtExceptionHandler();
-        final Thread.UncaughtExceptionHandler handler = (thread, exception) ->
-        {
-            old.uncaughtException(thread, exception);
-            uncaught = true;
-        };
+
+        final AtomicBoolean uncaught = new AtomicBoolean(false);
+        final Thread.UncaughtExceptionHandler handler = (thread, exception) -> uncaught.set(true);
         renderer.setUncaughtExceptionHandler(handler);
         renderer.startFirstSequence(loader, SequenceSingleMock.class);
+
         Assert.assertTrue(renderer.isStarted());
         Assert.assertNull(renderer.getNextSequence());
+
         renderer.join();
         renderer.startFirstSequence(loader, SequenceSingleMock.class);
         renderer.join();
-        Assert.assertTrue(uncaught);
+
+        Assert.assertTrue(uncaught.get());
     }
 
     /**
@@ -160,22 +163,25 @@ public class RendererTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 500)
+    @Test(timeout = TIME_OUT)
     public void testSequenceInterrupt() throws InterruptedException
     {
         final Loader loader = new Loader(CONFIG);
         final Renderer renderer = loader.getRenderer();
-        final Thread.UncaughtExceptionHandler handler = (t, exception) -> uncaught = true;
+
+        final AtomicBoolean uncaught = new AtomicBoolean(false);
+        final Thread.UncaughtExceptionHandler handler = (t, exception) -> uncaught.set(true);
         renderer.setUncaughtExceptionHandler(handler);
+
         loader.start(SequenceInterruptMock.class);
         while (renderer.getState() != State.TIMED_WAITING)
         {
-            Thread.sleep(50);
+            Thread.sleep(Constant.DECADE);
         }
         renderer.interrupt();
-        while (!uncaught)
+        while (!uncaught.get())
         {
-            // Wait
+            Thread.sleep(Constant.DECADE);
         }
         renderer.join();
     }
@@ -185,7 +191,7 @@ public class RendererTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = TIME_OUT + 1000)
+    @Test(timeout = TIME_OUT)
     public void testWaitScreenTimeout() throws InterruptedException
     {
         final Loader loader = new Loader(new Config(new Resolution(320, 240, 0), 16, true));
@@ -201,7 +207,7 @@ public class RendererTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 500)
+    @Test(timeout = TIME_OUT)
     public void testWaitScreenInterrupt() throws InterruptedException
     {
         final Loader loader = new Loader(new Config(new Resolution(320, 240, 0), 16, false));
@@ -242,11 +248,16 @@ public class RendererTest
     {
         final Loader loader = new Loader(CONFIG);
         final Renderer renderer = loader.getRenderer();
+
         EngineCore.terminate();
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         renderer.startFirstSequence(loader, SequenceLoopMock.class);
         renderer.join();
+
         Graphics.setFactoryGraphic(null);
-        EngineCore.start("RendererTest", Version.create(1, 0, 0), new FactoryGraphicMock(), new FactoryMediaMock());
+        EngineCore.start(RendererTest.class.getName(),
+                         Version.DEFAULT,
+                         new FactoryGraphicMock(),
+                         new FactoryMediaMock());
     }
 }

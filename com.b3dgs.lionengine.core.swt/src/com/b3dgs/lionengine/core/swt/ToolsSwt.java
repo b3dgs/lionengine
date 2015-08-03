@@ -27,6 +27,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -81,8 +82,9 @@ public final class ToolsSwt
         {
             final ImageData data = image.getImageData();
             data.transparentPixel = ColorRgba.TRANSPARENT.getRgba();
+            final Device device = image.getDevice();
             image.dispose();
-            return new Image(ScreenSwt.display, data);
+            return new Image(device, data);
         }
         return image;
     }
@@ -120,7 +122,7 @@ public final class ToolsSwt
      */
     public static Image getImage(Image image) throws SWTException
     {
-        return new Image(ScreenSwt.display, image, SWT.IMAGE_COPY);
+        return new Image(image.getDevice(), image, SWT.IMAGE_COPY);
     }
 
     /**
@@ -141,7 +143,7 @@ public final class ToolsSwt
         final ColorRgba mask = new ColorRgba(maskColor);
         newData.transparentPixel = newData.palette.getPixel(new RGB(mask.getRed(), mask.getGreen(), mask.getBlue()));
 
-        return new Image(ScreenSwt.display, newData);
+        return new Image(image.getDevice(), newData);
     }
 
     /**
@@ -166,7 +168,7 @@ public final class ToolsSwt
         {
             for (int x = 0; x < h; x++)
             {
-                images[frame] = new Image(ScreenSwt.display, width, height);
+                images[frame] = new Image(image.getDevice(), width, height);
                 final GC gc = new GC(images[frame]);
                 gc.drawImage(image, x * width, y * height, width, height, 0, 0, width, height);
                 gc.dispose();
@@ -193,9 +195,10 @@ public final class ToolsSwt
         final ImageData newData = new ImageData(width, height, sourceData.depth, sourceData.palette);
         newData.transparentPixel = sourceData.transparentPixel;
 
-        final Image rotated = new Image(ScreenSwt.display, newData);
+        final Device device = image.getDevice();
+        final Image rotated = new Image(device, newData);
         final GC gc = new GC(rotated);
-        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
+        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(device);
         final float rotate = (float) Math.toRadians(angle);
         final float cos = (float) Math.cos(rotate);
         final float sin = (float) Math.sin(rotate);
@@ -219,7 +222,7 @@ public final class ToolsSwt
      */
     public static Image resize(Image image, int width, int height) throws SWTException
     {
-        return new Image(ScreenSwt.display, image.getImageData().scaledTo(width, height));
+        return new Image(image.getDevice(), image.getImageData().scaledTo(width, height));
     }
 
     /**
@@ -261,8 +264,9 @@ public final class ToolsSwt
 
         final Image filtered = createImage(width * 2, height * 2, SWT.TRANSPARENCY_ALPHA);
         final GC gc = new GC(filtered);
+        final Device device = gc.getDevice();
 
-        final Transform transform = new Transform(ScreenSwt.display);
+        final Transform transform = new Transform(device);
         transform.scale(2.0f, 2.0f);
         gc.setTransform(transform);
         gc.drawImage(image, 0, 0);
@@ -270,7 +274,7 @@ public final class ToolsSwt
 
         final Image filtered2 = createImage(width, height, SWT.TRANSPARENCY_ALPHA);
         final GC gc2 = new GC(filtered2);
-        final Transform transform2 = new Transform(ScreenSwt.display);
+        final Transform transform2 = new Transform(device);
         final float scale = 0.5f;
         transform2.scale(scale, scale);
         gc2.setTransform(transform2);
@@ -376,7 +380,7 @@ public final class ToolsSwt
         }
         palette.colors = newColorsRgb;
 
-        return new Image(ScreenSwt.display, data);
+        return new Image(image.getDevice(), data);
     }
 
     /**
@@ -398,7 +402,7 @@ public final class ToolsSwt
                 flip.setPixel(data.width - x - 1, y, data.getPixel(x, y));
             }
         }
-        return new Image(ScreenSwt.display, flip);
+        return new Image(image.getDevice(), flip);
     }
 
     /**

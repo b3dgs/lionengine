@@ -37,11 +37,9 @@ public class FactoryMediaAwtTest
 
     /**
      * Prepare test.
-     * 
-     * @throws ReflectiveOperationException If error.
      */
     @BeforeClass
-    public static void setUp() throws ReflectiveOperationException
+    public static void setUp()
     {
         Medias.setFactoryMedia(new FactoryMediaAwt());
     }
@@ -71,7 +69,7 @@ public class FactoryMediaAwtTest
     @Test
     public void testCreateMediaPath()
     {
-        Assert.assertEquals(PATH, Medias.create("graphic").getPath());
+        Assert.assertEquals(PATH, Medias.create(PATH).getPath());
     }
 
     /**

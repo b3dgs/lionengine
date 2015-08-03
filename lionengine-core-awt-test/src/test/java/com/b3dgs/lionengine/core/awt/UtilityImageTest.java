@@ -74,6 +74,7 @@ public class UtilityImageTest
     public void testUtility()
     {
         final ImageBuffer image = UtilityImage.createImage(100, 100, Transparency.OPAQUE);
+
         Assert.assertNotNull(image);
         Assert.assertNotNull(UtilityImage.getBuffer(image));
         Assert.assertEquals(java.awt.Transparency.OPAQUE, UtilityImage.getTransparency(image.getTransparency()));
@@ -87,6 +88,8 @@ public class UtilityImageTest
         Assert.assertNotNull(UtilityImage.applyBilinearFilter(image));
         Assert.assertNotNull(UtilityImage.applyMask(image, ColorRgba.BLACK.getRgba()));
         Assert.assertNotNull(UtilityImage.applyMask(image, ColorRgba.WHITE.getRgba()));
+
+        image.dispose();
     }
 
     /**
@@ -168,7 +171,11 @@ public class UtilityImageTest
     {
         final ImageBuffer image = UtilityImage.createImage(100, 100, Transparency.TRANSLUCENT);
         final ImageBuffer copy = UtilityImage.copyImage(image, Transparency.OPAQUE);
+
         Assert.assertEquals(UtilityImage.getBuffer(image).getWidth(), UtilityImage.getBuffer(copy).getWidth());
+
+        image.dispose();
+        copy.dispose();
     }
 
     /**
@@ -179,13 +186,18 @@ public class UtilityImageTest
     {
         final Media media = new MediaAwt(MediaAwt.class.getResource("image.png").getFile());
         final ImageBuffer image = UtilityImage.getImage(media);
+        image.prepare();
+
         Assert.assertNotNull(image);
 
         final MediaAwt save = new MediaAwt("test");
         UtilityImage.saveImage(image, save);
+
         Assert.assertTrue(save.getFile().exists());
         Assert.assertTrue(save.getFile().delete());
         Assert.assertFalse(save.getFile().exists());
+
+        image.dispose();
     }
 
     /**
@@ -195,6 +207,7 @@ public class UtilityImageTest
     public void testGetFail()
     {
         final ImageBuffer image = UtilityImage.getImage(new MediaAwt("image.png"));
+
         Assert.assertNotNull(image);
     }
 
@@ -206,6 +219,7 @@ public class UtilityImageTest
     {
         final Media media = new MediaAwt(MediaAwt.class.getResource("raster.xml").getFile());
         final ImageBuffer image = UtilityImage.getImage(media);
+
         Assert.assertNotNull(image);
     }
 }

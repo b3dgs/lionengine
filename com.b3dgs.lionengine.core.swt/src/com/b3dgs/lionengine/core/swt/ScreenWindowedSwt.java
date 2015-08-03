@@ -73,7 +73,7 @@ final class ScreenWindowedSwt extends ScreenSwt
             buffer = Graphics.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
             frame.pack();
 
-            final Monitor primary = ScreenSwt.display.getPrimaryMonitor();
+            final Monitor primary = frame.getDisplay().getPrimaryMonitor();
             final Rectangle bounds = primary.getBounds();
             final Rectangle rect = frame.getBounds();
             final int x = bounds.x + (bounds.width - rect.width) / 2;

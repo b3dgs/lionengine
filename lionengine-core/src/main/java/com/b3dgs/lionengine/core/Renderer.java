@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Hq2x;
 import com.b3dgs.lionengine.Hq3x;
@@ -241,7 +242,7 @@ public class Renderer extends Thread implements Sequencable
         {
             try
             {
-                Thread.sleep(100);
+                Thread.sleep(Constant.HUNDRED);
                 if (timeout.elapsed(SCREEN_READY_TIME_OUT))
                 {
                     Thread.currentThread().interrupt();

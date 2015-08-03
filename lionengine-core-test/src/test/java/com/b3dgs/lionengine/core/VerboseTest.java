@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.lang.reflect.Method;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -26,6 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.test.SecurityManagerMock;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -42,7 +41,7 @@ public class VerboseTest
     @BeforeClass
     public static void setUp()
     {
-        prepareLogger();
+        UtilReflection.getMethod(Verbose.class, "prepareLogger");
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
     }
 
@@ -54,25 +53,6 @@ public class VerboseTest
     {
         Verbose.set(Verbose.INFORMATION, Verbose.WARNING, Verbose.CRITICAL);
         Verbose.info("****************************************************************************************");
-    }
-
-    /**
-     * Prepare the logger by reflection.
-     * 
-     * @throws LionEngineException If error during reflection.
-     */
-    private static void prepareLogger() throws LionEngineException
-    {
-        try
-        {
-            final Method method = Verbose.class.getDeclaredMethod("prepareLogger");
-            method.setAccessible(true);
-            method.invoke(Verbose.class);
-        }
-        catch (final ReflectiveOperationException exception)
-        {
-            throw new LionEngineException(exception);
-        }
     }
 
     /**
@@ -96,7 +76,7 @@ public class VerboseTest
     public void prepareTest()
     {
         System.setSecurityManager(null);
-        prepareLogger();
+        UtilReflection.getMethod(Verbose.class, "prepareLogger");
     }
 
     /**
@@ -137,6 +117,6 @@ public class VerboseTest
     public void testVerboseSecurity()
     {
         System.setSecurityManager(new SecurityManagerMock(false));
-        prepareLogger();
+        UtilReflection.getMethod(Verbose.class, "prepareLogger");
     }
 }

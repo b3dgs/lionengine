@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.EngineCore;
@@ -34,15 +34,6 @@ import com.b3dgs.lionengine.test.UtilTests;
 public class EngineAwtTest
 {
     /**
-     * Clean up test.
-     */
-    @After
-    public void cleanUp()
-    {
-        Engine.terminate();
-    }
-
-    /**
      * Test the constructor.
      * 
      * @throws Throwable If error.
@@ -50,19 +41,43 @@ public class EngineAwtTest
     @Test(expected = LionEngineException.class)
     public void testConstructor() throws Throwable
     {
-        Engine.start("EngineTest", Version.create(0, 0, 0), "resources");
         UtilTests.testPrivateConstructor(Engine.class);
     }
 
     /**
-     * Test the engine.
+     * Test the engine start without resources.
      */
     @Test(expected = LionEngineException.class)
-    public void testEngine()
+    public void testEngineNullResources()
     {
-        Engine.start("EngineTest", Version.create(0, 0, 0), (String) null);
-        Assert.assertTrue(EngineCore.isStarted());
-        Engine.start("EngineTest", Version.create(0, 1, 0), (String) null);
+        Engine.start(EngineAwtTest.class.getName(), Version.DEFAULT, (String) null);
+        try
+        {
+            Assert.assertTrue(EngineCore.isStarted());
+            Engine.start(EngineAwtTest.class.getName(), Version.DEFAULT, (String) null);
+        }
+        finally
+        {
+            Engine.terminate();
+        }
+    }
+
+    /**
+     * Test the engine start with resources.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testEngineResources()
+    {
+        Engine.start(EngineAwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
+        try
+        {
+            Assert.assertTrue(EngineCore.isStarted());
+            Engine.start(EngineAwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
+        }
+        finally
+        {
+            Engine.terminate();
+        }
     }
 
     /**
@@ -71,8 +86,15 @@ public class EngineAwtTest
     @Test(expected = LionEngineException.class)
     public void testEngineClass()
     {
-        Engine.start("EngineTest", Version.create(0, 0, 0), EngineAwtTest.class);
-        Assert.assertTrue(EngineCore.isStarted());
-        Engine.start("EngineTest", Version.create(0, 1, 0), EngineAwtTest.class);
+        Engine.start(EngineAwtTest.class.getName(), Version.DEFAULT, EngineAwtTest.class);
+        try
+        {
+            Assert.assertTrue(EngineCore.isStarted());
+            Engine.start(EngineAwtTest.class.getName(), Version.DEFAULT, EngineAwtTest.class);
+        }
+        finally
+        {
+            Engine.terminate();
+        }
     }
 }
