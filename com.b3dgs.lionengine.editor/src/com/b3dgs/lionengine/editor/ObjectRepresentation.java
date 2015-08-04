@@ -123,8 +123,8 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
      */
     public void alignToGrid()
     {
-        place(UtilMath.getRounded(transformable.getX() + transformable.getWidth() / 2, map.getTileWidth()),
-              UtilMath.getRounded(transformable.getY() + transformable.getHeight() / 2, map.getTileHeight()));
+        place(UtilMath.getRounded(transformable.getX() + transformable.getWidth() / 2.0, map.getTileWidth()),
+              UtilMath.getRounded(transformable.getY() + transformable.getHeight() / 2.0, map.getTileHeight()));
     }
 
     /**

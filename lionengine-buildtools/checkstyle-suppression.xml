@@ -24,7 +24,7 @@
     
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ScreenSwt" />
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ToolsSwt" />
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="318" />
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="297" />
     
     <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.UtilReflection" lines="48" />
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.Ratio" lines="31,33,35,37" />

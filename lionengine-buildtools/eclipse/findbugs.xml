@@ -59,6 +59,18 @@
 		<Bug pattern="DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED" />
 	</Match>
 	<Match>
+		<Class name="com.b3dgs.lionengine.core.Verbose" />
+		<Bug pattern="REC_CATCH_EXCEPTION" />
+	</Match>
+	<Match>
+		<Class name="com.b3dgs.lionengine.drawable.SpriteParallaxedImpl" />
+		<Bug pattern="DLS_DEAD_LOCAL_STORE" />
+	</Match>
+	<Match>
+		<Class name="com.b3dgs.lionengine.UtilFile" />
+		<Bug pattern="IIO_INEFFICIENT_LAST_INDEX_OF" />
+	</Match>
+	<Match>
 		<Class name="~.*Test$" />
 	</Match>
 	<Match>

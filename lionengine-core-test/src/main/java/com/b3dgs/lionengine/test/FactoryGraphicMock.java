@@ -167,7 +167,10 @@ public class FactoryGraphicMock implements FactoryGraphic
     {
         try
         {
-            media.getFile().createNewFile();
+            if (!media.getFile().createNewFile())
+            {
+                throw new LionEngineException(media, "Unable to create file !");
+            }
         }
         catch (final IOException exception)
         {

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -58,15 +59,12 @@ public final class UtilReflection
         {
             final Constructor<?> constructor = getCompatibleConstructor(type, paramTypes);
             final boolean accessible = constructor.isAccessible();
-            if (!accessible)
-            {
-                constructor.setAccessible(true);
-            }
+            setAccessible(constructor, true);
             @SuppressWarnings("unchecked")
             final T object = (T) constructor.newInstance(params);
             if (constructor.isAccessible() != accessible)
             {
-                constructor.setAccessible(accessible);
+                setAccessible(constructor, accessible);
             }
             return object;
         }
@@ -161,26 +159,18 @@ public final class UtilReflection
         Check.notNull(name);
         try
         {
-            final Class<?> clazz;
-            if (object instanceof Class)
-            {
-                clazz = (Class<?>) object;
-            }
-            else
-            {
-                clazz = object.getClass();
-            }
+            final Class<?> clazz = getClass(object);
             final Method method = clazz.getDeclaredMethod(name, getParamTypes(params));
             final boolean accessible = method.isAccessible();
             if (!accessible)
             {
-                method.setAccessible(true);
+                setAccessible(method, true);
             }
             @SuppressWarnings("unchecked")
             final T value = (T) method.invoke(object, params);
             if (method.isAccessible() != accessible)
             {
-                method.setAccessible(accessible);
+                setAccessible(method, accessible);
             }
             return value;
         }
@@ -217,26 +207,18 @@ public final class UtilReflection
         Check.notNull(name);
         try
         {
-            final Class<?> clazz;
-            if (object instanceof Class)
-            {
-                clazz = (Class<?>) object;
-            }
-            else
-            {
-                clazz = object.getClass();
-            }
+            final Class<?> clazz = getClass(object);
             final Field field = clazz.getDeclaredField(name);
             final boolean accessible = field.isAccessible();
             if (!accessible)
             {
-                field.setAccessible(true);
+                setAccessible(field, true);
             }
             @SuppressWarnings("unchecked")
             final T value = (T) field.get(object);
             if (field.isAccessible() != accessible)
             {
-                field.setAccessible(accessible);
+                setAccessible(field, accessible);
             }
             return value;
         }
@@ -252,6 +234,40 @@ public final class UtilReflection
         {
             throw new LionEngineException(exception, ERROR_FIELD, name);
         }
+    }
+
+    /**
+     * Set the object accessibility with an access controller.
+     * 
+     * @param object The accessible object.
+     * @param accessible <code>true</code> if accessible, <code>false</code> else.
+     */
+    private static void setAccessible(final AccessibleObject object, final boolean accessible)
+    {
+        java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<Void>()
+        {
+            @Override
+            public Void run()
+            {
+                object.setAccessible(accessible);
+                return null;
+            }
+        });
+    }
+
+    /**
+     * Get the object class.
+     * 
+     * @param object The object reference.
+     * @return The object class (or object itself if already a class).
+     */
+    private static Class<?> getClass(Object object)
+    {
+        if (object instanceof Class)
+        {
+            return (Class<?>) object;
+        }
+        return object.getClass();
     }
 
     /**
