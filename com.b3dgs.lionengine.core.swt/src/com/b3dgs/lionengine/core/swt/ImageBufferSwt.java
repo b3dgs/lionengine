@@ -65,10 +65,12 @@ final class ImageBufferSwt implements ImageBuffer
         return value;
     }
 
-    /** Transparency. */
-    private final Transparency transparency;
+    /** Device. */
+    private final Device device;
     /** Last image data. */
     private final ImageData data;
+    /** Transparency. */
+    private final Transparency transparency;
     /** Image. */
     private Image image;
     /** GC. */
@@ -77,10 +79,12 @@ final class ImageBufferSwt implements ImageBuffer
     /**
      * Internal constructor.
      * 
+     * @param device The device reference.
      * @param data The image data.
      */
-    ImageBufferSwt(ImageData data)
+    ImageBufferSwt(Device device, ImageData data)
     {
+        this.device = device;
         this.data = data;
         transparency = ImageBufferSwt.getTransparency(data.getTransparencyType());
     }
@@ -92,6 +96,7 @@ final class ImageBufferSwt implements ImageBuffer
      */
     ImageBufferSwt(Image image)
     {
+        device = image.getDevice();
         this.image = image;
         data = image.getImageData();
         transparency = ImageBufferSwt.getTransparency(data.getTransparencyType());
@@ -114,7 +119,7 @@ final class ImageBufferSwt implements ImageBuffer
     @Override
     public void prepare() throws LionEngineException
     {
-        image = new Image(ScreenSwt.display, data);
+        image = new Image(device, data);
     }
 
     @Override
@@ -146,7 +151,6 @@ final class ImageBufferSwt implements ImageBuffer
         final RGB color = new RGB(rgba.getRed(), rgba.getGreen(), rgba.getBlue());
         final int pixel = data.palette.getPixel(color);
         data.setPixel(x, y, pixel);
-        final Device device = image.getDevice();
         image.dispose();
         image = new Image(device, data);
     }
@@ -155,7 +159,6 @@ final class ImageBufferSwt implements ImageBuffer
     public void setRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
         data.setPixels(startX, startY, w, rgbArray, offset);
-        final Device device = image.getDevice();
         image.dispose();
         image = new Image(device, data);
     }

@@ -49,13 +49,14 @@ public final class ToolsSwt
     /**
      * Create a hidden cursor.
      * 
+     * @param device The device reference.
      * @return Hidden cursor.
      * @throws SWTException If error on getting data.
      */
-    public static Cursor createHiddenCursor() throws SWTException
+    public static Cursor createHiddenCursor(Device device) throws SWTException
     {
-        final Color white = ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE);
-        final Color black = ScreenSwt.display.getSystemColor(SWT.COLOR_BLACK);
+        final Color white = device.getSystemColor(SWT.COLOR_WHITE);
+        final Color black = device.getSystemColor(SWT.COLOR_BLACK);
         final PaletteData palette = new PaletteData(new RGB[]
         {
             white.getRGB(), black.getRGB()
@@ -63,30 +64,7 @@ public final class ToolsSwt
         final ImageData sourceData = new ImageData(16, 16, 1, palette);
         sourceData.transparentPixel = 0;
 
-        return new Cursor(ScreenSwt.display, sourceData, 0, 0);
-    }
-
-    /**
-     * Create an image.
-     * 
-     * @param width The image width.
-     * @param height The image height.
-     * @param transparency The image transparency.
-     * @return The image.
-     * @throws SWTException If error on getting data.
-     */
-    public static Image createImage(int width, int height, int transparency) throws SWTException
-    {
-        final Image image = new Image(ScreenSwt.display, width, height);
-        if (transparency != SWT.TRANSPARENCY_NONE)
-        {
-            final ImageData data = image.getImageData();
-            data.transparentPixel = ColorRgba.TRANSPARENT.getRgba();
-            final Device device = image.getDevice();
-            image.dispose();
-            return new Image(device, data);
-        }
-        return image;
+        return new Cursor(device, sourceData, 0, 0);
     }
 
     /**
@@ -104,13 +82,14 @@ public final class ToolsSwt
     /**
      * Get an image from an image file.
      * 
+     * @param device The device reference.
      * @param input The image input stream.
      * @return The created image from file.
      * @throws SWTException If error on getting data.
      */
-    public static Image getImage(InputStream input) throws SWTException
+    public static Image getImage(Device device, InputStream input) throws SWTException
     {
-        return new Image(ScreenSwt.display, input);
+        return new Image(device, input);
     }
 
     /**
@@ -183,7 +162,7 @@ public final class ToolsSwt
      * Rotate input image.
      * 
      * @param image The input image.
-     * @param angle The angle to apply in degree (0-359)
+     * @param angle The angle to apply in degree (0-359).
      * @return The new image with angle applied.
      * @throws SWTException If error on getting data.
      */
@@ -262,7 +241,7 @@ public final class ToolsSwt
         final int width = data.width;
         final int height = data.height;
 
-        final Image filtered = createImage(width * 2, height * 2, SWT.TRANSPARENCY_ALPHA);
+        final Image filtered = UtilityImage.createImage(width * 2, height * 2, SWT.TRANSPARENCY_ALPHA);
         final GC gc = new GC(filtered);
         final Device device = gc.getDevice();
 
@@ -272,7 +251,7 @@ public final class ToolsSwt
         gc.drawImage(image, 0, 0);
         gc.dispose();
 
-        final Image filtered2 = createImage(width, height, SWT.TRANSPARENCY_ALPHA);
+        final Image filtered2 = UtilityImage.createImage(width, height, SWT.TRANSPARENCY_ALPHA);
         final GC gc2 = new GC(filtered2);
         final Transform transform2 = new Transform(device);
         final float scale = 0.5f;

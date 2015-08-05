@@ -79,7 +79,7 @@ final class FactoryGraphicSwt implements FactoryGraphic
     @Override
     public Text createText(String fontName, int size, TextStyle style)
     {
-        return new TextSwt(fontName, size, style);
+        return UtilityImage.createText(fontName, size, style);
     }
 
     @Override

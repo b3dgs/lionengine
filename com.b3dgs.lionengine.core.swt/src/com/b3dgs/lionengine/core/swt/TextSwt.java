@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -62,6 +63,8 @@ final class TextSwt implements Text
         return value;
     }
 
+    /** Device used. */
+    private final Device device;
     /** Text java font. */
     private final Font font;
     /** Text size. */
@@ -86,15 +89,17 @@ final class TextSwt implements Text
     /**
      * Internal constructor.
      * 
+     * @param device The device reference.
      * @param fontName The font name.
      * @param size The font size (in pixel).
      * @param style The font style.
      */
-    TextSwt(String fontName, int size, TextStyle style)
+    TextSwt(Device device, String fontName, int size, TextStyle style)
     {
+        this.device = device;
         this.size = size;
         final double scale = 1.5;
-        font = new Font(ScreenSwt.display, fontName, (int) Math.round(size / scale), TextSwt.getStyle(style));
+        font = new Font(device, fontName, (int) Math.round(size / scale), TextSwt.getStyle(style));
         align = Align.LEFT;
         color = ColorRgba.WHITE;
     }
@@ -136,7 +141,7 @@ final class TextSwt implements Text
             default:
                 throw new RuntimeException();
         }
-        final Color c = new Color(gc.getDevice(), color.getRed(), color.getGreen(), color.getBlue());
+        final Color c = new Color(device, color.getRed(), color.getGreen(), color.getBlue());
         gc.setForeground(c);
         gc.drawString(text, tx, ty, true);
         c.dispose();

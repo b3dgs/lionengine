@@ -23,15 +23,20 @@ import java.io.OutputStream;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -47,6 +52,21 @@ public final class UtilityImage
     private static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
     /** Error image buffer implementation. */
     private static final String ERROR_IMAGE_BUFFER_IMPL = "Unsupported image buffer implementation !";
+
+    /**
+     * Get a unique display for the thread caller. Create a new one if not existing.
+     * 
+     * @return The display associated with the thread caller.
+     */
+    public static synchronized Display getDisplay()
+    {
+        final Display display = Display.findDisplay(Thread.currentThread());
+        if (display == null)
+        {
+            return new Display();
+        }
+        return display;
+    }
 
     /**
      * Get the image buffer.
@@ -90,6 +110,42 @@ public final class UtilityImage
     }
 
     /**
+     * Crate a text.
+     * 
+     * @param fontName The font name.
+     * @param size The font size (in pixel).
+     * @param style The font style.
+     * @return The created text.
+     */
+    public static Text createText(String fontName, int size, TextStyle style)
+    {
+        return new TextSwt(getDisplay(), fontName, size, style);
+    }
+
+    /**
+     * Create an image.
+     * 
+     * @param width The image width.
+     * @param height The image height.
+     * @param transparency The image transparency.
+     * @return The image.
+     * @throws SWTException If error on getting data.
+     */
+    public static Image createImage(int width, int height, int transparency) throws SWTException
+    {
+        final Device device = getDisplay();
+        final Image image = new Image(device, width, height);
+        if (transparency != SWT.TRANSPARENCY_NONE)
+        {
+            final ImageData data = image.getImageData();
+            data.transparentPixel = ColorRgba.TRANSPARENT.getRgba();
+            image.dispose();
+            return new Image(device, data);
+        }
+        return image;
+    }
+
+    /**
      * Create an image.
      * 
      * @param width The image width.
@@ -102,7 +158,7 @@ public final class UtilityImage
         Check.superiorOrEqual(width, 0);
         Check.superiorOrEqual(height, 0);
 
-        final Image image = ToolsSwt.createImage(width, height, getTransparency(transparency));
+        final Image image = createImage(width, height, getTransparency(transparency));
         final ImageBufferSwt buffer = new ImageBufferSwt(image);
 
         final Graphic g = buffer.createGraphic();
@@ -125,7 +181,7 @@ public final class UtilityImage
         final InputStream input = media.getInputStream();
         try
         {
-            return new ImageBufferSwt(ToolsSwt.getImageData(input));
+            return new ImageBufferSwt(getDisplay(), ToolsSwt.getImageData(input));
         }
         catch (final SWTException exception)
         {

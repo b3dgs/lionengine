@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.swt;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -56,19 +57,18 @@ import com.b3dgs.lionengine.core.Sequence;
  */
 abstract class ScreenSwt implements Screen, FocusListener
 {
-    /** Display. */
-    static Display display;
-
     /** Renderer reference. */
-    final Renderer renderer;
+    protected final Renderer renderer;
+    /** Current display. */
+    protected final Display display;
+    /** Hidden cursor instance. */
+    protected final Cursor cursorHidden;
+    /** Default cursor instance. */
+    protected final Cursor cursorDefault;
     /** Configuration reference. */
     protected final Config config;
     /** Frame reference. */
     protected final Shell frame;
-    /** Hidden cursor instance. */
-    private final Cursor cursorHidden;
-    /** Default cursor instance. */
-    private final Cursor cursorDefault;
     /** Input devices. */
     private final Map<Class<? extends InputDevice>, InputDevice> devices;
     /** Active graphic buffer reference. */
@@ -101,10 +101,10 @@ abstract class ScreenSwt implements Screen, FocusListener
     {
         Check.notNull(renderer);
 
-        display = new Display();
         this.renderer = renderer;
+        display = UtilityImage.getDisplay();
         config = renderer.getConfig();
-        cursorHidden = ToolsSwt.createHiddenCursor();
+        cursorHidden = ToolsSwt.createHiddenCursor(display);
         cursorDefault = display.getSystemCursor(0);
         graphics = Graphics.createGraphic();
         devices = new HashMap<Class<? extends InputDevice>, InputDevice>(2);
@@ -261,40 +261,67 @@ abstract class ScreenSwt implements Screen, FocusListener
         buf.dispose();
         frame.dispose();
         display.dispose();
-        display = null;
     }
 
     @Override
     public void requestFocus()
     {
-        if (!frame.isDisposed())
+        display.syncExec(new Runnable()
         {
-            frame.forceFocus();
-        }
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    frame.forceFocus();
+                }
+            }
+        });
     }
 
     @Override
     public void hideCursor()
     {
-        if (!frame.isDisposed())
+        display.syncExec(new Runnable()
         {
-            frame.setCursor(cursorHidden);
-        }
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    frame.setCursor(cursorHidden);
+                }
+            }
+        });
     }
 
     @Override
     public void showCursor()
     {
-        if (!frame.isDisposed())
+        display.syncExec(new Runnable()
         {
-            frame.setCursor(cursorDefault);
-        }
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    frame.setCursor(cursorDefault);
+                }
+            }
+        });
     }
 
     @Override
-    public void addKeyListener(InputDeviceKeyListener listener)
+    public void addKeyListener(final InputDeviceKeyListener listener)
     {
-        frame.addKeyListener(new KeyListener(listener));
+        display.syncExec(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                frame.addKeyListener(new KeyListener(listener));
+            }
+        });
     }
 
     @Override
@@ -304,13 +331,20 @@ abstract class ScreenSwt implements Screen, FocusListener
     }
 
     @Override
-    public void setIcon(String filename)
+    public void setIcon(final String filename)
     {
-        if (!frame.isDisposed())
+        display.syncExec(new Runnable()
         {
-            final Image icon = new Image(display, filename);
-            frame.setImage(icon);
-        }
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    final Image icon = new Image(display, filename);
+                    frame.setImage(icon);
+                }
+            }
+        });
     }
 
     @Override
@@ -334,21 +368,37 @@ abstract class ScreenSwt implements Screen, FocusListener
     @Override
     public int getX()
     {
-        if (!frame.isDisposed())
+        final AtomicInteger x = new AtomicInteger(0);
+        display.syncExec(new Runnable()
         {
-            return frame.getLocation().x;
-        }
-        return 0;
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    x.set(frame.getLocation().x);
+                }
+            }
+        });
+        return x.get();
     }
 
     @Override
     public int getY()
     {
-        if (!frame.isDisposed())
+        final AtomicInteger y = new AtomicInteger(0);
+        display.syncExec(new Runnable()
         {
-            return frame.getLocation().y;
-        }
-        return 0;
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    y.set(frame.getLocation().y);
+                }
+            }
+        });
+        return y.get();
     }
 
     @Override
