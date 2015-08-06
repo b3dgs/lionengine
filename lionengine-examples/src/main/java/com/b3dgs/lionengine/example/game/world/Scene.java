@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
 class Scene extends Sequence
 {
     /** Native resolution. */
-    private static final Resolution NATIVE = new Resolution(320, 50, 60);
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** The world. */
     private final World world;

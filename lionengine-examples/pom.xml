@@ -82,10 +82,12 @@
                         <phase>package</phase>
                     </execution>
                 </executions>
-                <configuration>
+                <configuration combine.self="override">
                     <archive>
                         <manifest>
+                            <addClasspath>true</addClasspath>
                             <mainClass>com.b3dgs.lionengine.example.AppExamples</mainClass>
+                            <classpathPrefix>classes/</classpathPrefix>
                         </manifest>
                     </archive>
                 </configuration>

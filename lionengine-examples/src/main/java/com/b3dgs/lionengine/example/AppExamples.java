@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.core.awt.swing.UtilitySwing;
 import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
 import com.b3dgs.lionengine.example.game.action.AppAction;
 import com.b3dgs.lionengine.example.game.assign.AppAssign;
+import com.b3dgs.lionengine.example.game.attack.AppAttack;
 import com.b3dgs.lionengine.example.game.background.AppBackground;
 import com.b3dgs.lionengine.example.game.collision.AppCollision;
 import com.b3dgs.lionengine.example.game.cursor.AppCursor;
@@ -82,6 +83,7 @@ public class AppExamples
         addExample(panel, "Drawable", AppDrawable.class);
         addExample(panel, "Action", AppAction.class);
         addExample(panel, "Assign", AppAssign.class);
+        addExample(panel, "Attack", AppAttack.class);
         addExample(panel, "Background", AppBackground.class);
         addExample(panel, "Collision", AppCollision.class);
         addExample(panel, "Cursor", AppCursor.class);
@@ -146,28 +148,29 @@ public class AppExamples
             try
             {
                 example.getDeclaredMethod("main", String[].class).invoke(example, (Object[]) new String[1]);
+                final Runnable runnable = () ->
+                {
+                    while (EngineCore.isStarted())
+                    {
+                        try
+                        {
+                            Thread.sleep(250);
+                        }
+                        catch (final InterruptedException exception)
+                        {
+                            Thread.currentThread().interrupt();
+                            break;
+                        }
+                    }
+                    SwingUtilities.invokeLater(() -> UtilitySwing.setEnabled(panel.getComponents(), true));
+                };
+                EXECUTOR.execute(runnable);
             }
-            catch (final ReflectiveOperationException exception)
+            catch (final Exception exception)
             {
                 Verbose.exception(AppExamples.class, "addExample", exception);
-            }
-            final Runnable runnable = () ->
-            {
-                while (EngineCore.isStarted())
-                {
-                    try
-                    {
-                        Thread.sleep(250);
-                    }
-                    catch (final InterruptedException exception)
-                    {
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
-                }
                 SwingUtilities.invokeLater(() -> UtilitySwing.setEnabled(panel.getComponents(), true));
-            };
-            EXECUTOR.execute(runnable);
+            }
         });
         panel.add(drawable);
     }
