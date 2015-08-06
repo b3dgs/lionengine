@@ -12,6 +12,7 @@
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-tutorials</artifactId>
+    <packaging>pom</packaging>
     <name>LionEngine Tutorials</name>
     <dependencies>
         <dependency>
@@ -62,6 +63,16 @@
                         <configuration>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-dependencies</id>
+                        <phase>none</phase>
                     </execution>
                 </executions>
             </plugin>
