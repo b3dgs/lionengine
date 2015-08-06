@@ -61,6 +61,7 @@ public class ImageInfoTest
     {
         final Media media = new MediaMock("image." + type);
         final ImageInfo info = ImageInfo.get(media);
+
         Assert.assertEquals(64, info.getWidth());
         Assert.assertEquals(32, info.getHeight());
         Assert.assertEquals(type, info.getFormat());
@@ -119,25 +120,31 @@ public class ImageInfoTest
     /**
      * Test skipped error tool.
      * 
+     * @throws IOException The expected exception.
      * @throws Throwable If error.
      */
     @Test(expected = IOException.class)
-    public void testSkippedError() throws Throwable
+    public void testSkippedError() throws IOException, Throwable
     {
         final Method method = ImageInfo.class.getDeclaredMethod("checkSkippedError", Long.TYPE, Integer.TYPE);
         final boolean back = method.isAccessible();
-        method.setAccessible(true);
+        UtilReflection.setAccessible(method, true);
         try
         {
             method.invoke(ImageInfo.class, Long.valueOf(1), Integer.valueOf(0));
         }
         catch (final InvocationTargetException exception)
         {
-            throw exception.getCause();
+            final Throwable cause = exception.getCause();
+            if (cause instanceof IOException)
+            {
+                throw (IOException) cause;
+            }
+            throw exception;
         }
         finally
         {
-            method.setAccessible(back);
+            UtilReflection.setAccessible(method, back);
         }
     }
 }

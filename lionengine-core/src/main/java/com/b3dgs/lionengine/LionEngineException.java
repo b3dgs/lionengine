@@ -52,7 +52,7 @@ public final class LionEngineException extends RuntimeException
         "audio.", "anim.", "core.", "drawable.", "geom.", "stream.", "network.", "game.", "editor.", "Check",
         "Checksum", "ColorGradient", "ColorRgba", "Config", "Hq2x", "Hq3x", "ImageInfo", "LionEngineException",
         "OperatingSystem", "Origin", "Ratio", "Resolution", "Timing", "UtilConversion", "UtilFile", "UtilMath",
-        "UtilProjectStats", "UtilRandom", "Version"
+        "UtilProjectStats", "UtilRandom", "UtilReflection", "Version"
     };
     /** The list of all ignored packages and classes. */
     private static final Collection<String> IGNORED = new ArrayList<String>();

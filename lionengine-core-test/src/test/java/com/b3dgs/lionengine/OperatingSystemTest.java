@@ -41,36 +41,32 @@ public class OperatingSystemTest
     }
 
     /**
-     * Test the operating system class.
+     * Test the operating system getters.
+     * 
+     * @throws ReflectiveOperationException If error.
      */
     @Test
-    public void testOperatingSystem()
+    public void testOperatingSystem() throws ReflectiveOperationException
     {
-        Assert.assertNotNull(OperatingSystem.getArchitecture());
         Assert.assertNotNull(OperatingSystem.getOperatingSystem());
-        Assert.assertNotNull(OperatingSystem.MAC);
-        Assert.assertNotNull(OperatingSystem.WINDOWS);
-        Assert.assertNotNull(OperatingSystem.UNIX);
-        Assert.assertNotNull(OperatingSystem.UNKNOWN);
-        Assert.assertNotNull(OperatingSystem.SOLARIS);
+    }
 
-        Assert.assertNotNull(OperatingSystem.values());
-        Assert.assertEquals(OperatingSystem.WINDOWS, OperatingSystem.valueOf(OperatingSystem.WINDOWS.name()));
-
-        Assert.assertEquals(OperatingSystem.UNKNOWN, OperatingSystem.findOs(null));
-        Assert.assertEquals(OperatingSystem.UNKNOWN, OperatingSystem.findOs("azerty"));
-        Assert.assertEquals(OperatingSystem.WINDOWS, OperatingSystem.findOs("win"));
-        Assert.assertEquals(OperatingSystem.MAC, OperatingSystem.findOs("mac"));
-        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("nix"));
-        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("nux"));
-        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("bsd"));
-        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.findOs("aix"));
-        Assert.assertEquals(OperatingSystem.SOLARIS, OperatingSystem.findOs("sunos"));
-
-        Assert.assertEquals(Architecture.UNKNOWN, OperatingSystem.findArchitecture(null));
-        Assert.assertEquals(Architecture.UNKNOWN, OperatingSystem.findArchitecture("0"));
-        Assert.assertEquals(Architecture.X86, OperatingSystem.findArchitecture("86"));
-        Assert.assertEquals(Architecture.X86, OperatingSystem.findArchitecture("32"));
-        Assert.assertEquals(Architecture.X64, OperatingSystem.findArchitecture("64"));
+    /**
+     * Test the find operating system.
+     * 
+     * @throws ReflectiveOperationException If error.
+     */
+    @Test
+    public void testFindOs() throws ReflectiveOperationException
+    {
+        Assert.assertEquals(OperatingSystem.UNKNOWN, OperatingSystem.find(null));
+        Assert.assertEquals(OperatingSystem.UNKNOWN, OperatingSystem.find("azerty"));
+        Assert.assertEquals(OperatingSystem.WINDOWS, OperatingSystem.find("win"));
+        Assert.assertEquals(OperatingSystem.MAC, OperatingSystem.find("mac"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.find("nix"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.find("nux"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.find("bsd"));
+        Assert.assertEquals(OperatingSystem.UNIX, OperatingSystem.find("aix"));
+        Assert.assertEquals(OperatingSystem.SOLARIS, OperatingSystem.find("sunos"));
     }
 }

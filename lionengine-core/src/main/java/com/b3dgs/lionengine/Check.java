@@ -215,14 +215,14 @@ public final class Check
     {
         if (strict)
         {
-            if (a <= b)
+            if (!(Double.compare(a, b) > 0))
             {
                 throw argumentError(a, b, ERROR_SUPERIOR_STRICT);
             }
         }
         else
         {
-            if (a < b)
+            if (Double.compare(a, b) < 0)
             {
                 throw argumentError(a, b, ERROR_SUPERIOR);
             }
@@ -267,14 +267,14 @@ public final class Check
     {
         if (strict)
         {
-            if (a >= b)
+            if (!(Double.compare(a, b) < 0))
             {
                 throw argumentError(a, b, ERROR_INFERIOR_STRICT);
             }
         }
         else
         {
-            if (a > b)
+            if (Double.compare(a, b) > 0)
             {
                 throw argumentError(a, b, ERROR_INFERIOR);
             }

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.test.UtilTests;
@@ -40,15 +41,6 @@ public class CheckTest
     }
 
     /**
-     * Test the check with a null object.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testNotNullFail()
-    {
-        Check.notNull(null);
-    }
-
-    /**
      * Test the check with non null object.
      */
     @Test
@@ -58,122 +50,356 @@ public class CheckTest
     }
 
     /**
-     * Test the check superior valid case.
+     * Test the check with a null object.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNotNullFail()
+    {
+        Check.notNull(null);
+    }
+
+    /**
+     * Test the check superior or equal valid cases.
      */
     @Test
-    public void testSuperior()
+    public void testSuperiorOrEqual()
     {
-        Check.superiorOrEqual(0, 0);
-        Check.superiorOrEqual(1, 0);
-        Check.superiorStrict(1, 0);
-
-        Check.superiorOrEqual(0.0, 0.0);
-        Check.superiorOrEqual(1.0, 0.0);
-        Check.superiorStrict(1.0, 0.0);
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            Check.superiorOrEqual(i, i);
+            Check.superiorOrEqual(i + 1, i);
+        }
+        Check.superiorOrEqual(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        Check.superiorOrEqual(Integer.MAX_VALUE, Integer.MIN_VALUE);
+        Check.superiorOrEqual(Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**
-     * Test the check inferior valid case.
+     * Test the check superior invalid cases.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSuperiorOrEqualFail()
+    {
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            try
+            {
+                Check.superiorOrEqual(i, i + 1);
+
+                Assert.fail();
+            }
+            catch (final LionEngineException exception)
+            {
+                // Success
+            }
+        }
+        Check.superiorOrEqual(Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Test the check superior or equal with double valid cases.
      */
     @Test
-    public void testInferior()
+    public void testSuperiorOrEqualDouble()
     {
-        Check.inferiorOrEqual(0, 0);
-        Check.inferiorOrEqual(0, 1);
-        Check.inferiorStrict(0, 1);
+        final double factor = Double.MIN_VALUE;
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            final double value = i * factor;
 
-        Check.inferiorOrEqual(0.0, 0.0);
-        Check.inferiorOrEqual(0.0, 1.0);
-        Check.inferiorStrict(0.0, 1.0);
+            Check.superiorOrEqual(value, value);
+
+            Check.superiorOrEqual(value + Double.MIN_VALUE, value);
+        }
+        Check.superiorOrEqual(Double.MIN_VALUE, Double.MIN_VALUE);
+        Check.superiorOrEqual(Double.MAX_VALUE, Double.MIN_VALUE);
+        Check.superiorOrEqual(Double.MAX_VALUE, Double.MAX_VALUE);
     }
 
     /**
-     * Test the check superior invalid case.
+     * Test the check superior invalid cases.
      */
     @Test(expected = LionEngineException.class)
-    public void testSuperiorFail()
+    public void testSuperiorOrEqualDoubleFail()
     {
-        Check.superiorStrict(-1, 0);
+        final double factor = Double.MIN_VALUE;
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            final double value = i * factor;
+            try
+            {
+                Check.superiorOrEqual(value, value + Double.MIN_VALUE);
+            }
+            catch (final LionEngineException exception)
+            {
+                // Success
+            }
+        }
+        Check.superiorOrEqual(Double.MIN_VALUE, Double.MAX_VALUE);
     }
 
     /**
-     * Test the check superior invalid case.
+     * Test the check superior strict valid cases.
+     */
+    @Test
+    public void testSuperiorStrict()
+    {
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            Check.superiorStrict(i + 1, i);
+        }
+        Check.superiorStrict(Integer.MAX_VALUE, Integer.MIN_VALUE);
+    }
+
+    /**
+     * Test the check superior strict invalid cases.
      */
     @Test(expected = LionEngineException.class)
-    public void testSuperiorEqualFail()
+    public void testSuperiorStrictFail()
     {
-        Check.superiorOrEqual(-1, 0);
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            try
+            {
+                Check.superiorStrict(i, i + 1);
+
+                Assert.fail();
+            }
+            catch (final LionEngineException exception)
+            {
+                // Success
+            }
+        }
+        Check.superiorStrict(Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     /**
-     * Test the check inferior invalid case.
+     * Test the check superior strict with double valid cases.
+     */
+    @Test
+    public void testSuperiorStrictDouble()
+    {
+        final double factor = Double.MIN_VALUE;
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            final double value = i * factor;
+
+            Check.superiorStrict(value + Double.MIN_VALUE, value);
+        }
+        Check.superiorStrict(Double.MAX_VALUE, Double.MIN_VALUE);
+    }
+
+    /**
+     * Test the check superior strict invalid cases.
      */
     @Test(expected = LionEngineException.class)
-    public void testInferiorFail()
+    public void testSuperiorStrictDoubleFail()
     {
-        Check.inferiorStrict(1, 0);
+        final double factor = Double.MIN_VALUE;
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            final double value = i * factor;
+            try
+            {
+                Check.superiorStrict(value, value + Double.MIN_VALUE);
+            }
+            catch (final LionEngineException exception)
+            {
+                // Success
+            }
+        }
+        Check.superiorStrict(Double.MIN_VALUE, Double.MAX_VALUE);
     }
 
     /**
-     * Test the check inferior invalid case.
+     * Test the check inferior or equal valid cases.
+     */
+    @Test
+    public void testInferiorOrEqual()
+    {
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            Check.inferiorOrEqual(i, i);
+            Check.inferiorOrEqual(i, i + 1);
+        }
+        Check.inferiorOrEqual(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        Check.inferiorOrEqual(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        Check.inferiorOrEqual(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Test the check inferior invalid cases.
      */
     @Test(expected = LionEngineException.class)
-    public void testCheckInferiorEqualFail()
+    public void testInferiorOrEqualFail()
     {
-        Check.inferiorOrEqual(1, 0);
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            try
+            {
+                Check.inferiorOrEqual(i + 1, i);
+
+                Assert.fail();
+            }
+            catch (final LionEngineException exception)
+            {
+                // Success
+            }
+        }
+        Check.inferiorOrEqual(Integer.MAX_VALUE, Integer.MIN_VALUE);
     }
 
     /**
-     * Test the check superior invalid case.
+     * Test the check inferior or equal with double valid cases.
+     */
+    @Test
+    public void testInferiorOrEqualDouble()
+    {
+        final double factor = Double.MIN_VALUE;
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            final double value = i * factor;
+
+            Check.inferiorOrEqual(value, value);
+
+            Check.inferiorOrEqual(value, value + Double.MIN_VALUE);
+        }
+        Check.inferiorOrEqual(Double.MAX_VALUE, Double.MAX_VALUE);
+        Check.inferiorOrEqual(Double.MIN_VALUE, Double.MAX_VALUE);
+        Check.inferiorOrEqual(Double.MIN_VALUE, Double.MIN_VALUE);
+    }
+
+    /**
+     * Test the check inferior invalid cases.
      */
     @Test(expected = LionEngineException.class)
-    public void testSuperiorDoubleFail()
+    public void testInferiorOrEqualDoubleFail()
     {
-        Check.superiorStrict(-1.0, 0.0);
+        final double factor = Double.MIN_VALUE;
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            final double value = i * factor;
+            try
+            {
+                Check.inferiorOrEqual(value + Double.MIN_VALUE, value);
+            }
+            catch (final LionEngineException exception)
+            {
+                // Success
+            }
+        }
+        Check.inferiorOrEqual(Double.MAX_VALUE, Double.MIN_VALUE);
     }
 
     /**
-     * Test the check superior invalid case.
+     * Test the check inferior strict valid cases.
+     */
+    @Test
+    public void testInferiorStrict()
+    {
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            Check.inferiorStrict(i, i + 1);
+        }
+        Check.inferiorStrict(Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Test the check inferior strict invalid cases.
      */
     @Test(expected = LionEngineException.class)
-    public void testSuperiorEqualDoubleFail()
+    public void testInferiorStrictFail()
     {
-        Check.superiorOrEqual(-1.0, 0.0);
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            try
+            {
+                Check.inferiorStrict(i + 1, i);
+
+                Assert.fail();
+            }
+            catch (final LionEngineException exception)
+            {
+                // Success
+            }
+        }
+        Check.inferiorStrict(Integer.MAX_VALUE, Integer.MIN_VALUE);
     }
 
     /**
-     * Test the check inferior invalid case.
+     * Test the check inferior strict with double valid cases.
+     */
+    @Test
+    public void testInferiorStrictDouble()
+    {
+        final double factor = Double.MIN_VALUE;
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            final double value = i * factor;
+
+            Check.inferiorStrict(value, value + Double.MIN_VALUE);
+        }
+        Check.inferiorStrict(Double.MIN_VALUE, Double.MAX_VALUE);
+    }
+
+    /**
+     * Test the check inferior strict invalid cases.
      */
     @Test(expected = LionEngineException.class)
-    public void testInferiorDoubleFail()
+    public void testInferiorStrictDoubleFail()
     {
-        Check.inferiorStrict(1.0, 0.0);
+        final double factor = Double.MIN_VALUE;
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            final double value = i * factor;
+            try
+            {
+                Check.inferiorStrict(value, value + Double.MIN_VALUE);
+            }
+            catch (final LionEngineException exception)
+            {
+                // Success
+            }
+        }
+        Check.inferiorStrict(Double.MAX_VALUE, Double.MIN_VALUE);
     }
 
     /**
-     * Test the check inferior invalid case.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testInferiorEqualDoubleFail()
-    {
-        Check.inferiorOrEqual(1.0, 0.0);
-    }
-
-    /**
-     * Test the check different valid case.
+     * Test the check different valid cases.
      */
     @Test
     public void testDifferent()
     {
-        Check.different(1, 0);
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            for (int j = -Constant.THOUSAND; j < Constant.THOUSAND; j++)
+            {
+                if (i != j)
+                {
+                    Check.different(i, j);
+                }
+            }
+        }
     }
 
     /**
-     * Test the check different invalid case.
+     * Test the check different invalid cases.
      */
-    @Test(expected = LionEngineException.class)
+    @Test
     public void testDifferentFail()
     {
-        Check.different(0, 0);
+        for (int i = -Constant.THOUSAND; i < Constant.THOUSAND; i++)
+        {
+            try
+            {
+                Check.different(i, i);
+
+                Assert.fail();
+            }
+            catch (final LionEngineException exception)
+            {
+                // Success
+            }
+        }
     }
 }

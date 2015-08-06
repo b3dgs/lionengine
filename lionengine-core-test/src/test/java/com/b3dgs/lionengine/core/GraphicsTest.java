@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.test.FactoryGraphicMock;
 import com.b3dgs.lionengine.test.MediaMock;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -55,8 +56,6 @@ public class GraphicsTest
     private static final Media MEDIA_RASTER = new MediaMock("raster.xml");
     /** Raster error. */
     private static final Media RASTER_ERROR = new MediaMock("raster_error.xml");
-    /** Save image. */
-    private static Media mediaSave;
     /** Image. */
     private static ImageBuffer image;
 
@@ -69,11 +68,6 @@ public class GraphicsTest
     public static void setUp() throws IOException
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
-
-        final File temp = Files.createTempFile("save", "png").toFile();
-        temp.deleteOnExit();
-
-        mediaSave = new MediaMock(temp.getAbsolutePath(), true);
         image = Graphics.getImageBuffer(MEDIA_IMAGE);
     }
 
@@ -365,11 +359,18 @@ public class GraphicsTest
 
     /**
      * Test save image.
+     * 
+     * @throws IOException If error.
      */
     @Test
-    public void testSaveImage()
+    public void testSaveImage() throws IOException
     {
-        Graphics.saveImage(image, mediaSave);
+        final File temp = Files.createTempFile("save", "png").toFile();
+        UtilFile.deleteFile(temp);
+
+        final Media media = new MediaMock(temp.getAbsolutePath(), true);
+        Graphics.saveImage(image, media);
+        UtilFile.deleteFile(media.getFile());
     }
 
     /**

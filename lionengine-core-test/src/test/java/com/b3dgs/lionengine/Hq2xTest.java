@@ -85,6 +85,7 @@ public class Hq2xTest
         }
         final Hq2x hq2x = new Hq2x(image);
         final ImageBuffer filtered = hq2x.getScaledImage();
+
         Assert.assertNotEquals(image, filtered);
         Assert.assertEquals(image.getWidth() * 2, filtered.getWidth());
         Assert.assertEquals(image.getHeight() * 2, filtered.getHeight());

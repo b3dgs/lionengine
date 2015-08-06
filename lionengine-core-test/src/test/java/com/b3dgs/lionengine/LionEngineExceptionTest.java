@@ -20,7 +20,9 @@ package com.b3dgs.lionengine;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -37,13 +39,25 @@ import com.b3dgs.lionengine.test.MediaMock;
  */
 public class LionEngineExceptionTest
 {
+    /** Output result. */
+    private static PrintStream stream;
+    /** Output result. */
+    private static PrintWriter writer;
+
     /**
      * Prepare the test.
+     * 
+     * @throws IOException If error.
      */
     @BeforeClass
-    public static void prepareTest()
+    public static void prepareTest() throws IOException
     {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        final File file1 = Files.createTempFile(LionEngineExceptionTest.class.getName(), ".log").toFile();
+        stream = new PrintStream(file1);
+        final File file2 = Files.createTempFile(LionEngineExceptionTest.class.getName(), ".log").toFile();
+        writer = new PrintWriter(file2);
+        Verbose.info("Test results of ", LionEngineExceptionTest.class.getName(), " in ", file1.getAbsolutePath());
+        Verbose.info("Test results of ", LionEngineExceptionTest.class.getName(), " in ", file2.getAbsolutePath());
     }
 
     /**
@@ -52,7 +66,10 @@ public class LionEngineExceptionTest
     @AfterClass
     public static void cleanUp()
     {
-        Verbose.info("****************************************************************************************");
+        stream.flush();
+        stream.close();
+        writer.flush();
+        writer.close();
     }
 
     /**
@@ -61,14 +78,16 @@ public class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithCheck()
     {
+        stream.println("testLionEngineExceptionWithCheck");
         try
         {
             Check.notNull(null);
         }
         catch (final LionEngineException exception)
         {
-            exception.printStackTrace();
+            exception.printStackTrace(stream);
         }
+        stream.println();
     }
 
     /**
@@ -77,6 +96,7 @@ public class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithCheckMessage()
     {
+        stream.println("testLionEngineExceptionWithCheckMessage");
         try
         {
             Check.notNull(null);
@@ -84,8 +104,9 @@ public class LionEngineExceptionTest
         catch (final LionEngineException exception)
         {
             Assert.assertEquals("Unexpected null argument !", exception.getMessage());
-            exception.printStackTrace();
+            exception.printStackTrace(stream);
         }
+        stream.println();
     }
 
     /**
@@ -94,6 +115,7 @@ public class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithMediaNullPath()
     {
+        stream.println("testLionEngineExceptionWithMediaNullPath");
         final String message = "Exception test";
         try
         {
@@ -101,8 +123,9 @@ public class LionEngineExceptionTest
         }
         catch (final LionEngineException exception)
         {
-            exception.printStackTrace();
+            exception.printStackTrace(stream);
         }
+        stream.println();
     }
 
     /**
@@ -111,6 +134,7 @@ public class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithMedia()
     {
+        stream.println("testLionEngineExceptionWithMedia");
         final String message = "Exception test";
         try
         {
@@ -118,8 +142,9 @@ public class LionEngineExceptionTest
         }
         catch (final LionEngineException exception)
         {
-            exception.printStackTrace();
+            exception.printStackTrace(stream);
         }
+        stream.println();
     }
 
     /**
@@ -130,13 +155,14 @@ public class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithThrowable() throws FileNotFoundException
     {
+        stream.println("testLionEngineExceptionWithThrowable");
         try
         {
             throw new LionEngineException(new IOException("error"));
         }
         catch (final LionEngineException exception)
         {
-            exception.printStackTrace();
+            exception.printStackTrace(stream);
         }
         try
         {
@@ -144,24 +170,19 @@ public class LionEngineExceptionTest
         }
         catch (final LionEngineException exception)
         {
-            exception.printStackTrace();
+            exception.printStackTrace(stream);
         }
-        final File out = new File("out.txt");
-        try (PrintWriter writer = new PrintWriter(out))
+        stream.println();
+        writer.println("testLionEngineExceptionWithThrowable");
+        try
         {
-            try
-            {
-                throw new LionEngineException(new LionEngineException(new RuntimeException("sub")));
-            }
-            catch (final LionEngineException exception)
-            {
-                exception.printStackTrace(writer);
-            }
+            throw new LionEngineException(new LionEngineException(new RuntimeException("sub")));
         }
-        if (out.isFile())
+        catch (final LionEngineException exception)
         {
-            UtilFile.deleteFile(out);
+            exception.printStackTrace(writer);
         }
+        writer.println();
     }
 
     /**
@@ -172,22 +193,16 @@ public class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithNullReason() throws FileNotFoundException
     {
-        final File out = new File("out.txt");
-        try (PrintWriter writer = new PrintWriter(out))
+        writer.println("testLionEngineExceptionWithNullReason");
+        try
         {
-            try
-            {
-                throw new LionEngineException((Throwable) null);
-            }
-            catch (final LionEngineException exception)
-            {
-                exception.printStackTrace(writer);
-            }
+            throw new LionEngineException((Throwable) null);
         }
-        if (out.isFile())
+        catch (final LionEngineException exception)
         {
-            UtilFile.deleteFile(out);
+            exception.printStackTrace(writer);
         }
+        writer.println();
     }
 
     /**
@@ -196,6 +211,7 @@ public class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithThrowableNoMessage()
     {
+        stream.println("testLionEngineExceptionWithThrowableNoMessage");
         LionEngineException.setIgnoreEngineTrace(true);
         try
         {
@@ -203,8 +219,9 @@ public class LionEngineExceptionTest
         }
         catch (final LionEngineException exception)
         {
-            exception.printStackTrace();
+            exception.printStackTrace(stream);
         }
         LionEngineException.setIgnoreEngineTrace(false);
+        stream.println();
     }
 }

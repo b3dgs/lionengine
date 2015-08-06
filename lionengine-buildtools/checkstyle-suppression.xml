@@ -3,7 +3,7 @@
 <!DOCTYPE suppressions PUBLIC "-//Puppy Crawl//DTD Suppressions 1.1//EN" "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 
 <suppressions>
-    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.audio.sc68.AudioSc68" lines="83" />
+    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.audio.sc68.AudioSc68" lines="84" />
     <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding" />
     <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding" />
     
@@ -26,7 +26,7 @@
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ToolsSwt" />
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="297" />
     
-    <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.UtilReflection" lines="48" />
+    <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.UtilReflection" lines="55" />
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.Ratio" lines="31,33,35,37" />
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.ImageInfo" />
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.Hq3x" lines="300" />
@@ -54,7 +54,7 @@
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.network.ServerImpl" lines="369" />
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ServerImpl" lines="443, 522" />
     
-    <suppress checks="IllegalThrow" files="com.b3dgs.lionengine.test.UtilTest" lines="46" />
+    <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.test.UtilTests" lines="50" />
     
     <suppress checks="MagicNumber" files="[\\/]com.b3dgs.lionengine.editor[\\/]" />
 

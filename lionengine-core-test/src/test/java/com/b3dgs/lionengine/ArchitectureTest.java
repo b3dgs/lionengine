@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.test.UtilTests;
@@ -37,5 +38,31 @@ public class ArchitectureTest
     public void testEnum() throws ReflectiveOperationException
     {
         UtilTests.testEnum(Architecture.class);
+    }
+
+    /**
+     * Test the architecture getter .
+     * 
+     * @throws ReflectiveOperationException If error.
+     */
+    @Test
+    public void testArchitectureGet() throws ReflectiveOperationException
+    {
+        Assert.assertNotNull(Architecture.getArchitecture());
+    }
+
+    /**
+     * Test the find architecture.
+     * 
+     * @throws ReflectiveOperationException If error.
+     */
+    @Test
+    public void testArchitectureFind() throws ReflectiveOperationException
+    {
+        Assert.assertEquals(Architecture.UNKNOWN, Architecture.find(null));
+        Assert.assertEquals(Architecture.UNKNOWN, Architecture.find("0"));
+        Assert.assertEquals(Architecture.X86, Architecture.find("86"));
+        Assert.assertEquals(Architecture.X86, Architecture.find("32"));
+        Assert.assertEquals(Architecture.X64, Architecture.find("64"));
     }
 }

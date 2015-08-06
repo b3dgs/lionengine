@@ -34,9 +34,6 @@ import com.b3dgs.lionengine.test.MediaMock;
  */
 public class ColorRgbaTest
 {
-    /** Raster. */
-    private static final Media RASTER = new MediaMock("raster.xml");
-
     /**
      * Prepare test.
      */
@@ -93,67 +90,116 @@ public class ColorRgbaTest
      * Test the color out of range value.
      */
     @Test
-    public void testColorRgbaFailures()
+    public void testColorRgbaOutOfRange()
     {
-        testColorFailure(256, 0, 0, 0);
-        testColorFailure(0, 256, 0, 0);
-        testColorFailure(0, 0, 256, 0);
-        testColorFailure(0, 0, 0, 256);
+        testColorFailure(Constant.UNSIGNED_BYTE, 0, 0, 0);
+        testColorFailure(0, Constant.UNSIGNED_BYTE, 0, 0);
+        testColorFailure(0, 0, Constant.UNSIGNED_BYTE, 0);
+        testColorFailure(0, 0, 0, Constant.UNSIGNED_BYTE);
     }
 
     /**
-     * Test the color rgba value constructor.
+     * Test the color rgba value constructor with color value.
      */
     @Test
-    public void testColorRgbaValueConstructor()
+    public void testColorRgbaValueConstructorValue()
     {
-        final ColorRgba color1 = new ColorRgba(100);
-        Assert.assertEquals(100, color1.getRgba());
-        Assert.assertEquals(100, color1.getBlue());
+        final int step = 51;
+        for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE; i += step)
+        {
+            final ColorRgba color = new ColorRgba(i);
 
-        final ColorRgba color2 = new ColorRgba(255, 0, 0);
-        Assert.assertEquals(ColorRgba.RED.getRgba(), color2.getRgba());
-
-        final ColorRgba color3 = new ColorRgba(0, 255, 0, 255);
-        Assert.assertEquals(ColorRgba.GREEN.getRgba(), color3.getRgba());
+            Assert.assertEquals(i, color.getRgba());
+            Assert.assertEquals(i >> Constant.BYTE_4 & 0xFF, color.getAlpha());
+            Assert.assertEquals(i >> Constant.BYTE_3 & 0xFF, color.getRed());
+            Assert.assertEquals(i >> Constant.BYTE_2 & 0xFF, color.getGreen());
+            Assert.assertEquals(i >> Constant.BYTE_1 & 0xFF, color.getBlue());
+        }
     }
 
     /**
-     * Test the color rgb value equality.
+     * Test the color rgba value constructor with rgb.
      */
     @Test
-    public void testColorRgbValueEquality()
+    public void testColorRgbaValueConstructorRgb()
     {
-        final ColorRgba color = new ColorRgba(255, 0, 0);
-        Assert.assertTrue(ColorRgba.inc(color.getRgba(), 1, 1, 1) != color.getRgba());
-        Assert.assertEquals(255, color.getRed());
-        Assert.assertEquals(0, color.getGreen());
-        Assert.assertEquals(0, color.getBlue());
-        Assert.assertEquals(255, color.getAlpha());
+        for (int r = 0; r < Constant.UNSIGNED_BYTE; r++)
+        {
+            for (int g = 0; g < Constant.UNSIGNED_BYTE; g++)
+            {
+                for (int b = 0; b < Constant.UNSIGNED_BYTE; b++)
+                {
+                    final ColorRgba color = new ColorRgba(r, g, b);
+
+                    Assert.assertEquals(255, color.getAlpha());
+                    Assert.assertEquals(r, color.getRed());
+                    Assert.assertEquals(g, color.getGreen());
+                    Assert.assertEquals(b, color.getBlue());
+                }
+            }
+        }
     }
 
     /**
-     * Test the color with alpha value equality.
+     * Test the color rgba value constructor with rgb and alpha.
      */
     @Test
-    public void testColorWithAlphaValueEquality()
+    public void testColorRgbaValueConstructorRgbAlpha()
     {
-        final int r = 100;
-        final int g = 75;
-        final int b = 50;
-        final int a = 0;
+        final int step = 5;
+        for (int r = 0; r < Constant.UNSIGNED_BYTE; r += step)
+        {
+            for (int g = 0; g < Constant.UNSIGNED_BYTE; g += step)
+            {
+                for (int b = 0; b < Constant.UNSIGNED_BYTE; b += step)
+                {
+                    for (int a = 0; a < Constant.UNSIGNED_BYTE; a += step)
+                    {
+                        final ColorRgba color = new ColorRgba(r, g, b, a);
 
-        final ColorRgba color = new ColorRgba(r, g, b, a);
-        Assert.assertEquals(r, color.getRed());
-        Assert.assertEquals(g, color.getGreen());
-        Assert.assertEquals(b, color.getBlue());
-        Assert.assertEquals(a, color.getAlpha());
+                        Assert.assertEquals(a, color.getAlpha());
+                        Assert.assertEquals(r, color.getRed());
+                        Assert.assertEquals(g, color.getGreen());
+                        Assert.assertEquals(b, color.getBlue());
+                    }
+                }
+            }
+        }
+    }
 
-        Assert.assertTrue(ColorRgba.inc(color.getRgba(), 1, 1, 1) != color.getRgba());
-        Assert.assertEquals(r, color.getRed());
-        Assert.assertEquals(g, color.getGreen());
-        Assert.assertEquals(b, color.getBlue());
-        Assert.assertEquals(a, color.getAlpha());
+    /**
+     * Test the color rgb increment.
+     */
+    @Test
+    public void testColorRgbInc()
+    {
+        final int step = 5;
+        for (int r = 0; r < Constant.UNSIGNED_BYTE; r += step)
+        {
+            for (int g = 0; g < Constant.UNSIGNED_BYTE; g += step)
+            {
+                for (int b = 0; b < Constant.UNSIGNED_BYTE; b += step)
+                {
+                    for (int a = 0; a < Constant.UNSIGNED_BYTE; a += step)
+                    {
+                        final ColorRgba color = new ColorRgba(r, g, b, a);
+                        final ColorRgba colorInc = new ColorRgba(ColorRgba.inc(color.getRgba(), r, g, b));
+
+                        if (r != 0 && g != 0 && b != 0 && r != 255 && g != 255 && b != 255)
+                        {
+                            Assert.assertNotEquals(color.getRgba(), colorInc.getRgba());
+                        }
+                        if (!(a == 0 && (r > 0 || g > 0 || b > 0)))
+                        {
+                            Assert.assertEquals(color.getAlpha(), colorInc.getAlpha());
+                            Assert.assertEquals(UtilMath.fixBetween(color.getRed() + r, 0, 255), colorInc.getRed());
+                            Assert.assertEquals(UtilMath.fixBetween(color.getGreen() + g, 0, 255), colorInc.getGreen());
+                            Assert.assertEquals(UtilMath.fixBetween(color.getBlue() + b, 0, 255), colorInc.getBlue());
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -191,21 +237,42 @@ public class ColorRgbaTest
     @Test
     public void testColorEquals()
     {
+        final int step = 654321;
+        for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE - step; i += step)
+        {
+            final ColorRgba color = new ColorRgba(i);
+            for (int j = Integer.MIN_VALUE; j < Integer.MAX_VALUE - step; j += step)
+            {
+                if (i != j)
+                {
+                    Assert.assertNotEquals(color, new ColorRgba(j));
+                }
+            }
+        }
         Assert.assertEquals(ColorRgba.BLACK, ColorRgba.BLACK);
         Assert.assertNotEquals(ColorRgba.WHITE, ColorRgba.BLACK);
         Assert.assertNotEquals(ColorRgba.WHITE, ColorRgba.class);
     }
 
     /**
-     * Test the color utility.
+     * Test the color raster.
      */
     @Test
-    public void testColorUtility()
+    public void testColorRaster()
     {
-        final int[][] raster = Graphics.loadRaster(RASTER);
+        final Media media = new MediaMock("raster.xml");
+        final int[][] raster = Graphics.loadRaster(media);
         Assert.assertTrue(ColorRgba.getRasterColor(0, raster[0], 2) > 0);
         raster[0][5] = 1;
         Assert.assertTrue(ColorRgba.getRasterColor(0, raster[0], 2) < 0);
+    }
+
+    /**
+     * Test the color filter rgb.
+     */
+    @Test
+    public void testColorFilterRgb()
+    {
         Assert.assertTrue(ColorRgba.filterRgb(-16711423, 0, 0, 0) < 0);
         Assert.assertTrue(ColorRgba.filterRgb(0, 0, 0, 0) == 0);
         Assert.assertTrue(ColorRgba.filterRgb(16711935, 0, 0, 0) > 0);
@@ -219,6 +286,7 @@ public class ColorRgbaTest
 
         final int filterRgb1 = ColorRgba.filterRgb(0, -1, -1, -1);
         Assert.assertTrue(filterRgb1 >= 0);
+
         final int filterRgb2 = ColorRgba.filterRgb(65535, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
         Assert.assertTrue(filterRgb2 >= 0);
     }

@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.UtilFile;
@@ -146,7 +147,8 @@ public final class AudioSc68
      */
     private static String getLibraryArchitecture()
     {
-        switch (OperatingSystem.getArchitecture())
+        final Architecture architecture = Architecture.getArchitecture();
+        switch (architecture)
         {
             case X86:
             case UNKNOWN:
@@ -154,7 +156,7 @@ public final class AudioSc68
             case X64:
                 return AudioSc68.ARCHITECTURE_X64;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException("Unknown type: ", architecture.name());
         }
     }
 

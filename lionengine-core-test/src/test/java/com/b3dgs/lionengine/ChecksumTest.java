@@ -29,13 +29,6 @@ import com.b3dgs.lionengine.test.UtilTests;
  */
 public class ChecksumTest
 {
-    /** Key to encode. */
-    private static final String STRING = "keyToBeEncoded";
-    /** Another key to encode. */
-    private static final String OTHER = "anotherKey";
-    /** A value to encode. */
-    private static final int VALUE = 489464795;
-
     /**
      * Test the constructor.
      * 
@@ -54,6 +47,7 @@ public class ChecksumTest
     public void testCreation()
     {
         final Checksum checksum = Checksum.createSha256();
+
         Assert.assertNotNull(checksum);
     }
 
@@ -61,15 +55,28 @@ public class ChecksumTest
      * Test checksum encoding.
      */
     @Test
-    public void testEncoding()
+    public void testEncodingString()
     {
         final Checksum checksum = Checksum.createSha256();
-        final String signature = checksum.getSha256(STRING);
-        final String test = checksum.getSha256(VALUE);
+        final String keyToBeEncoded = "keyToBeEncoded";
+        final String signature = checksum.getSha256(keyToBeEncoded);
 
-        Assert.assertTrue(checksum.check(STRING, signature));
-        Assert.assertFalse(checksum.check(OTHER, signature));
-        Assert.assertTrue(checksum.check(VALUE, test));
+        Assert.assertTrue(checksum.check(keyToBeEncoded, signature));
+        Assert.assertFalse(checksum.check("anotherKey", signature));
+    }
+
+    /**
+     * Test checksum encoding integer.
+     */
+    @Test
+    public void testEncodingInt()
+    {
+        final Checksum checksum = Checksum.createSha256();
+        final int value = 489464795;
+        final String signature = checksum.getSha256(value);
+
+        Assert.assertTrue(checksum.check(value, signature));
+        Assert.assertFalse(checksum.check(2456135, signature));
     }
 
     /**
@@ -80,6 +87,7 @@ public class ChecksumTest
     {
         final Checksum checksum = Checksum.createSha256();
         final String signature = checksum.getSha256((String) null);
+
         Assert.assertNull(signature);
     }
 
@@ -91,6 +99,7 @@ public class ChecksumTest
     {
         final Checksum checksum = Checksum.createSha256();
         final String signature = checksum.getSha256((byte[]) null);
+
         Assert.assertNull(signature);
     }
 }

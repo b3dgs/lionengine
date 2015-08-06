@@ -242,7 +242,7 @@ public final class UtilReflection
      * @param object The accessible object.
      * @param accessible <code>true</code> if accessible, <code>false</code> else.
      */
-    private static void setAccessible(final AccessibleObject object, final boolean accessible)
+    public static void setAccessible(final AccessibleObject object, final boolean accessible)
     {
         java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<Void>()
         {

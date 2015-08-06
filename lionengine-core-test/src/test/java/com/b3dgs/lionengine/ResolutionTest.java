@@ -74,7 +74,7 @@ public class ResolutionTest
      * Test the resolution failure.
      */
     @Test
-    public void testResolutionFailures()
+    public void testFailures()
     {
         testResolutionCreation(0, 0, -1);
         testResolutionCreation(0, 1, -1);
@@ -91,7 +91,7 @@ public class ResolutionTest
      * Test the resolution setters.
      */
     @Test
-    public void testResolution()
+    public void testSetters()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
         Assert.assertEquals(Ratio.R4_3, resolution.getRatio(), 0.000001);

@@ -35,30 +35,43 @@ public final class UtilTests
 {
     /** Double precision. */
     public static final double PRECISION = 0.000000001;
+    /** Enum.valueOf method. */
+    private static final String ENUM_VALUEOF = "valueOf";
 
     /**
      * Test private constructor.
      * 
      * @param clazz The class to test.
      * @param args Optional arguments.
-     * @throws Throwable If error.
+     * @throws LionEngineException Expected exception.
+     * @throws ReflectiveOperationException If error.
      */
-    public static void testPrivateConstructor(Class<?> clazz, Object... args) throws Throwable
+    public static void testPrivateConstructor(Class<?> clazz, Object... args)
+            throws LionEngineException, ReflectiveOperationException
     {
-        final Constructor<?> constructor = clazz.getDeclaredConstructor(UtilReflection.getParamTypes(args));
+        final Class<?>[] params = UtilReflection.getParamTypes(args);
+        final Constructor<?> constructor = clazz.getDeclaredConstructor(params);
+        final boolean accessible = constructor.isAccessible();
         try
         {
-            constructor.setAccessible(true);
+            UtilReflection.setAccessible(constructor, true);
             final Object instance = constructor.newInstance(args);
             Assert.assertNotNull(instance);
         }
         catch (final InvocationTargetException exception)
         {
-            throw exception.getCause();
+            final Throwable cause = exception.getCause();
+            if (cause instanceof LionEngineException)
+            {
+                throw (LionEngineException) cause;
+            }
         }
         finally
         {
-            constructor.setAccessible(false);
+            if (constructor.isAccessible() != accessible)
+            {
+                UtilReflection.setAccessible(constructor, accessible);
+            }
         }
         Assert.fail();
     }
@@ -72,7 +85,7 @@ public final class UtilTests
      */
     public static <T extends Enum<T>> void testEnum(Class<T> type) throws ReflectiveOperationException
     {
-        final Method method = type.getDeclaredMethod("valueOf", String.class);
+        final Method method = type.getDeclaredMethod(ENUM_VALUEOF, String.class);
         for (final T value : type.getEnumConstants())
         {
             Assert.assertNotNull(value);

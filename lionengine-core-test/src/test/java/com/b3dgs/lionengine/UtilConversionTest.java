@@ -85,7 +85,7 @@ public class UtilConversionTest
     }
 
     /**
-     * Test the utility conversion byte.
+     * Test the utility conversion boolean.
      */
     @Test
     public void testBool()

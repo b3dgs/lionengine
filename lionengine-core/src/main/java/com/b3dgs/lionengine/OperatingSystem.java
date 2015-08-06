@@ -42,30 +42,20 @@ public enum OperatingSystem
     /** Unknown system. */
     UNKNOWN;
 
-    /** The OS enum. */
-    private static final OperatingSystem OS;
-    /** The architecture used. */
-    private static final Architecture ARCHI;
     /** Unknown item. */
     private static final String DEFAULT = "unknown";
+    /** The OS enum. */
+    private static final OperatingSystem OS = find(EngineCore.getSystemProperty("os.name", DEFAULT)
+                                                             .toLowerCase(Locale.ENGLISH));
 
     /**
-     * Static init.
-     */
-    static
-    {
-        OS = findOs(EngineCore.getSystemProperty("os.name", DEFAULT).toLowerCase(Locale.ENGLISH));
-        ARCHI = findArchitecture(EngineCore.getSystemProperty("sun.arch.data.model", DEFAULT));
-    }
-
-    /**
-     * Find the current OS.
+     * Find the current system.
      * 
      * @param os The system short name (usually <code>win</code> or <code>mac</code> or <code>nux</code> or
      *            <code>sunos</code>...).
      * @return The OS found.
      */
-    public static OperatingSystem findOs(String os)
+    public static OperatingSystem find(String os)
     {
         final OperatingSystem found;
         if (os == null)
@@ -96,34 +86,6 @@ public enum OperatingSystem
     }
 
     /**
-     * Find the current architecture.
-     * 
-     * @param arch The architecture short name (usually <code>32</code> or <code>86</code> or <code>64</code>).
-     * @return The current architecture.
-     */
-    public static Architecture findArchitecture(String arch)
-    {
-        final Architecture architecture;
-        if (arch == null)
-        {
-            architecture = Architecture.UNKNOWN;
-        }
-        else if (arch.contains("64"))
-        {
-            architecture = Architecture.X64;
-        }
-        else if (arch.contains("32") || arch.contains("86"))
-        {
-            architecture = Architecture.X86;
-        }
-        else
-        {
-            architecture = Architecture.UNKNOWN;
-        }
-        return architecture;
-    }
-
-    /**
      * Get operating system name.
      * 
      * @return The operating system name.
@@ -131,15 +93,5 @@ public enum OperatingSystem
     public static OperatingSystem getOperatingSystem()
     {
         return OS;
-    }
-
-    /**
-     * Get java current running architecture.
-     * 
-     * @return The jvm architecture.
-     */
-    public static Architecture getArchitecture()
-    {
-        return ARCHI;
     }
 }

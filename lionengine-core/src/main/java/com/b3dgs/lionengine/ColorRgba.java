@@ -108,7 +108,7 @@ public final class ColorRgba
         final int green = mask(value >> Constant.BYTE_2);
         final int blue = mask(value >> Constant.BYTE_1);
 
-        final int alphaMask = mask(255) << Constant.BYTE_4;
+        final int alphaMask = mask(UtilMath.fixBetween(alpha, 0, 255)) << Constant.BYTE_4;
         final int redMask = mask(UtilMath.fixBetween(red + r, 0, 255)) << Constant.BYTE_3;
         final int greenMask = mask(UtilMath.fixBetween(green + g, 0, 255)) << Constant.BYTE_2;
         final int blueMask = mask(UtilMath.fixBetween(blue + b, 0, 255)) << Constant.BYTE_1;
