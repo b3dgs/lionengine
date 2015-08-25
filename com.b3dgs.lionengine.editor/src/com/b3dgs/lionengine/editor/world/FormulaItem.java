@@ -65,7 +65,7 @@ public class FormulaItem
     /**
      * Get the current collision function selection.
      * 
-     * @return The collision function selection.
+     * @return The collision function selection (<code>null</code> if no function).
      */
     public CollisionFunction getFunction()
     {

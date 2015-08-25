@@ -232,13 +232,12 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     @Override
     public void onMousePressed(int click, int mx, int my)
     {
-        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
-        if (palette == PaletteType.POINTER_OBJECT)
+        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_OBJECT))
         {
             controlObject(click, mx, my);
             selectObject(mx, my);
         }
-        else if (palette == PaletteType.SELECTION)
+        else if (WorldModel.INSTANCE.isPalette(PaletteType.SELECTION))
         {
             startSelection(mx, my);
         }
@@ -247,16 +246,14 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     @Override
     public void onMouseReleased(int click, int mx, int my)
     {
-        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
-        if (palette == PaletteType.POINTER_OBJECT)
+        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_OBJECT))
         {
             endDragging();
         }
-        else if (palette == PaletteType.SELECTION)
+        else if (WorldModel.INSTANCE.isPalette(PaletteType.SELECTION))
         {
             endSelection(mx, my);
         }
-
     }
 
     /*
@@ -266,12 +263,11 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
-        if (palette == PaletteType.POINTER_OBJECT)
+        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_OBJECT))
         {
             updateDragging(click, oldMx, oldMy, mx, my);
         }
-        else if (palette == PaletteType.SELECTION && click == Mouse.LEFT)
+        else if (WorldModel.INSTANCE.isPalette(PaletteType.SELECTION) && click == Mouse.LEFT)
         {
             updateSelection(click, oldMx, oldMy, mx, my);
         }

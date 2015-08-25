@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.geom.Point;
 
 /**
  * Handle the world cursor rendering.
@@ -39,12 +40,14 @@ public class WorldCursor implements WorldRenderListener
 {
     /** Color of the selection area. */
     private static final ColorRgba COLOR_CURSOR_SELECTION = new ColorRgba(240, 240, 240, 96);
+    /** Color of the pixel area. */
+    private static final ColorRgba COLOR_CURSOR_PIXEL = new ColorRgba(240, 128, 128, 255);
 
-    /** Map. */
+    /** Map reference. */
     private final MapTile map;
-    /** Camera. */
+    /** Camera reference. */
     private final Camera camera;
-    /** Updater. */
+    /** Updater reference. */
     private final WorldUpdater world;
     /** Selection handler. */
     private final Selection selection;
@@ -65,6 +68,43 @@ public class WorldCursor implements WorldRenderListener
         objectControl = services.get(ObjectControl.class);
     }
 
+    /**
+     * Draw the pointed tile.
+     * 
+     * @param g The graphic output.
+     * @param scale The current world scaling.
+     * @param tile The current selected tile.
+     * @param tw The current tile width.
+     * @param th The current tile height.
+     */
+    private void drawCursorTile(Graphic g, double scale, Tile tile, int tw, int th)
+    {
+        g.setColor(COLOR_CURSOR_SELECTION);
+
+        final int x = (int) (camera.getViewpointX(tile.getX()) * scale);
+        final int y = (int) (camera.getViewpointY(tile.getY()) * scale) - th;
+
+        g.drawRect(x, y, tw, th, true);
+    }
+
+    /**
+     * Draw the pointed cursor pixel.
+     * 
+     * @param g The graphic output.
+     * @param scale The current world scaling.
+     */
+    private void drawCursorPixel(Graphic g, double scale)
+    {
+        g.setColor(COLOR_CURSOR_PIXEL);
+
+        final int size = (int) Math.round(scale);
+        final Point mouse = UtilWorld.getPoint(map, camera, world.getMouseX(), world.getMouseY());
+        final int mx = (int) (camera.getViewpointX(mouse.getX()) * scale);
+        final int my = (int) (camera.getViewpointY(mouse.getY()) * scale) - size;
+
+        g.drawRect(mx, my, size, size, true);
+    }
+
     /*
      * WorldRenderListener
      */
@@ -72,7 +112,7 @@ public class WorldCursor implements WorldRenderListener
     @Override
     public void onRender(Graphic g, int width, int height, double scale, int tw, int th)
     {
-        if (WorldModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER_OBJECT
+        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_OBJECT)
             && !selection.isSelecting()
             && !objectControl.isDragging()
             && !objectControl.hasOver())
@@ -80,10 +120,8 @@ public class WorldCursor implements WorldRenderListener
             final Tile tile = UtilWorld.getTile(map, camera, world.getMouseX(), world.getMouseY());
             if (tile != null)
             {
-                g.setColor(COLOR_CURSOR_SELECTION);
-                final int x = (int) (camera.getViewpointX(tile.getX()) * scale);
-                final int y = (int) (camera.getViewpointY(tile.getY()) * scale) - th;
-                g.drawRect(x, y, tw, th, true);
+                drawCursorTile(g, scale, tile, tw, th);
+                drawCursorPixel(g, scale);
             }
         }
     }

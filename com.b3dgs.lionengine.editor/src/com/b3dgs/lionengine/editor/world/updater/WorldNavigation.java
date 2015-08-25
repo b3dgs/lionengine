@@ -86,8 +86,7 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
-        if (palette == PaletteType.HAND && click > 0)
+        if (WorldModel.INSTANCE.isPalette(PaletteType.HAND) && click > 0)
         {
             camera.moveLocation(1.0, oldMx - mx, my - oldMy);
         }

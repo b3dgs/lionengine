@@ -166,8 +166,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         firstX = mx;
         firstY = my;
-        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
-        if (palette == PaletteType.POINTER_TILE)
+        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_TILE))
         {
             updatePointerTile(mx, my);
         }
@@ -180,8 +179,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     @Override
     public void onMouseReleased(int click, int mx, int my)
     {
-        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
-        if (palette == PaletteType.POINTER_COLLISION)
+        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_COLLISION))
         {
             updatePointerCollision(mx, my);
         }
@@ -194,8 +192,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        final Enum<?> palette = WorldModel.INSTANCE.getSelectedPalette();
-        if (palette == PaletteType.POINTER_COLLISION)
+        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_COLLISION))
         {
             updatePointerCollision(mx, my);
         }

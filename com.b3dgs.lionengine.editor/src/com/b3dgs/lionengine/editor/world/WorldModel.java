@@ -123,4 +123,15 @@ public class WorldModel
     {
         return palette;
     }
+
+    /**
+     * Check if current palette is the specified type.
+     * 
+     * @param type The expected type.
+     * @return <code>true</code> if right type, <code>false</code> else.
+     */
+    public boolean isPalette(PaletteType type)
+    {
+        return palette.equals(type);
+    }
 }
