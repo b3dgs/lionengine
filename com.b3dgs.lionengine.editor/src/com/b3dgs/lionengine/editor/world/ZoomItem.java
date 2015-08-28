@@ -19,8 +19,9 @@ package com.b3dgs.lionengine.editor.world;
 
 import javax.annotation.PostConstruct;
 
+import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -42,6 +43,8 @@ public class ZoomItem
 {
     /** Element ID. */
     public static final String ID = "zoom-item";
+    /** Text height. */
+    private static final int TEXT_HEIGHT = 8;
 
     /** Current zoom value. */
     private Text zoom;
@@ -96,12 +99,15 @@ public class ZoomItem
     @PostConstruct
     public void create(Composite parent)
     {
+        final FontDescriptor boldDescriptor = FontDescriptor.createFrom(parent.getFont()).setHeight(TEXT_HEIGHT);
+        final Font font = boldDescriptor.createFont(parent.getDisplay());
+
         final GridLayout layout = new GridLayout(2, false);
-        layout.marginHeight = 1;
+        layout.marginHeight = 0;
         parent.setLayout(layout);
 
         zoom = new Text(parent, SWT.SINGLE | SWT.CENTER | SWT.BORDER);
-        zoom.setLayoutData(new GridData(20, 13));
+        zoom.setFont(font);
         UtilText.createVerify(zoom, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
         zoom.setText(String.valueOf(WorldZoom.ZOOM_DEFAULT));
         zoom.addTraverseListener(event ->
@@ -111,8 +117,10 @@ public class ZoomItem
                 chooseZoom();
             }
         });
+        zoom.pack();
 
         final Label label = new Label(parent, SWT.NONE);
+        label.setFont(font);
         label.setText(Constant.PERCENT);
     }
 }

@@ -22,11 +22,14 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -46,6 +49,10 @@ public class FormulaItem
 {
     /** Element ID. */
     public static final String ID = "formulas";
+    /** Text height. */
+    private static final int TEXT_HEIGHT = 8;
+    /** Minimum combo width. */
+    private static final int COMBO_MIN_WIDTH = 128;
 
     /** Loaded data. */
     final Map<String, CollisionFunction> values = new HashMap<>();
@@ -80,14 +87,20 @@ public class FormulaItem
     @PostConstruct
     public void create(Composite parent)
     {
+        final FontDescriptor boldDescriptor = FontDescriptor.createFrom(parent.getFont()).setHeight(TEXT_HEIGHT);
+        final Font font = boldDescriptor.createFont(parent.getDisplay());
+
         final GridLayout layout = new GridLayout(2, false);
-        layout.marginHeight = 1;
+        layout.marginHeight = 0;
         parent.setLayout(layout);
 
         final Label label = new Label(parent, SWT.NONE);
+        label.setFont(font);
         label.setText(Messages.Toolbar_Formula);
 
         combo = new Combo(parent, SWT.SINGLE | SWT.READ_ONLY);
+        combo.setFont(font);
+        combo.setLayoutData(new GridData(COMBO_MIN_WIDTH, TEXT_HEIGHT));
         combo.addMouseTrackListener(new MouseTrackListener()
         {
             @Override
