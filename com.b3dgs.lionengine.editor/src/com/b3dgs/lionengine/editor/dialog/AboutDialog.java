@@ -21,8 +21,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -85,10 +83,6 @@ public class AboutDialog
 
         final Label aboutText = new Label(top, SWT.NONE);
         aboutText.setBackground(aboutText.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        final FontData aboutTextdata = aboutText.getFont().getFontData()[0];
-        aboutTextdata.setHeight(10);
-        aboutTextdata.setStyle(SWT.BOLD);
-        aboutText.setFont(new Font(aboutText.getDisplay(), aboutTextdata));
 
         final String vendor = Platform.getBundle(Activator.PLUGIN_ID).getHeaders().get("Bundle-Vendor");
         final StringBuilder text = new StringBuilder(Activator.PLUGIN_NAME).append(Constant.SPACE);
