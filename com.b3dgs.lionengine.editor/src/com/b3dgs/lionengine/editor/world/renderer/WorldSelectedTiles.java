@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.geom.Line;
 
 /**
  * Handle the tiles selection rendering.
@@ -99,6 +100,30 @@ public class WorldSelectedTiles implements WorldRenderListener
         g.drawRect(x, y, tw, th, true);
     }
 
+    /**
+     * Render the assigning collision line.
+     * 
+     * @param g The graphic output.
+     * @param line The current line.
+     * @param scale The scale factor.
+     * @param tw The current tile width.
+     * @param th The current tile height.
+     */
+    private void renderAssigningCollision(Graphic g, Line line, double scale, int tw, int th)
+    {
+        final int x1 = (int) (camera.getViewpointX(line.getX1()) * scale);
+        final int y1 = (int) (camera.getViewpointY(line.getY1()) * scale);
+        final int x2 = (int) (camera.getViewpointX(line.getX2()) * scale);
+        final int y2 = (int) (camera.getViewpointY(line.getY2()) * scale);
+
+        g.drawLine(x1, y1, x2, y2);
+
+        for (final Tile tile : map.getTilesHit(line.getX1(), line.getY1(), line.getX2(), line.getY2()))
+        {
+            renderSelectedTile(g, tile, scale, tw, th);
+        }
+    }
+
     /*
      * WorldRenderListener
      */
@@ -114,6 +139,12 @@ public class WorldSelectedTiles implements WorldRenderListener
 
             g.setColor(COLOR_TILE_SELECTED);
             renderSelectedTile(g, selectedTile, scale, tw, th);
+        }
+
+        final Line currentLine = interactionTile.getCollisionLine();
+        if (currentLine != null)
+        {
+            renderAssigningCollision(g, currentLine, scale, tw, th);
         }
     }
 }

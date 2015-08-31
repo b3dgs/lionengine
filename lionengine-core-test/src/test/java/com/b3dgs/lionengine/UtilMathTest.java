@@ -153,17 +153,9 @@ public class UtilMathTest
     @Test
     public void testSign()
     {
-        Assert.assertTrue(UtilMath.getSign(-1) < 0);
-        Assert.assertTrue(UtilMath.getSign(1) > 0);
-        try
-        {
-            Assert.assertFalse(UtilMath.getSign(0) == 0);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        Assert.assertEquals(UtilMath.getSign(-1.0), -1);
+        Assert.assertEquals(UtilMath.getSign(1.0), 1);
+        Assert.assertEquals(UtilMath.getSign(0), 0);
     }
 
     /**

@@ -327,15 +327,25 @@ public final class UtilMath
     /**
      * Get the sign of a value.
      * 
-     * @param value The value to check (must be != 0).
-     * @return -1 if negative, 1 if positive.
-     * @throws LionEngineException If argument is equal to 0.
+     * @param value The value to check.
+     * @return -1 if negative strict, 1 if positive strict, 0 if 0.
      */
-    public static int getSign(int value) throws LionEngineException
+    public static int getSign(double value)
     {
-        Check.different(value, 0);
-
-        return Math.abs(value) / value;
+        final int sign;
+        if (value > 0)
+        {
+            sign = 1;
+        }
+        else if (value < 0)
+        {
+            sign = -1;
+        }
+        else
+        {
+            sign = 0;
+        }
+        return sign;
     }
 
     /**

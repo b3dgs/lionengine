@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,8 +25,6 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
@@ -35,10 +34,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
+import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
 
 /**
  * Represents the quick formula assignment area.
@@ -49,6 +46,10 @@ public class FormulaItem
 {
     /** Element ID. */
     public static final String ID = "formulas";
+    /** Line function. */
+    public static final CollisionFunction LINE = new CollisionFunctionLinear(0.0, 0.0);
+    /** Slope function. */
+    public static final CollisionFunction SLOPE2X = new CollisionFunctionLinear(0.5, 0.0);
     /** Text height. */
     private static final int TEXT_HEIGHT = 8;
     /** Minimum combo width. */
@@ -101,26 +102,6 @@ public class FormulaItem
         combo = new Combo(parent, SWT.SINGLE | SWT.READ_ONLY);
         combo.setFont(font);
         combo.setLayoutData(new GridData(COMBO_MIN_WIDTH, TEXT_HEIGHT));
-        combo.addMouseTrackListener(new MouseTrackListener()
-        {
-            @Override
-            public void mouseEnter(MouseEvent event)
-            {
-                loadValues();
-            }
-
-            @Override
-            public void mouseExit(MouseEvent event)
-            {
-                // Nothing to do
-            }
-
-            @Override
-            public void mouseHover(MouseEvent event)
-            {
-                // Nothing to do
-            }
-        });
         combo.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -129,28 +110,12 @@ public class FormulaItem
                 combo.setData(values.get(combo.getText()));
             }
         });
-    }
+        values.clear();
+        values.put("Line", LINE);
+        values.put("Slope 2X", SLOPE2X);
 
-    /**
-     * Load combo values.
-     */
-    void loadValues()
-    {
-        final MapTile map = WorldModel.INSTANCE.getMap();
-        if (map.hasFeature(MapTileCollision.class))
-        {
-            final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
-            final long mofified = mapCollision.getFormulasConfig().getFile().lastModified();
-            if (lastModified != mofified)
-            {
-                lastModified = mofified;
-                values.clear();
-                for (final CollisionFormula formula : mapCollision.getCollisionFormulas())
-                {
-                    values.put(formula.getName(), formula.getFunction());
-                }
-                combo.setItems(values.keySet().toArray(new String[values.size()]));
-            }
-        }
+        final String[] formulas = values.keySet().toArray(new String[values.size()]);
+        Arrays.sort(formulas);
+        combo.setItems(formulas);
     }
 }

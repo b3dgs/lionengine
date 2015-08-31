@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor.world.updater;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
@@ -36,6 +37,8 @@ import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Line;
 import com.b3dgs.lionengine.geom.Point;
 
 /**
@@ -54,10 +57,16 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     private final MapTile map;
     /** Selected tile. */
     private Tile selectedTile;
-    /** First x. */
-    private int firstX;
-    /** First y. */
-    private int firstY;
+    /** Line collision assign. */
+    private Line collLine;
+    /** Start x collision assign. */
+    private int startX;
+    /** Start y collision assign. */
+    private int startY;
+    /** Starting point collision assign. */
+    private Point collStart;
+    /** Ending point collision assign. */
+    private Point collEnd;
 
     /**
      * Create the interactions handler.
@@ -101,6 +110,16 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     }
 
     /**
+     * Get the current line collision assigning.
+     * 
+     * @return The line collision assigning.
+     */
+    public Line getCollisionLine()
+    {
+        return collLine;
+    }
+
+    /**
      * Update the pointer in tile case.
      * 
      * @param mx The horizontal mouse location.
@@ -135,12 +154,44 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final CollisionFunction function = item.getFunction();
         if (function != null)
         {
-            // TODO apply function depending of the axis
-            final Point old = UtilWorld.getPoint(map, camera, firstX, firstY);
-            final Point point = UtilWorld.getPoint(map, camera, mx, my);
-            final Collection<Tile> tiles = map.getTilesHit(old.getX(), old.getY(), point.getX(), point.getY());
-            // TODO assign collision to tiles
-            // TODO render current line
+            updatePointerCollision(mx, my, function);
+        }
+    }
+
+    /**
+     * Update the pointer in collision case.
+     * 
+     * @param mx The horizontal mouse location.
+     * @param my The vertical mouse location.
+     * @param function The function base used.
+     */
+    private void updatePointerCollision(int mx, int my, CollisionFunction function)
+    {
+        final int x = mx - startX;
+        final int y = my - startY;
+        final int sideX = UtilMath.getSign(x);
+        final int sideY = UtilMath.getSign(y);
+        if (function == FormulaItem.LINE)
+        {
+            if (Math.abs(x) > Math.abs(y))
+            {
+                collEnd = UtilWorld.getPoint(map, camera, mx, startY + (int) function.compute(x * sideX));
+            }
+            else
+            {
+                collEnd = UtilWorld.getPoint(map, camera, startX + (int) function.compute(y * sideY), my);
+            }
+        }
+        else
+        {
+            if (sideY > 0)
+            {
+                collEnd = UtilWorld.getPoint(map, camera, mx, startY + (int) function.compute(x * sideX));
+            }
+            else
+            {
+                collEnd = UtilWorld.getPoint(map, camera, mx, startY + (int) function.compute(x * -sideX));
+            }
         }
     }
 
@@ -164,8 +215,9 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     @Override
     public void onMousePressed(int click, int mx, int my)
     {
-        firstX = mx;
-        firstY = my;
+        startX = mx;
+        startY = my;
+        collStart = UtilWorld.getPoint(map, camera, mx, my);
         if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_TILE))
         {
             updatePointerTile(mx, my);
@@ -182,6 +234,9 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_COLLISION))
         {
             updatePointerCollision(mx, my);
+            collStart = null;
+            collEnd = null;
+            collLine = null;
         }
     }
 
@@ -194,7 +249,11 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_COLLISION))
         {
-            updatePointerCollision(mx, my);
+            if (collStart != null)
+            {
+                updatePointerCollision(mx, my);
+                collLine = Geom.createLine(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY());
+            }
         }
     }
 }
