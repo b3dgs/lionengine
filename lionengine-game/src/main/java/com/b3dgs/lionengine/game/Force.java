@@ -28,6 +28,49 @@ import com.b3dgs.lionengine.core.Updatable;
  */
 public class Force implements Direction, Updatable
 {
+    /**
+     * Create a force from a vector movement.
+     * 
+     * <p>
+     * The created force will describe the following values:
+     * 
+     * <p>
+     * <ul>
+     * <li>horizontal normalized speed ({@link #getDirectionHorizontal()}),</li>
+     * <li>vertical normalized speed ({@link #getDirectionVertical()}),</li>
+     * <li>normal value ({@link #getVelocity()}).</li>
+     * </ul>
+     * 
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @return The tiles found.
+     */
+    public static Force fromVector(double ox, double oy, double x, double y)
+    {
+        // Distance calculation
+        final double dh = x - ox;
+        final double dv = y - oy;
+
+        // Search vector and number of search steps
+        final double norm;
+        if (dh > dv)
+        {
+            norm = Math.abs(dh);
+        }
+        else
+        {
+            norm = Math.abs(dv);
+        }
+        final double sx = dh / norm;
+        final double sy = dv / norm;
+
+        final Force force = new Force(sx, sy);
+        force.setVelocity(norm);
+        return force;
+    }
+
     /** Horizontal force vector. */
     private double fh;
     /** Vertical force vector. */
@@ -192,6 +235,16 @@ public class Force implements Direction, Updatable
     public void setDirectionMinimum(Direction min)
     {
         directionMin = min;
+    }
+
+    /**
+     * Get the current velocity.
+     * 
+     * @return The current velocity.
+     */
+    public double getVelocity()
+    {
+        return velocity;
     }
 
     /**

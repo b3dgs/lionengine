@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.object.Services;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldZoom implements WorldMouseScrollListener
+public class WorldZoom implements WorldMouseClickListener, WorldMouseScrollListener
 {
     /** Default zoom value. */
     public static final int ZOOM_DEFAULT = 100;
@@ -47,6 +47,8 @@ public class WorldZoom implements WorldMouseScrollListener
     private int zoomPercent;
     /** Old scale. */
     private double oldScale;
+    /** Zoom enabled flag. */
+    private boolean enabled;
 
     /**
      * Create the world zoom.
@@ -147,24 +149,43 @@ public class WorldZoom implements WorldMouseScrollListener
     }
 
     /*
+     * WorldMouseClickListener
+     */
+
+    @Override
+    public void onMousePressed(int click, int mx, int my)
+    {
+        enabled = false;
+    }
+
+    @Override
+    public void onMouseReleased(int click, int mx, int my)
+    {
+        enabled = true;
+    }
+
+    /*
      * WorldMouseScrollListener
      */
 
     @Override
     public void onMouseScroll(int value, int mx, int my)
     {
-        oldScale = getScale();
-        if (UtilMath.getSign(value) > 0)
+        if (enabled)
         {
-            zoomIn();
-        }
-        else
-        {
-            zoomOut();
-        }
+            oldScale = getScale();
+            if (UtilMath.getSign(value) > 0)
+            {
+                zoomIn();
+            }
+            else
+            {
+                zoomOut();
+            }
 
-        final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
-        part.setToolItemText(ZoomItem.ID, String.valueOf(zoomPercent));
-        updateScrollToCursor(mx, my);
+            final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+            part.setToolItemText(ZoomItem.ID, String.valueOf(zoomPercent));
+            updateScrollToCursor(mx, my);
+        }
     }
 }

@@ -194,6 +194,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         final int my = getMouseY();
         interactionObject.onMousePressed(click, mx, my);
         interactionTile.onMousePressed(click, mx, my);
+        zoom.onMousePressed(click, mx, my);
     }
 
     @Override
@@ -206,6 +207,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         final int my = getMouseY();
         interactionObject.onMouseReleased(click, mx, my);
         interactionTile.onMouseReleased(click, mx, my);
+        zoom.onMouseReleased(click, mx, my);
 
         click = 0;
     }

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.world.updater;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.swt.Mouse;
@@ -32,6 +33,7 @@ import com.b3dgs.lionengine.editor.world.TileSelectionListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -146,8 +148,9 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      * 
      * @param mx The horizontal mouse location.
      * @param my The vertical mouse location.
+     * @param apply <code>true</code> to apply collision, <code>false</code> else.
      */
-    private void updatePointerCollision(int mx, int my)
+    private void updatePointerCollision(int mx, int my, boolean apply)
     {
         final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
         final FormulaItem item = part.getToolItem(FormulaItem.ID, FormulaItem.class);
@@ -155,7 +158,48 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         if (function != null)
         {
             updatePointerCollision(mx, my, function);
+            if (apply)
+            {
+                applyCollision(function);
+            }
         }
+    }
+
+    /**
+     * Apply the selected collision to tiles.
+     * 
+     * @param function The collision function used.
+     */
+    private void applyCollision(CollisionFunction function)
+    {
+        final List<Point> markers = new ArrayList<>();
+
+        final Force force = Force.fromVector(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY());
+        final double sx = force.getDirectionHorizontal() * map.getTileWidth();
+        final double sy = force.getDirectionVertical() * map.getTileHeight();
+
+        double h = collStart.getX();
+        double v = collStart.getY();
+
+        for (final Tile tile : map.getTilesHit(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY()))
+        {
+            final int x = (int) UtilMath.getRound(sx, h);
+            final int y = (int) UtilMath.getRound(sy, v);
+            final Point marker = Geom.createPoint(x - tile.getX(), y - tile.getY());
+            if (!markers.contains(marker))
+            {
+                markers.add(marker);
+            }
+            final int index = markers.indexOf(marker);
+            // TODO sub collision index here, apply necessary offset
+
+            if (tile == map.getTileAt(x, y))
+            {
+                h += sx;
+                v += sy;
+            }
+        }
+        markers.clear();
     }
 
     /**
@@ -233,7 +277,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_COLLISION))
         {
-            updatePointerCollision(mx, my);
+            updatePointerCollision(mx, my, true);
             collStart = null;
             collEnd = null;
             collLine = null;
@@ -251,7 +295,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         {
             if (collStart != null)
             {
-                updatePointerCollision(mx, my);
+                updatePointerCollision(mx, my, false);
                 collLine = Geom.createLine(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY());
             }
         }

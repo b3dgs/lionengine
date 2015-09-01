@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Features;
+import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.object.Services;
@@ -654,20 +655,15 @@ public class MapTileGame implements MapTile
     @Override
     public Collection<Tile> getTilesHit(double ox, double oy, double x, double y)
     {
-        // Distance calculation
-        final double dh = x - ox;
-        final double dv = y - oy;
-
-        // Search vector and number of search steps
-        final double norm = Math.sqrt(dh * dh + dv * dv);
-        final double sx = dh / norm;
-        final double sy = dv / norm;
+        final Force force = Force.fromVector(ox, oy, x, y);
+        final double sx = force.getDirectionHorizontal();
+        final double sy = force.getDirectionVertical();
 
         double h = ox;
         double v = oy;
 
         final Collection<Tile> found = new ArrayList<Tile>();
-        for (int count = 0; count < norm; count++)
+        for (int count = 0; count < force.getVelocity(); count++)
         {
             v += sy;
             Tile tile = getTileAt(UtilMath.getRound(sx, h), UtilMath.getRound(sy, v));
