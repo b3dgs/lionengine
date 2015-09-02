@@ -86,7 +86,7 @@ public final class ConfigCollisionFormula
      * @return The tile collision formula instance.
      * @throws LionEngineException If error when reading data.
      */
-    private static CollisionFormula createCollision(XmlNode node) throws LionEngineException
+    public static CollisionFormula createCollision(XmlNode node) throws LionEngineException
     {
         final String name = node.readString(NAME);
         final CollisionRange range = ConfigCollisionRange.create(node.getChild(ConfigCollisionRange.RANGE));
@@ -94,6 +94,42 @@ public final class ConfigCollisionFormula
         final CollisionConstraint constraint = ConfigCollisionConstraint.create(node);
 
         return new CollisionFormula(name, range, function, constraint);
+    }
+
+    /**
+     * Remove the formula node.
+     * 
+     * @param root The root node.
+     * @param formula The formula name to remove.
+     */
+    public static void remove(XmlNode root, String formula)
+    {
+        for (final XmlNode node : root.getChildren(FORMULA))
+        {
+            if (node.readString(NAME).equals(formula))
+            {
+                root.removeChild(node);
+            }
+        }
+    }
+
+    /**
+     * Check if node has formula node.
+     * 
+     * @param root The root node.
+     * @param formula The formula name to check.
+     * @return <code>true</code> if has formula, <code>false</code> else.
+     */
+    public static boolean has(XmlNode root, String formula)
+    {
+        for (final XmlNode node : root.getChildren(FORMULA))
+        {
+            if (node.readString(NAME).equals(formula))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Collision formulas list. */

@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.editor.properties.tile;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -39,6 +39,8 @@ import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.map.TileFeature;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -73,44 +75,75 @@ public class PropertiesTile implements PropertiesProviderTile
     public static void changeTileGroup(MapTile map, String oldGroup, String newGroup, Tile tile)
     {
         final Media config = map.getGroupsConfig();
-        final XmlNode node = Stream.loadXml(config);
-        final Collection<XmlNode> toAdd = new ArrayList<>();
-        for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroup.GROUP))
+        final XmlNode root = Stream.loadXml(config);
+        changeTileGroup(root, oldGroup, newGroup, tile);
+        Stream.saveXml(root, config);
+        map.loadGroups(config);
+    }
+
+    /**
+     * Change tile group.
+     * 
+     * @param root The root reference.
+     * @param oldGroup The old group name.
+     * @param newGroup The new group name (empty to remove it).
+     * @param tile The tile reference.
+     */
+    public static void changeTileGroup(XmlNode root, String oldGroup, String newGroup, Tile tile)
+    {
+        final Collection<Point> toAdd = new HashSet<>();
+        for (final XmlNode nodeGroup : root.getChildren(ConfigTileGroup.GROUP))
         {
-            final Collection<XmlNode> toRemove = new ArrayList<>();
-            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), oldGroup))
-            {
-                for (final XmlNode nodeTile : nodeGroup.getChildren(ConfigTileGroup.TILE))
-                {
-                    if (nodeTile.readInteger(ConfigTileGroup.SHEET) == tile.getSheet().intValue()
-                        && nodeTile.readInteger(ConfigTileGroup.NUMBER) == tile.getNumber())
-                    {
-                        toRemove.add(nodeTile);
-                    }
-                }
-                for (final XmlNode remove : toRemove)
-                {
-                    nodeGroup.removeChild(remove);
-                }
-            }
+            removeOldGroup(nodeGroup, oldGroup, tile);
             if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
             {
-                final XmlNode tileRef = Stream.createXmlNode(ConfigTileGroup.TILE);
-                tileRef.writeInteger(ConfigTileGroup.SHEET, tile.getSheet().intValue());
-                tileRef.writeInteger(ConfigTileGroup.NUMBER, tile.getNumber());
-                toAdd.add(tileRef);
+                final Point point = Geom.createPoint(tile.getSheet().intValue(), tile.getNumber());
+                if (!toAdd.contains(point))
+                {
+                    toAdd.add(point);
+                }
             }
+
         }
         if (!ConfigTileGroup.REMOVE_GROUP_NAME.equals(newGroup))
         {
-            final XmlNode newNode = getNewNode(node, newGroup);
-            for (final XmlNode current : toAdd)
+            final XmlNode newNode = getNewNode(root, newGroup);
+            for (final Point current : toAdd)
             {
-                newNode.add(current);
+                final XmlNode node = newNode.createChild(ConfigTileGroup.TILE);
+                node.writeInteger(ConfigTileGroup.SHEET, current.getX());
+                node.writeInteger(ConfigTileGroup.NUMBER, current.getY());
             }
         }
-        Stream.saveXml(node, config);
-        map.loadGroups(config);
+        toAdd.clear();
+    }
+
+    /**
+     * Remove old tile group.
+     * 
+     * @param nodeGroup The current node group.
+     * @param oldGroup The old group name.
+     * @param tile The current tile.
+     */
+    private static void removeOldGroup(XmlNode nodeGroup, String oldGroup, Tile tile)
+    {
+        final Collection<XmlNode> toRemove = new ArrayList<>();
+        if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), oldGroup))
+        {
+            for (final XmlNode nodeTile : nodeGroup.getChildren(ConfigTileGroup.TILE))
+            {
+                if (nodeTile.readInteger(ConfigTileGroup.SHEET) == tile.getSheet().intValue()
+                    && nodeTile.readInteger(ConfigTileGroup.NUMBER) == tile.getNumber())
+                {
+                    toRemove.add(nodeTile);
+                }
+            }
+            for (final XmlNode remove : toRemove)
+            {
+                nodeGroup.removeChild(remove);
+            }
+        }
+        toRemove.clear();
     }
 
     /**
@@ -184,7 +217,7 @@ public class PropertiesTile implements PropertiesProviderTile
 
         properties.addListener(SWT.MouseDoubleClick, event ->
         {
-            final Point point = new Point(event.x, event.y);
+            final org.eclipse.swt.graphics.Point point = new org.eclipse.swt.graphics.Point(event.x, event.y);
             final TreeItem selection = properties.getItem(point);
             if (selection == item)
             {

@@ -44,6 +44,8 @@ public final class Constant
     public static final String DOUBLE_DOT = ": ";
     /** Space string. */
     public static final String SPACE = " ";
+    /** Underscore string. */
+    public static final String UNDERSCORE = "_";
     /** Star string. */
     public static final String STAR = "*";
     /** At string. */

@@ -105,8 +105,45 @@ public final class ConfigCollisionGroup
 
         for (final CollisionFormula formula : group.getFormulas())
         {
-            ConfigCollisionFormula.export(node, formula);
+            final XmlNode nodeFormula = node.createChild(ConfigCollisionFormula.FORMULA);
+            nodeFormula.setText(formula.getName());
         }
+    }
+
+    /**
+     * Remove the group node.
+     * 
+     * @param root The root node.
+     * @param group The group name to remove.
+     */
+    public static void remove(XmlNode root, String group)
+    {
+        for (final XmlNode node : root.getChildren(COLLISION))
+        {
+            if (node.readString(GROUP).equals(group))
+            {
+                root.removeChild(node);
+            }
+        }
+    }
+
+    /**
+     * Check if node has group node.
+     * 
+     * @param root The root node.
+     * @param group The group name to check.
+     * @return <code>true</code> if has group, <code>false</code> else.
+     */
+    public static boolean has(XmlNode root, String group)
+    {
+        for (final XmlNode node : root.getChildren(COLLISION))
+        {
+            if (node.readString(GROUP).equals(group))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

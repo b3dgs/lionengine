@@ -49,7 +49,7 @@ public class FormulaItem
     /** Line function. */
     public static final CollisionFunction LINE = new CollisionFunctionLinear(0.0, 0.0);
     /** Slope function. */
-    public static final CollisionFunction SLOPE2X = new CollisionFunctionLinear(0.5, 0.0);
+    public static final CollisionFunction SLOPE = new CollisionFunctionLinear(0.5, 0.0);
     /** Text height. */
     private static final int TEXT_HEIGHT = 8;
     /** Minimum combo width. */
@@ -68,6 +68,16 @@ public class FormulaItem
     public FormulaItem()
     {
         // Nothing to do
+    }
+
+    /**
+     * Get the selected formula name.
+     * 
+     * @return The selected formula name.
+     */
+    public String getName()
+    {
+        return combo.getText();
     }
 
     /**
@@ -112,7 +122,7 @@ public class FormulaItem
         });
         values.clear();
         values.put("Line", LINE);
-        values.put("Slope 2X", SLOPE2X);
+        values.put("Slope", SLOPE);
 
         final String[] formulas = values.keySet().toArray(new String[values.size()]);
         Arrays.sort(formulas);
