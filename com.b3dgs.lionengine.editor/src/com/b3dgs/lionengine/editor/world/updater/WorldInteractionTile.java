@@ -42,6 +42,7 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
@@ -83,6 +84,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     private Point collStart;
     /** Ending point collision assign. */
     private Point collEnd;
+    /** Function side (<code>-1</code> for left or <code>1</code> for right). */
+    private int side;
 
     /**
      * Create the interactions handler.
@@ -236,9 +239,21 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         if (map.hasFeature(MapTileCollision.class))
         {
             final MapTileCollision collision = map.getFeature(MapTileCollision.class);
-            final String fullName = name + Constant.UNDERSCORE + index;
+            final String fullName;
+            if (FormulaItem.LINE.equals(function))
+            {
+                fullName = name + Constant.UNDERSCORE + index;
+            }
+            else if (side == -1)
+            {
+                fullName = name + Constant.UNDERSCORE + "left" + Constant.UNDERSCORE + index;
+            }
+            else
+            {
+                fullName = name + Constant.UNDERSCORE + "right" + Constant.UNDERSCORE + index;
+            }
 
-            final CollisionFormula formula = saveCollisionFormula(collision, fullName, function);
+            final CollisionFormula formula = saveCollisionFormula(collision, fullName, function, index);
             final CollisionGroup group = saveCollisionGroup(collision, fullName, formula);
 
             if (!fullName.equals(tile.getGroup()))
@@ -254,9 +269,13 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      * @param collision The collision feature.
      * @param name The collision name.
      * @param function The collision function used.
+     * @param index The current collision index (in case of multiple sub collision).
      * @return The formula saved.
      */
-    private CollisionFormula saveCollisionFormula(MapTileCollision collision, String name, CollisionFunction function)
+    private CollisionFormula saveCollisionFormula(MapTileCollision collision,
+                                                  String name,
+                                                  CollisionFunction function,
+                                                  int index)
     {
         final Media config = collision.getFormulasConfig();
         final XmlNode root = Stream.loadXml(config);
@@ -266,11 +285,30 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         }
 
         final CollisionRange range = new CollisionRange(Axis.Y, 0, map.getTileWidth() - 1, 0, map.getTileHeight() - 1);
-        final CollisionFormula formula = new CollisionFormula(name, range, function, new CollisionConstraint());
+        final CollisionFunction updatedFunction = updateFunction(function, index);
+        final CollisionFormula formula = new CollisionFormula(name, range, updatedFunction, new CollisionConstraint());
         ConfigCollisionFormula.export(root, formula);
         Stream.saveXml(root, config);
 
         return formula;
+    }
+
+    /**
+     * Update the function if needed.
+     * 
+     * @param function The function to update.
+     * @param index The current formula index.
+     * @return The updated function.
+     */
+    private CollisionFunction updateFunction(CollisionFunction function, int index)
+    {
+        if (function instanceof CollisionFunctionLinear)
+        {
+            final CollisionFunctionLinear linear = (CollisionFunctionLinear) function;
+            final double b = (index - 1) * map.getTileHeight() / 2;
+            return new CollisionFunctionLinear(linear.getA() * -side, b);
+        }
+        return function;
     }
 
     /**
@@ -315,25 +353,26 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         {
             if (Math.abs(x) > Math.abs(y))
             {
-                collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + (int) function.compute(x * sideX));
+                side = sideX;
+                collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + (int) function.compute(x * side));
             }
             else
             {
-                collEnd = UtilWorld.getPoint(map, camera, startX + (int) function.compute(y * sideY), startY + y);
+                side = sideY;
+                collEnd = UtilWorld.getPoint(map, camera, startX + (int) function.compute(y * side), startY + y);
             }
         }
         else
         {
-            final int fx;
             if (sideY > 0)
             {
-                fx = (int) function.compute(x * sideX);
+                side = sideX;
             }
             else
             {
-                fx = (int) function.compute(x * -sideX);
+                side = -sideX;
             }
-            collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + fx);
+            collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + (int) function.compute(x * side));
         }
     }
 
