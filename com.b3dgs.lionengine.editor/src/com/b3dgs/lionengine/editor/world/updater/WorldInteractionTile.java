@@ -172,13 +172,54 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
         final FormulaItem item = part.getToolItem(FormulaItem.ID, FormulaItem.class);
         final CollisionFunction function = item.getFunction();
-        if (function != null)
+        if (function != null && collStart != null)
         {
             updatePointerCollision(mx, my, function);
             if (apply)
             {
                 applyCollision(item.getName().toLowerCase(Locale.ENGLISH), function);
             }
+        }
+    }
+
+    /**
+     * Update the pointer in collision case.
+     * 
+     * @param mx The horizontal mouse location.
+     * @param my The vertical mouse location.
+     * @param function The function base used.
+     */
+    private void updatePointerCollision(int mx, int my, CollisionFunction function)
+    {
+        final int x = mx - startX;
+        final int y = my - startY;
+        final int sideX = UtilMath.getSign(x);
+        final int sideY = UtilMath.getSign(y);
+
+        if (function == FormulaItem.LINE)
+        {
+            if (Math.abs(x) > Math.abs(y))
+            {
+                side = sideX;
+                collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + (int) function.compute(x * side));
+            }
+            else
+            {
+                side = sideY;
+                collEnd = UtilWorld.getPoint(map, camera, startX + (int) function.compute(y * side), startY + y);
+            }
+        }
+        else
+        {
+            if (sideY > 0)
+            {
+                side = sideX;
+            }
+            else
+            {
+                side = -sideX;
+            }
+            collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + (int) function.compute(x * side));
         }
     }
 
@@ -220,9 +261,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 v += sy;
             }
         }
-        markers.clear();
-        Stream.saveXml(groupNode, config);
-        map.loadGroups(config);
+        updateMap(markers, config, groupNode);
     }
 
     /**
@@ -236,30 +275,27 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void applyCollision(XmlNode groupNode, String name, CollisionFunction function, int index, Tile tile)
     {
-        if (map.hasFeature(MapTileCollision.class))
+        final MapTileCollision collision = map.getFeature(MapTileCollision.class);
+        final String fullName;
+        if (FormulaItem.LINE.equals(function))
         {
-            final MapTileCollision collision = map.getFeature(MapTileCollision.class);
-            final String fullName;
-            if (FormulaItem.LINE.equals(function))
-            {
-                fullName = name + Constant.UNDERSCORE + index;
-            }
-            else if (side == -1)
-            {
-                fullName = name + Constant.UNDERSCORE + "left" + Constant.UNDERSCORE + index;
-            }
-            else
-            {
-                fullName = name + Constant.UNDERSCORE + "right" + Constant.UNDERSCORE + index;
-            }
+            fullName = name + Constant.UNDERSCORE + index;
+        }
+        else if (side == -1)
+        {
+            fullName = name + Constant.UNDERSCORE + "left" + Constant.UNDERSCORE + index;
+        }
+        else
+        {
+            fullName = name + Constant.UNDERSCORE + "right" + Constant.UNDERSCORE + index;
+        }
 
-            final CollisionFormula formula = saveCollisionFormula(collision, fullName, function, index);
-            final CollisionGroup group = saveCollisionGroup(collision, fullName, formula);
+        final CollisionFormula formula = saveCollisionFormula(collision, fullName, function, index);
+        final CollisionGroup group = saveCollisionGroup(collision, fullName, formula);
 
-            if (!fullName.equals(tile.getGroup()))
-            {
-                PropertiesTile.changeTileGroup(groupNode, tile.getGroup(), group.getName(), tile);
-            }
+        if (!fullName.equals(tile.getGroup()))
+        {
+            PropertiesTile.changeTileGroup(groupNode, tile.getGroup(), group.getName(), tile);
         }
     }
 
@@ -336,43 +372,22 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     }
 
     /**
-     * Update the pointer in collision case.
+     * Update map by reloading new configuration.
      * 
-     * @param mx The horizontal mouse location.
-     * @param my The vertical mouse location.
-     * @param function The function base used.
+     * @param markers Current generated markers.
+     * @param config Current configuration used.
+     * @param groupNode Node group reference.
      */
-    private void updatePointerCollision(int mx, int my, CollisionFunction function)
+    private void updateMap(List<Point> markers, Media config, XmlNode groupNode)
     {
-        final int x = mx - startX;
-        final int y = my - startY;
-        final int sideX = UtilMath.getSign(x);
-        final int sideY = UtilMath.getSign(y);
-
-        if (function == FormulaItem.LINE)
+        if (!markers.isEmpty())
         {
-            if (Math.abs(x) > Math.abs(y))
-            {
-                side = sideX;
-                collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + (int) function.compute(x * side));
-            }
-            else
-            {
-                side = sideY;
-                collEnd = UtilWorld.getPoint(map, camera, startX + (int) function.compute(y * side), startY + y);
-            }
-        }
-        else
-        {
-            if (sideY > 0)
-            {
-                side = sideX;
-            }
-            else
-            {
-                side = -sideX;
-            }
-            collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + (int) function.compute(x * side));
+            Stream.saveXml(groupNode, config);
+            map.loadGroups(config);
+            final MapTileCollision collision = map.getFeature(MapTileCollision.class);
+            collision.loadCollisions(collision.getFormulasConfig(), collision.getCollisionsConfig());
+            collision.createCollisionDraw();
+            markers.clear();
         }
     }
 
