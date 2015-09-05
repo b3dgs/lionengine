@@ -20,8 +20,10 @@ package com.b3dgs.lionengine.editor.world.updater;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.UtilMath;
@@ -231,8 +233,33 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void applyCollision(String name, CollisionFunction function)
     {
-        final List<Point> markers = new ArrayList<>();
+        final Map<Integer, Marker> markers = getMarkers();
+        final Set<Integer> keys = markers.keySet();
+        final Media config = map.getGroupsConfig();
+        final XmlNode groupNode = Stream.loadXml(config);
 
+        final int offset = 0;
+        final int max = keys.size();
+        for (final Integer key : keys)
+        {
+            final int offsetKey = (key.intValue() + offset) % max;
+            final Marker marker = markers.get(Integer.valueOf(offsetKey));
+            for (final Tile tile : marker.getTiles())
+            {
+                applyCollision(groupNode, name, function, offsetKey, tile);
+            }
+        }
+
+        updateMap(markers, config, groupNode);
+    }
+
+    /**
+     * Get all markers found on selected tiles.
+     * 
+     * @return The markers found.
+     */
+    private Map<Integer, Marker> getMarkers()
+    {
         final Force force = Force.fromVector(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY());
         final double sx = force.getDirectionHorizontal() * map.getTileWidth();
         final double sy = force.getDirectionVertical() * map.getTileHeight();
@@ -240,20 +267,12 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         double h = collStart.getX();
         double v = collStart.getY();
 
-        final Media config = map.getGroupsConfig();
-        final XmlNode groupNode = Stream.loadXml(config);
+        final Map<Integer, Marker> markers = new TreeMap<>();
         for (final Tile tile : map.getTilesHit(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY()))
         {
             final int x = (int) UtilMath.getRound(sx, h);
             final int y = (int) UtilMath.getRound(sy, v);
-            final Point marker = Geom.createPoint(x - tile.getX(), y - tile.getY());
-            if (!markers.contains(marker))
-            {
-                markers.add(marker);
-            }
-
-            final int index = markers.indexOf(marker);
-            applyCollision(groupNode, name, function, index, tile);
+            checkMarker(markers, tile, x, y);
 
             if (tile == map.getTileAt(x, y))
             {
@@ -261,7 +280,49 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 v += sy;
             }
         }
-        updateMap(markers, config, groupNode);
+        return markers;
+    }
+
+    /**
+     * Check the current marker and add it to the markers found.
+     * 
+     * @param markers The current markers.
+     * @param tile The current tile.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    private void checkMarker(Map<Integer, Marker> markers, Tile tile, int x, int y)
+    {
+        final Marker marker = new Marker(x - tile.getX(), y - tile.getY());
+        final Integer key = containsMarker(markers, marker);
+        if (key != null)
+        {
+            markers.get(key).addTile(tile);
+        }
+        else
+        {
+            marker.addTile(tile);
+            markers.put(Integer.valueOf(markers.keySet().size()), marker);
+        }
+    }
+
+    /**
+     * Check the current marker already exists or not.
+     * 
+     * @param markers The current markers.
+     * @param marker The new marker found.
+     * @return key if exists, <code>null</code> else.
+     */
+    private Integer containsMarker(Map<Integer, Marker> markers, Marker marker)
+    {
+        for (final Map.Entry<Integer, Marker> entry : markers.entrySet())
+        {
+            if (entry.getValue().equals(marker))
+            {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     /**
@@ -378,7 +439,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      * @param config Current configuration used.
      * @param groupNode Node group reference.
      */
-    private void updateMap(List<Point> markers, Media config, XmlNode groupNode)
+    private void updateMap(Map<Integer, Marker> markers, Media config, XmlNode groupNode)
     {
         if (!markers.isEmpty())
         {
