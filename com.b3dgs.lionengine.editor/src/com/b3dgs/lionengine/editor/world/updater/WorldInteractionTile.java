@@ -25,11 +25,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Display;
+
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.Mouse;
+import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
+import com.b3dgs.lionengine.editor.properties.frames.Messages;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
@@ -67,9 +73,11 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class WorldInteractionTile implements WorldMouseClickListener, WorldMouseMoveListener
 {
+    /** Default offset value. */
+    private static final String DEFAULT_OFFSET = "0";
+
     /** Tile selection listener. */
     private final Collection<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
-
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
@@ -238,19 +246,42 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final Media config = map.getGroupsConfig();
         final XmlNode groupNode = Stream.loadXml(config);
 
-        final int offset = 0;
-        final int max = keys.size();
-        for (final Integer key : keys)
+        final int offset = getMarkerOffset();
+        if (offset > -1)
         {
-            final int offsetKey = (key.intValue() + offset) % max;
-            final Marker marker = markers.get(Integer.valueOf(offsetKey));
-            for (final Tile tile : marker.getTiles())
+            final int max = keys.size();
+            for (final Integer key : keys)
             {
-                applyCollision(groupNode, name, function, offsetKey, tile);
+                final int offsetKey = (key.intValue() + offset) % max;
+                final Marker marker = markers.get(key);
+                for (final Tile tile : marker.getTiles())
+                {
+                    applyCollision(groupNode, name, function, offsetKey, tile);
+                }
             }
+            updateMap(markers, config, groupNode);
         }
+    }
 
-        updateMap(markers, config, groupNode);
+    /**
+     * Get the marker offset from user input.
+     * 
+     * @return The marker offset (-1 if canceled).
+     */
+    private int getMarkerOffset()
+    {
+        final InputValidator validator = new InputValidator(InputValidator.INTEGER_POSITIVE_MATCH,
+                                                            Messages.Properties_Frames_Error);
+        final InputDialog offset = new InputDialog(Display.getDefault().getActiveShell(),
+                                                   Messages.Properties_Frames_Title,
+                                                   Messages.Properties_Frames_NumberVertical,
+                                                   DEFAULT_OFFSET,
+                                                   validator);
+        if (offset.open() == Window.OK)
+        {
+            return Integer.parseInt(offset.getValue());
+        }
+        return -1;
     }
 
     /**
@@ -354,7 +385,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final CollisionFormula formula = saveCollisionFormula(collision, fullName, function, index);
         final CollisionGroup group = saveCollisionGroup(collision, fullName, formula);
 
-        if (!fullName.equals(tile.getGroup()))
+        if (!group.getName().equals(tile.getGroup()))
         {
             PropertiesTile.changeTileGroup(groupNode, tile.getGroup(), group.getName(), tile);
         }
