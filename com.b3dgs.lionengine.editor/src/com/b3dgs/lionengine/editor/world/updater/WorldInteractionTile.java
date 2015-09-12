@@ -20,9 +20,10 @@ package com.b3dgs.lionengine.editor.world.updater;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import org.eclipse.jface.dialogs.InputDialog;
@@ -35,7 +36,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.editor.properties.frames.Messages;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
@@ -149,6 +149,36 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     }
 
     /**
+     * Get all markers found on selected tiles.
+     * 
+     * @return The markers found.
+     */
+    public Map<Integer, Marker> getMarkers()
+    {
+        final Force force = Force.fromVector(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY());
+        final double sx = force.getDirectionHorizontal() * map.getTileWidth();
+        final double sy = force.getDirectionVertical() * map.getTileHeight();
+
+        double h = collStart.getX();
+        double v = collStart.getY();
+
+        final Map<Integer, Marker> markers = new TreeMap<>();
+        for (final Tile tile : map.getTilesHit(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY()))
+        {
+            final int x = (int) UtilMath.getRound(sx, h);
+            final int y = (int) UtilMath.getRound(sy, v);
+            checkMarker(markers, tile, x, y);
+
+            if (tile == map.getTileAt(x, y))
+            {
+                h += sx;
+                v += sy;
+            }
+        }
+        return markers;
+    }
+
+    /**
      * Update the pointer in tile case.
      * 
      * @param mx The horizontal mouse location.
@@ -229,7 +259,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
             {
                 side = -sideX;
             }
-            collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + (int) function.compute(x * side));
+            final int rx = UtilMath.getRounded(x, (int) (1 / function.compute(1)));
+            collEnd = UtilWorld.getPoint(map, camera, startX + rx, startY + (int) function.compute(rx * side));
         }
     }
 
@@ -242,7 +273,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     private void applyCollision(String name, CollisionFunction function)
     {
         final Map<Integer, Marker> markers = getMarkers();
-        final Set<Integer> keys = markers.keySet();
+        final List<Integer> keys = new ArrayList<>(markers.keySet());
+        Collections.sort(keys);
         final Media config = map.getGroupsConfig();
         final XmlNode groupNode = Stream.loadXml(config);
 
@@ -271,10 +303,10 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     private int getMarkerOffset()
     {
         final InputValidator validator = new InputValidator(InputValidator.INTEGER_POSITIVE_MATCH,
-                                                            Messages.Properties_Frames_Error);
+                                                            Messages.WorldInteractionTile_OffsetError);
         final InputDialog offset = new InputDialog(Display.getDefault().getActiveShell(),
-                                                   Messages.Properties_Frames_Title,
-                                                   Messages.Properties_Frames_NumberVertical,
+                                                   Messages.WorldInteractionTile_Offset,
+                                                   Messages.WorldInteractionTile_Offset,
                                                    DEFAULT_OFFSET,
                                                    validator);
         if (offset.open() == Window.OK)
@@ -282,36 +314,6 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
             return Integer.parseInt(offset.getValue());
         }
         return -1;
-    }
-
-    /**
-     * Get all markers found on selected tiles.
-     * 
-     * @return The markers found.
-     */
-    private Map<Integer, Marker> getMarkers()
-    {
-        final Force force = Force.fromVector(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY());
-        final double sx = force.getDirectionHorizontal() * map.getTileWidth();
-        final double sy = force.getDirectionVertical() * map.getTileHeight();
-
-        double h = collStart.getX();
-        double v = collStart.getY();
-
-        final Map<Integer, Marker> markers = new TreeMap<>();
-        for (final Tile tile : map.getTilesHit(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY()))
-        {
-            final int x = (int) UtilMath.getRound(sx, h);
-            final int y = (int) UtilMath.getRound(sy, v);
-            checkMarker(markers, tile, x, y);
-
-            if (tile == map.getTileAt(x, y))
-            {
-                h += sx;
-                v += sy;
-            }
-        }
-        return markers;
     }
 
     /**
@@ -326,6 +328,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         final Marker marker = new Marker(x - tile.getX(), y - tile.getY());
         final Integer key = containsMarker(markers, marker);
+
         if (key != null)
         {
             markers.get(key).addTile(tile);
@@ -433,7 +436,16 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         if (function instanceof CollisionFunctionLinear)
         {
             final CollisionFunctionLinear linear = (CollisionFunctionLinear) function;
-            final double b = (index - 1) * map.getTileHeight() / 2;
+            final int offset;
+            if (side < 0)
+            {
+                offset = -1;
+            }
+            else
+            {
+                offset = 0;
+            }
+            final double b = (index + offset) * map.getTileHeight() / 2;
             return new CollisionFunctionLinear(linear.getA() * -side, b);
         }
         return function;

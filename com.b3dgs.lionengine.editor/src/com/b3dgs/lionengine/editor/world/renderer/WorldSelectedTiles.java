@@ -17,8 +17,11 @@
  */
 package com.b3dgs.lionengine.editor.world.renderer;
 
+import java.util.Map;
+
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.editor.world.updater.Marker;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
@@ -118,9 +121,13 @@ public class WorldSelectedTiles implements WorldRenderListener
 
         g.drawLine(x1, y1, x2, y2);
 
-        for (final Tile tile : map.getTilesHit(line.getX1(), line.getY1(), line.getX2(), line.getY2()))
+        final Map<Integer, Marker> markers = interactionTile.getMarkers();
+        for (final Marker marker : markers.values())
         {
-            renderSelectedTile(g, tile, scale, tw, th);
+            for (final Tile tile : marker.getTiles())
+            {
+                renderSelectedTile(g, tile, scale, tw, th);
+            }
         }
     }
 
