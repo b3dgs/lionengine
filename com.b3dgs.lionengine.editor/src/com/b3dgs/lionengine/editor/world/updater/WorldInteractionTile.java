@@ -26,15 +26,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.window.Window;
-import org.eclipse.swt.widgets.Display;
-
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.Mouse;
-import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
@@ -44,6 +39,7 @@ import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.TileSelectionListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.editor.world.dialog.MapCollisionAssignDialog;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Force;
@@ -73,9 +69,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class WorldInteractionTile implements WorldMouseClickListener, WorldMouseMoveListener
 {
-    /** Default offset value. */
-    private static final String DEFAULT_OFFSET = "0";
-
     /** Tile selection listener. */
     private final Collection<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
     /** Camera reference. */
@@ -96,6 +89,12 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     private Point collEnd;
     /** Function side (<code>-1</code> for left or <code>1</code> for right). */
     private int side;
+    /** Selected function. */
+    private CollisionFunction function;
+    /** Selected function name. */
+    private String functionName;
+    /** Last markers computed. */
+    private Map<Integer, Marker> markers;
 
     /**
      * Create the interactions handler.
@@ -129,6 +128,38 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     }
 
     /**
+     * Apply and verify computed collision.
+     * 
+     * @param offset The marker offset.
+     */
+    public void verifyCollision(int offset)
+    {
+        final Media config = map.getGroupsConfig();
+        final XmlNode groupNode = Stream.loadXml(config);
+        final List<Integer> keys = new ArrayList<>(markers.keySet());
+        Collections.sort(keys);
+        final int max = keys.size();
+
+        for (final Integer key : keys)
+        {
+            final int offsetKey = (key.intValue() + offset) % max;
+            final Marker marker = markers.get(key);
+            for (final Tile tile : marker.getTiles())
+            {
+                applyCollision(groupNode, offsetKey, tile);
+            }
+        }
+        if (!markers.isEmpty())
+        {
+            Stream.saveXml(groupNode, config);
+            map.loadGroups(config);
+            final MapTileCollision collision = map.getFeature(MapTileCollision.class);
+            collision.loadCollisions(collision.getFormulasConfig(), collision.getCollisionsConfig());
+            collision.createCollisionDraw();
+        }
+    }
+
+    /**
      * Get the current selected tile.
      * 
      * @return The current selected tile.
@@ -149,7 +180,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     }
 
     /**
-     * Get all markers found on selected tiles.
+     * Update all markers found on selected tiles.
      * 
      * @return The markers found.
      */
@@ -211,13 +242,22 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
         final FormulaItem item = part.getToolItem(FormulaItem.ID, FormulaItem.class);
-        final CollisionFunction function = item.getFunction();
+        function = item.getFunction();
         if (function != null && collStart != null)
         {
-            updatePointerCollision(mx, my, function);
+            updatePointerCollision(mx, my);
             if (apply)
             {
-                applyCollision(item.getName().toLowerCase(Locale.ENGLISH), function);
+                markers = getMarkers();
+                functionName = item.getName().toLowerCase(Locale.ENGLISH);
+                collStart = null;
+                collEnd = null;
+                collLine = null;
+
+                final MapCollisionAssignDialog dialog = new MapCollisionAssignDialog(item.getParent().getShell(), this);
+                dialog.open();
+
+                markers.clear();
             }
         }
     }
@@ -227,9 +267,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      * 
      * @param mx The horizontal mouse location.
      * @param my The vertical mouse location.
-     * @param function The function base used.
      */
-    private void updatePointerCollision(int mx, int my, CollisionFunction function)
+    private void updatePointerCollision(int mx, int my)
     {
         final int x = mx - startX;
         final int y = my - startY;
@@ -265,61 +304,9 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     }
 
     /**
-     * Apply the selected collision to tiles.
-     * 
-     * @param name The collision name.
-     * @param function The collision function used.
-     */
-    private void applyCollision(String name, CollisionFunction function)
-    {
-        final Map<Integer, Marker> markers = getMarkers();
-        final List<Integer> keys = new ArrayList<>(markers.keySet());
-        Collections.sort(keys);
-        final Media config = map.getGroupsConfig();
-        final XmlNode groupNode = Stream.loadXml(config);
-
-        final int offset = getMarkerOffset();
-        if (offset > -1)
-        {
-            final int max = keys.size();
-            for (final Integer key : keys)
-            {
-                final int offsetKey = (key.intValue() + offset) % max;
-                final Marker marker = markers.get(key);
-                for (final Tile tile : marker.getTiles())
-                {
-                    applyCollision(groupNode, name, function, offsetKey, tile);
-                }
-            }
-            updateMap(markers, config, groupNode);
-        }
-    }
-
-    /**
-     * Get the marker offset from user input.
-     * 
-     * @return The marker offset (-1 if canceled).
-     */
-    private int getMarkerOffset()
-    {
-        final InputValidator validator = new InputValidator(InputValidator.INTEGER_POSITIVE_MATCH,
-                                                            Messages.WorldInteractionTile_OffsetError);
-        final InputDialog offset = new InputDialog(Display.getDefault().getActiveShell(),
-                                                   Messages.WorldInteractionTile_Offset,
-                                                   Messages.WorldInteractionTile_Offset,
-                                                   DEFAULT_OFFSET,
-                                                   validator);
-        if (offset.open() == Window.OK)
-        {
-            return Integer.parseInt(offset.getValue());
-        }
-        return -1;
-    }
-
-    /**
      * Check the current marker and add it to the markers found.
      * 
-     * @param markers The current markers.
+     * @param markers The markers found.
      * @param tile The current tile.
      * @param x The horizontal location.
      * @param y The vertical location.
@@ -343,9 +330,9 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     /**
      * Check the current marker already exists or not.
      * 
-     * @param markers The current markers.
+     * @param markers The markers found.
      * @param marker The new marker found.
-     * @return key if exists, <code>null</code> else.
+     * @return Key if exists, <code>null</code> else.
      */
     private Integer containsMarker(Map<Integer, Marker> markers, Marker marker)
     {
@@ -363,26 +350,24 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      * Apply the collision from its short name and function, depending on the index for the specified tile.
      * 
      * @param groupNode The group node reference.
-     * @param name The collision short name.
-     * @param function The function reference.
      * @param index The current collision index (in case of multiple sub collision).
      * @param tile The current tile.
      */
-    private void applyCollision(XmlNode groupNode, String name, CollisionFunction function, int index, Tile tile)
+    private void applyCollision(XmlNode groupNode, int index, Tile tile)
     {
         final MapTileCollision collision = map.getFeature(MapTileCollision.class);
         final String fullName;
         if (FormulaItem.LINE.equals(function))
         {
-            fullName = name + Constant.UNDERSCORE + index;
+            fullName = functionName + Constant.UNDERSCORE + index;
         }
         else if (side == -1)
         {
-            fullName = name + Constant.UNDERSCORE + "left" + Constant.UNDERSCORE + index;
+            fullName = functionName + Constant.UNDERSCORE + "left" + Constant.UNDERSCORE + index;
         }
         else
         {
-            fullName = name + Constant.UNDERSCORE + "right" + Constant.UNDERSCORE + index;
+            fullName = functionName + Constant.UNDERSCORE + "right" + Constant.UNDERSCORE + index;
         }
 
         final CollisionFormula formula = saveCollisionFormula(collision, fullName, function, index);
@@ -473,26 +458,6 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         Stream.saveXml(root, config);
 
         return group;
-    }
-
-    /**
-     * Update map by reloading new configuration.
-     * 
-     * @param markers Current generated markers.
-     * @param config Current configuration used.
-     * @param groupNode Node group reference.
-     */
-    private void updateMap(Map<Integer, Marker> markers, Media config, XmlNode groupNode)
-    {
-        if (!markers.isEmpty())
-        {
-            Stream.saveXml(groupNode, config);
-            map.loadGroups(config);
-            final MapTileCollision collision = map.getFeature(MapTileCollision.class);
-            collision.loadCollisions(collision.getFormulasConfig(), collision.getCollisionsConfig());
-            collision.createCollisionDraw();
-            markers.clear();
-        }
     }
 
     /**

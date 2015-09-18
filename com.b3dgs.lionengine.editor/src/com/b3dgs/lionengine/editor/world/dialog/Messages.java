@@ -111,6 +111,17 @@ public final class Messages extends NLS
     /** Error collisions file. */
     public static String ImportMapCollisionDialog_ErrorCollisions;
 
+    /** Collision assign dialog title. */
+    public static String CollisionAssign_Title;
+    /** Collision assign dialog title header. */
+    public static String CollisionAssign_HeaderTitle;
+    /** Collision assign dialog description header. */
+    public static String CollisionAssign_HeaderDesc;
+    /** Collision assign offset. */
+    public static String CollisionAssign_Offset;
+    /** Collision assign check. */
+    public static String CollisionAssign_Check;
+
     /**
      * Initialize.
      */

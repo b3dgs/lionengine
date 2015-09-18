@@ -91,6 +91,16 @@ public class FormulaItem
     }
 
     /**
+     * Get the parent composite.
+     * 
+     * @return The parent composite.
+     */
+    public Composite getParent()
+    {
+        return combo.getParent();
+    }
+
+    /**
      * Construct the item.
      * 
      * @param parent The parent reference.

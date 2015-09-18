@@ -158,6 +158,16 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
     }
 
     /**
+     * Set the finish button enabled state.
+     * 
+     * @param enabled <code>true</code> to enabled it, <code>false</code> else.
+     */
+    public void setFinishEnabled(boolean enabled)
+    {
+        finish.setEnabled(enabled);
+    }
+
+    /**
      * Check if dialog has been canceled.
      * 
      * @return <code>true</code> if canceled, <code>false</code> else.

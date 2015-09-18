@@ -78,7 +78,7 @@ public class MapImportDialog extends AbstractDialog
               Messages.ImportMapDialog_Title,
               Messages.ImportMapDialog_HeaderTitle,
               Messages.ImportMapDialog_HeaderDesc,
-              MapImportDialog.ICON);
+              ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
         finish.setEnabled(false);

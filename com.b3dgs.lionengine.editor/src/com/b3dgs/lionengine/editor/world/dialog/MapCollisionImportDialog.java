@@ -84,7 +84,7 @@ public class MapCollisionImportDialog extends AbstractDialog
               Messages.ImportMapCollisionDialog_Title,
               Messages.ImportMapCollisionDialog_HeaderTitle,
               Messages.ImportMapCollisionDialog_HeaderDesc,
-              MapCollisionImportDialog.ICON);
+              ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
         part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
