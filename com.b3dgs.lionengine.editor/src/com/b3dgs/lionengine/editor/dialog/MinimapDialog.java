@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.editor.dialog;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -33,24 +31,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.swt.UtilityImage;
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.editor.project.dialog.Messages;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.configurer.ConfigMinimap;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Minimap;
-import com.b3dgs.lionengine.stream.Stream;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Minimap dialog.
@@ -60,11 +49,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class MinimapDialog
 {
     /** Shell. */
-    private final Shell shell;
+    final Shell shell;
     /** Minimap configuration. */
     private Text config;
-    /** Automatic generation. */
-    private Button automatic;
     /** GC minimap. */
     private GC gc;
 
@@ -76,8 +63,9 @@ public class MinimapDialog
     public MinimapDialog(Shell parent)
     {
         shell = new Shell(parent, SWT.DIALOG_TRIM);
-        shell.setText("Minimap");
-        final GridLayout layout = new GridLayout();
+        shell.setText(Messages.Minimap_Title);
+
+        final GridLayout layout = new GridLayout(1, false);
         layout.marginHeight = 0;
         layout.marginWidth = 0;
         shell.setLayout(layout);
@@ -95,10 +83,8 @@ public class MinimapDialog
         label.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
         gc = new GC(label);
 
-        final Composite composite = new Composite(shell, SWT.NONE);
-        composite.setLayout(new GridLayout(2, true));
-        createProjectLocationArea(composite);
-        createAutomaticButton(composite);
+        createConfigLocation(shell);
+        createButtons(shell);
 
         shell.pack();
         UtilSwt.center(shell);
@@ -106,27 +92,13 @@ public class MinimapDialog
     }
 
     /**
-     * Perform an automatic color minimap resolution.
-     */
-    void automaticColor()
-    {
-        final XmlNode root = Stream.createXmlNode(ConfigMinimap.MINIMAPS);
-        final Map<ColorRgba, XmlNode> colors = new HashMap<>();
-        for (final Integer sheet : WorldModel.INSTANCE.getMap().getSheets())
-        {
-            computeSheet(root, colors, sheet);
-        }
-        Stream.saveXml(root, Medias.create(config.getText()));
-        loadConfig();
-    }
-
-    /**
      * Load minimap configuration.
+     * 
+     * @param media The configuration media.
      */
-    void loadConfig()
+    void loadConfig(Media media)
     {
         final Minimap minimap = WorldModel.INSTANCE.getMinimap();
-        final Media media = Medias.create(config.getText());
         if (media.getFile().isFile())
         {
             minimap.loadPixelConfig(media);
@@ -136,167 +108,89 @@ public class MinimapDialog
     }
 
     /**
-     * Create the project location area.
+     * Create the configuration location area.
      * 
-     * @param content The content composite.
+     * @param parent The parent composite.
      */
-    private void createProjectLocationArea(final Composite content)
+    private void createConfigLocation(final Composite parent)
     {
-        final Composite area = new Composite(content, SWT.NONE);
-        area.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        area.setLayout(new GridLayout(3, false));
+        final Composite content = new Composite(parent, SWT.NONE);
+        content.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        content.setLayout(new GridLayout(2, false));
 
-        final Label locationLabel = new Label(area, SWT.NONE);
-        locationLabel.setText(Messages.AbstractProjectDialog_Location);
+        final Label locationLabel = new Label(content, SWT.NONE);
+        locationLabel.setText(com.b3dgs.lionengine.editor.project.dialog.Messages.AbstractProjectDialog_Location);
+        locationLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
-        final Text config = new Text(area, SWT.BORDER);
+        config = new Text(content, SWT.BORDER);
         config.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+    }
 
-        final Button browse = UtilButton.create(area,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
-                                                AbstractDialog.ICON_BROWSE);
+    /**
+     * Create the buttons area.
+     * 
+     * @param parent The parent reference.
+     */
+    private void createButtons(Composite parent)
+    {
+        final Composite content = new Composite(parent, SWT.NONE);
+        content.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        content.setLayout(new GridLayout(3, false));
+
+        final Text configMedia = config;
+        final Button browse = UtilButton.create(content, Messages.AbstractDialog_Browse, AbstractDialog.ICON_BROWSE);
+        browse.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        final Button automatic = UtilButton.create(content, Messages.Minimap_Generate, AbstractDialog.ICON_OK);
+        automatic.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        automatic.setEnabled(false);
+        automatic.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent event)
+            {
+                final Minimap minimap = WorldModel.INSTANCE.getMinimap();
+                final Media media = Medias.create(configMedia.getText());
+                if (media.getFile().isFile())
+                {
+                    minimap.automaticColor(media);
+                }
+                loadConfig(media);
+            }
+        });
+
         browse.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final File file = UtilDialog.selectResourceFile(content.getShell(), true, new String[]
+                final File file = UtilDialog.selectResourceFile(parent.getShell(), true, new String[]
                 {
-                    "Minimap configuration file"
+                    Messages.Minimap_FileDesc
                 }, new String[]
                 {
                     "*.xml"
                 });
                 if (file != null)
                 {
-                    config.setText(UtilityMedia.get(file).getPath());
-                    loadConfig();
+                    final Media media = UtilityMedia.get(file);
+                    configMedia.setText(media.getPath());
+                    automatic.setEnabled(media.getFile().isFile());
+                    loadConfig(media);
                 }
             }
         });
-        this.config = config;
-    }
 
-    /**
-     * Create the automatic generation button.
-     * 
-     * @param parent The parent reference.
-     */
-    private void createAutomaticButton(Composite parent)
-    {
-        final Composite area = new Composite(parent, SWT.NONE);
-        area.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        area.setLayout(new GridLayout(1, false));
-
-        automatic = UtilButton.create(area, "Generate", AbstractDialog.ICON_OK);
-        automatic.addSelectionListener(new SelectionAdapter()
+        final Button finish = UtilButton.create(content, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
+        finish.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        finish.addSelectionListener(new SelectionAdapter()
         {
             @Override
-            public void widgetSelected(SelectionEvent event)
+            public void widgetSelected(SelectionEvent selectionEvent)
             {
-                automaticColor();
+                shell.dispose();
             }
         });
-    }
-
-    /**
-     * Compute the current sheet.
-     * 
-     * @param root The configuration root.
-     * @param colors The colors set found.
-     * @param sheet The sheet number.
-     */
-    private void computeSheet(XmlNode root, Map<ColorRgba, XmlNode> colors, Integer sheet)
-    {
-        final MapTile map = WorldModel.INSTANCE.getMap();
-        final SpriteTiled tiles = map.getSheet(sheet);
-        final ImageBuffer surface = tiles.getSurface();
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-
-        int number = 0;
-        for (int x = 0; x < surface.getWidth(); x += tw)
-        {
-            for (int y = 0; y < surface.getHeight(); y += th)
-            {
-                final int h = number * tw % tiles.getWidth();
-                final int v = number / tiles.getTilesHorizontal() * th;
-                final ColorRgba color = getWeightedTileColor(surface, tw, th, h, v);
-
-                if (!Minimap.NO_TILE.equals(color) && !ColorRgba.TRANSPARENT.equals(color))
-                {
-                    saveColor(root, colors, color, sheet, number);
-                }
-                number++;
-            }
-        }
-    }
-
-    /**
-     * Save the current color.
-     * 
-     * @param root The configuration root.
-     * @param colors The colors set found.
-     * @param color The current color.
-     * @param sheet The sheet number.
-     * @param number The tile number.
-     */
-    private void saveColor(XmlNode root, Map<ColorRgba, XmlNode> colors, ColorRgba color, Integer sheet, int number)
-    {
-        final XmlNode node;
-        if (colors.containsKey(color))
-        {
-            node = colors.get(color);
-        }
-        else
-        {
-            node = root.createChild(ConfigMinimap.MINIMAP);
-            node.writeInteger(ConfigMinimap.R, color.getRed());
-            node.writeInteger(ConfigMinimap.G, color.getGreen());
-            node.writeInteger(ConfigMinimap.B, color.getBlue());
-            colors.put(color, node);
-        }
-
-        final XmlNode tile = node.createChild(ConfigTileGroup.TILE);
-        tile.writeInteger(ConfigTileGroup.SHEET, sheet.intValue());
-        tile.writeInteger(ConfigTileGroup.NUMBER, number);
-    }
-
-    /**
-     * Get the weighted color of a tile.
-     * 
-     * @param surface The surface reference.
-     * @param tw The tile width.
-     * @param th The tile height.
-     * @param tx The starting horizontal location.
-     * @param ty The starting vertical location.
-     * @return The weighted color.
-     */
-    private ColorRgba getWeightedTileColor(ImageBuffer surface, int tw, int th, int tx, int ty)
-    {
-        int r = 0;
-        int g = 0;
-        int b = 0;
-        int count = 0;
-        for (int x = 0; x < tw; x++)
-        {
-            for (int y = 0; y < th; y++)
-            {
-                final ColorRgba color = new ColorRgba(surface.getRgb(tx + x, ty + y));
-                if (!ColorRgba.TRANSPARENT.equals(color))
-                {
-                    r += color.getRed();
-                    g += color.getGreen();
-                    b += color.getBlue();
-                    count++;
-                }
-            }
-        }
-        if (count == 0)
-        {
-            return ColorRgba.TRANSPARENT;
-        }
-        return new ColorRgba(r / count, g / count, b / count);
     }
 
     /**

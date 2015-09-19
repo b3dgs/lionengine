@@ -45,6 +45,13 @@ public final class Messages extends NLS
     /** About. */
     public static String AboutDialog_Title;
 
+    /** Minimap. */
+    public static String Minimap_Title;
+    /** Minimap file description. */
+    public static String Minimap_FileDesc;
+    /** Minimap generate colors. */
+    public static String Minimap_Generate;
+
     /**
      * Initialize.
      */

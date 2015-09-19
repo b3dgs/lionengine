@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.ColorRgba;
@@ -30,8 +31,10 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
 import com.b3dgs.lionengine.game.configurer.ConfigMinimap;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -90,6 +93,22 @@ public class Minimap implements Image
     }
 
     /**
+     * Perform an automatic color minimap resolution.
+     * 
+     * @param config The pixel configuration destination file.
+     */
+    public void automaticColor(Media config)
+    {
+        final XmlNode root = Stream.createXmlNode(ConfigMinimap.MINIMAPS);
+        final Map<ColorRgba, XmlNode> colors = new HashMap<ColorRgba, XmlNode>();
+        for (final Integer sheet : map.getSheets())
+        {
+            computeSheet(root, colors, sheet);
+        }
+        Stream.saveXml(root, config);
+    }
+
+    /**
      * Create the minimap if not already created.
      */
     private void create()
@@ -139,6 +158,105 @@ public class Minimap implements Image
             color = DEFAULT_COLOR;
         }
         return color;
+    }
+
+    /**
+     * Compute the current sheet.
+     * 
+     * @param root The configuration root.
+     * @param colors The colors set found.
+     * @param sheet The sheet number.
+     */
+    private void computeSheet(XmlNode root, Map<ColorRgba, XmlNode> colors, Integer sheet)
+    {
+        final SpriteTiled tiles = map.getSheet(sheet);
+        final ImageBuffer surface = tiles.getSurface();
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+
+        int number = 0;
+        for (int x = 0; x < surface.getWidth(); x += tw)
+        {
+            for (int y = 0; y < surface.getHeight(); y += th)
+            {
+                final int h = number * tw % tiles.getWidth();
+                final int v = number / tiles.getTilesHorizontal() * th;
+                final ColorRgba color = getWeightedTileColor(surface, tw, th, h, v);
+
+                if (!Minimap.NO_TILE.equals(color) && !ColorRgba.TRANSPARENT.equals(color))
+                {
+                    saveColor(root, colors, color, sheet, number);
+                }
+                number++;
+            }
+        }
+    }
+
+    /**
+     * Save the current color.
+     * 
+     * @param root The configuration root.
+     * @param colors The colors set found.
+     * @param color The current color.
+     * @param sheet The sheet number.
+     * @param number The tile number.
+     */
+    private void saveColor(XmlNode root, Map<ColorRgba, XmlNode> colors, ColorRgba color, Integer sheet, int number)
+    {
+        final XmlNode node;
+        if (colors.containsKey(color))
+        {
+            node = colors.get(color);
+        }
+        else
+        {
+            node = root.createChild(ConfigMinimap.MINIMAP);
+            node.writeInteger(ConfigMinimap.R, color.getRed());
+            node.writeInteger(ConfigMinimap.G, color.getGreen());
+            node.writeInteger(ConfigMinimap.B, color.getBlue());
+            colors.put(color, node);
+        }
+
+        final XmlNode tile = node.createChild(ConfigTileGroup.TILE);
+        tile.writeInteger(ConfigTileGroup.SHEET, sheet.intValue());
+        tile.writeInteger(ConfigTileGroup.NUMBER, number);
+    }
+
+    /**
+     * Get the weighted color of a tile.
+     * 
+     * @param surface The surface reference.
+     * @param tw The tile width.
+     * @param th The tile height.
+     * @param tx The starting horizontal location.
+     * @param ty The starting vertical location.
+     * @return The weighted color.
+     */
+    private ColorRgba getWeightedTileColor(ImageBuffer surface, int tw, int th, int tx, int ty)
+    {
+        int r = 0;
+        int g = 0;
+        int b = 0;
+        int count = 0;
+        for (int x = 0; x < tw; x++)
+        {
+            for (int y = 0; y < th; y++)
+            {
+                final ColorRgba color = new ColorRgba(surface.getRgb(tx + x, ty + y));
+                if (!ColorRgba.TRANSPARENT.equals(color))
+                {
+                    r += color.getRed();
+                    g += color.getGreen();
+                    b += color.getBlue();
+                    count++;
+                }
+            }
+        }
+        if (count == 0)
+        {
+            return ColorRgba.TRANSPARENT;
+        }
+        return new ColorRgba(r / count, g / count, b / count);
     }
 
     /*
