@@ -22,6 +22,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -52,20 +53,32 @@ public final class ConfigMinimap
      * @return The minimap data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Map<String, ColorRgba> create(XmlNode root, MapTile map) throws LionEngineException
+    public static Map<TileRef, ColorRgba> create(XmlNode root, MapTile map) throws LionEngineException
     {
-        final Map<String, ColorRgba> colors = new HashMap<String, ColorRgba>();
+        final Map<TileRef, ColorRgba> colors = new HashMap<TileRef, ColorRgba>();
         for (final XmlNode node : root.getChildren(MINIMAP))
         {
             final ColorRgba color = new ColorRgba(node.readInteger(R), node.readInteger(G), node.readInteger(B));
-            final String group = node.getChild(ConfigTileGroup.GROUP).getText();
-            colors.put(map.getGroup(group).getName(), color);
+            if (node.hasChild(ConfigTileGroup.GROUP))
+            {
+                final String group = node.getChild(ConfigTileGroup.GROUP).getText();
+                for (final TileRef ref : map.getGroup(group).getTiles())
+                {
+                    colors.put(ref, color);
+                }
+            }
+            for (final XmlNode tile : node.getChildren(ConfigTileGroup.TILE))
+            {
+                final TileRef ref = new TileRef(Integer.valueOf(tile.readInteger(ConfigTileGroup.SHEET)),
+                                                tile.readInteger(ConfigTileGroup.NUMBER));
+                colors.put(ref, color);
+            }
         }
         return colors;
     }
 
     /**
-     * Disabled Constructor.
+     * Disabled constructor.
      */
     private ConfigMinimap()
     {

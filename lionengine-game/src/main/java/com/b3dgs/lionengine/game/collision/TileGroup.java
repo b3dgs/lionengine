@@ -71,7 +71,7 @@ public class TileGroup implements Nameable
     {
         for (final TileRef current : tiles)
         {
-            if (current.getSheet() == tile.getSheet().intValue() && current.getNumber() == tile.getNumber())
+            if (current.getSheet().equals(tile.getSheet()) && current.getNumber() == tile.getNumber())
             {
                 return true;
             }
@@ -107,7 +107,7 @@ public class TileGroup implements Nameable
     public static final class TileRef
     {
         /** Sheet id. */
-        private final int sheet;
+        private final Integer sheet;
         /** TIle number. */
         private final int number;
 
@@ -117,7 +117,7 @@ public class TileGroup implements Nameable
          * @param sheet The tile sheet number.
          * @param number The tile number.
          */
-        public TileRef(int sheet, int number)
+        public TileRef(Integer sheet, int number)
         {
             this.sheet = sheet;
             this.number = number;
@@ -128,7 +128,7 @@ public class TileGroup implements Nameable
          * 
          * @return The sheet number.
          */
-        public int getSheet()
+        public Integer getSheet()
         {
             return sheet;
         }
@@ -141,6 +141,39 @@ public class TileGroup implements Nameable
         public int getNumber()
         {
             return number;
+        }
+
+        /*
+         * Object
+         */
+
+        @Override
+        public int hashCode()
+        {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + number;
+            result = prime * result + sheet.intValue();
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (this == obj)
+            {
+                return true;
+            }
+            if (obj == null || !(obj instanceof TileRef))
+            {
+                return false;
+            }
+            final TileRef other = (TileRef) obj;
+            if (number != other.number || sheet.intValue() != other.sheet.intValue())
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

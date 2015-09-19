@@ -64,7 +64,7 @@ public final class ConfigTileGroup
             final Collection<TileRef> tiles = new ArrayList<TileRef>();
             for (final XmlNode ref : node.getChildren(TILE))
             {
-                tiles.add(new TileRef(ref.readInteger(SHEET), ref.readInteger(NUMBER)));
+                tiles.add(new TileRef(Integer.valueOf(ref.readInteger(SHEET)), ref.readInteger(NUMBER)));
             }
 
             final TileGroup group = new TileGroup(node.readString(NAME), tiles);
@@ -87,7 +87,7 @@ public final class ConfigTileGroup
         for (final TileRef ref : group.getTiles())
         {
             final XmlNode tileRef = node.createChild(TILE);
-            tileRef.writeInteger(SHEET, ref.getSheet());
+            tileRef.writeInteger(SHEET, ref.getSheet().intValue());
             tileRef.writeInteger(NUMBER, ref.getNumber());
         }
     }

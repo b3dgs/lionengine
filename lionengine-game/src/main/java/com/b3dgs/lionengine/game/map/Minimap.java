@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
 import com.b3dgs.lionengine.game.configurer.ConfigMinimap;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -37,7 +38,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Minimap representation of a map tile. This can be used to represent strategic view of a map.
  * <p>
- * A call to {@link #load()} is needed once the {@link MapTile} as been created / loaded, and also each time
+ * A call to {@link #prepare()} is needed once the {@link MapTile} as been created / loaded, and also each time
  * modification occurs on the map.
  * </p>
  * 
@@ -46,10 +47,15 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class Minimap implements Image
 {
+    /** No tile representation. */
+    public static final ColorRgba NO_TILE = ColorRgba.BLACK;
+    /** Default tile color. */
+    private static final ColorRgba DEFAULT_COLOR = ColorRgba.WHITE;
+
     /** Map reference. */
     private final MapTile map;
     /** Pixel configuration. */
-    private Map<String, ColorRgba> pixels;
+    private Map<TileRef, ColorRgba> pixels;
     /** Minimap image reference. */
     private ImageBuffer minimap;
     /** Origin reference. */
@@ -83,18 +89,10 @@ public class Minimap implements Image
         pixels = ConfigMinimap.create(root, map);
     }
 
-    /*
-     * Image
+    /**
+     * Create the minimap if not already created.
      */
-
-    @Override
-    public void load() throws LionEngineException
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void prepare() throws LionEngineException
+    private void create()
     {
         if (minimap == null)
         {
@@ -109,31 +107,64 @@ public class Minimap implements Image
             }
             minimap = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), transparency);
         }
-        final Graphic g = minimap.createGraphic();
-        final int vert = map.getInTileHeight();
-        final int hori = map.getInTileWidth();
+    }
 
-        for (int ty = 0; ty < vert; ty++)
+    /**
+     * Get the corresponding tile color.
+     * 
+     * @param tile The tile reference.
+     * @return The tile color representation.
+     */
+    private ColorRgba getTileColor(Tile tile)
+    {
+        final ColorRgba color;
+        if (tile == null)
         {
-            for (int tx = 0; tx < hori; tx++)
+            color = NO_TILE;
+        }
+        else if (pixels != null)
+        {
+            final TileRef ref = new TileRef(tile.getSheet(), tile.getNumber());
+            if (!pixels.containsKey(ref))
+            {
+                color = DEFAULT_COLOR;
+            }
+            else
+            {
+                color = pixels.get(ref);
+            }
+        }
+        else
+        {
+            color = DEFAULT_COLOR;
+        }
+        return color;
+    }
+
+    /*
+     * Image
+     */
+
+    @Override
+    public void load() throws LionEngineException
+    {
+        create();
+    }
+
+    @Override
+    public void prepare() throws LionEngineException
+    {
+        final Graphic g = minimap.createGraphic();
+        final int v = map.getInTileHeight();
+        final int h = map.getInTileWidth();
+
+        for (int ty = 0; ty < v; ty++)
+        {
+            for (int tx = 0; tx < h; tx++)
             {
                 final Tile tile = map.getTile(tx, ty);
-                if (tile != null)
-                {
-                    if (pixels != null && tile.getGroup() != null && pixels.containsKey(tile.getGroup()))
-                    {
-                        g.setColor(pixels.get(tile.getGroup()));
-                    }
-                    else
-                    {
-                        g.setColor(ColorRgba.WHITE);
-                    }
-                }
-                else
-                {
-                    g.setColor(ColorRgba.BLACK);
-                }
-                g.drawRect(tx, vert - ty - 1, 1, 1, true);
+                g.setColor(getTileColor(tile));
+                g.drawRect(tx, v - ty - 1, 1, 1, true);
             }
         }
         g.dispose();
