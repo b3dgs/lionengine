@@ -20,6 +20,11 @@ package com.b3dgs.lionengine.editor.dialog;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
@@ -37,8 +42,13 @@ import com.b3dgs.lionengine.core.swt.UtilityImage;
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.editor.world.updater.WorldUpdateListener;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Minimap;
 
 /**
@@ -46,14 +56,24 @@ import com.b3dgs.lionengine.game.map.Minimap;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MinimapDialog
+public class MinimapDialog implements MouseListener, MouseMoveListener, WorldUpdateListener
 {
     /** Shell. */
     final Shell shell;
+    /** Minimap reference. */
+    final Minimap minimap = WorldModel.INSTANCE.getMinimap();
+    /** Map reference. */
+    private final MapTile map = WorldModel.INSTANCE.getMap();
+    /** Camera reference. */
+    private final Camera camera = WorldModel.INSTANCE.getCamera();
+    /** World reference. */
+    final WorldPart part;
     /** Minimap configuration. */
     private Text config;
     /** GC minimap. */
-    private GC gc;
+    private volatile GC gc;
+    /** Mouse click. */
+    private volatile boolean click;
 
     /**
      * Create the dialog.
@@ -69,6 +89,8 @@ public class MinimapDialog
         layout.marginHeight = 0;
         layout.marginWidth = 0;
         shell.setLayout(layout);
+
+        part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
     }
 
     /**
@@ -76,12 +98,13 @@ public class MinimapDialog
      */
     public void open()
     {
-        final Minimap minimap = WorldModel.INSTANCE.getMinimap();
         minimap.load();
 
         final Label label = new Label(shell, SWT.NONE);
         label.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
         gc = new GC(label);
+        label.addMouseListener(this);
+        label.addMouseMoveListener(this);
 
         createConfigLocation(shell);
         createButtons(shell);
@@ -89,6 +112,16 @@ public class MinimapDialog
         shell.pack();
         UtilSwt.center(shell);
         shell.setVisible(true);
+
+        part.getUpdater().addListener(this);
+        shell.addDisposeListener(new DisposeListener()
+        {
+            @Override
+            public void widgetDisposed(DisposeEvent event)
+            {
+                part.getUpdater().removeListener(MinimapDialog.this);
+            }
+        });
     }
 
     /**
@@ -98,12 +131,11 @@ public class MinimapDialog
      */
     void loadConfig(Media media)
     {
-        final Minimap minimap = WorldModel.INSTANCE.getMinimap();
         if (media.getFile().isFile())
         {
             minimap.loadPixelConfig(media);
             minimap.prepare();
-            render(gc, minimap);
+            render();
         }
     }
 
@@ -149,7 +181,6 @@ public class MinimapDialog
             @Override
             public void widgetSelected(SelectionEvent event)
             {
-                final Minimap minimap = WorldModel.INSTANCE.getMinimap();
                 final Media media = Medias.create(configMedia.getText());
                 if (media.getFile().isFile())
                 {
@@ -195,15 +226,84 @@ public class MinimapDialog
 
     /**
      * Render the minimap.
-     * 
-     * @param gc The graphic context.
-     * @param minimap The minimap reference.
      */
-    private void render(GC gc, Minimap minimap)
+    private void render()
     {
-        shell.getDisplay().timerExec(0, () ->
+        shell.getDisplay().asyncExec(() ->
         {
-            gc.drawImage(UtilityImage.getBuffer(minimap.getSurface()), 0, 0);
+            if (!gc.isDisposed())
+            {
+                gc.drawImage(UtilityImage.getBuffer(minimap.getSurface()), 0, 0);
+                gc.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_GREEN));
+
+                final int width = camera.getWidth() / map.getTileWidth();
+                final int height = camera.getHeight() / map.getTileHeight();
+                final int x = (int) camera.getX() / map.getTileWidth();
+                final int y = minimap.getHeight() - (int) camera.getY() / map.getTileHeight() - height - 1;
+                gc.drawRectangle(x, y, width, height);
+            }
         });
+    }
+
+    /**
+     * Move the map from minimap location.
+     * 
+     * @param mx The mouse X.
+     * @param my The mouse Y.
+     */
+    private void moveMap(int mx, int my)
+    {
+        if (click)
+        {
+            camera.setLocation(mx * map.getTileWidth(), (minimap.getHeight() - my) * map.getTileHeight());
+            shell.getDisplay().asyncExec(() ->
+            {
+                part.update();
+            });
+            render();
+        }
+    }
+
+    /*
+     * MouseMoveListener
+     */
+
+    @Override
+    public void mouseMove(MouseEvent event)
+    {
+        moveMap(event.x, event.y);
+    }
+
+    /*
+     * MouseListener
+     */
+
+    @Override
+    public void mouseDown(MouseEvent event)
+    {
+        click = true;
+        moveMap(event.x, event.y);
+    }
+
+    @Override
+    public void mouseUp(MouseEvent event)
+    {
+        click = false;
+    }
+
+    @Override
+    public void mouseDoubleClick(MouseEvent event)
+    {
+        // Nothing to do
+    }
+
+    /*
+     * WorldUpdateListener
+     */
+
+    @Override
+    public void notifyWorldUpdated()
+    {
+        render();
     }
 }

@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.world.updater;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -42,6 +45,8 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
 
     /** Part service. */
     protected final EPartService partService;
+    /** World update listeners. */
+    private final Collection<WorldUpdateListener> listeners = new ArrayList<>();
     /** Zoom handler. */
     private final WorldZoom zoom;
     /** World navigation. */
@@ -78,6 +83,26 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         interactionTile = services.create(WorldInteractionTile.class);
         map = services.get(MapTile.class);
         gridEnabled = true;
+    }
+
+    /**
+     * Add a world listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void addListener(WorldUpdateListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    /**
+     * Remove a world listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void removeListener(WorldUpdateListener listener)
+    {
+        listeners.remove(listener);
     }
 
     /**
@@ -179,6 +204,17 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         return collisionsEnabled;
     }
 
+    /**
+     * Notify world updated.
+     */
+    private void notifyListeners()
+    {
+        for (final WorldUpdateListener listener : listeners)
+        {
+            listener.notifyWorldUpdated();
+        }
+    }
+
     /*
      * MouseListener
      */
@@ -236,6 +272,8 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         navigation.onMouseMoved(click, oldMx, oldMy, mx, my);
         interactionObject.onMouseMoved(click, oldMx, oldMy, mx, my);
         interactionTile.onMouseMoved(click, oldMx, oldMy, mx, my);
+
+        notifyListeners();
     }
 
     /*
@@ -246,6 +284,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     public void mouseScrolled(MouseEvent mouseEvent)
     {
         zoom.onMouseScroll(mouseEvent.count, getMouseX(), getMouseY());
+        notifyListeners();
     }
 
     /*
@@ -256,6 +295,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     public void keyPressed(KeyEvent keyEvent)
     {
         navigation.onKeyPushed(Integer.valueOf(keyEvent.keyCode));
+        notifyListeners();
     }
 
     @Override
