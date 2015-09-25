@@ -10,9 +10,9 @@ before_install:
   - sh -e /etc/init.d/xvfb start - sleep 10
 script:
 - cd lionengine-parent
-- jdk_switcher use oraclejdk7
+- jdk_switcher use oraclejdk8
 - mvn clean install -Pcore
 - mvn clean verify -Pplugins
-- jdk_switcher use oraclejdk8
-- mvn clean install -Pexample
+- mvn clean install -Pexamples
+- mvn clean install -Ptutorials
 - mvn clean verify -Peditor
