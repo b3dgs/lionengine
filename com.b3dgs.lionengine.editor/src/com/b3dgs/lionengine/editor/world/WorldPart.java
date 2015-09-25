@@ -101,6 +101,7 @@ public class WorldPart implements Focusable, TileSelectionListener
         composite.addMouseTrackListener(UtilSwt.createFocusListener(this));
 
         final Services services = WorldModel.INSTANCE.getServices();
+        services.add(this);
 
         updater = checkUpdaterExtensionPoint(services);
         composite.addMouseListener(updater);

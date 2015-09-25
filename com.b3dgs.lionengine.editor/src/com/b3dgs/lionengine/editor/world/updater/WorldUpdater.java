@@ -45,8 +45,14 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
 
     /** Part service. */
     protected final EPartService partService;
-    /** World update listeners. */
-    private final Collection<WorldUpdateListener> listeners = new ArrayList<>();
+    /** World mouse click listeners. */
+    private final Collection<WorldMouseClickListener> clickListeners = new ArrayList<>();
+    /** World mouse move listeners. */
+    private final Collection<WorldMouseMoveListener> moveListeners = new ArrayList<>();
+    /** World mouse scroll listeners. */
+    private final Collection<WorldMouseScrollListener> scrollListeners = new ArrayList<>();
+    /** World keyboard listeners. */
+    private final Collection<WorldKeyboardListener> keyListeners = new ArrayList<>();
     /** Zoom handler. */
     private final WorldZoom zoom;
     /** World navigation. */
@@ -83,26 +89,71 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         interactionTile = services.create(WorldInteractionTile.class);
         map = services.get(MapTile.class);
         gridEnabled = true;
+
+        addMouseClickListener(interactionObject);
+        addMouseMoveListener(interactionObject);
+
+        addMouseClickListener(interactionTile);
+        addMouseMoveListener(interactionTile);
+
+        addMouseClickListener(zoom);
+        addMouseScrollListener(zoom);
+
+        addMouseMoveListener(navigation);
+        addKeyboardListener(navigation);
     }
 
     /**
-     * Add a world listener.
+     * Add a mouse click listener.
      * 
      * @param listener The listener reference.
      */
-    public void addListener(WorldUpdateListener listener)
+    public void addMouseClickListener(WorldMouseClickListener listener)
     {
-        listeners.add(listener);
+        clickListeners.add(listener);
     }
 
     /**
-     * Remove a world listener.
+     * Add a mouse move listener.
      * 
      * @param listener The listener reference.
      */
-    public void removeListener(WorldUpdateListener listener)
+    public void addMouseMoveListener(WorldMouseMoveListener listener)
     {
-        listeners.remove(listener);
+        moveListeners.add(listener);
+    }
+
+    /**
+     * Add a mouse scroll listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void addMouseScrollListener(WorldMouseScrollListener listener)
+    {
+        scrollListeners.add(listener);
+    }
+
+    /**
+     * Add a key listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void addKeyboardListener(WorldKeyboardListener listener)
+    {
+        keyListeners.add(listener);
+    }
+
+    /**
+     * Remove a listener from all events listening.
+     * 
+     * @param listener The listener to remove.
+     */
+    public void removeListeners(Object listener)
+    {
+        clickListeners.remove(listener);
+        moveListeners.remove(listener);
+        scrollListeners.remove(listener);
+        keyListeners.remove(listener);
     }
 
     /**
@@ -204,17 +255,6 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         return collisionsEnabled;
     }
 
-    /**
-     * Notify world updated.
-     */
-    private void notifyListeners()
-    {
-        for (final WorldUpdateListener listener : listeners)
-        {
-            listener.notifyWorldUpdated();
-        }
-    }
-
     /*
      * MouseListener
      */
@@ -228,9 +268,11 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
 
         final int mx = getMouseX();
         final int my = getMouseY();
-        interactionObject.onMousePressed(click, mx, my);
-        interactionTile.onMousePressed(click, mx, my);
-        zoom.onMousePressed(click, mx, my);
+
+        for (final WorldMouseClickListener listener : clickListeners)
+        {
+            listener.onMousePressed(click, mx, my);
+        }
     }
 
     @Override
@@ -241,9 +283,11 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
 
         final int mx = getMouseX();
         final int my = getMouseY();
-        interactionObject.onMouseReleased(click, mx, my);
-        interactionTile.onMouseReleased(click, mx, my);
-        zoom.onMouseReleased(click, mx, my);
+
+        for (final WorldMouseClickListener listener : clickListeners)
+        {
+            listener.onMouseReleased(click, mx, my);
+        }
 
         click = 0;
     }
@@ -269,11 +313,11 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
 
         final int mx = getMouseX();
         final int my = getMouseY();
-        navigation.onMouseMoved(click, oldMx, oldMy, mx, my);
-        interactionObject.onMouseMoved(click, oldMx, oldMy, mx, my);
-        interactionTile.onMouseMoved(click, oldMx, oldMy, mx, my);
 
-        notifyListeners();
+        for (final WorldMouseMoveListener listener : moveListeners)
+        {
+            listener.onMouseMoved(click, oldMx, oldMy, mx, my);
+        }
     }
 
     /*
@@ -283,8 +327,10 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     @Override
     public void mouseScrolled(MouseEvent mouseEvent)
     {
-        zoom.onMouseScroll(mouseEvent.count, getMouseX(), getMouseY());
-        notifyListeners();
+        for (final WorldMouseScrollListener listener : scrollListeners)
+        {
+            listener.onMouseScroll(mouseEvent.count, getMouseX(), getMouseY());
+        }
     }
 
     /*
@@ -294,8 +340,10 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     @Override
     public void keyPressed(KeyEvent keyEvent)
     {
-        navigation.onKeyPushed(Integer.valueOf(keyEvent.keyCode));
-        notifyListeners();
+        for (final WorldKeyboardListener listener : keyListeners)
+        {
+            listener.onKeyPushed(Integer.valueOf(keyEvent.keyCode));
+        }
     }
 
     @Override

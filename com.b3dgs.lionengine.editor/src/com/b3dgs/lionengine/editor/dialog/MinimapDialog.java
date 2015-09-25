@@ -20,11 +20,10 @@ package com.b3dgs.lionengine.editor.dialog;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
@@ -40,13 +39,16 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.swt.UtilityImage;
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
+import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
-import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.editor.world.updater.WorldUpdateListener;
+import com.b3dgs.lionengine.editor.world.updater.WorldKeyboardListener;
+import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
+import com.b3dgs.lionengine.editor.world.updater.WorldMouseScrollListener;
+import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Minimap;
@@ -56,7 +58,8 @@ import com.b3dgs.lionengine.game.map.Minimap;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MinimapDialog implements MouseListener, MouseMoveListener, WorldUpdateListener
+public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWheelListener, WorldMouseMoveListener,
+                           WorldMouseScrollListener, WorldKeyboardListener, Focusable
 {
     /** Shell. */
     final Shell shell;
@@ -84,13 +87,9 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, WorldUpd
     {
         shell = new Shell(parent, SWT.DIALOG_TRIM);
         shell.setText(Messages.Minimap_Title);
+        shell.setLayout(UtilSwt.borderless());
 
-        final GridLayout layout = new GridLayout(1, false);
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        shell.setLayout(layout);
-
-        part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+        part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
     }
 
     /**
@@ -100,28 +99,24 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, WorldUpd
     {
         minimap.load();
 
-        final Label label = new Label(shell, SWT.NONE);
-        label.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
-        gc = new GC(label);
-        label.addMouseListener(this);
-        label.addMouseMoveListener(this);
+        final Composite composite = new Composite(shell, SWT.DOUBLE_BUFFERED);
+        composite.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
+        gc = new GC(composite);
+        composite.addMouseListener(this);
+        composite.addMouseMoveListener(this);
 
         createConfigLocation(shell);
         createButtons(shell);
 
-        shell.pack();
-        UtilSwt.center(shell);
-        shell.setVisible(true);
+        final WorldUpdater updater = part.getUpdater();
+        updater.addMouseMoveListener(this);
+        updater.addMouseScrollListener(this);
+        updater.addKeyboardListener(this);
+        shell.addDisposeListener(event -> updater.removeListeners(MinimapDialog.this));
+        shell.addMouseWheelListener(this);
+        composite.addMouseTrackListener(UtilSwt.createFocusListener(this));
 
-        part.getUpdater().addListener(this);
-        shell.addDisposeListener(new DisposeListener()
-        {
-            @Override
-            public void widgetDisposed(DisposeEvent event)
-            {
-                part.getUpdater().removeListener(MinimapDialog.this);
-            }
-        });
+        UtilSwt.open(shell);
     }
 
     /**
@@ -229,20 +224,17 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, WorldUpd
      */
     private void render()
     {
-        shell.getDisplay().asyncExec(() ->
+        if (!gc.isDisposed())
         {
-            if (!gc.isDisposed())
-            {
-                gc.drawImage(UtilityImage.getBuffer(minimap.getSurface()), 0, 0);
-                gc.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_GREEN));
+            gc.drawImage(UtilityImage.getBuffer(minimap.getSurface()), 0, 0);
+            gc.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_GREEN));
 
-                final int width = camera.getWidth() / map.getTileWidth();
-                final int height = camera.getHeight() / map.getTileHeight();
-                final int x = (int) camera.getX() / map.getTileWidth();
-                final int y = minimap.getHeight() - (int) camera.getY() / map.getTileHeight() - height - 1;
-                gc.drawRectangle(x, y, width, height);
-            }
-        });
+            final int width = camera.getWidth() / map.getTileWidth();
+            final int height = camera.getHeight() / map.getTileHeight();
+            final int x = (int) camera.getX() / map.getTileWidth();
+            final int y = minimap.getHeight() - (int) camera.getY() / map.getTileHeight() - height - 1;
+            gc.drawRectangle(x, y, width, height);
+        }
     }
 
     /**
@@ -256,22 +248,9 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, WorldUpd
         if (click)
         {
             camera.setLocation(mx * map.getTileWidth(), (minimap.getHeight() - my) * map.getTileHeight());
-            shell.getDisplay().asyncExec(() ->
-            {
-                part.update();
-            });
+            part.update();
             render();
         }
-    }
-
-    /*
-     * MouseMoveListener
-     */
-
-    @Override
-    public void mouseMove(MouseEvent event)
-    {
-        moveMap(event.x, event.y);
     }
 
     /*
@@ -298,12 +277,66 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, WorldUpd
     }
 
     /*
-     * WorldUpdateListener
+     * MouseMoveListener
      */
 
     @Override
-    public void notifyWorldUpdated()
+    public void mouseMove(MouseEvent event)
+    {
+        moveMap(event.x, event.y);
+    }
+
+    /*
+     * MouseWheelListener
+     */
+
+    @Override
+    public void mouseScrolled(MouseEvent event)
+    {
+        part.getUpdater().mouseScrolled(event);
+        part.getRenderer().mouseScrolled(event);
+    }
+
+    /*
+     * WorldMouseMoveListener
+     */
+
+    @Override
+    public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
+    {
+        if (click > 0)
+        {
+            render();
+        }
+    }
+
+    /*
+     * WorldMouseScrollListener
+     */
+
+    @Override
+    public void onMouseScroll(int value, int mx, int my)
     {
         render();
+    }
+
+    /*
+     * WorldKeyboardListener
+     */
+
+    @Override
+    public void onKeyPushed(Integer key)
+    {
+        render();
+    }
+
+    /*
+     * Focusable
+     */
+
+    @Override
+    public void focus()
+    {
+        shell.forceFocus();
     }
 }
