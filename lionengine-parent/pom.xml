@@ -5,7 +5,7 @@
     <properties>
         <project-name>lionengine</project-name>
         <jdk.version>1.6</jdk.version>
-        <java.home>${JDK_6_HOME}</java.home>
+        <jdk.home>${JDK_6_HOME}</jdk.home>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
         <main-group-id>com.b3dgs.${project-name}</main-group-id>
@@ -293,7 +293,7 @@
                     <configuration>
                         <source>${jdk.version}</source>
                         <target>${jdk.version}</target>
-                        <executable>${java.home}/bin/javac</executable>
+                        <executable>${jdk.home}</executable>
                         <encoding>${encoding.type}</encoding>
                         <showDeprecation>true</showDeprecation>
                         <showWarnings>true</showWarnings>

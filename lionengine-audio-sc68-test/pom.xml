@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <jdk.version>1.8</jdk.version>
-        <java.home>${JDK_8_HOME}</java.home>
+        <jdk.home>${JDK_8_HOME}</jdk.home>
     </properties>
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
@@ -34,7 +34,7 @@
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
-                    <executable>${java.home}/bin/javac</executable>
+                    <executable>${jdk.home}</executable>
                     <fork>true</fork>
                 </configuration>
             </plugin>

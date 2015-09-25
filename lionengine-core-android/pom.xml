@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <jdk.version>1.6</jdk.version>
-        <java.home>${JDK_6_HOME}</java.home>
+        <jdk.home>${JDK_6_HOME}</jdk.home>
         <android.version>1.5_r3</android.version>
     </properties>
     <parent>
@@ -43,7 +43,7 @@
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
-                    <executable>${java.home}/bin/javac</executable>
+                    <executable>${jdk.home}</executable>
                 </configuration>
             </plugin>
         </plugins>
