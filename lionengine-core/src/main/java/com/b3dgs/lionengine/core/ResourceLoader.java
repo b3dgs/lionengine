@@ -151,7 +151,7 @@ public class ResourceLoader
         /**
          * Create the resource loader.
          */
-        public ResourceLoaderThread()
+        ResourceLoaderThread()
         {
             super("Resource loader");
         }
