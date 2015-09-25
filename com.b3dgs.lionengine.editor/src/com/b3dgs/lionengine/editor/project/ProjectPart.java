@@ -31,7 +31,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
@@ -129,10 +128,7 @@ public final class ProjectPart implements Focusable
     @PostConstruct
     public void createComposite(Composite parent, EMenuService menuService)
     {
-        final GridLayout layout = new GridLayout(1, false);
-        layout.marginWidth = 0;
-        layout.marginHeight = 0;
-        parent.setLayout(layout);
+        parent.setLayout(UtilSwt.borderless());
 
         tree = new Tree(parent, SWT.NONE);
         tree.setLayoutData(new GridData(GridData.FILL_BOTH));

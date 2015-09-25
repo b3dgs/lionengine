@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.editor.world.dialog;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -35,8 +33,8 @@ import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilText;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 
@@ -103,15 +101,11 @@ public class MapCollisionAssignDialog extends AbstractDialog
         offset.setText(DEFAULT_OFFSET);
 
         final Button check = createCheckButton(offsetArea, offset);
-        offset.addModifyListener(new ModifyListener()
+        offset.addModifyListener(event ->
         {
-            @Override
-            public void modifyText(ModifyEvent event)
-            {
-                final boolean enabled = !offset.getText().isEmpty();
-                check.setEnabled(enabled);
-                setFinishEnabled(false);
-            }
+            final boolean enabled = !offset.getText().isEmpty();
+            check.setEnabled(enabled);
+            setFinishEnabled(false);
         });
     }
 
@@ -126,7 +120,7 @@ public class MapCollisionAssignDialog extends AbstractDialog
     {
         final Button check = UtilButton.create(offsetArea, Messages.CollisionAssign_Check, null);
         check.setImage(AbstractDialog.ICON_BROWSE);
-        final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+
         final WorldInteractionTile interactionTile = collision;
         check.addSelectionListener(new SelectionAdapter()
         {
@@ -134,6 +128,8 @@ public class MapCollisionAssignDialog extends AbstractDialog
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 interactionTile.verifyCollision(Integer.parseInt(offset.getText()));
+
+                final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
                 if (!part.getUpdater().isCollisionsEnabled())
                 {
                     part.getUpdater().switchCollisionsEnabled();

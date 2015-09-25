@@ -49,7 +49,7 @@ public final class ProjectImportHandler
         final Factory factory = WorldModel.INSTANCE.getFactory();
         factory.setClassLoader(project.getClassLoader());
 
-        final WorldPart worldPart = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+        final WorldPart worldPart = WorldModel.INSTANCE.getServices().get(WorldPart.class);
         worldPart.setToolBarEnabled(true);
         worldPart.setToolItemEnabled(SetShowCollisionsHandler.ID, false);
         worldPart.setToolItemEnabled(SetPointerCollisionHandler.ID, false);

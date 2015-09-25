@@ -19,8 +19,9 @@ package com.b3dgs.lionengine.editor.world.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 
-import com.b3dgs.lionengine.editor.utility.UtilPart;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Set show hide collisions handler.
@@ -46,7 +47,8 @@ public final class SetShowCollisionsHandler
     @Execute
     public void execute()
     {
-        final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+        final Services services = WorldModel.INSTANCE.getServices();
+        final WorldPart part = services.get(WorldPart.class);
         part.getUpdater().switchCollisionsEnabled();
         part.update();
     }

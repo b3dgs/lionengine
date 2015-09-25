@@ -127,17 +127,10 @@ public class AboutDialog
     public AboutDialog(Shell shell)
     {
         dialog = new Shell(shell, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-        final GridLayout dialogLayout = new GridLayout(1, false);
-        dialogLayout.marginHeight = 0;
-        dialogLayout.marginWidth = 0;
-        dialogLayout.verticalSpacing = 0;
-        dialog.setLayout(dialogLayout);
+        dialog.setLayout(UtilSwt.borderless());
         dialog.setText(Messages.AboutDialog_Title);
 
         create(dialog);
-
-        dialog.pack();
-        UtilSwt.center(dialog);
     }
 
     /**
@@ -145,6 +138,6 @@ public class AboutDialog
      */
     public void open()
     {
-        dialog.open();
+        UtilSwt.open(dialog);
     }
 }

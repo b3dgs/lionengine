@@ -425,7 +425,6 @@ public abstract class ObjectList<T extends Nameable>
                     item.dispose();
                 }
                 objectsTree.layout(true, true);
-
                 UtilSwt.setDirty(toolbar.getShell(), true);
             }
         });

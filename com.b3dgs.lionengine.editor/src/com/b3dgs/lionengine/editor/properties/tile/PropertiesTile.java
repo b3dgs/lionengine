@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderTile;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
@@ -175,7 +174,7 @@ public class PropertiesTile implements PropertiesProviderTile
             changeTileGroup(map, oldGroup, newGroup, tile);
             selection.setText(PropertiesPart.COLUMN_VALUE, newGroup);
 
-            final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+            final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
             part.update();
         }
     }

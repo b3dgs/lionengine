@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
-import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.FormulaItem;
 import com.b3dgs.lionengine.editor.world.PaletteType;
@@ -71,6 +70,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
 {
     /** Tile selection listener. */
     private final Collection<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
+    /** World part. */
+    private final WorldPart part;
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
@@ -103,6 +104,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     public WorldInteractionTile(Services services)
     {
+        part = services.get(WorldPart.class);
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
     }
@@ -240,7 +242,6 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void updatePointerCollision(int mx, int my, boolean apply)
     {
-        final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
         final FormulaItem item = part.getToolItem(FormulaItem.ID, FormulaItem.class);
         function = item.getFunction();
         if (function != null && collStart != null)

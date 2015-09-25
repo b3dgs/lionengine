@@ -113,9 +113,7 @@ public abstract class AbstractProgressDialog extends AbstractDialog
     @Override
     public void open()
     {
-        dialog.pack(true);
-        UtilSwt.center(dialog);
-        dialog.open();
+        UtilSwt.open(dialog);
     }
 
     @Override

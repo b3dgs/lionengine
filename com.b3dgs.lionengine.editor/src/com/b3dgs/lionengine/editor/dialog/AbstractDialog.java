@@ -37,8 +37,8 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
@@ -108,11 +108,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
         this.headerIcon = headerIcon;
         dialog = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
         dialog.setMinimumSize(640, 100);
-        final GridLayout dialogLayout = new GridLayout(1, false);
-        dialogLayout.marginHeight = 0;
-        dialogLayout.marginWidth = 0;
-        dialogLayout.verticalSpacing = 0;
-        dialog.setLayout(dialogLayout);
+        dialog.setLayout(UtilSwt.borderless());
         dialog.setText(title);
         dialog.setImage(headerIcon);
     }
@@ -142,10 +138,8 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
      */
     public void open()
     {
-        dialog.pack(true);
-        UtilSwt.center(dialog);
-        dialog.open();
         dialog.setData(this);
+        UtilSwt.open(dialog);
 
         final Display display = dialog.getDisplay();
         while (!dialog.isDisposed())
@@ -275,7 +269,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
                 onFinish();
                 dialog.dispose();
 
-                final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+                final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
                 part.update();
             }
         });
@@ -290,7 +284,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
                 onCanceled();
                 dialog.dispose();
 
-                final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+                final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
                 part.update();
             }
         });

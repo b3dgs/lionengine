@@ -22,7 +22,6 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
-import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilToolbar;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.WorldModel;
@@ -72,7 +71,7 @@ public final class SetSelectionHandler
         }
         final PaletteType type = PaletteType.SELECTION;
         WorldModel.INSTANCE.setSelectedPalette(type);
-        final WorldPart view = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+        final WorldPart view = WorldModel.INSTANCE.getServices().get(WorldPart.class);
         view.setCursor(type.getCursor());
     }
 }

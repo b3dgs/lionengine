@@ -24,6 +24,7 @@ import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Monitor;
@@ -43,6 +44,18 @@ public final class UtilSwt
     static final String KEY_DIRTY = "dirty";
 
     /**
+     * Pack, center and open the shell.
+     * 
+     * @param shell The shell to open.
+     */
+    public static void open(Shell shell)
+    {
+        shell.pack();
+        center(shell);
+        shell.open();
+    }
+
+    /**
      * Center the shell on screen.
      * 
      * @param shell The shell to center.
@@ -55,6 +68,20 @@ public final class UtilSwt
         final int x = bounds.x + (bounds.width - rect.width) / 2;
         final int y = bounds.y + (bounds.height - rect.height) / 2;
         shell.setLocation(x, y);
+    }
+
+    /**
+     * Create a border less grid layout.
+     * 
+     * @return The border less layout.
+     */
+    public static GridLayout borderless()
+    {
+        final GridLayout layout = new GridLayout(1, false);
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        layout.verticalSpacing = 0;
+        return layout;
     }
 
     /**

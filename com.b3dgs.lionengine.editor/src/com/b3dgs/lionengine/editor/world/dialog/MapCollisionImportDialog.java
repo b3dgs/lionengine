@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
@@ -87,7 +86,7 @@ public class MapCollisionImportDialog extends AbstractDialog
               ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
-        part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+        part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
         finish.setEnabled(false);
         finish.forceFocus();
         loadDefaults();

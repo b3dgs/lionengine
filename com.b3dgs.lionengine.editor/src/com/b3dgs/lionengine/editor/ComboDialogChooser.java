@@ -70,12 +70,7 @@ public class ComboDialogChooser extends Dialog
         final Shell shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
         shell.setText(Messages.ComboDialogChooser_Title);
         shell.setImage(ICON);
-
-        final GridLayout dialogLayout = new GridLayout(1, false);
-        dialogLayout.marginHeight = 0;
-        dialogLayout.marginWidth = 0;
-        dialogLayout.verticalSpacing = 0;
-        shell.setLayout(dialogLayout);
+        shell.setLayout(UtilSwt.borderless());
 
         final Composite area = new Composite(shell, SWT.NONE);
         area.setLayout(new GridLayout(1, false));
@@ -97,9 +92,7 @@ public class ComboDialogChooser extends Dialog
             }
         });
 
-        shell.pack();
-        UtilSwt.center(shell);
-        shell.open();
+        UtilSwt.open(shell);
         final Display display = parent.getDisplay();
         while (!shell.isDisposed())
         {

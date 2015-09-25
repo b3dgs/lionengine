@@ -79,9 +79,7 @@ public abstract class AbstractEditor implements MDirtyable
     {
         createContent(shell);
         createBottom(shell);
-        shell.pack(true);
         shell.layout(true, true);
-        UtilSwt.center(shell);
     }
 
     /**
@@ -89,7 +87,7 @@ public abstract class AbstractEditor implements MDirtyable
      */
     public void openAndWait()
     {
-        shell.setVisible(true);
+        UtilSwt.open(shell);
         shell.setData(this);
         final Display display = shell.getDisplay();
         while (!shell.isDisposed())

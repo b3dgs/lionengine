@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Represents the zoom item label with its current value.
@@ -83,11 +83,13 @@ public class ZoomItem
      */
     void chooseZoom()
     {
-        final WorldZoom zoom = WorldModel.INSTANCE.getServices().get(WorldZoom.class);
+        final Services services = WorldModel.INSTANCE.getServices();
+
+        final WorldZoom zoom = services.get(WorldZoom.class);
         final int percent = validateZoomValue();
         zoom.setPercent(percent);
 
-        final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
+        final WorldPart part = services.get(WorldPart.class);
         part.update();
     }
 
