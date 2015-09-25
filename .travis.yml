@@ -12,8 +12,8 @@ before_install:
   - sh -e /etc/init.d/xvfb start - sleep 10
 script:
 - cd lionengine-parent
-- mvn clean install -Pcore
-- mvn clean verify -Pplugins
-- mvn clean install -Pexamples
-- mvn clean install -Ptutorials
-- mvn clean verify -Peditor
+- mvn clean install -Pcore -Dcheckstyle.skip=true
+- mvn clean verify -Pplugins -Dcheckstyle.skip=true
+- mvn clean install -Pexamples -Dcheckstyle.skip=true
+- mvn clean install -Ptutorials -Dcheckstyle.skip=true
+- mvn clean verify -Peditor -Dcheckstyle.skip=true
