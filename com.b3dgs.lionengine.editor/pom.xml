@@ -21,16 +21,6 @@
             <layout>p2</layout>
         </repository>
     </repositories>
-    <dependencies>
-        <dependency>
-            <groupId>com.b3dgs.lionengine</groupId>
-            <artifactId>lionengine-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.b3dgs.lionengine</groupId>
-            <artifactId>lionengine-game</artifactId>
-        </dependency>
-    </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
