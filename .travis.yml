@@ -11,7 +11,7 @@ env:
 before_install:
   - sh -e /etc/init.d/xvfb start - sleep 10
 script:
-- echo JDK_6_HOME
+- echo $JDK_6_HOME
 - cd lionengine-parent
 - mvn clean install -Pcore
 - mvn clean verify -Pplugins
