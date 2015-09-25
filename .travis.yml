@@ -9,12 +9,11 @@ env:
 before_install:
   - sh -e /etc/init.d/xvfb start - sleep 10
 script:
-- echo $JDK_6_HOME
-- echo $JDK_7_HOME
-- echo $JDK_8_HOME
 - cd lionengine-parent
+- jdk_switcher use oraclejdk7
 - mvn clean install -Pcore
 - mvn clean verify -Pplugins
+- jdk_switcher use oraclejdk8
 - mvn clean install -Pexamples
 - mvn clean install -Ptutorials
 - mvn clean verify -Peditor
