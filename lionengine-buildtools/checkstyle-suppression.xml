@@ -35,6 +35,7 @@
               lines="62, 271, 331, 332, 333, 334, 335, 336, 337, 338, 339" />
     
     <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.game.object.Factory" lines="71" />
+    <suppress checks="RedundantModifier" files="com.b3dgs.lionengine.game.state.StateAnimationBased" lines="57" />
     <suppress checks="EmptyBlock" files="com.b3dgs.lionengine.game.state.StateAnimationBased" lines="108" />
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax" />
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.map.astar.PathFinderImpl" lines="294" />

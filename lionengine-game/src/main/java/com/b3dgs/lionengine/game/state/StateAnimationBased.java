@@ -54,7 +54,7 @@ public interface StateAnimationBased
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    public static final class Util
+    final class Util
     {
         /**
          * Load all existing animations defined in the xml file.

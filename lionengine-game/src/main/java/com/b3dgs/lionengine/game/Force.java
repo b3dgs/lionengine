@@ -33,8 +33,7 @@ public class Force implements Direction, Updatable
      * 
      * <p>
      * The created force will describe the following values:
-     * 
-     * <p>
+     * </p>
      * <ul>
      * <li>horizontal normalized speed ({@link #getDirectionHorizontal()}),</li>
      * <li>vertical normalized speed ({@link #getDirectionVertical()}),</li>

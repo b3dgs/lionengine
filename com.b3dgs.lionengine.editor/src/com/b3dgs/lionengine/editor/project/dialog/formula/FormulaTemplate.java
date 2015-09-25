@@ -86,7 +86,7 @@ public enum FormulaTemplate
      * @param range The collision range.
      * @param function The collision function.
      */
-    private FormulaTemplate(CollisionRange range, CollisionFunction function)
+    FormulaTemplate(CollisionRange range, CollisionFunction function)
     {
         formula = new CollisionFormula(name().toLowerCase(Locale.ENGLISH), range, function, new CollisionConstraint());
     }

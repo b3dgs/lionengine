@@ -51,7 +51,7 @@ public enum PaletteType
      * 
      * @param cursor The cursor reference.
      */
-    private PaletteType(int cursor)
+    PaletteType(int cursor)
     {
         this.cursor = Display.getDefault().getSystemCursor(cursor);
     }
@@ -61,7 +61,7 @@ public enum PaletteType
      * 
      * @param cursor The cursor reference.
      */
-    private PaletteType(Cursor cursor)
+    PaletteType(Cursor cursor)
     {
         this.cursor = cursor;
     }

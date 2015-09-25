@@ -59,7 +59,7 @@ public enum Property
      * 
      * @param extensions The extensions list associated to the property.
      */
-    private Property(String... extensions)
+    Property(String... extensions)
     {
         this(null, extensions);
     }
@@ -69,7 +69,7 @@ public enum Property
      * 
      * @param parent The excepted parent class.
      */
-    private Property(Class<?> parent)
+    Property(Class<?> parent)
     {
         this(parent, "class");
     }
@@ -80,7 +80,7 @@ public enum Property
      * @param extensions The extensions list associated to the property.
      * @param parent The excepted parent class.
      */
-    private Property(Class<?> parent, String... extensions)
+    Property(Class<?> parent, String... extensions)
     {
         this.parent = parent;
         this.extensions = new ArrayList<>(extensions.length);

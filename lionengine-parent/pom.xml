@@ -30,7 +30,7 @@
         <maven-install.version>2.5.2</maven-install.version>
         <maven-resources.version>2.7</maven-resources.version>
         <maven-dependency.version>2.10</maven-dependency.version>
-        <checkstyle.version>6.10.1</checkstyle.version>
+        <checkstyle.version>6.9</checkstyle.version>
         <maven-eclipse.version>2.10</maven-eclipse.version>
         <pde-target-maven.version>1.0.1</pde-target-maven.version>
     </properties>
