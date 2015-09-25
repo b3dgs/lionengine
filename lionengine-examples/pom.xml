@@ -52,7 +52,7 @@
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
-                    <executable>${jdk.home}</executable>
+                    <executable>${jdk.home}/bin/javac</executable>
                     <excludes>
                         <exclude>**/com/b3dgs/lionengine/example/snippet/*.java</exclude>
                     </excludes>

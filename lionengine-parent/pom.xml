@@ -293,7 +293,7 @@
                     <configuration>
                         <source>${jdk.version}</source>
                         <target>${jdk.version}</target>
-                        <executable>${jdk.home}</executable>
+                        <executable>${jdk.home}/bin/javac</executable>
                         <encoding>${encoding.type}</encoding>
                         <showDeprecation>true</showDeprecation>
                         <showWarnings>true</showWarnings>
