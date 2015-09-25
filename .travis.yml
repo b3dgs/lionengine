@@ -1,5 +1,7 @@
 sudo: false
 language: java
+jdk:
+  - oraclejdk8
 cache:
   directories:
     - $HOME/.m2
@@ -10,7 +12,6 @@ before_install:
   - sh -e /etc/init.d/xvfb start - sleep 10
 script:
 - cd lionengine-parent
-- jdk_switcher use oraclejdk8
 - mvn clean install -Pcore
 - mvn clean verify -Pplugins
 - mvn clean install -Pexamples
