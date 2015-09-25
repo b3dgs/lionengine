@@ -431,7 +431,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
             {
                 offset = 0;
             }
-            final double b = (index + offset) * map.getTileHeight() / 2;
+            final double b = (index + offset) * map.getTileHeight() / 2.0;
             return new CollisionFunctionLinear(linear.getA() * -side, b);
         }
         return function;
