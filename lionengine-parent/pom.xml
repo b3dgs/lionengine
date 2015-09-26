@@ -127,11 +127,16 @@
             </modules>
         </profile>
         <profile>
-            <id>tests</id>
+            <id>tests-core</id>
             <modules>
                 <module>../lionengine-core-test</module>
                 <module>../lionengine-core-awt-test</module>
                 <module>../lionengine-game-test</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>tests-audio</id>
+            <modules>
                 <module>../lionengine-audio-wav-test</module>
                 <module>../lionengine-audio-midi-test</module>
                 <module>../lionengine-audio-sc68-test</module>
