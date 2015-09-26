@@ -139,9 +139,10 @@ public class UtilityMediaTest
     public void testOutputStream() throws LionEngineException, IOException
     {
         UtilityMedia.setLoadFromJar(null);
-        UtilityMedia.setResourcesDirectory(Constant.EMPTY_STRING);
 
-        final File file = new File("test.xml");
+        final File file = File.createTempFile("test", "txt");
+        UtilityMedia.setResourcesDirectory(file.getParent());
+
         final Media media = UtilityMedia.get(file);
         try (OutputStream output = UtilityMedia.getOutputStream(media))
         {
@@ -149,10 +150,7 @@ public class UtilityMediaTest
         }
         finally
         {
-            if (media.exists())
-            {
-                UtilFile.deleteFile(media.getFile());
-            }
+            UtilFile.deleteFile(media.getFile());
         }
     }
 
