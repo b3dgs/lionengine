@@ -149,7 +149,10 @@ public class UtilityMediaTest
         }
         finally
         {
-            UtilFile.deleteFile(media.getFile());
+            if (media.exists())
+            {
+                UtilFile.deleteFile(media.getFile());
+            }
         }
     }
 

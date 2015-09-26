@@ -21,6 +21,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.lang.Thread.State;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -45,7 +46,7 @@ import com.b3dgs.lionengine.core.Screen;
 public class ScreenAwtTest
 {
     /** Test timeout in milliseconds. */
-    private static final long TIMEOUT = 5000;
+    private static final long TIMEOUT = 10000;
     /** Get renderer function. */
     private static final String GET_RENDERER = "getRenderer";
     /** Sequence field. */
@@ -134,31 +135,42 @@ public class ScreenAwtTest
     /**
      * Test the full screen.
      * 
-     * @throws InterruptedException If error.
+     * @throws Throwable If error.
      */
     @Test(timeout = TIMEOUT)
-    public void testFullscreen() throws InterruptedException
+    public void testFullscreen() throws Throwable
     {
         final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        final int width = gd.getDisplayMode().getWidth();
-        final int height = gd.getDisplayMode().getHeight();
-
-        final Resolution resolution = new Resolution(width, height, 60);
-        final Config config = new Config(resolution, 32, false);
-        config.setIcon(Medias.create(IMAGE));
-
-        final Loader loader = new Loader(config);
-        final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
-
-        loader.start(SequenceMock.class);
-        while (renderer.getState() == State.RUNNABLE || UtilReflection.getField(renderer, SEQUENCE) == null)
+        if (gd.isFullScreenSupported())
         {
-            Thread.sleep(Constant.DECADE);
-        }
+            final int width = gd.getDisplayMode().getWidth();
+            final int height = gd.getDisplayMode().getHeight();
 
-        final Screen screen = UtilReflection.getField(renderer, SCREEN);
-        screen.requestFocus();
-        renderer.join();
+            final Resolution resolution = new Resolution(width, height, 60);
+            final Config config = new Config(resolution, 32, false);
+            config.setIcon(Medias.create(IMAGE));
+
+            final Loader loader = new Loader(config);
+            final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
+            final AtomicReference<Throwable> error = new AtomicReference<>();
+            renderer.setUncaughtExceptionHandler((thread, throwable) ->
+            {
+                error.set(throwable);
+            });
+            loader.start(SequenceMock.class);
+            while (renderer.getState() == State.RUNNABLE || UtilReflection.getField(renderer, SEQUENCE) == null)
+            {
+                Thread.sleep(Constant.DECADE);
+                if (error.get() != null)
+                {
+                    throw error.get();
+                }
+            }
+
+            final Screen screen = UtilReflection.getField(renderer, SCREEN);
+            screen.requestFocus();
+            renderer.join();
+        }
     }
 
     /**
