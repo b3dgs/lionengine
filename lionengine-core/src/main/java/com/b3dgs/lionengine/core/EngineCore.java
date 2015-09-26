@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 
@@ -35,19 +36,21 @@ public abstract class EngineCore
     /** Engine name. */
     public static final String NAME = "LionEngine";
     /** Engine version. */
-    public static final Version VERSION = Version.create(8, 0, 0);
+    public static final Version VERSION = Version.create(8, 1, 0);
     /** Engine begin date. */
     public static final String BEGIN_DATE = "13 June 2010";
     /** Engine last release date. */
-    public static final String LAST_RELEASE_DATE = "13 June 2015";
+    public static final String LAST_RELEASE_DATE = "26 September 2015";
     /** Engine author. */
     public static final String AUTHOR = "Pierre-Alexandre";
     /** Engine website. */
     public static final String WEBSITE = "http://lionengine.b3dgs.com";
+    /** Error message engine not started. */
+    protected static final String ERROR_STARTED_NOT = "The engine has not been started !";
     /** Error message engine already started. */
     private static final String ERROR_STARTED_ALREADY = "The engine has already been started !";
-    /** Error message engine not started. */
-    private static final String ERROR_STARTED_NOT = "The engine has not been started !";
+    /** Error system property. */
+    private static final String ERROR_PROPERTY = "Unable to get system property: ";
     /** Engine starting. */
     private static final String ENGINE_STARTING = "Starting \"LionEngine ";
     /** Engine terminated. */
@@ -68,8 +71,10 @@ public abstract class EngineCore
      * @param factoryMedia The media factory (must not be <code>null</code>).
      * @throws LionEngineException If the engine has already been started.
      */
-    public static synchronized void start(String name, Version version, FactoryGraphic factoryGraphic,
-            FactoryMedia factoryMedia) throws LionEngineException
+    public static synchronized void start(String name,
+                                          Version version,
+                                          FactoryGraphic factoryGraphic,
+                                          FactoryMedia factoryMedia) throws LionEngineException
     {
         if (started)
         {
@@ -87,9 +92,9 @@ public abstract class EngineCore
         programVersion = version;
 
         final StringBuilder message = new StringBuilder(ENGINE_STARTING);
-        message.append(VERSION).append("\" for \"");
-        message.append(programName).append(" ");
-        message.append(programVersion).append("\"");
+        message.append(VERSION).append(Constant.QUOTE).append(" for ").append(Constant.QUOTE);
+        message.append(programName).append(Constant.SPACE);
+        message.append(programVersion).append(Constant.QUOTE);
         Verbose.info(message.toString());
 
         Graphics.setFactoryGraphic(factoryGraphic);
@@ -177,7 +182,9 @@ public abstract class EngineCore
         }
         catch (final SecurityException exception)
         {
-            Verbose.exception(EngineCore.class, "getSystemProperty", exception);
+            final StringBuilder builder = new StringBuilder(ERROR_PROPERTY);
+            builder.append(property).append(" (").append(exception.getClass().getName()).append(")");
+            Verbose.critical(EngineCore.class, "getSystemProperty", builder.toString());
             return def;
         }
     }

@@ -21,16 +21,14 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
-import com.b3dgs.lionengine.game.map.TileCollision;
 import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
- * Represents something which can enter in collision with a {@link TileCollision}.
+ * Represents something which can enter in collision with a {@link com.b3dgs.lionengine.game.map.TileCollision}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface TileCollidable
-        extends Trait, Updatable
+public interface TileCollidable extends Trait, Updatable
 {
     /**
      * Add a tile collision listener.

@@ -28,10 +28,10 @@ public interface ExtractorChecker
      * Check if extractor can extract (called while going to resources location).
      * <p>
      * For example:
+     * </p>
      * <ul>
      * <li>The owner is close enough to the resource location</li>
      * </ul>
-     * </p>
      * 
      * @return The extraction check condition result.
      */

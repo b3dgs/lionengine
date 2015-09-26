@@ -22,8 +22,7 @@ package com.b3dgs.lionengine.geom;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class RectangleImpl
-        implements Rectangle
+final class RectangleImpl implements Rectangle
 {
     /** The coordinate X. */
     private double x;
@@ -61,8 +60,10 @@ final class RectangleImpl
         {
             return false;
         }
-        return rectangle.getX() + rectangle.getWidth() > x && rectangle.getY() + rectangle.getHeight() > y
-                && rectangle.getX() < x + width && rectangle.getY() < y + height;
+        return rectangle.getX() + rectangle.getWidth() > x
+               && rectangle.getY() + rectangle.getHeight() > y
+               && rectangle.getX() < x + width
+               && rectangle.getY() < y + height;
     }
 
     @Override
@@ -72,14 +73,16 @@ final class RectangleImpl
         {
             return false;
         }
-        return rectangle.getX() >= x && rectangle.getY() >= y && rectangle.getX() + rectangle.getWidth() <= x + width
-                && rectangle.getY() + rectangle.getHeight() <= y + height;
+        return rectangle.getX() >= x
+               && rectangle.getY() >= y
+               && rectangle.getX() + rectangle.getWidth() <= x + width
+               && rectangle.getY() + rectangle.getHeight() <= y + height;
     }
 
     @Override
     public boolean contains(double x, double y)
     {
-        return x >= this.x && y >= this.y && x < this.x + width && y < this.y + height;
+        return x >= this.x && y >= this.y && x <= this.x + width && y <= this.y + height;
     }
 
     @Override

@@ -102,6 +102,6 @@ public final class Stream
      */
     private Stream()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

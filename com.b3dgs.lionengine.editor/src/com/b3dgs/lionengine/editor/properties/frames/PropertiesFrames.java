@@ -28,15 +28,14 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -44,11 +43,10 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesFrames
-        implements PropertiesProviderObject
+public class PropertiesFrames implements PropertiesProviderObject
 {
     /** Icon frames. */
-    private static final Image ICON_FRAMES = UtilEclipse.getIcon("properties", "frames.png");
+    private static final Image ICON_FRAMES = UtilIcon.get("properties", "frames.png");
 
     /**
      * Create the frames attribute.
@@ -66,13 +64,15 @@ public class PropertiesFrames
         final ConfigFrames configFrames = ConfigFrames.create(configurer);
 
         final TreeItem framesHorizontal = new TreeItem(iconItem, SWT.NONE);
-        PropertiesPart.createLine(framesHorizontal, Messages.Properties_Frames_Horizontal,
-                String.valueOf(configFrames.getHorizontal()));
+        PropertiesPart.createLine(framesHorizontal,
+                                  Messages.Properties_Frames_Horizontal,
+                                  String.valueOf(configFrames.getHorizontal()));
         framesHorizontal.setData(ConfigFrames.FRAMES_HORIZONTAL);
 
         final TreeItem framesVertical = new TreeItem(iconItem, SWT.NONE);
-        PropertiesPart.createLine(framesVertical, Messages.Properties_Frames_Vertical,
-                String.valueOf(configFrames.getVertical()));
+        PropertiesPart.createLine(framesVertical,
+                                  Messages.Properties_Frames_Vertical,
+                                  String.valueOf(configFrames.getVertical()));
         framesVertical.setData(ConfigFrames.FRAMES_VERTICAL);
     }
 
@@ -85,9 +85,12 @@ public class PropertiesFrames
      */
     private static boolean updateFrames(TreeItem item, Configurer configurer)
     {
-        final InputDialog frames = new InputDialog(item.getParent().getShell(), Messages.Properties_Frames_Title,
-                Messages.Properties_Frames_Message, item.getText(1), new InputValidator(
-                        InputValidator.INTEGER_POSITIVE_STRICT_MATCH, Messages.Properties_Frames_Error));
+        final InputDialog frames = new InputDialog(item.getParent().getShell(),
+                                                   Messages.Properties_Frames_Title,
+                                                   Messages.Properties_Frames_Message,
+                                                   item.getText(1),
+                                                   new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH,
+                                                                      Messages.Properties_Frames_Error));
         if (frames.open() == Window.OK)
         {
             final XmlNode root = configurer.getRoot();
@@ -111,24 +114,31 @@ public class PropertiesFrames
     public static void updateSize(Configurer configurer, XmlNode root, XmlNode framesNode)
     {
         final XmlNode size;
-        final File file = new File(configurer.getPath(), root.getChild(ConfigSurface.SURFACE).readString(
-                ConfigSurface.SURFACE_IMAGE));
+        final File file = new File(configurer.getPath(),
+                                   root.getChild(ConfigSurface.SURFACE).readString(ConfigSurface.SURFACE_IMAGE));
         final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(file));
         if (!root.hasChild(ConfigSize.SIZE))
         {
-            size = Stream.createXmlNode(ConfigSize.SIZE);
+            size = root.createChild(ConfigSize.SIZE);
             size.writeInteger(ConfigSize.SIZE_WIDTH, info.getWidth());
             size.writeInteger(ConfigSize.SIZE_HEIGHT, info.getHeight());
-            root.add(size);
         }
         else
         {
             size = root.getChild(ConfigSize.SIZE);
         }
         size.writeInteger(ConfigSize.SIZE_WIDTH,
-                info.getWidth() / framesNode.readInteger(ConfigFrames.FRAMES_HORIZONTAL));
+                          info.getWidth() / framesNode.readInteger(ConfigFrames.FRAMES_HORIZONTAL));
         size.writeInteger(ConfigSize.SIZE_HEIGHT,
-                info.getHeight() / framesNode.readInteger(ConfigFrames.FRAMES_VERTICAL));
+                          info.getHeight() / framesNode.readInteger(ConfigFrames.FRAMES_VERTICAL));
+    }
+
+    /**
+     * Create properties.
+     */
+    public PropertiesFrames()
+    {
+        // Nothing to do
     }
 
     /*

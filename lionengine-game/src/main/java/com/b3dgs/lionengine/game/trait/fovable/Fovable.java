@@ -25,8 +25,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Fovable
-        extends Trait, Tiled
+public interface Fovable extends Trait, Tiled
 {
     /**
      * Set the field of view value (in tile).

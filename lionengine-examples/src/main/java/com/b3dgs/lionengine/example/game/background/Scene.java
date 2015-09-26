@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
-import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.background.BackgroundGame;
 
@@ -33,8 +32,7 @@ import com.b3dgs.lionengine.game.background.BackgroundGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-class Scene
-        extends Sequence
+class Scene extends Sequence
 {
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(320, 240, 60);
@@ -58,14 +56,7 @@ class Scene
         super(loader, NATIVE);
         background = new Swamp(getConfig().getSource(), 1.0, 1.0);
         foreground = new Foreground(getConfig().getSource(), 1.0, 1.0);
-        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                end();
-            }
-        });
+        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     /*

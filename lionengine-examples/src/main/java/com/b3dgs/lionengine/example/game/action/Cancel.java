@@ -31,8 +31,7 @@ import com.b3dgs.lionengine.game.object.SetupSurface;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Cancel
-        extends Button
+class Cancel extends Button
 {
     /** Action to delete. */
     private final Collection<ObjectGame> toDelete = new ArrayList<>();

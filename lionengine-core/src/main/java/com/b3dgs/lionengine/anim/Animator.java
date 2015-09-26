@@ -24,11 +24,11 @@ import com.b3dgs.lionengine.core.Updatable;
  * Animator can play an {@link Animation}.
  * <p>
  * To play correctly an animation, it just needs the following steps:
+ * </p>
  * <ul>
  * <li>Call only one time {@link #play(Animation)}</li>
  * <li>Call {@link #update(double)} in your main loop</li>
  * </ul>
- * </p>
  * <p>
  * Example:
  * </p>
@@ -48,8 +48,7 @@ import com.b3dgs.lionengine.core.Updatable;
  * @see Animation
  * @see AnimState
  */
-public interface Animator
-        extends Updatable
+public interface Animator extends Updatable
 {
     /**
      * Play the animation. Should be called only one time, as {@link #update(double)} does the animation update.
@@ -70,7 +69,7 @@ public interface Animator
      * Can be used to synchronize the player movement speed to the walking animation speed.
      * </p>
      * 
-     * @param speed The new animation speed (>= 0).
+     * @param speed The new animation speed (positive).
      * @throws LionEngineException If speed is negative.
      */
     void setAnimSpeed(double speed) throws LionEngineException;
@@ -78,7 +77,7 @@ public interface Animator
     /**
      * Set a fixed frame (it will overwrite the current animation frame).
      * 
-     * @param frame The frame to set (>= {@link Animation#MINIMUM_FRAME}).
+     * @param frame The frame to set (superior or equal to {@link Animation#MINIMUM_FRAME}).
      * @throws LionEngineException If frame is out of range.
      */
     void setFrame(int frame) throws LionEngineException;

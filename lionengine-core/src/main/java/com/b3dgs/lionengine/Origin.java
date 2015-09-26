@@ -29,6 +29,10 @@ public enum Origin
 {
     /** Top left origin point. */
     TOP_LEFT,
+    /** Bottom left origin point. */
+    BOTTOM_LEFT,
+    /** Bottom right origin point. */
+    BOTTOM_RIGHT,
     /** Center center origin point. */
     MIDDLE,
     /** Center bottom origin point. */
@@ -48,17 +52,32 @@ public enum Origin
      */
     public double getX(double x, double width)
     {
+        final double result;
         switch (this)
         {
             case TOP_LEFT:
-                return x;
+            case BOTTOM_LEFT:
+                result = x;
+                break;
+            case BOTTOM_RIGHT:
+                result = x - width;
+                break;
             case MIDDLE:
             case CENTER_TOP:
             case CENTER_BOTTOM:
-                return width > 0 ? x - width / 2.0 : x;
+                if (width > 0)
+                {
+                    result = x - width / 2.0;
+                }
+                else
+                {
+                    result = x;
+                }
+                break;
             default:
                 throw new LionEngineException(ERROR_ENUM, name());
         }
+        return result;
     }
 
     /**
@@ -70,18 +89,33 @@ public enum Origin
      */
     public double getY(double y, double height)
     {
+        final double result;
         switch (this)
         {
             case TOP_LEFT:
-                return y;
+                result = y;
+                break;
             case MIDDLE:
-                return height > 0 ? y - height / 2.0 : y;
+                if (height > 0)
+                {
+                    result = y - height / 2.0;
+                }
+                else
+                {
+                    result = y;
+                }
+                break;
             case CENTER_TOP:
-                return y;
+                result = y;
+                break;
+            case BOTTOM_LEFT:
+            case BOTTOM_RIGHT:
             case CENTER_BOTTOM:
-                return y - height;
+                result = y - height;
+                break;
             default:
                 throw new LionEngineException(ERROR_ENUM, name());
         }
+        return result;
     }
 }

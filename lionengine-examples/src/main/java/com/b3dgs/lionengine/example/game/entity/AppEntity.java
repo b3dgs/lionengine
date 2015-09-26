@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.entity;
 
-import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
@@ -43,7 +42,7 @@ public class AppEntity
      */
     public static void main(String[] args)
     {
-        Engine.start("Entity", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "entity"));
+        Engine.start("Entity", Version.create(1, 0, 0), AppEntity.class);
 
         final Graphic g = Graphics.createGraphic();
         final Services services = new Services();

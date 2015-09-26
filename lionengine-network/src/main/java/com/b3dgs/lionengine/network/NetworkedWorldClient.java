@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface NetworkedWorldClient
-        extends NetworkedWorld, ConnectionListener
+public interface NetworkedWorldClient extends NetworkedWorld, ConnectionListener
 {
     /**
      * Connect to a server.

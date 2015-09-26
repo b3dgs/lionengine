@@ -32,17 +32,16 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
 
 /**
  * Represents the abstract project dialog.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class AbstractProjectDialog
-        extends AbstractDialog
+public abstract class AbstractProjectDialog extends AbstractDialog
 {
     /** Jar text. */
     private static final String JAR_TEXT = "JAR";
@@ -134,8 +133,9 @@ public abstract class AbstractProjectDialog
         projectLocationText = new Text(nameArea, SWT.BORDER);
         projectLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-        final Button browse = UtilSwt.createButton(nameArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+        final Button browse = UtilButton.create(nameArea,
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
         browse.addSelectionListener(new SelectionAdapter()
@@ -167,8 +167,8 @@ public abstract class AbstractProjectDialog
         projectClassesText.setTextLimit(AbstractDialog.MAX_CHAR);
 
         projectClassesBrowseJar = createBrowseButton(classesArea, JAR_TEXT, projectClassesText, false, "*.jar");
-        projectClassesBrowseFolder = createBrowseButton(classesArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, projectClassesText, true);
+        final String browse = com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse;
+        projectClassesBrowseFolder = createBrowseButton(classesArea, browse, projectClassesText, true);
     }
 
     /**
@@ -190,7 +190,9 @@ public abstract class AbstractProjectDialog
         projectLibrariesText.setTextLimit(AbstractDialog.MAX_CHAR);
 
         projectLibrariesBrowse = createBrowseButton(librariesArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, projectLibrariesText, true);
+                                                    com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                    projectLibrariesText,
+                                                    true);
     }
 
     /**
@@ -212,7 +214,9 @@ public abstract class AbstractProjectDialog
         projectResourcesText.setTextLimit(AbstractDialog.MAX_CHAR);
 
         projectResourcesBrowse = createBrowseButton(resourcesArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, projectResourcesText, true);
+                                                    com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                    projectResourcesText,
+                                                    true);
     }
 
     /**
@@ -257,10 +261,13 @@ public abstract class AbstractProjectDialog
      * @param extensions The extensions to filter.
      * @return The created button.
      */
-    private Button createBrowseButton(Composite parent, String title, final Text text, final boolean folder,
-            final String... extensions)
+    private Button createBrowseButton(Composite parent,
+                                      String title,
+                                      final Text text,
+                                      final boolean folder,
+                                      final String... extensions)
     {
-        final Button browse = UtilSwt.createButton(parent, title, AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.create(parent, title, AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
         browse.addSelectionListener(new SelectionAdapter()
         {

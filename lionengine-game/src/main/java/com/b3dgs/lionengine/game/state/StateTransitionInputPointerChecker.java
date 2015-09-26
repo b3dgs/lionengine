@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface StateTransitionInputPointerChecker
-        extends StateTransitionInputChecker<InputDevicePointer>
+public interface StateTransitionInputPointerChecker extends StateTransitionInputChecker<InputDevicePointer>
 {
     // Marker interface
 }

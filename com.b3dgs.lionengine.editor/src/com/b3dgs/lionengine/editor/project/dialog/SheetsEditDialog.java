@@ -32,13 +32,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.Stream;
@@ -49,11 +51,10 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SheetsEditDialog
-        extends AbstractDialog
+public class SheetsEditDialog extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
+    private static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
     /** Sheets media. */
     final Media sheets;
@@ -72,8 +73,11 @@ public class SheetsEditDialog
      */
     public SheetsEditDialog(Shell parent, Media sheets)
     {
-        super(parent, Messages.EditSheetsDialog_Title, Messages.EditSheetsDialog_HeaderTitle,
-                Messages.EditSheetsDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.EditSheetsDialog_Title,
+              Messages.EditSheetsDialog_HeaderTitle,
+              Messages.EditSheetsDialog_HeaderDesc,
+              ICON);
         this.sheets = sheets;
         dialog.setMinimumSize(100, 100);
         createDialog();
@@ -92,12 +96,12 @@ public class SheetsEditDialog
         tileSizeArea.setLayout(new GridLayout(1, false));
         tileSizeArea.setText(Messages.EditSheetsDialog_TileSize);
 
-        tileWidthText = UtilSwt.createText(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
-        tileWidthText.addVerifyListener(UtilSwt.createVerify(tileWidthText,
-                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
-        tileHeightText = UtilSwt.createText(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
-        tileHeightText.addVerifyListener(UtilSwt.createVerify(tileHeightText,
-                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        tileWidthText = UtilText.create(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
+        tileWidthText.addVerifyListener(UtilText.createVerify(tileWidthText,
+                                                              InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        tileHeightText = UtilText.create(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
+        tileHeightText.addVerifyListener(UtilText.createVerify(tileHeightText,
+                                                               InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
     }
 
     /**
@@ -112,19 +116,17 @@ public class SheetsEditDialog
         tileSheetsArea.setLayout(new GridLayout(1, false));
         tileSheetsArea.setText(Messages.EditSheetsDialog_TileSheets);
 
-        final File[] files = sheets.getFile().getParentFile().listFiles();
-        if (files != null)
+        for (final File file : UtilFile.getFiles(sheets.getFile().getParentFile()))
         {
-            for (final File file : files)
+            final Media media = UtilityMedia.get(file);
+            if (ImageInfo.isImage(media))
             {
-                final Media media = UtilityMedia.get(file);
-                if (ImageInfo.isImage(media))
-                {
-                    final Button check = new Button(tileSheetsArea, SWT.CHECK);
-                    check.setText(file.getName());
-                    check.setSelection(false);
-                    buttons.add(check);
-                }
+                final Button check = new Button(tileSheetsArea, SWT.CHECK);
+                check.setText(file.getName());
+                check.setSelection(false);
+                UtilButton.registerDirty(check, true);
+
+                buttons.add(check);
             }
         }
     }
@@ -138,6 +140,9 @@ public class SheetsEditDialog
         final XmlNode tileSize = node.getChild(MapTile.NODE_TILE_SIZE);
         tileWidthText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_WIDTH));
         tileHeightText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_HEIGHT));
+
+        UtilText.registerDirty(tileWidthText, true);
+        UtilText.registerDirty(tileHeightText, true);
 
         final Collection<XmlNode> sheets = node.getChildren();
         for (final Button button : buttons)
@@ -174,17 +179,17 @@ public class SheetsEditDialog
     {
         final XmlNode root = Stream.createXmlNode(MapTile.NODE_TILE_SHEETS);
         root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
-        final XmlNode tileSize = Stream.createXmlNode(MapTile.NODE_TILE_SIZE);
+
+        final XmlNode tileSize = root.createChild(MapTile.NODE_TILE_SIZE);
         tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, tileWidthText.getText());
         tileSize.writeString(MapTile.ATTRIBUTE_TILE_HEIGHT, tileHeightText.getText());
-        root.add(tileSize);
+
         for (final Button button : buttons)
         {
             if (button.getSelection())
             {
-                final XmlNode node = Stream.createXmlNode(MapTile.NODE_TILE_SHEET);
+                final XmlNode node = root.createChild(MapTile.NODE_TILE_SHEET);
                 node.setText(button.getText());
-                root.add(node);
             }
         }
         Stream.saveXml(root, sheets);

@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.editor.properties.collision.handler;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -31,20 +31,27 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsEnableHandler
+public final class CollisionsEnableHandler
 {
+    /**
+     * Create handler.
+     */
+    public CollisionsEnableHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
-        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final Collision collision = new Collision("default", 0, 0, 0, 0, false);
-        configurer.getRoot().add(ConfigCollisions.createNode(collision));
+        ConfigCollisions.export(configurer.getRoot(), collision);
         configurer.save();
         part.setInput(properties, configurer);
     }

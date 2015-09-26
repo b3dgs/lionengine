@@ -22,8 +22,10 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.game.collision.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.CollisionRange;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -50,7 +52,7 @@ public final class ConfigCollisionFormula
      */
     public static ConfigCollisionFormula create(XmlNode root) throws LionEngineException
     {
-        final Map<String, CollisionFormula> collisions = new HashMap<>(0);
+        final Map<String, CollisionFormula> collisions = new HashMap<String, CollisionFormula>(0);
         for (final XmlNode node : root.getChildren(FORMULA))
         {
             final String name = node.readString(NAME);
@@ -63,17 +65,18 @@ public final class ConfigCollisionFormula
     /**
      * Export the current formula data to the formula node.
      * 
+     * @param root The root node.
      * @param formula The formula reference.
-     * @return The exported node.
+     * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(CollisionFormula formula)
+    public static void export(XmlNode root, CollisionFormula formula) throws LionEngineException
     {
-        final XmlNode node = Stream.createXmlNode(FORMULA);
+        final XmlNode node = root.createChild(FORMULA);
         node.writeString(NAME, formula.getName());
-        node.add(ConfigCollisionRange.export(formula.getRange()));
-        node.add(ConfigCollisionFunction.export(formula.getFunction()));
-        node.add(ConfigCollisionConstraint.export(formula.getConstraint()));
-        return node;
+
+        ConfigCollisionRange.export(node, formula.getRange());
+        ConfigCollisionFunction.export(node, formula.getFunction());
+        ConfigCollisionConstraint.export(node, formula.getConstraint());
     }
 
     /**
@@ -83,11 +86,50 @@ public final class ConfigCollisionFormula
      * @return The tile collision formula instance.
      * @throws LionEngineException If error when reading data.
      */
-    private static CollisionFormula createCollision(XmlNode node) throws LionEngineException
+    public static CollisionFormula createCollision(XmlNode node) throws LionEngineException
     {
-        return new CollisionFormula(node.readString(NAME), ConfigCollisionRange.create(node
-                .getChild(ConfigCollisionRange.RANGE)), ConfigCollisionFunction.create(node),
-                ConfigCollisionConstraint.create(node.getChild(ConfigCollisionConstraint.CONSTRAINT)));
+        final String name = node.readString(NAME);
+        final CollisionRange range = ConfigCollisionRange.create(node.getChild(ConfigCollisionRange.RANGE));
+        final CollisionFunction function = ConfigCollisionFunction.create(node);
+        final CollisionConstraint constraint = ConfigCollisionConstraint.create(node);
+
+        return new CollisionFormula(name, range, function, constraint);
+    }
+
+    /**
+     * Remove the formula node.
+     * 
+     * @param root The root node.
+     * @param formula The formula name to remove.
+     */
+    public static void remove(XmlNode root, String formula)
+    {
+        for (final XmlNode node : root.getChildren(FORMULA))
+        {
+            if (node.readString(NAME).equals(formula))
+            {
+                root.removeChild(node);
+            }
+        }
+    }
+
+    /**
+     * Check if node has formula node.
+     * 
+     * @param root The root node.
+     * @param formula The formula name to check.
+     * @return <code>true</code> if has formula, <code>false</code> else.
+     */
+    public static boolean has(XmlNode root, String formula)
+    {
+        for (final XmlNode node : root.getChildren(FORMULA))
+        {
+            if (node.readString(NAME).equals(formula))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Collision formulas list. */
@@ -98,16 +140,15 @@ public final class ConfigCollisionFormula
      */
     private ConfigCollisionFormula()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**
      * Create a collision formula config map.
      * 
      * @param formulas The collisions formula mapping.
-     * @throws LionEngineException If error when opening the media.
      */
-    private ConfigCollisionFormula(Map<String, CollisionFormula> formulas) throws LionEngineException
+    private ConfigCollisionFormula(Map<String, CollisionFormula> formulas)
     {
         this.formulas = formulas;
     }

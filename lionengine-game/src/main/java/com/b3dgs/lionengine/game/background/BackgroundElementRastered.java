@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.background;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphics;
@@ -32,63 +33,8 @@ import com.b3dgs.lionengine.drawable.Sprite;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class BackgroundElementRastered
-        extends BackgroundElement
+public abstract class BackgroundElementRastered extends BackgroundElement
 {
-    /**
-     * Get filtered rgb from data.
-     * 
-     * @param rgb The input rgb.
-     * @param fr The first red.
-     * @param fg The first green.
-     * @param fb The first blue.
-     * @return The filtered color.
-     */
-    private static int filterRGB(int rgb, int fr, int fg, int fb)
-    {
-        if (-16711423 == rgb || 0 == rgb || 16711935 == rgb)
-        {
-            return rgb;
-        }
-
-        int nr = (rgb & 0xFF0000) + fr;
-        if (nr < 0x000000)
-        {
-            nr = 0x000000;
-        }
-        if (nr > 0xFF0000)
-        {
-            nr = 0xFF0000;
-        }
-
-        int ng = (rgb & 0x00FF00) + fg;
-        if (ng < 0x000000)
-        {
-            ng = 0x000000;
-        }
-        if (ng > 0x00FF00)
-        {
-            ng = 0x00FF00;
-        }
-
-        int nb = (rgb & 0x0000FF) + fb;
-        if (nb < 0x000000)
-        {
-            nb = 0x000000;
-        }
-        if (nb > 0x0000FF)
-        {
-            nb = 0x0000FF;
-        }
-
-        final int a = rgb & 0xFF000000;
-        final int r = nr;
-        final int g = ng;
-        final int b = nb;
-
-        return a | r | g | b;
-    }
-
     /** Rasters list. */
     private final List<Sprite> rasters;
 
@@ -103,7 +49,7 @@ public abstract class BackgroundElementRastered
     public BackgroundElementRastered(int mainX, int mainY, Sprite sprite, int rastersNumber)
     {
         super(mainX, mainY, sprite);
-        rasters = new ArrayList<>(rastersNumber);
+        rasters = new ArrayList<Sprite>(rastersNumber);
         initialize(sprite, rastersNumber);
     }
 
@@ -145,7 +91,7 @@ public abstract class BackgroundElementRastered
             for (int j = 0; j < rasterBuf.getHeight(); j++)
             {
                 final int rgb = buf.getRgb(i, j);
-                final int filtered = BackgroundElementRastered.filterRGB(rgb, fr, fg, fb);
+                final int filtered = ColorRgba.filterRgb(rgb, fr, fg, fb);
                 rasterBuf.setRgb(i, j, filtered);
             }
         }

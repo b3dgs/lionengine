@@ -25,9 +25,8 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class NetworkedWorldModelClient
-        extends NetworkedWorldModel<ConnectionListener, ClientImpl>
-        implements NetworkedWorldClient
+public class NetworkedWorldModelClient extends NetworkedWorldModel<ConnectionListener, ClientImpl>
+                                       implements NetworkedWorldClient
 {
     /**
      * Constructor.

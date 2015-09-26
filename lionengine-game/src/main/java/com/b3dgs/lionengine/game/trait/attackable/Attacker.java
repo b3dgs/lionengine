@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Attacker
-        extends Trait, Updatable
+public interface Attacker extends Trait, Updatable
 {
     /**
      * Add an attacker listener.

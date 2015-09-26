@@ -33,9 +33,7 @@ import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateWalk
-        extends StateGame
-        implements StateInputDirectionalUpdater
+class StateWalk extends StateGame implements StateInputDirectionalUpdater
 {
     /** Movement force. */
     final Force movement;
@@ -99,9 +97,7 @@ class StateWalk
     /**
      * Transition from {@link StateWalk} to {@link StateIdle}.
      */
-    private final class TransitionWalkToIdle
-            extends StateTransition
-            implements StateTransitionInputDirectionalChecker
+    private final class TransitionWalkToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -121,9 +117,7 @@ class StateWalk
     /**
      * Transition from {@link StateWalk} to {@link StateTurn}.
      */
-    private final class TransitionWalkToTurn
-            extends StateTransition
-            implements StateTransitionInputDirectionalChecker
+    private final class TransitionWalkToTurn extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -137,16 +131,14 @@ class StateWalk
         public boolean check(InputDeviceDirectional input)
         {
             return input.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() > 0
-                    || input.getHorizontalDirection() > 0 && movement.getDirectionHorizontal() < 0;
+                   || input.getHorizontalDirection() > 0 && movement.getDirectionHorizontal() < 0;
         }
     }
 
     /**
      * Transition from {@link StateWalk} to {@link StateJump}.
      */
-    private final class TransitionWalkToJump
-            extends StateTransition
-            implements StateTransitionInputDirectionalChecker
+    private final class TransitionWalkToJump extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.

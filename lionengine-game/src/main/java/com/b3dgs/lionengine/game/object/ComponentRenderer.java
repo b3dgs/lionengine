@@ -25,8 +25,7 @@ import com.b3dgs.lionengine.core.Renderable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ComponentRenderer
-        implements ComponentRenderable
+public class ComponentRenderer implements ComponentRenderable
 {
     /**
      * Create a renderer component.

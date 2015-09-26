@@ -28,6 +28,7 @@ package com.b3dgs.lionengine;
  * final Object object = null;
  * Check.notNull(object);
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -214,14 +215,14 @@ public final class Check
     {
         if (strict)
         {
-            if (a <= b)
+            if (!(Double.compare(a, b) > 0))
             {
                 throw argumentError(a, b, ERROR_SUPERIOR_STRICT);
             }
         }
         else
         {
-            if (a < b)
+            if (Double.compare(a, b) < 0)
             {
                 throw argumentError(a, b, ERROR_SUPERIOR);
             }
@@ -266,14 +267,14 @@ public final class Check
     {
         if (strict)
         {
-            if (a >= b)
+            if (!(Double.compare(a, b) < 0))
             {
                 throw argumentError(a, b, ERROR_INFERIOR_STRICT);
             }
         }
         else
         {
-            if (a > b)
+            if (Double.compare(a, b) > 0)
             {
                 throw argumentError(a, b, ERROR_INFERIOR);
             }
@@ -311,6 +312,6 @@ public final class Check
      */
     private Check()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

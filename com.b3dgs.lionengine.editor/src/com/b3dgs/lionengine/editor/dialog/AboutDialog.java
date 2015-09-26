@@ -21,8 +21,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -31,9 +29,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
 
 /**
  * Represents the about dialog of the application.
@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.editor.UtilSwt;
 public class AboutDialog
 {
     /** About icon. */
-    private static final Image ICON_ABOUT = UtilEclipse.getIcon("about.png");
+    private static final Image ICON_ABOUT = UtilIcon.get("about.png");
 
     /**
      * Create the dialog content.
@@ -83,15 +83,11 @@ public class AboutDialog
 
         final Label aboutText = new Label(top, SWT.NONE);
         aboutText.setBackground(aboutText.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        final FontData aboutTextdata = aboutText.getFont().getFontData()[0];
-        aboutTextdata.setHeight(10);
-        aboutTextdata.setStyle(SWT.BOLD);
-        aboutText.setFont(new Font(aboutText.getDisplay(), aboutTextdata));
 
         final String vendor = Platform.getBundle(Activator.PLUGIN_ID).getHeaders().get("Bundle-Vendor");
-        final StringBuilder text = new StringBuilder(Activator.PLUGIN_NAME).append(" ");
-        text.append(Activator.PLUGIN_VERSION + "\n");
-        text.append(vendor).append("\n");
+        final StringBuilder text = new StringBuilder(Activator.PLUGIN_NAME).append(Constant.SPACE);
+        text.append(Activator.PLUGIN_VERSION + Constant.NEW_LINE);
+        text.append(vendor).append(Constant.NEW_LINE);
         text.append(Activator.PLUGIN_WEBSITE);
 
         aboutText.setText(text.toString());
@@ -105,7 +101,7 @@ public class AboutDialog
      */
     private static void createBottom(final Shell dialog, Composite bottom)
     {
-        final Button okButton = UtilSwt.createButton(bottom, "OK", null);
+        final Button okButton = UtilButton.create(bottom, "OK", null);
         final GridData data = new GridData();
         data.widthHint = 72;
         okButton.setLayoutData(data);
@@ -131,17 +127,10 @@ public class AboutDialog
     public AboutDialog(Shell shell)
     {
         dialog = new Shell(shell, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-        final GridLayout dialogLayout = new GridLayout(1, false);
-        dialogLayout.marginHeight = 0;
-        dialogLayout.marginWidth = 0;
-        dialogLayout.verticalSpacing = 0;
-        dialog.setLayout(dialogLayout);
+        dialog.setLayout(UtilSwt.borderless());
         dialog.setText(Messages.AboutDialog_Title);
 
         create(dialog);
-
-        dialog.pack();
-        UtilSwt.center(dialog);
     }
 
     /**
@@ -149,6 +138,6 @@ public class AboutDialog
      */
     public void open()
     {
-        dialog.open();
+        UtilSwt.open(dialog);
     }
 }

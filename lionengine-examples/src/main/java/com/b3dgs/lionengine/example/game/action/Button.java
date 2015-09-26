@@ -40,9 +40,7 @@ import com.b3dgs.lionengine.game.trait.actionable.ActionableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Button
-        extends ObjectGame
-        implements Action, Updatable, Renderable
+class Button extends ObjectGame implements Action, Updatable, Renderable
 {
     /** Media buildings reference. */
     public static final Media BUILDINGS = Medias.create("action", "Buildings.xml");
@@ -72,7 +70,7 @@ class Button
     {
         super(setup, services);
         text = services.get(Text.class);
-        image = Drawable.loadImage(setup.surface);
+        image = Drawable.loadImage(setup.getSurface());
         name = setup.getConfigurer().getText(ConfigAction.NAME);
         actionable.setClickAction(Mouse.LEFT);
     }

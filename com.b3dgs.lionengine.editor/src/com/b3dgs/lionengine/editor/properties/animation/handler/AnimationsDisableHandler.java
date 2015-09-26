@@ -21,9 +21,9 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
@@ -32,13 +32,20 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AnimationsDisableHandler
+public final class AnimationsDisableHandler
 {
+    /**
+     * Create handler.
+     */
+    public AnimationsDisableHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();
@@ -46,7 +53,7 @@ public class AnimationsDisableHandler
         configurer.getRoot().removeChildren(ConfigAnimations.ANIMATION);
         configurer.save();
 
-        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         for (final TreeItem item : tree.getItems())
         {
             if (ConfigAnimations.ANIMATION.equals(item.getData()))

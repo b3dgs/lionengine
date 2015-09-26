@@ -22,8 +22,6 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
 
 /**
  * Collision category, representing a collision point at a specified offset relative to the owner position. Computation
@@ -31,32 +29,33 @@ import com.b3dgs.lionengine.game.map.MapTileCollision;
  * Here a definition example:
  * 
  * <pre>
- *  {@code<lionengine:category name="leg_right" axis="Y" x="6" y="0">}
- *     {@code<lionengine:group>block</lionengine:group>}
- *  {@code</lionengine:category>}
+ * &lt;lionengine:category name="leg_right" axis="Y" x="6" y="0"&gt;
+ *     &lt;lionengine:group&gt;block&lt;/lionengine:group&gt;
+ *  &lt;/lionengine:category&gt;
  * 
- *  {@code<lionengine:category name="leg_left" axis="Y" x="-6" y="0">}
- *     {@code<lionengine:group>block</lionengine:group>}
- *  {@code</lionengine:category>}
+ *  &lt;lionengine:category name="leg_left" axis="Y" x="-6" y="0"&gt;
+ *     &lt;lionengine:group&gt;block&lt;/lionengine:group&gt;
+ *  &lt;/lionengine:category&gt;
  * 
- *  {@code<lionengine:category name="knee_right" axis="X" x="6" y="0">}
- *     {@code<lionengine:group>block</lionengine:group>}
- *  {@code</lionengine:category>}
+ *  &lt;lionengine:category name="knee_right" axis="X" x="6" y="0"&gt;
+ *     &lt;lionengine:group&gt;block&lt;/lionengine:group&gt;
+ *  &lt;/lionengine:category&gt;
  * 
- *  {@code<lionengine:category name="knee_left" axis="X" x="-6" y="0">}
- *     {@code<lionengine:group>block</lionengine:group>}
- *  {@code</lionengine:category>}
- * 
- *  This will define 4 collision points (for ground collision and their borders, plus vertical elements for horizontal
- * collision).
+ *  &lt;lionengine:category name="knee_left" axis="X" x="-6" y="0"&gt;
+ *     &lt;lionengine:group&gt;block&lt;/lionengine:group&gt;
+ *  &lt;/lionengine:category&gt;
  * </pre>
  * 
+ * <p>
+ * This will define 4 collision points (for ground collision and their borders, plus vertical elements for horizontal
+ * collision).
+ * </p>
+ * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see ConfigCollisionCategory
+ * @see com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory
  * @see CollisionFormula
  */
-public class CollisionCategory
-        implements Nameable
+public class CollisionCategory implements Nameable
 {
     /** Category name. */
     private final String name;
@@ -68,7 +67,10 @@ public class CollisionCategory
     private final int y;
     /** Defined groups. */
     private final Collection<CollisionGroup> groups;
-    /** Collision formula used list (each must be available in {@link MapTileCollision#getCollisionFormula(String)}. */
+    /**
+     * Collision formula used list (each must be available in
+     * {@link com.b3dgs.lionengine.game.map.MapTileCollision#getCollisionFormula(String)}.
+     */
     private final Collection<CollisionFormula> formulas;
 
     /**
@@ -87,7 +89,7 @@ public class CollisionCategory
         this.x = x;
         this.y = y;
         this.groups = groups;
-        formulas = new HashSet<>();
+        formulas = new HashSet<CollisionFormula>();
         for (final CollisionGroup group : groups)
         {
             formulas.addAll(group.getFormulas());

@@ -18,14 +18,13 @@
 package com.b3dgs.lionengine.game.collision;
 
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionRange;
 
 /**
  * Represents the range of the collision for a specified axis. It allows to restrict the computation area of the
  * collision, depending of the input value.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see ConfigCollisionRange
+ * @see com.b3dgs.lionengine.game.configurer.ConfigCollisionRange
  */
 public class CollisionRange
 {

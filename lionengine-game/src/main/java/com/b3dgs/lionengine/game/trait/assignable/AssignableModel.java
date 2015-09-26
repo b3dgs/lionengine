@@ -39,9 +39,7 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AssignableModel
-        extends TraitModel
-        implements Assignable
+public class AssignableModel extends TraitModel implements Assignable
 {
     /** Cursor reference. */
     private Cursor cursor;
@@ -82,9 +80,9 @@ public class AssignableModel
     public void update(double extrp)
     {
         if (assign != null
-                && UtilMath.isBetween(cursor.getScreenX(), viewer.getViewX(), viewer.getViewX() + viewer.getWidth())
-                && UtilMath.isBetween(cursor.getScreenY(), viewer.getViewY(), viewer.getViewY() + viewer.getHeight())
-                && cursor.hasClickedOnce(clickAssign))
+            && UtilMath.isBetween(cursor.getScreenX(), viewer.getViewX(), viewer.getViewX() + viewer.getWidth())
+            && UtilMath.isBetween(cursor.getScreenY(), viewer.getViewY(), viewer.getViewY() + viewer.getHeight())
+            && cursor.hasClickedOnce(clickAssign))
         {
             assign.assign();
         }

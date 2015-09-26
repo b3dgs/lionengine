@@ -27,9 +27,9 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -43,16 +43,17 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulasEditDialog
-        extends AbstractDialog
+public class FormulasEditDialog extends AbstractDialog
 {
     /** Icon. */
-    public static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
+    public static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
     /** Formulas media. */
     final Media formulas;
+    /** Formulas properties. */
+    private final FormulasProperties properties = new FormulasProperties();
     /** Formulas list. */
-    private final FormulaList list = new FormulaList();
+    private final FormulaList list = new FormulaList(properties);
 
     /**
      * Create a formulas edit dialog.
@@ -62,8 +63,11 @@ public class FormulasEditDialog
      */
     public FormulasEditDialog(Shell parent, Media formulas)
     {
-        super(parent, Messages.EditFormulasDialog_Title, Messages.EditFormulasDialog_HeaderTitle,
-                Messages.EditFormulasDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.EditFormulasDialog_Title,
+              Messages.EditFormulasDialog_HeaderTitle,
+              Messages.EditFormulasDialog_HeaderDesc,
+              ICON);
         this.formulas = formulas;
         dialog.setMinimumSize(128, 320);
         createDialog();
@@ -80,28 +84,28 @@ public class FormulasEditDialog
         content.setLayout(new GridLayout(2, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         list.create(content);
-        list.loadFormulas(formulas);
         list.addListener(list);
 
-        final FormulasProperties properties = new FormulasProperties(list);
         properties.create(content);
         list.addListener(properties);
+        list.loadFormulas(formulas);
     }
 
     @Override
     protected void onFinish()
     {
+        list.save();
         final XmlNode root = Stream.createXmlNode(ConfigCollisionFormula.FORMULAS);
         root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
 
         for (final TreeItem item : list.getTree().getItems())
         {
             final CollisionFormula formula = (CollisionFormula) item.getData();
-            final XmlNode nodeFormula = ConfigCollisionFormula.export(formula);
-            root.add(nodeFormula);
+            ConfigCollisionFormula.export(root, formula);
         }
         Stream.saveXml(root, formulas);
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+
+        final MapTile map = WorldModel.INSTANCE.getMap();
         if (map.hasFeature(MapTileCollision.class))
         {
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);

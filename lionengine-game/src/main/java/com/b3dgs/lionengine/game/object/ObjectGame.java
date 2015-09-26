@@ -59,13 +59,13 @@ import com.b3dgs.lionengine.game.trait.Trait;
 public class ObjectGame
 {
     /** Features provider. */
-    private final Features<Trait> features = new Features<>(Trait.class);
+    private final Features<Trait> features = new Features<Trait>(Trait.class);
     /** Types provided. */
-    private final Map<Class<?>, Object> types = new HashMap<>();
+    private final Map<Class<?>, Object> types = new HashMap<Class<?>, Object>();
     /** Trait to prepare. */
-    private final Collection<Trait> traitToPrepare = new ArrayList<>();
+    private final Collection<Trait> traitToPrepare = new ArrayList<Trait>();
     /** Listeners. */
-    private final Collection<ObjectGameListener> listeners = new HashSet<>(1);
+    private final Collection<ObjectGameListener> listeners = new HashSet<ObjectGameListener>(1);
     /** Media representation. */
     private final Media media;
     /** Configurer reference. */
@@ -123,18 +123,23 @@ public class ObjectGame
      */
     public final boolean hasTrait(Class<?> trait)
     {
+        final boolean hasTrait;
         if (trait.isAssignableFrom(getClass()))
         {
-            return true;
+            hasTrait = true;
         }
-        for (final Class<?> type : types.keySet())
+        else
         {
-            if (trait.isAssignableFrom(type))
+            for (final Class<?> type : types.keySet())
             {
-                return true;
+                if (trait.isAssignableFrom(type))
+                {
+                    return true;
+                }
             }
+            hasTrait = features.contains(trait);
         }
-        return features.contains(trait);
+        return hasTrait;
     }
 
     /**
@@ -147,18 +152,23 @@ public class ObjectGame
      */
     public final <T> T getTrait(Class<T> trait) throws LionEngineException
     {
+        final T found;
         if (trait.isAssignableFrom(getClass()))
         {
-            return trait.cast(this);
+            found = trait.cast(this);
         }
-        for (final Map.Entry<Class<?>, Object> type : types.entrySet())
+        else
         {
-            if (trait.isAssignableFrom(type.getKey()))
+            for (final Map.Entry<Class<?>, Object> type : types.entrySet())
             {
-                return trait.cast(type.getValue());
+                if (trait.isAssignableFrom(type.getKey()))
+                {
+                    return trait.cast(type.getValue());
+                }
             }
+            found = features.get(trait);
         }
-        return features.get(trait);
+        return found;
     }
 
     /**

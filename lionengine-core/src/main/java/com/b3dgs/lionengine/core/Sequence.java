@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.Resolution;
  * </p>
  * 
  * <pre>
- * public class MySequence
- *         extends Sequence
+ * public class MySequence extends Sequence
  * {
  *     private static final Resolution NATIVE = new Resolution(320, 240, 60);
  * 
@@ -60,6 +59,7 @@ import com.b3dgs.lionengine.Resolution;
  *     }
  * }
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -69,15 +69,12 @@ import com.b3dgs.lionengine.Resolution;
  * @see Resolution
  * @see InputDevice
  */
-public abstract class Sequence
-        implements Sequencable
+public abstract class Sequence implements Sequencable
 {
     /** Native resolution. */
     final Resolution resolution;
     /** Renderer. */
     private final Renderer renderer;
-    /** Loaded state. */
-    private volatile boolean loaded;
     /** Rendering width. */
     private volatile int width;
     /** Rendering height. */
@@ -194,22 +191,11 @@ public abstract class Sequence
     }
 
     /**
-     * Check if the sequence has been loaded.
-     * 
-     * @return <code>true</code> if loaded, <code>false</code> else.
-     */
-    final boolean isLoaded()
-    {
-        return loaded;
-    }
-
-    /**
      * Start the sequence and load it.
      */
     final synchronized void start()
     {
         load();
-        loaded = true;
     }
 
     /**

@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.map.astar;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTilePath;
 
 /**
  * A star factory.
@@ -30,14 +30,16 @@ public final class Astar
     /**
      * Create a path finder.
      * 
-     * @param map The map to be searched. Must have the {@link MapTilePath} feature.
+     * @param map The map to be searched. Must have the {@link com.b3dgs.lionengine.game.map.MapTilePath} feature.
      * @param maxSearchDistance The maximum depth we'll search before giving up.
      * @param allowDiagMovement <code>true</code> if the search should try diagonal movement, <code>false</code> else.
      * @param heuristic The heuristic used to determine the search order of the map.
      * @return The path finder instance.
      */
-    public static PathFinder createPathFinder(MapTile map, int maxSearchDistance, boolean allowDiagMovement,
-            Heuristic heuristic)
+    public static PathFinder createPathFinder(MapTile map,
+                                              int maxSearchDistance,
+                                              boolean allowDiagMovement,
+                                              Heuristic heuristic)
     {
         return new PathFinderImpl(map, maxSearchDistance, allowDiagMovement, heuristic);
     }
@@ -78,6 +80,6 @@ public final class Astar
      */
     private Astar()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

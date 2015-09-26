@@ -22,8 +22,7 @@ package com.b3dgs.lionengine.geom;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class LineImpl
-        implements Line
+final class LineImpl implements Line
 {
     /** The X coordinate of the start point of the line segment. */
     private double x1;

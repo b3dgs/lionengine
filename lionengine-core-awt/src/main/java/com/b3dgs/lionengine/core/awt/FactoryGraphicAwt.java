@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.FactoryGraphic;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderer;
@@ -39,8 +38,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class FactoryGraphicAwt
-        implements FactoryGraphic
+public final class FactoryGraphicAwt implements FactoryGraphic
 {
     /**
      * Internal constructor.
@@ -85,9 +83,9 @@ public final class FactoryGraphicAwt
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media, boolean alpha)
+    public ImageBuffer getImageBuffer(Media media)
     {
-        return UtilityImage.getImage(media, alpha);
+        return UtilityImage.getImage(media);
     }
 
     @Override
@@ -135,21 +133,27 @@ public final class FactoryGraphicAwt
     @Override
     public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter)
     {
+        final ImageBuffer filtered;
         switch (filter)
         {
             case NONE:
-                return imageBuffer;
+                filtered = imageBuffer;
+                break;
             case BILINEAR:
-                return UtilityImage.applyBilinearFilter(imageBuffer);
+                filtered = UtilityImage.applyBilinearFilter(imageBuffer);
+                break;
             case HQ2X:
                 final Hq2x hq2x = new Hq2x(imageBuffer);
-                return hq2x.getScaledImage();
+                filtered = hq2x.getScaledImage();
+                break;
             case HQ3X:
                 final Hq3x hq3x = new Hq3x(imageBuffer);
-                return hq3x.getScaledImage();
+                filtered = hq3x.getScaledImage();
+                break;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException("Unknown filter: ", filter.name());
         }
+        return filtered;
     }
 
     @Override
@@ -159,15 +163,8 @@ public final class FactoryGraphicAwt
     }
 
     @Override
-    public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb,
-            int refSize)
+    public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb, int ref)
     {
-        return UtilityImage.getRasterBuffer(imageBuffer, fr, fg, fb, er, eg, eb, refSize);
-    }
-
-    @Override
-    public int[][] loadRaster(Media media) throws LionEngineException
-    {
-        return Graphics.loadRaster(media);
+        return UtilityImage.getRasterBuffer(imageBuffer, fr, fg, fb, er, eg, eb, ref);
     }
 }

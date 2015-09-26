@@ -31,13 +31,12 @@ import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class PathFinderImpl
-        implements PathFinder
+final class PathFinderImpl implements PathFinder
 {
     /** Closed list. */
-    private final Collection<Node> closed = new ArrayList<>(8);
+    private final Collection<Node> closed = new ArrayList<Node>(8);
     /** Open list. */
-    private final SortedList<Node> open = new SortedList<>();
+    private final SortedList<Node> open = new SortedList<Node>();
     /** Map reference. */
     private final MapTile map;
     /** Map path reference. */
@@ -212,8 +211,14 @@ final class PathFinderImpl
      * @param maxDepth The last max depth.
      * @return The next max depth.
      */
-    private int updateList(Pathfindable mover, int stx, int sty, int dtx, int dty, boolean ignoreRef, Node current,
-            int maxDepth)
+    private int updateList(Pathfindable mover,
+                           int stx,
+                           int sty,
+                           int dtx,
+                           int dty,
+                           boolean ignoreRef,
+                           Node current,
+                           int maxDepth)
     {
         int nextDepth = maxDepth;
         for (int y = -1; y < 2; y++)

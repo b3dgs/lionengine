@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
@@ -41,8 +40,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Camera
-        implements Viewer
+public class Camera implements Viewer
 {
     /** Current location. */
     private final Transformable transformable;
@@ -135,8 +133,9 @@ public class Camera
      */
     public void setLocation(double x, double y)
     {
-        moveLocation(1, x - width / 2.0 - (transformable.getX() + offset.getX()),
-                y - height / 2.0 - (transformable.getY() + offset.getY()));
+        final double dx = x - width / 2.0 - (transformable.getX() + offset.getX());
+        final double dy = y - height / 2.0 - (transformable.getY() + offset.getY());
+        moveLocation(1, dx, dy);
     }
 
     /**
@@ -158,10 +157,10 @@ public class Camera
      * For example: if the camera is following an object and the camera horizontal interval is 16, anything that is
      * rendered using the camera view point will see its horizontal axis change when the object horizontal location will
      * be before / after the camera location -16 / +16:
-     * <ul>
-     * <li><code><--camera movement--> -16[..no camera movement..]+16 <--camera movement--></code></li>
-     * </ul>
      * </p>
+     * <ul>
+     * <li><code>&lt;--camera movement--&gt; -16[..no camera movement..]+16 &lt;--camera movement--&gt;</code></li>
+     * </ul>
      * 
      * @param intervalHorizontal The horizontal margin.
      * @param intervalVertical The vertical margin.
@@ -186,8 +185,8 @@ public class Camera
      * (screen top-left).</li>
      * </ul>
      * <p>
-     * It is also compatible with object rendering (by using an {@link Handler}). The object which is outside the camera
-     * view will not be rendered. This avoid useless rendering.
+     * It is also compatible with object rendering (by using an {@link com.b3dgs.lionengine.game.object.Handler}). The
+     * object which is outside the camera view will not be rendered. This avoid useless rendering.
      * </p>
      * <p>
      * Note: The rendering view is from the camera location. So <code>x</code> and <code>y</code> are an offset from
@@ -226,6 +225,26 @@ public class Camera
     }
 
     /**
+     * Get the horizontal movement.
+     * 
+     * @return Camera horizontal movement.
+     */
+    public double getMovementHorizontal()
+    {
+        return transformable.getX() - transformable.getOldX();
+    }
+
+    /**
+     * Get the horizontal movement.
+     * 
+     * @return Camera horizontal movement.
+     */
+    public double getMovementVertical()
+    {
+        return transformable.getY() - transformable.getOldY();
+    }
+
+    /**
      * Check horizontal limit on move.
      * 
      * @param vx The horizontal movement.
@@ -233,8 +252,10 @@ public class Camera
     private void checkHorizontalLimit(double vx)
     {
         // Inside interval
-        if (transformable.getX() >= mapLeftLimit && transformable.getX() <= mapRightLimit
-                && mapLeftLimit != Integer.MIN_VALUE && mapRightLimit != Integer.MAX_VALUE)
+        if (transformable.getX() >= mapLeftLimit
+            && transformable.getX() <= mapRightLimit
+            && mapLeftLimit != Integer.MIN_VALUE
+            && mapRightLimit != Integer.MAX_VALUE)
         {
             offset.moveLocation(1, vx, 0);
 
@@ -264,8 +285,10 @@ public class Camera
     private void checkVerticalLimit(double vy)
     {
         // Inside interval
-        if (transformable.getY() >= mapDownLimit && transformable.getY() <= mapUpLimit
-                && mapDownLimit != Integer.MIN_VALUE && mapUpLimit != Integer.MAX_VALUE)
+        if (transformable.getY() >= mapDownLimit
+            && transformable.getY() <= mapUpLimit
+            && mapDownLimit != Integer.MIN_VALUE
+            && mapUpLimit != Integer.MAX_VALUE)
         {
             offset.moveLocation(1, 0, vy);
 
@@ -388,8 +411,8 @@ public class Camera
     public boolean isViewable(Localizable localizable, int radiusX, int radiusY)
     {
         return localizable.getX() + localizable.getWidth() + radiusX >= getX()
-                && localizable.getX() - localizable.getWidth() - radiusX <= getX() + width
-                && localizable.getY() + localizable.getHeight() + radiusY >= getY()
-                && localizable.getY() - localizable.getHeight() * 2 - radiusY <= getY() + height;
+               && localizable.getX() - localizable.getWidth() - radiusX <= getX() + width
+               && localizable.getY() + localizable.getHeight() + radiusY >= getY()
+               && localizable.getY() - localizable.getHeight() * 2 - radiusY <= getY() + height;
     }
 }

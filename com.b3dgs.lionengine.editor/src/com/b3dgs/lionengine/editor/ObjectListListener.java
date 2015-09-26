@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.Nameable;
 /**
  * Notify object selection from {@link ObjectList}.
  * 
- * @param <T> The object type handled by the list.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <T> The object type handled by the list.
  */
 public interface ObjectListListener<T extends Nameable>
 {

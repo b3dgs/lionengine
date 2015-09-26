@@ -22,9 +22,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.properties.collision.editor.EntityCollisionEditor;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -34,11 +34,10 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesCollision
-        implements PropertiesProviderObject
+public class PropertiesCollision implements PropertiesProviderObject
 {
     /** Collisions icon. */
-    private static final Image ICON_COLLISIONS = UtilEclipse.getIcon("properties", "collisions.png");
+    private static final Image ICON_COLLISIONS = UtilIcon.get("properties", "collisions.png");
 
     /**
      * Create the collisions attribute.
@@ -51,6 +50,14 @@ public class PropertiesCollision
         animationsItem.setText(Messages.Properties_Collisions);
         animationsItem.setData(ConfigCollisions.COLLISION);
         animationsItem.setImage(PropertiesCollision.ICON_COLLISIONS);
+    }
+
+    /**
+     * Create properties.
+     */
+    public PropertiesCollision()
+    {
+        // Nothing to do
     }
 
     /*

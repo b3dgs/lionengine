@@ -33,9 +33,7 @@ import com.b3dgs.lionengine.game.Collision;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class EntityCollisionProperties
-        extends ObjectProperties<Collision>
-        implements ObjectListListener<Collision>
+public class EntityCollisionProperties extends ObjectProperties<Collision> implements ObjectListListener<Collision>
 {
     /** Horizontal offset. */
     Text offsetX;
@@ -50,12 +48,10 @@ public class EntityCollisionProperties
 
     /**
      * Create an entity collision properties.
-     * 
-     * @param list The list reference.
      */
-    public EntityCollisionProperties(EntityCollisionList list)
+    public EntityCollisionProperties()
     {
-        super(list);
+        super();
     }
 
     /**
@@ -66,8 +62,8 @@ public class EntityCollisionProperties
      */
     public void setAnimationRange(int first, int last)
     {
-        ObjectProperties.setTextValue(offsetX, String.valueOf(first));
-        ObjectProperties.setTextValue(offsetY, String.valueOf(last));
+        setValue(offsetX, String.valueOf(first));
+        setValue(offsetY, String.valueOf(last));
     }
 
     /*
@@ -81,11 +77,11 @@ public class EntityCollisionProperties
         fields.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         fields.setLayout(new GridLayout(1, false));
 
-        offsetX = ObjectProperties.createTextField(fields, Messages.EntityCollisionProperties_OffsetX);
-        offsetY = ObjectProperties.createTextField(fields, Messages.EntityCollisionProperties_OffsetY);
+        offsetX = createTextField(fields, Messages.EntityCollisionProperties_OffsetX);
+        offsetY = createTextField(fields, Messages.EntityCollisionProperties_OffsetY);
 
-        width = ObjectProperties.createTextField(fields, Messages.EntityCollisionProperties_Width);
-        height = ObjectProperties.createTextField(fields, Messages.EntityCollisionProperties_Height);
+        width = createTextField(fields, Messages.EntityCollisionProperties_Width);
+        height = createTextField(fields, Messages.EntityCollisionProperties_Height);
 
         mirror = new Button(fields, SWT.CHECK | SWT.RIGHT_TO_LEFT);
         mirror.setText(Messages.EntityCollisionProperties_Mirror);
@@ -94,9 +90,12 @@ public class EntityCollisionProperties
     @Override
     protected Collision createObject(String name)
     {
-        final Collision collision = new Collision(name, Integer.parseInt(offsetX.getText()), Integer.parseInt(offsetY
-                .getText()), Integer.parseInt(width.getText()), Integer.parseInt(height.getText()),
-                mirror.getSelection());
+        final Collision collision = new Collision(name,
+                                                  Integer.parseInt(offsetX.getText()),
+                                                  Integer.parseInt(offsetY.getText()),
+                                                  Integer.parseInt(width.getText()),
+                                                  Integer.parseInt(height.getText()),
+                                                  mirror.getSelection());
         return collision;
     }
 
@@ -107,10 +106,10 @@ public class EntityCollisionProperties
     @Override
     public void notifyObjectSelected(Collision collision)
     {
-        setTextValue(offsetX, String.valueOf(collision.getOffsetX()));
-        setTextValue(offsetY, String.valueOf(collision.getOffsetY()));
-        setTextValue(width, String.valueOf(collision.getWidth()));
-        setTextValue(height, String.valueOf(collision.getHeight()));
+        setValueDefault(offsetX, String.valueOf(collision.getOffsetX()));
+        setValueDefault(offsetY, String.valueOf(collision.getOffsetY()));
+        setValueDefault(width, String.valueOf(collision.getWidth()));
+        setValueDefault(height, String.valueOf(collision.getHeight()));
         setButtonSelection(mirror, collision.hasMirror());
     }
 

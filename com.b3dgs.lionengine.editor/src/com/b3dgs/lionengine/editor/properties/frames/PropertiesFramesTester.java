@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.properties.frames;
 
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
@@ -30,13 +30,46 @@ import com.b3dgs.lionengine.game.configurer.ConfigSurface;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesFramesTester
-        extends PropertyTester
+public final class PropertiesFramesTester extends PropertyTester
 {
     /** Can set frames. */
     private static final String PROPERTY_FRAMES_SET = "setFrames";
     /** Can remove frames. */
     private static final String PROPERTY_FRAMES_REMOVE = "removeFrames";
+
+    /**
+     * Check result depending of selection.
+     * 
+     * @param model The properties model.
+     * @param data The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(PropertiesModel model, Object data, String property)
+    {
+        final boolean result;
+        if (PROPERTY_FRAMES_SET.equals(property))
+        {
+            result = !model.hasProperty(ConfigFrames.FRAMES) && model.hasProperty(ConfigSurface.SURFACE_IMAGE);
+        }
+        else if (PROPERTY_FRAMES_REMOVE.equals(property) && ConfigFrames.FRAMES.equals(data))
+        {
+            result = model.hasProperty(ConfigFrames.FRAMES);
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Create tester.
+     */
+    public PropertiesFramesTester()
+    {
+        // Nothing to do
+    }
 
     /*
      * PropertyTester
@@ -46,17 +79,10 @@ public class PropertiesFramesTester
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
         final PropertiesModel model = PropertiesModel.INSTANCE;
-        if (!model.isEmpty() && ObjectsTester.isObjectFile(ProjectsModel.INSTANCE.getSelection()))
+        if (!model.isEmpty() && ObjectsTester.isObjectFile(ProjectModel.INSTANCE.getSelection()))
         {
             final Object data = model.getSelectedData();
-            if (PROPERTY_FRAMES_SET.equals(property))
-            {
-                return !model.hasProperty(ConfigFrames.FRAMES) && model.hasProperty(ConfigSurface.SURFACE_IMAGE);
-            }
-            else if (PROPERTY_FRAMES_REMOVE.equals(property) && ConfigFrames.FRAMES.equals(data))
-            {
-                return model.hasProperty(ConfigFrames.FRAMES);
-            }
+            return check(model, data, property);
         }
         return false;
     }

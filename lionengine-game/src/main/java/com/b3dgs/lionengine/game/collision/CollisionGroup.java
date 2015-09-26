@@ -20,33 +20,54 @@ package com.b3dgs.lionengine.game.collision;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
 
 /**
- * Represents the collision group, which can be applied to a {@link Tile}. It allows to reference easily a set of
- * {@link CollisionFormula} previously defined on the {@link MapTile}.
- * Here a definition example:
+ * Represents the collision group, which can be applied to a {@link com.b3dgs.lionengine.game.map.Tile}. It allows to
+ * reference easily a set of {@link CollisionFormula} previously defined on the
+ * {@link com.b3dgs.lionengine.game.map.MapTile}. Here a definition example:
  * 
  * <pre>
- * {@code<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">}
- *    {@code<lionengine:group name="block">}
- *       {@code<lionengine:formula>top</lionengine:formula>}
- *       {@code<lionengine:formula>bottom</lionengine:formula>}
- *       {@code<lionengine:formula>left</lionengine:formula>}
- *       {@code<lionengine:formula>right</lionengine:formula>}
- *    {@code</lionengine:group>}
- * {@code</lionengine:groups>}
+ * &lt;lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com"&gt;
+ *    &lt;lionengine:group name="block"&gt;
+ *       &lt;lionengine:formula&gt;top&lt;/lionengine:formula&gt;
+ *       &lt;lionengine:formula&gt;bottom&lt;/lionengine:formula&gt;
+ *       &lt;lionengine:formula&gt;left&lt;/lionengine:formula&gt;
+ *       &lt;lionengine:formula&gt;right&lt;/lionengine:formula&gt;
+ *    &lt;/lionengine:group&gt;
+ * &lt;/lionengine:groups&gt;
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see ConfigCollisionGroup
+ * @see com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup
  * @see CollisionFormula
  */
-public class CollisionGroup
-        implements Nameable
+public class CollisionGroup implements Nameable
 {
+    /**
+     * Check if tiles groups are same.
+     * 
+     * @param groupA The first group.
+     * @param groupB The second group.
+     * @return <code>true</code> if groups are same (<code>null</code> included).
+     */
+    public static boolean equals(String groupA, String groupB)
+    {
+        final boolean result;
+        if (groupA != null && groupB != null)
+        {
+            result = groupA.equals(groupB);
+        }
+        else if (groupA == null && groupB == null)
+        {
+            result = true;
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
     /** The group name. */
     private final String group;
     /** The collision formulas used. */

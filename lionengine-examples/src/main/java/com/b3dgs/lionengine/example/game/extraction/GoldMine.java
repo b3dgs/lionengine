@@ -43,9 +43,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class GoldMine
-        extends ObjectGame
-        implements Updatable, Renderable
+class GoldMine extends ObjectGame implements Updatable, Renderable
 {
     /** Gold mine media reference. */
     public static final Media GOLD_MINE = Medias.create("GoldMine.xml");
@@ -74,7 +72,7 @@ class GoldMine
         super(setup, services);
         viewer = services.get(Viewer.class);
 
-        surface = Drawable.loadSprite(setup.surface);
+        surface = Drawable.loadSprite(setup.getSurface());
         surface.setOrigin(Origin.TOP_LEFT);
 
         extractable.setResourcesQuantity(100);

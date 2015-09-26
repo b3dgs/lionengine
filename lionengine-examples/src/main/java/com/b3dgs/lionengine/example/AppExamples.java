@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.example;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.core.awt.swing.UtilitySwing;
 import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
 import com.b3dgs.lionengine.example.game.action.AppAction;
 import com.b3dgs.lionengine.example.game.assign.AppAssign;
+import com.b3dgs.lionengine.example.game.attack.AppAttack;
 import com.b3dgs.lionengine.example.game.background.AppBackground;
 import com.b3dgs.lionengine.example.game.collision.AppCollision;
 import com.b3dgs.lionengine.example.game.cursor.AppCursor;
@@ -60,6 +61,8 @@ public class AppExamples
 {
     /** Application name. */
     public static final String NAME = "LionEngine Examples";
+    /** Executor. */
+    private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
     /**
      * Main function.
@@ -80,6 +83,7 @@ public class AppExamples
         addExample(panel, "Drawable", AppDrawable.class);
         addExample(panel, "Action", AppAction.class);
         addExample(panel, "Assign", AppAssign.class);
+        addExample(panel, "Attack", AppAttack.class);
         addExample(panel, "Background", AppBackground.class);
         addExample(panel, "Collision", AppCollision.class);
         addExample(panel, "Cursor", AppCursor.class);
@@ -95,14 +99,7 @@ public class AppExamples
         addExample(panel, "Pong", AppPong.class);
 
         final JButton exit = new JButton("Exit");
-        exit.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent event)
-            {
-                frame.dispose();
-            }
-        });
+        exit.addActionListener(event -> terminate(frame));
         panel.add(exit);
 
         frame.addWindowListener(new WindowAdapter()
@@ -110,22 +107,29 @@ public class AppExamples
             @Override
             public void windowClosing(WindowEvent event)
             {
-                frame.dispose();
+                terminate(frame);
             }
         });
 
-        SwingUtilities.invokeLater(new Runnable()
+        SwingUtilities.invokeLater(() ->
         {
-            @Override
-            public void run()
-            {
-                frame.add(panel);
-                frame.setResizable(false);
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
+            frame.add(panel);
+            frame.setResizable(false);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
+    }
+
+    /**
+     * Terminate example.
+     * 
+     * @param frame The main frame reference.
+     */
+    static void terminate(JFrame frame)
+    {
+        EXECUTOR.shutdownNow();
+        frame.dispose();
     }
 
     /**
@@ -138,48 +142,34 @@ public class AppExamples
     private static void addExample(final JPanel panel, String name, final Class<?> example)
     {
         final JButton drawable = new JButton(name);
-        drawable.addActionListener(new ActionListener()
+        drawable.addActionListener(event ->
         {
-            @Override
-            public void actionPerformed(ActionEvent event)
+            UtilitySwing.setEnabled(panel.getComponents(), false);
+            try
             {
-                UtilitySwing.setEnabled(panel.getComponents(), false);
-                try
+                example.getDeclaredMethod("main", String[].class).invoke(example, (Object[]) new String[1]);
+                final Runnable runnable = () ->
                 {
-                    example.getDeclaredMethod("main", String[].class).invoke(example, (Object[]) new String[1]);
-                }
-                catch (final ReflectiveOperationException exception)
-                {
-                    Verbose.exception(AppExamples.class, "addExample", exception);
-                }
-                final Thread thread = new Thread()
-                {
-                    @Override
-                    public void run()
+                    while (EngineCore.isStarted())
                     {
-                        while (EngineCore.isStarted())
+                        try
                         {
-                            try
-                            {
-                                Thread.sleep(250);
-                            }
-                            catch (final InterruptedException exception)
-                            {
-                                Thread.currentThread().interrupt();
-                                break;
-                            }
+                            Thread.sleep(250);
                         }
-                        SwingUtilities.invokeLater(new Runnable()
+                        catch (final InterruptedException exception)
                         {
-                            @Override
-                            public void run()
-                            {
-                                UtilitySwing.setEnabled(panel.getComponents(), true);
-                            }
-                        });
+                            Thread.currentThread().interrupt();
+                            break;
+                        }
                     }
+                    SwingUtilities.invokeLater(() -> UtilitySwing.setEnabled(panel.getComponents(), true));
                 };
-                thread.start();
+                EXECUTOR.execute(runnable);
+            }
+            catch (final Exception exception)
+            {
+                Verbose.exception(AppExamples.class, "addExample", exception);
+                SwingUtilities.invokeLater(() -> UtilitySwing.setEnabled(panel.getComponents(), true));
             }
         });
         panel.add(drawable);

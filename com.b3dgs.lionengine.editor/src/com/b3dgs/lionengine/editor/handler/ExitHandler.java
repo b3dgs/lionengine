@@ -23,16 +23,24 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.Messages;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.ProjectsPart;
+import com.b3dgs.lionengine.editor.project.ProjectPart;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 
 /**
  * Exit handler implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ExitHandler
+public final class ExitHandler
 {
+    /**
+     * Create handler.
+     */
+    public ExitHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 
@@ -40,12 +48,11 @@ public class ExitHandler
      * @param shell The shell reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(IWorkbench workbench, Shell shell)
     {
         if (MessageDialog.openConfirm(shell, Messages.ExitHandler_Title, Messages.ExitHandler_Text))
         {
-            final ProjectsPart part = UtilEclipse.getPart(ProjectsPart.ID, ProjectsPart.class);
+            final ProjectPart part = UtilPart.getPart(ProjectPart.ID, ProjectPart.class);
             part.close();
             workbench.close();
         }

@@ -53,6 +53,16 @@ public final class ColorRgba
     public static final ColorRgba TRANSPARENT = new ColorRgba(0, 0, 0, 0);
     /** Opaque color. */
     public static final ColorRgba OPAQUE = new ColorRgba(0, 0, 0, 255);
+    /** Minimum color value. */
+    private static final int MIN_COLOR = 0x000000;
+    /** Maximum alpha value. */
+    private static final int MAX_ALPHA = 0xFF000000;
+    /** Maximum red value. */
+    private static final int MAX_RED = 0xFF0000;
+    /** Maximum green value. */
+    private static final int MAX_GREEN = 0x00FF00;
+    /** Maximum blue value. */
+    private static final int MAX_BLUE = 0x0000FF;
 
     /**
      * Apply a filter rgb.
@@ -65,40 +75,15 @@ public final class ColorRgba
      */
     public static int filterRgb(int rgb, int fr, int fg, int fb)
     {
-        if (-16711423 == rgb || 0 == rgb || 16711935 == rgb)
+        if (rgb == 0)
         {
             return rgb;
         }
 
-        final int a = rgb & 0xFF000000;
-        int r = (rgb & 0xFF0000) + fr;
-        int g = (rgb & 0x00FF00) + fg;
-        int b = (rgb & 0x0000FF) + fb;
-
-        if (r < 0x000000)
-        {
-            r = 0x000000;
-        }
-        if (r > 0xFF0000)
-        {
-            r = 0xFF0000;
-        }
-        if (g < 0x000000)
-        {
-            g = 0x000000;
-        }
-        if (g > 0x00FF00)
-        {
-            g = 0x00FF00;
-        }
-        if (b < 0x000000)
-        {
-            b = 0x000000;
-        }
-        if (b > 0x0000FF)
-        {
-            b = 0x0000FF;
-        }
+        final int a = rgb & MAX_ALPHA;
+        final int r = UtilMath.fixBetween((rgb & MAX_RED) + fr, MIN_COLOR, MAX_RED);
+        final int g = UtilMath.fixBetween((rgb & MAX_GREEN) + fg, MIN_COLOR, MAX_GREEN);
+        final int b = UtilMath.fixBetween((rgb & MAX_BLUE) + fb, MIN_COLOR, MAX_BLUE);
 
         return a | r | g | b;
     }
@@ -114,19 +99,19 @@ public final class ColorRgba
      */
     public static int inc(int value, int r, int g, int b)
     {
-        final int alpha = mask(value >> 24);
+        final int alpha = mask(value >> Constant.BYTE_4);
         if (alpha == 0)
         {
             return 0;
         }
-        final int red = mask(value >> 16);
-        final int green = mask(value >> 8);
-        final int blue = mask(value >> 0);
+        final int red = mask(value >> Constant.BYTE_3);
+        final int green = mask(value >> Constant.BYTE_2);
+        final int blue = mask(value >> Constant.BYTE_1);
 
-        final int alphaMask = mask(255) << 24;
-        final int redMask = mask(UtilMath.fixBetween(red + r, 0, 255)) << 16;
-        final int greenMask = mask(UtilMath.fixBetween(green + g, 0, 255)) << 8;
-        final int blueMask = mask(UtilMath.fixBetween(blue + b, 0, 255)) << 0;
+        final int alphaMask = mask(UtilMath.fixBetween(alpha, 0, 255)) << Constant.BYTE_4;
+        final int redMask = mask(UtilMath.fixBetween(red + r, 0, 255)) << Constant.BYTE_3;
+        final int greenMask = mask(UtilMath.fixBetween(green + g, 0, 255)) << Constant.BYTE_2;
+        final int blueMask = mask(UtilMath.fixBetween(blue + b, 0, 255)) << Constant.BYTE_1;
 
         return alphaMask | redMask | greenMask | blueMask;
     }
@@ -141,11 +126,27 @@ public final class ColorRgba
      */
     public static int getRasterColor(int i, int[] data, int max)
     {
-        if (0 == data[5])
+        final int startIndex = 0;
+        final int start = data[startIndex];
+
+        final int stepIndex = 1;
+        final int step = data[stepIndex];
+
+        final int forceIndex = 2;
+        final int force = data[forceIndex];
+
+        final int amplitudeIndex = 3;
+        final int amplitude = data[amplitudeIndex];
+
+        final int offsetIndex = 4;
+        final int offset = data[offsetIndex];
+
+        final int typeIndex = 5;
+        if (0 == data[typeIndex])
         {
-            return data[0] + data[1] * (int) (data[2] * UtilMath.sin(i * (data[3] / (double) max) - data[4]));
+            return start + step * (int) (force * UtilMath.sin(i * (amplitude / (double) max) - offset));
         }
-        return data[0] + data[1] * (int) (data[2] * UtilMath.cos(i * (data[3] / (double) max) - data[4]));
+        return start + step * (int) (force * UtilMath.cos(i * (amplitude / (double) max) - offset));
     }
 
     /**
@@ -170,7 +171,7 @@ public final class ColorRgba
     public static boolean isOpaqueTransparentExclusive(int colorA, int colorB)
     {
         return colorA == ColorRgba.TRANSPARENT.getRgba() && colorB == ColorRgba.OPAQUE.getRgba()
-                || colorA == ColorRgba.OPAQUE.getRgba() && colorB == ColorRgba.TRANSPARENT.getRgba();
+               || colorA == ColorRgba.OPAQUE.getRgba() && colorB == ColorRgba.TRANSPARENT.getRgba();
     }
 
     /**
@@ -231,7 +232,10 @@ public final class ColorRgba
         Check.superiorOrEqual(a, 0);
         Check.inferiorOrEqual(a, 255);
 
-        value = mask(a) << 24 | mask(r) << 16 | mask(g) << 8 | mask(b) << 0;
+        value = mask(a) << Constant.BYTE_4
+                | mask(r) << Constant.BYTE_3
+                | mask(g) << Constant.BYTE_2
+                | mask(b) << Constant.BYTE_1;
         alpha = a;
         red = r;
         green = g;
@@ -246,10 +250,10 @@ public final class ColorRgba
     public ColorRgba(int value)
     {
         this.value = value;
-        alpha = mask(value >> 24);
-        red = mask(value >> 16);
-        green = mask(value >> 8);
-        blue = mask(value >> 0);
+        alpha = mask(value >> Constant.BYTE_4);
+        red = mask(value >> Constant.BYTE_3);
+        green = mask(value >> Constant.BYTE_2);
+        blue = mask(value >> Constant.BYTE_1);
     }
 
     /**

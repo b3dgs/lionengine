@@ -63,8 +63,8 @@ public final class UtilRandom
     /**
      * Get a random value from an interval.
      * 
-     * @param min The minimum value (>= 0).
-     * @param max The maximum value (>= 0 && >= min).
+     * @param min The minimum value (positive).
+     * @param max The maximum value (positive and superior or equal to min).
      * @return A value between min inclusive and max inclusive.
      */
     public static int getRandomInteger(int min, int max)
@@ -97,6 +97,6 @@ public final class UtilRandom
      */
     private UtilRandom()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

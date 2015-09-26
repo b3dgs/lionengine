@@ -56,9 +56,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class BuildButton
-        extends ObjectGame
-        implements Action, Assign, Updatable, Renderable
+class BuildButton extends ObjectGame implements Action, Assign, Updatable, Renderable
 {
     /** Build farm media. */
     public static final Media FARM = Medias.create("BuildFarm.xml");
@@ -105,7 +103,7 @@ class BuildButton
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
 
-        image = Drawable.loadImage(setup.surface);
+        image = Drawable.loadImage(setup.getSurface());
         target = Medias.create(setup.getConfigurer().getText("media"));
 
         actionable.setClickAction(Mouse.LEFT);
@@ -126,8 +124,11 @@ class BuildButton
     {
         state = assignable;
         final ConfigSize size = ConfigSize.create(new Configurer(target));
-        area = Geom.createRectangle(cursor.getInTileX() * cursor.getWidth(), cursor.getInTileY() * cursor.getHeight(),
-                size.getWidth(), size.getHeight());
+        area = Geom.createRectangle(cursor.getInTileX()
+                                    * cursor.getWidth(),
+                                    cursor.getInTileY() * cursor.getHeight(),
+                                    size.getWidth(),
+                                    size.getHeight());
     }
 
     @Override
@@ -159,8 +160,11 @@ class BuildButton
         state.update(extrp);
         if (area != null)
         {
-            area.set(cursor.getInTileX() * cursor.getWidth(), cursor.getInTileY() * cursor.getHeight(),
-                    area.getWidth(), area.getHeight());
+            area.set(cursor.getInTileX()
+                     * cursor.getWidth(),
+                     cursor.getInTileY() * cursor.getHeight(),
+                     area.getWidth(),
+                     area.getHeight());
         }
     }
 
@@ -171,8 +175,13 @@ class BuildButton
         if (area != null)
         {
             g.setColor(ColorRgba.GREEN);
-            g.drawRect(viewer, Origin.TOP_LEFT, area.getX(), area.getY(), (int) area.getWidth(),
-                    (int) area.getHeight(), false);
+            g.drawRect(viewer,
+                       Origin.TOP_LEFT,
+                       area.getX(),
+                       area.getY(),
+                       (int) area.getWidth(),
+                       (int) area.getHeight(),
+                       false);
         }
     }
 }

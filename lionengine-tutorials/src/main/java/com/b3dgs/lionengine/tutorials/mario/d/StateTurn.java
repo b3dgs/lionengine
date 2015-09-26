@@ -33,9 +33,7 @@ import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateTurn
-        extends StateGame
-        implements StateInputDirectionalUpdater
+class StateTurn extends StateGame implements StateInputDirectionalUpdater
 {
     /** Mirrorable reference. */
     final Mirrorable mirrorable;
@@ -90,9 +88,7 @@ class StateTurn
     /**
      * Transition from {@link StateTurn} to {@link StateIdle}.
      */
-    private final class TransitionTurnToIdle
-            extends StateTransition
-            implements StateTransitionInputDirectionalChecker
+    private final class TransitionTurnToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -105,8 +101,9 @@ class StateTurn
         @Override
         public boolean check(InputDeviceDirectional input)
         {
-            return input.getHorizontalDirection() == 0 && movement.getDirectionHorizontal() == 0
-                    && input.getVerticalDirection() == 0;
+            return input.getHorizontalDirection() == 0
+                   && movement.getDirectionHorizontal() == 0
+                   && input.getVerticalDirection() == 0;
         }
 
         @Override
@@ -119,9 +116,7 @@ class StateTurn
     /**
      * Transition from {@link StateTurn} to {@link StateWalk}.
      */
-    private final class TransitionTurnToWalk
-            extends StateTransition
-            implements StateTransitionInputDirectionalChecker
+    private final class TransitionTurnToWalk extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -134,18 +129,16 @@ class StateTurn
         @Override
         public boolean check(InputDeviceDirectional input)
         {
-            return (input.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() < 0 || input
-                    .getHorizontalDirection() > 0 && movement.getDirectionHorizontal() > 0)
-                    && input.getVerticalDirection() == 0;
+            return (input.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() < 0
+                    || input.getHorizontalDirection() > 0 && movement.getDirectionHorizontal() > 0)
+                   && input.getVerticalDirection() == 0;
         }
     }
 
     /**
      * Transition from {@link StateTurn} to {@link StateJump}.
      */
-    private final class TransitionTurnToJump
-            extends StateTransition
-            implements StateTransitionInputDirectionalChecker
+    private final class TransitionTurnToJump extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.

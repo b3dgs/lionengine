@@ -50,9 +50,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Peon
-        extends ObjectGame
-        implements Updatable, Renderable, ProducerChecker, ProducerListener
+class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker, ProducerListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
@@ -86,7 +84,7 @@ class Peon
         viewer = services.get(Viewer.class);
         mapPath = services.get(MapTilePath.class);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 15, 9);
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
         visible = true;
@@ -117,8 +115,9 @@ class Peon
     public boolean checkProduction(Producible producible)
     {
         return UtilMath.isBetween(transformable.getX(), producible.getX(), producible.getX() + producible.getWidth())
-                && UtilMath.isBetween(transformable.getY(), producible.getY() - producible.getHeight(),
-                        producible.getY());
+               && UtilMath.isBetween(transformable.getY(),
+                                     producible.getY() - producible.getHeight(),
+                                     producible.getY());
     }
 
     @Override
@@ -143,9 +142,12 @@ class Peon
     public void notifyProduced(Producible producible, ObjectGame object)
     {
         final MapTile map = mapPath.getMap();
-        final CoordTile coord = mapPath.getFreeTileAround(pathfindable, (int) producible.getX() / map.getTileWidth(),
-                (int) producible.getY() / map.getTileHeight(), producible.getWidth() / map.getTileWidth(),
-                producible.getHeight() / map.getTileHeight(), map.getInTileRadius());
+        final CoordTile coord = mapPath.getFreeTileAround(pathfindable,
+                                                          (int) producible.getX() / map.getTileWidth(),
+                                                          (int) producible.getY() / map.getTileHeight(),
+                                                          producible.getWidth() / map.getTileWidth(),
+                                                          producible.getHeight() / map.getTileHeight(),
+                                                          map.getInTileRadius());
         if (coord != null)
         {
             pathfindable.setLocation(coord.getX(), coord.getY());

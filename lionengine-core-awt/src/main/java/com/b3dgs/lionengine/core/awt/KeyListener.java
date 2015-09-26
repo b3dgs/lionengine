@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.core.InputDeviceKeyListener;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class KeyListener
-        implements java.awt.event.KeyListener
+final class KeyListener implements java.awt.event.KeyListener
 {
     /** The original listener. */
     private final InputDeviceKeyListener listener;

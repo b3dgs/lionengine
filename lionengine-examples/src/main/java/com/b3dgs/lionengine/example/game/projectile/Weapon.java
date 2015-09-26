@@ -36,9 +36,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Weapon
-        extends ObjectGame
-        implements Updatable, LauncherListener
+class Weapon extends ObjectGame implements Updatable, LauncherListener
 {
     /** Media. */
     public static final Media PULSE_CANNON = Medias.create("PulseCannon.xml");

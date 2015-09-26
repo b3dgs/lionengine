@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
-import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
@@ -41,8 +40,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-class Scene
-        extends Sequence
+class Scene extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(640, 480, 60);
@@ -95,14 +93,7 @@ class Scene
         anim = Anim.createAnimation(null, 4, 6, 0.125, false, true);
 
         // Exit
-        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                end();
-            }
-        });
+        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
@@ -110,12 +101,18 @@ class Scene
     {
         // Prepare surfaces without alpha (need to be called only one time)
         // If this function is not called, there won't have any surface to display
-        image.load(false);
-        sprite.load(false);
-        animation.load(false);
-        animationMirror.load(false);
-        tilesheets.load(false);
-        tilesheet.load(false);
+        image.load();
+        image.prepare();
+        sprite.load();
+        sprite.prepare();
+        animation.load();
+        animation.prepare();
+        animationMirror.load();
+        animationMirror.prepare();
+        tilesheets.load();
+        tilesheets.prepare();
+        tilesheet.load();
+        tilesheet.prepare();
 
         tile = 0.0;
 

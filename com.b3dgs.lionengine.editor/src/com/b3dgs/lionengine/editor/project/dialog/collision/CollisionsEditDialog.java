@@ -27,9 +27,9 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
@@ -45,16 +45,17 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsEditDialog
-        extends AbstractDialog
+public class CollisionsEditDialog extends AbstractDialog
 {
     /** Icon. */
-    public static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
+    public static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
     /** Collisions media. */
     final Media collisions;
+    /** Collisions properties. */
+    private final CollisionsProperties properties = new CollisionsProperties();
     /** Collisions list. */
-    private final CollisionList list = new CollisionList();
+    private final CollisionList list = new CollisionList(properties);
 
     /**
      * Create a collisions edit dialog.
@@ -64,8 +65,11 @@ public class CollisionsEditDialog
      */
     public CollisionsEditDialog(Shell parent, Media collisions)
     {
-        super(parent, Messages.EditCollisionsDialog_Title, Messages.EditCollisionsDialog_HeaderTitle,
-                Messages.EditCollisionsDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.EditCollisionsDialog_Title,
+              Messages.EditCollisionsDialog_HeaderTitle,
+              Messages.EditCollisionsDialog_HeaderDesc,
+              ICON);
         this.collisions = collisions;
         dialog.setMinimumSize(128, 320);
         createDialog();
@@ -82,35 +86,36 @@ public class CollisionsEditDialog
         content.setLayout(new GridLayout(2, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         list.create(content);
-        list.loadCollisions(collisions);
         list.addListener(list);
 
-        final CollisionsProperties properties = new CollisionsProperties(list);
         properties.create(content);
         list.addListener(properties);
+        list.loadCollisions(collisions);
     }
 
     @Override
     protected void onFinish()
     {
+        list.save();
+
         final XmlNode root = Stream.createXmlNode(ConfigCollisionGroup.COLLISIONS);
         root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
 
         for (final TreeItem item : list.getTree().getItems())
         {
             final CollisionGroup collision = (CollisionGroup) item.getData();
-            final XmlNode nodeGroup = Stream.createXmlNode(ConfigCollisionGroup.COLLISION);
+            final XmlNode nodeGroup = root.createChild(ConfigCollisionGroup.COLLISION);
             nodeGroup.writeString(ConfigCollisionGroup.GROUP, collision.getName());
+
             for (final CollisionFormula formula : collision.getFormulas())
             {
-                final XmlNode nodeFormula = Stream.createXmlNode(ConfigCollisionFormula.FORMULA);
+                final XmlNode nodeFormula = nodeGroup.createChild(ConfigCollisionFormula.FORMULA);
                 nodeFormula.setText(formula.getName());
-                nodeGroup.add(nodeFormula);
             }
-            root.add(nodeGroup);
         }
         Stream.saveXml(root, collisions);
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+
+        final MapTile map = WorldModel.INSTANCE.getMap();
         if (map.hasFeature(MapTileCollision.class))
         {
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);

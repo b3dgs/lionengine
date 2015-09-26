@@ -31,8 +31,7 @@ import java.util.Collection;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface TilePath
-        extends TileFeature
+public interface TilePath extends TileFeature
 {
     /**
      * Add an object ID over this tile.

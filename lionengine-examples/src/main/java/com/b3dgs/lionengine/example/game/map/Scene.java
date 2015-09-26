@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
-import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -38,8 +37,7 @@ import com.b3dgs.lionengine.game.object.Services;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-class Scene
-        extends Sequence
+class Scene extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
@@ -67,21 +65,15 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, NATIVE);
-        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                end();
-            }
-        });
+        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
     protected void load()
     {
         map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
-        minimap.load(false);
+        minimap.load();
+        minimap.prepare();
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
         size = map.getInTileWidth() * map.getTileWidth() - camera.getWidth();
@@ -111,8 +103,11 @@ class Scene
         map.render(g);
         minimap.render(g);
         g.setColor(ColorRgba.RED);
-        g.drawRect((int) (camera.getX() / map.getTileWidth()), (int) (camera.getY() / map.getTileHeight()),
-                camera.getWidth() / map.getTileWidth(), camera.getHeight() / map.getTileWidth(), false);
+        g.drawRect((int) (camera.getX() / map.getTileWidth()),
+                   (int) (camera.getY() / map.getTileHeight()),
+                   camera.getWidth() / map.getTileWidth(),
+                   camera.getHeight() / map.getTileWidth(),
+                   false);
     }
 
     @Override

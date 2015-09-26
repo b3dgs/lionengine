@@ -19,12 +19,18 @@ package com.b3dgs.lionengine.core;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -34,6 +40,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * </p>
  * 
  * <pre>
+ * Verbose.set(Verbose.INFORMATION, Verbose.WARNING, Verbose.CRITICAL);
  * Verbose.info(&quot;Code reached&quot;);
  * try
  * {
@@ -47,6 +54,7 @@ import com.b3dgs.lionengine.LionEngineException;
  *     Verbose.exception(MyClass.class, &quot;function&quot;, exception);
  * }
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -55,8 +63,6 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public enum Verbose
 {
-    /** Verbose disabled. */
-    NONE,
     /** Only information messages. */
     INFORMATION,
     /** Information and warning messages. */
@@ -65,23 +71,48 @@ public enum Verbose
     CRITICAL;
 
     /** Logger. */
-    private static final Logger LOGGER = Logger.getAnonymousLogger();
+    private static final Logger LOGGER = Logger.getLogger(Constant.EMPTY_STRING);
+    /** One megabyte. */
+    private static final int MEGA_BYTE = 1048576;
+    /** Log size. */
+    private static final int LOG_SIZE = MEGA_BYTE * 4;
+    /** Log count. */
+    private static final int LOG_COUNT = 6;
+    /** Log file. */
+    private static final String LOG_FILE = "%t/lionengine-%g.log";
+    /** Separator date. */
+    private static final String SEPARATOR_DATE = " - ";
+    /** In. */
+    private static final String IN = "in ";
+    /** At. */
+    private static final String AT = " at ";
     /** Error formatter. */
     private static final String ERROR_FORMATTER = "Unable to set logger formatter due to security exception !";
+    /** Error level. */
+    private static final String ERROR_LEVEL = "Unknown level: ";
     /** Verbose flag. */
-    private static volatile Verbose level = CRITICAL;
+    private static final Collection<Verbose> LEVELS = new HashSet<Verbose>();
+
+    /**
+     * Set default verbose values.
+     */
+    static
+    {
+        for (final Verbose verbose : Verbose.values())
+        {
+            LEVELS.add(verbose);
+        }
+    }
 
     /**
      * Display an informative verbose message to standard output.
      * 
      * @param message The list of messages.
+     * @see Verbose#INFORMATION
      */
     public static synchronized void info(String... message)
     {
-        if (NONE != level)
-        {
-            verbose(INFORMATION, null, null, null, message);
-        }
+        verbose(INFORMATION, null, null, null, message);
     }
 
     /**
@@ -90,13 +121,11 @@ public enum Verbose
      * @param clazz The current class name.
      * @param function The current function name.
      * @param message The list of messages.
+     * @see Verbose#WARNING
      */
     public static synchronized void warning(Class<?> clazz, String function, String... message)
     {
-        if (WARNING == level || CRITICAL == level)
-        {
-            verbose(WARNING, clazz, function, null, message);
-        }
+        verbose(WARNING, clazz, function, null, message);
     }
 
     /**
@@ -105,13 +134,11 @@ public enum Verbose
      * @param clazz The current class name.
      * @param function The current function name.
      * @param message The list of messages.
+     * @see Verbose#CRITICAL
      */
     public static synchronized void critical(Class<?> clazz, String function, String... message)
     {
-        if (CRITICAL == level)
-        {
-            verbose(CRITICAL, clazz, function, null, message);
-        }
+        verbose(CRITICAL, clazz, function, null, message);
     }
 
     /**
@@ -121,23 +148,25 @@ public enum Verbose
      * @param function The current function name.
      * @param thrown The thrown exception.
      * @param message The list of messages.
+     * @see Verbose#CRITICAL
      */
     public static synchronized void exception(Class<?> clazz, String function, Throwable thrown, String... message)
     {
-        if (CRITICAL == level)
-        {
-            verbose(CRITICAL, clazz, function, thrown, message);
-        }
+        verbose(CRITICAL, clazz, function, thrown, message);
     }
 
     /**
      * Set the verbosity level.
      * 
-     * @param verbose Verbosity level.
+     * @param verboses Verbosity levels.
      */
-    public static synchronized void set(Verbose verbose)
+    public static synchronized void set(Verbose... verboses)
     {
-        level = verbose;
+        LEVELS.clear();
+        for (final Verbose verbose : verboses)
+        {
+            LEVELS.add(verbose);
+        }
     }
 
     /**
@@ -147,15 +176,19 @@ public enum Verbose
     {
         try
         {
-            final Handler[] handlers = Logger.getLogger("").getHandlers();
+            final VerboseFormatter formatter = new VerboseFormatter();
+            final FileHandler fileHandler = new FileHandler(LOG_FILE, LOG_SIZE, LOG_COUNT, true);
+            LOGGER.addHandler(fileHandler);
+
+            final Handler[] handlers = LOGGER.getHandlers();
             for (final Handler handler : handlers)
             {
-                handler.setFormatter(new VerboseFormatter());
+                handler.setFormatter(formatter);
             }
         }
-        catch (final SecurityException exception)
+        catch (final Exception exception)
         {
-            critical(Verbose.class, "start", ERROR_FORMATTER);
+            exception(Verbose.class, "prepareLogger", exception, ERROR_FORMATTER);
         }
     }
 
@@ -170,31 +203,28 @@ public enum Verbose
      */
     private static void verbose(Verbose level, Class<?> clazz, String function, Throwable thrown, String... message)
     {
-        final StringBuilder builder = new StringBuilder("");
-        for (final String element : message)
+        if (LEVELS.contains(level))
         {
-            builder.append(element);
-        }
-        final String verbose = builder.toString();
-        switch (level)
-        {
-            case NONE:
-                LOGGER.setLevel(Level.OFF);
-                break;
-            case INFORMATION:
-                LOGGER.setLevel(Level.INFO);
-                LOGGER.logp(Level.INFO, null, null, verbose, thrown);
-                break;
-            case WARNING:
-                LOGGER.setLevel(Level.WARNING);
-                LOGGER.logp(Level.WARNING, clazz.getSimpleName(), function, verbose, thrown);
-                break;
-            case CRITICAL:
-                LOGGER.setLevel(Level.SEVERE);
-                LOGGER.logp(Level.SEVERE, clazz.getSimpleName(), function, verbose, thrown);
-                break;
-            default:
-                throw new LionEngineException("Unknown level: " + level);
+            final StringBuilder builder = new StringBuilder();
+            for (final String element : message)
+            {
+                builder.append(element);
+            }
+            final String verbose = builder.toString();
+            switch (level)
+            {
+                case INFORMATION:
+                    LOGGER.logp(Level.INFO, null, null, verbose, thrown);
+                    break;
+                case WARNING:
+                    LOGGER.logp(Level.WARNING, clazz.getSimpleName(), function, verbose, thrown);
+                    break;
+                case CRITICAL:
+                    LOGGER.logp(Level.SEVERE, clazz.getSimpleName(), function, verbose, thrown);
+                    break;
+                default:
+                    throw new LionEngineException(ERROR_LEVEL + level);
+            }
         }
     }
 
@@ -203,9 +233,11 @@ public enum Verbose
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private static class VerboseFormatter
-            extends Formatter
+    private static final class VerboseFormatter extends Formatter
     {
+        /** Date formatter. */
+        private final DateFormat format = DateFormat.getInstance();
+
         /**
          * Internal constructor.
          */
@@ -220,17 +252,19 @@ public enum Verbose
             final String clazz = event.getSourceClassName();
             final String function = event.getSourceMethodName();
             final Throwable thrown = event.getThrown();
-            final StringBuilder message = new StringBuilder(event.getLevel().getName()).append(": ");
+            final StringBuilder message = new StringBuilder(event.getLevel().getName()).append(Constant.DOUBLE_DOT);
 
+            message.append(format.format(Calendar.getInstance().getTime()));
+            message.append(SEPARATOR_DATE);
             if (clazz != null)
             {
-                message.append("in ").append(clazz);
+                message.append(IN).append(clazz);
             }
             if (function != null)
             {
-                message.append(" at ").append(function).append(": ");
+                message.append(AT).append(function).append(Constant.DOUBLE_DOT);
             }
-            message.append(event.getMessage()).append("\n");
+            message.append(event.getMessage()).append(Constant.NEW_LINE);
             if (thrown != null)
             {
                 final StringWriter sw = new StringWriter();

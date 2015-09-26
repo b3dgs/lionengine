@@ -26,17 +26,19 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Locale;
 import java.util.Properties;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.utility.UtilClass;
 
 /**
  * Represents a project and its data.
@@ -90,10 +92,10 @@ public final class Project
     public static Project create(File projectPath) throws IOException
     {
         Verbose.info(Project.VERBOSE_READ_PROJECT_PROPERTIES, projectPath.getAbsolutePath());
-        try (InputStream inputStream = new FileInputStream(new File(projectPath, Project.PROPERTIES_FILE)))
+        try (InputStream input = new FileInputStream(new File(projectPath, Project.PROPERTIES_FILE)))
         {
             final Properties properties = new Properties();
-            properties.load(inputStream);
+            properties.load(input);
 
             final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES);
             final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES);
@@ -126,6 +128,11 @@ public final class Project
         if (!path.startsWith(fromPath))
         {
             throw new LionEngineException(error + path);
+        }
+        if (fromPath.length() == path.length())
+        {
+            // Media folder itself
+            return Medias.create(Constant.EMPTY_STRING);
         }
         final int fromPrefix = fromPath.length() + 1;
         final String relativePath = path.substring(fromPrefix);
@@ -315,7 +322,7 @@ public final class Project
         {
             return classLoader.loadClass(name);
         }
-        catch (final ClassNotFoundException exception)
+        catch (final ClassNotFoundException | NoClassDefFoundError exception)
         {
             throw new LionEngineException(exception, Project.ERROR_LOAD_CLASS, name);
         }
@@ -332,7 +339,9 @@ public final class Project
      */
     public <C> Class<? extends C> getClass(Media media, Class<C> clazz) throws LionEngineException
     {
-        final String name = media.getPath().replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".");
+        final String name = media.getPath()
+                                 .replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
+                                 .replace(File.separator, Constant.DOT);
         final Class<?> clazzRef = getClass(name);
         try
         {
@@ -386,18 +395,28 @@ public final class Project
         urls.add(librariesPath.toURI().toURL());
         if (librariesPath.isDirectory())
         {
-            final File[] files = librariesPath.listFiles();
-            if (files != null)
-            {
-                for (final File file : files)
-                {
-                    if (file.isFile() && file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jar"))
-                    {
-                        urls.add(file.toURI().toURL());
-                    }
-                }
-            }
+            urls.addAll(getJars(UtilFile.getFiles(librariesPath)));
         }
         return new URLClassLoader(urls.toArray(new URL[urls.size()]), bundleClassLoader);
+    }
+
+    /**
+     * Get all jar files as URL.
+     * 
+     * @param files The files.
+     * @return The jars URL.
+     * @throws MalformedURLException If error on URL.
+     */
+    private static Collection<URL> getJars(Collection<File> files) throws MalformedURLException
+    {
+        final Collection<URL> urls = new ArrayList<>();
+        for (final File file : files)
+        {
+            if (UtilClass.isJar(file))
+            {
+                urls.add(file.toURI().toURL());
+            }
+        }
+        return urls;
     }
 }

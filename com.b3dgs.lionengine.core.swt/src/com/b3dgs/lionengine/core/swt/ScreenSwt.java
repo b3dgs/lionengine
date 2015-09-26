@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.core.swt;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -33,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.EngineCore;
@@ -44,7 +47,6 @@ import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Screen implementation.
@@ -53,24 +55,22 @@ import com.b3dgs.lionengine.core.Verbose;
  * @see Keyboard
  * @see Mouse
  */
-abstract class ScreenSwt
-        implements Screen, FocusListener
+abstract class ScreenSwt implements Screen, FocusListener
 {
-    /** Display. */
-    static Display display;
-
     /** Renderer reference. */
-    final Renderer renderer;
+    protected final Renderer renderer;
+    /** Current display. */
+    protected final Display display;
+    /** Hidden cursor instance. */
+    protected final Cursor cursorHidden;
+    /** Default cursor instance. */
+    protected final Cursor cursorDefault;
     /** Configuration reference. */
     protected final Config config;
     /** Frame reference. */
     protected final Shell frame;
-    /** Hidden cursor instance. */
-    private final Cursor cursorHidden;
-    /** Default cursor instance. */
-    private final Cursor cursorDefault;
     /** Input devices. */
-    private final HashMap<Class<? extends InputDevice>, InputDevice> devices;
+    private final Map<Class<? extends InputDevice>, InputDevice> devices;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
     /** Buffer reference. */
@@ -101,13 +101,13 @@ abstract class ScreenSwt
     {
         Check.notNull(renderer);
 
-        ScreenSwt.display = new Display();
         this.renderer = renderer;
+        display = UtilityImage.getDisplay();
         config = renderer.getConfig();
-        cursorHidden = ToolsSwt.createHiddenCursor();
-        cursorDefault = ScreenSwt.display.getSystemCursor(0);
+        cursorHidden = ToolsSwt.createHiddenCursor(display);
+        cursorDefault = display.getSystemCursor(0);
         graphics = Graphics.createGraphic();
-        devices = new HashMap<>(2);
+        devices = new HashMap<Class<? extends InputDevice>, InputDevice>(2);
         frame = initMainFrame(config.isWindowed());
 
         setResolution(config.getOutput());
@@ -128,20 +128,20 @@ abstract class ScreenSwt
         final Shell shell;
         if (windowed)
         {
-            shell = new Shell(ScreenSwt.display, SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.NO_BACKGROUND);
+            shell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.NO_BACKGROUND);
         }
         else
         {
-            shell = new Shell(ScreenSwt.display, SWT.NO_TRIM | SWT.ON_TOP);
-            shell.setBounds(ScreenSwt.display.getPrimaryMonitor().getBounds());
+            shell = new Shell(display, SWT.NO_TRIM | SWT.ON_TOP);
+            shell.setBounds(display.getPrimaryMonitor().getBounds());
         }
-        shell.setText(EngineCore.getProgramName() + " " + EngineCore.getProgramVersion());
+        shell.setText(EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion());
         shell.addDisposeListener(new DisposeListener()
         {
             @Override
             public void widgetDisposed(DisposeEvent event)
             {
-                renderer.end(null);
+                renderer.end();
             }
         });
         return shell;
@@ -162,7 +162,7 @@ abstract class ScreenSwt
      */
     private void addDeviceMouse()
     {
-        final MouseSwt mouse = new MouseSwt(ScreenSwt.display);
+        final MouseSwt mouse = new MouseSwt(display);
         addMouseListener(mouse);
         devices.put(Mouse.class, mouse);
     }
@@ -172,14 +172,7 @@ abstract class ScreenSwt
      */
     private void prepareFocusListener()
     {
-        try
-        {
-            frame.addFocusListener(this);
-        }
-        catch (final Exception exception)
-        {
-            Verbose.critical(Screen.class, "constructor", "Mouse focus listener can not be added !");
-        }
+        frame.addFocusListener(this);
     }
 
     /**
@@ -244,7 +237,7 @@ abstract class ScreenSwt
     @Override
     public void update()
     {
-        ScreenSwt.display.readAndDispatch();
+        display.readAndDispatch();
         if (!canvas.isDisposed())
         {
             final GC gc = new GC(canvas);
@@ -267,40 +260,68 @@ abstract class ScreenSwt
         update();
         buf.dispose();
         frame.dispose();
-        ScreenSwt.display.dispose();
+        display.dispose();
     }
 
     @Override
     public void requestFocus()
     {
-        if (!frame.isDisposed())
+        display.syncExec(new Runnable()
         {
-            frame.forceFocus();
-        }
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    frame.forceFocus();
+                }
+            }
+        });
     }
 
     @Override
     public void hideCursor()
     {
-        if (!frame.isDisposed())
+        display.syncExec(new Runnable()
         {
-            frame.setCursor(cursorHidden);
-        }
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    frame.setCursor(cursorHidden);
+                }
+            }
+        });
     }
 
     @Override
     public void showCursor()
     {
-        if (!frame.isDisposed())
+        display.syncExec(new Runnable()
         {
-            frame.setCursor(cursorDefault);
-        }
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    frame.setCursor(cursorDefault);
+                }
+            }
+        });
     }
 
     @Override
-    public void addKeyListener(InputDeviceKeyListener listener)
+    public void addKeyListener(final InputDeviceKeyListener listener)
     {
-        frame.addKeyListener(new KeyListener(listener));
+        display.syncExec(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                frame.addKeyListener(new KeyListener(listener));
+            }
+        });
     }
 
     @Override
@@ -310,13 +331,20 @@ abstract class ScreenSwt
     }
 
     @Override
-    public void setIcon(String filename)
+    public void setIcon(final String filename)
     {
-        if (!frame.isDisposed())
+        display.syncExec(new Runnable()
         {
-            final Image icon = new Image(ScreenSwt.display, filename);
-            frame.setImage(icon);
-        }
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    final Image icon = new Image(display, filename);
+                    frame.setImage(icon);
+                }
+            }
+        });
     }
 
     @Override
@@ -340,21 +368,37 @@ abstract class ScreenSwt
     @Override
     public int getX()
     {
-        if (!frame.isDisposed())
+        final AtomicInteger x = new AtomicInteger(0);
+        display.syncExec(new Runnable()
         {
-            return frame.getLocation().x;
-        }
-        return 0;
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    x.set(frame.getLocation().x);
+                }
+            }
+        });
+        return x.get();
     }
 
     @Override
     public int getY()
     {
-        if (!frame.isDisposed())
+        final AtomicInteger y = new AtomicInteger(0);
+        display.syncExec(new Runnable()
         {
-            return frame.getLocation().y;
-        }
-        return 0;
+            @Override
+            public void run()
+            {
+                if (!frame.isDisposed())
+                {
+                    y.set(frame.getLocation().y);
+                }
+            }
+        });
+        return y.get();
     }
 
     @Override

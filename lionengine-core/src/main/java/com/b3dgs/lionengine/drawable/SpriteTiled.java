@@ -37,13 +37,13 @@ package com.b3dgs.lionengine.drawable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface SpriteTiled
-        extends Sprite
+public interface SpriteTiled extends Sprite
 {
     /**
      * Set the active tile.
      * 
-     * @param tile The tile to render (>= 0 & < {@link #getTilesHorizontal()} * {@link #getTilesVertical()}).
+     * @param tile The tile to render (superior or equal to 0 and inferior to {@link #getTilesHorizontal()} *
+     *            {@link #getTilesVertical()}).
      */
     void setTile(int tile);
 

@@ -20,18 +20,18 @@ package com.b3dgs.lionengine.game.trait.fovable;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Fovable model implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.trait.Trait}:
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>
  * </ul>
+ * <p>
  * The {@link Services} must provide the following services:
  * </p>
  * <ul>
@@ -40,9 +40,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FovableModel
-        extends TraitModel
-        implements Fovable
+public class FovableModel extends TraitModel implements Fovable
 {
     /** Map tile reference. */
     private MapTile map;

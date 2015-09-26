@@ -23,15 +23,14 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.ImageInfo;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.surface.PropertiesSurface;
+import com.b3dgs.lionengine.editor.utility.UtilDialog;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -39,37 +38,42 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SurfaceSetHandler
+public final class SurfaceSetHandler
 {
+    /**
+     * Create handler.
+     */
+    public SurfaceSetHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
-        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
-        final String file = Tools.selectFile(properties.getShell(), configurer.getPath(), true);
+        final String file = UtilDialog.selectFile(properties.getShell(), configurer.getPath(), true);
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = Stream.createXmlNode(ConfigSurface.SURFACE);
-            surfaceNode.writeString(ConfigSurface.SURFACE_IMAGE, file);
-
             if (!root.hasChild(ConfigSize.SIZE))
             {
-                final XmlNode size = Stream.createXmlNode(ConfigSize.SIZE);
-                root.add(size);
-
                 final File surface = new File(configurer.getPath(), file);
                 final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(surface));
+
+                final XmlNode size = root.createChild(ConfigSize.SIZE);
                 size.writeInteger(ConfigSize.SIZE_WIDTH, info.getWidth());
                 size.writeInteger(ConfigSize.SIZE_HEIGHT, info.getHeight());
             }
 
-            root.add(surfaceNode);
+            final XmlNode surfaceNode = root.createChild(ConfigSurface.SURFACE);
+            surfaceNode.writeString(ConfigSurface.SURFACE_IMAGE, file);
+
             configurer.save();
             PropertiesSurface.createAttributeSurface(properties, configurer);
             part.setInput(properties, configurer);

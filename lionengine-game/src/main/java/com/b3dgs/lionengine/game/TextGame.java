@@ -37,8 +37,7 @@ import com.b3dgs.lionengine.core.Text;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TextGame
-        implements Text
+public class TextGame implements Text
 {
     /** Text reference. */
     private final Text text;

@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -41,7 +40,7 @@ public final class ConfigCollisionCategory
     public static final String CATEGORY = Configurer.PREFIX + "category";
     /** Category attribute name. */
     public static final String NAME = "name";
-    /** Category axis attribute. */
+    /** Category attribute axis. */
     public static final String AXIS = "axis";
     /** Category attribute horizontal offset. */
     public static final String X = "x";
@@ -60,18 +59,22 @@ public final class ConfigCollisionCategory
      */
     public static Collection<CollisionCategory> create(XmlNode root) throws LionEngineException
     {
-        final Collection<CollisionCategory> categories = new ArrayList<>();
+        final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
         for (final XmlNode node : root.getChildren(CATEGORY))
         {
-            final Collection<CollisionGroup> groups = new ArrayList<>();
+            final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>();
             for (final XmlNode group : node.getChildren(ConfigTileGroup.GROUP))
             {
                 final String name = group.getText();
                 groups.add(new CollisionGroup(name, new ArrayList<CollisionFormula>(0)));
             }
-            final CollisionCategory category = new CollisionCategory(node.readString(NAME), Axis.valueOf(node
-                    .readString(AXIS)), Integer.parseInt(node.readString(X)), Integer.parseInt(node.readString(Y)),
-                    groups);
+
+            final String name = node.readString(NAME);
+            final Axis axis = Axis.valueOf(node.readString(AXIS));
+            final int x = node.readInteger(X);
+            final int y = node.readInteger(Y);
+
+            final CollisionCategory category = new CollisionCategory(name, axis, x, y, groups);
             categories.add(category);
         }
         return categories;
@@ -88,7 +91,7 @@ public final class ConfigCollisionCategory
     public static Collection<CollisionCategory> create(Configurer configurer, MapTileCollision map)
             throws LionEngineException
     {
-        final Collection<CollisionCategory> categories = new ArrayList<>();
+        final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
         for (final XmlNode node : configurer.getRoot().getChildren(CATEGORY))
         {
             final CollisionCategory category = create(node, map);
@@ -107,45 +110,51 @@ public final class ConfigCollisionCategory
      */
     public static CollisionCategory create(XmlNode root, MapTileCollision map) throws LionEngineException
     {
-        final Collection<CollisionGroup> groups = new ArrayList<>();
+        final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>();
         for (final XmlNode groupNode : root.getChildren(ConfigTileGroup.GROUP))
         {
             final String groupName = groupNode.getText();
             final CollisionGroup group = map.getCollisionGroup(groupName);
             groups.add(group);
         }
-        final String axis = root.readString(AXIS);
+
+        final String name = root.readString(NAME);
+        final String axisName = root.readString(AXIS);
+        final Axis axis;
         try
         {
-            return new CollisionCategory(root.readString(NAME), Axis.valueOf(axis), root.readInteger(X),
-                    root.readInteger(Y), groups);
+            axis = Axis.valueOf(axisName);
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(ERROR_AXIS, axis);
+            throw new LionEngineException(exception, ERROR_AXIS, axisName);
         }
+        final int x = root.readInteger(X);
+        final int y = root.readInteger(Y);
+
+        return new CollisionCategory(name, axis, x, y, groups);
     }
 
     /**
      * Export the collision category data as a node.
      * 
+     * @param root The node root.
      * @param category The collision category to export.
-     * @return The node reference.
+     * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(CollisionCategory category)
+    public static void export(XmlNode root, CollisionCategory category) throws LionEngineException
     {
-        final XmlNode node = Stream.createXmlNode(CATEGORY);
+        final XmlNode node = root.createChild(CATEGORY);
         node.writeString(NAME, category.getName());
         node.writeString(AXIS, category.getAxis().name());
         node.writeInteger(X, category.getOffsetX());
         node.writeInteger(Y, category.getOffsetY());
+
         for (final CollisionGroup group : category.getGroups())
         {
-            final XmlNode groupNode = Stream.createXmlNode(ConfigTileGroup.GROUP);
+            final XmlNode groupNode = node.createChild(ConfigTileGroup.GROUP);
             groupNode.setText(group.getName());
-            node.add(groupNode);
         }
-        return node;
     }
 
     /**
@@ -153,6 +162,6 @@ public final class ConfigCollisionCategory
      */
     private ConfigCollisionCategory()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

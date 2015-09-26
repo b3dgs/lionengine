@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -39,16 +39,15 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AnimationEditor
-        extends AbstractEditor
+public class AnimationEditor extends AbstractEditor
 {
     /** Dialog icon. */
-    public static final Image ICON = UtilEclipse.getIcon("animation-editor", "dialog.png");
+    public static final Image ICON = UtilIcon.get("animation-editor", "dialog.png");
 
     /** Configurer reference. */
     private final Configurer configurer;
     /** Animations list. */
-    private final AnimationList animationList;
+    private AnimationList animationList;
 
     /**
      * Create an animation editor and associate its configurer.
@@ -60,7 +59,6 @@ public class AnimationEditor
     {
         super(parent, Messages.AnimationEditor_Title, ICON);
         this.configurer = configurer;
-        animationList = new AnimationList(configurer);
     }
 
     /**
@@ -131,7 +129,8 @@ public class AnimationEditor
         final AnimationFrameSelector animationFrameSelector = createAnimationFrameSelector(animationTabs);
         final AnimationRenderer animationRenderer = createAnimationRenderer(animationTabs);
 
-        final AnimationProperties animationProperties = new AnimationProperties(animationList, animationRenderer);
+        final AnimationProperties animationProperties = new AnimationProperties(animationRenderer);
+        animationList = new AnimationList(configurer, animationProperties);
         animationList.addListener(animationProperties);
         final AnimationPlayer animationPlayer = new AnimationPlayer(animationList, animationRenderer);
         animationPlayer.createAnimationPlayer(animationRenderer.getParent().getParent());
@@ -153,13 +152,15 @@ public class AnimationEditor
     @Override
     protected void onExit()
     {
+        animationList.save();
+
         final XmlNode root = configurer.getRoot();
         root.removeChildren(ConfigAnimations.ANIMATION);
+
         for (final TreeItem item : animationList.getTree().getItems())
         {
             final Animation animation = (Animation) item.getData();
-            final XmlNode nodeAnim = ConfigAnimations.createNode(animation);
-            root.add(nodeAnim);
+            ConfigAnimations.export(root, animation);
         }
         configurer.save();
     }

@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
@@ -32,11 +33,10 @@ import com.b3dgs.lionengine.core.Medias;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MediaSwt
-        implements Media
+final class MediaSwt implements Media
 {
     /** No parent. */
-    private static final String NO_PARENT = "";
+    private static final String NO_PARENT = Constant.EMPTY_STRING;
 
     /** Media path. */
     private final String path;
@@ -112,7 +112,10 @@ final class MediaSwt
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (path == null ? 0 : path.hashCode());
+        if (path != null)
+        {
+            result = prime * result + path.hashCode();
+        }
         return result;
     }
 

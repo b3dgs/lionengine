@@ -50,9 +50,11 @@ public final class ConfigForce
     public static Force create(XmlNode root) throws LionEngineException
     {
         final XmlNode node = root.getChild(FORCE);
+
         final Force force = new Force(node.readDouble(FORCE_VX), node.readDouble(FORCE_VY));
         force.setVelocity(node.readDouble(FORCE_VELOCITY));
         force.setSensibility(node.readDouble(FORCE_SENSIBILITY));
+
         return force;
     }
 
@@ -61,6 +63,6 @@ public final class ConfigForce
      */
     private ConfigForce()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

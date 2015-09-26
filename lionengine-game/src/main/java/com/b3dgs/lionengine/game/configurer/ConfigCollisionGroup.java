@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -52,10 +51,10 @@ public final class ConfigCollisionGroup
      */
     public static Collection<CollisionGroup> create(XmlNode root) throws LionEngineException
     {
-        final Collection<CollisionGroup> collisions = new ArrayList<>();
+        final Collection<CollisionGroup> collisions = new ArrayList<CollisionGroup>();
         for (final XmlNode node : root.getChildren(COLLISION))
         {
-            final Collection<CollisionFormula> formulas = new ArrayList<>();
+            final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>();
             for (final XmlNode formula : node.getChildren(ConfigCollisionFormula.FORMULA))
             {
                 final String name = formula.getText();
@@ -77,10 +76,10 @@ public final class ConfigCollisionGroup
      */
     public static Collection<CollisionGroup> create(XmlNode root, MapTileCollision map) throws LionEngineException
     {
-        final Collection<CollisionGroup> collisions = new ArrayList<>();
+        final Collection<CollisionGroup> collisions = new ArrayList<CollisionGroup>();
         for (final XmlNode node : root.getChildren(COLLISION))
         {
-            final Collection<CollisionFormula> formulas = new ArrayList<>();
+            final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>();
             for (final XmlNode formula : node.getChildren(ConfigCollisionFormula.FORMULA))
             {
                 final String name = formula.getText();
@@ -95,18 +94,56 @@ public final class ConfigCollisionGroup
     /**
      * Export the collision group data as a node.
      * 
+     * @param root The node root.
      * @param group The collision group to export.
-     * @return The node reference.
+     * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(CollisionGroup group)
+    public static void export(XmlNode root, CollisionGroup group) throws LionEngineException
     {
-        final XmlNode node = Stream.createXmlNode(COLLISION);
+        final XmlNode node = root.createChild(COLLISION);
         node.writeString(GROUP, group.getName());
+
         for (final CollisionFormula formula : group.getFormulas())
         {
-            node.add(ConfigCollisionFormula.export(formula));
+            final XmlNode nodeFormula = node.createChild(ConfigCollisionFormula.FORMULA);
+            nodeFormula.setText(formula.getName());
         }
-        return node;
+    }
+
+    /**
+     * Remove the group node.
+     * 
+     * @param root The root node.
+     * @param group The group name to remove.
+     */
+    public static void remove(XmlNode root, String group)
+    {
+        for (final XmlNode node : root.getChildren(COLLISION))
+        {
+            if (node.readString(GROUP).equals(group))
+            {
+                root.removeChild(node);
+            }
+        }
+    }
+
+    /**
+     * Check if node has group node.
+     * 
+     * @param root The root node.
+     * @param group The group name to check.
+     * @return <code>true</code> if has group, <code>false</code> else.
+     */
+    public static boolean has(XmlNode root, String group)
+    {
+        for (final XmlNode node : root.getChildren(COLLISION))
+        {
+            if (node.readString(GROUP).equals(group))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -114,6 +151,6 @@ public final class ConfigCollisionGroup
      */
     private ConfigCollisionGroup()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

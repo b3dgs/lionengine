@@ -43,8 +43,10 @@ public final class ConfigSize
      */
     public static ConfigSize create(Configurer configurer) throws LionEngineException
     {
-        return new ConfigSize(configurer.getInteger(ConfigSize.SIZE_WIDTH, ConfigSize.SIZE), configurer.getInteger(
-                ConfigSize.SIZE_HEIGHT, ConfigSize.SIZE));
+        final int width = configurer.getInteger(ConfigSize.SIZE_WIDTH, ConfigSize.SIZE);
+        final int height = configurer.getInteger(ConfigSize.SIZE_HEIGHT, ConfigSize.SIZE);
+
+        return new ConfigSize(width, height);
     }
 
     /** The width value. */
@@ -57,7 +59,7 @@ public final class ConfigSize
      */
     private ConfigSize()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**

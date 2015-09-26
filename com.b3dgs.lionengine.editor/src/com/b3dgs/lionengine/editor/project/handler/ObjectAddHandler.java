@@ -31,11 +31,12 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.utility.UtilTemplate;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -45,7 +46,7 @@ import com.b3dgs.lionengine.game.object.Setup;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ObjectAddHandler
+public final class ObjectAddHandler
 {
     /** Default new object name. */
     private static final String DEFAULT_NEW_OBJECT_NAME = "object";
@@ -60,18 +61,18 @@ public class ObjectAddHandler
      */
     private static void createObject(File object, Class<?> clazz, Class<?> setup) throws IOException
     {
-        final File template = Tools.getTemplate(Tools.TEMPLATE_OBJECT);
+        final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_OBJECT);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
         final Collection<String> dest = new ArrayList<>();
         for (final String line : lines)
         {
-            if (line.contains(Tools.TEMPLATE_CLASS_AREA))
+            if (line.contains(UtilTemplate.TEMPLATE_CLASS_AREA))
             {
-                dest.add(line.replace(Tools.TEMPLATE_CLASS_AREA, clazz.getName()));
+                dest.add(line.replace(UtilTemplate.TEMPLATE_CLASS_AREA, clazz.getName()));
             }
-            else if (line.contains(Tools.TEMPLATE_SETUP_AREA))
+            else if (line.contains(UtilTemplate.TEMPLATE_SETUP_AREA))
             {
-                dest.add(line.replace(Tools.TEMPLATE_SETUP_AREA, setup.getName()));
+                dest.add(line.replace(UtilTemplate.TEMPLATE_SETUP_AREA, setup.getName()));
             }
             else
             {
@@ -84,6 +85,14 @@ public class ObjectAddHandler
     }
 
     /**
+     * Create handler.
+     */
+    public ObjectAddHandler()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Execute the handler.
      * 
      * @param partService The part service reference.
@@ -92,15 +101,19 @@ public class ObjectAddHandler
     @Execute
     public void execute(EPartService partService, Shell parent)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, Messages.AddObject_Title, Messages.AddObject_Text,
-                DEFAULT_NEW_OBJECT_NAME, new InputValidator(InputValidator.NAME_MATCH,
-                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+        final Media selection = ProjectModel.INSTANCE.getSelection();
+        final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
+        final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
+        final InputDialog inputDialog = new InputDialog(parent,
+                                                        Messages.AddObject_Title,
+                                                        Messages.AddObject_Text,
+                                                        DEFAULT_NEW_OBJECT_NAME,
+                                                        validator);
         final int code = inputDialog.open();
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File object = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
+            final File object = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
             if (object.exists())
             {

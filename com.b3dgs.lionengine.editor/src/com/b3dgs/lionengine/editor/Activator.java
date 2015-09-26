@@ -25,6 +25,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.swt.Engine;
@@ -34,8 +35,7 @@ import com.b3dgs.lionengine.core.swt.Engine;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Activator
-        implements BundleActivator
+public class Activator implements BundleActivator
 {
     /** Plugin name. */
     public static final String PLUGIN_NAME = EngineCore.NAME + " Editor";
@@ -85,6 +85,14 @@ public class Activator
         return new File(path).getAbsoluteFile();
     }
 
+    /**
+     * Create activator.
+     */
+    public Activator()
+    {
+        // Nothing to do
+    }
+
     /*
      * BundleActivator
      */
@@ -93,6 +101,7 @@ public class Activator
     public void start(BundleContext bundleContext) throws Exception
     {
         Activator.context = bundleContext;
+        LionEngineException.setIgnoreEngineTrace(false);
         Engine.start(Activator.PLUGIN_NAME, Activator.PLUGIN_VERSION, (String) null);
     }
 

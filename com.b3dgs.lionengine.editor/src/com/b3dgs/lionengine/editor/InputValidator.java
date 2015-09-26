@@ -24,8 +24,7 @@ import org.eclipse.jface.dialogs.IInputValidator;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class InputValidator
-        implements IInputValidator
+public class InputValidator implements IInputValidator
 {
     /** Must match a name. */
     public static final String NAME_MATCH = "[a-zA-z0-9]+";

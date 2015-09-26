@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * ParallaxedSprites are used for parallax effect (2.5D perspective). It cuts a sprite surface into an array of lines.
@@ -30,15 +29,17 @@ import com.b3dgs.lionengine.core.Media;
  *  &#47;========\
  * &#47;==========\
  * </pre>
+ * 
  * <p>
  * Usage should be as following:
+ * </p>
  * <ul>
- * <li>Create the instance with {@link Drawable#loadSpriteParallaxed(Media, int, int, int)}</li>
+ * <li>Create the instance with {@link Drawable#loadSpriteParallaxed(com.b3dgs.lionengine.core.Media, int, int, int)}
+ * </li>
  * <li>Scale if necessary with {@link #stretch(int, int)}</li>
  * <li>Call {@link #load(boolean)}</li>
  * <li>Then other functions can be used.</li>
  * </ul>
- * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -57,8 +58,8 @@ public interface SpriteParallaxed
      * Works as scale, but using different width and height factor. Using different values, the ratio won't be kept, and
      * the sprite will be different !
      * 
-     * @param percentWidth The percent value for scaling width (> 0).
-     * @param percentHeight The percent value for scaling height (> 0).
+     * @param percentWidth The percent value for scaling width (strictly positive).
+     * @param percentHeight The percent value for scaling height (strictly positive).
      */
     void stretch(int percentWidth, int percentHeight);
 
@@ -66,7 +67,7 @@ public interface SpriteParallaxed
      * Render a line of parallax to the specified coordinates.
      * 
      * @param g The graphic output.
-     * @param line The line to render (>= 0).
+     * @param line The line to render (positive).
      * @param x The abscissa.
      * @param y The ordinate.
      */
@@ -75,7 +76,7 @@ public interface SpriteParallaxed
     /**
      * Get a parallax line width.
      * 
-     * @param line The desired line (>= 0).
+     * @param line The desired line (positive).
      * @return The line width.
      */
     int getLineWidth(int line);

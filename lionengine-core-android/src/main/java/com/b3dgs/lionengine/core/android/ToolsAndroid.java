@@ -55,13 +55,12 @@ public final class ToolsAndroid
     /**
      * Get an image from an image file.
      * 
-     * @param inputStream The image input stream.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
+     * @param input The image input stream.
      * @return The created image from file.
      */
-    static Bitmap getImage(InputStream inputStream, boolean alpha)
+    static Bitmap getImage(InputStream input)
     {
-        return BitmapFactory.decodeStream(inputStream);
+        return BitmapFactory.decodeStream(input);
     }
 
     /**
@@ -95,8 +94,8 @@ public final class ToolsAndroid
      * Split an image into an array of sub image.
      * 
      * @param image The image to split.
-     * @param h The number of horizontal divisions (> 0).
-     * @param v The number of vertical divisions (> 0).
+     * @param h The number of horizontal divisions (strictly positive).
+     * @param v The number of vertical divisions (strictly positive).
      * @return The splited images array (can not be empty).
      */
     static Bitmap[] splitImage(Bitmap image, int h, int v)
@@ -193,9 +192,8 @@ public final class ToolsAndroid
             case BILINEAR:
             case HQ2X:
             case HQ3X:
-                throw new LionEngineException("Filter not supported !");
             default:
-                throw new RuntimeException();
+                throw new LionEngineException("Filter not supported !");
         }
     }
 
@@ -203,12 +201,12 @@ public final class ToolsAndroid
      * Save an image into a file.
      * 
      * @param image The image to save.
-     * @param outputStream The output stream.
+     * @param output The output stream.
      * @return <code>true</code> if saved, <code>false</code> else.
      */
-    static boolean saveImage(Bitmap image, OutputStream outputStream)
+    static boolean saveImage(Bitmap image, OutputStream output)
     {
-        return image.compress(CompressFormat.PNG, 100, outputStream);
+        return image.compress(CompressFormat.PNG, 100, output);
     }
 
     /**
@@ -229,9 +227,13 @@ public final class ToolsAndroid
         final boolean method = true;
         final Bitmap raster = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
 
-        final double sr = -((er - fr) / 0x010000) / (double) refSize;
-        final double sg = -((eg - fg) / 0x000100) / (double) refSize;
-        final double sb = -((eb - fb) / 0x000001) / (double) refSize;
+        final int divisorRed = 0x010000;
+        final int divisorGreen = 0x000100;
+        final int divisorBlue = 0x000001;
+
+        final double sr = -((er - fr) / divisorRed) / (double) refSize;
+        final double sg = -((eg - fg) / divisorGreen) / (double) refSize;
+        final double sb = -((eb - fb) / divisorBlue) / (double) refSize;
 
         if (method)
         {
@@ -239,9 +241,9 @@ public final class ToolsAndroid
             {
                 for (int j = 0; j < raster.getHeight(); j++)
                 {
-                    final int r = (int) (sr * (j % refSize)) * 0x010000;
-                    final int g = (int) (sg * (j % refSize)) * 0x000100;
-                    final int b = (int) (sb * (j % refSize)) * 0x000001;
+                    final int r = (int) (sr * (j % refSize)) * divisorRed;
+                    final int g = (int) (sg * (j % refSize)) * divisorGreen;
+                    final int b = (int) (sb * (j % refSize)) * divisorBlue;
 
                     raster.setPixel(i, j, ColorRgba.filterRgb(image.getPixel(i, j), fr + r, fg + g, fb + b));
                 }
@@ -249,11 +251,12 @@ public final class ToolsAndroid
         }
         else
         {
-            final int[] org = new int[image.getWidth() * image.getHeight() * 4];
+            final int bitsPerPixel = 4;
+            final int[] org = new int[image.getWidth() * image.getHeight() * bitsPerPixel];
             image.getPixels(org, 0, 0, 0, 0, image.getWidth(), image.getHeight());
             final int width = raster.getWidth();
             final int height = raster.getHeight();
-            final int[] pixels = new int[width * height * 4];
+            final int[] pixels = new int[width * height * bitsPerPixel];
             raster.getPixels(org, 0, 0, 0, 0, width, height);
 
             for (int j = 0; j < height; j++)
@@ -273,6 +276,6 @@ public final class ToolsAndroid
      */
     private ToolsAndroid()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

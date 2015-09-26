@@ -20,8 +20,10 @@ package com.b3dgs.lionengine;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.core.Media;
 
@@ -33,26 +35,47 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class LionEngineException
-        extends RuntimeException
+public final class LionEngineException extends RuntimeException
 {
+    /** Error private constructor. */
+    public static final String ERROR_PRIVATE_CONSTRUCTOR = "Private constructor !";
     /** The main ignored package. */
-    private static final String IGNORE = "com.b3dgs.lionengine.";
-    /** The number of ignored characters. */
-    private static final int IGNORE_SIZE = IGNORE.length();
-    /** The list of ignored sub packages and main class. */
-    private static final String[] IGNORED =
+    private static final String ENGINE_PREFIX = "com.b3dgs.lionengine.";
+    /** The list of ignored external packages. */
+    private static final String[] IGNORED_PACKAGES =
     {
-            "audio", "anim", "core", "drawable", "geom", "stream", "game", "trait", "component", "handler", "factory",
-            "network", "utility", "editor", "xsd", "Align", "Architecture", "Check", "Checksum", "ColorGradient",
-            "ColorRgba", "Config", "Filter", "Hq2x", "Hq3x", "ImageInfo", "LionEngineException", "OperatingSystem",
-            "Ratio", "Resolution", "Strings", "TextStyle", "Timing", "Transparency", "UtilConversion", "UtilFile",
-            "UtilMath", "UtilProjectStats", "UtilRandom", "Version"
+        "sun.", "java.lang.", "java.net.", "java.security."
     };
+    /** The list of ignored sub packages and main class. */
+    private static final String[] IGNORED_ENGINE =
+    {
+        "audio.", "anim.", "core.", "drawable.", "geom.", "stream.", "network.", "game.", "editor.", "Check",
+        "Checksum", "ColorGradient", "ColorRgba", "Config", "Hq2x", "Hq3x", "ImageInfo", "LionEngineException",
+        "OperatingSystem", "Origin", "Ratio", "Resolution", "Timing", "UtilConversion", "UtilFile", "UtilMath",
+        "UtilProjectStats", "UtilRandom", "UtilReflection", "Version"
+    };
+    /** The list of all ignored packages and classes. */
+    private static final Collection<String> IGNORED = new ArrayList<String>();
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599464L;
     /** Activate the ignore flag. */
-    private static volatile boolean ignoreEngineTrace = true;
+    private static final AtomicBoolean IGNORE_ENGINE_TRACE = new AtomicBoolean(true);
+    /** Trace reason. */
+    private static final String TRACE_REASON = "\n\tReason: ";
+    /** Trace at. */
+    private static final String TRACE_AT = "\tat ";
+
+    /**
+     * Fill array.
+     */
+    static
+    {
+        IGNORED.addAll(Arrays.asList(IGNORED_PACKAGES));
+        for (final String current : IGNORED_ENGINE)
+        {
+            IGNORED.add(ENGINE_PREFIX + current);
+        }
+    }
 
     /**
      * Set the engine trace ignore flag.
@@ -61,7 +84,7 @@ public final class LionEngineException
      */
     public static void setIgnoreEngineTrace(boolean ignore)
     {
-        ignoreEngineTrace = ignore;
+        IGNORE_ENGINE_TRACE.set(ignore);
     }
 
     /**
@@ -83,31 +106,21 @@ public final class LionEngineException
     }
 
     /**
-     * Check if ignore engine trace depending of the class name source.
+     * Check if ignore trace depending of the class name source.
      * 
      * @param className The class name.
      * @return <code>true</code> if ignore trace, <code>false</code> else.
      */
-    private static boolean checkIgnoreEngineTrace(String className)
+    private static boolean checkIgnoreTrace(String className)
     {
-        if (className.startsWith("sun.") || className.startsWith("java.lang") || className.startsWith("java.net")
-                || className.startsWith("java.security"))
+        for (final String ignore : IGNORED)
         {
-            return false;
-        }
-        if (className.startsWith(IGNORE))
-        {
-            final String pack = className.substring(IGNORE_SIZE);
-            for (final String ignore : IGNORED)
+            if (className.startsWith(ignore))
             {
-                // Ignored sub package
-                if (pack.startsWith(ignore))
-                {
-                    return false;
-                }
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -118,16 +131,13 @@ public final class LionEngineException
      */
     private static StackTraceElement[] getFilteredTraces(StackTraceElement[] allTrace)
     {
-        final Collection<StackTraceElement> neededTrace = new ArrayList<>(4);
+        final Collection<StackTraceElement> neededTrace = new ArrayList<StackTraceElement>(4);
         for (final StackTraceElement element : allTrace)
         {
-            final String className = element.getClassName();
-
-            // Ignored package
             final boolean add;
-            if (ignoreEngineTrace)
+            if (IGNORE_ENGINE_TRACE.get())
             {
-                add = checkIgnoreEngineTrace(className);
+                add = !checkIgnoreTrace(element.getClassName());
             }
             else
             {
@@ -192,7 +202,7 @@ public final class LionEngineException
      */
     public LionEngineException(Throwable exception, Media media, String... messages)
     {
-        super();
+        super(exception);
         final StringBuilder buffer = new StringBuilder(16);
         if (media != null && media.getPath() != null)
         {
@@ -227,7 +237,7 @@ public final class LionEngineException
     private StackTraceElement[] getFilteredStackTrace(Throwable exception, StringBuilder buffer)
     {
         Throwable current = exception;
-        final LinkedList<StackTraceElement> traces = new LinkedList<>();
+        final LinkedList<StackTraceElement> traces = new LinkedList<StackTraceElement>();
         for (final StackTraceElement element : getFilteredTraces(getStackTrace()))
         {
             traces.add(element);
@@ -237,7 +247,7 @@ public final class LionEngineException
             final String message = current.getMessage();
             if (message != null)
             {
-                buffer.append("\n\t\t").append(current.getMessage());
+                buffer.append(Constant.NEW_LINE + Constant.TAB + Constant.TAB).append(current.getMessage());
             }
             final StackTraceElement[] elements = getFilteredTraces(current.getStackTrace());
             for (final StackTraceElement element : elements)
@@ -281,17 +291,17 @@ public final class LionEngineException
                             last = current;
                             current = current.getCause();
                         }
-                        reasonDesc = "\n\tReason: " + last;
+                        reasonDesc = TRACE_REASON + last;
                     }
                     else
                     {
-                        reasonDesc = "";
+                        reasonDesc = Constant.EMPTY_STRING;
                     }
-                    stream.println(": " + message + reasonDesc + "\n\tat " + element);
+                    stream.println(Constant.DOUBLE_DOT + message + reasonDesc + Constant.NEW_LINE + TRACE_AT + element);
                 }
                 else
                 {
-                    stream.println("\tat " + element);
+                    stream.println(TRACE_AT + element);
                 }
                 first = false;
             }
@@ -321,17 +331,17 @@ public final class LionEngineException
                             last = current;
                             current = current.getCause();
                         }
-                        reasonDesc = "\n\tReason: " + last;
+                        reasonDesc = TRACE_REASON + last;
                     }
                     else
                     {
-                        reasonDesc = "";
+                        reasonDesc = Constant.EMPTY_STRING;
                     }
-                    writer.println(": " + message + reasonDesc + "\n\tat " + element);
+                    writer.println(Constant.DOUBLE_DOT + message + reasonDesc + Constant.NEW_LINE + TRACE_AT + element);
                 }
                 else
                 {
-                    writer.println("\tat " + element);
+                    writer.println(TRACE_AT + element);
                 }
                 first = false;
             }

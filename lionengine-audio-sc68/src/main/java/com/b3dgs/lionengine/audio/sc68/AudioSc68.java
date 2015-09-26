@@ -18,11 +18,13 @@
 package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.io.IOException;
+import java.io.InputStream;
 
+import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.OperatingSystem;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Verbose;
 import com.sun.jna.Native;
 
@@ -49,6 +51,8 @@ public final class AudioSc68
     private static final String ARCHITECTURE_X86 = "x86";
     /** Load library error. */
     private static final String ERROR_LOAD_LIBRARY = "Error on loading SC68 Library: ";
+    /** Unknown type. */
+    private static final String UNKNOWN_TYPE = "Unknown type: ";
 
     /**
      * Create a sc68 player.
@@ -65,27 +69,35 @@ public final class AudioSc68
     /**
      * Load the library.
      * 
-     * @param name The library name.
-     * @param ext The library extension.
      * @param library The library path.
      * @return The library binding.
      * @throws LionEngineException If error on loading.
      */
-    private static Sc68Binding loadLibrary(String name, String ext, String library) throws LionEngineException
+    private static Sc68Binding loadLibrary(String library) throws LionEngineException
     {
+        final InputStream input = AudioSc68.class.getResourceAsStream(library);
         try
         {
-            final File tempLib = File.createTempFile(name, ext);
-            tempLib.deleteOnExit();
-            Files.copy(AudioSc68.class.getResourceAsStream(library), tempLib.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
-            final Sc68Binding bind = (Sc68Binding) Native.loadLibrary(tempLib.getCanonicalPath(), Sc68Binding.class);
+            final File tempLib = UtilFile.getCopy(library, input);
+            Verbose.info("Temporary copy: ", tempLib.getPath());
+            final Sc68Binding binding = (Sc68Binding) Native.loadLibrary(tempLib.getCanonicalPath(), Sc68Binding.class);
             Verbose.info("Library ", library, " loaded");
-            return bind;
+            return binding;
         }
         catch (final Throwable exception)
         {
-            throw new LionEngineException(exception, AudioSc68.ERROR_LOAD_LIBRARY, name);
+            throw new LionEngineException(exception, AudioSc68.ERROR_LOAD_LIBRARY, library);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(Sc68Binding.class, "loadLibrary", exception2);
+            }
         }
     }
 
@@ -96,7 +108,8 @@ public final class AudioSc68
      */
     private static String getLibrarySystem()
     {
-        switch (OperatingSystem.getOperatingSystem())
+        final OperatingSystem system = OperatingSystem.getOperatingSystem();
+        switch (system)
         {
             case UNIX:
             case MAC:
@@ -106,7 +119,7 @@ public final class AudioSc68
             case WINDOWS:
                 return AudioSc68.SYSTEM_WINDOW;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException(UNKNOWN_TYPE, system.name());
         }
     }
 
@@ -117,7 +130,8 @@ public final class AudioSc68
      */
     private static String getLibraryExtension()
     {
-        switch (OperatingSystem.getOperatingSystem())
+        final OperatingSystem system = OperatingSystem.getOperatingSystem();
+        switch (system)
         {
             case UNIX:
             case MAC:
@@ -127,7 +141,7 @@ public final class AudioSc68
             case WINDOWS:
                 return AudioSc68.EXTENSION_DLL;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException(UNKNOWN_TYPE, system.name());
         }
     }
 
@@ -138,7 +152,8 @@ public final class AudioSc68
      */
     private static String getLibraryArchitecture()
     {
-        switch (OperatingSystem.getArchitecture())
+        final Architecture architecture = Architecture.getArchitecture();
+        switch (architecture)
         {
             case X86:
             case UNKNOWN:
@@ -146,7 +161,7 @@ public final class AudioSc68
             case X64:
                 return AudioSc68.ARCHITECTURE_X64;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException(UNKNOWN_TYPE, architecture.name());
         }
     }
 
@@ -166,7 +181,8 @@ public final class AudioSc68
 
         final String name = AudioSc68.LIBRARY_NAME + ext;
         final String library = sys + arch + '/' + name;
-        bind = AudioSc68.loadLibrary(name, ext, library);
+        Verbose.info("Load library: ", library);
+        bind = AudioSc68.loadLibrary(library);
     }
 
     /**

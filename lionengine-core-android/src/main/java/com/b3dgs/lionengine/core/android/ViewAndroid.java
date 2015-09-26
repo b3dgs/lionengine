@@ -26,8 +26,7 @@ import android.view.SurfaceView;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ViewAndroid
-        extends SurfaceView
+final class ViewAndroid extends SurfaceView
 {
     /** Mouse. */
     private MouseAndroid mouse;

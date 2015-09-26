@@ -29,8 +29,9 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.project.dialog.collision.CollisionList;
+import com.b3dgs.lionengine.editor.utility.UtilCombo;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
@@ -40,9 +41,8 @@ import com.b3dgs.lionengine.game.collision.CollisionGroup;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionCategoryProperties
-        extends ObjectProperties<CollisionCategory>
-        implements ObjectListListener<CollisionCategory>
+public class CollisionCategoryProperties extends ObjectProperties<CollisionCategory>
+                                         implements ObjectListListener<CollisionCategory>
 {
     /** Groups. */
     private final CollisionList groups;
@@ -55,12 +55,10 @@ public class CollisionCategoryProperties
 
     /**
      * Create a collision category properties.
-     * 
-     * @param list The list reference.
      */
-    public CollisionCategoryProperties(CollisionCategoryList list)
+    public CollisionCategoryProperties()
     {
-        super(list);
+        super();
         groups = new CollisionList();
     }
 
@@ -85,11 +83,11 @@ public class CollisionCategoryProperties
         fields.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         fields.setLayout(new GridLayout(1, false));
 
-        axis = UtilSwt.createCombo(Messages.CollisionCategoryEditor_Axis, fields, Axis.values());
-        offsetX = UtilSwt.createText(Messages.CollisionCategoryEditor_OffsetX, fields);
-        offsetX.addVerifyListener(UtilSwt.createVerify(offsetX, InputValidator.INTEGER_MATCH));
-        offsetY = UtilSwt.createText(Messages.CollisionCategoryEditor_OffsetY, fields);
-        offsetY.addVerifyListener(UtilSwt.createVerify(offsetY, InputValidator.INTEGER_MATCH));
+        axis = UtilCombo.create(Messages.CollisionCategoryEditor_Axis, fields, Axis.values());
+        offsetX = UtilText.create(Messages.CollisionCategoryEditor_OffsetX, fields);
+        offsetX.addVerifyListener(UtilText.createVerify(offsetX, InputValidator.INTEGER_MATCH));
+        offsetY = UtilText.create(Messages.CollisionCategoryEditor_OffsetY, fields);
+        offsetY.addVerifyListener(UtilText.createVerify(offsetY, InputValidator.INTEGER_MATCH));
 
         final Group groupsArea = new Group(parent, SWT.NONE);
         groupsArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -102,8 +100,11 @@ public class CollisionCategoryProperties
     @Override
     protected CollisionCategory createObject(String name)
     {
-        return new CollisionCategory(name, (Axis) axis.getData(), Integer.parseInt(offsetX.getText()),
-                Integer.parseInt(offsetY.getText()), groups.getObjects());
+        return new CollisionCategory(name,
+                                     (Axis) axis.getData(),
+                                     Integer.parseInt(offsetX.getText()),
+                                     Integer.parseInt(offsetY.getText()),
+                                     groups.getObjects());
     }
 
     /*

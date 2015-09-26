@@ -28,12 +28,9 @@ import javax.swing.border.EmptyBorder;
 /**
  * Disactivable combo box implementation.
  * 
- * @param <E> The object type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class DisactivableComboBox<E>
-        extends JLabel
-        implements ListCellRenderer<E>
+public final class DisactivableComboBox extends JLabel implements ListCellRenderer
 {
     /** Serial uid. */
     private static final long serialVersionUID = -5285387364457225845L;
@@ -52,8 +49,11 @@ public final class DisactivableComboBox<E>
      */
 
     @Override
-    public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected,
-            boolean cellHasFocus)
+    public Component getListCellRendererComponent(JList list,
+                                                  Object value,
+                                                  int index,
+                                                  boolean isSelected,
+                                                  boolean cellHasFocus)
     {
         if (isSelected)
         {

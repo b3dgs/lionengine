@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
@@ -46,7 +47,7 @@ public enum Property
     CLASS(Property.EXTENSION_CLASS);
 
     /** Java class file extension. */
-    public static final String EXTENSION_CLASS = "class";
+    public static final String EXTENSION_CLASS = ".class";
 
     /** Extension list. */
     private final Collection<String> extensions;
@@ -58,7 +59,7 @@ public enum Property
      * 
      * @param extensions The extensions list associated to the property.
      */
-    private Property(String... extensions)
+    Property(String... extensions)
     {
         this(null, extensions);
     }
@@ -68,7 +69,7 @@ public enum Property
      * 
      * @param parent The excepted parent class.
      */
-    private Property(Class<?> parent)
+    Property(Class<?> parent)
     {
         this(parent, "class");
     }
@@ -79,13 +80,13 @@ public enum Property
      * @param extensions The extensions list associated to the property.
      * @param parent The excepted parent class.
      */
-    private Property(Class<?> parent, String... extensions)
+    Property(Class<?> parent, String... extensions)
     {
         this.parent = parent;
         this.extensions = new ArrayList<>(extensions.length);
         for (final String extension : extensions)
         {
-            this.extensions.add(extension);
+            this.extensions.add(extension.replace(Constant.DOT, Constant.EMPTY_STRING));
         }
     }
 
@@ -151,7 +152,9 @@ public enum Property
      */
     private boolean isParent(Media file)
     {
-        final String name = file.getPath().replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".");
+        final String name = file.getPath()
+                                .replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
+                                .replace(File.separator, Constant.DOT);
         try
         {
             final Class<?> clazz = Project.getActive().getClass(name);

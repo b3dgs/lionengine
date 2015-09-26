@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.EngineCore;
@@ -43,13 +44,29 @@ import com.b3dgs.lionengine.core.Renderer;
  * @see Keyboard
  * @see Mouse
  */
-final class ScreenFullAwt
-        extends ScreenAwt
+final class ScreenFullAwt extends ScreenAwt
 {
     /** Error message unsupported full screen. */
     private static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported resolution: ";
     /** Unable to switch to full screen. */
     private static final String ERROR_SWITCH = "Unable to switch to full screen mode !";
+
+    /**
+     * Format resolution to string.
+     * 
+     * @param resolution The resolution reference.
+     * @param depth The depth reference.
+     * @return The formatted string.
+     */
+    private static String formatResolution(Resolution resolution, int depth)
+    {
+        final StringBuilder builder = new StringBuilder(String.valueOf(resolution.getWidth()));
+        builder.append(Constant.STAR).append(String.valueOf(resolution.getHeight()));
+        builder.append(Constant.STAR).append(depth);
+        builder.append(Constant.SPACE).append(Constant.AT);
+        builder.append(String.valueOf(resolution.getRate())).append(Constant.UNIT_RATE);
+        return builder.toString();
+    }
 
     /** Graphics device reference. */
     private final GraphicsDevice dev;
@@ -69,8 +86,6 @@ final class ScreenFullAwt
     ScreenFullAwt(Renderer renderer) throws LionEngineException
     {
         super(renderer);
-
-        // Initialize environment
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         dev = env.getDefaultScreenDevice();
         conf = dev.getDefaultConfiguration();
@@ -86,8 +101,8 @@ final class ScreenFullAwt
      */
     private JFrame initMainFrame(final Renderer renderer) throws LionEngineException
     {
-        final JFrame frame = new JFrame(EngineCore.getProgramName() + " " + EngineCore.getProgramVersion(), conf);
-
+        final String title = EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion();
+        final JFrame frame = new JFrame(title, conf);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter()
         {
@@ -98,6 +113,7 @@ final class ScreenFullAwt
             }
         });
         frame.setResizable(false);
+        frame.setUndecorated(true);
         frame.setIgnoreRepaint(true);
 
         return frame;
@@ -115,7 +131,6 @@ final class ScreenFullAwt
         window = new java.awt.Window(frame, conf);
         window.setBackground(Color.BLACK);
         window.setIgnoreRepaint(true);
-        frame.setUndecorated(true);
         window.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
         dev.setFullScreenWindow(window);
 
@@ -123,9 +138,8 @@ final class ScreenFullAwt
         if (!isSupported(disp))
         {
             throw new LionEngineException(ScreenFullAwt.ERROR_UNSUPPORTED_FULLSCREEN,
-                    String.valueOf(output.getWidth()), "*", String.valueOf(output.getHeight()), "*",
-                    String.valueOf(depth), " @", String.valueOf(output.getRate()), "Hz", "\n",
-                    getSupportedResolutions());
+                                          formatResolution(output, depth),
+                                          getSupportedResolutions());
         }
         if (!dev.isDisplayChangeSupported())
         {
@@ -159,35 +173,39 @@ final class ScreenFullAwt
      */
     private String getSupportedResolutions()
     {
-        final StringBuilder builder = new StringBuilder("Supported display mode:\n");
+        final StringBuilder builder = new StringBuilder("Supported display mode:").append(Constant.NEW_LINE);
         int i = 0;
         for (final DisplayMode display : dev.getDisplayModes())
         {
-            final StringBuilder widthSpace = new StringBuilder("");
+            final StringBuilder widthSpace = new StringBuilder(Constant.EMPTY_STRING);
             final int width = display.getWidth();
-            if (width < 1000)
+            if (width < Constant.THOUSAND)
             {
-                widthSpace.append(" ");
+                widthSpace.append(Constant.SPACE);
             }
-            final StringBuilder heightSpace = new StringBuilder("");
+            final StringBuilder heightSpace = new StringBuilder(Constant.EMPTY_STRING);
             final int height = display.getHeight();
-            if (height < 1000)
+            if (height < Constant.THOUSAND)
             {
-                heightSpace.append(" ");
+                heightSpace.append(Constant.NEW_LINE);
             }
-            final StringBuilder freqSpace = new StringBuilder("");
+            final StringBuilder freqSpace = new StringBuilder(Constant.EMPTY_STRING);
             final int freq = display.getRefreshRate();
-            if (freq < 100)
+            if (freq < Constant.HUNDRED)
             {
-                freqSpace.append(" ");
+                freqSpace.append(Constant.SPACE);
             }
-            builder.append("[").append(widthSpace).append(width).append("*").append(heightSpace).append(height)
-                    .append("*").append(display.getBitDepth()).append(" @").append(freqSpace).append(freq)
-                    .append("Hz] ");
+            builder.append("[");
+            builder.append(widthSpace).append(width).append(Constant.STAR);
+            builder.append(heightSpace).append(height).append(Constant.STAR);
+            builder.append(display.getBitDepth()).append(Constant.SPACE).append(Constant.AT);
+            builder.append(freqSpace).append(freq).append(Constant.UNIT_RATE);
+            builder.append("]").append(Constant.SPACE);
             i++;
-            if (i % 5 == 0)
+            final int linesPerDisplay = 5;
+            if (i % linesPerDisplay == 0)
             {
-                builder.append("\n");
+                builder.append(Constant.NEW_LINE);
             }
         }
         return builder.toString();

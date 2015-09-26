@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.game.state.StateGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateDieGoomba
-        extends StateGame
+class StateDieGoomba extends StateGame
 {
     /** Entity reference. */
     private final Entity entity;
@@ -45,7 +44,7 @@ class StateDieGoomba
      */
     public StateDieGoomba(Entity entity, Animation animation)
     {
-        super(EntityState.DEATH_GOOMBA);
+        super(GoombaState.DEATH);
         this.entity = entity;
         this.animation = animation;
         animator = entity.surface;

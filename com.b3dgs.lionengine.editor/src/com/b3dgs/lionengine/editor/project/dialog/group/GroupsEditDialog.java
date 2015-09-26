@@ -27,9 +27,9 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -42,11 +42,10 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class GroupsEditDialog
-        extends AbstractDialog
+public class GroupsEditDialog extends AbstractDialog
 {
     /** Icon. */
-    public static final Image ICON = UtilEclipse.getIcon("dialog", "edit.png");
+    public static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
     /** Groups media. */
     final Media groups;
@@ -61,8 +60,11 @@ public class GroupsEditDialog
      */
     public GroupsEditDialog(Shell parent, Media groups)
     {
-        super(parent, Messages.EditGroupsDialog_Title, Messages.EditGroupsDialog_HeaderTitle,
-                Messages.EditGroupsDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.EditGroupsDialog_Title,
+              Messages.EditGroupsDialog_HeaderTitle,
+              Messages.EditGroupsDialog_HeaderDesc,
+              ICON);
         this.groups = groups;
         dialog.setMinimumSize(128, 320);
         createDialog();
@@ -92,11 +94,11 @@ public class GroupsEditDialog
         for (final TreeItem item : list.getTree().getItems())
         {
             final TileGroup group = (TileGroup) item.getData();
-            final XmlNode nodeGroup = ConfigTileGroup.export(group);
-            root.add(nodeGroup);
+            ConfigTileGroup.export(root, group);
         }
         Stream.saveXml(root, groups);
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+
+        final MapTile map = WorldModel.INSTANCE.getMap();
         map.loadGroups(groups);
     }
 }

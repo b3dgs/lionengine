@@ -33,30 +33,34 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilDialog;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
 import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
+import com.b3dgs.lionengine.editor.world.tester.MapTester;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
+import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 
 /**
  * Represents the import map dialog.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapCollisionImportDialog
-        extends AbstractDialog
+public class MapCollisionImportDialog extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    private static final Image ICON = UtilIcon.get("dialog", "import.png");
+    /** Xml filter. */
+    private static final String XML = "*.xml";
 
-    /** World view part reference. */
-    private final WorldViewPart part;
+    /** World part reference. */
+    private final WorldPart part;
     /** Formulas config file location. */
     Text formulasText;
     /** Collisions config file location. */
@@ -75,13 +79,17 @@ public class MapCollisionImportDialog
      */
     public MapCollisionImportDialog(Shell parent)
     {
-        super(parent, Messages.ImportMapCollisionDialog_Title, Messages.ImportMapCollisionDialog_HeaderTitle,
-                Messages.ImportMapCollisionDialog_HeaderDesc, MapCollisionImportDialog.ICON);
+        super(parent,
+              Messages.ImportMapCollisionDialog_Title,
+              Messages.ImportMapCollisionDialog_HeaderTitle,
+              Messages.ImportMapCollisionDialog_HeaderDesc,
+              ICON);
         createDialog();
-
-        part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        dialog.setMinimumSize(512, 160);
+        part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
         finish.setEnabled(false);
         finish.forceFocus();
+        loadDefaults();
     }
 
     /**
@@ -127,12 +135,12 @@ public class MapCollisionImportDialog
      */
     void browseFormulasLocation()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
             Messages.ImportMapCollisionDialog_FormulasConfigFileFilter
         }, new String[]
         {
-            "*.xml"
+            XML
         });
         if (file != null)
         {
@@ -145,12 +153,12 @@ public class MapCollisionImportDialog
      */
     void browseCollisionLocation()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
             Messages.ImportMapCollisionDialog_CollisionsFileFilter
         }, new String[]
         {
-            "*.xml"
+            XML
         });
         if (file != null)
         {
@@ -166,11 +174,11 @@ public class MapCollisionImportDialog
     void onFormulasConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        formulasText.setText(path.getAbsolutePath());
         boolean validSheets = false;
         try
         {
-            formulasConfig = project.getResourceMedia(new File(formulasText.getText()));
+            formulasConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
+            formulasText.setText(formulasConfig.getPath());
             final File sheets = formulasConfig.getFile();
             if (!sheets.isFile())
             {
@@ -196,10 +204,10 @@ public class MapCollisionImportDialog
     void onCollisionsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        collisionsText.setText(path.getAbsolutePath());
         try
         {
-            collisionsConfig = project.getResourceMedia(new File(collisionsText.getText()));
+            collisionsConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
+            collisionsText.setText(collisionsConfig.getPath());
         }
         catch (final LionEngineException exception)
         {
@@ -227,8 +235,9 @@ public class MapCollisionImportDialog
         formulasText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         formulasText.setEditable(false);
 
-        final Button browse = UtilSwt.createButton(sheetArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+        final Button browse = UtilButton.create(sheetArea,
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
@@ -258,8 +267,9 @@ public class MapCollisionImportDialog
         collisionsText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         collisionsText.setEditable(false);
 
-        final Button browse = UtilSwt.createButton(collisionArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+        final Button browse = UtilButton.create(collisionArea,
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
@@ -269,6 +279,28 @@ public class MapCollisionImportDialog
                 browseCollisionLocation();
             }
         });
+    }
+
+    /**
+     * Load default files.
+     */
+    private void loadDefaults()
+    {
+        final Project project = Project.getActive();
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        final File parentFile = map.getGroupsConfig().getFile().getParentFile();
+
+        final File formulas = new File(parentFile, MapTileCollision.DEFAULT_FORMULAS_FILE);
+        if (MapTester.isFormulasConfig(project.getResourceMedia(formulas)))
+        {
+            onFormulasConfigLocationSelected(formulas);
+        }
+
+        final File collisions = new File(parentFile, MapTileCollision.DEFAULT_COLLISIONS_FILE);
+        if (MapTester.isCollisionsConfig(project.getResourceMedia(collisions)))
+        {
+            onCollisionsConfigLocationSelected(collisions);
+        }
     }
 
     /*
@@ -288,12 +320,17 @@ public class MapCollisionImportDialog
         found = formulasConfig != null && collisionsConfig != null;
         if (found)
         {
-            final MapTile map = WorldViewModel.INSTANCE.getMap();
+            final MapTile map = WorldModel.INSTANCE.getMap();
+            if (!map.hasFeature(MapTileCollision.class))
+            {
+                map.createFeature(MapTileCollisionModel.class);
+            }
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             mapCollision.loadCollisions(formulasConfig, collisionsConfig);
             mapCollision.createCollisionDraw();
 
-            part.setToolItemEnabled(SetShowCollisionsHandler.SHORT_ID, true);
+            part.setToolItemEnabled(SetShowCollisionsHandler.ID, true);
+            part.setToolItemEnabled(SetPointerCollisionHandler.ID, true);
         }
     }
 }

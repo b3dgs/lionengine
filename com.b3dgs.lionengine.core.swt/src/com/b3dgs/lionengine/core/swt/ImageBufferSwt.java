@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core.swt;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -25,6 +26,7 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -34,8 +36,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ImageBufferSwt
-        implements ImageBuffer
+final class ImageBufferSwt implements ImageBuffer
 {
     /**
      * Get the transparency equivalence.
@@ -45,23 +46,31 @@ final class ImageBufferSwt
      */
     static Transparency getTransparency(int transparency)
     {
+        final Transparency value;
         switch (transparency)
         {
             case SWT.TRANSPARENCY_NONE:
-                return Transparency.OPAQUE;
+                value = Transparency.OPAQUE;
+                break;
             case SWT.TRANSPARENCY_MASK:
-                return Transparency.BITMASK;
+                value = Transparency.BITMASK;
+                break;
+            case SWT.TRANSPARENCY_PIXEL:
             case SWT.TRANSPARENCY_ALPHA:
-                return Transparency.TRANSLUCENT;
+                value = Transparency.TRANSLUCENT;
+                break;
             default:
-                return Transparency.OPAQUE;
+                value = Transparency.OPAQUE;
         }
+        return value;
     }
 
-    /** Transparency. */
-    private final Transparency transparency;
+    /** Device. */
+    private final Device device;
     /** Last image data. */
     private final ImageData data;
+    /** Transparency. */
+    private final Transparency transparency;
     /** Image. */
     private Image image;
     /** GC. */
@@ -70,10 +79,24 @@ final class ImageBufferSwt
     /**
      * Internal constructor.
      * 
+     * @param device The device reference.
+     * @param data The image data.
+     */
+    ImageBufferSwt(Device device, ImageData data)
+    {
+        this.device = device;
+        this.data = data;
+        transparency = ImageBufferSwt.getTransparency(data.getTransparencyType());
+    }
+
+    /**
+     * Internal constructor.
+     * 
      * @param image The image.
      */
     ImageBufferSwt(Image image)
     {
+        device = image.getDevice();
         this.image = image;
         data = image.getImageData();
         transparency = ImageBufferSwt.getTransparency(data.getTransparencyType());
@@ -92,6 +115,12 @@ final class ImageBufferSwt
     /*
      * ImageBuffer
      */
+
+    @Override
+    public void prepare() throws LionEngineException
+    {
+        image = new Image(device, data);
+    }
 
     @Override
     public Graphic createGraphic()
@@ -123,7 +152,7 @@ final class ImageBufferSwt
         final int pixel = data.palette.getPixel(color);
         data.setPixel(x, y, pixel);
         image.dispose();
-        image = new Image(ScreenSwt.display, data);
+        image = new Image(device, data);
     }
 
     @Override
@@ -131,7 +160,7 @@ final class ImageBufferSwt
     {
         data.setPixels(startX, startY, w, rgbArray, offset);
         image.dispose();
-        image = new Image(ScreenSwt.display, data);
+        image = new Image(device, data);
     }
 
     @Override

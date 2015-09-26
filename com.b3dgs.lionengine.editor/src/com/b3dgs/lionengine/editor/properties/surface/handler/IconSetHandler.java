@@ -20,10 +20,10 @@ package com.b3dgs.lionengine.editor.properties.surface.handler;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.surface.PropertiesSurface;
+import com.b3dgs.lionengine.editor.utility.UtilDialog;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -33,19 +33,26 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class IconSetHandler
+public final class IconSetHandler
 {
+    /**
+     * Create handler.
+     */
+    public IconSetHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
-        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
-        final String file = Tools.selectFile(properties.getShell(), configurer.getPath(), true);
+        final String file = UtilDialog.selectFile(properties.getShell(), configurer.getPath(), true);
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();

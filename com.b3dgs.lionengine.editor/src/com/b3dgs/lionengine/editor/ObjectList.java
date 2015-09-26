@@ -36,21 +36,24 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilTree;
 
 /**
  * Represents the object list, allowing to add and remove objects.
  * 
- * @param <T> The object type handled by the list.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <T> The object type handled by the list.
  */
 public abstract class ObjectList<T extends Nameable>
 {
     /** Icon add. */
-    public static final Image ICON_ADD = UtilEclipse.getIcon("add.png");
+    public static final Image ICON_ADD = UtilIcon.get("add.png");
     /** Icon remove. */
-    public static final Image ICON_REMOVE = UtilEclipse.getIcon("remove.png");
+    public static final Image ICON_REMOVE = UtilIcon.get("remove.png");
     /** Icon save. */
-    public static final Image ICON_SAVE = UtilEclipse.getIcon("save.png");
+    public static final Image ICON_SAVE = UtilIcon.get("save.png");
     /** Default new object name. */
     private static final String DEFAULT_NEW_OBJECT_NAME = "new";
 
@@ -58,8 +61,12 @@ public abstract class ObjectList<T extends Nameable>
     final Collection<ObjectListListener<T>> listeners = new ArrayList<>();
     /** Class type. */
     final Class<T> type;
+    /** Properties. */
+    final ObjectProperties<T> properties;
     /** Objects list. */
     Tree objectsTree;
+    /** Selected item. */
+    TreeItem selectedItem;
     /** Selected data. */
     T selectedObject;
     /** Selected data backup. */
@@ -72,7 +79,19 @@ public abstract class ObjectList<T extends Nameable>
      */
     public ObjectList(Class<T> type)
     {
+        this(type, null);
+    }
+
+    /**
+     * Create an object list.
+     * 
+     * @param type The list class type.
+     * @param properties The properties reference.
+     */
+    public ObjectList(Class<T> type, ObjectProperties<T> properties)
+    {
         this.type = type;
+        this.properties = properties;
     }
 
     /**
@@ -141,28 +160,16 @@ public abstract class ObjectList<T extends Nameable>
     public void createTree(final Composite parent)
     {
         objectsTree = new Tree(parent, SWT.SINGLE);
-        objectsTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        final GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+        data.minimumWidth = 128;
+        data.minimumHeight = 96;
+        objectsTree.setLayoutData(data);
         objectsTree.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final TreeItem[] items = objectsTree.getSelection();
-                if (items.length > 0)
-                {
-                    final TreeItem selection = items[0];
-                    final Object data = selection.getData();
-                    if (instanceOf(data))
-                    {
-                        setSelectedObject(cast(data));
-                    }
-                    else
-                    {
-                        final T object = createObject("default");
-                        selection.setData(object);
-                        setSelectedObject(object);
-                    }
-                }
+                onSelection();
             }
         });
     }
@@ -207,7 +214,7 @@ public abstract class ObjectList<T extends Nameable>
         items = objectsTree.getSelection();
         if (items.length > 0)
         {
-            final int index = UtilSwt.getItemIndex(objectsTree, items[0]) + side;
+            final int index = UtilTree.getItemIndex(objectsTree, items[0]) + side;
             final int next = Math.max(0, Math.min(index, objectsTree.getItemCount() - 1));
             final TreeItem previous = objectsTree.getItem(next);
             objectsTree.setSelection(previous);
@@ -256,6 +263,29 @@ public abstract class ObjectList<T extends Nameable>
     }
 
     /**
+     * Clear all items.
+     */
+    public void clear()
+    {
+        for (final TreeItem item : objectsTree.getItems())
+        {
+            item.setData(null);
+            item.dispose();
+        }
+    }
+
+    /**
+     * Save current element.
+     */
+    public void save()
+    {
+        if (properties != null && selectedItem != null && !selectedItem.isDisposed())
+        {
+            update(selectedItem, properties.createObject(selectedItem.getText()));
+        }
+    }
+
+    /**
      * Check if the object is an instance of the handled type.
      * 
      * @param object The object to check.
@@ -292,6 +322,7 @@ public abstract class ObjectList<T extends Nameable>
             item.setData(object);
             if (!selected)
             {
+                selectedItem = item;
                 objectsTree.setSelection(item);
                 objectsTree.forceFocus();
                 setSelectedObject(object);
@@ -316,6 +347,30 @@ public abstract class ObjectList<T extends Nameable>
     }
 
     /**
+     * Called on selection.
+     */
+    void onSelection()
+    {
+        save();
+        final TreeItem[] items = objectsTree.getSelection();
+        if (items.length > 0)
+        {
+            selectedItem = items[0];
+            final Object data = selectedItem.getData();
+            if (instanceOf(data))
+            {
+                setSelectedObject(cast(data));
+            }
+            else
+            {
+                final T object = createObject("default");
+                selectedItem.setData(object);
+                setSelectedObject(object);
+            }
+        }
+    }
+
+    /**
      * Create the add object tool item.
      * 
      * @param toolbar The tool bar reference.
@@ -330,15 +385,18 @@ public abstract class ObjectList<T extends Nameable>
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 final InputDialog inputDialog = new InputDialog(toolbar.getShell(),
-                        Messages.ObjectList_AddObject_Title, Messages.ObjectList_AddObject_Text,
-                        ObjectList.DEFAULT_NEW_OBJECT_NAME, new InputValidator(InputValidator.NAME_MATCH,
-                                Messages.InputValidator_Error_Name));
+                                                                Messages.ObjectList_AddObject_Title,
+                                                                Messages.ObjectList_AddObject_Text,
+                                                                ObjectList.DEFAULT_NEW_OBJECT_NAME,
+                                                                new InputValidator(InputValidator.NAME_MATCH,
+                                                                                   Messages.InputValidator_Error_Name));
                 if (inputDialog.open() == Window.OK)
                 {
                     final String name = inputDialog.getValue();
                     final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
                     item.setText(name);
                     item.setData(createObject(name));
+                    UtilSwt.setDirty(toolbar.getShell(), true);
                 }
             }
         });
@@ -349,7 +407,7 @@ public abstract class ObjectList<T extends Nameable>
      * 
      * @param toolbar The tool bar reference.
      */
-    private void createRemoveObjectToolItem(ToolBar toolbar)
+    private void createRemoveObjectToolItem(final ToolBar toolbar)
     {
         final ToolItem removeObject = new ToolItem(toolbar, SWT.PUSH);
         removeObject.setImage(ObjectList.ICON_REMOVE);
@@ -367,6 +425,7 @@ public abstract class ObjectList<T extends Nameable>
                     item.dispose();
                 }
                 objectsTree.layout(true, true);
+                UtilSwt.setDirty(toolbar.getShell(), true);
             }
         });
     }

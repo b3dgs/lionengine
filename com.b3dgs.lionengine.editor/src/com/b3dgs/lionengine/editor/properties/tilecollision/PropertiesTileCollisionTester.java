@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesTileCollisionTester
-        extends PropertyTester
+public final class PropertiesTileCollisionTester extends PropertyTester
 {
     /** Can add formula. */
     private static final String PROPERTY_FORMULA_ADD = "addFormula";
@@ -36,6 +35,44 @@ public class PropertiesTileCollisionTester
     private static final String PROPERTY_FORMULA_REMOVE = "removeFormula";
     /** Can edit formula. */
     private static final String PROPERTY_FORMULA_EDIT = "editFormula";
+
+    /**
+     * Check result depending of selection.
+     * 
+     * @param model The properties model.
+     * @param data The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(PropertiesModel model, Object data, String property)
+    {
+        final boolean result;
+        if (PROPERTY_FORMULA_ADD.equals(property))
+        {
+            result = ConfigCollisionFormula.FORMULAS.equals(data);
+        }
+        else if (PROPERTY_FORMULA_REMOVE.equals(property))
+        {
+            result = ConfigCollisionFormula.FORMULA.equals(data);
+        }
+        else if (PROPERTY_FORMULA_EDIT.equals(property))
+        {
+            result = ConfigCollisionFormula.FORMULA.equals(data);
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Create tester.
+     */
+    public PropertiesTileCollisionTester()
+    {
+        // Nothing to do
+    }
 
     /*
      * PropertyTester
@@ -48,18 +85,7 @@ public class PropertiesTileCollisionTester
         if (!model.isEmpty())
         {
             final Object data = model.getSelectedData();
-            if (PROPERTY_FORMULA_ADD.equals(property))
-            {
-                return ConfigCollisionFormula.FORMULAS.equals(data);
-            }
-            else if (PROPERTY_FORMULA_REMOVE.equals(property))
-            {
-                return ConfigCollisionFormula.FORMULA.equals(data);
-            }
-            else if (PROPERTY_FORMULA_EDIT.equals(property))
-            {
-                return ConfigCollisionFormula.FORMULA.equals(data);
-            }
+            return check(model, data, property);
         }
         return false;
     }

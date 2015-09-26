@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.properties.animation;
 
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigFrames;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesAnimationTester
-        extends PropertyTester
+public final class PropertiesAnimationTester extends PropertyTester
 {
     /** Can enable animations. */
     private static final String PROPERTY_ANIMATIONS_ENABLE = "enableAnimations";
@@ -39,6 +38,44 @@ public class PropertiesAnimationTester
     private static final String PROPERTY_ANIMATIONS_EDIT = "editAnimations";
     /** Can disable animations. */
     private static final String PROPERTY_ANIMATIONS_DISABLE = "disableAnimations";
+
+    /**
+     * Check result depending of selection.
+     * 
+     * @param model The properties model.
+     * @param data The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(PropertiesModel model, Object data, String property)
+    {
+        final boolean result;
+        if (PROPERTY_ANIMATIONS_ENABLE.equals(property) && model.hasProperty(ConfigFrames.FRAMES))
+        {
+            result = !model.hasProperty(ConfigAnimations.ANIMATION);
+        }
+        else if (PROPERTY_ANIMATIONS_EDIT.equals(property) && ConfigAnimations.ANIMATION.equals(data))
+        {
+            result = model.hasProperty(ConfigAnimations.ANIMATION);
+        }
+        else if (PROPERTY_ANIMATIONS_DISABLE.equals(property) && ConfigAnimations.ANIMATION.equals(data))
+        {
+            result = model.hasProperty(ConfigAnimations.ANIMATION);
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Create tester.
+     */
+    public PropertiesAnimationTester()
+    {
+        // Nothing to do
+    }
 
     /*
      * PropertyTester
@@ -48,21 +85,10 @@ public class PropertiesAnimationTester
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
         final PropertiesModel model = PropertiesModel.INSTANCE;
-        if (!model.isEmpty() && ObjectsTester.isObjectFile(ProjectsModel.INSTANCE.getSelection()))
+        if (!model.isEmpty() && ObjectsTester.isObjectFile(ProjectModel.INSTANCE.getSelection()))
         {
             final Object data = model.getSelectedData();
-            if (PROPERTY_ANIMATIONS_ENABLE.equals(property) && model.hasProperty(ConfigFrames.FRAMES))
-            {
-                return !model.hasProperty(ConfigAnimations.ANIMATION);
-            }
-            else if (PROPERTY_ANIMATIONS_EDIT.equals(property) && ConfigAnimations.ANIMATION.equals(data))
-            {
-                return model.hasProperty(ConfigAnimations.ANIMATION);
-            }
-            else if (PROPERTY_ANIMATIONS_DISABLE.equals(property) && ConfigAnimations.ANIMATION.equals(data))
-            {
-                return model.hasProperty(ConfigAnimations.ANIMATION);
-            }
+            return check(model, data, property);
         }
         return false;
     }

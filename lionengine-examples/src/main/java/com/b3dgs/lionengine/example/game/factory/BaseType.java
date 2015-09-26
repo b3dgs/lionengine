@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.game.object.Setup;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class BaseType
-        extends ObjectGame
+class BaseType extends ObjectGame
 {
     /** Object argument. */
     private final Object param;

@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionCategoryList
-        extends ObjectList<CollisionCategory>
+public class CollisionCategoryList extends ObjectList<CollisionCategory>
 {
     /** Configurer reference. */
     private final Configurer configurer;
@@ -42,10 +41,11 @@ public class CollisionCategoryList
      * Create category list and associate its properties.
      * 
      * @param configurer The configurer reference.
+     * @param properties The properties reference.
      */
-    public CollisionCategoryList(Configurer configurer)
+    public CollisionCategoryList(Configurer configurer, CollisionCategoryProperties properties)
     {
-        super(CollisionCategory.class);
+        super(CollisionCategory.class, properties);
         this.configurer = configurer;
     }
 
@@ -65,8 +65,11 @@ public class CollisionCategoryList
     @Override
     protected CollisionCategory copyObject(CollisionCategory category)
     {
-        return new CollisionCategory(category.getName(), category.getAxis(), category.getOffsetX(),
-                category.getOffsetY(), category.getGroups());
+        return new CollisionCategory(category.getName(),
+                                     category.getAxis(),
+                                     category.getOffsetX(),
+                                     category.getOffsetY(),
+                                     category.getGroups());
     }
 
     @Override

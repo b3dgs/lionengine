@@ -30,11 +30,12 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.utility.UtilTemplate;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.object.Factory;
 
@@ -43,7 +44,7 @@ import com.b3dgs.lionengine.game.object.Factory;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulasAddHandler
+public final class FormulasAddHandler
 {
     /**
      * Create the formulas.
@@ -53,7 +54,7 @@ public class FormulasAddHandler
      */
     private static void createFormulas(File formulas) throws IOException
     {
-        final File template = Tools.getTemplate(Tools.TEMPLATE_FORMULAS);
+        final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_FORMULAS);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
         final Collection<String> dest = new ArrayList<>();
         for (final String line : lines)
@@ -66,6 +67,14 @@ public class FormulasAddHandler
     }
 
     /**
+     * Create handler.
+     */
+    public FormulasAddHandler()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Execute the handler.
      * 
      * @param parent The shell parent.
@@ -73,16 +82,22 @@ public class FormulasAddHandler
     @Execute
     public void execute(Shell parent)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, Messages.AddFormulas_Title, Messages.AddFormulas_Text,
-                MapTileCollision.DEFAULT_FORMULAS_FILE.replace("." + Factory.FILE_DATA_EXTENSION, ""),
-                new InputValidator(InputValidator.NAME_MATCH,
-                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+        final Media selection = ProjectModel.INSTANCE.getSelection();
+        final String value = MapTileCollision.DEFAULT_FORMULAS_FILE.replace(Constant.DOT
+                                                                            + Factory.FILE_DATA_EXTENSION,
+                                                                            Constant.EMPTY_STRING);
+        final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
+        final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
+        final InputDialog inputDialog = new InputDialog(parent,
+                                                        Messages.AddFormulas_Title,
+                                                        Messages.AddFormulas_Text,
+                                                        value,
+                                                        validator);
         final int code = inputDialog.open();
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File formulas = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
+            final File formulas = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
             if (formulas.exists())
             {

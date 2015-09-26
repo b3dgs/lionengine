@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.core.awt.swing;
 
 import javax.swing.JOptionPane;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Static functions displaying message on screen.
  * 
@@ -64,6 +66,6 @@ public final class UtilityMessageBox
      */
     private UtilityMessageBox()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

@@ -20,10 +20,10 @@ package com.b3dgs.lionengine.game.configurer;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -46,6 +46,8 @@ public final class ConfigTileGroup
     public static final String SHEET = "sheet";
     /** Tile number attribute. */
     public static final String NUMBER = "number";
+    /** Remove group. */
+    public static final String REMOVE_GROUP_NAME = Constant.EMPTY_STRING;
 
     /**
      * Create the group data from node.
@@ -56,13 +58,13 @@ public final class ConfigTileGroup
      */
     public static Collection<TileGroup> create(XmlNode root) throws LionEngineException
     {
-        final Collection<TileGroup> groups = new ArrayList<>();
+        final Collection<TileGroup> groups = new ArrayList<TileGroup>();
         for (final XmlNode node : root.getChildren(GROUP))
         {
-            final Collection<TileRef> tiles = new ArrayList<>();
+            final Collection<TileRef> tiles = new ArrayList<TileRef>();
             for (final XmlNode ref : node.getChildren(TILE))
             {
-                tiles.add(new TileRef(ref.readInteger(SHEET), ref.readInteger(NUMBER)));
+                tiles.add(new TileRef(Integer.valueOf(ref.readInteger(SHEET)), ref.readInteger(NUMBER)));
             }
 
             final TileGroup group = new TileGroup(node.readString(NAME), tiles);
@@ -74,23 +76,20 @@ public final class ConfigTileGroup
     /**
      * Export the group data as a node.
      * 
+     * @param root The root node.
      * @param group The group to export.
-     * @return The node reference.
      */
-    public static XmlNode export(TileGroup group)
+    public static void export(XmlNode root, TileGroup group)
     {
-        final XmlNode node = Stream.createXmlNode(GROUP);
+        final XmlNode node = root.createChild(GROUP);
         node.writeString(NAME, group.getName());
 
         for (final TileRef ref : group.getTiles())
         {
-            final XmlNode tileRef = Stream.createXmlNode(TILE);
-            tileRef.writeInteger(SHEET, ref.sheet);
-            tileRef.writeInteger(NUMBER, ref.number);
-            node.add(tileRef);
+            final XmlNode tileRef = node.createChild(TILE);
+            tileRef.writeInteger(SHEET, ref.getSheet().intValue());
+            tileRef.writeInteger(NUMBER, ref.getNumber());
         }
-
-        return node;
     }
 
     /**
@@ -98,6 +97,6 @@ public final class ConfigTileGroup
      */
     private ConfigTileGroup()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

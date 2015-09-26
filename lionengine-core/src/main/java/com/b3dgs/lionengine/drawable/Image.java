@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Resource;
 
 /**
  * It allows images loading and rendering. Images can't be resized and can't use any filters.
@@ -41,14 +42,13 @@ import com.b3dgs.lionengine.core.Renderable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Image
-        extends Localizable, Renderable
+public interface Image extends Resource, Localizable, Renderable
 {
     /**
-     * Load surface and prepare it to be displayed. This function must be called if the surface is loaded from a file,
-     * else the surface will never be prepared.
+     * Load surface. This function must be called if the surface is loaded from a file, else the surface will never be
+     * prepared. It will only load data from source to memory.
      * <p>
-     * Must be called only one time.
+     * Must be called only one time. {@link #prepare()} must be then called.
      * </p>
      * <p>
      * Images loaded with a reference of an existing {@link ImageBuffer} (such as
@@ -56,10 +56,18 @@ public interface Image
      * shared.
      * </p>
      * 
-     * @param alpha Set <code>true</code> to enable alpha, <code>false</code> else.
      * @throws LionEngineException If an error occurred when reading the image or already loaded.
      */
-    void load(boolean alpha) throws LionEngineException;
+    @Override
+    void load() throws LionEngineException;
+
+    /**
+     * Prepare loaded surface to be displayed. Must be called only one time, after {@link #load()}. It will
+     * prepare memory data to be displayed.
+     * 
+     * @throws LionEngineException If error on preparing.
+     */
+    void prepare() throws LionEngineException;
 
     /**
      * Set the origin location type, related to surface area. The type will affect the defined location and the
@@ -88,7 +96,7 @@ public interface Image
     /**
      * Get the surface which represents the image.
      * 
-     * @return The image descriptor reference.
+     * @return The image descriptor reference (<code>null</code> if not loaded).
      */
     ImageBuffer getSurface();
 }

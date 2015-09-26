@@ -18,33 +18,27 @@
 package com.b3dgs.lionengine.editor;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Nameable;
+import com.b3dgs.lionengine.editor.utility.UtilCombo;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 
 /**
  * Represents the object properties edition view.
  * 
- * @param <T> The object type handled by the properties.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <T> The object type handled by the properties.
  */
 public abstract class ObjectProperties<T extends Nameable>
 {
-    /** Revert icon. */
-    public static final Image ICON_APPLY = UtilEclipse.getIcon("dialog", "apply.png");
-    /** Apply icon. */
-    public static final Image ICON_REVERT = UtilEclipse.getIcon("dialog", "revert.png");
-
     /**
      * Create a text and its label.
      * 
@@ -76,11 +70,53 @@ public abstract class ObjectProperties<T extends Nameable>
      * @param text The text reference.
      * @param value The text value.
      */
-    protected static void setTextValue(Text text, String value)
+    protected static void setValue(Text text, String value)
     {
         if (!text.isDisposed())
         {
             text.setText(value);
+        }
+    }
+
+    /**
+     * Set the combo value by checking if it is not disposed.
+     * 
+     * @param combo The combo reference.
+     * @param value The combo value.
+     */
+    protected static void setValue(Combo combo, String value)
+    {
+        if (!combo.isDisposed())
+        {
+            combo.setText(value);
+        }
+    }
+
+    /**
+     * Set the text default value by checking if it is not disposed.
+     * 
+     * @param text The text reference.
+     * @param value The text value.
+     */
+    protected static void setValueDefault(Text text, String value)
+    {
+        if (!text.isDisposed())
+        {
+            UtilText.setDefaultValue(text, value);
+        }
+    }
+
+    /**
+     * Set the combo default value by checking if it is not disposed.
+     * 
+     * @param combo The combo reference.
+     * @param value The combo value.
+     */
+    protected static void setValueDefault(Combo combo, String value)
+    {
+        if (!combo.isDisposed())
+        {
+            UtilCombo.setDefaultValue(combo, value);
         }
     }
 
@@ -98,17 +134,12 @@ public abstract class ObjectProperties<T extends Nameable>
         }
     }
 
-    /** Object list. */
-    ObjectList<T> objectList;
-
     /**
      * Create an object properties.
-     * 
-     * @param objectList The list reference.
      */
-    public ObjectProperties(ObjectList<T> objectList)
+    public ObjectProperties()
     {
-        this.objectList = objectList;
+        // Nothing to do
     }
 
     /**
@@ -143,62 +174,5 @@ public abstract class ObjectProperties<T extends Nameable>
         objectData.setLayout(new GridLayout(1, false));
 
         createTextFields(objectData);
-
-        final Composite objectButtons = new Composite(objectProperties, SWT.NONE);
-        objectButtons.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        objectButtons.setLayout(new GridLayout(2, true));
-
-        createResetButton(objectButtons);
-        createConfirmButton(objectButtons);
-    }
-
-    /**
-     * Create the confirm button.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createConfirmButton(Composite parent)
-    {
-        final Button confirm = UtilSwt.createButton(parent, Messages.ObjectProperties_Confirm, null);
-        confirm.setImage(ICON_APPLY);
-        confirm.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                if (objectList.getSelectedObject() != null)
-                {
-                    final TreeItem[] items = objectList.getTree().getSelection();
-                    if (items.length > 0)
-                    {
-                        final TreeItem selection = items[0];
-                        final T object = createObject(selection.getText());
-                        objectList.update(selection, object);
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * Create the reset button.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createResetButton(Composite parent)
-    {
-        final Button reset = UtilSwt.createButton(parent, Messages.ObjectProperties_Reset, null);
-        reset.setImage(ICON_REVERT);
-        reset.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                if (objectList.getSelectedObject() != null)
-                {
-                    objectList.restoreSelectedObject();
-                }
-            }
-        });
     }
 }

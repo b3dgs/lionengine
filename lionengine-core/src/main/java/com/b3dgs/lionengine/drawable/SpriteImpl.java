@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
@@ -38,20 +39,23 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class SpriteImpl
-        implements Sprite
+class SpriteImpl implements Sprite
 {
+    /** Surface already loaded error. */
+    private static final String ERROR_LOADED = "Surface has already been loaded !";
     /** Invalid mirror type. */
     private static final String ERROR_MIRROR = "Invalid mirror type used: ";
 
     /** Sprite file name. */
     private final Media media;
-    /** Sprite current surface. */
-    private ImageBuffer surface;
+    /** Sprite current surface (<code>null</code> if not loaded). */
+    private volatile ImageBuffer surface;
     /** Sprite original surface. */
     private ImageBuffer surfaceOriginal;
     /** Origin point. */
-    private Origin origin;
+    private Origin origin = Origin.TOP_LEFT;
+    /** Mirror flag. */
+    private Mirror mirror = Mirror.NONE;
     /** Sprite horizontal position. */
     private double x;
     /** Sprite vertical position. */
@@ -64,8 +68,6 @@ class SpriteImpl
     private int rx;
     /** Render vertical position. */
     private int ry;
-    /** Mirror flag. */
-    private Mirror mirror;
     /** Sprite raw data (used for alpha). */
     private int[][] rgb;
     /** First alpha. */
@@ -87,8 +89,6 @@ class SpriteImpl
         width = info.getWidth();
         height = info.getHeight();
 
-        mirror = Mirror.NONE;
-        origin = Origin.TOP_LEFT;
         rgb = null;
     }
 
@@ -108,8 +108,6 @@ class SpriteImpl
         width = surface.getWidth();
         height = surface.getHeight();
 
-        mirror = Mirror.NONE;
-        origin = Origin.TOP_LEFT;
         rgb = null;
     }
 
@@ -204,12 +202,19 @@ class SpriteImpl
      */
 
     @Override
-    public void load(boolean alpha) throws LionEngineException
+    public synchronized void load() throws LionEngineException
     {
-        if (surface == null)
+        if (surface != null)
         {
-            surface = Graphics.getImageBuffer(media, alpha);
+            throw new LionEngineException(ERROR_LOADED);
         }
+        surface = Graphics.getImageBuffer(media);
+    }
+
+    @Override
+    public void prepare() throws LionEngineException
+    {
+        surface.prepare();
     }
 
     @Override
@@ -232,6 +237,8 @@ class SpriteImpl
     {
         lazySurfaceBackup();
         surface = Graphics.rotate(surfaceOriginal, angle);
+        width = surface.getWidth();
+        height = surface.getHeight();
     }
 
     @Override
@@ -239,6 +246,8 @@ class SpriteImpl
     {
         lazySurfaceBackup();
         surface = Graphics.applyFilter(surfaceOriginal, filter);
+        width = surface.getWidth();
+        height = surface.getHeight();
     }
 
     @Override
@@ -300,9 +309,8 @@ class SpriteImpl
                     lazySurfaceBackup();
                     rgb[cx][cy] = surfaceOriginal.getRgb(cx, cy);
                 }
-                final int alphaDec = 24;
                 final int alphaKey = 0x00ffffff;
-                final int mc = Math.abs(alpha) << alphaDec | alphaKey;
+                final int mc = Math.abs(alpha) << Constant.BYTE_4 | alphaKey;
                 surface.setRgb(cx, cy, ColorRgba.inc(rgb[cx][cy], fade + alpha, fade + alpha, fade + alpha) & mc);
             }
         }
@@ -351,6 +359,12 @@ class SpriteImpl
         return surface;
     }
 
+    @Override
+    public boolean isLoaded()
+    {
+        return surface != null;
+    }
+
     /*
      * Object
      */
@@ -382,9 +396,15 @@ class SpriteImpl
         int result = 1;
         result = prime * result + width;
         result = prime * result + height;
-        result = prime * result + (media == null ? 0 : media.hashCode());
+        if (media != null)
+        {
+            result = prime * result + media.hashCode();
+        }
         result = prime * result + Arrays.hashCode(rgb);
-        result = prime * result + (surface == null ? 0 : surface.hashCode());
+        if (surface != null)
+        {
+            result = prime * result + surface.hashCode();
+        }
         result = prime * result + mirror.hashCode();
         return result;
     }

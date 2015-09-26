@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.game.Features;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileGame
-        implements Tile
+public class TileGame implements Tile
 {
     /** Tile width. */
     private final int width;
@@ -60,7 +59,7 @@ public class TileGame
 
         this.width = width;
         this.height = height;
-        features = new Features<>(TileFeature.class);
+        features = new Features<TileFeature>(TileFeature.class);
         sheet = Integer.valueOf(0);
         x = 0;
         y = 0;

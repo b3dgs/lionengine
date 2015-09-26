@@ -31,16 +31,12 @@ enum EntityState implements StateAnimationBased
 {
     /** Idle state. */
     IDLE(StateIdle.class),
-    /** Walk state. */
-    WALK(StateWalk.class),
     /** Turn state. */
     TURN(StateTurn.class),
     /** Jump state. */
     JUMP(StateJump.class),
-    /** Death mario state. */
-    DEATH_MARIO(StateDieMario.class),
-    /** Death goomba state. */
-    DEATH_GOOMBA(StateDieGoomba.class);
+    /** Walk state. */
+    WALK(StateWalk.class);
 
     /** Class reference. */
     private final Class<? extends State> clazz;

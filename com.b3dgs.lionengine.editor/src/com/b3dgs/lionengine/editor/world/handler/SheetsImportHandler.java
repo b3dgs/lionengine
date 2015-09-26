@@ -27,15 +27,25 @@ import com.b3dgs.lionengine.editor.world.dialog.SheetsImportDialog;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SheetsImportHandler
+public final class SheetsImportHandler
 {
+    /** Element ID. */
+    public static final String ID = "import-sheets";
+
+    /**
+     * Create handler.
+     */
+    public SheetsImportHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 
      * @param shell The shell reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(Shell shell)
     {
         final SheetsImportDialog importSheetsDialog = new SheetsImportDialog(shell);

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.dialog;
 
+import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -28,17 +29,25 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
 
 /**
  * Abstract editor.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class AbstractEditor
+public abstract class AbstractEditor implements MDirtyable
 {
     /** Shell reference. */
     final Shell shell;
+    /** Title. */
+    private final String title;
+    /** Dirty flag. */
+    private boolean dirty;
+    /** Last dirty flag. */
+    private boolean dirtyOld;
 
     /**
      * Editor constructor base.
@@ -49,6 +58,7 @@ public abstract class AbstractEditor
      */
     public AbstractEditor(Composite parent, String title, Image icon)
     {
+        this.title = title;
         shell = new Shell(parent.getDisplay(), SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
         shell.setLayout(new GridLayout(1, false));
         shell.setImage(icon);
@@ -69,9 +79,7 @@ public abstract class AbstractEditor
     {
         createContent(shell);
         createBottom(shell);
-        shell.pack(true);
         shell.layout(true, true);
-        UtilSwt.center(shell);
     }
 
     /**
@@ -79,7 +87,8 @@ public abstract class AbstractEditor
      */
     public void openAndWait()
     {
-        shell.setVisible(true);
+        UtilSwt.open(shell);
+        shell.setData(this);
         final Display display = shell.getDisplay();
         while (!shell.isDisposed())
         {
@@ -120,7 +129,7 @@ public abstract class AbstractEditor
         bottom.setLayout(new GridLayout(1, false));
         bottom.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
-        final Button exit = UtilSwt.createButton(bottom, "Exit", null);
+        final Button exit = UtilButton.create(bottom, "Exit", null);
         exit.setImage(AbstractDialog.ICON_EXIT);
         exit.addSelectionListener(new SelectionAdapter()
         {
@@ -131,5 +140,35 @@ public abstract class AbstractEditor
                 shell.dispose();
             }
         });
+    }
+
+    /*
+     * MDirtyable
+     */
+
+    @Override
+    public void setDirty(boolean value)
+    {
+        dirty = value;
+        if (dirtyOld != dirty)
+        {
+            dirtyOld = dirty;
+            if (dirty)
+            {
+                shell.setText(Constant.STAR + title);
+                shell.update();
+            }
+            else
+            {
+                shell.update();
+                shell.setText(title);
+            }
+        }
+    }
+
+    @Override
+    public boolean isDirty()
+    {
+        return dirty;
     }
 }

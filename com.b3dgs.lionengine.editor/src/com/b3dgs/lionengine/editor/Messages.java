@@ -19,13 +19,14 @@ package com.b3dgs.lionengine.editor;
 
 import org.eclipse.osgi.util.NLS;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Messages internationalization.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Messages
-        extends NLS
+public final class Messages extends NLS
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".messages"; //$NON-NLS-1$
@@ -64,6 +65,6 @@ public final class Messages
      */
     private Messages()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

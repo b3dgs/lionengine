@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.network.purview.Networkable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface NetworkedWorld
-        extends ClientListener
+public interface NetworkedWorld extends ClientListener
 {
     /**
      * Disconnect.

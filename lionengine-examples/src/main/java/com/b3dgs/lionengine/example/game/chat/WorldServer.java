@@ -27,9 +27,7 @@ import com.b3dgs.lionengine.network.NetworkedWorldServer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class WorldServer
-        extends World<NetworkedWorldModelServer>
-        implements NetworkedWorldServer
+class WorldServer extends World<NetworkedWorldModelServer> implements NetworkedWorldServer
 {
     /**
      * @see WorldGame#WorldGame(Config)

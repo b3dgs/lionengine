@@ -36,13 +36,13 @@ import com.b3dgs.lionengine.Mirror;
  * </p>
  * <ul>
  * <li>Create the sprite.</li>
- * <li>Call {@link #load(boolean)} (this function will load the surface)</li>
+ * <li>Call {@link #load()} (this function will load the surface)</li>
  * </ul>
- * <p>
  * <p>
  * A non loaded sprite can be displayed (nothing will be displayed), but the sprite information are available (size).
  * However, sprite manipulation will throw an exception as the surface is not available.
  * </p>
+ * <p>
  * Example:
  * </p>
  * 
@@ -58,15 +58,14 @@ import com.b3dgs.lionengine.Mirror;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Sprite
-        extends Image
+public interface Sprite extends Image
 {
     /**
      * Stretch and resize the image to a different percent. Using different value, the ratio won't be kept,
      * and the sprite will be different.
      * 
-     * @param percentWidth The percent value for scaling width (> 0).
-     * @param percentHeight The percent value for scaling height (> 0).
+     * @param percentWidth The percent value for scaling width (strictly positive).
+     * @param percentHeight The percent value for scaling height (strictly positive).
      * @throws LionEngineException If arguments are invalid.
      */
     void stretch(double percentWidth, double percentHeight) throws LionEngineException;

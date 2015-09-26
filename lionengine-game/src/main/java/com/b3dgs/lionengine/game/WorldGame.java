@@ -22,36 +22,31 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
 
 /**
- * Default world model, designed to contain game elements ({@link MapTile}, {@link Handler}, {@link Factory}...).
+ * Default world model, designed to contain game elements ({@link com.b3dgs.lionengine.game.map.MapTile},
+ * {@link com.b3dgs.lionengine.game.object.Handler}, {@link com.b3dgs.lionengine.game.object.Factory}...).
  * <p>
  * It contains different elements, such as:
+ * </p>
  * <ul>
- * <li>{@link Config} : The configuration used by the {@link Loader}</li>
+ * <li>{@link Config} : The configuration used by the {@link com.b3dgs.lionengine.core.Loader}</li>
  * <li><code>width</code> : The source screen width, retrieve from the source screen {@link Resolution}</li>
  * <li><code>height</code> : The source screen height, retrieve from the source screen {@link Resolution}</li>
  * </ul>
- * </p>
- * It has to be handled by a {@link Sequence}.
  * <p>
- * Here a standard world usage:
+ * It has to be handled by a {@link com.b3dgs.lionengine.core.Sequence}. Here a standard world usage:
  * </p>
  * 
  * <pre>
- * public class MySequence
- *         extends Sequence
+ * public class MySequence extends Sequence
  * {
  *     private final World world;
  * 
@@ -87,8 +82,7 @@ import com.b3dgs.lionengine.stream.Stream;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class WorldGame
-        implements Updatable, Renderable
+public abstract class WorldGame implements Updatable, Renderable
 {
     /** Config reference. */
     protected final Config config;
@@ -118,7 +112,8 @@ public abstract class WorldGame
 
     /**
      * Internal world saves; called from {@link WorldGame#saveToFile(Media)} function. The world will be saved in a file
-     * as binary. Here should be called all saving functions, such as {@link MapTile#save(FileWriting)}...
+     * as binary. Here should be called all saving functions, such as
+     * {@link com.b3dgs.lionengine.game.map.MapTile#save(FileWriting)}...
      * 
      * @param file The file writer reference.
      * @throws IOException If error on writing.
@@ -127,7 +122,8 @@ public abstract class WorldGame
 
     /**
      * Internal world loads; called from {@link WorldGame#loadFromFile(Media)} function. The world will be loaded from
-     * an existing binary file. Here should be called all loading functions, such as {@link MapTile#load(FileReading)}
+     * an existing binary file. Here should be called all loading functions, such as
+     * {@link com.b3dgs.lionengine.game.map.MapTile#load(FileReading)}
      * ...
      * 
      * @param file The file reader reference.
@@ -143,13 +139,25 @@ public abstract class WorldGame
      */
     public final void saveToFile(Media media) throws LionEngineException
     {
-        try (FileWriting writing = Stream.createFileWriting(media))
+        final FileWriting writing = Stream.createFileWriting(media);
+        try
         {
             saving(writing);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, media, "Error on saving to file !");
+        }
+        finally
+        {
+            try
+            {
+                writing.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(getClass(), "saveToFile", exception2);
+            }
         }
     }
 
@@ -161,13 +169,25 @@ public abstract class WorldGame
      */
     public final void loadFromFile(Media media) throws LionEngineException
     {
-        try (FileReading reading = Stream.createFileReading(media))
+        final FileReading reading = Stream.createFileReading(media);
+        try
         {
             loading(reading);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, media, "Error on loading from file !");
+        }
+        finally
+        {
+            try
+            {
+                reading.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(getClass(), "loadFromFile", exception2);
+            }
         }
     }
 }

@@ -30,11 +30,12 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.utility.UtilTemplate;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
 
@@ -43,7 +44,7 @@ import com.b3dgs.lionengine.game.object.Factory;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class GroupsAddHandler
+public final class GroupsAddHandler
 {
     /**
      * Create the groups.
@@ -53,7 +54,7 @@ public class GroupsAddHandler
      */
     private static void createGroups(File groups) throws IOException
     {
-        final File template = Tools.getTemplate(Tools.TEMPLATE_GROUPS);
+        final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_GROUPS);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
         final Collection<String> dest = new ArrayList<>();
         for (final String line : lines)
@@ -66,6 +67,14 @@ public class GroupsAddHandler
     }
 
     /**
+     * Create handler.
+     */
+    public GroupsAddHandler()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Execute the handler.
      * 
      * @param parent The shell parent.
@@ -73,15 +82,22 @@ public class GroupsAddHandler
     @Execute
     public void execute(Shell parent)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, Messages.AddGroups_Title, Messages.AddGroups_Text,
-                MapTile.DEFAULT_GROUPS_FILE.replace("." + Factory.FILE_DATA_EXTENSION, ""), new InputValidator(
-                        InputValidator.NAME_MATCH, com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+        final Media selection = ProjectModel.INSTANCE.getSelection();
+        final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
+        final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
+        final String value = MapTile.DEFAULT_GROUPS_FILE.replace(Constant.DOT
+                                                                 + Factory.FILE_DATA_EXTENSION,
+                                                                 Constant.EMPTY_STRING);
+        final InputDialog inputDialog = new InputDialog(parent,
+                                                        Messages.AddGroups_Title,
+                                                        Messages.AddGroups_Text,
+                                                        value,
+                                                        validator);
         final int code = inputDialog.open();
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File groups = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
+            final File groups = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
             if (groups.exists())
             {

@@ -42,9 +42,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Projectile
-        extends ObjectGame
-        implements Updatable, Renderable, CollidableListener
+class Projectile extends ObjectGame implements Updatable, Renderable, CollidableListener
 {
     /** Media. */
     public static final Media PULSE = Medias.create("Pulse.xml");
@@ -71,7 +69,7 @@ class Projectile
         super(setup, services);
         viewer = services.get(Viewer.class);
 
-        sprite = Drawable.loadSprite(setup.surface);
+        sprite = Drawable.loadSprite(setup.getSurface());
         sprite.setOrigin(Origin.MIDDLE);
 
         collidable.setOrigin(Origin.MIDDLE);

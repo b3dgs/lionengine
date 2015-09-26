@@ -19,21 +19,25 @@ package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.io.InputStream;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilConversion;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * SC68 player implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Sc68Player
-        implements Sc68
+final class Sc68Player implements Sc68
 {
+    /** Max volume. */
+    private static final int MAX_VOLUME = 100;
+
     /** Binding reference. */
     private final Sc68Binding binding;
 
@@ -59,16 +63,26 @@ final class Sc68Player
     {
         Check.notNull(media);
 
+        final InputStream input = media.getInputStream();
         try
         {
-            final File music = Files.createTempFile(null, null).toFile();
-            music.deleteOnExit();
-            Files.copy(media.getInputStream(), music.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            binding.Sc68Play(music.getPath());
+            final File music = UtilFile.getCopy(media.getFile().getName(), input);
+            binding.Sc68Play(music.getCanonicalPath());
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, media);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(Sc68Player.class, "play", exception2);
+            }
         }
     }
 
@@ -76,7 +90,7 @@ final class Sc68Player
     public void setVolume(int volume) throws LionEngineException
     {
         Check.superiorOrEqual(volume, 0);
-        Check.inferiorOrEqual(volume, 100);
+        Check.inferiorOrEqual(volume, MAX_VOLUME);
 
         binding.Sc68SetVolume(volume);
     }
@@ -84,7 +98,7 @@ final class Sc68Player
     @Override
     public void setConfig(boolean interpolation, boolean joinStereo)
     {
-        binding.Sc68Config(interpolation ? 1 : 0, joinStereo ? 1 : 0);
+        binding.Sc68Config(UtilConversion.boolToInt(interpolation), UtilConversion.boolToInt(joinStereo));
     }
 
     @Override

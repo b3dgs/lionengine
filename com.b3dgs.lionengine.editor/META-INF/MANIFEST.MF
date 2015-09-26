@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.b3dgs.lionengine.editor;singleton:=true
-Bundle-Version: 8.0.0
+Bundle-Version: 8.1.0
 Bundle-Activator: com.b3dgs.lionengine.editor.Activator
 Bundle-Vendor: %Bundle-Vendor
 Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -19,22 +19,47 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.eclipse.e4.ui.workbench.swt;bundle-version="0.12.2",
  org.eclipse.core.expressions;bundle-version="3.4.501",
  org.eclipse.e4.core.services;bundle-version="1.1.0",
- com.b3dgs.lionengine.core,
- com.b3dgs.lionengine.core.swt,
- com.b3dgs.lionengine.game
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ com.b3dgs.lionengine.core;bundle-version="8.1.0",
+ com.b3dgs.lionengine.core.swt;bundle-version="8.1.0",
+ com.b3dgs.lionengine.game;bundle-version="8.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: javax.annotation;version="1.0.0",
  org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: com.b3dgs.lionengine.editor,
  com.b3dgs.lionengine.editor.dialog,
+ com.b3dgs.lionengine.editor.handler,
  com.b3dgs.lionengine.editor.project,
+ com.b3dgs.lionengine.editor.project.dialog,
+ com.b3dgs.lionengine.editor.project.dialog.collision,
+ com.b3dgs.lionengine.editor.project.dialog.formula,
+ com.b3dgs.lionengine.editor.project.dialog.group,
  com.b3dgs.lionengine.editor.project.handler,
  com.b3dgs.lionengine.editor.project.tester,
  com.b3dgs.lionengine.editor.properties,
+ com.b3dgs.lionengine.editor.properties.animation,
  com.b3dgs.lionengine.editor.properties.animation.editor,
+ com.b3dgs.lionengine.editor.properties.animation.handler,
+ com.b3dgs.lionengine.editor.properties.clazz,
+ com.b3dgs.lionengine.editor.properties.collision,
  com.b3dgs.lionengine.editor.properties.collision.editor,
+ com.b3dgs.lionengine.editor.properties.collision.handler,
+ com.b3dgs.lionengine.editor.properties.collisioncategory,
+ com.b3dgs.lionengine.editor.properties.collisioncategory.editor,
+ com.b3dgs.lionengine.editor.properties.frames,
+ com.b3dgs.lionengine.editor.properties.frames.handler,
+ com.b3dgs.lionengine.editor.properties.surface,
+ com.b3dgs.lionengine.editor.properties.surface.handler,
+ com.b3dgs.lionengine.editor.properties.tile,
+ com.b3dgs.lionengine.editor.properties.tilecollision,
+ com.b3dgs.lionengine.editor.properties.tilecollision.dialog,
+ com.b3dgs.lionengine.editor.properties.tilecollision.handler,
+ com.b3dgs.lionengine.editor.utility,
  com.b3dgs.lionengine.editor.world,
- com.b3dgs.lionengine.editor.world.handler
+ com.b3dgs.lionengine.editor.world.dialog,
+ com.b3dgs.lionengine.editor.world.handler,
+ com.b3dgs.lionengine.editor.world.renderer,
+ com.b3dgs.lionengine.editor.world.tester,
+ com.b3dgs.lionengine.editor.world.updater
 Bundle-ClassPath: .
 Bundle-Localization: OSGI-INF/l10n/bundle

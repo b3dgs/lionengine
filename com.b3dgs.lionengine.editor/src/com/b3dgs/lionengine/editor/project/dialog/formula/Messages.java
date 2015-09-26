@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.project.dialog.formula;
 
 import org.eclipse.osgi.util.NLS;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.Activator;
 
 /**
@@ -26,8 +27,7 @@ import com.b3dgs.lionengine.editor.Activator;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Messages
-        extends NLS
+public final class Messages extends NLS
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".project.dialog.formula.messages"; //$NON-NLS-1$
@@ -38,6 +38,10 @@ public final class Messages
     public static String EditFormulasDialog_HeaderTitle;
     /** Edit formulas dialog description header. */
     public static String EditFormulasDialog_HeaderDesc;
+    /** Edit formulas preview. */
+    public static String EditFormulasDialog_Preview;
+    /** Edit formulas template. */
+    public static String EditFormulasDialog_Template;
     /** Edit formulas range. */
     public static String EditFormulasDialog_Range;
     /** Range output. */
@@ -82,6 +86,6 @@ public final class Messages
      */
     private Messages()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

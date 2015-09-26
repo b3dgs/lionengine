@@ -19,8 +19,11 @@ package com.b3dgs.lionengine.game.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
@@ -33,7 +36,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
  * This class allows to extract unique tiles from a level rip.
- * The color [0-128-128] ({@link #IGNORED_COLOR}) is ignored (can be used to skip tile, in order to improve
+ * The color [0-128-128] ({@link #IGNORED_COLOR_VALUE}) is ignored (can be used to skip tile, in order to improve
  * performance).
  * <p>
  * Example (will scan level.png, using a 16*16 tile size, and store result in sheet.png 256*256):
@@ -48,7 +51,9 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 public final class TileExtractor
 {
     /** Ignored color. */
-    public static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
+    public static final ColorRgba IGNORED_COLOR = new ColorRgba(0, 128, 128);
+    /** Ignored color. */
+    public static final int IGNORED_COLOR_VALUE = IGNORED_COLOR.getRgba();
 
     /**
      * Compare two tiles by checking all pixels.
@@ -85,9 +90,13 @@ public final class TileExtractor
     }
 
     /** Levels rip. */
-    private final Collection<Media> rips = new ArrayList<>();
+    private final Collection<Media> rips = new ArrayList<Media>();
     /** Extracted tile sheets. */
-    private final Collection<ImageBuffer> extractions = new ArrayList<>();
+    private final Collection<ImageBuffer> extractions = new ArrayList<ImageBuffer>();
+    /** Progress listener. */
+    private final Collection<ProgressListener> listeners = new HashSet<ProgressListener>();
+    /** Generated sheets. */
+    private final Collection<Media> generatedSheets = new ArrayList<Media>();
     /** Extraction folder. */
     private final Media folder;
     /** Extracted tile sheet prefix. */
@@ -100,8 +109,12 @@ public final class TileExtractor
     private final int horizontal;
     /** Maximum tile sheet vertical tiles. */
     private final int vertical;
+    /** Canceler. */
+    private Canceler canceler;
     /** Last sheet buffer. */
     private ImageBuffer sheet;
+    /** Last exported sheet. */
+    private ImageBuffer lastExport;
     /** Last sheet graphic. */
     private Graphic g;
     /** Last tile sheet extraction number. */
@@ -110,6 +123,12 @@ public final class TileExtractor
     private int cx;
     /** Draw tile found location y. */
     private int cy;
+    /** Progress max. */
+    private double progressMax;
+    /** Old progress. */
+    private long progressPercentOld;
+    /** Current progress. */
+    private long progress;
 
     /**
      * Create the extractor.
@@ -122,7 +141,7 @@ public final class TileExtractor
      */
     public TileExtractor(Media folder, int tileWidth, int tileHeight, int horizontal, int vertical)
     {
-        this(folder, "", tileWidth, tileHeight, horizontal, vertical);
+        this(folder, Constant.EMPTY_STRING, tileWidth, tileHeight, horizontal, vertical);
     }
 
     /**
@@ -156,18 +175,51 @@ public final class TileExtractor
     }
 
     /**
-     * Start using specified output file.
+     * Add a listener.
+     * 
+     * @param listener The listener to add.
+     */
+    public void addListener(ProgressListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    /**
+     * Start using specified output file. Listeners are cleared once ended.
      * 
      * @throws LionEngineException If an error occurred when saving the image.
      */
     public void start() throws LionEngineException
     {
+        start(null);
+    }
+
+    /**
+     * Start using specified output file. Listeners are cleared once ended.
+     * 
+     * @param canceler The canceler reference.
+     * @throws LionEngineException If an error occurred when saving the image.
+     */
+    public void start(Canceler canceler) throws LionEngineException
+    {
+        this.canceler = canceler;
         sheet = Graphics.createImageBuffer(horizontal * tileWidth, vertical * tileHeight, Transparency.BITMASK);
         g = sheet.createGraphic();
 
         for (final Media rip : rips)
         {
-            proceed(rip);
+            final ImageInfo info = ImageInfo.get(rip);
+            final int h = info.getWidth() / tileWidth;
+            final int v = info.getHeight() / tileHeight;
+            progressMax += h * v;
+        }
+
+        for (final Media rip : rips)
+        {
+            if (!proceed(rip))
+            {
+                break;
+            }
         }
         g.dispose();
         saveExtraction();
@@ -176,18 +228,41 @@ public final class TileExtractor
         {
             image.dispose();
         }
+        listeners.clear();
+    }
+
+    /**
+     * Get the list of generated sheets.
+     * 
+     * @return The generated sheets.
+     */
+    public Collection<Media> getGeneratedSheets()
+    {
+        return generatedSheets;
+    }
+
+    /**
+     * Get percent progress.
+     * 
+     * @return Progress percent.
+     */
+    private int getProgressPercent()
+    {
+        return (int) Math.round(progress / progressMax * 100);
     }
 
     /**
      * Proceed the specified level rip.
      * 
      * @param ripMedia The level rip.
+     * @return <code>true</code> if continue, <code>false</code> if cancel.
      * @throws LionEngineException If an error occurred when proceeding the image.
      */
-    private void proceed(Media ripMedia) throws LionEngineException
+    private boolean proceed(Media ripMedia) throws LionEngineException
     {
         final SpriteTiled rip = Drawable.loadSpriteTiled(ripMedia, tileWidth, tileHeight);
-        rip.load(false);
+        rip.load();
+        rip.prepare();
 
         final int ripHorizontalTiles = rip.getWidth() / tileWidth;
         final int ripVerticalTiles = rip.getHeight() / tileHeight;
@@ -198,7 +273,7 @@ public final class TileExtractor
             for (int ripH = 0; ripH < ripHorizontalTiles; ripH++)
             {
                 // Skip blank tile of image map (0, 128, 128)
-                if (IGNORED_COLOR != surface.getRgb(ripH * tileWidth, ripV * tileHeight))
+                if (IGNORED_COLOR_VALUE != surface.getRgb(ripH * tileWidth, ripV * tileHeight))
                 {
                     if (!isExtracted(surface, ripH, ripV))
                     {
@@ -207,7 +282,30 @@ public final class TileExtractor
                         extract(rip, tileNumber);
                     }
                 }
+                updateProgress();
+                if (canceler != null && canceler.isCanceled())
+                {
+                    return false;
+                }
             }
+        }
+        return true;
+    }
+
+    /**
+     * Update progress and notify if needed.
+     */
+    private void updateProgress()
+    {
+        progress++;
+        final int percent = getProgressPercent();
+        if (percent != progressPercentOld)
+        {
+            for (final ProgressListener listener : listeners)
+            {
+                listener.notifyProgress(percent, sheet);
+            }
+            progressPercentOld = percent;
         }
     }
 
@@ -240,7 +338,12 @@ public final class TileExtractor
         {
             g.dispose();
             saveExtraction();
-            extractions.add(Graphics.getImageBuffer(sheet));
+            lastExport = Graphics.getImageBuffer(sheet);
+            for (final ProgressListener listener : listeners)
+            {
+                listener.notifyExtracted(lastExport);
+            }
+            extractions.add(lastExport);
             sheet = Graphics.createImageBuffer(horizontal * tileWidth, vertical * tileHeight, Transparency.BITMASK);
             g = sheet.createGraphic();
 
@@ -255,7 +358,9 @@ public final class TileExtractor
      */
     private void saveExtraction()
     {
-        Graphics.saveImage(sheet, getSheetMedia(lastIndex));
+        final Media media = getSheetMedia(lastIndex);
+        Graphics.saveImage(sheet, media);
+        generatedSheets.add(media);
     }
 
     /**
@@ -279,7 +384,7 @@ public final class TileExtractor
      */
     private boolean isExtracted(ImageBuffer rip, int ripH, int ripV)
     {
-        final Collection<ImageBuffer> checks = new ArrayList<>(extractions);
+        final Collection<ImageBuffer> checks = new ArrayList<ImageBuffer>(extractions);
         g.dispose();
 
         final ImageBuffer buffer = Graphics.getImageBuffer(sheet);
@@ -329,5 +434,39 @@ public final class TileExtractor
         }
         // No tile found
         return false;
+    }
+
+    /**
+     * Listen to extraction progress.
+     */
+    public interface ProgressListener
+    {
+        /**
+         * Called once progress detected.
+         * 
+         * @param percent Progress percent.
+         * @param current The current extracting sheet.
+         */
+        void notifyProgress(int percent, ImageBuffer current);
+
+        /**
+         * Called once sheet fully extracted.
+         * 
+         * @param sheet Last exported sheet (may be <code>null</code>).
+         */
+        void notifyExtracted(ImageBuffer sheet);
+    }
+
+    /**
+     * Cancel controller.
+     */
+    public interface Canceler
+    {
+        /**
+         * Check if operation is canceled.
+         * 
+         * @return <code>true</code> if canceled, <code>false</code> else.
+         */
+        boolean isCanceled();
     }
 }

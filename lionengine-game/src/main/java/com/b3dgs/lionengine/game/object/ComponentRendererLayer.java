@@ -33,8 +33,7 @@ import com.b3dgs.lionengine.game.trait.layerable.LayerableListener;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ComponentRendererLayer
-        implements ComponentRenderable, HandlerListener, LayerableListener
+public class ComponentRendererLayer implements ComponentRenderable, HandlerListener, LayerableListener
 {
     /** Layers to render. */
     private final Map<Integer, Set<Renderable>> layers;
@@ -44,7 +43,7 @@ public class ComponentRendererLayer
      */
     public ComponentRendererLayer()
     {
-        layers = new TreeMap<>();
+        layers = new TreeMap<Integer, Set<Renderable>>();
     }
 
     /**
@@ -58,7 +57,7 @@ public class ComponentRendererLayer
         final Set<Renderable> objects;
         if (!layers.containsKey(layer))
         {
-            objects = new HashSet<>();
+            objects = new HashSet<Renderable>();
             layers.put(layer, objects);
         }
         else

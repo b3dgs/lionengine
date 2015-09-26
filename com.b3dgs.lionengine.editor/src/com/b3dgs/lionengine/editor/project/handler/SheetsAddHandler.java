@@ -31,11 +31,12 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.utility.UtilTemplate;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
 
@@ -44,7 +45,7 @@ import com.b3dgs.lionengine.game.object.Factory;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SheetsAddHandler
+public final class SheetsAddHandler
 {
     /** Default tile size. */
     private static final String DEFAULT_TILE_SIZE = String.valueOf(16);
@@ -57,15 +58,15 @@ public class SheetsAddHandler
      */
     private static void createSheets(File sheets) throws IOException
     {
-        final File template = Tools.getTemplate(Tools.TEMPLATE_SHEETS);
+        final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_SHEETS);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
         final Collection<String> dest = new ArrayList<>();
         for (final String line : lines)
         {
-            if (line.contains(Tools.TEMPLATE_SHEETS_WIDTH) && line.contains(Tools.TEMPLATE_SHEETS_HEIGHT))
+            if (line.contains(UtilTemplate.TEMPLATE_SHEETS_WIDTH) && line.contains(UtilTemplate.TEMPLATE_SHEETS_HEIGHT))
             {
-                dest.add(line.replace(Tools.TEMPLATE_SHEETS_WIDTH, DEFAULT_TILE_SIZE).replace(
-                        Tools.TEMPLATE_SHEETS_HEIGHT, DEFAULT_TILE_SIZE));
+                dest.add(line.replace(UtilTemplate.TEMPLATE_SHEETS_WIDTH, DEFAULT_TILE_SIZE)
+                             .replace(UtilTemplate.TEMPLATE_SHEETS_HEIGHT, DEFAULT_TILE_SIZE));
             }
             else
             {
@@ -78,6 +79,14 @@ public class SheetsAddHandler
     }
 
     /**
+     * Create handler.
+     */
+    public SheetsAddHandler()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Execute the handler.
      * 
      * @param partService The part service reference.
@@ -86,15 +95,22 @@ public class SheetsAddHandler
     @Execute
     public void execute(EPartService partService, Shell parent)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, Messages.AddSheets_Title, Messages.AddSheets_Text,
-                MapTile.DEFAULT_SHEETS_FILE.replace("." + Factory.FILE_DATA_EXTENSION, ""), new InputValidator(
-                        InputValidator.NAME_MATCH, com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+        final Media selection = ProjectModel.INSTANCE.getSelection();
+        final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
+        final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
+        final String value = MapTile.DEFAULT_SHEETS_FILE.replace(Constant.DOT
+                                                                 + Factory.FILE_DATA_EXTENSION,
+                                                                 Constant.EMPTY_STRING);
+        final InputDialog inputDialog = new InputDialog(parent,
+                                                        Messages.AddSheets_Title,
+                                                        Messages.AddSheets_Text,
+                                                        value,
+                                                        validator);
         final int code = inputDialog.open();
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File sheets = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
+            final File sheets = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
             if (sheets.exists())
             {

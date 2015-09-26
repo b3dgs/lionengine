@@ -18,12 +18,11 @@
 package com.b3dgs.lionengine.geom;
 
 /**
- * Point implementation
+ * Point implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class PointImpl
-        implements Point
+final class PointImpl implements Point
 {
     /** Point horizontal. */
     private int x;
@@ -82,5 +81,34 @@ final class PointImpl
     public int getY()
     {
         return y;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + x;
+        result = prime * result + y;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final PointImpl other = (PointImpl) obj;
+        return x == other.x && y == other.y;
     }
 }

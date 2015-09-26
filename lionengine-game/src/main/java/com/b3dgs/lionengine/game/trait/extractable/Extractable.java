@@ -25,8 +25,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Extractable
-        extends Trait, Tiled
+public interface Extractable extends Trait, Tiled
 {
     /**
      * Extract the specified quantity if possible.

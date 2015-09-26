@@ -42,9 +42,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateJump
-        extends StateGame
-        implements StateInputDirectionalUpdater, TileCollidableListener
+class StateJump extends StateGame implements StateInputDirectionalUpdater, TileCollidableListener
 {
     /** On ground. */
     final AtomicBoolean ground = new AtomicBoolean();
@@ -137,9 +135,7 @@ class StateJump
     /**
      * Transition from {@link StateJump} to {@link StateIdle}.
      */
-    private final class TransitionJumpToIdle
-            extends StateTransition
-            implements StateTransitionInputDirectionalChecker
+    private final class TransitionJumpToIdle extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.

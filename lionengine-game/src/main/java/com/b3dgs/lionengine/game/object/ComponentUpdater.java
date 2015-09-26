@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.core.Updatable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ComponentUpdater
-        implements ComponentUpdatable
+public class ComponentUpdater implements ComponentUpdatable
 {
     /**
      * Create an updater component.

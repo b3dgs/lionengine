@@ -23,7 +23,6 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -60,7 +59,7 @@ public final class ConfigCollisions
      */
     public static ConfigCollisions create(Configurer configurer) throws LionEngineException
     {
-        final Map<String, Collision> collisions = new HashMap<>(0);
+        final Map<String, Collision> collisions = new HashMap<String, Collision>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(COLLISION))
         {
             final String coll = node.readString(COLLISION_NAME);
@@ -85,25 +84,25 @@ public final class ConfigCollisions
         final int width = node.readInteger(COLLISION_WIDTH);
         final int height = node.readInteger(COLLISION_HEIGHT);
         final boolean mirror = node.readBoolean(COLLISION_MIRROR);
+
         return new Collision(name, offsetX, offsetY, width, height, mirror);
     }
 
     /**
      * Create an XML node from a collision.
      * 
+     * @param root The node root.
      * @param collision The collision reference.
-     * @return The collision node.
      */
-    public static XmlNode createNode(Collision collision)
+    public static void export(XmlNode root, Collision collision)
     {
-        final XmlNode node = Stream.createXmlNode(COLLISION);
+        final XmlNode node = root.createChild(COLLISION);
         node.writeString(COLLISION_NAME, collision.getName());
         node.writeInteger(COLLISION_OFFSETX, collision.getOffsetX());
         node.writeInteger(COLLISION_OFFSETY, collision.getOffsetY());
         node.writeInteger(COLLISION_WIDTH, collision.getWidth());
         node.writeInteger(COLLISION_HEIGHT, collision.getHeight());
         node.writeBoolean(COLLISION_MIRROR, collision.hasMirror());
-        return node;
     }
 
     /** Collisions map. */
@@ -114,16 +113,15 @@ public final class ConfigCollisions
      */
     private ConfigCollisions()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**
      * Load collisions from configuration media.
      * 
      * @param collisions The collisions mapping.
-     * @throws LionEngineException If error when opening the media.
      */
-    private ConfigCollisions(Map<String, Collision> collisions) throws LionEngineException
+    private ConfigCollisions(Map<String, Collision> collisions)
     {
         this.collisions = collisions;
     }

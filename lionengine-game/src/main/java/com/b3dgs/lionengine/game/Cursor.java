@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Resource;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
@@ -37,7 +38,6 @@ import com.b3dgs.lionengine.drawable.Image;
  * Used to represent a pointer cursor, desynchronized from the system pointer or not. This way, it is possible to
  * set a specific sensibility. As the cursor surface is stored in an {@link Image}, the cursor can be rendered
  * immediately after the constructor call. It contains the following functionalities:
- * <p>
  * <ul>
  * <li><code>surface</code>: A cursor can contain many surfaces, but only the selected one is displayed.</li>
  * <li><code>area</code>: Represents the area where the cursor can move on. Its location can not exit this area (
@@ -51,14 +51,13 @@ import com.b3dgs.lionengine.drawable.Image;
  * <li>
  * <code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
  * </ul>
- * </p>
  * <p>
  * Usage example:
  * </p>
  * <ul>
  * <li>Create the cursor with {@link #Cursor()}.</li>
  * <li>Add images with {@link #addImage(int, Media)}.</li>
- * <li>Load added images {@link #load(boolean)}.</li>
+ * <li>Load added images {@link #load()}.</li>
  * <li>Set the input to use {@link #setInputDevice(InputDevicePointer)}.</li>
  * <li>Change the cursor image if when needed with {@link #setSurfaceId(int)}.</li>
  * </ul>
@@ -67,8 +66,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * @see InputDevicePointer
  * @see Image
  */
-public class Cursor
-        implements Localizable, Tiled, Updatable, Renderable
+public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderable
 {
     /** Surface ID not found error. */
     private static final String ERROR_SURFACE_ID = "Undefined surface id:";
@@ -123,7 +121,7 @@ public class Cursor
      */
     public Cursor()
     {
-        surfaces = new HashMap<>();
+        surfaces = new HashMap<Integer, Image>();
         x = 0.0;
         y = 0.0;
         sensibilityHorizontal = 1.0;
@@ -136,7 +134,7 @@ public class Cursor
     }
 
     /**
-     * Add a cursor image. Once there are no more images to add, a call to {@link #load(boolean)} will be necessary.
+     * Add a cursor image. Once there are no more images to add, a call to {@link #load()} will be necessary.
      * 
      * @param id The cursor id.
      * @param media The cursor media.
@@ -149,23 +147,6 @@ public class Cursor
         if (surfaceId == null)
         {
             surfaceId = key;
-        }
-    }
-
-    /**
-     * Load the cursor images. Must be called only one time.
-     * 
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
-     */
-    public void load(boolean alpha)
-    {
-        for (final Image current : surfaces.values())
-        {
-            current.load(alpha);
-            if (surface == null)
-            {
-                surface = current;
-            }
         }
     }
 
@@ -206,8 +187,8 @@ public class Cursor
     /**
      * Set cursor sensibility (move speed). Default value should be 1.0 (close to system sensibility).
      * 
-     * @param sh The horizontal sensibility (>= 0.0).
-     * @param sv The vertical sensibility (>= 0.0).
+     * @param sh The horizontal sensibility (superior or equal to 0.0).
+     * @param sv The vertical sensibility (superior or equal to 0.0).
      */
     public void setSensibility(double sh, double sv)
     {
@@ -278,8 +259,8 @@ public class Cursor
     /**
      * Set the grid size. Will affect {@link #getInTileX()} and {@link #getInTileY()}.
      * 
-     * @param width The horizontal grid (> 0).
-     * @param height The vertical grid (> 0).
+     * @param width The horizontal grid (strictly positive).
+     * @param height The vertical grid (strictly positive).
      * @throws LionEngineException If grid is not strictly positive.
      */
     public void setGrid(int width, int height) throws LionEngineException
@@ -383,6 +364,37 @@ public class Cursor
     }
 
     /*
+     * Resource
+     */
+
+    @Override
+    public void load()
+    {
+        for (final Image current : surfaces.values())
+        {
+            current.load();
+            current.prepare();
+            if (surface == null)
+            {
+                surface = current;
+            }
+        }
+    }
+
+    @Override
+    public boolean isLoaded()
+    {
+        for (final Image current : surfaces.values())
+        {
+            if (current.isLoaded())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /*
      * Updatable
      */
 
@@ -411,7 +423,14 @@ public class Cursor
         x = UtilMath.fixBetween(x, minX, maxX);
         y = UtilMath.fixBetween(y, minY, maxY);
         viewX = x + offX;
-        viewY = (viewer != null ? viewer.getHeight() : 0) - y + offY;
+        if (viewer != null)
+        {
+            viewY = viewer.getHeight() - y + offY;
+        }
+        else
+        {
+            viewY = -y + offY;
+        }
         for (final Image current : surfaces.values())
         {
             current.setLocation(x + offsetX, y + offsetY);

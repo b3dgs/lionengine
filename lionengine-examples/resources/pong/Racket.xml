@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:setup>com.b3dgs.lionengine.game.object.Setup</lionengine:setup>
-    <lionengine:class>com.b3dgs.lionengine.example.pong.Racket</lionengine:class>
-    <lionengine:size width="4" height="24"/>
-    <lionengine:collision name="default" offsetX="0" offsetY="0" width="4" height="24" mirror="false"/>
-</lionengine:entity>

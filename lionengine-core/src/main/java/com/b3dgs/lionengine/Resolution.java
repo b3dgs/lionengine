@@ -20,9 +20,10 @@ package com.b3dgs.lionengine;
 /**
  * Describes a display resolution. It allows to define different parameters:
  * <ul>
- * <li><code>width & height</code> : represent the screen size</li>
+ * <li><code>width</code> and <code>height</code> : represent the screen size</li>
  * <li>
- * <code>ratio</code>, which is computed by using the <code>width & height</code>, allows to know the screen ratio.</li>
+ * <code>ratio</code>, which is computed by using the <code>width</code> and <code>height</code>, allows to know the
+ * screen ratio.</li>
  * <li><code>rate</code> : represents the screen refresh rate (in frames per seconds)</li>
  * </ul>
  * This class is mainly used to describe the display resolution chosen.
@@ -34,23 +35,23 @@ package com.b3dgs.lionengine;
  */
 public final class Resolution
 {
-    /** Size lock. */
-    private final Object lockSize = new Object();
+    /** Lock. */
+    private final Object lock = new Object();
     /** Display rate. */
     private volatile int rate;
-    /** Resolution width (locked by {@link #lockSize}). */
+    /** Resolution width (locked by {@link #lock}). */
     private int width;
-    /** Resolution height (locked by {@link #lockSize}). */
+    /** Resolution height (locked by {@link #lock}). */
     private int height;
-    /** Resolution ratio (locked by {@link #lockSize}). */
+    /** Resolution ratio (locked by {@link #lock}). */
     private double ratio;
 
     /**
      * Create a resolution.
      * 
-     * @param width The resolution width (in pixel) [> 0].
-     * @param height The resolution height (in pixel) [> 0].
-     * @param rate The refresh rate (usually 50 or 60) [>= 0].
+     * @param width The resolution width (in pixel) (strictly positive).
+     * @param height The resolution height (in pixel) (strictly positive).
+     * @param rate The refresh rate (usually 50 or 60) (positive).
      * @throws LionEngineException If arguments are invalid.
      */
     public Resolution(int width, int height, int rate) throws LionEngineException
@@ -67,7 +68,7 @@ public final class Resolution
      */
     public void setSize(int width, int height) throws LionEngineException
     {
-        synchronized (lockSize)
+        synchronized (lock)
         {
             set(width, height, rate);
         }
@@ -76,14 +77,14 @@ public final class Resolution
     /**
      * Set the ratio and adapt the resolution to the new ratio (based on the height value).
      * 
-     * @param ratio The new ratio [> 0].
+     * @param ratio The new ratio (strictly positive).
      * @throws LionEngineException If ratio is not strictly positive.
      */
     public void setRatio(double ratio) throws LionEngineException
     {
         Check.superiorStrict(ratio, 0);
 
-        synchronized (lockSize)
+        synchronized (lock)
         {
             if (!Ratio.equals(this.ratio, ratio))
             {
@@ -97,7 +98,7 @@ public final class Resolution
     /**
      * Set the refresh rate value in hertz.
      * 
-     * @param rate The refresh rate value [>= 0].
+     * @param rate The refresh rate value (positive).
      * @throws LionEngineException If ratio is not strictly positive.
      */
     public void setRate(int rate) throws LionEngineException
@@ -114,7 +115,7 @@ public final class Resolution
      */
     public int getWidth()
     {
-        synchronized (lockSize)
+        synchronized (lock)
         {
             return width;
         }
@@ -127,7 +128,7 @@ public final class Resolution
      */
     public int getHeight()
     {
-        synchronized (lockSize)
+        synchronized (lock)
         {
             return height;
         }
@@ -140,7 +141,7 @@ public final class Resolution
      */
     public double getRatio()
     {
-        synchronized (lockSize)
+        synchronized (lock)
         {
             return ratio;
         }
@@ -159,9 +160,9 @@ public final class Resolution
     /**
      * Set the resolution.
      * 
-     * @param width The resolution width (in pixel) [> 0].
-     * @param height The resolution height (in pixel) [> 0].
-     * @param rate The refresh rate in hertz (usually 50 or 60) [>= 0].
+     * @param width The resolution width (in pixel, strictly positive).
+     * @param height The resolution height (in pixel, strictly positive).
+     * @param rate The refresh rate in hertz (usually 50 or 60, positive).
      * @throws LionEngineException If arguments are invalid.
      */
     private void set(int width, int height, int rate) throws LionEngineException

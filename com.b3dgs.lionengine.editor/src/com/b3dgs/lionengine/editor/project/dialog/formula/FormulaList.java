@@ -23,12 +23,12 @@ import java.util.Collection;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewRenderer;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
@@ -42,9 +42,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulaList
-        extends ObjectList<CollisionFormula>
-        implements ObjectListListener<CollisionFormula>
+public class FormulaList extends ObjectList<CollisionFormula> implements ObjectListListener<CollisionFormula>
 {
     /**
      * Remove the formula from configuration.
@@ -58,7 +56,7 @@ public class FormulaList
         final Collection<XmlNode> toRemove = new ArrayList<>();
         for (final XmlNode nodeFormula : node.getChildren(ConfigCollisionFormula.FORMULA))
         {
-            if (WorldViewRenderer.groupEquals(nodeFormula.readString(ConfigTileGroup.NAME), formula.getName()))
+            if (CollisionGroup.equals(nodeFormula.readString(ConfigTileGroup.NAME), formula.getName()))
             {
                 toRemove.add(nodeFormula);
             }
@@ -83,6 +81,16 @@ public class FormulaList
     }
 
     /**
+     * Create the group list.
+     * 
+     * @param properties The properties reference.
+     */
+    public FormulaList(FormulasProperties properties)
+    {
+        super(CollisionFormula.class, properties);
+    }
+
+    /**
      * Load the existing formulas from the object configurer.
      * 
      * @param config The config file.
@@ -102,15 +110,19 @@ public class FormulaList
     @Override
     protected CollisionFormula copyObject(CollisionFormula formula)
     {
-        return new CollisionFormula(formula.getName(), formula.getRange(), formula.getFunction(),
-                formula.getConstraint());
+        return new CollisionFormula(formula.getName(),
+                                    formula.getRange(),
+                                    formula.getFunction(),
+                                    formula.getConstraint());
     }
 
     @Override
     protected CollisionFormula createObject(String name)
     {
-        return new CollisionFormula(name, new CollisionRange(Axis.Y, 0, 0, 0, 0), new CollisionFunctionLinear(0, 0),
-                new CollisionConstraint(null, null, null, null));
+        return new CollisionFormula(name,
+                                    new CollisionRange(Axis.Y, 0, 0, 0, 0),
+                                    new CollisionFunctionLinear(0, 0),
+                                    new CollisionConstraint());
     }
 
     /*
@@ -126,7 +138,7 @@ public class FormulaList
     @Override
     public void notifyObjectDeleted(CollisionFormula formula)
     {
-        final MapTile map = WorldViewModel.INSTANCE.getMap();
+        final MapTile map = WorldModel.INSTANCE.getMap();
         if (map.hasFeature(MapTileCollision.class))
         {
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);

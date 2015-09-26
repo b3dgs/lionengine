@@ -30,15 +30,22 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsEditorHandler
+public final class CollisionsEditorHandler
 {
+    /**
+     * Create handler.
+     */
+    public CollisionsEditorHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 
      * @param partService The part service reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(EPartService partService)
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();

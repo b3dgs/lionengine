@@ -54,9 +54,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Entity
-        extends ObjectGame
-        implements Updatable, Renderable, TileCollidableListener
+class Entity extends ObjectGame implements Updatable, Renderable, TileCollidableListener
 {
     /** Ground location y. */
     private static final int GROUND = 32;
@@ -73,12 +71,12 @@ class Entity
     protected final TileCollidable tileCollidable = addTrait(new TileCollidableModel());
     /** Collidable reference. */
     protected final Collidable collidable = addTrait(new CollidableModel());
+    /** State factory. */
+    protected final StateFactory factory = new StateFactory();
     /** Mirrorable model. */
     private final Mirrorable mirrorable = addTrait(new MirrorableModel());
     /** Body model. */
     private final Body body = addTrait(new BodyModel());
-    /** State factory. */
-    private final StateFactory factory = new StateFactory();
     /** State handler. */
     private final StateHandler handler = new StateHandler(factory);
     /** Camera reference. */
@@ -97,7 +95,7 @@ class Entity
         collidable.setOrigin(Origin.CENTER_TOP);
 
         final ConfigFrames frames = ConfigFrames.create(getConfigurer());
-        surface = Drawable.loadSpriteAnimated(setup.surface, frames.getHorizontal(), frames.getVertical());
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), frames.getHorizontal(), frames.getVertical());
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 
@@ -122,7 +120,7 @@ class Entity
      * @param state The state to check.
      * @return <code>true</code> if it is this state, <code>false</code> else.
      */
-    public boolean isState(EntityState state)
+    public boolean isState(Enum<? extends StateAnimationBased> state)
     {
         return handler.isState(state);
     }

@@ -32,8 +32,7 @@ import org.eclipse.swt.events.KeyListener;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class KeyboardSwt
-        implements Keyboard, KeyListener
+public final class KeyboardSwt implements Keyboard, KeyListener
 {
     /** No key code. */
     private static final int NO_KEY_CODE = -1;
@@ -43,13 +42,13 @@ public final class KeyboardSwt
     private static final char EMPTY_KEY_NAME = ' ';
 
     /** Actions pressed listeners. */
-    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<>();
+    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<Integer, List<EventAction>>();
     /** Actions released listeners. */
-    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<>();
+    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<Integer, List<EventAction>>();
     /** List of keys. */
-    private final Collection<Integer> keys = new HashSet<>();
+    private final Collection<Integer> keys = new HashSet<Integer>();
     /** Pressed states. */
-    private final Collection<Integer> pressed = new HashSet<>();
+    private final Collection<Integer> pressed = new HashSet<Integer>();
     /** Last key code. */
     private volatile Integer lastCode = NO_KEY_CODE_VALUE;
     /** Last key name. */
@@ -82,7 +81,7 @@ public final class KeyboardSwt
         final List<EventAction> list;
         if (actionsPressed.get(key) == null)
         {
-            list = new ArrayList<>();
+            list = new ArrayList<EventAction>();
             actionsPressed.put(key, list);
         }
         else
@@ -98,7 +97,7 @@ public final class KeyboardSwt
         final List<EventAction> list;
         if (actionsReleased.get(key) == null)
         {
-            list = new ArrayList<>();
+            list = new ArrayList<EventAction>();
             actionsReleased.put(key, list);
         }
         else
@@ -189,29 +188,39 @@ public final class KeyboardSwt
     @Override
     public double getHorizontalDirection()
     {
+        final double direction;
         if (isPressed(left))
         {
-            return -1;
+            direction = -1;
         }
         else if (isPressed(right))
         {
-            return 1;
+            direction = 1;
         }
-        return 0;
+        else
+        {
+            direction = 0;
+        }
+        return direction;
     }
 
     @Override
     public double getVerticalDirection()
     {
+        final int direction;
         if (isPressed(down))
         {
-            return -1;
+            direction = -1;
         }
         else if (isPressed(up))
         {
-            return 1;
+            direction = 1;
         }
-        return 0;
+        else
+        {
+            direction = 0;
+        }
+        return direction;
     }
 
     /*

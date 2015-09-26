@@ -38,7 +38,7 @@ public enum CollisionFunctionType
      * 
      * @param type The associated type.
      */
-    private CollisionFunctionType(Class<? extends CollisionFunction> type)
+    CollisionFunctionType(Class<? extends CollisionFunction> type)
     {
         this.type = type;
     }

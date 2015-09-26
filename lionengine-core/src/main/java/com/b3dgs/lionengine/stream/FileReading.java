@@ -47,8 +47,7 @@ import java.io.IOException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface FileReading
-        extends Closeable
+public interface FileReading extends Closeable
 {
     /**
      * Read a boolean (1 bit, <code>true</code> or <code>false</code>).

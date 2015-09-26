@@ -26,8 +26,7 @@ import java.io.IOException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class NetworkMessageChat
-        extends NetworkMessage
+public class NetworkMessageChat extends NetworkMessage
 {
     /** The message. */
     private String message;

@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface NetworkedWorldServer
-        extends NetworkedWorld
+public interface NetworkedWorldServer extends NetworkedWorld
 {
     /**
      * Start the server.

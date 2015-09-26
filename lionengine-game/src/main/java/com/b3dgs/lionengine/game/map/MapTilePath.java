@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.map.astar
  */
-public interface MapTilePath
-        extends MapTileFeature
+public interface MapTilePath extends MapTileFeature
 {
     /**
      * Load map pathfinding from an external file.

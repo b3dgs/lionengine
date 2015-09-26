@@ -24,8 +24,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -36,14 +36,15 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionCategoryEditor
-        extends AbstractEditor
+public class CollisionCategoryEditor extends AbstractEditor
 {
     /** Dialog icon. */
-    public static final Image ICON = UtilEclipse.getIcon("collisioncategory-editor", "dialog.png");
+    public static final Image ICON = UtilIcon.get("collisioncategory-editor", "dialog.png");
 
     /** Configurer reference. */
     private final Configurer configurer;
+    /** Properties. */
+    private final CollisionCategoryProperties categoryProperties = new CollisionCategoryProperties();
     /** Collision category list. */
     private final CollisionCategoryList categoryList;
 
@@ -57,7 +58,7 @@ public class CollisionCategoryEditor
     {
         super(parent, Messages.CollisionCategoryEditor_Title, ICON);
         this.configurer = configurer;
-        categoryList = new CollisionCategoryList(configurer);
+        categoryList = new CollisionCategoryList(configurer, categoryProperties);
     }
 
     /*
@@ -67,7 +68,6 @@ public class CollisionCategoryEditor
     @Override
     protected void createContent(Composite parent)
     {
-        final CollisionCategoryProperties categoryProperties = new CollisionCategoryProperties(categoryList);
         categoryList.addListener(categoryProperties);
 
         final Composite properties = new Composite(parent, SWT.NONE);
@@ -82,13 +82,15 @@ public class CollisionCategoryEditor
     @Override
     protected void onExit()
     {
+        categoryList.save();
+
         final XmlNode root = configurer.getRoot();
         root.removeChildren(ConfigCollisionCategory.CATEGORY);
+
         for (final TreeItem item : categoryList.getTree().getItems())
         {
             final CollisionCategory category = (CollisionCategory) item.getData();
-            final XmlNode nodeCategory = ConfigCollisionCategory.export(category);
-            root.add(nodeCategory);
+            ConfigCollisionCategory.export(root, category);
         }
         configurer.save();
     }

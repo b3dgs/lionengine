@@ -33,8 +33,7 @@ import com.b3dgs.lionengine.game.background.Parallax;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Swamp
-        extends BackgroundGame
+class Swamp extends BackgroundGame
 {
     /** Moon rasters. */
     private static final int MOON_RASTERS = 20;
@@ -51,7 +50,8 @@ class Swamp
     static ElementRastered createElementRastered(String name, int x, int y, int rastersNumber)
     {
         final Sprite sprite = Drawable.loadSprite(Medias.create(name));
-        sprite.load(false);
+        sprite.load();
+        sprite.prepare();
         return new ElementRastered(x, y, sprite, rastersNumber);
     }
 
@@ -99,8 +99,7 @@ class Swamp
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private final class Backdrop
-            implements BackgroundComponent
+    private final class Backdrop implements BackgroundComponent
     {
         /** Backdrop color. */
         private final BackgroundElement backcolor;
@@ -139,8 +138,8 @@ class Swamp
         {
             backcolor.setOffsetY(y);
             moon.setOffsetY(-20 - moonOffset + getOffsetY());
-            mountain.setOffsetX(UtilMath.wrapDouble(mountain.getOffsetX() + speed * 0.24, 0.0,
-                    mountainSprite.getWidth()));
+            final double mx = mountain.getOffsetX() + speed * 0.24;
+            mountain.setOffsetX(UtilMath.wrapDouble(mx, 0.0, mountainSprite.getWidth()));
             mountain.setOffsetY(y);
         }
 
@@ -151,13 +150,14 @@ class Swamp
             final Sprite sprite = (Sprite) backcolor.getRenderable();
             for (int i = 0; i < Math.ceil(screenWidth / (double) sprite.getWidth()); i++)
             {
-                sprite.setLocation(backcolor.getMainX() + i * sprite.getWidth(),
-                        backcolor.getOffsetY() + backcolor.getMainY());
+                final int x = backcolor.getMainX() + i * sprite.getWidth();
+                final double y = backcolor.getOffsetY() + backcolor.getMainY();
+                sprite.setLocation(x, y);
                 sprite.render(g);
             }
             // Render moon
-            final Sprite spriteMoon = moon
-                    .getRaster((int) ((mountain.getOffsetY() + (moonOffset - getOffsetY())) / 4 + Swamp.MOON_RASTERS));
+            final int id = (int) ((mountain.getOffsetY() + (moonOffset - getOffsetY())) / 4 + Swamp.MOON_RASTERS);
+            final Sprite spriteMoon = moon.getRaster(id);
             spriteMoon.setLocation(moon.getMainX(), moon.getOffsetY() + moon.getMainY());
             spriteMoon.render(g);
 
