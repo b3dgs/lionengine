@@ -40,7 +40,7 @@ public abstract class EngineCore
     /** Engine begin date. */
     public static final String BEGIN_DATE = "13 June 2010";
     /** Engine last release date. */
-    public static final String LAST_RELEASE_DATE = "13 June 2015";
+    public static final String LAST_RELEASE_DATE = "26 September 2015";
     /** Engine author. */
     public static final String AUTHOR = "Pierre-Alexandre";
     /** Engine website. */
