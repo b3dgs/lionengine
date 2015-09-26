@@ -1,3 +1,6 @@
+# LionEngine
+<img src="https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.1.0"/>
+
 <table>
     <tr>
         <td>
@@ -25,7 +28,7 @@ The __LionEngine__ is a game engine especially developed during the project [Lio
 The engine is as a library, in Jar format (_including its javadoc_), which can be included in any project;
 for utility class uses, or to directly implement and inherit a game skeleton (_including management of frame rate, extrapolation, input output..._).
 
-Using Java 7 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resources management (_images_, _sprites_, _animations_, _tiles_...).
+Using Java 6 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resources management (_images_, _sprites_, _animations_, _tiles_...).
 Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (_Wav_, _Midi_, and more using plug-ins, such as _Sc68_).
 Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
@@ -54,7 +57,7 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 
 
 * #### __lionengine-core-awt__
->  * Engine implementation using __AWT__ from _JDK 7_
+>  * Engine implementation using __AWT__ from _JDK 6_
 
 
 * #### __lionengine-core-swt__
@@ -113,13 +116,13 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 ## Download
 
 * [Go to website](http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
-* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_8.0.0_lib.zip)
+* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_8.1.0_lib.zip)
 
 ## Installation
 
 Steps to include the __LionEngine__ in your project:
 
-1. Install at least the [Java JDK 7] (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+1. Install at least the [Java JDK 6] (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 2. Install the [Android SDK 1.5] (http://developer.android.com/sdk/index.html) (only if you use __lionengine-core-android__)
 3. Choose your favourite IDE ([Eclipse] (http://www.eclipse.org/downloads/), [Netbeans] (https://netbeans.org/downloads/)...)
 4. Download the latest [LionEngine] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
