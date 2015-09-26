@@ -322,8 +322,8 @@ public final class UtilFile
         final int i = name.lastIndexOf(Constant.DOT);
         if (i > minimumPrefix)
         {
-            prefix = name.substring(i);
-            suffix = name.substring(i + 1);
+            prefix = name.substring(0, i);
+            suffix = name.substring(i);
         }
         else
         {

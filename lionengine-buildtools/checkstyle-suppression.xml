@@ -3,7 +3,7 @@
 <!DOCTYPE suppressions PUBLIC "-//Puppy Crawl//DTD Suppressions 1.1//EN" "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 
 <suppressions>
-    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.audio.sc68.AudioSc68" lines="84" />
+    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.audio.sc68.AudioSc68" lines="87" />
     <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding" />
     <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding" />
     
