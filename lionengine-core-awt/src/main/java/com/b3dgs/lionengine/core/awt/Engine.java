@@ -68,7 +68,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @version 8.1.0
+ * @version 8.2.0
  * @since 13 June 2010
  */
 public final class Engine extends EngineCore
