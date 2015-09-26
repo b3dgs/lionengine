@@ -18,13 +18,13 @@
 package com.b3dgs.lionengine.audio.midi;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the midi class.
@@ -56,8 +56,10 @@ public class MidiTest
         }
         catch (final LionEngineException exception)
         {
-            Assert.assertTrue(exception.getMessage(), exception.getMessage().contains(Midi.ERROR_MIDI));
-            Verbose.info("Midi synthesizer not supported on test machine - Test skipped");
+            final String message = exception.getMessage();
+            Assert.assertTrue(message, message.contains(Midi.ERROR_MIDI));
+            Assume.assumeFalse("Midi synthesizer not supported on test machine - Test skipped",
+                               message.contains(Midi.ERROR_MIDI));
         }
     }
 
