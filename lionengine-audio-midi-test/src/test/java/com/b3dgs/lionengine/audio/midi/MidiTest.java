@@ -56,7 +56,7 @@ public class MidiTest
         }
         catch (final LionEngineException exception)
         {
-            Assert.assertTrue(exception.getMessage(), exception.getMessage().contains("No synthesizer available"));
+            Assert.assertTrue(exception.getMessage(), exception.getMessage().contains(Midi.ERROR_MIDI));
             Verbose.info("Midi synthesizer not supported on test machine - Test skipped");
         }
     }

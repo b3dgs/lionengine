@@ -70,7 +70,7 @@ public final class Midi
     /** Maximum volume value. */
     public static final int VOLUME_MAX = 100;
     /** Error midi. */
-    private static final String ERROR_MIDI = "No midi output available !";
+    public static final String ERROR_MIDI = "No midi output available !";
     /** Error midi data. */
     private static final String ERROR_MIDI_DATA = "Invalid midi data !";
     /** Error midi sequence. */
