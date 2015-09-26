@@ -23,8 +23,8 @@ import java.util.Map;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Describe an XML node, which can be modified (reading & writing). All primitive types are written as string inside any
- * XML file. XmlNode can be save in a file, using an XmlParser.
+ * Describe an XML node, which can be modified (reading and writing). All primitive types are written as string inside
+ * any XML file. XmlNode can be save in a file, using an XmlParser.
  * <p>
  * Note: Special case for the string stored as <code>null</code> which is in fact stored as {@link XmlNode#NULL}. When
  * read, the {@link XmlNode#NULL} string is return if the stored string was <code>null</code>.

@@ -25,18 +25,16 @@ import com.b3dgs.lionengine.Nameable;
  * It contains the <code>first</code> and <code>last</code> animation frame number, the animation <code>speed</code>, a
  * <code>reverse</code> flag (for reversed animation), and a <code>repeat</code> flag (for looped animation).
  * </p>
- * <p>
  * <ul>
  * <li><code>first</code>: first frame of the animation that will be played (included).</li>
  * <li><code>last</code>: last frame of the animation that will be played (included).</li>
  * <li><code>speed</code>: animation speed.</li>
- * <li><code>reverse</code>: reverse flag (1 -> 2 -> 3 -> 2 -> 1).</li>
- * <li><code>repeat</code>: repeat flag (1 -> 2 -> 3 -> 1 -> 2 -> 3...).</li>
+ * <li><code>reverse</code>: reverse flag (1 -&gt; 2 -&gt; 3 -&gt; 2 -&gt; 1).</li>
+ * <li><code>repeat</code>: repeat flag (1 -&gt; 2 -&gt; 3 -&gt; 1 -&gt; 2 -&gt; 3...).</li>
  * </ul>
- * </p>
  * <p>
  * Note: <code>reverse</code> and <code>repeat</code> can also be combined to play in loop an animation in reverse:
- * 1 -> 2 -> 3 -> 2 -> 1 -> 2 -> 3....
+ * 1 -&gt; 2 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; 2 -&gt; 3....
  * </p>
  * <p>
  * Example:

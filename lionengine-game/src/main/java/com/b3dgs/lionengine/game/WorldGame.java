@@ -35,15 +35,14 @@ import com.b3dgs.lionengine.stream.Stream;
  * {@link com.b3dgs.lionengine.game.object.Handler}, {@link com.b3dgs.lionengine.game.object.Factory}...).
  * <p>
  * It contains different elements, such as:
+ * </p>
  * <ul>
  * <li>{@link Config} : The configuration used by the {@link com.b3dgs.lionengine.core.Loader}</li>
  * <li><code>width</code> : The source screen width, retrieve from the source screen {@link Resolution}</li>
  * <li><code>height</code> : The source screen height, retrieve from the source screen {@link Resolution}</li>
  * </ul>
- * </p>
- * It has to be handled by a {@link com.b3dgs.lionengine.core.Sequence}.
  * <p>
- * Here a standard world usage:
+ * It has to be handled by a {@link com.b3dgs.lionengine.core.Sequence}. Here a standard world usage:
  * </p>
  * 
  * <pre>

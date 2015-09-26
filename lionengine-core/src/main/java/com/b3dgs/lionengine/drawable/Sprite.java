@@ -64,8 +64,8 @@ public interface Sprite extends Image
      * Stretch and resize the image to a different percent. Using different value, the ratio won't be kept,
      * and the sprite will be different.
      * 
-     * @param percentWidth The percent value for scaling width (> 0).
-     * @param percentHeight The percent value for scaling height (> 0).
+     * @param percentWidth The percent value for scaling width (strictly positive).
+     * @param percentHeight The percent value for scaling height (strictly positive).
      * @throws LionEngineException If arguments are invalid.
      */
     void stretch(double percentWidth, double percentHeight) throws LionEngineException;

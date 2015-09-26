@@ -227,8 +227,8 @@ public final class UtilityImage
      * Split an image into an array of sub image.
      * 
      * @param image The image to split.
-     * @param h The number of horizontal divisions (> 0).
-     * @param v The number of vertical divisions (> 0).
+     * @param h The number of horizontal divisions (strictly positive).
+     * @param v The number of vertical divisions (strictly positive).
      * @return The splited images array (can not be empty).
      */
     public static ImageBuffer[] splitImage(ImageBuffer image, int h, int v)

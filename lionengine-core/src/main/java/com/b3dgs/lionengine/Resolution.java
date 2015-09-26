@@ -20,9 +20,10 @@ package com.b3dgs.lionengine;
 /**
  * Describes a display resolution. It allows to define different parameters:
  * <ul>
- * <li><code>width & height</code> : represent the screen size</li>
+ * <li><code>width</code> and <code>height</code> : represent the screen size</li>
  * <li>
- * <code>ratio</code>, which is computed by using the <code>width & height</code>, allows to know the screen ratio.</li>
+ * <code>ratio</code>, which is computed by using the <code>width</code> and <code>height</code>, allows to know the
+ * screen ratio.</li>
  * <li><code>rate</code> : represents the screen refresh rate (in frames per seconds)</li>
  * </ul>
  * This class is mainly used to describe the display resolution chosen.
@@ -48,9 +49,9 @@ public final class Resolution
     /**
      * Create a resolution.
      * 
-     * @param width The resolution width (in pixel) [> 0].
-     * @param height The resolution height (in pixel) [> 0].
-     * @param rate The refresh rate (usually 50 or 60) [>= 0].
+     * @param width The resolution width (in pixel) (strictly positive).
+     * @param height The resolution height (in pixel) (strictly positive).
+     * @param rate The refresh rate (usually 50 or 60) (positive).
      * @throws LionEngineException If arguments are invalid.
      */
     public Resolution(int width, int height, int rate) throws LionEngineException
@@ -76,7 +77,7 @@ public final class Resolution
     /**
      * Set the ratio and adapt the resolution to the new ratio (based on the height value).
      * 
-     * @param ratio The new ratio [> 0].
+     * @param ratio The new ratio (strictly positive).
      * @throws LionEngineException If ratio is not strictly positive.
      */
     public void setRatio(double ratio) throws LionEngineException
@@ -97,7 +98,7 @@ public final class Resolution
     /**
      * Set the refresh rate value in hertz.
      * 
-     * @param rate The refresh rate value [>= 0].
+     * @param rate The refresh rate value (positive).
      * @throws LionEngineException If ratio is not strictly positive.
      */
     public void setRate(int rate) throws LionEngineException
@@ -159,9 +160,9 @@ public final class Resolution
     /**
      * Set the resolution.
      * 
-     * @param width The resolution width (in pixel) [> 0].
-     * @param height The resolution height (in pixel) [> 0].
-     * @param rate The refresh rate in hertz (usually 50 or 60) [>= 0].
+     * @param width The resolution width (in pixel, strictly positive).
+     * @param height The resolution height (in pixel, strictly positive).
+     * @param rate The refresh rate in hertz (usually 50 or 60, positive).
      * @throws LionEngineException If arguments are invalid.
      */
     private void set(int width, int height, int rate) throws LionEngineException

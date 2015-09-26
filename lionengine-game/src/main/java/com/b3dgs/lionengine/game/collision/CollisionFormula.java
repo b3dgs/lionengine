@@ -24,28 +24,28 @@ import com.b3dgs.lionengine.Nameable;
  * adjacent tiles.
  * 
  * <pre>
- * &lt;lionengine:formulas xmlns:lionengine="http://lionengine.b3dgs.com">
- *     &lt;lionengine:formula name="top">
- *         &lt;lionengine:range output="Y" minX="0" maxX="15" minY="15" maxY="15"/>
- *         &lt;lionengine:function type="LINEAR" a="0" b="16"/>
- *         &lt;lionengine:constraint top="none"/>
- *     &lt;/lionengine:formula>
- *     &lt;lionengine:formula name="bottom">
- *         &lt;lionengine:range output="Y" minX="0" maxX="15" minY="0" maxY="0"/>
- *         &lt;lionengine:function type="LINEAR" a="0" b="-1"/>
- *         &lt;lionengine:constraint bottom="none"/>
- *     &lt;/lionengine:formula>
- *     &lt;lionengine:formula name="left">
- *         &lt;lionengine:range output="X" minX="0" maxX="0" minY="0" maxY="15"/>
- *         &lt;lionengine:function type="LINEAR" a="0" b="-1"/>
- *         &lt;lionengine:constraint left="none"/>
- *     &lt;/lionengine:formula>
- *     &lt;lionengine:formula name="right">
- *         &lt;lionengine:range output="X" minX="15" maxX="15" minY="0" maxY="15"/>
- *         &lt;lionengine:function type="LINEAR" a="0" b="16"/>
- *         &lt;lionengine:constraint right="none"/>
- *     &lt;/lionengine:formula>
- * &lt;/lionengine:formulas>
+ * &lt;lionengine:formulas xmlns:lionengine="http://lionengine.b3dgs.com"&gt;
+ *     &lt;lionengine:formula name="top"&gt;
+ *         &lt;lionengine:range output="Y" minX="0" maxX="15" minY="15" maxY="15"/&gt;
+ *         &lt;lionengine:function type="LINEAR" a="0" b="16"/&gt;
+ *         &lt;lionengine:constraint top="none"/&gt;
+ *     &lt;/lionengine:formula&gt;
+ *     &lt;lionengine:formula name="bottom"&gt;
+ *         &lt;lionengine:range output="Y" minX="0" maxX="15" minY="0" maxY="0"/&gt;
+ *         &lt;lionengine:function type="LINEAR" a="0" b="-1"/&gt;
+ *         &lt;lionengine:constraint bottom="none"/&gt;
+ *     &lt;/lionengine:formula&gt;
+ *     &lt;lionengine:formula name="left"&gt;
+ *         &lt;lionengine:range output="X" minX="0" maxX="0" minY="0" maxY="15"/&gt;
+ *         &lt;lionengine:function type="LINEAR" a="0" b="-1"/&gt;
+ *         &lt;lionengine:constraint left="none"/&gt;
+ *     &lt;/lionengine:formula&gt;
+ *     &lt;lionengine:formula name="right"&gt;
+ *         &lt;lionengine:range output="X" minX="15" maxX="15" minY="0" maxY="15"/&gt;
+ *         &lt;lionengine:function type="LINEAR" a="0" b="16"/&gt;
+ *         &lt;lionengine:constraint right="none"/&gt;
+ *     &lt;/lionengine:formula&gt;
+ * &lt;/lionengine:formulas&gt;
  * </pre>
  * 
  * <p>

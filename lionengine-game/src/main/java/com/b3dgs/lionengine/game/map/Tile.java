@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.Featurable;
  * <ul>
  * <li><code>sheet</code> : tile sheet number</li>
  * <li><code>number</code> : tile number inside tilesheet</li>
- * <li><code>x & y</code> : real location on map</li>
+ * <li><code>x and y</code> : real location on map</li>
  * </ul>
  * <p>
  * A tile represents a surface reference, localized on a {@link MapTile}.

@@ -38,12 +38,12 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * must contains the files images. Example of a sheet configuration file:
  * 
  * <pre>
- * &lt;lionengine:sheets xmlns:lionengine="http://lionengine.b3dgs.com">
- *    &lt;lionengine:tileSize width="16" height="16"/>
- *    &lt;lionengine:sheet>ground.png&lt;/lionengine:sheet>
- *    &lt;lionengine:sheet>wall.png&lt;/lionengine:sheet>
- *    &lt;lionengine:sheet>water.png&lt;/lionengine:sheet>
- * &lt;/lionengine:sheets>
+ * &lt;lionengine:sheets xmlns:lionengine="http://lionengine.b3dgs.com"&gt;
+ *    &lt;lionengine:tileSize width="16" height="16"/&gt;
+ *    &lt;lionengine:sheet&gt;ground.png&lt;/lionengine:sheet&gt;
+ *    &lt;lionengine:sheet&gt;wall.png&lt;/lionengine:sheet&gt;
+ *    &lt;lionengine:sheet&gt;water.png&lt;/lionengine:sheet&gt;
+ * &lt;/lionengine:sheets&gt;
  * </pre>
  * 
  * <p>
@@ -121,10 +121,10 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
     void create(Media levelrip, Media sheetsConfig, Media groupsConfig) throws LionEngineException;
 
     /**
-     * Create a feature from its type, and automatically {@link #addFeature(MapTileFeature)} it.
+     * Create a feature from its type, and automatically {@link #addFeature} it.
      * The feature instance must provide a public constructor with {@link com.b3dgs.lionengine.game.object.Services} as
      * single argument, or the public default constructor. Else, create manually the instance and use
-     * {@link #addFeature(MapTileFeature)} on it.
+     * {@link #addFeature} on it.
      * 
      * @param <F> The feature type.
      * @param feature The feature class.
@@ -210,8 +210,8 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * the new map at the top-right.
      * 
      * @param map The map to append.
-     * @param offsetX The horizontal offset in tile (>= 0).
-     * @param offsetY The vertical offset in tile (>= 0).
+     * @param offsetX The horizontal offset in tile (positive).
+     * @param offsetY The vertical offset in tile (positive).
      */
     void append(MapTile map, int offsetX, int offsetY);
 

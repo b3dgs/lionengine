@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * </p>
  * <ul>
  * <li>{@link Handler}</li>
- * <li>{@link Integer}</li> (for the desired fps).
+ * <li>{@link Integer} (for the desired fps).</li>
  * </ul>
  * <p>
  * The {@link ObjectGame} must be a {@link ProducerChecker}.

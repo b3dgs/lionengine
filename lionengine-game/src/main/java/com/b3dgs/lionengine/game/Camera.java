@@ -157,10 +157,10 @@ public class Camera implements Viewer
      * For example: if the camera is following an object and the camera horizontal interval is 16, anything that is
      * rendered using the camera view point will see its horizontal axis change when the object horizontal location will
      * be before / after the camera location -16 / +16:
-     * <ul>
-     * <li><code><--camera movement--> -16[..no camera movement..]+16 <--camera movement--></code></li>
-     * </ul>
      * </p>
+     * <ul>
+     * <li><code>&lt;--camera movement--&gt; -16[..no camera movement..]+16 &lt;--camera movement--&gt;</code></li>
+     * </ul>
      * 
      * @param intervalHorizontal The horizontal margin.
      * @param intervalVertical The vertical margin.

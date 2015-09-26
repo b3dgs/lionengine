@@ -47,9 +47,10 @@ final class AnimationImpl implements Animation
      * Internal constructor.
      * 
      * @param name The animation name.
-     * @param firstFrame The first frame (included) index to play (>= {@link Animation#MINIMUM_FRAME}).
-     * @param lastFrame The last frame (included) index to play (>= firstFrame).
-     * @param speed The animation playing speed (>= 0.0).
+     * @param firstFrame The first frame (included) index to play (superior or equal to {@link Animation#MINIMUM_FRAME}
+     *            ).
+     * @param lastFrame The last frame (included) index to play (superior or equal to firstFrame).
+     * @param speed The animation playing speed (superior or equal to 0.0).
      * @param reverse <code>true</code> to reverse animation play (play it from first to last, and last to first).
      * @param repeat The repeat state (<code>true</code> will play in loop, <code>false</code> will play once only).
      * @throws LionEngineException If invalid animation.

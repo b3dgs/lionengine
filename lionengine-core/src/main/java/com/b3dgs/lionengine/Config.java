@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.core.Media;
  * <ul>
  * <li>source : It is corresponding to the native screen resolution for what the program was designed for (the source is
  * defined by the {@link com.b3dgs.lionengine.core.Sequence})</li>
- * <li>output : It is corresponding to the desired screen resolution output. If source & output are not equal, the
+ * <li>output : It is corresponding to the desired screen resolution output. If source and output are not equal, the
  * screen will be stretched</li>
  * <li>windowed : Allows to set the screen output mode (<code>true</code> for windowed, <code>false</code> for
  * fullscreen)</li>
@@ -112,7 +112,7 @@ public final class Config
     /**
      * Set the ratio and adapt the resolution to the new ratio (based on the height value).
      * 
-     * @param ratio The new ratio [> 0].
+     * @param ratio The new ratio (strictly positive).
      * @throws LionEngineException If ratio is not strictly positive.
      */
     public void setRatio(double ratio) throws LionEngineException
@@ -265,7 +265,7 @@ public final class Config
     /**
      * Set the ratio value.
      * 
-     * @param ratio The new ratio [> 0].
+     * @param ratio The new ratio (strictly positive).
      * @throws LionEngineException If ratio is not strictly positive.
      */
     private void setRatioValue(double ratio) throws LionEngineException

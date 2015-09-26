@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.drawable.Image;
  * Used to represent a pointer cursor, desynchronized from the system pointer or not. This way, it is possible to
  * set a specific sensibility. As the cursor surface is stored in an {@link Image}, the cursor can be rendered
  * immediately after the constructor call. It contains the following functionalities:
- * <p>
  * <ul>
  * <li><code>surface</code>: A cursor can contain many surfaces, but only the selected one is displayed.</li>
  * <li><code>area</code>: Represents the area where the cursor can move on. Its location can not exit this area (
@@ -52,7 +51,6 @@ import com.b3dgs.lionengine.drawable.Image;
  * <li>
  * <code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
  * </ul>
- * </p>
  * <p>
  * Usage example:
  * </p>
@@ -189,8 +187,8 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
     /**
      * Set cursor sensibility (move speed). Default value should be 1.0 (close to system sensibility).
      * 
-     * @param sh The horizontal sensibility (>= 0.0).
-     * @param sv The vertical sensibility (>= 0.0).
+     * @param sh The horizontal sensibility (superior or equal to 0.0).
+     * @param sv The vertical sensibility (superior or equal to 0.0).
      */
     public void setSensibility(double sh, double sv)
     {
@@ -261,8 +259,8 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
     /**
      * Set the grid size. Will affect {@link #getInTileX()} and {@link #getInTileY()}.
      * 
-     * @param width The horizontal grid (> 0).
-     * @param height The vertical grid (> 0).
+     * @param width The horizontal grid (strictly positive).
+     * @param height The vertical grid (strictly positive).
      * @throws LionEngineException If grid is not strictly positive.
      */
     public void setGrid(int width, int height) throws LionEngineException

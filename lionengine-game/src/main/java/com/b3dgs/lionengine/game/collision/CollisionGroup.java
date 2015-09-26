@@ -27,14 +27,14 @@ import com.b3dgs.lionengine.Nameable;
  * {@link com.b3dgs.lionengine.game.map.MapTile}. Here a definition example:
  * 
  * <pre>
- * &lt;lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">
- *    &lt;lionengine:group name="block">
- *       &lt;lionengine:formula>top&lt;/lionengine:formula>
- *       &lt;lionengine:formula>bottom&lt;/lionengine:formula>
- *       &lt;lionengine:formula>left&lt;/lionengine:formula>
- *       &lt;lionengine:formula>right&lt;/lionengine:formula>
- *    &lt;/lionengine:group>
- * &lt;/lionengine:groups>
+ * &lt;lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com"&gt;
+ *    &lt;lionengine:group name="block"&gt;
+ *       &lt;lionengine:formula&gt;top&lt;/lionengine:formula&gt;
+ *       &lt;lionengine:formula&gt;bottom&lt;/lionengine:formula&gt;
+ *       &lt;lionengine:formula&gt;left&lt;/lionengine:formula&gt;
+ *       &lt;lionengine:formula&gt;right&lt;/lionengine:formula&gt;
+ *    &lt;/lionengine:group&gt;
+ * &lt;/lionengine:groups&gt;
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)

@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.core.Media;
  * <li>Start index</li>
  * <li>Loop (range setting)</li>
  * <li>Volume</li>
- * <li>Pause & resume</li>
+ * <li>Pause and resume</li>
  * </ul>
  * <p>
  * The <code>tick</code> represents the position in the sound data.

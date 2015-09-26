@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * Represents a 2D vector force, using double precision. This can be used to describe a vectorial force, on 2 axis
- * (horizontal & vertical). Can be used as a speed.
+ * (horizontal and vertical). Can be used as a speed.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

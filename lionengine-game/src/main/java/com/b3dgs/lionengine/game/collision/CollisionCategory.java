@@ -29,21 +29,21 @@ import com.b3dgs.lionengine.game.Axis;
  * Here a definition example:
  * 
  * <pre>
- * &lt;lionengine:category name="leg_right" axis="Y" x="6" y="0">
- *     &lt;lionengine:group>block&lt;/lionengine:group>
- *  &lt;/lionengine:category>
+ * &lt;lionengine:category name="leg_right" axis="Y" x="6" y="0"&gt;
+ *     &lt;lionengine:group&gt;block&lt;/lionengine:group&gt;
+ *  &lt;/lionengine:category&gt;
  * 
- *  &lt;lionengine:category name="leg_left" axis="Y" x="-6" y="0">
- *     &lt;lionengine:group>block&lt;/lionengine:group>
- *  &lt;/lionengine:category>
+ *  &lt;lionengine:category name="leg_left" axis="Y" x="-6" y="0"&gt;
+ *     &lt;lionengine:group&gt;block&lt;/lionengine:group&gt;
+ *  &lt;/lionengine:category&gt;
  * 
- *  &lt;lionengine:category name="knee_right" axis="X" x="6" y="0">
- *     &lt;lionengine:group>block&lt;/lionengine:group>
- *  &lt;/lionengine:category>
+ *  &lt;lionengine:category name="knee_right" axis="X" x="6" y="0"&gt;
+ *     &lt;lionengine:group&gt;block&lt;/lionengine:group&gt;
+ *  &lt;/lionengine:category&gt;
  * 
- *  &lt;lionengine:category name="knee_left" axis="X" x="-6" y="0">
- *     &lt;lionengine:group>block&lt;/lionengine:group>
- *  &lt;/lionengine:category>
+ *  &lt;lionengine:category name="knee_left" axis="X" x="-6" y="0"&gt;
+ *     &lt;lionengine:group&gt;block&lt;/lionengine:group&gt;
+ *  &lt;/lionengine:category&gt;
  * </pre>
  * 
  * <p>

@@ -10,6 +10,36 @@
     <artifactId>com.b3dgs.lionengine.repository</artifactId>
     <name>LionEngine Repository</name>
     <packaging>eclipse-repository</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-core-awt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-game</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-network</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-audio-midi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-audio-wav</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-audio-sc68</artifactId>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>

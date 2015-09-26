@@ -27,16 +27,16 @@ import com.b3dgs.lionengine.game.map.Tile;
  * Here a definition example:
  * 
  * <pre>
- * &lt;lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">
- *    &lt;lionengine:group name="block">
- *      &lt;lionengine:tile sheet="0" number="1"/>
- *      &lt;lionengine:tile sheet="1" number="5"/>
- *    &lt;/lionengine:group>
- *    &lt;lionengine:group name="top">
- *      &lt;lionengine:tile sheet="0" number="2"/>
- *      &lt;lionengine:tile sheet="0" number="3"/>
- *    &lt;/lionengine:group>
- * &lt;/lionengine:groups>
+ * &lt;lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com"&gt;
+ *    &lt;lionengine:group name="block"&gt;
+ *      &lt;lionengine:tile sheet="0" number="1"/&gt;
+ *      &lt;lionengine:tile sheet="1" number="5"/&gt;
+ *    &lt;/lionengine:group&gt;
+ *    &lt;lionengine:group name="top"&gt;
+ *      &lt;lionengine:tile sheet="0" number="2"/&gt;
+ *      &lt;lionengine:tile sheet="0" number="3"/&gt;
+ *    &lt;/lionengine:group&gt;
+ * &lt;/lionengine:groups&gt;
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)

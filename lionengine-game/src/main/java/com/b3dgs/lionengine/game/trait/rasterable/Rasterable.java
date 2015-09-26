@@ -47,7 +47,7 @@ public interface Rasterable extends Trait, Updatable, Renderable
     /**
      * Get raster animation from raster index.
      * 
-     * @param rasterIndex The raster index (>= 0).
+     * @param rasterIndex The raster index (positive).
      * @return The raster animated sprite.
      */
     SpriteAnimated getRasterAnim(int rasterIndex);
