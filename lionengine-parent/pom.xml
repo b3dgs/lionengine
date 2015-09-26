@@ -81,24 +81,19 @@
             <modules>
                 <module>../lionengine-buildtools</module>
                 <module>../lionengine-core</module>
-                <module>../lionengine-core-test</module>
                 <module>../lionengine-core-awt</module>
-                <module>../lionengine-core-awt-test</module>
                 <module>../lionengine-core-android</module>
                 <module>../lionengine-game</module>
-                <module>../lionengine-game-test</module>
                 <module>../lionengine-network</module>
                 <module>../lionengine-audio-wav</module>
-                <module>../lionengine-audio-wav-test</module>
                 <module>../lionengine-audio-midi</module>
-                <module>../lionengine-audio-midi-test</module>
                 <module>../lionengine-audio-sc68</module>
-                <module>../lionengine-audio-sc68-test</module>
             </modules>
         </profile>
         <profile>
             <id>plugins</id>
             <modules>
+                <module>../lionengine-buildtools</module>
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
             </modules>
@@ -106,6 +101,7 @@
         <profile>
             <id>repository</id>
             <modules>
+                <module>../lionengine-buildtools</module>
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
                 <module>../com.b3dgs.lionengine.editor</module>
@@ -115,6 +111,7 @@
         <profile>
             <id>editor</id>
             <modules>
+                <module>../lionengine-buildtools</module>
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
                 <module>../com.b3dgs.lionengine.editor</module>
@@ -124,8 +121,27 @@
         <profile>
             <id>examples</id>
             <modules>
+                <module>../lionengine-buildtools</module>
                 <module>../lionengine-examples</module>
                 <module>../lionengine-tutorials</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>tests</id>
+            <modules>
+                <module>../lionengine-core-test</module>
+                <module>../lionengine-core-awt-test</module>
+                <module>../lionengine-game-test</module>
+                <module>../lionengine-audio-wav-test</module>
+                <module>../lionengine-audio-midi-test</module>
+                <module>../lionengine-audio-sc68-test</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>tests-plugins</id>
+            <modules>
+                <module>../com.b3dgs.lionengine.target</module>
+                <module>../com.b3dgs.lionengine.core.swt.test</module>
             </modules>
         </profile>
     </profiles>
