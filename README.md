@@ -1,6 +1,5 @@
 # LionEngine
-<img src="https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.1.0"/>
-
+[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.1.0)](https://travis-ci.org/b3dgs/lionengine)
 <table>
     <tr>
         <td>
