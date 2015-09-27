@@ -1,8 +1,5 @@
 sudo: false
 language: java
-os:
-  - linux
-  - osx
 notifications:
   email:
     on_success: never
@@ -19,8 +16,6 @@ script:
 - cd lionengine-parent
 - jdk_switcher use oraclejdk8
 - mvn clean install -Pcore
-- mvn clean install -Ptests-core
+- mvn test -Ptests-core jacoco:report coveralls:jacoco
 - mvn clean verify -Pplugins
-- mvn clean verify -Ptests-plugins
-after_success:
-- mvn cobertura:cobertura coveralls:report
+- mvn verify -Ptests-plugins jacoco:report coveralls:jacoco
