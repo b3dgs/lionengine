@@ -1,21 +1,27 @@
 sudo: false
+
 language: java
+
 notifications:
   email:
     on_success: never
     on_failure: change
+	
 cache:
   directories:
     - $HOME/.m2
+	
 env:
   global:
     - DISPLAY=:99.0
+	
 before_install:
   - sh -e /etc/init.d/xvfb start - sleep 10
+  
 script:
 - cd lionengine-parent
 - jdk_switcher use oraclejdk8
 - mvn clean install -Pcore
-- mvn test -Ptests-core jacoco:report coveralls:jacoco
+- mvn test -Ptests-core
 - mvn clean verify -Pplugins
-- mvn verify -Ptests-plugins jacoco:report coveralls:jacoco
+- mvn verify -Ptests-plugins
