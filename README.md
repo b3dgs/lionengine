@@ -1,5 +1,5 @@
 # LionEngine
-[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.2.0)](https://travis-ci.org/b3dgs/lionengine) [![Coverage Status](https://coveralls.io/repos/b3dgs/lionengine/badge.svg?branch=lionengine-8.2.0&service=github)](https://coveralls.io/github/b3dgs/lionengine?branch=lionengine-8.2.0)
+[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.2.0)](https://travis-ci.org/b3dgs/lionengine)
 <table>
     <tr>
         <td>
