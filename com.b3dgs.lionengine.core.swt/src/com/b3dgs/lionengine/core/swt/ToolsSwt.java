@@ -35,9 +35,12 @@ import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Transform;
+import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * Misc tools for SWT.
@@ -46,6 +49,115 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public final class ToolsSwt
 {
+    /** Error image buffer implementation. */
+    private static final String ERROR_IMAGE_BUFFER_IMPL = "Unsupported image buffer implementation !";
+
+    /**
+     * Get a unique display for the thread caller. Create a new one if not existing.
+     * 
+     * @return The display associated with the thread caller.
+     */
+    public static synchronized Display getDisplay()
+    {
+        final Display display = Display.findDisplay(Thread.currentThread());
+        if (display == null)
+        {
+            return new Display();
+        }
+        return display;
+    }
+
+    /**
+     * Create an image.
+     * 
+     * @param width The image width.
+     * @param height The image height.
+     * @param transparency The image transparency.
+     * @return The image.
+     * @throws SWTException If error on getting data.
+     */
+    public static Image createImage(int width, int height, int transparency) throws SWTException
+    {
+        final Device device = getDisplay();
+        final Image image = new Image(device, width, height);
+        if (transparency != SWT.TRANSPARENCY_NONE)
+        {
+            final ImageData data = image.getImageData();
+            data.transparentPixel = ColorRgba.TRANSPARENT.getRgba();
+            image.dispose();
+            return new Image(device, data);
+        }
+        return image;
+    }
+
+    /**
+     * Get the image buffer.
+     * 
+     * @param image The image buffer.
+     * @return The buffer.
+     */
+    public static Image getBuffer(ImageBuffer image)
+    {
+        if (image instanceof ImageBufferSwt)
+        {
+            return ((ImageBufferSwt) image).getBuffer();
+        }
+        throw new LionEngineException(ERROR_IMAGE_BUFFER_IMPL);
+    }
+
+    /**
+     * Get the image transparency equivalence.
+     * 
+     * @param transparency The transparency type.
+     * @return The transparency value.
+     */
+    public static int getTransparency(Transparency transparency)
+    {
+        final int value;
+        switch (transparency)
+        {
+            case OPAQUE:
+                value = SWT.TRANSPARENCY_NONE;
+                break;
+            case BITMASK:
+                value = SWT.TRANSPARENCY_MASK;
+                break;
+            case TRANSLUCENT:
+                value = SWT.TRANSPARENCY_ALPHA;
+                break;
+            default:
+                value = 0;
+        }
+        return value;
+    }
+
+    /**
+     * Get the transparency equivalence.
+     * 
+     * @param transparency The transparency.
+     * @return The equivalence.
+     */
+    public static Transparency getTransparency(int transparency)
+    {
+        final Transparency value;
+        switch (transparency)
+        {
+            case SWT.TRANSPARENCY_NONE:
+                value = Transparency.OPAQUE;
+                break;
+            case SWT.TRANSPARENCY_MASK:
+                value = Transparency.BITMASK;
+                break;
+            case SWT.TRANSPARENCY_PIXEL:
+            case SWT.TRANSPARENCY_ALPHA:
+                value = Transparency.TRANSLUCENT;
+                break;
+            default:
+                value = Transparency.OPAQUE;
+        }
+        return value;
+    }
+
     /**
      * Create a hidden cursor.
      * 
@@ -102,6 +214,18 @@ public final class ToolsSwt
     public static Image getImage(Image image) throws SWTException
     {
         return new Image(image.getDevice(), image, SWT.IMAGE_COPY);
+    }
+
+    /**
+     * Create an image.
+     * 
+     * @param image The image.
+     * @return The image.
+     * @throws SWTException If error on getting data.
+     */
+    public static ImageBuffer getImageBuffer(Image image) throws SWTException
+    {
+        return new ImageBufferSwt(image);
     }
 
     /**
@@ -241,7 +365,7 @@ public final class ToolsSwt
         final int width = data.width;
         final int height = data.height;
 
-        final Image filtered = UtilityImage.createImage(width * 2, height * 2, SWT.TRANSPARENCY_ALPHA);
+        final Image filtered = createImage(width * 2, height * 2, SWT.TRANSPARENCY_ALPHA);
         final GC gc = new GC(filtered);
         final Device device = gc.getDevice();
 
@@ -251,7 +375,7 @@ public final class ToolsSwt
         gc.drawImage(image, 0, 0);
         gc.dispose();
 
-        final Image filtered2 = UtilityImage.createImage(width, height, SWT.TRANSPARENCY_ALPHA);
+        final Image filtered2 = createImage(width, height, SWT.TRANSPARENCY_ALPHA);
         final GC gc2 = new GC(filtered2);
         final Transform transform2 = new Transform(device);
         final float scale = 0.5f;

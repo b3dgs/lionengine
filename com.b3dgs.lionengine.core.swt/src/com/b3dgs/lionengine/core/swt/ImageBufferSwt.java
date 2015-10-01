@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -38,33 +37,6 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  */
 final class ImageBufferSwt implements ImageBuffer
 {
-    /**
-     * Get the transparency equivalence.
-     * 
-     * @param transparency The transparency.
-     * @return The equivalence.
-     */
-    static Transparency getTransparency(int transparency)
-    {
-        final Transparency value;
-        switch (transparency)
-        {
-            case SWT.TRANSPARENCY_NONE:
-                value = Transparency.OPAQUE;
-                break;
-            case SWT.TRANSPARENCY_MASK:
-                value = Transparency.BITMASK;
-                break;
-            case SWT.TRANSPARENCY_PIXEL:
-            case SWT.TRANSPARENCY_ALPHA:
-                value = Transparency.TRANSLUCENT;
-                break;
-            default:
-                value = Transparency.OPAQUE;
-        }
-        return value;
-    }
-
     /** Device. */
     private final Device device;
     /** Last image data. */
@@ -86,7 +58,7 @@ final class ImageBufferSwt implements ImageBuffer
     {
         this.device = device;
         this.data = data;
-        transparency = ImageBufferSwt.getTransparency(data.getTransparencyType());
+        transparency = ToolsSwt.getTransparency(data.getTransparencyType());
     }
 
     /**
@@ -99,7 +71,7 @@ final class ImageBufferSwt implements ImageBuffer
         device = image.getDevice();
         this.image = image;
         data = image.getImageData();
-        transparency = ImageBufferSwt.getTransparency(data.getTransparencyType());
+        transparency = ToolsSwt.getTransparency(data.getTransparencyType());
     }
 
     /**

@@ -250,7 +250,7 @@ abstract class ScreenAwt implements Screen, FocusListener
     @Override
     public void addKeyListener(InputDeviceKeyListener listener)
     {
-        componentForKeyboard.addKeyListener(new KeyListener(listener));
+        componentForKeyboard.addKeyListener(new KeyboardAwtListener(listener));
     }
 
     @Override

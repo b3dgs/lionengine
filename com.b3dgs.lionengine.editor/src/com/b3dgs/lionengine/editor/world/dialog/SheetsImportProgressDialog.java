@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.swt.UtilityImage;
+import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractProgressDialog;
 import com.b3dgs.lionengine.game.map.TileExtractor;
 
@@ -95,7 +95,7 @@ public class SheetsImportProgressDialog extends AbstractProgressDialog
                 last = current;
                 gc.fillRectangle(0, 0, current.getWidth(), current.getHeight());
             }
-            gc.drawImage(UtilityImage.getBuffer(current), 0, 0);
+            gc.drawImage(ToolsSwt.getBuffer(current), 0, 0);
             dialog.getDisplay().readAndDispatch();
         }
     }

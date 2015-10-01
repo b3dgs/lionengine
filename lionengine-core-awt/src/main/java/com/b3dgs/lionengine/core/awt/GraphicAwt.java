@@ -90,7 +90,7 @@ final class GraphicAwt implements Graphic
     @Override
     public void drawImage(ImageBuffer image, int x, int y)
     {
-        g.drawImage(UtilityImage.getBuffer(image), null, x, y);
+        g.drawImage(ToolsAwt.getBuffer(image), null, x, y);
     }
 
     @Override
@@ -103,13 +103,13 @@ final class GraphicAwt implements Graphic
             at.scale(transform.getScaleX(), transform.getScaleY());
             op = new AffineTransformOp(at, transform.getInterpolation());
         }
-        g.drawImage(UtilityImage.getBuffer(image), op, x, y);
+        g.drawImage(ToolsAwt.getBuffer(image), op, x, y);
     }
 
     @Override
     public void drawImage(ImageBuffer image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
     {
-        g.drawImage(UtilityImage.getBuffer(image), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
+        g.drawImage(ToolsAwt.getBuffer(image), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
     }
 
     @Override

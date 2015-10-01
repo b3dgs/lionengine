@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.core.EngineCore;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
@@ -99,7 +99,7 @@ public class CollisionsEditDialog extends AbstractDialog
         list.save();
 
         final XmlNode root = Stream.createXmlNode(ConfigCollisionGroup.COLLISIONS);
-        root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
+        root.writeString(Configurer.HEADER, Engine.WEBSITE);
 
         for (final TreeItem item : list.getTree().getItems())
         {

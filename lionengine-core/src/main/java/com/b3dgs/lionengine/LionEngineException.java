@@ -204,7 +204,7 @@ public final class LionEngineException extends RuntimeException
     {
         super(exception);
         final StringBuilder buffer = new StringBuilder(16);
-        if (media != null && media.getPath() != null)
+        if (media != null)
         {
             buffer.append("[").append(media.getPath()).append("] ");
         }

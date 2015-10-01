@@ -72,10 +72,8 @@ public enum Verbose
 
     /** Logger. */
     private static final Logger LOGGER = Logger.getLogger(Constant.EMPTY_STRING);
-    /** One megabyte. */
-    private static final int MEGA_BYTE = 1048576;
     /** Log size. */
-    private static final int LOG_SIZE = MEGA_BYTE * 4;
+    private static final int LOG_SIZE = Constant.MEGA_BYTE * 4;
     /** Log count. */
     private static final int LOG_COUNT = 6;
     /** Log file. */

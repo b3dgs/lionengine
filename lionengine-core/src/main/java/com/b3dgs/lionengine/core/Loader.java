@@ -134,7 +134,7 @@ public final class Loader
             {
                 Verbose.exception(Renderer.class, "run", throwable);
                 renderer.terminate();
-                EngineCore.terminate();
+                Engine.terminate();
             }
         });
         this.renderer = renderer;

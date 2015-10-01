@@ -32,6 +32,11 @@ import com.b3dgs.lionengine.core.Transform;
  */
 public class GraphicMock implements Graphic
 {
+    /** Color value. */
+    private ColorRgba color = ColorRgba.WHITE;
+    /** Graphic used. */
+    private Object g;
+
     /**
      * Create mock.
      */
@@ -131,7 +136,7 @@ public class GraphicMock implements Graphic
     @Override
     public void setColor(ColorRgba color)
     {
-        // Mock
+        this.color = color;
     }
 
     @Override
@@ -143,18 +148,18 @@ public class GraphicMock implements Graphic
     @Override
     public void setGraphic(Object graphic)
     {
-        // Mock
+        g = graphic;
     }
 
     @Override
     public Object getGraphic()
     {
-        return new GraphicMock();
+        return g;
     }
 
     @Override
     public ColorRgba getColor()
     {
-        return new ColorRgba(0);
+        return color;
     }
 }

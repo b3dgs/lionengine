@@ -34,7 +34,7 @@ import javax.swing.WindowConstants;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.EngineCore;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Renderer;
 
 /**
@@ -127,7 +127,7 @@ final class ScreenWindowedAwt extends ScreenAwt
      */
     private JFrame initMainFrame(final Renderer renderer) throws LionEngineException
     {
-        final String title = EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion();
+        final String title = Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion();
         final JFrame frame = new JFrame(title, conf);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter()

@@ -19,6 +19,9 @@ package com.b3dgs.lionengine;
 
 import java.nio.charset.Charset;
 
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Verbose;
+
 /**
  * List of common constants.
  * 
@@ -56,6 +59,8 @@ public final class Constant
     public static final String UNIT_RATE = "Hz";
     /** Jar type. */
     public static final String TYPE_JAR = ".jar";
+    /** One megabyte. */
+    public static final int MEGA_BYTE = 1048576;
     /** Maximum port value. */
     public static final int MAX_PORT = 65535;
     /** Maximum degree value (excluded). */
@@ -76,12 +81,37 @@ public final class Constant
     public static final int BYTE_2 = 8;
     /** Byte 1. */
     public static final int BYTE_1 = 0;
+    /** Error system property. */
+    private static final String ERROR_PROPERTY = "Unable to get system property: ";
+
+    /**
+     * Get the system property. If the property is not valid due to a {@link SecurityException}, an empty string is
+     * returned.
+     * 
+     * @param property The system property.
+     * @param def The default value used if property is not available.
+     * @return The system property value (<code>null</code> if there is not any corresponding property).
+     */
+    public static String getSystemProperty(String property, String def)
+    {
+        try
+        {
+            return System.getProperty(property);
+        }
+        catch (final SecurityException exception)
+        {
+            final StringBuilder builder = new StringBuilder(ERROR_PROPERTY);
+            builder.append(property).append(" (").append(exception.getClass().getName()).append(")");
+            Verbose.critical(Engine.class, "getSystemProperty", builder.toString());
+            return def;
+        }
+    }
 
     /**
      * Private constructor.
      */
     private Constant()
     {
-        throw new RuntimeException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

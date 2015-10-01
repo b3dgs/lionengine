@@ -33,9 +33,9 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.EngineCore;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.swt.UtilityMedia;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
@@ -118,7 +118,7 @@ public class SheetsEditDialog extends AbstractDialog
 
         for (final File file : UtilFile.getFiles(sheets.getFile().getParentFile()))
         {
-            final Media media = UtilityMedia.get(file);
+            final Media media = Medias.get(file);
             if (ImageInfo.isImage(media))
             {
                 final Button check = new Button(tileSheetsArea, SWT.CHECK);
@@ -178,7 +178,7 @@ public class SheetsEditDialog extends AbstractDialog
     protected void onFinish()
     {
         final XmlNode root = Stream.createXmlNode(MapTile.NODE_TILE_SHEETS);
-        root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
+        root.writeString(Configurer.HEADER, Engine.WEBSITE);
 
         final XmlNode tileSize = root.createChild(MapTile.NODE_TILE_SIZE);
         tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, tileWidthText.getText());

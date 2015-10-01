@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.test;
 
+import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.core.Transform;
 
 /**
@@ -26,6 +27,13 @@ import com.b3dgs.lionengine.core.Transform;
  */
 public class TransformMock implements Transform
 {
+    /** Horizontal scale. */
+    private double sx;
+    /** Vertical scale. */
+    private double sy;
+    /** Interpolation. */
+    private int interpolation;
+
     /**
      * Create mock.
      */
@@ -41,30 +49,31 @@ public class TransformMock implements Transform
     @Override
     public void scale(double sx, double sy)
     {
-        // Mock
+        this.sx = sx;
+        this.sy = sy;
     }
 
     @Override
     public void setInterpolation(boolean bilinear)
     {
-        // Mock
+        interpolation = UtilConversion.boolToInt(bilinear);
     }
 
     @Override
     public double getScaleX()
     {
-        return 0;
+        return sx;
     }
 
     @Override
     public double getScaleY()
     {
-        return 0;
+        return sy;
     }
 
     @Override
     public int getInterpolation()
     {
-        return 0;
+        return interpolation;
     }
 }

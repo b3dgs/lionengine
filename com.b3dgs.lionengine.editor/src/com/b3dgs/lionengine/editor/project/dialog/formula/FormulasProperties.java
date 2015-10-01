@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.swt.UtilityImage;
+import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
@@ -168,7 +168,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
                                                                                 map.getTileWidth(),
                                                                                 map.getTileHeight());
             gc.fillRectangle(0, 0, map.getTileWidth(), map.getTileHeight());
-            gc.drawImage(UtilityImage.getBuffer(buffer), 0, 0);
+            gc.drawImage(ToolsSwt.getBuffer(buffer), 0, 0);
         }
     }
 

@@ -19,8 +19,6 @@ package com.b3dgs.lionengine;
 
 import java.util.Locale;
 
-import com.b3dgs.lionengine.core.EngineCore;
-
 /**
  * List of available operating systems.
  * <p>
@@ -45,8 +43,8 @@ public enum OperatingSystem
     /** Unknown item. */
     private static final String DEFAULT = "unknown";
     /** The OS enum. */
-    private static final OperatingSystem OS = find(EngineCore.getSystemProperty("os.name", DEFAULT)
-                                                             .toLowerCase(Locale.ENGLISH));
+    private static final OperatingSystem OS = find(Constant.getSystemProperty("os.name", DEFAULT)
+                                                           .toLowerCase(Locale.ENGLISH));
 
     /**
      * Find the current system.

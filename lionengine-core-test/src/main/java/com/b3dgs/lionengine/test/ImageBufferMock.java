@@ -69,7 +69,9 @@ public class ImageBufferMock implements ImageBuffer
     @Override
     public Graphic createGraphic()
     {
-        return new GraphicMock();
+        final Graphic g = new GraphicMock();
+        g.setGraphic(new Object());
+        return g;
     }
 
     @Override

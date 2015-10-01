@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
  * Program starts here. When you start the jvm, ensure that this main function is called.
@@ -44,8 +44,8 @@ public class AppJava
         // - The main resources directory, relative to the execution directory: ./resources/
         // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
         // To load resources from JAR, this alternative is preferred if external folder is not possible:
-        // Engine.start("AppJava", Version.create(1, 0, 0), AppJava.class);
-        Engine.start("AppJava", Version.create(1, 0, 0), AppJava.class);
+        // EngineAwt.start("AppJava", Version.create(1, 0, 0), AppJava.class);
+        EngineAwt.start("AppJava", Version.create(1, 0, 0), AppJava.class);
 
         // Resolution configuration (output = 640*480 at 60Hz). This is the output configuration.
         // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.

@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.example.game.chat;
 
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
  * Game loop designed to handle our little world.

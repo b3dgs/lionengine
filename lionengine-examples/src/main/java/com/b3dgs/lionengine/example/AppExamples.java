@@ -29,7 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import com.b3dgs.lionengine.core.EngineCore;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Theme;
 import com.b3dgs.lionengine.core.awt.swing.UtilitySwing;
@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.example.game.background.AppBackground;
 import com.b3dgs.lionengine.example.game.collision.AppCollision;
 import com.b3dgs.lionengine.example.game.cursor.AppCursor;
 import com.b3dgs.lionengine.example.game.effect.AppEffect;
+import com.b3dgs.lionengine.example.game.extraction.AppExtraction;
 import com.b3dgs.lionengine.example.game.fog.AppFog;
 import com.b3dgs.lionengine.example.game.map.AppMap;
 import com.b3dgs.lionengine.example.game.pathfinding.AppPathfinding;
@@ -92,6 +93,7 @@ public class AppExamples
         addExample(panel, "Map", AppMap.class);
         addExample(panel, "Pathfinding", AppPathfinding.class);
         addExample(panel, "Production", AppProduction.class);
+        addExample(panel, "Extraction", AppExtraction.class);
         addExample(panel, "Projectile", AppProjectile.class);
         addExample(panel, "Raster", AppRaster.class);
         addExample(panel, "Selector", AppSelector.class);
@@ -150,7 +152,7 @@ public class AppExamples
                 example.getDeclaredMethod("main", String[].class).invoke(example, (Object[]) new String[1]);
                 final Runnable runnable = () ->
                 {
-                    while (EngineCore.isStarted())
+                    while (Engine.isStarted())
                     {
                         try
                         {

@@ -29,7 +29,6 @@ import android.net.Uri;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 
@@ -55,7 +54,7 @@ import com.b3dgs.lionengine.core.Verbose;
 public final class UtilityMedia
 {
     /** System temp directory. */
-    public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir", null);
+    public static final String SYSTEM_TEMP_DIR = Constant.getSystemProperty("java.io.tmpdir", null);
     /** Error get stream. */
     private static final String ERROR_GET_STREAM = "Error on getting stream of: ";
     /** System separator. */

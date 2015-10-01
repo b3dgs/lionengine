@@ -98,5 +98,4 @@ public class ViewerMock implements Viewer
     {
         return false;
     }
-
 }

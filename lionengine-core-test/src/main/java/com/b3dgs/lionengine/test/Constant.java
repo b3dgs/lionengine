@@ -37,6 +37,6 @@ public final class Constant
      */
     private Constant()
     {
-        throw new RuntimeException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

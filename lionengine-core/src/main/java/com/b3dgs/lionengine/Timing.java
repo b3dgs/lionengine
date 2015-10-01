@@ -135,7 +135,7 @@ public final class Timing
     {
         if (started)
         {
-            return systemTime() - cur >= time;
+            return getRelativeTime() - cur >= time;
         }
         return false;
     }
@@ -149,9 +149,9 @@ public final class Timing
     {
         if (started)
         {
-            return systemTime() - cur;
+            return getRelativeTime() - cur;
         }
-        return 0;
+        return 0L;
     }
 
     /**
@@ -183,5 +183,19 @@ public final class Timing
     public boolean isStarted()
     {
         return started;
+    }
+
+    /**
+     * Get the relative time.
+     * 
+     * @return The current time, the old time if paused.
+     */
+    private long getRelativeTime()
+    {
+        if (back > 0L)
+        {
+            return back;
+        }
+        return systemTime();
     }
 }

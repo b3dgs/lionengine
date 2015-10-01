@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.example.game.selector;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;

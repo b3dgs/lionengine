@@ -297,7 +297,7 @@ public class Renderer extends Thread implements Sequencable
             extrp = computeExtrapolation(lastTime, currentTime);
             updateFpsTimer = computeFrameRate(lastTime, currentTime, updateFpsTimer);
 
-            if (!EngineCore.isStarted())
+            if (!Engine.isStarted())
             {
                 isRunning = false;
             }

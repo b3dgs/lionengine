@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.core;
 
+import java.io.File;
+
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -29,17 +32,24 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public final class Medias
 {
+    /** Resources directory. */
+    private static volatile String resourcesDir = Constant.EMPTY_STRING;
+    /** Class loader. */
+    private static volatile Class<?> loader;
     /** Factory media implementation. */
-    private static FactoryMedia factoryMedia;
+    private static volatile FactoryMedia factoryMedia = new FactoryMediaDefault();
 
     /**
-     * Set the media factory used.
+     * Get a media from an existing file descriptor.
      * 
-     * @param factoryMedia The media factory used.
+     * @param file The file descriptor.
+     * @return The media instance.
      */
-    public static synchronized void setFactoryMedia(FactoryMedia factoryMedia)
+    public static synchronized Media get(File file)
     {
-        Medias.factoryMedia = factoryMedia;
+        final String filename = file.getPath();
+        final String localFile = filename.substring(resourcesDir.length() + filename.lastIndexOf(resourcesDir));
+        return create(localFile);
     }
 
     /**
@@ -67,13 +77,48 @@ public final class Medias
     }
 
     /**
-     * Get the path separator.
+     * Set the media factory used.
      * 
-     * @return The path separator.
+     * @param factoryMedia The media factory used.
      */
-    public static synchronized String getSeparator()
+    public static synchronized void setFactoryMedia(FactoryMedia factoryMedia)
     {
-        return factoryMedia.getSeparator();
+        Medias.factoryMedia = factoryMedia;
+    }
+
+    /**
+     * Define resources directory. Root for all medias.
+     * 
+     * @param directory The main resources directory (may be <code>null</code>).
+     */
+    public static synchronized void setResourcesDirectory(String directory)
+    {
+        if (directory == null)
+        {
+            resourcesDir = Constant.EMPTY_STRING;
+        }
+        else
+        {
+            resourcesDir = directory + getSeparator();
+        }
+    }
+
+    /**
+     * Activate or no the resources loading from *.jar. A <code>null</code> value will disable load from jar.
+     * 
+     * @param clazz The class loader reference (resources entry point).
+     */
+    public static synchronized void setLoadFromJar(Class<?> clazz)
+    {
+        loader = clazz;
+        if (loader != null)
+        {
+            setSeparator(Constant.SLASH);
+        }
+        else
+        {
+            setSeparator(File.separator);
+        }
     }
 
     /**
@@ -84,6 +129,36 @@ public final class Medias
     public static synchronized void setSeparator(String separator)
     {
         factoryMedia.setSeparator(separator);
+    }
+
+    /**
+     * Get current resource directory.
+     * 
+     * @return The resource directory.
+     */
+    public static synchronized String getResourcesDir()
+    {
+        return resourcesDir;
+    }
+
+    /**
+     * Get the resources class loader.
+     * 
+     * @return The class loader to gather resources (can be <code>null</code>).
+     */
+    public static synchronized Class<?> getClassResources()
+    {
+        return loader;
+    }
+
+    /**
+     * Get the path separator.
+     * 
+     * @return The path separator.
+     */
+    public static synchronized String getSeparator()
+    {
+        return factoryMedia.getSeparator();
     }
 
     /**

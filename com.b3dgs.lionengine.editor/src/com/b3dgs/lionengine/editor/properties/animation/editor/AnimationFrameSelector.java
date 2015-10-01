@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.swt.UtilityMedia;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
@@ -98,7 +98,7 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
         this.parent = parent;
         g = Graphics.createGraphic();
         final ConfigSurface configSurface = ConfigSurface.create(configurer);
-        final Media media = UtilityMedia.get(new File(configurer.getPath(), configSurface.getImage()));
+        final Media media = Medias.get(new File(configurer.getPath(), configSurface.getImage()));
         final ConfigFrames framesData = ConfigFrames.create(configurer);
         horizontalFrames = framesData.getHorizontal();
         verticalFrames = framesData.getVertical();

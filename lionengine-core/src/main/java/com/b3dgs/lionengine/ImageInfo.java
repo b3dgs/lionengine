@@ -47,7 +47,7 @@ public final class ImageInfo
     /** Unsupported format. */
     private static final String ERROR_FORMAT = "Unsupported image format";
     /** Read error. */
-    private static final String ERROR_READ = "Can not read image information";
+    private static final String ERROR_READ = "Cannot read image information";
     /** Invalid Jpg. */
     private static final String ERROR_JPG = "Invalid JPG file !";
     /** Message skipped. */
@@ -437,7 +437,7 @@ public final class ImageInfo
         final boolean bigEndian = 'M' == byte1;
         final int ifd = readInt(input, 4, bigEndian);
         long skipped = input.skip(ifd - toSkip);
-        checkSkippedError(skipped, ifd - toSkip);
+        // checkSkippedError(skipped, ifd - toSkip); fail when reading from JAR, not needed
         final int entries = readInt(input, 2, bigEndian);
 
         int w = -1;

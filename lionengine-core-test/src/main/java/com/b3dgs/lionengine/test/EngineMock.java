@@ -17,20 +17,46 @@
  */
 package com.b3dgs.lionengine.test;
 
-import com.b3dgs.lionengine.core.EngineCore;
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Graphics;
 
 /**
  * Engine mock.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class EngineMock extends EngineCore
+public class EngineMock extends Engine
 {
     /**
      * Constructor.
+     * 
+     * @param name The program name (must not be <code>null</code>).
+     * @param version The program version (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    public EngineMock()
+    public EngineMock(String name, Version version) throws LionEngineException
     {
-        super();
+        super(name, version);
+        Check.notNull(name);
+        Check.notNull(version);
+    }
+
+    /*
+     * Engine
+     */
+
+    @Override
+    protected void open()
+    {
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+    }
+
+    @Override
+    protected void close()
+    {
+        Graphics.setFactoryGraphic(null);
     }
 }

@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import com.b3dgs.lionengine.core.EngineCore;
-
 /**
  * List of standard architectures.
  * <p>
@@ -39,8 +37,8 @@ public enum Architecture
     /** Unknown item. */
     private static final String DEFAULT = "unknown";
     /** The architecture used. */
-    private static final Architecture ARCHI = Architecture.find(EngineCore.getSystemProperty("sun.arch.data.model",
-                                                                                             DEFAULT));
+    private static final Architecture ARCHI = Architecture.find(Constant.getSystemProperty("sun.arch.data.model",
+                                                                                           DEFAULT));
 
     /**
      * Find the current architecture.

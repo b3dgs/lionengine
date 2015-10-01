@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.EngineCore;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -102,7 +102,7 @@ abstract class ScreenSwt implements Screen, FocusListener
         Check.notNull(renderer);
 
         this.renderer = renderer;
-        display = UtilityImage.getDisplay();
+        display = ToolsSwt.getDisplay();
         config = renderer.getConfig();
         cursorHidden = ToolsSwt.createHiddenCursor(display);
         cursorDefault = display.getSystemCursor(0);
@@ -135,7 +135,7 @@ abstract class ScreenSwt implements Screen, FocusListener
             shell = new Shell(display, SWT.NO_TRIM | SWT.ON_TOP);
             shell.setBounds(display.getPrimaryMonitor().getBounds());
         }
-        shell.setText(EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion());
+        shell.setText(Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion());
         shell.addDisposeListener(new DisposeListener()
         {
             @Override
@@ -241,7 +241,7 @@ abstract class ScreenSwt implements Screen, FocusListener
         if (!canvas.isDisposed())
         {
             final GC gc = new GC(canvas);
-            gc.drawImage(UtilityImage.getBuffer(buffer), 0, 0);
+            gc.drawImage(ToolsSwt.getBuffer(buffer), 0, 0);
             gc.dispose();
             if (lastGc != null)
             {
@@ -319,7 +319,7 @@ abstract class ScreenSwt implements Screen, FocusListener
             @Override
             public void run()
             {
-                frame.addKeyListener(new KeyListener(listener));
+                frame.addKeyListener(new KeyboardSwtListener(listener));
             }
         });
     }

@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
+public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
 {
     /** Default button number. */
     private static final int DEFAULT_BUTTONS = 3;
@@ -89,11 +89,10 @@ final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, Mouse
     private boolean moved;
 
     /**
-     * Internal constructor.
+     * Constructor.
      */
-    MouseAwt()
+    public MouseAwt()
     {
-        super();
         final int mouseButtons = getButtonsNumber();
         clicks = new boolean[mouseButtons];
         clicked = new boolean[mouseButtons];
@@ -122,7 +121,7 @@ final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, Mouse
      * 
      * @param config The config.
      */
-    void setConfig(Config config)
+    public void setConfig(Config config)
     {
         xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
         yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();

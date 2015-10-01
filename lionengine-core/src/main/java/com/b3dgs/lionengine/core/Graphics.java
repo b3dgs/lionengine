@@ -205,7 +205,7 @@ public final class Graphics
      * 
      * @param image The input image.
      * @param filter The filter to use.
-     * @return The filtered image as a new instance.
+     * @return The filtered image as a new instance, or image parameter reference (no copy) if {@link Filter#NONE}.
      * @throws LionEngineException If the filter is not supported.
      */
     public static ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException

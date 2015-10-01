@@ -59,8 +59,9 @@ public interface Media
      * Get the file descriptor.
      * 
      * @return The file descriptor.
+     * @throws LionEngineException If descriptor is not accessible.
      */
-    File getFile();
+    File getFile() throws LionEngineException;
 
     /**
      * Get the media input stream.

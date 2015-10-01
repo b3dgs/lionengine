@@ -13,7 +13,7 @@
     </parent>
     <artifactId>com.b3dgs.lionengine.core.swt.test</artifactId>
     <name>LionEngine Core SWT Test</name>
-    <packaging>eclipse-plugin</packaging>
+    <packaging>eclipse-test-plugin</packaging>
     <dependencies>
         <dependency>
             <groupId>com.b3dgs.lionengine</groupId>
@@ -23,10 +23,12 @@
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-core-test</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>src</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

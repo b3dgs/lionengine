@@ -17,6 +17,12 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Hq2x;
@@ -32,6 +38,7 @@ import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Transform;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Graphic factory implementation.
@@ -40,10 +47,15 @@ import com.b3dgs.lionengine.core.Transform;
  */
 public final class FactoryGraphicAwt implements FactoryGraphic
 {
+    /** Reading image message. */
+    private static final String ERROR_IMAGE_READING = "Error on reading image !";
+    /** Save image message. */
+    private static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
+
     /**
-     * Internal constructor.
+     * Constructor.
      */
-    FactoryGraphicAwt()
+    public FactoryGraphicAwt()
     {
         // Nothing to do
     }
@@ -79,75 +91,102 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     @Override
     public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
-        return UtilityImage.createImage(width, height, transparency);
+        return new ImageBufferAwt(ToolsAwt.createImage(width, height, ToolsAwt.getTransparency(transparency)));
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media)
+    public ImageBuffer getImageBuffer(Media media) throws LionEngineException
     {
-        return UtilityImage.getImage(media);
+        Check.notNull(media);
+        final InputStream input = media.getInputStream();
+        try
+        {
+            return new ImageBufferAwt(ToolsAwt.getImage(input));
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, ERROR_IMAGE_READING);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(FactoryGraphicAwt.class, "getImage", exception2);
+            }
+        }
     }
 
     @Override
-    public ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
+    public ImageBuffer getImageBuffer(ImageBuffer image)
     {
-        return UtilityImage.copyImage(imageBuffer, imageBuffer.getTransparency());
+        return new ImageBufferAwt(ToolsAwt.copyImage(ToolsAwt.getBuffer(image),
+                                                     ToolsAwt.getTransparency(image.getTransparency())));
     }
 
     @Override
-    public ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
+    public ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
-        return UtilityImage.applyMask(imageBuffer, maskColor.getRgba());
+        return new ImageBufferAwt(ToolsAwt.applyMask(ToolsAwt.getBuffer(image), maskColor.getRgba()));
     }
 
     @Override
-    public ImageBuffer[] splitImage(ImageBuffer imageBuffer, int h, int v)
+    public ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
-        return UtilityImage.splitImage(imageBuffer, h, v);
+        final BufferedImage[] images = ToolsAwt.splitImage(ToolsAwt.getBuffer(image), h, v);
+        final ImageBuffer[] imageBuffers = new ImageBuffer[h * v];
+        for (int i = 0; i < imageBuffers.length; i++)
+        {
+            imageBuffers[i] = new ImageBufferAwt(images[i]);
+        }
+        return imageBuffers;
     }
 
     @Override
-    public ImageBuffer rotate(ImageBuffer imageBuffer, int angle)
+    public ImageBuffer rotate(ImageBuffer image, int angle)
     {
-        return UtilityImage.rotate(imageBuffer, angle);
+        return new ImageBufferAwt(ToolsAwt.rotate(ToolsAwt.getBuffer(image), angle));
     }
 
     @Override
-    public ImageBuffer resize(ImageBuffer imageBuffer, int width, int height)
+    public ImageBuffer resize(ImageBuffer image, int width, int height)
     {
-        return UtilityImage.resize(imageBuffer, width, height);
+        return new ImageBufferAwt(ToolsAwt.resize(ToolsAwt.getBuffer(image), width, height));
     }
 
     @Override
-    public ImageBuffer flipHorizontal(ImageBuffer imageBuffer)
+    public ImageBuffer flipHorizontal(ImageBuffer image)
     {
-        return UtilityImage.flipHorizontal(imageBuffer);
+        return new ImageBufferAwt(ToolsAwt.flipHorizontal(ToolsAwt.getBuffer(image)));
     }
 
     @Override
-    public ImageBuffer flipVertical(ImageBuffer imageBuffer)
+    public ImageBuffer flipVertical(ImageBuffer image)
     {
-        return UtilityImage.flipVertical(imageBuffer);
+        return new ImageBufferAwt(ToolsAwt.flipVertical(ToolsAwt.getBuffer(image)));
     }
 
     @Override
-    public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter)
+    public ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException
     {
         final ImageBuffer filtered;
         switch (filter)
         {
             case NONE:
-                filtered = imageBuffer;
+                filtered = image;
                 break;
             case BILINEAR:
-                filtered = UtilityImage.applyBilinearFilter(imageBuffer);
+                filtered = new ImageBufferAwt(ToolsAwt.applyBilinearFilter(ToolsAwt.getBuffer(image)));
                 break;
             case HQ2X:
-                final Hq2x hq2x = new Hq2x(imageBuffer);
+                final Hq2x hq2x = new Hq2x(image);
                 filtered = hq2x.getScaledImage();
                 break;
             case HQ3X:
-                final Hq3x hq3x = new Hq3x(imageBuffer);
+                final Hq3x hq3x = new Hq3x(image);
                 filtered = hq3x.getScaledImage();
                 break;
             default:
@@ -157,14 +196,34 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     }
 
     @Override
-    public void saveImage(ImageBuffer imageBuffer, Media media)
+    public void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
-        UtilityImage.saveImage(imageBuffer, media);
+        Check.notNull(media);
+        final OutputStream output = media.getOutputStream();
+        try
+        {
+            ToolsAwt.saveImage(ToolsAwt.getBuffer(image), output);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
+        }
+        finally
+        {
+            try
+            {
+                output.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(FactoryGraphicAwt.class, "saveImage", exception2);
+            }
+        }
     }
 
     @Override
-    public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb, int ref)
+    public ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int ref)
     {
-        return UtilityImage.getRasterBuffer(imageBuffer, fr, fg, fb, er, eg, eb, ref);
+        return new ImageBufferAwt(ToolsAwt.getRasterBuffer(ToolsAwt.getBuffer(image), fr, fg, fb, er, eg, eb, ref));
     }
 }

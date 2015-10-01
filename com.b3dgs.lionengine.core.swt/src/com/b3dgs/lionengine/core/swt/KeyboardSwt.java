@@ -63,9 +63,9 @@ public final class KeyboardSwt implements Keyboard, KeyListener
     private Integer down = DOWN;
 
     /**
-     * Internal constructor.
+     * Constructor.
      */
-    KeyboardSwt()
+    public KeyboardSwt()
     {
         lastKeyName = ' ';
         lastCode = Integer.valueOf(-1);

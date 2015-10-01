@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -211,7 +212,7 @@ public final class DrawableTestTool
         {
             // Success
         }
-        final Media media = new MediaMock("none.png", true);
+        final Media media = Medias.create("none.png");
         try
         {
             final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tw, th);
@@ -243,7 +244,7 @@ public final class DrawableTestTool
         {
             // Success
         }
-        final Media media = new MediaMock("dot.png", true);
+        final Media media = Medias.create("dot.png");
         try
         {
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(media, hf, vf);

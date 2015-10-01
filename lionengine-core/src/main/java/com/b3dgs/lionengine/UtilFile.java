@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
- * Static functions giving informations related to files and directory.
+ * Tools related to files and directories handling.
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -41,59 +41,123 @@ import com.b3dgs.lionengine.core.Verbose;
  */
 public final class UtilFile
 {
-    /** Error folder. */
-    private static final String ERROR_FOLDER = "Not a folder: ";
+    /** File deleted. */
+    private static final String FILE_DELETED = "File deleted: ";
+    /** Error directory. */
+    private static final String ERROR_DIRECTORY = "Not a directory: ";
+    /** Error delete directory. */
+    private static final String ERROR_DELETE_DIRECTORY = "Directory not deleted: ";
+    /** Error delete file. */
+    private static final String ERROR_DELETE_FILE = "File not deleted: ";
+    /** Error temporary file. */
+    private static final String ERROR_TEMP_FILE = "Unable to create temporary file for: ";
+    /** Temporary file prefix. */
+    private static final String PREFIX_TEMP = "temp";
+    /** Copy buffer. */
+    private static final int BUFFER_COPY = 65535;
 
     /**
-     * Check if the path is a directory.
+     * Copy a stream onto another.
      * 
-     * @param path The path to check.
-     * @return <code>true</code> if it is a directory, <code>false</code> else.
+     * @param source The source stream.
+     * @param destination The destination stream.
+     * @throws IOException If error.
+     * @throws LionEngineException If <code>null</code> arguments.
      */
-    public static boolean isDir(String path)
+    public static void copy(InputStream source, OutputStream destination) throws IOException, LionEngineException
     {
-        if (path == null)
+        Check.notNull(source);
+        Check.notNull(destination);
+
+        final byte[] buffer = new byte[BUFFER_COPY];
+        while (true)
         {
-            return false;
+            final int read = source.read(buffer);
+            if (read == -1)
+            {
+                break;
+            }
+            destination.write(buffer, 0, read);
         }
-        return new File(path).isDirectory();
     }
 
     /**
-     * Check if the path is a file.
+     * Get the file name without its extension.
+     * <p>
+     * Using <code>"image.png"</code> as argument returns <code>"image"</code>.
+     * </p>
      * 
-     * @param path The path to check.
-     * @return <code>true</code> if it is a file, <code>false</code> else.
+     * @param file The file name.
+     * @return The file name without its extension.
+     * @throws LionEngineException If <code>null</code> argument.
      */
-    public static boolean isFile(String path)
+    public static String removeExtension(String file) throws LionEngineException
     {
-        if (path == null)
-        {
-            return false;
-        }
-        return new File(path).isFile();
+        Check.notNull(file);
+
+        final int extensionBegin = file.lastIndexOf(Constant.DOT);
+        return file.substring(0, extensionBegin);
     }
 
     /**
-     * Check if the path exists.
+     * Get of full copy of the input stream stored in a temporary file.
      * 
-     * @param path The path to check.
-     * @return <code>true</code> if exists, <code>false</code> else.
+     * @param name The file name reference (to have a similar temporary file name).
+     * @param input The input stream reference.
+     * @return The temporary file created with copied content from stream.
+     * @throws LionEngineException If <code>null</code> arguments.
      */
-    public static boolean exists(String path)
+    public static File getCopy(String name, InputStream input) throws LionEngineException
     {
-        if (path == null)
+        Check.notNull(name);
+        Check.notNull(input);
+
+        final String prefix;
+        final String suffix;
+        final int minimumPrefix = 3;
+        final int i = name.lastIndexOf(Constant.DOT);
+        if (i > minimumPrefix)
         {
-            return false;
+            prefix = name.substring(0, i);
+            suffix = name.substring(i);
         }
-        return new File(path).exists();
+        else
+        {
+            if (name.length() > minimumPrefix)
+            {
+                prefix = name;
+            }
+            else
+            {
+                prefix = PREFIX_TEMP;
+            }
+            suffix = null;
+        }
+        try
+        {
+            final File temp = File.createTempFile(prefix, suffix);
+            final OutputStream output = new BufferedOutputStream(new FileOutputStream(temp));
+            try
+            {
+                copy(input, output);
+            }
+            finally
+            {
+                output.close();
+            }
+            return temp;
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, ERROR_TEMP_FILE, name);
+        }
     }
 
     /**
      * Construct a usable path using a list of string, automatically separated by the portable separator. The
      * constructed path will use local system file separator.
      * 
-     * @param path The list of folders (if has) and file.
+     * @param path The list of directories (if has) and file.
      * @return The full media path.
      */
     public static String getPath(String... path)
@@ -105,7 +169,7 @@ public final class UtilFile
      * Construct a usable path using a list of string, automatically separated by the portable separator.
      * 
      * @param separator The separator to use.
-     * @param path The list of folders (if has) and file.
+     * @param path The list of directories (if has) and file.
      * @return The full media path.
      */
     public static String getPathSeparator(String separator, String... path)
@@ -117,7 +181,7 @@ public final class UtilFile
             {
                 fullPath.append(path[i]);
             }
-            else if (path[i] != null && path[i].length() > 0)
+            else if (path[i] != null && path[i].length() > 0 && !Medias.getSeparator().equals(path[i]))
             {
                 fullPath.append(path[i]);
                 if (!fullPath.substring(fullPath.length() - 1, fullPath.length()).equals(separator))
@@ -158,23 +222,6 @@ public final class UtilFile
     }
 
     /**
-     * Check if the following type is the expected type.
-     * 
-     * @param file The file to check.
-     * @param extension The expected extension.
-     * @return <code>true</code> if correct, <code>false</code> else.
-     */
-    public static boolean isType(File file, String extension)
-    {
-        if (file.isFile())
-        {
-            final String current = getExtension(file);
-            return current.equals(extension.replace(Constant.DOT, Constant.EMPTY_STRING));
-        }
-        return false;
-    }
-
-    /**
      * Get the filename from a path (last part of a path, after the last separator).
      * 
      * @param path The path used to extract filename.
@@ -187,40 +234,60 @@ public final class UtilFile
     }
 
     /**
-     * Get all directory existing in the path.
+     * Get all directories existing in the path.
      * 
      * @param path The path to check.
-     * @return The directory list.
+     * @return The directories list.
      */
-    public static String[] getDirsList(String path)
+    public static String[] getDirectoriesList(String path)
     {
-        final File file = new File(path);
-        final File[] files = file.listFiles();
-        if (files == null)
+        final File directoryMain = new File(path);
+        final File[] directories = directoryMain.listFiles();
+        if (directories == null)
         {
             return new String[0];
         }
 
-        int numberOfDirs = 0;
-        for (final File file2 : files)
+        int directoriesNumber = 0;
+        for (final File directory : directories)
         {
-            if (file2.isDirectory())
+            if (directory.isDirectory())
             {
-                numberOfDirs++;
+                directoriesNumber++;
             }
         }
-        final String[] dirsList = new String[numberOfDirs];
+        final String[] directoriesFound = new String[directoriesNumber];
         int id = 0;
-        for (final File file2 : files)
+        for (final File directory : directories)
         {
-            if (file2.isDirectory())
+            if (directory.isDirectory())
             {
-                dirsList[id] = file2.getName();
+                directoriesFound[id] = directory.getName();
                 id++;
             }
         }
 
-        return dirsList;
+        return directoriesFound;
+    }
+
+    /**
+     * Get the files list from directory.
+     * 
+     * @param directory The directory reference.
+     * @return The directory content.
+     * @throws LionEngineException If not a directory.
+     */
+    public static Collection<File> getFiles(File directory) throws LionEngineException
+    {
+        if (directory.isDirectory())
+        {
+            final File[] files = directory.listFiles();
+            if (files != null)
+            {
+                return Arrays.asList(files);
+            }
+        }
+        throw new LionEngineException(ERROR_DIRECTORY, directory.getPath());
     }
 
     /**
@@ -231,28 +298,28 @@ public final class UtilFile
      */
     public static String[] getFilesList(String path)
     {
-        final File file = new File(path);
-        final File[] files = file.listFiles();
+        final File directory = new File(path);
+        final File[] files = directory.listFiles();
         if (files == null)
         {
             return new String[0];
         }
 
-        int numberOfFiles = 0;
-        for (final File file2 : files)
+        int filesNumber = 0;
+        for (final File file : files)
         {
-            if (file2.isFile())
+            if (file.isFile())
             {
-                numberOfFiles++;
+                filesNumber++;
             }
         }
-        final String[] filesList = new String[numberOfFiles];
+        final String[] filesList = new String[filesNumber];
         int id = 0;
-        for (final File file2 : files)
+        for (final File file : files)
         {
-            if (file2.isFile())
+            if (file.isFile())
             {
-                filesList[id] = file2.getName();
+                filesList[id] = file.getName();
                 id++;
             }
         }
@@ -288,112 +355,6 @@ public final class UtilFile
     }
 
     /**
-     * Get the files list from folder.
-     * 
-     * @param folder The folder reference.
-     * @return The folder content.
-     * @throws LionEngineException If not a folder.
-     */
-    public static Collection<File> getFiles(File folder) throws LionEngineException
-    {
-        if (folder.isDirectory())
-        {
-            final File[] files = folder.listFiles();
-            if (files != null)
-            {
-                return Arrays.asList(files);
-            }
-        }
-        throw new LionEngineException(ERROR_FOLDER, folder.getPath());
-    }
-
-    /**
-     * Get of full copy of the input stream stored in a temporary file.
-     * 
-     * @param name The file name reference (to have a similar temporary file name).
-     * @param input The input stream reference.
-     * @return The temporary file created with copied content from stream.
-     */
-    public static File getCopy(String name, InputStream input)
-    {
-        final String prefix;
-        final String suffix;
-        final int minimumPrefix = 3;
-        final int i = name.lastIndexOf(Constant.DOT);
-        if (i > minimumPrefix)
-        {
-            prefix = name.substring(0, i);
-            suffix = name.substring(i);
-        }
-        else
-        {
-            if (name.length() > minimumPrefix)
-            {
-                prefix = name;
-            }
-            else
-            {
-                prefix = "temp";
-            }
-            suffix = null;
-        }
-        try
-        {
-            final File temp = File.createTempFile(prefix, suffix);
-            final OutputStream output = new BufferedOutputStream(new FileOutputStream(temp));
-            try
-            {
-                copy(input, output);
-            }
-            finally
-            {
-                output.close();
-            }
-            return temp;
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, "Unable to create temporary file for: ", name);
-        }
-    }
-
-    /**
-     * Copy a stream onto another.
-     * 
-     * @param source The source stream.
-     * @param destination The destination stream.
-     * @throws IOException If error.
-     */
-    public static void copy(InputStream source, OutputStream destination) throws IOException
-    {
-        Check.notNull(source);
-        Check.notNull(destination);
-
-        final int bufferSize = 65535;
-        final byte[] buffer = new byte[bufferSize];
-        while (true)
-        {
-            final int read = source.read(buffer);
-            if (read == -1)
-            {
-                break;
-            }
-            destination.write(buffer, 0, read);
-        }
-    }
-
-    /**
-     * Get the file name without its extension.
-     * 
-     * @param file The file name.
-     * @return The file name without its extension.
-     */
-    public static String removeExtension(String file)
-    {
-        return file.substring(0, file.lastIndexOf('.'));
-    }
-
-    /**
      * Delete a directory and all of its content (be careful, it will erase all children, including child directory).
      * 
      * @param directory The directory to delete with all of its content.
@@ -404,23 +365,23 @@ public final class UtilFile
 
         if (directory.isDirectory())
         {
-            final String[] children = directory.list();
-            if (children != null)
+            final File[] files = directory.listFiles();
+            if (files != null)
             {
-                for (final String element : children)
+                for (final File file : files)
                 {
-                    deleteDirectory(new File(directory, element));
+                    deleteDirectory(file);
                 }
             }
             if (!directory.delete())
             {
-                Verbose.warning(UtilFile.class, "deleteDirectory", "Directory not deleted: " + directory);
+                Verbose.warning(UtilFile.class, "deleteDirectory", ERROR_DELETE_DIRECTORY + directory);
             }
         }
         else if (directory.isFile())
         {
             deleteFile(directory);
-            Verbose.info("File deleted: " + directory);
+            Verbose.info(FILE_DELETED + directory);
         }
     }
 
@@ -435,8 +396,70 @@ public final class UtilFile
         Check.notNull(file);
         if (!file.delete())
         {
-            throw new LionEngineException("File not deleted: " + file);
+            throw new LionEngineException(ERROR_DELETE_FILE + file);
         }
+    }
+
+    /**
+     * Check if the path exists.
+     * 
+     * @param path The path to check.
+     * @return <code>true</code> if exists, <code>false</code> else.
+     */
+    public static boolean exists(String path)
+    {
+        if (path == null)
+        {
+            return false;
+        }
+        return new File(path).exists();
+    }
+
+    /**
+     * Check if the path is a directory.
+     * 
+     * @param path The path to check.
+     * @return <code>true</code> if it is a directory, <code>false</code> else.
+     */
+    public static boolean isDirectory(String path)
+    {
+        if (path == null)
+        {
+            return false;
+        }
+        return new File(path).isDirectory();
+    }
+
+    /**
+     * Check if the path is a file.
+     * 
+     * @param path The path to check.
+     * @return <code>true</code> if it is a file, <code>false</code> else.
+     */
+    public static boolean isFile(String path)
+    {
+        if (path == null)
+        {
+            return false;
+        }
+        return new File(path).isFile();
+    }
+
+    /**
+     * Check if the following type is the expected type.
+     * 
+     * @param file The file to check.
+     * @param extension The expected extension.
+     * @return <code>true</code> if correct, <code>false</code> else.
+     */
+    public static boolean isType(File file, String extension)
+    {
+        if (file.isFile())
+        {
+            final String current = getExtension(file);
+            return current.equals(extension.replace(Constant.DOT, Constant.EMPTY_STRING));
+        }
+        return false;
     }
 
     /**

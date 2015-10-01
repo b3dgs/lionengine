@@ -37,8 +37,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.swt.UtilityImage;
-import com.b3dgs.lionengine.core.swt.UtilityMedia;
+import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
@@ -199,7 +198,7 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
                 });
                 if (file != null)
                 {
-                    final Media media = UtilityMedia.get(file);
+                    final Media media = Medias.get(file);
                     configMedia.setText(media.getPath());
                     automatic.setEnabled(media.getFile().isFile());
                     loadConfig(media);
@@ -226,7 +225,7 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
     {
         if (!gc.isDisposed())
         {
-            gc.drawImage(UtilityImage.getBuffer(minimap.getSurface()), 0, 0);
+            gc.drawImage(ToolsSwt.getBuffer(minimap.getSurface()), 0, 0);
             gc.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_GREEN));
 
             final int width = camera.getWidth() / map.getTileWidth();

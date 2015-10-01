@@ -80,7 +80,7 @@ final class ScreenAppletAwt extends ScreenAwt
     @Override
     public void update()
     {
-        applet.getGraphics().drawImage(UtilityImage.getBuffer(buffer), 0, 0, null);
+        applet.getGraphics().drawImage(ToolsAwt.getBuffer(buffer), 0, 0, null);
         graphics.setGraphic(gbuf);
     }
 
