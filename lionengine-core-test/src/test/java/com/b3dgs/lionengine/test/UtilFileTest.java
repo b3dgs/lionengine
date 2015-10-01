@@ -123,9 +123,10 @@ public class UtilFileTest
         try
         {
             final String path = Medias.create("file").getFile().getParentFile().getAbsolutePath();
-            final String[] dirs = UtilFile.getDirectoriesList(path);
-            Assert.assertEquals(6, dirs.length);
-            Assert.assertEquals("anim", dirs[0]);
+            final List<String> dirs = Arrays.asList(UtilFile.getDirectoriesList(path));
+            Collections.sort(dirs);
+            Assert.assertEquals(6, dirs.size());
+            Assert.assertEquals("anim", dirs.get(0));
             Assert.assertEquals(0, UtilFile.getDirectoriesList(UtilFile.getPath("null")).length);
 
             final String[] files = UtilFile.getFilesList(path);
