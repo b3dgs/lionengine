@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.core.Medias;
@@ -96,7 +97,11 @@ public final class UtilFile
         Check.notNull(file);
 
         final int extensionBegin = file.lastIndexOf(Constant.DOT);
-        return file.substring(0, extensionBegin);
+        if (extensionBegin > 0)
+        {
+            return file.substring(0, extensionBegin);
+        }
+        return file;
     }
 
     /**
@@ -198,9 +203,11 @@ public final class UtilFile
      * 
      * @param file The filename.
      * @return The extension.
+     * @throws LionEngineException If <code>null</code> argument.
      */
-    public static String getExtension(String file)
+    public static String getExtension(String file) throws LionEngineException
     {
+        Check.notNull(file);
         String ext = Constant.EMPTY_STRING;
         final int i = file.lastIndexOf(Constant.DOT);
         if (i > 0 && i < file.length() - 1)
@@ -214,10 +221,12 @@ public final class UtilFile
      * Get a file extension.
      * 
      * @param file The file.
-     * @return The extension.
+     * @return The extension without dot.
+     * @throws LionEngineException If <code>null</code> argument.
      */
-    public static String getExtension(File file)
+    public static String getExtension(File file) throws LionEngineException
     {
+        Check.notNull(file);
         return getExtension(file.getName());
     }
 
@@ -226,11 +235,17 @@ public final class UtilFile
      * 
      * @param path The path used to extract filename.
      * @return The filename extracted from path.
+     * @throws LionEngineException If path is <code>null</code>.
      */
-    public static String getFilenameFromPath(String path)
+    public static String getFilenameFromPath(String path) throws LionEngineException
     {
+        Check.notNull(path);
         final int i = path.lastIndexOf(Medias.getSeparator());
-        return path.substring(i + 1, path.length());
+        if (i > 0)
+        {
+            return path.substring(i + 1, path.length());
+        }
+        return path;
     }
 
     /**
@@ -239,35 +254,22 @@ public final class UtilFile
      * @param path The path to check.
      * @return The directories list.
      */
-    public static String[] getDirectoriesList(String path)
+    public static List<File> getDirectories(String path)
     {
-        final File directoryMain = new File(path);
-        final File[] directories = directoryMain.listFiles();
-        if (directories == null)
+        final File root = new File(path);
+        final File[] files = root.listFiles();
+        final List<File> directories = new ArrayList<File>();
+        if (files != null)
         {
-            return new String[0];
-        }
-
-        int directoriesNumber = 0;
-        for (final File directory : directories)
-        {
-            if (directory.isDirectory())
+            for (final File current : files)
             {
-                directoriesNumber++;
+                if (current.isDirectory())
+                {
+                    directories.add(current);
+                }
             }
         }
-        final String[] directoriesFound = new String[directoriesNumber];
-        int id = 0;
-        for (final File directory : directories)
-        {
-            if (directory.isDirectory())
-            {
-                directoriesFound[id] = directory.getName();
-                id++;
-            }
-        }
-
-        return directoriesFound;
+        return directories;
     }
 
     /**
@@ -277,7 +279,7 @@ public final class UtilFile
      * @return The directory content.
      * @throws LionEngineException If not a directory.
      */
-    public static Collection<File> getFiles(File directory) throws LionEngineException
+    public static List<File> getFiles(File directory) throws LionEngineException
     {
         if (directory.isDirectory())
         {
@@ -291,51 +293,15 @@ public final class UtilFile
     }
 
     /**
-     * Get all files existing in the path.
-     * 
-     * @param path The path to check.
-     * @return The files list.
-     */
-    public static String[] getFilesList(String path)
-    {
-        final File directory = new File(path);
-        final File[] files = directory.listFiles();
-        if (files == null)
-        {
-            return new String[0];
-        }
-
-        int filesNumber = 0;
-        for (final File file : files)
-        {
-            if (file.isFile())
-            {
-                filesNumber++;
-            }
-        }
-        final String[] filesList = new String[filesNumber];
-        int id = 0;
-        for (final File file : files)
-        {
-            if (file.isFile())
-            {
-                filesList[id] = file.getName();
-                id++;
-            }
-        }
-        return filesList;
-    }
-
-    /**
      * Get all files existing in the path considering the extension.
      * 
      * @param path The path to check.
      * @param extension The extension (without dot; eg: png).
      * @return The files list.
      */
-    public static Collection<File> getFilesByExtension(String path, String extension)
+    public static List<File> getFilesByExtension(File path, String extension)
     {
-        final Collection<File> filesList = new ArrayList<File>(1);
+        final List<File> filesList = new ArrayList<File>(1);
         getFilesByExtensionRecursive(filesList, path, extension);
         return filesList;
     }
@@ -347,9 +313,9 @@ public final class UtilFile
      * @param name The file name.
      * @return The files list (empty array if none).
      */
-    public static Collection<File> getFilesByName(File path, String name)
+    public static List<File> getFilesByName(File path, String name)
     {
-        final Collection<File> filesList = new ArrayList<File>(1);
+        final List<File> filesList = new ArrayList<File>(1);
         getFilesByNameRecursive(filesList, path, name);
         return filesList;
     }
@@ -469,16 +435,16 @@ public final class UtilFile
      * @param path The path to check.
      * @param extension The extension (without dot; eg: png).
      */
-    private static void getFilesByExtensionRecursive(Collection<File> filesList, String path, String extension)
+    private static void getFilesByExtensionRecursive(Collection<File> filesList, File path, String extension)
     {
-        final File[] files = new File(path).listFiles();
+        final File[] files = path.listFiles();
         if (files != null)
         {
             for (final File content : files)
             {
                 if (content.isDirectory())
                 {
-                    getFilesByExtensionRecursive(filesList, content.getPath(), extension);
+                    getFilesByExtensionRecursive(filesList, content, extension);
                 }
                 if (content.isFile() && extension.equals(getExtension(content)))
                 {
