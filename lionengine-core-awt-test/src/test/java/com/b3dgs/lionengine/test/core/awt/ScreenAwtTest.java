@@ -87,7 +87,7 @@ public class ScreenAwtTest
     @Test(timeout = TIMEOUT)
     public void testWindowed() throws InterruptedException
     {
-        final Config config = new Config(com.b3dgs.lionengine.test.Constant.RESOLUTION_320_240, 32, true);
+        final Config config = new Config(com.b3dgs.lionengine.test.util.Constant.RESOLUTION_320_240, 32, true);
         config.setIcon(Medias.create(IMAGE));
 
         final Loader loader = new Loader(config);
@@ -112,7 +112,7 @@ public class ScreenAwtTest
     @Test(timeout = TIMEOUT)
     public void testApplet() throws InterruptedException
     {
-        final Config config = new Config(com.b3dgs.lionengine.test.Constant.RESOLUTION_320_240, 32, false);
+        final Config config = new Config(com.b3dgs.lionengine.test.util.Constant.RESOLUTION_320_240, 32, false);
         config.setIcon(Medias.create(IMAGE));
         config.setApplet(new AppletAwt());
 

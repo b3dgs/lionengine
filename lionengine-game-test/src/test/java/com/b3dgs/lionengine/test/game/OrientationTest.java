@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.test.game;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test orientation class.

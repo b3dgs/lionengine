@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
 
 /**
  * Test the Hq2x filter.

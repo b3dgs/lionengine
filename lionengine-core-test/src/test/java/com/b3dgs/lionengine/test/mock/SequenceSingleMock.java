@@ -15,28 +15,51 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.test;
+package com.b3dgs.lionengine.test.mock;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.test.util.Constant;
 
 /**
- * Mock input stream.
+ * Single sequence mock.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class OutputStreamMock extends OutputStream
+public class SequenceSingleMock extends Sequence
 {
     /**
-     * Create mock.
+     * Constructor.
+     * 
+     * @param loader The loader reference.
      */
-    public OutputStreamMock()
+    public SequenceSingleMock(Loader loader)
     {
-        // Nothing to do
+        super(loader, Constant.RESOLUTION_320_240);
+    }
+
+    /*
+     * Sequence
+     */
+
+    @Override
+    protected void load()
+    {
+        setSystemCursorVisible(true);
+        setSystemCursorVisible(false);
     }
 
     @Override
-    public void write(int b) throws IOException
+    public void update(double extrp)
+    {
+        getX();
+        getY();
+        end(SequenceArgumentsMock.class, new Object());
+    }
+
+    @Override
+    public void render(Graphic g)
     {
         // Mock
     }

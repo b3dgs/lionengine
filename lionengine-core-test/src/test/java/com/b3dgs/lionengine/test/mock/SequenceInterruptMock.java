@@ -15,28 +15,53 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.test;
+package com.b3dgs.lionengine.test.mock;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.test.util.Constant;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
- * List of common constants.
+ * Interrupt sequence mock.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Constant
+public class SequenceInterruptMock extends Sequence
 {
-    /** Standard resolution. */
-    public static final Resolution RESOLUTION_320_240 = new Resolution(320, 240, 60);
-    /** Standard resolution. */
-    public static final Resolution RESOLUTION_640_480 = new Resolution(640, 480, 60);
+    /** Pause time. */
+    private static final int PAUSE_MILLI = 250;
 
     /**
-     * Private constructor.
+     * Constructor.
+     * 
+     * @param loader The loader reference.
      */
-    private Constant()
+    public SequenceInterruptMock(Loader loader)
     {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+        super(loader, Constant.RESOLUTION_320_240);
+    }
+
+    /*
+     * Sequence
+     */
+
+    @Override
+    protected void load()
+    {
+        // Mock
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        // Mock
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        UtilTests.pause(PAUSE_MILLI);
     }
 }

@@ -29,6 +29,7 @@
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-core-test</artifactId>
             <version>${project.version}</version>
+            <type>test-jar</type>
             <scope>test</scope>
         </dependency>
     </dependencies>

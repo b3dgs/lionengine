@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.awt.Theme;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the theme class.

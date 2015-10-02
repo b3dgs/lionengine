@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.geom.Coord;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Line;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the utility math class.

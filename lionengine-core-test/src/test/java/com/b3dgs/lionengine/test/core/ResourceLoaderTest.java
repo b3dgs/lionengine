@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.core.Resource;
 import com.b3dgs.lionengine.core.ResourceLoader;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.test.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
 
 /**
  * Test the resource loader class.

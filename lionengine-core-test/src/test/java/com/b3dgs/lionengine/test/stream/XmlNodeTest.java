@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
-import com.b3dgs.lionengine.test.XmlNodeMock;
+import com.b3dgs.lionengine.test.mock.XmlNodeMock;
 
 /**
  * Test the XML node.

@@ -30,8 +30,8 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Transform;
-import com.b3dgs.lionengine.test.FactoryGraphicMock;
-import com.b3dgs.lionengine.test.ViewerMock;
+import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.mock.ViewerMock;
 
 /**
  * Test the graphic class.

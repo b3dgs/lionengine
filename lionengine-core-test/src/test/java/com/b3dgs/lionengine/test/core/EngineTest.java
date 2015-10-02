@@ -26,8 +26,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.test.EngineMock;
-import com.b3dgs.lionengine.test.SecurityManagerMock;
+import com.b3dgs.lionengine.test.mock.EngineMock;
+import com.b3dgs.lionengine.test.mock.SecurityManagerMock;
 
 /**
  * Test the engine core class.

@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the utility reflection class.

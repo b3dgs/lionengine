@@ -15,28 +15,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.test;
+package com.b3dgs.lionengine.test.mock;
 
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.test.util.Constant;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
- * Interrupt sequence mock.
+ * Loop sequence mock.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceInterruptMock extends Sequence
+public class SequenceLoopMock extends Sequence
 {
     /** Pause time. */
-    private static final int PAUSE_MILLI = 250;
+    private static final int PAUSE_MILLI = 10;
+    /** Max update time. */
+    private static final int MAX_UPDATE_TIME_MILLI = 200;
+
+    /** Timing. */
+    private final Timing timing = new Timing();
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    public SequenceInterruptMock(Loader loader)
+    public SequenceLoopMock(Loader loader)
     {
         super(loader, Constant.RESOLUTION_320_240);
     }
@@ -48,13 +56,16 @@ public class SequenceInterruptMock extends Sequence
     @Override
     protected void load()
     {
-        // Mock
+        timing.start();
     }
 
     @Override
     public void update(double extrp)
     {
-        // Mock
+        if (timing.elapsed(MAX_UPDATE_TIME_MILLI))
+        {
+            end();
+        }
     }
 
     @Override

@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the origin class.

@@ -32,8 +32,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlFactory;
 import com.b3dgs.lionengine.stream.XmlNode;
-import com.b3dgs.lionengine.test.UtilTests;
-import com.b3dgs.lionengine.test.XmlNodeMock;
+import com.b3dgs.lionengine.test.mock.XmlNodeMock;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the XML parser.

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.test;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the mirror class.

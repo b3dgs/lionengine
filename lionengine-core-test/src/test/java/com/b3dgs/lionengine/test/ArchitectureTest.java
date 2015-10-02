@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Architecture;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test architecture class.

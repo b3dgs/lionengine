@@ -15,45 +15,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.test;
+package com.b3dgs.lionengine.test.mock;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Sequence;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
- * Mock sequence.
+ * Mock input stream.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceFailMock extends Sequence
+public class OutputStreamMock extends OutputStream
 {
     /**
-     * Constructor.
+     * Create mock.
      */
-    public SequenceFailMock()
+    public OutputStreamMock()
     {
-        super(null, Constant.RESOLUTION_320_240);
-    }
-
-    /*
-     * Sequence
-     */
-
-    @Override
-    protected void load()
-    {
-        // Mock
+        // Nothing to do
     }
 
     @Override
-    public void update(double extrp)
-    {
-        throw new LionEngineException("expected failure");
-    }
-
-    @Override
-    public void render(Graphic g)
+    public void write(int b) throws IOException
     {
         // Mock
     }

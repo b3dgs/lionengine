@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.test.AppletMock;
+import com.b3dgs.lionengine.test.mock.AppletMock;
 
 /**
  * Test the config class.

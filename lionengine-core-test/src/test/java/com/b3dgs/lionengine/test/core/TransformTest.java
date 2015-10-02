@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Transform;
-import com.b3dgs.lionengine.test.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
 
 /**
  * Test the transform class.

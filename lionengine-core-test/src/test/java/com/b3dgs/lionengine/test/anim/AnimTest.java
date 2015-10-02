@@ -23,7 +23,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the animation package.

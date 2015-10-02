@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.test.anim;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the anim state.

@@ -15,51 +15,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.test;
+package com.b3dgs.lionengine.test.util;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Resolution;
 
 /**
- * Single sequence mock.
+ * List of common constants.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceSingleMock extends Sequence
+public final class Constant
 {
+    /** Standard resolution. */
+    public static final Resolution RESOLUTION_320_240 = new Resolution(320, 240, 60);
+    /** Standard resolution. */
+    public static final Resolution RESOLUTION_640_480 = new Resolution(640, 480, 60);
+
     /**
-     * Constructor.
-     * 
-     * @param loader The loader reference.
+     * Private constructor.
      */
-    public SequenceSingleMock(Loader loader)
+    private Constant()
     {
-        super(loader, Constant.RESOLUTION_320_240);
-    }
-
-    /*
-     * Sequence
-     */
-
-    @Override
-    protected void load()
-    {
-        setSystemCursorVisible(true);
-        setSystemCursorVisible(false);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        getX();
-        getY();
-        end(SequenceArgumentsMock.class, new Object());
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        // Mock
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

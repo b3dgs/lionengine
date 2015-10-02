@@ -30,8 +30,8 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.test.DrawableTestTool;
-import com.b3dgs.lionengine.test.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.util.DrawableTestTool;
 
 /**
  * Test the sprite tiled class.

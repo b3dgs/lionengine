@@ -23,7 +23,7 @@
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-core-test</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
+            <type>test-jar</type>
         </dependency>
     </dependencies>
     <build>
@@ -72,6 +72,10 @@
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-versions-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-surefire-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>lt.velykis.maven</groupId>

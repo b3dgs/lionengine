@@ -34,11 +34,11 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderer;
-import com.b3dgs.lionengine.test.FactoryGraphicMock;
-import com.b3dgs.lionengine.test.SequenceArgumentsMock;
-import com.b3dgs.lionengine.test.SequenceFailMock;
-import com.b3dgs.lionengine.test.SequenceNextFailMock;
-import com.b3dgs.lionengine.test.SequenceSingleMock;
+import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.mock.SequenceArgumentsMock;
+import com.b3dgs.lionengine.test.mock.SequenceFailMock;
+import com.b3dgs.lionengine.test.mock.SequenceNextFailMock;
+import com.b3dgs.lionengine.test.mock.SequenceSingleMock;
 
 /**
  * Test the loader class.

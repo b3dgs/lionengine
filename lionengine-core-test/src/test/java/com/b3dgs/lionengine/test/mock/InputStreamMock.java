@@ -15,10 +15,48 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+package com.b3dgs.lionengine.test.mock;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import com.b3dgs.lionengine.Constant;
 
 /**
- * Test API package.
+ * Mock input stream.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-package com.b3dgs.lionengine.test;
+public class InputStreamMock extends InputStream
+{
+    /** Available bytes. */
+    private int available;
+
+    /**
+     * Create mock.
+     */
+    public InputStreamMock()
+    {
+        available = Constant.MAX_PORT * 2;
+    }
+
+    @Override
+    public int read() throws IOException
+    {
+        available = Math.max(-1, available--);
+        return available;
+    }
+
+    @Override
+    public int read(byte[] b) throws IOException
+    {
+        available = Math.max(-1, available - b.length);
+        return available;
+    }
+
+    @Override
+    public int available() throws IOException
+    {
+        return available;
+    }
+}

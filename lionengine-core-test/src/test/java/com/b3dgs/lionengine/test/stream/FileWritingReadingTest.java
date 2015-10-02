@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
-import com.b3dgs.lionengine.test.XmlNodeMock;
+import com.b3dgs.lionengine.test.mock.XmlNodeMock;
 
 /**
  * Test the file writing and reading.

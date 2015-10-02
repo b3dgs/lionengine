@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteParallaxed;
-import com.b3dgs.lionengine.test.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
 
 /**
  * Test the parallaxed sprite class.

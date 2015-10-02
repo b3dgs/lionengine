@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the timing class.

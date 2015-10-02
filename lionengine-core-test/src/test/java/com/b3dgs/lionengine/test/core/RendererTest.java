@@ -37,12 +37,12 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.test.EngineMock;
-import com.b3dgs.lionengine.test.FactoryGraphicMock;
-import com.b3dgs.lionengine.test.ScreenMock;
-import com.b3dgs.lionengine.test.SequenceInterruptMock;
-import com.b3dgs.lionengine.test.SequenceLoopMock;
-import com.b3dgs.lionengine.test.SequenceSingleMock;
+import com.b3dgs.lionengine.test.mock.EngineMock;
+import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.mock.ScreenMock;
+import com.b3dgs.lionengine.test.mock.SequenceInterruptMock;
+import com.b3dgs.lionengine.test.mock.SequenceLoopMock;
+import com.b3dgs.lionengine.test.mock.SequenceSingleMock;
 
 /**
  * Test the renderer class.

@@ -15,65 +15,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.test;
+package com.b3dgs.lionengine.test.mock;
 
-import com.b3dgs.lionengine.UtilConversion;
-import com.b3dgs.lionengine.core.Transform;
+import com.b3dgs.lionengine.core.Applet;
 
 /**
- * Mock transform.
+ * Applet mock.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TransformMock implements Transform
+public class AppletMock implements Applet<AppletMock>
 {
-    /** Horizontal scale. */
-    private double sx;
-    /** Vertical scale. */
-    private double sy;
-    /** Interpolation. */
-    private int interpolation;
-
     /**
      * Create mock.
      */
-    public TransformMock()
+    public AppletMock()
     {
         // Nothing to do
     }
 
     /*
-     * Transform
+     * Applet
      */
 
     @Override
-    public void scale(double sx, double sy)
+    public AppletMock getApplet()
     {
-        this.sx = sx;
-        this.sy = sy;
-    }
-
-    @Override
-    public void setInterpolation(boolean bilinear)
-    {
-        interpolation = UtilConversion.boolToInt(bilinear);
-    }
-
-    @Override
-    public double getScaleX()
-    {
-        return sx;
-    }
-
-    @Override
-    public double getScaleY()
-    {
-        return sy;
-    }
-
-    @Override
-    public int getInterpolation()
-    {
-        return interpolation;
+        return new AppletMock();
     }
 }

@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the stream package.

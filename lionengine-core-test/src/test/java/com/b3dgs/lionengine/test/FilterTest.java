@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.test;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the filter class.

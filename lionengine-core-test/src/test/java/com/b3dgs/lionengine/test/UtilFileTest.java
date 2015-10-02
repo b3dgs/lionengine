@@ -39,6 +39,9 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.test.mock.InputStreamMock;
+import com.b3dgs.lionengine.test.mock.OutputStreamMock;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the utility file class.

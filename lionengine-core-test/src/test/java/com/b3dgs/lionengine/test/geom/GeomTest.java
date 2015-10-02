@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Line;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.geom.Rectangle;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the geom class.

@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.test.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
 
 /**
  * Test the text class.

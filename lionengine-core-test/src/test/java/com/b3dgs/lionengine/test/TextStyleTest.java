@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.test;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the text style class.

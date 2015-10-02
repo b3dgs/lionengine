@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Checksum;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the checksum class.

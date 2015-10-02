@@ -15,36 +15,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.test;
+package com.b3dgs.lionengine.test.mock;
 
-import com.b3dgs.lionengine.Timing;
+import org.junit.Assert;
+
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.test.util.Constant;
 
 /**
- * Loop sequence mock.
+ * Mock sequence.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceLoopMock extends Sequence
+public class SequenceArgumentsMock extends Sequence
 {
-    /** Pause time. */
-    private static final int PAUSE_MILLI = 10;
-    /** Max update time. */
-    private static final int MAX_UPDATE_TIME_MILLI = 200;
-
-    /** Timing. */
-    private final Timing timing = new Timing();
+    /** Width. */
+    private int width;
+    /** Height. */
+    private int height;
+    /** Config. */
+    private Config config;
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
+     * @param argument The argument reference.
      */
-    public SequenceLoopMock(Loader loader)
+    public SequenceArgumentsMock(Loader loader, Object argument)
     {
         super(loader, Constant.RESOLUTION_320_240);
+        setExtrapolated(true);
+        addKeyListener(null);
+        setSystemCursorVisible(true);
+        Assert.assertNull(getInputDevice(InputDevice.class));
     }
 
     /*
@@ -54,21 +63,25 @@ public class SequenceLoopMock extends Sequence
     @Override
     protected void load()
     {
-        timing.start();
+        width = getWidth();
+        height = getHeight();
+        config = getConfig();
+        setResolution(Constant.RESOLUTION_640_480);
     }
 
     @Override
     public void update(double extrp)
     {
-        if (timing.elapsed(MAX_UPDATE_TIME_MILLI))
-        {
-            end();
-        }
+        end();
     }
 
     @Override
     public void render(Graphic g)
     {
-        UtilTests.pause(PAUSE_MILLI);
+        Verbose.info("Sequence single mock info");
+        Verbose.info(String.valueOf(width));
+        Verbose.info(String.valueOf(height));
+        Verbose.info(String.valueOf(config));
+        Verbose.info(String.valueOf(getFps()));
     }
 }

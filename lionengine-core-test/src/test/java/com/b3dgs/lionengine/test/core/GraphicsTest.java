@@ -41,8 +41,8 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Renderer;
-import com.b3dgs.lionengine.test.FactoryGraphicMock;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the graphic factory class.
