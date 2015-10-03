@@ -20,10 +20,12 @@ package com.b3dgs.lionengine.test.core.swt;
 import java.lang.Thread.State;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,6 +59,8 @@ public class ScreenSwtTest
     private static final String SCREEN = "screen";
     /** Image media. */
     private static final String IMAGE = "image.png";
+    /** Error multiple display. */
+    private static final String ERROR_MULTIPLE_DISPLAY = "Not implemented [multiple displays]";
 
     /**
      * Prepare test.
@@ -84,21 +88,28 @@ public class ScreenSwtTest
     @Test(timeout = TIMEOUT)
     public void testWindowed() throws InterruptedException
     {
-        final Config config = new Config(com.b3dgs.lionengine.test.util.Constant.RESOLUTION_320_240, 32, true);
-        config.setIcon(Medias.create(IMAGE));
-
-        final Loader loader = new Loader(config);
-        final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
-
-        loader.start(SequenceMock.class);
-        while (renderer.getState() == State.RUNNABLE || UtilReflection.getField(renderer, SEQUENCE) == null)
+        try
         {
-            Thread.sleep(Constant.DECADE);
-        }
+            final Config config = new Config(com.b3dgs.lionengine.test.util.Constant.RESOLUTION_320_240, 32, true);
+            config.setIcon(Medias.create(IMAGE));
 
-        final Screen screen = UtilReflection.getField(renderer, SCREEN);
-        screen.requestFocus();
-        renderer.join();
+            final Loader loader = new Loader(config);
+            final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
+
+            loader.start(SequenceMock.class);
+            while (renderer.getState() == State.RUNNABLE || UtilReflection.getField(renderer, SEQUENCE) == null)
+            {
+                Thread.sleep(Constant.DECADE);
+            }
+
+            final Screen screen = UtilReflection.getField(renderer, SCREEN);
+            screen.requestFocus();
+            renderer.join();
+        }
+        catch (final SWTError error)
+        {
+            Assume.assumeFalse(ERROR_MULTIPLE_DISPLAY, ERROR_MULTIPLE_DISPLAY.equals(error.getMessage()));
+        }
     }
 
     /**
@@ -109,31 +120,38 @@ public class ScreenSwtTest
     @Test(timeout = TIMEOUT)
     public void testFullscreen() throws InterruptedException
     {
-        final Rectangle bounds = new Rectangle(0, 0, 0, 0);
-        final Display display = ToolsSwt.getDisplay();
-        display.syncExec(() ->
+        try
         {
-            final Rectangle size = display.getPrimaryMonitor().getBounds();
-            bounds.width = size.width;
-            bounds.height = size.height;
-        });
+            final Rectangle bounds = new Rectangle(0, 0, 0, 0);
+            final Display display = ToolsSwt.getDisplay();
+            display.syncExec(() ->
+            {
+                final Rectangle size = display.getPrimaryMonitor().getBounds();
+                bounds.width = size.width;
+                bounds.height = size.height;
+            });
 
-        final Resolution resolution = new Resolution(bounds.width, bounds.height, 60);
-        final Config config = new Config(resolution, 32, false);
-        config.setIcon(Medias.create(IMAGE));
+            final Resolution resolution = new Resolution(bounds.width, bounds.height, 60);
+            final Config config = new Config(resolution, 32, false);
+            config.setIcon(Medias.create(IMAGE));
 
-        final Loader loader = new Loader(config);
-        final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
+            final Loader loader = new Loader(config);
+            final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
 
-        loader.start(SequenceMock.class);
-        while (renderer.getState() == State.RUNNABLE || UtilReflection.getField(renderer, SEQUENCE) == null)
-        {
-            Thread.sleep(Constant.DECADE);
+            loader.start(SequenceMock.class);
+            while (renderer.getState() == State.RUNNABLE || UtilReflection.getField(renderer, SEQUENCE) == null)
+            {
+                Thread.sleep(Constant.DECADE);
+            }
+
+            final Screen screen = UtilReflection.getField(renderer, SCREEN);
+            screen.requestFocus();
+            renderer.join();
         }
-
-        final Screen screen = UtilReflection.getField(renderer, SCREEN);
-        screen.requestFocus();
-        renderer.join();
+        catch (final SWTError error)
+        {
+            Assume.assumeFalse(ERROR_MULTIPLE_DISPLAY, ERROR_MULTIPLE_DISPLAY.equals(error.getMessage()));
+        }
     }
 
     /**
@@ -144,22 +162,29 @@ public class ScreenSwtTest
     @Test(timeout = TIMEOUT)
     public void testFullscreenFail() throws InterruptedException
     {
-        final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
-        final Config config = new Config(resolution, 32, false);
-        final Loader loader = new Loader(config);
-        final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
-
-        final AtomicBoolean uncaught = new AtomicBoolean(false);
-        final Thread.UncaughtExceptionHandler handler = (thread, exception) -> uncaught.set(true);
-        renderer.setUncaughtExceptionHandler(handler);
-
-        loader.start(SequenceMock.class);
-        while (renderer.getState() == State.RUNNABLE)
+        try
         {
-            Thread.sleep(Constant.DECADE);
-        }
+            final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
+            final Config config = new Config(resolution, 32, false);
+            final Loader loader = new Loader(config);
+            final Renderer renderer = UtilReflection.getMethod(loader, GET_RENDERER);
 
-        renderer.join();
-        Assert.assertTrue(uncaught.get());
+            final AtomicBoolean uncaught = new AtomicBoolean(false);
+            final Thread.UncaughtExceptionHandler handler = (thread, exception) -> uncaught.set(true);
+            renderer.setUncaughtExceptionHandler(handler);
+
+            loader.start(SequenceMock.class);
+            while (renderer.getState() == State.RUNNABLE)
+            {
+                Thread.sleep(Constant.DECADE);
+            }
+
+            renderer.join();
+            Assert.assertTrue(uncaught.get());
+        }
+        catch (final SWTError error)
+        {
+            Assume.assumeFalse(ERROR_MULTIPLE_DISPLAY, ERROR_MULTIPLE_DISPLAY.equals(error.getMessage()));
+        }
     }
 }
