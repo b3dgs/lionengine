@@ -31,8 +31,7 @@ import com.b3dgs.lionengine.core.Renderer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ScreenAppletAwt
-        extends ScreenAwt
+final class ScreenAppletAwt extends ScreenAwt
 {
     /** Applet reference. */
     private final AppletAwt applet;

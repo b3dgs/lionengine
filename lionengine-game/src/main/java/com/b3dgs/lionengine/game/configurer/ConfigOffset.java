@@ -43,8 +43,10 @@ public final class ConfigOffset
      */
     public static ConfigOffset create(Configurer configurer) throws LionEngineException
     {
-        return new ConfigOffset(configurer.getInteger(ConfigOffset.OFFSET_X, ConfigOffset.OFFSET),
-                configurer.getInteger(ConfigOffset.OFFSET_Y, ConfigOffset.OFFSET));
+        final int offsetX = configurer.getInteger(ConfigOffset.OFFSET_X, ConfigOffset.OFFSET);
+        final int offsetY = configurer.getInteger(ConfigOffset.OFFSET_Y, ConfigOffset.OFFSET);
+
+        return new ConfigOffset(offsetX, offsetY);
     }
 
     /** The x value. */
@@ -57,7 +59,7 @@ public final class ConfigOffset
      */
     private ConfigOffset()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**

@@ -31,12 +31,10 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ExtractorModel
-        extends TraitModel
-        implements Extractor
+public class ExtractorModel extends TraitModel implements Extractor
 {
     /** Extractor listeners. */
-    private final Collection<ExtractorListener> listeners = new ArrayList<>();
+    private final Collection<ExtractorListener> listeners = new ArrayList<ExtractorListener>();
     /** Resources location. */
     private final ResourceLocation resourceLocation = new ResourceLocation();
     /** Tick timer rate. */
@@ -225,8 +223,9 @@ public class ExtractorModel
     @Override
     public boolean isExtracting()
     {
-        return ExtractorState.EXTRACTING == state || ExtractorState.DROPOFF == state
-                || ExtractorState.GOTO_WAREHOUSE == state;
+        return ExtractorState.EXTRACTING == state
+               || ExtractorState.DROPOFF == state
+               || ExtractorState.GOTO_WAREHOUSE == state;
     }
 
     @Override

@@ -29,8 +29,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class SequenceFirst
-        extends Sequence
+class SequenceFirst extends Sequence
 {
     /** Count value. */
     private int count;

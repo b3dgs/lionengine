@@ -18,13 +18,12 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Represents the surface data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see SetupSurface
+ * @see com.b3dgs.lionengine.game.object.SetupSurface
  */
 public final class ConfigSurface
 {
@@ -44,8 +43,9 @@ public final class ConfigSurface
      */
     public static ConfigSurface create(Configurer configurer) throws LionEngineException
     {
-        return new ConfigSurface(configurer.getString(ConfigSurface.SURFACE_IMAGE, ConfigSurface.SURFACE),
-                ConfigSurface.getSurfaceIcon(configurer));
+        final String surface = configurer.getString(ConfigSurface.SURFACE_IMAGE, ConfigSurface.SURFACE);
+
+        return new ConfigSurface(surface, ConfigSurface.getSurfaceIcon(configurer));
     }
 
     /** The image descriptor. */
@@ -58,7 +58,7 @@ public final class ConfigSurface
      */
     private ConfigSurface()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**

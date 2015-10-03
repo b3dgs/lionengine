@@ -26,8 +26,7 @@ import java.util.Collection;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class PolygonImpl
-        implements Polygon
+final class PolygonImpl implements Polygon
 {
     /** Minimum number of points. */
     private static final int MIN = 4;
@@ -158,7 +157,7 @@ final class PolygonImpl
     @Override
     public Collection<Line> getPoints()
     {
-        final Collection<Line> list = new ArrayList<>(npoints);
+        final Collection<Line> list = new ArrayList<Line>(npoints);
         for (int i = 0; i < npoints / 2; i++)
         {
             list.add(Geom.createLine(xpoints[i], ypoints[i], xpoints[i + npoints / 2], ypoints[i + npoints / 2]));

@@ -32,6 +32,22 @@ import com.b3dgs.lionengine.geom.Line;
 public final class UtilMath
 {
     /**
+     * Get the rounded floor or ceil value depending of the speed.
+     * 
+     * @param speed The speed value.
+     * @param value The value to round.
+     * @return The rounded value.
+     */
+    public static double getRound(double speed, double value)
+    {
+        if (speed < 0)
+        {
+            return Math.floor(value);
+        }
+        return Math.ceil(value);
+    }
+
+    /**
      * Check if value is between an interval.
      * 
      * @param value The value to check.
@@ -67,15 +83,20 @@ public final class UtilMath
      */
     public static int fixBetween(int value, int min, int max)
     {
+        final int fixed;
         if (value < min)
         {
-            return min;
+            fixed = min;
         }
         else if (value > max)
         {
-            return max;
+            fixed = max;
         }
-        return value;
+        else
+        {
+            fixed = value;
+        }
+        return fixed;
     }
 
     /**
@@ -88,15 +109,20 @@ public final class UtilMath
      */
     public static double fixBetween(double value, double min, double max)
     {
+        final double fixed;
         if (value < min)
         {
-            return min;
+            fixed = min;
         }
         else if (value > max)
         {
-            return max;
+            fixed = max;
         }
-        return value;
+        else
+        {
+            fixed = value;
+        }
+        return fixed;
     }
 
     /**
@@ -301,15 +327,25 @@ public final class UtilMath
     /**
      * Get the sign of a value.
      * 
-     * @param value The value to check (must be != 0).
-     * @return -1 if negative, 1 if positive.
-     * @throws LionEngineException If argument is equal to 0.
+     * @param value The value to check.
+     * @return -1 if negative strict, 1 if positive strict, 0 if 0.
      */
-    public static int getSign(int value) throws LionEngineException
+    public static int getSign(double value)
     {
-        Check.different(value, 0);
-
-        return Math.abs(value) / value;
+        final int sign;
+        if (value > 0)
+        {
+            sign = 1;
+        }
+        else if (value < 0)
+        {
+            sign = -1;
+        }
+        else
+        {
+            sign = 0;
+        }
+        return sign;
     }
 
     /**
@@ -337,6 +373,6 @@ public final class UtilMath
      */
     private UtilMath()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

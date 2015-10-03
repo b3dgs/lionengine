@@ -31,6 +31,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
@@ -41,8 +42,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class WavRoutine
-        extends Thread
+final class WavRoutine extends Thread
 {
     /** Sound buffer size. */
     static final int BUFFER = 128000;
@@ -196,8 +196,8 @@ final class WavRoutine
      * @throws LineUnavailableException The no audio line available.
      * @throws LionEngineException If error when getting the stream.
      */
-    private void openStream() throws UnsupportedAudioFileException, IOException, LineUnavailableException,
-            LionEngineException
+    private void openStream()
+            throws UnsupportedAudioFileException, IOException, LineUnavailableException, LionEngineException
     {
         audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(media.getInputStream()));
         final AudioFormat audioFormat = audioInputStream.getFormat();
@@ -315,11 +315,21 @@ final class WavRoutine
                 }
                 catch (final UnsupportedAudioFileException exception)
                 {
-                    Verbose.critical(WavRoutine.class, "run", "Unsupported audio format: \"", filename, "\"");
+                    Verbose.critical(WavRoutine.class,
+                                     "run",
+                                     "Unsupported audio format: ",
+                                     Constant.QUOTE,
+                                     filename,
+                                     Constant.QUOTE);
                 }
                 catch (final LineUnavailableException exception)
                 {
-                    Verbose.critical(WavRoutine.class, "run", "Unavailable audio line: \"", filename, "\"");
+                    Verbose.critical(WavRoutine.class,
+                                     "run",
+                                     "Unavailable audio line: ",
+                                     Constant.QUOTE,
+                                     filename,
+                                     Constant.QUOTE);
                 }
                 catch (final IOException exception)
                 {

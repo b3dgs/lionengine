@@ -21,14 +21,13 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Default launchable model implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.trait.Trait}:
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>
@@ -36,9 +35,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class LaunchableModel
-        extends TraitModel
-        implements Launchable
+public class LaunchableModel extends TraitModel implements Launchable
 {
     /** Launch timer. */
     private final Timing timer = new Timing();

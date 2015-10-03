@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.io.File;
+
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.FactoryMedia;
 import com.b3dgs.lionengine.core.Media;
@@ -26,11 +29,25 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryMediaSwt
-        implements FactoryMedia
+final class FactoryMediaSwt implements FactoryMedia
 {
+    /**
+     * Remove unwanted end element.
+     * 
+     * @param path The input path.
+     * @return The formatted path.
+     */
+    private static String format(String path)
+    {
+        if (path.endsWith(Constant.SLASH) || path.endsWith("\\"))
+        {
+            return path.substring(0, path.length() - 1);
+        }
+        return path;
+    }
+
     /** Path separator. */
-    private String separator;
+    private String separator = File.separator;
 
     /**
      * Internal constructor.
@@ -56,13 +73,13 @@ final class FactoryMediaSwt
         final StringBuilder fullPath = new StringBuilder();
         for (int i = 0; i < path.length; i++)
         {
-            if (path[i] != null)
+            if (path[i] != null && !path[i].isEmpty())
             {
-                fullPath.append(path[i]);
-            }
-            if (i < path.length - 1)
-            {
-                fullPath.append(getSeparator());
+                fullPath.append(format(path[i]));
+                if (i < path.length - 1)
+                {
+                    fullPath.append(getSeparator());
+                }
             }
         }
         return new MediaSwt(fullPath.toString());

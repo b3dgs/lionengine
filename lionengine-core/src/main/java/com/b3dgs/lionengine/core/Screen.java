@@ -111,7 +111,7 @@ public interface Screen
      * @return The input instance reference.
      * @throws LionEngineException If device not found.
      */
-    <T extends InputDevice> T getInputDevice(Class<T> type);
+    <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException;
 
     /**
      * Get main frame location x.

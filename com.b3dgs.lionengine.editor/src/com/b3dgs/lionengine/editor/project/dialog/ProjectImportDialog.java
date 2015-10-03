@@ -24,34 +24,32 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectGenerator;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Represents the new project dialog.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ProjectImportDialog
-        extends AbstractProjectDialog
+public class ProjectImportDialog extends AbstractProjectDialog
 {
     /** Project imported verbose. */
     private static final String VERBOSE_PROJECT_IMPORTED = "Project imported: ";
     /** From verbose. */
     private static final String VERBOSE_FROM = " from ";
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    private static final Image ICON = UtilIcon.get("dialog", "import.png");
 
     /** Already exists. */
     private boolean hasProject;
@@ -69,8 +67,11 @@ public class ProjectImportDialog
      */
     public ProjectImportDialog(Shell parent)
     {
-        super(parent, Messages.ImportProjectDialog_Title, Messages.ImportProjectDialog_HeaderTitle,
-                Messages.ImportProjectDialog_HeaderDesc, ICON);
+        super(parent,
+              Messages.ImportProjectDialog_Title,
+              Messages.ImportProjectDialog_HeaderTitle,
+              Messages.ImportProjectDialog_HeaderDesc,
+              ICON);
 
         createDialog();
         dialog.setMinimumSize(512, 100);
@@ -189,8 +190,9 @@ public class ProjectImportDialog
         catch (final IOException exception)
         {
             Verbose.exception(getClass(), "generateProperties", exception);
-            MessageDialog.openError(dialog, Messages.ImportProjectDialog_ErrorTitle,
-                    Messages.ImportProjectDialog_ErrorText);
+            MessageDialog.openError(dialog,
+                                    Messages.ImportProjectDialog_ErrorTitle,
+                                    Messages.ImportProjectDialog_ErrorText);
         }
     }
 
@@ -210,8 +212,9 @@ public class ProjectImportDialog
         catch (final IOException exception)
         {
             Verbose.exception(getClass(), "createProject", exception);
-            MessageDialog.openError(dialog, Messages.ImportProjectDialog_ErrorTitle,
-                    Messages.ImportProjectDialog_ErrorText);
+            MessageDialog.openError(dialog,
+                                    Messages.ImportProjectDialog_ErrorTitle,
+                                    Messages.ImportProjectDialog_ErrorText);
         }
     }
 
@@ -243,14 +246,14 @@ public class ProjectImportDialog
     private void fillProjectProperties() throws IOException
     {
         final File file = new File(projectLocationText.getText(), Project.PROPERTIES_FILE);
-        try (InputStream inputStream = new FileInputStream(file))
+        try (InputStream input = new FileInputStream(file))
         {
             final Properties properties = new Properties();
-            properties.load(inputStream);
+            properties.load(input);
 
-            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES, "");
-            final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES, "");
-            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES, "");
+            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES, Constant.EMPTY_STRING);
+            final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES, Constant.EMPTY_STRING);
+            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES, Constant.EMPTY_STRING);
             projectClassesText.setText(classes);
             projectLibrariesText.setText(libraries);
             projectResourcesText.setText(resources);
@@ -287,8 +290,7 @@ public class ProjectImportDialog
                 projectResourcesText.setEditable(true);
                 projectResourcesBrowse.setEnabled(true);
             }
-            catch (final LionEngineException
-                         | IOException exception)
+            catch (final LionEngineException | IOException exception)
             {
                 setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportProjectDialog_InvalidImport);
                 tipsLabel.setVisible(true);
@@ -302,14 +304,10 @@ public class ProjectImportDialog
     {
         super.createProjectClassesArea(content);
 
-        projectClassesText.addModifyListener(new ModifyListener()
+        projectClassesText.addModifyListener(modifyEvent ->
         {
-            @Override
-            public void modifyText(ModifyEvent modifyEvent)
-            {
-                checkClassesExistence();
-                updateTipsLabel();
-            }
+            checkClassesExistence();
+            updateTipsLabel();
         });
     }
 
@@ -318,14 +316,10 @@ public class ProjectImportDialog
     {
         super.createProjectLibrariesArea(content);
 
-        projectLibrariesText.addModifyListener(new ModifyListener()
+        projectLibrariesText.addModifyListener(modifyEvent ->
         {
-            @Override
-            public void modifyText(ModifyEvent modifyEvent)
-            {
-                checkLibrariesExistence();
-                updateTipsLabel();
-            }
+            checkLibrariesExistence();
+            updateTipsLabel();
         });
     }
 
@@ -334,14 +328,10 @@ public class ProjectImportDialog
     {
         super.createProjectResourcesArea(content);
 
-        projectResourcesText.addModifyListener(new ModifyListener()
+        projectResourcesText.addModifyListener(modifyEvent ->
         {
-            @Override
-            public void modifyText(ModifyEvent modifyEvent)
-            {
-                checkResourcesExistence();
-                updateTipsLabel();
-            }
+            checkResourcesExistence();
+            updateTipsLabel();
         });
     }
 

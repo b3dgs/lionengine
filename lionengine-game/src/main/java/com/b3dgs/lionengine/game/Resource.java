@@ -84,7 +84,7 @@ public class Resource
      * Check if the specified amount of resource can be spent.
      * 
      * @param amount The amount to check.
-     * @return <code>true</code> if current stock - amount > 0, <code>false</code> else.
+     * @return <code>true</code> if current stock - amount &gt; 0, <code>false</code> else.
      */
     public boolean canSpend(int amount)
     {

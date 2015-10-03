@@ -23,15 +23,21 @@ import java.io.OutputStream;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.widgets.Display;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Misc tools for engine image creation.
@@ -48,12 +54,27 @@ public final class UtilityImage
     private static final String ERROR_IMAGE_BUFFER_IMPL = "Unsupported image buffer implementation !";
 
     /**
+     * Get a unique display for the thread caller. Create a new one if not existing.
+     * 
+     * @return The display associated with the thread caller.
+     */
+    public static synchronized Display getDisplay()
+    {
+        final Display display = Display.findDisplay(Thread.currentThread());
+        if (display == null)
+        {
+            return new Display();
+        }
+        return display;
+    }
+
+    /**
      * Get the image buffer.
      * 
      * @param image The image buffer.
      * @return The buffer.
      */
-    static Image getBuffer(ImageBuffer image)
+    public static Image getBuffer(ImageBuffer image)
     {
         if (image instanceof ImageBufferSwt)
         {
@@ -68,19 +89,60 @@ public final class UtilityImage
      * @param transparency The transparency type.
      * @return The transparency value.
      */
-    static int getTransparency(Transparency transparency)
+    public static int getTransparency(Transparency transparency)
     {
+        final int value;
         switch (transparency)
         {
             case OPAQUE:
-                return SWT.TRANSPARENCY_NONE;
+                value = SWT.TRANSPARENCY_NONE;
+                break;
             case BITMASK:
-                return SWT.TRANSPARENCY_MASK;
+                value = SWT.TRANSPARENCY_MASK;
+                break;
             case TRANSLUCENT:
-                return SWT.TRANSPARENCY_ALPHA;
+                value = SWT.TRANSPARENCY_ALPHA;
+                break;
             default:
-                return 0;
+                value = 0;
         }
+        return value;
+    }
+
+    /**
+     * Crate a text.
+     * 
+     * @param fontName The font name.
+     * @param size The font size (in pixel).
+     * @param style The font style.
+     * @return The created text.
+     */
+    public static Text createText(String fontName, int size, TextStyle style)
+    {
+        return new TextSwt(getDisplay(), fontName, size, style);
+    }
+
+    /**
+     * Create an image.
+     * 
+     * @param width The image width.
+     * @param height The image height.
+     * @param transparency The image transparency.
+     * @return The image.
+     * @throws SWTException If error on getting data.
+     */
+    public static Image createImage(int width, int height, int transparency) throws SWTException
+    {
+        final Device device = getDisplay();
+        final Image image = new Image(device, width, height);
+        if (transparency != SWT.TRANSPARENCY_NONE)
+        {
+            final ImageData data = image.getImageData();
+            data.transparentPixel = ColorRgba.TRANSPARENT.getRgba();
+            image.dispose();
+            return new Image(device, data);
+        }
+        return image;
     }
 
     /**
@@ -91,10 +153,13 @@ public final class UtilityImage
      * @param transparency The image transparency.
      * @return The image.
      */
-    static ImageBuffer createImage(int width, int height, Transparency transparency)
+    public static ImageBuffer createImage(int width, int height, Transparency transparency)
     {
-        final ImageBufferSwt buffer = new ImageBufferSwt(ToolsSwt.createImage(width, height,
-                getTransparency(transparency)));
+        Check.superiorOrEqual(width, 0);
+        Check.superiorOrEqual(height, 0);
+
+        final Image image = createImage(width, height, getTransparency(transparency));
+        final ImageBufferSwt buffer = new ImageBufferSwt(image);
 
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.BLACK);
@@ -105,23 +170,33 @@ public final class UtilityImage
     }
 
     /**
-     * Get an image from an image file.
+     * Get an image from an image file. Image must call {@link ImageBuffer#prepare()} before any rendering.
      * 
      * @param media The image media.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image from file.
      * @throws LionEngineException If image cannot be read.
      */
-    static ImageBuffer getImage(Media media, boolean alpha) throws LionEngineException
+    public static ImageBuffer getImage(Media media) throws LionEngineException
     {
-        try (InputStream inputStream = media.getInputStream())
+        final InputStream input = media.getInputStream();
+        try
         {
-            return new ImageBufferSwt(ToolsSwt.getImage(inputStream, alpha));
+            return new ImageBufferSwt(getDisplay(), ToolsSwt.getImageData(input));
         }
-        catch (final IOException
-                     | SWTException exception)
+        catch (final SWTException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_READING);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(UtilityImage.class, "getImage", exception2);
+            }
         }
     }
 
@@ -131,7 +206,7 @@ public final class UtilityImage
      * @param image The image.
      * @return The created image from file.
      */
-    static ImageBuffer getImage(ImageBuffer image)
+    public static ImageBuffer getImage(ImageBuffer image)
     {
         return new ImageBufferSwt(ToolsSwt.getImage(getBuffer(image)));
     }
@@ -143,7 +218,7 @@ public final class UtilityImage
      * @param maskColor The color mask.
      * @return The masked image.
      */
-    static ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
+    public static ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
         return new ImageBufferSwt(ToolsSwt.applyMask(getBuffer(image), maskColor.getRgba()));
     }
@@ -152,11 +227,11 @@ public final class UtilityImage
      * Split an image into an array of sub image.
      * 
      * @param image The image to split.
-     * @param h The number of horizontal divisions (> 0).
-     * @param v The number of vertical divisions (> 0).
+     * @param h The number of horizontal divisions (strictly positive).
+     * @param v The number of vertical divisions (strictly positive).
      * @return The splited images array (can not be empty).
      */
-    static ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
+    public static ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
         final Image[] images = ToolsSwt.splitImage(getBuffer(image), h, v);
         final ImageBuffer[] imageBuffers = new ImageBuffer[images.length];
@@ -174,7 +249,7 @@ public final class UtilityImage
      * @param angle The angle to apply in degree (0-359)
      * @return The new image with angle applied.
      */
-    static ImageBuffer rotate(ImageBuffer image, int angle)
+    public static ImageBuffer rotate(ImageBuffer image, int angle)
     {
         return new ImageBufferSwt(ToolsSwt.rotate(getBuffer(image), angle));
     }
@@ -187,7 +262,7 @@ public final class UtilityImage
      * @param height The new height.
      * @return The new image with new size.
      */
-    static ImageBuffer resize(ImageBuffer image, int width, int height)
+    public static ImageBuffer resize(ImageBuffer image, int width, int height)
     {
         return new ImageBufferSwt(ToolsSwt.resize(getBuffer(image), width, height));
     }
@@ -198,7 +273,7 @@ public final class UtilityImage
      * @param image The input image.
      * @return The flipped image as a new instance.
      */
-    static ImageBuffer flipHorizontal(ImageBuffer image)
+    public static ImageBuffer flipHorizontal(ImageBuffer image)
     {
         return new ImageBufferSwt(ToolsSwt.flipHorizontal(getBuffer(image)));
     }
@@ -209,7 +284,7 @@ public final class UtilityImage
      * @param image The input image.
      * @return The flipped image as a new instance.
      */
-    static ImageBuffer flipVertical(ImageBuffer image)
+    public static ImageBuffer flipVertical(ImageBuffer image)
     {
         return new ImageBufferSwt(ToolsSwt.flipVertical(getBuffer(image)));
     }
@@ -218,13 +293,11 @@ public final class UtilityImage
      * Apply a filter to the input image.
      * 
      * @param image The input image.
-     * @param filter The filter to use.
      * @return The filtered image as a new instance.
-     * @throws LionEngineException If the filter is not supported.
      */
-    static ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException
+    public static ImageBuffer applyBilinearFilter(ImageBuffer image)
     {
-        return new ImageBufferSwt(ToolsSwt.applyFilter(getBuffer(image), filter));
+        return new ImageBufferSwt(ToolsSwt.applyBilinearFilter(getBuffer(image)));
     }
 
     /**
@@ -234,35 +307,46 @@ public final class UtilityImage
      * @param media The output media.
      * @throws LionEngineException If image cannot be read.
      */
-    static void saveImage(ImageBuffer image, Media media) throws LionEngineException
+    public static void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
-        try (OutputStream outputStream = media.getOutputStream())
+        final OutputStream output = media.getOutputStream();
+        try
         {
-            ToolsSwt.saveImage(getBuffer(image), outputStream);
+            ToolsSwt.saveImage(getBuffer(image), output);
         }
-        catch (final IOException
-                     | SWTException exception)
+        catch (final SWTException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
+        }
+        finally
+        {
+            try
+            {
+                output.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(UtilityImage.class, "saveImage", exception2);
+            }
         }
     }
 
     /**
      * Get raster buffer from data.
      * 
-     * @param image The image.
+     * @param img The image.
      * @param fr The first red.
      * @param fg The first green.
      * @param fb The first blue.
      * @param er The end red.
      * @param eg The end green.
      * @param eb The end blue.
-     * @param refSize The reference size.
+     * @param ref The reference size.
      * @return The rastered image.
      */
-    static ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
+    public static ImageBuffer getRasterBuffer(ImageBuffer img, int fr, int fg, int fb, int er, int eg, int eb, int ref)
     {
-        return new ImageBufferSwt(ToolsSwt.getRasterBuffer(getBuffer(image), fr, fg, fb, er, eg, eb, refSize));
+        return new ImageBufferSwt(ToolsSwt.getRasterBuffer(getBuffer(img), fr, fg, fb, er, eg, eb, ref));
     }
 
     /**
@@ -270,6 +354,6 @@ public final class UtilityImage
      */
     private UtilityImage()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

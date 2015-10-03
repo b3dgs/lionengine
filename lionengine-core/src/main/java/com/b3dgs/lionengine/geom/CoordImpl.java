@@ -22,8 +22,7 @@ package com.b3dgs.lionengine.geom;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class CoordImpl
-        implements Coord
+final class CoordImpl implements Coord
 {
     /** Coordinate horizontal. */
     private double x;

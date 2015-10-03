@@ -19,25 +19,35 @@ package com.b3dgs.lionengine.editor.world.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
  * Set grid handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetGridHandler
+public final class SetGridHandler
 {
+    /** Element ID. */
+    public static final String ID = "grid";
+
+    /**
+     * Create handler.
+     */
+    public SetGridHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-        part.switchGridEnabled();
+        final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+        part.getUpdater().switchGridEnabled();
         part.update();
     }
 }

@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.game.object.Services;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class TraitModel
-        implements Trait
+public abstract class TraitModel implements Trait
 {
     /** Cast error. */
     private static final String ERROR_CAST = "Unable to cast: ";

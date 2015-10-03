@@ -17,8 +17,12 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 
@@ -35,8 +39,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class GraphicSwt
-        implements Graphic
+final class GraphicSwt implements Graphic
 {
     /**
      * Get the image buffer.
@@ -49,8 +52,12 @@ final class GraphicSwt
         return ((ImageBufferSwt) imageBuffer).getBuffer();
     }
 
+    /** Flip image cache. */
+    private final Map<ImageBuffer, Image> cacheFlip = new HashMap<ImageBuffer, Image>();
     /** The graphic output. */
     private GC gc;
+    /** Device used. */
+    private Device device;
     /** Gradient paint. */
     private Color gradientColor1;
     /** Gradient paint. */
@@ -74,6 +81,7 @@ final class GraphicSwt
     GraphicSwt(GC g)
     {
         gc = g;
+        device = g.getDevice();
     }
 
     /*
@@ -83,15 +91,20 @@ final class GraphicSwt
     @Override
     public void clear(int x, int y, int width, int height)
     {
-        gc.setBackground(ScreenSwt.display.getSystemColor(SWT.COLOR_BLACK));
+        gc.setBackground(device.getSystemColor(SWT.COLOR_BLACK));
         gc.fillRectangle(0, 0, width, height);
-        gc.setBackground(ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE));
-        gc.setForeground(ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE));
+        gc.setBackground(device.getSystemColor(SWT.COLOR_WHITE));
+        gc.setForeground(device.getSystemColor(SWT.COLOR_WHITE));
     }
 
     @Override
     public void dispose()
     {
+        for (final Image image : cacheFlip.values())
+        {
+            image.dispose();
+        }
+        cacheFlip.clear();
         gc.dispose();
     }
 
@@ -110,8 +123,10 @@ final class GraphicSwt
     @Override
     public void drawImage(ImageBuffer image, Transform transform, int x, int y)
     {
-        gc.drawImage(GraphicSwt.getBuffer(image), x, y, image.getWidth(), image.getHeight(), x, y,
-                (int) (image.getWidth() * transform.getScaleX()), (int) (image.getHeight() * transform.getScaleY()));
+        final Image buffer = GraphicSwt.getBuffer(image);
+        final int width = (int) (image.getWidth() * transform.getScaleX());
+        final int height = (int) (image.getHeight() * transform.getScaleY());
+        gc.drawImage(buffer, x, y, image.getWidth(), image.getHeight(), x, y, width, height);
     }
 
     @Override
@@ -119,15 +134,12 @@ final class GraphicSwt
     {
         if (sx2 < sx1)
         {
-            // TODO not working
-            final org.eclipse.swt.graphics.Transform old = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
-            final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(
-                    ScreenSwt.display);
-            transform.setElements(1, 0, 0, -1, 0, 0);
-            gc.setTransform(transform);
-            gc.drawImage(GraphicSwt.getBuffer(image), dx1, dy1);
-            transform.dispose();
-            gc.setTransform(old);
+            if (!cacheFlip.containsKey(image))
+            {
+                final Image flip = ToolsSwt.flipHorizontal(getBuffer(image));
+                cacheFlip.put(image, flip);
+            }
+            gc.drawImage(cacheFlip.get(image), dx1, dy1);
         }
         else
         {
@@ -158,8 +170,9 @@ final class GraphicSwt
     @Override
     public void drawRect(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
-        drawRect((int) origin.getX(viewer.getViewpointX(x), width), (int) origin.getY(viewer.getViewpointY(y), height),
-                width, height, fill);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawRect(px, py, width, height, fill);
     }
 
     @Override
@@ -173,8 +186,9 @@ final class GraphicSwt
     @Override
     public void drawGradient(Viewer viewer, Origin origin, double x, double y, int width, int height)
     {
-        drawGradient((int) origin.getX(viewer.getViewpointX(x), width),
-                (int) origin.getY(viewer.getViewpointY(y), height), width, height);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawGradient(px, py, width, height);
     }
 
     @Override
@@ -186,8 +200,10 @@ final class GraphicSwt
     @Override
     public void drawLine(Viewer viewer, double x1, double y1, double x2, double y2)
     {
-        gc.drawLine((int) viewer.getViewpointX(x1), (int) viewer.getViewpointY(y1), (int) viewer.getViewpointX(x2),
-                (int) viewer.getViewpointY(y2));
+        gc.drawLine((int) viewer.getViewpointX(x1),
+                    (int) viewer.getViewpointY(y1),
+                    (int) viewer.getViewpointX(x2),
+                    (int) viewer.getViewpointY(y2));
     }
 
     @Override
@@ -206,8 +222,9 @@ final class GraphicSwt
     @Override
     public void drawOval(Viewer viewer, Origin origin, double x, double y, int width, int height, boolean fill)
     {
-        drawOval((int) origin.getX(viewer.getViewpointX(x), width), (int) origin.getY(viewer.getViewpointY(y), height),
-                width, height, fill);
+        final int px = (int) origin.getX(viewer.getViewpointX(x), width);
+        final int py = (int) origin.getY(viewer.getViewpointY(y), height);
+        drawOval(px, py, width, height, fill);
     }
 
     @Override
@@ -217,7 +234,7 @@ final class GraphicSwt
         {
             lastColor.dispose();
         }
-        lastColor = new Color(ScreenSwt.display, color.getRed(), color.getGreen(), color.getBlue());
+        lastColor = new Color(device, color.getRed(), color.getGreen(), color.getBlue());
         gc.setAlpha(color.getAlpha());
         gc.setBackground(lastColor);
         gc.setForeground(lastColor);
@@ -236,8 +253,8 @@ final class GraphicSwt
         {
             gradientColor1.dispose();
         }
-        gradientColor1 = new Color(ScreenSwt.display, color1.getRed(), color1.getGreen(), color1.getBlue());
-        gradientColor2 = new Color(ScreenSwt.display, color2.getRed(), color2.getGreen(), color2.getBlue());
+        gradientColor1 = new Color(device, color1.getRed(), color1.getGreen(), color1.getBlue());
+        gradientColor2 = new Color(device, color2.getRed(), color2.getGreen(), color2.getBlue());
     }
 
     @Override
@@ -248,6 +265,10 @@ final class GraphicSwt
             gc.dispose();
         }
         gc = (GC) graphic;
+        if (gc != null)
+        {
+            device = gc.getDevice();
+        }
     }
 
     @Override

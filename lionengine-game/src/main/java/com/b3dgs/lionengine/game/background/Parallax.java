@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.drawable.SpriteParallaxed;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Parallax
-        implements BackgroundComponent
+public class Parallax implements BackgroundComponent
 {
     /** Parallax surface. */
     private final SpriteParallaxed parallax;
@@ -144,18 +143,16 @@ public class Parallax
     @Override
     public void render(Graphic g)
     {
-        int i, j, lx, ly, lineWidth;
-        for (i = 0; i < parallaxsNumber; i++)
+        for (int i = 0; i < parallaxsNumber; i++)
         {
-            ly = (int) y[i];
-            lineWidth = parallax.getLineWidth(i);
+            final int ly = (int) y[i];
+            final int lineWidth = parallax.getLineWidth(i);
 
             if (ly >= 0 && ly < screenHeight)
             {
-                for (j = -amplitude; j < amplitude; j++)
+                for (int j = -amplitude; j < amplitude; j++)
                 {
-                    lx = (int) (-offsetX + offsetX * j - x[i] - x2[i] + i * (2.56 * factH) * j);
-
+                    final int lx = (int) (-offsetX + offsetX * j - x[i] - x2[i] + i * (2.56 * factH) * j);
                     if (lx + lineWidth + decX >= 0 && lx <= screenWidth)
                     {
                         parallax.render(g, i, lx + decX, ly);

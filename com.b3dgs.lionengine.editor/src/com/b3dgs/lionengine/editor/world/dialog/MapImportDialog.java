@@ -33,11 +33,13 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilDialog;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
@@ -45,11 +47,12 @@ import com.b3dgs.lionengine.game.map.MapTile;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapImportDialog
-        extends AbstractDialog
+public class MapImportDialog extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "import.png");
+    public static final Image ICON = UtilIcon.get("dialog", "import.png");
+    /** Xml filter. */
+    private static final String XML = "*.xml";
 
     /** Level rip location. */
     Text levelRipLocationText;
@@ -63,8 +66,6 @@ public class MapImportDialog
     Media sheetsConfig;
     /** Groups config file. */
     Media groupsConfig;
-    /** Found. */
-    private boolean found;
 
     /**
      * Create an import map dialog.
@@ -73,52 +74,15 @@ public class MapImportDialog
      */
     public MapImportDialog(Shell parent)
     {
-        super(parent, Messages.ImportMapDialog_Title, Messages.ImportMapDialog_HeaderTitle,
-                Messages.ImportMapDialog_HeaderDesc, MapImportDialog.ICON);
+        super(parent,
+              Messages.ImportMapDialog_Title,
+              Messages.ImportMapDialog_HeaderTitle,
+              Messages.ImportMapDialog_HeaderDesc,
+              ICON);
         createDialog();
-
+        dialog.setMinimumSize(512, 160);
         finish.setEnabled(false);
         finish.forceFocus();
-    }
-
-    /**
-     * Get the level rip location.
-     * 
-     * @return The level rip location.
-     */
-    public Media getLevelRipLocation()
-    {
-        return levelRip;
-    }
-
-    /**
-     * Get the sheets config location.
-     * 
-     * @return The sheets config location.
-     */
-    public Media getSheetsConfigLocation()
-    {
-        return sheetsConfig;
-    }
-
-    /**
-     * Get the groups config location.
-     * 
-     * @return The group config location.
-     */
-    public Media getGroupsConfigLocation()
-    {
-        return groupsConfig;
-    }
-
-    /**
-     * Check if import is found.
-     * 
-     * @return <code>true</code> if found, <code>false</code> else.
-     */
-    public boolean isFound()
-    {
-        return found;
     }
 
     /**
@@ -134,7 +98,7 @@ public class MapImportDialog
      */
     void browseLevelRipLocation()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
             Messages.ImportMapDialog_LevelRipFileFilter
         }, new String[]
@@ -152,12 +116,12 @@ public class MapImportDialog
      */
     void browseSheetsLocation()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
             Messages.ImportMapDialog_SheetsConfigFileFilter
         }, new String[]
         {
-            "*.xml"
+            XML
         });
         if (file != null)
         {
@@ -170,12 +134,12 @@ public class MapImportDialog
      */
     void browseGroupsLocation()
     {
-        final File file = Tools.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
             Messages.ImportMapDialog_GroupsConfigFileFilter
         }, new String[]
         {
-            "*.xml"
+            XML
         });
         if (file != null)
         {
@@ -191,10 +155,10 @@ public class MapImportDialog
     void onLevelRipLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        levelRipLocationText.setText(path.getAbsolutePath());
         try
         {
-            levelRip = project.getResourceMedia(new File(levelRipLocationText.getText()));
+            levelRip = project.getResourceMedia(new File(path.getAbsolutePath()));
+            levelRipLocationText.setText(levelRip.getPath());
         }
         catch (final LionEngineException exception)
         {
@@ -213,11 +177,11 @@ public class MapImportDialog
     void onSheetsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        sheetsLocationText.setText(path.getAbsolutePath());
         boolean validSheets = false;
         try
         {
-            sheetsConfig = project.getResourceMedia(new File(sheetsLocationText.getText()));
+            sheetsConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
+            sheetsLocationText.setText(sheetsConfig.getPath());
             final File sheets = sheetsConfig.getFile();
             if (!sheets.isFile())
             {
@@ -243,11 +207,11 @@ public class MapImportDialog
     void onGroupsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        groupsLocationText.setText(path.getAbsolutePath());
         boolean validGroups = false;
         try
         {
-            groupsConfig = project.getResourceMedia(new File(groupsLocationText.getText()));
+            groupsConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
+            groupsLocationText.setText(groupsConfig.getPath());
             final File groups = groupsConfig.getFile();
             if (!groups.isFile())
             {
@@ -283,8 +247,9 @@ public class MapImportDialog
         levelRipLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         levelRipLocationText.setEditable(false);
 
-        final Button browse = UtilSwt.createButton(levelRipArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+        final Button browse = UtilButton.create(levelRipArea,
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
@@ -314,8 +279,9 @@ public class MapImportDialog
         sheetsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         sheetsLocationText.setEditable(false);
 
-        final Button browse = UtilSwt.createButton(sheetArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+        final Button browse = UtilButton.create(sheetArea,
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
@@ -345,8 +311,9 @@ public class MapImportDialog
         groupsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         groupsLocationText.setEditable(false);
 
-        final Button browse = UtilSwt.createButton(groupArea,
-                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse, null);
+        final Button browse = UtilButton.create(groupArea,
+                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
@@ -396,6 +363,15 @@ public class MapImportDialog
     @Override
     protected void onFinish()
     {
-        found = levelRip != null && sheetsConfig != null;
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        final LevelRipConverter levelRipConverter = new LevelRipConverter(levelRip, sheetsConfig, map);
+        final MapImportProgressDialog progress = new MapImportProgressDialog(dialog, levelRip);
+
+        levelRipConverter.addListener(progress);
+        progress.open();
+        levelRipConverter.start(progress);
+        progress.finish();
+
+        map.loadGroups(groupsConfig);
     }
 }

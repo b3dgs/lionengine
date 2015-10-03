@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
@@ -54,8 +55,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapTileCollisionModel
-        implements MapTileCollision
+public class MapTileCollisionModel implements MapTileCollision
 {
     /** Info loading formulas. */
     private static final String INFO_LOAD_FORMULAS = "Loading collision formulas from: ";
@@ -65,16 +65,92 @@ public class MapTileCollisionModel
     private static final String ERROR_FORMULA = "Formula not found (may not have been loaded): ";
 
     /**
+     * Create the function draw to buffer.
+     * 
+     * @param collision The collision reference.
+     * @param tw The tile width.
+     * @param th The tile height.
+     * @return The created collision representation buffer.
+     */
+    public static ImageBuffer createFunctionDraw(CollisionFormula collision, int tw, int th)
+    {
+        final ImageBuffer buffer = Graphics.createImageBuffer(tw, th, Transparency.TRANSLUCENT);
+        final Graphic g = buffer.createGraphic();
+        g.setColor(ColorRgba.PURPLE);
+
+        createFunctionDraw(g, collision, tw, th);
+
+        g.dispose();
+        return buffer;
+    }
+
+    /**
+     * Create the function draw to buffer by computing all possible locations.
+     * 
+     * @param g The graphic buffer.
+     * @param formula The collision formula.
+     * @param tw The tile width.
+     * @param th The tile height.
+     */
+    private static void createFunctionDraw(Graphic g, CollisionFormula formula, int tw, int th)
+    {
+        for (int x = 0; x < tw; x++)
+        {
+            for (int y = 0; y < th; y++)
+            {
+                renderCollision(g, formula, th, x, y);
+            }
+        }
+    }
+
+    /**
+     * Render collision from current vector.
+     * 
+     * @param g The graphic buffer.
+     * @param formula The collision formula.
+     * @param th The tile height.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     */
+    private static void renderCollision(Graphic g, CollisionFormula formula, int th, int x, int y)
+    {
+        final CollisionFunction function = formula.getFunction();
+        final CollisionRange range = formula.getRange();
+        switch (range.getOutput())
+        {
+            case X:
+                final double fx = function.compute(y);
+                if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX())
+                    && UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
+                {
+                    g.drawRect((int) fx, th - y - 1, 0, 0, false);
+                }
+                break;
+            case Y:
+                final double fy = function.compute(x);
+                if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY())
+                    && UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
+                {
+                    g.drawRect(x, th - (int) fy - 1, 0, 0, false);
+                }
+                break;
+            default:
+                throw new RuntimeException("Unknown type: " + range.getOutput());
+        }
+    }
+
+    /**
      * Check the constraint with the specified tile.
      * 
-     * @param constraint The constraint name to check.
+     * @param constraints The constraint groups to check.
      * @param tile The tile to check with.
      * @return <code>true</code> if can be ignored, <code>false</code> else.
      */
-    private static boolean checkConstraint(String constraint, Tile tile)
+    private static boolean checkConstraint(Collection<String> constraints, Tile tile)
     {
-        return constraint != null && tile != null
-                && !tile.getFeature(TileCollision.class).getCollisionFormulas().isEmpty();
+        return tile != null
+               && constraints.contains(tile.getGroup())
+               && !tile.getFeature(TileCollision.class).getCollisionFormulas().isEmpty();
     }
 
     /**
@@ -98,31 +174,65 @@ public class MapTileCollisionModel
     }
 
     /**
-     * Get the rounded floor or ceil value depending of the speed.
+     * Get the horizontal collision from current location.
      * 
-     * @param speed The speed value.
-     * @param value The value to round.
-     * @return The rounded value.
+     * @param category The collision category.
+     * @param tileCollision The current tile collision.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @return The computed horizontal collision.
      */
-    private static double getRound(double speed, double value)
+    private static Double getCollisionX(CollisionCategory category,
+                                        TileCollision tileCollision,
+                                        double ox,
+                                        double oy,
+                                        double x,
+                                        double y)
     {
-        if (speed < 0)
+        if (category.getAxis() == Axis.X)
         {
-            return Math.floor(value);
+            return tileCollision.getCollisionX(category, ox, oy, x, y);
         }
-        return Math.ceil(value);
+        return null;
+    }
+
+    /**
+     * Get the vertical collision from current location.
+     * 
+     * @param category The collision category.
+     * @param tileCollision The current tile collision.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @return The computed vertical collision.
+     */
+    private static Double getCollisionY(CollisionCategory category,
+                                        TileCollision tileCollision,
+                                        double ox,
+                                        double oy,
+                                        double x,
+                                        double y)
+    {
+        if (category.getAxis() == Axis.Y)
+        {
+            return tileCollision.getCollisionY(category, ox, oy, x, y);
+        }
+        return null;
     }
 
     /** Collision formulas list. */
-    private final Map<String, CollisionFormula> formulas = new HashMap<>();
+    private final Map<String, CollisionFormula> formulas = new HashMap<String, CollisionFormula>();
     /** Collisions groups list. */
-    private final Map<String, CollisionGroup> groups = new HashMap<>();
+    private final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>();
     /** Map reference. */
     private final MapTile map;
     /** Viewer reference. */
     private final Viewer viewer;
     /** Collision draw cache. */
-    private HashMap<CollisionFormula, ImageBuffer> collisionCache;
+    private Map<CollisionFormula, ImageBuffer> collisionCache;
     /** Formulas configuration media. */
     private Media formulasConfig;
     /** Groups configuration media. */
@@ -145,100 +255,6 @@ public class MapTileCollisionModel
     {
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
-    }
-
-    /**
-     * Create the function draw to buffer.
-     * 
-     * @param collision The collision reference.
-     * @return The created collision representation buffer.
-     */
-    private ImageBuffer createFunctionDraw(CollisionFormula collision)
-    {
-        final ImageBuffer buffer = Graphics.createImageBuffer(map.getTileWidth() + 2, map.getTileHeight() + 2,
-                Transparency.TRANSLUCENT);
-        final Graphic g = buffer.createGraphic();
-        g.setColor(ColorRgba.PURPLE);
-
-        createFunctionDraw(g, collision);
-
-        g.dispose();
-        return buffer;
-    }
-
-    /**
-     * Create the function draw to buffer.
-     * 
-     * @param g The graphic buffer.
-     * @param formula The collision formula to draw.
-     */
-    private void createFunctionDraw(Graphic g, CollisionFormula formula)
-    {
-        final CollisionFunction function = formula.getFunction();
-        final CollisionRange range = formula.getRange();
-
-        for (int ox = 0; ox < map.getTileWidth(); ox++)
-        {
-            for (int oy = 0; oy < map.getTileHeight(); oy++)
-            {
-                for (int x = 0; x < map.getTileWidth(); x++)
-                {
-                    for (int y = 0; y < map.getTileHeight(); y++)
-                    {
-                        renderCollision(g, range, function, ox, oy, x, y);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Render collision from current vector.
-     * 
-     * @param g The graphic buffer.
-     * @param range The collision range reference.
-     * @param function The collision function reference.
-     * @param ox The old horizontal location.
-     * @param oy The old vertical location.
-     * @param x The current horizontal location.
-     * @param y The current vertical location.
-     */
-    private void renderCollision(Graphic g, CollisionRange range, CollisionFunction function, int ox, int oy, int x,
-            int y)
-    {
-        switch (range.getOutput())
-        {
-            case X:
-                final double fx = function.compute(ox);
-                if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
-                {
-                    if (x > ox)
-                    {
-                        g.drawRect((int) fx + 1 + range.getMinX(), map.getTileHeight() - y - 1, 0, 0, false);
-                    }
-                    else
-                    {
-                        g.drawRect((int) fx + 1 + range.getMaxX(), map.getTileHeight() - y - 1, 0, 0, false);
-                    }
-                }
-                break;
-            case Y:
-                final double fy = function.compute(oy);
-                if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
-                {
-                    if (y > oy)
-                    {
-                        g.drawRect(x + 1, map.getTileHeight() - (int) fy - range.getMinY() - 1, 0, 0, false);
-                    }
-                    else
-                    {
-                        g.drawRect(x + 1, map.getTileHeight() - (int) fy - range.getMaxY() - 1, 0, 0, false);
-                    }
-                }
-                break;
-            default:
-                throw new RuntimeException("Unknown type: " + range.getOutput());
-        }
     }
 
     /**
@@ -334,7 +350,7 @@ public class MapTileCollisionModel
      */
     private void applyConstraints()
     {
-        final Map<Tile, Collection<CollisionFormula>> toRemove = new HashMap<>();
+        final Map<Tile, Collection<CollisionFormula>> toRemove = new HashMap<Tile, Collection<CollisionFormula>>();
         for (int v = 0; v < map.getInTileHeight(); v++)
         {
             for (int h = 0; h < map.getInTileWidth(); h++)
@@ -373,12 +389,14 @@ public class MapTileCollisionModel
         final Tile left = map.getTile(h - 1, v);
         final Tile right = map.getTile(h + 1, v);
 
-        final Collection<CollisionFormula> toRemove = new ArrayList<>();
+        final Collection<CollisionFormula> toRemove = new ArrayList<CollisionFormula>();
         for (final CollisionFormula formula : tile.getCollisionFormulas())
         {
             final CollisionConstraint constraint = formula.getConstraint();
-            if (checkConstraint(constraint.getTop(), top) || checkConstraint(constraint.getBottom(), bottom)
-                    || checkConstraint(constraint.getLeft(), left) || checkConstraint(constraint.getRight(), right))
+            if (checkConstraint(constraint.getConstraints(Orientation.NORTH), top)
+                || checkConstraint(constraint.getConstraints(Orientation.SOUTH), bottom)
+                || checkConstraint(constraint.getConstraints(Orientation.WEST), left)
+                || checkConstraint(constraint.getConstraints(Orientation.EAST), right))
             {
                 toRemove.add(formula);
             }
@@ -399,17 +417,14 @@ public class MapTileCollisionModel
     private CollisionResult computeCollision(CollisionCategory category, double ox, double oy, double x, double y)
     {
         final Tile tile = map.getTile((int) Math.floor(x / map.getTileWidth()),
-                (int) Math.floor(y / map.getTileHeight()));
+                                      (int) Math.floor(y / map.getTileHeight()));
         if (tile != null)
         {
             final TileCollision tileCollision = tile.getFeature(TileCollision.class);
             if (containsCollisionFormula(tileCollision, category))
             {
-                final Double cx = category.getAxis() == Axis.X ? tileCollision.getCollisionX(category, ox, oy, x, y)
-                        : null;
-                final Double cy = category.getAxis() == Axis.Y ? tileCollision.getCollisionY(category, ox, oy, x, y)
-                        : null;
-
+                final Double cx = getCollisionX(category, tileCollision, ox, oy, x, y);
+                final Double cy = getCollisionY(category, tileCollision, ox, oy, x, y);
                 return new CollisionResult(cx, cy, tile);
             }
         }
@@ -464,7 +479,7 @@ public class MapTileCollisionModel
             final XmlNode formulasRoot = Stream.createXmlNode(ConfigCollisionFormula.FORMULAS);
             for (final CollisionFormula formula : getCollisionFormulas())
             {
-                formulasRoot.add(ConfigCollisionFormula.export(formula));
+                ConfigCollisionFormula.export(formulasRoot, formula);
             }
             Stream.saveXml(formulasRoot, formulasConfig);
         }
@@ -473,7 +488,7 @@ public class MapTileCollisionModel
             final XmlNode groupsNode = Stream.createXmlNode(ConfigCollisionGroup.COLLISIONS);
             for (final CollisionGroup group : getCollisionGroups())
             {
-                groupsNode.add(ConfigCollisionGroup.export(group));
+                ConfigCollisionGroup.export(groupsNode, group);
             }
             Stream.saveXml(groupsNode, groupsConfig);
         }
@@ -487,11 +502,11 @@ public class MapTileCollisionModel
     public void createCollisionDraw()
     {
         clearCollisionDraw();
-        collisionCache = new HashMap<>(formulas.size());
+        collisionCache = new HashMap<CollisionFormula, ImageBuffer>(formulas.size());
 
         for (final CollisionFormula collision : formulas.values())
         {
-            final ImageBuffer buffer = createFunctionDraw(collision);
+            final ImageBuffer buffer = createFunctionDraw(collision, map.getTileWidth(), map.getTileHeight());
             collisionCache.put(collision, buffer);
         }
     }
@@ -527,28 +542,36 @@ public class MapTileCollisionModel
 
         double oh;
         double ov;
-        int count = 0;
+        double h = sh;
+        double v = sv;
 
-        for (double h = sh, v = sv; count < norm; count++)
+        CollisionResult found = null;
+        for (int count = 0; count < norm; count++)
         {
-            oh = getRound(sx, h);
-            ov = getRound(sy, v);
+            oh = UtilMath.getRound(sx, h);
+            ov = UtilMath.getRound(sy, v);
 
             v += sy;
-            CollisionResult result = computeCollision(category, oh, ov, getRound(sx, h), getRound(sy, v));
+            CollisionResult result = computeCollision(category,
+                                                      oh,
+                                                      ov,
+                                                      UtilMath.getRound(sx, h),
+                                                      UtilMath.getRound(sy, v));
             if (result != null)
             {
-                return result;
+                found = result;
+                break;
             }
 
             h += sx;
-            result = computeCollision(category, oh, ov, getRound(sx, h), getRound(sy, v));
+            result = computeCollision(category, oh, ov, UtilMath.getRound(sx, h), UtilMath.getRound(sy, v));
             if (result != null)
             {
-                return result;
+                found = result;
+                break;
             }
         }
-        return null;
+        return found;
     }
 
     @Override

@@ -44,8 +44,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class World
-        extends WorldGame
+class World extends WorldGame
 {
     /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);

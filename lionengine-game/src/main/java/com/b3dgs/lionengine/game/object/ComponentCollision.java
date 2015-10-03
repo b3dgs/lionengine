@@ -19,18 +19,16 @@ package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.trait.collidable.Collidable;
-import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
 
 /**
  * Default collision component implementation. Designed to check collision between {@link Collidable}.
- * Collision events are notified to {@link CollidableListener}.
+ * Collision events are notified to {@link com.b3dgs.lionengine.game.trait.collidable.CollidableListener}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Collidable
- * @see CollidableListener
+ * @see com.b3dgs.lionengine.game.trait.collidable.CollidableListener
  */
-public class ComponentCollision
-        implements ComponentUpdatable
+public class ComponentCollision implements ComponentUpdatable
 {
     /**
      * Create a collision component.

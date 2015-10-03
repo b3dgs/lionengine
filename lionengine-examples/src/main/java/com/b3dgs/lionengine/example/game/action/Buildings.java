@@ -28,8 +28,7 @@ import com.b3dgs.lionengine.game.object.SetupSurface;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Buildings
-        extends Button
+class Buildings extends Button
 {
     /** Factory reference. */
     private final Factory factory;

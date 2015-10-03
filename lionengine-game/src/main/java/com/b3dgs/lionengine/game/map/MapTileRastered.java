@@ -35,8 +35,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface MapTileRastered
-        extends MapTileFeature, MapTileRenderer
+public interface MapTileRastered extends MapTileFeature, MapTileRenderer
 {
     /**
      * Load tile sheets as rastered.

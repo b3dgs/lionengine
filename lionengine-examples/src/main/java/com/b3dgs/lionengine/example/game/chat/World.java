@@ -41,9 +41,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * @param <N> The network type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class World<N extends NetworkedWorld>
-        extends WorldGame
-        implements NetworkedWorld
+abstract class World<N extends NetworkedWorld> extends WorldGame implements NetworkedWorld
 {
     /** Text. */
     protected final Text text;

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Get quick information from an image without reading all data.
@@ -34,6 +35,7 @@ import com.b3dgs.lionengine.core.Media;
  * Assert.assertEquals(32, info.getHeight());
  * Assert.assertEquals(&quot;png&quot;, info.getFormat());
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -85,7 +87,8 @@ public final class ImageInfo
     {
         try
         {
-            return get(media).getFormat() != null;
+            get(media);
+            return true;
         }
         catch (final LionEngineException exception)
         {
@@ -96,20 +99,37 @@ public final class ImageInfo
     /**
      * Read integer in image data.
      * 
-     * @param inputStream The stream.
+     * @param input The stream.
      * @param bytesNumber The number of bytes to read.
      * @param bigEndian The big endian flag.
      * @return The integer read.
      * @throws IOException if error on reading.
      */
-    private static int readInt(InputStream inputStream, int bytesNumber, boolean bigEndian) throws IOException
+    private static int readInt(InputStream input, int bytesNumber, boolean bigEndian) throws IOException
     {
+        final int oneByte = 8;
         int ret = 0;
-        int sv = bigEndian ? (bytesNumber - 1) * 8 : 0;
-        final int cnt = bigEndian ? -8 : 8;
+        int sv;
+        if (bigEndian)
+        {
+            sv = (bytesNumber - 1) * oneByte;
+        }
+        else
+        {
+            sv = 0;
+        }
+        final int cnt;
+        if (bigEndian)
+        {
+            cnt = -oneByte;
+        }
+        else
+        {
+            cnt = oneByte;
+        }
         for (int i = 0; i < bytesNumber; i++)
         {
-            ret |= inputStream.read() << sv;
+            ret |= input.read() << sv;
             sv += cnt;
         }
         return ret;
@@ -146,17 +166,29 @@ public final class ImageInfo
     private ImageInfo(Media media) throws LionEngineException
     {
         Check.notNull(media);
-        try (InputStream inputStream = media.getInputStream())
+        final InputStream input = media.getInputStream();
+        try
         {
-            final int byte1 = inputStream.read();
-            final int byte2 = inputStream.read();
-            final int byte3 = inputStream.read();
+            final int byte1 = input.read();
+            final int byte2 = input.read();
+            final int byte3 = input.read();
 
-            checkFormat(inputStream, byte1, byte2, byte3);
+            readFormat(input, byte1, byte2, byte3);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, ERROR_READ);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(getClass(), "ImageInfo", exception2);
+            }
         }
     }
 
@@ -193,182 +225,162 @@ public final class ImageInfo
     /**
      * Check the image format and read it.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @param byte1 The first byte.
      * @param byte2 The second byte.
      * @param byte3 The third byte.
-     * @throws IOException If an error occurred.
-     * @throws LionEngineException If image has an invalid format.
+     * @throws IOException If an error occurred or invalid format.
      */
-    private void checkFormat(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException,
-            LionEngineException
+    private void readFormat(InputStream input, int byte1, int byte2, int byte3) throws IOException
     {
-        if (!checkGif(inputStream, byte1, byte2, byte3))
+        if (isGif(input, byte1, byte2, byte3))
         {
-            if (!checkJpg(inputStream, byte1, byte2, byte3))
-            {
-                if (!checkPng(inputStream, byte1, byte2, byte3))
-                {
-                    if (!checkBmp(inputStream, byte1, byte2, byte3))
-                    {
-                        checkTiff(inputStream, byte1, byte2, byte3);
-                    }
-                }
-            }
+            readGif(input);
+        }
+        else if (isJpg(input, byte1, byte2, byte3))
+        {
+            readJpg(input, byte3);
+        }
+        else if (isPng(input, byte1, byte2, byte3))
+        {
+            readPng(input);
+        }
+        else if (isBmp(input, byte1, byte2, byte3))
+        {
+            readBmp(input);
+        }
+        else if (isTiff(input, byte1, byte2, byte3))
+        {
+            readTiff(input, byte1);
+        }
+        else
+        {
+            throw new IOException(ERROR_FORMAT);
         }
     }
 
     /**
      * Check if can read as GIF.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @param byte1 The first byte.
      * @param byte2 The second byte.
      * @param byte3 The third byte.
-     * @return <code>true</code> if read, <code>false</code> else.
+     * @return <code>true</code> if is gif, <code>false</code> else.
      * @throws IOException If an error occurred.
      */
-    private boolean checkGif(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    private static boolean isGif(InputStream input, int byte1, int byte2, int byte3) throws IOException
     {
-        final boolean gif = 'G' == byte1 && 'I' == byte2 && 'F' == byte3;
-        if (gif)
-        {
-            readGif(inputStream);
-        }
-        return gif;
+        return 'G' == byte1 && 'I' == byte2 && 'F' == byte3;
     }
 
     /**
      * Check if can read as JPG.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @param byte1 The first byte.
      * @param byte2 The second byte.
      * @param byte3 The third byte.
-     * @return <code>true</code> if read, <code>false</code> else.
+     * @return <code>true</code> if is jpg, <code>false</code> else.
      * @throws IOException If an error occurred.
      */
-    private boolean checkJpg(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    private static boolean isJpg(InputStream input, int byte1, int byte2, int byte3) throws IOException
     {
-        final boolean jpg = 0xFF == byte1 && 0xD8 == byte2;
-        if (jpg)
-        {
-            readJpg(inputStream, byte3);
-        }
-        return jpg;
+        return 0xFF == byte1 && 0xD8 == byte2;
     }
 
     /**
      * Check if can read as PNG.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @param byte1 The first byte.
      * @param byte2 The second byte.
      * @param byte3 The third byte.
      * @return <code>true</code> if read, <code>false</code> else.
      * @throws IOException If an error occurred.
      */
-    private boolean checkPng(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    private static boolean isPng(InputStream input, int byte1, int byte2, int byte3) throws IOException
     {
-        final boolean png = 137 == byte1 && 80 == byte2 && 78 == byte3;
-        if (png)
-        {
-            readPng(inputStream);
-        }
-        return png;
+        return 137 == byte1 && 80 == byte2 && 78 == byte3;
     }
 
     /**
      * Check if can read as BMP.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @param byte1 The first byte.
      * @param byte2 The second byte.
      * @param byte3 The third byte.
-     * @return <code>true</code> if read, <code>false</code> else.
+     * @return <code>true</code> if is bmp, <code>false</code> else.
      * @throws IOException If an error occurred.
      */
-    private boolean checkBmp(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    private static boolean isBmp(InputStream input, int byte1, int byte2, int byte3) throws IOException
     {
-        final boolean bmp = 66 == byte1 && 77 == byte2;
-        if (bmp)
-        {
-            readBmp(inputStream);
-        }
-        return bmp;
+        return 66 == byte1 && 77 == byte2;
     }
 
     /**
      * Check if can read as TIFF.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @param byte1 The first byte.
      * @param byte2 The second byte.
      * @param byte3 The third byte.
+     * @return <code>true</code> if is tiff, <code>false</code> else.
      * @throws IOException If an error occurred.
-     * @throws LionEngineException If image has an invalid format.
      */
-    private void checkTiff(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException,
-            LionEngineException
+    private static boolean isTiff(InputStream input, int byte1, int byte2, int byte3) throws IOException
     {
-        final int byte4 = inputStream.read();
+        final int byte4 = input.read();
         final boolean tiff1 = 'M' == byte1 && 'M' == byte2 && 0 == byte3 && 42 == byte4;
         final boolean tiff2 = 'I' == byte1 && 'I' == byte2 && 42 == byte3 && 0 == byte4;
-        final boolean tiff = tiff1 || tiff2;
-
-        if (tiff)
-        {
-            readTiff(inputStream, byte1);
-        }
-        else
-        {
-            throw new LionEngineException(ERROR_FORMAT);
-        }
+        return tiff1 || tiff2;
     }
 
     /**
      * Read GIF header.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @throws IOException If an error occurred.
      */
-    private void readGif(InputStream inputStream) throws IOException
+    private void readGif(InputStream input) throws IOException
     {
-        final long skipped = inputStream.skip(3);
-        checkSkippedError(skipped, 3);
-        width = readInt(inputStream, 2, false);
-        height = readInt(inputStream, 2, false);
+        final int headBytes = 3;
+        final long skipped = input.skip(headBytes);
+        checkSkippedError(skipped, headBytes);
+        width = readInt(input, 2, false);
+        height = readInt(input, 2, false);
         format = FORMAT_GIF;
     }
 
     /**
      * Read JPG header.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @param byte3 The third byte.
      * @throws IOException If an error occurred.
      */
-    private void readJpg(InputStream inputStream, int byte3) throws IOException
+    private void readJpg(InputStream input, int byte3) throws IOException
     {
         boolean success = false;
         int current = byte3;
         while (255 == current)
         {
-            final int marker = inputStream.read();
-            final int len = readInt(inputStream, 2, true);
+            final int marker = input.read();
+            final int len = readInt(input, 2, true);
             if (192 == marker || 193 == marker || 194 == marker)
             {
-                final long skipped = inputStream.skip(1);
+                final long skipped = input.skip(1);
                 checkSkippedError(skipped, 1);
-                height = readInt(inputStream, 2, true);
-                width = readInt(inputStream, 2, true);
+                height = readInt(input, 2, true);
+                width = readInt(input, 2, true);
                 format = FORMAT_JPG;
                 success = true;
                 break;
             }
-            final long skipped = inputStream.skip(len - 2);
+            final long skipped = input.skip(len - 2);
             checkSkippedError(skipped, len - 2);
-            current = inputStream.read();
+            current = input.read();
         }
         if (!success)
         {
@@ -379,71 +391,72 @@ public final class ImageInfo
     /**
      * Read PNG header.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @throws IOException If an error occurred.
      */
-    private void readPng(InputStream inputStream) throws IOException
+    private void readPng(InputStream input) throws IOException
     {
         final int toSkip = 15;
-        long skipped = inputStream.skip(toSkip);
+        long skipped = input.skip(toSkip);
         checkSkippedError(skipped, toSkip);
-        width = readInt(inputStream, 2, true);
-        skipped = inputStream.skip(2);
+        width = readInt(input, 2, true);
+        skipped = input.skip(2);
         checkSkippedError(skipped, 2);
-        height = readInt(inputStream, 2, true);
+        height = readInt(input, 2, true);
         format = FORMAT_PNG;
     }
 
     /**
      * Read BMP header.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @throws IOException If an error occurred.
      */
-    private void readBmp(InputStream inputStream) throws IOException
+    private void readBmp(InputStream input) throws IOException
     {
         final int toSkip = 15;
-        long skipped = inputStream.skip(toSkip);
+        long skipped = input.skip(toSkip);
         checkSkippedError(skipped, toSkip);
-        width = readInt(inputStream, 2, false);
-        skipped = inputStream.skip(2);
+        width = readInt(input, 2, false);
+        skipped = input.skip(2);
         checkSkippedError(skipped, 2);
-        height = readInt(inputStream, 2, false);
+        height = readInt(input, 2, false);
         format = FORMAT_BMP;
     }
 
     /**
      * Read TIFF header.
      * 
-     * @param inputStream The input stream.
+     * @param input The input stream.
      * @param byte1 The firsts byte.
      * @throws IOException If an error occurred.
      */
-    private void readTiff(InputStream inputStream, int byte1) throws IOException
+    private void readTiff(InputStream input, int byte1) throws IOException
     {
         final int toSkip = 8;
         final boolean bigEndian = 'M' == byte1;
-        int w = -1, h = -1;
-        final int ifd = readInt(inputStream, 4, bigEndian);
-        long skipped = inputStream.skip(ifd - toSkip);
+        final int ifd = readInt(input, 4, bigEndian);
+        long skipped = input.skip(ifd - toSkip);
         checkSkippedError(skipped, ifd - toSkip);
-        final int entries = readInt(inputStream, 2, bigEndian);
+        final int entries = readInt(input, 2, bigEndian);
 
+        int w = -1;
+        int h = -1;
         for (int i = 1; i <= entries; i++)
         {
-            final int tag = readInt(inputStream, 2, bigEndian);
-            final int fieldType = readInt(inputStream, 2, bigEndian);
-            readInt(inputStream, 4, bigEndian);
+            final int tag = readInt(input, 2, bigEndian);
+            final int fieldType = readInt(input, 2, bigEndian);
+            readInt(input, 4, bigEndian);
             int valOffset;
             if (3 == fieldType || 8 == fieldType)
             {
-                valOffset = readInt(inputStream, 2, bigEndian);
-                skipped = inputStream.skip(2);
+                valOffset = readInt(input, 2, bigEndian);
+                skipped = input.skip(2);
                 checkSkippedError(skipped, 2);
             }
             else
             {
-                valOffset = readInt(inputStream, 4, bigEndian);
+                valOffset = readInt(input, 4, bigEndian);
             }
             if (256 == tag)
             {

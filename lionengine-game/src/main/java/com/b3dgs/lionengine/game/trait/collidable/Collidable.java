@@ -29,8 +29,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Collidable
-        extends Trait, Updatable, Renderable, CollidableListener
+public interface Collidable extends Trait, Updatable, Renderable, CollidableListener
 {
     /**
      * Add a collision listener.

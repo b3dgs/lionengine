@@ -25,18 +25,22 @@ import org.eclipse.swt.widgets.TreeItem;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesModel
+public final class PropertiesModel
 {
     /** Properties explorer model. */
     public static final PropertiesModel INSTANCE = new PropertiesModel();
 
     /** Properties tree. */
     private Tree properties;
+    /** Copied property data (<code>null</code> if none). */
+    private Object copyData;
+    /** Copied property text (<code>null</code> if none). */
+    private String copyText;
 
     /**
      * Private constructor.
      */
-    protected PropertiesModel()
+    private PropertiesModel()
     {
         // Nothing to do
     }
@@ -49,6 +53,46 @@ public class PropertiesModel
     public void setTree(Tree properties)
     {
         this.properties = properties;
+    }
+
+    /**
+     * Set the copied element.
+     * 
+     * @param copyData The copied element.
+     */
+    public void setCopyData(Object copyData)
+    {
+        this.copyData = copyData;
+    }
+
+    /**
+     * Set the copied element.
+     * 
+     * @param copyText The copied element.
+     */
+    public void setCopyText(String copyText)
+    {
+        this.copyText = copyText;
+    }
+
+    /**
+     * Return the last copied element.
+     * 
+     * @return The last copied element, <code>null</code> if none.
+     */
+    public Object getCopyData()
+    {
+        return copyData;
+    }
+
+    /**
+     * Return the last copied element.
+     * 
+     * @return The last copied element, <code>null</code> if none.
+     */
+    public String getCopyText()
+    {
+        return copyText;
     }
 
     /**

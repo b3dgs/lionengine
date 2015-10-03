@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Mirror
  */
-public interface Mirrorable
-        extends Trait, Updatable
+public interface Mirrorable extends Trait, Updatable
 {
     /**
      * Set the next mirror state and apply it on next {@link Updatable#update(double)} call.

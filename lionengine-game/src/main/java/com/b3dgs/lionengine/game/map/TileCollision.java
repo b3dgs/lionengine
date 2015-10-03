@@ -35,8 +35,7 @@ import com.b3dgs.lionengine.game.collision.CollisionFormula;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionFormula
  */
-public interface TileCollision
-        extends TileFeature
+public interface TileCollision extends TileFeature
 {
     /**
      * Add a collision formula.

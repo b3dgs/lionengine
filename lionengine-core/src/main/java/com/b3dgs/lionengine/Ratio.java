@@ -53,6 +53,6 @@ public final class Ratio
      */
     private Ratio()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

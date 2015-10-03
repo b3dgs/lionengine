@@ -17,9 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.state;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Media;
@@ -31,10 +29,10 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.state.StateFactory;
 import com.b3dgs.lionengine.game.state.StateHandler;
 import com.b3dgs.lionengine.game.trait.body.Body;
@@ -49,9 +47,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Mario
-        extends ObjectGame
-        implements Updatable, Renderable
+class Mario extends ObjectGame implements Updatable, Renderable
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Mario.xml");
@@ -89,7 +85,7 @@ class Mario
         camera = services.get(Camera.class);
         transformable.teleport(160, GROUND);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 
@@ -138,30 +134,10 @@ class Mario
         return surface;
     }
 
-    /**
-     * Load all existing animations defined in the xml file.
-     */
-    private void loadStates()
-    {
-        final ConfigAnimations configAnimations = ConfigAnimations.create(getConfigurer());
-        for (final MarioState state : MarioState.values())
-        {
-            try
-            {
-                final Animation animation = configAnimations.getAnimation(state.getAnimationName());
-                factory.addState(state.create(this, animation));
-            }
-            catch (final LionEngineException exception)
-            {
-                continue;
-            }
-        }
-    }
-
     @Override
     protected void onPrepared()
     {
-        loadStates();
+        StateAnimationBased.Util.loadStates(MarioState.values(), factory, this);
         handler.start(MarioState.IDLE);
     }
 

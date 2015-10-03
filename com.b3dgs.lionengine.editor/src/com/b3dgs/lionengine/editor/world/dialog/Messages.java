@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.world.dialog;
 
 import org.eclipse.osgi.util.NLS;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.Activator;
 
 /**
@@ -26,8 +27,7 @@ import com.b3dgs.lionengine.editor.Activator;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Messages
-        extends NLS
+public final class Messages extends NLS
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".world.dialog.messages"; //$NON-NLS-1$
@@ -38,6 +38,10 @@ public final class Messages
     public static String SheetsImportDialog_HeaderTitle;
     /** Import sheets description header. */
     public static String SheetsImportDialog_HeaderDesc;
+    /** Rips list. */
+    public static String SheetsImportDialog_RipsList;
+    /** Add remove rip. */
+    public static String SheetsImportDialog_AddRemoveRip;
     /** Add level rip. */
     public static String SheetsImportDialog_AddLevelRip;
     /** Remove level rip. */
@@ -52,6 +56,14 @@ public final class Messages
     public static String SheetsImportDialog_HorizontalTiles;
     /** Vertical tiles. */
     public static String SheetsImportDialog_VerticalTiles;
+    /** Extract to. */
+    public static String SheetsImportDialog_ExtractTo;
+    /** Generate sheets config. */
+    public static String SheetsImportDialog_GenerateSheetsConfig;
+    /** Import sheets finished. */
+    public static String SheetsImportDialog_Finished;
+    /** Import sheets progress. */
+    public static String SheetsImportDialog_Progress;
 
     /** Import map dialog title. */
     public static String ImportMapDialog_Title;
@@ -77,6 +89,8 @@ public final class Messages
     public static String ImportMapDialog_ErrorSheets;
     /** Error groups. */
     public static String ImportMapDialog_ErrorGroups;
+    /** Import map progress. */
+    public static String ImportMapDialog_Progress;
 
     /** Import map collision dialog title. */
     public static String ImportMapCollisionDialog_Title;
@@ -97,6 +111,17 @@ public final class Messages
     /** Error collisions file. */
     public static String ImportMapCollisionDialog_ErrorCollisions;
 
+    /** Collision assign dialog title. */
+    public static String CollisionAssign_Title;
+    /** Collision assign dialog title header. */
+    public static String CollisionAssign_HeaderTitle;
+    /** Collision assign dialog description header. */
+    public static String CollisionAssign_HeaderDesc;
+    /** Collision assign offset. */
+    public static String CollisionAssign_Offset;
+    /** Collision assign check. */
+    public static String CollisionAssign_Check;
+
     /**
      * Initialize.
      */
@@ -110,6 +135,6 @@ public final class Messages
      */
     private Messages()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

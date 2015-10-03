@@ -29,8 +29,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class SpriteParallaxedImpl
-        implements SpriteParallaxed
+final class SpriteParallaxedImpl implements SpriteParallaxed
 {
     /** Parallax surface file name. */
     private final Media media;
@@ -83,18 +82,20 @@ final class SpriteParallaxedImpl
     @Override
     public void load(boolean alpha) throws LionEngineException
     {
-        ImageBuffer surface = Graphics.getImageBuffer(media, false);
+        ImageBuffer surface = Graphics.getImageBuffer(media);
 
         if (0 != Double.compare(factorH, 1.0) || 0 != Double.compare(factorV, 1.0))
         {
-            surface = Graphics.resize(surface, (int) (surface.getWidth() * factorH),
-                    (int) (surface.getHeight() * factorV));
+            final int x = (int) (surface.getWidth() * factorH);
+            final int y = (int) (surface.getHeight() * factorV);
+            surface = Graphics.resize(surface, x, y);
         }
 
         lineWidth = (int) Math.floor(surface.getWidth() * sx / 100.0);
         lineHeight = (int) Math.floor(surface.getHeight() / linesNumber * sy / 100.0);
         lines = Graphics.splitImage(surface, 1, linesNumber);
-        final double factH = sx / 100.0 / 0.6;
+        final double ratio = 0.6;
+        final double factH = sx / 100.0 / ratio;
 
         for (int i = 0; i < linesNumber; i++)
         {

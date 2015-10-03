@@ -47,9 +47,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Ship
-        extends ObjectGame
-        implements Updatable, Renderable, CollidableListener
+class Ship extends ObjectGame implements Updatable, Renderable, CollidableListener
 {
     /** Media. */
     public static final Media MEDIA = Medias.create("Ship.xml");
@@ -87,7 +85,7 @@ class Ship
         viewer = services.get(Viewer.class);
 
         final ConfigFrames config = ConfigFrames.create(setup.getConfigurer());
-        sprite = Drawable.loadSpriteAnimated(setup.surface, config.getHorizontal(), config.getVertical());
+        sprite = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         sprite.setFrame(3);
         sprite.setOrigin(Origin.MIDDLE);
 
@@ -133,8 +131,8 @@ class Ship
      */
     private void pointTarget()
     {
-        final int angle = (int) StrictMath.toDegrees(Math.atan((transformable.getX() - target.getX())
-                / (target.getY() - transformable.getY())));
+        final double grad = Math.atan((transformable.getX() - target.getX()) / (target.getY() - transformable.getY()));
+        final int angle = (int) StrictMath.toDegrees(grad);
         if (sprite.getMirror() == Mirror.NONE)
         {
             sprite.rotate(-angle + 180);

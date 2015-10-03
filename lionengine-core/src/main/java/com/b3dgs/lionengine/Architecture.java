@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
+import com.b3dgs.lionengine.core.EngineCore;
+
 /**
  * List of standard architectures.
  * <p>
@@ -33,4 +35,48 @@ public enum Architecture
     X64,
     /** Unknown architecture. */
     UNKNOWN;
+
+    /** Unknown item. */
+    private static final String DEFAULT = "unknown";
+    /** The architecture used. */
+    private static final Architecture ARCHI = Architecture.find(EngineCore.getSystemProperty("sun.arch.data.model",
+                                                                                             DEFAULT));
+
+    /**
+     * Find the current architecture.
+     * 
+     * @param arch The architecture short name (usually <code>32</code> or <code>86</code> or <code>64</code>).
+     * @return The current architecture.
+     */
+    public static Architecture find(String arch)
+    {
+        final Architecture architecture;
+        if (arch == null)
+        {
+            architecture = Architecture.UNKNOWN;
+        }
+        else if (arch.contains("64"))
+        {
+            architecture = Architecture.X64;
+        }
+        else if (arch.contains("32") || arch.contains("86"))
+        {
+            architecture = Architecture.X86;
+        }
+        else
+        {
+            architecture = Architecture.UNKNOWN;
+        }
+        return architecture;
+    }
+
+    /**
+     * Get java current running architecture.
+     * 
+     * @return The jvm architecture.
+     */
+    public static Architecture getArchitecture()
+    {
+        return ARCHI;
+    }
 }

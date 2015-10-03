@@ -23,9 +23,9 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.utility.UtilClass;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
@@ -33,8 +33,7 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ObjectsTester
-        extends PropertyTester
+public final class ObjectsTester extends PropertyTester
 {
     /** Can add object property. */
     private static final String PROPERTY_ADD_OBJECT = "addObject";
@@ -51,13 +50,47 @@ public class ObjectsTester
     {
         try
         {
-            final Class<?> clazz = Tools.getClass(media);
+            final Class<?> clazz = UtilClass.get(media);
             return ObjectGame.class.isAssignableFrom(clazz);
         }
         catch (final LionEngineException exception)
         {
             return false;
         }
+    }
+
+    /**
+     * Check result depending of selection.
+     * 
+     * @param selection The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(Media selection, String property)
+    {
+        final boolean result;
+        final File file = selection.getFile();
+        if (ObjectsTester.PROPERTY_ADD_OBJECT.equals(property))
+        {
+            result = file.isDirectory();
+        }
+        else if (ObjectsTester.PROPERTY_IS_OBJECT.equals(property))
+        {
+            result = ObjectsTester.isObjectFile(selection);
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Create tester.
+     */
+    public ObjectsTester()
+    {
+        // Nothing to do
     }
 
     /*
@@ -70,18 +103,10 @@ public class ObjectsTester
         final Project project = Project.getActive();
         if (project != null)
         {
-            final Media selection = ProjectsModel.INSTANCE.getSelection();
+            final Media selection = ProjectModel.INSTANCE.getSelection();
             if (selection != null)
             {
-                final File file = selection.getFile();
-                if (ObjectsTester.PROPERTY_ADD_OBJECT.equals(property))
-                {
-                    return file.isDirectory() && !FolderTypeTester.isFolderType(selection.getFile());
-                }
-                else if (ObjectsTester.PROPERTY_IS_OBJECT.equals(property))
-                {
-                    return ObjectsTester.isObjectFile(selection);
-                }
+                return check(selection, property);
             }
         }
         return false;

@@ -33,8 +33,7 @@ import com.b3dgs.lionengine.drawable.Sprite;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class BackgroundGame
-        implements Background
+public abstract class BackgroundGame implements Background
 {
     /**
      * Create an element from a name, plus its coordinates.
@@ -79,7 +78,8 @@ public abstract class BackgroundGame
     protected static Sprite createSprite(Media media, boolean alpha) throws LionEngineException
     {
         final Sprite sprite = Drawable.loadSprite(media);
-        sprite.load(alpha);
+        sprite.load();
+        sprite.prepare();
         return sprite;
     }
 
@@ -95,7 +95,7 @@ public abstract class BackgroundGame
     protected int totalHeight;
     /** Number of background components. */
     protected int componentsNumber;
-    /** Offset y; */
+    /** Offset y. */
     private int offsetY;
 
     /**
@@ -108,7 +108,7 @@ public abstract class BackgroundGame
     public BackgroundGame(String theme, int min, int max)
     {
         this.theme = theme;
-        components = new ArrayList<>(1);
+        components = new ArrayList<BackgroundComponent>(1);
         maxY = max;
         minY = min;
     }

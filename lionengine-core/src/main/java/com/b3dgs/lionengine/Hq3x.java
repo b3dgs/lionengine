@@ -30,6 +30,42 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  */
 public final class Hq3x
 {
+    /** Scale factor. */
+    public static final int SCALE = 3;
+
+    /** Source data array. */
+    private final int[] srcData;
+    /** Width. */
+    private final int width;
+    /** Height. */
+    private final int height;
+
+    /**
+     * Create an Hq3x filter.
+     * 
+     * @param srcImage The buffer source.
+     */
+    public Hq3x(ImageBuffer srcImage)
+    {
+        width = srcImage.getWidth();
+        height = srcImage.getHeight();
+        srcData = new int[width * height];
+        srcImage.getRgb(0, 0, width, height, srcData, 0, width);
+    }
+
+    /**
+     * Filtered buffer.
+     * 
+     * @return The filtered buffer.
+     */
+    public ImageBuffer getScaledImage()
+    {
+        final RawScale3x scaler = new RawScale3x(srcData, width, height);
+        final ImageBuffer image = Graphics.createImageBuffer(width * SCALE, height * SCALE, Transparency.OPAQUE);
+        image.setRgb(0, 0, width * SCALE, height * SCALE, scaler.getScaledData(), 0, width * SCALE);
+        return image;
+    }
+
     /**
      * The raw scale implementation.
      * 
@@ -47,7 +83,11 @@ public final class Hq3x
          */
         private static int computeE0(int b, int d, int e)
         {
-            return !RawScale3x.different(d, b) ? d : e;
+            if (!RawScale3x.different(d, b))
+            {
+                return d;
+            }
+            return e;
         }
 
         /**
@@ -63,8 +103,12 @@ public final class Hq3x
          */
         private static int computeE1(int a, int b, int c, int d, int e, int f)
         {
-            return !RawScale3x.different(d, b) && RawScale3x.different(e, c) || !RawScale3x.different(b, f)
-                    && RawScale3x.different(e, a) ? b : e;
+            if (!RawScale3x.different(d, b) && RawScale3x.different(e, c)
+                || !RawScale3x.different(b, f) && RawScale3x.different(e, a))
+            {
+                return b;
+            }
+            return e;
         }
 
         /**
@@ -77,7 +121,11 @@ public final class Hq3x
          */
         private static int computeE2(int b, int e, int f)
         {
-            return !RawScale3x.different(b, f) ? f : e;
+            if (!RawScale3x.different(b, f))
+            {
+                return f;
+            }
+            return e;
         }
 
         /**
@@ -93,8 +141,12 @@ public final class Hq3x
          */
         private static int computeE3(int a, int b, int d, int e, int g, int h)
         {
-            return !RawScale3x.different(d, b) && RawScale3x.different(e, g) || !RawScale3x.different(d, h)
-                    && RawScale3x.different(e, a) ? d : e;
+            if (!RawScale3x.different(d, b) && RawScale3x.different(e, g)
+                || !RawScale3x.different(d, h) && RawScale3x.different(e, a))
+            {
+                return d;
+            }
+            return e;
         }
 
         /**
@@ -110,8 +162,12 @@ public final class Hq3x
          */
         private static int computeE5(int b, int c, int e, int f, int h, int i)
         {
-            return !RawScale3x.different(b, f) && RawScale3x.different(e, i) || !RawScale3x.different(h, f)
-                    && RawScale3x.different(e, c) ? f : e;
+            if (!RawScale3x.different(b, f) && RawScale3x.different(e, i)
+                || !RawScale3x.different(h, f) && RawScale3x.different(e, c))
+            {
+                return f;
+            }
+            return e;
         }
 
         /**
@@ -124,7 +180,11 @@ public final class Hq3x
          */
         private static int computeE6(int d, int e, int h)
         {
-            return !RawScale3x.different(d, h) ? d : e;
+            if (!RawScale3x.different(d, h))
+            {
+                return d;
+            }
+            return e;
         }
 
         /**
@@ -140,8 +200,12 @@ public final class Hq3x
          */
         private static int computeE7(int d, int e, int f, int g, int h, int i)
         {
-            return !RawScale3x.different(d, h) && RawScale3x.different(e, i) || !RawScale3x.different(h, f)
-                    && RawScale3x.different(e, g) ? h : e;
+            if (!RawScale3x.different(d, h) && RawScale3x.different(e, i)
+                || !RawScale3x.different(h, f) && RawScale3x.different(e, g))
+            {
+                return h;
+            }
+            return e;
         }
 
         /**
@@ -154,7 +218,11 @@ public final class Hq3x
          */
         private static int computeE8(int e, int f, int h)
         {
-            return !RawScale3x.different(h, f) ? f : e;
+            if (!RawScale3x.different(h, f))
+            {
+                return f;
+            }
+            return e;
         }
 
         /** Source data array. */
@@ -178,7 +246,8 @@ public final class Hq3x
             width = dataWidth;
             height = dataHeight;
             srcImage = imageData;
-            dstImage = new int[imageData.length * 9];
+            final int tripleSize = SCALE * SCALE;
+            dstImage = new int[imageData.length * tripleSize];
         }
 
         /**
@@ -202,7 +271,7 @@ public final class Hq3x
          */
         private void setDestPixel(int x, int y, int p)
         {
-            dstImage[x + y * width * 3] = p;
+            dstImage[x + y * width * SCALE] = p;
         }
 
         /**
@@ -262,15 +331,15 @@ public final class Hq3x
                 e8 = RawScale3x.computeE8(e, f, h);
             }
 
-            setDestPixel(x * 3, y * 3, e0);
-            setDestPixel(x * 3 + 1, y * 3, e1);
-            setDestPixel(x * 3 + 2, y * 3, e2);
-            setDestPixel(x * 3, y * 3 + 1, e3);
-            setDestPixel(x * 3 + 1, y * 3 + 1, e4);
-            setDestPixel(x * 3 + 2, y * 3 + 1, e5);
-            setDestPixel(x * 3, y * 3 + 2, e6);
-            setDestPixel(x * 3 + 1, y * 3 + 2, e7);
-            setDestPixel(x * 3 + 2, y * 3 + 2, e8);
+            setDestPixel(x * SCALE, y * SCALE, e0);
+            setDestPixel(x * SCALE + 1, y * SCALE, e1);
+            setDestPixel(x * SCALE + 2, y * SCALE, e2);
+            setDestPixel(x * SCALE, y * SCALE + 1, e3);
+            setDestPixel(x * SCALE + 1, y * SCALE + 1, e4);
+            setDestPixel(x * SCALE + 2, y * SCALE + 1, e5);
+            setDestPixel(x * SCALE, y * SCALE + 2, e6);
+            setDestPixel(x * SCALE + 1, y * SCALE + 2, e7);
+            setDestPixel(x * SCALE + 2, y * SCALE + 2, e8);
         }
 
         /**
@@ -290,38 +359,5 @@ public final class Hq3x
 
             return dstImage;
         }
-    }
-
-    /** Source data array. */
-    private final int[] srcData;
-    /** Width. */
-    private final int width;
-    /** Height. */
-    private final int height;
-
-    /**
-     * Create an Hq3x filter.
-     * 
-     * @param srcImage The buffer source.
-     */
-    public Hq3x(ImageBuffer srcImage)
-    {
-        width = srcImage.getWidth();
-        height = srcImage.getHeight();
-        srcData = new int[width * height];
-        srcImage.getRgb(0, 0, width, height, srcData, 0, width);
-    }
-
-    /**
-     * Filtered buffer.
-     * 
-     * @return The filtered buffer.
-     */
-    public ImageBuffer getScaledImage()
-    {
-        final RawScale3x scaler = new RawScale3x(srcData, width, height);
-        final ImageBuffer image = Graphics.createImageBuffer(width * 3, height * 3, Transparency.OPAQUE);
-        image.setRgb(0, 0, width * 3, height * 3, scaler.getScaledData(), 0, width * 3);
-        return image;
     }
 }

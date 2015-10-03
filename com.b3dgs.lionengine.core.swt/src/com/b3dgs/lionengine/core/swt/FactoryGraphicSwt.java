@@ -20,12 +20,13 @@ package com.b3dgs.lionengine.core.swt;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Hq2x;
+import com.b3dgs.lionengine.Hq3x;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.FactoryGraphic;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderer;
@@ -38,8 +39,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryGraphicSwt
-        implements FactoryGraphic
+final class FactoryGraphicSwt implements FactoryGraphic
 {
     /**
      * Internal constructor.
@@ -79,7 +79,7 @@ final class FactoryGraphicSwt
     @Override
     public Text createText(String fontName, int size, TextStyle style)
     {
-        return new TextSwt(fontName, size, style);
+        return UtilityImage.createText(fontName, size, style);
     }
 
     @Override
@@ -89,9 +89,9 @@ final class FactoryGraphicSwt
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media, boolean alpha)
+    public ImageBuffer getImageBuffer(Media media)
     {
-        return UtilityImage.getImage(media, alpha);
+        return UtilityImage.getImage(media);
     }
 
     @Override
@@ -139,7 +139,27 @@ final class FactoryGraphicSwt
     @Override
     public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter) throws LionEngineException
     {
-        return UtilityImage.applyFilter(imageBuffer, filter);
+        final ImageBuffer filtered;
+        switch (filter)
+        {
+            case NONE:
+                filtered = imageBuffer;
+                break;
+            case BILINEAR:
+                filtered = UtilityImage.applyBilinearFilter(imageBuffer);
+                break;
+            case HQ2X:
+                final Hq2x hq2x = new Hq2x(imageBuffer);
+                filtered = hq2x.getScaledImage();
+                break;
+            case HQ3X:
+                final Hq3x hq3x = new Hq3x(imageBuffer);
+                filtered = hq3x.getScaledImage();
+                break;
+            default:
+                throw new RuntimeException();
+        }
+        return filtered;
     }
 
     @Override
@@ -149,15 +169,8 @@ final class FactoryGraphicSwt
     }
 
     @Override
-    public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb,
-            int refSize)
+    public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb, int ref)
     {
-        return UtilityImage.getRasterBuffer(imageBuffer, fr, fg, fb, er, eg, eb, refSize);
-    }
-
-    @Override
-    public int[][] loadRaster(Media media) throws LionEngineException
-    {
-        return Graphics.loadRaster(media);
+        return UtilityImage.getRasterBuffer(imageBuffer, fr, fg, fb, er, eg, eb, ref);
     }
 }

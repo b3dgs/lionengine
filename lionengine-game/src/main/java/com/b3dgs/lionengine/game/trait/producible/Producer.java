@@ -28,8 +28,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Producer
-        extends Trait, Updatable
+public interface Producer extends Trait, Updatable
 {
     /**
      * Add a producer listener.
@@ -41,8 +40,6 @@ public interface Producer
     /**
      * Add an element to the production queue. It works as a FIFO (First In, First Out). Production will be stopped when
      * the list is empty. In this case, getProductionProgress() will return -1. Production list stores only entity name.
-     * You have to return the corresponding instance by overriding this function: getUnitToProduce(Enum<?> id) from the
-     * ProducerModel.
      * 
      * @param producible The element to produce.
      */

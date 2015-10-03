@@ -35,8 +35,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * @see CollisionFormula
  * @see CollisionGroup
  */
-public interface MapTileCollision
-        extends MapTileFeature, Renderable
+public interface MapTileCollision extends MapTileFeature, Renderable
 {
     /** Default formulas config file. */
     String DEFAULT_FORMULAS_FILE = "formulas.xml";

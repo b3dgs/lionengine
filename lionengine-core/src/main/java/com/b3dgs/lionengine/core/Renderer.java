@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Hq2x;
 import com.b3dgs.lionengine.Hq3x;
@@ -35,9 +36,7 @@ import com.b3dgs.lionengine.Transparency;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Renderer
-        extends Thread
-        implements Sequencable
+public class Renderer extends Thread implements Sequencable
 {
     /** Screen ready timeout in milli second. */
     static final long SCREEN_READY_TIME_OUT = 50L;
@@ -81,7 +80,7 @@ public class Renderer
     /** Image buffer. */
     private volatile ImageBuffer buf;
     /** Hq3x use flag. */
-    private volatile int hqx;
+    private volatile Filter hqx;
     /** Filter used. */
     private volatile Transform op;
     /** Direct rendering. */
@@ -213,19 +212,21 @@ public class Renderer
         {
             case NONE:
             case BILINEAR:
-                hqx = 0;
+                hqx = null;
                 transform.scale(scaleX, scaleY);
                 break;
             case HQ2X:
-                hqx = 2;
-                transform.scale(scaleX / 2, scaleY / 2);
+                hqx = filter;
+                final int scale2x = 2;
+                transform.scale(scaleX / scale2x, scaleY / scale2x);
                 break;
             case HQ3X:
-                hqx = 3;
-                transform.scale(scaleX / 3, scaleY / 3);
+                hqx = filter;
+                final int scale3x = 3;
+                transform.scale(scaleX / scale3x, scaleY / scale3x);
                 break;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException("Unknown filter: ", filter.name());
         }
         return transform;
     }
@@ -241,7 +242,7 @@ public class Renderer
         {
             try
             {
-                Thread.sleep(100);
+                Thread.sleep(Constant.HUNDRED);
                 if (timeout.elapsed(SCREEN_READY_TIME_OUT))
                 {
                     Thread.currentThread().interrupt();
@@ -267,11 +268,7 @@ public class Renderer
         this.sequence = sequence;
         nextSequence = null;
         screen.setSequence(sequence);
-        // Sequence may have already been loaded in case of async load or if started from another sequence
-        if (!sequence.isLoaded())
-        {
-            sequence.start();
-        }
+        sequence.start();
         setResolution(sequence.resolution);
 
         // Prepare sequence to be started
@@ -402,14 +399,16 @@ public class Renderer
         else
         {
             sequence.render(graphic);
-            switch (hqx)
+            switch (filter)
             {
-                case 2:
+                case HQ2X:
                     g.drawImage(new Hq2x(buf).getScaledImage(), op, 0, 0);
                     break;
-                case 3:
+                case HQ3X:
                     g.drawImage(new Hq3x(buf).getScaledImage(), op, 0, 0);
                     break;
+                case NONE:
+                case BILINEAR:
                 default:
                     g.drawImage(buf, op, 0, 0);
                     break;
@@ -446,7 +445,7 @@ public class Renderer
         final int height = source.getHeight();
 
         // Standard rendering
-        if (hqx == 0 && source.getWidth() == output.getWidth() && source.getHeight() == output.getHeight())
+        if (hqx == null && source.getWidth() == output.getWidth() && source.getHeight() == output.getHeight())
         {
             buf = null;
             op = null;
@@ -456,19 +455,19 @@ public class Renderer
         else
         {
             buf = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
-            if (hqx > 1 || filter == Filter.NONE)
+            if (filter == Filter.BILINEAR)
             {
-                transform.setInterpolation(false);
+                transform.setInterpolation(true);
             }
             else
             {
-                transform.setInterpolation(true);
+                transform.setInterpolation(false);
             }
             op = transform;
             final Graphic gbuf = buf.createGraphic();
             graphic.setGraphic(gbuf.getGraphic());
         }
-        directRendering = hqx == 0 && (op == null || buf == null);
+        directRendering = hqx == null && (op == null || buf == null);
         sequence.setResolution(width, height);
     }
 

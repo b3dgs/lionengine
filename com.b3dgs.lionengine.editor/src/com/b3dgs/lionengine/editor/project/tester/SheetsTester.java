@@ -22,7 +22,7 @@ import org.eclipse.core.expressions.PropertyTester;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SheetsTester
-        extends PropertyTester
+public final class SheetsTester extends PropertyTester
 {
     /** Can add sheets property. */
     private static final String PROPERTY_ADD_SHEETS = "addSheets";
@@ -59,6 +58,39 @@ public class SheetsTester
         }
     }
 
+    /**
+     * Check result depending of selection.
+     * 
+     * @param selection The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(Media selection, String property)
+    {
+        final boolean result;
+        if (PROPERTY_EDIT_SHEETS.equals(property))
+        {
+            result = isSheetsFile(selection);
+        }
+        else if (PROPERTY_ADD_SHEETS.equals(property))
+        {
+            result = selection.getFile().isDirectory();
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Create tester.
+     */
+    public SheetsTester()
+    {
+        // Nothing to do
+    }
+
     /*
      * PropertyTester
      */
@@ -69,17 +101,10 @@ public class SheetsTester
         final Project project = Project.getActive();
         if (project != null)
         {
-            final Media selection = ProjectsModel.INSTANCE.getSelection();
+            final Media selection = ProjectModel.INSTANCE.getSelection();
             if (selection != null)
             {
-                if (PROPERTY_EDIT_SHEETS.equals(property))
-                {
-                    return isSheetsFile(selection);
-                }
-                if (PROPERTY_ADD_SHEETS.equals(property))
-                {
-                    return selection.getFile().isDirectory();
-                }
+                return check(selection, property);
             }
         }
         return false;

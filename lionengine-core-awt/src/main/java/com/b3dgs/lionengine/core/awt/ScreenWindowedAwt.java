@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.EngineCore;
@@ -43,8 +44,7 @@ import com.b3dgs.lionengine.core.Renderer;
  * @see Keyboard
  * @see Mouse
  */
-final class ScreenWindowedAwt
-        extends ScreenAwt
+final class ScreenWindowedAwt extends ScreenAwt
 {
     /** Error message windowed. */
     private static final String ERROR_WINDOWED = "Windowed mode initialization failed !";
@@ -127,8 +127,8 @@ final class ScreenWindowedAwt
      */
     private JFrame initMainFrame(final Renderer renderer) throws LionEngineException
     {
-        final JFrame frame = new JFrame(EngineCore.getProgramName() + " " + EngineCore.getProgramVersion(), conf);
-
+        final String title = EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion();
+        final JFrame frame = new JFrame(title, conf);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter()
         {

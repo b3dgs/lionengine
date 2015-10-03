@@ -17,19 +17,17 @@
  */
 package com.b3dgs.lionengine.example.game.state;
 
-import java.lang.reflect.Constructor;
 import java.util.Locale;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.state.State;
+import com.b3dgs.lionengine.game.state.StateAnimationBased;
 
 /**
  * List of mario states.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum MarioState
+enum MarioState implements StateAnimationBased
 {
     /** Idle state. */
     IDLE(StateIdle.class),
@@ -41,7 +39,7 @@ enum MarioState
     JUMP(StateJump.class);
 
     /** Class reference. */
-    private final Class<?> clazz;
+    private final Class<? extends State> clazz;
     /** Animation name. */
     private final String animationName;
 
@@ -50,37 +48,19 @@ enum MarioState
      * 
      * @param clazz The associated class reference.
      */
-    private MarioState(Class<?> clazz)
+    private MarioState(Class<? extends State> clazz)
     {
         this.clazz = clazz;
         animationName = name().toLowerCase(Locale.ENGLISH);
     }
 
-    /**
-     * Create the state from its parameters.
-     * 
-     * @param mario The mario reference.
-     * @param animation The associated animation reference.
-     * @return The state instance.
-     */
-    public State create(Mario mario, Animation animation)
+    @Override
+    public Class<? extends State> getStateClass()
     {
-        try
-        {
-            final Constructor<?> constructor = clazz.getConstructor(Mario.class, Animation.class);
-            return State.class.cast(constructor.newInstance(mario, animation));
-        }
-        catch (final ReflectiveOperationException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        return clazz;
     }
 
-    /**
-     * Get the animation name.
-     * 
-     * @return The animation name.
-     */
+    @Override
     public String getAnimationName()
     {
         return animationName;

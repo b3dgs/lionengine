@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.collision;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.Tile;
 
 /**
@@ -28,50 +27,23 @@ import com.b3dgs.lionengine.game.map.Tile;
  * Here a definition example:
  * 
  * <pre>
- * {@code<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">}
- *    {@code<lionengine:group name="block">}
- *      {@code<lionengine:tile sheet="0" number="1"/>}
- *      {@code<lionengine:tile sheet="1" number="5"/>}
- *    {@code</lionengine:group>}
- *    {@code<lionengine:group name="top">}
- *      {@code<lionengine:tile sheet="0" number="2"/>}
- *      {@code<lionengine:tile sheet="0" number="3"/>}
- *    {@code</lionengine:group>}
- * {@code</lionengine:groups>}
- * 
+ * &lt;lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com"&gt;
+ *    &lt;lionengine:group name="block"&gt;
+ *      &lt;lionengine:tile sheet="0" number="1"/&gt;
+ *      &lt;lionengine:tile sheet="1" number="5"/&gt;
+ *    &lt;/lionengine:group&gt;
+ *    &lt;lionengine:group name="top"&gt;
+ *      &lt;lionengine:tile sheet="0" number="2"/&gt;
+ *      &lt;lionengine:tile sheet="0" number="3"/&gt;
+ *    &lt;/lionengine:group&gt;
+ * &lt;/lionengine:groups&gt;
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see ConfigTileGroup
+ * @see com.b3dgs.lionengine.game.configurer.ConfigTileGroup
  */
-public class TileGroup
-        implements Nameable
+public class TileGroup implements Nameable
 {
-    /**
-     * Represents the tile reference indexes.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
-     */
-    public static class TileRef
-    {
-        /** Sheet id. */
-        public final int sheet;
-        /** TIle number. */
-        public final int number;
-
-        /**
-         * Create the tile reference.
-         * 
-         * @param sheet The tile sheet number.
-         * @param number The tile number.
-         */
-        public TileRef(int sheet, int number)
-        {
-            this.sheet = sheet;
-            this.number = number;
-        }
-    }
-
     /** The group Name. */
     private final String name;
     /** Elements inside group. */
@@ -99,7 +71,7 @@ public class TileGroup
     {
         for (final TileRef current : tiles)
         {
-            if (current.sheet == tile.getSheet().intValue() && current.number == tile.getNumber())
+            if (current.getSheet().equals(tile.getSheet()) && current.getNumber() == tile.getNumber())
             {
                 return true;
             }
@@ -125,5 +97,83 @@ public class TileGroup
     public String getName()
     {
         return name;
+    }
+
+    /**
+     * Represents the tile reference indexes.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
+     */
+    public static final class TileRef
+    {
+        /** Sheet id. */
+        private final Integer sheet;
+        /** TIle number. */
+        private final int number;
+
+        /**
+         * Create the tile reference.
+         * 
+         * @param sheet The tile sheet number.
+         * @param number The tile number.
+         */
+        public TileRef(Integer sheet, int number)
+        {
+            this.sheet = sheet;
+            this.number = number;
+        }
+
+        /**
+         * Get the sheet number.
+         * 
+         * @return The sheet number.
+         */
+        public Integer getSheet()
+        {
+            return sheet;
+        }
+
+        /**
+         * Get the tile number.
+         * 
+         * @return The tile number.
+         */
+        public int getNumber()
+        {
+            return number;
+        }
+
+        /*
+         * Object
+         */
+
+        @Override
+        public int hashCode()
+        {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + number;
+            result = prime * result + sheet.intValue();
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (this == obj)
+            {
+                return true;
+            }
+            if (obj == null || !(obj instanceof TileRef))
+            {
+                return false;
+            }
+            final TileRef other = (TileRef) obj;
+            if (number != other.number || sheet.intValue() != other.sheet.intValue())
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

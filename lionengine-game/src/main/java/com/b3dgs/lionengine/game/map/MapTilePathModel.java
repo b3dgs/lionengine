@@ -36,8 +36,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapTilePathModel
-        implements MapTilePath
+public class MapTilePathModel implements MapTilePath
 {
     /** Map reference. */
     private final MapTile map;
@@ -74,8 +73,16 @@ public class MapTilePathModel
      * @param radius The search radius.
      * @return The closest tile found.
      */
-    private CoordTile getClosestAvailableTile(Pathfindable mover, int stx, int sty, int stw, int sth, int dtx, int dty,
-            int dtw, int dth, int radius)
+    private CoordTile getClosestAvailableTile(Pathfindable mover,
+                                              int stx,
+                                              int sty,
+                                              int stw,
+                                              int sth,
+                                              int dtx,
+                                              int dty,
+                                              int dtw,
+                                              int dth,
+                                              int radius)
     {
         int closestX = 0;
         int closestY = 0;
@@ -229,8 +236,12 @@ public class MapTilePathModel
     @Override
     public CoordTile getFreeTileAround(Pathfindable mover, Tiled tiled, int radius)
     {
-        return getFreeTileAround(mover, tiled.getInTileX(), tiled.getInTileY(), tiled.getInTileWidth(),
-                tiled.getInTileHeight(), radius);
+        return getFreeTileAround(mover,
+                                 tiled.getInTileX(),
+                                 tiled.getInTileY(),
+                                 tiled.getInTileWidth(),
+                                 tiled.getInTileHeight(),
+                                 radius);
     }
 
     @Override
@@ -262,9 +273,16 @@ public class MapTilePathModel
     @Override
     public CoordTile getClosestAvailableTile(Pathfindable mover, Tiled to, int radius)
     {
-        return getClosestAvailableTile(mover, mover.getInTileX(), mover.getInTileY(), mover.getInTileWidth(),
-                mover.getInTileHeight(), to.getInTileX(), to.getInTileY(), to.getInTileWidth(), to.getInTileHeight(),
-                radius);
+        return getClosestAvailableTile(mover,
+                                       mover.getInTileX(),
+                                       mover.getInTileY(),
+                                       mover.getInTileWidth(),
+                                       mover.getInTileHeight(),
+                                       to.getInTileX(),
+                                       to.getInTileY(),
+                                       to.getInTileWidth(),
+                                       to.getInTileHeight(),
+                                       radius);
     }
 
     @Override
@@ -287,8 +305,8 @@ public class MapTilePathModel
                     final TilePath tilePath = tile.getFeature(TilePath.class);
                     try
                     {
-                        if (mover.isBlocking(tilePath.getCategory()) || ignoreObjectId != null && ids.size() > 0
-                                && !ids.contains(ignoreObjectId))
+                        if (mover.isBlocking(tilePath.getCategory())
+                            || ignoreObjectId != null && ids.size() > 0 && !ids.contains(ignoreObjectId))
                         {
                             return false;
                         }

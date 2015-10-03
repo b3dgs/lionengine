@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.core.awt;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,6 +27,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Misc tools for engine image creation.
@@ -43,11 +42,6 @@ public final class UtilityImage
     private static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
     /** Error image buffer implementation. */
     private static final String ERROR_IMAGE_BUFFER_IMPL = "Unsupported image buffer implementation !";
-    /** Bilinear filter. */
-    private static final float[] BILINEAR_FILTER = new float[]
-    {
-            1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f
-    };
 
     /**
      * Get the image buffer.
@@ -72,17 +66,22 @@ public final class UtilityImage
      */
     static int getTransparency(Transparency transparency)
     {
+        final int value;
         switch (transparency)
         {
             case OPAQUE:
-                return java.awt.Transparency.OPAQUE;
+                value = java.awt.Transparency.OPAQUE;
+                break;
             case BITMASK:
-                return java.awt.Transparency.BITMASK;
+                value = java.awt.Transparency.BITMASK;
+                break;
             case TRANSLUCENT:
-                return java.awt.Transparency.TRANSLUCENT;
+                value = java.awt.Transparency.TRANSLUCENT;
+                break;
             default:
-                return 0;
+                throw new LionEngineException("Unknown transparency: ", transparency.name());
         }
+        return value;
     }
 
     /**
@@ -92,8 +91,9 @@ public final class UtilityImage
      * @param height The image height.
      * @param transparency The image transparency.
      * @return The image instance.
+     * @throws LionEngineException If negative size.
      */
-    static ImageBuffer createImage(int width, int height, Transparency transparency)
+    static ImageBuffer createImage(int width, int height, Transparency transparency) throws LionEngineException
     {
         return new ImageBufferAwt(ToolsAwt.createImage(width, height, getTransparency(transparency)));
     }
@@ -102,20 +102,31 @@ public final class UtilityImage
      * Get an image from an input stream.
      * 
      * @param media The image input media.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The loaded image.
      * @throws LionEngineException If error when getting image.
      */
-    static ImageBuffer getImage(Media media, boolean alpha) throws LionEngineException
+    static ImageBuffer getImage(Media media) throws LionEngineException
     {
         Check.notNull(media);
-        try (InputStream inputStream = media.getInputStream())
+        final InputStream input = media.getInputStream();
+        try
         {
-            return new ImageBufferAwt(ToolsAwt.getImage(inputStream, alpha));
+            return new ImageBufferAwt(ToolsAwt.getImage(input));
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_READING);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(UtilityImage.class, "getImage", exception2);
+            }
         }
     }
 
@@ -129,13 +140,25 @@ public final class UtilityImage
     static void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
         Check.notNull(media);
-        try (OutputStream outputStream = media.getOutputStream())
+        final OutputStream output = media.getOutputStream();
+        try
         {
-            ToolsAwt.saveImage(getBuffer(image), outputStream);
+            ToolsAwt.saveImage(getBuffer(image), output);
         }
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
+        }
+        finally
+        {
+            try
+            {
+                output.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(UtilityImage.class, "saveImage", exception2);
+            }
         }
     }
 
@@ -159,9 +182,7 @@ public final class UtilityImage
      */
     static ImageBuffer applyBilinearFilter(ImageBuffer image)
     {
-        final Kernel kernel = new Kernel(3, 3, BILINEAR_FILTER);
-        final ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
-        return new ImageBufferAwt(op.filter(getBuffer(image), null));
+        return new ImageBufferAwt(ToolsAwt.applyBilinearFilter(getBuffer(image)));
     }
 
     /**
@@ -227,8 +248,8 @@ public final class UtilityImage
      * Split an image into an array of sub image.
      * 
      * @param image The image to split.
-     * @param h The number of horizontal divisions (> 0).
-     * @param v The number of vertical divisions (> 0).
+     * @param h The number of horizontal divisions (strictly positive).
+     * @param v The number of vertical divisions (strictly positive).
      * @return The splited images array (can not be empty).
      */
     static ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
@@ -265,6 +286,6 @@ public final class UtilityImage
      */
     private UtilityImage()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

@@ -35,21 +35,17 @@ import com.b3dgs.lionengine.game.collision.CollisionGroup;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsProperties
-        extends ObjectProperties<CollisionGroup>
-        implements ObjectListListener<CollisionGroup>
+public class CollisionsProperties extends ObjectProperties<CollisionGroup> implements ObjectListListener<CollisionGroup>
 {
     /** Formulas tree. */
     private final FormulaList tree = new FormulaList();
 
     /**
      * Create collisions properties.
-     * 
-     * @param list The list reference.
      */
-    public CollisionsProperties(CollisionList list)
+    public CollisionsProperties()
     {
-        super(list);
+        super();
     }
 
     /**

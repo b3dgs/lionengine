@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.network.purview.NetworkableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Client
-        extends NetworkableModel
+class Client extends NetworkableModel
 {
     /** Client name. */
     private String name;

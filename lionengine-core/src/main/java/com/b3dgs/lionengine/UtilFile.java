@@ -17,10 +17,14 @@
  */
 package com.b3dgs.lionengine;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -37,6 +41,9 @@ import com.b3dgs.lionengine.core.Verbose;
  */
 public final class UtilFile
 {
+    /** Error folder. */
+    private static final String ERROR_FOLDER = "Not a folder: ";
+
     /**
      * Check if the path is a directory.
      * 
@@ -123,6 +130,23 @@ public final class UtilFile
     }
 
     /**
+     * Get extension from a string (search first dot).
+     * 
+     * @param file The filename.
+     * @return The extension.
+     */
+    public static String getExtension(String file)
+    {
+        String ext = Constant.EMPTY_STRING;
+        final int i = file.lastIndexOf(Constant.DOT);
+        if (i > 0 && i < file.length() - 1)
+        {
+            ext = file.substring(i + 1).toLowerCase(Locale.ENGLISH);
+        }
+        return ext;
+    }
+
+    /**
      * Get a file extension.
      * 
      * @param file The file.
@@ -142,24 +166,12 @@ public final class UtilFile
      */
     public static boolean isType(File file, String extension)
     {
-        return getExtension(file).equals(extension);
-    }
-
-    /**
-     * Get extension from a string (search first dot).
-     * 
-     * @param file The filename.
-     * @return The extension.
-     */
-    public static String getExtension(String file)
-    {
-        String ext = "";
-        final int i = file.lastIndexOf('.');
-        if (i > 0 && i < file.length() - 1)
+        if (file.isFile())
         {
-            ext = file.substring(i + 1).toLowerCase(Locale.getDefault());
+            final String current = getExtension(file);
+            return current.equals(extension.replace(Constant.DOT, Constant.EMPTY_STRING));
         }
-        return ext;
+        return false;
     }
 
     /**
@@ -198,11 +210,12 @@ public final class UtilFile
             }
         }
         final String[] dirsList = new String[numberOfDirs];
-        for (int i = 0, id = 0; i < files.length; i++)
+        int id = 0;
+        for (final File file2 : files)
         {
-            if (files[i].isDirectory())
+            if (file2.isDirectory())
             {
-                dirsList[id] = files[i].getName();
+                dirsList[id] = file2.getName();
                 id++;
             }
         }
@@ -234,11 +247,12 @@ public final class UtilFile
             }
         }
         final String[] filesList = new String[numberOfFiles];
-        for (int i = 0, id = 0; i < files.length; i++)
+        int id = 0;
+        for (final File file2 : files)
         {
-            if (files[i].isFile())
+            if (file2.isFile())
             {
-                filesList[id] = files[i].getName();
+                filesList[id] = file2.getName();
                 id++;
             }
         }
@@ -254,7 +268,7 @@ public final class UtilFile
      */
     public static Collection<File> getFilesByExtension(String path, String extension)
     {
-        final Collection<File> filesList = new ArrayList<>(1);
+        final Collection<File> filesList = new ArrayList<File>(1);
         getFilesByExtensionRecursive(filesList, path, extension);
         return filesList;
     }
@@ -268,9 +282,104 @@ public final class UtilFile
      */
     public static Collection<File> getFilesByName(File path, String name)
     {
-        final Collection<File> filesList = new ArrayList<>(1);
+        final Collection<File> filesList = new ArrayList<File>(1);
         getFilesByNameRecursive(filesList, path, name);
         return filesList;
+    }
+
+    /**
+     * Get the files list from folder.
+     * 
+     * @param folder The folder reference.
+     * @return The folder content.
+     * @throws LionEngineException If not a folder.
+     */
+    public static Collection<File> getFiles(File folder) throws LionEngineException
+    {
+        if (folder.isDirectory())
+        {
+            final File[] files = folder.listFiles();
+            if (files != null)
+            {
+                return Arrays.asList(files);
+            }
+        }
+        throw new LionEngineException(ERROR_FOLDER, folder.getPath());
+    }
+
+    /**
+     * Get of full copy of the input stream stored in a temporary file.
+     * 
+     * @param name The file name reference (to have a similar temporary file name).
+     * @param input The input stream reference.
+     * @return The temporary file created with copied content from stream.
+     */
+    public static File getCopy(String name, InputStream input)
+    {
+        final String prefix;
+        final String suffix;
+        final int minimumPrefix = 3;
+        final int i = name.lastIndexOf(Constant.DOT);
+        if (i > minimumPrefix)
+        {
+            prefix = name.substring(0, i);
+            suffix = name.substring(i);
+        }
+        else
+        {
+            if (name.length() > minimumPrefix)
+            {
+                prefix = name;
+            }
+            else
+            {
+                prefix = "temp";
+            }
+            suffix = null;
+        }
+        try
+        {
+            final File temp = File.createTempFile(prefix, suffix);
+            final OutputStream output = new BufferedOutputStream(new FileOutputStream(temp));
+            try
+            {
+                copy(input, output);
+            }
+            finally
+            {
+                output.close();
+            }
+            return temp;
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, "Unable to create temporary file for: ", name);
+        }
+    }
+
+    /**
+     * Copy a stream onto another.
+     * 
+     * @param source The source stream.
+     * @param destination The destination stream.
+     * @throws IOException If error.
+     */
+    public static void copy(InputStream source, OutputStream destination) throws IOException
+    {
+        Check.notNull(source);
+        Check.notNull(destination);
+
+        final int bufferSize = 65535;
+        final byte[] buffer = new byte[bufferSize];
+        while (true)
+        {
+            final int read = source.read(buffer);
+            if (read == -1)
+            {
+                break;
+            }
+            destination.write(buffer, 0, read);
+        }
     }
 
     /**
@@ -303,13 +412,9 @@ public final class UtilFile
                     deleteDirectory(new File(directory, element));
                 }
             }
-            try
+            if (!directory.delete())
             {
-                Files.delete(directory.toPath());
-            }
-            catch (final IOException exception)
-            {
-                Verbose.exception(UtilFile.class, "deleteDirectory", exception, "Directory not deleted: " + directory);
+                Verbose.warning(UtilFile.class, "deleteDirectory", "Directory not deleted: " + directory);
             }
         }
         else if (directory.isFile())
@@ -323,17 +428,14 @@ public final class UtilFile
      * Delete a file.
      * 
      * @param file The file to delete.
+     * @throws LionEngineException If unable to remove file.
      */
-    public static void deleteFile(File file)
+    public static void deleteFile(File file) throws LionEngineException
     {
         Check.notNull(file);
-        try
+        if (!file.delete())
         {
-            Files.delete(file.toPath());
-        }
-        catch (final IOException exception)
-        {
-            Verbose.warning(UtilFile.class, "deleteFile", "File not deleted: " + file);
+            throw new LionEngineException("File not deleted: " + file);
         }
     }
 
@@ -346,22 +448,18 @@ public final class UtilFile
      */
     private static void getFilesByExtensionRecursive(Collection<File> filesList, String path, String extension)
     {
-        final File file = new File(path);
-        if (file.exists())
+        final File[] files = new File(path).listFiles();
+        if (files != null)
         {
-            final File[] files = file.listFiles();
-            if (files != null)
+            for (final File content : files)
             {
-                for (final File content : files)
+                if (content.isDirectory())
                 {
-                    if (content.isDirectory())
-                    {
-                        getFilesByExtensionRecursive(filesList, content.getPath(), extension);
-                    }
-                    if (content.isFile() && extension.equals(getExtension(content)))
-                    {
-                        filesList.add(content);
-                    }
+                    getFilesByExtensionRecursive(filesList, content.getPath(), extension);
+                }
+                if (content.isFile() && extension.equals(getExtension(content)))
+                {
+                    filesList.add(content);
                 }
             }
         }
@@ -398,6 +496,6 @@ public final class UtilFile
      */
     private UtilFile()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

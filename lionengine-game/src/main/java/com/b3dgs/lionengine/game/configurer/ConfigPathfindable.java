@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.map.astar.PathData;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Represents the pathfindable data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Collision
+ * @see com.b3dgs.lionengine.game.Collision
  */
 public final class ConfigPathfindable
 {
@@ -51,7 +50,7 @@ public final class ConfigPathfindable
      */
     public static Map<String, PathData> create(Configurer configurer) throws LionEngineException
     {
-        final Map<String, PathData> categories = new HashMap<>(0);
+        final Map<String, PathData> categories = new HashMap<String, PathData>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(PATHFINDABLE))
         {
             final PathData data = createPathData(node);
@@ -71,6 +70,7 @@ public final class ConfigPathfindable
     {
         final double cost = node.readDouble(COST);
         final boolean blocking = node.readBoolean(BLOCK);
+
         return new PathData(cost, blocking);
     }
 
@@ -79,6 +79,6 @@ public final class ConfigPathfindable
      */
     private ConfigPathfindable()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

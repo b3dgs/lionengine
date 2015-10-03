@@ -29,10 +29,8 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
@@ -42,13 +40,14 @@ import com.b3dgs.lionengine.geom.Rectangle;
 /**
  * Box ray cast collidable model implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.trait.Trait}:
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>
  * </ul>
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigCollisions}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
+ * with {@link ConfigCollisions}.
  * </p>
  * <p>
  * The {@link Services} must provide the following services:
@@ -63,18 +62,35 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollidableModel
-        extends TraitModel
-        implements Collidable
+public class CollidableModel extends TraitModel implements Collidable
 {
+    /**
+     * Check if current rectangle collides other collidable rectangles.
+     * 
+     * @param rectangle The current rectangle.
+     * @param other The other collidable.
+     * @return <code>true</code> if collide, <code>false</code> else.
+     */
+    private static boolean checkCollide(Rectangle rectangle, Collidable other)
+    {
+        for (final Rectangle current : other.getCollisionBounds())
+        {
+            if (rectangle.intersects(current) || rectangle.contains(current))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** The collision listener reference. */
-    private final Collection<CollidableListener> listeners = new ArrayList<>();
+    private final Collection<CollidableListener> listeners = new ArrayList<CollidableListener>();
     /** The collisions used. */
-    private final Collection<Collision> collisions = new ArrayList<>();
+    private final Collection<Collision> collisions = new ArrayList<Collision>();
     /** The ignored collidables. */
-    private final Collection<Collidable> ignored = new HashSet<>();
+    private final Collection<Collidable> ignored = new HashSet<Collidable>();
     /** Temp bounding box from polygon. */
-    private final Map<Collision, Rectangle> boxs = new HashMap<>();
+    private final Map<Collision, Rectangle> boxs = new HashMap<Collision, Rectangle>();
     /** Transformable owning this model. */
     private Transformable transformable;
     /** The viewer reference. */
@@ -147,13 +163,32 @@ public class CollidableModel
                 {
                     mirror = ((Mirrorable) transformable).getMirror();
                 }
-                final int offsetX = mirror == Mirror.HORIZONTAL ? -collision.getOffsetX() : collision.getOffsetX();
-                final int offsetY = mirror == Mirror.VERTICAL ? -collision.getOffsetY() : collision.getOffsetY();
+
+                final int offsetX;
+                if (mirror == Mirror.HORIZONTAL)
+                {
+                    offsetX = -collision.getOffsetX();
+                }
+                else
+                {
+                    offsetX = collision.getOffsetX();
+                }
+
+                final int offsetY;
+                if (mirror == Mirror.VERTICAL)
+                {
+                    offsetY = -collision.getOffsetY();
+                }
+                else
+                {
+                    offsetY = collision.getOffsetY();
+                }
+
                 final int width = collision.getWidth();
                 final int height = collision.getHeight();
-
                 final double x = origin.getX(transformable.getOldX() + offsetX, width);
                 final double y = origin.getY(transformable.getOldY() + offsetY, height);
+
                 if (boxs.containsKey(collision))
                 {
                     final Rectangle rectangle = boxs.get(collision);
@@ -169,9 +204,9 @@ public class CollidableModel
     }
 
     @Override
-    public Collision collide(Collidable collidable)
+    public Collision collide(Collidable other)
     {
-        if (enabled && !ignored.contains(collidable))
+        if (enabled && !ignored.contains(other))
         {
             for (final Map.Entry<Collision, Rectangle> current : boxs.entrySet())
             {
@@ -182,19 +217,16 @@ public class CollidableModel
                 final double sv = rectangle.getY();
                 final double dh = origin.getX(transformable.getX() + collision.getOffsetX(), rectangle.getWidth()) - sh;
                 final double dv = origin.getY(transformable.getY() + collision.getOffsetY(), rectangle.getHeight())
-                        - sv;
+                                  - sv;
                 final double norm = Math.sqrt(dh * dh + dv * dv);
                 final double sx = dh / norm;
                 final double sy = dv / norm;
 
                 for (int count = 0; count < norm; count++)
                 {
-                    for (final Rectangle other : collidable.getCollisionBounds())
+                    if (checkCollide(rectangle, other))
                     {
-                        if (rectangle.intersects(other) || rectangle.contains(other))
-                        {
-                            return current.getKey();
-                        }
+                        return current.getKey();
                     }
                     rectangle.translate(sx, sy);
                 }
@@ -213,9 +245,9 @@ public class CollidableModel
                 final Collision collision = current.getKey();
 
                 final int x = (int) origin.getX(viewer.getViewpointX(transformable.getX() + collision.getOffsetX()),
-                        collision.getWidth());
+                                                collision.getWidth());
                 final int y = (int) origin.getY(viewer.getViewpointY(transformable.getY() + collision.getOffsetY()),
-                        collision.getHeight());
+                                                collision.getHeight());
                 g.drawRect(x, y, collision.getWidth(), collision.getHeight(), false);
             }
         }

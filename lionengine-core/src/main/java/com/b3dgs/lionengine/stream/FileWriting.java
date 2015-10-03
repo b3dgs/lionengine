@@ -47,8 +47,7 @@ import java.io.IOException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface FileWriting
-        extends Closeable
+public interface FileWriting extends Closeable
 {
     /**
      * Write a boolean (1 bit, <code>true</code> or <code>false</code>).

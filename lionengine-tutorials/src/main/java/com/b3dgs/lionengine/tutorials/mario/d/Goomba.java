@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.trait.collidable.Collidable;
 import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
@@ -33,9 +34,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Goomba
-        extends Entity
-        implements InputDeviceDirectional, CollidableListener
+class Goomba extends Entity implements InputDeviceDirectional, CollidableListener
 {
     /** Goomba media. */
     public static final Media CONFIG = Medias.create("entity", "Goomba.xml");
@@ -50,6 +49,13 @@ class Goomba
     {
         super(setup, services);
         side = 0.25;
+    }
+
+    @Override
+    protected void onPrepared()
+    {
+        StateAnimationBased.Util.loadStates(GoombaState.values(), factory, this);
+        super.onPrepared();
     }
 
     @Override
@@ -108,7 +114,7 @@ class Goomba
             collider.teleportY(transformable.getY() + transformable.getHeight());
             target.jump();
             this.collidable.setEnabled(false);
-            changeState(EntityState.DEATH_GOOMBA);
+            changeState(GoombaState.DEATH);
             Sfx.CRUSH.play();
         }
     }

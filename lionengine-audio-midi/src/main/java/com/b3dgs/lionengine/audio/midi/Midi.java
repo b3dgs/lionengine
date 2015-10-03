@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.core.Media;
  * <li>Start index</li>
  * <li>Loop (range setting)</li>
  * <li>Volume</li>
- * <li>Pause & resume</li>
+ * <li>Pause and resume</li>
  * </ul>
  * <p>
  * The <code>tick</code> represents the position in the sound data.
@@ -69,6 +69,12 @@ public final class Midi
     public static final int VOLUME_MIN = 0;
     /** Maximum volume value. */
     public static final int VOLUME_MAX = 100;
+    /** Error midi. */
+    public static final String ERROR_MIDI = "No midi output available !";
+    /** Error midi data. */
+    private static final String ERROR_MIDI_DATA = "Invalid midi data !";
+    /** Error midi sequence. */
+    private static final String ERROR_MIDI_SEQUENCE = "Error on reading sequence !";
 
     /**
      * Open the sequence from the media.
@@ -87,11 +93,11 @@ public final class Midi
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, media, "Error on reading sequence !");
+            throw new LionEngineException(exception, media, ERROR_MIDI_SEQUENCE);
         }
         catch (final InvalidMidiDataException exception)
         {
-            throw new LionEngineException(exception, media, "Invalid midi data !");
+            throw new LionEngineException(exception, media, ERROR_MIDI_DATA);
         }
     }
 
@@ -133,10 +139,13 @@ public final class Midi
                 sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
             }
         }
-        catch (final InvalidMidiDataException
-                     | MidiUnavailableException exception)
+        catch (final InvalidMidiDataException exception)
         {
-            throw new LionEngineException(exception, "No midi output available !");
+            throw new LionEngineException(exception, ERROR_MIDI);
+        }
+        catch (final MidiUnavailableException exception)
+        {
+            throw new LionEngineException(exception, ERROR_MIDI);
         }
 
         ticks = sequence.getTickLength();
@@ -210,6 +219,8 @@ public final class Midi
         Check.inferiorOrEqual(volume, Midi.VOLUME_MAX);
 
         final double maxChannelVolume = 127.0;
+        final int channelsNumber = 16;
+        final int controlChangeByte = 7;
         final int vol = (int) (volume * maxChannelVolume / Midi.VOLUME_MAX);
 
         if (synthesizer.getDefaultSoundbank() == null)
@@ -217,14 +228,17 @@ public final class Midi
             try
             {
                 final ShortMessage volumeMessage = new ShortMessage();
-                for (int i = 0; i < 16; i++)
+                for (int i = 0; i < channelsNumber; i++)
                 {
-                    volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, vol);
+                    volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i, controlChangeByte, vol);
                     MidiSystem.getReceiver().send(volumeMessage, -1);
                 }
             }
-            catch (MidiUnavailableException
-                   | InvalidMidiDataException exception)
+            catch (final MidiUnavailableException exception)
+            {
+                return;
+            }
+            catch (final InvalidMidiDataException exception)
             {
                 return;
             }
@@ -234,7 +248,7 @@ public final class Midi
             final MidiChannel[] channels = synthesizer.getChannels();
             for (int c = 0; channels != null && c < channels.length; c++)
             {
-                channels[c].controlChange(7, vol);
+                channels[c].controlChange(controlChangeByte, vol);
             }
         }
     }

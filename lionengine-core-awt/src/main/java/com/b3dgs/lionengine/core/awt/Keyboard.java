@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Keyboard
-        extends InputDeviceDirectional
+public interface Keyboard extends InputDeviceDirectional
 {
     /** Enter key. */
     Integer ENTER = Integer.valueOf(KeyEvent.VK_ENTER);

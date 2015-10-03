@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -34,8 +35,7 @@ import com.b3dgs.lionengine.core.Text;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TextSwt
-        implements Text
+final class TextSwt implements Text
 {
     /**
      * Get the style equivalence.
@@ -45,19 +45,26 @@ final class TextSwt
      */
     private static int getStyle(TextStyle style)
     {
+        final int value;
         switch (style)
         {
             case NORMAL:
-                return SWT.NORMAL;
+                value = SWT.NORMAL;
+                break;
             case BOLD:
-                return SWT.BOLD;
+                value = SWT.BOLD;
+                break;
             case ITALIC:
-                return SWT.ITALIC;
+                value = SWT.ITALIC;
+                break;
             default:
-                return SWT.NORMAL;
+                value = SWT.NORMAL;
         }
+        return value;
     }
 
+    /** Device used. */
+    private final Device device;
     /** Text java font. */
     private final Font font;
     /** Text size. */
@@ -82,14 +89,17 @@ final class TextSwt
     /**
      * Internal constructor.
      * 
+     * @param device The device reference.
      * @param fontName The font name.
      * @param size The font size (in pixel).
      * @param style The font style.
      */
-    TextSwt(String fontName, int size, TextStyle style)
+    TextSwt(Device device, String fontName, int size, TextStyle style)
     {
+        this.device = device;
         this.size = size;
-        font = new Font(ScreenSwt.display, fontName, (int) Math.round(size / 1.5), TextSwt.getStyle(style));
+        final double scale = 1.5;
+        font = new Font(device, fontName, (int) Math.round(size / scale), TextSwt.getStyle(style));
         align = Align.LEFT;
         color = ColorRgba.WHITE;
     }
@@ -131,7 +141,7 @@ final class TextSwt
             default:
                 throw new RuntimeException();
         }
-        final Color c = new Color(ScreenSwt.display, color.getRed(), color.getGreen(), color.getBlue());
+        final Color c = new Color(device, color.getRed(), color.getGreen(), color.getBlue());
         gc.setForeground(c);
         gc.drawString(text, tx, ty, true);
         c.dispose();

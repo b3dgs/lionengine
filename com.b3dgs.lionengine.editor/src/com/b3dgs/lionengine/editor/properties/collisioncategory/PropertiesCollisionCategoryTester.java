@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.properties.collisioncategory;
 
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
@@ -30,8 +30,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesCollisionCategoryTester
-        extends PropertyTester
+public final class PropertiesCollisionCategoryTester extends PropertyTester
 {
     /** Can add formula. */
     private static final String PROPERTY_FORMULA_ADD = "addFormula";
@@ -39,6 +38,59 @@ public class PropertiesCollisionCategoryTester
     private static final String PROPERTY_FORMULA_REMOVE = "removeFormula";
     /** Can edit formula. */
     private static final String PROPERTY_FORMULA_EDIT = "editFormula";
+
+    /**
+     * Check result depending of selection.
+     * 
+     * @param model The properties model.
+     * @param data The selection reference.
+     * @param property The property to check.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean check(PropertiesModel model, Object data, String property)
+    {
+        final boolean result;
+        if (PROPERTY_FORMULA_ADD.equals(property))
+        {
+            result = ConfigCollisionFormula.FORMULAS.equals(data);
+        }
+        else if (PROPERTY_FORMULA_REMOVE.equals(property))
+        {
+            result = ConfigCollisionFormula.FORMULA.equals(data);
+        }
+        else if (PROPERTY_FORMULA_EDIT.equals(property))
+        {
+            result = ConfigCollisionFormula.FORMULA.equals(data);
+        }
+        else if (ObjectsTester.isObjectFile(ProjectModel.INSTANCE.getSelection()))
+        {
+            if (PROPERTY_FORMULA_ADD.equals(property))
+            {
+                result = !model.hasProperty(ConfigCollisionCategory.CATEGORY);
+            }
+            else if (PROPERTY_FORMULA_REMOVE.equals(property) && ConfigCollisionCategory.CATEGORY.equals(data))
+            {
+                result = model.hasProperty(ConfigCollisionCategory.CATEGORY);
+            }
+            else
+            {
+                result = false;
+            }
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Create tester.
+     */
+    public PropertiesCollisionCategoryTester()
+    {
+        // Nothing to do
+    }
 
     /*
      * PropertyTester
@@ -51,29 +103,7 @@ public class PropertiesCollisionCategoryTester
         if (!model.isEmpty())
         {
             final Object data = model.getSelectedData();
-            if (PROPERTY_FORMULA_ADD.equals(property))
-            {
-                return ConfigCollisionFormula.FORMULAS.equals(data);
-            }
-            else if (PROPERTY_FORMULA_REMOVE.equals(property))
-            {
-                return ConfigCollisionFormula.FORMULA.equals(data);
-            }
-            else if (PROPERTY_FORMULA_EDIT.equals(property))
-            {
-                return ConfigCollisionFormula.FORMULA.equals(data);
-            }
-            else if (ObjectsTester.isObjectFile(ProjectsModel.INSTANCE.getSelection()))
-            {
-                if (PROPERTY_FORMULA_ADD.equals(property))
-                {
-                    return !model.hasProperty(ConfigCollisionCategory.CATEGORY);
-                }
-                else if (PROPERTY_FORMULA_REMOVE.equals(property) && ConfigCollisionCategory.CATEGORY.equals(data))
-                {
-                    return model.hasProperty(ConfigCollisionCategory.CATEGORY);
-                }
-            }
+            return check(model, data, property);
         }
         return false;
     }

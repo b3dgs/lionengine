@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Rasterable
-        extends Trait, Updatable, Renderable
+public interface Rasterable extends Trait, Updatable, Renderable
 {
     /** Maximum rasters. */
     int MAX_RASTERS = 15;
@@ -48,7 +47,7 @@ public interface Rasterable
     /**
      * Get raster animation from raster index.
      * 
-     * @param rasterIndex The raster index (>= 0).
+     * @param rasterIndex The raster index (positive).
      * @return The raster animated sprite.
      */
     SpriteAnimated getRasterAnim(int rasterIndex);

@@ -25,8 +25,7 @@ package com.b3dgs.lionengine.game.collision;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionFunctionLinear
-        implements CollisionFunction
+public class CollisionFunctionLinear implements CollisionFunction
 {
     /** Multiplication factor. */
     private final double a;

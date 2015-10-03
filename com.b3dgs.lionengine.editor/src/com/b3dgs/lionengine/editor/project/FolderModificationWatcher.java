@@ -36,6 +36,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -113,8 +114,7 @@ public final class FolderModificationWatcher
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private final class Watcher
-            implements Runnable
+    private final class Watcher implements Runnable
     {
         /** Tasks. */
         private final Set<Task> tasks = new HashSet<>();
@@ -146,7 +146,7 @@ public final class FolderModificationWatcher
          */
         private void createWatchers(File current)
         {
-            for (final File file : current.listFiles())
+            for (final File file : UtilFile.getFiles(current))
             {
                 if (file.isDirectory())
                 {
@@ -244,8 +244,9 @@ public final class FolderModificationWatcher
             this.creator = creator;
 
             service = folder.getFileSystem().newWatchService();
-            watcher = folder.register(service, StandardWatchEventKinds.ENTRY_CREATE,
-                    StandardWatchEventKinds.ENTRY_DELETE);
+            watcher = folder.register(service,
+                                      StandardWatchEventKinds.ENTRY_CREATE,
+                                      StandardWatchEventKinds.ENTRY_DELETE);
         }
 
         /**
@@ -282,6 +283,33 @@ public final class FolderModificationWatcher
         }
 
         /**
+         * Called on created element.
+         * 
+         * @param path The created element path.
+         * @param keyParent The parent key.
+         */
+        void onCreated(File path, String keyParent)
+        {
+            final Object data = tree.getData(keyParent);
+            if (data != null && data instanceof TreeItem)
+            {
+                final TreeItem parent = (TreeItem) data;
+                creator.checkPath(path, parent);
+                if (path.isDirectory())
+                {
+                    try
+                    {
+                        newTasks.add(new Task(root, path.toPath(), tree, creator));
+                    }
+                    catch (final IOException exception)
+                    {
+                        Verbose.exception(getClass(), "onCreated", exception);
+                    }
+                }
+            }
+        }
+
+        /**
          * Case of created item.
          * 
          * @param path The created item.
@@ -293,30 +321,7 @@ public final class FolderModificationWatcher
             if (full.length() > prefix)
             {
                 final String keyParent = full.substring(prefix);
-                tree.getDisplay().asyncExec(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        final Object data = tree.getData(keyParent);
-                        if (data != null && data instanceof TreeItem)
-                        {
-                            final TreeItem parent = (TreeItem) data;
-                            creator.checkPath(path, parent);
-                            if (path.isDirectory())
-                            {
-                                try
-                                {
-                                    newTasks.add(new Task(root, path.toPath(), tree, creator));
-                                }
-                                catch (final IOException exception)
-                                {
-                                    Verbose.exception(getClass(), "onCreated", exception);
-                                }
-                            }
-                        }
-                    }
-                });
+                tree.getDisplay().asyncExec(() -> onCreated(path, keyParent));
             }
         }
 
@@ -333,17 +338,13 @@ public final class FolderModificationWatcher
             if (full.length() > prefix)
             {
                 final String simple = full.substring(prefix);
-                tree.getDisplay().asyncExec(new Runnable()
+                tree.getDisplay().asyncExec(() ->
                 {
-                    @Override
-                    public void run()
+                    final Object data = tree.getData(simple);
+                    if (data != null && data instanceof TreeItem)
                     {
-                        final Object data = tree.getData(simple);
-                        if (data != null && data instanceof TreeItem)
-                        {
-                            final TreeItem item = (TreeItem) data;
-                            item.dispose();
-                        }
+                        final TreeItem item = (TreeItem) data;
+                        item.dispose();
                     }
                 });
             }

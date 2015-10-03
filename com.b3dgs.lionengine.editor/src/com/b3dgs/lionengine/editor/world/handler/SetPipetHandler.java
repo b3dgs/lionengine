@@ -22,40 +22,56 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.utility.UtilToolbar;
 import com.b3dgs.lionengine.editor.world.PaletteType;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
  * Set pipet handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetPipetHandler
+public final class SetPipetHandler
 {
+    /** Element ID. */
+    public static final String ID = "pipet";
+    /** Excluded elements. */
+    private static final String[] EXCLUDED =
+    {
+        SetPointerObjectHandler.ID, SetPointerTileHandler.ID, SetHandHandler.ID, SetSelectionHandler.ID,
+        SetPointerCollisionHandler.ID
+    };
+
+    /**
+     * Create handler.
+     */
+    public SetPipetHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      * 
      * @param partService The part service reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(EPartService partService)
     {
-        final MPart part = partService.findPart(WorldViewPart.ID);
+        final MPart part = partService.findPart(WorldPart.ID);
         if (part != null)
         {
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemSelection(toolBar, false, "pointer-object", "pointer-tile", "hand", "selection");
-                UtilEclipse.setToolItemSelection(toolBar, true, "pipet");
+                UtilToolbar.setToolItemSelection(toolBar, false, EXCLUDED);
+                UtilToolbar.setToolItemSelection(toolBar, true, ID);
             }
         }
         final PaletteType type = PaletteType.PIPET;
-        WorldViewModel.INSTANCE.setSelectedPalette(type);
-        final WorldViewPart view = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
+        WorldModel.INSTANCE.setSelectedPalette(type);
+        final WorldPart view = WorldModel.INSTANCE.getServices().get(WorldPart.class);
         view.setCursor(type.getCursor());
     }
 }

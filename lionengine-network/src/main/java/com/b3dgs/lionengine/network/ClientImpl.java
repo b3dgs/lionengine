@@ -28,6 +28,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Verbose;
@@ -39,9 +40,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ClientImpl
-        extends NetworkModel<ConnectionListener>
-        implements Client
+final class ClientImpl extends NetworkModel<ConnectionListener> implements Client
 {
     /** Ping timer. */
     private final Timing pingTimer;
@@ -332,13 +331,74 @@ final class ClientImpl
             final byte[] data = new byte[size];
             if (in.read(data) != -1)
             {
-                try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data)))
+                final DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));
+                try
                 {
                     decodeMessage(type, from, dest, buffer);
                 }
+                finally
+                {
+                    try
+                    {
+                        buffer.close();
+                    }
+                    catch (final IOException exception)
+                    {
+                        Verbose.exception(getClass(), "updateUserMessage", exception);
+                    }
+                }
             }
         }
-        bandwidth += 4 + size;
+        final int headerSize = 4;
+        bandwidth += headerSize + size;
+    }
+
+    /**
+     * Send message over the network.
+     * 
+     * @param message The message to send.
+     */
+    private void sendMessage(NetworkMessage message)
+    {
+        ByteArrayOutputStream encode = null;
+        try
+        {
+            encode = message.encode();
+            final byte[] encoded = encode.toByteArray();
+            // Message header
+            out.writeByte(NetworkMessageSystemId.USER_MESSAGE);
+            out.writeByte(message.getClientId());
+            out.writeByte(message.getClientDestId());
+            out.writeByte(message.getType());
+            // Message content
+            out.writeInt(encoded.length);
+            out.write(encoded);
+            out.flush();
+
+            final int headerSize = 8;
+            bandwidth += headerSize + encoded.length;
+        }
+        catch (final IOException exception)
+        {
+            Verbose.warning(Client.class,
+                            "sendMessage",
+                            "Unable to send the message for client: ",
+                            String.valueOf(clientId));
+        }
+        finally
+        {
+            try
+            {
+                if (encode != null)
+                {
+                    encode.close();
+                }
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(getClass(), "sendMessage finally", exception);
+            }
+        }
     }
 
     /*
@@ -350,7 +410,7 @@ final class ClientImpl
     {
         Check.notNull(ip);
         Check.superiorOrEqual(port, 0);
-        Check.inferiorOrEqual(port, 65535);
+        Check.inferiorOrEqual(port, Constant.MAX_PORT);
 
         try
         {
@@ -454,7 +514,8 @@ final class ClientImpl
             return;
         }
         // Ping
-        if (pingRequestTimer.elapsed(1000L))
+        final long pingMilli = 1000L;
+        if (pingRequestTimer.elapsed(pingMilli))
         {
             try
             {
@@ -467,35 +528,19 @@ final class ClientImpl
             }
             catch (final IOException exception)
             {
-                Verbose.warning(Client.class, "sendMessage", "Unable to send the messages for client: ",
-                        String.valueOf(clientId));
+                Verbose.warning(Client.class,
+                                "sendMessages",
+                                "Unable to send the messages for client: ",
+                                String.valueOf(clientId));
             }
         }
         // Send messages
         for (final NetworkMessage message : messagesOut)
         {
-            try (ByteArrayOutputStream encode = message.encode())
-            {
-                final byte[] encoded = encode.toByteArray();
-                // Message header
-                out.writeByte(NetworkMessageSystemId.USER_MESSAGE);
-                out.writeByte(message.getClientId());
-                out.writeByte(message.getClientDestId());
-                out.writeByte(message.getType());
-                // Message content
-                out.writeInt(encoded.length);
-                out.write(encoded);
-                out.flush();
-
-                bandwidth += 8 + encoded.length;
-            }
-            catch (final IOException exception)
-            {
-                Verbose.warning(Client.class, "sendMessage", "Unable to send the messages for client: ",
-                        String.valueOf(clientId));
-            }
+            sendMessage(message);
         }
-        if (bandwidthTimer.elapsed(1000L))
+        final long bandwidthMilli = 1000L;
+        if (bandwidthTimer.elapsed(bandwidthMilli))
         {
             bandwidthPerSecond = bandwidth;
             bandwidth = 0;
@@ -524,8 +569,10 @@ final class ClientImpl
         }
         catch (final IOException exception)
         {
-            Verbose.warning(Client.class, "receiveMessages", "Unable to receive the messages for client: ",
-                    String.valueOf(clientId));
+            Verbose.warning(Client.class,
+                            "receiveMessages",
+                            "Unable to receive the messages for client: ",
+                            String.valueOf(clientId));
         }
     }
 }

@@ -51,9 +51,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.game.entity
  */
-class Mario
-        extends ObjectGame
-        implements Updatable, Renderable, TileCollidableListener
+class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Mario.xml");
@@ -101,7 +99,7 @@ class Mario
         collidable.setCollisionVisibility(true);
         collidable.setOrigin(Origin.CENTER_BOTTOM);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 7, 1);
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
     }

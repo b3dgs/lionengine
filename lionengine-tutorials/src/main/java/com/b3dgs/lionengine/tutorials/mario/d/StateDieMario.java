@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.game.state.StateGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateDieMario
-        extends StateGame
+class StateDieMario extends StateGame
 {
     /** Entity reference. */
     private final Entity entity;
@@ -44,7 +43,7 @@ class StateDieMario
      */
     public StateDieMario(Entity entity, Animation animation)
     {
-        super(EntityState.DEATH_MARIO);
+        super(MarioState.DEATH);
         this.entity = entity;
         this.animation = animation;
         animator = entity.surface;

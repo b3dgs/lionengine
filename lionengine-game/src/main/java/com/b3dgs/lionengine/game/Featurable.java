@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * Represents something that can support features.
  * 
- * @param <F> The feature type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <F> The feature type used.
  * @see Features
  */
 public interface Featurable<F>

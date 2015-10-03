@@ -22,6 +22,7 @@ import java.util.LinkedList;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
@@ -36,16 +37,14 @@ import com.b3dgs.lionengine.network.purview.NetworkChat;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Chat
-        extends NetworkChat
-        implements ConnectionListener
+class Chat extends NetworkChat implements ConnectionListener
 {
     /** Background. */
     private static final ColorRgba BACKGROUND = new ColorRgba(128, 128, 128, 255);
     /** Background writing. */
     private static final ColorRgba BACKGROUND_WRITING = new ColorRgba(64, 64, 64, 255);
     /** Command marker. */
-    private static final String COMMAND = "/";
+    private static final String COMMAND = Constant.SLASH;
 
     /** Text. */
     private final Text text;
@@ -96,8 +95,9 @@ class Chat
     @Override
     protected String getMessage(NetworkMessageChat message)
     {
-        return new StringBuilder(world.getClientName(message.getClientId())).append(" says: ")
-                .append(message.getMessage()).toString();
+        final StringBuilder builder = new StringBuilder(world.getClientName(message.getClientId()));
+        builder.append(" says: ").append(message.getMessage());
+        return builder.toString();
     }
 
     @Override

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.anim;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Animation implementation.
@@ -27,8 +28,7 @@ import com.b3dgs.lionengine.Check;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class AnimationImpl
-        implements Animation
+final class AnimationImpl implements Animation
 {
     /** Animation name. */
     private final String name;
@@ -47,13 +47,16 @@ final class AnimationImpl
      * Internal constructor.
      * 
      * @param name The animation name.
-     * @param firstFrame The first frame (included) index to play (>= {@link Animation#MINIMUM_FRAME}).
-     * @param lastFrame The last frame (included) index to play (>= firstFrame).
-     * @param speed The animation playing speed (>= 0.0).
+     * @param firstFrame The first frame (included) index to play (superior or equal to {@link Animation#MINIMUM_FRAME}
+     *            ).
+     * @param lastFrame The last frame (included) index to play (superior or equal to firstFrame).
+     * @param speed The animation playing speed (superior or equal to 0.0).
      * @param reverse <code>true</code> to reverse animation play (play it from first to last, and last to first).
      * @param repeat The repeat state (<code>true</code> will play in loop, <code>false</code> will play once only).
+     * @throws LionEngineException If invalid animation.
      */
     AnimationImpl(String name, int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
+            throws LionEngineException
     {
         Check.superiorOrEqual(firstFrame, Animation.MINIMUM_FRAME);
         Check.superiorOrEqual(lastFrame, firstFrame);

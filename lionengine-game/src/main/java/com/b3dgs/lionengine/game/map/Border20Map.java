@@ -354,159 +354,276 @@ public class Border20Map
 
         // Center
         if (l == Border20.CENTER && r == Border20.CENTER && t != Border20.NONE && d != Border20.NONE
-                || l != Border20.NONE && r != Border20.NONE && t == Border20.CENTER && d == Border20.CENTER)
+            || l != Border20.NONE && r != Border20.NONE && t == Border20.CENTER && d == Border20.CENTER)
         {
             set(map, tx, ty, Border20.CENTER);
         }
 
         // Top
         if ((l == Border20.TOP || l == Border20.CORNER_TOP_RIGHT)
-                && (r == Border20.TOP || r == Border20.CORNER_TOP_LEFT)
-                && (t == Border20.CENTER || t == Border20.DOWN)
-                && (d == Border20.NONE || d == Border20.DOWN || d == Border20.CORNER_DOWN_RIGHT || d == Border20.CORNER_DOWN_LEFT))
+            && (r == Border20.TOP || r == Border20.CORNER_TOP_LEFT)
+            && (t == Border20.CENTER || t == Border20.DOWN)
+            && (d == Border20.NONE
+                || d == Border20.DOWN
+                || d == Border20.CORNER_DOWN_RIGHT
+                || d == Border20.CORNER_DOWN_LEFT))
         {
             set(map, tx, ty, Border20.TOP);
         }
 
         // Right
-        if ((l == Border20.NONE || l == Border20.LEFT || l == Border20.CORNER_DOWN_LEFT || l == Border20.CORNER_TOP_LEFT)
-                && (r == Border20.CENTER || r == Border20.LEFT)
-                && (t == Border20.RIGHT || t == Border20.CORNER_DOWN_RIGHT)
-                && (d == Border20.RIGHT || d == Border20.CORNER_TOP_RIGHT))
+        if ((l == Border20.NONE
+             || l == Border20.LEFT
+             || l == Border20.CORNER_DOWN_LEFT
+             || l == Border20.CORNER_TOP_LEFT)
+            && (r == Border20.CENTER || r == Border20.LEFT)
+            && (t == Border20.RIGHT || t == Border20.CORNER_DOWN_RIGHT)
+            && (d == Border20.RIGHT || d == Border20.CORNER_TOP_RIGHT))
         {
             set(map, tx, ty, Border20.RIGHT);
         }
 
         // Down
         if ((l == Border20.DOWN || l == Border20.CORNER_DOWN_RIGHT)
-                && (r == Border20.DOWN || r == Border20.CORNER_DOWN_LEFT)
-                && (t == Border20.NONE || t == Border20.TOP || t == Border20.CORNER_TOP_RIGHT || t == Border20.CORNER_TOP_LEFT)
-                && (d == Border20.CENTER || d == Border20.TOP))
+            && (r == Border20.DOWN || r == Border20.CORNER_DOWN_LEFT)
+            && (t == Border20.NONE
+                || t == Border20.TOP
+                || t == Border20.CORNER_TOP_RIGHT
+                || t == Border20.CORNER_TOP_LEFT)
+            && (d == Border20.CENTER || d == Border20.TOP))
         {
             set(map, tx, ty, Border20.DOWN);
         }
 
         // Left
         if ((l == Border20.CENTER || l == Border20.RIGHT)
-                && (r == Border20.NONE || r == Border20.RIGHT || r == Border20.CORNER_DOWN_RIGHT || r == Border20.CORNER_TOP_RIGHT)
-                && (t == Border20.LEFT || t == Border20.CORNER_DOWN_LEFT)
-                && (d == Border20.LEFT || d == Border20.CORNER_TOP_LEFT))
+            && (r == Border20.NONE
+                || r == Border20.RIGHT
+                || r == Border20.CORNER_DOWN_RIGHT
+                || r == Border20.CORNER_TOP_RIGHT)
+            && (t == Border20.LEFT || t == Border20.CORNER_DOWN_LEFT)
+            && (d == Border20.LEFT || d == Border20.CORNER_TOP_LEFT))
         {
             set(map, tx, ty, Border20.LEFT);
         }
 
         // Top-Left
         if ((l == Border20.CENTER || l == Border20.DOWN_RIGHT || l == Border20.TOP_RIGHT || l == Border20.RIGHT)
-                && (r == Border20.TOP_RIGHT || r == Border20.CORNER_IN_TOP_DOWN || r == Border20.CORNER_OUT_TOP_DOWN
-                        || r == Border20.TOP || r == Border20.CORNER_TOP_LEFT)
-                && (t == Border20.CENTER || t == Border20.DOWN_RIGHT || t == Border20.DOWN_LEFT || t == Border20.DOWN)
-                && (d == Border20.DOWN_LEFT || d == Border20.CORNER_IN_TOP_DOWN || d == Border20.CORNER_OUT_TOP_DOWN
-                        || d == Border20.LEFT || d == Border20.CORNER_TOP_LEFT))
+            && (r == Border20.TOP_RIGHT
+                || r == Border20.CORNER_IN_TOP_DOWN
+                || r == Border20.CORNER_OUT_TOP_DOWN
+                || r == Border20.TOP
+                || r == Border20.CORNER_TOP_LEFT)
+            && (t == Border20.CENTER || t == Border20.DOWN_RIGHT || t == Border20.DOWN_LEFT || t == Border20.DOWN)
+            && (d == Border20.DOWN_LEFT
+                || d == Border20.CORNER_IN_TOP_DOWN
+                || d == Border20.CORNER_OUT_TOP_DOWN
+                || d == Border20.LEFT
+                || d == Border20.CORNER_TOP_LEFT))
         {
             set(map, tx, ty, Border20.TOP_LEFT);
         }
 
         // Top-Right
-        if ((l == Border20.TOP_LEFT || l == Border20.CORNER_IN_DOWN_TOP || l == Border20.CORNER_OUT_DOWN_TOP
-                || l == Border20.TOP || l == Border20.CORNER_TOP_RIGHT)
-                && (r == Border20.CENTER || r == Border20.DOWN_LEFT || r == Border20.TOP_LEFT || r == Border20.LEFT)
-                && (t == Border20.CENTER || t == Border20.DOWN_LEFT || t == Border20.DOWN_RIGHT || t == Border20.DOWN)
-                && (d == Border20.DOWN_RIGHT || d == Border20.CORNER_IN_DOWN_TOP || d == Border20.CORNER_OUT_DOWN_TOP
-                        || d == Border20.RIGHT || d == Border20.CORNER_TOP_RIGHT))
+        if ((l == Border20.TOP_LEFT
+             || l == Border20.CORNER_IN_DOWN_TOP
+             || l == Border20.CORNER_OUT_DOWN_TOP
+             || l == Border20.TOP
+             || l == Border20.CORNER_TOP_RIGHT)
+            && (r == Border20.CENTER || r == Border20.DOWN_LEFT || r == Border20.TOP_LEFT || r == Border20.LEFT)
+            && (t == Border20.CENTER || t == Border20.DOWN_LEFT || t == Border20.DOWN_RIGHT || t == Border20.DOWN)
+            && (d == Border20.DOWN_RIGHT
+                || d == Border20.CORNER_IN_DOWN_TOP
+                || d == Border20.CORNER_OUT_DOWN_TOP
+                || d == Border20.RIGHT
+                || d == Border20.CORNER_TOP_RIGHT))
         {
             set(map, tx, ty, Border20.TOP_RIGHT);
         }
 
         // Down-Right
-        if ((l == Border20.DOWN_LEFT || l == Border20.CORNER_IN_TOP_DOWN || l == Border20.CORNER_OUT_TOP_DOWN
-                || l == Border20.DOWN || l == Border20.CORNER_DOWN_RIGHT)
-                && (r == Border20.CENTER || r == Border20.TOP_LEFT || r == Border20.DOWN_LEFT || r == Border20.LEFT)
-                && (t == Border20.TOP_RIGHT || t == Border20.CORNER_IN_TOP_DOWN || t == Border20.CORNER_OUT_TOP_DOWN
-                        || t == Border20.RIGHT || t == Border20.CORNER_DOWN_RIGHT)
-                && (d == Border20.CENTER || d == Border20.TOP_LEFT || d == Border20.TOP_RIGHT || d == Border20.TOP))
+        if ((l == Border20.DOWN_LEFT
+             || l == Border20.CORNER_IN_TOP_DOWN
+             || l == Border20.CORNER_OUT_TOP_DOWN
+             || l == Border20.DOWN
+             || l == Border20.CORNER_DOWN_RIGHT)
+            && (r == Border20.CENTER || r == Border20.TOP_LEFT || r == Border20.DOWN_LEFT || r == Border20.LEFT)
+            && (t == Border20.TOP_RIGHT
+                || t == Border20.CORNER_IN_TOP_DOWN
+                || t == Border20.CORNER_OUT_TOP_DOWN
+                || t == Border20.RIGHT
+                || t == Border20.CORNER_DOWN_RIGHT)
+            && (d == Border20.CENTER || d == Border20.TOP_LEFT || d == Border20.TOP_RIGHT || d == Border20.TOP))
         {
             set(map, tx, ty, Border20.DOWN_RIGHT);
         }
 
         // Down-Left
         if ((l == Border20.CENTER || l == Border20.TOP_RIGHT || l == Border20.DOWN_RIGHT || l == Border20.RIGHT)
-                && (r == Border20.DOWN_RIGHT || r == Border20.CORNER_IN_DOWN_TOP || r == Border20.CORNER_OUT_DOWN_TOP
-                        || r == Border20.DOWN || r == Border20.CORNER_DOWN_LEFT)
-                && (t == Border20.TOP_LEFT || t == Border20.CORNER_IN_DOWN_TOP || t == Border20.CORNER_OUT_DOWN_TOP
-                        || t == Border20.LEFT || t == Border20.CORNER_DOWN_LEFT)
-                && (d == Border20.CENTER || d == Border20.TOP_RIGHT || d == Border20.TOP_LEFT || d == Border20.TOP))
+            && (r == Border20.DOWN_RIGHT
+                || r == Border20.CORNER_IN_DOWN_TOP
+                || r == Border20.CORNER_OUT_DOWN_TOP
+                || r == Border20.DOWN
+                || r == Border20.CORNER_DOWN_LEFT)
+            && (t == Border20.TOP_LEFT
+                || t == Border20.CORNER_IN_DOWN_TOP
+                || t == Border20.CORNER_OUT_DOWN_TOP
+                || t == Border20.LEFT
+                || t == Border20.CORNER_DOWN_LEFT)
+            && (d == Border20.CENTER || d == Border20.TOP_RIGHT || d == Border20.TOP_LEFT || d == Border20.TOP))
         {
             set(map, tx, ty, Border20.DOWN_LEFT);
         }
 
         // Corner-Top-Left
-        if ((l == Border20.TOP_LEFT || l == Border20.CORNER_IN_DOWN_TOP || l == Border20.TOP || l == Border20.CORNER_TOP_RIGHT)
-                && (r == Border20.NONE || r == Border20.RIGHT || r == Border20.CORNER_TOP_RIGHT || r == Border20.CORNER_DOWN_RIGHT)
-                && (t == Border20.TOP_LEFT || t == Border20.CORNER_IN_DOWN_TOP || t == Border20.LEFT || t == Border20.CORNER_DOWN_LEFT)
-                && (d == Border20.NONE || d == Border20.DOWN || d == Border20.CORNER_DOWN_LEFT || d == Border20.CORNER_DOWN_RIGHT))
+        if ((l == Border20.TOP_LEFT
+             || l == Border20.CORNER_IN_DOWN_TOP
+             || l == Border20.TOP
+             || l == Border20.CORNER_TOP_RIGHT)
+            && (r == Border20.NONE
+                || r == Border20.RIGHT
+                || r == Border20.CORNER_TOP_RIGHT
+                || r == Border20.CORNER_DOWN_RIGHT)
+            && (t == Border20.TOP_LEFT
+                || t == Border20.CORNER_IN_DOWN_TOP
+                || t == Border20.LEFT
+                || t == Border20.CORNER_DOWN_LEFT)
+            && (d == Border20.NONE
+                || d == Border20.DOWN
+                || d == Border20.CORNER_DOWN_LEFT
+                || d == Border20.CORNER_DOWN_RIGHT))
         {
             set(map, tx, ty, Border20.CORNER_TOP_LEFT);
         }
 
         // Corner-Top-Right
-        if ((l == Border20.NONE || l == Border20.LEFT || l == Border20.CORNER_DOWN_LEFT || l == Border20.CORNER_TOP_LEFT)
-                && (r == Border20.TOP_RIGHT || r == Border20.CORNER_IN_TOP_DOWN || r == Border20.TOP || r == Border20.CORNER_TOP_LEFT)
-                && (t == Border20.TOP_RIGHT || t == Border20.CORNER_IN_TOP_DOWN || t == Border20.RIGHT || t == Border20.CORNER_DOWN_RIGHT)
-                && (d == Border20.NONE || d == Border20.DOWN || d == Border20.CORNER_DOWN_LEFT || d == Border20.CORNER_DOWN_RIGHT))
+        if ((l == Border20.NONE
+             || l == Border20.LEFT
+             || l == Border20.CORNER_DOWN_LEFT
+             || l == Border20.CORNER_TOP_LEFT)
+            && (r == Border20.TOP_RIGHT
+                || r == Border20.CORNER_IN_TOP_DOWN
+                || r == Border20.TOP
+                || r == Border20.CORNER_TOP_LEFT)
+            && (t == Border20.TOP_RIGHT
+                || t == Border20.CORNER_IN_TOP_DOWN
+                || t == Border20.RIGHT
+                || t == Border20.CORNER_DOWN_RIGHT)
+            && (d == Border20.NONE
+                || d == Border20.DOWN
+                || d == Border20.CORNER_DOWN_LEFT
+                || d == Border20.CORNER_DOWN_RIGHT))
         {
             set(map, tx, ty, Border20.CORNER_TOP_RIGHT);
         }
 
         // Corner-Down-Right
-        if ((l == Border20.NONE || l == Border20.LEFT || l == Border20.CORNER_TOP_LEFT || l == Border20.CORNER_DOWN_LEFT)
-                && (r == Border20.DOWN_RIGHT || r == Border20.CORNER_IN_DOWN_TOP || r == Border20.DOWN || r == Border20.CORNER_DOWN_LEFT)
-                && (t == Border20.NONE || t == Border20.TOP || t == Border20.CORNER_TOP_LEFT || t == Border20.CORNER_TOP_RIGHT)
-                && (d == Border20.DOWN_RIGHT || d == Border20.CORNER_IN_DOWN_TOP || d == Border20.RIGHT || d == Border20.CORNER_TOP_RIGHT))
+        if ((l == Border20.NONE
+             || l == Border20.LEFT
+             || l == Border20.CORNER_TOP_LEFT
+             || l == Border20.CORNER_DOWN_LEFT)
+            && (r == Border20.DOWN_RIGHT
+                || r == Border20.CORNER_IN_DOWN_TOP
+                || r == Border20.DOWN
+                || r == Border20.CORNER_DOWN_LEFT)
+            && (t == Border20.NONE
+                || t == Border20.TOP
+                || t == Border20.CORNER_TOP_LEFT
+                || t == Border20.CORNER_TOP_RIGHT)
+            && (d == Border20.DOWN_RIGHT
+                || d == Border20.CORNER_IN_DOWN_TOP
+                || d == Border20.RIGHT
+                || d == Border20.CORNER_TOP_RIGHT))
         {
             set(map, tx, ty, Border20.CORNER_DOWN_RIGHT);
         }
 
         // Corner-Down-Left
-        if ((l == Border20.DOWN_LEFT || l == Border20.CORNER_IN_TOP_DOWN || l == Border20.DOWN || l == Border20.CORNER_DOWN_RIGHT)
-                && (r == Border20.NONE || r == Border20.RIGHT || r == Border20.TOP_RIGHT || r == Border20.DOWN_RIGHT)
-                && (t == Border20.NONE || t == Border20.TOP || t == Border20.CORNER_TOP_LEFT || t == Border20.CORNER_TOP_RIGHT)
-                && (d == Border20.DOWN_LEFT || d == Border20.CORNER_IN_TOP_DOWN || d == Border20.LEFT || d == Border20.CORNER_TOP_LEFT))
+        if ((l == Border20.DOWN_LEFT
+             || l == Border20.CORNER_IN_TOP_DOWN
+             || l == Border20.DOWN
+             || l == Border20.CORNER_DOWN_RIGHT)
+            && (r == Border20.NONE || r == Border20.RIGHT || r == Border20.TOP_RIGHT || r == Border20.DOWN_RIGHT)
+            && (t == Border20.NONE
+                || t == Border20.TOP
+                || t == Border20.CORNER_TOP_LEFT
+                || t == Border20.CORNER_TOP_RIGHT)
+            && (d == Border20.DOWN_LEFT
+                || d == Border20.CORNER_IN_TOP_DOWN
+                || d == Border20.LEFT
+                || d == Border20.CORNER_TOP_LEFT))
         {
             set(map, tx, ty, Border20.CORNER_DOWN_LEFT);
         }
 
         // Corner-In-Top-Down
-        if ((l == Border20.TOP_LEFT || l == Border20.CORNER_OUT_DOWN_TOP || l == Border20.TOP || l == Border20.CORNER_TOP_RIGHT)
-                && (r == Border20.DOWN_RIGHT || r == Border20.CORNER_OUT_DOWN_TOP || r == Border20.DOWN || r == Border20.CORNER_DOWN_LEFT)
-                && (t == Border20.TOP_LEFT || t == Border20.CORNER_OUT_DOWN_TOP || t == Border20.LEFT || t == Border20.CORNER_DOWN_LEFT)
-                && (d == Border20.DOWN_RIGHT || d == Border20.CORNER_OUT_DOWN_TOP || d == Border20.RIGHT || d == Border20.CORNER_TOP_RIGHT))
+        if ((l == Border20.TOP_LEFT
+             || l == Border20.CORNER_OUT_DOWN_TOP
+             || l == Border20.TOP
+             || l == Border20.CORNER_TOP_RIGHT)
+            && (r == Border20.DOWN_RIGHT
+                || r == Border20.CORNER_OUT_DOWN_TOP
+                || r == Border20.DOWN
+                || r == Border20.CORNER_DOWN_LEFT)
+            && (t == Border20.TOP_LEFT
+                || t == Border20.CORNER_OUT_DOWN_TOP
+                || t == Border20.LEFT
+                || t == Border20.CORNER_DOWN_LEFT)
+            && (d == Border20.DOWN_RIGHT
+                || d == Border20.CORNER_OUT_DOWN_TOP
+                || d == Border20.RIGHT
+                || d == Border20.CORNER_TOP_RIGHT))
         {
             set(map, tx, ty, Border20.CORNER_IN_TOP_DOWN);
         }
 
         // Corner-In-Down-Top
-        if ((l == Border20.DOWN_LEFT || l == Border20.CORNER_OUT_TOP_DOWN || l == Border20.DOWN || l == Border20.CORNER_DOWN_RIGHT)
-                && (r == Border20.TOP_RIGHT || r == Border20.CORNER_OUT_TOP_DOWN || r == Border20.TOP || r == Border20.CORNER_TOP_LEFT)
-                && (t == Border20.TOP_RIGHT || t == Border20.CORNER_OUT_TOP_DOWN || t == Border20.RIGHT || t == Border20.CORNER_DOWN_RIGHT)
-                && (d == Border20.DOWN_LEFT || d == Border20.CORNER_OUT_TOP_DOWN || d == Border20.LEFT || d == Border20.CORNER_TOP_LEFT))
+        if ((l == Border20.DOWN_LEFT
+             || l == Border20.CORNER_OUT_TOP_DOWN
+             || l == Border20.DOWN
+             || l == Border20.CORNER_DOWN_RIGHT)
+            && (r == Border20.TOP_RIGHT
+                || r == Border20.CORNER_OUT_TOP_DOWN
+                || r == Border20.TOP
+                || r == Border20.CORNER_TOP_LEFT)
+            && (t == Border20.TOP_RIGHT
+                || t == Border20.CORNER_OUT_TOP_DOWN
+                || t == Border20.RIGHT
+                || t == Border20.CORNER_DOWN_RIGHT)
+            && (d == Border20.DOWN_LEFT
+                || d == Border20.CORNER_OUT_TOP_DOWN
+                || d == Border20.LEFT
+                || d == Border20.CORNER_TOP_LEFT))
         {
             set(map, tx, ty, Border20.CORNER_IN_DOWN_TOP);
         }
 
         // Corner-Out-Top-Down
         if ((l == Border20.CORNER_IN_DOWN_TOP || l == Border20.TOP || l == Border20.CORNER_TOP_RIGHT)
-                && (r == Border20.CORNER_IN_DOWN_TOP || r == Border20.DOWN_RIGHT || r == Border20.DOWN || r == Border20.CORNER_DOWN_LEFT)
-                && (t == Border20.CORNER_IN_DOWN_TOP || t == Border20.LEFT || t == Border20.CORNER_DOWN_LEFT)
-                && (d == Border20.CORNER_IN_DOWN_TOP || d == Border20.DOWN_RIGHT || d == Border20.RIGHT || d == Border20.CORNER_TOP_RIGHT))
+            && (r == Border20.CORNER_IN_DOWN_TOP
+                || r == Border20.DOWN_RIGHT
+                || r == Border20.DOWN
+                || r == Border20.CORNER_DOWN_LEFT)
+            && (t == Border20.CORNER_IN_DOWN_TOP || t == Border20.LEFT || t == Border20.CORNER_DOWN_LEFT)
+            && (d == Border20.CORNER_IN_DOWN_TOP
+                || d == Border20.DOWN_RIGHT
+                || d == Border20.RIGHT
+                || d == Border20.CORNER_TOP_RIGHT))
         {
             set(map, tx, ty, Border20.CORNER_OUT_TOP_DOWN);
         }
 
         // Corner-Out-Down-Top
-        if ((l == Border20.CORNER_IN_TOP_DOWN || l == Border20.DOWN_LEFT || l == Border20.DOWN || l == Border20.CORNER_DOWN_RIGHT)
-                && (r == Border20.CORNER_IN_TOP_DOWN || r == Border20.TOP || r == Border20.CORNER_TOP_LEFT)
-                && (t == Border20.CORNER_IN_TOP_DOWN || t == Border20.RIGHT || t == Border20.CORNER_DOWN_RIGHT)
-                && (d == Border20.CORNER_IN_TOP_DOWN || d == Border20.DOWN_LEFT || d == Border20.LEFT || d == Border20.CORNER_TOP_LEFT))
+        if ((l == Border20.CORNER_IN_TOP_DOWN
+             || l == Border20.DOWN_LEFT
+             || l == Border20.DOWN
+             || l == Border20.CORNER_DOWN_RIGHT)
+            && (r == Border20.CORNER_IN_TOP_DOWN || r == Border20.TOP || r == Border20.CORNER_TOP_LEFT)
+            && (t == Border20.CORNER_IN_TOP_DOWN || t == Border20.RIGHT || t == Border20.CORNER_DOWN_RIGHT)
+            && (d == Border20.CORNER_IN_TOP_DOWN
+                || d == Border20.DOWN_LEFT
+                || d == Border20.LEFT
+                || d == Border20.CORNER_TOP_LEFT))
         {
             set(map, tx, ty, Border20.CORNER_OUT_DOWN_TOP);
         }
@@ -514,34 +631,43 @@ public class Border20Map
         if (middle)
         {
             // Right-Middle
-            if ((l == Border20.NONE || l == Border20.LEFT || l == Border20.CORNER_DOWN_LEFT || l == Border20.CORNER_TOP_LEFT)
-                    && (r == Border20.CENTER || r == Border20.LEFT || r == Border20.TOP)
-                    && (t == Border20.DOWN_MIDDLE || t == Border20.RIGHT || t == Border20.CORNER_DOWN_RIGHT)
-                    && (d == Border20.TOP_MIDDLE || d == Border20.RIGHT || d == Border20.CORNER_TOP_RIGHT))
+            if ((l == Border20.NONE
+                 || l == Border20.LEFT
+                 || l == Border20.CORNER_DOWN_LEFT
+                 || l == Border20.CORNER_TOP_LEFT)
+                && (r == Border20.CENTER || r == Border20.LEFT || r == Border20.TOP)
+                && (t == Border20.DOWN_MIDDLE || t == Border20.RIGHT || t == Border20.CORNER_DOWN_RIGHT)
+                && (d == Border20.TOP_MIDDLE || d == Border20.RIGHT || d == Border20.CORNER_TOP_RIGHT))
             {
                 set(map, tx, ty, Border20.RIGHT_MIDDLE);
             }
 
             // Left-Middle
             if ((l == Border20.CENTER || l == Border20.RIGHT)
-                    && (r == Border20.NONE || r == Border20.RIGHT || r == Border20.CORNER_DOWN_RIGHT || r == Border20.CORNER_TOP_RIGHT)
-                    && (t == Border20.DOWN_MIDDLE || t == Border20.LEFT || t == Border20.CORNER_DOWN_LEFT)
-                    && (d == Border20.TOP_MIDDLE || d == Border20.LEFT || d == Border20.CORNER_TOP_LEFT))
+                && (r == Border20.NONE
+                    || r == Border20.RIGHT
+                    || r == Border20.CORNER_DOWN_RIGHT
+                    || r == Border20.CORNER_TOP_RIGHT)
+                && (t == Border20.DOWN_MIDDLE || t == Border20.LEFT || t == Border20.CORNER_DOWN_LEFT)
+                && (d == Border20.TOP_MIDDLE || d == Border20.LEFT || d == Border20.CORNER_TOP_LEFT))
             {
                 set(map, tx, ty, Border20.LEFT_MIDDLE);
             }
 
             // Top-Middle
-            if (l == Border20.NONE && r == Border20.NONE
-                    && (t == Border20.DOWN_MIDDLE || t == Border20.LEFT_MIDDLE || t == Border20.RIGHT_MIDDLE)
-                    && d == Border20.NONE)
+            if (l == Border20.NONE
+                && r == Border20.NONE
+                && (t == Border20.DOWN_MIDDLE || t == Border20.LEFT_MIDDLE || t == Border20.RIGHT_MIDDLE)
+                && d == Border20.NONE)
             {
                 set(map, tx, ty, Border20.TOP_MIDDLE);
             }
 
             // Down-Middle
-            if (l == Border20.NONE && r == Border20.NONE && t == Border20.NONE
-                    && (d == Border20.TOP_MIDDLE || d == Border20.LEFT_MIDDLE || t == Border20.RIGHT_MIDDLE))
+            if (l == Border20.NONE
+                && r == Border20.NONE
+                && t == Border20.NONE
+                && (d == Border20.TOP_MIDDLE || d == Border20.LEFT_MIDDLE || t == Border20.RIGHT_MIDDLE))
             {
                 set(map, tx, ty, Border20.DOWN_MIDDLE);
             }

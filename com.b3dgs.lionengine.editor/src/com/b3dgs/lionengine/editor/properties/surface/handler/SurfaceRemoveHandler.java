@@ -21,8 +21,8 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
@@ -34,16 +34,23 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SurfaceRemoveHandler
+public final class SurfaceRemoveHandler
 {
+    /**
+     * Create handler.
+     */
+    public SurfaceRemoveHandler()
+    {
+        // Nothing to do
+    }
+
     /**
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
-        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
+        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final XmlNode root = configurer.getRoot();
@@ -53,8 +60,10 @@ public class SurfaceRemoveHandler
         for (final TreeItem item : properties.getItems())
         {
             final Object data = item.getData();
-            if (ConfigSurface.SURFACE_IMAGE.equals(data) || ConfigSurface.SURFACE_ICON.equals(data)
-                    || ConfigFrames.FRAMES.equals(data) || ConfigAnimations.ANIMATION.equals(data))
+            if (ConfigSurface.SURFACE_IMAGE.equals(data)
+                || ConfigSurface.SURFACE_ICON.equals(data)
+                || ConfigFrames.FRAMES.equals(data)
+                || ConfigAnimations.ANIMATION.equals(data))
             {
                 part.clear(item);
             }

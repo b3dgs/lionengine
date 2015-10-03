@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.Resolution;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Sequencable
-        extends Updatable, Renderable
+public interface Sequencable extends Updatable, Renderable
 {
     /**
      * Terminate sequence.

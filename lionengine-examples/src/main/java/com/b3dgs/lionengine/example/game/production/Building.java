@@ -41,9 +41,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Building
-        extends ObjectGame
-        implements Updatable, Renderable, ProducibleListener
+class Building extends ObjectGame implements Updatable, Renderable, ProducibleListener
 {
     /** Farm media reference. */
     public static final Media FARM = Medias.create("Farm.xml");
@@ -72,7 +70,7 @@ class Building
         super(setup, services);
         viewer = services.get(Viewer.class);
 
-        surface = Drawable.loadSpriteAnimated(setup.surface, 2, 1);
+        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 2, 1);
         surface.setOrigin(Origin.TOP_LEFT);
 
         layerable.setLayer(Integer.valueOf(1));

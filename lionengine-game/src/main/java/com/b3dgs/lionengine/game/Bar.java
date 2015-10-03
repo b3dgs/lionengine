@@ -28,8 +28,7 @@ import com.b3dgs.lionengine.core.Renderable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Bar
-        implements Renderable
+public class Bar implements Renderable
 {
     /** Horizontal location. */
     private int x;
@@ -93,7 +92,8 @@ public class Bar
         final int ry = maxHeight - vBorder * 2;
         if (!(pWidth == 0 || pHeight == 0))
         {
-            final int x1, y1, x2, y2;
+            final int x1;
+            final int x2;
             if (leftRight)
             {
                 x1 = x + hBorder;
@@ -104,6 +104,9 @@ public class Bar
                 x1 = x + hBorder + (int) (rx - pWidth / 100.0 * rx);
                 x2 = (int) Math.ceil(rx * (pWidth / 100.0));
             }
+
+            final int y1;
+            final int y2;
             if (upDown)
             {
                 y1 = y + vBorder;
@@ -114,6 +117,7 @@ public class Bar
                 y1 = y + vBorder + (int) (ry - pHeight / 100.0 * ry);
                 y2 = (int) Math.ceil(ry * (pHeight / 100.0));
             }
+
             if (foreground != null)
             {
                 g.setColor(foreground);

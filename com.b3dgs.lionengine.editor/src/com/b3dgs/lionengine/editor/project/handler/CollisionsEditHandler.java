@@ -21,7 +21,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.dialog.collision.CollisionsEditDialog;
 
 /**
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.editor.project.dialog.collision.CollisionsEditDialog
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionsEditHandler
+public final class CollisionsEditHandler
 {
     /**
      * Execute the handler.
@@ -38,9 +38,17 @@ public class CollisionsEditHandler
      */
     public static void executeHandler(Shell parent)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
+        final Media selection = ProjectModel.INSTANCE.getSelection();
         final CollisionsEditDialog dialog = new CollisionsEditDialog(parent, selection);
         dialog.open();
+    }
+
+    /**
+     * Create handler.
+     */
+    public CollisionsEditHandler()
+    {
+        // Nothing to do
     }
 
     /**
@@ -49,7 +57,6 @@ public class CollisionsEditHandler
      * @param parent The shell parent.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(Shell parent)
     {
         executeHandler(parent);

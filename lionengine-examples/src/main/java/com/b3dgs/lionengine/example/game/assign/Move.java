@@ -44,9 +44,7 @@ import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Move
-        extends ObjectGame
-        implements Action, Assign, Updatable, Renderable
+class Move extends ObjectGame implements Action, Assign, Updatable, Renderable
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Move.xml");
@@ -78,7 +76,7 @@ class Move
         text = services.get(Text.class);
         cursor = services.get(Cursor.class);
         handler = services.get(Handler.class);
-        image = Drawable.loadImage(setup.surface);
+        image = Drawable.loadImage(setup.getSurface());
 
         actionable.setClickAction(Mouse.LEFT);
         assignable.setClickAssign(Mouse.LEFT);

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.core.awt;
 
-import java.awt.AWTError;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -26,7 +25,6 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
@@ -41,7 +39,9 @@ import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -54,13 +54,15 @@ public final class ToolsAwt
     /** Graphics environment. */
     private static final GraphicsEnvironment ENV = GraphicsEnvironment.getLocalGraphicsEnvironment();
     /** Graphics device. */
-    private static final GraphicsDevice DEV = ToolsAwt.ENV.getDefaultScreenDevice();
+    private static final GraphicsDevice DEV = ENV.getDefaultScreenDevice();
     /** Graphics configuration. */
-    private static final GraphicsConfiguration CONFIG = ToolsAwt.DEV.getDefaultConfiguration();
+    private static final GraphicsConfiguration CONFIG = DEV.getDefaultConfiguration();
+    /** Fraction. */
+    private static final float DIV = 1 / 9f;
     /** Bilinear filter. */
     private static final float[] BILINEAR_FILTER = new float[]
     {
-            1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f
+        DIV, DIV, DIV, DIV, DIV, DIV, DIV, DIV, DIV
     };
 
     /**
@@ -70,33 +72,30 @@ public final class ToolsAwt
      * @param height The image height.
      * @param transparency The image transparency.
      * @return The image instance.
+     * @throws LionEngineException If negative size.
      */
-    static BufferedImage createImage(int width, int height, int transparency)
+    static BufferedImage createImage(int width, int height, int transparency) throws LionEngineException
     {
-        return ToolsAwt.CONFIG.createCompatibleImage(width, height, transparency);
+        Check.superiorOrEqual(width, 0);
+        Check.superiorOrEqual(height, 0);
+        return CONFIG.createCompatibleImage(width, height, transparency);
     }
 
     /**
      * Get an image from an input stream.
      * 
-     * @param inputStream The image input stream.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
+     * @param input The image input stream.
      * @return The loaded image.
      * @throws IOException If error when reading image.
      */
-    static BufferedImage getImage(InputStream inputStream, boolean alpha) throws IOException
+    static BufferedImage getImage(InputStream input) throws IOException
     {
-        final BufferedImage buffer = ImageIO.read(inputStream);
+        final BufferedImage buffer = ImageIO.read(input);
         if (buffer == null)
         {
             throw new IOException("Invalid image !");
         }
-        int transparency = buffer.getTransparency();
-        if (alpha)
-        {
-            transparency = java.awt.Transparency.TRANSLUCENT;
-        }
-        final BufferedImage image = ToolsAwt.copyImage(buffer, transparency);
+        final BufferedImage image = copyImage(buffer, buffer.getTransparency());
         return image;
     }
 
@@ -104,12 +103,12 @@ public final class ToolsAwt
      * Save image to output stream.
      * 
      * @param image The image to save.
-     * @param outputStream The output stream.
+     * @param output The output stream.
      * @throws IOException If error when saving image.
      */
-    static void saveImage(BufferedImage image, OutputStream outputStream) throws IOException
+    static void saveImage(BufferedImage image, OutputStream output) throws IOException
     {
-        ImageIO.write(image, "png", outputStream);
+        ImageIO.write(image, "png", output);
     }
 
     /**
@@ -121,7 +120,7 @@ public final class ToolsAwt
      */
     static BufferedImage copyImage(BufferedImage image, int transparency)
     {
-        final BufferedImage copy = ToolsAwt.createImage(image.getWidth(), image.getHeight(), transparency);
+        final BufferedImage copy = createImage(image.getWidth(), image.getHeight(), transparency);
         final Graphics2D g = copy.createGraphics();
         g.setComposite(AlphaComposite.Src);
         g.drawImage(image, 0, 0, null);
@@ -148,7 +147,7 @@ public final class ToolsAwt
      */
     static BufferedImage applyBilinearFilter(BufferedImage image)
     {
-        final Kernel kernel = new Kernel(3, 3, ToolsAwt.BILINEAR_FILTER);
+        final Kernel kernel = new Kernel(3, 3, BILINEAR_FILTER);
         final ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
         return op.filter(image, null);
     }
@@ -162,7 +161,7 @@ public final class ToolsAwt
      */
     static BufferedImage applyMask(BufferedImage image, int rgba)
     {
-        final BufferedImage mask = ToolsAwt.copyImage(image, Transparency.BITMASK);
+        final BufferedImage mask = copyImage(image, Transparency.BITMASK);
         final int height = mask.getHeight();
         final int width = mask.getWidth();
 
@@ -190,13 +189,14 @@ public final class ToolsAwt
      */
     static BufferedImage rotate(BufferedImage image, int angle)
     {
-        final int w = image.getWidth(), h = image.getHeight();
+        final int width = image.getWidth();
+        final int height = image.getHeight();
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage rotated = ToolsAwt.createImage(w, h, transparency);
+        final BufferedImage rotated = createImage(width, height, transparency);
         final Graphics2D g = rotated.createGraphics();
 
-        ToolsAwt.optimizeGraphics(g);
-        g.rotate(Math.toRadians(angle), w / 2.0, h / 2.0);
+        optimizeGraphics(g);
+        g.rotate(Math.toRadians(angle), width / 2.0, height / 2.0);
         g.drawImage(image, null, 0, 0);
         g.dispose();
 
@@ -214,10 +214,10 @@ public final class ToolsAwt
     static BufferedImage resize(BufferedImage image, int width, int height)
     {
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage resized = ToolsAwt.createImage(width, height, transparency);
+        final BufferedImage resized = createImage(width, height, transparency);
         final Graphics2D g = resized.createGraphics();
 
-        ToolsAwt.optimizeGraphics(g);
+        optimizeGraphics(g);
         g.drawImage(image, 0, 0, width, height, 0, 0, image.getWidth(), image.getHeight(), null);
         g.dispose();
 
@@ -232,12 +232,13 @@ public final class ToolsAwt
      */
     static BufferedImage flipHorizontal(BufferedImage image)
     {
-        final int w = image.getWidth(), h = image.getHeight();
-        final BufferedImage flipped = ToolsAwt.createImage(w, h, image.getColorModel().getTransparency());
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        final BufferedImage flipped = createImage(width, height, image.getColorModel().getTransparency());
         final Graphics2D g = flipped.createGraphics();
 
-        ToolsAwt.optimizeGraphics(g);
-        g.drawImage(image, 0, 0, w, h, w, 0, 0, h, null);
+        optimizeGraphics(g);
+        g.drawImage(image, 0, 0, width, height, width, 0, 0, height, null);
         g.dispose();
 
         return flipped;
@@ -251,12 +252,13 @@ public final class ToolsAwt
      */
     static BufferedImage flipVertical(BufferedImage image)
     {
-        final int w = image.getWidth(), h = image.getHeight();
-        final BufferedImage flipped = ToolsAwt.createImage(w, h, image.getColorModel().getTransparency());
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        final BufferedImage flipped = createImage(width, height, image.getColorModel().getTransparency());
         final Graphics2D g = flipped.createGraphics();
 
-        ToolsAwt.optimizeGraphics(g);
-        g.drawImage(image, 0, 0, w, h, 0, h, w, 0, null);
+        optimizeGraphics(g);
+        g.drawImage(image, 0, 0, width, height, 0, height, width, 0, null);
         g.dispose();
 
         return flipped;
@@ -266,25 +268,25 @@ public final class ToolsAwt
      * Split an image into an array of sub image.
      * 
      * @param image The image to split.
-     * @param h The number of horizontal divisions (> 0).
-     * @param v The number of vertical divisions (> 0).
+     * @param h The number of horizontal divisions (strictly positive).
+     * @param v The number of vertical divisions (strictly positive).
      * @return The splited images array (can not be empty).
      */
     static BufferedImage[] splitImage(BufferedImage image, int h, int v)
     {
-        final int total = h * v;
-        final int width = image.getWidth() / h, height = image.getHeight() / v;
+        final int width = image.getWidth() / h;
+        final int height = image.getHeight() / v;
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage[] images = new BufferedImage[total];
+        final BufferedImage[] images = new BufferedImage[h * v];
         int frame = 0;
 
         for (int y = 0; y < v; y++)
         {
             for (int x = 0; x < h; x++)
             {
-                images[frame] = ToolsAwt.createImage(width, height, transparency);
+                images[frame] = createImage(width, height, transparency);
                 final Graphics2D g = images[frame].createGraphics();
-                ToolsAwt.optimizeGraphics(g);
+                optimizeGraphics(g);
                 g.drawImage(image, 0, 0, width, height, x * width, y * height, (x + 1) * width, (y + 1) * height, null);
                 g.dispose();
                 frame++;
@@ -304,18 +306,21 @@ public final class ToolsAwt
      * @param er The end red.
      * @param eg The end green.
      * @param eb The end blue.
-     * @param refSize The reference size.
+     * @param size The reference size.
      * @return The rastered image.
      */
-    static BufferedImage getRasterBuffer(BufferedImage image, int fr, int fg, int fb, int er, int eg, int eb,
-            int refSize)
+    static BufferedImage getRasterBuffer(BufferedImage image, int fr, int fg, int fb, int er, int eg, int eb, int size)
     {
         final boolean method = true;
-        final BufferedImage raster = ToolsAwt.createImage(image.getWidth(), image.getHeight(), image.getTransparency());
+        final BufferedImage raster = createImage(image.getWidth(), image.getHeight(), image.getTransparency());
 
-        final double sr = -((er - fr) / 0x010000) / (double) refSize;
-        final double sg = -((eg - fg) / 0x000100) / (double) refSize;
-        final double sb = -((eb - fb) / 0x000001) / (double) refSize;
+        final int divisorRed = 0x010000;
+        final int divisorGreen = 0x000100;
+        final int divisorBlue = 0x000001;
+
+        final double sr = -((er - fr) / divisorRed) / (double) size;
+        final double sg = -((eg - fg) / divisorGreen) / (double) size;
+        final double sb = -((eb - fb) / divisorBlue) / (double) size;
 
         if (method)
         {
@@ -323,9 +328,9 @@ public final class ToolsAwt
             {
                 for (int j = 0; j < raster.getHeight(); j++)
                 {
-                    final int r = (int) (sr * (j % refSize)) * 0x010000;
-                    final int g = (int) (sg * (j % refSize)) * 0x000100;
-                    final int b = (int) (sb * (j % refSize)) * 0x000001;
+                    final int r = (int) (sr * (j % size)) * divisorRed;
+                    final int g = (int) (sg * (j % size)) * divisorGreen;
+                    final int b = (int) (sb * (j % size)) * divisorBlue;
 
                     raster.setRGB(i, j, ColorRgba.filterRgb(image.getRGB(i, j), fr + r, fg + g, fb + b));
                 }
@@ -333,10 +338,10 @@ public final class ToolsAwt
         }
         else
         {
-            final int[] org = ToolsAwt.getImageData(image);
+            final int[] org = getImageData(image);
             final int width = raster.getWidth();
             final int height = raster.getHeight();
-            final int[] pixels = ToolsAwt.getImageData(raster);
+            final int[] pixels = getImageData(raster);
 
             for (int j = 0; j < height; j++)
             {
@@ -361,12 +366,11 @@ public final class ToolsAwt
         {
             final Toolkit toolkit = Toolkit.getDefaultToolkit();
             final Dimension dim = toolkit.getBestCursorSize(1, 1);
-            final BufferedImage cursor = ToolsAwt.createImage(dim.width, dim.height, Transparency.BITMASK);
-            final BufferedImage buffer = ToolsAwt.applyMask(cursor, Color.BLACK.getRGB());
+            final BufferedImage cursor = createImage(dim.width, dim.height, Transparency.BITMASK);
+            final BufferedImage buffer = applyMask(cursor, Color.BLACK.getRGB());
             return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
         }
-        catch (final AWTError
-                     | HeadlessException exception)
+        catch (final Throwable exception)
         {
             Verbose.exception(ToolsAwt.class, "createHiddenCursor", exception);
             return Cursor.getDefaultCursor();
@@ -414,7 +418,7 @@ public final class ToolsAwt
      */
     static void optimizeGraphics(Graphics2D g)
     {
-        ToolsAwt.optimizeGraphicsSpeed(g);
+        optimizeGraphicsSpeed(g);
     }
 
     /**
@@ -422,6 +426,6 @@ public final class ToolsAwt
      */
     private ToolsAwt()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

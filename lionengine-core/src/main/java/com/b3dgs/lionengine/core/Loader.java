@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,6 +25,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilReflection;
 
 /**
  * Engine starter, need to be called only one time with the first {@link Sequence} to start, by using
@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * final Loader loader = new Loader(config);
  * loader.start(Scene.class);
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -70,23 +71,11 @@ public final class Loader
 
         try
         {
-            final Constructor<? extends Sequence> constructor = nextSequence.getDeclaredConstructor(Loader
-                    .getParamTypes(loader, arguments));
-            final boolean accessible = constructor.isAccessible();
-            if (!accessible)
-            {
-                constructor.setAccessible(true);
-            }
-
-            final Sequence sequence = constructor.newInstance(getParams(loader, arguments));
-            if (constructor.isAccessible() != accessible)
-            {
-                constructor.setAccessible(accessible);
-            }
-
+            final Class<?>[] params = Loader.getParamTypes(loader, arguments);
+            final Sequence sequence = UtilReflection.create(nextSequence, params, getParams(loader, arguments));
             return sequence;
         }
-        catch (final ReflectiveOperationException exception)
+        catch (final NoSuchMethodException exception)
         {
             throw new LionEngineException(exception);
         }
@@ -101,16 +90,10 @@ public final class Loader
      */
     private static Class<?>[] getParamTypes(Loader loader, Object... arguments)
     {
-        final Collection<Object> types = new ArrayList<>(1);
-        types.add(loader.getClass());
-
-        for (final Object argument : arguments)
-        {
-            types.add(argument.getClass());
-        }
-
-        final Class<?>[] typesArray = new Class<?>[types.size()];
-        return types.toArray(typesArray);
+        final Collection<Object> params = new ArrayList<Object>();
+        params.add(loader);
+        params.addAll(Arrays.asList(arguments));
+        return UtilReflection.getParamTypes(params.toArray());
     }
 
     /**
@@ -122,12 +105,10 @@ public final class Loader
      */
     private static Object[] getParams(Loader loader, Object... arguments)
     {
-        final Collection<Object> params = new ArrayList<>(1);
+        final Collection<Object> params = new ArrayList<Object>(1);
         params.add(loader);
         params.addAll(Arrays.asList(arguments));
-
-        final Object[] paramsArray = new Object[params.size()];
-        return params.toArray(paramsArray);
+        return params.toArray();
     }
 
     /** Renderer instance. */
@@ -153,6 +134,7 @@ public final class Loader
             {
                 Verbose.exception(Renderer.class, "run", throwable);
                 renderer.terminate();
+                EngineCore.terminate();
             }
         });
         this.renderer = renderer;

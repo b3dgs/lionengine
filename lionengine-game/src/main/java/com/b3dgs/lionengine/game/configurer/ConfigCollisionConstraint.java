@@ -17,9 +17,12 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
+import java.util.Collection;
+import java.util.Map.Entry;
+
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -32,14 +35,10 @@ public final class ConfigCollisionConstraint
 {
     /** Constraint node. */
     public static final String CONSTRAINT = Configurer.PREFIX + "constraint";
-    /** Constraint top attribute. */
-    public static final String TOP = "top";
-    /** Constraint bottom attribute. */
-    public static final String BOTTOM = "bottom";
-    /** Constraint left attribute. */
-    public static final String LEFT = "left";
-    /** Constraint right attribute. */
-    public static final String RIGHT = "right";
+    /** Orientation attribute. */
+    public static final String ORIENTATION = "orientation";
+    /** Group name attribute. */
+    public static final String GROUP = "group";
 
     /**
      * Create the collision constraint data from node.
@@ -50,42 +49,37 @@ public final class ConfigCollisionConstraint
      */
     public static CollisionConstraint create(XmlNode node) throws LionEngineException
     {
-        final String top = node.hasAttribute(TOP) ? node.readString(TOP) : null;
-        final String bottom = node.hasAttribute(BOTTOM) ? node.readString(BOTTOM) : null;
-        final String left = node.hasAttribute(LEFT) ? node.readString(LEFT) : null;
-        final String right = node.hasAttribute(RIGHT) ? node.readString(RIGHT) : null;
-
-        return new CollisionConstraint(top, bottom, left, right);
+        final CollisionConstraint constraint = new CollisionConstraint();
+        if (node.hasChild(CONSTRAINT))
+        {
+            for (final XmlNode current : node.getChildren(CONSTRAINT))
+            {
+                final Orientation orientation = Orientation.valueOf(current.readString(ORIENTATION));
+                final String group = current.readString(GROUP);
+                constraint.add(orientation, group);
+            }
+        }
+        return constraint;
     }
 
     /**
      * Export the collision constraint as a node.
      * 
+     * @param root The node root.
      * @param constraint The collision constraint to export.
-     * @return The node reference.
+     * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(CollisionConstraint constraint)
+    public static void export(XmlNode root, CollisionConstraint constraint) throws LionEngineException
     {
-        final XmlNode node = Stream.createXmlNode(CONSTRAINT);
-        writeNodeIfExists(node, TOP, constraint.getTop());
-        writeNodeIfExists(node, BOTTOM, constraint.getBottom());
-        writeNodeIfExists(node, LEFT, constraint.getLeft());
-        writeNodeIfExists(node, RIGHT, constraint.getRight());
-        return node;
-    }
-
-    /**
-     * Write node attribute value if not <code>null</code>.
-     * 
-     * @param node The node reference.
-     * @param attribute The attribute name.
-     * @param value The attribute value.
-     */
-    private static void writeNodeIfExists(XmlNode node, String attribute, String value)
-    {
-        if (value != null)
+        for (final Entry<Orientation, Collection<String>> entry : constraint.getConstraints().entrySet())
         {
-            node.writeString(attribute, value);
+            final Orientation orientation = entry.getKey();
+            for (final String group : entry.getValue())
+            {
+                final XmlNode current = root.createChild(CONSTRAINT);
+                current.writeString(ORIENTATION, orientation.name());
+                current.writeString(GROUP, group);
+            }
         }
     }
 
@@ -94,6 +88,6 @@ public final class ConfigCollisionConstraint
      */
     private ConfigCollisionConstraint()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

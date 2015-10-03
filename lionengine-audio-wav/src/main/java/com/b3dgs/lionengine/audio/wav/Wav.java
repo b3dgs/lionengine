@@ -117,8 +117,8 @@ public final class Wav
         this.maxSimultaneous = maxSimultaneous;
         count = Integer.valueOf(0);
         latch = new Semaphore(0);
-        freeSounds = new LinkedList<>();
-        busySounds = new LinkedList<>();
+        freeSounds = new LinkedList<WavRoutine>();
+        busySounds = new LinkedList<WavRoutine>();
         alignment = Align.CENTER;
         volume = 100;
         terminated = Boolean.FALSE;
@@ -250,7 +250,7 @@ public final class Wav
      */
     public void stop()
     {
-        final Collection<WavRoutine> toStop = new ArrayList<>(busySounds);
+        final Collection<WavRoutine> toStop = new ArrayList<WavRoutine>(busySounds);
         for (final WavRoutine routine : toStop)
         {
             if (routine != null)
@@ -274,7 +274,7 @@ public final class Wav
             {
                 while (!busySounds.isEmpty())
                 {
-                    final Collection<WavRoutine> toStop = new ArrayList<>(busySounds);
+                    final Collection<WavRoutine> toStop = new ArrayList<WavRoutine>(busySounds);
                     for (final WavRoutine routine : toStop)
                     {
                         if (routine != null)
@@ -298,7 +298,7 @@ public final class Wav
                 {
                     synchronized (monitor)
                     {
-                        final Collection<WavRoutine> toStop = new ArrayList<>(freeSounds);
+                        final Collection<WavRoutine> toStop = new ArrayList<WavRoutine>(freeSounds);
                         for (final WavRoutine routine : toStop)
                         {
                             if (routine != null)

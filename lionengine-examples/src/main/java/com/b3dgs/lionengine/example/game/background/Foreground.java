@@ -35,8 +35,7 @@ import com.b3dgs.lionengine.game.background.BackgroundGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Foreground
-        extends BackgroundGame
+class Foreground extends BackgroundGame
 {
     /** Screen width. */
     int screenWidth;
@@ -185,8 +184,7 @@ class Foreground
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private final class Primary
-            implements BackgroundComponent
+    private final class Primary implements BackgroundComponent
     {
         /** Water element. */
         private final BackgroundElement data;
@@ -201,7 +199,8 @@ class Foreground
         Primary(Foreground water)
         {
             final Sprite sprite = Drawable.loadSprite(Medias.create("calc.png"));
-            sprite.load(false);
+            sprite.load();
+            sprite.prepare();
             data = new BackgroundElement(0, (int) Math.ceil(water.getNominal() * scaleV), sprite);
             top = data.getRenderable().getHeight();
             this.water = water;
@@ -248,8 +247,7 @@ class Foreground
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private final class Secondary
-            implements BackgroundComponent
+    private final class Secondary implements BackgroundComponent
     {
         /** Water element. */
         private final BackgroundElement data;
@@ -274,12 +272,13 @@ class Foreground
         Secondary(Foreground water)
         {
             final Sprite back = Drawable.loadSprite(Medias.create("back.png"));
-            back.load(false);
+            back.load();
+            back.prepare();
             data = new BackgroundElement(0, (int) Math.floor(water.getNominal() * scaleV), back);
 
             animation = Anim.createAnimation(null, 1, 7, 0.25, false, true);
             anim = Drawable.loadSpriteAnimated(Medias.create("anim.png"), 7, 1);
-            anim.load(false);
+            anim.load();
             anim.play(animation);
             this.water = water;
             height = 0.0;

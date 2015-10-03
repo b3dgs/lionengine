@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.world;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.editor.ObjectRepresentation;
 
 /**
  * Listen to objects selection on map.
@@ -33,12 +33,12 @@ public interface ObjectSelectionListener
      * 
      * @param object The selected object from map.
      */
-    void notifyObjectSelected(ObjectGame object);
+    void notifyObjectSelected(ObjectRepresentation object);
 
     /**
      * Called when objects are selected.
      * 
      * @param objects The selected objects from map.
      */
-    void notifyObjectsSelected(Collection<ObjectGame> objects);
+    void notifyObjectsSelected(Collection<ObjectRepresentation> objects);
 }

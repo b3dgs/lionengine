@@ -32,14 +32,13 @@ import com.b3dgs.lionengine.game.collision.CollisionRange;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileCollisionModel
-        implements TileCollision
+public class TileCollisionModel implements TileCollision
 {
     /** Error type. */
     private static final String ERROR_TYPE = "Unknown type: ";
 
     /** The collision formulas used. */
-    private final Collection<CollisionFormula> formulas = new HashSet<>();
+    private final Collection<CollisionFormula> formulas = new HashSet<CollisionFormula>();
     /** Tile reference. */
     private final Tile tile;
 
@@ -115,11 +114,16 @@ public class TileCollisionModel
                         if (UtilMath.isBetween(current, range.getMinX(), range.getMaxX()))
                         {
                             final double coll = tile.getX() + result - category.getOffsetX();
+                            final Double collisionX;
                             if (x > ox)
                             {
-                                return Double.valueOf(coll + range.getMinX() - 1);
+                                collisionX = Double.valueOf(coll - 1);
                             }
-                            return Double.valueOf(coll + range.getMaxX() + 1);
+                            else
+                            {
+                                collisionX = Double.valueOf(coll + 1);
+                            }
+                            return collisionX;
                         }
                     }
                 }
@@ -136,8 +140,9 @@ public class TileCollisionModel
             if (formulas.contains(formula) && category.getAxis() == formula.getRange().getOutput())
             {
                 final CollisionRange range = formula.getRange();
-                if (range.getOutput() == Axis.Y && ox >= tile.getX() + range.getMinX()
-                        && ox <= tile.getX() + range.getMaxX())
+                if (range.getOutput() == Axis.Y
+                    && ox >= tile.getX() + range.getMinX()
+                    && ox <= tile.getX() + range.getMaxX())
                 {
                     final int value = getInputValue(Axis.X, x, y);
                     if (UtilMath.isBetween(value, range.getMinX(), range.getMaxX()))
@@ -148,11 +153,16 @@ public class TileCollisionModel
                         if (UtilMath.isBetween(current, range.getMinY(), range.getMaxY()))
                         {
                             final double coll = tile.getY() + result - category.getOffsetY();
+                            final Double collisionY;
                             if (y > oy)
                             {
-                                return Double.valueOf(coll + range.getMinY() - 1);
+                                collisionY = Double.valueOf(coll - 1);
                             }
-                            return Double.valueOf(coll + range.getMaxY() + 1);
+                            else
+                            {
+                                collisionY = Double.valueOf(coll + 1);
+                            }
+                            return collisionY;
                         }
                     }
                 }

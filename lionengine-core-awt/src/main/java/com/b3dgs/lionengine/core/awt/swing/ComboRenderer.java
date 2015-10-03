@@ -28,12 +28,9 @@ import javax.swing.border.EmptyBorder;
 /**
  * Combo renderer implementation.
  * 
- * @param <E> The object type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ComboRenderer<E>
-        extends JLabel
-        implements ListCellRenderer<E>
+public final class ComboRenderer extends JLabel implements ListCellRenderer
 {
     /** Serial uid. */
     private static final long serialVersionUID = -3958632959558263178L;
@@ -52,8 +49,11 @@ public final class ComboRenderer<E>
      */
 
     @Override
-    public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected,
-            boolean cellHasFocus)
+    public Component getListCellRendererComponent(JList list,
+                                                  Object value,
+                                                  int index,
+                                                  boolean isSelected,
+                                                  boolean cellHasFocus)
     {
         if (isSelected)
         {

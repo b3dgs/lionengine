@@ -26,8 +26,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Body
-        extends Trait, Updatable
+public interface Body extends Trait, Updatable
 {
     /** Gravity of Earth (in m/s²). */
     double GRAVITY_EARTH = 9.80665;

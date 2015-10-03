@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.configurer;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -28,7 +27,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Allows to retrieve informations from an external XML configuration file.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Setup
+ * @see com.b3dgs.lionengine.game.object.Setup
  * @see XmlNode
  */
 public class Configurer
@@ -62,8 +61,10 @@ public class Configurer
 
     /**
      * Save the configurer.
+     * 
+     * @throws LionEngineException If error on saving.
      */
-    public void save()
+    public void save() throws LionEngineException
     {
         Stream.saveXml(root, media);
     }

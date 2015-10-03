@@ -31,17 +31,19 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.Messages;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
 
 /**
  * Represents a combo dialog chooser.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ComboDialogChooser
-        extends Dialog
+public class ComboDialogChooser extends Dialog
 {
     /** Icon. */
-    private static final Image ICON = UtilEclipse.getIcon("dialog", "browse.png");
+    private static final Image ICON = UtilIcon.get("dialog", "browse.png");
 
     /** Choice. */
     String choice;
@@ -68,12 +70,7 @@ public class ComboDialogChooser
         final Shell shell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
         shell.setText(Messages.ComboDialogChooser_Title);
         shell.setImage(ICON);
-
-        final GridLayout dialogLayout = new GridLayout(1, false);
-        dialogLayout.marginHeight = 0;
-        dialogLayout.marginWidth = 0;
-        dialogLayout.verticalSpacing = 0;
-        shell.setLayout(dialogLayout);
+        shell.setLayout(UtilSwt.borderless());
 
         final Composite area = new Composite(shell, SWT.NONE);
         area.setLayout(new GridLayout(1, false));
@@ -84,7 +81,7 @@ public class ComboDialogChooser
             combo.setText(items[0]);
         }
 
-        final Button finish = UtilSwt.createButton(area, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
+        final Button finish = UtilButton.create(area, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
         finish.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -95,9 +92,7 @@ public class ComboDialogChooser
             }
         });
 
-        shell.pack();
-        UtilSwt.center(shell);
-        shell.open();
+        UtilSwt.open(shell);
         final Display display = parent.getDisplay();
         while (!shell.isDisposed())
         {

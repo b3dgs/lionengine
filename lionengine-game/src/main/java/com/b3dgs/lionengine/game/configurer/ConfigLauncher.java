@@ -21,20 +21,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.trait.launchable.Launcher;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the launcher data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Launcher
+ * @see com.b3dgs.lionengine.game.trait.launchable.Launcher
  */
 public final class ConfigLauncher
 {
     /** Launcher node name. */
     public static final String LAUNCHER = Configurer.PREFIX + "launcher";
-    /** Rate node name. */
+    /** Rate attribute name. */
     public static final String RATE = "rate";
 
     /**
@@ -46,12 +45,13 @@ public final class ConfigLauncher
      */
     public static ConfigLauncher create(Configurer configurer) throws LionEngineException
     {
-        final Collection<ConfigLaunchable> launchables = new ArrayList<>();
+        final Collection<ConfigLaunchable> launchables = new ArrayList<ConfigLaunchable>();
         for (final XmlNode launchable : configurer.getRoot().getChildren(ConfigLaunchable.LAUNCHABLE))
         {
             launchables.add(ConfigLaunchable.create(launchable));
         }
         final int rate = configurer.getInteger(ConfigLauncher.RATE, ConfigLauncher.LAUNCHER);
+
         return new ConfigLauncher(rate, launchables);
     }
 
@@ -65,7 +65,7 @@ public final class ConfigLauncher
      */
     private ConfigLauncher()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**

@@ -35,7 +35,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import javax.swing.border.Border;
 import javax.swing.filechooser.FileFilter;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Set of functions around swing call, in order to create easily standard JObjects.
@@ -61,6 +64,7 @@ public final class UtilitySwing
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(filter);
+
         final int approve = fileChooser.showOpenDialog(parent);
         if (approve == JFileChooser.APPROVE_OPTION)
         {
@@ -104,8 +108,9 @@ public final class UtilitySwing
     public static JPanel createBorderedPanel(String title, int margin)
     {
         final JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(title),
-                BorderFactory.createEmptyBorder(margin, margin, margin, margin)));
+        final Border outside = BorderFactory.createTitledBorder(title);
+        final Border inside = BorderFactory.createEmptyBorder(margin, margin, margin, margin);
+        panel.setBorder(BorderFactory.createCompoundBorder(outside, inside));
 
         return panel;
     }
@@ -119,8 +124,9 @@ public final class UtilitySwing
      */
     public static void setBorderedPanel(JPanel panel, String title, int margin)
     {
-        panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(title),
-                BorderFactory.createEmptyBorder(margin, margin, margin, margin)));
+        final Border outside = BorderFactory.createTitledBorder(title);
+        final Border inside = BorderFactory.createEmptyBorder(margin, margin, margin, margin);
+        panel.setBorder(BorderFactory.createCompoundBorder(outside, inside));
     }
 
     /**
@@ -145,20 +151,19 @@ public final class UtilitySwing
     /**
      * Create a menu combo.
      * 
-     * @param <T> The object type.
      * @param name The combo name.
      * @param panel The panel owner.
      * @param tab The combo list.
      * @param actionCombo The combo action.
      * @return The created combo.
      */
-    public static <T> JComboBox<T> addMenuCombo(String name, JPanel panel, T[] tab, ActionCombo actionCombo)
+    public static JComboBox addMenuCombo(String name, JPanel panel, Object[] tab, ActionCombo actionCombo)
     {
-        final JComboBox<T> combo = new JComboBox<>(tab);
-        combo.setRenderer(new ComboRenderer<>());
+        final JComboBox combo = new JComboBox(tab);
+        combo.setRenderer(new ComboRenderer());
         if (actionCombo != null)
         {
-            combo.addActionListener(new ComboListener<>(combo, actionCombo));
+            combo.addActionListener(new ComboListener(combo, actionCombo));
         }
         if (name != null)
         {
@@ -270,6 +275,6 @@ public final class UtilitySwing
      */
     private UtilitySwing()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

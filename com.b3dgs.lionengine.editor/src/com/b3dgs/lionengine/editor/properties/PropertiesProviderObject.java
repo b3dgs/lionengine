@@ -34,6 +34,8 @@ public interface PropertiesProviderObject
     String EXTENSION_ID = Activator.PLUGIN_ID + ".propertiesObject";
     /** Properties extension. */
     String EXTENSION_PROPERTIES = "class";
+    /** Properties folder. */
+    String FOLDER = "properties";
 
     /**
      * Set the properties input.

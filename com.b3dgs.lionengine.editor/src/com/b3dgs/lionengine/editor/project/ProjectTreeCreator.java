@@ -25,15 +25,16 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.tester.CollisionsTester;
 import com.b3dgs.lionengine.editor.project.tester.FormulasTester;
 import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
+import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Generate the project tree from the project folder.
@@ -42,33 +43,34 @@ import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
  */
 public class ProjectTreeCreator
 {
-    /** Project icon. */
-    public static final Image ICON_MAIN = UtilEclipse.getIcon("resources", "project.png");
-    /** Folder icon. */
-    public static final Image ICON_FOLDER = UtilEclipse.getIcon("resources", "folder.png");
-    /** File icon. */
-    public static final Image ICON_FILE = UtilEclipse.getIcon("resources", "file.png");
-    /** Sound file icon. */
-    public static final Image ICON_SOUND = UtilEclipse.getIcon("resources", "sound.png");
-    /** Music file icon. */
-    public static final Image ICON_MUSIC = UtilEclipse.getIcon("resources", "music.png");
-    /** Image file icon. */
-    public static final Image ICON_IMAGE = UtilEclipse.getIcon("resources", "image.png");
-    /** Data file icon. */
-    public static final Image ICON_DATA = UtilEclipse.getIcon("resources", "data.png");
-    /** Object file icon. */
-    public static final Image ICON_OBJECT = UtilEclipse.getIcon("resources", "object.png");
-    /** Sheets file icon. */
-    public static final Image ICON_SHEETS = UtilEclipse.getIcon("resources", "sheets.png");
-    /** Groups file icon. */
-    public static final Image ICON_GROUPS = UtilEclipse.getIcon("resources", "groups.png");
-    /** Formulas file icon. */
-    public static final Image ICON_FORMULAS = UtilEclipse.getIcon("resources", "formulas.png");
-    /** Collisions file icon. */
-    public static final Image ICON_COLLISIONS = UtilEclipse.getIcon("resources", "collisions.png");
-
     /** Resources folder. */
-    private static final String FOLDER_RESOURCES = "resources";
+    public static final String RESOURCES_FOLDER = "resources";
+    /** Project icon. */
+    public static final Image ICON_MAIN = UtilIcon.get(RESOURCES_FOLDER, "project.png");
+    /** Folder icon. */
+    public static final Image ICON_FOLDER = UtilIcon.get(RESOURCES_FOLDER, "folder.png");
+    /** File icon. */
+    public static final Image ICON_FILE = UtilIcon.get(RESOURCES_FOLDER, "file.png");
+    /** Sound file icon. */
+    public static final Image ICON_SOUND = UtilIcon.get(RESOURCES_FOLDER, "sound.png");
+    /** Music file icon. */
+    public static final Image ICON_MUSIC = UtilIcon.get(RESOURCES_FOLDER, "music.png");
+    /** Image file icon. */
+    public static final Image ICON_IMAGE = UtilIcon.get(RESOURCES_FOLDER, "image.png");
+    /** Data file icon. */
+    public static final Image ICON_DATA = UtilIcon.get(RESOURCES_FOLDER, "data.png");
+    /** Object file icon. */
+    public static final Image ICON_OBJECT = UtilIcon.get(RESOURCES_FOLDER, "object.png");
+    /** Sheets file icon. */
+    public static final Image ICON_SHEETS = UtilIcon.get(RESOURCES_FOLDER, "sheets.png");
+    /** Groups file icon. */
+    public static final Image ICON_GROUPS = UtilIcon.get(RESOURCES_FOLDER, "groups.png");
+    /** Formulas file icon. */
+    public static final Image ICON_FORMULAS = UtilIcon.get(RESOURCES_FOLDER, "formulas.png");
+    /** Collisions file icon. */
+    public static final Image ICON_COLLISIONS = UtilIcon.get(RESOURCES_FOLDER, "collisions.png");
+    /** Meta-inf folder. */
+    private static final String FOLDER_METAINF = "META-INF";
 
     /**
      * Check the path reference and create the node if necessary.
@@ -99,27 +101,32 @@ public class ProjectTreeCreator
      */
     private static Image getDataIcon(Media file)
     {
+        final Image image;
         if (ObjectsTester.isObjectFile(file))
         {
-            return ICON_OBJECT;
+            image = ICON_OBJECT;
         }
         else if (SheetsTester.isSheetsFile(file))
         {
-            return ICON_SHEETS;
+            image = ICON_SHEETS;
         }
         else if (GroupsTester.isGroupsFile(file))
         {
-            return ICON_GROUPS;
+            image = ICON_GROUPS;
         }
         else if (FormulasTester.isFormulasFile(file))
         {
-            return ICON_FORMULAS;
+            image = ICON_FORMULAS;
         }
         else if (CollisionsTester.isCollisionsFile(file))
         {
-            return ICON_COLLISIONS;
+            image = ICON_COLLISIONS;
         }
-        return ICON_DATA;
+        else
+        {
+            image = ICON_DATA;
+        }
+        return image;
     }
 
     /**
@@ -130,23 +137,28 @@ public class ProjectTreeCreator
      */
     private static Image getFileIcon(Media file)
     {
+        final Image image;
         if (Property.SOUND.is(file))
         {
-            return ICON_SOUND;
+            image = ICON_SOUND;
         }
         else if (Property.MUSIC.is(file))
         {
-            return ICON_MUSIC;
+            image = ICON_MUSIC;
         }
         else if (Property.IMAGE.is(file))
         {
-            return ICON_IMAGE;
+            image = ICON_IMAGE;
         }
         else if (Property.DATA.is(file))
         {
-            return getDataIcon(file);
+            image = getDataIcon(file);
         }
-        return ICON_FILE;
+        else
+        {
+            image = ICON_FILE;
+        }
+        return image;
     }
 
     /** Project reference. */
@@ -210,7 +222,7 @@ public class ProjectTreeCreator
      */
     public void checkPath(File path, TreeItem parent)
     {
-        if (path.isDirectory() && !path.getName().equals("META-INF"))
+        if (path.isDirectory() && !FOLDER_METAINF.equals(path.getName()))
         {
             checkPathDirectory(path, parent);
         }
@@ -271,7 +283,7 @@ public class ProjectTreeCreator
     {
         if (resourcesPath.getPath().startsWith(path.getPath()))
         {
-            return checkPathReference(FOLDER_RESOURCES, parent, resourcesPath, path);
+            return checkPathReference(RESOURCES_FOLDER, parent, resourcesPath, path);
         }
         return createItem(parent, path, ICON_FOLDER);
     }
@@ -311,11 +323,11 @@ public class ProjectTreeCreator
         String relative;
         if (path.startsWith(resourcesPath.getPath()))
         {
-            relative = path.replace(resourcesPath.getPath(), "");
+            relative = path.replace(resourcesPath.getPath(), Constant.EMPTY_STRING);
         }
         else
         {
-            relative = path.replace(projectPath.getPath(), "");
+            relative = path.replace(projectPath.getPath(), Constant.EMPTY_STRING);
         }
         if (!relative.isEmpty())
         {

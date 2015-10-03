@@ -18,31 +18,32 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.trait.actionable.Actionable;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the action data from a configurer.
  *
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Actionable
+ * @see com.b3dgs.lionengine.game.trait.actionable.Actionable
  */
 public final class ConfigAction
 {
     /** Action node name. */
     public static final String ACTION = Configurer.PREFIX + "action";
-    /** Action node name. */
+    /** Action attribute name. */
     public static final String NAME = "name";
-    /** Action node description. */
+    /** Action attribute description. */
     public static final String DESCRIPTION = "description";
-    /** Action node x. */
+    /** Action attribute x. */
     public static final String X = "x";
-    /** Action node y. */
+    /** Action attribute y. */
     public static final String Y = "y";
-    /** Action node width. */
+    /** Action attribute width. */
     public static final String WIDTH = "width";
-    /** Action node height. */
+    /** Action attribute height. */
     public static final String HEIGHT = "height";
+    /** Error parsing integer. */
+    private static final String ERROR_PARSING_INT = "Error on parsing integer value: ";
 
     /**
      * Create the action data from node.
@@ -54,9 +55,36 @@ public final class ConfigAction
     public static ConfigAction create(Configurer configurer) throws LionEngineException
     {
         final XmlNode node = configurer.getRoot();
-        return new ConfigAction(node.getChild(NAME).getText(), node.getChild(DESCRIPTION).getText(),
-                Integer.parseInt(node.getChild(X).getText()), Integer.parseInt(node.getChild(Y).getText()),
-                Integer.parseInt(node.getChild(WIDTH).getText()), Integer.parseInt(node.getChild(HEIGHT).getText()));
+
+        final String name = node.getChild(NAME).getText();
+        final String description = node.getChild(DESCRIPTION).getText();
+        final int x = getTextInt(node, X);
+        final int y = getTextInt(node, Y);
+        final int width = getTextInt(node, WIDTH);
+        final int height = getTextInt(node, HEIGHT);
+
+        return new ConfigAction(name, description, x, y, width, height);
+    }
+
+    /**
+     * Get text content as integer.
+     * 
+     * @param node The main node.
+     * @param child The child node containing the text.
+     * @return The integer value.
+     * @throws LionEngineException If error on parsing value.
+     */
+    private static int getTextInt(XmlNode node, String child) throws LionEngineException
+    {
+        final String text = node.getChild(child).getText();
+        try
+        {
+            return Integer.parseInt(text);
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception, ERROR_PARSING_INT, text);
+        }
     }
 
     /** Action name. */
@@ -77,7 +105,7 @@ public final class ConfigAction
      */
     private ConfigAction()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**
@@ -89,7 +117,6 @@ public final class ConfigAction
      * @param y The vertical location on screen.
      * @param width The button width.
      * @param height The button height.
-     * @throws LionEngineException If error when opening the media.
      */
     private ConfigAction(String name, String description, int x, int y, int width, int height)
     {

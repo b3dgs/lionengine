@@ -44,8 +44,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AnimationRenderer
-        implements PaintListener
+public final class AnimationRenderer implements PaintListener
 {
     /** Animation update rate. */
     private static final int TIMER_INTERVAL_MILLI = 16;
@@ -55,54 +54,6 @@ public final class AnimationRenderer
     /** The animated surface. */
     final SpriteAnimated surface;
 
-    /** Animator thread. */
-    private final class AnimationRunner
-            implements Runnable
-    {
-        /** Display reference. */
-        private final Display display;
-
-        /**
-         * Internal constructor.
-         * 
-         * @param display The display reference.
-         */
-        AnimationRunner(Display display)
-        {
-            this.display = display;
-        }
-
-        /*
-         * Runnable
-         */
-
-        @Override
-        public void run()
-        {
-            if (!parent.isDisposed())
-            {
-                if (!paused)
-                {
-                    lastPlayedFrame = surface.getFrame();
-                    surface.update(1.0);
-                }
-                final AnimState state = surface.getAnimState();
-                if (lastPlayedFrame != surface.getFrame())
-                {
-                    parent.redraw();
-                }
-                if (state == AnimState.PLAYING || state == AnimState.REVERSING)
-                {
-                    display.timerExec(AnimationRenderer.TIMER_INTERVAL_MILLI, this);
-                }
-                if (state == AnimState.FINISHED)
-                {
-                    animationPlayer.notifyAnimationFinished();
-                }
-            }
-        }
-    }
-
     /** Animation runner. */
     private final AnimationRunner animationRunner;
     /** Graphic reference. */
@@ -111,7 +62,7 @@ public final class AnimationRenderer
     AnimationPlayer animationPlayer;
     /** Paused flag. */
     boolean paused;
-    /** Last played frame */
+    /** Last played frame. */
     int lastPlayedFrame;
     /** Last first frame. */
     private int lastFirstFrame;
@@ -131,7 +82,8 @@ public final class AnimationRenderer
         final Media media = UtilityMedia.get(new File(configurer.getPath(), configSurface.getImage()));
         final ConfigFrames framesData = ConfigFrames.create(configurer);
         surface = Drawable.loadSpriteAnimated(media, framesData.getHorizontal(), framesData.getVertical());
-        surface.load(false);
+        surface.load();
+        surface.prepare();
 
         final GridData data = new GridData(surface.getWidth(), surface.getHeight());
         data.horizontalAlignment = SWT.CENTER;
@@ -223,5 +175,52 @@ public final class AnimationRenderer
         final GC gc = paintEvent.gc;
         g.setGraphic(gc);
         render(g, paintEvent.width, paintEvent.height);
+    }
+
+    /** Animator thread. */
+    private final class AnimationRunner implements Runnable
+    {
+        /** Display reference. */
+        private final Display display;
+
+        /**
+         * Internal constructor.
+         * 
+         * @param display The display reference.
+         */
+        AnimationRunner(Display display)
+        {
+            this.display = display;
+        }
+
+        /*
+         * Runnable
+         */
+
+        @Override
+        public void run()
+        {
+            if (!parent.isDisposed())
+            {
+                if (!paused)
+                {
+                    lastPlayedFrame = surface.getFrame();
+                    surface.update(1.0);
+                }
+                final AnimState state = surface.getAnimState();
+                if (lastPlayedFrame != surface.getFrame())
+                {
+                    parent.redraw();
+                }
+                if (state == AnimState.PLAYING || state == AnimState.REVERSING)
+                {
+                    display.timerExec(AnimationRenderer.TIMER_INTERVAL_MILLI, this);
+                }
+                if (state == AnimState.FINISHED)
+                {
+                    animationPlayer.notifyAnimationFinished();
+                }
+            }
+        }
     }
 }

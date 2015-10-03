@@ -32,21 +32,20 @@ import com.b3dgs.lionengine.core.Graphic;
  * </p>
  * <p>
  * The usage is simple:
+ * </p>
  * <ul>
  * <li>{@link #draw(Graphic, int, int, Align, String)} can be used to render a single text (which can contains
  * {@link #NEW_LINE} characters).</li>
  * <li>{@link #draw(Graphic, int, int, Align, String...)} can be used to render many texts, where each of them is
  * separated by a new line automatically.</li>
  * </ul>
- * </p>
  * <p>
  * As the SpriteFont is a sprite, is supports all sprite operations.
  * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface SpriteFont
-        extends Sprite
+public interface SpriteFont extends Sprite
 {
     /** New line char. */
     char NEW_LINE = '%';

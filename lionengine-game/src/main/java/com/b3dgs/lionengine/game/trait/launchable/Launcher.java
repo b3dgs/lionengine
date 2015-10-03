@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.trait.launchable;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
@@ -29,8 +28,7 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Launchable
  */
-public interface Launcher
-        extends Trait
+public interface Launcher extends Trait
 {
     /**
      * Add a launcher listener.
@@ -41,7 +39,7 @@ public interface Launcher
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
-     * {@link LauncherListener#notifyFired(ObjectGame)}.
+     * {@link LauncherListener#notifyFired(com.b3dgs.lionengine.game.object.ObjectGame)}.
      * 
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
@@ -49,7 +47,7 @@ public interface Launcher
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
-     * {@link LauncherListener#notifyFired(ObjectGame)}.
+     * {@link LauncherListener#notifyFired(com.b3dgs.lionengine.game.object.ObjectGame)}.
      * 
      * @param target The launch target.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.

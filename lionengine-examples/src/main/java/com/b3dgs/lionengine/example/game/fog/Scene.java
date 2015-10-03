@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
-import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -45,8 +44,7 @@ import com.b3dgs.lionengine.game.trait.fovable.Fovable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-class Scene
-        extends Sequence
+class Scene extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
@@ -79,14 +77,7 @@ class Scene
     {
         super(loader, NATIVE);
         setSystemCursorVisible(false);
-        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                end();
-            }
-        });
+        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
@@ -97,8 +88,10 @@ class Scene
 
         final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create("hide.png"), 16, 16);
         final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create("fog.png"), 16, 16);
-        hide.load(false);
-        fog.load(false);
+        hide.load();
+        hide.prepare();
+        fog.load();
+        fog.prepare();
         fogOfWar.setTilesheet(hide, fog);
         fogOfWar.setEnabled(true, true);
         fogOfWar.create(map, map);

@@ -32,9 +32,7 @@ import com.b3dgs.lionengine.game.object.Setup;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Entity
-        extends ObjectGame
-        implements Updatable, Renderable
+class Entity extends ObjectGame implements Updatable, Renderable
 {
     /** Goomba config. */
     public static final Media GOOMBA = Medias.create("Goomba.xml");

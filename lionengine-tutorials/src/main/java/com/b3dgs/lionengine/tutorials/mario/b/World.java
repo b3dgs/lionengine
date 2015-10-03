@@ -34,8 +34,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class World
-        extends WorldGame
+class World extends WorldGame
 {
     /** Services reference. */
     private final Services services = new Services();

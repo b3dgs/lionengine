@@ -25,8 +25,7 @@ import com.b3dgs.lionengine.game.background.BackgroundElementRastered;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class ElementRastered
-        extends BackgroundElementRastered
+class ElementRastered extends BackgroundElementRastered
 {
     /**
      * @see BackgroundElementRastered#BackgroundElementRastered(int, int, Sprite, int)

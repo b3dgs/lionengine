@@ -23,14 +23,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the pathfinding data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see MapTilePath
+ * @see com.b3dgs.lionengine.game.map.MapTilePath
  */
 public final class ConfigPathfinding
 {
@@ -70,7 +69,7 @@ public final class ConfigPathfinding
      */
     private ConfigPathfinding()
     {
-        categories = new HashMap<>();
+        categories = new HashMap<String, Collection<String>>();
     }
 
     /**
@@ -114,7 +113,7 @@ public final class ConfigPathfinding
         }
         else
         {
-            category = new ArrayList<>();
+            category = new ArrayList<String>();
             categories.put(categoryName, category);
         }
         category.add(groupName);

@@ -22,30 +22,65 @@ import java.util.List;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
 
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
+ * @see com.b3dgs.lionengine.game.configurer.Configurer
  */
-public class SetupSurfaceRastered
-        extends SetupSurface
+public class SetupSurfaceRastered extends SetupSurface
 {
+    /**
+     * Load all rasters data.
+     * 
+     * @param rasters The raster data.
+     * @param color The raster colors.
+     * @param next The next colors.
+     * @param m The raster smooth.
+     * @param i The raster id.
+     * @param smooth <code>true</code> to smooth raster, <code>false</code> else.
+     */
+    public static void loadRaster(int[][] rasters, int[] color, int[] next, int m, int i, boolean smooth)
+    {
+        for (int c = 0; c < rasters.length; c++)
+        {
+            final int[] data = rasters[c];
+            if (smooth)
+            {
+                if (m == 0)
+                {
+                    color[c] = ColorRgba.getRasterColor(i, data, Rasterable.MAX_RASTERS);
+                    next[c] = ColorRgba.getRasterColor(i + 1, data, Rasterable.MAX_RASTERS);
+                }
+                else
+                {
+                    color[c] = ColorRgba.getRasterColor(Rasterable.MAX_RASTERS - i, data, Rasterable.MAX_RASTERS);
+                    next[c] = ColorRgba.getRasterColor(Rasterable.MAX_RASTERS - i - 1, data, Rasterable.MAX_RASTERS);
+                }
+            }
+            else
+            {
+                color[c] = ColorRgba.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
+                next[c] = color[c];
+            }
+        }
+    }
+
     /** List of rasters animation. */
-    public final List<SpriteAnimated> rastersAnim;
+    private final List<SpriteAnimated> rastersAnim;
     /** Raster filename. */
-    public final Media rasterFile;
+    private final Media rasterFile;
     /** Raster smooth flag. */
-    public final boolean smoothRaster;
+    private final boolean smoothRaster;
     /** Vertical frames. */
     private final int vf;
     /** Horizontal frames. */
@@ -57,20 +92,18 @@ public class SetupSurfaceRastered
      * Create a setup.
      * 
      * @param config The config media.
-     * @param alpha The alpha use flag.
      * @param rasterFile The raster media.
      * @param smoothRaster The raster smooth flag.
      * @throws LionEngineException If error when opening the media.
      */
-    public SetupSurfaceRastered(Media config, boolean alpha, Media rasterFile, boolean smoothRaster)
-            throws LionEngineException
+    public SetupSurfaceRastered(Media config, Media rasterFile, boolean smoothRaster) throws LionEngineException
     {
-        super(config, alpha);
+        super(config);
         this.rasterFile = rasterFile;
         this.smoothRaster = smoothRaster;
         if (rasterFile != null)
         {
-            rastersAnim = new ArrayList<>(Rasterable.MAX_RASTERS);
+            rastersAnim = new ArrayList<SpriteAnimated>(Rasterable.MAX_RASTERS);
             final ConfigFrames framesData = ConfigFrames.create(getConfigurer());
             hf = framesData.getHorizontal();
             vf = framesData.getVertical();
@@ -87,6 +120,36 @@ public class SetupSurfaceRastered
     }
 
     /**
+     * Get the rasters.
+     * 
+     * @return The rasters.
+     */
+    public List<SpriteAnimated> getRasters()
+    {
+        return rastersAnim;
+    }
+
+    /**
+     * Get the raster file.
+     * 
+     * @return The raster file.
+     */
+    public Media getFile()
+    {
+        return rasterFile;
+    }
+
+    /**
+     * Check if smooth raster.
+     * 
+     * @return <code>true</code> if smooth enabled, <code>false</code> else.
+     */
+    public boolean hasSmooth()
+    {
+        return smoothRaster;
+    }
+
+    /**
      * Load rasters.
      *
      * @throws LionEngineException If the raster data from the media are invalid.
@@ -96,35 +159,13 @@ public class SetupSurfaceRastered
         final int[][] rasters = Graphics.loadRaster(rasterFile);
         final int[] color = new int[rasters.length];
         final int[] colorNext = new int[rasters.length];
-        final int max = smoothRaster ? 2 : 1;
+        final int max = UtilConversion.boolToInt(smoothRaster) + 1;
 
         for (int m = 0; m < max; m++)
         {
             for (int i = 1; i <= Rasterable.MAX_RASTERS; i++)
             {
-                for (int c = 0; c < rasters.length; c++)
-                {
-                    if (smoothRaster)
-                    {
-                        if (m == 0)
-                        {
-                            color[c] = ColorRgba.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
-                            colorNext[c] = ColorRgba.getRasterColor(i + 1, rasters[c], Rasterable.MAX_RASTERS);
-                        }
-                        else
-                        {
-                            color[c] = ColorRgba.getRasterColor(Rasterable.MAX_RASTERS - i, rasters[c],
-                                    Rasterable.MAX_RASTERS);
-                            colorNext[c] = ColorRgba.getRasterColor(Rasterable.MAX_RASTERS - i - 1, rasters[c],
-                                    Rasterable.MAX_RASTERS);
-                        }
-                    }
-                    else
-                    {
-                        color[c] = ColorRgba.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
-                        colorNext[c] = color[c];
-                    }
-                }
+                loadRaster(rasters, color, colorNext, m, i, smoothRaster);
                 addRaster(color[0], color[1], color[2], colorNext[0], colorNext[1], colorNext[2]);
             }
         }

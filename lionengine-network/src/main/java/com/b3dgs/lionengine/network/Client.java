@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-interface Client
-        extends Networker<ConnectionListener>
+interface Client extends Networker<ConnectionListener>
 {
     /**
      * Connect to a server.

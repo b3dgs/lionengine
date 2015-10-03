@@ -37,9 +37,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateIdle
-        extends StateGame
-        implements TileCollidableListener
+class StateIdle extends StateGame implements TileCollidableListener
 {
     /** Can jump flag. */
     final AtomicBoolean canJump = new AtomicBoolean(false);
@@ -109,9 +107,7 @@ class StateIdle
     /**
      * Transition from {@link StateIdle} to {@link StateWalk}.
      */
-    private final class TransitionIdleToWalk
-            extends StateTransition
-            implements StateTransitionInputDirectionalChecker
+    private final class TransitionIdleToWalk extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.
@@ -131,9 +127,7 @@ class StateIdle
     /**
      * Transition from {@link StateIdle} to {@link StateJump}.
      */
-    private final class TransitionIdleToJump
-            extends StateTransition
-            implements StateTransitionInputDirectionalChecker
+    private final class TransitionIdleToJump extends StateTransition implements StateTransitionInputDirectionalChecker
     {
         /**
          * Create the transition.

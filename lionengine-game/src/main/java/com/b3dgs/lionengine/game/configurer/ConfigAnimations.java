@@ -21,11 +21,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -58,9 +56,9 @@ public final class ConfigAnimations
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static ConfigAnimations create(Configurer configurer)
+    public static ConfigAnimations create(Configurer configurer) throws LionEngineException
     {
-        final Map<String, Animation> animations = new HashMap<>(0);
+        final Map<String, Animation> animations = new HashMap<String, Animation>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(ANIMATION))
         {
             final String anim = node.readString(ANIMATION_NAME);
@@ -91,25 +89,26 @@ public final class ConfigAnimations
         final double speed = node.readDouble(ANIMATION_SPEED);
         final boolean reversed = node.readBoolean(ANIMATION_REVERSED);
         final boolean repeat = node.readBoolean(ANIMATION_REPEAT);
+
         return Anim.createAnimation(name, start, end, speed, reversed, repeat);
     }
 
     /**
      * Create an XML node from an animation.
      * 
+     * @param root The node root.
      * @param animation The animation reference.
-     * @return The animation node.
+     * @throws LionEngineException If error on writing.
      */
-    public static XmlNode createNode(Animation animation)
+    public static void export(XmlNode root, Animation animation) throws LionEngineException
     {
-        final XmlNode node = Stream.createXmlNode(ANIMATION);
+        final XmlNode node = root.createChild(ANIMATION);
         node.writeString(ANIMATION_NAME, animation.getName());
         node.writeInteger(ANIMATION_START, animation.getFirst());
         node.writeInteger(ANIMATION_END, animation.getLast());
         node.writeDouble(ANIMATION_SPEED, animation.getSpeed());
         node.writeBoolean(ANIMATION_REVERSED, animation.getReverse());
         node.writeBoolean(ANIMATION_REPEAT, animation.getRepeat());
-        return node;
     }
 
     /** Animations map. */
@@ -120,16 +119,15 @@ public final class ConfigAnimations
      */
     private ConfigAnimations()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**
      * Load animations from configuration media.
      * 
      * @param animations The animations mapping.
-     * @throws LionEngineException If error when opening the media.
      */
-    private ConfigAnimations(Map<String, Animation> animations) throws LionEngineException
+    private ConfigAnimations(Map<String, Animation> animations)
     {
         this.animations = animations;
     }
@@ -152,7 +150,10 @@ public final class ConfigAnimations
     public Animation getAnimation(String name) throws LionEngineException
     {
         final Animation animation = animations.get(name);
-        Check.notNull(animation);
+        if (animation == null)
+        {
+            throw new LionEngineException("Animation not found: ", name);
+        }
         return animation;
     }
 

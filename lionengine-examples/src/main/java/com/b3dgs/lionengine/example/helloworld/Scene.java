@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
-import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 
 /**
@@ -35,8 +34,7 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-class Scene
-        extends Sequence
+class Scene extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
@@ -54,14 +52,7 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, NATIVE);
-        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                end();
-            }
-        });
+        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override

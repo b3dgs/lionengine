@@ -46,8 +46,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AnimationFrameSelector
-        implements PaintListener, MouseListener, MouseMoveListener
+public final class AnimationFrameSelector implements PaintListener, MouseListener, MouseMoveListener
 {
     /** Frame color. */
     private static final ColorRgba COLOR_FRAME = new ColorRgba(128, 128, 192, 255);
@@ -106,7 +105,8 @@ public final class AnimationFrameSelector
         surface = Drawable.loadSprite(media);
         frameWidth = surface.getWidth() / horizontalFrames;
         frameHeight = surface.getHeight() / verticalFrames;
-        surface.load(false);
+        surface.load();
+        surface.prepare();
         surface.setLocation(0, 0);
 
         final GridData data = new GridData(surface.getWidth(), surface.getHeight());

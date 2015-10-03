@@ -26,9 +26,7 @@ import com.b3dgs.lionengine.core.Applet;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class AppletAwt
-        extends JApplet
-        implements Applet<AppletAwt>
+final class AppletAwt extends JApplet implements Applet<AppletAwt>
 {
     /** UID. */
     private static final long serialVersionUID = -7221935102778197564L;

@@ -17,55 +17,40 @@
  */
 package com.b3dgs.lionengine.editor.properties.tilecollision.handler;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.properties.PropertiesPart;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.map.TileCollision;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.editor.project.dialog.formula.FormulasEditDialog;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 
 /**
  * Remove formula handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulaRemoveHandler
+public final class FormulaRemoveHandler
 {
     /**
+     * Create handler.
+     */
+    public FormulaRemoveHandler()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Execute the handler.
+     * 
+     * @param parent The parent reference.
      */
     @Execute
-    @SuppressWarnings("static-method")
-    public void execute()
+    public void execute(Shell parent)
     {
-        final PropertiesPart part = UtilEclipse.getPart(PropertiesPart.ID, PropertiesPart.class);
-        final Tree properties = part.getTree();
-        final TileGame tile = (TileGame) properties.getData();
-        final TileCollision tileCollision = tile.getFeature(TileCollision.class);
-
-        final Collection<CollisionFormula> toRemove = new ArrayList<>();
-        for (final TreeItem selection : properties.getSelection())
-        {
-            for (final CollisionFormula formula : tileCollision.getCollisionFormulas())
-            {
-                if (formula.getName().equals(selection.getText(PropertiesPart.COLUMN_VALUE)))
-                {
-                    toRemove.add(formula);
-                }
-            }
-            part.clear(selection);
-        }
-        for (final CollisionFormula formula : toRemove)
-        {
-            tileCollision.removeCollisionFormula(formula);
-        }
-        toRemove.clear();
-        part.setInput(properties, tile);
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
+        final FormulasEditDialog dialog = new FormulasEditDialog(parent, mapCollision.getFormulasConfig());
+        dialog.open();
     }
 }

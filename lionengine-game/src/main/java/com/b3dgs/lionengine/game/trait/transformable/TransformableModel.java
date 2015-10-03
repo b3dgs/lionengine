@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.trait.transformable;
 
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.TraitModel;
@@ -27,14 +26,13 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
 /**
  * Transformable model implementation.
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigSize}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
+ * with {@link ConfigSize}.
  * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TransformableModel
-        extends TraitModel
-        implements Transformable
+public class TransformableModel extends TraitModel implements Transformable
 {
     /** Current x. */
     private double x;

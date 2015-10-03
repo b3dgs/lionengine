@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurer.ConfigPathfindable;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.map.Tile;
@@ -44,7 +43,6 @@ import com.b3dgs.lionengine.game.map.astar.PathData;
 import com.b3dgs.lionengine.game.map.astar.PathFinder;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 import com.b3dgs.lionengine.game.trait.orientable.Orientable;
 import com.b3dgs.lionengine.game.trait.orientable.OrientableModel;
@@ -53,14 +51,15 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 /**
  * Pathfindable implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.trait.Trait}:
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>
  * <li>{@link Orientable}</li>
  * </ul>
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link Configurer} compatible with {@link ConfigPathfindable}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
+ * with {@link ConfigPathfindable}.
  * </p>
  * <p>
  * The {@link Services} must provide the following services:
@@ -76,21 +75,21 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PathfindableModel
-        extends TraitModel
-        implements Pathfindable
+public class PathfindableModel extends TraitModel implements Pathfindable
 {
     /** Category not found error. */
     private static final String ERROR_CATEGORY = "Category not found: ";
     /** Diagonal speed factor. */
     private static final double DIAGONAL_SPEED = 0.8;
+    /** Debug text size. */
+    private static final int TEXT_DEBUG_SIZE = 8;
 
     /** Pathfindable listeners. */
-    private final Collection<PathfindableListener> listeners = new ArrayList<>();
+    private final Collection<PathfindableListener> listeners = new ArrayList<PathfindableListener>();
     /** List of shared path id. */
-    private final Collection<Integer> sharedPathIds = new HashSet<>(0);
+    private final Collection<Integer> sharedPathIds = new HashSet<Integer>(0);
     /** List of ignored id. */
-    private final Collection<Integer> ignoredIds = new HashSet<>(0);
+    private final Collection<Integer> ignoredIds = new HashSet<Integer>(0);
     /** Object id. */
     private Integer id;
     /** Viewer reference. */
@@ -190,16 +189,16 @@ public class PathfindableModel
         {
             for (int ty = dty; ty < dty + th; ty++)
             {
-                if (mapPath.getObjectsId(tx, ty).equals(id))
+                if (mapPath.getObjectsId(tx, ty).contains(id))
                 {
-                    mapPath.addObjectId(tx, ty, Integer.valueOf(0));
+                    mapPath.removeObjectId(tx, ty, id);
                 }
             }
         }
     }
 
     /**
-     * Update reference by updating map object ID.
+     * Update reference by updating map object Id.
      * 
      * @param lastStep The last step.
      * @param nextStep The next step.
@@ -212,31 +211,78 @@ public class PathfindableModel
             // Next step is free
             if (checkObjectId(path.getX(nextStep), path.getY(nextStep)))
             {
-                if (!pathStoppedRequested)
-                {
-                    removeObjectId(path.getX(lastStep), path.getY(lastStep));
-                    assignObjectId(path.getX(nextStep), path.getY(nextStep));
-                }
+                takeNextStep(lastStep, nextStep);
             }
-            // Need to avoid new obstacle
             else
             {
-                if (nextStep >= max - 1)
+                avoidObstacle(nextStep, max);
+            }
+        }
+    }
+
+    /**
+     * Update the next step has it is free.
+     * 
+     * @param lastStep The last step.
+     * @param nextStep The next step.
+     */
+    private void takeNextStep(int lastStep, int nextStep)
+    {
+        if (!pathStoppedRequested)
+        {
+            removeObjectId(path.getX(lastStep), path.getY(lastStep));
+            assignObjectId(path.getX(nextStep), path.getY(nextStep));
+        }
+    }
+
+    /**
+     * Update to avoid obstacle because next step is not free.
+     * 
+     * @param nextStep The next step.
+     * @param max The maximum steps.
+     */
+    private void avoidObstacle(int nextStep, int max)
+    {
+        if (nextStep >= max - 1)
+        {
+            pathStoppedRequested = true;
+        }
+        final Collection<Integer> cid = mapPath.getObjectsId(path.getX(nextStep), path.getY(nextStep));
+        if (sharedPathIds.containsAll(cid))
+        {
+            // skip = true;
+            setDestination(destX, destY);
+        }
+        else
+        {
+            if (!ignoredIds.containsAll(cid))
+            {
+                setDestination(destX, destY);
+            }
+        }
+    }
+
+    /**
+     * Render the current path.
+     * 
+     * @param g The graphic output.
+     */
+    private void renderPath(Graphic g)
+    {
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        for (int i = 0; i < path.getLength(); i++)
+        {
+            final int x = (int) viewer.getViewpointX(path.getX(i) * tw);
+            final int y = (int) viewer.getViewpointY(path.getY(i) * th);
+            g.drawRect(x, y - th, tw, th, true);
+            if (renderDebug)
+            {
+                final Tile tile = map.getTile(path.getX(i), path.getY(i));
+                if (tile != null)
                 {
-                    pathStoppedRequested = true;
-                }
-                final Collection<Integer> cid = mapPath.getObjectsId(path.getX(nextStep), path.getY(nextStep));
-                if (sharedPathIds.containsAll(cid))
-                {
-                    // skip = true;
-                    setDestination(destX, destY);
-                }
-                else
-                {
-                    if (!ignoredIds.containsAll(cid))
-                    {
-                        setDestination(destX, destY);
-                    }
+                    final TilePath tilePath = tile.getFeature(TilePath.class);
+                    text.draw(g, x + 2, y - th + 2, String.valueOf(getCost(tilePath.getCategory())));
                 }
             }
         }
@@ -466,11 +512,16 @@ public class PathfindableModel
     {
         if (path != null)
         {
+            final int steps;
             if (pathStopped)
             {
-                return currentStep;
+                steps = currentStep;
             }
-            return path.getLength();
+            else
+            {
+                steps = path.getLength();
+            }
+            return steps;
         }
         return 0;
     }
@@ -488,8 +539,8 @@ public class PathfindableModel
         viewer = services.get(Viewer.class);
         mapPath = map.getFeature(MapTilePath.class);
         id = owner.getId();
-        final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth() + map.getInTileHeight()
-                * map.getInTileHeight());
+        final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
+                                          + map.getInTileHeight() * map.getInTileHeight());
         pathfinder = Astar.createPathFinder(map, range, true, Astar.createHeuristicClosest());
         categories = ConfigPathfindable.create(owner.getConfigurer());
 
@@ -593,23 +644,7 @@ public class PathfindableModel
         {
             final ColorRgba oldColor = g.getColor();
             g.setColor(ColorRgba.GREEN);
-            final int tw = map.getTileWidth();
-            final int th = map.getTileHeight();
-            for (int i = 0; i < path.getLength(); i++)
-            {
-                final int x = (int) viewer.getViewpointX(path.getX(i) * tw);
-                final int y = (int) viewer.getViewpointY(path.getY(i) * th);
-                g.drawRect(x, y - th, tw, th, true);
-                if (renderDebug)
-                {
-                    final Tile tile = map.getTile(path.getX(i), path.getY(i));
-                    if (tile != null)
-                    {
-                        final TilePath tilePath = tile.getFeature(TilePath.class);
-                        text.draw(g, x + 2, y - th + 2, String.valueOf(getCost(tilePath.getCategory())));
-                    }
-                }
-            }
+            renderPath(g);
             g.setColor(oldColor);
         }
     }
@@ -696,7 +731,7 @@ public class PathfindableModel
         renderDebug = debug;
         if (text == null)
         {
-            text = Graphics.createText(Text.SANS_SERIF, 8, TextStyle.NORMAL);
+            text = Graphics.createText(Text.SANS_SERIF, TEXT_DEBUG_SIZE, TextStyle.NORMAL);
             text.setColor(ColorRgba.BLACK);
         }
     }

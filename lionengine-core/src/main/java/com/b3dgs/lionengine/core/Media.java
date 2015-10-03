@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * <pre>
  * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), Verbose.CRITICAL, &quot;resources&quot;);
  * Medias.create(&quot;img&quot;, &quot;image.png&quot;);
- * System.out.println(Medias.create()); // print: resources/img/image.png
+ * print(Medias.create()); // print: resources/img/image.png
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)

@@ -38,6 +38,7 @@ import org.xml.sax.SAXException;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * XML parser implementation.
@@ -58,7 +59,7 @@ public final class XmlFactory
     private static final String PROPERTY_INDENT = "{http://xml.apache.org/xslt}indent-amount";
 
     /** Load factory. */
-    private static DocumentBuilderFactory documentFactory;
+    private static DocumentBuilder documentFactory;
     /** Save factory. */
     private static TransformerFactory transformerFactory;
 
@@ -73,21 +74,33 @@ public final class XmlFactory
     {
         Check.notNull(media);
 
-        try (InputStream inputStream = media.getInputStream())
+        final InputStream input = media.getInputStream();
+        try
         {
-            Check.notNull(inputStream);
-
-            final DocumentBuilder builder = getDocumentFactory().newDocumentBuilder();
+            final DocumentBuilder builder = getDocumentFactory();
             builder.setErrorHandler(null);
-            final Document document = builder.parse(inputStream);
+            final Document document = builder.parse(input);
             final Element root = document.getDocumentElement();
-            return new XmlNodeImpl(root);
+            return new XmlNodeImpl(document, root);
         }
-        catch (final IOException
-                     | SAXException
-                     | ParserConfigurationException exception)
+        catch (final IOException exception)
         {
             throw new LionEngineException(exception, media, ERROR_READING);
+        }
+        catch (final SAXException exception)
+        {
+            throw new LionEngineException(exception, media, ERROR_READING);
+        }
+        finally
+        {
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(XmlNode.class, "load", exception2);
+            }
         }
     }
 
@@ -103,24 +116,38 @@ public final class XmlFactory
         Check.notNull(root);
         Check.notNull(media);
 
-        try (OutputStream outputStream = media.getOutputStream())
+        final OutputStream output = media.getOutputStream();
+        try
         {
             final Transformer transformer = getTransformerFactory().newTransformer();
             if (root instanceof XmlNodeImpl)
             {
+                final XmlNodeImpl node = (XmlNodeImpl) root;
+                node.normalize();
                 root.writeString(HEADER_ATTRIBUTE, HEADER_VALUE);
-                final DOMSource source = new DOMSource(((XmlNodeImpl) root).getElement());
-                final StreamResult result = new StreamResult(outputStream);
-                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-                transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+                final DOMSource source = new DOMSource(node.getElement());
+                final StreamResult result = new StreamResult(output);
+                final String yes = "yes";
+                transformer.setOutputProperty(OutputKeys.INDENT, yes);
+                transformer.setOutputProperty(OutputKeys.STANDALONE, yes);
                 transformer.setOutputProperty(PROPERTY_INDENT, "4");
                 transformer.transform(source, result);
             }
         }
-        catch (final IOException
-                     | TransformerException exception)
+        catch (final TransformerException exception)
         {
             throw new LionEngineException(exception, media, ERROR_WRITING);
+        }
+        finally
+        {
+            try
+            {
+                output.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(XmlNode.class, "save", exception2);
+            }
         }
     }
 
@@ -129,13 +156,22 @@ public final class XmlFactory
      * 
      * @return The document factory.
      */
-    static DocumentBuilderFactory getDocumentFactory()
+    static DocumentBuilder getDocumentFactory()
     {
         synchronized (XmlFactory.class)
         {
             if (documentFactory == null)
             {
-                documentFactory = DocumentBuilderFactory.newInstance();
+                final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setIgnoringElementContentWhitespace(true);
+                try
+                {
+                    documentFactory = documentBuilderFactory.newDocumentBuilder();
+                }
+                catch (final ParserConfigurationException exception)
+                {
+                    Verbose.exception(XmlFactory.class, "getDocumentFactory", exception);
+                }
             }
         }
         return documentFactory;
@@ -163,6 +199,6 @@ public final class XmlFactory
      */
     private XmlFactory()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

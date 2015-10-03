@@ -42,9 +42,7 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Ball
-        extends ObjectGame
-        implements Updatable, Renderable, CollidableListener
+class Ball extends ObjectGame implements Updatable, Renderable, CollidableListener
 {
     /** Racket media. */
     public static final Media MEDIA = Medias.create("Ball.xml");
@@ -102,8 +100,13 @@ class Ball
     public void render(Graphic g)
     {
         g.setColor(COLOR);
-        g.drawOval(viewer, Origin.MIDDLE, (int) transformable.getX(), (int) transformable.getY(),
-                transformable.getWidth(), transformable.getHeight(), true);
+        g.drawOval(viewer,
+                   Origin.MIDDLE,
+                   (int) transformable.getX(),
+                   (int) transformable.getY(),
+                   transformable.getWidth(),
+                   transformable.getHeight(),
+                   true);
         collidable.render(g);
     }
 

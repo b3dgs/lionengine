@@ -48,9 +48,7 @@ import com.b3dgs.lionengine.game.trait.layerable.LayerableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Button
-        extends ObjectGame
-        implements Action, Assign, Updatable, Renderable
+class Button extends ObjectGame implements Action, Assign, Updatable, Renderable
 {
     /** Extract media. */
     public static final Media EXTRACT = Medias.create("Extract.xml");
@@ -85,7 +83,7 @@ class Button
     public Button(SetupSurface setup, Services services)
     {
         super(setup, services);
-        image = Drawable.loadImage(setup.surface);
+        image = Drawable.loadImage(setup.getSurface());
 
         text = services.get(Text.class);
         cursor = services.get(Cursor.class);

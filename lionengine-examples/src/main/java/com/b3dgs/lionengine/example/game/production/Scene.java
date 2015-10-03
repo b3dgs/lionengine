@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.production;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Graphic;
@@ -26,7 +27,6 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
-import com.b3dgs.lionengine.core.awt.EventAction;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -50,8 +50,7 @@ import com.b3dgs.lionengine.game.object.Services;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-class Scene
-        extends Sequence
+class Scene extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 200, 60);
@@ -89,28 +88,23 @@ class Scene
         super(loader, NATIVE);
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
-        keyboard.addActionPressed(Keyboard.ESCAPE, new EventAction()
-        {
-            @Override
-            public void action()
-            {
-                end();
-            }
-        });
+        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
     protected void load()
     {
-        map.create(Medias.create("map", "level.png"), Medias.create("map", "sheets.xml"),
-                Medias.create("map", "groups.xml"));
+        map.create(Medias.create("map", "level.png"),
+                   Medias.create("map", "sheets.xml"),
+                   Medias.create("map", "groups.xml"));
         mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
 
-        hud.load(false);
+        hud.load();
+        hud.prepare();
         text.setLocation(74, 192);
 
         cursor.addImage(0, Medias.create("cursor.png"));
-        cursor.load(false);
+        cursor.load();
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setInputDevice(mouse);
@@ -140,7 +134,7 @@ class Scene
     @Override
     public void update(double extrp)
     {
-        text.setText("");
+        text.setText(Constant.EMPTY_STRING);
         mouse.update(extrp);
         cursor.update(extrp);
         handler.update(extrp);

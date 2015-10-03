@@ -25,6 +25,7 @@ import java.awt.geom.Rectangle2D;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Text;
@@ -34,8 +35,7 @@ import com.b3dgs.lionengine.core.Text;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TextAwt
-        implements Text
+final class TextAwt implements Text
 {
     /**
      * Get the style equivalence.
@@ -45,17 +45,22 @@ final class TextAwt
      */
     private static int getStyle(TextStyle style)
     {
+        final int value;
         switch (style)
         {
             case NORMAL:
-                return Font.TRUETYPE_FONT;
+                value = Font.TRUETYPE_FONT;
+                break;
             case BOLD:
-                return Font.BOLD;
+                value = Font.BOLD;
+                break;
             case ITALIC:
-                return Font.ITALIC;
+                value = Font.ITALIC;
+                break;
             default:
-                throw new RuntimeException("Unsupported text style !");
+                throw new LionEngineException("Unsupported text style: ", style.name());
         }
+        return value;
     }
 
     /** Text java font. */
@@ -129,7 +134,7 @@ final class TextAwt
                 ty = (int) textSize.getHeight() + y;
                 break;
             default:
-                throw new RuntimeException("Unsupported alignment !");
+                throw new LionEngineException("Unsupported alignment: ", alignment.name());
         }
 
         final ColorRgba colorOld = g.getColor();

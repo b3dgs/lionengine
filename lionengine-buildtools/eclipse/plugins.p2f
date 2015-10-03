@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?p2f version='1.0.0'?>
+<p2f version='1.0.0'>
+  <ius size='16'>
+    <iu id='com.android.ide.eclipse.ddms.feature.feature.group' name='Android DDMS' version='23.0.6.1720515'>
+      <repositories size='1'>
+        <repository location='https://dl-ssl.google.com/android/eclipse/'/>
+      </repositories>
+    </iu>
+    <iu id='com.android.ide.eclipse.adt.feature.feature.group' name='Android Development Tools' version='23.0.6.1720515'>
+      <repositories size='1'>
+        <repository location='https://dl-ssl.google.com/android/eclipse/'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.cdt.feature.group' name='C/C++ Development Tools' version='8.6.0.201502131403'>
+      <repositories size='2'>
+        <repository location='http://download.eclipse.org/tools/cdt/releases/8.6'/>
+        <repository location='http://download.eclipse.org/releases/luna'/>
+      </repositories>
+    </iu>
+    <iu id='com.basistech.m2e.code.quality.checkstyle.feature.feature.group' name='Checkstyle configuration plugin for M2Eclipse' version='1.0.0.201503101518'>
+      <repositories size='2'>
+        <repository location='http://m2e-code-quality.github.io/m2e-code-quality/site/'/>
+        <repository location='http://m2e-code-quality.github.com/m2e-code-quality/site/latest/'/>
+      </repositories>
+    </iu>
+    <iu id='com.mountainminds.eclemma.feature.feature.group' name='EclEmma Java Code Coverage' version='2.3.2.201409141915'>
+      <repositories size='1'>
+        <repository location='http://update.eclemma.org/'/>
+      </repositories>
+    </iu>
+    <iu id='net.sf.eclipsecs.feature.group' name='Eclipse Checkstyle Plug-in' version='6.5.0.201504121610'>
+      <repositories size='2'>
+        <repository location='http://eclipse-cs.sf.net/update'/>
+        <repository location='http://eclipse-cs.sourceforge.net/update/'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.egit.feature.group' name='Eclipse Git Team Provider' version='4.0.1.201506240215-r'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/egit/updates'/>
+      </repositories>
+    </iu>
+    <iu id='epp.package.java' name='Eclipse IDE for Java Developers' version='4.4.2.20150219-0708'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/releases/luna'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jdt.source.feature.group' name='Eclipse JDT Plug-in Developer Resources' version='3.10.1.v20150204-1700'>
+      <repositories size='2'>
+        <repository location='http://download.eclipse.org/releases/luna'/>
+        <repository location='http://download.eclipse.org/eclipse/updates/4.4'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.pde.source.feature.group' name='Eclipse PDE Plug-in Developer Resources' version='3.10.1.v20150204-1700'>
+      <repositories size='2'>
+        <repository location='http://download.eclipse.org/releases/luna'/>
+        <repository location='http://download.eclipse.org/eclipse/updates/4.4'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.pde.feature.group' name='Eclipse Plug-in Development Environment' version='3.10.1.v20150204-1700'>
+      <repositories size='2'>
+        <repository location='http://download.eclipse.org/releases/luna'/>
+        <repository location='http://download.eclipse.org/eclipse/updates/4.4'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.rcp.source.feature.group' name='Eclipse RCP Plug-in Developer Resources' version='4.4.2.v20150204-1700'>
+      <repositories size='2'>
+        <repository location='http://download.eclipse.org/releases/luna'/>
+        <repository location='http://download.eclipse.org/eclipse/updates/4.4'/>
+      </repositories>
+    </iu>
+    <iu id='edu.umd.cs.findbugs.plugin.eclipse.feature.group' name='FindBugs Feature' version='3.0.1.20150306-5afe4d1'>
+      <repositories size='1'>
+        <repository location='http://findbugs.cs.umd.edu/eclipse'/>
+      </repositories>
+    </iu>
+    <iu id='net.sf.jautodoc.feature.feature.group' name='JAutodoc' version='1.13.0'>
+      <repositories size='1'>
+        <repository location='http://jautodoc.sourceforge.net/update/'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.jgit.feature.group' name='Java implementation of Git' version='4.0.1.201506240215-r'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/egit/updates'/>
+      </repositories>
+    </iu>
+    <iu id='org.eclipse.m2e.feature.feature.group' name='m2e - Maven Integration for Eclipse (includes Incubating components)' version='1.6.0.20150526-2032'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/technology/m2e/releases'/>
+      </repositories>
+    </iu>
+  </ius>
+</p2f>

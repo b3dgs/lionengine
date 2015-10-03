@@ -22,8 +22,7 @@ package com.b3dgs.lionengine.core.awt.swing;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ComboItem
-        implements CanEnable
+public final class ComboItem implements CanEnable
 {
     /**
      * Convert an array of objects to an array of combo item.

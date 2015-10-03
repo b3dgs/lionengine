@@ -27,12 +27,11 @@ import com.b3dgs.lionengine.network.purview.Networkable;
 /**
  * Networked world base implementation.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <L> Listener type.
  * @param <N> Network implementation.
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class NetworkedWorldModel<L extends ClientListener, N extends NetworkModel<L>>
-        implements NetworkedWorld
+abstract class NetworkedWorldModel<L extends ClientListener, N extends NetworkModel<L>> implements NetworkedWorld
 {
     /** List of networkable objects. */
     protected final Collection<Networkable> networkables;
@@ -53,9 +52,9 @@ abstract class NetworkedWorldModel<L extends ClientListener, N extends NetworkMo
     NetworkedWorldModel(N network)
     {
         this.network = network;
-        networkables = new HashSet<>(1);
-        toAdd = new ArrayList<>(1);
-        listeners = new ArrayList<>(1);
+        networkables = new HashSet<Networkable>(1);
+        toAdd = new ArrayList<Networkable>(1);
+        listeners = new ArrayList<L>(1);
         willAdd = false;
     }
 

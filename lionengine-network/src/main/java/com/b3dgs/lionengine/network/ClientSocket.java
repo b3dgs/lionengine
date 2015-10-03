@@ -150,13 +150,17 @@ final class ClientSocket
     {
         try
         {
+            final byte[] data;
             final int size = in.available();
             if (size <= 0)
             {
-                return null;
+                data = null;
             }
-            final byte[] data = new byte[size];
-            in.readFully(data);
+            else
+            {
+                data = new byte[size];
+                in.readFully(data);
+            }
             return data;
         }
         catch (final Exception exception)

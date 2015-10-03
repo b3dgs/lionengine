@@ -18,21 +18,17 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.object.ComponentCollision;
-import com.b3dgs.lionengine.game.trait.collidable.Collidable;
 
 /**
  * Represents the collision data, offsets and size. Should be used in combination with
- * {@link ConfigCollisions#getCollision(String)} and {@link Collidable#addCollision(Collision)}.
+ * {@link com.b3dgs.lionengine.game.configurer.ConfigCollisions#getCollision(String)} and
+ * {@link com.b3dgs.lionengine.game.trait.collidable.Collidable#addCollision(Collision)}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
- * @see ComponentCollision
+ * @see com.b3dgs.lionengine.game.configurer.Configurer
+ * @see com.b3dgs.lionengine.game.object.ComponentCollision
  */
-public class Collision
-        implements Nameable
+public class Collision implements Nameable
 {
     /** Name. */
     private final String name;

@@ -57,6 +57,6 @@ public final class AudioWav
      */
     private AudioWav()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

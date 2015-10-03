@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public final class ConfigObject
 {
-    /** Class node name. */
+    /** Class attribute name. */
     public static final String CLASS = Configurer.PREFIX + "class";
-    /** Setup node name. */
+    /** Setup attribute name. */
     public static final String SETUP = Configurer.PREFIX + "setup";
 
     /**
@@ -41,7 +41,10 @@ public final class ConfigObject
      */
     public static ConfigObject create(Configurer configurer) throws LionEngineException
     {
-        return new ConfigObject(configurer.getText(CLASS), configurer.getText(SETUP));
+        final String clazz = configurer.getText(CLASS);
+        final String setup = configurer.getText(SETUP);
+
+        return new ConfigObject(clazz, setup);
     }
 
     /** Object class name. */
@@ -54,7 +57,7 @@ public final class ConfigObject
      */
     private ConfigObject()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**

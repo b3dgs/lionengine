@@ -17,27 +17,37 @@
  */
 package com.b3dgs.lionengine.network;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * List of messages system flag. This allows to filter data on message received depending of the case.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-interface NetworkMessageSystemId
+final class NetworkMessageSystemId
 {
     /** First connection step (client if preparing its connection with the server). */
-    byte CONNECTING = -120;
+    public static final byte CONNECTING = -120;
     /** Last connection step (client is now connected to the server properly). */
-    byte CONNECTED = -110;
+    public static final byte CONNECTED = -110;
     /** Ping message. */
-    byte PING = -105;
+    public static final byte PING = -105;
     /** Client is kicked. */
-    byte KICKED = -100;
+    public static final byte KICKED = -100;
     /** Inform about a new connected client. */
-    byte OTHER_CLIENT_CONNECTED = -90;
+    public static final byte OTHER_CLIENT_CONNECTED = -90;
     /** Disconnect other client. */
-    byte OTHER_CLIENT_DISCONNECTED = -80;
+    public static final byte OTHER_CLIENT_DISCONNECTED = -80;
     /** Other client Name changes. */
-    byte OTHER_CLIENT_RENAMED = -70;
+    public static final byte OTHER_CLIENT_RENAMED = -70;
     /** User message. */
-    byte USER_MESSAGE = -60;
+    public static final byte USER_MESSAGE = -60;
+
+    /**
+     * Private constructor.
+     */
+    private NetworkMessageSystemId()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+    }
 }

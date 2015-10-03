@@ -23,7 +23,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
 
@@ -32,8 +32,7 @@ import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionFunctionLinearComposite
-        implements CollisionFunctionTypeComposite
+public class CollisionFunctionLinearComposite implements CollisionFunctionTypeComposite
 {
     /** Default function values. */
     private static final String DEFAULT_FUNCTION_VALUES = String.valueOf(0.0);
@@ -42,6 +41,14 @@ public class CollisionFunctionLinearComposite
     private Text textA;
     /** B value. */
     private Text textB;
+
+    /**
+     * Create composite.
+     */
+    public CollisionFunctionLinearComposite()
+    {
+        // Nothing to do
+    }
 
     /*
      * CollisionFunctionTypeComposite
@@ -54,10 +61,10 @@ public class CollisionFunctionLinearComposite
         composite.setLayout(new GridLayout(2, true));
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-        textA = UtilSwt.createText(Messages.Dialog_TileCollision_Linear_A, composite);
+        textA = UtilText.create(Messages.Dialog_TileCollision_Linear_A, composite);
         textA.setText(DEFAULT_FUNCTION_VALUES);
 
-        textB = UtilSwt.createText(Messages.Dialog_TileCollision_Linear_B, composite);
+        textB = UtilText.create(Messages.Dialog_TileCollision_Linear_B, composite);
         textB.setText(DEFAULT_FUNCTION_VALUES);
     }
 

@@ -21,14 +21,13 @@ import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.TraitModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Default body supporting gravity implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.trait.Trait}:
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>
@@ -36,9 +35,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class BodyModel
-        extends TraitModel
-        implements Body
+public class BodyModel extends TraitModel implements Body
 {
     /** Body force. */
     private final Force force;
@@ -81,7 +78,15 @@ public class BodyModel
     @Override
     public void update(double extrp)
     {
-        final double factor = desiredFps > 0 ? desiredFps * extrp : 1.0;
+        final double factor;
+        if (desiredFps > 0)
+        {
+            factor = desiredFps * extrp;
+        }
+        else
+        {
+            factor = 1.0;
+        }
         force.addDirection(0.0, -getWeight() / factor);
         transformable.moveLocation(extrp, force, vectors);
     }

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
@@ -39,9 +40,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ServerImpl
-        extends NetworkModel<ClientListener>
-        implements Server
+final class ServerImpl extends NetworkModel<ClientListener> implements Server
 {
     /**
      * Send the id and the name to the client.
@@ -75,7 +74,7 @@ final class ServerImpl
     }
 
     /** Client list. */
-    private final HashMap<Byte, ClientSocket> clientsList;
+    private final Map<Byte, ClientSocket> clientsList;
     /** Remove list. */
     private final Collection<ClientSocket> removeList;
     /** Average bandwidth. */
@@ -109,8 +108,8 @@ final class ServerImpl
     ServerImpl(NetworkMessageDecoder decoder)
     {
         super(decoder);
-        clientsList = new HashMap<>(1);
-        removeList = new HashSet<>(1);
+        clientsList = new HashMap<Byte, ClientSocket>(1);
+        removeList = new HashSet<ClientSocket>(1);
         bandwidthTimer = new Timing();
         willRemove = false;
         clientsNumber = 0;
@@ -135,7 +134,8 @@ final class ServerImpl
             {
                 lastId++;
                 secure++;
-                if (secure > 127)
+                final int max = 127;
+                if (secure > max)
                 {
                     break;
                 }
@@ -151,14 +151,13 @@ final class ServerImpl
             clientsList.put(Byte.valueOf(client.getId()), client);
             clientsNumber++;
         }
-        catch (final IOException
-                     | LionEngineException exception)
+        catch (final IOException exception)
         {
-            Verbose.warning(Server.class, "addClient", "Error on adding client: ", exception.getMessage());
-            if (clientsList.remove(Byte.valueOf(lastId)) != null)
-            {
-                clientsNumber--;
-            }
+            errorNewClientConnected(exception);
+        }
+        catch (final LionEngineException exception)
+        {
+            errorNewClientConnected(exception);
         }
     }
 
@@ -176,6 +175,20 @@ final class ServerImpl
             clientsNumber--;
             willRemove = true;
             Verbose.info("Server: ", client.getName() + " disconnected");
+        }
+    }
+
+    /**
+     * Error on new client connection.
+     * 
+     * @param exception The associated exception.
+     */
+    private void errorNewClientConnected(Exception exception)
+    {
+        Verbose.warning(Server.class, "addClient", "Error on adding client: ", exception.getMessage());
+        if (clientsList.remove(Byte.valueOf(lastId)) != null)
+        {
+            clientsNumber--;
         }
     }
 
@@ -359,7 +372,8 @@ final class ServerImpl
                     decodeMessage(type, from, dest, clientBuffer);
                 }
             }
-            bandwidth += 4 + size;
+            final int headerSize = 4;
+            bandwidth += headerSize + size;
         }
     }
 
@@ -472,7 +486,7 @@ final class ServerImpl
         clientConnectionListener.terminate();
 
         // Disconnect all clients
-        final Collection<ClientSocket> delete = new ArrayList<>(clientsList.size());
+        final Collection<ClientSocket> delete = new ArrayList<ClientSocket>(clientsList.size());
         for (final ClientSocket client : clientsList.values())
         {
             for (final ClientSocket other : clientsList.values())
@@ -524,7 +538,8 @@ final class ServerImpl
             {
                 continue;
             }
-            try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data)))
+            final DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));
+            try
             {
                 final byte messageSystemId = buffer.readByte();
                 final byte from = buffer.readByte();
@@ -540,6 +555,17 @@ final class ServerImpl
             catch (final IOException exception)
             {
                 Verbose.warning(Server.class, "update", "Error on updating server: ", exception.getMessage());
+            }
+            finally
+            {
+                try
+                {
+                    buffer.close();
+                }
+                catch (final IOException exception2)
+                {
+                    Verbose.exception(getClass(), "receiveMessages", exception2);
+                }
             }
         }
         // Remove deleted clients
@@ -567,8 +593,10 @@ final class ServerImpl
                 {
                     continue;
                 }
-                try (ByteArrayOutputStream encode = message.encode())
+                ByteArrayOutputStream encode = null;
+                try
                 {
+                    encode = message.encode();
                     final byte[] encoded = encode.toByteArray();
                     // Message header
                     client.getOut().writeByte(NetworkMessageSystemId.USER_MESSAGE);
@@ -579,16 +607,35 @@ final class ServerImpl
                     client.getOut().writeInt(encoded.length);
                     client.getOut().write(encoded);
                     client.getOut().flush();
-                    bandwidth += 4 + encoded.length;
+
+                    final int headerSize = 4;
+                    bandwidth += headerSize + encoded.length;
                 }
                 catch (final IOException exception)
                 {
-                    Verbose.warning(Server.class, "sendMessage", "Unable to send the messages for client: ",
-                            String.valueOf(client.getId()));
+                    Verbose.warning(Server.class,
+                                    "sendMessage",
+                                    "Unable to send the messages for client: ",
+                                    String.valueOf(client.getId()));
+                }
+                finally
+                {
+                    if (encode != null)
+                    {
+                        try
+                        {
+                            encode.close();
+                        }
+                        catch (final IOException exception2)
+                        {
+                            Verbose.exception(getClass(), "sendMessages", exception2);
+                        }
+                    }
                 }
             }
         }
-        if (bandwidthTimer.elapsed(1000L))
+        final long bandwidthMilli = 1000L;
+        if (bandwidthTimer.elapsed(bandwidthMilli))
         {
             bandwidthPerSecond = bandwidth;
             bandwidth = 0;

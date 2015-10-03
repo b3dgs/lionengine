@@ -19,28 +19,37 @@ package com.b3dgs.lionengine.editor.world.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Set show hide collisions handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetShowCollisionsHandler
+public final class SetShowCollisionsHandler
 {
     /** Short id. */
-    public static final String SHORT_ID = "collisions";
+    public static final String ID = "collisions";
+
+    /**
+     * Create handler.
+     */
+    public SetShowCollisionsHandler()
+    {
+        // Nothing to do
+    }
 
     /**
      * Execute the handler.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute()
     {
-        final WorldViewPart part = UtilEclipse.getPart(WorldViewPart.ID, WorldViewPart.class);
-        part.switchCollisionsEnabled();
+        final Services services = WorldModel.INSTANCE.getServices();
+        final WorldPart part = services.get(WorldPart.class);
+        part.getUpdater().switchCollisionsEnabled();
         part.update();
     }
 }

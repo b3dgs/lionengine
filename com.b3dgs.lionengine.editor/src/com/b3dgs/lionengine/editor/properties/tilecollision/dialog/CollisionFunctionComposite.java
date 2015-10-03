@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionType;
 
@@ -62,6 +62,14 @@ public class CollisionFunctionComposite
     CollisionFunction old;
 
     /**
+     * Create composite.
+     */
+    public CollisionFunctionComposite()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Load an existing function and fill fields.
      * 
      * @param function The function to load.
@@ -86,7 +94,7 @@ public class CollisionFunctionComposite
         group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         group.setText(Messages.Dialog_TileCollision_Function);
 
-        comboFunction = UtilSwt.createCombo(group, CollisionFunctionType.values());
+        comboFunction = UtilCombo.create(group, CollisionFunctionType.values());
         comboFunction.addSelectionListener(new SelectionAdapter()
         {
             @Override

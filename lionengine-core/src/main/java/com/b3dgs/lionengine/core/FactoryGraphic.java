@@ -26,13 +26,13 @@ import com.b3dgs.lionengine.Transparency;
 /**
  * Represents the graphic factory.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Renderer
  * @see Screen
  * @see Graphic
  * @see Text
  * @see ImageBuffer
  * @see Transform
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface FactoryGraphic
 {
@@ -82,11 +82,10 @@ public interface FactoryGraphic
      * Get an image buffer from an image file.
      * 
      * @param media The image media.
-     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image buffer from file.
      * @throws LionEngineException If an error occurred when reading the image.
      */
-    ImageBuffer getImageBuffer(Media media, boolean alpha) throws LionEngineException;
+    ImageBuffer getImageBuffer(Media media) throws LionEngineException;
 
     /**
      * Get an image buffer from an image buffer.
@@ -109,8 +108,8 @@ public interface FactoryGraphic
      * Split an image into an array of sub image.
      * 
      * @param image The image to split.
-     * @param h The number of horizontal divisions (> 0).
-     * @param v The number of vertical divisions (> 0).
+     * @param h The number of horizontal divisions (strictly positive).
+     * @param v The number of vertical divisions (strictly positive).
      * @return The splited images array (can not be empty).
      */
     ImageBuffer[] splitImage(ImageBuffer image, int h, int v);
@@ -183,13 +182,4 @@ public interface FactoryGraphic
      * @return The rastered image.
      */
     ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize);
-
-    /**
-     * Load a raster data from a file.
-     * 
-     * @param media The raster media.
-     * @return The raster data (can not be empty).
-     * @throws LionEngineException If the raster data from the media are invalid.
-     */
-    int[][] loadRaster(Media media) throws LionEngineException;
 }

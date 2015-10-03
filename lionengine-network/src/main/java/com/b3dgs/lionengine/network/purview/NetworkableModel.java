@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class NetworkableModel
-        implements Networkable
+public class NetworkableModel implements Networkable
 {
     /** List of messages. */
     private final Collection<NetworkMessage> messages;
@@ -40,7 +39,7 @@ public class NetworkableModel
      */
     public NetworkableModel()
     {
-        messages = new ArrayList<>(4);
+        messages = new ArrayList<NetworkMessage>();
         clientId = Byte.valueOf((byte) -1);
     }
 

@@ -25,8 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class AnimatorImpl
-        implements Animator
+final class AnimatorImpl implements Animator
 {
     /** Frame. */
     private static final double FRAME = 1.0;
@@ -74,22 +73,30 @@ final class AnimatorImpl
         {
             // If not reversed, done, else, reverse
             current = last + HALF_FRAME;
-            if (!reverse)
+            checkStatePlaying();
+        }
+    }
+
+    /**
+     * Check state in playing case.
+     */
+    private void checkStatePlaying()
+    {
+        if (!reverse)
+        {
+            if (repeat)
             {
-                if (repeat)
-                {
-                    state = AnimState.PLAYING;
-                    current = first;
-                }
-                else
-                {
-                    state = AnimState.FINISHED;
-                }
+                state = AnimState.PLAYING;
+                current = first;
             }
             else
             {
-                state = AnimState.REVERSING;
+                state = AnimState.FINISHED;
             }
+        }
+        else
+        {
+            state = AnimState.REVERSING;
         }
     }
 

@@ -29,8 +29,7 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class EntityCollisionList
-        extends ObjectList<Collision>
+public class EntityCollisionList extends ObjectList<Collision>
 {
     /** Configurer reference. */
     private final Configurer configurer;
@@ -39,10 +38,11 @@ public class EntityCollisionList
      * Create an entity collision list and associate its configurer and properties.
      * 
      * @param configurer The configurer reference.
+     * @param properties The properties reference.
      */
-    public EntityCollisionList(Configurer configurer)
+    public EntityCollisionList(Configurer configurer, EntityCollisionProperties properties)
     {
-        super(Collision.class);
+        super(Collision.class, properties);
         this.configurer = configurer;
     }
 
@@ -63,8 +63,12 @@ public class EntityCollisionList
     @Override
     protected Collision copyObject(Collision collision)
     {
-        return new Collision(collision.getName(), collision.getOffsetX(), collision.getOffsetY(), collision.getWidth(),
-                collision.getHeight(), collision.hasMirror());
+        return new Collision(collision.getName(),
+                             collision.getOffsetX(),
+                             collision.getOffsetY(),
+                             collision.getWidth(),
+                             collision.getHeight(),
+                             collision.hasMirror());
     }
 
     @Override

@@ -27,8 +27,7 @@ import com.b3dgs.lionengine.core.Updatable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Mouse
-        extends InputDevicePointer, Updatable
+public interface Mouse extends InputDevicePointer, Updatable
 {
     /** Left click. */
     int LEFT = MouseEvent.BUTTON1;

@@ -27,8 +27,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MenuDetectEvent;
-import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -41,8 +39,10 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.Focusable;
+import com.b3dgs.lionengine.editor.utility.UtilClass;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilTree;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.Tile;
 
@@ -51,8 +51,7 @@ import com.b3dgs.lionengine.game.map.Tile;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PropertiesPart
-        implements PropertiesProviderObject, PropertiesProviderTile
+public class PropertiesPart implements Focusable, PropertiesProviderObject, PropertiesProviderTile
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.properties";
@@ -74,23 +73,23 @@ public class PropertiesPart
     {
         item.setText(new String[]
         {
-                key, property
+            key, property
         });
     }
 
     /**
      * Check the properties extension point object.
      * 
-     * @param <P> The properties type.
+     * @param <T> The properties type.
      * @param clazz The class type.
      * @param id The extension id.
      * @param extension The extension attribute.
      * @return The properties instance from extension point or default one.
      */
-    private static <P> Collection<P> checkPropertiesExtensionPoint(Class<P> clazz, String id, String extension)
+    private static <T> Collection<T> checkPropertiesExtensionPoint(Class<T> clazz, String id, String extension)
     {
         final IConfigurationElement[] nodes = Platform.getExtensionRegistry().getConfigurationElementsFor(id);
-        final Collection<P> extensions = new ArrayList<>();
+        final Collection<T> extensions = new ArrayList<>();
         for (final IConfigurationElement node : nodes)
         {
             final String properties = node.getAttribute(extension);
@@ -98,7 +97,7 @@ public class PropertiesPart
             {
                 try
                 {
-                    final P provider = UtilEclipse.createClass(properties, clazz);
+                    final T provider = UtilClass.createClass(properties, clazz);
                     extensions.add(provider);
                 }
                 catch (final ReflectiveOperationException exception)
@@ -118,6 +117,14 @@ public class PropertiesPart
     private Collection<PropertiesProviderTile> providersTile;
 
     /**
+     * Create part.
+     */
+    public PropertiesPart()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Create the composite.
      * 
      * @param parent The parent reference.
@@ -126,11 +133,13 @@ public class PropertiesPart
     @PostConstruct
     public void createComposite(Composite parent, EMenuService menuService)
     {
-        final Listener listener = UtilSwt.createAutosizeListener();
         properties = new Tree(parent, SWT.H_SCROLL | SWT.V_SCROLL);
         properties.setLayout(new FillLayout());
         properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         properties.setHeaderVisible(true);
+        properties.addMouseTrackListener(UtilSwt.createFocusListener(this));
+
+        final Listener listener = UtilTree.createAutosizeListener();
         properties.addListener(SWT.Collapse, listener);
         properties.addListener(SWT.Expand, listener);
 
@@ -145,9 +154,23 @@ public class PropertiesPart
         PropertiesModel.INSTANCE.setTree(properties);
 
         providersObject = checkPropertiesExtensionPoint(PropertiesProviderObject.class,
-                PropertiesProviderObject.EXTENSION_ID, PropertiesProviderObject.EXTENSION_PROPERTIES);
+                                                        PropertiesProviderObject.EXTENSION_ID,
+                                                        PropertiesProviderObject.EXTENSION_PROPERTIES);
         providersTile = checkPropertiesExtensionPoint(PropertiesProviderTile.class,
-                PropertiesProviderTile.EXTENSION_ID, PropertiesProviderTile.EXTENSION_PROPERTIES);
+                                                      PropertiesProviderTile.EXTENSION_ID,
+                                                      PropertiesProviderTile.EXTENSION_PROPERTIES);
+    }
+
+    /**
+     * Clear properties.
+     */
+    public void clear()
+    {
+        for (final TreeItem item : properties.getItems())
+        {
+            clear(item);
+        }
+        properties.setData(null);
     }
 
     /**
@@ -198,10 +221,25 @@ public class PropertiesPart
     /**
      * Set the focus.
      */
+    @Override
     @Focus
-    public void setFocus()
+    public void focus()
     {
         properties.setFocus();
+    }
+
+    /**
+     * Called on double click.
+     * 
+     * @param item The selected item.
+     * @param configurer The associated configurer.
+     */
+    void onDoubleClick(TreeItem item, Configurer configurer)
+    {
+        if (updateProperties(item, configurer))
+        {
+            configurer.save();
+        }
     }
 
     /**
@@ -214,7 +252,7 @@ public class PropertiesPart
         properties.addMouseListener(new MouseAdapter()
         {
             @Override
-            public void mouseDoubleClick(MouseEvent e)
+            public void mouseDoubleClick(MouseEvent event)
             {
                 final TreeItem[] items = properties.getSelection();
                 if (items.length > 0)
@@ -223,22 +261,15 @@ public class PropertiesPart
                     if (properties.getData() instanceof Configurer)
                     {
                         final Configurer configurer = (Configurer) properties.getData();
-                        if (updateProperties(item, configurer))
-                        {
-                            configurer.save();
-                        }
+                        onDoubleClick(item, configurer);
                     }
                 }
             }
         });
-        properties.addMenuDetectListener(new MenuDetectListener()
+        properties.addMenuDetectListener(menuDetectEvent ->
         {
-            @Override
-            public void menuDetected(MenuDetectEvent menuDetectEvent)
-            {
-                properties.getMenu().setVisible(false);
-                properties.update();
-            }
+            properties.getMenu().setVisible(false);
+            properties.update();
         });
         menuService.registerContextMenu(properties, MENU_ID);
     }
@@ -264,7 +295,7 @@ public class PropertiesPart
         }
         for (final TreeItem item : properties.getItems())
         {
-            UtilSwt.autoSize(item);
+            UtilTree.autoSize(item);
         }
     }
 
@@ -300,7 +331,7 @@ public class PropertiesPart
         }
         for (final TreeItem item : properties.getItems())
         {
-            UtilSwt.autoSize(item);
+            UtilTree.autoSize(item);
         }
     }
 }

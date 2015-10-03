@@ -23,18 +23,16 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.orientable.Orientable;
 
 /**
- * Describe an object which can move on a {@link MapTilePath} by using A-Star algorithm.
+ * Describe an object which can move on a {@link com.b3dgs.lionengine.game.map.MapTilePath} by using A-Star algorithm.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.map.astar
  */
-public interface Pathfindable
-        extends Trait, Tiled, Orientable, Updatable, Renderable
+public interface Pathfindable extends Trait, Tiled, Orientable, Updatable, Renderable
 {
     /**
      * Add a pathfindable listener.

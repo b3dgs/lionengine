@@ -17,11 +17,16 @@
  */
 package com.b3dgs.lionengine.editor.properties.tile;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -29,17 +34,23 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupsEditDialog;
+import com.b3dgs.lionengine.editor.utility.UtilCombo;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
+import com.b3dgs.lionengine.game.collision.TileGroup;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Represents the tile group chooser.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class GroupChooser
-        extends AbstractDialog
+public class GroupChooser extends AbstractDialog
 {
     /** Groups values. */
-    private final String[] groups;
+    final String[] groups;
     /** Combo box. */
     private Combo combo;
     /** Choice value. */
@@ -53,11 +64,14 @@ public class GroupChooser
      */
     public GroupChooser(Shell parent, Collection<String> groups)
     {
-        super(parent, Messages.GroupChooser_Title, Messages.GroupChooser_HeaderTitle, Messages.GroupChooser_HeaderDesc,
-                GroupsEditDialog.ICON);
+        super(parent,
+              Messages.GroupChooser_Title,
+              Messages.GroupChooser_HeaderTitle,
+              Messages.GroupChooser_HeaderDesc,
+              GroupsEditDialog.ICON);
         this.groups = groups.toArray(new String[groups.size()]);
         createDialog();
-        dialog.setMinimumSize(64, 64);
+        dialog.setMinimumSize(256, 64);
         finish.setEnabled(true);
     }
 
@@ -71,6 +85,54 @@ public class GroupChooser
         return choice;
     }
 
+    /**
+     * Load groups.
+     * 
+     * @param groups The groups to load.
+     */
+    void loadGroups(String[] groups)
+    {
+        UtilCombo.registerDirty(combo, false);
+        Arrays.sort(groups);
+        combo.setItems(groups);
+
+        final WorldInteractionTile interaction = WorldModel.INSTANCE.getServices().get(WorldInteractionTile.class);
+        final Tile tile = interaction.getSelection();
+        if (tile != null && tile.getGroup() != null)
+        {
+            combo.setText(tile.getGroup());
+        }
+        else if (groups.length > 0)
+        {
+            combo.setText(groups[0]);
+        }
+        UtilCombo.registerDirty(combo, true);
+    }
+
+    /**
+     * Add group action.
+     * 
+     * @param shell The shell reference.
+     */
+    void addGroup(Shell shell)
+    {
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        final GroupsEditDialog dialog = new GroupsEditDialog(shell, map.getGroupsConfig());
+        dialog.open();
+
+        final Collection<TileGroup> groups = map.getGroups();
+        final Collection<String> values = new ArrayList<>();
+        for (final TileGroup group : groups)
+        {
+            values.add(group.getName());
+        }
+        if (!values.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
+        {
+            values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
+        }
+        loadGroups(values.toArray(new String[values.size()]));
+    }
+
     /*
      * AbstractDialog
      */
@@ -80,17 +142,24 @@ public class GroupChooser
     {
         final Composite composite = new Composite(content, SWT.NONE);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        composite.setLayout(new GridLayout(2, false));
+        composite.setLayout(new GridLayout(3, false));
 
         final Label label = new Label(composite, SWT.NONE);
         label.setText(Messages.GroupChooser_Choice);
 
         combo = new Combo(composite, SWT.SINGLE | SWT.READ_ONLY);
-        combo.setItems(groups);
-        if (groups.length > 0)
+        loadGroups(groups);
+
+        final Button add = new Button(composite, SWT.PUSH);
+        add.setText(Messages.GroupChooser_Add);
+        add.addSelectionListener(new SelectionAdapter()
         {
-            combo.setText(groups[0]);
-        }
+            @Override
+            public void widgetSelected(SelectionEvent event)
+            {
+                addGroup(add.getShell());
+            }
+        });
     }
 
     @Override

@@ -17,12 +17,11 @@
  */
 package com.b3dgs.lionengine.game.state;
 
-import com.b3dgs.lionengine.core.InputDevice;
-
 /**
  * Represents the transition between two {@link State}.
  * <p>
- * It is possible to listen to {@link InputDevice}, by implementing children of {@link StateTransitionInputChecker}.
+ * It is possible to listen to {@link com.b3dgs.lionengine.core.InputDevice}, by implementing children of
+ * {@link StateTransitionInputChecker}.
  * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)

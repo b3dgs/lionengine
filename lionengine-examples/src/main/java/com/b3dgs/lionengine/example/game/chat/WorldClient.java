@@ -35,9 +35,7 @@ import com.b3dgs.lionengine.stream.FileReading;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class WorldClient
-        extends World<NetworkedWorldModelClient>
-        implements NetworkedWorldClient, Networkable
+class WorldClient extends World<NetworkedWorldModelClient> implements NetworkedWorldClient, Networkable
 {
     /** Networkable. */
     private final Networkable networkableModel;

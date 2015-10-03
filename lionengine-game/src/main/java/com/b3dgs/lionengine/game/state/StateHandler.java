@@ -40,11 +40,10 @@ import com.b3dgs.lionengine.core.Updatable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class StateHandler
-        implements Updatable
+public class StateHandler implements Updatable
 {
     /** Inputs used. */
-    private final Collection<InputDevice> inputs = new ArrayList<>();
+    private final Collection<InputDevice> inputs = new ArrayList<InputDevice>();
     /** State factory reference. */
     private final StateFactory factory;
     /** Current state pointer (<code>null</code> if none). */
@@ -146,7 +145,8 @@ public class StateHandler
      * @param <I> The input device type.
      */
     private <I extends InputDevice> void updateInput(Class<? extends StateInputUpdater<I>> updaterType,
-            Class<I> inputType, InputDevice input)
+                                                     Class<I> inputType,
+                                                     InputDevice input)
     {
         if (updaterType.isAssignableFrom(current.getClass()) && inputType.isAssignableFrom(input.getClass()))
         {

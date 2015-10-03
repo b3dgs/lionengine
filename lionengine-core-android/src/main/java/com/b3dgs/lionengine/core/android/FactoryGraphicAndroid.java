@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.FactoryGraphic;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderer;
@@ -37,8 +36,7 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryGraphicAndroid
-        implements FactoryGraphic
+final class FactoryGraphicAndroid implements FactoryGraphic
 {
     /**
      * Internal constructor.
@@ -83,9 +81,9 @@ final class FactoryGraphicAndroid
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws LionEngineException
+    public ImageBuffer getImageBuffer(Media media) throws LionEngineException
     {
-        return UtilityImage.getImage(media, alpha);
+        return UtilityImage.getImage(media);
     }
 
     @Override
@@ -143,15 +141,8 @@ final class FactoryGraphicAndroid
     }
 
     @Override
-    public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb,
-            int refSize)
+    public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb, int ref)
     {
-        return UtilityImage.getRasterBuffer(imageBuffer, fr, fg, fb, er, eg, eb, refSize);
-    }
-
-    @Override
-    public int[][] loadRaster(Media media)
-    {
-        return Graphics.loadRaster(media);
+        return UtilityImage.getRasterBuffer(imageBuffer, fr, fg, fb, er, eg, eb, ref);
     }
 }

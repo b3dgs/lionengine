@@ -25,10 +25,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
@@ -40,8 +42,9 @@ import com.b3dgs.lionengine.core.Medias;
  * <pre>
  * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
  * final Media media = Media.get(&quot;img&quot;, &quot;image.png&quot;);
- * System.out.println(media.getPath()); // print: resources/img/image.png
+ * print(media.getPath()); // print: resources/img/image.png
  * </pre>
+ * 
  * <p>
  * This class is Thread-Safe.
  * </p>
@@ -50,12 +53,14 @@ import com.b3dgs.lionengine.core.Medias;
  */
 public final class UtilityMedia
 {
+    /** Error open media. */
+    private static final String ERROR_OPEN_MEDIA = "Cannot open the media";
     /** From jar flag. */
     private static volatile boolean fromJar;
     /** Resources directory. */
-    private static volatile String resourcesDir = "";
+    private static volatile String resourcesDir = Constant.EMPTY_STRING;
     /** Class loader. */
-    private static volatile Class<?> loader = null;
+    private static volatile Class<?> loader;
 
     /**
      * Get a media from an existing file descriptor.
@@ -91,7 +96,7 @@ public final class UtilityMedia
         if (fromJar)
         {
             loader = clazz;
-            Medias.setSeparator("/");
+            Medias.setSeparator(Constant.SLASH);
         }
         else
         {
@@ -109,7 +114,7 @@ public final class UtilityMedia
     {
         if (dir == null)
         {
-            resourcesDir = "";
+            resourcesDir = Constant.EMPTY_STRING;
         }
         else
         {
@@ -131,18 +136,18 @@ public final class UtilityMedia
         {
             if (fromJar)
             {
-                final InputStream inputStream = loader.getResourceAsStream(path);
-                if (inputStream == null)
+                final InputStream input = loader.getResourceAsStream(path);
+                if (input == null)
                 {
                     throw new LionEngineException(media, "Resource in JAR not found");
                 }
-                return inputStream;
+                return input;
             }
             return new FileInputStream(path);
         }
         catch (final FileNotFoundException exception)
         {
-            throw new LionEngineException(exception, media, "Cannot open the media");
+            throw new LionEngineException(exception, media, ERROR_OPEN_MEDIA);
         }
     }
 
@@ -162,7 +167,7 @@ public final class UtilityMedia
         }
         catch (final FileNotFoundException exception)
         {
-            throw new LionEngineException(exception, media, "Cannot open the media");
+            throw new LionEngineException(exception, media, ERROR_OPEN_MEDIA);
         }
     }
 
@@ -176,17 +181,36 @@ public final class UtilityMedia
     {
         if (fromJar)
         {
-            try (InputStream stream = getInputStream(media))
-            {
-                return true;
-            }
-            catch (final LionEngineException
-                         | IOException exception)
-            {
-                return false;
-            }
+            return existsFromJar(media);
         }
         return media.getFile().exists();
+    }
+
+    /**
+     * Check if media exists from jar.
+     * 
+     * @param media The media to check.
+     * @return <code>true</code> if exists, <code>false</code> else.
+     */
+    private static boolean existsFromJar(Media media)
+    {
+        try
+        {
+            final InputStream input = getInputStream(media);
+            try
+            {
+                input.close();
+            }
+            catch (final IOException exception2)
+            {
+                Verbose.exception(UtilityMedia.class, "exists", exception2);
+            }
+            return true;
+        }
+        catch (final LionEngineException exception)
+        {
+            return false;
+        }
     }
 
     /**
@@ -194,6 +218,6 @@ public final class UtilityMedia
      */
     private UtilityMedia()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

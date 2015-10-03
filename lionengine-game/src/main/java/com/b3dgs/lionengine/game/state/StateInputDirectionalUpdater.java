@@ -24,8 +24,7 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface StateInputDirectionalUpdater
-        extends StateInputUpdater<InputDeviceDirectional>
+public interface StateInputDirectionalUpdater extends StateInputUpdater<InputDeviceDirectional>
 {
     // Marker interface
 }

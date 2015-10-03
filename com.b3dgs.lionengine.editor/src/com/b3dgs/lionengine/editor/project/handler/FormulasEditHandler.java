@@ -21,7 +21,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.dialog.formula.FormulasEditDialog;
 
 /**
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.editor.project.dialog.formula.FormulasEditDialog;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulasEditHandler
+public final class FormulasEditHandler
 {
     /**
      * Execute the handler.
@@ -38,9 +38,17 @@ public class FormulasEditHandler
      */
     public static void executeHandler(Shell parent)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
+        final Media selection = ProjectModel.INSTANCE.getSelection();
         final FormulasEditDialog dialog = new FormulasEditDialog(parent, selection);
         dialog.open();
+    }
+
+    /**
+     * Create handler.
+     */
+    public FormulasEditHandler()
+    {
+        // Nothing to do
     }
 
     /**
@@ -49,7 +57,6 @@ public class FormulasEditHandler
      * @param parent The shell parent.
      */
     @Execute
-    @SuppressWarnings("static-method")
     public void execute(Shell parent)
     {
         executeHandler(parent);

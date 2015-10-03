@@ -17,52 +17,115 @@
  */
 package com.b3dgs.lionengine.editor.project.dialog.formula;
 
+import java.util.Collections;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.swt.UtilityImage;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
-import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.project.dialog.group.GroupList;
+import com.b3dgs.lionengine.editor.utility.UtilCombo;
+import com.b3dgs.lionengine.editor.utility.UtilText;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionType;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
+import com.b3dgs.lionengine.game.collision.TileGroup;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 
 /**
  * Represents the formulas properties edition view.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FormulasProperties
-        extends ObjectProperties<CollisionFormula>
-        implements ObjectListListener<CollisionFormula>
+public class FormulasProperties extends ObjectProperties<CollisionFormula>
+                                implements ObjectListListener<CollisionFormula>
 {
     /** Unknown function type. */
     private static final String ERROR_TYPE = "Unknown collision function type: ";
 
     /**
-     * Get the constraint value.
+     * Create the constraints list.
      * 
-     * @param constraint The constraint value.
-     * @return The same constraint value, empty string if <code>null</code>.
+     * @param title The constraints type.
+     * @param list The current list.
+     * @param parent The parent composite.
+     * @return The constraints list.
      */
-    private static String getConstraintValue(String constraint)
+    private static GroupList createConstraintsList(String title, GroupList list, Composite parent)
     {
-        return constraint != null ? constraint : "";
+        list.create(parent);
+        ((Group) list.getTree().getParent()).setText(title);
+        return list;
     }
 
+    /**
+     * Add groups to constraint.
+     * 
+     * @param constraint The constraint reference.
+     * @param orientation The orientation.
+     * @param list The groups reference.
+     */
+    private static void addGroups(CollisionConstraint constraint, Orientation orientation, GroupList list)
+    {
+        for (final TileGroup group : list.getObjects())
+        {
+            constraint.add(orientation, group.getName());
+        }
+    }
+
+    /**
+     * Read constraints from specified list and orientation.
+     * 
+     * @param constraint The constraint container.
+     * @param constraints The constraints tree.
+     * @param orientation The orientation value.
+     */
+    private static void readConstraints(CollisionConstraint constraint, GroupList constraints, Orientation orientation)
+    {
+        constraints.clear();
+        final Tree tree = constraints.getTree();
+        for (final String group : constraint.getConstraints(orientation))
+        {
+            final TreeItem item = new TreeItem(tree, SWT.NONE);
+            item.setText(group);
+            item.setData(new TileGroup(group, Collections.EMPTY_LIST));
+        }
+    }
+
+    /** Constraints top. */
+    private final GroupList constraintsTop = new GroupList();
+    /** Constraints bottom. */
+    private final GroupList constraintsBottom = new GroupList();
+    /** Constraints left. */
+    private final GroupList constraintsLeft = new GroupList();
+    /** Constraints right. */
+    private final GroupList constraintsRight = new GroupList();
+    /** GC preview. */
+    private GC gc;
     /** Last collision function panel. */
     private Composite lastFunctionPanel;
     /** Function type. */
@@ -83,23 +146,30 @@ public class FormulasProperties
     private Text linearA;
     /** Function linear B. */
     private Text linearB;
-    /** Constraint top. */
-    private Text constraintTop;
-    /** Constraint bottom. */
-    private Text constraintBottom;
-    /** Constraint left. */
-    private Text constraintLeft;
-    /** Constraint right. */
-    private Text constraintRight;
 
     /**
      * Create formulas properties.
-     * 
-     * @param list The list reference.
      */
-    public FormulasProperties(FormulaList list)
+    public FormulasProperties()
     {
-        super(list);
+        super();
+    }
+
+    /**
+     * Update the formula preview rendering.
+     */
+    void updatePreview()
+    {
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        if (map.isCreated() && isFieldsFilled() && !linearB.getText().isEmpty())
+        {
+            final CollisionFormula formula = createObject("preview");
+            final ImageBuffer buffer = MapTileCollisionModel.createFunctionDraw(formula,
+                                                                                map.getTileWidth(),
+                                                                                map.getTileHeight());
+            gc.fillRectangle(0, 0, map.getTileWidth(), map.getTileHeight());
+            gc.drawImage(UtilityImage.getBuffer(buffer), 0, 0);
+        }
     }
 
     /**
@@ -150,12 +220,51 @@ public class FormulasProperties
     {
         final Composite linearArea = new Composite(parent, SWT.NONE);
         linearArea.setLayout(new GridLayout(2, false));
-        linearA = UtilSwt.createText(Messages.EditFormulasDialog_FunctionLinearA, linearArea);
-        linearA.addVerifyListener(UtilSwt.createVerify(linearA, InputValidator.DOUBLE_MATCH));
-        linearB = UtilSwt.createText(Messages.EditFormulasDialog_FunctionLinearB, linearArea);
-        linearB.addVerifyListener(UtilSwt.createVerify(linearB, InputValidator.DOUBLE_MATCH));
+
+        linearA = UtilText.create(Messages.EditFormulasDialog_FunctionLinearA, linearArea);
+        linearA.addVerifyListener(UtilText.createVerify(linearA, InputValidator.DOUBLE_MATCH));
+        updatePreviewOnModify(linearA);
+
+        linearB = UtilText.create(Messages.EditFormulasDialog_FunctionLinearB, linearArea);
+        linearB.addVerifyListener(UtilText.createVerify(linearB, InputValidator.DOUBLE_MATCH));
+        updatePreviewOnModify(linearB);
 
         lastFunctionPanel = linearArea;
+    }
+
+    /**
+     * Create the preview.
+     * 
+     * @param parent The parent composite.
+     */
+    private void createPreview(Composite parent)
+    {
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        final Label preview = new Label(parent, SWT.BORDER);
+        final GridData data = new GridData(map.getTileWidth(), map.getTileHeight());
+        data.horizontalAlignment = SWT.CENTER;
+        preview.setLayoutData(data);
+        gc = new GC(preview);
+    }
+
+    /**
+     * Create the template chooser.
+     * 
+     * @param parent The parent composite.
+     */
+    private void createTemplate(Composite parent)
+    {
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        final Combo template = UtilCombo.create(Messages.EditFormulasDialog_Template, parent, FormulaTemplate.values());
+        template.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent event)
+            {
+                final CollisionFormula formula = ((FormulaTemplate) template.getData()).getFormula(map);
+                notifyObjectSelected(formula);
+            }
+        });
     }
 
     /**
@@ -169,25 +278,29 @@ public class FormulasProperties
         final GridLayout outputAreaLayout = new GridLayout(1, false);
         outputAreaLayout.marginHeight = 0;
         outputArea.setLayout(outputAreaLayout);
-        output = UtilSwt.createCombo(Messages.EditFormulasDialog_RangeOutput, outputArea, Axis.values());
+        output = UtilCombo.create(Messages.EditFormulasDialog_RangeOutput, outputArea, Axis.values());
 
         final Composite xArea = new Composite(parent, SWT.NONE);
         final GridLayout xAreaLayout = new GridLayout(2, false);
         xAreaLayout.marginHeight = 0;
         xArea.setLayout(xAreaLayout);
-        minX = UtilSwt.createText(Messages.EditFormulasDialog_RangeMinX, xArea);
-        minX.addVerifyListener(UtilSwt.createVerify(minX, InputValidator.INTEGER_POSITIVE_MATCH));
-        maxX = UtilSwt.createText(Messages.EditFormulasDialog_RangeMaxX, xArea);
-        maxX.addVerifyListener(UtilSwt.createVerify(maxX, InputValidator.INTEGER_POSITIVE_MATCH));
+        minX = UtilText.create(Messages.EditFormulasDialog_RangeMinX, xArea);
+        minX.addVerifyListener(UtilText.createVerify(minX, InputValidator.INTEGER_POSITIVE_MATCH));
+        updatePreviewOnModify(minX);
+        maxX = UtilText.create(Messages.EditFormulasDialog_RangeMaxX, xArea);
+        maxX.addVerifyListener(UtilText.createVerify(maxX, InputValidator.INTEGER_POSITIVE_MATCH));
+        updatePreviewOnModify(maxX);
 
         final Composite yArea = new Composite(parent, SWT.NONE);
         final GridLayout yAreaLayout = new GridLayout(2, false);
         yAreaLayout.marginHeight = 0;
         yArea.setLayout(yAreaLayout);
-        minY = UtilSwt.createText(Messages.EditFormulasDialog_RangeMinY, yArea);
-        minY.addVerifyListener(UtilSwt.createVerify(minY, InputValidator.INTEGER_POSITIVE_MATCH));
-        maxY = UtilSwt.createText(Messages.EditFormulasDialog_RangeMaxY, yArea);
-        maxY.addVerifyListener(UtilSwt.createVerify(maxY, InputValidator.INTEGER_POSITIVE_MATCH));
+        minY = UtilText.create(Messages.EditFormulasDialog_RangeMinY, yArea);
+        minY.addVerifyListener(UtilText.createVerify(minY, InputValidator.INTEGER_POSITIVE_MATCH));
+        updatePreviewOnModify(minY);
+        maxY = UtilText.create(Messages.EditFormulasDialog_RangeMaxY, yArea);
+        maxY.addVerifyListener(UtilText.createVerify(maxY, InputValidator.INTEGER_POSITIVE_MATCH));
+        updatePreviewOnModify(maxY);
     }
 
     /**
@@ -201,7 +314,7 @@ public class FormulasProperties
         final GridLayout typeAreaLayout = new GridLayout(1, false);
         typeAreaLayout.marginHeight = 0;
         typeArea.setLayout(typeAreaLayout);
-        type = UtilSwt.createCombo(Messages.EditFormulasDialog_FunctionType, typeArea, CollisionFunctionType.values());
+        type = UtilCombo.create(Messages.EditFormulasDialog_FunctionType, typeArea, CollisionFunctionType.values());
         selectFunctionType(parent);
         type.addSelectionListener(new SelectionAdapter()
         {
@@ -221,11 +334,12 @@ public class FormulasProperties
     private void createTextConstraint(Composite parent)
     {
         final Composite constraintArea = new Composite(parent, SWT.NONE);
-        constraintArea.setLayout(new GridLayout(2, true));
-        constraintTop = UtilSwt.createText(Messages.EditFormulasDialog_ConstraintTop, constraintArea);
-        constraintBottom = UtilSwt.createText(Messages.EditFormulasDialog_ConstraintBottom, constraintArea);
-        constraintLeft = UtilSwt.createText(Messages.EditFormulasDialog_ConstraintLeft, constraintArea);
-        constraintRight = UtilSwt.createText(Messages.EditFormulasDialog_ConstraintRight, constraintArea);
+        constraintArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        constraintArea.setLayout(new GridLayout(4, true));
+        createConstraintsList(Orientation.NORTH.name(), constraintsTop, constraintArea);
+        createConstraintsList(Orientation.SOUTH.name(), constraintsBottom, constraintArea);
+        createConstraintsList(Orientation.WEST.name(), constraintsLeft, constraintArea);
+        createConstraintsList(Orientation.EAST.name(), constraintsRight, constraintArea);
     }
 
     /**
@@ -248,6 +362,16 @@ public class FormulasProperties
     }
 
     /**
+     * Update preview rendering when text has been modified.
+     * 
+     * @param text The text reference.
+     */
+    private void updatePreviewOnModify(Text text)
+    {
+        text.addModifyListener(event -> updatePreview());
+    }
+
+    /**
      * Load the function and fill fields.
      * 
      * @param function The function to load.
@@ -258,12 +382,27 @@ public class FormulasProperties
         {
             case LINEAR:
                 final CollisionFunctionLinear linear = (CollisionFunctionLinear) function;
-                linearA.setText(Double.toString(linear.getA()));
-                linearB.setText(Double.toString(linear.getB()));
+                setValueDefault(linearA, Double.toString(linear.getA()));
+                setValueDefault(linearB, Double.toString(linear.getB()));
                 break;
             default:
                 throw new LionEngineException(ERROR_TYPE, function.getType().name());
         }
+    }
+
+    /**
+     * Check if all fields are filled.
+     * 
+     * @return <code>true</code> if filled, <code>false</code> else.
+     */
+    private boolean isFieldsFilled()
+    {
+        final boolean range = !minX.getText().isEmpty()
+                              && !maxX.getText().isEmpty()
+                              && !minY.getText().isEmpty()
+                              && !maxY.getText().isEmpty();
+        final boolean linear = !linearA.getText().isEmpty() && !linearB.getText().isEmpty();
+        return !type.getText().isEmpty() && !output.getText().isEmpty() && range && linear;
     }
 
     /*
@@ -273,23 +412,35 @@ public class FormulasProperties
     @Override
     protected void createTextFields(Composite parent)
     {
-        final Group range = new Group(parent, SWT.NONE);
-        range.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(3, false));
+
+        final Group preview = new Group(composite, SWT.NONE);
+        preview.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        preview.setLayout(new GridLayout(1, false));
+        preview.setText(Messages.EditFormulasDialog_Preview);
+        createPreview(preview);
+        createTemplate(preview);
+
+        final Group range = new Group(composite, SWT.NONE);
+        range.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         range.setLayout(new GridLayout(1, false));
         range.setText(Messages.EditFormulasDialog_Range);
         createTextRange(range);
 
-        final Group function = new Group(parent, SWT.NONE);
-        function.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final Group function = new Group(composite, SWT.NONE);
+        function.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         function.setLayout(new GridLayout(1, false));
         function.setText(Messages.EditFormulasDialog_Function);
         createTextFunction(function);
 
         final Group constraint = new Group(parent, SWT.NONE);
-        constraint.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        constraint.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         constraint.setLayout(new GridLayout(1, false));
         constraint.setText(Messages.EditFormulasDialog_Constraint);
         createTextConstraint(constraint);
+
+        notifyObjectDeleted(null);
     }
 
     @Override
@@ -304,10 +455,25 @@ public class FormulasProperties
 
         final CollisionRange range = new CollisionRange(output, minX, maxX, minY, maxY);
         final CollisionFunction function = createFunction(type);
-        final CollisionConstraint constraint = new CollisionConstraint(constraintTop.getText(),
-                constraintBottom.getText(), constraintLeft.getText(), constraintRight.getText());
+        final CollisionConstraint constraint = new CollisionConstraint();
+        addGroups(constraint, Orientation.NORTH, constraintsTop);
+        addGroups(constraint, Orientation.SOUTH, constraintsBottom);
+        addGroups(constraint, Orientation.WEST, constraintsLeft);
+        addGroups(constraint, Orientation.EAST, constraintsRight);
+
         final CollisionFormula formula = new CollisionFormula(name, range, function, constraint);
         return formula;
+    }
+
+    /**
+     * Save constraints.
+     */
+    public void save()
+    {
+        constraintsTop.save();
+        constraintsBottom.save();
+        constraintsLeft.save();
+        constraintsRight.save();
     }
 
     /*
@@ -320,39 +486,42 @@ public class FormulasProperties
         final CollisionRange range = formula.getRange();
         output.setText(range.getOutput().name());
         output.setData(range.getOutput());
-        minX.setText(Integer.toString(range.getMinX()));
-        maxX.setText(Integer.toString(range.getMaxX()));
-        minY.setText(Integer.toString(range.getMinY()));
-        maxY.setText(Integer.toString(range.getMaxY()));
+        setValueDefault(minX, Integer.toString(range.getMinX()));
+        setValueDefault(maxX, Integer.toString(range.getMaxX()));
+        setValueDefault(minY, Integer.toString(range.getMinY()));
+        setValueDefault(maxY, Integer.toString(range.getMaxY()));
 
         final CollisionFunction function = formula.getFunction();
-        type.setText(function.getType().name());
+        UtilCombo.setDefaultValue(type, function.getType().name());
         type.setData(function.getType());
         loadFunction(function);
 
         final CollisionConstraint constraint = formula.getConstraint();
-        constraintTop.setText(getConstraintValue(constraint.getTop()));
-        constraintBottom.setText(getConstraintValue(constraint.getBottom()));
-        constraintLeft.setText(getConstraintValue(constraint.getLeft()));
-        constraintRight.setText(getConstraintValue(constraint.getRight()));
+        readConstraints(constraint, constraintsTop, Orientation.NORTH);
+        readConstraints(constraint, constraintsBottom, Orientation.SOUTH);
+        readConstraints(constraint, constraintsLeft, Orientation.WEST);
+        readConstraints(constraint, constraintsRight, Orientation.EAST);
     }
 
     @Override
     public void notifyObjectDeleted(CollisionFormula formula)
     {
-        output.setText("");
+        setValueDefault(output, Constant.EMPTY_STRING);
+        setValueDefault(minX, Constant.EMPTY_STRING);
+        setValueDefault(maxX, Constant.EMPTY_STRING);
+        setValueDefault(minY, Constant.EMPTY_STRING);
+        setValueDefault(maxY, Constant.EMPTY_STRING);
+        setValueDefault(type, Constant.EMPTY_STRING);
+
+        setValueDefault(linearA, Constant.EMPTY_STRING);
+        setValueDefault(linearB, Constant.EMPTY_STRING);
+
         output.setData(null);
-        minX.setText("");
-        maxX.setText("");
-        minY.setText("");
-        maxY.setText("");
-        type.setText("");
         type.setData(null);
-        linearA.setText("");
-        linearB.setText("");
-        constraintTop.setText("");
-        constraintBottom.setText("");
-        constraintLeft.setText("");
-        constraintRight.setText("");
+
+        constraintsTop.clear();
+        constraintsBottom.clear();
+        constraintsLeft.clear();
+        constraintsRight.clear();
     }
 }

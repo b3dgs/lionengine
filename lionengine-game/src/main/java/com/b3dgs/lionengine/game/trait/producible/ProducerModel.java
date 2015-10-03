@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * </p>
  * <ul>
  * <li>{@link Handler}</li>
- * <li>{@link Integer}</li> (for the desired fps).
+ * <li>{@link Integer} (for the desired fps).</li>
  * </ul>
  * <p>
  * The {@link ObjectGame} must be a {@link ProducerChecker}.
@@ -49,14 +49,12 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ProducerModel
-        extends TraitModel
-        implements Producer
+public class ProducerModel extends TraitModel implements Producer
 {
     /** Producer listeners. */
-    private final Collection<ProducerListener> listeners = new ArrayList<>();
+    private final Collection<ProducerListener> listeners = new ArrayList<ProducerListener>();
     /** Production queue. */
-    private final Queue<Producible> productions = new LinkedList<>();
+    private final Queue<Producible> productions = new LinkedList<Producible>();
     /** Handler reference. */
     private Handler handler;
     /** Tick timer rate. */
@@ -249,16 +247,20 @@ public class ProducerModel
             case NONE:
                 progress = -1;
                 break;
-            case WILL_PRODUCE: // Before production
+            // Before production
+            case WILL_PRODUCE:
                 actionWillProduce();
                 break;
-            case PRODUCING: // During production
+            // During production
+            case PRODUCING:
                 actionProducing(extrp);
                 break;
-            case PRODUCED: // Production done
+            // Production done
+            case PRODUCED:
                 actionProduced();
                 break;
-            case CHECK: // Next production ?
+            // Next production ?
+            case CHECK:
                 actionCheck();
                 break;
             default:
