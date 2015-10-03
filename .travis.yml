@@ -16,6 +16,6 @@ script:
 - cd lionengine-parent
 - jdk_switcher use oraclejdk8
 - mvn clean install -Pcore
-- mvn test -Ptests-core
+- mvn clean install -Ptests-core
 - mvn clean verify -Pplugins
-- mvn verify -Ptests-plugins
+- mvn clean verify -Ptests-plugins
