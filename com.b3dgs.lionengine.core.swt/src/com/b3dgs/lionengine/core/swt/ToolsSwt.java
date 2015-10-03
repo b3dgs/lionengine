@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
@@ -62,7 +63,7 @@ public final class ToolsSwt
         final Display display = Display.findDisplay(Thread.currentThread());
         if (display == null)
         {
-            return new Display();
+            return createDisplay();
         }
         return display;
     }
@@ -506,6 +507,23 @@ public final class ToolsSwt
             }
         }
         return new Image(image.getDevice(), flip);
+    }
+
+    /**
+     * Create a display or use the default one.
+     * 
+     * @return The usable display.
+     */
+    private static Display createDisplay()
+    {
+        try
+        {
+            return new Display();
+        }
+        catch (final SWTError error)
+        {
+            return Display.getDefault();
+        }
     }
 
     /**
