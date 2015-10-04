@@ -217,9 +217,9 @@ public class Camera implements Viewer
      */
     public void setLimits(MapTile map)
     {
-        mapUpLimit = UtilMath.fixBetween(map.getInTileHeight() * map.getTileHeight() - height, 0, Integer.MAX_VALUE);
+        mapUpLimit = Math.max(0, map.getInTileHeight() * map.getTileHeight() - height);
         mapLeftLimit = 0;
-        mapRightLimit = map.getInTileWidth() * map.getTileWidth() - width;
+        mapRightLimit = Math.max(0, map.getInTileWidth() * map.getTileWidth() - width);
         mapDownLimit = 0;
         moveLocation(1.0, 0.0, 0.0);
     }
