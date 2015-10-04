@@ -34,11 +34,21 @@ public final class UtilProjectStats
 {
     /** Java file extension. */
     private static final String JAVA_FILE_EXTENSION = "java";
+    /** Documentation regex. */
+    private static final String REGEX_DOC = "[\\s]*(/|\\*)+.*";
+    /** Spaces regex. */
+    private static final String REGEX_SPACES = "[\\s]*";
     /** Error directory. */
     private static final String ERROR_DIR = "Not a directory: ";
 
     /** Number of files. */
     private static int numberOfFiles;
+    /** Number of code lines. */
+    private static int numberOfLinesCode;
+    /** Number of doc lines. */
+    private static int numberOfLinesDoc;
+    /** Number of empty lines. */
+    private static int numberOfLinesEmpty;
     /** Number of lines. */
     private static int numberOfLines;
 
@@ -51,15 +61,30 @@ public final class UtilProjectStats
     public static void start(String sourcesDir) throws LionEngineException
     {
         numberOfFiles = 0;
+        numberOfLinesCode = 0;
+        numberOfLinesDoc = 0;
+        numberOfLinesEmpty = 0;
         numberOfLines = 0;
 
-        final File mainDir = new File(sourcesDir + File.separator);
-        exploreDir(mainDir.getAbsolutePath());
+        final File mainDir = new File(sourcesDir);
+        try
+        {
+            final String path = mainDir.getCanonicalPath();
+            exploreDir(path);
 
-        final StringBuilder builder = new StringBuilder("Project statistics:\n");
-        builder.append("Number of files: ").append(numberOfFiles).append(Constant.NEW_LINE);
-        builder.append("Number of lines: ").append(numberOfLines).append(Constant.NEW_LINE);
-        Verbose.info(builder.toString());
+            final StringBuilder builder = new StringBuilder("Project statistics: ");
+            builder.append(Constant.QUOTE).append(path).append(Constant.QUOTE).append(Constant.NEW_LINE);
+            builder.append("Files = ").append(numberOfFiles).append(Constant.NEW_LINE);
+            builder.append("Code lines = ").append(numberOfLinesCode).append(Constant.NEW_LINE);
+            builder.append("Documentation lines = ").append(numberOfLinesDoc).append(Constant.NEW_LINE);
+            builder.append("Empty lines = ").append(numberOfLinesEmpty).append(Constant.NEW_LINE);
+            builder.append("Total lines = ").append(numberOfLines).append(Constant.NEW_LINE);
+            Verbose.info(builder.toString());
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, ERROR_DIR, sourcesDir);
+        }
     }
 
     /**
@@ -81,6 +106,18 @@ public final class UtilProjectStats
                 s = in.readLine();
                 if (s != null)
                 {
+                    if (s.matches(REGEX_DOC))
+                    {
+                        numberOfLinesDoc++;
+                    }
+                    else if (s.matches(REGEX_SPACES))
+                    {
+                        numberOfLinesEmpty++;
+                    }
+                    else
+                    {
+                        numberOfLinesCode++;
+                    }
                     numberOfLines++;
                 }
                 else
@@ -150,7 +187,7 @@ public final class UtilProjectStats
      */
     private static String getExtension(String file)
     {
-        return file.substring(file.lastIndexOf('.') + 1);
+        return file.substring(file.lastIndexOf(Constant.DOT) + 1);
     }
 
     /**
