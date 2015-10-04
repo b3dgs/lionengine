@@ -22,12 +22,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
+import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -36,6 +37,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Verbose;
 
@@ -48,6 +50,8 @@ public final class FolderModificationWatcher
 {
     /** Default check time in milliseconds. */
     private static final int CHECK_TIME = 1000;
+    /** Watcher already started error. */
+    private static final String ERROR_STARTED = "Watcher already started !";
 
     /** New tasks. */
     final Queue<Task> newTasks = new ConcurrentLinkedQueue<>();
@@ -72,13 +76,13 @@ public final class FolderModificationWatcher
      * @param root The root path.
      * @param tree The tree viewer reference.
      * @param creator The creator reference.
-     * @throws IllegalStateException If already started.
+     * @throws LionEngineException If already started.
      */
-    public synchronized void start(Path root, Tree tree, ProjectTreeCreator creator) throws IllegalStateException
+    public synchronized void start(Path root, Tree tree, ProjectTreeCreator creator) throws LionEngineException
     {
         if (started)
         {
-            throw new IllegalStateException("Watcher already started !");
+            throw new LionEngineException(ERROR_STARTED);
         }
         future = executor.submit(new Watcher(root, tree, creator));
         started = true;
@@ -117,7 +121,7 @@ public final class FolderModificationWatcher
     private final class Watcher implements Runnable
     {
         /** Tasks. */
-        private final Set<Task> tasks = new HashSet<>();
+        private final Collection<Task> tasks = new HashSet<>();
         /** Root folder. */
         private final Path root;
         /** Tree reference. */
@@ -142,23 +146,49 @@ public final class FolderModificationWatcher
         /**
          * Create all sub watchers.
          * 
-         * @param current The current folder.
+         * @param directory The directory root folder.
          */
-        private void createWatchers(File current)
+        private void createWatchers(File directory)
         {
-            for (final File file : UtilFile.getFiles(current))
+            for (final File current : UtilFile.getDirectories(directory))
             {
-                if (file.isDirectory())
+                createTask(current.toPath());
+                createWatchers(current);
+            }
+        }
+
+        /**
+         * Create the task for the specified directory.
+         * 
+         * @param directory The directory reference.
+         */
+        private void createTask(Path directory)
+        {
+            try
+            {
+                tasks.add(new Task(root, directory, tree, creator));
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(getClass(), "createWatchers", exception);
+            }
+        }
+
+        /**
+         * Close all task.
+         */
+        private void closeTasks()
+        {
+            for (final Task task : tasks)
+            {
+                try
                 {
-                    try
-                    {
-                        tasks.add(new Task(root, file.toPath(), tree, creator));
-                    }
-                    catch (final IOException exception)
-                    {
-                        continue;
-                    }
-                    createWatchers(file);
+                    task.close();
+                }
+                catch (final IOException exception)
+                {
+                    Verbose.exception(getClass(), "closeTasks", exception);
+                    continue;
                 }
             }
         }
@@ -170,6 +200,7 @@ public final class FolderModificationWatcher
         @Override
         public void run()
         {
+            createTask(root);
             createWatchers(root.toFile());
 
             while (!Thread.currentThread().isInterrupted())
@@ -192,17 +223,7 @@ public final class FolderModificationWatcher
                     break;
                 }
             }
-            for (final Task task : tasks)
-            {
-                try
-                {
-                    task.close();
-                }
-                catch (final IOException exception)
-                {
-                    continue;
-                }
-            }
+            closeTasks();
             tasks.clear();
         }
     }
@@ -215,13 +236,13 @@ public final class FolderModificationWatcher
     private final class Task
     {
         /** Root folder. */
-        final Path root;
+        private final Path root;
         /** Current folder. */
-        final Path folder;
+        private final Path folder;
         /** Tree. */
-        final Tree tree;
+        private final Tree tree;
         /** Creator reference. */
-        final ProjectTreeCreator creator;
+        private final ProjectTreeCreator creator;
         /** Watcher reference. */
         private final WatchKey watcher;
         /** Watcher service. */
@@ -242,7 +263,6 @@ public final class FolderModificationWatcher
             this.folder = folder;
             this.tree = tree;
             this.creator = creator;
-
             service = folder.getFileSystem().newWatchService();
             watcher = folder.register(service,
                                       StandardWatchEventKinds.ENTRY_CREATE,
@@ -260,11 +280,12 @@ public final class FolderModificationWatcher
                 final Object object = event.context();
                 if (object instanceof Path)
                 {
-                    if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE)
+                    final Kind<?> kind = event.kind();
+                    if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind))
                     {
                         onCreated(new File(folder.toFile(), object.toString()));
                     }
-                    if (event.kind() == StandardWatchEventKinds.ENTRY_DELETE)
+                    else if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind))
                     {
                         onDeleted(object.toString());
                     }
@@ -310,17 +331,34 @@ public final class FolderModificationWatcher
         }
 
         /**
+         * Dispose item from its name.
+         * 
+         * @param name The item name.
+         */
+        void disposeItem(String name)
+        {
+            if (!tree.isDisposed())
+            {
+                final Object data = tree.getData(name);
+                if (data != null && data instanceof TreeItem)
+                {
+                    final TreeItem item = (TreeItem) data;
+                    item.dispose();
+                }
+            }
+        }
+
+        /**
          * Case of created item.
          * 
          * @param path The created item.
          */
         private void onCreated(final File path)
         {
-            final int prefix = root.toFile().getAbsolutePath().length() + 1;
-            final String full = folder.toFile().getPath();
-            if (full.length() > prefix)
+            final File parent = path.getParentFile();
+            if (parent != null)
             {
-                final String keyParent = full.substring(prefix);
+                final String keyParent = parent.getName();
                 tree.getDisplay().asyncExec(() -> onCreated(path, keyParent));
             }
         }
@@ -338,15 +376,7 @@ public final class FolderModificationWatcher
             if (full.length() > prefix)
             {
                 final String simple = full.substring(prefix);
-                tree.getDisplay().asyncExec(() ->
-                {
-                    final Object data = tree.getData(simple);
-                    if (data != null && data instanceof TreeItem)
-                    {
-                        final TreeItem item = (TreeItem) data;
-                        item.dispose();
-                    }
-                });
+                tree.getDisplay().asyncExec(() -> disposeItem(simple));
             }
         }
     }

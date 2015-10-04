@@ -254,10 +254,9 @@ public final class UtilFile
      * @param path The path to check.
      * @return The directories list.
      */
-    public static List<File> getDirectories(String path)
+    public static List<File> getDirectories(File path)
     {
-        final File root = new File(path);
-        final File[] files = root.listFiles();
+        final File[] files = path.listFiles();
         final List<File> directories = new ArrayList<File>();
         if (files != null)
         {

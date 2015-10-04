@@ -292,7 +292,7 @@ public class UtilFileTest
         }
         Collections.sort(expected);
 
-        final List<File> found = UtilFile.getDirectories(dir.toFile().getPath());
+        final List<File> found = UtilFile.getDirectories(dir.toFile());
         Collections.sort(found);
 
         Assert.assertEquals(expected, found);
@@ -316,7 +316,7 @@ public class UtilFileTest
         final Path dir = Files.createTempDirectory("temp");
         try
         {
-            Assert.assertTrue(UtilFile.getDirectories("null").isEmpty());
+            Assert.assertTrue(UtilFile.getDirectories(new File("null")).isEmpty());
         }
         finally
         {

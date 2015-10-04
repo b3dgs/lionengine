@@ -73,27 +73,6 @@ public class ProjectTreeCreator
     private static final String FOLDER_METAINF = "META-INF";
 
     /**
-     * Check the path reference and create the node if necessary.
-     * 
-     * @param title The node title.
-     * @param parent The node parent.
-     * @param referencePath The reference path.
-     * @param path The current path.
-     * @return The item reference.
-     */
-    private static TreeItem checkPathReference(String title, TreeItem parent, File referencePath, File path)
-    {
-        if (referencePath.getPath().equals(path.getPath()))
-        {
-            final TreeItem folder = new TreeItem(parent, SWT.NONE);
-            folder.setText(title);
-            folder.setImage(ICON_FOLDER);
-            return folder;
-        }
-        return parent;
-    }
-
-    /**
      * Get the data file icon.
      * 
      * @param file The child file.
@@ -270,6 +249,28 @@ public class ProjectTreeCreator
                 }
             }
         }
+    }
+
+    /**
+     * Check the path reference and create the node if necessary.
+     * 
+     * @param title The node title.
+     * @param parent The node parent.
+     * @param referencePath The reference path.
+     * @param path The current path.
+     * @return The item reference.
+     */
+    private TreeItem checkPathReference(String title, TreeItem parent, File referencePath, File path)
+    {
+        if (referencePath.getPath().equals(path.getPath()))
+        {
+            final TreeItem folder = new TreeItem(parent, SWT.NONE);
+            folder.setText(title);
+            folder.setImage(ICON_FOLDER);
+            tree.setData(title, folder);
+            return folder;
+        }
+        return parent;
     }
 
     /**
