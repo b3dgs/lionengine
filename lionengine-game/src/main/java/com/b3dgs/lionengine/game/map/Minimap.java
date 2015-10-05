@@ -95,7 +95,7 @@ public class Minimap implements Image
     /**
      * Perform an automatic color minimap resolution.
      * 
-     * @param config The pixel configuration destination file.
+     * @param config The pixel configuration destination file (can be <code>null</code>).
      */
     public void automaticColor(Media config)
     {
@@ -105,7 +105,12 @@ public class Minimap implements Image
         {
             computeSheet(root, colors, sheet);
         }
-        Stream.saveXml(root, config);
+        if (config != null)
+        {
+            Stream.saveXml(root, config);
+        }
+        pixels = ConfigMinimap.create(root, map);
+        prepare();
     }
 
     /**
