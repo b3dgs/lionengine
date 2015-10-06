@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.editor.dialog;
 
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -131,14 +129,10 @@ public abstract class AbstractEditor implements MDirtyable
 
         final Button exit = UtilButton.create(bottom, "Exit", null);
         exit.setImage(AbstractDialog.ICON_EXIT);
-        exit.addSelectionListener(new SelectionAdapter()
+        UtilButton.setAction(exit, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                onExit();
-                shell.dispose();
-            }
+            onExit();
+            shell.dispose();
         });
     }
 

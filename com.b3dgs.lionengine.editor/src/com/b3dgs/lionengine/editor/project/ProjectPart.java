@@ -27,8 +27,6 @@ import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -52,6 +50,7 @@ import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.UtilTree;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
@@ -142,14 +141,7 @@ public final class ProjectPart implements Focusable
                 checkOpenFile();
             }
         });
-        tree.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                updateSelection();
-            }
-        });
+        UtilTree.setAction(tree, () -> updateSelection());
         tree.addMenuDetectListener(menuDetectEvent -> updateMenu());
         menuService.registerContextMenu(tree, ProjectPart.MENU_ID);
     }

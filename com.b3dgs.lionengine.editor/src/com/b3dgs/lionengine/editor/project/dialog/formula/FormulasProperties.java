@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.editor.project.dialog.formula;
 import java.util.Collections;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -256,14 +254,10 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
     {
         final MapTile map = WorldModel.INSTANCE.getMap();
         final Combo template = UtilCombo.create(Messages.EditFormulasDialog_Template, parent, FormulaTemplate.values());
-        template.addSelectionListener(new SelectionAdapter()
+        UtilCombo.setAction(template, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                final CollisionFormula formula = ((FormulaTemplate) template.getData()).getFormula(map);
-                notifyObjectSelected(formula);
-            }
+            final CollisionFormula formula = ((FormulaTemplate) template.getData()).getFormula(map);
+            notifyObjectSelected(formula);
         });
     }
 
@@ -316,14 +310,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         typeArea.setLayout(typeAreaLayout);
         type = UtilCombo.create(Messages.EditFormulasDialog_FunctionType, typeArea, CollisionFunctionType.values());
         selectFunctionType(parent);
-        type.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                selectFunctionType(parent);
-            }
-        });
+        UtilCombo.setAction(type, () -> selectFunctionType(parent));
     }
 
     /**

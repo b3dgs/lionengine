@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.editor.properties.tilecollision.dialog;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -95,19 +93,15 @@ public class CollisionFunctionComposite
         group.setText(Messages.Dialog_TileCollision_Function);
 
         comboFunction = UtilCombo.create(group, CollisionFunctionType.values());
-        comboFunction.addSelectionListener(new SelectionAdapter()
+        UtilCombo.setAction(comboFunction, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent event)
+            if (current != null)
             {
-                if (current != null)
-                {
-                    current.dispose();
-                }
-                current = createComposite((CollisionFunctionType) comboFunction.getData());
-                current.create(group);
-                current.load(old);
+                current.dispose();
             }
+            current = createComposite((CollisionFunctionType) comboFunction.getData());
+            current.create(group);
+            current.load(old);
         });
         current = createComposite((CollisionFunctionType) comboFunction.getData());
         current.create(group);

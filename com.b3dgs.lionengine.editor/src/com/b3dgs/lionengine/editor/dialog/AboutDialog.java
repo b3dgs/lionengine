@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.editor.dialog;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -106,14 +104,7 @@ public class AboutDialog
         data.widthHint = 72;
         okButton.setLayoutData(data);
         okButton.setImage(AbstractDialog.ICON_EXIT);
-        okButton.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                dialog.dispose();
-            }
-        });
+        UtilButton.setAction(okButton, () -> dialog.dispose());
     }
 
     /** The dialog. */

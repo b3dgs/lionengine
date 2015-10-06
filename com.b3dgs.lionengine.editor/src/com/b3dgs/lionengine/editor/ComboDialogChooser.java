@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.editor;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -82,14 +80,10 @@ public class ComboDialogChooser extends Dialog
         }
 
         final Button finish = UtilButton.create(area, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
-        finish.addSelectionListener(new SelectionAdapter()
+        UtilButton.setAction(finish, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                choice = combo.getText();
-                shell.dispose();
-            }
+            choice = combo.getText();
+            shell.dispose();
         });
 
         UtilSwt.open(shell);

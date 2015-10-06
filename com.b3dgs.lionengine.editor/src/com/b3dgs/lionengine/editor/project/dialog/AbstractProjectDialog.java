@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.editor.project.dialog;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -138,14 +136,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
                                                 null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
-        browse.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                browseProjectLocation();
-            }
-        });
+        UtilButton.setAction(browse, () -> browseProjectLocation());
     }
 
     /**
@@ -269,19 +260,15 @@ public abstract class AbstractProjectDialog extends AbstractDialog
     {
         final Button browse = UtilButton.create(parent, title, AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
-        browse.addSelectionListener(new SelectionAdapter()
+        UtilButton.setAction(browse, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
+            final String projectPath = projectLocationText.getText();
+            if (projectPath != null && !projectPath.isEmpty())
             {
-                final String projectPath = projectLocationText.getText();
-                if (projectPath != null && !projectPath.isEmpty())
+                final String path = getSelectedPath(projectPath, folder, extensions);
+                if (path != null)
                 {
-                    final String path = getSelectedPath(projectPath, folder, extensions);
-                    if (path != null)
-                    {
-                        text.setText(path.substring(projectPath.length() + 1));
-                    }
+                    text.setText(path.substring(projectPath.length() + 1));
                 }
             }
         });

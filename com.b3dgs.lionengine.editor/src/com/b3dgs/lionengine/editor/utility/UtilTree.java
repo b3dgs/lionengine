@@ -17,12 +17,15 @@
  */
 package com.b3dgs.lionengine.editor.utility;
 
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.editor.Action;
 
 /**
  * Series of tool functions around the trees.
@@ -77,6 +80,24 @@ public final class UtilTree
             final TreeItem item = (TreeItem) e.item;
             item.getDisplay().asyncExec(() -> autoSize(item));
         };
+    }
+
+    /**
+     * Set the tree action.
+     * 
+     * @param tree The tree reference.
+     * @param action The button action.
+     */
+    public static void setAction(Tree tree, Action action)
+    {
+        tree.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent event)
+            {
+                action.perform();
+            }
+        });
     }
 
     /**

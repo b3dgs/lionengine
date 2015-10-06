@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.editor.dialog;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
@@ -261,32 +259,24 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
 
         finish = UtilButton.create(buttonArea, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
         finish.setEnabled(false);
-        finish.addSelectionListener(new SelectionAdapter()
+        UtilButton.setAction(finish, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                onFinish();
-                dialog.dispose();
+            onFinish();
+            dialog.dispose();
 
-                final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
-                part.update();
-            }
+            final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+            part.update();
         });
 
         cancel = UtilButton.create(buttonArea, Messages.AbstractDialog_Cancel, AbstractDialog.ICON_CANCEL);
-        cancel.addSelectionListener(new SelectionAdapter()
+        UtilButton.setAction(cancel, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                canceled = true;
-                onCanceled();
-                dialog.dispose();
+            canceled = true;
+            onCanceled();
+            dialog.dispose();
 
-                final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
-                part.update();
-            }
+            final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+            part.update();
         });
     }
 

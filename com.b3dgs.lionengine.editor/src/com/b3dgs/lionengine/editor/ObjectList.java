@@ -164,14 +164,7 @@ public abstract class ObjectList<T extends Nameable>
         data.minimumWidth = 128;
         data.minimumHeight = 96;
         objectsTree.setLayoutData(data);
-        objectsTree.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                onSelection();
-            }
-        });
+        UtilTree.setAction(objectsTree, () -> onSelection());
     }
 
     /**

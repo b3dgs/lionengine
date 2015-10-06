@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.editor.world.dialog;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -225,14 +223,7 @@ public class SheetsImportDialog extends AbstractDialog
         addLevelRip = new Button(parent, SWT.PUSH);
         addLevelRip.setImage(ObjectList.ICON_ADD);
         addLevelRip.setToolTipText(Messages.SheetsImportDialog_AddLevelRip);
-        addLevelRip.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                onAddLevelRip();
-            }
-        });
+        UtilButton.setAction(addLevelRip, () -> onAddLevelRip());
     }
 
     /**
@@ -245,14 +236,7 @@ public class SheetsImportDialog extends AbstractDialog
         removeLevelRip = new Button(parent, SWT.PUSH);
         removeLevelRip.setImage(ObjectList.ICON_REMOVE);
         removeLevelRip.setToolTipText(Messages.SheetsImportDialog_RemoveLevelRip);
-        removeLevelRip.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                onRemoveLevelRip();
-            }
-        });
+        UtilButton.setAction(removeLevelRip, () -> onRemoveLevelRip());
     }
 
     /**
@@ -278,14 +262,7 @@ public class SheetsImportDialog extends AbstractDialog
                                                 AbstractDialog.ICON_BROWSE);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
-        browse.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                onBrowseExtractionLocation();
-            }
-        });
+        UtilButton.setAction(browse, () -> onBrowseExtractionLocation());
     }
 
     /**

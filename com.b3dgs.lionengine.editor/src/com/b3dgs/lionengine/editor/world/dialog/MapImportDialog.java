@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.editor.world.dialog;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -251,14 +249,7 @@ public class MapImportDialog extends AbstractDialog
                                                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
                                                 null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
-        browse.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                browseLevelRipLocation();
-            }
-        });
+        UtilButton.setAction(browse, () -> browseLevelRipLocation());
     }
 
     /**
@@ -283,14 +274,7 @@ public class MapImportDialog extends AbstractDialog
                                                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
                                                 null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
-        browse.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                browseSheetsLocation();
-            }
-        });
+        UtilButton.setAction(browse, () -> browseSheetsLocation());
     }
 
     /**
@@ -315,14 +299,7 @@ public class MapImportDialog extends AbstractDialog
                                                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
                                                 null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
-        browse.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                browseGroupsLocation();
-            }
-        });
+        UtilButton.setAction(browse, () -> browseGroupsLocation());
     }
 
     /**

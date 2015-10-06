@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.editor.properties.animation.editor;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -115,14 +113,7 @@ public class AnimationPlayer
     private void createButtonPreviousAnim(Composite parent)
     {
         previousAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_PREVIOUS);
-        previousAnim.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                animationList.setNextSelection(-1);
-            }
-        });
+        UtilButton.setAction(previousAnim, () -> animationList.setNextSelection(-1));
     }
 
     /**
@@ -133,22 +124,18 @@ public class AnimationPlayer
     private void createButtonPlayAnim(Composite parent)
     {
         playAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_PLAY);
-        playAnim.addSelectionListener(new SelectionAdapter()
+        UtilButton.setAction(playAnim, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
+            final Animation animation = animationList.getSelectedObject();
+            if (animation != null)
             {
-                final Animation animation = animationList.getSelectedObject();
-                if (animation != null)
-                {
-                    animationRenderer.setAnimation(animation);
-                    animationRenderer.setPause(false);
-                    previousAnim.setEnabled(false);
-                    playAnim.setEnabled(false);
-                    pauseAnim.setEnabled(true);
-                    stopAnim.setEnabled(true);
-                    nextAnim.setEnabled(false);
-                }
+                animationRenderer.setAnimation(animation);
+                animationRenderer.setPause(false);
+                previousAnim.setEnabled(false);
+                playAnim.setEnabled(false);
+                pauseAnim.setEnabled(true);
+                stopAnim.setEnabled(true);
+                nextAnim.setEnabled(false);
             }
         });
     }
@@ -162,17 +149,13 @@ public class AnimationPlayer
     {
         pauseAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_PAUSE);
         pauseAnim.setEnabled(false);
-        pauseAnim.addSelectionListener(new SelectionAdapter()
+        UtilButton.setAction(pauseAnim, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                animationRenderer.setPause(true);
-                previousAnim.setEnabled(false);
-                playAnim.setEnabled(true);
-                pauseAnim.setEnabled(false);
-                nextAnim.setEnabled(false);
-            }
+            animationRenderer.setPause(true);
+            previousAnim.setEnabled(false);
+            playAnim.setEnabled(true);
+            pauseAnim.setEnabled(false);
+            nextAnim.setEnabled(false);
         });
     }
 
@@ -185,18 +168,14 @@ public class AnimationPlayer
     {
         stopAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_STOP);
         stopAnim.setEnabled(false);
-        stopAnim.addSelectionListener(new SelectionAdapter()
+        UtilButton.setAction(stopAnim, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                animationRenderer.stopAnimation();
-                previousAnim.setEnabled(true);
-                playAnim.setEnabled(true);
-                pauseAnim.setEnabled(false);
-                stopAnim.setEnabled(false);
-                nextAnim.setEnabled(true);
-            }
+            animationRenderer.stopAnimation();
+            previousAnim.setEnabled(true);
+            playAnim.setEnabled(true);
+            pauseAnim.setEnabled(false);
+            stopAnim.setEnabled(false);
+            nextAnim.setEnabled(true);
         });
     }
 
@@ -208,13 +187,6 @@ public class AnimationPlayer
     private void createButtonNextAnim(Composite parent)
     {
         nextAnim = UtilButton.create(parent, null, AnimationPlayer.ICON_ANIM_NEXT);
-        nextAnim.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                animationList.setNextSelection(1);
-            }
-        });
+        UtilButton.setAction(nextAnim, () -> animationList.setNextSelection(1));
     }
 }

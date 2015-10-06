@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.editor.world.dialog;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -239,14 +237,7 @@ public class MapCollisionImportDialog extends AbstractDialog
                                                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
                                                 null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
-        browse.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                browseFormulasLocation();
-            }
-        });
+        UtilButton.setAction(browse, () -> browseFormulasLocation());
     }
 
     /**
@@ -271,14 +262,7 @@ public class MapCollisionImportDialog extends AbstractDialog
                                                 com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
                                                 null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
-        browse.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                browseCollisionLocation();
-            }
-        });
+        UtilButton.setAction(browse, () -> browseCollisionLocation());
     }
 
     /**

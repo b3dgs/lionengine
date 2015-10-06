@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.editor.world.dialog;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -122,29 +120,18 @@ public class MapCollisionAssignDialog extends AbstractDialog
         check.setImage(AbstractDialog.ICON_BROWSE);
 
         final WorldInteractionTile interactionTile = collision;
-        check.addSelectionListener(new SelectionAdapter()
+        UtilButton.setAction(check, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                interactionTile.verifyCollision(Integer.parseInt(offset.getText()));
+            interactionTile.verifyCollision(Integer.parseInt(offset.getText()));
 
-                final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
-                if (!part.getUpdater().isCollisionsEnabled())
-                {
-                    part.getUpdater().switchCollisionsEnabled();
-                }
-                part.update();
-            }
-        });
-        check.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent event)
+            final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+            if (!part.getUpdater().isCollisionsEnabled())
             {
-                setFinishEnabled(true);
+                part.getUpdater().switchCollisionsEnabled();
             }
+            part.update();
         });
+        UtilButton.setAction(check, () -> setFinishEnabled(true));
         return check;
     }
 

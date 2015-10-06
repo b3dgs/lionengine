@@ -22,8 +22,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -34,6 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupsEditDialog;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
@@ -152,14 +151,7 @@ public class GroupChooser extends AbstractDialog
 
         final Button add = new Button(composite, SWT.PUSH);
         add.setText(Messages.GroupChooser_Add);
-        add.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                addGroup(add.getShell());
-            }
-        });
+        UtilButton.setAction(add, () -> addGroup(add.getShell()));
     }
 
     @Override
