@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.editor.Action;
 
 /**
  * Series of tool functions around buttons.
@@ -104,6 +105,24 @@ public final class UtilButton
             button.setData(UtilSwt.KEY_DIRTY, listener);
             button.addSelectionListener(listener);
         }
+    }
+
+    /**
+     * Set the button action.
+     * 
+     * @param button The button reference.
+     * @param action The button action.
+     */
+    public static void setAction(Button button, Action action)
+    {
+        button.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent event)
+            {
+                action.perform();
+            }
+        });
     }
 
     /**

@@ -105,6 +105,31 @@ public final class UtilFile
     }
 
     /**
+     * Normalize the file extension by ensuring it has the required one.
+     * 
+     * @param file The original file name.
+     * @param extension The desired extension (will replace the other one if has).
+     * @return The normalized file with its extension.
+     * @throws LionEngineException If <code>null</code> arguments.
+     */
+    public static String normalizeExtension(String file, String extension) throws LionEngineException
+    {
+        Check.notNull(file);
+        Check.notNull(extension);
+
+        final StringBuilder builder = new StringBuilder(removeExtension(file)).append(Constant.DOT);
+        if (extension.startsWith(Constant.DOT))
+        {
+            builder.append(getExtension(extension));
+        }
+        else
+        {
+            builder.append(extension);
+        }
+        return builder.toString();
+    }
+
+    /**
      * Get of full copy of the input stream stored in a temporary file.
      * 
      * @param name The file name reference (to have a similar temporary file name).
@@ -210,7 +235,7 @@ public final class UtilFile
         Check.notNull(file);
         String ext = Constant.EMPTY_STRING;
         final int i = file.lastIndexOf(Constant.DOT);
-        if (i > 0 && i < file.length() - 1)
+        if (i >= 0 && i < file.length() - 1)
         {
             ext = file.substring(i + 1).toLowerCase(Locale.ENGLISH);
         }

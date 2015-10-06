@@ -18,15 +18,12 @@
 package com.b3dgs.lionengine.editor.dialog;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -36,9 +33,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
@@ -53,6 +50,7 @@ import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Minimap;
+import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Minimap dialog.
@@ -62,22 +60,24 @@ import com.b3dgs.lionengine.game.map.Minimap;
 public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWheelListener, WorldMouseMoveListener,
                            WorldMouseScrollListener, WorldKeyboardListener, Focusable
 {
-    /** Shell. */
-    final Shell shell;
+    /** Shell dialog. */
+    private final Shell shell;
     /** World reference. */
-    final WorldPart part;
+    private final WorldPart part;
     /** Minimap reference. */
-    final Minimap minimap = WorldModel.INSTANCE.getMinimap();
+    private final Minimap minimap = WorldModel.INSTANCE.getMinimap();
     /** Map reference. */
     private final MapTile map = WorldModel.INSTANCE.getMap();
     /** Camera reference. */
     private final Camera camera = WorldModel.INSTANCE.getCamera();
-    /** Minimap configuration. */
-    private Text config;
     /** GC minimap. */
     private volatile GC gc;
     /** Mouse click. */
     private volatile boolean click;
+    /** Minimap active. */
+    private volatile boolean active;
+    /** Minimap configuration. */
+    private Text config;
 
     /**
      * Create the dialog.
@@ -94,7 +94,7 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
     }
 
     /**
-     * Open minimap window.
+     * Open minimap dialog.
      */
     public void open()
     {
@@ -121,60 +121,27 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
     }
 
     /**
-     * Load minimap configuration.
+     * Create the buttons area.
      * 
-     * @param media The configuration media.
+     * @param parent The parent reference.
      */
-    void loadConfig(Media media)
+    private void createButtons(Composite parent)
     {
-        if (media.getFile().isFile())
-        {
-            minimap.loadPixelConfig(media);
-            minimap.prepare();
-            render();
-        }
-    }
+        final Composite content = new Composite(parent, SWT.NONE);
+        content.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        content.setLayout(new GridLayout(3, false));
 
-    /**
-     * Render the minimap.
-     */
-    void render()
-    {
-        if (!gc.isDisposed())
-        {
-            gc.drawImage(ToolsSwt.getBuffer(minimap.getSurface()), 0, 0);
-            gc.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_GREEN));
+        final Button browse = UtilButton.create(content, Messages.AbstractDialog_Browse, AbstractDialog.ICON_BROWSE);
+        browse.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        UtilButton.setAction(browse, () -> selectConfig());
 
-            final int width = camera.getWidth() / map.getTileWidth();
-            final int height = camera.getHeight() / map.getTileHeight();
-            final int x = (int) camera.getX() / map.getTileWidth();
-            final int y = minimap.getHeight() - (int) camera.getY() / map.getTileHeight() - height - 1;
-            gc.drawRectangle(x, y, width, height);
-        }
-    }
+        final Button automatic = UtilButton.create(content, Messages.Minimap_Generate, AbstractDialog.ICON_OK);
+        automatic.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        UtilButton.setAction(automatic, () -> actionAutomatic(config.getText()));
 
-    /**
-     * Select the configuration file.
-     * 
-     * @param file The configuration file.
-     */
-    void selectConfig(File file)
-    {
-        final Media media = Medias.get(file);
-        if (!file.exists())
-        {
-            try
-            {
-                file.createNewFile();
-            }
-            catch (final IOException exception)
-            {
-                Verbose.exception(getClass(), "widgetSelected", exception);
-            }
-            minimap.automaticColor(media);
-        }
-        config.setText(media.getPath());
-        loadConfig(media);
+        final Button finish = UtilButton.create(content, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
+        finish.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        UtilButton.setAction(finish, () -> shell.dispose());
     }
 
     /**
@@ -197,73 +164,86 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
     }
 
     /**
-     * Create the buttons area.
+     * Load minimap configuration.
      * 
-     * @param parent The parent reference.
+     * @param media The configuration media.
      */
-    private void createButtons(Composite parent)
+    private void loadConfig(Media media)
     {
-        final Composite content = new Composite(parent, SWT.NONE);
-        content.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        content.setLayout(new GridLayout(3, false));
-
-        final Text configMedia = config;
-        final Button browse = UtilButton.create(content, Messages.AbstractDialog_Browse, AbstractDialog.ICON_BROWSE);
-        browse.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-        final Button automatic = UtilButton.create(content, Messages.Minimap_Generate, AbstractDialog.ICON_OK);
-        automatic.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        automatic.addSelectionListener(new SelectionAdapter()
+        if (media.getFile().isFile())
         {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                if (configMedia.getText().isEmpty())
-                {
-                    minimap.automaticColor(null);
-                    render();
-                }
-                else
-                {
-                    final Media media = Medias.create(configMedia.getText());
-                    if (media.getFile().isFile())
-                    {
-                        minimap.automaticColor(media);
-                        render();
-                    }
-                }
-            }
-        });
+            minimap.loadPixelConfig(media);
+            minimap.prepare();
+            render();
+        }
+    }
 
-        browse.addSelectionListener(new SelectionAdapter()
+    /**
+     * Render the minimap.
+     */
+    private void render()
+    {
+        if (!gc.isDisposed())
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                final File file = UtilDialog.selectResourceFile(parent.getShell(), true, new String[]
-                {
-                    Messages.Minimap_FileDesc
-                }, new String[]
-                {
-                    "*.xml"
-                });
-                if (file != null)
-                {
-                    selectConfig(file);
-                }
-            }
-        });
+            gc.drawImage(ToolsSwt.getBuffer(minimap.getSurface()), 0, 0);
+            gc.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_GREEN));
 
-        final Button finish = UtilButton.create(content, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
-        finish.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        finish.addSelectionListener(new SelectionAdapter()
+            final int width = camera.getWidth() / map.getTileWidth();
+            final int height = camera.getHeight() / map.getTileHeight();
+            final int x = (int) camera.getX() / map.getTileWidth();
+            final int y = minimap.getHeight() - (int) camera.getY() / map.getTileHeight() - height - 1;
+            gc.drawRectangle(x, y, width, height);
+
+            active = true;
+        }
+    }
+
+    /**
+     * Select the configuration file.
+     */
+    private void selectConfig()
+    {
+        final File file = UtilDialog.selectResourceFile(shell, true, new String[]
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                shell.dispose();
-            }
+            Messages.Minimap_FileDesc
+        }, new String[]
+        {
+            "*.xml"
         });
+        if (file != null)
+        {
+            final String normalized = UtilFile.normalizeExtension(file.getName(), Factory.FILE_DATA_EXTENSION);
+            final Media media = Medias.get(new File(file.getParentFile(), normalized));
+            config.setText(media.getPath());
+            if (!file.exists())
+            {
+                minimap.automaticColor(media);
+            }
+            else
+            {
+                loadConfig(media);
+            }
+        }
+    }
+
+    /**
+     * Called when clicked on automatic button.
+     * 
+     * @param text The selected minimap configuration text.
+     */
+    private void actionAutomatic(String text)
+    {
+        if (text.isEmpty())
+        {
+            minimap.automaticColor(null);
+            render();
+        }
+        else
+        {
+            final Media media = Medias.create(UtilFile.normalizeExtension(text, Factory.FILE_DATA_EXTENSION));
+            minimap.automaticColor(media);
+            render();
+        }
     }
 
     /**
@@ -274,7 +254,7 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
      */
     private void moveMap(int mx, int my)
     {
-        if (click)
+        if (click && active)
         {
             camera.setLocation(mx * map.getTileWidth(), (minimap.getHeight() - my) * map.getTileHeight());
             part.update();
@@ -322,8 +302,11 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
     @Override
     public void mouseScrolled(MouseEvent event)
     {
-        part.getUpdater().mouseScrolled(event);
-        part.getRenderer().mouseScrolled(event);
+        if (active)
+        {
+            part.getUpdater().mouseScrolled(event);
+            part.getRenderer().mouseScrolled(event);
+        }
     }
 
     /*
@@ -346,7 +329,10 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
     @Override
     public void onMouseScroll(int value, int mx, int my)
     {
-        render();
+        if (active)
+        {
+            render();
+        }
     }
 
     /*
@@ -356,7 +342,10 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
     @Override
     public void onKeyPushed(Integer key)
     {
-        render();
+        if (active)
+        {
+            render();
+        }
     }
 
     /*

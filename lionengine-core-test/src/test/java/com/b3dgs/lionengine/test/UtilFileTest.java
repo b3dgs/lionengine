@@ -153,6 +153,37 @@ public class UtilFileTest
     }
 
     /**
+     * Test the remove extension.
+     */
+    @Test
+    public void testNormalizeExtension()
+    {
+        Assert.assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", "tmp"));
+        Assert.assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", ".tmp"));
+        Assert.assertEquals("temp.tmp", UtilFile.normalizeExtension("temp", "..tmp"));
+        Assert.assertEquals("temp.tmp", UtilFile.normalizeExtension("temp.tmp", ".tmp"));
+        Assert.assertEquals("temp.tmp", UtilFile.normalizeExtension("temp.txt", ".tmp"));
+    }
+
+    /**
+     * Test the normalized extension with <code>null</code> file.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNormalizeExtensionNullFile()
+    {
+        Assert.assertNull(UtilFile.normalizeExtension(null, ""));
+    }
+
+    /**
+     * Test the normalized extension with <code>null</code> extension.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNormalizeExtensionNullExtension()
+    {
+        Assert.assertNull(UtilFile.normalizeExtension("", null));
+    }
+
+    /**
      * Test the input stream copy.
      * 
      * @throws IOException If error.
@@ -219,6 +250,8 @@ public class UtilFileTest
     @Test
     public void testGetExtension()
     {
+        Assert.assertEquals("", UtilFile.getExtension("tmp"));
+        Assert.assertEquals("tmp", UtilFile.getExtension(".tmp"));
         Assert.assertEquals("tmp", UtilFile.getExtension("temp.tmp"));
         Assert.assertEquals("t", UtilFile.getExtension("temp.t"));
         Assert.assertEquals(Constant.EMPTY_STRING, UtilFile.getExtension("temp."));
