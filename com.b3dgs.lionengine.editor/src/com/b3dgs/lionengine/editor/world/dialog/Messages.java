@@ -111,6 +111,19 @@ public final class Messages extends NLS
     /** Error collisions file. */
     public static String ImportMapCollisionDialog_ErrorCollisions;
 
+    /** Import map tile constraints dialog title. */
+    public static String ImportMapTileConstraintsDialog_Title;
+    /** Import map tile constraints title header. */
+    public static String ImportMapTileConstraintsDialog_HeaderTitle;
+    /** Import map tile constraints description header. */
+    public static String ImportMapTileConstraintsDialog_HeaderDesc;
+    /** Constraints config file filter. */
+    public static String ImportMapTileConstraintsDialog_ConstraintsConfigFileFilter;
+    /** Constraints location. */
+    public static String ImportMapTileConstraintsDialog_ConstraintsLocation;
+    /** Error constraints. */
+    public static String ImportMapTileConstraintsDialog_ErrorConstraints;
+
     /** Collision assign dialog title. */
     public static String CollisionAssign_Title;
     /** Collision assign dialog title header. */
