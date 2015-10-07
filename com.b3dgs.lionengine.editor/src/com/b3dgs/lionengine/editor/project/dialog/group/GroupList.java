@@ -25,10 +25,10 @@ import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.TileGroup;
-import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGroup;
+import com.b3dgs.lionengine.game.map.TileRef;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 

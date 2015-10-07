@@ -15,12 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.collision;
+package com.b3dgs.lionengine.game.map;
 
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Represents the tile group, which can be applied to a {@link TileRef}.
@@ -97,83 +96,5 @@ public class TileGroup implements Nameable
     public String getName()
     {
         return name;
-    }
-
-    /**
-     * Represents the tile reference indexes.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
-     */
-    public static final class TileRef
-    {
-        /** Sheet id. */
-        private final Integer sheet;
-        /** TIle number. */
-        private final int number;
-
-        /**
-         * Create the tile reference.
-         * 
-         * @param sheet The tile sheet number.
-         * @param number The tile number.
-         */
-        public TileRef(Integer sheet, int number)
-        {
-            this.sheet = sheet;
-            this.number = number;
-        }
-
-        /**
-         * Get the sheet number.
-         * 
-         * @return The sheet number.
-         */
-        public Integer getSheet()
-        {
-            return sheet;
-        }
-
-        /**
-         * Get the tile number.
-         * 
-         * @return The tile number.
-         */
-        public int getNumber()
-        {
-            return number;
-        }
-
-        /*
-         * Object
-         */
-
-        @Override
-        public int hashCode()
-        {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + number;
-            result = prime * result + sheet.intValue();
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj)
-        {
-            if (this == obj)
-            {
-                return true;
-            }
-            if (obj == null || !(obj instanceof TileRef))
-            {
-                return false;
-            }
-            final TileRef other = (TileRef) obj;
-            if (number != other.number || sheet.intValue() != other.sheet.intValue())
-            {
-                return false;
-            }
-            return true;
-        }
     }
 }

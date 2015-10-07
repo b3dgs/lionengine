@@ -30,10 +30,10 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGroup;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 

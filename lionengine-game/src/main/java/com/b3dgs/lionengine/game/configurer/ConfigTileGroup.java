@@ -22,8 +22,8 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.collision.TileGroup;
-import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
+import com.b3dgs.lionengine.game.map.TileGroup;
+import com.b3dgs.lionengine.game.map.TileRef;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**

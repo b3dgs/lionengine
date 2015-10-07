@@ -42,7 +42,6 @@ import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
 import com.b3dgs.lionengine.game.collision.CollisionResult;
-import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.object.Services;

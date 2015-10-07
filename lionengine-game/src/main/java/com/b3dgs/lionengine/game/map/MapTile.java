@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;

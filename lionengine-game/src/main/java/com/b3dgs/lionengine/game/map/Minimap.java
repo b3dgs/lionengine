@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
 import com.b3dgs.lionengine.game.configurer.ConfigMinimap;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.stream.Stream;

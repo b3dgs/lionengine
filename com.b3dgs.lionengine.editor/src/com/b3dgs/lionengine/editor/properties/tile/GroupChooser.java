@@ -36,10 +36,10 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
-import com.b3dgs.lionengine.game.collision.TileGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.TileGroup;
 
 /**
  * Represents the tile group chooser.

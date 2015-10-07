@@ -22,8 +22,8 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileRef;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**

@@ -76,46 +76,10 @@ public class OrientableModel extends TraitModel implements Orientable
     {
         final int tx = map.getInTileX(transformable);
         final int ty = map.getInTileY(transformable);
-        if (ty < dty)
+        final Orientation next = Orientation.get(tx, ty, dtx, dty);
+        if (next != null)
         {
-            if (tx < dtx)
-            {
-                orientation = Orientation.NORTH_EAST;
-            }
-            else if (tx > dtx)
-            {
-                orientation = Orientation.NORTH_WEST;
-            }
-            else
-            {
-                orientation = Orientation.NORTH;
-            }
-        }
-        else if (ty > dty)
-        {
-            if (tx > dtx)
-            {
-                orientation = Orientation.SOUTH_WEST;
-            }
-            else if (tx < dtx)
-            {
-                orientation = Orientation.SOUTH_EAST;
-            }
-            else
-            {
-                orientation = Orientation.SOUTH;
-            }
-        }
-        else
-        {
-            if (tx < dtx)
-            {
-                orientation = Orientation.EAST;
-            }
-            else if (tx > dtx)
-            {
-                orientation = Orientation.WEST;
-            }
+            orientation = next;
         }
     }
 
