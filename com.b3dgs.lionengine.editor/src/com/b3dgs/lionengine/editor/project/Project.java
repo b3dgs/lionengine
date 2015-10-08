@@ -79,7 +79,7 @@ public final class Project
      */
     public static Project getActive()
     {
-        return Project.activeProject;
+        return activeProject;
     }
 
     /**
@@ -91,22 +91,22 @@ public final class Project
      */
     public static Project create(File projectPath) throws IOException
     {
-        Verbose.info(Project.VERBOSE_READ_PROJECT_PROPERTIES, projectPath.getAbsolutePath());
-        try (InputStream input = new FileInputStream(new File(projectPath, Project.PROPERTIES_FILE)))
+        Verbose.info(VERBOSE_READ_PROJECT_PROPERTIES, projectPath.getAbsolutePath());
+        try (InputStream input = new FileInputStream(new File(projectPath, PROPERTIES_FILE)))
         {
             final Properties properties = new Properties();
             properties.load(input);
 
-            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES);
-            final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES);
-            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES);
+            final String classes = properties.getProperty(PROPERTY_PROJECT_CLASSES);
+            final String libraries = properties.getProperty(PROPERTY_PROJECT_LIBRARIES);
+            final String resources = properties.getProperty(PROPERTY_PROJECT_RESOURCES);
 
             final Project project = new Project(projectPath);
             project.setName(projectPath.getName());
             project.setClasses(classes, libraries);
             project.setResources(resources);
 
-            Project.activeProject = project;
+            activeProject = project;
 
             return project;
         }
@@ -191,7 +191,7 @@ public final class Project
         }
         else
         {
-            Verbose.warning(getClass(), "setClasses", Project.WARNING_BUNDLE);
+            Verbose.warning(getClass(), "setClasses", WARNING_BUNDLE);
         }
     }
 
@@ -214,7 +214,7 @@ public final class Project
      */
     public Media getClassMedia(File file) throws LionEngineException
     {
-        return Project.getRelativeMedia(file, getClassesPath(), Project.ERROR_MEDIA_RELATIVE_TO_CLASS);
+        return getRelativeMedia(file, getClassesPath(), ERROR_MEDIA_RELATIVE_TO_CLASS);
     }
 
     /**
@@ -226,7 +226,7 @@ public final class Project
      */
     public Media getResourceMedia(File file) throws LionEngineException
     {
-        return Project.getRelativeMedia(file, getResourcesPath(), Project.ERROR_MEDIA_RELATIVE_TO_RESOURCES);
+        return getRelativeMedia(file, getResourcesPath(), ERROR_MEDIA_RELATIVE_TO_RESOURCES);
     }
 
     /**
@@ -324,7 +324,7 @@ public final class Project
         }
         catch (final ClassNotFoundException | NoClassDefFoundError exception)
         {
-            throw new LionEngineException(exception, Project.ERROR_LOAD_CLASS, name);
+            throw new LionEngineException(exception, ERROR_LOAD_CLASS, name);
         }
     }
 
@@ -349,7 +349,7 @@ public final class Project
         }
         catch (final LionEngineException exception)
         {
-            throw new LionEngineException(exception, media, Project.ERROR_CLASS_CAST, clazz.getName());
+            throw new LionEngineException(exception, media, ERROR_CLASS_CAST, clazz.getName());
         }
     }
 
@@ -372,7 +372,7 @@ public final class Project
         }
         catch (final ReflectiveOperationException exception)
         {
-            throw new LionEngineException(exception, Project.ERROR_LOAD_CLASS, name);
+            throw new LionEngineException(exception, ERROR_LOAD_CLASS, name);
         }
     }
 

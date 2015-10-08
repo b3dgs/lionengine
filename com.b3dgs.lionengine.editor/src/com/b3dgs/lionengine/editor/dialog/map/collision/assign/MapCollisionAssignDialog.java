@@ -59,11 +59,7 @@ public class MapCollisionAssignDialog extends AbstractDialog
      */
     public MapCollisionAssignDialog(Shell parent, WorldInteractionTile collision)
     {
-        super(parent,
-              Messages.Title,
-              Messages.HeaderTitle,
-              Messages.HeaderDesc,
-              ICON);
+        super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
         this.collision = collision;
         createDialog();
         dialog.setMinimumSize(320, 160);

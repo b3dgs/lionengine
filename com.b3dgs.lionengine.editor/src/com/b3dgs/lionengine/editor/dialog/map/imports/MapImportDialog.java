@@ -72,11 +72,7 @@ public class MapImportDialog extends AbstractDialog
      */
     public MapImportDialog(Shell parent)
     {
-        super(parent,
-              Messages.Title,
-              Messages.HeaderTitle,
-              Messages.HeaderDesc,
-              ICON);
+        super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
         finish.setEnabled(false);
@@ -245,9 +241,7 @@ public class MapImportDialog extends AbstractDialog
         levelRipLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         levelRipLocationText.setEditable(false);
 
-        final Button browse = UtilButton.create(levelRipArea,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                null);
+        final Button browse = UtilButton.create(levelRipArea, com.b3dgs.lionengine.editor.dialog.Messages.Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         UtilButton.setAction(browse, () -> browseLevelRipLocation());
     }
@@ -270,9 +264,7 @@ public class MapImportDialog extends AbstractDialog
         sheetsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         sheetsLocationText.setEditable(false);
 
-        final Button browse = UtilButton.create(sheetArea,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                null);
+        final Button browse = UtilButton.create(sheetArea, com.b3dgs.lionengine.editor.dialog.Messages.Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         UtilButton.setAction(browse, () -> browseSheetsLocation());
     }
@@ -295,9 +287,7 @@ public class MapImportDialog extends AbstractDialog
         groupsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         groupsLocationText.setEditable(false);
 
-        final Button browse = UtilButton.create(groupArea,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                null);
+        final Button browse = UtilButton.create(groupArea, com.b3dgs.lionengine.editor.dialog.Messages.Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         UtilButton.setAction(browse, () -> browseGroupsLocation());
     }

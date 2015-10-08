@@ -56,11 +56,7 @@ public class SheetsImportProgressDialog extends AbstractProgressDialog
      */
     public SheetsImportProgressDialog(Shell parent, int width, int height)
     {
-        super(parent,
-              Messages.Title,
-              Messages.HeaderTitle,
-              Messages.Progress,
-              SheetsImportDialog.ICON);
+        super(parent, Messages.Title, Messages.HeaderTitle, Messages.Progress, SheetsImportDialog.ICON);
         this.width = width;
         this.height = height;
         createDialog();

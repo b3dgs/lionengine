@@ -64,11 +64,7 @@ public class MapConstraintsImportDialog extends AbstractDialog
      */
     public MapConstraintsImportDialog(Shell parent)
     {
-        super(parent,
-              Messages.Title,
-              Messages.HeaderTitle,
-              Messages.HeaderDesc,
-              ICON);
+        super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
         finish.setEnabled(false);
@@ -140,9 +136,7 @@ public class MapConstraintsImportDialog extends AbstractDialog
         constraintsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         constraintsLocationText.setEditable(false);
 
-        final Button browse = UtilButton.create(groupArea,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                null);
+        final Button browse = UtilButton.create(groupArea, com.b3dgs.lionengine.editor.dialog.Messages.Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         UtilButton.setAction(browse, () -> browseConstraintsLocation());
     }

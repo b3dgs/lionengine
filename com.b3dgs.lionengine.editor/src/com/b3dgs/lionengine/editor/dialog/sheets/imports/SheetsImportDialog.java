@@ -90,11 +90,7 @@ public class SheetsImportDialog extends AbstractDialog
      */
     public SheetsImportDialog(Shell parent)
     {
-        super(parent,
-              Messages.Title,
-              Messages.HeaderTitle,
-              Messages.HeaderDesc,
-              ICON);
+        super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
 
         createDialog();
         setTipsMessage(ICON_ERROR, Messages.NoLevelRipDefined);

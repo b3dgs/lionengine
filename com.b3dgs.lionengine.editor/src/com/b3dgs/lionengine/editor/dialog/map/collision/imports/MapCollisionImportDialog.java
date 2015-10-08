@@ -77,11 +77,7 @@ public class MapCollisionImportDialog extends AbstractDialog
      */
     public MapCollisionImportDialog(Shell parent)
     {
-        super(parent,
-              Messages.Title,
-              Messages.HeaderTitle,
-              Messages.HeaderDesc,
-              ICON);
+        super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
         part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
@@ -233,9 +229,7 @@ public class MapCollisionImportDialog extends AbstractDialog
         formulasText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         formulasText.setEditable(false);
 
-        final Button browse = UtilButton.create(sheetArea,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                null);
+        final Button browse = UtilButton.create(sheetArea, com.b3dgs.lionengine.editor.dialog.Messages.Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         UtilButton.setAction(browse, () -> browseFormulasLocation());
     }

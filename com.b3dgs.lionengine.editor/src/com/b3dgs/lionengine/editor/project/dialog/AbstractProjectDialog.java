@@ -131,9 +131,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
         projectLocationText = new Text(nameArea, SWT.BORDER);
         projectLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-        final Button browse = UtilButton.create(nameArea,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                null);
+        final Button browse = UtilButton.create(nameArea, com.b3dgs.lionengine.editor.dialog.Messages.Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
         UtilButton.setAction(browse, () -> browseProjectLocation());
