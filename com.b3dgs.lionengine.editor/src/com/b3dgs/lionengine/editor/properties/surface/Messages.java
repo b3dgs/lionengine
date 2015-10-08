@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.editor.properties.surface;
 
+import java.util.Locale;
+
 import org.eclipse.osgi.util.NLS;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Messages internationalization.
@@ -29,9 +30,6 @@ import com.b3dgs.lionengine.editor.Activator;
  */
 public final class Messages extends NLS
 {
-    /** Bundle name. */
-    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".properties.surface.messages"; //$NON-NLS-1$
-
     /** Surface property. */
     public static String Properties_Surface;
     /** Surface icon property. */
@@ -42,7 +40,7 @@ public final class Messages extends NLS
      */
     static
     {
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
     }
 
     /**

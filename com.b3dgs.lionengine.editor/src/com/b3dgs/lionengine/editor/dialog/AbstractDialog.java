@@ -257,7 +257,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
         buttonArea.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         buttonArea.setLayout(new GridLayout(2, true));
 
-        finish = UtilButton.create(buttonArea, Messages.AbstractDialog_Finish, AbstractDialog.ICON_OK);
+        finish = UtilButton.create(buttonArea, Messages.Finish, AbstractDialog.ICON_OK);
         finish.setEnabled(false);
         UtilButton.setAction(finish, () ->
         {
@@ -268,7 +268,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
             part.update();
         });
 
-        cancel = UtilButton.create(buttonArea, Messages.AbstractDialog_Cancel, AbstractDialog.ICON_CANCEL);
+        cancel = UtilButton.create(buttonArea, Messages.Cancel, AbstractDialog.ICON_CANCEL);
         UtilButton.setAction(cancel, () ->
         {
             canceled = true;

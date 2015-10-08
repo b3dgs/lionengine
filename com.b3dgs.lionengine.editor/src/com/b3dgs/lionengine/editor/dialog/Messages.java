@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.editor.dialog;
 
+import java.util.Locale;
+
 import org.eclipse.osgi.util.NLS;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Messages internationalization.
@@ -29,35 +30,19 @@ import com.b3dgs.lionengine.editor.Activator;
  */
 public final class Messages extends NLS
 {
-    /** Bundle name. */
-    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".dialog.messages"; //$NON-NLS-1$
-
     /** Cancel button. */
-    public static String AbstractDialog_Cancel;
+    public static String Cancel;
     /** Finish button. */
-    public static String AbstractDialog_Finish;
-    /** Browse. */
-    public static String AbstractDialog_Browse;
-
-    /** Combo dialog chooser title. */
-    public static String ComboDialogChooser_Title;
-
-    /** About. */
-    public static String AboutDialog_Title;
-
-    /** Minimap. */
-    public static String Minimap_Title;
-    /** Minimap file description. */
-    public static String Minimap_FileDesc;
-    /** Minimap generate colors. */
-    public static String Minimap_Generate;
+    public static String Finish;
+    /** Browse button. */
+    public static String Browse;
 
     /**
      * Initialize.
      */
     static
     {
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
     }
 
     /**

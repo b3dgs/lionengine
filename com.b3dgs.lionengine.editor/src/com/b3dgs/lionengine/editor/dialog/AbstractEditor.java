@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.editor.utility.UtilSwt;
 public abstract class AbstractEditor implements MDirtyable
 {
     /** Shell reference. */
-    final Shell shell;
+    private final Shell shell;
     /** Title. */
     private final String title;
     /** Dirty flag. */

@@ -132,7 +132,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
         projectLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         final Button browse = UtilButton.create(nameArea,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                com.b3dgs.lionengine.editor.dialog.Messages.Browse,
                                                 null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
@@ -158,7 +158,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
         projectClassesText.setTextLimit(AbstractDialog.MAX_CHAR);
 
         projectClassesBrowseJar = createBrowseButton(classesArea, JAR_TEXT, projectClassesText, false, "*.jar");
-        final String browse = com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse;
+        final String browse = com.b3dgs.lionengine.editor.dialog.Messages.Browse;
         projectClassesBrowseFolder = createBrowseButton(classesArea, browse, projectClassesText, true);
     }
 
@@ -181,7 +181,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
         projectLibrariesText.setTextLimit(AbstractDialog.MAX_CHAR);
 
         projectLibrariesBrowse = createBrowseButton(librariesArea,
-                                                    com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                    com.b3dgs.lionengine.editor.dialog.Messages.Browse,
                                                     projectLibrariesText,
                                                     true);
     }
@@ -205,7 +205,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
         projectResourcesText.setTextLimit(AbstractDialog.MAX_CHAR);
 
         projectResourcesBrowse = createBrowseButton(resourcesArea,
-                                                    com.b3dgs.lionengine.editor.dialog.Messages.AbstractDialog_Browse,
+                                                    com.b3dgs.lionengine.editor.dialog.Messages.Browse,
                                                     projectResourcesText,
                                                     true);
     }
