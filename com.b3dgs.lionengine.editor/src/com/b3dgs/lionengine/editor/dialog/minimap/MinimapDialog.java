@@ -61,24 +61,26 @@ import com.b3dgs.lionengine.game.object.Factory;
 public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWheelListener, WorldMouseMoveListener,
                            WorldMouseScrollListener, WorldKeyboardListener, Focusable
 {
-    /** Shell dialog. */
-    private final Shell shell;
-    /** World reference. */
-    private final WorldPart part;
-    /** Minimap reference. */
-    private final Minimap minimap = WorldModel.INSTANCE.getMinimap();
     /** Map reference. */
     private final MapTile map = WorldModel.INSTANCE.getMap();
     /** Camera reference. */
     private final Camera camera = WorldModel.INSTANCE.getCamera();
+    /** Minimap reference. */
+    private final Minimap minimap = WorldModel.INSTANCE.getMinimap();
+    /** World reference. */
+    private final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+    /** Shell dialog. */
+    private final Shell shell;
+    /** Composite reference. */
+    private final Composite composite;
+    /** Minimap configuration. */
+    private final Text config;
     /** GC minimap. */
-    private volatile GC gc;
+    private final GC gc;
     /** Mouse click. */
     private volatile boolean click;
     /** Minimap active. */
     private volatile boolean active;
-    /** Minimap configuration. */
-    private Text config;
 
     /**
      * Create the dialog.
@@ -91,7 +93,14 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
         shell.setText(Messages.Title);
         shell.setLayout(UtilSwt.borderless());
 
-        part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+        minimap.load();
+
+        composite = new Composite(shell, SWT.DOUBLE_BUFFERED);
+        composite.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
+        gc = new GC(composite);
+
+        config = createConfigLocation(shell);
+        createButtons(shell);
     }
 
     /**
@@ -99,24 +108,17 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
      */
     public void open()
     {
-        minimap.load();
-
-        final Composite composite = new Composite(shell, SWT.DOUBLE_BUFFERED);
-        composite.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
-        gc = new GC(composite);
         composite.addMouseListener(this);
         composite.addMouseMoveListener(this);
-
-        createConfigLocation(shell);
-        createButtons(shell);
+        composite.addMouseTrackListener(UtilSwt.createFocusListener(this));
 
         final WorldUpdater updater = part.getUpdater();
         updater.addMouseMoveListener(this);
         updater.addMouseScrollListener(this);
         updater.addKeyboardListener(this);
+
         shell.addDisposeListener(event -> updater.removeListeners(MinimapDialog.this));
         shell.addMouseWheelListener(this);
-        composite.addMouseTrackListener(UtilSwt.createFocusListener(this));
 
         UtilSwt.open(shell);
     }
@@ -153,8 +155,9 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
      * Create the configuration location area.
      * 
      * @param parent The parent composite.
+     * @return The created text.
      */
-    private void createConfigLocation(final Composite parent)
+    private Text createConfigLocation(final Composite parent)
     {
         final Composite content = new Composite(parent, SWT.NONE);
         content.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -164,8 +167,10 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
         locationLabel.setText(com.b3dgs.lionengine.editor.project.dialog.Messages.AbstractProjectDialog_Location);
         locationLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
-        config = new Text(content, SWT.BORDER);
-        config.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final Text text = new Text(content, SWT.BORDER);
+        text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        return text;
     }
 
     /**
