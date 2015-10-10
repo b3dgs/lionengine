@@ -94,7 +94,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     /**
      * Check if the sources folder already exists.
      */
-    void checkClassesExistence()
+    private void checkClassesExistence()
     {
         final String text = projectClassesText.getText();
         if (!text.isEmpty())
@@ -111,7 +111,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     /**
      * Check if the libraries folder already exists.
      */
-    void checkLibrariesExistence()
+    private void checkLibrariesExistence()
     {
         final String text = projectLibrariesText.getText();
         if (!text.isEmpty())
@@ -128,7 +128,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     /**
      * Check if the resources folder already exists.
      */
-    void checkResourcesExistence()
+    private void checkResourcesExistence()
     {
         final String text = projectResourcesText.getText();
         if (!text.isEmpty())
@@ -145,7 +145,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     /**
      * Update the tips label.
      */
-    void updateTipsLabel()
+    private void updateTipsLabel()
     {
         tipsLabel.setVisible(false);
         boolean enabled = true;

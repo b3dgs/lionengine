@@ -60,13 +60,13 @@ public class MapCollisionImportDialog extends AbstractDialog
     /** World part reference. */
     private final WorldPart part;
     /** Formulas config file location. */
-    Text formulasText;
+    private Text formulasText;
     /** Collisions config file location. */
-    Text collisionsText;
+    private Text collisionsText;
     /** Formulas config file. */
-    Media formulasConfig;
+    private Media formulasConfig;
     /** Collisions config file. */
-    Media collisionsConfig;
+    private Media collisionsConfig;
     /** Found. */
     private boolean found;
 
@@ -119,7 +119,7 @@ public class MapCollisionImportDialog extends AbstractDialog
     /**
      * Update the tips label.
      */
-    void updateTipsLabel()
+    private void updateTipsLabel()
     {
         tipsLabel.setVisible(false);
     }
@@ -127,7 +127,7 @@ public class MapCollisionImportDialog extends AbstractDialog
     /**
      * Browse the formulas location.
      */
-    void browseFormulasLocation()
+    private void browseFormulasLocation()
     {
         final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
@@ -145,7 +145,7 @@ public class MapCollisionImportDialog extends AbstractDialog
     /**
      * Browse the collision location.
      */
-    void browseCollisionLocation()
+    private void browseCollisionLocation()
     {
         final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
@@ -165,7 +165,7 @@ public class MapCollisionImportDialog extends AbstractDialog
      * 
      * @param path The selected formulas config file location path.
      */
-    void onFormulasConfigLocationSelected(File path)
+    private void onFormulasConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
         boolean validSheets = false;
@@ -195,7 +195,7 @@ public class MapCollisionImportDialog extends AbstractDialog
      * 
      * @param path The collision config file location path.
      */
-    void onCollisionsConfigLocationSelected(File path)
+    private void onCollisionsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
         try

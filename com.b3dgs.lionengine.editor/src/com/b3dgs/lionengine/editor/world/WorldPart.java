@@ -67,7 +67,7 @@ public class WorldPart implements Focusable, TileSelectionListener
 
     /** Part service. */
     @Inject
-    EPartService partService;
+    private EPartService partService;
     /** Composite. */
     private Composite composite;
     /** Updater. */
@@ -308,6 +308,10 @@ public class WorldPart implements Focusable, TileSelectionListener
         }
         return new WorldRenderer(composite, partService, services);
     }
+
+    /*
+     * TileSelectionListener
+     */
 
     @Override
     public void notifyTileSelected(Tile tile)

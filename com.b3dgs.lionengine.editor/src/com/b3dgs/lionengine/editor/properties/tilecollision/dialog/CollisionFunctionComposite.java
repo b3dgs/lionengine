@@ -41,7 +41,7 @@ public class CollisionFunctionComposite
      * @param type The function type.
      * @return The function composite.
      */
-    static CollisionFunctionTypeComposite createComposite(CollisionFunctionType type)
+    private static CollisionFunctionTypeComposite createComposite(CollisionFunctionType type)
     {
         switch (type)
         {
@@ -53,11 +53,11 @@ public class CollisionFunctionComposite
     }
 
     /** Function type. */
-    Combo comboFunction;
+    private Combo comboFunction;
     /** Current function composite. */
-    CollisionFunctionTypeComposite current;
+    private CollisionFunctionTypeComposite current;
     /** Old function. */
-    CollisionFunction old;
+    private CollisionFunction old;
 
     /**
      * Create composite.

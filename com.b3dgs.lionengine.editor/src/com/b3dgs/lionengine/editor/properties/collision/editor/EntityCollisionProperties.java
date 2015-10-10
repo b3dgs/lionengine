@@ -36,15 +36,15 @@ import com.b3dgs.lionengine.game.Collision;
 public class EntityCollisionProperties extends ObjectProperties<Collision> implements ObjectListListener<Collision>
 {
     /** Horizontal offset. */
-    Text offsetX;
+    private Text offsetX;
     /** Vertical offset. */
-    Text offsetY;
+    private Text offsetY;
     /** Collision width.. */
-    Text width;
+    private Text width;
     /** Collision height. */
-    Text height;
+    private Text height;
     /** Mirror flag. */
-    Button mirror;
+    private Button mirror;
 
     /**
      * Create an entity collision properties.

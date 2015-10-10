@@ -62,15 +62,15 @@ public abstract class ObjectList<T extends Nameable>
     /** Class type. */
     final Class<T> type;
     /** Properties. */
-    final ObjectProperties<T> properties;
+    private final ObjectProperties<T> properties;
     /** Objects list. */
     Tree objectsTree;
     /** Selected item. */
-    TreeItem selectedItem;
+    private TreeItem selectedItem;
     /** Selected data. */
-    T selectedObject;
+    private T selectedObject;
     /** Selected data backup. */
-    T selectedObjectBackup;
+    private T selectedObjectBackup;
 
     /**
      * Create an object list.

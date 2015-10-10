@@ -37,19 +37,19 @@ import com.b3dgs.lionengine.editor.ObjectProperties;
 public class AnimationProperties extends ObjectProperties<Animation> implements ObjectListListener<Animation>
 {
     /** Maximum frame. */
-    final int maxFrame;
+    private final int maxFrame;
     /** Animation frame selector. */
-    AnimationFrameSelector animationFrameSelector;
+    private AnimationFrameSelector animationFrameSelector;
     /** First frame. */
-    Text firstFrame;
+    private Text firstFrame;
     /** Last frame. */
-    Text lastFrame;
+    private Text lastFrame;
     /** Animation speed. */
-    Text speed;
+    private Text speed;
     /** Animation reverse. */
-    Button reverseAnim;
+    private Button reverseAnim;
     /** Animation repeat. */
-    Button repeatAnim;
+    private Button repeatAnim;
 
     /**
      * Create an animation properties and associate its renderer to retrieve the maximum frames number.

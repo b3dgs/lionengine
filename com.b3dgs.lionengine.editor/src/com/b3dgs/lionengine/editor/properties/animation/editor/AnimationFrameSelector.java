@@ -56,10 +56,9 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     private static final ColorRgba COLOR_FRAME_SELECTED = new ColorRgba(192, 240, 192, 192);
 
     /** The parent. */
-    final Composite parent;
+    private final Composite parent;
     /** The surface. */
-    final Sprite surface;
-
+    private final Sprite surface;
     /** Graphic reference. */
     private final Graphic g;
     /** Horizontal frames. */

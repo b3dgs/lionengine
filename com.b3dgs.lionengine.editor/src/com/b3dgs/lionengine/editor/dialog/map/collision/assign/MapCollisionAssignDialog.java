@@ -68,14 +68,6 @@ public class MapCollisionAssignDialog extends AbstractDialog
     }
 
     /**
-     * Update the tips label.
-     */
-    void updateTipsLabel()
-    {
-        tipsLabel.setVisible(false);
-    }
-
-    /**
      * Create the offset area.
      * 
      * @param content The content composite.

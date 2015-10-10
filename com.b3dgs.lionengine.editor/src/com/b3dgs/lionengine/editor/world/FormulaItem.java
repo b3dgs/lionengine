@@ -55,11 +55,9 @@ public class FormulaItem
     private static final int COMBO_MIN_WIDTH = 128;
 
     /** Loaded data. */
-    final Map<String, CollisionFunction> values = new HashMap<>();
+    private final Map<String, CollisionFunction> values = new HashMap<>();
     /** The combo item. */
-    Combo combo;
-    /** Last loaded. */
-    long lastModified;
+    private Combo combo;
 
     /**
      * Create item.

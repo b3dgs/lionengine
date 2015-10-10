@@ -49,19 +49,19 @@ public class AnimationPlayer
     private static final Image ICON_ANIM_NEXT = UtilIcon.get(FOLDER, "anim-next.png");
 
     /** Animation list. */
-    final AnimationList animationList;
+    private final AnimationList animationList;
     /** Animation renderer. */
-    final AnimationRenderer animationRenderer;
+    private final AnimationRenderer animationRenderer;
     /** Previous anim. */
-    Button previousAnim;
+    private Button previousAnim;
     /** Play anim. */
-    Button playAnim;
+    private Button playAnim;
     /** Pause anim. */
-    Button pauseAnim;
+    private Button pauseAnim;
     /** Stop anim. */
-    Button stopAnim;
+    private Button stopAnim;
     /** Next anim. */
-    Button nextAnim;
+    private Button nextAnim;
 
     /**
      * Create an animation player and associate its animation list and renderer.

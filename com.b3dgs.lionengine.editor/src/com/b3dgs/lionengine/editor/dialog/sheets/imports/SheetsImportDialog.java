@@ -63,19 +63,19 @@ public class SheetsImportDialog extends AbstractDialog
     private static final String ERROR_GENERATE = "Unable to generate sheets config file !";
 
     /** Level rip list. */
-    Tree levelRips;
+    private Tree levelRips;
     /** Destination folder. */
-    Text folderText;
+    private Text folderText;
     /** Tile width. */
-    Text widthText;
+    private Text widthText;
     /** Tile height. */
-    Text heightText;
+    private Text heightText;
     /** Horizontal tiles. */
-    Text horizontalText;
+    private Text horizontalText;
     /** Vertical tiles. */
-    Text verticalText;
+    private Text verticalText;
     /** Generate sheets config. */
-    Button generate;
+    private Button generate;
     /** Add level rip. */
     private Button addLevelRip;
     /** Remove level rip. */
@@ -100,7 +100,7 @@ public class SheetsImportDialog extends AbstractDialog
     /**
      * Called on add level rip action.
      */
-    void onAddLevelRip()
+    private void onAddLevelRip()
     {
         final File[] files = UtilDialog.selectResourceFiles(dialog, new String[]
         {
@@ -136,7 +136,7 @@ public class SheetsImportDialog extends AbstractDialog
     /**
      * Called on remove a level rip action.
      */
-    void onRemoveLevelRip()
+    private void onRemoveLevelRip()
     {
         for (final TreeItem item : levelRips.getSelection())
         {
@@ -152,7 +152,7 @@ public class SheetsImportDialog extends AbstractDialog
     /**
      * Called on browse extraction location action.
      */
-    void onBrowseExtractionLocation()
+    private void onBrowseExtractionLocation()
     {
         final File file = UtilDialog.selectResourceFolder(dialog);
         if (file != null)
@@ -170,7 +170,7 @@ public class SheetsImportDialog extends AbstractDialog
      * @param th The tile height.
      * @param extractFolder The extraction folder.
      */
-    void generateConfig(int tw, int th, Media extractFolder)
+    private void generateConfig(int tw, int th, Media extractFolder)
     {
         try
         {
@@ -198,7 +198,7 @@ public class SheetsImportDialog extends AbstractDialog
     /**
      * Check for finish button enabling.
      */
-    void checkFinish()
+    private void checkFinish()
     {
         final boolean hasRips = levelRips.getItems().length > 0;
         final boolean hasSize = !widthText.getText().isEmpty() && !heightText.getText().isEmpty();

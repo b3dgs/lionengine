@@ -309,7 +309,7 @@ public final class FolderModificationWatcher
          * @param path The created element path.
          * @param keyParent The parent key.
          */
-        void onCreated(File path, String keyParent)
+        private void onCreated(File path, String keyParent)
         {
             final Object data = tree.getData(keyParent);
             if (data != null && data instanceof TreeItem)
@@ -335,7 +335,7 @@ public final class FolderModificationWatcher
          * 
          * @param name The item name.
          */
-        void disposeItem(String name)
+        private void disposeItem(String name)
         {
             if (!tree.isDisposed())
             {

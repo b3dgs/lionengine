@@ -57,7 +57,7 @@ public class SheetsEditDialog extends AbstractDialog
     private static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
     /** Sheets media. */
-    final Media sheets;
+    private final Media sheets;
     /** Buttons list. */
     private final Collection<Button> buttons = new ArrayList<>();
     /** Tile width text. */

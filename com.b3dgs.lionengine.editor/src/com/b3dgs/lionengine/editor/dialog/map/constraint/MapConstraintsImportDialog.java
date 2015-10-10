@@ -53,9 +53,9 @@ public class MapConstraintsImportDialog extends AbstractDialog
     private static final String XML = "*.xml";
 
     /** Constraints location. */
-    Text constraintsLocationText;
+    private Text constraintsLocationText;
     /** Constraints config file. */
-    Media constraintsConfig;
+    private Media constraintsConfig;
 
     /**
      * Create an import map tile constraints dialog.
@@ -74,7 +74,7 @@ public class MapConstraintsImportDialog extends AbstractDialog
     /**
      * Update the tips label.
      */
-    void updateTipsLabel()
+    private void updateTipsLabel()
     {
         tipsLabel.setVisible(false);
     }
@@ -82,7 +82,7 @@ public class MapConstraintsImportDialog extends AbstractDialog
     /**
      * Browse the constraints location.
      */
-    void browseConstraintsLocation()
+    private void browseConstraintsLocation()
     {
         final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
@@ -102,7 +102,7 @@ public class MapConstraintsImportDialog extends AbstractDialog
      * 
      * @param path The selected groups config location path.
      */
-    void onConstraintsConfigLocationSelected(File path)
+    private void onConstraintsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
         try

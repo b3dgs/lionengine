@@ -82,7 +82,7 @@ public class MapImportDialog extends AbstractDialog
     /**
      * Update the tips label.
      */
-    void updateTipsLabel()
+    private void updateTipsLabel()
     {
         tipsLabel.setVisible(false);
     }
@@ -90,7 +90,7 @@ public class MapImportDialog extends AbstractDialog
     /**
      * Browse the level rip location.
      */
-    void browseLevelRipLocation()
+    private void browseLevelRipLocation()
     {
         final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
@@ -108,7 +108,7 @@ public class MapImportDialog extends AbstractDialog
     /**
      * Browse the sheets location.
      */
-    void browseSheetsLocation()
+    private void browseSheetsLocation()
     {
         final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
@@ -126,7 +126,7 @@ public class MapImportDialog extends AbstractDialog
     /**
      * Browse the groups location.
      */
-    void browseGroupsLocation()
+    private void browseGroupsLocation()
     {
         final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
         {
@@ -146,7 +146,7 @@ public class MapImportDialog extends AbstractDialog
      * 
      * @param path The level rip location path.
      */
-    void onLevelRipLocationSelected(File path)
+    private void onLevelRipLocationSelected(File path)
     {
         final Project project = Project.getActive();
         try
@@ -168,7 +168,7 @@ public class MapImportDialog extends AbstractDialog
      * 
      * @param path The selected sheets config location path.
      */
-    void onSheetsConfigLocationSelected(File path)
+    private void onSheetsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
         boolean validSheets = false;
@@ -198,7 +198,7 @@ public class MapImportDialog extends AbstractDialog
      * 
      * @param path The selected groups config location path.
      */
-    void onGroupsConfigLocationSelected(File path)
+    private void onGroupsConfigLocationSelected(File path)
     {
         final Project project = Project.getActive();
         boolean validGroups = false;

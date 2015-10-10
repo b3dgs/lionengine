@@ -49,7 +49,7 @@ import com.b3dgs.lionengine.game.map.TileGroup;
 public class GroupChooser extends AbstractDialog
 {
     /** Groups values. */
-    final String[] groups;
+    private final String[] groups;
     /** Combo box. */
     private Combo combo;
     /** Choice value. */
@@ -89,7 +89,7 @@ public class GroupChooser extends AbstractDialog
      * 
      * @param groups The groups to load.
      */
-    void loadGroups(String[] groups)
+    private void loadGroups(String[] groups)
     {
         UtilCombo.registerDirty(combo, false);
         Arrays.sort(groups);
@@ -113,7 +113,7 @@ public class GroupChooser extends AbstractDialog
      * 
      * @param shell The shell reference.
      */
-    void addGroup(Shell shell)
+    private void addGroup(Shell shell)
     {
         final MapTile map = WorldModel.INSTANCE.getMap();
         final GroupsEditDialog dialog = new GroupsEditDialog(shell, map.getGroupsConfig());

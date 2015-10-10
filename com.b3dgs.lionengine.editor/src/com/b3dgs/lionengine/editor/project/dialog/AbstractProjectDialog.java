@@ -211,7 +211,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
     /**
      * Browse the project location.
      */
-    void browseProjectLocation()
+    private void browseProjectLocation()
     {
         final DirectoryDialog directoryDialog = new DirectoryDialog(dialog, SWT.APPLICATION_MODAL);
         final String path = directoryDialog.open();
@@ -226,7 +226,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
      * @param extensions The extensions to filter.
      * @return The selected path (can be folder or file).
      */
-    String getSelectedPath(String projectPath, boolean folder, String... extensions)
+    private String getSelectedPath(String projectPath, boolean folder, String... extensions)
     {
         if (folder)
         {

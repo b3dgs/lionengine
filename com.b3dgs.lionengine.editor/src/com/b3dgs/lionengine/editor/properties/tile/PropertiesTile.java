@@ -152,7 +152,7 @@ public class PropertiesTile implements PropertiesProviderTile
      * @param selection The selected item.
      * @param tile The selected tile.
      */
-    static void onDoubleClick(Tree properties, TreeItem selection, Tile tile)
+    private static void onDoubleClick(Tree properties, TreeItem selection, Tile tile)
     {
         final MapTile map = WorldModel.INSTANCE.getMap();
         final Collection<TileGroup> groups = map.getGroups();
