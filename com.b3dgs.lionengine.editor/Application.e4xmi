@@ -133,8 +133,13 @@
         <children xsi:type="menu:DirectMenuItem" xmi:id="_Uq-0AB9mEeWl-qhW9GtH-g" elementId="" label="%menu.map.import-map-collision" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/import-map.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.map.collision.imports.MapCollisionImportHandler">
           <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_CafCsB9nEeWl-qhW9GtH-g" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
         </children>
-        <children xsi:type="menu:DirectMenuItem" xmi:id="_9RiFUF6zEeWkWPaLeuAPFA" elementId="" label="%menu.map.minimap" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/minimap.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.minimap.MinimapHandler">
-          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_9RiFUV6zEeWkWPaLeuAPFA" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_pXb_8G9-EeWXTKDefNFrEg" elementId="" label="%menu.view">
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_pXb_9W9-EeWXTKDefNFrEg" elementId="" label="%menu.view.minimap" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/menu/minimap.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.minimap.MinimapHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_pXb_9m9-EeWXTKDefNFrEg" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
+        </children>
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_rOSM0G9-EeWXTKDefNFrEg" elementId="" label="%menu.view.palette" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/menu/palette.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.sheets.palette.SheetsPaletteHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_rOSM0W9-EeWXTKDefNFrEg" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
         </children>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_RgxMzscnEeO6QsMPtNpkHg" label="%menu.help" mnemonics="">
