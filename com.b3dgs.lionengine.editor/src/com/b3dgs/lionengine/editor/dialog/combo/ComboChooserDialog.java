@@ -98,5 +98,4 @@ public class ComboChooserDialog extends Dialog
         }
         return choice;
     }
-
 }

@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.Label;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.Action;
+import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.dialog.Messages;
 
 /**
  * Series of tool functions around buttons.
@@ -39,7 +41,7 @@ import com.b3dgs.lionengine.editor.Action;
 public final class UtilButton
 {
     /**
-     * Create a button with a text and an icon at a fixed width.
+     * Create a button with a text and an icon.
      * 
      * @param parent The composite parent.
      * @param name The button name.
@@ -56,6 +58,17 @@ public final class UtilButton
         }
         button.setImage(icon);
         return button;
+    }
+
+    /**
+     * Create a browse button.
+     * 
+     * @param parent The composite parent.
+     * @return The button instance.
+     */
+    public static Button createBrowse(Composite parent)
+    {
+        return UtilButton.create(parent, Messages.Browse, AbstractDialog.ICON_BROWSE);
     }
 
     /**

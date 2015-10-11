@@ -136,8 +136,7 @@ public class MapConstraintsImportDialog extends AbstractDialog
         constraintsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         constraintsLocationText.setEditable(false);
 
-        final Button browse = UtilButton.create(groupArea, com.b3dgs.lionengine.editor.dialog.Messages.Browse, null);
-        browse.setImage(AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.createBrowse(groupArea);
         UtilButton.setAction(browse, () -> browseConstraintsLocation());
     }
 

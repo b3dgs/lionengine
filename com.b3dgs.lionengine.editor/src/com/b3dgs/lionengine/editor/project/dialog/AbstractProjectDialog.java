@@ -131,8 +131,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
         projectLocationText = new Text(nameArea, SWT.BORDER);
         projectLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-        final Button browse = UtilButton.create(nameArea, com.b3dgs.lionengine.editor.dialog.Messages.Browse, null);
-        browse.setImage(AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.createBrowse(nameArea);
         browse.forceFocus();
         UtilButton.setAction(browse, () -> browseProjectLocation());
     }
@@ -155,9 +154,9 @@ public abstract class AbstractProjectDialog extends AbstractDialog
         projectClassesText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         projectClassesText.setTextLimit(AbstractDialog.MAX_CHAR);
 
-        projectClassesBrowseJar = createBrowseButton(classesArea, JAR_TEXT, projectClassesText, false, "*.jar");
-        final String browse = com.b3dgs.lionengine.editor.dialog.Messages.Browse;
-        projectClassesBrowseFolder = createBrowseButton(classesArea, browse, projectClassesText, true);
+        projectClassesBrowseJar = createBrowseButton(classesArea, projectClassesText, false, "*.jar");
+        projectClassesBrowseJar.setText(JAR_TEXT);
+        projectClassesBrowseFolder = createBrowseButton(classesArea, projectClassesText, true);
     }
 
     /**
@@ -178,10 +177,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
         projectLibrariesText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         projectLibrariesText.setTextLimit(AbstractDialog.MAX_CHAR);
 
-        projectLibrariesBrowse = createBrowseButton(librariesArea,
-                                                    com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                    projectLibrariesText,
-                                                    true);
+        projectLibrariesBrowse = createBrowseButton(librariesArea, projectLibrariesText, true);
     }
 
     /**
@@ -202,10 +198,7 @@ public abstract class AbstractProjectDialog extends AbstractDialog
         projectResourcesText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         projectResourcesText.setTextLimit(AbstractDialog.MAX_CHAR);
 
-        projectResourcesBrowse = createBrowseButton(resourcesArea,
-                                                    com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                    projectResourcesText,
-                                                    true);
+        projectResourcesBrowse = createBrowseButton(resourcesArea, projectResourcesText, true);
     }
 
     /**
@@ -244,19 +237,14 @@ public abstract class AbstractProjectDialog extends AbstractDialog
      * Create browse path button associated to a text.
      * 
      * @param parent The composite parent.
-     * @param title The button title.
      * @param text The text reference.
      * @param folder <code>true</code> for folder search, <code>false</code> for file search.
      * @param extensions The extensions to filter.
      * @return The created button.
      */
-    private Button createBrowseButton(Composite parent,
-                                      String title,
-                                      final Text text,
-                                      final boolean folder,
-                                      final String... extensions)
+    private Button createBrowseButton(Composite parent, Text text, boolean folder, String... extensions)
     {
-        final Button browse = UtilButton.create(parent, title, AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.createBrowse(parent);
         browse.forceFocus();
         UtilButton.setAction(browse, () ->
         {

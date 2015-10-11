@@ -134,9 +134,7 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
         content.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         content.setLayout(new GridLayout(3, false));
 
-        final Button browse = UtilButton.create(content,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.createBrowse(content);
         browse.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         UtilButton.setAction(browse, () -> selectConfig());
 

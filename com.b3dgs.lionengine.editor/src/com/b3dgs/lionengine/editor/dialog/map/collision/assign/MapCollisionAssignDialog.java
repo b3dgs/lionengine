@@ -104,8 +104,8 @@ public class MapCollisionAssignDialog extends AbstractDialog
      */
     private Button createCheckButton(Composite offsetArea, Text offset)
     {
-        final Button check = UtilButton.create(offsetArea, Messages.Check, null);
-        check.setImage(AbstractDialog.ICON_BROWSE);
+        final Button check = UtilButton.createBrowse(offsetArea);
+        check.setText(Messages.Check);
 
         final WorldInteractionTile interactionTile = collision;
         UtilButton.setAction(check, () ->

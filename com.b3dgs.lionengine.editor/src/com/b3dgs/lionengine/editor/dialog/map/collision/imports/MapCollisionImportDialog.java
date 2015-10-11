@@ -229,8 +229,7 @@ public class MapCollisionImportDialog extends AbstractDialog
         formulasText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         formulasText.setEditable(false);
 
-        final Button browse = UtilButton.create(sheetArea, com.b3dgs.lionengine.editor.dialog.Messages.Browse, null);
-        browse.setImage(AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.createBrowse(sheetArea);
         UtilButton.setAction(browse, () -> browseFormulasLocation());
     }
 
@@ -252,10 +251,7 @@ public class MapCollisionImportDialog extends AbstractDialog
         collisionsText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         collisionsText.setEditable(false);
 
-        final Button browse = UtilButton.create(collisionArea,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                null);
-        browse.setImage(AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.createBrowse(collisionArea);
         UtilButton.setAction(browse, () -> browseCollisionLocation());
     }
 

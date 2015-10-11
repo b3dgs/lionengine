@@ -253,10 +253,7 @@ public class SheetsImportDialog extends AbstractDialog
         folderText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textCheckFinish(folderText);
 
-        final Button browse = UtilButton.create(area,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.Browse,
-                                                AbstractDialog.ICON_BROWSE);
-        browse.setImage(AbstractDialog.ICON_BROWSE);
+        final Button browse = UtilButton.createBrowse(area);
         browse.forceFocus();
         UtilButton.setAction(browse, () -> onBrowseExtractionLocation());
     }
