@@ -8,13 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: com.b3dgs.sample.game
 Bundle-Vendor: Byron 3D Games Studio
 Bundle-Version: 0.1.0.SNAPSHOT
-Export-Package: com.b3dgs.sample;version="0.1.0";
-  uses:="com.b3dgs.lionengine,
-   com.b3dgs.lionengine.core,
-   com.b3dgs.lionengine.core.awt,
-   com.b3dgs.lionengine.game,
-   com.b3dgs.lionengine.stream"
+Export-Package: com.b3dgs.sample;uses:="com.b3dgs.lionengine,com.b3dgs.l
+ ionengine.core";version="0.1.0"
 Import-Package: com.b3dgs.lionengine,com.b3dgs.lionengine.core,com.b3dgs
- .lionengine.core.awt,com.b3dgs.lionengine.game,com.b3dgs.lionengine.gam
- e.map,com.b3dgs.lionengine.game.object,com.b3dgs.lionengine.stream,org.
- junit;resolution:=optional
+ .lionengine.core.awt,org.junit;resolution:=optional
