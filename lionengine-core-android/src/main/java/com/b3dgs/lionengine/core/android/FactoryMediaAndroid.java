@@ -71,7 +71,7 @@ final class FactoryMediaAndroid implements FactoryMedia
         final StringBuilder fullPath = new StringBuilder();
         for (int i = 0; i < path.length; i++)
         {
-            if (path[i] != null && !path[i].isEmpty())
+            if (path[i] != null && path[i].length() > 0)
             {
                 fullPath.append(format(path[i]));
                 if (i < path.length - 1)

@@ -5,6 +5,8 @@
         <jdk.version>1.6</jdk.version>
         <jdk.home>${JDK_6_HOME}</jdk.home>
         <android.version>1.5_r3</android.version>
+        <android.sdk>3</android.sdk>
+        <android.maven.version>4.0.0-rc.2</android.maven.version>
     </properties>
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
@@ -24,9 +26,11 @@
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <version>${android.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
+        <outputDirectory>bin/classes</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -44,6 +48,16 @@
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
                     <executable>${jdk.home}/bin/javac</executable>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>${android.maven.version}</version>
+                <configuration>
+                    <sdk>
+                        <platform>${android.sdk}</platform>
+                    </sdk>
                 </configuration>
             </plugin>
         </plugins>

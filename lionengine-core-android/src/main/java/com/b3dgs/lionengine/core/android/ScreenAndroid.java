@@ -65,12 +65,10 @@ public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
     private final Graphic graphics;
     /** Configuration reference. */
     private final Config config;
-    /** Active sequence reference. */
-    Sequence sequence;
     /** Windowed canvas. */
-    private Canvas canvas;
+    private volatile Canvas canvas;
     /** Ready flag. */
-    private boolean ready;
+    private volatile boolean ready;
 
     /**
      * Internal constructor.
@@ -97,7 +95,7 @@ public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
     {
         final MouseAndroid mouse = new MouseAndroid();
         view.setMouse(mouse);
-        devices.put(mouse.getClass(), mouse);
+        devices.put(Mouse.class, mouse);
     }
 
     /**
@@ -183,7 +181,7 @@ public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
     @Override
     public void setSequence(Sequence sequence)
     {
-        this.sequence = sequence;
+        // Nothing to do
     }
 
     @Override
@@ -207,7 +205,7 @@ public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
     @Override
     public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
     {
-        return null;
+        return type.cast(devices.get(type));
     }
 
     @Override

@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.Transparency;
 public class Renderer extends Thread implements Sequencable
 {
     /** Screen ready timeout in milli second. */
-    static final long SCREEN_READY_TIME_OUT = 50L;
+    private static final long SCREEN_READY_TIME_OUT = 5000L;
     /** Error message already started. */
     private static final String ERROR_STARTED = "Renderer has already been started !";
     /** One nano second. */

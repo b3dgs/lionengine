@@ -32,6 +32,19 @@ import com.b3dgs.lionengine.core.Graphics;
  */
 public final class EngineAndroid extends Engine
 {
+    /**
+     * Create engine.
+     * 
+     * @param name The program name (must not be <code>null</code>).
+     * @param version The program version (must not be <code>null</code>).
+     * @param activity The activity reference (must not be <code>null</code>).
+     * @throws LionEngineException If arguments error.
+     */
+    public static void start(String name, Version version, Activity activity) throws LionEngineException
+    {
+        Engine.start(new EngineAndroid(name, version, activity));
+    }
+
     /** Activity reference. */
     private final Activity activity;
 
