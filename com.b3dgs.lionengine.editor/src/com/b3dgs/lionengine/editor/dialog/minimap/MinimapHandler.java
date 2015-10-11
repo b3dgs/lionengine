@@ -43,7 +43,6 @@ public final class MinimapHandler
     @Execute
     public void execute(Shell shell)
     {
-        final MinimapDialog dialog = new MinimapDialog(shell);
-        dialog.open();
+        MinimapDialog.create(shell);
     }
 }

@@ -27,6 +27,7 @@ import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
@@ -118,6 +119,16 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
         selection = services.get(Selection.class);
         worldUpdater = services.get(WorldUpdater.class);
         zoom = services.get(WorldZoom.class);
+    }
+
+    /**
+     * Get the view location.
+     * 
+     * @return The view location.
+     */
+    public Point getLocation()
+    {
+        return parent.toDisplay(parent.getClientArea().x, parent.getClientArea().y);
     }
 
     /**

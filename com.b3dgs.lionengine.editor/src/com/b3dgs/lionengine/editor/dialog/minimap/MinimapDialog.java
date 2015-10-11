@@ -24,7 +24,9 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -58,9 +60,34 @@ import com.b3dgs.lionengine.game.object.Factory;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWheelListener, WorldMouseMoveListener,
-                           WorldMouseScrollListener, WorldKeyboardListener, Focusable
+public final class MinimapDialog implements MouseListener, MouseMoveListener, MouseWheelListener,
+                                 WorldMouseMoveListener, WorldMouseScrollListener, WorldKeyboardListener, Focusable
 {
+    /** Active reference. */
+    private static volatile MinimapDialog instance;
+    /** Last location. */
+    private static volatile Point lastLocation;
+    /** Minimap shell. */
+    private static volatile Shell minimapShell;
+
+    /**
+     * Create the minimap dialog.
+     * 
+     * @param parent The parent reference.
+     */
+    public static synchronized void create(Shell parent)
+    {
+        if (instance == null)
+        {
+            instance = new MinimapDialog(parent);
+            instance.open();
+            if (lastLocation != null)
+            {
+                instance.shell.setLocation(lastLocation);
+            }
+        }
+    }
+
     /** Map reference. */
     private final MapTile map = WorldModel.INSTANCE.getMap();
     /** Camera reference. */
@@ -75,8 +102,10 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
     private final Composite composite;
     /** Minimap configuration. */
     private final Text config;
+    /** Green color. */
+    private final Color green;
     /** GC minimap. */
-    private final GC gc;
+    private GC gc;
     /** Mouse click. */
     private volatile boolean click;
     /** Minimap active. */
@@ -87,7 +116,7 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
      * 
      * @param parent The parent reference.
      */
-    public MinimapDialog(Shell parent)
+    private MinimapDialog(Shell parent)
     {
         shell = new Shell(parent, SWT.DIALOG_TRIM);
         shell.setText(Messages.Title);
@@ -98,15 +127,16 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
         composite = new Composite(shell, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
         gc = new GC(composite);
+        green = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
 
         config = createConfigLocation(shell);
-        createButtons(shell);
+        createButtons(parent, shell);
     }
 
     /**
      * Open minimap dialog.
      */
-    public void open()
+    private void open()
     {
         composite.addMouseListener(this);
         composite.addMouseMoveListener(this);
@@ -117,7 +147,12 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
         updater.addMouseScrollListener(this);
         updater.addKeyboardListener(this);
 
-        shell.addDisposeListener(event -> updater.removeListeners(MinimapDialog.this));
+        shell.addDisposeListener(event ->
+        {
+            updater.removeListeners(MinimapDialog.this);
+            lastLocation = shell.getLocation();
+            instance = null;
+        });
         shell.addMouseWheelListener(this);
 
         UtilSwt.open(shell);
@@ -126,9 +161,10 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
     /**
      * Create the buttons area.
      * 
+     * @param parentShell The shell parent.
      * @param parent The parent reference.
      */
-    private void createButtons(Composite parent)
+    private void createButtons(Shell parentShell, Composite parent)
     {
         final Composite content = new Composite(parent, SWT.NONE);
         content.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -146,7 +182,40 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
                                                 com.b3dgs.lionengine.editor.dialog.Messages.Finish,
                                                 AbstractDialog.ICON_OK);
         finish.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        UtilButton.setAction(finish, () -> shell.dispose());
+        UtilButton.setAction(finish, () -> openMinimapShell(parentShell));
+    }
+
+    /**
+     * Open the minimap shell and dispose the current shell.
+     * 
+     * @param parent The parent shell
+     */
+    private void openMinimapShell(Shell parent)
+    {
+        final WorldUpdater updater = part.getUpdater();
+        updater.addMouseMoveListener(this);
+        updater.addMouseScrollListener(this);
+        updater.addKeyboardListener(this);
+
+        gc.dispose();
+        shell.dispose();
+        if (minimapShell != null)
+        {
+            minimapShell.dispose();
+        }
+        minimapShell = new Shell(parent, SWT.BORDER | SWT.DOUBLE_BUFFERED);
+        minimapShell.setSize(minimap.getWidth(), minimap.getHeight());
+        minimapShell.setLayout(UtilSwt.borderless());
+        minimapShell.setBackgroundImage(ToolsSwt.getBuffer(minimap.getSurface()));
+        minimapShell.addMouseListener(this);
+        minimapShell.addMouseMoveListener(this);
+        minimapShell.addMouseWheelListener(this);
+        minimapShell.addMouseTrackListener(UtilSwt.createFocusListener(() -> minimapShell.forceFocus()));
+        minimapShell.addDisposeListener(event -> updater.removeListeners(MinimapDialog.this));
+        minimapShell.setLocation(part.getRenderer().getLocation());
+        minimapShell.open();
+        gc = new GC(minimapShell);
+        render();
     }
 
     /**
@@ -194,7 +263,7 @@ public class MinimapDialog implements MouseListener, MouseMoveListener, MouseWhe
         if (!gc.isDisposed())
         {
             gc.drawImage(ToolsSwt.getBuffer(minimap.getSurface()), 0, 0);
-            gc.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_GREEN));
+            gc.setForeground(green);
 
             final int width = camera.getWidth() / map.getTileWidth();
             final int height = camera.getHeight() / map.getTileHeight();
