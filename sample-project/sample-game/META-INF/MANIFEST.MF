@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-Description: Sample project
+Bundle-DocURL: www.b3dgs.com
+Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
+Bundle-ManifestVersion: 2
+Bundle-Name: Sample Game
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-SymbolicName: com.b3dgs.sample.game
+Bundle-Vendor: Byron 3D Games Studio
+Bundle-Version: 0.1.0.SNAPSHOT
+Export-Package: com.b3dgs.sample;version="0.1.0";
+  uses:="com.b3dgs.lionengine,
+   com.b3dgs.lionengine.core,
+   com.b3dgs.lionengine.core.awt,
+   com.b3dgs.lionengine.game,
+   com.b3dgs.lionengine.stream"
+Import-Package: com.b3dgs.lionengine,com.b3dgs.lionengine.core,com.b3dgs
+ .lionengine.core.awt,com.b3dgs.lionengine.game,com.b3dgs.lionengine.gam
+ e.map,com.b3dgs.lionengine.game.object,com.b3dgs.lionengine.stream,org.
+ junit;resolution:=optional
