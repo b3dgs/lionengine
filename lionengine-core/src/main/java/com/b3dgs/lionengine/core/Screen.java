@@ -128,6 +128,13 @@ public interface Screen
     int getY();
 
     /**
+     * Get the maximum time in milliseconds for screen to be ready.
+     * 
+     * @return The maximum time in milliseconds for screen to get ready.
+     */
+    int getReadyTimeOut();
+
+    /**
      * Check if screen is ready.
      * 
      * @return <code>true</code> if ready, <code>false</code> else.

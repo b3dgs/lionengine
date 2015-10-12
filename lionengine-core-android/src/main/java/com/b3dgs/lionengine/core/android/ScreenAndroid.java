@@ -47,6 +47,8 @@ public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
     static volatile ViewAndroid view;
     /** Holder. */
     static volatile SurfaceHolder holder;
+    /** Max ready time in millisecond. */
+    private static final int READY_TIMEOUT = 5000;
 
     /**
      * Set the view holder.
@@ -218,6 +220,12 @@ public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
     public int getY()
     {
         return 0;
+    }
+
+    @Override
+    public int getReadyTimeOut()
+    {
+        return READY_TIMEOUT;
     }
 
     @Override

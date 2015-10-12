@@ -55,6 +55,8 @@ abstract class ScreenAwt implements Screen, FocusListener
     private static final Cursor CURSOR_HIDDEN = ToolsAwt.createHiddenCursor();
     /** Default cursor instance. */
     private static final Cursor CURSOR_DEFAULT = Cursor.getDefaultCursor();
+    /** Max ready time in millisecond. */
+    private static final int READY_TIMEOUT = 5000;
 
     /**
      * Create a screen depending of the configuration.
@@ -301,6 +303,12 @@ abstract class ScreenAwt implements Screen, FocusListener
         {
             return 0;
         }
+    }
+
+    @Override
+    public int getReadyTimeOut()
+    {
+        return READY_TIMEOUT;
     }
 
     @Override

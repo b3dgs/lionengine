@@ -38,6 +38,9 @@ public class ScreenMock implements Screen
 {
     /** Wait for screen ready. */
     private static final AtomicBoolean READY = new AtomicBoolean(true);
+    /** Max ready time in millisecond. */
+    private static final int READY_TIMEOUT = 100;
+
     /** Renderer. */
     private final Renderer renderer;
 
@@ -154,6 +157,12 @@ public class ScreenMock implements Screen
     public int getY()
     {
         return 0;
+    }
+
+    @Override
+    public int getReadyTimeOut()
+    {
+        return READY_TIMEOUT;
     }
 
     @Override

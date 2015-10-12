@@ -56,7 +56,7 @@ public class RendererTest
     /** Config. */
     private static final Config CONFIG = new Config(OUTPUT, 16, true);
     /** Time out. */
-    private static final int TIME_OUT = 5000;
+    private static final int TIME_OUT = 10000;
 
     /**
      * Prepare the test.

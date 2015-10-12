@@ -57,6 +57,9 @@ import com.b3dgs.lionengine.core.Sequence;
  */
 abstract class ScreenSwt implements Screen, FocusListener
 {
+    /** Max ready time in millisecond. */
+    private static final int READY_TIMEOUT = 5000;
+
     /** Renderer reference. */
     protected final Renderer renderer;
     /** Current display. */
@@ -399,6 +402,12 @@ abstract class ScreenSwt implements Screen, FocusListener
             }
         });
         return y.get();
+    }
+
+    @Override
+    public int getReadyTimeOut()
+    {
+        return READY_TIMEOUT;
     }
 
     @Override

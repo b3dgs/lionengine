@@ -38,10 +38,10 @@ import com.b3dgs.lionengine.Transparency;
  */
 public class Renderer extends Thread implements Sequencable
 {
-    /** Screen ready timeout in milli second. */
-    private static final long SCREEN_READY_TIME_OUT = 5000L;
     /** Error message already started. */
     private static final String ERROR_STARTED = "Renderer has already been started !";
+    /** Error screen ready. */
+    private static final String ERROR_SCREEN_READY = "Unable to get screen ready !";
     /** One nano second. */
     private static final long TIME_LONG = 1000000000L;
     /** One nano second. */
@@ -242,8 +242,8 @@ public class Renderer extends Thread implements Sequencable
         {
             try
             {
-                Thread.sleep(Constant.HUNDRED);
-                if (timeout.elapsed(SCREEN_READY_TIME_OUT))
+                Thread.sleep(screen.getReadyTimeOut() + Constant.HUNDRED);
+                if (timeout.elapsed(screen.getReadyTimeOut()))
                 {
                     Thread.currentThread().interrupt();
                 }
@@ -251,7 +251,7 @@ public class Renderer extends Thread implements Sequencable
             catch (final InterruptedException exception)
             {
                 Thread.currentThread().interrupt();
-                Verbose.critical(Renderer.class, "run", "Unable to get screen ready !");
+                Verbose.critical(Renderer.class, "waitForScreenReady", ERROR_SCREEN_READY);
                 nextSequence = null;
                 break;
             }
