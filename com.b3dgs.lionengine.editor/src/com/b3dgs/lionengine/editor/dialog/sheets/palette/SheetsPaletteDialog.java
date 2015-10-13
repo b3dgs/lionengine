@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor.dialog.sheets.palette;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -70,8 +71,12 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     private final Shell shell;
     /** GC minimap. */
     private final GC gc;
+    /** Tile color. */
+    private final Color tileColor;
     /** Current sheet id. */
-    private volatile int sheetId;
+    private volatile Integer sheetId = Integer.valueOf(0);
+    /** Current tile number. */
+    private volatile int number;
 
     /**
      * Create the dialog.
@@ -102,6 +107,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         composite.setLayoutData(new GridData(width, height));
         composite.addMouseListener(this);
         gc = new GC(composite);
+        tileColor = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
 
         createBottom();
     }
@@ -135,16 +141,14 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
 
         UtilButton.setAction(previous, () ->
         {
-            sheetId--;
-            sheetId = Math.max(sheetId, 0);
-            sheetIdText.setText(String.valueOf(sheetId));
+            sheetId = Integer.valueOf(Math.max(sheetId.intValue() - 1, 0));
+            sheetIdText.setText(sheetId.toString());
             render();
         });
         UtilButton.setAction(next, () ->
         {
-            sheetId++;
-            sheetId = Math.min(sheetId, map.getSheets().size() - 1);
-            sheetIdText.setText(String.valueOf(sheetId));
+            sheetId = Integer.valueOf(Math.min(sheetId.intValue() + 1, map.getSheets().size() - 1));
+            sheetIdText.setText(sheetId.toString());
             render();
         });
     }
@@ -156,8 +160,13 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     {
         if (!gc.isDisposed())
         {
-            final SpriteTiled sheet = map.getSheet(Integer.valueOf(sheetId));
+            final SpriteTiled sheet = map.getSheet(sheetId);
             gc.drawImage(ToolsSwt.getBuffer(sheet.getSurface()), 0, 0);
+
+            final int x = number % sheet.getTilesHorizontal() * map.getTileWidth();
+            final int y = number / sheet.getTilesHorizontal() * map.getTileHeight();
+            gc.setForeground(tileColor);
+            gc.drawRectangle(x, y, map.getTileWidth(), map.getTileHeight());
         }
     }
 
@@ -168,7 +177,10 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     @Override
     public void mouseDown(MouseEvent event)
     {
-        // Nothing to do
+        final int x = (int) Math.floor(event.x / (double) map.getTileWidth());
+        final int y = (int) Math.floor(event.y / (double) map.getTileHeight());
+        number = x + y * map.getSheet(sheetId).getTilesHorizontal();
+        render();
     }
 
     @Override
