@@ -333,6 +333,16 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
     TileGroup getGroup(String name) throws LionEngineException;
 
     /**
+     * Get the group from its tile reference.
+     * 
+     * @param sheet The sheet number.
+     * @param number The tile number.
+     * @return The supported group reference.
+     * @throws LionEngineException If group not found.
+     */
+    TileGroup getGroup(Integer sheet, int number) throws LionEngineException;
+
+    /**
      * Get the groups list.
      * 
      * @return The groups list.

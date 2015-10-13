@@ -27,9 +27,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.Focusable;
@@ -38,6 +40,7 @@ import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileRef;
 
 /**
  * Sheets palette dialog.
@@ -65,6 +68,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         }
     }
 
+    /** Model reference. */
+    private final SheetsPaletteModel model = SheetsPaletteModel.INSTANCE;
     /** Map reference. */
     private final MapTile map = WorldModel.INSTANCE.getMap();
     /** Shell dialog. */
@@ -73,6 +78,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     private final GC gc;
     /** Tile color. */
     private final Color tileColor;
+    /** Grid color. */
+    private final Color gridColor;
     /** Current sheet id. */
     private Integer sheetId = Integer.valueOf(0);
     /** Current tile number. */
@@ -108,7 +115,9 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         composite.addMouseListener(this);
         gc = new GC(composite);
         tileColor = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
+        gridColor = shell.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
 
+        createTypes();
         createBottom();
     }
 
@@ -126,29 +135,50 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     }
 
     /**
+     * Create the palette type part.
+     */
+    private void createTypes()
+    {
+        final Group area = new Group(shell, SWT.NONE);
+        area.setText(Messages.TileType);
+        area.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        area.setLayout(new GridLayout(2, false));
+
+        final Button typeSelection = UtilButton.createRadio(Messages.TileSelection, area);
+        typeSelection.setSelection(true);
+        UtilButton.setAction(typeSelection, () -> model.setSheetPaletteType(SheetPaletteType.SELECTION));
+        final Button typeEdit = UtilButton.createRadio(Messages.TileEdition, area);
+        UtilButton.setAction(typeEdit, () -> model.setSheetPaletteType(SheetPaletteType.EDITION));
+    }
+
+    /**
      * Create the bottom part.
      */
     private void createBottom()
     {
-        final Composite area = new Composite(shell, SWT.NONE);
+        final Group area = new Group(shell, SWT.NONE);
+        area.setText(Messages.Sheet);
         area.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         area.setLayout(new GridLayout(3, false));
 
-        final Button previous = UtilButton.create(area, "<", null);
-        final Text sheetIdText = UtilText.create("sheet", area);
-        sheetIdText.setText(String.valueOf(sheetId));
-        final Button next = UtilButton.create(area, ">", null);
+        final int sheetsNumber = map.getSheets().size() - 1;
+
+        final Button previous = UtilButton.create(area, Messages.Decrease, null);
+        final Text sheetIdText = UtilText.create(Messages.CurrentSheet, area);
+        sheetIdText.setEditable(false);
+        sheetIdText.setText(String.valueOf(sheetId) + Constant.SLASH + sheetsNumber);
+        final Button next = UtilButton.create(area, Messages.Increase, null);
 
         UtilButton.setAction(previous, () ->
         {
             sheetId = Integer.valueOf(Math.max(sheetId.intValue() - 1, 0));
-            sheetIdText.setText(sheetId.toString());
+            sheetIdText.setText(sheetId.toString() + Constant.SLASH + sheetsNumber);
             render();
         });
         UtilButton.setAction(next, () ->
         {
-            sheetId = Integer.valueOf(Math.min(sheetId.intValue() + 1, map.getSheets().size() - 1));
-            sheetIdText.setText(sheetId.toString());
+            sheetId = Integer.valueOf(Math.min(sheetId.intValue() + 1, sheetsNumber));
+            sheetIdText.setText(sheetId.toString() + Constant.SLASH + sheetsNumber);
             render();
         });
     }
@@ -163,10 +193,30 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
             final SpriteTiled sheet = map.getSheet(sheetId);
             gc.drawImage(ToolsSwt.getBuffer(sheet.getSurface()), 0, 0);
 
+            renderGrid();
+
             final int x = number % sheet.getTilesHorizontal() * map.getTileWidth();
             final int y = number / sheet.getTilesHorizontal() * map.getTileHeight();
+
             gc.setForeground(tileColor);
             gc.drawRectangle(x, y, map.getTileWidth(), map.getTileHeight());
+        }
+    }
+
+    /**
+     * Render the tile grid.
+     */
+    private void renderGrid()
+    {
+        final SpriteTiled sheet = map.getSheet(sheetId);
+        gc.setForeground(gridColor);
+        for (int h = 0; h < sheet.getWidth(); h += map.getTileWidth())
+        {
+            gc.drawLine(h, 0, h, sheet.getHeight());
+        }
+        for (int v = 0; v < sheet.getHeight(); v += map.getTileHeight())
+        {
+            gc.drawLine(0, v, sheet.getWidth(), v);
         }
     }
 
@@ -180,6 +230,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         final int x = (int) Math.floor(event.x / (double) map.getTileWidth());
         final int y = (int) Math.floor(event.y / (double) map.getTileHeight());
         number = x + y * map.getSheet(sheetId).getTilesHorizontal();
+        model.setSelectedTile(new TileRef(sheetId, number));
         render();
     }
 

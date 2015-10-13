@@ -23,10 +23,8 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.Action;
@@ -78,18 +76,21 @@ public final class UtilButton
      * @param parent The parent reference.
      * @return The check instance.
      */
-    public static Button create(String legend, Composite parent)
+    public static Button createCheck(String legend, Composite parent)
     {
-        final Composite composite = new Composite(parent, SWT.NONE);
-        composite.setLayout(new GridLayout(2, false));
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        return create(legend, parent, SWT.CHECK);
+    }
 
-        final Label textLegend = new Label(composite, SWT.HORIZONTAL);
-        textLegend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        textLegend.setText(legend);
-
-        final Button check = new Button(composite, SWT.CHECK);
-        return check;
+    /**
+     * Create a radio box button with its legend.
+     * 
+     * @param legend The check legend.
+     * @param parent The parent reference.
+     * @return The check instance.
+     */
+    public static Button createRadio(String legend, Composite parent)
+    {
+        return create(legend, parent, SWT.RADIO);
     }
 
     /**
@@ -136,6 +137,21 @@ public final class UtilButton
                 action.perform();
             }
         });
+    }
+
+    /**
+     * Create a button with its legend.
+     * 
+     * @param legend The check legend.
+     * @param parent The parent reference.
+     * @param type The button type.
+     * @return The check instance.
+     */
+    private static Button create(String legend, Composite parent, int type)
+    {
+        final Button button = new Button(parent, type);
+        button.setText(legend);
+        return button;
     }
 
     /**

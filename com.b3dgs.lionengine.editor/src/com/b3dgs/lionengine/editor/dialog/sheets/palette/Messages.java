@@ -32,38 +32,20 @@ public final class Messages extends NLS
 {
     /** Dialog title. */
     public static String Title;
-    /** Title header. */
-    public static String HeaderTitle;
-    /** Description header. */
-    public static String HeaderDesc;
-    /** Rips list. */
-    public static String RipsList;
-    /** Add remove rip. */
-    public static String AddRemoveRip;
-    /** Add level rip. */
-    public static String AddLevelRip;
-    /** Level rip file filter. */
-    public static String LevelRipFileFilter;
-    /** Remove level rip. */
-    public static String RemoveLevelRip;
-    /** No level rip defined. */
-    public static String NoLevelRipDefined;
-    /** Tile width. */
-    public static String TileWidth;
-    /** Tile height. */
-    public static String TileHeight;
-    /** Horizontal tiles. */
-    public static String HorizontalTiles;
-    /** Vertical tiles. */
-    public static String VerticalTiles;
-    /** Extract to. */
-    public static String ExtractTo;
-    /** Generate sheets config. */
-    public static String GenerateSheetsConfig;
-    /** Import sheets finished. */
-    public static String Finished;
-    /** Import sheets progress. */
-    public static String Progress;
+    /** Tile type. */
+    public static String TileType;
+    /** Tile selection. */
+    public static String TileSelection;
+    /** Tile edition. */
+    public static String TileEdition;
+    /** Sheet. */
+    public static String Sheet;
+    /** Current sheet. */
+    public static String CurrentSheet;
+    /** Decrease. */
+    public static String Decrease;
+    /** Increase. */
+    public static String Increase;
 
     /**
      * Initialize.

@@ -330,7 +330,7 @@ public class SheetsImportDialog extends AbstractDialog
         createExtractLocationArea(config);
         createTextConfig(config);
 
-        generate = UtilButton.create(Messages.GenerateSheetsConfig, config);
+        generate = UtilButton.createCheck(Messages.GenerateSheetsConfig, config);
     }
 
     @Override

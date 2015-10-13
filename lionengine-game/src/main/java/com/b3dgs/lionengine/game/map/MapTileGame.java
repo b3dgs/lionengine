@@ -732,6 +732,20 @@ public class MapTileGame implements MapTile
     }
 
     @Override
+    public TileGroup getGroup(Integer sheet, int number) throws LionEngineException
+    {
+        for (final TileGroup group : groups.values())
+        {
+            if (group.contains(sheet, number))
+            {
+                return group;
+            }
+        }
+        final String tile = "sheet = " + sheet.toString() + ", number = " + String.valueOf(number);
+        throw new LionEngineException(ERROR_GROUP_MISSING, tile);
+    }
+
+    @Override
     public Collection<TileGroup> getGroups()
     {
         return groups.values();

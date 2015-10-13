@@ -68,9 +68,21 @@ public class TileGroup implements Nameable
      */
     public boolean contains(Tile tile)
     {
+        return contains(tile.getSheet(), tile.getNumber());
+    }
+
+    /**
+     * Check if tile is contained by the group.
+     * 
+     * @param sheet The sheet number.
+     * @param number The tile number.
+     * @return <code>true</code> if part of the group, <code>false</code> else.
+     */
+    public boolean contains(Integer sheet, int number)
+    {
         for (final TileRef current : tiles)
         {
-            if (current.getSheet().equals(tile.getSheet()) && current.getNumber() == tile.getNumber())
+            if (current.getSheet().equals(sheet) && current.getNumber() == number)
             {
                 return true;
             }

@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.editor.world.updater;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -27,10 +26,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.dialog.map.collision.assign.MapCollisionAssignDialog;
+import com.b3dgs.lionengine.editor.dialog.sheets.palette.SheetPaletteType;
+import com.b3dgs.lionengine.editor.dialog.sheets.palette.SheetsPaletteModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
@@ -54,6 +56,8 @@ import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.TileGroup;
+import com.b3dgs.lionengine.game.map.TileRef;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Line;
@@ -68,8 +72,11 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class WorldInteractionTile implements WorldMouseClickListener, WorldMouseMoveListener
 {
+    /** Error unknown palette type. */
+    private static final String ERROR_SHEET_PALETTE_TYPE = "Unknown sheet palette type: ";
+
     /** Tile selection listener. */
-    private final Collection<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
+    private final List<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
     /** World part. */
     private final WorldPart part;
     /** Camera reference. */
@@ -219,17 +226,56 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void updatePointerTile(int mx, int my)
     {
+        final Tile oldSelectedTile = selectedTile;
         if (map.isCreated())
         {
-            selectedTile = UtilWorld.getTile(map, camera, mx, my);
+            final Tile tile = UtilWorld.getTile(map, camera, mx, my);
+            final SheetPaletteType type = SheetsPaletteModel.INSTANCE.getSheetPaletteType();
+            updatePointerTile(tile, type);
         }
         else
         {
             selectedTile = null;
         }
-        for (final TileSelectionListener listener : tileSelectionListeners)
+        if (selectedTile != oldSelectedTile)
         {
-            listener.notifyTileSelected(selectedTile);
+            for (final TileSelectionListener listener : tileSelectionListeners)
+            {
+                listener.notifyTileSelected(selectedTile);
+            }
+        }
+    }
+
+    /**
+     * Update the pointer with current pointed tile depending of the palette.
+     * 
+     * @param tile The pointed tile.
+     * @param type The sheet palette type.
+     */
+    private void updatePointerTile(Tile tile, SheetPaletteType type)
+    {
+        switch (type)
+        {
+            case SELECTION:
+                selectedTile = tile;
+                break;
+            case EDITION:
+                selectedTile = null;
+                final TileRef ref = SheetsPaletteModel.INSTANCE.getSelectedTile();
+                if (tile != null && ref != null)
+                {
+                    tile.setSheet(ref.getSheet());
+                    tile.setNumber(ref.getNumber());
+
+                    final TileGroup group = map.getGroup(tile.getSheet(), tile.getNumber());
+                    if (group != null)
+                    {
+                        tile.setGroup(group.getName());
+                    }
+                }
+                break;
+            default:
+                throw new LionEngineException(ERROR_SHEET_PALETTE_TYPE, type.name());
         }
     }
 
@@ -513,7 +559,11 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_COLLISION) && collStart != null)
+        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_TILE) && click > 0)
+        {
+            updatePointerTile(mx, my);
+        }
+        else if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_COLLISION) && collStart != null)
         {
             updatePointerCollision(mx, my, false);
             if (collEnd != null)
