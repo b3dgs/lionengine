@@ -36,12 +36,12 @@ import com.b3dgs.lionengine.core.Transform;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryGraphicAndroid implements FactoryGraphic
+public final class FactoryGraphicAndroid implements FactoryGraphic
 {
     /**
      * Internal constructor.
      */
-    FactoryGraphicAndroid()
+    public FactoryGraphicAndroid()
     {
         // Nothing to do
     }

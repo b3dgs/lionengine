@@ -47,7 +47,7 @@ public final class ToolsAndroid
      * @param height The image height.
      * @return The image.
      */
-    static Bitmap createImage(int width, int height)
+    public static Bitmap createImage(int width, int height)
     {
         return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
     }
@@ -58,7 +58,7 @@ public final class ToolsAndroid
      * @param input The image input stream.
      * @return The created image from file.
      */
-    static Bitmap getImage(InputStream input)
+    public static Bitmap getImage(InputStream input)
     {
         return BitmapFactory.decodeStream(input);
     }
@@ -69,7 +69,7 @@ public final class ToolsAndroid
      * @param image The image.
      * @return The created image.
      */
-    static Bitmap getImage(Bitmap image)
+    public static Bitmap getImage(Bitmap image)
     {
         return Bitmap.createBitmap(image);
     }
@@ -81,7 +81,7 @@ public final class ToolsAndroid
      * @param maskColor The color mask.
      * @return The masked image.
      */
-    static Bitmap applyMask(Bitmap image, int maskColor)
+    public static Bitmap applyMask(Bitmap image, int maskColor)
     {
         final Paint mask = new Paint();
         mask.setXfermode(new AvoidXfermode(maskColor, 0, AvoidXfermode.Mode.TARGET));
@@ -98,7 +98,7 @@ public final class ToolsAndroid
      * @param v The number of vertical divisions (strictly positive).
      * @return The splited images array (can not be empty).
      */
-    static Bitmap[] splitImage(Bitmap image, int h, int v)
+    public static Bitmap[] splitImage(Bitmap image, int h, int v)
     {
         final Bitmap[] buffers = new Bitmap[h * v];
         final int width = image.getWidth() / h;
@@ -130,7 +130,7 @@ public final class ToolsAndroid
      * @param angle The angle to apply in degree (0-359)
      * @return The new image with angle applied.
      */
-    static Bitmap rotate(Bitmap image, int angle)
+    public static Bitmap rotate(Bitmap image, int angle)
     {
         final Matrix matrix = new Matrix();
         matrix.postRotate(angle);
@@ -145,7 +145,7 @@ public final class ToolsAndroid
      * @param height The new height.
      * @return The new image with new size.
      */
-    static Bitmap resize(Bitmap image, int width, int height)
+    public static Bitmap resize(Bitmap image, int width, int height)
     {
         return Bitmap.createScaledBitmap(image, width, height, false);
     }
@@ -156,7 +156,7 @@ public final class ToolsAndroid
      * @param image The input image.
      * @return The flipped image as a new instance.
      */
-    static Bitmap flipHorizontal(Bitmap image)
+    public static Bitmap flipHorizontal(Bitmap image)
     {
         final Matrix matrix = new Matrix();
         matrix.preScale(-1, 1);
@@ -169,7 +169,7 @@ public final class ToolsAndroid
      * @param image The input image.
      * @return The flipped image as a new instance.
      */
-    static Bitmap flipVertical(Bitmap image)
+    public static Bitmap flipVertical(Bitmap image)
     {
         final Matrix matrix = new Matrix();
         matrix.preScale(1, -1);
@@ -183,7 +183,7 @@ public final class ToolsAndroid
      * @param filter The filter to use.
      * @return The filtered image as a new instance.
      */
-    static Bitmap applyFilter(Bitmap image, Filter filter)
+    public static Bitmap applyFilter(Bitmap image, Filter filter)
     {
         switch (filter)
         {
@@ -204,7 +204,7 @@ public final class ToolsAndroid
      * @param output The output stream.
      * @return <code>true</code> if saved, <code>false</code> else.
      */
-    static boolean saveImage(Bitmap image, OutputStream output)
+    public static boolean saveImage(Bitmap image, OutputStream output)
     {
         return image.compress(CompressFormat.PNG, 100, output);
     }
@@ -222,7 +222,7 @@ public final class ToolsAndroid
      * @param refSize The reference size.
      * @return The rastered image.
      */
-    static Bitmap getRasterBuffer(Bitmap image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
+    public static Bitmap getRasterBuffer(Bitmap image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
         final boolean method = true;
         final Bitmap raster = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);

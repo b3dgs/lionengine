@@ -54,7 +54,7 @@ public final class MouseAndroid implements Mouse
     /**
      * Internal constructor.
      */
-    MouseAndroid()
+    public MouseAndroid()
     {
         super();
         x = 0;
@@ -99,7 +99,7 @@ public final class MouseAndroid implements Mouse
      * 
      * @param config The config.
      */
-    void setConfig(Config config)
+    public void setConfig(Config config)
     {
         xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
         yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
