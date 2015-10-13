@@ -63,7 +63,7 @@ import com.b3dgs.lionengine.game.object.Factory;
 public final class MinimapDialog implements MouseListener, MouseMoveListener, MouseWheelListener,
                                  WorldMouseMoveListener, WorldMouseScrollListener, WorldKeyboardListener, Focusable
 {
-    /** Active reference. */
+    /** Dialog instance. */
     private static volatile MinimapDialog instance;
     /** Last location. */
     private static volatile Point lastLocation;
@@ -71,20 +71,16 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
     private static volatile Shell minimapShell;
 
     /**
-     * Create the minimap dialog.
+     * Open the dialog.
      * 
-     * @param parent The parent reference.
+     * @param parent The parent shell.
      */
-    public static synchronized void create(Shell parent)
+    public static synchronized void open(Shell parent)
     {
         if (instance == null)
         {
             instance = new MinimapDialog(parent);
             instance.open();
-            if (lastLocation != null)
-            {
-                instance.shell.setLocation(lastLocation);
-            }
         }
     }
 
@@ -156,6 +152,10 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         shell.addMouseWheelListener(this);
 
         UtilSwt.open(shell);
+        if (lastLocation != null)
+        {
+            shell.setLocation(lastLocation);
+        }
     }
 
     /**

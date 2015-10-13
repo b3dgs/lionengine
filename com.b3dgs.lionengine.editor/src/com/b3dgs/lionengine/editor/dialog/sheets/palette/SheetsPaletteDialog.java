@@ -51,20 +51,16 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     private static volatile Point lastLocation;
 
     /**
-     * Create and show the dialog.
+     * Open the dialog.
      * 
-     * @param parent The parent reference.
+     * @param parent The parent shell.
      */
-    public static synchronized void create(Shell parent)
+    public static synchronized void open(Shell parent)
     {
         if (instance == null)
         {
             instance = new SheetsPaletteDialog(parent);
             instance.open();
-            if (lastLocation != null)
-            {
-                instance.shell.setLocation(lastLocation);
-            }
         }
     }
 
@@ -116,6 +112,10 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     private void open()
     {
         UtilSwt.open(shell);
+        if (lastLocation != null)
+        {
+            shell.setLocation(lastLocation);
+        }
         render();
     }
 

@@ -43,6 +43,6 @@ public final class SheetsPaletteHandler
     @Execute
     public void execute(Shell shell)
     {
-        SheetsPaletteDialog.create(shell);
+        SheetsPaletteDialog.open(shell);
     }
 }
