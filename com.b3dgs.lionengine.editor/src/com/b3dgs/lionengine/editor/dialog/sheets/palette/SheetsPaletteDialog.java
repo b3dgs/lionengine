@@ -47,16 +47,16 @@ import com.b3dgs.lionengine.game.map.MapTile;
 public final class SheetsPaletteDialog implements MouseListener, Focusable
 {
     /** Dialog instance. */
-    private static volatile SheetsPaletteDialog instance;
+    private static SheetsPaletteDialog instance;
     /** Last location. */
-    private static volatile Point lastLocation;
+    private static Point lastLocation;
 
     /**
      * Open the dialog.
      * 
      * @param parent The parent shell.
      */
-    public static synchronized void open(Shell parent)
+    public static void open(Shell parent)
     {
         if (instance == null)
         {
@@ -74,9 +74,9 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     /** Tile color. */
     private final Color tileColor;
     /** Current sheet id. */
-    private volatile Integer sheetId = Integer.valueOf(0);
+    private Integer sheetId = Integer.valueOf(0);
     /** Current tile number. */
-    private volatile int number;
+    private int number;
 
     /**
      * Create the dialog.

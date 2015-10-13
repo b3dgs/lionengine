@@ -64,18 +64,18 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
                                  WorldMouseMoveListener, WorldMouseScrollListener, WorldKeyboardListener, Focusable
 {
     /** Dialog instance. */
-    private static volatile MinimapDialog instance;
+    private static MinimapDialog instance;
     /** Last location. */
-    private static volatile Point lastLocation;
+    private static Point lastLocation;
     /** Minimap shell. */
-    private static volatile Shell minimapShell;
+    private static Shell minimapShell;
 
     /**
      * Open the dialog.
      * 
      * @param parent The parent shell.
      */
-    public static synchronized void open(Shell parent)
+    public static void open(Shell parent)
     {
         if (instance == null)
         {
@@ -103,9 +103,9 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
     /** GC minimap. */
     private GC gc;
     /** Mouse click. */
-    private volatile boolean click;
+    private boolean click;
     /** Minimap active. */
-    private volatile boolean active;
+    private boolean active;
 
     /**
      * Create the dialog.
