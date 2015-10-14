@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.editor.dialog.minimap;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -46,6 +48,7 @@ import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.editor.world.renderer.WorldRenderer;
 import com.b3dgs.lionengine.editor.world.updater.WorldKeyboardListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseScrollListener;
@@ -203,19 +206,50 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         {
             minimapShell.dispose();
         }
-        minimapShell = new Shell(parent, SWT.BORDER | SWT.DOUBLE_BUFFERED);
-        minimapShell.setSize(minimap.getWidth(), minimap.getHeight());
-        minimapShell.setLayout(UtilSwt.borderless());
-        minimapShell.setBackgroundImage(ToolsSwt.getBuffer(minimap.getSurface()));
-        minimapShell.addMouseListener(this);
-        minimapShell.addMouseMoveListener(this);
-        minimapShell.addMouseWheelListener(this);
-        minimapShell.addMouseTrackListener(UtilSwt.createFocusListener(() -> minimapShell.forceFocus()));
-        minimapShell.addDisposeListener(event -> updater.removeListeners(MinimapDialog.this));
-        minimapShell.setLocation(part.getRenderer().getLocation());
-        minimapShell.open();
-        gc = new GC(minimapShell);
+        minimapShell = createMiniShell(parent);
         render();
+    }
+
+    /**
+     * Create and open the mini shell.
+     * 
+     * @param parent The shell parent.
+     * @return The mini shell.
+     */
+    private Shell createMiniShell(Shell parent)
+    {
+        final Shell miniShell = new Shell(parent, SWT.NONE);
+        miniShell.setLayout(UtilSwt.borderless());
+
+        final Label label = new Label(miniShell, SWT.DOUBLE_BUFFERED);
+        label.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
+        label.setImage(ToolsSwt.getBuffer(minimap.getSurface()));
+        label.addMouseListener(this);
+        label.addMouseMoveListener(this);
+        label.addMouseWheelListener(this);
+        label.addMouseTrackListener(UtilSwt.createFocusListener(() -> label.forceFocus()));
+        label.addDisposeListener(event -> part.getUpdater().removeListeners(MinimapDialog.this));
+
+        final WorldRenderer renderer = part.getRenderer();
+        miniShell.setLocation(renderer.getLocation());
+        parent.addControlListener(new ControlListener()
+        {
+            @Override
+            public void controlResized(ControlEvent event)
+            {
+                parent.getDisplay().asyncExec(() -> miniShell.setLocation(renderer.getLocation()));
+            }
+
+            @Override
+            public void controlMoved(ControlEvent event)
+            {
+                miniShell.setLocation(renderer.getLocation());
+            }
+        });
+        miniShell.pack();
+        miniShell.open();
+        gc = new GC(label);
+        return miniShell;
     }
 
     /**
