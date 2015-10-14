@@ -64,25 +64,60 @@ public class WorldGrid implements WorldRenderListener
         if (world.isGridEnabled())
         {
             g.setColor(COLOR_GRID);
-
-            final int tw = map.getTileWidth();
-            final int th = map.getTileHeight();
-            final int sx = (int) Math.floor(camera.getX()) / th;
-            final int sy = (int) Math.floor(camera.getY()) / tw;
-
-            for (int ty = 0; ty <= camera.getHeight() / th + 1; ty++)
+            final Tile tile = findTileInView();
+            if (tile != null)
             {
-                for (int tx = 0; tx <= camera.getWidth() / tw + 1; tx++)
+                final double sx = camera.getViewpointX(tile.getX()) * scale;
+                final double sy = camera.getViewpointY(tile.getY()) * scale;
+                final double tw = map.getTileWidth() * scale;
+                final double th = map.getTileHeight() * scale;
+                final double widthScaled = camera.getWidth() * scale;
+                final double heightScaled = camera.getHeight() * scale;
+
+                for (double x = sx; x < widthScaled; x += tw)
                 {
-                    final Tile tile = map.getTile(sx + tx, sy + ty);
-                    if (tile != null)
-                    {
-                        final int x = (int) Math.floor(camera.getViewpointX(tile.getX()) * scale);
-                        final int y = (int) Math.floor(camera.getViewpointY(tile.getY()) * scale) - cth;
-                        g.drawRect(x, y, ctw, cth, false);
-                    }
+                    g.drawLine((int) Math.floor(x), 0, (int) Math.floor(x), (int) Math.floor(heightScaled));
+                }
+                for (double x = sx; x > 0; x -= tw)
+                {
+                    g.drawLine((int) Math.floor(x), 0, (int) Math.floor(x), (int) Math.floor(heightScaled));
+                }
+
+                for (double y = sy; y < heightScaled; y += th)
+                {
+                    g.drawLine(0, (int) Math.floor(y), (int) Math.floor(widthScaled), (int) Math.floor(y));
+                }
+                for (double y = sy; y > 0; y -= th)
+                {
+                    g.drawLine(0, (int) Math.floor(y), (int) Math.floor(widthScaled), (int) Math.floor(y));
                 }
             }
         }
+    }
+
+    /**
+     * Find a tile in view area.
+     * 
+     * @return The tile found, <code>null</code> if none.
+     */
+    private Tile findTileInView()
+    {
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        final int sx = (int) Math.floor(camera.getX()) / th;
+        final int sy = (int) Math.floor(camera.getY()) / tw;
+
+        for (int ty = 0; ty <= camera.getHeight() / th + 1; ty++)
+        {
+            for (int tx = 0; tx <= camera.getWidth() / tw + 1; tx++)
+            {
+                final Tile tile = map.getTile(sx + tx, sy + ty);
+                if (tile != null)
+                {
+                    return tile;
+                }
+            }
+        }
+        return null;
     }
 }
