@@ -27,7 +27,7 @@ import java.util.List;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <E> The comparable type.
  */
-final class SortedList<E extends Comparable<E>>
+public final class SortedList<E extends Comparable<E>>
 {
     /** List of object. */
     private final List<E> list;

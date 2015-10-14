@@ -22,7 +22,7 @@ package com.b3dgs.lionengine.game.map.astar;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Step
+public final class Step
 {
     /** Step location x. */
     private final int x;

@@ -23,7 +23,7 @@ package com.b3dgs.lionengine.game.map.astar;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class HeuristicClosestSquared implements Heuristic
+public final class HeuristicClosestSquared implements Heuristic
 {
     /**
      * Create heuristic.

@@ -136,7 +136,7 @@ public final class FolderModificationWatcher
          * @param tree The tree reference.
          * @param creator The creator reference.
          */
-        public Watcher(Path root, Tree tree, ProjectTreeCreator creator)
+        Watcher(Path root, Tree tree, ProjectTreeCreator creator)
         {
             this.root = root;
             this.tree = tree;
@@ -257,7 +257,7 @@ public final class FolderModificationWatcher
          * @param creator The creator reference.
          * @throws IOException If error.
          */
-        public Task(Path root, Path folder, Tree tree, ProjectTreeCreator creator) throws IOException
+        Task(Path root, Path folder, Tree tree, ProjectTreeCreator creator) throws IOException
         {
             this.root = root;
             this.folder = folder;

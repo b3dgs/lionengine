@@ -80,7 +80,7 @@ final class HandledObjectsImpl implements HandledObjects
     /**
      * Create the objects handler.
      */
-    public HandledObjectsImpl()
+    HandledObjectsImpl()
     {
         objects = new HashMap<Integer, ObjectGame>();
         items = new HashMap<Class<?>, Set<Object>>();

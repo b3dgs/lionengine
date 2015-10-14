@@ -58,7 +58,7 @@ final class PathFinderImpl implements PathFinder
      * @param allowDiagMovement <code>true</code> if the search should try diagonal movement, <code>false</code> else.
      * @param heuristic The heuristic used to determine the search order of the map.
      */
-    public PathFinderImpl(MapTile map, int maxSearchDistance, boolean allowDiagMovement, Heuristic heuristic)
+    PathFinderImpl(MapTile map, int maxSearchDistance, boolean allowDiagMovement, Heuristic heuristic)
     {
         this.heuristic = heuristic;
         this.map = map;

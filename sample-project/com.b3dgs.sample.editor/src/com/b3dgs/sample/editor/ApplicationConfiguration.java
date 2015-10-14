@@ -74,7 +74,7 @@ public class ApplicationConfiguration
         /**
          * Constructor.
          */
-        public AppStartupCompleteEventHandler()
+        AppStartupCompleteEventHandler()
         {
             // Nothing to do
         }
