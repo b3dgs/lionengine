@@ -22,6 +22,7 @@
         <maven-osgi-packaging.version>0.11.1</maven-osgi-packaging.version>
         <maven-jar.version>2.6</maven-jar.version>
         <maven-clean.version>2.6.1</maven-clean.version>
+        <maven-source.version>2.4</maven-source.version>
         <maven-javadoc.version>2.10.3</maven-javadoc.version>
         <maven-surfire.version>2.18.1</maven-surfire.version>
         <maven-checkstyle.version>2.16</maven-checkstyle.version>
@@ -283,6 +284,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
