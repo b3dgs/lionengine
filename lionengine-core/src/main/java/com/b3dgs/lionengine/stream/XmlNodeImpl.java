@@ -362,7 +362,7 @@ final class XmlNodeImpl implements XmlNode
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element)
+            if (root.equals(node.getParentNode()) && node instanceof Element)
             {
                 nodes.add(new XmlNodeImpl(document, (Element) node));
             }
@@ -378,7 +378,7 @@ final class XmlNodeImpl implements XmlNode
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element)
+            if (root.equals(node.getParentNode()) && node instanceof Element)
             {
                 nodes.add(new XmlNodeImpl(document, (Element) node));
             }
@@ -412,7 +412,7 @@ final class XmlNodeImpl implements XmlNode
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element && node.getNodeName().equals(child))
+            if (root.equals(node.getParentNode()) && node instanceof Element && node.getNodeName().equals(child))
             {
                 return true;
             }
