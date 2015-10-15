@@ -9,7 +9,7 @@
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
         <main-group-id>com.b3dgs.${project-name}</main-group-id>
-        <build-tools-project>${project-name}-buildtools</build-tools-project>
+        <buildtools-project>${project-name}-buildtools</buildtools-project>
         <encoding.type>UTF-8</encoding.type>
         <working.dir>${project.basedir}</working.dir>
         <project.build.sourceEncoding>${encoding.type}</project.build.sourceEncoding>
@@ -30,9 +30,12 @@
         <maven-install.version>2.5.2</maven-install.version>
         <maven-resources.version>2.7</maven-resources.version>
         <maven-dependency.version>2.10</maven-dependency.version>
+        <maven-release.version>2.4.2</maven-release.version>
         <checkstyle.version>6.11.1</checkstyle.version>
         <maven-eclipse.version>2.10</maven-eclipse.version>
         <pde-target-maven.version>1.0.1</pde-target-maven.version>
+        <maven-gpg.version>1.5</maven-gpg.version>
+        <nexus-staging-maven.version>1.6.3</nexus-staging-maven.version>
     </properties>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
@@ -43,11 +46,28 @@
     <url>https://github.com/b3dgs/lionengine</url>
     <organization>
         <name>Byron 3D Games Studio</name>
-        <url>www.b3dgs.com</url>
+        <url>http://www.b3dgs.com</url>
     </organization>
     <scm>
-        <url>https://github.com/b3dgs/lionengine.git</url>
+        <url>https://github.com/b3dgs/lionengine</url>
+        <connection>scm:git:git@github.com:b3dgs/lionengine.git</connection>
+        <developerConnection>scm:git:git@github.com:b3dgs/lionengine.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
+    <ciManagement>
+        <system>TravisCI</system>
+        <url>https://travis-ci.org/b3dgs/lionengine</url>
+    </ciManagement>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
     <developers>
         <developer>
             <id>DjThunder</id>
@@ -129,6 +149,7 @@
         <profile>
             <id>tests-core</id>
             <modules>
+                <module>../lionengine-buildtools</module>
                 <module>../lionengine-core-test</module>
                 <module>../lionengine-core-awt-test</module>
                 <module>../lionengine-game-test</module>
@@ -137,6 +158,7 @@
         <profile>
             <id>tests-audio</id>
             <modules>
+                <module>../lionengine-buildtools</module>
                 <module>../lionengine-audio-wav-test</module>
                 <module>../lionengine-audio-midi-test</module>
                 <module>../lionengine-audio-sc68-test</module>
@@ -145,6 +167,7 @@
         <profile>
             <id>tests-plugins</id>
             <modules>
+                <module>../lionengine-buildtools</module>
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
                 <module>../com.b3dgs.lionengine.core.swt.test</module>
@@ -218,6 +241,39 @@
                 <artifactId>maven-jar-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
             </plugin>
@@ -226,16 +282,165 @@
                 <artifactId>pde-target-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven-gpg.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven-release.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler.version}</version>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                        <executable>${jdk.home}/bin/javac</executable>
+                        <encoding>${encoding.type}</encoding>
+                        <showDeprecation>true</showDeprecation>
+                        <showWarnings>true</showWarnings>
+                        <fork>true</fork>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven-site.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven-install.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven-dependency.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar.version}</version>
+                    <configuration>
+                        <archive>
+                            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc.version}</version>
+                    <configuration>
+                        <show>protected</show>
+                        <nohelp>true</nohelp>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surfire.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.apache.maven.surefire</groupId>
+                            <artifactId>surefire-junit47</artifactId>
+                            <version>${maven-surfire.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <propertiesLocation>../${buildtools-project}/checkstyle.properties</propertiesLocation>
+                        <propertyExpansion>dir=${project.basedir}/../${buildtools-project}</propertyExpansion>
+                        <configLocation>../${buildtools-project}/checkstyle.xml</configLocation>
+                        <headerLocation>../${buildtools-project}/header.txt</headerLocation>
+                        <suppressionsLocation>../${buildtools-project}/checkstyle-suppression.xml</suppressionsLocation>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>validate</id>
+                            <phase>validate</phase>
+                            <configuration>
+                                <encoding>${encoding.type}</encoding>
+                                <consoleOutput>true</consoleOutput>
+                                <failsOnError>true</failsOnError>
+                                <linkXRef>false</linkXRef>
+                            </configuration>
+                            <goals>
+                                <goal>check</goal>
+                                <goal>checkstyle</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-eclipse-plugin</artifactId>
+                    <version>${maven-eclipse.version}</version>
+                    <configuration>
+                        <additionalBuildcommands>
+                            <buildcommand>net.sf.eclipsecs.core.CheckstyleBuilder</buildcommand>
+                        </additionalBuildcommands>
+                        <additionalProjectnatures>
+                            <projectnature>net.sf.eclipsecs.core.CheckstyleNature</projectnature>
+                        </additionalProjectnatures>
+                        <additionalConfig>
+                            <file>
+                                <name>.checkstyle</name>
+                                <location>../${buildtools-project}/eclipse-checkstyle.xml</location>
+                            </file>
+                        </additionalConfig>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>${buildtools-project}</artifactId>
+                            <version>${project.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
                 <plugin>
                     <groupId>org.eclipse.tycho</groupId>
                     <artifactId>tycho-maven-plugin</artifactId>
@@ -309,43 +514,25 @@
                     <version>${tycho.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler.version}</version>
+                    <groupId>org.sonatype.tycho</groupId>
+                    <artifactId>maven-osgi-packaging-plugin</artifactId>
+                    <version>${maven-osgi-packaging.version}</version>
                     <configuration>
-                        <source>${jdk.version}</source>
-                        <target>${jdk.version}</target>
-                        <executable>${jdk.home}/bin/javac</executable>
-                        <encoding>${encoding.type}</encoding>
-                        <showDeprecation>true</showDeprecation>
-                        <showWarnings>true</showWarnings>
-                        <fork>true</fork>
+                        <archive>
+                            <addMavenDescriptor>false</addMavenDescriptor>
+                        </archive>
                     </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>${maven-site.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>${maven-deploy.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>${maven-install.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>${maven-resources.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>${maven-dependency.version}</version>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>${nexus-staging-maven.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.felix</groupId>
@@ -362,7 +549,7 @@
                             <Bundle-RequiredExecutionEnvironment>JavaSE-${jdk.version}</Bundle-RequiredExecutionEnvironment>
                             <_removeheaders>
                                 Build-Jdk,Built-By,Bnd-LastModified,Created-By,Private-Package,Tool,Require-Capability,
-                                JDK_5_HOME,JDK_6_HOME,JDK_7_HOME,JDK_8_HOME 
+                                JDK_6_HOME,JDK_7_HOME,JDK_8_HOME 
                             </_removeheaders>
                         </instructions>
                     </configuration>
@@ -375,113 +562,6 @@
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.sonatype.tycho</groupId>
-                    <artifactId>maven-osgi-packaging-plugin</artifactId>
-                    <version>${maven-osgi-packaging.version}</version>
-                    <configuration>
-                        <archive>
-                            <addMavenDescriptor>false</addMavenDescriptor>
-                        </archive>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>${maven-jar.version}</version>
-                    <configuration>
-                        <archive>
-                            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-                        </archive>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>${maven-clean.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>${maven-javadoc.version}</version>
-                    <configuration>
-                        <show>protected</show>
-                        <nohelp>true</nohelp>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surfire.version}</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.apache.maven.surefire</groupId>
-                            <artifactId>surefire-junit47</artifactId>
-                            <version>${maven-surfire.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${maven-checkstyle.version}</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.puppycrawl.tools</groupId>
-                            <artifactId>checkstyle</artifactId>
-                            <version>${checkstyle.version}</version>
-                        </dependency>
-                    </dependencies>
-                    <configuration>
-                        <propertiesLocation>../${build-tools-project}/checkstyle.properties</propertiesLocation>
-                        <propertyExpansion>dir=${project.basedir}/../${build-tools-project}</propertyExpansion>
-                        <configLocation>../${build-tools-project}/checkstyle.xml</configLocation>
-                        <headerLocation>../${build-tools-project}/header.txt</headerLocation>
-                        <suppressionsLocation>../${build-tools-project}/checkstyle-suppression.xml</suppressionsLocation>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>validate</id>
-                            <phase>validate</phase>
-                            <configuration>
-                                <encoding>${encoding.type}</encoding>
-                                <consoleOutput>true</consoleOutput>
-                                <failsOnError>true</failsOnError>
-                                <linkXRef>false</linkXRef>
-                            </configuration>
-                            <goals>
-                                <goal>check</goal>
-                                <goal>checkstyle</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-eclipse-plugin</artifactId>
-                    <version>${maven-eclipse.version}</version>
-                    <configuration>
-                        <additionalBuildcommands>
-                            <buildcommand>net.sf.eclipsecs.core.CheckstyleBuilder</buildcommand>
-                        </additionalBuildcommands>
-                        <additionalProjectnatures>
-                            <projectnature>net.sf.eclipsecs.core.CheckstyleNature</projectnature>
-                        </additionalProjectnatures>
-                        <additionalConfig>
-                            <file>
-                                <name>.checkstyle</name>
-                                <location>../${build-tools-project}/eclipse-checkstyle.xml</location>
-                            </file>
-                        </additionalConfig>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>${build-tools-project}</artifactId>
-                            <version>${project.version}</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>lt.velykis.maven</groupId>
