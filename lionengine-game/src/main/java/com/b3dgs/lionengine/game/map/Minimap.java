@@ -54,6 +54,43 @@ public class Minimap implements Image
     /** Default tile color. */
     private static final ColorRgba DEFAULT_COLOR = ColorRgba.WHITE;
 
+    /**
+     * Get the weighted color of an area.
+     * 
+     * @param surface The surface reference.
+     * @param sx The starting horizontal location.
+     * @param sy The starting vertical location.
+     * @param width The area width.
+     * @param height The area height.
+     * @return The weighted color.
+     */
+    public static ColorRgba getWeightedColor(ImageBuffer surface, int sx, int sy, int width, int height)
+    {
+        int r = 0;
+        int g = 0;
+        int b = 0;
+        int count = 0;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                final ColorRgba color = new ColorRgba(surface.getRgb(sx + x, sy + y));
+                if (!ColorRgba.TRANSPARENT.equals(color))
+                {
+                    r += color.getRed();
+                    g += color.getGreen();
+                    b += color.getBlue();
+                    count++;
+                }
+            }
+        }
+        if (count == 0)
+        {
+            return ColorRgba.TRANSPARENT;
+        }
+        return new ColorRgba(r / count, g / count, b / count);
+    }
+
     /** Map reference. */
     private final MapTile map;
     /** Pixel configuration. */
@@ -185,7 +222,7 @@ public class Minimap implements Image
             {
                 final int h = number * tw % tiles.getWidth();
                 final int v = number / tiles.getTilesHorizontal() * th;
-                final ColorRgba color = getWeightedTileColor(surface, tw, th, h, v);
+                final ColorRgba color = getWeightedColor(surface, h, v, tw, th);
 
                 if (!Minimap.NO_TILE.equals(color) && !ColorRgba.TRANSPARENT.equals(color))
                 {
@@ -224,43 +261,6 @@ public class Minimap implements Image
         final XmlNode tile = node.createChild(ConfigTileGroup.TILE);
         tile.writeInteger(ConfigTileGroup.SHEET, sheet.intValue());
         tile.writeInteger(ConfigTileGroup.NUMBER, number);
-    }
-
-    /**
-     * Get the weighted color of a tile.
-     * 
-     * @param surface The surface reference.
-     * @param tw The tile width.
-     * @param th The tile height.
-     * @param tx The starting horizontal location.
-     * @param ty The starting vertical location.
-     * @return The weighted color.
-     */
-    private ColorRgba getWeightedTileColor(ImageBuffer surface, int tw, int th, int tx, int ty)
-    {
-        int r = 0;
-        int g = 0;
-        int b = 0;
-        int count = 0;
-        for (int x = 0; x < tw; x++)
-        {
-            for (int y = 0; y < th; y++)
-            {
-                final ColorRgba color = new ColorRgba(surface.getRgb(tx + x, ty + y));
-                if (!ColorRgba.TRANSPARENT.equals(color))
-                {
-                    r += color.getRed();
-                    g += color.getGreen();
-                    b += color.getBlue();
-                    count++;
-                }
-            }
-        }
-        if (count == 0)
-        {
-            return ColorRgba.TRANSPARENT;
-        }
-        return new ColorRgba(r / count, g / count, b / count);
     }
 
     /*

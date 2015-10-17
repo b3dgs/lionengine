@@ -38,6 +38,8 @@ public final class Messages extends NLS
     public static String TileSelection;
     /** Tile edition. */
     public static String TileEdition;
+    /** Simple palette. */
+    public static String SimplePalette;
     /** Sheet. */
     public static String Sheet;
     /** Current sheet. */

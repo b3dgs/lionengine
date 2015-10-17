@@ -117,6 +117,21 @@ public final class ColorRgba
     }
 
     /**
+     * Return the delta between two colors.
+     * 
+     * @param a The first color.
+     * @param b The second color.
+     * @return The delta between the two colors.
+     */
+    public static double getDelta(ColorRgba a, ColorRgba b)
+    {
+        final double dr = a.getRed() - b.getRed();
+        final double dg = a.getGreen() - b.getGreen();
+        final double db = a.getBlue() - b.getBlue();
+        return Math.sqrt(dr * dr + dg * dg + db * db);
+    }
+
+    /**
      * Get raster color.
      * 
      * @param i The color offset.
