@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
@@ -41,16 +42,18 @@ import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
- * Represents the import map tile constraints dialog.
+ * Represents the export map tile constraints dialog.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MapConstraintsImportDialog extends AbstractDialog
+public class MapConstraintsExportDialog extends AbstractDialog
 {
     /** Icon. */
     public static final Image ICON = UtilIcon.get("dialog", "import.png");
     /** Xml filter. */
     private static final String XML = "*.xml";
+    /** Default constraints file name. */
+    private static final String DEFAULT_NAME = "constraints.xml";
 
     /** Constraints location. */
     private Text constraintsLocationText;
@@ -58,16 +61,16 @@ public class MapConstraintsImportDialog extends AbstractDialog
     private Media constraintsConfig;
 
     /**
-     * Create an import map tile constraints dialog.
+     * Create an export map tile constraints dialog.
      * 
      * @param parent The shell parent.
      */
-    public MapConstraintsImportDialog(Shell parent)
+    public MapConstraintsExportDialog(Shell parent)
     {
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
-        finish.setEnabled(false);
+        finish.setEnabled(true);
         finish.forceFocus();
     }
 
@@ -84,7 +87,7 @@ public class MapConstraintsImportDialog extends AbstractDialog
      */
     private void browseConstraintsLocation()
     {
-        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
+        final File file = UtilDialog.selectResourceFile(dialog, false, new String[]
         {
             Messages.ConstraintsConfigFileFilter
         }, new String[]
@@ -135,6 +138,10 @@ public class MapConstraintsImportDialog extends AbstractDialog
         constraintsLocationText = new Text(groupArea, SWT.BORDER);
         constraintsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         constraintsLocationText.setEditable(false);
+
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        constraintsConfig = Medias.create(map.getSheetsConfig().getParentPath(), DEFAULT_NAME);
+        constraintsLocationText.setText(constraintsConfig.getPath());
 
         final Button browse = UtilButton.createBrowse(groupArea);
         UtilButton.setAction(browse, () -> browseConstraintsLocation());

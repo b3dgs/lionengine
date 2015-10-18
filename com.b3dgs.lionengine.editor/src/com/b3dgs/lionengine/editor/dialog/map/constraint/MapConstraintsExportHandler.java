@@ -24,19 +24,19 @@ import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
- * Import map tile constraints handler.
+ * Export map tile constraints handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class MapConstraintsImportHandler
+public final class MapConstraintsExportHandler
 {
     /** Element ID. */
-    public static final String ID = "import-map-tile-constraints";
+    public static final String ID = "export-map-tile-constraints";
 
     /**
      * Create handler.
      */
-    public MapConstraintsImportHandler()
+    public MapConstraintsExportHandler()
     {
         // Nothing to do
     }
@@ -49,7 +49,7 @@ public final class MapConstraintsImportHandler
     @Execute
     public void execute(Shell shell)
     {
-        final MapConstraintsImportDialog dialog = new MapConstraintsImportDialog(shell);
+        final MapConstraintsExportDialog dialog = new MapConstraintsExportDialog(shell);
         dialog.open();
 
         final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
