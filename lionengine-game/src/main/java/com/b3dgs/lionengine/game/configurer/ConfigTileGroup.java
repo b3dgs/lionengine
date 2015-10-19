@@ -22,8 +22,10 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.map.TileGroup;
 import com.b3dgs.lionengine.game.map.TileRef;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -34,6 +36,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class ConfigTileGroup
 {
+    /** Configuration file name. */
+    public static final String FILENAME = "groups.xml";
     /** Group root node. */
     public static final String GROUPS = Configurer.PREFIX + "groups";
     /** Group node. */
@@ -52,12 +56,13 @@ public final class ConfigTileGroup
     /**
      * Create the group data from node.
      * 
-     * @param root The node root reference.
+     * @param config The tile collision groups descriptor.
      * @return The group data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<TileGroup> create(XmlNode root) throws LionEngineException
+    public static Collection<TileGroup> create(Media config) throws LionEngineException
     {
+        final XmlNode root = Stream.loadXml(config);
         final Collection<TileGroup> groups = new ArrayList<TileGroup>();
         for (final XmlNode node : root.getChildren(GROUP))
         {

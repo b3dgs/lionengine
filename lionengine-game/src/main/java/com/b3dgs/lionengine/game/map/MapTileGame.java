@@ -40,11 +40,10 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.configurer.ConfigTileSheet;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
-import com.b3dgs.lionengine.stream.Stream;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to
@@ -415,8 +414,8 @@ public class MapTileGame implements MapTile
     public void create(Media levelrip) throws LionEngineException
     {
         create(levelrip,
-               Medias.create(levelrip.getParentPath(), DEFAULT_SHEETS_FILE),
-               Medias.create(levelrip.getParentPath(), DEFAULT_GROUPS_FILE));
+               Medias.create(levelrip.getParentPath(), ConfigTileSheet.FILENAME),
+               Medias.create(levelrip.getParentPath(), ConfigTileGroup.FILENAME));
     }
 
     @Override
@@ -460,34 +459,24 @@ public class MapTileGame implements MapTile
     {
         Verbose.info(INFO_LOAD_SHEETS, sheetsConfig.getFile().getPath());
         this.sheetsConfig = sheetsConfig;
-        final XmlNode root = Stream.loadXml(sheetsConfig);
+        final ConfigTileSheet config = ConfigTileSheet.create(sheetsConfig);
 
-        // Retrieve tile size
-        final XmlNode tileSize = root.getChild(MapTile.NODE_TILE_SIZE);
-        tileWidth = tileSize.readInteger(MapTile.ATTRIBUTE_TILE_WIDTH);
-        tileHeight = tileSize.readInteger(MapTile.ATTRIBUTE_TILE_HEIGHT);
-
-        // Retrieve sheets list
-        final Collection<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
-        final String[] files = new String[children.size()];
-        int sheetNumber = 0;
-        for (final XmlNode child : children)
-        {
-            files[sheetNumber] = child.getText();
-            sheetNumber++;
-        }
+        tileWidth = config.getTileWidth();
+        tileHeight = config.getTileHeight();
 
         // Load sheets from list
         final String path = sheetsConfig.getPath();
         final String folder = path.substring(0, path.length() - sheetsConfig.getFile().getName().length());
         sheets.clear();
-        for (int sheet = 0; sheet < files.length; sheet++)
+        int sheetId = 0;
+        for (final String sheet : config.getSheets())
         {
-            final Media media = Medias.create(folder, files[sheet]);
+            final Media media = Medias.create(folder, sheet);
             final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
             sprite.load();
             sprite.prepare();
-            sheets.put(Integer.valueOf(sheet), sprite);
+            sheets.put(Integer.valueOf(sheetId), sprite);
+            sheetId++;
         }
     }
 
@@ -498,8 +487,7 @@ public class MapTileGame implements MapTile
         this.groupsConfig = groupsConfig;
 
         groups.clear();
-        final XmlNode nodeGroups = Stream.loadXml(groupsConfig);
-        final Collection<TileGroup> groups = ConfigTileGroup.create(nodeGroups);
+        final Collection<TileGroup> groups = ConfigTileGroup.create(groupsConfig);
         for (final TileGroup group : groups)
         {
             this.groups.put(group.getName(), group);

@@ -37,6 +37,8 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.configurer.ConfigTileSheet;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 
@@ -296,7 +298,7 @@ public class MapImportDialog extends AbstractDialog
     {
         if (sheetsConfig == null)
         {
-            final File defaultSheetFile = new File(levelRip.getFile().getParentFile(), MapTile.DEFAULT_SHEETS_FILE);
+            final File defaultSheetFile = new File(levelRip.getFile().getParentFile(), ConfigTileSheet.FILENAME);
             if (defaultSheetFile.isFile())
             {
                 onSheetsConfigLocationSelected(defaultSheetFile);
@@ -304,7 +306,7 @@ public class MapImportDialog extends AbstractDialog
         }
         if (groupsConfig == null)
         {
-            final File defaultGroupsFile = new File(levelRip.getFile().getParentFile(), MapTile.DEFAULT_GROUPS_FILE);
+            final File defaultGroupsFile = new File(levelRip.getFile().getParentFile(), ConfigTileGroup.FILENAME);
             if (defaultGroupsFile.isFile())
             {
                 onGroupsConfigLocationSelected(defaultGroupsFile);

@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilTemplate;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.configurer.ConfigTileSheet;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**
@@ -98,9 +98,9 @@ public final class SheetsAddHandler
         final Media selection = ProjectModel.INSTANCE.getSelection();
         final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
         final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
-        final String value = MapTile.DEFAULT_SHEETS_FILE.replace(Constant.DOT
-                                                                 + Factory.FILE_DATA_EXTENSION,
-                                                                 Constant.EMPTY_STRING);
+        final String value = ConfigTileSheet.FILENAME.replace(Constant.DOT
+                                                              + Factory.FILE_DATA_EXTENSION,
+                                                              Constant.EMPTY_STRING);
         final InputDialog inputDialog = new InputDialog(parent,
                                                         Messages.AddSheets_Title,
                                                         Messages.AddSheets_Text,

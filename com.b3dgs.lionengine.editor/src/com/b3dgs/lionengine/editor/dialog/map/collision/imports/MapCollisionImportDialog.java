@@ -41,6 +41,8 @@ import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
 import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.editor.world.tester.MapTester;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
@@ -264,13 +266,13 @@ public class MapCollisionImportDialog extends AbstractDialog
         final MapTile map = WorldModel.INSTANCE.getMap();
         final File parentFile = map.getGroupsConfig().getFile().getParentFile();
 
-        final File formulas = new File(parentFile, MapTileCollision.DEFAULT_FORMULAS_FILE);
+        final File formulas = new File(parentFile, ConfigCollisionFormula.FILENAME);
         if (MapTester.isFormulasConfig(project.getResourceMedia(formulas)))
         {
             onFormulasConfigLocationSelected(formulas);
         }
 
-        final File collisions = new File(parentFile, MapTileCollision.DEFAULT_COLLISIONS_FILE);
+        final File collisions = new File(parentFile, ConfigCollisionGroup.FILENAME);
         if (MapTester.isCollisionsConfig(project.getResourceMedia(collisions)))
         {
             onCollisionsConfigLocationSelected(collisions);
@@ -300,7 +302,7 @@ public class MapCollisionImportDialog extends AbstractDialog
                 map.createFeature(MapTileCollisionModel.class);
             }
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
-            mapCollision.loadCollisions(formulasConfig, collisionsConfig);
+            mapCollision.loadCollisions();
             mapCollision.createCollisionDraw();
 
             part.setToolItemEnabled(SetShowCollisionsHandler.ID, true);

@@ -44,8 +44,8 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
+import com.b3dgs.lionengine.game.configurer.ConfigTileSheet;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileExtractor;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -174,19 +174,19 @@ public class SheetsImportDialog extends AbstractDialog
     {
         try
         {
-            final XmlNode root = Stream.createXmlNode(MapTile.NODE_TILE_SHEETS);
+            final XmlNode root = Stream.createXmlNode(ConfigTileSheet.NODE_TILE_SHEETS);
             root.writeString(Configurer.HEADER, Engine.WEBSITE);
 
-            final XmlNode tileSize = root.createChild(MapTile.NODE_TILE_SIZE);
-            tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, Integer.toString(tw));
-            tileSize.writeString(MapTile.ATTRIBUTE_TILE_HEIGHT, Integer.toString(th));
+            final XmlNode tileSize = root.createChild(ConfigTileSheet.NODE_TILE_SIZE);
+            tileSize.writeString(ConfigTileSheet.ATTRIBUTE_TILE_WIDTH, Integer.toString(tw));
+            tileSize.writeString(ConfigTileSheet.ATTRIBUTE_TILE_HEIGHT, Integer.toString(th));
 
             for (final Media media : extractor.getGeneratedSheets())
             {
-                final XmlNode node = root.createChild(MapTile.NODE_TILE_SHEET);
+                final XmlNode node = root.createChild(ConfigTileSheet.NODE_TILE_SHEET);
                 node.setText(media.getFile().getName());
             }
-            final File file = new File(extractFolder.getFile(), MapTile.DEFAULT_SHEETS_FILE);
+            final File file = new File(extractFolder.getFile(), ConfigTileSheet.FILENAME);
             Stream.saveXml(root, Project.getActive().getResourceMedia(file));
         }
         catch (final LionEngineException exception)

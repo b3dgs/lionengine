@@ -79,8 +79,8 @@ class Scene extends Sequence
     @Override
     protected void load()
     {
-        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
-        mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
+        map.create(Medias.create("level.png"));
+        mapCollision.loadCollisions();
         mapCollision.createCollisionDraw();
 
         camera.setIntervals(16, 0);

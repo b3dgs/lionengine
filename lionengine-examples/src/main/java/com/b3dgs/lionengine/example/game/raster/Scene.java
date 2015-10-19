@@ -72,7 +72,7 @@ class Scene extends Sequence
     @Override
     protected void load()
     {
-        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        map.create(Medias.create("level.png"));
         raster.loadSheets(Medias.create("sheets.xml"), Medias.create("raster.xml"), false);
 
         camera.setView(0, 0, getWidth(), getHeight());

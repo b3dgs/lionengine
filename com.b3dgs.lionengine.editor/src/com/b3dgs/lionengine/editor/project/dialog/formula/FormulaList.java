@@ -98,7 +98,7 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
     public void loadFormulas(Media config)
     {
         this.config = config;
-        final ConfigCollisionFormula configCollisionFormula = ConfigCollisionFormula.create(Stream.loadXml(config));
+        final ConfigCollisionFormula configCollisionFormula = ConfigCollisionFormula.create(config);
         final Collection<CollisionFormula> formulas = configCollisionFormula.getFormulas().values();
         loadObjects(formulas);
     }
@@ -144,7 +144,7 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             final Media formulasConfig = mapCollision.getFormulasConfig();
             removeFormula(formulasConfig, formula);
-            mapCollision.loadCollisions(formulasConfig, map.getGroupsConfig());
+            mapCollision.loadCollisions();
         }
         else if (config != null)
         {

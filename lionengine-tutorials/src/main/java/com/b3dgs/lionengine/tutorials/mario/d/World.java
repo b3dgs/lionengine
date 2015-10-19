@@ -22,7 +22,6 @@ import java.io.IOException;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -111,7 +110,7 @@ class World extends WorldGame
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
-        mapCollision.loadCollisions(Medias.create("map", "formulas.xml"), Medias.create("map", "collisions.xml"));
+        mapCollision.loadCollisions();
         mapCollision.createCollisionDraw();
 
         mario = factory.create(Mario.CONFIG);

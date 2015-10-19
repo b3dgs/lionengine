@@ -86,7 +86,7 @@ class Scene extends Sequence
     @Override
     protected void load()
     {
-        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        map.create(Medias.create("level.png"));
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
         cursor.addImage(0, Medias.create("cursor.png"));

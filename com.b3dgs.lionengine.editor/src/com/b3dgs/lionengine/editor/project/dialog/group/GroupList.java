@@ -54,7 +54,7 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
      */
     public void loadGroups(Media config)
     {
-        final Collection<TileGroup> groups = ConfigTileGroup.create(Stream.loadXml(config));
+        final Collection<TileGroup> groups = ConfigTileGroup.create(config);
         loadObjects(groups);
     }
 

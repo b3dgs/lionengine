@@ -83,7 +83,7 @@ class Scene extends Sequence
     @Override
     protected void load()
     {
-        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        map.create(Medias.create("level.png"));
         map.setTileRenderer(fogOfWar);
 
         final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create("hide.png"), 16, 16);

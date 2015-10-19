@@ -21,9 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -34,6 +36,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class ConfigCollisionGroup
 {
+    /** Configuration file name. */
+    public static final String FILENAME = "collisions.xml";
     /** Collision group root node. */
     public static final String COLLISIONS = Configurer.PREFIX + "collisions";
     /** Collision group node. */
@@ -45,12 +49,13 @@ public final class ConfigCollisionGroup
      * Create the collision group data from node (should only be used to display names, as real content is
      * <code>null</code>, mainly UI specific to not have dependency on {@link MapTileCollision}).
      * 
-     * @param root The node root reference.
+     * @param config The tile collision groups descriptor.
      * @return The collisions group data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<CollisionGroup> create(XmlNode root) throws LionEngineException
+    public static Collection<CollisionGroup> create(Media config) throws LionEngineException
     {
+        final XmlNode root = Stream.loadXml(config);
         final Collection<CollisionGroup> collisions = new ArrayList<CollisionGroup>();
         for (final XmlNode node : root.getChildren(COLLISION))
         {

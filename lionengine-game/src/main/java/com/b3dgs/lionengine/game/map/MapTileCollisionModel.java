@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Orientation;
@@ -266,8 +267,7 @@ public class MapTileCollisionModel implements MapTileCollision
         Verbose.info(INFO_LOAD_FORMULAS, formulasConfig.getFile().getPath());
         formulas.clear();
         this.formulasConfig = formulasConfig;
-        final XmlNode nodeFormulas = Stream.loadXml(formulasConfig);
-        final ConfigCollisionFormula config = ConfigCollisionFormula.create(nodeFormulas);
+        final ConfigCollisionFormula config = ConfigCollisionFormula.create(formulasConfig);
         for (final CollisionFormula formula : config.getFormulas().values())
         {
             formulas.put(formula.getName(), formula);
@@ -454,6 +454,14 @@ public class MapTileCollisionModel implements MapTileCollision
     /*
      * MapTileCollision
      */
+
+    @Override
+    public void loadCollisions() throws LionEngineException
+    {
+        final String parent = map.getSheetsConfig().getParentPath();
+        loadCollisions(Medias.create(parent, ConfigCollisionFormula.FILENAME),
+                       Medias.create(parent, ConfigCollisionGroup.FILENAME));
+    }
 
     @Override
     public void loadCollisions(Media collisionFormulas, Media collisionGroups) throws LionEngineException

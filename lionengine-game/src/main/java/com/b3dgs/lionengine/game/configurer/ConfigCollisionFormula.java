@@ -22,10 +22,12 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -36,6 +38,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class ConfigCollisionFormula
 {
+    /** Configuration file name. */
+    public static final String FILENAME = "formulas.xml";
     /** Collision formula root node. */
     public static final String FORMULAS = Configurer.PREFIX + "formulas";
     /** Collision formula node. */
@@ -46,12 +50,13 @@ public final class ConfigCollisionFormula
     /**
      * Create the formula data from node.
      * 
-     * @param root The root reference.
+     * @param config The collision formulas descriptor.
      * @return The collision formula data.
      * @throws LionEngineException If error when reading data.
      */
-    public static ConfigCollisionFormula create(XmlNode root) throws LionEngineException
+    public static ConfigCollisionFormula create(Media config) throws LionEngineException
     {
+        final XmlNode root = Stream.loadXml(config);
         final Map<String, CollisionFormula> collisions = new HashMap<String, CollisionFormula>(0);
         for (final XmlNode node : root.getChildren(FORMULA))
         {

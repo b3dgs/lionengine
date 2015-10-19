@@ -109,7 +109,7 @@ public class FormulasEditDialog extends AbstractDialog
         if (map.hasFeature(MapTileCollision.class))
         {
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
-            mapCollision.loadCollisions(formulas, map.getGroupsConfig());
+            mapCollision.loadCollisions();
         }
     }
 }

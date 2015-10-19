@@ -70,9 +70,7 @@ class Scene extends Sequence
     private static void importAndSave()
     {
         final MapTile map = new MapTileGame();
-        map.create(Medias.create("map", "level.png"),
-                   Medias.create("map", "sheets.xml"),
-                   Medias.create("map", "groups.xml"));
+        map.create(Medias.create("map", "level.png"));
         try (FileWriting file = Stream.createFileWriting(LEVEL))
         {
             map.save(file);

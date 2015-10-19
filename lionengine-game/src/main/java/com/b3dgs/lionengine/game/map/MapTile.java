@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Featurable;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -57,20 +56,6 @@ import com.b3dgs.lionengine.stream.FileWriting;
  */
 public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTileFeature>
 {
-    /** Default sheets config file. */
-    String DEFAULT_SHEETS_FILE = "sheets.xml";
-    /** Default sheets config file. */
-    String DEFAULT_GROUPS_FILE = "groups.xml";
-    /** Tile size node. */
-    String NODE_TILE_SIZE = Configurer.PREFIX + "tileSize";
-    /** Tile width attribute. */
-    String ATTRIBUTE_TILE_WIDTH = "width";
-    /** Tile height attribute. */
-    String ATTRIBUTE_TILE_HEIGHT = "height";
-    /** Tile sheets node. */
-    String NODE_TILE_SHEETS = Configurer.PREFIX + "sheets";
-    /** Tile sheet node. */
-    String NODE_TILE_SHEET = Configurer.PREFIX + "sheet";
     /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
     int BLOC_SIZE = 256;
 
@@ -91,7 +76,8 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created.
      * Previous map data (if existing) will be cleared.
      * <p>
-     * {@link #DEFAULT_SHEETS_FILE} and {@link #DEFAULT_GROUPS_FILE} will be used as default, by calling
+     * {@link com.b3dgs.lionengine.game.configurer.ConfigTileSheet#FILENAME} and
+     * {@link com.b3dgs.lionengine.game.configurer.ConfigTileGroup#FILENAME} will be used as default, by calling
      * {@link #create(Media, Media, Media)}.
      * </p>
      * 

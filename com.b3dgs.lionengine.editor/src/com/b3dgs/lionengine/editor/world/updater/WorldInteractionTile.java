@@ -163,7 +163,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
             Stream.saveXml(groupNode, config);
             map.loadGroups(config);
             final MapTileCollision collision = map.getFeature(MapTileCollision.class);
-            collision.loadCollisions(collision.getFormulasConfig(), collision.getCollisionsConfig());
+            collision.loadCollisions();
             collision.createCollisionDraw();
         }
     }

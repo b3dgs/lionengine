@@ -71,7 +71,7 @@ class Scene extends Sequence
     @Override
     protected void load()
     {
-        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        map.create(Medias.create("level.png"));
         minimap.load();
         minimap.prepare();
         camera.setView(0, 0, getWidth(), getHeight());

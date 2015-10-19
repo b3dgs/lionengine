@@ -93,7 +93,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
     public void loadCollisions(Media config)
     {
         this.config = config;
-        final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(Stream.loadXml(config));
+        final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(config);
         loadObjects(groups);
     }
 
@@ -132,7 +132,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             final Media collisionsConfig = mapCollision.getFormulasConfig();
             removeCollision(collisionsConfig, collision);
-            mapCollision.loadCollisions(collisionsConfig, map.getGroupsConfig());
+            mapCollision.loadCollisions();
         }
         else if (config != null)
         {
