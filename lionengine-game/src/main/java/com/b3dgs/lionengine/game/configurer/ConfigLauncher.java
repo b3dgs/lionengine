@@ -46,7 +46,8 @@ public final class ConfigLauncher
     public static ConfigLauncher create(Configurer configurer) throws LionEngineException
     {
         final Collection<ConfigLaunchable> launchables = new ArrayList<ConfigLaunchable>();
-        for (final XmlNode launchable : configurer.getRoot().getChildren(ConfigLaunchable.LAUNCHABLE))
+        final XmlNode launcher = configurer.getRoot().getChild(LAUNCHER);
+        for (final XmlNode launchable : launcher.getChildren(ConfigLaunchable.LAUNCHABLE))
         {
             launchables.add(ConfigLaunchable.create(launchable));
         }
