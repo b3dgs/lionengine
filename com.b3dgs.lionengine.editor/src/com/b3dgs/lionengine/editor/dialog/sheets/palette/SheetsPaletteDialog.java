@@ -44,6 +44,7 @@ import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -124,7 +125,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     /** GC composite. */
     private GC gc;
     /** Simple palette mode. */
-    private boolean simple = true;
+    private boolean simple;
     /** Current sheet id. */
     private Integer sheetId = Integer.valueOf(0);
     /** Current number. */
@@ -160,6 +161,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         gc = new GC(composite);
         tileColor = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
         gridColor = shell.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
+        simple = Medias.create(map.getGroupsConfig().getParentPath(), ConfigTileConstraint.FILENAME).exists();
 
         createTypes();
         createBottom();
@@ -177,6 +179,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
             shell.setLocation(lastLocation);
         }
         render();
+        UtilSwt.center(shell);
     }
 
     /**
@@ -197,7 +200,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         UtilButton.setAction(typeEdit, () -> model.setSheetPaletteType(SheetPaletteType.EDITION));
 
         final Button simplePalette = UtilButton.createCheck(Messages.SimplePalette, area);
-        simplePalette.setSelection(true);
+        simplePalette.setSelection(simple);
+        simplePalette.setEnabled(simple);
         UtilButton.setAction(simplePalette, () ->
         {
             simple = simplePalette.getSelection();
@@ -350,7 +354,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      */
     private Collection<TileRef> getCenterTiles()
     {
-        final XmlNode root = Stream.loadXml(Medias.create(map.getGroupsConfig().getParentPath(), "constraints.xml"));
+        final Media media = Medias.create(map.getGroupsConfig().getParentPath(), ConfigTileConstraint.FILENAME);
+        final XmlNode root = Stream.loadXml(media);
         final Map<TileRef, Collection<TileConstraint>> constraints = ConfigTileConstraint.create(root);
         final Collection<TileRef> centerTiles = new HashSet<>();
         final Map<String, Collection<ColorRgba>> deltas = new HashMap<>();

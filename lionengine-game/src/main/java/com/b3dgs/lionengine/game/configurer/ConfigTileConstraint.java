@@ -37,6 +37,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class ConfigTileConstraint
 {
+    /** Configuration file name. */
+    public static final String FILENAME = "constraints.xml";
     /** Constraints node. */
     public static final String CONSTRAINTS = Configurer.PREFIX + "constraints";
     /** Constraint node. */
