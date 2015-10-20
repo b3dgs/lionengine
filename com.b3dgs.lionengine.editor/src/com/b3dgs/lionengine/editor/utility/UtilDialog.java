@@ -38,6 +38,12 @@ import com.b3dgs.lionengine.editor.project.Project;
  */
 public final class UtilDialog
 {
+    /** Xml filter. */
+    private static final String[] XML = new String[]
+    {
+        "*.xml"
+    };
+
     /**
      * Select a file from a dialog and returns its path relative to the starting path.
      * 
@@ -111,6 +117,39 @@ public final class UtilDialog
         fileDialog.setFilterPath(Project.getActive().getResourcesPath().getAbsolutePath());
         fileDialog.setFilterNames(extensionsName);
         fileDialog.setFilterExtensions(extensions);
+        final String file = fileDialog.open();
+        if (file != null)
+        {
+            return new File(file);
+        }
+        return null;
+    }
+
+    /**
+     * Select a media file from dialog.
+     * 
+     * @param parent The shell parent.
+     * @param openSave <code>true</code> to open, <code>false</code> to save.
+     * @param description The type description.
+     * @return The media file, <code>null</code> if none.
+     */
+    public static File selectResourceXml(Shell parent, boolean openSave, String description)
+    {
+        final FileDialog fileDialog;
+        if (openSave)
+        {
+            fileDialog = new FileDialog(parent, SWT.OPEN);
+        }
+        else
+        {
+            fileDialog = new FileDialog(parent, SWT.SAVE);
+        }
+        fileDialog.setFilterPath(Project.getActive().getResourcesPath().getAbsolutePath());
+        fileDialog.setFilterNames(new String[]
+        {
+            description
+        });
+        fileDialog.setFilterExtensions(XML);
         final String file = fileDialog.open();
         if (file != null)
         {

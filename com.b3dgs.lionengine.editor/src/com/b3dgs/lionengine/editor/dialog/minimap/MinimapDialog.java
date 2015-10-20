@@ -314,13 +314,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
      */
     private void selectConfig()
     {
-        final File file = UtilDialog.selectResourceFile(shell, true, new String[]
-        {
-            Messages.FileDesc
-        }, new String[]
-        {
-            "*.xml"
-        });
+        final File file = UtilDialog.selectResourceXml(shell, true, Messages.FileDesc);
         if (file != null)
         {
             final String normalized = UtilFile.normalizeExtension(file.getName(), Factory.FILE_DATA_EXTENSION);

@@ -56,8 +56,6 @@ public class MapCollisionImportDialog extends AbstractDialog
 {
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "import.png");
-    /** Xml filter. */
-    private static final String XML = "*.xml";
 
     /** World part reference. */
     private final WorldPart part;
@@ -131,13 +129,7 @@ public class MapCollisionImportDialog extends AbstractDialog
      */
     private void browseFormulasLocation()
     {
-        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
-        {
-            Messages.FormulasConfigFileFilter
-        }, new String[]
-        {
-            XML
-        });
+        final File file = UtilDialog.selectResourceXml(dialog, true, Messages.FormulasConfigFileFilter);
         if (file != null)
         {
             onFormulasConfigLocationSelected(file);
@@ -149,13 +141,7 @@ public class MapCollisionImportDialog extends AbstractDialog
      */
     private void browseCollisionLocation()
     {
-        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
-        {
-            Messages.CollisionsFileFilter
-        }, new String[]
-        {
-            XML
-        });
+        final File file = UtilDialog.selectResourceXml(dialog, true, Messages.CollisionsFileFilter);
         if (file != null)
         {
             onCollisionsConfigLocationSelected(file);

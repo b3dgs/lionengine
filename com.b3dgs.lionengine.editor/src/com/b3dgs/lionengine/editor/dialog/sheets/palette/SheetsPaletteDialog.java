@@ -173,13 +173,17 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     private void open()
     {
         shell.pack();
-        UtilSwt.open(shell);
+        render();
+        shell.open();
         if (lastLocation != null)
         {
             shell.setLocation(lastLocation);
         }
+        else
+        {
+            UtilSwt.center(shell);
+        }
         render();
-        UtilSwt.center(shell);
     }
 
     /**

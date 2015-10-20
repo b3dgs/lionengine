@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.game.configurer.ConfigTileConstraint;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.MapTile;
 
@@ -50,10 +51,6 @@ public class MapConstraintsExportDialog extends AbstractDialog
 {
     /** Icon. */
     public static final Image ICON = UtilIcon.get("dialog", "import.png");
-    /** Xml filter. */
-    private static final String XML = "*.xml";
-    /** Default constraints file name. */
-    private static final String DEFAULT_NAME = "constraints.xml";
 
     /** Constraints location. */
     private Text constraintsLocationText;
@@ -87,13 +84,7 @@ public class MapConstraintsExportDialog extends AbstractDialog
      */
     private void browseConstraintsLocation()
     {
-        final File file = UtilDialog.selectResourceFile(dialog, false, new String[]
-        {
-            Messages.ConstraintsConfigFileFilter
-        }, new String[]
-        {
-            XML
-        });
+        final File file = UtilDialog.selectResourceXml(dialog, false, Messages.ConstraintsConfigFileFilter);
         if (file != null)
         {
             onConstraintsConfigLocationSelected(file);
@@ -140,7 +131,7 @@ public class MapConstraintsExportDialog extends AbstractDialog
         constraintsLocationText.setEditable(false);
 
         final MapTile map = WorldModel.INSTANCE.getMap();
-        constraintsConfig = Medias.create(map.getSheetsConfig().getParentPath(), DEFAULT_NAME);
+        constraintsConfig = Medias.create(map.getSheetsConfig().getParentPath(), ConfigTileConstraint.FILENAME);
         constraintsLocationText.setText(constraintsConfig.getPath());
 
         final Button browse = UtilButton.createBrowse(groupArea);

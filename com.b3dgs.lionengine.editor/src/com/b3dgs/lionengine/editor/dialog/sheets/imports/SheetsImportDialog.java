@@ -57,6 +57,11 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class SheetsImportDialog extends AbstractDialog
 {
+    /** Level rip filter. */
+    public static final String[] LEVEL_RIP_FILTER = new String[]
+    {
+        "*.bmp;*.png"
+    };
     /** Icon. */
     static final Image ICON = UtilIcon.get("dialog", "import.png");
     /** Error on config file generation. */
@@ -105,10 +110,7 @@ public class SheetsImportDialog extends AbstractDialog
         final File[] files = UtilDialog.selectResourceFiles(dialog, new String[]
         {
             Messages.LevelRipFileFilter
-        }, new String[]
-        {
-            "*.bmp;*.png"
-        });
+        }, LEVEL_RIP_FILTER);
         final Project project = Project.getActive();
         for (final File file : files)
         {
