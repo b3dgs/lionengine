@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.map.TileConstraint;
 import com.b3dgs.lionengine.game.map.TileRef;
@@ -49,13 +49,16 @@ public final class ConfigTileConstraint
     /**
      * Create the collision constraint data from node.
      * 
-     * @param root The root reference.
+     * @param config The constraints configuration.
      * @return The collision constraint data.
      * @throws LionEngineException If error when reading node.
      */
-    public static Map<TileRef, Collection<TileConstraint>> create(XmlNode root) throws LionEngineException
+    public static Map<TileRef, Map<Orientation, TileConstraint>> create(Media config) throws LionEngineException
     {
-        final Map<TileRef, Collection<TileConstraint>> constraints = new HashMap<TileRef, Collection<TileConstraint>>();
+        final Map<TileRef, Map<Orientation, TileConstraint>> constraints;
+        constraints = new HashMap<TileRef, Map<Orientation, TileConstraint>>();
+
+        final XmlNode root = Stream.loadXml(config);
 
         for (final XmlNode nodeTileRef : root.getChildren(ConfigTileRef.TILE_REF))
         {
@@ -73,9 +76,9 @@ public final class ConfigTileConstraint
      * @return The constraints read.
      * @throws LionEngineException If error when reading node.
      */
-    private static Collection<TileConstraint> getConstraints(XmlNode nodeTileRef) throws LionEngineException
+    private static Map<Orientation, TileConstraint> getConstraints(XmlNode nodeTileRef) throws LionEngineException
     {
-        final Collection<TileConstraint> constraints = new ArrayList<TileConstraint>();
+        final Map<Orientation, TileConstraint> constraints = new HashMap<Orientation, TileConstraint>();
         for (final XmlNode nodeConstraint : nodeTileRef.getChildren(CONSTRAINT))
         {
             final Orientation orientation = Orientation.valueOf(nodeConstraint.readString(ORIENTATION));
@@ -85,7 +88,7 @@ public final class ConfigTileConstraint
             {
                 constraint.add(ConfigTileRef.create(tileRefNode));
             }
-            constraints.add(constraint);
+            constraints.put(orientation, constraint);
         }
         return constraints;
     }

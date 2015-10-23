@@ -53,13 +53,12 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.configurer.ConfigTileConstraint;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.map.TileConstraint;
 import com.b3dgs.lionengine.game.map.TileRef;
-import com.b3dgs.lionengine.stream.Stream;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Sheets palette dialog.
@@ -359,12 +358,11 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     private Collection<TileRef> getCenterTiles()
     {
         final Media media = Medias.create(map.getGroupsConfig().getParentPath(), ConfigTileConstraint.FILENAME);
-        final XmlNode root = Stream.loadXml(media);
-        final Map<TileRef, Collection<TileConstraint>> constraints = ConfigTileConstraint.create(root);
+        final Map<TileRef, Map<Orientation, TileConstraint>> constraints = ConfigTileConstraint.create(media);
         final Collection<TileRef> centerTiles = new HashSet<>();
         final Map<String, Collection<ColorRgba>> deltas = new HashMap<>();
 
-        for (final Map.Entry<TileRef, Collection<TileConstraint>> entry : constraints.entrySet())
+        for (final Map.Entry<TileRef, Map<Orientation, TileConstraint>> entry : constraints.entrySet())
         {
             final TileRef tile = entry.getKey();
             if (isCenter(tile, entry.getValue()) && checkCenterTile(tile, deltas))
@@ -382,12 +380,12 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      * @param constraints The constraints.
      * @return <code>true</code> if center, <code>false</code> else.
      */
-    private boolean isCenter(TileRef tile, Collection<TileConstraint> constraints)
+    private boolean isCenter(TileRef tile, Map<Orientation, TileConstraint> constraints)
     {
         final String group = map.getGroup(tile.getSheet(), tile.getNumber()).getName();
 
         int check = 0;
-        for (final TileConstraint constraint : constraints)
+        for (final TileConstraint constraint : constraints.values())
         {
             for (final TileRef allowed : constraint.getAllowed())
             {
