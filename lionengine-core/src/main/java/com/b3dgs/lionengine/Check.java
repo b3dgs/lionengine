@@ -51,6 +51,8 @@ public final class Check
     private static final String ERROR_INFERIOR_STRICT = " is not strictly inferior to ";
     /** Different comparison error. */
     private static final String ERROR_DIFFERENT = " is not different to ";
+    /** Equals comparison error. */
+    private static final String ERROR_EQUALS = " is not equal to ";
 
     /**
      * Check if <code>a</code> is superior to <code>b</code>.
@@ -160,6 +162,21 @@ public final class Check
         if (a == b)
         {
             throw argumentError(a, b, ERROR_DIFFERENT);
+        }
+    }
+
+    /**
+     * Check if <code>a</code> is equal to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
+     */
+    public static void equals(int a, int b) throws LionEngineException
+    {
+        if (a != b)
+        {
+            throw argumentError(a, b, ERROR_EQUALS);
         }
     }
 

@@ -32,6 +32,16 @@ public final class TileRef
     /**
      * Create the tile reference.
      * 
+     * @param tile The tile reference.
+     */
+    public TileRef(Tile tile)
+    {
+        this(tile.getSheet(), tile.getNumber());
+    }
+
+    /**
+     * Create the tile reference.
+     * 
      * @param sheet The tile sheet number.
      * @param number The tile number.
      */

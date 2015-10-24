@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.TileTransitionsExtractor;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -48,7 +49,7 @@ class Scene extends Sequence
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** Text reference. */
-    private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
+    private final TextGame text = new TextGame(Text.DIALOG, 9, TextStyle.NORMAL);
     /** Services reference. */
     private final Services services = new Services();
     /** Camera reference. */
@@ -95,6 +96,7 @@ class Scene extends Sequence
             text.draw(g, x + 20, y + 15, "X = " + tx + " | Y = " + ty);
             text.draw(g, x + 20, y + 5, "RX = " + cursor.getX() + " | RY = " + cursor.getY());
             text.draw(g, x + 20, y - 5, "Group: " + tile.getGroup());
+            text.draw(g, x + 20, y - 15, "Transition: " + TileTransitionsExtractor.getTransition(map, tile));
         }
     }
 
