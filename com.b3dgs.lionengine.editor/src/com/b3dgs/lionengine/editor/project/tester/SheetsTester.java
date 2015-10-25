@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.configurer.ConfigTileSheet;
+import com.b3dgs.lionengine.game.configurer.ConfigTileSheets;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -50,7 +50,7 @@ public final class SheetsTester extends PropertyTester
         try
         {
             final XmlNode root = Stream.loadXml(media);
-            return ConfigTileSheet.FILENAME.equals(root.getNodeName());
+            return ConfigTileSheets.FILENAME.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)
         {

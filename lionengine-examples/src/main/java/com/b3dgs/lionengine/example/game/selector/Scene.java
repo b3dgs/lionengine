@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Selector;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTilePath;
-import com.b3dgs.lionengine.game.map.MapTilePathModel;
 import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
@@ -60,8 +58,6 @@ class Scene extends Sequence
     private final Cursor cursor = services.create(Cursor.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map path. */
-    private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
     /** Selector reference. */
@@ -92,9 +88,8 @@ class Scene extends Sequence
     protected void load()
     {
         map.create(Medias.create("map", "level.png"));
-        mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
-        minimap.loadPixelConfig(Medias.create("map", "minimap.xml"));
         minimap.load();
+        minimap.automaticColor(null);
         minimap.prepare();
         minimap.setLocation(3, 6);
 

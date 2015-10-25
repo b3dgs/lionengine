@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilTemplate;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroups;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**
@@ -85,9 +85,9 @@ public final class GroupsAddHandler
         final Media selection = ProjectModel.INSTANCE.getSelection();
         final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
         final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
-        final String value = ConfigTileGroup.FILENAME.replace(Constant.DOT
-                                                              + Factory.FILE_DATA_EXTENSION,
-                                                              Constant.EMPTY_STRING);
+        final String value = ConfigTileGroups.FILENAME.replace(Constant.DOT
+                                                               + Factory.FILE_DATA_EXTENSION,
+                                                               Constant.EMPTY_STRING);
         final InputDialog inputDialog = new InputDialog(parent,
                                                         Messages.AddGroups_Title,
                                                         Messages.AddGroups_Text,

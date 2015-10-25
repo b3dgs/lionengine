@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * It will check from an existing map all transitions combination.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see TileTransition
  */
 public final class ConfigTileTransitions
 {
@@ -46,31 +47,31 @@ public final class ConfigTileTransitions
     /** Transition node. */
     public static final String NODE_TRANSITION = Configurer.PREFIX + "transition";
     /** Attribute transition name. */
-    public static final String ATT_TRANSITION_NAME = "name";
+    public static final String ATTRIBUTE_TRANSITION_NAME = "name";
 
     /**
-     * Import all transitions from an XML file.
+     * Import all transitions from configuration.
      * 
-     * @param media The transitions media.
+     * @param configTransitions The transitions media.
      * @return The transitions imported.
-     * @throws LionEngineException If error on reading transitions.
+     * @throws LionEngineException If unable to read data.
      */
-    public static Map<TileTransition, Collection<TileRef>> imports(Media media) throws LionEngineException
+    public static Map<TileTransition, Collection<TileRef>> imports(Media configTransitions) throws LionEngineException
     {
-        final Map<TileTransition, Collection<TileRef>> transitions = new HashMap<TileTransition, Collection<TileRef>>();
-        final XmlNode root = Stream.loadXml(media);
-        for (final XmlNode nodeTransition : root.getChildren(NODE_TRANSITION))
+        final XmlNode root = Stream.loadXml(configTransitions);
+        final Collection<XmlNode> nodesTransition = root.getChildren(NODE_TRANSITION);
+        final Map<TileTransition, Collection<TileRef>> transitions;
+        transitions = new HashMap<TileTransition, Collection<TileRef>>(nodesTransition.size());
+
+        for (final XmlNode nodeTransition : nodesTransition)
         {
-            final String name = nodeTransition.readString(ATT_TRANSITION_NAME);
-            final TileTransition transition = TileTransition.from(name);
+            final String transitionName = nodeTransition.readString(ATTRIBUTE_TRANSITION_NAME);
+            final TileTransition transition = TileTransition.from(transitionName);
 
-            final Collection<TileRef> tiles = new HashSet<TileRef>();
-            for (final XmlNode nodeTileRef : nodeTransition.getChildren(ConfigTileRef.TILE_REF))
-            {
-                tiles.add(ConfigTileRef.create(nodeTileRef));
-            }
+            final Collection<XmlNode> nodesTileRef = nodeTransition.getChildren(ConfigTile.NODE_TILE);
+            final Collection<TileRef> tilesRef = importTiles(nodesTileRef);
 
-            transitions.put(transition, tiles);
+            transitions.put(transition, tilesRef);
         }
         return transitions;
     }
@@ -80,21 +81,23 @@ public final class ConfigTileTransitions
      * 
      * @param media The export output.
      * @param map The map reference.
+     * @throws LionEngineException If error on export.
      */
-    public static void exports(Media media, MapTile map)
+    public static void exports(Media media, MapTile map) throws LionEngineException
     {
         final Map<TileTransition, Collection<TileRef>> transitions = getTransitions(map);
-        final XmlNode root = Stream.createXmlNode(NODE_TRANSITIONS);
+        final XmlNode nodeTransitions = Stream.createXmlNode(NODE_TRANSITIONS);
+
         for (final Map.Entry<TileTransition, Collection<TileRef>> entry : transitions.entrySet())
         {
             final TileTransition transition = entry.getKey();
-            final XmlNode nodeTransition = root.createChild(NODE_TRANSITION);
-            nodeTransition.writeString(ATT_TRANSITION_NAME, transition.name());
-            for (final TileRef tile : entry.getValue())
-            {
-                nodeTransition.add(ConfigTileRef.export(tile));
-            }
+            final XmlNode nodeTransition = nodeTransitions.createChild(NODE_TRANSITION);
+            nodeTransition.writeString(ATTRIBUTE_TRANSITION_NAME, transition.name());
+
+            exportTiles(nodeTransition, entry.getValue());
         }
+
+        Stream.saveXml(nodeTransitions, media);
     }
 
     /**
@@ -148,6 +151,38 @@ public final class ConfigTileTransitions
             }
         }
         return TileTransition.from(bits);
+    }
+
+    /**
+     * Import all tiles from their nodes.
+     * 
+     * @param nodesTileRef The tiles nodes.
+     * @return The imported tiles ref.
+     */
+    private static Collection<TileRef> importTiles(Collection<XmlNode> nodesTileRef)
+    {
+        final Collection<TileRef> tilesRef = new HashSet<TileRef>(nodesTileRef.size());
+        for (final XmlNode nodeTileRef : nodesTileRef)
+        {
+            final TileRef tileRef = ConfigTile.create(nodeTileRef);
+            tilesRef.add(tileRef);
+        }
+        return tilesRef;
+    }
+
+    /**
+     * Export all tiles for the transition.
+     * 
+     * @param nodeTransition The transition node.
+     * @param tilesRef The transition tiles ref.
+     */
+    private static void exportTiles(XmlNode nodeTransition, Collection<TileRef> tilesRef)
+    {
+        for (final TileRef tileRef : tilesRef)
+        {
+            final XmlNode nodeTileRef = ConfigTile.export(tileRef);
+            nodeTransition.add(nodeTileRef);
+        }
     }
 
     /**

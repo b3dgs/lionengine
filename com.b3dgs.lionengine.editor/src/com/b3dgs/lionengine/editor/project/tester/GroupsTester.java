@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroups;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -50,7 +50,7 @@ public final class GroupsTester extends PropertyTester
         try
         {
             final XmlNode root = Stream.loadXml(media);
-            return ConfigTileGroup.GROUPS.equals(root.getNodeName());
+            return ConfigTileGroups.NODE_GROUPS.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)
         {

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.map.TileRef;
 import com.b3dgs.lionengine.stream.Stream;
@@ -28,48 +29,55 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileRef
  */
-public final class ConfigTileRef
+public final class ConfigTile
 {
-    /** Tile ref node. */
-    public static final String TILE_REF = Configurer.PREFIX + "tileRef";
+    /** Tile node. */
+    public static final String NODE_TILE = Configurer.PREFIX + "tile";
     /** Sheet attribute. */
-    public static final String SHEET = "sheet";
+    public static final String ATT_TILE_SHEET = "sheet";
     /** Number attribute. */
-    public static final String NUMBER = "number";
+    public static final String ATT_TILE_NUMBER = "number";
 
     /**
-     * Create the tile ref data from node.
+     * Create the tile data from node.
      * 
-     * @param node The node reference.
-     * @return The tile ref data.
-     * @throws LionEngineException If error when reading node.
+     * @param nodeTile The node reference.
+     * @return The tile data.
+     * @throws LionEngineException If <code>null</code> argument or error when reading.
      */
-    public static TileRef create(XmlNode node) throws LionEngineException
+    public static TileRef create(XmlNode nodeTile) throws LionEngineException
     {
-        final Integer sheet = Integer.valueOf(node.readInteger(SHEET));
-        final int number = node.readInteger(NUMBER);
-        return new TileRef(sheet, number);
+        Check.notNull(nodeTile);
+
+        final int sheet = nodeTile.readInteger(ATT_TILE_SHEET);
+        final int number = nodeTile.readInteger(ATT_TILE_NUMBER);
+        final TileRef tileRef = new TileRef(sheet, number);
+
+        return tileRef;
     }
 
     /**
-     * Export the tile ref as a node.
+     * Export the tile as a node.
      * 
-     * @param tileRef The tile ref to export.
+     * @param tileRef The tile to export.
      * @return The exported node.
-     * @throws LionEngineException If error on writing.
+     * @throws LionEngineException If <code>null</code> argument or error on writing.
      */
     public static XmlNode export(TileRef tileRef) throws LionEngineException
     {
-        final XmlNode node = Stream.createXmlNode(TILE_REF);
-        node.writeInteger(SHEET, tileRef.getSheet().intValue());
-        node.writeInteger(NUMBER, tileRef.getNumber());
+        Check.notNull(tileRef);
+
+        final XmlNode node = Stream.createXmlNode(NODE_TILE);
+        node.writeInteger(ATT_TILE_SHEET, tileRef.getSheet().intValue());
+        node.writeInteger(ATT_TILE_NUMBER, tileRef.getNumber());
+
         return node;
     }
 
     /**
      * Disabled constructor.
      */
-    private ConfigTileRef()
+    private ConfigTile()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

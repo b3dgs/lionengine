@@ -24,7 +24,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.configurer.ConfigTileConstraint;
+import com.b3dgs.lionengine.game.configurer.ConfigTileConstraints;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -106,7 +106,7 @@ public class ConstraintsExtractor
      */
     public void export(Media media)
     {
-        final XmlNode root = ConfigTileConstraint.export(constraints);
+        final XmlNode root = ConfigTileConstraints.export(constraints);
         Stream.saveXml(root, media);
     }
 

@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.project.dialog.group;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -25,17 +28,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroups;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGroup;
-import com.b3dgs.lionengine.stream.Stream;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the groups edition dialog.
@@ -47,25 +46,25 @@ public class GroupsEditDialog extends AbstractDialog
     /** Icon. */
     public static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
-    /** Groups media. */
-    final Media groups;
     /** Groups list. */
     private final GroupList list = new GroupList();
+    /** Groups media. */
+    private final Media configGroups;
 
     /**
      * Create a groups edit dialog.
      * 
      * @param parent The parent shell.
-     * @param groups The groups media.
+     * @param configGroups The groups configuration.
      */
-    public GroupsEditDialog(Shell parent, Media groups)
+    public GroupsEditDialog(Shell parent, Media configGroups)
     {
         super(parent,
               Messages.EditGroupsDialog_Title,
               Messages.EditGroupsDialog_HeaderTitle,
               Messages.EditGroupsDialog_HeaderDesc,
               ICON);
-        this.groups = groups;
+        this.configGroups = configGroups;
         dialog.setMinimumSize(128, 320);
         createDialog();
         finish.setEnabled(true);
@@ -81,24 +80,23 @@ public class GroupsEditDialog extends AbstractDialog
         content.setLayout(new GridLayout(2, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         list.create(content);
-        list.loadGroups(groups);
+        list.loadGroups(configGroups);
         list.addListener(list);
     }
 
     @Override
     protected void onFinish()
     {
-        final XmlNode root = Stream.createXmlNode(ConfigTileGroup.GROUPS);
-        root.writeString(Configurer.HEADER, Engine.WEBSITE);
-
+        final Collection<TileGroup> groups = new ArrayList<>();
         for (final TreeItem item : list.getTree().getItems())
         {
             final TileGroup group = (TileGroup) item.getData();
-            ConfigTileGroup.export(root, group);
+            groups.add(group);
         }
-        Stream.saveXml(root, groups);
+
+        ConfigTileGroups.exports(configGroups, groups);
 
         final MapTile map = WorldModel.INSTANCE.getMap();
-        map.loadGroups(groups);
+        map.loadGroups(configGroups);
     }
 }

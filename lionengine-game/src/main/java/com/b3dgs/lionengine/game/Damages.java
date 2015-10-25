@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.UtilRandom;
 
 /**

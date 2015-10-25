@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.collidable.Collidable;
 import com.b3dgs.lionengine.game.trait.collidable.CollidableModel;
-import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
-import com.b3dgs.lionengine.game.trait.pathfindable.PathfindableModel;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -51,8 +49,6 @@ class Peon extends ObjectGame implements Updatable, Renderable, SelectorListener
 
     /** Transformable model. */
     private final Transformable transformable = addTrait(new TransformableModel());
-    /** Pathfindable model. */
-    private final Pathfindable pathfindable = addTrait(new PathfindableModel());
     /** Collidable model. */
     private final Collidable collidable = addTrait(new CollidableModel());
     /** Surface reference. */
@@ -84,7 +80,6 @@ class Peon extends ObjectGame implements Updatable, Renderable, SelectorListener
     @Override
     public void update(double extrp)
     {
-        pathfindable.update(extrp);
         collidable.update(extrp);
         surface.setLocation(viewer, transformable);
     }

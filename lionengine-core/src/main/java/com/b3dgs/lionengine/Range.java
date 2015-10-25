@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine;
 
 /**
  * Standard range description, with a minimum and a maximum.
@@ -24,6 +24,11 @@ package com.b3dgs.lionengine.game;
  */
 public class Range
 {
+    /** Positive integer numbers including 0. */
+    public static final Range INT_POSITIVE = new Range(0, Integer.MAX_VALUE);
+    /** Positive integer numbers excluding 0. */
+    public static final Range INT_POSITIVE_STRICT = new Range(1, Integer.MAX_VALUE);
+
     /** Minimum value. */
     private int min;
     /** Maximum value. */

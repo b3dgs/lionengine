@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.editor.dialog.sheets.imports;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -33,7 +35,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.InputValidator;
@@ -44,11 +45,8 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
-import com.b3dgs.lionengine.game.configurer.ConfigTileSheet;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.configurer.ConfigTileSheets;
 import com.b3dgs.lionengine.game.map.TileExtractor;
-import com.b3dgs.lionengine.stream.Stream;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Import sheets dialog.
@@ -176,20 +174,14 @@ public class SheetsImportDialog extends AbstractDialog
     {
         try
         {
-            final XmlNode root = Stream.createXmlNode(ConfigTileSheet.NODE_TILE_SHEETS);
-            root.writeString(Configurer.HEADER, Engine.WEBSITE);
-
-            final XmlNode tileSize = root.createChild(ConfigTileSheet.NODE_TILE_SIZE);
-            tileSize.writeString(ConfigTileSheet.ATTRIBUTE_TILE_WIDTH, Integer.toString(tw));
-            tileSize.writeString(ConfigTileSheet.ATTRIBUTE_TILE_HEIGHT, Integer.toString(th));
-
+            final Collection<String> sheets = new ArrayList<>();
             for (final Media media : extractor.getGeneratedSheets())
             {
-                final XmlNode node = root.createChild(ConfigTileSheet.NODE_TILE_SHEET);
-                node.setText(media.getFile().getName());
+                sheets.add(media.getFile().getName());
             }
-            final File file = new File(extractFolder.getFile(), ConfigTileSheet.FILENAME);
-            Stream.saveXml(root, Project.getActive().getResourceMedia(file));
+            final File file = new File(extractFolder.getFile(), ConfigTileSheets.FILENAME);
+            final Media config = Project.getActive().getResourceMedia(file);
+            ConfigTileSheets.exports(config, tw, th, sheets);
         }
         catch (final LionEngineException exception)
         {

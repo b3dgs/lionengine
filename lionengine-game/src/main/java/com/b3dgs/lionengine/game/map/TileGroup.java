@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.Nameable;
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.game.configurer.ConfigTileGroup
+ * @see com.b3dgs.lionengine.game.configurer.ConfigTileGroups
  */
 public class TileGroup implements Nameable
 {

@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.game.trait.attackable;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.game.Damages;
-import com.b3dgs.lionengine.game.Range;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.TraitModel;

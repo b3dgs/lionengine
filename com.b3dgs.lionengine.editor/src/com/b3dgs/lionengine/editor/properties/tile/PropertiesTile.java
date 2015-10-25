@@ -33,7 +33,8 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.configurer.ConfigTile;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroups;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.map.TileFeature;
@@ -91,10 +92,10 @@ public class PropertiesTile implements PropertiesProviderTile
     public static void changeTileGroup(XmlNode root, String oldGroup, String newGroup, Tile tile)
     {
         final Collection<Point> toAdd = new HashSet<>();
-        for (final XmlNode nodeGroup : root.getChildren(ConfigTileGroup.GROUP))
+        for (final XmlNode nodeGroup : root.getChildren(ConfigTileGroups.NODE_GROUP))
         {
             removeOldGroup(nodeGroup, oldGroup, tile);
-            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
+            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME), newGroup))
             {
                 final Point point = Geom.createPoint(tile.getSheet().intValue(), tile.getNumber());
                 if (!toAdd.contains(point))
@@ -104,14 +105,14 @@ public class PropertiesTile implements PropertiesProviderTile
             }
 
         }
-        if (!ConfigTileGroup.REMOVE_GROUP_NAME.equals(newGroup))
+        if (!ConfigTileGroups.REMOVE_GROUP_NAME.equals(newGroup))
         {
             final XmlNode newNode = getNewNode(root, newGroup);
             for (final Point current : toAdd)
             {
-                final XmlNode node = newNode.createChild(ConfigTileGroup.TILE);
-                node.writeInteger(ConfigTileGroup.SHEET, current.getX());
-                node.writeInteger(ConfigTileGroup.NUMBER, current.getY());
+                final XmlNode node = newNode.createChild(ConfigTile.NODE_TILE);
+                node.writeInteger(ConfigTile.ATT_TILE_SHEET, current.getX());
+                node.writeInteger(ConfigTile.ATT_TILE_NUMBER, current.getY());
             }
         }
         toAdd.clear();
@@ -127,12 +128,12 @@ public class PropertiesTile implements PropertiesProviderTile
     private static void removeOldGroup(XmlNode nodeGroup, String oldGroup, Tile tile)
     {
         final Collection<XmlNode> toRemove = new ArrayList<>();
-        if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), oldGroup))
+        if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME), oldGroup))
         {
-            for (final XmlNode nodeTile : nodeGroup.getChildren(ConfigTileGroup.TILE))
+            for (final XmlNode nodeTile : nodeGroup.getChildren(ConfigTile.NODE_TILE))
             {
-                if (nodeTile.readInteger(ConfigTileGroup.SHEET) == tile.getSheet().intValue()
-                    && nodeTile.readInteger(ConfigTileGroup.NUMBER) == tile.getNumber())
+                if (nodeTile.readInteger(ConfigTile.ATT_TILE_SHEET) == tile.getSheet().intValue()
+                    && nodeTile.readInteger(ConfigTile.ATT_TILE_NUMBER) == tile.getNumber())
                 {
                     toRemove.add(nodeTile);
                 }
@@ -161,9 +162,9 @@ public class PropertiesTile implements PropertiesProviderTile
         {
             values.add(group.getName());
         }
-        if (!values.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
+        if (!values.contains(ConfigTileGroups.REMOVE_GROUP_NAME))
         {
-            values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
+            values.add(ConfigTileGroups.REMOVE_GROUP_NAME);
         }
         final GroupChooser chooser = new GroupChooser(properties.getShell(), values);
         chooser.open();
@@ -188,15 +189,15 @@ public class PropertiesTile implements PropertiesProviderTile
      */
     private static XmlNode getNewNode(XmlNode node, String newGroup)
     {
-        for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroup.GROUP))
+        for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroups.NODE_GROUP))
         {
-            if (newGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME)))
+            if (newGroup.equals(nodeGroup.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME)))
             {
                 return nodeGroup;
             }
         }
-        final XmlNode newGroupNode = node.createChild(ConfigTileGroup.GROUP);
-        newGroupNode.writeString(ConfigTileGroup.NAME, newGroup);
+        final XmlNode newGroupNode = node.createChild(ConfigTileGroups.NODE_GROUP);
+        newGroupNode.writeString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME, newGroup);
 
         return newGroupNode;
     }
@@ -211,7 +212,7 @@ public class PropertiesTile implements PropertiesProviderTile
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileGroup, tile.getGroup());
-        item.setData(ConfigTileGroup.GROUP);
+        item.setData(ConfigTileGroups.NODE_GROUP);
         item.setImage(PropertiesTile.ICON_GROUP);
 
         properties.addListener(SWT.MouseDoubleClick, event ->
@@ -235,7 +236,7 @@ public class PropertiesTile implements PropertiesProviderTile
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileSheet, String.valueOf(tile.getSheet()));
-        item.setData(ConfigTileGroup.SHEET);
+        item.setData(ConfigTile.ATT_TILE_SHEET);
         item.setImage(PropertiesTile.ICON_SHEET);
     }
 
@@ -249,7 +250,7 @@ public class PropertiesTile implements PropertiesProviderTile
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileNumber, String.valueOf(tile.getNumber()));
-        item.setData(ConfigTileGroup.NUMBER);
+        item.setData(ConfigTile.ATT_TILE_NUMBER);
         item.setImage(PropertiesTile.ICON_NUMBER);
     }
 
@@ -263,7 +264,7 @@ public class PropertiesTile implements PropertiesProviderTile
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileSize, tile.getWidth() + " * " + tile.getHeight());
-        item.setData(ConfigTileGroup.TILE);
+        item.setData(ConfigTile.NODE_TILE);
         item.setImage(PropertiesTile.ICON_SIZE);
     }
 

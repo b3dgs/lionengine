@@ -53,7 +53,7 @@ public final class ConfigPathfinding
         for (final XmlNode node : root.getChildren(TILE_PATH))
         {
             final String category = node.readString(CATEGORY);
-            for (final XmlNode group : node.getChildren(ConfigTileGroup.GROUP))
+            for (final XmlNode group : node.getChildren(ConfigTileGroups.NODE_GROUP))
             {
                 config.addGroup(category, group.getText());
             }

@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.configurer.ConfigTileConstraint;
+import com.b3dgs.lionengine.game.configurer.ConfigTileConstraints;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.MapTile;
 
@@ -131,7 +131,7 @@ public class MapConstraintsExportDialog extends AbstractDialog
         constraintsLocationText.setEditable(false);
 
         final MapTile map = WorldModel.INSTANCE.getMap();
-        constraintsConfig = Medias.create(map.getSheetsConfig().getParentPath(), ConfigTileConstraint.FILENAME);
+        constraintsConfig = Medias.create(map.getSheetsConfig().getParentPath(), ConfigTileConstraints.FILENAME);
         constraintsLocationText.setText(constraintsConfig.getPath());
 
         final Button browse = UtilButton.createBrowse(groupArea);

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroups;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGroup;
 import com.b3dgs.lionengine.game.map.TileRef;
@@ -54,7 +54,7 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
      */
     public void loadGroups(Media config)
     {
-        final Collection<TileGroup> groups = ConfigTileGroup.create(config);
+        final Collection<TileGroup> groups = ConfigTileGroups.imports(config);
         loadObjects(groups);
     }
 
@@ -91,9 +91,9 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
         final Media config = map.getGroupsConfig();
         final XmlNode node = Stream.loadXml(config);
         final Collection<XmlNode> toRemove = new ArrayList<>();
-        for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroup.GROUP))
+        for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroups.NODE_GROUP))
         {
-            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), group.getName()))
+            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME), group.getName()))
             {
                 toRemove.add(nodeGroup);
             }

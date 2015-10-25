@@ -17,36 +17,67 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Range;
+
 /**
  * Represents the tile reference indexes.
+ * Tile representation with the following data:
+ * <ul>
+ * <li><code>sheet</code> : tile sheet number [0 - {@link Integer#MAX_VALUE}].</li>
+ * <li><code>number</code> : tile number inside tilesheet [0 - {@link Integer#MAX_VALUE}].</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Tile
  */
-public final class TileRef
+public class TileRef
 {
-    /** Sheet id. */
+    /** Sheet number. */
     private final Integer sheet;
-    /** TIle number. */
+    /** Tile number on sheet. */
     private final int number;
 
     /**
      * Create the tile reference.
      * 
      * @param tile The tile reference.
+     * @throws LionEngineException If invalid argument.
      */
-    public TileRef(Tile tile)
+    public TileRef(Tile tile) throws LionEngineException
     {
-        this(tile.getSheet(), tile.getNumber());
+        Check.notNull(tile);
+
+        sheet = tile.getSheet();
+        number = tile.getNumber();
     }
 
     /**
      * Create the tile reference.
      * 
-     * @param sheet The tile sheet number.
-     * @param number The tile number.
+     * @param sheet The tile sheet number [0 - {@link Integer#MAX_VALUE}].
+     * @param number The tile number [0 - {@link Integer#MAX_VALUE}].
+     * @throws LionEngineException If invalid arguments.
      */
-    public TileRef(Integer sheet, int number)
+    public TileRef(int sheet, int number) throws LionEngineException
     {
+        this(Integer.valueOf(sheet), number);
+    }
+
+    /**
+     * Create the tile reference.
+     * 
+     * @param sheet The tile sheet number [0 - {@link Integer#MAX_VALUE}].
+     * @param number The tile number [0 - {@link Integer#MAX_VALUE}].
+     * @throws LionEngineException If invalid arguments.
+     */
+    public TileRef(Integer sheet, int number) throws LionEngineException
+    {
+        Check.notNull(sheet);
+        Check.range(Range.INT_POSITIVE, sheet.intValue());
+        Check.range(Range.INT_POSITIVE, number);
+
         this.sheet = sheet;
         this.number = number;
     }
@@ -86,18 +117,18 @@ public final class TileRef
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(Object object)
     {
-        if (this == obj)
+        if (this == object)
         {
             return true;
         }
-        if (obj == null || !(obj instanceof TileRef))
+        if (object == null || !(object instanceof TileRef))
         {
             return false;
         }
-        final TileRef other = (TileRef) obj;
-        if (number != other.number || sheet.intValue() != other.sheet.intValue())
+        final TileRef other = (TileRef) object;
+        if (!sheet.equals(other.sheet) || number != other.number)
         {
             return false;
         }

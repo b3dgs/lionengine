@@ -33,9 +33,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.configurer.ConfigMinimap;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
-import com.b3dgs.lionengine.stream.Stream;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Minimap representation of a map tile. This can be used to represent strategic view of a map.
@@ -124,8 +121,7 @@ public class Minimap implements Image
      */
     public void loadPixelConfig(Media config)
     {
-        final XmlNode root = Stream.loadXml(config);
-        pixels = ConfigMinimap.create(root, map);
+        pixels = ConfigMinimap.imports(config, map);
     }
 
     /**
@@ -135,17 +131,16 @@ public class Minimap implements Image
      */
     public void automaticColor(Media config)
     {
-        final XmlNode root = Stream.createXmlNode(ConfigMinimap.MINIMAPS);
-        final Map<ColorRgba, XmlNode> colors = new HashMap<ColorRgba, XmlNode>();
+        final Map<TileRef, ColorRgba> colors = new HashMap<TileRef, ColorRgba>();
         for (final Integer sheet : map.getSheets())
         {
-            computeSheet(root, colors, sheet);
+            computeSheet(colors, sheet);
         }
         if (config != null)
         {
-            Stream.saveXml(root, config);
+            ConfigMinimap.exports(config, colors);
         }
-        pixels = ConfigMinimap.create(root, map);
+        pixels = colors;
         prepare();
     }
 
@@ -204,11 +199,10 @@ public class Minimap implements Image
     /**
      * Compute the current sheet.
      * 
-     * @param root The configuration root.
-     * @param colors The colors set found.
+     * @param colors The colors data.
      * @param sheet The sheet number.
      */
-    private void computeSheet(XmlNode root, Map<ColorRgba, XmlNode> colors, Integer sheet)
+    private void computeSheet(Map<TileRef, ColorRgba> colors, Integer sheet)
     {
         final SpriteTiled tiles = map.getSheet(sheet);
         final ImageBuffer surface = tiles.getSurface();
@@ -226,41 +220,11 @@ public class Minimap implements Image
 
                 if (!Minimap.NO_TILE.equals(color) && !ColorRgba.TRANSPARENT.equals(color))
                 {
-                    saveColor(root, colors, color, sheet, number);
+                    colors.put(new TileRef(sheet, number), color);
                 }
                 number++;
             }
         }
-    }
-
-    /**
-     * Save the current color.
-     * 
-     * @param root The configuration root.
-     * @param colors The colors set found.
-     * @param color The current color.
-     * @param sheet The sheet number.
-     * @param number The tile number.
-     */
-    private void saveColor(XmlNode root, Map<ColorRgba, XmlNode> colors, ColorRgba color, Integer sheet, int number)
-    {
-        final XmlNode node;
-        if (colors.containsKey(color))
-        {
-            node = colors.get(color);
-        }
-        else
-        {
-            node = root.createChild(ConfigMinimap.MINIMAP);
-            node.writeInteger(ConfigMinimap.R, color.getRed());
-            node.writeInteger(ConfigMinimap.G, color.getGreen());
-            node.writeInteger(ConfigMinimap.B, color.getBlue());
-            colors.put(color, node);
-        }
-
-        final XmlNode tile = node.createChild(ConfigTileGroup.TILE);
-        tile.writeInteger(ConfigTileGroup.SHEET, sheet.intValue());
-        tile.writeInteger(ConfigTileGroup.NUMBER, number);
     }
 
     /*
