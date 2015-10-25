@@ -31,10 +31,10 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.TextGame;
+import com.b3dgs.lionengine.game.configurer.ConfigTileTransitions;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.map.TileTransitionsExtractor;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -96,7 +96,7 @@ class Scene extends Sequence
             text.draw(g, x + 20, y + 15, "X = " + tx + " | Y = " + ty);
             text.draw(g, x + 20, y + 5, "RX = " + cursor.getX() + " | RY = " + cursor.getY());
             text.draw(g, x + 20, y - 5, "Group: " + tile.getGroup());
-            text.draw(g, x + 20, y - 15, "Transition: " + TileTransitionsExtractor.getTransition(map, tile));
+            text.draw(g, x + 20, y - 15, "Transition: " + ConfigTileTransitions.getTransition(map, tile));
         }
     }
 

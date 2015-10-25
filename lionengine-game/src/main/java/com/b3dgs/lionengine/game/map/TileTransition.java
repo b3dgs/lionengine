@@ -412,6 +412,27 @@ public enum TileTransition
 
     /** Bit numbers. */
     public static final int BITS = 9;
+    /** Error transition name. */
+    private static final String ERROR_TRANSITION_NAME = "Unknown transition name: ";
+
+    /**
+     * Convert transition name to its enum value.
+     * 
+     * @param name The transition name.
+     * @return The transition enum value.
+     * @throws LionEngineException If invalid name.
+     */
+    public static TileTransition from(String name) throws LionEngineException
+    {
+        try
+        {
+            return TileTransition.valueOf(name);
+        }
+        catch (final IllegalArgumentException exception)
+        {
+            throw new LionEngineException(exception, ERROR_TRANSITION_NAME, name);
+        }
+    }
 
     /**
      * Get the transition representation from its bits sequence.
