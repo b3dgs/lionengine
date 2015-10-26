@@ -52,9 +52,10 @@ import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.configurer.ConfigTileGroups;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
+import com.b3dgs.lionengine.game.map.MapTileTransition;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.map.TileGroup;
 import com.b3dgs.lionengine.game.map.TileRef;
@@ -272,6 +273,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                     {
                         tile.setGroup(group.getName());
                     }
+
+                    map.getFeature(MapTileTransition.class).resolve(tile);
                 }
                 break;
             default:
@@ -514,7 +517,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         final Object copy = PropertiesModel.INSTANCE.getCopyData();
         final String group = PropertiesModel.INSTANCE.getCopyText();
-        if (copy != null && selectedTile != null && ConfigTileGroup.GROUP.equals(copy))
+        if (copy != null && selectedTile != null && ConfigTileGroups.NODE_GROUP.equals(copy))
         {
             PropertiesTile.changeTileGroup(map, selectedTile.getGroup(), group, selectedTile);
         }

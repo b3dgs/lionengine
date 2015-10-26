@@ -24,8 +24,6 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.map.TileRef;
 import com.b3dgs.lionengine.game.map.TileTransition;
 import com.b3dgs.lionengine.stream.Stream;
@@ -80,12 +78,12 @@ public final class ConfigTileTransitions
      * Export all transitions to an XML file.
      * 
      * @param media The export output.
-     * @param map The map reference.
+     * @param transitions The transitions reference.
      * @throws LionEngineException If error on export.
      */
-    public static void exports(Media media, MapTile map) throws LionEngineException
+    public static void exports(Media media, Map<TileTransition, Collection<TileRef>> transitions)
+            throws LionEngineException
     {
-        final Map<TileTransition, Collection<TileRef>> transitions = getTransitions(map);
         final XmlNode nodeTransitions = Stream.createXmlNode(NODE_TRANSITIONS);
 
         for (final Map.Entry<TileTransition, Collection<TileRef>> entry : transitions.entrySet())
@@ -98,59 +96,6 @@ public final class ConfigTileTransitions
         }
 
         Stream.saveXml(nodeTransitions, media);
-    }
-
-    /**
-     * Check map tile transitions.
-     *
-     * @param map The map reference.
-     * @return The transitions found.
-     */
-    public static Map<TileTransition, Collection<TileRef>> getTransitions(MapTile map)
-    {
-        final Map<TileTransition, Collection<TileRef>> transitions = new HashMap<TileTransition, Collection<TileRef>>();
-        for (int ty = 0; ty < map.getInTileHeight(); ty++)
-        {
-            for (int tx = 0; tx < map.getInTileWidth(); tx++)
-            {
-                final Tile tile = map.getTile(tx, ty);
-                if (tile != null)
-                {
-                    final TileTransition transition = getTransition(map, tile);
-                    final Collection<TileRef> tiles = getTiles(transitions, transition);
-                    tiles.add(new TileRef(tile));
-                }
-            }
-        }
-        return transitions;
-    }
-
-    /**
-     * Get the tile transition.
-     * 
-     * @param map The map reference.
-     * @param tile The current tile.
-     * @return The tile transition.
-     */
-    public static TileTransition getTransition(MapTile map, Tile tile)
-    {
-        final Boolean[] bits = new Boolean[TileTransition.BITS];
-        final int tx = tile.getX() / tile.getWidth();
-        final int ty = tile.getY() / tile.getHeight();
-        int i = 0;
-        for (int v = ty + 1; v >= ty - 1; v--)
-        {
-            for (int h = tx - 1; h <= tx + 1; h++)
-            {
-                final Tile neighbor = map.getTile(h, v);
-                if (neighbor != null)
-                {
-                    bits[i] = Boolean.valueOf(neighbor.getGroup().equals(tile.getGroup()));
-                }
-                i++;
-            }
-        }
-        return TileTransition.from(bits);
     }
 
     /**
@@ -183,23 +128,6 @@ public final class ConfigTileTransitions
             final XmlNode nodeTileRef = ConfigTile.export(tileRef);
             nodeTransition.add(nodeTileRef);
         }
-    }
-
-    /**
-     * Get the tiles for the transition. Create empty list if new transition.
-     * 
-     * @param transitions The transitions data.
-     * @param transition The transition type.
-     * @return The associated tiles.
-     */
-    private static Collection<TileRef> getTiles(Map<TileTransition, Collection<TileRef>> transitions,
-                                                TileTransition transition)
-    {
-        if (!transitions.containsKey(transition))
-        {
-            transitions.put(transition, new HashSet<TileRef>());
-        }
-        return transitions.get(transition);
     }
 
     /**

@@ -64,7 +64,7 @@
     <suppress checks="MagicNumber" files="[\\/]com.b3dgs.lionengine.editor[\\/]" />
 
 	<suppress checks="EmptyBlock" files="com.b3dgs.lionengine.editor.project.ProjectsPart" lines="261" />
-    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile" lines="73" />
+    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile" lines="74" />
     <suppress checks="FanOut" files="com.b3dgs.lionengine.editor.project.dialog.formula.FormulasProperties" />
     <suppress checks="StaticVariableName" files="[\\/]com.b3dgs.lionengine.editor.*.Messages" />
     <suppress checks="VisibilityModifier" files="[\\/]com.b3dgs.lionengine.editor.*.Messages" />

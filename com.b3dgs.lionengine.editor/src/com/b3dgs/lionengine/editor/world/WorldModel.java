@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor.world;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
@@ -65,6 +66,8 @@ public class WorldModel
 
         final ObjectControl objectControl = new ObjectControl(services);
         services.add(objectControl);
+
+        map.addFeature(new MapTileTransitionModel(map));
     }
 
     /**
