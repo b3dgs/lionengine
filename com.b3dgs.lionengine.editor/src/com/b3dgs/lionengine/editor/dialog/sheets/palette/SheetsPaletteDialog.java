@@ -144,25 +144,6 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     }
 
     /**
-     * Open minimap dialog.
-     */
-    private void open()
-    {
-        shell.pack();
-        render();
-        shell.open();
-        if (lastLocation != null)
-        {
-            shell.setLocation(lastLocation);
-        }
-        else
-        {
-            UtilSwt.center(shell);
-        }
-        render();
-    }
-
-    /**
      * Create the palette type part.
      */
     private void createTypes()
@@ -219,6 +200,25 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
             sheetIdText.setText(sheetId.toString() + Constant.SLASH + sheetsNumber);
             render();
         });
+    }
+
+    /**
+     * Open minimap dialog.
+     */
+    private void open()
+    {
+        shell.pack();
+        render();
+        shell.open();
+        if (lastLocation != null)
+        {
+            shell.setLocation(lastLocation);
+        }
+        else
+        {
+            UtilSwt.center(shell);
+        }
+        render();
     }
 
     /**
@@ -289,6 +289,23 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         gc.drawImage(ToolsSwt.getBuffer(sheet), 0, 0);
 
         return sheet.getWidth() / map.getTileWidth() * (sheet.getHeight() / map.getTileHeight());
+    }
+
+    /**
+     * Render the tile grid.
+     */
+    private void renderGrid()
+    {
+        final Point size = composite.getSize();
+        gc.setForeground(gridColor);
+        for (int h = 0; h < size.x; h += map.getTileWidth())
+        {
+            gc.drawLine(h, 0, h, size.y);
+        }
+        for (int v = 0; v < size.y; v += map.getTileHeight())
+        {
+            gc.drawLine(0, v, size.x, v);
+        }
     }
 
     /**
@@ -424,23 +441,6 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
             }
         }
         return false;
-    }
-
-    /**
-     * Render the tile grid.
-     */
-    private void renderGrid()
-    {
-        final Point size = composite.getSize();
-        gc.setForeground(gridColor);
-        for (int h = 0; h < size.x; h += map.getTileWidth())
-        {
-            gc.drawLine(h, 0, h, size.y);
-        }
-        for (int v = 0; v < size.y; v += map.getTileHeight())
-        {
-            gc.drawLine(0, v, size.x, v);
-        }
     }
 
     /*
