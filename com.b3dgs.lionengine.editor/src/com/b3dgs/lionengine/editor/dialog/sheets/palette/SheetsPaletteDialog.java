@@ -229,6 +229,9 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         if (!gc.isDisposed())
         {
             final int horizontalTiles;
+            final Point size = composite.getSize();
+            gc.fillRectangle(0, 0, size.x, size.y);
+
             if (simple)
             {
                 horizontalTiles = renderPaletteSimple();
@@ -238,7 +241,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
                 horizontalTiles = renderPaletteFull();
             }
 
-            renderGrid();
+            renderGrid(horizontalTiles);
 
             final int x = number % horizontalTiles * map.getTileWidth();
             final int y = number / horizontalTiles * map.getTileHeight();
@@ -269,6 +272,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         gc = new GC(composite);
         shell.update();
         gc.drawImage(ToolsSwt.getBuffer(sheet.getSurface()), 0, 0);
+
         return sheet.getTilesHorizontal();
     }
 
@@ -279,7 +283,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      */
     private int renderPaletteSimple()
     {
-        final ImageBuffer sheet = getCenterTilesSheet();
+        final Collection<TileRef> centered = getCenterTiles();
+        final ImageBuffer sheet = getCenterTilesSheet(centered);
 
         gc.dispose();
         composite.setLayoutData(new GridData(sheet.getWidth(), sheet.getHeight()));
@@ -288,47 +293,53 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         shell.update();
         gc.drawImage(ToolsSwt.getBuffer(sheet), 0, 0);
 
-        return sheet.getWidth() / map.getTileWidth() * (sheet.getHeight() / map.getTileHeight());
+        if (centered.size() < Constant.DECADE)
+        {
+            return centered.size();
+        }
+        return (int) Math.floor(Math.sqrt(centered.size()));
     }
 
     /**
      * Render the tile grid.
+     * 
+     * @param horizontalTiles Number of horizontal tiles.
      */
-    private void renderGrid()
+    private void renderGrid(int horizontalTiles)
     {
         final Point size = composite.getSize();
         gc.setForeground(gridColor);
-        for (int h = 0; h < size.x; h += map.getTileWidth())
+        final int width = Math.min(size.x, horizontalTiles * map.getTileWidth());
+        for (int h = 0; h < width; h += map.getTileWidth())
         {
             gc.drawLine(h, 0, h, size.y);
         }
         for (int v = 0; v < size.y; v += map.getTileHeight())
         {
-            gc.drawLine(0, v, size.x, v);
+            gc.drawLine(0, v, width, v);
         }
     }
 
     /**
      * Get the center tiles sheet.
      * 
+     * @param tiles The tiles to include in sheet.
      * @return The center tiles sheet.
      */
-    private ImageBuffer getCenterTilesSheet()
+    private ImageBuffer getCenterTilesSheet(Collection<TileRef> tiles)
     {
-        final Collection<TileRef> centered = getCenterTiles();
-
         available.clear();
-        available.addAll(centered);
+        available.addAll(tiles);
 
-        final int horizontalTiles = Math.max(Constant.DECADE, (int) Math.floor(Math.sqrt(centered.size())));
+        final int horizontalTiles = Math.max(Constant.DECADE, (int) Math.floor(Math.sqrt(tiles.size())));
         final int width = horizontalTiles * map.getTileWidth();
-        final int height = horizontalTiles / Math.max(1, centered.size()) * map.getTileHeight() - map.getTileHeight();
+        final int height = horizontalTiles / Math.max(1, tiles.size()) * map.getTileHeight() - map.getTileHeight();
 
         final ImageBuffer buff = Graphics.createImageBuffer(width + 1, height + 1, Transparency.BITMASK);
         final Graphic g = buff.createGraphic();
 
         int id = 0;
-        for (final TileRef tile : centered)
+        for (final TileRef tile : tiles)
         {
             final SpriteTiled sheet = map.getSheet(tile.getSheet());
             sheet.setTile(tile.getNumber());
