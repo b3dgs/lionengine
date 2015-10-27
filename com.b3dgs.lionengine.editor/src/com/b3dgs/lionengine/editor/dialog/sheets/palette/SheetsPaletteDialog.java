@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.editor.dialog.sheets.palette;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
@@ -56,8 +54,8 @@ import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.configurer.ConfigTileConstraints;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.map.TileConstraint;
+import com.b3dgs.lionengine.game.map.TileGroup;
 import com.b3dgs.lionengine.game.map.TileRef;
 
 /**
@@ -84,27 +82,6 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
             instance = new SheetsPaletteDialog(parent);
             instance.open();
         }
-    }
-
-    /**
-     * Compare color delta against other colors.
-     * 
-     * @param colors The colors to compare to.
-     * @param color The color to check.
-     * @param minimum The minimum delta value to return <code>true</code>.
-     * @return <code>true</code> if delta is far enough, <code>false</code> else.
-     */
-    private static boolean compareDelta(Collection<ColorRgba> colors, ColorRgba color, double minimum)
-    {
-        for (final ColorRgba current : colors)
-        {
-            final double delta = ColorRgba.getDelta(color, current);
-            if (delta < minimum)
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
     /** Model reference. */
@@ -328,7 +305,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
 
         final int horizontalTiles = Math.max(Constant.DECADE, (int) Math.floor(Math.sqrt(centered.size())));
         final int width = horizontalTiles * map.getTileWidth();
-        final int height = horizontalTiles / centered.size() * map.getTileHeight();
+        final int height = horizontalTiles / Math.max(1, centered.size()) * map.getTileHeight() - map.getTileHeight();
 
         final ImageBuffer buff = Graphics.createImageBuffer(width + 1, height + 1, Transparency.BITMASK);
         final Graphic g = buff.createGraphic();
@@ -360,12 +337,11 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         final Media media = Medias.create(map.getGroupsConfig().getParentPath(), ConfigTileConstraints.FILENAME);
         final Map<TileRef, Map<Orientation, TileConstraint>> constraints = ConfigTileConstraints.create(media);
         final Collection<TileRef> centerTiles = new HashSet<>();
-        final Map<String, Collection<ColorRgba>> deltas = new HashMap<>();
 
         for (final Map.Entry<TileRef, Map<Orientation, TileConstraint>> entry : constraints.entrySet())
         {
             final TileRef tile = entry.getKey();
-            if (isCenter(tile, entry.getValue()) && checkCenterTile(tile, deltas))
+            if ((isCenter(tile, entry.getValue()) || !hasCenter(tile, constraints)) && !existsGroup(tile, centerTiles))
             {
                 centerTiles.add(tile);
             }
@@ -382,14 +358,12 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      */
     private boolean isCenter(TileRef tile, Map<Orientation, TileConstraint> constraints)
     {
-        final String group = map.getGroup(tile.getSheet(), tile.getNumber()).getName();
-
         int check = 0;
         for (final TileConstraint constraint : constraints.values())
         {
             for (final TileRef allowed : constraint.getAllowed())
             {
-                if (group.equals(map.getGroup(allowed.getSheet(), allowed.getNumber()).getName()))
+                if (sameGroup(tile, allowed))
                 {
                     check++;
                     break;
@@ -400,51 +374,56 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     }
 
     /**
-     * Check if center tile is not redundant by checking its weighted color.
+     * Check if the group of the tile has at least one center tile.
      * 
-     * @param tile The tile to check.
-     * @param deltas The color deltas.
-     * @return <code>true</code> if can be considered as unique, <code>false</code> else.
+     * @param tile The tile to check group.
+     * @param constraints The associated constraints.
+     * @return <code>true</code> if one tile center exists at least, <code>false</code> else.
      */
-    private boolean checkCenterTile(TileRef tile, Map<String, Collection<ColorRgba>> deltas)
+    private boolean hasCenter(TileRef tile, Map<TileRef, Map<Orientation, TileConstraint>> constraints)
     {
-        final ColorRgba color = getWeightedColor(tile);
-        final String group = map.getGroup(tile.getSheet(), tile.getNumber()).getName();
-        final Collection<ColorRgba> colors;
-        final boolean unique;
-        if (!deltas.containsKey(group))
+        final TileGroup group = map.getGroup(tile.getSheet(), tile.getNumber());
+        for (final TileRef tileRef : group.getTiles())
         {
-            colors = new HashSet<>();
-            deltas.put(group, colors);
-            unique = true;
+            if (isCenter(tileRef, constraints.get(tileRef)))
+            {
+                return true;
+            }
         }
-        else
-        {
-            colors = deltas.get(group);
-            unique = compareDelta(colors, color, 10);
-        }
-        if (unique)
-        {
-            colors.add(color);
-        }
-        return unique;
+        return false;
     }
 
     /**
-     * Get the weighted color of the tile.
+     * Check if tiles are in the same group.
+     * 
+     * @param tile1 The first tile.
+     * @param tile2 The second tile.
+     * @return <code>true</code> if in same group, <code>false</code> else.
+     */
+    private boolean sameGroup(TileRef tile1, TileRef tile2)
+    {
+        final String group1 = map.getGroup(tile1.getSheet(), tile1.getNumber()).getName();
+        final String group2 = map.getGroup(tile2.getSheet(), tile2.getNumber()).getName();
+        return group1.equals(group2);
+    }
+
+    /**
+     * Check if tile has the same group of at least one tile from the list.
      * 
      * @param tile The tile to check.
-     * @return The weighted tile color.
+     * @param tiles The tiles to compare within.
+     * @return <code>true</code> if group already exists in the list, <code>false</code> else.
      */
-    private ColorRgba getWeightedColor(TileRef tile)
+    private boolean existsGroup(TileRef tile, Collection<TileRef> tiles)
     {
-        final SpriteTiled sheet = map.getSheet(tile.getSheet());
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-        final int x = tile.getNumber() % sheet.getTilesHorizontal() * tw;
-        final int y = tile.getNumber() / sheet.getTilesHorizontal() * th;
-        final ColorRgba color = Minimap.getWeightedColor(sheet.getSurface(), x, y, tw, th);
-        return color;
+        for (final TileRef existing : tiles)
+        {
+            if (sameGroup(tile, existing))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
