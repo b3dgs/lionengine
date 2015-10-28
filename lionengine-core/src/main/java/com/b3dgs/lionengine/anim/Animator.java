@@ -56,7 +56,7 @@ public interface Animator extends Updatable
      * @param animation The animation to play (must not be <code>null</code>).
      * @throws LionEngineException If the animation is <code>null</code>.
      */
-    void play(Animation animation) throws LionEngineException;
+    void play(Animation animation);
 
     /**
      * Stop the current animation (animation state set to {@link AnimState#STOPPED}).
@@ -72,7 +72,7 @@ public interface Animator extends Updatable
      * @param speed The new animation speed (positive).
      * @throws LionEngineException If speed is negative.
      */
-    void setAnimSpeed(double speed) throws LionEngineException;
+    void setAnimSpeed(double speed);
 
     /**
      * Set a fixed frame (it will overwrite the current animation frame).
@@ -80,7 +80,7 @@ public interface Animator extends Updatable
      * @param frame The frame to set (superior or equal to {@link Animation#MINIMUM_FRAME}).
      * @throws LionEngineException If frame is out of range.
      */
-    void setFrame(int frame) throws LionEngineException;
+    void setFrame(int frame);
 
     /**
      * Get the playing frame number.

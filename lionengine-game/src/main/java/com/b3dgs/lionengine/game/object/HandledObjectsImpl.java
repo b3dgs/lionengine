@@ -51,7 +51,7 @@ final class HandledObjectsImpl implements HandledObjects
      * @return The next unused id.
      * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
      */
-    static Integer getFreeId() throws LionEngineException
+    static Integer getFreeId()
     {
         if (!RECYCLE.isEmpty())
         {
@@ -92,7 +92,7 @@ final class HandledObjectsImpl implements HandledObjects
      * @param object The object to add.
      * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
      */
-    public void add(ObjectGame object) throws LionEngineException
+    public void add(ObjectGame object)
     {
         objects.put(object.getId(), object);
 

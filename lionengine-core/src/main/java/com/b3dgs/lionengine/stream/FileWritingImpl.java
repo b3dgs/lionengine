@@ -41,7 +41,7 @@ final class FileWritingImpl implements FileWriting
      * @param media The media path.
      * @throws LionEngineException If error when opening the media.
      */
-    FileWritingImpl(Media media) throws LionEngineException
+    FileWritingImpl(Media media)
     {
         Check.notNull(media);
 

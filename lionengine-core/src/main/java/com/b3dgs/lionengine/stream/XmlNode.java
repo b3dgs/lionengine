@@ -59,7 +59,7 @@ public interface XmlNode extends XmlNodeReader
      * @param node The child node.
      * @throws LionEngineException If error when adding the node.
      */
-    void add(XmlNode node) throws LionEngineException;
+    void add(XmlNode node);
 
     /**
      * Set the text inside the node.
@@ -67,7 +67,7 @@ public interface XmlNode extends XmlNodeReader
      * @param text The text content.
      * @throws LionEngineException If error when setting the node text.
      */
-    void setText(String text) throws LionEngineException;
+    void setText(String text);
 
     /**
      * Write a byte.
@@ -76,7 +76,7 @@ public interface XmlNode extends XmlNodeReader
      * @param content The byte value.
      * @throws LionEngineException If error when writing.
      */
-    void writeByte(String attribute, byte content) throws LionEngineException;
+    void writeByte(String attribute, byte content);
 
     /**
      * Write a short.
@@ -85,7 +85,7 @@ public interface XmlNode extends XmlNodeReader
      * @param content The short value.
      * @throws LionEngineException If error when writing.
      */
-    void writeShort(String attribute, short content) throws LionEngineException;
+    void writeShort(String attribute, short content);
 
     /**
      * Write an integer.
@@ -94,7 +94,7 @@ public interface XmlNode extends XmlNodeReader
      * @param content The integer value.
      * @throws LionEngineException If error when writing.
      */
-    void writeInteger(String attribute, int content) throws LionEngineException;
+    void writeInteger(String attribute, int content);
 
     /**
      * Write a long.
@@ -103,7 +103,7 @@ public interface XmlNode extends XmlNodeReader
      * @param content The long value.
      * @throws LionEngineException If error when writing.
      */
-    void writeLong(String attribute, long content) throws LionEngineException;
+    void writeLong(String attribute, long content);
 
     /**
      * Write a float.
@@ -112,7 +112,7 @@ public interface XmlNode extends XmlNodeReader
      * @param content The float value.
      * @throws LionEngineException If error when writing.
      */
-    void writeFloat(String attribute, float content) throws LionEngineException;
+    void writeFloat(String attribute, float content);
 
     /**
      * Write a double.
@@ -121,7 +121,7 @@ public interface XmlNode extends XmlNodeReader
      * @param content The double value.
      * @throws LionEngineException If error when writing.
      */
-    void writeDouble(String attribute, double content) throws LionEngineException;
+    void writeDouble(String attribute, double content);
 
     /**
      * Write a string. If the content is equal to <code>null</code>, {@link XmlNode#NULL} is wrote instead.
@@ -130,7 +130,7 @@ public interface XmlNode extends XmlNodeReader
      * @param content The string value.
      * @throws LionEngineException If error when writing.
      */
-    void writeString(String attribute, String content) throws LionEngineException;
+    void writeString(String attribute, String content);
 
     /**
      * Write a boolean.
@@ -139,7 +139,7 @@ public interface XmlNode extends XmlNodeReader
      * @param content The boolean value.
      * @throws LionEngineException If error when writing.
      */
-    void writeBoolean(String attribute, boolean content) throws LionEngineException;
+    void writeBoolean(String attribute, boolean content);
 
     /**
      * Remove attribute.
@@ -154,7 +154,7 @@ public interface XmlNode extends XmlNodeReader
      * @param child The child to remove.
      * @throws LionEngineException If no node is found at this child name.
      */
-    void removeChild(String child) throws LionEngineException;
+    void removeChild(String child);
 
     /**
      * Remove child.
@@ -191,7 +191,7 @@ public interface XmlNode extends XmlNodeReader
      * @return The child node reference.
      * @throws LionEngineException If no node is found at this child name.
      */
-    XmlNode getChild(String name) throws LionEngineException;
+    XmlNode getChild(String name);
 
     /**
      * Get the list of all children with this name.

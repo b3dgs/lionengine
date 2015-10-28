@@ -41,7 +41,7 @@ public final class ConfigProducible
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigProducible create(Configurer configurer) throws LionEngineException
+    public static ConfigProducible create(Configurer configurer)
     {
         final XmlNode node = configurer.getRoot();
         final ConfigSize size = ConfigSize.create(configurer);

@@ -65,7 +65,7 @@ abstract class ScreenAwt implements Screen, FocusListener
      * @return The created screen.
      * @throws LionEngineException If resolution is not supported.
      */
-    static Screen createScreen(Renderer renderer) throws LionEngineException
+    static Screen createScreen(Renderer renderer)
     {
         final Config config = renderer.getConfig();
         final Screen screen;
@@ -111,7 +111,7 @@ abstract class ScreenAwt implements Screen, FocusListener
      * @param renderer The renderer reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
-    protected ScreenAwt(Renderer renderer) throws LionEngineException
+    protected ScreenAwt(Renderer renderer)
     {
         Check.notNull(renderer);
         if (GraphicsEnvironment.isHeadless())
@@ -129,7 +129,7 @@ abstract class ScreenAwt implements Screen, FocusListener
      * @param output The output resolution
      * @throws LionEngineException If resolution is not supported.
      */
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
         width = output.getWidth();
         height = output.getHeight();
@@ -274,7 +274,7 @@ abstract class ScreenAwt implements Screen, FocusListener
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
+    public <T extends InputDevice> T getInputDevice(Class<T> type)
     {
         return type.cast(devices.get(type));
     }

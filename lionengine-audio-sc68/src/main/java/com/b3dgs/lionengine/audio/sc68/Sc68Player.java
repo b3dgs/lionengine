@@ -47,7 +47,7 @@ final class Sc68Player implements Sc68
      * @param binding The binding reference.
      * @throws LionEngineException If binding is <code>null</code>
      */
-    Sc68Player(Sc68Binding binding) throws LionEngineException
+    Sc68Player(Sc68Binding binding)
     {
         Check.notNull(binding);
 
@@ -59,7 +59,7 @@ final class Sc68Player implements Sc68
      */
 
     @Override
-    public void play(Media media) throws LionEngineException
+    public void play(Media media)
     {
         Check.notNull(media);
 
@@ -87,7 +87,7 @@ final class Sc68Player implements Sc68
     }
 
     @Override
-    public void setVolume(int volume) throws LionEngineException
+    public void setVolume(int volume)
     {
         Check.superiorOrEqual(volume, 0);
         Check.inferiorOrEqual(volume, MAX_VOLUME);

@@ -52,7 +52,7 @@ public interface SpriteParallaxed
      * @param alpha Set <code>true</code> to enable alpha, <code>false</code> else.
      * @throws LionEngineException If an error occurred when reading the image.
      */
-    void load(boolean alpha) throws LionEngineException;
+    void load(boolean alpha);
 
     /**
      * Works as scale, but using different width and height factor. Using different values, the ratio won't be kept, and

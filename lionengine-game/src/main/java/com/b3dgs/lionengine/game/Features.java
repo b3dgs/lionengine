@@ -73,7 +73,7 @@ public class Features<F>
      * @return The feature instance.
      * @throws LionEngineException If the feature was not found.
      */
-    public final <C> C get(Class<C> feature) throws LionEngineException
+    public final <C> C get(Class<C> feature)
     {
         final C found = getFeature(feature);
         if (found == null)

@@ -83,7 +83,7 @@ public final class LevelRipConverter
      * @param map The destination map reference.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public LevelRipConverter(Media levelrip, Media sheetsConfig, MapTile map) throws LionEngineException
+    public LevelRipConverter(Media levelrip, Media sheetsConfig, MapTile map)
     {
         this.map = map;
         map.loadSheets(sheetsConfig);

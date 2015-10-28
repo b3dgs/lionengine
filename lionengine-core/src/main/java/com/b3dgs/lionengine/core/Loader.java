@@ -64,7 +64,7 @@ public final class Loader
      * @throws LionEngineException If not able to create the sequence for any reason.
      */
     static Sequence createSequence(Class<? extends Sequence> nextSequence, Loader loader, Object... arguments)
-            throws LionEngineException
+           
     {
         Check.notNull(nextSequence);
         Check.notNull(loader);
@@ -122,7 +122,7 @@ public final class Loader
      * @param config The configuration used (must not be <code>null</code>).
      * @throws LionEngineException If the configuration is <code>null</code>.
      */
-    public Loader(Config config) throws LionEngineException
+    public Loader(Config config)
     {
         Check.notNull(config);
 
@@ -148,7 +148,7 @@ public final class Loader
      * @throws LionEngineException If the loader has already been started or sequence is invalid.
      */
     public synchronized void start(Class<? extends Sequence> sequenceClass, Object... arguments)
-            throws LionEngineException
+           
     {
         Check.notNull(sequenceClass);
 

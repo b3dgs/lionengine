@@ -63,7 +63,7 @@ public final class UtilTemplate
      * @return The template file.
      * @throws LionEngineException If path error.
      */
-    public static File getTemplate(String template) throws LionEngineException
+    public static File getTemplate(String template)
     {
         return getFile(UtilFile.getPath(UtilTemplate.TEMPLATES_DIR, template));
     }
@@ -75,7 +75,7 @@ public final class UtilTemplate
      * @return The file instance.
      * @throws LionEngineException If path error.
      */
-    private static File getFile(String file) throws LionEngineException
+    private static File getFile(String file)
     {
         try
         {

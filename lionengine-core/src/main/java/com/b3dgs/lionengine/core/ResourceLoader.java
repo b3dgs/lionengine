@@ -70,7 +70,7 @@ public class ResourceLoader
      * @param resource The resource to load.
      * @throws LionEngineException If loader has already been started.
      */
-    public synchronized void add(Enum<?> key, Resource resource) throws LionEngineException
+    public synchronized void add(Enum<?> key, Resource resource)
     {
         if (started.get())
         {
@@ -84,7 +84,7 @@ public class ResourceLoader
      * 
      * @throws LionEngineException If loader has already been started.
      */
-    public synchronized void start() throws LionEngineException
+    public synchronized void start()
     {
         if (started.get())
         {
@@ -99,7 +99,7 @@ public class ResourceLoader
      * 
      * @throws LionEngineException If loading skipped or loader has not been started.
      */
-    public synchronized void await() throws LionEngineException
+    public synchronized void await()
     {
         if (!started.get())
         {
@@ -122,7 +122,7 @@ public class ResourceLoader
      * @return The loaded resources.
      * @throws LionEngineException If resources are not fully loaded.
      */
-    public synchronized Map<Enum<?>, Resource> get() throws LionEngineException
+    public synchronized Map<Enum<?>, Resource> get()
     {
         if (!done.get())
         {

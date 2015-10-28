@@ -61,7 +61,7 @@ public abstract class Engine
      * @param engine The engine implementation used.
      * @throws LionEngineException If the engine has already been started.
      */
-    public static synchronized void start(Engine engine) throws LionEngineException
+    public static synchronized void start(Engine engine)
     {
         if (started)
         {
@@ -97,7 +97,7 @@ public abstract class Engine
      * @return The program name.
      * @throws LionEngineException If the engine has not been started.
      */
-    public static String getProgramName() throws LionEngineException
+    public static String getProgramName()
     {
         if (!started)
         {
@@ -112,7 +112,7 @@ public abstract class Engine
      * @return The program version.
      * @throws LionEngineException If the engine has not been started.
      */
-    public static Version getProgramVersion() throws LionEngineException
+    public static Version getProgramVersion()
     {
         if (!started)
         {
@@ -158,7 +158,7 @@ public abstract class Engine
      * @param version The program version (must not be <code>null</code>).
      * @throws LionEngineException If invalid parameters.
      */
-    protected Engine(String name, Version version) throws LionEngineException
+    protected Engine(String name, Version version)
     {
         Check.notNull(name);
         Check.notNull(version);

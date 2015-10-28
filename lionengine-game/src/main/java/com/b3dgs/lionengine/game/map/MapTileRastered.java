@@ -45,7 +45,7 @@ public interface MapTileRastered extends MapTileFeature, MapTileRenderer
      * @param smooth <code>true</code> for a smoothed raster (may be slower), <code>false</code> else.
      * @throws LionEngineException If error when reading sheets.
      */
-    void loadSheets(Media sheetsConfig, Media rasterConfig, boolean smooth) throws LionEngineException;
+    void loadSheets(Media sheetsConfig, Media rasterConfig, boolean smooth);
 
     /**
      * Get raster index from input tile (depending of its height).

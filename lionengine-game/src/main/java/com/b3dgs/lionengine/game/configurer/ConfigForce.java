@@ -47,7 +47,7 @@ public final class ConfigForce
      * @return The force data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Force create(XmlNode root) throws LionEngineException
+    public static Force create(XmlNode root)
     {
         final XmlNode node = root.getChild(FORCE);
 

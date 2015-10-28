@@ -45,7 +45,7 @@ public class TileRef
      * @param tile The tile reference.
      * @throws LionEngineException If invalid argument.
      */
-    public TileRef(Tile tile) throws LionEngineException
+    public TileRef(Tile tile)
     {
         Check.notNull(tile);
 
@@ -60,7 +60,7 @@ public class TileRef
      * @param number The tile number [0 - {@link Integer#MAX_VALUE}].
      * @throws LionEngineException If invalid arguments.
      */
-    public TileRef(int sheet, int number) throws LionEngineException
+    public TileRef(int sheet, int number)
     {
         this(Integer.valueOf(sheet), number);
     }
@@ -72,7 +72,7 @@ public class TileRef
      * @param number The tile number [0 - {@link Integer#MAX_VALUE}].
      * @throws LionEngineException If invalid arguments.
      */
-    public TileRef(Integer sheet, int number) throws LionEngineException
+    public TileRef(Integer sheet, int number)
     {
         Check.notNull(sheet);
         Check.range(Range.INT_POSITIVE, sheet.intValue());

@@ -75,7 +75,7 @@ public class StateHandler implements Updatable
      * @param input The input device reference.
      * @throws LionEngineException If input is <code>null</code>.
      */
-    public void addInput(InputDevice input) throws LionEngineException
+    public void addInput(InputDevice input)
     {
         Check.notNull(input);
         inputs.add(input);

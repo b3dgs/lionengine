@@ -45,7 +45,7 @@ public abstract class BackgroundGame implements Background
      * @return The created element.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static BackgroundElement createElement(String name, int x, int y, boolean alpha) throws LionEngineException
+    public static BackgroundElement createElement(String name, int x, int y, boolean alpha)
     {
         return new BackgroundElement(x, y, createSprite(Medias.create(name), alpha));
     }
@@ -62,7 +62,7 @@ public abstract class BackgroundGame implements Background
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
     public static BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
-            throws LionEngineException
+           
     {
         return new BackgroundElement(x, y, createSprite(Medias.create(path, name), alpha));
     }
@@ -75,7 +75,7 @@ public abstract class BackgroundGame implements Background
      * @return The sprite instance.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    protected static Sprite createSprite(Media media, boolean alpha) throws LionEngineException
+    protected static Sprite createSprite(Media media, boolean alpha)
     {
         final Sprite sprite = Drawable.loadSprite(media);
         sprite.load();

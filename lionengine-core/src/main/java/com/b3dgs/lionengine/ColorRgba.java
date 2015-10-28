@@ -219,7 +219,7 @@ public final class ColorRgba
      * @param b The blue value [0-255].
      * @throws LionEngineException If color value is not in a valid range.
      */
-    public ColorRgba(int r, int g, int b) throws LionEngineException
+    public ColorRgba(int r, int g, int b)
     {
         this(r, g, b, 255);
     }
@@ -233,7 +233,7 @@ public final class ColorRgba
      * @param a The alpha value [0-255].
      * @throws LionEngineException If color value is not in a valid range.
      */
-    public ColorRgba(int r, int g, int b, int a) throws LionEngineException
+    public ColorRgba(int r, int g, int b, int a)
     {
         Check.superiorOrEqual(r, 0);
         Check.inferiorOrEqual(r, 255);

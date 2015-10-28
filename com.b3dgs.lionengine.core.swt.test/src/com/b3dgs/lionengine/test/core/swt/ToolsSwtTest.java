@@ -77,10 +77,9 @@ public class ToolsSwtTest
      * Test the utility.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test
-    public void testUtility() throws LionEngineException, IOException
+    public void testUtility() throws IOException
     {
         final Display display = ToolsSwt.getDisplay();
         final Image image = ToolsSwt.createImage(100, 100, SWT.TRANSPARENCY_NONE);
@@ -132,10 +131,9 @@ public class ToolsSwtTest
      * Test the save.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test
-    public void testSave() throws LionEngineException, IOException
+    public void testSave() throws IOException
     {
         final Media media = Medias.create("image.png");
         try (InputStream input = media.getInputStream())
@@ -162,10 +160,9 @@ public class ToolsSwtTest
      * Test the get fail.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test(expected = LionEngineException.class)
-    public void testGetFail() throws LionEngineException, IOException
+    public void testGetFail() throws IOException
     {
         final Media media = Medias.create("image.xml");
         try (InputStream input = media.getInputStream())
@@ -179,10 +176,9 @@ public class ToolsSwtTest
      * Test the get fail IO.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test(expected = SWTException.class)
-    public void testGetIoFail() throws LionEngineException, IOException
+    public void testGetIoFail() throws IOException
     {
         final Media media = Medias.create("raster.xml");
         try (InputStream input = media.getInputStream())

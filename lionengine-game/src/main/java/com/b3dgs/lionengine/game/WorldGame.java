@@ -137,7 +137,7 @@ public abstract class WorldGame implements Updatable, Renderable
      * @param media The output media.
      * @throws LionEngineException If error on saving to file.
      */
-    public final void saveToFile(Media media) throws LionEngineException
+    public final void saveToFile(Media media)
     {
         final FileWriting writing = Stream.createFileWriting(media);
         try
@@ -167,7 +167,7 @@ public abstract class WorldGame implements Updatable, Renderable
      * @param media The input media.
      * @throws LionEngineException If error on loading from file.
      */
-    public final void loadFromFile(Media media) throws LionEngineException
+    public final void loadFromFile(Media media)
     {
         final FileReading reading = Stream.createFileReading(media);
         try

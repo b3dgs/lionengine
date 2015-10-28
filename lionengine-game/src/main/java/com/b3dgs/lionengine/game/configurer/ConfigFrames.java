@@ -40,7 +40,7 @@ public final class ConfigFrames
      * @return The frames data.
      * @throws LionEngineException If unable to read node or not a valid integer.
      */
-    public static ConfigFrames create(Configurer configurer) throws LionEngineException
+    public static ConfigFrames create(Configurer configurer)
     {
         final int horizontals = configurer.getInteger(ConfigFrames.FRAMES_HORIZONTAL, ConfigFrames.FRAMES);
         final int verticals = configurer.getInteger(ConfigFrames.FRAMES_VERTICAL, ConfigFrames.FRAMES);

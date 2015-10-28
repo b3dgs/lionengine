@@ -43,7 +43,7 @@ public final class ConfigLauncher
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigLauncher create(Configurer configurer) throws LionEngineException
+    public static ConfigLauncher create(Configurer configurer)
     {
         final Collection<ConfigLaunchable> launchables = new ArrayList<ConfigLaunchable>();
         final XmlNode launcher = configurer.getRoot().getChild(LAUNCHER);

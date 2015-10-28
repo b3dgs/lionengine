@@ -43,7 +43,7 @@ public interface Launcher extends Trait
      * 
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
-    void fire() throws LionEngineException;
+    void fire();
 
     /**
      * Fire with the specified configuration. {@link LauncherListener} will be notified with
@@ -52,7 +52,7 @@ public interface Launcher extends Trait
      * @param target The launch target.
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
-    void fire(Localizable target) throws LionEngineException;
+    void fire(Localizable target);
 
     /**
      * Set the launcher position offset. Modify the {@link Launchable} starting position on fire.

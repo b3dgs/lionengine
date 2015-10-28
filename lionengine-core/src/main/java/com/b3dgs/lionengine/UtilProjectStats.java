@@ -58,7 +58,7 @@ public final class UtilProjectStats
      * @param sourcesDir The specified directory to analyze.
      * @throws LionEngineException If an error occurred on check.
      */
-    public static void start(String sourcesDir) throws LionEngineException
+    public static void start(String sourcesDir)
     {
         numberOfFiles = 0;
         numberOfLinesCode = 0;
@@ -153,7 +153,7 @@ public final class UtilProjectStats
      * @param dirName The current directory.
      * @throws LionEngineException If directory is not valid.
      */
-    private static void exploreDir(String dirName) throws LionEngineException
+    private static void exploreDir(String dirName)
     {
         final File dir = new File(dirName);
         final File[] files = dir.listFiles();

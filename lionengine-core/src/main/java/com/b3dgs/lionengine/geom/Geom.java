@@ -44,7 +44,7 @@ public final class Geom
      * @return The created point.
      * @throws LionEngineException If point is invalid.
      */
-    public static Point createPoint(Point point) throws LionEngineException
+    public static Point createPoint(Point point)
     {
         Check.notNull(point);
         return new PointImpl(point.getX(), point.getY());
@@ -79,7 +79,7 @@ public final class Geom
      * @return The created coord.
      * @throws LionEngineException If coord is invalid.
      */
-    public static Coord createCoord(Coord coord) throws LionEngineException
+    public static Coord createCoord(Coord coord)
     {
         Check.notNull(coord);
         return new CoordImpl(coord.getX(), coord.getY());
@@ -114,7 +114,7 @@ public final class Geom
      * @return The created line.
      * @throws LionEngineException If line is invalid.
      */
-    public static Line createLine(Line line) throws LionEngineException
+    public static Line createLine(Line line)
     {
         Check.notNull(line);
         return new LineImpl(line.getX1(), line.getY1(), line.getX2(), line.getY2());
@@ -151,7 +151,7 @@ public final class Geom
      * @return The created rectangle.
      * @throws LionEngineException If rectangle is invalid.
      */
-    public static Rectangle createRectangle(Rectangle rectangle) throws LionEngineException
+    public static Rectangle createRectangle(Rectangle rectangle)
     {
         Check.notNull(rectangle);
         return new RectangleImpl(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());

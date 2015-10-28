@@ -47,7 +47,7 @@ public final class ConfigPathfinding
      * @return The collisions group data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigPathfinding create(XmlNode root) throws LionEngineException
+    public static ConfigPathfinding create(XmlNode root)
     {
         final ConfigPathfinding config = new ConfigPathfinding();
         for (final XmlNode node : root.getChildren(TILE_PATH))

@@ -95,7 +95,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media) throws LionEngineException
+    public ImageBuffer getImageBuffer(Media media)
     {
         Check.notNull(media);
         final InputStream input = media.getInputStream();
@@ -170,7 +170,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException
+    public ImageBuffer applyFilter(ImageBuffer image, Filter filter)
     {
         final ImageBuffer filtered;
         switch (filter)
@@ -196,7 +196,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     }
 
     @Override
-    public void saveImage(ImageBuffer image, Media media) throws LionEngineException
+    public void saveImage(ImageBuffer image, Media media)
     {
         Check.notNull(media);
         final OutputStream output = media.getOutputStream();

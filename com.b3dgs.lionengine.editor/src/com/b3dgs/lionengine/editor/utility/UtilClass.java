@@ -89,7 +89,7 @@ public final class UtilClass
      * @return The class reference.
      * @throws LionEngineException If not able to create the class.
      */
-    public static Class<?> get(Media media) throws LionEngineException
+    public static Class<?> get(Media media)
     {
         final XmlNode root = Stream.loadXml(media);
         final String className = root.getChild(ConfigObject.CLASS).getText();

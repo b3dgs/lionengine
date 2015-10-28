@@ -56,7 +56,7 @@ final class MediaImpl implements Media
      * @param path The media path.
      * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaImpl(String path) throws LionEngineException
+    MediaImpl(String path)
     {
         Check.notNull(path);
         this.path = path;
@@ -114,7 +114,7 @@ final class MediaImpl implements Media
     }
 
     @Override
-    public File getFile() throws LionEngineException
+    public File getFile()
     {
         final File file;
         if (Medias.getClassResources() != null)
@@ -137,7 +137,7 @@ final class MediaImpl implements Media
     }
 
     @Override
-    public InputStream getInputStream() throws LionEngineException
+    public InputStream getInputStream()
     {
         final String path = UtilFile.getPath(Medias.getResourcesDir(), getPath());
         try
@@ -161,7 +161,7 @@ final class MediaImpl implements Media
     }
 
     @Override
-    public OutputStream getOutputStream() throws LionEngineException
+    public OutputStream getOutputStream()
     {
         final String path = UtilFile.getPath(Medias.getResourcesDir(), getPath());
         try

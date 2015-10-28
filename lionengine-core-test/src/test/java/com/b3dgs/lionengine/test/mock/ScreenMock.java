@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.test.mock;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevice;
@@ -142,7 +141,7 @@ public class ScreenMock implements Screen
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
+    public <T extends InputDevice> T getInputDevice(Class<T> type)
     {
         return null;
     }

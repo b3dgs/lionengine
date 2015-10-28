@@ -62,7 +62,7 @@ public class MapTileRasteredModel implements MapTileRastered
      * @param services The services reference.
      * @throws LionEngineException If services not found.
      */
-    public MapTileRasteredModel(Services services) throws LionEngineException
+    public MapTileRasteredModel(Services services)
     {
         map = services.get(MapTile.class);
     }
@@ -74,7 +74,7 @@ public class MapTileRasteredModel implements MapTileRastered
      * @param rasters The rasters data.
      * @throws LionEngineException If arguments are invalid.
      */
-    private void loadRaster(Integer sheet, int[][] rasters) throws LionEngineException
+    private void loadRaster(Integer sheet, int[][] rasters)
     {
         final int[] color = new int[rasters.length];
         final int[] colorNext = new int[rasters.length];
@@ -103,7 +103,7 @@ public class MapTileRasteredModel implements MapTileRastered
      * @throws LionEngineException If arguments are invalid.
      */
     private void addRasterSheet(Integer sheet, int fr, int fg, int fb, int er, int eg, int eb)
-            throws LionEngineException
+           
     {
         final SpriteTiled original = map.getSheet(sheet);
         final ImageBuffer buf = original.getSurface();
@@ -124,7 +124,7 @@ public class MapTileRasteredModel implements MapTileRastered
      */
 
     @Override
-    public void loadSheets(Media sheetsConfig, Media rasterConfig, boolean smooth) throws LionEngineException
+    public void loadSheets(Media sheetsConfig, Media rasterConfig, boolean smooth)
     {
         this.smooth = smooth;
 
@@ -140,7 +140,7 @@ public class MapTileRasteredModel implements MapTileRastered
     }
 
     @Override
-    public void renderTile(Graphic g, Tile tile, int x, int y) throws LionEngineException
+    public void renderTile(Graphic g, Tile tile, int x, int y)
     {
         final Integer sheet = tile.getSheet();
         final int number = tile.getNumber();

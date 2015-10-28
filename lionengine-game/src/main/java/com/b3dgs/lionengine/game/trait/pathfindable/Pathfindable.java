@@ -156,7 +156,7 @@ public interface Pathfindable extends Trait, Tiled, Orientable, Updatable, Rende
      * @return The category movement cost.
      * @throws LionEngineException If category has not been found.
      */
-    double getCost(String category) throws LionEngineException;
+    double getCost(String category);
 
     /**
      * Check if a path exists between object and destination.
@@ -174,7 +174,7 @@ public interface Pathfindable extends Trait, Tiled, Orientable, Updatable, Rende
      * @return <code>true</code> if blocking, <code>false</code> else.
      * @throws LionEngineException If category has not been found.
      */
-    boolean isBlocking(String category) throws LionEngineException;
+    boolean isBlocking(String category);
 
     /**
      * Check if has reached destination.

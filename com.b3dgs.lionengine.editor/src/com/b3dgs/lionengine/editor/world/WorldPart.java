@@ -199,7 +199,7 @@ public class WorldPart implements Focusable, TileSelectionListener
      * @return The composite found.
      * @throws LionEngineException If not found.
      */
-    public <T> T getToolItem(String item, Class<T> clazz) throws LionEngineException
+    public <T> T getToolItem(String item, Class<T> clazz)
     {
         final MPart part = partService.findPart(WorldPart.ID);
         if (part != null)

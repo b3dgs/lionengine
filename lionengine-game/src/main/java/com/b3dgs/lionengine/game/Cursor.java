@@ -140,7 +140,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      * @param media The cursor media.
      * @throws LionEngineException If invalid media.
      */
-    public void addImage(int id, Media media) throws LionEngineException
+    public void addImage(int id, Media media)
     {
         final Integer key = Integer.valueOf(id);
         surfaces.put(key, Drawable.loadImage(media));
@@ -156,7 +156,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      * @param pointer The pointer reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid pointer.
      */
-    public void setInputDevice(InputDevicePointer pointer) throws LionEngineException
+    public void setInputDevice(InputDevicePointer pointer)
     {
         Check.notNull(pointer);
         this.pointer = pointer;
@@ -168,7 +168,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      * @param viewer The viewer reference.
      * @throws LionEngineException If invalid viewer.
      */
-    public void setViewer(Viewer viewer) throws LionEngineException
+    public void setViewer(Viewer viewer)
     {
         Check.notNull(pointer);
         this.viewer = viewer;
@@ -214,7 +214,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      * @param surfaceId The surface id number (must be strictly positive).
      * @throws LionEngineException If invalid id value or not found.
      */
-    public void setSurfaceId(int surfaceId) throws LionEngineException
+    public void setSurfaceId(int surfaceId)
     {
         Check.superiorOrEqual(surfaceId, 0);
         this.surfaceId = Integer.valueOf(surfaceId);
@@ -263,7 +263,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      * @param height The vertical grid (strictly positive).
      * @throws LionEngineException If grid is not strictly positive.
      */
-    public void setGrid(int width, int height) throws LionEngineException
+    public void setGrid(int width, int height)
     {
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);

@@ -52,7 +52,7 @@ public final class ConfigAction
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigAction create(Configurer configurer) throws LionEngineException
+    public static ConfigAction create(Configurer configurer)
     {
         final XmlNode node = configurer.getRoot();
 
@@ -74,7 +74,7 @@ public final class ConfigAction
      * @return The integer value.
      * @throws LionEngineException If error on parsing value.
      */
-    private static int getTextInt(XmlNode node, String child) throws LionEngineException
+    private static int getTextInt(XmlNode node, String child)
     {
         final String text = node.getChild(child).getText();
         try

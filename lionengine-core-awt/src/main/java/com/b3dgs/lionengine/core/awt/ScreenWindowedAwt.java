@@ -64,7 +64,7 @@ final class ScreenWindowedAwt extends ScreenAwt
      * @param renderer The renderer reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
-    ScreenWindowedAwt(Renderer renderer) throws LionEngineException
+    ScreenWindowedAwt(Renderer renderer)
     {
         super(renderer);
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -79,7 +79,7 @@ final class ScreenWindowedAwt extends ScreenAwt
      * @param output The output resolution
      * @throws LionEngineException If unable to initialize windowed mode.
      */
-    private void initWindowed(Resolution output) throws LionEngineException
+    private void initWindowed(Resolution output)
     {
         try
         {
@@ -125,7 +125,7 @@ final class ScreenWindowedAwt extends ScreenAwt
      * @return The created main frame.
      * @throws LionEngineException If engine has not been started.
      */
-    private JFrame initMainFrame(final Renderer renderer) throws LionEngineException
+    private JFrame initMainFrame(final Renderer renderer)
     {
         final String title = Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion();
         final JFrame frame = new JFrame(title, conf);
@@ -145,7 +145,7 @@ final class ScreenWindowedAwt extends ScreenAwt
     }
 
     @Override
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
         initWindowed(output);
         super.setResolution(output);

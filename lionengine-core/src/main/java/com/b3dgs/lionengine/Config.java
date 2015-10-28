@@ -81,7 +81,7 @@ public final class Config
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
      * @throws LionEngineException If arguments are <code>null</code> or invalid.
      */
-    public Config(Resolution output, int depth, boolean windowed) throws LionEngineException
+    public Config(Resolution output, int depth, boolean windowed)
     {
         this(output, depth, windowed, Filter.NONE);
     }
@@ -95,7 +95,7 @@ public final class Config
      * @param filter The filter mode (must not be null).
      * @throws LionEngineException If arguments are <code>null</code> or invalid.
      */
-    public Config(Resolution output, int depth, boolean windowed, Filter filter) throws LionEngineException
+    public Config(Resolution output, int depth, boolean windowed, Filter filter)
     {
         Check.notNull(output);
         Check.notNull(filter);
@@ -115,7 +115,7 @@ public final class Config
      * @param ratio The new ratio (strictly positive).
      * @throws LionEngineException If ratio is not strictly positive.
      */
-    public void setRatio(double ratio) throws LionEngineException
+    public void setRatio(double ratio)
     {
         synchronized (sourceLock)
         {
@@ -152,7 +152,7 @@ public final class Config
      * @param source The source resolution (native).
      * @throws LionEngineException If source is <code>null</code>.
      */
-    public void setSource(Resolution source) throws LionEngineException
+    public void setSource(Resolution source)
     {
         Check.notNull(source);
 
@@ -268,7 +268,7 @@ public final class Config
      * @param ratio The new ratio (strictly positive).
      * @throws LionEngineException If ratio is not strictly positive.
      */
-    private void setRatioValue(double ratio) throws LionEngineException
+    private void setRatioValue(double ratio)
     {
         Check.superiorStrict(ratio, 0);
 

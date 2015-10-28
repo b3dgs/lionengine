@@ -57,7 +57,7 @@ public final class ConfigCollisions
      * @return The collisions data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigCollisions create(Configurer configurer) throws LionEngineException
+    public static ConfigCollisions create(Configurer configurer)
     {
         final Map<String, Collision> collisions = new HashMap<String, Collision>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(COLLISION))
@@ -76,7 +76,7 @@ public final class ConfigCollisions
      * @return The collision instance.
      * @throws LionEngineException If error when reading collision data.
      */
-    public static Collision createCollision(XmlNode node) throws LionEngineException
+    public static Collision createCollision(XmlNode node)
     {
         final String name = node.readString(COLLISION_NAME);
         final int offsetX = node.readInteger(COLLISION_OFFSETX);
@@ -141,7 +141,7 @@ public final class ConfigCollisions
      * @return The collision reference.
      * @throws LionEngineException If the collision with the specified name was not found.
      */
-    public Collision getCollision(String name) throws LionEngineException
+    public Collision getCollision(String name)
     {
         if (collisions.containsKey(name))
         {

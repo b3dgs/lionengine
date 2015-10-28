@@ -59,7 +59,7 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
      * @param sy The parallax height.
      * @throws LionEngineException If arguments are invalid.
      */
-    SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy) throws LionEngineException
+    SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy)
     {
         Check.notNull(media);
         Check.superiorStrict(linesNumber, 0);
@@ -80,7 +80,7 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
      */
 
     @Override
-    public void load(boolean alpha) throws LionEngineException
+    public void load(boolean alpha)
     {
         ImageBuffer surface = Graphics.getImageBuffer(media);
 

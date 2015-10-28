@@ -201,7 +201,7 @@ public final class UtilReflection
      * @return The field found.
      * @throws LionEngineException If field not found.
      */
-    public static <T> T getField(Object object, String name) throws LionEngineException
+    public static <T> T getField(Object object, String name)
     {
         Check.notNull(object);
         Check.notNull(name);

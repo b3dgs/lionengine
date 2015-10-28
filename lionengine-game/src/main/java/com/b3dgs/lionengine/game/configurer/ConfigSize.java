@@ -41,7 +41,7 @@ public final class ConfigSize
      * @return The size data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigSize create(Configurer configurer) throws LionEngineException
+    public static ConfigSize create(Configurer configurer)
     {
         final int width = configurer.getInteger(ConfigSize.SIZE_WIDTH, ConfigSize.SIZE);
         final int height = configurer.getInteger(ConfigSize.SIZE_HEIGHT, ConfigSize.SIZE);

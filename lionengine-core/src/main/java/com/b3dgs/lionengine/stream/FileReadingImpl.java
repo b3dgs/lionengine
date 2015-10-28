@@ -41,7 +41,7 @@ final class FileReadingImpl implements FileReading
      * @param media The media path.
      * @throws LionEngineException If error when opening the media.
      */
-    FileReadingImpl(Media media) throws LionEngineException
+    FileReadingImpl(Media media)
     {
         Check.notNull(media);
 

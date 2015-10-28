@@ -92,7 +92,7 @@ public final class UtilFile
      * @return The file name without its extension.
      * @throws LionEngineException If <code>null</code> argument.
      */
-    public static String removeExtension(String file) throws LionEngineException
+    public static String removeExtension(String file)
     {
         Check.notNull(file);
 
@@ -112,7 +112,7 @@ public final class UtilFile
      * @return The normalized file with its extension.
      * @throws LionEngineException If <code>null</code> arguments.
      */
-    public static String normalizeExtension(String file, String extension) throws LionEngineException
+    public static String normalizeExtension(String file, String extension)
     {
         Check.notNull(file);
         Check.notNull(extension);
@@ -137,7 +137,7 @@ public final class UtilFile
      * @return The temporary file created with copied content from stream.
      * @throws LionEngineException If <code>null</code> arguments.
      */
-    public static File getCopy(String name, InputStream input) throws LionEngineException
+    public static File getCopy(String name, InputStream input)
     {
         Check.notNull(name);
         Check.notNull(input);
@@ -230,7 +230,7 @@ public final class UtilFile
      * @return The extension.
      * @throws LionEngineException If <code>null</code> argument.
      */
-    public static String getExtension(String file) throws LionEngineException
+    public static String getExtension(String file)
     {
         Check.notNull(file);
         String ext = Constant.EMPTY_STRING;
@@ -249,7 +249,7 @@ public final class UtilFile
      * @return The extension without dot.
      * @throws LionEngineException If <code>null</code> argument.
      */
-    public static String getExtension(File file) throws LionEngineException
+    public static String getExtension(File file)
     {
         Check.notNull(file);
         return getExtension(file.getName());
@@ -262,7 +262,7 @@ public final class UtilFile
      * @return The filename extracted from path.
      * @throws LionEngineException If path is <code>null</code>.
      */
-    public static String getFilenameFromPath(String path) throws LionEngineException
+    public static String getFilenameFromPath(String path)
     {
         Check.notNull(path);
         final int i = path.lastIndexOf(Medias.getSeparator());
@@ -303,7 +303,7 @@ public final class UtilFile
      * @return The directory content.
      * @throws LionEngineException If not a directory.
      */
-    public static List<File> getFiles(File directory) throws LionEngineException
+    public static List<File> getFiles(File directory)
     {
         if (directory.isDirectory())
         {
@@ -381,7 +381,7 @@ public final class UtilFile
      * @param file The file to delete.
      * @throws LionEngineException If unable to remove file.
      */
-    public static void deleteFile(File file) throws LionEngineException
+    public static void deleteFile(File file)
     {
         Check.notNull(file);
         if (!file.delete())

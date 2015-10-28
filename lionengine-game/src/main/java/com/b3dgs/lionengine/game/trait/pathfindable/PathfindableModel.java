@@ -791,7 +791,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
     }
 
     @Override
-    public double getCost(String category) throws LionEngineException
+    public double getCost(String category)
     {
         if (categories.containsKey(category))
         {
@@ -807,7 +807,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
     }
 
     @Override
-    public boolean isBlocking(String category) throws LionEngineException
+    public boolean isBlocking(String category)
     {
         if (categories.containsKey(category))
         {

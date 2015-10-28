@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.core;
 import java.io.File;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Default media factory implementation.
@@ -60,13 +59,13 @@ public class FactoryMediaDefault implements FactoryMedia
      */
 
     @Override
-    public Media create(String path) throws LionEngineException
+    public Media create(String path)
     {
         return new MediaImpl(path);
     }
 
     @Override
-    public Media create(String... path) throws LionEngineException
+    public Media create(String... path)
     {
         final StringBuilder fullPath = new StringBuilder();
         for (int i = 0; i < path.length; i++)

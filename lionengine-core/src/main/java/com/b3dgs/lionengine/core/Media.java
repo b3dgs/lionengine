@@ -61,7 +61,7 @@ public interface Media
      * @return The file descriptor.
      * @throws LionEngineException If descriptor is not accessible.
      */
-    File getFile() throws LionEngineException;
+    File getFile();
 
     /**
      * Get the media input stream.
@@ -69,7 +69,7 @@ public interface Media
      * @return The media input stream.
      * @throws LionEngineException If error when getting the stream.
      */
-    InputStream getInputStream() throws LionEngineException;
+    InputStream getInputStream();
 
     /**
      * Get the media output stream.
@@ -77,7 +77,7 @@ public interface Media
      * @return The media output stream.
      * @throws LionEngineException If error when getting the stream.
      */
-    OutputStream getOutputStream() throws LionEngineException;
+    OutputStream getOutputStream();
 
     /**
      * Check if the following media point to an existing target (could be file of directory).

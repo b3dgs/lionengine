@@ -40,7 +40,7 @@ public interface Sequencable extends Updatable, Renderable
      * @param arguments The sequence arguments list if needed by its constructor.
      * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
      */
-    void end(Class<? extends Sequence> nextSequenceClass, Object... arguments) throws LionEngineException;
+    void end(Class<? extends Sequence> nextSequenceClass, Object... arguments);
 
     /**
      * Add a key listener.
@@ -62,7 +62,7 @@ public interface Sequencable extends Updatable, Renderable
      * @param newSource The new resolution used.
      * @throws LionEngineException If the resolution is <code>null</code>.
      */
-    void setResolution(Resolution newSource) throws LionEngineException;
+    void setResolution(Resolution newSource);
 
     /**
      * Set the system cursor visibility.
@@ -93,5 +93,5 @@ public interface Sequencable extends Updatable, Renderable
      * @return The input instance reference.
      * @throws LionEngineException If device not found.
      */
-    <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException;
+    <T extends InputDevice> T getInputDevice(Class<T> type);
 }

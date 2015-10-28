@@ -48,7 +48,7 @@ final class ScreenWindowedSwt extends ScreenSwt
      * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not
      *             supported.
      */
-    ScreenWindowedSwt(Renderer renderer) throws LionEngineException
+    ScreenWindowedSwt(Renderer renderer)
     {
         super(renderer);
     }
@@ -59,7 +59,7 @@ final class ScreenWindowedSwt extends ScreenSwt
      * @param output The output resolution
      * @throws LionEngineException If windowed is not supported.
      */
-    private void initWindowed(Resolution output) throws LionEngineException
+    private void initWindowed(Resolution output)
     {
         try
         {
@@ -89,7 +89,7 @@ final class ScreenWindowedSwt extends ScreenSwt
     }
 
     @Override
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
         initWindowed(output);
         super.setResolution(output);

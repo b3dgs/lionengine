@@ -44,7 +44,7 @@ public class MapTileTransitionModel implements MapTileTransition
      * @param map The map reference.
      * @throws LionEngineException If <code>null</code> map.
      */
-    public MapTileTransitionModel(MapTile map) throws LionEngineException
+    public MapTileTransitionModel(MapTile map)
     {
         Check.notNull(map);
         this.map = map;

@@ -55,7 +55,7 @@ public final class Checksum
      * @return The checksum instance.
      * @throws LionEngineException If algorithm is invalid.
      */
-    public static Checksum createSha256() throws LionEngineException
+    public static Checksum createSha256()
     {
         return new Checksum(SHA);
     }
@@ -69,7 +69,7 @@ public final class Checksum
      * @param algorithm The algorithm name.
      * @throws LionEngineException If algorithm is invalid.
      */
-    private Checksum(String algorithm) throws LionEngineException
+    private Checksum(String algorithm)
     {
         try
         {

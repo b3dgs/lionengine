@@ -47,7 +47,7 @@ final class ScreenFullSwt extends ScreenSwt
      * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not
      *             supported.
      */
-    ScreenFullSwt(Renderer renderer) throws LionEngineException
+    ScreenFullSwt(Renderer renderer)
     {
         super(renderer);
     }
@@ -59,7 +59,7 @@ final class ScreenFullSwt extends ScreenSwt
      * @param depth The bit depth color.
      * @throws LionEngineException If full screen is not supported.
      */
-    private void initFullscreen(Resolution output, int depth) throws LionEngineException
+    private void initFullscreen(Resolution output, int depth)
     {
         try
         {
@@ -87,7 +87,7 @@ final class ScreenFullSwt extends ScreenSwt
     }
 
     @Override
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
         initFullscreen(output, config.getDepth());
         super.setResolution(output);

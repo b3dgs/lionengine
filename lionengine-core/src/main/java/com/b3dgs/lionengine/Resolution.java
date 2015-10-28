@@ -54,7 +54,7 @@ public final class Resolution
      * @param rate The refresh rate (usually 50 or 60) (positive).
      * @throws LionEngineException If arguments are invalid.
      */
-    public Resolution(int width, int height, int rate) throws LionEngineException
+    public Resolution(int width, int height, int rate)
     {
         set(width, height, rate);
     }
@@ -66,7 +66,7 @@ public final class Resolution
      * @param height The resolution height (in pixel).
      * @throws LionEngineException If arguments are invalid.
      */
-    public void setSize(int width, int height) throws LionEngineException
+    public void setSize(int width, int height)
     {
         synchronized (lock)
         {
@@ -80,7 +80,7 @@ public final class Resolution
      * @param ratio The new ratio (strictly positive).
      * @throws LionEngineException If ratio is not strictly positive.
      */
-    public void setRatio(double ratio) throws LionEngineException
+    public void setRatio(double ratio)
     {
         Check.superiorStrict(ratio, 0);
 
@@ -101,7 +101,7 @@ public final class Resolution
      * @param rate The refresh rate value (positive).
      * @throws LionEngineException If ratio is not strictly positive.
      */
-    public void setRate(int rate) throws LionEngineException
+    public void setRate(int rate)
     {
         Check.superiorOrEqual(rate, 0);
 
@@ -165,7 +165,7 @@ public final class Resolution
      * @param rate The refresh rate in hertz (usually 50 or 60, positive).
      * @throws LionEngineException If arguments are invalid.
      */
-    private void set(int width, int height, int rate) throws LionEngineException
+    private void set(int width, int height, int rate)
     {
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);

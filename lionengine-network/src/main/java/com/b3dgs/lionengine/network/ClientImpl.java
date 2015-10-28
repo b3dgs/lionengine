@@ -406,7 +406,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
      */
 
     @Override
-    public void connect(String ip, int port) throws LionEngineException
+    public void connect(String ip, int port)
     {
         Check.notNull(ip);
         Check.superiorOrEqual(port, 0);

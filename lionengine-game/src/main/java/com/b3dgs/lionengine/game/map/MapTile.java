@@ -68,7 +68,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @throws LionEngineException If size if invalid.
      * @see #create(Media, Media, Media)
      */
-    void create(int widthInTile, int heightInTile) throws LionEngineException;
+    void create(int widthInTile, int heightInTile);
 
     /**
      * Create a map from a level rip and the associated tiles directory.
@@ -87,7 +87,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @see LevelRipConverter
      * @see TileExtractor
      */
-    void create(Media levelrip) throws LionEngineException;
+    void create(Media levelrip);
 
     /**
      * Create a map from a level rip and the associated tiles directory.
@@ -103,7 +103,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @see LevelRipConverter
      * @see TileExtractor
      */
-    void create(Media levelrip, Media sheetsConfig, Media groupsConfig) throws LionEngineException;
+    void create(Media levelrip, Media sheetsConfig, Media groupsConfig);
 
     /**
      * Create a feature from its type, and automatically {@link #addFeature} it.
@@ -116,7 +116,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @return The feature instance already added.
      * @throws LionEngineException If unable to create feature or <code>null</code>.
      */
-    <F extends MapTileFeature> F createFeature(Class<F> feature) throws LionEngineException;
+    <F extends MapTileFeature> F createFeature(Class<F> feature);
 
     /**
      * Create a tile.
@@ -132,7 +132,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @param sheetsConfig The file that define the sheets configuration.
      * @throws LionEngineException If error when reading sheets.
      */
-    void loadSheets(Media sheetsConfig) throws LionEngineException;
+    void loadSheets(Media sheetsConfig);
 
     /**
      * Load tiles group from an external file.
@@ -140,7 +140,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @param groupsConfig The tile collision groups descriptor.
      * @throws LionEngineException If error when reading groups.
      */
-    void loadGroups(Media groupsConfig) throws LionEngineException;
+    void loadGroups(Media groupsConfig);
 
     /**
      * Load a map from a specified file as binary data.
@@ -211,7 +211,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @param renderer The renderer reference.
      * @throws LionEngineException If renderer is <code>null</code>.
      */
-    void setTileRenderer(MapTileRenderer renderer) throws LionEngineException;
+    void setTileRenderer(MapTileRenderer renderer);
 
     /**
      * Set a tile at specified map location.
@@ -221,7 +221,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @param tile The tile reference.
      * @throws LionEngineException If outside map range.
      */
-    void setTile(int tx, int ty, Tile tile) throws LionEngineException;
+    void setTile(int tx, int ty, Tile tile);
 
     /**
      * Get tile from specified map location (in tile index). If the returned tile is equal to <code>null</code>, this
@@ -307,7 +307,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @return The sheet found.
      * @throws LionEngineException If sheet not found.
      */
-    SpriteTiled getSheet(Integer sheet) throws LionEngineException;
+    SpriteTiled getSheet(Integer sheet);
 
     /**
      * Get the group from its name.
@@ -316,7 +316,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @return The supported group reference.
      * @throws LionEngineException If group not found.
      */
-    TileGroup getGroup(String name) throws LionEngineException;
+    TileGroup getGroup(String name);
 
     /**
      * Get the group from its tile reference.
@@ -326,7 +326,7 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * @return The supported group reference.
      * @throws LionEngineException If group not found.
      */
-    TileGroup getGroup(Integer sheet, int number) throws LionEngineException;
+    TileGroup getGroup(Integer sheet, int number);
 
     /**
      * Get the groups list.

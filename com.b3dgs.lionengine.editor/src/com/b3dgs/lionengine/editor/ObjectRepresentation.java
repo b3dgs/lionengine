@@ -83,7 +83,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
      * @param services The services reference.
      * @throws LionEngineException If error.
      */
-    public ObjectRepresentation(SetupSurface setup, Services services) throws LionEngineException
+    public ObjectRepresentation(SetupSurface setup, Services services)
     {
         super(setup, services);
         surface = getSprite(setup.getConfigurer(), setup.getSurface());

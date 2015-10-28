@@ -55,7 +55,7 @@ public final class ConfigTileSheets
      * @return The tile sheet configuration.
      * @throws LionEngineException If unable to read data.
      */
-    public static ConfigTileSheets imports(Media configSheets) throws LionEngineException
+    public static ConfigTileSheets imports(Media configSheets)
     {
         final XmlNode nodeSheets = Stream.loadXml(configSheets);
 
@@ -79,7 +79,7 @@ public final class ConfigTileSheets
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Media configSheets, int tileWidth, int tileHeight, Collection<String> sheets)
-            throws LionEngineException
+           
     {
         final XmlNode nodeSheets = Stream.createXmlNode(NODE_TILE_SHEETS);
         nodeSheets.writeString(Configurer.HEADER, Engine.WEBSITE);
@@ -140,7 +140,7 @@ public final class ConfigTileSheets
      * @param sheets The defined sheets.
      * @throws LionEngineException If invalid size or sheets is <code>null</code>.
      */
-    private ConfigTileSheets(int tileWidth, int tileHeight, Collection<String> sheets) throws LionEngineException
+    private ConfigTileSheets(int tileWidth, int tileHeight, Collection<String> sheets)
     {
         Check.range(Range.INT_POSITIVE_STRICT, tileWidth);
         Check.range(Range.INT_POSITIVE_STRICT, tileHeight);

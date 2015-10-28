@@ -5,7 +5,7 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: b3dgs
+    Checkstyle-Configuration: B3DGS Checks
     Description: none
 -->
 <module name="Checker">
@@ -64,6 +64,7 @@
     </module>
     <module name="UnusedImports">
       <property name="severity" value="error"/>
+      <property name="processJavadoc" value="true"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="MethodLength">

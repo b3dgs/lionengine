@@ -187,7 +187,7 @@ public final class FactoryGraphicSwt implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException
+    public ImageBuffer applyFilter(ImageBuffer image, Filter filter)
     {
         final ImageBuffer filtered;
         switch (filter)

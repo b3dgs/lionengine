@@ -55,7 +55,7 @@ public final class ConfigTileGroups
      * @return The groups data.
      * @throws LionEngineException If unable to read data.
      */
-    public static Collection<TileGroup> imports(Media configGroups) throws LionEngineException
+    public static Collection<TileGroup> imports(Media configGroups)
     {
         final XmlNode nodeGroups = Stream.loadXml(configGroups);
         final Collection<TileGroup> groups = new ArrayList<TileGroup>();

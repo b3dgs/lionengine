@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 
 /**
@@ -216,7 +215,7 @@ public abstract class Sequence implements Sequencable
      */
 
     @Override
-    public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments) throws LionEngineException
+    public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments)
     {
         renderer.end(nextSequenceClass, arguments);
     }
@@ -246,7 +245,7 @@ public abstract class Sequence implements Sequencable
     }
 
     @Override
-    public final <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
+    public final <T extends InputDevice> T getInputDevice(Class<T> type)
     {
         return renderer.getInputDevice(type);
     }
@@ -264,7 +263,7 @@ public abstract class Sequence implements Sequencable
     }
 
     @Override
-    public final void setResolution(Resolution newSource) throws LionEngineException
+    public final void setResolution(Resolution newSource)
     {
         renderer.setResolution(newSource);
     }

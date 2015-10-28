@@ -36,7 +36,7 @@ public interface Resource
      * 
      * @throws LionEngineException If an error occurred when loading the resource or already loaded.
      */
-    void load() throws LionEngineException;
+    void load();
 
     /**
      * Check if resource has been loaded.

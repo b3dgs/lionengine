@@ -53,7 +53,7 @@ public class MapTilePathModel implements MapTilePath
      * @param services The services reference.
      * @throws LionEngineException If services not found.
      */
-    public MapTilePathModel(Services services) throws LionEngineException
+    public MapTilePathModel(Services services)
     {
         map = services.get(MapTile.class);
     }
@@ -122,7 +122,7 @@ public class MapTilePathModel implements MapTilePath
      */
 
     @Override
-    public void loadPathfinding(Media pathfindingConfig) throws LionEngineException
+    public void loadPathfinding(Media pathfindingConfig)
     {
         final XmlNode nodePathfinding = Stream.loadXml(pathfindingConfig);
         final ConfigPathfinding config = ConfigPathfinding.create(nodePathfinding);

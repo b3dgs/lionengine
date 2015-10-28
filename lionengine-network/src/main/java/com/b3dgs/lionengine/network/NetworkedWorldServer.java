@@ -34,5 +34,5 @@ public interface NetworkedWorldServer extends NetworkedWorld
      * @param messageOfTheDay The message of the day.
      * @throws LionEngineException If unable to start server.
      */
-    void startServer(String name, int port, String messageOfTheDay) throws LionEngineException;
+    void startServer(String name, int port, String messageOfTheDay);
 }

@@ -47,7 +47,6 @@ public final class AppSample
     public static void main(String[] args)
     {
         EngineAwt.start(NAME, VERSION, RESOURCES_DIR);
-        LionEngineException.setIgnoreEngineTrace(false);
 
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
@@ -60,6 +59,6 @@ public final class AppSample
      */
     private AppSample()
     {
-        throw new RuntimeException();
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

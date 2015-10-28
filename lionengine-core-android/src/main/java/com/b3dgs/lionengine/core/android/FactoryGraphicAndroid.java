@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.core.android;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.FactoryGraphic;
@@ -81,7 +80,7 @@ public final class FactoryGraphicAndroid implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media) throws LionEngineException
+    public ImageBuffer getImageBuffer(Media media)
     {
         return UtilityImage.getImage(media);
     }
@@ -135,7 +134,7 @@ public final class FactoryGraphicAndroid implements FactoryGraphic
     }
 
     @Override
-    public void saveImage(ImageBuffer imageBuffer, Media media) throws LionEngineException
+    public void saveImage(ImageBuffer imageBuffer, Media media)
     {
         UtilityImage.saveImage(imageBuffer, media);
     }

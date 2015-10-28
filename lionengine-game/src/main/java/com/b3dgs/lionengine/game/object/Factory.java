@@ -84,7 +84,7 @@ public class Factory
      *             missing service.
      * @see ObjectGame#ObjectGame(Setup, Services)
      */
-    public <O extends ObjectGame> O create(Media media) throws LionEngineException
+    public <O extends ObjectGame> O create(Media media)
     {
         final Setup setup = getSetup(media);
         final Class<?> type = setup.getConfigClass(classLoader);
@@ -117,7 +117,7 @@ public class Factory
      *             missing service.
      * @see ObjectGame#ObjectGame(Setup, Services)
      */
-    public <O extends ObjectGame> O create(Media media, Class<O> type) throws LionEngineException
+    public <O extends ObjectGame> O create(Media media, Class<O> type)
     {
         final Setup setup = getSetup(media);
         try
@@ -166,7 +166,7 @@ public class Factory
      * @return The setup reference.
      * @throws LionEngineException If no setup found for the media.
      */
-    public Setup getSetup(Media media) throws LionEngineException
+    public Setup getSetup(Media media)
     {
         Check.notNull(media);
         if (!setups.containsKey(media))

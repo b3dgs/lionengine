@@ -25,7 +25,6 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -89,7 +88,7 @@ final class ImageBufferSwt implements ImageBuffer
      */
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         image = new Image(device, data);
     }

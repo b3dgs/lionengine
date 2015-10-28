@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.Viewer;
@@ -62,7 +61,7 @@ class Racket extends ObjectGame implements Updatable, Renderable, CollidableList
     /**
      * {@link ObjectGame#ObjectGame(Setup, Services)}
      */
-    public Racket(Setup setup, Services services) throws LionEngineException
+    public Racket(Setup setup, Services services)
     {
         super(setup, services);
         viewer = services.get(Viewer.class);

@@ -60,7 +60,7 @@ public final class AudioSc68
      * @return The sc68 player instance.
      * @throws LionEngineException If unable to load library.
      */
-    public static Sc68 createSc68Player() throws LionEngineException
+    public static Sc68 createSc68Player()
     {
         final AudioSc68 sc68 = new AudioSc68();
         return new Sc68Player(sc68.getBinding());
@@ -73,7 +73,7 @@ public final class AudioSc68
      * @return The library binding.
      * @throws LionEngineException If error on loading.
      */
-    private static Sc68Binding loadLibrary(String library) throws LionEngineException
+    private static Sc68Binding loadLibrary(String library)
     {
         final InputStream input = AudioSc68.class.getResourceAsStream(library);
         try
@@ -173,7 +173,7 @@ public final class AudioSc68
      * 
      * @throws LionEngineException If unable to load library.
      */
-    private AudioSc68() throws LionEngineException
+    private AudioSc68()
     {
         final String ext = AudioSc68.getLibraryExtension();
         final String sys = AudioSc68.getLibrarySystem();

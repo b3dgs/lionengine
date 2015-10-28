@@ -54,7 +54,7 @@ public abstract class TraitModel implements Trait
 
     @Override
     @SuppressWarnings("unchecked")
-    public <O extends ObjectGame> O getOwner() throws LionEngineException
+    public <O extends ObjectGame> O getOwner()
     {
         try
         {

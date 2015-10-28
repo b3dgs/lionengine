@@ -52,7 +52,7 @@ public class TileGame implements Tile
      * @param height The tile height (must be strictly positive).
      * @throws LionEngineException If tile size is not correct.
      */
-    public TileGame(int width, int height) throws LionEngineException
+    public TileGame(int width, int height)
     {
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);
@@ -150,7 +150,7 @@ public class TileGame implements Tile
     }
 
     @Override
-    public <C extends TileFeature> C getFeature(Class<C> feature) throws LionEngineException
+    public <C extends TileFeature> C getFeature(Class<C> feature)
     {
         return features.get(feature);
     }

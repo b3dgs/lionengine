@@ -33,7 +33,7 @@ public interface FactoryMedia
      * @return The media instance.
      * @throws LionEngineException If path is <code>null</code>.
      */
-    Media create(String path) throws LionEngineException;
+    Media create(String path);
 
     /**
      * Create a media from an abstract path.
@@ -42,7 +42,7 @@ public interface FactoryMedia
      * @return The media instance.
      * @throws LionEngineException If path is <code>null</code>.
      */
-    Media create(String... path) throws LionEngineException;
+    Media create(String... path);
 
     /**
      * Get the path separator.

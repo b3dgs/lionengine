@@ -189,7 +189,7 @@ public final class TileExtractor
      * 
      * @throws LionEngineException If an error occurred when saving the image.
      */
-    public void start() throws LionEngineException
+    public void start()
     {
         start(null);
     }
@@ -200,7 +200,7 @@ public final class TileExtractor
      * @param canceler The canceler reference.
      * @throws LionEngineException If an error occurred when saving the image.
      */
-    public void start(Canceler canceler) throws LionEngineException
+    public void start(Canceler canceler)
     {
         this.canceler = canceler;
         sheet = Graphics.createImageBuffer(horizontal * tileWidth, vertical * tileHeight, Transparency.BITMASK);
@@ -258,7 +258,7 @@ public final class TileExtractor
      * @return <code>true</code> if continue, <code>false</code> if cancel.
      * @throws LionEngineException If an error occurred when proceeding the image.
      */
-    private boolean proceed(Media ripMedia) throws LionEngineException
+    private boolean proceed(Media ripMedia)
     {
         final SpriteTiled rip = Drawable.loadSpriteTiled(ripMedia, tileWidth, tileHeight);
         rip.load();

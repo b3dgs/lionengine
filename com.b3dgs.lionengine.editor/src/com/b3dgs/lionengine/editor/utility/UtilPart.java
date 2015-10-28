@@ -56,7 +56,7 @@ public final class UtilPart
      * @return The part class instance.
      * @throws LionEngineException If part can not be found.
      */
-    public static <C> C getPart(String id, Class<C> clazz) throws LionEngineException
+    public static <C> C getPart(String id, Class<C> clazz)
     {
         final IEclipseContext activeContext = app.getContext().getActiveLeaf();
         final EPartService partService = activeContext.get(EPartService.class);

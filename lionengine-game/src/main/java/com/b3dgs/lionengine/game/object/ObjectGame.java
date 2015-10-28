@@ -82,7 +82,7 @@ public class ObjectGame
      * @param services The services reference (external services provider).
      * @throws LionEngineException If setup or service is <code>null</code>.
      */
-    public ObjectGame(Setup setup, Services services) throws LionEngineException
+    public ObjectGame(Setup setup, Services services)
     {
         Check.notNull(setup);
         Check.notNull(services);
@@ -150,7 +150,7 @@ public class ObjectGame
      * @return The trait instance.
      * @throws LionEngineException If feature was not found.
      */
-    public final <T> T getTrait(Class<T> trait) throws LionEngineException
+    public final <T> T getTrait(Class<T> trait)
     {
         final T found;
         if (trait.isAssignableFrom(getClass()))
@@ -274,7 +274,7 @@ public class ObjectGame
      * @param services The services reference.
      * @throws LionEngineException If error when creating instances.
      */
-    void prepareTraits(Setup setup, Services services) throws LionEngineException
+    void prepareTraits(Setup setup, Services services)
     {
         for (final Trait trait : traitToPrepare)
         {

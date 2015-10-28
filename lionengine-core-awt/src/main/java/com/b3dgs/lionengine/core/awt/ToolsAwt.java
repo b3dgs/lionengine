@@ -75,7 +75,7 @@ public final class ToolsAwt
      * @return The buffer.
      * @throws LionEngineException If unknown implementation.
      */
-    public static BufferedImage getBuffer(ImageBuffer image) throws LionEngineException
+    public static BufferedImage getBuffer(ImageBuffer image)
     {
         if (image instanceof ImageBufferAwt)
         {
@@ -145,7 +145,7 @@ public final class ToolsAwt
      * @return The image instance.
      * @throws LionEngineException If negative size.
      */
-    public static BufferedImage createImage(int width, int height, int transparency) throws LionEngineException
+    public static BufferedImage createImage(int width, int height, int transparency)
     {
         Check.superiorOrEqual(width, 0);
         Check.superiorOrEqual(height, 0);

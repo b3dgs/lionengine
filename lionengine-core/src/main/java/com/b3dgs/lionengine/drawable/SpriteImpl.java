@@ -79,7 +79,7 @@ class SpriteImpl implements Sprite
      * @param media The sprite media.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    SpriteImpl(Media media) throws LionEngineException
+    SpriteImpl(Media media)
     {
         Check.notNull(media);
 
@@ -98,7 +98,7 @@ class SpriteImpl implements Sprite
      * @param surface The surface to share.
      * @throws LionEngineException If surface is <code>null</code>.
      */
-    SpriteImpl(ImageBuffer surface) throws LionEngineException
+    SpriteImpl(ImageBuffer surface)
     {
         Check.notNull(surface);
 
@@ -123,7 +123,7 @@ class SpriteImpl implements Sprite
      * @param oy The vertical offset (height count).
      * @throws LionEngineException If mirror error.
      */
-    protected final void render(Graphic g, int x, int y, int w, int h, int ox, int oy) throws LionEngineException
+    protected final void render(Graphic g, int x, int y, int w, int h, int ox, int oy)
     {
         switch (mirror)
         {
@@ -202,7 +202,7 @@ class SpriteImpl implements Sprite
      */
 
     @Override
-    public synchronized void load() throws LionEngineException
+    public synchronized void load()
     {
         if (surface != null)
         {
@@ -212,13 +212,13 @@ class SpriteImpl implements Sprite
     }
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         surface.prepare();
     }
 
     @Override
-    public final void stretch(double widthPercent, double heightPercent) throws LionEngineException
+    public final void stretch(double widthPercent, double heightPercent)
     {
         Check.superiorStrict(widthPercent, 0);
         Check.superiorStrict(heightPercent, 0);
@@ -242,7 +242,7 @@ class SpriteImpl implements Sprite
     }
 
     @Override
-    public final void filter(Filter filter) throws LionEngineException
+    public final void filter(Filter filter)
     {
         lazySurfaceBackup();
         surface = Graphics.applyFilter(surfaceOriginal, filter);
@@ -284,7 +284,7 @@ class SpriteImpl implements Sprite
     }
 
     @Override
-    public final void setAlpha(int alpha) throws LionEngineException
+    public final void setAlpha(int alpha)
     {
         Check.superiorOrEqual(alpha, 0);
         Check.inferiorOrEqual(alpha, 255);

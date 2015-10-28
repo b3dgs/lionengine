@@ -44,5 +44,5 @@ public interface Trait
      * @return The trait owner reference.
      * @throws LionEngineException If cast error.
      */
-    <O extends ObjectGame> O getOwner() throws LionEngineException;
+    <O extends ObjectGame> O getOwner();
 }

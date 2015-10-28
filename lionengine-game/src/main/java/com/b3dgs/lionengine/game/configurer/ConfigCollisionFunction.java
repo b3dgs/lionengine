@@ -49,7 +49,7 @@ public final class ConfigCollisionFunction
      * @return The collision function data.
      * @throws LionEngineException If error when reading node.
      */
-    public static CollisionFunction create(XmlNode parent) throws LionEngineException
+    public static CollisionFunction create(XmlNode parent)
     {
         final XmlNode node = parent.getChild(FUNCTION);
         final String name = node.readString(TYPE);
@@ -77,7 +77,7 @@ public final class ConfigCollisionFunction
      * @param function The collision function to export.
      * @throws LionEngineException If error on writing.
      */
-    public static void export(XmlNode root, CollisionFunction function) throws LionEngineException
+    public static void export(XmlNode root, CollisionFunction function)
     {
         final XmlNode node = root.createChild(FUNCTION);
         if (function instanceof CollisionFunctionLinear)

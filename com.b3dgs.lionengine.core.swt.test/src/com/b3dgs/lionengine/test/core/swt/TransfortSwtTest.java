@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.test.core.swt;
 
 import org.junit.BeforeClass;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.swt.FactoryGraphicSwt;
 import com.b3dgs.lionengine.test.core.TransformTest;
@@ -45,7 +44,7 @@ public class TransfortSwtTest extends TransformTest
      */
 
     @Override
-    protected int getInterpolation(int value) throws LionEngineException
+    protected int getInterpolation(int value)
     {
         return value;
     }

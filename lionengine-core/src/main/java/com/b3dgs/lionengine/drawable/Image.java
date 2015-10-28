@@ -59,7 +59,7 @@ public interface Image extends Resource, Localizable, Renderable
      * @throws LionEngineException If an error occurred when reading the image or already loaded.
      */
     @Override
-    void load() throws LionEngineException;
+    void load();
 
     /**
      * Prepare loaded surface to be displayed. Must be called only one time, after {@link #load()}. It will
@@ -67,7 +67,7 @@ public interface Image extends Resource, Localizable, Renderable
      * 
      * @throws LionEngineException If error on preparing.
      */
-    void prepare() throws LionEngineException;
+    void prepare();
 
     /**
      * Set the origin location type, related to surface area. The type will affect the defined location and the

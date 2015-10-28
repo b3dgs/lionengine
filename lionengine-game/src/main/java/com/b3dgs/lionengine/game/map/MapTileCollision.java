@@ -48,7 +48,7 @@ public interface MapTileCollision extends MapTileFeature, Renderable
      * 
      * @throws LionEngineException If error when reading collisions.
      */
-    void loadCollisions() throws LionEngineException;
+    void loadCollisions();
 
     /**
      * Load map collision from an external file.
@@ -57,14 +57,14 @@ public interface MapTileCollision extends MapTileFeature, Renderable
      * @param groupsConfig The tile collision groups descriptor.
      * @throws LionEngineException If error when reading collisions.
      */
-    void loadCollisions(Media formulasConfig, Media groupsConfig) throws LionEngineException;
+    void loadCollisions(Media formulasConfig, Media groupsConfig);
 
     /**
      * Save the current collisions to the collision file.
      * 
      * @throws LionEngineException If error when saving collisions.
      */
-    void saveCollisions() throws LionEngineException;
+    void saveCollisions();
 
     /**
      * Create the collision draw surface. Must be called after map creation to enable collision rendering.
@@ -94,7 +94,7 @@ public interface MapTileCollision extends MapTileFeature, Renderable
      * @return The collision formula from name reference.
      * @throws LionEngineException If formula not found.
      */
-    CollisionFormula getCollisionFormula(String name) throws LionEngineException;
+    CollisionFormula getCollisionFormula(String name);
 
     /**
      * Get the collision group from its name.
@@ -103,7 +103,7 @@ public interface MapTileCollision extends MapTileFeature, Renderable
      * @return The supported collision group reference.
      * @throws LionEngineException If group not found.
      */
-    CollisionGroup getCollisionGroup(String name) throws LionEngineException;
+    CollisionGroup getCollisionGroup(String name);
 
     /**
      * Get the collision formulas list.

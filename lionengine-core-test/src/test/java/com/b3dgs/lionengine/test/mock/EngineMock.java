@@ -37,7 +37,7 @@ public class EngineMock extends Engine
      * @param version The program version (must not be <code>null</code>).
      * @throws LionEngineException If invalid arguments.
      */
-    public EngineMock(String name, Version version) throws LionEngineException
+    public EngineMock(String name, Version version)
     {
         super(name, version);
         Check.notNull(name);

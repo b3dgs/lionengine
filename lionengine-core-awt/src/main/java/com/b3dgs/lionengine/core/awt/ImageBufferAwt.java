@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.image.BufferedImage;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -59,7 +58,7 @@ final class ImageBufferAwt implements ImageBuffer
      */
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         // Nothing to do
     }

@@ -106,7 +106,7 @@ public class Services
      * @return The service instance already added.
      * @throws LionEngineException If unable to create service or if <code>null</code>.
      */
-    public <S> S create(Class<S> service) throws LionEngineException
+    public <S> S create(Class<S> service)
     {
         Check.notNull(service);
         try
@@ -162,7 +162,7 @@ public class Services
      * @return The added service (same as source).
      * @throws LionEngineException If service is <code>null</code>.
      */
-    public <S> S add(S service) throws LionEngineException
+    public <S> S add(S service)
     {
         Check.notNull(service);
         services.add(service);
@@ -195,7 +195,7 @@ public class Services
      * @return The service implementation found.
      * @throws LionEngineException If service not found or <code>null</code>.
      */
-    public <S> S get(Class<S> service) throws LionEngineException
+    public <S> S get(Class<S> service)
     {
         Check.notNull(service);
         for (final Object object : services)

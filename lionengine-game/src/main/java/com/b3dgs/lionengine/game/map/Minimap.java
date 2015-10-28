@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
@@ -232,13 +231,13 @@ public class Minimap implements Image
      */
 
     @Override
-    public void load() throws LionEngineException
+    public void load()
     {
         create();
     }
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         final Graphic g = minimap.createGraphic();
         final int v = map.getInTileHeight();

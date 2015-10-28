@@ -33,7 +33,7 @@ public interface NetworkedWorldClient extends NetworkedWorld, ConnectionListener
      * @param port The server port.
      * @throws LionEngineException If unable to connect.
      */
-    void connect(String ip, int port) throws LionEngineException;
+    void connect(String ip, int port);
 
     /**
      * Set the client new name.

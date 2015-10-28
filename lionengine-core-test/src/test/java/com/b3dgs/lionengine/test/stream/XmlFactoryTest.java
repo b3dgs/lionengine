@@ -59,11 +59,10 @@ public class XmlFactoryTest
     /**
      * Test the write and read in XML with parser.
      * 
-     * @throws LionEngineException If error.
      * @throws IOException If error.
      */
     @Test
-    public void testXmlWriteRead() throws LionEngineException, IOException
+    public void testXmlWriteRead() throws IOException
     {
         final File file = Files.createTempFile("test", "xml").toFile();
         file.deleteOnExit();
@@ -147,7 +146,7 @@ public class XmlFactoryTest
      * 
      * @throws LionEngineException If node note found, error case.
      */
-    private void testReadXml() throws LionEngineException
+    private void testReadXml()
     {
         final XmlNode root = Stream.loadXml(fileXml);
         final XmlNode child = root.getChild("child");

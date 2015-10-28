@@ -71,7 +71,7 @@ public final class MediaMock implements Media
     }
 
     @Override
-    public InputStream getInputStream() throws LionEngineException
+    public InputStream getInputStream()
     {
         try
         {
@@ -84,7 +84,7 @@ public final class MediaMock implements Media
     }
 
     @Override
-    public OutputStream getOutputStream() throws LionEngineException
+    public OutputStream getOutputStream()
     {
         return null;
     }

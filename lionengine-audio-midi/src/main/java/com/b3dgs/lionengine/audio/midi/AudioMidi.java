@@ -34,7 +34,7 @@ public final class AudioMidi
      * @return The loaded midi.
      * @throws LionEngineException If media is <code>null</code> or invalid midi or no midi player is available.
      */
-    public static Midi loadMidi(Media media) throws LionEngineException
+    public static Midi loadMidi(Media media)
     {
         return new Midi(media);
     }

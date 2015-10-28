@@ -127,7 +127,7 @@ public class Renderer extends Thread implements Sequencable
      * @throws LionEngineException If the renderer has already been started.
      */
     public final synchronized void startFirstSequence(Loader loader, Class<? extends Sequence> first, Object... param)
-            throws LionEngineException
+           
     {
         if (!started)
         {
@@ -375,7 +375,7 @@ public class Renderer extends Thread implements Sequencable
 
     @Override
     public final synchronized void end(Class<? extends Sequence> nextSequenceClass, Object... arguments)
-            throws LionEngineException
+           
     {
         Check.notNull(nextSequenceClass);
 
@@ -429,7 +429,7 @@ public class Renderer extends Thread implements Sequencable
     }
 
     @Override
-    public final synchronized void setResolution(Resolution newSource) throws LionEngineException
+    public final synchronized void setResolution(Resolution newSource)
     {
         Check.notNull(newSource);
 
@@ -497,7 +497,7 @@ public class Renderer extends Thread implements Sequencable
     }
 
     @Override
-    public final <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
+    public final <T extends InputDevice> T getInputDevice(Class<T> type)
     {
         return screen.getInputDevice(type);
     }

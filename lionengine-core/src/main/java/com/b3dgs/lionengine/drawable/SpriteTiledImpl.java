@@ -45,7 +45,7 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
      * @param tileHeight The tile height.
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
-    SpriteTiledImpl(Media media, int tileWidth, int tileHeight) throws LionEngineException
+    SpriteTiledImpl(Media media, int tileWidth, int tileHeight)
     {
         super(media);
         Check.superiorStrict(tileWidth, 0);
@@ -63,7 +63,7 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
      * @param tileHeight The tile height.
      * @throws LionEngineException If arguments are invalid.
      */
-    SpriteTiledImpl(ImageBuffer surface, int tileWidth, int tileHeight) throws LionEngineException
+    SpriteTiledImpl(ImageBuffer surface, int tileWidth, int tileHeight)
     {
         super(surface);
         Check.superiorStrict(tileWidth, 0);

@@ -73,7 +73,7 @@ public class StateFactory
      * @return The state instance.
      * @throws LionEngineException If state does not exist.
      */
-    public State getState(Enum<?> type) throws LionEngineException
+    public State getState(Enum<?> type)
     {
         final State state = states.get(type);
         if (state == null)

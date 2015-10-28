@@ -81,7 +81,7 @@ public abstract class BackgroundElementRastered extends BackgroundElement
      * @param fb The blue color offset.
      * @throws LionEngineException If arguments are invalid.
      */
-    protected void addRaster(Sprite sprite, int fr, int fg, int fb) throws LionEngineException
+    protected void addRaster(Sprite sprite, int fr, int fg, int fb)
     {
         final ImageBuffer buf = sprite.getSurface();
         final ImageBuffer rasterBuf = Graphics.getImageBuffer(buf);

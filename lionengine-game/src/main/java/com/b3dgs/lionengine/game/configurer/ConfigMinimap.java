@@ -57,7 +57,7 @@ public final class ConfigMinimap
      * @return The minimap data.
      * @throws LionEngineException If unable to read data.
      */
-    public static Map<TileRef, ColorRgba> imports(Media configMinimap, MapTile map) throws LionEngineException
+    public static Map<TileRef, ColorRgba> imports(Media configMinimap, MapTile map)
     {
         final Map<TileRef, ColorRgba> colors = new HashMap<TileRef, ColorRgba>();
         final XmlNode nodeMinimap = Stream.loadXml(configMinimap);
@@ -85,7 +85,7 @@ public final class ConfigMinimap
      * @param tiles The tiles data.
      * @throws LionEngineException If error on writing.
      */
-    public static void exports(Media configMinimap, Map<TileRef, ColorRgba> tiles) throws LionEngineException
+    public static void exports(Media configMinimap, Map<TileRef, ColorRgba> tiles)
     {
         final Map<ColorRgba, Collection<TileRef>> colors = convertToColorKey(tiles);
         final XmlNode nodeMinimap = Stream.createXmlNode(NODE_MINIMAPS);

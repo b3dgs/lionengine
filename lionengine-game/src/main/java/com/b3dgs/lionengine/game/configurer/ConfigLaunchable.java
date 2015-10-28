@@ -43,7 +43,7 @@ public final class ConfigLaunchable
      * @return The launchable data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigLaunchable create(XmlNode node) throws LionEngineException
+    public static ConfigLaunchable create(XmlNode node)
     {
         final String media = node.readString(MEDIA);
         final int delay = node.readInteger(ConfigLaunchable.DELAY);

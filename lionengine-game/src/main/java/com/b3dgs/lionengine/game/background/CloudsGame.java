@@ -60,7 +60,7 @@ public abstract class CloudsGame implements BackgroundComponent
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
     public CloudsGame(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY, boolean alpha)
-            throws LionEngineException
+           
     {
         this.decY = decY;
         sprite = Drawable.loadSpriteTiled(media, cloudWidth, cloudHeight);

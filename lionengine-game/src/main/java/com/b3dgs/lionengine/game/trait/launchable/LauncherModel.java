@@ -98,7 +98,7 @@ public class LauncherModel extends TraitModel implements Launcher
      * 
      * @throws LionEngineException If the fired object is not a {@link Launchable}.
      */
-    private void fired() throws LionEngineException
+    private void fired()
     {
         for (final ConfigLaunchable launchable : launchables)
         {
@@ -207,13 +207,13 @@ public class LauncherModel extends TraitModel implements Launcher
     }
 
     @Override
-    public void fire() throws LionEngineException
+    public void fire()
     {
         fire(null);
     }
 
     @Override
-    public void fire(Localizable target) throws LionEngineException
+    public void fire(Localizable target)
     {
         this.target = target;
         if (fire.elapsed(rate))

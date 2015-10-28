@@ -54,7 +54,7 @@ public final class ConfigTileTransitions
      * @return The transitions imported.
      * @throws LionEngineException If unable to read data.
      */
-    public static Map<TileTransition, Collection<TileRef>> imports(Media configTransitions) throws LionEngineException
+    public static Map<TileTransition, Collection<TileRef>> imports(Media configTransitions)
     {
         final XmlNode root = Stream.loadXml(configTransitions);
         final Collection<XmlNode> nodesTransition = root.getChildren(NODE_TRANSITION);
@@ -82,7 +82,7 @@ public final class ConfigTileTransitions
      * @throws LionEngineException If error on export.
      */
     public static void exports(Media media, Map<TileTransition, Collection<TileRef>> transitions)
-            throws LionEngineException
+           
     {
         final XmlNode nodeTransitions = Stream.createXmlNode(NODE_TRANSITIONS);
 

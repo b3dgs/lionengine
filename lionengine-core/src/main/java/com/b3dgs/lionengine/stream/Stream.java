@@ -44,7 +44,7 @@ public final class Stream
      * @return The created reader.
      * @throws LionEngineException If error when opening the media.
      */
-    public static FileReading createFileReading(Media media) throws LionEngineException
+    public static FileReading createFileReading(Media media)
     {
         return new FileReadingImpl(media);
     }
@@ -56,7 +56,7 @@ public final class Stream
      * @return The created writer.
      * @throws LionEngineException If error when opening the media.
      */
-    public static FileWriting createFileWriting(Media media) throws LionEngineException
+    public static FileWriting createFileWriting(Media media)
     {
         return new FileWritingImpl(media);
     }
@@ -68,7 +68,7 @@ public final class Stream
      * @return The XML root node.
      * @throws LionEngineException If error when opening the media.
      */
-    public static XmlNode loadXml(Media media) throws LionEngineException
+    public static XmlNode loadXml(Media media)
     {
         return XmlFactory.load(media);
     }
@@ -80,7 +80,7 @@ public final class Stream
      * @param media The output media path.
      * @throws LionEngineException If error when opening the media.
      */
-    public static void saveXml(XmlNode root, Media media) throws LionEngineException
+    public static void saveXml(XmlNode root, Media media)
     {
         XmlFactory.save(root, media);
     }
@@ -92,7 +92,7 @@ public final class Stream
      * @return The created node.
      * @throws LionEngineException If error when creating the node.
      */
-    public static XmlNode createXmlNode(String name) throws LionEngineException
+    public static XmlNode createXmlNode(String name)
     {
         return new XmlNodeImpl(name);
     }

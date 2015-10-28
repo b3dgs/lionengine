@@ -41,7 +41,7 @@ public class EngineSwt extends Engine
      * @param version The program version (must not be <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
-    public static void start(String name, Version version) throws LionEngineException
+    public static void start(String name, Version version)
     {
         Engine.start(new EngineSwt(name, version, (String) null));
     }
@@ -54,7 +54,7 @@ public class EngineSwt extends Engine
      * @param resourcesDir The main resources directory (can be <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
-    public static void start(String name, Version version, String resourcesDir) throws LionEngineException
+    public static void start(String name, Version version, String resourcesDir)
     {
         Engine.start(new EngineSwt(name, version, resourcesDir));
     }
@@ -67,7 +67,7 @@ public class EngineSwt extends Engine
      * @param classResource The class loader reference (resources entry point, non <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
-    public static void start(String name, Version version, Class<?> classResource) throws LionEngineException
+    public static void start(String name, Version version, Class<?> classResource)
     {
         Engine.start(new EngineSwt(name, version, classResource));
     }
@@ -80,7 +80,7 @@ public class EngineSwt extends Engine
      * @param resourcesDir The main resources directory (can be <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
-    public EngineSwt(String name, Version version, String resourcesDir) throws LionEngineException
+    public EngineSwt(String name, Version version, String resourcesDir)
     {
         super(name, version);
         Medias.setResourcesDirectory(resourcesDir);
@@ -94,7 +94,7 @@ public class EngineSwt extends Engine
      * @param classResource The class loader reference (resources entry point, non <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
-    public EngineSwt(String name, Version version, Class<?> classResource) throws LionEngineException
+    public EngineSwt(String name, Version version, Class<?> classResource)
     {
         super(name, version);
         Check.notNull(classResource);

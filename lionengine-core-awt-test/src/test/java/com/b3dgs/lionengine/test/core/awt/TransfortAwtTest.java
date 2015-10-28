@@ -47,7 +47,7 @@ public class TransfortAwtTest extends TransformTest
      */
 
     @Override
-    protected int getInterpolation(int value) throws LionEngineException
+    protected int getInterpolation(int value)
     {
         if (value == 1)
         {

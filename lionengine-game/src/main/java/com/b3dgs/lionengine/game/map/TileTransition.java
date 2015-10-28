@@ -422,7 +422,7 @@ public enum TileTransition
      * @return The transition enum value.
      * @throws LionEngineException If invalid name.
      */
-    public static TileTransition from(String name) throws LionEngineException
+    public static TileTransition from(String name)
     {
         try
         {
@@ -486,7 +486,7 @@ public enum TileTransition
      * @param bits Bits defining transition.
      * @throws LionEngineException If invalid bits number.
      */
-    TileTransition(Boolean... bits) throws LionEngineException
+    TileTransition(Boolean... bits)
     {
         table = bits;
     }

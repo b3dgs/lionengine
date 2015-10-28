@@ -43,7 +43,7 @@ public class SetupSurface extends Setup
      * @param config The config media.
      * @throws LionEngineException If error when opening the media.
      */
-    public SetupSurface(Media config) throws LionEngineException
+    public SetupSurface(Media config)
     {
         super(config);
         final String conf = config.getPath();

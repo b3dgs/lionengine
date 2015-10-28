@@ -56,7 +56,7 @@ public final class ConfigAnimations
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static ConfigAnimations create(Configurer configurer) throws LionEngineException
+    public static ConfigAnimations create(Configurer configurer)
     {
         final Map<String, Animation> animations = new HashMap<String, Animation>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(ANIMATION))
@@ -81,7 +81,7 @@ public final class ConfigAnimations
      * @return The animation instance.
      * @throws LionEngineException If error when reading animation data.
      */
-    public static Animation createAnimation(XmlNode node) throws LionEngineException
+    public static Animation createAnimation(XmlNode node)
     {
         final String name = node.readString(ANIMATION_NAME);
         final int start = node.readInteger(ANIMATION_START);
@@ -100,7 +100,7 @@ public final class ConfigAnimations
      * @param animation The animation reference.
      * @throws LionEngineException If error on writing.
      */
-    public static void export(XmlNode root, Animation animation) throws LionEngineException
+    public static void export(XmlNode root, Animation animation)
     {
         final XmlNode node = root.createChild(ANIMATION);
         node.writeString(ANIMATION_NAME, animation.getName());
@@ -147,7 +147,7 @@ public final class ConfigAnimations
      * @return The animation reference.
      * @throws LionEngineException If the animation with the specified name is not found.
      */
-    public Animation getAnimation(String name) throws LionEngineException
+    public Animation getAnimation(String name)
     {
         final Animation animation = animations.get(name);
         if (animation == null)

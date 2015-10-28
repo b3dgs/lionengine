@@ -59,7 +59,7 @@ public final class Medias
      * @return The media instance.
      * @throws LionEngineException If path is <code>null</code>.
      */
-    public static synchronized Media create(String path) throws LionEngineException
+    public static synchronized Media create(String path)
     {
         return factoryMedia.create(path);
     }
@@ -71,7 +71,7 @@ public final class Medias
      * @return The media instance.
      * @throws LionEngineException If path is <code>null</code>.
      */
-    public static synchronized Media create(String... path) throws LionEngineException
+    public static synchronized Media create(String... path)
     {
         return factoryMedia.create(path);
     }

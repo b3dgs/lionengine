@@ -427,7 +427,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
     }
 
     @Override
-    public void start(String name, int port) throws LionEngineException
+    public void start(String name, int port)
     {
         if (!started)
         {

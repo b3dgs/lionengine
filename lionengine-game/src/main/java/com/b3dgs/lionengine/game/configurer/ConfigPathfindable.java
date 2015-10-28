@@ -48,7 +48,7 @@ public final class ConfigPathfindable
      * @return The pathfindable data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Map<String, PathData> create(Configurer configurer) throws LionEngineException
+    public static Map<String, PathData> create(Configurer configurer)
     {
         final Map<String, PathData> categories = new HashMap<String, PathData>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(PATHFINDABLE))
@@ -66,7 +66,7 @@ public final class ConfigPathfindable
      * @return The path data instance.
      * @throws LionEngineException If error when reading path data.
      */
-    public static PathData createPathData(XmlNode node) throws LionEngineException
+    public static PathData createPathData(XmlNode node)
     {
         final double cost = node.readDouble(COST);
         final boolean blocking = node.readBoolean(BLOCK);

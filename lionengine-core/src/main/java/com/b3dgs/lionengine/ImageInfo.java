@@ -72,7 +72,7 @@ public final class ImageInfo
      * @return The image info instance.
      * @throws LionEngineException If media is <code>null</code> or cannot be read.
      */
-    public static ImageInfo get(Media media) throws LionEngineException
+    public static ImageInfo get(Media media)
     {
         return new ImageInfo(media);
     }
@@ -163,7 +163,7 @@ public final class ImageInfo
      * @param media The image media path.
      * @throws LionEngineException If media is <code>null</code> or cannot be read.
      */
-    private ImageInfo(Media media) throws LionEngineException
+    private ImageInfo(Media media)
     {
         Check.notNull(media);
         final InputStream input = media.getInputStream();

@@ -41,7 +41,7 @@ public final class ConfigSurface
      * @return The surface data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigSurface create(Configurer configurer) throws LionEngineException
+    public static ConfigSurface create(Configurer configurer)
     {
         final String surface = configurer.getString(ConfigSurface.SURFACE_IMAGE, ConfigSurface.SURFACE);
 

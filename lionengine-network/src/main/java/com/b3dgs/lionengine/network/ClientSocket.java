@@ -53,7 +53,7 @@ final class ClientSocket
      * @param server The server reference.
      * @throws LionEngineException If error on client socket.
      */
-    ClientSocket(final byte id, final Socket socket, final ServerImpl server) throws LionEngineException
+    ClientSocket(final byte id, final Socket socket, final ServerImpl server)
     {
         clientId = id;
         this.socket = socket;

@@ -46,8 +46,7 @@ public final class UtilTests
      * @throws LionEngineException Expected exception.
      * @throws ReflectiveOperationException If error.
      */
-    public static void testPrivateConstructor(Class<?> clazz, Object... args)
-            throws LionEngineException, ReflectiveOperationException
+    public static void testPrivateConstructor(Class<?> clazz, Object... args) throws ReflectiveOperationException
     {
         final Class<?>[] params = UtilReflection.getParamTypes(args);
         final Constructor<?> constructor = clazz.getDeclaredConstructor(params);
@@ -99,7 +98,7 @@ public final class UtilTests
      * @param milli Time to wait in millisecond.
      * @throws LionEngineException If interrupted.
      */
-    public static void pause(long milli) throws LionEngineException
+    public static void pause(long milli)
     {
         try
         {

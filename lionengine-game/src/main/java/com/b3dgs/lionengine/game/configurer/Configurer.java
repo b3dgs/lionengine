@@ -50,7 +50,7 @@ public class Configurer
      * @param media The xml media.
      * @throws LionEngineException If error when opening the media.
      */
-    public Configurer(Media media) throws LionEngineException
+    public Configurer(Media media)
     {
         Check.notNull(media);
 
@@ -64,7 +64,7 @@ public class Configurer
      * 
      * @throws LionEngineException If error on saving.
      */
-    public void save() throws LionEngineException
+    public void save()
     {
         Stream.saveXml(root, media);
     }
@@ -96,7 +96,7 @@ public class Configurer
      * @return The node text value.
      * @throws LionEngineException If unable to read node.
      */
-    public String getText(String... path) throws LionEngineException
+    public String getText(String... path)
     {
         final XmlNode node = getNode(path);
         return node.getText();
@@ -110,7 +110,7 @@ public class Configurer
      * @return The string value.
      * @throws LionEngineException If unable to read node.
      */
-    public String getString(String attribute, String... path) throws LionEngineException
+    public String getString(String attribute, String... path)
     {
         return getNodeString(attribute, path);
     }
@@ -123,7 +123,7 @@ public class Configurer
      * @return The boolean value.
      * @throws LionEngineException If unable to read node.
      */
-    public boolean getBoolean(String attribute, String... path) throws LionEngineException
+    public boolean getBoolean(String attribute, String... path)
     {
         return Boolean.parseBoolean(getNodeString(attribute, path));
     }
@@ -136,7 +136,7 @@ public class Configurer
      * @return The integer value.
      * @throws LionEngineException If unable to read node or not a valid integer.
      */
-    public int getInteger(String attribute, String... path) throws LionEngineException
+    public int getInteger(String attribute, String... path)
     {
         try
         {
@@ -156,7 +156,7 @@ public class Configurer
      * @return The double value.
      * @throws LionEngineException If unable to read node.
      */
-    public double getDouble(String attribute, String... path) throws LionEngineException
+    public double getDouble(String attribute, String... path)
     {
         try
         {
@@ -175,7 +175,7 @@ public class Configurer
      * @return The node found.
      * @throws LionEngineException If node not found.
      */
-    private XmlNode getNode(String... path) throws LionEngineException
+    private XmlNode getNode(String... path)
     {
         XmlNode node = root;
         for (final String element : path)
@@ -200,7 +200,7 @@ public class Configurer
      * @return The string found.
      * @throws LionEngineException If nod not found.
      */
-    private String getNodeString(String attribute, String... path) throws LionEngineException
+    private String getNodeString(String attribute, String... path)
     {
         final XmlNode node = getNode(path);
         return node.readString(attribute);

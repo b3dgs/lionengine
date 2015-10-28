@@ -83,7 +83,7 @@ final class ScreenFullAwt extends ScreenAwt
      * @param renderer The renderer reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
-    ScreenFullAwt(Renderer renderer) throws LionEngineException
+    ScreenFullAwt(Renderer renderer)
     {
         super(renderer);
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -99,7 +99,7 @@ final class ScreenFullAwt extends ScreenAwt
      * @return The created main frame.
      * @throws LionEngineException If the engine has not been started.
      */
-    private JFrame initMainFrame(final Renderer renderer) throws LionEngineException
+    private JFrame initMainFrame(final Renderer renderer)
     {
         final String title = Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion();
         final JFrame frame = new JFrame(title, conf);
@@ -126,7 +126,7 @@ final class ScreenFullAwt extends ScreenAwt
      * @param depth The bit depth color.
      * @throws LionEngineException If unsupported resolution.
      */
-    private void initFullscreen(Resolution output, int depth) throws LionEngineException
+    private void initFullscreen(Resolution output, int depth)
     {
         window = new java.awt.Window(frame, conf);
         window.setBackground(Color.BLACK);
@@ -266,7 +266,7 @@ final class ScreenFullAwt extends ScreenAwt
     }
 
     @Override
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
         initFullscreen(output, config.getDepth());
         super.setResolution(output);

@@ -34,7 +34,7 @@ public final class AudioWav
      * @return The loaded sound.
      * @throws LionEngineException If media is <code>null</code>
      */
-    public static Wav loadWav(Media media) throws LionEngineException
+    public static Wav loadWav(Media media)
     {
         return new Wav(media);
     }
@@ -47,7 +47,7 @@ public final class AudioWav
      * @return The loaded Sound.
      * @throws LionEngineException If media is <code>null</code>
      */
-    public static Wav loadWav(Media media, int maxSimultaneous) throws LionEngineException
+    public static Wav loadWav(Media media, int maxSimultaneous)
     {
         return new Wav(media, maxSimultaneous);
     }

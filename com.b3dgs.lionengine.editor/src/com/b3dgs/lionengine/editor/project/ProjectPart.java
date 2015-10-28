@@ -176,7 +176,7 @@ public final class ProjectPart implements Focusable
      * @param project The project reference.
      * @throws LionEngineException If error while reading project children.
      */
-    public void setInput(Project project) throws LionEngineException
+    public void setInput(Project project)
     {
         tree.removeAll();
 

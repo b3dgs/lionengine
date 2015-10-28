@@ -39,7 +39,7 @@ public final class ConfigObject
      * @return The object data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigObject create(Configurer configurer) throws LionEngineException
+    public static ConfigObject create(Configurer configurer)
     {
         final String clazz = configurer.getText(CLASS);
         final String setup = configurer.getText(SETUP);

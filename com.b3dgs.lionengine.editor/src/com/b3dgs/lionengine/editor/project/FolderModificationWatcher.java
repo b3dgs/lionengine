@@ -78,7 +78,7 @@ public final class FolderModificationWatcher
      * @param creator The creator reference.
      * @throws LionEngineException If already started.
      */
-    public synchronized void start(Path root, Tree tree, ProjectTreeCreator creator) throws LionEngineException
+    public synchronized void start(Path root, Tree tree, ProjectTreeCreator creator)
     {
         if (started)
         {

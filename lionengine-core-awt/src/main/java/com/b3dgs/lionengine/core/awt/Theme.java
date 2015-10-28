@@ -52,7 +52,7 @@ public enum Theme
      * @param theme The theme.
      * @throws LionEngineException If an error occurred when setting the theme.
      */
-    public static void set(Theme theme) throws LionEngineException
+    public static void set(Theme theme)
     {
         Check.notNull(theme);
 

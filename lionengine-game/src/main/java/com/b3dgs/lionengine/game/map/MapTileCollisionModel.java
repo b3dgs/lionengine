@@ -251,7 +251,7 @@ public class MapTileCollisionModel implements MapTileCollision
      * @param services The services reference.
      * @throws LionEngineException If services not found.
      */
-    public MapTileCollisionModel(Services services) throws LionEngineException
+    public MapTileCollisionModel(Services services)
     {
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
@@ -456,7 +456,7 @@ public class MapTileCollisionModel implements MapTileCollision
      */
 
     @Override
-    public void loadCollisions() throws LionEngineException
+    public void loadCollisions()
     {
         final String parent = map.getSheetsConfig().getParentPath();
         loadCollisions(Medias.create(parent, ConfigCollisionFormula.FILENAME),
@@ -464,7 +464,7 @@ public class MapTileCollisionModel implements MapTileCollision
     }
 
     @Override
-    public void loadCollisions(Media collisionFormulas, Media collisionGroups) throws LionEngineException
+    public void loadCollisions(Media collisionFormulas, Media collisionGroups)
     {
         if (collisionFormulas.exists())
         {
@@ -479,7 +479,7 @@ public class MapTileCollisionModel implements MapTileCollision
     }
 
     @Override
-    public void saveCollisions() throws LionEngineException
+    public void saveCollisions()
     {
         if (formulasConfig != null)
         {

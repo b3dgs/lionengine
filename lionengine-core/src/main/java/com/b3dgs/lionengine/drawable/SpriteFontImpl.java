@@ -62,7 +62,7 @@ final class SpriteFontImpl implements SpriteFont
      * @param th The vertical character number.
      * @throws LionEngineException If an error occurred when creating the font.
      */
-    SpriteFontImpl(Media media, Media mediaData, int tw, int th) throws LionEngineException
+    SpriteFontImpl(Media media, Media mediaData, int tw, int th)
     {
         surface = Drawable.loadSpriteTiled(media, tw, th);
         fontData = new TreeMap<Character, Data>();
@@ -84,19 +84,19 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
-    public void load() throws LionEngineException
+    public void load()
     {
         surface.load();
     }
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         surface.prepare();
     }
 
     @Override
-    public void stretch(double percentWidth, double percentHeight) throws LionEngineException
+    public void stretch(double percentWidth, double percentHeight)
     {
         surface.stretch(percentWidth, percentHeight);
     }
@@ -108,7 +108,7 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
-    public void filter(Filter filter) throws LionEngineException
+    public void filter(Filter filter)
     {
         surface.filter(filter);
     }
@@ -185,7 +185,7 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
-    public void setAlpha(int alpha) throws LionEngineException
+    public void setAlpha(int alpha)
     {
         surface.setAlpha(alpha);
     }
@@ -197,7 +197,7 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
-    public void setMirror(Mirror mirror) throws LionEngineException
+    public void setMirror(Mirror mirror)
     {
         surface.setMirror(mirror);
     }

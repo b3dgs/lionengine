@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
@@ -63,7 +62,7 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
     /**
      * {@link ObjectGame#ObjectGame(Setup, Services)}
      */
-    public Ball(Setup setup, Services services) throws LionEngineException
+    public Ball(Setup setup, Services services)
     {
         super(setup, services);
         viewer = services.get(Viewer.class);

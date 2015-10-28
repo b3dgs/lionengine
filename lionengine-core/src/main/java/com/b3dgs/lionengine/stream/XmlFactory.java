@@ -70,7 +70,7 @@ public final class XmlFactory
      * @return The XML root node.
      * @throws LionEngineException If error when loading media.
      */
-    public static XmlNode load(Media media) throws LionEngineException
+    public static XmlNode load(Media media)
     {
         Check.notNull(media);
 
@@ -111,7 +111,7 @@ public final class XmlFactory
      * @param media The output media path.
      * @throws LionEngineException If error when saving media.
      */
-    public static void save(XmlNode root, Media media) throws LionEngineException
+    public static void save(XmlNode root, Media media)
     {
         Check.notNull(root);
         Check.notNull(media);

@@ -61,7 +61,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void superiorOrEqual(int a, int b) throws LionEngineException
+    public static void superiorOrEqual(int a, int b)
     {
         superior(a, b, false);
     }
@@ -73,7 +73,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void superiorOrEqual(double a, double b) throws LionEngineException
+    public static void superiorOrEqual(double a, double b)
     {
         superior(a, b, false);
     }
@@ -85,7 +85,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void superiorStrict(int a, int b) throws LionEngineException
+    public static void superiorStrict(int a, int b)
     {
         superior(a, b, true);
     }
@@ -97,7 +97,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void superiorStrict(double a, double b) throws LionEngineException
+    public static void superiorStrict(double a, double b)
     {
         superior(a, b, true);
     }
@@ -109,7 +109,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void inferiorOrEqual(int a, int b) throws LionEngineException
+    public static void inferiorOrEqual(int a, int b)
     {
         inferior(a, b, false);
     }
@@ -121,7 +121,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void inferiorOrEqual(double a, double b) throws LionEngineException
+    public static void inferiorOrEqual(double a, double b)
     {
         inferior(a, b, false);
     }
@@ -133,7 +133,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void inferiorStrict(int a, int b) throws LionEngineException
+    public static void inferiorStrict(int a, int b)
     {
         inferior(a, b, true);
     }
@@ -145,7 +145,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void inferiorStrict(double a, double b) throws LionEngineException
+    public static void inferiorStrict(double a, double b)
     {
         inferior(a, b, true);
     }
@@ -157,7 +157,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void different(int a, int b) throws LionEngineException
+    public static void different(int a, int b)
     {
         if (a == b)
         {
@@ -172,7 +172,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void equals(int a, int b) throws LionEngineException
+    public static void equals(int a, int b)
     {
         if (a != b)
         {
@@ -198,7 +198,7 @@ public final class Check
      * @param object The object to check.
      * @throws LionEngineException If object is <code>null</code>.
      */
-    public static void notNull(Object object) throws LionEngineException
+    public static void notNull(Object object)
     {
         if (object == null)
         {
@@ -214,7 +214,7 @@ public final class Check
      * @param strict <code>true</code> for strictly superior, <code>false</code> for strict or equal superior.
      * @throws LionEngineException If check failed.
      */
-    private static void superior(int a, int b, boolean strict) throws LionEngineException
+    private static void superior(int a, int b, boolean strict)
     {
         if (strict)
         {
@@ -240,7 +240,7 @@ public final class Check
      * @param strict <code>true</code> for strictly superior, <code>false</code> for strict or equal superior.
      * @throws LionEngineException If check failed.
      */
-    private static void superior(double a, double b, boolean strict) throws LionEngineException
+    private static void superior(double a, double b, boolean strict)
     {
         if (strict)
         {
@@ -266,7 +266,7 @@ public final class Check
      * @param strict <code>true</code> for strictly inferior, <code>false</code> for strict or equal inferior.
      * @throws LionEngineException If check failed.
      */
-    private static void inferior(int a, int b, boolean strict) throws LionEngineException
+    private static void inferior(int a, int b, boolean strict)
     {
         if (strict)
         {
@@ -292,7 +292,7 @@ public final class Check
      * @param strict <code>true</code> for strictly inferior, <code>false</code> for strict or equal inferior.
      * @throws LionEngineException If check failed.
      */
-    private static void inferior(double a, double b, boolean strict) throws LionEngineException
+    private static void inferior(double a, double b, boolean strict)
     {
         if (strict)
         {

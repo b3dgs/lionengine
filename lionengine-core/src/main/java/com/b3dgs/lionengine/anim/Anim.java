@@ -51,7 +51,7 @@ public final class Anim
                                             int lastFrame,
                                             double speed,
                                             boolean reverse,
-                                            boolean repeat) throws LionEngineException
+                                            boolean repeat)
     {
         return new AnimationImpl(name, firstFrame, lastFrame, speed, reverse, repeat);
     }

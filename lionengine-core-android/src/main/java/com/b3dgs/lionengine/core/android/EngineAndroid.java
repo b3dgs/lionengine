@@ -40,7 +40,7 @@ public final class EngineAndroid extends Engine
      * @param activity The activity reference (must not be <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
-    public static void start(String name, Version version, Activity activity) throws LionEngineException
+    public static void start(String name, Version version, Activity activity)
     {
         Engine.start(new EngineAndroid(name, version, activity));
     }
@@ -56,7 +56,7 @@ public final class EngineAndroid extends Engine
      * @param activity The activity reference (must not be <code>null</code>).
      * @throws LionEngineException If arguments error.
      */
-    public EngineAndroid(String name, Version version, Activity activity) throws LionEngineException
+    public EngineAndroid(String name, Version version, Activity activity)
     {
         super(name, version);
         Check.notNull(activity);

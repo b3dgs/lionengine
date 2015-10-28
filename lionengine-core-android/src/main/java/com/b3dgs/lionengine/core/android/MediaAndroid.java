@@ -50,7 +50,7 @@ final class MediaAndroid implements Media
      * @param path The media path.
      * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaAndroid(String path) throws LionEngineException
+    MediaAndroid(String path)
     {
         Check.notNull(path);
         this.path = path;
@@ -89,13 +89,13 @@ final class MediaAndroid implements Media
     }
 
     @Override
-    public InputStream getInputStream() throws LionEngineException
+    public InputStream getInputStream()
     {
         return UtilityMedia.getStream(this, MediaAndroid.class.getName(), false);
     }
 
     @Override
-    public OutputStream getOutputStream() throws LionEngineException
+    public OutputStream getOutputStream()
     {
         return UtilityMedia.getOutputStream(this, MediaAndroid.class.getName(), false);
     }

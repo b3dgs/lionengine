@@ -77,7 +77,7 @@ public final class UtilityImage
      * @return The created image from file.
      * @throws LionEngineException If an error occurred when reading the image.
      */
-    static ImageBuffer getImage(Media media) throws LionEngineException
+    static ImageBuffer getImage(Media media)
     {
         try
         {
@@ -200,7 +200,7 @@ public final class UtilityImage
      * @param media The output media.
      * @throws LionEngineException If an error occurred when saving the image.
      */
-    static void saveImage(ImageBuffer image, Media media) throws LionEngineException
+    static void saveImage(ImageBuffer image, Media media)
     {
         final OutputStream output = media.getOutputStream();
         if (ToolsAndroid.saveImage(UtilityImage.getBuffer(image), output))

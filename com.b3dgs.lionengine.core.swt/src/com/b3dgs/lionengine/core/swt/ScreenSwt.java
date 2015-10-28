@@ -100,7 +100,7 @@ abstract class ScreenSwt implements Screen, FocusListener
      * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not
      *             supported.
      */
-    protected ScreenSwt(Renderer renderer) throws LionEngineException
+    protected ScreenSwt(Renderer renderer)
     {
         Check.notNull(renderer);
 
@@ -126,7 +126,7 @@ abstract class ScreenSwt implements Screen, FocusListener
      * @return The created main frame.
      * @throws LionEngineException If engine has not been started.
      */
-    private Shell initMainFrame(boolean windowed) throws LionEngineException
+    private Shell initMainFrame(boolean windowed)
     {
         final Shell shell;
         if (windowed)
@@ -208,7 +208,7 @@ abstract class ScreenSwt implements Screen, FocusListener
      * @param output The output resolution
      * @throws LionEngineException If resolution is not supported.
      */
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
         width = output.getWidth();
         height = output.getHeight();
@@ -363,7 +363,7 @@ abstract class ScreenSwt implements Screen, FocusListener
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
+    public <T extends InputDevice> T getInputDevice(Class<T> type)
     {
         return type.cast(devices.get(type));
     }

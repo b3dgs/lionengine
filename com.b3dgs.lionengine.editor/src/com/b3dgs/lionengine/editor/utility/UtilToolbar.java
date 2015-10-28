@@ -114,7 +114,7 @@ public final class UtilToolbar
      * @return The composite found.
      * @throws LionEngineException If not found.
      */
-    public static <T> T getToolItem(MToolBar toolbar, String name, Class<T> clazz) throws LionEngineException
+    public static <T> T getToolItem(MToolBar toolbar, String name, Class<T> clazz)
     {
         for (final MToolBarElement element : toolbar.getChildren())
         {

@@ -151,7 +151,7 @@ public class MapTileGame implements MapTile
      * @param services The services reference.
      * @throws LionEngineException If service not found.
      */
-    public MapTileGame(Services services) throws LionEngineException
+    public MapTileGame(Services services)
     {
         this.services = services;
         viewer = services.get(Viewer.class);
@@ -327,7 +327,7 @@ public class MapTileGame implements MapTile
      */
 
     @Override
-    public void create(int widthInTile, int heightInTile) throws LionEngineException
+    public void create(int widthInTile, int heightInTile)
     {
         Check.superiorStrict(widthInTile, 0);
         Check.superiorStrict(heightInTile, 0);
@@ -411,7 +411,7 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public void create(Media levelrip) throws LionEngineException
+    public void create(Media levelrip)
     {
         create(levelrip,
                Medias.create(levelrip.getParentPath(), ConfigTileSheets.FILENAME),
@@ -419,7 +419,7 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public void create(Media levelrip, Media sheetsConfig, Media groupsConfig) throws LionEngineException
+    public void create(Media levelrip, Media sheetsConfig, Media groupsConfig)
     {
         clear();
         final LevelRipConverter rip = new LevelRipConverter(levelrip, sheetsConfig, this);
@@ -436,7 +436,7 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public <F extends MapTileFeature> F createFeature(Class<F> feature) throws LionEngineException
+    public <F extends MapTileFeature> F createFeature(Class<F> feature)
     {
         try
         {
@@ -455,7 +455,7 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public void loadSheets(Media sheetsConfig) throws LionEngineException
+    public void loadSheets(Media sheetsConfig)
     {
         Verbose.info(INFO_LOAD_SHEETS, sheetsConfig.getFile().getPath());
         this.sheetsConfig = sheetsConfig;
@@ -481,7 +481,7 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public void loadGroups(Media groupsConfig) throws LionEngineException
+    public void loadGroups(Media groupsConfig)
     {
         Verbose.info(INFO_LOAD_GROUPS, groupsConfig.getFile().getPath());
         this.groupsConfig = groupsConfig;
@@ -595,14 +595,14 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public void setTileRenderer(MapTileRenderer renderer) throws LionEngineException
+    public void setTileRenderer(MapTileRenderer renderer)
     {
         Check.notNull(renderer);
         this.renderer = renderer;
     }
 
     @Override
-    public void setTile(int tx, int ty, Tile tile) throws LionEngineException
+    public void setTile(int tx, int ty, Tile tile)
     {
         Check.inferiorStrict(tx, getInTileWidth());
         Check.inferiorStrict(ty, getInTileHeight());
@@ -700,7 +700,7 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public SpriteTiled getSheet(Integer sheet) throws LionEngineException
+    public SpriteTiled getSheet(Integer sheet)
     {
         if (!sheets.containsKey(sheet))
         {
@@ -720,7 +720,7 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public TileGroup getGroup(Integer sheet, int number) throws LionEngineException
+    public TileGroup getGroup(Integer sheet, int number)
     {
         for (final TileGroup group : groups.values())
         {
@@ -740,7 +740,7 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public <C extends MapTileFeature> C getFeature(Class<C> feature) throws LionEngineException
+    public <C extends MapTileFeature> C getFeature(Class<C> feature)
     {
         return features.get(feature);
     }

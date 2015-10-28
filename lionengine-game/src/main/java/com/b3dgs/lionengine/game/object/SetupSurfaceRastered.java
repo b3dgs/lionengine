@@ -96,7 +96,7 @@ public class SetupSurfaceRastered extends SetupSurface
      * @param smoothRaster The raster smooth flag.
      * @throws LionEngineException If error when opening the media.
      */
-    public SetupSurfaceRastered(Media config, Media rasterFile, boolean smoothRaster) throws LionEngineException
+    public SetupSurfaceRastered(Media config, Media rasterFile, boolean smoothRaster)
     {
         super(config);
         this.rasterFile = rasterFile;
@@ -154,7 +154,7 @@ public class SetupSurfaceRastered extends SetupSurface
      *
      * @throws LionEngineException If the raster data from the media are invalid.
      */
-    private void loadRasters() throws LionEngineException
+    private void loadRasters()
     {
         final int[][] rasters = Graphics.loadRaster(rasterFile);
         final int[] color = new int[rasters.length];
@@ -182,7 +182,7 @@ public class SetupSurfaceRastered extends SetupSurface
      * @param eb The end blue.
      * @throws LionEngineException If arguments are invalid.
      */
-    private void addRaster(int fr, int fg, int fb, int er, int eg, int eb) throws LionEngineException
+    private void addRaster(int fr, int fg, int fb, int er, int eg, int eb)
     {
         final ImageBuffer rasterBuf = Graphics.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, frameHeight);
         final SpriteAnimated raster = Drawable.loadSpriteAnimated(rasterBuf, hf, vf);

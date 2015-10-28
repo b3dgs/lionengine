@@ -43,7 +43,7 @@ public interface Featurable<F>
      * @return The feature instance.
      * @throws LionEngineException If feature not found.
      */
-    <C extends F> C getFeature(Class<C> feature) throws LionEngineException;
+    <C extends F> C getFeature(Class<C> feature);
 
     /**
      * Get the supported features.

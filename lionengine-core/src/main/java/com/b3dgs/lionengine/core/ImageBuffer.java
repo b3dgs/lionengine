@@ -33,7 +33,7 @@ public interface ImageBuffer
      * 
      * @throws LionEngineException If error on preparing.
      */
-    void prepare() throws LionEngineException;
+    void prepare();
 
     /**
      * Create the image graphic context.

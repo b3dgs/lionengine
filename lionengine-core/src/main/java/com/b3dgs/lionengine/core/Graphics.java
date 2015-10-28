@@ -112,7 +112,7 @@ public final class Graphics
      * @return The created image buffer from file.
      * @throws LionEngineException If an error occurred when reading the image.
      */
-    public static ImageBuffer getImageBuffer(Media media) throws LionEngineException
+    public static ImageBuffer getImageBuffer(Media media)
     {
         return factoryGraphic.getImageBuffer(media);
     }
@@ -208,7 +208,7 @@ public final class Graphics
      * @return The filtered image as a new instance, or image parameter reference (no copy) if {@link Filter#NONE}.
      * @throws LionEngineException If the filter is not supported.
      */
-    public static ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException
+    public static ImageBuffer applyFilter(ImageBuffer image, Filter filter)
     {
         return factoryGraphic.applyFilter(image, filter);
     }
@@ -220,7 +220,7 @@ public final class Graphics
      * @param media The output media.
      * @throws LionEngineException If an error occurred when saving the image.
      */
-    public static void saveImage(ImageBuffer image, Media media) throws LionEngineException
+    public static void saveImage(ImageBuffer image, Media media)
     {
         factoryGraphic.saveImage(image, media);
     }
@@ -250,7 +250,7 @@ public final class Graphics
      * @return The raster data (can not be empty).
      * @throws LionEngineException If the raster data from the media are invalid.
      */
-    public static int[][] loadRaster(Media media) throws LionEngineException
+    public static int[][] loadRaster(Media media)
     {
         final XmlNode raster = Stream.loadXml(media);
         final String[] colors =

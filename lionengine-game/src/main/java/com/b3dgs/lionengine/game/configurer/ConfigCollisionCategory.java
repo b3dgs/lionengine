@@ -57,7 +57,7 @@ public final class ConfigCollisionCategory
      * @return The collisions category data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<CollisionCategory> create(XmlNode root) throws LionEngineException
+    public static Collection<CollisionCategory> create(XmlNode root)
     {
         final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
         for (final XmlNode node : root.getChildren(CATEGORY))
@@ -89,7 +89,7 @@ public final class ConfigCollisionCategory
      * @throws LionEngineException If unable to read node.
      */
     public static Collection<CollisionCategory> create(Configurer configurer, MapTileCollision map)
-            throws LionEngineException
+           
     {
         final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
         for (final XmlNode node : configurer.getRoot().getChildren(CATEGORY))
@@ -108,7 +108,7 @@ public final class ConfigCollisionCategory
      * @return The category node instance.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollisionCategory create(XmlNode root, MapTileCollision map) throws LionEngineException
+    public static CollisionCategory create(XmlNode root, MapTileCollision map)
     {
         final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>();
         for (final XmlNode groupNode : root.getChildren(ConfigTileGroups.NODE_GROUP))
@@ -142,7 +142,7 @@ public final class ConfigCollisionCategory
      * @param category The collision category to export.
      * @throws LionEngineException If error on writing.
      */
-    public static void export(XmlNode root, CollisionCategory category) throws LionEngineException
+    public static void export(XmlNode root, CollisionCategory category)
     {
         final XmlNode node = root.createChild(CATEGORY);
         node.writeString(NAME, category.getName());

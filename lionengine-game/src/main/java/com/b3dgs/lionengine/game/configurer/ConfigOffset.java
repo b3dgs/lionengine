@@ -41,7 +41,7 @@ public final class ConfigOffset
      * @return The offset data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigOffset create(Configurer configurer) throws LionEngineException
+    public static ConfigOffset create(Configurer configurer)
     {
         final int offsetX = configurer.getInteger(ConfigOffset.OFFSET_X, ConfigOffset.OFFSET);
         final int offsetY = configurer.getInteger(ConfigOffset.OFFSET_Y, ConfigOffset.OFFSET);

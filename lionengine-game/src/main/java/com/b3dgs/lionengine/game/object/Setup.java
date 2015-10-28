@@ -46,7 +46,7 @@ public class Setup
      * @param config The config media.
      * @throws LionEngineException If error when opening the media.
      */
-    public Setup(Media config) throws LionEngineException
+    public Setup(Media config)
     {
         configurer = new Configurer(config);
         configFile = config;
@@ -87,7 +87,7 @@ public class Setup
      * @return The class mapped to the setup.
      * @throws LionEngineException If the class was not found by the class loader.
      */
-    public final Class<?> getConfigClass(ClassLoader classLoader) throws LionEngineException
+    public final Class<?> getConfigClass(ClassLoader classLoader)
     {
         if (clazz == null)
         {

@@ -53,7 +53,7 @@ public final class ConfigTileConstraints
      * @return The collision constraint data.
      * @throws LionEngineException If error when reading node.
      */
-    public static Map<TileRef, Map<Orientation, TileConstraint>> create(Media config) throws LionEngineException
+    public static Map<TileRef, Map<Orientation, TileConstraint>> create(Media config)
     {
         final Map<TileRef, Map<Orientation, TileConstraint>> constraints;
         constraints = new HashMap<TileRef, Map<Orientation, TileConstraint>>();
@@ -76,7 +76,7 @@ public final class ConfigTileConstraints
      * @return The constraints read.
      * @throws LionEngineException If error when reading node.
      */
-    private static Map<Orientation, TileConstraint> getConstraints(XmlNode nodeTileRef) throws LionEngineException
+    private static Map<Orientation, TileConstraint> getConstraints(XmlNode nodeTileRef)
     {
         final Map<Orientation, TileConstraint> constraints = new HashMap<Orientation, TileConstraint>();
         for (final XmlNode nodeConstraint : nodeTileRef.getChildren(CONSTRAINT))
@@ -100,7 +100,7 @@ public final class ConfigTileConstraints
      * @return The exported node.
      * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(Map<TileRef, Collection<TileConstraint>> constraints) throws LionEngineException
+    public static XmlNode export(Map<TileRef, Collection<TileConstraint>> constraints)
     {
         final XmlNode nodeConstraints = Stream.createXmlNode(CONSTRAINTS);
         for (final Map.Entry<TileRef, Collection<TileConstraint>> entry : constraints.entrySet())

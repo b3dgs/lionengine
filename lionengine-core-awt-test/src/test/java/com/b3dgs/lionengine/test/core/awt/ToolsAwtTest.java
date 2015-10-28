@@ -76,10 +76,9 @@ public class ToolsAwtTest
      * Test the utility.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test
-    public void testUtility() throws LionEngineException, IOException
+    public void testUtility() throws IOException
     {
         final BufferedImage image = ToolsAwt.createImage(100, 100, Transparency.OPAQUE);
         Assert.assertNotNull(image);
@@ -120,10 +119,9 @@ public class ToolsAwtTest
      * Test the save.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test
-    public void testSave() throws LionEngineException, IOException
+    public void testSave() throws IOException
     {
         final Media media = Medias.create("image.png");
         try (InputStream input = media.getInputStream())
@@ -146,10 +144,9 @@ public class ToolsAwtTest
      * Test the get fail.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test(expected = LionEngineException.class)
-    public void testGetFail() throws LionEngineException, IOException
+    public void testGetFail() throws IOException
     {
         final Media media = Medias.create("image.xml");
         try (InputStream input = media.getInputStream())
@@ -163,10 +160,9 @@ public class ToolsAwtTest
      * Test the get fail IO.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test(expected = IOException.class)
-    public void testGetIoFail() throws LionEngineException, IOException
+    public void testGetIoFail() throws IOException
     {
         final Media media = Medias.create("raster.xml");
         try (InputStream input = media.getInputStream())

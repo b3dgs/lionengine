@@ -52,7 +52,7 @@ public interface Sc68
      * @param media The music media.
      * @throws LionEngineException If media is <code>null</code>
      */
-    void play(Media media) throws LionEngineException;
+    void play(Media media);
 
     /**
      * Set player volume (between 0 and 100, as a percent).
@@ -60,7 +60,7 @@ public interface Sc68
      * @param volume The music volume [0-100].
      * @throws LionEngineException If argument is invalid.
      */
-    void setVolume(int volume) throws LionEngineException;
+    void setVolume(int volume);
 
     /**
      * Configure the audio output.

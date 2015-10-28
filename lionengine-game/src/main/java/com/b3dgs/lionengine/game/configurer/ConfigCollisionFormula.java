@@ -54,7 +54,7 @@ public final class ConfigCollisionFormula
      * @return The collision formula data.
      * @throws LionEngineException If error when reading data.
      */
-    public static ConfigCollisionFormula create(Media config) throws LionEngineException
+    public static ConfigCollisionFormula create(Media config)
     {
         final XmlNode root = Stream.loadXml(config);
         final Map<String, CollisionFormula> collisions = new HashMap<String, CollisionFormula>(0);
@@ -74,7 +74,7 @@ public final class ConfigCollisionFormula
      * @param formula The formula reference.
      * @throws LionEngineException If error on writing.
      */
-    public static void export(XmlNode root, CollisionFormula formula) throws LionEngineException
+    public static void export(XmlNode root, CollisionFormula formula)
     {
         final XmlNode node = root.createChild(FORMULA);
         node.writeString(NAME, formula.getName());
@@ -91,7 +91,7 @@ public final class ConfigCollisionFormula
      * @return The tile collision formula instance.
      * @throws LionEngineException If error when reading data.
      */
-    public static CollisionFormula createCollision(XmlNode node) throws LionEngineException
+    public static CollisionFormula createCollision(XmlNode node)
     {
         final String name = node.readString(NAME);
         final CollisionRange range = ConfigCollisionRange.create(node.getChild(ConfigCollisionRange.RANGE));
@@ -173,7 +173,7 @@ public final class ConfigCollisionFormula
      * @return The formula reference.
      * @throws LionEngineException If the formula with the specified name is not found.
      */
-    public CollisionFormula getFormula(String name) throws LionEngineException
+    public CollisionFormula getFormula(String name)
     {
         final CollisionFormula collision = formulas.get(name);
         Check.notNull(collision);

@@ -121,7 +121,7 @@ public final class Project
      * @return The relative media.
      * @throws LionEngineException If not relative to expected folder.
      */
-    private static Media getRelativeMedia(File file, File from, String error) throws LionEngineException
+    private static Media getRelativeMedia(File file, File from, String error)
     {
         final String fromPath = from.getPath();
         final String path = file.getAbsolutePath();
@@ -212,7 +212,7 @@ public final class Project
      * @return The relative class media.
      * @throws LionEngineException If not relative to the expected folder.
      */
-    public Media getClassMedia(File file) throws LionEngineException
+    public Media getClassMedia(File file)
     {
         return getRelativeMedia(file, getClassesPath(), ERROR_MEDIA_RELATIVE_TO_CLASS);
     }
@@ -224,7 +224,7 @@ public final class Project
      * @return The relative media.
      * @throws LionEngineException If not relative to expected folder.
      */
-    public Media getResourceMedia(File file) throws LionEngineException
+    public Media getResourceMedia(File file)
     {
         return getRelativeMedia(file, getResourcesPath(), ERROR_MEDIA_RELATIVE_TO_RESOURCES);
     }
@@ -316,7 +316,7 @@ public final class Project
      * @return The loaded class.
      * @throws LionEngineException If error when loading the class.
      */
-    public Class<?> getClass(String name) throws LionEngineException
+    public Class<?> getClass(String name)
     {
         try
         {
@@ -337,7 +337,7 @@ public final class Project
      * @return The class reference.
      * @throws LionEngineException If not able to load the class.
      */
-    public <C> Class<? extends C> getClass(Media media, Class<C> clazz) throws LionEngineException
+    public <C> Class<? extends C> getClass(Media media, Class<C> clazz)
     {
         final String name = media.getPath()
                                  .replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
@@ -362,7 +362,7 @@ public final class Project
      * @return The class instance.
      * @throws LionEngineException If not able to create the class.
      */
-    public <C> C getInstance(Media media, Class<C> clazz) throws LionEngineException
+    public <C> C getInstance(Media media, Class<C> clazz)
     {
         final Class<? extends C> clazzRef = getClass(media, clazz);
         try

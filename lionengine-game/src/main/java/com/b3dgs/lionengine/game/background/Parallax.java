@@ -70,7 +70,7 @@ public class Parallax implements BackgroundComponent
      * @throws LionEngineException If arguments are invalid.
      */
     public Parallax(Resolution source, Media media, int parallaxsNumber, int decX, int decY, int sx, int sy)
-            throws LionEngineException
+           
     {
         this.parallaxsNumber = parallaxsNumber;
         parallax = Drawable.loadSpriteParallaxed(media, this.parallaxsNumber, sx, sy);

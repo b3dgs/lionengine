@@ -190,7 +190,7 @@ public class ResourceLoaderTest
         }
 
         @Override
-        public void load() throws LionEngineException
+        public void load()
         {
             try
             {
