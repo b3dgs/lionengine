@@ -330,12 +330,12 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
             if (Math.abs(x) > Math.abs(y))
             {
                 side = sideX;
-                collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + (int) function.compute(x * side));
+                collEnd = UtilWorld.getPoint(camera, startX + x, startY + (int) function.compute(x * side));
             }
             else
             {
                 side = sideY;
-                collEnd = UtilWorld.getPoint(map, camera, startX + (int) function.compute(y * side), startY + y);
+                collEnd = UtilWorld.getPoint(camera, startX + (int) function.compute(y * side), startY + y);
             }
         }
         else
@@ -349,7 +349,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 side = -sideX;
             }
             final int rx = UtilMath.getRounded(x, (int) (1 / function.compute(1)));
-            collEnd = UtilWorld.getPoint(map, camera, startX + rx, startY + (int) function.compute(rx * side));
+            collEnd = UtilWorld.getPoint(camera, startX + rx, startY + (int) function.compute(rx * side));
         }
     }
 
@@ -532,7 +532,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         startX = mx;
         startY = my;
-        collStart = UtilWorld.getPoint(map, camera, mx, my);
+        collStart = UtilWorld.getPoint(camera, mx, my);
         if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_TILE))
         {
             updatePointerTile(mx, my);

@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.properties.animation.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
@@ -42,11 +41,9 @@ public final class AnimationsEditorHandler
 
     /**
      * Execute the handler.
-     * 
-     * @param partService The part service reference.
      */
     @Execute
-    public void execute(EPartService partService)
+    public void execute()
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();
         final Configurer configurer = (Configurer) tree.getData();

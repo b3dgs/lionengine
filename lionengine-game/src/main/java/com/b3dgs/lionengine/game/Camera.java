@@ -121,8 +121,8 @@ public class Camera implements Viewer
      */
     public void moveLocation(double extrp, double vx, double vy)
     {
-        checkHorizontalLimit(vx);
-        checkVerticalLimit(vy);
+        checkHorizontalLimit(extrp, vx);
+        checkVerticalLimit(extrp, vy);
     }
 
     /**
@@ -247,9 +247,10 @@ public class Camera implements Viewer
     /**
      * Check horizontal limit on move.
      * 
+     * @param extrp The extrapolation value.
      * @param vx The horizontal movement.
      */
-    private void checkHorizontalLimit(double vx)
+    private void checkHorizontalLimit(double extrp, double vx)
     {
         // Inside interval
         if (transformable.getX() >= mapLeftLimit
@@ -257,7 +258,7 @@ public class Camera implements Viewer
             && mapLeftLimit != Integer.MIN_VALUE
             && mapRightLimit != Integer.MAX_VALUE)
         {
-            offset.moveLocation(1, vx, 0);
+            offset.moveLocation(extrp, vx, 0);
 
             // Block offset on its limits
             if (offset.getX() < -intervalHorizontal)
@@ -272,7 +273,7 @@ public class Camera implements Viewer
         // Outside interval
         if ((int) offset.getX() == -intervalHorizontal || (int) offset.getX() == intervalHorizontal)
         {
-            transformable.moveLocation(1, vx, 0);
+            transformable.moveLocation(extrp, vx, 0);
         }
         applyHorizontalLimit();
     }
@@ -280,9 +281,10 @@ public class Camera implements Viewer
     /**
      * Check vertical limit on move.
      * 
+     * @param extrp The extrapolation value.
      * @param vy The vertical movement.
      */
-    private void checkVerticalLimit(double vy)
+    private void checkVerticalLimit(double extrp, double vy)
     {
         // Inside interval
         if (transformable.getY() >= mapDownLimit
@@ -290,7 +292,7 @@ public class Camera implements Viewer
             && mapDownLimit != Integer.MIN_VALUE
             && mapUpLimit != Integer.MAX_VALUE)
         {
-            offset.moveLocation(1, 0, vy);
+            offset.moveLocation(extrp, 0, vy);
 
             // Block offset on its limits
             if (offset.getY() < -intervalVertical)
@@ -305,7 +307,7 @@ public class Camera implements Viewer
         // Outside interval
         if ((int) offset.getY() == -intervalVertical || (int) offset.getY() == intervalVertical)
         {
-            transformable.moveLocation(1, 0, vy);
+            transformable.moveLocation(extrp, 0, vy);
         }
         applyVerticalLimit();
     }

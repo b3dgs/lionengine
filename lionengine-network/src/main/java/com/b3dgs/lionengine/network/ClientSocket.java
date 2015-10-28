@@ -50,10 +50,9 @@ final class ClientSocket
      * 
      * @param id The client id.
      * @param socket The socket reference.
-     * @param server The server reference.
      * @throws LionEngineException If error on client socket.
      */
-    ClientSocket(final byte id, final Socket socket, final ServerImpl server)
+    ClientSocket(final byte id, final Socket socket)
     {
         clientId = id;
         this.socket = socket;

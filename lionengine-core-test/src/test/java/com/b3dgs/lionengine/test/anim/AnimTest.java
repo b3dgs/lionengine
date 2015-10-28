@@ -65,7 +65,7 @@ public class AnimTest
     {
         try
         {
-            Anim.createAnimation(null, first, last, speed, false, false);
+            Anim.createAnimation(null, first, last, speed, reverse, repeat);
         }
         catch (final LionEngineException exception)
         {

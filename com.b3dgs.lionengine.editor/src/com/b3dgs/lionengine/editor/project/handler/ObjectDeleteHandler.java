@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor.project.handler;
 import java.io.File;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -45,12 +44,10 @@ public final class ObjectDeleteHandler
 
     /**
      * Execute the handler.
-     * 
-     * @param partService The part service reference.
      * @param parent The shell parent.
      */
     @Execute
-    public void execute(EPartService partService, Shell parent)
+    public void execute(Shell parent)
     {
         final Media selection = ProjectModel.INSTANCE.getSelection();
         final File file = selection.getFile();

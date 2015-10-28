@@ -196,8 +196,7 @@ final class WavRoutine extends Thread
      * @throws LineUnavailableException The no audio line available.
      * @throws LionEngineException If error when getting the stream.
      */
-    private void openStream()
-            throws UnsupportedAudioFileException, IOException, LineUnavailableException, LionEngineException
+    private void openStream() throws UnsupportedAudioFileException, IOException, LineUnavailableException
     {
         audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(media.getInputStream()));
         final AudioFormat audioFormat = audioInputStream.getFormat();

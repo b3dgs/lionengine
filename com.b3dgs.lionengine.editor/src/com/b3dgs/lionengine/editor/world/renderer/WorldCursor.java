@@ -90,7 +90,7 @@ public class WorldCursor implements WorldRenderListener
         g.setColor(COLOR_CURSOR_PIXEL);
 
         final int size = (int) Math.round(scale);
-        final Point mouse = UtilWorld.getPoint(map, camera, world.getMouseX(), world.getMouseY());
+        final Point mouse = UtilWorld.getPoint(camera, world.getMouseX(), world.getMouseY());
         final int mx = (int) (camera.getViewpointX(mouse.getX()) * scale);
         final int my = (int) (camera.getViewpointY(mouse.getY()) * scale) - size;
 

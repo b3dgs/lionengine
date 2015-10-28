@@ -74,6 +74,7 @@ public final class ConfigTileGroups
      * 
      * @param configGroups The export media.
      * @param groups The groups to export.
+     * @throws LionEngineException If unable to write to media.
      */
     public static void exports(Media configGroups, Collection<TileGroup> groups)
     {
@@ -84,6 +85,8 @@ public final class ConfigTileGroups
         {
             exportGroup(nodeGroups, group);
         }
+
+        Stream.saveXml(nodeGroups, configGroups);
     }
 
     /**

@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -49,10 +48,8 @@ public class Selection
 
     /**
      * Create the selection updater.
-     * 
-     * @param services The services reference.
      */
-    public Selection(Services services)
+    public Selection()
     {
         selectionArea = Geom.createRectangle();
     }

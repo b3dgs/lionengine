@@ -96,7 +96,7 @@ public class Factory
             }, setup, services);
             final Integer id = HandledObjectsImpl.getFreeId();
             object.setId(id);
-            object.prepareTraits(setup, services);
+            object.prepareTraits(services);
             return object;
         }
         catch (final NoSuchMethodException exception)
@@ -128,7 +128,7 @@ public class Factory
             }, setup, services);
             final Integer id = HandledObjectsImpl.getFreeId();
             object.setId(id);
-            object.prepareTraits(setup, services);
+            object.prepareTraits(services);
             return object;
         }
         catch (final NoSuchMethodException exception)

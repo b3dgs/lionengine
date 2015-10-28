@@ -120,7 +120,7 @@ public class Minimap implements Image
      */
     public void loadPixelConfig(Media config)
     {
-        pixels = ConfigMinimap.imports(config, map);
+        pixels = ConfigMinimap.imports(config);
     }
 
     /**

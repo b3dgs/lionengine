@@ -25,7 +25,6 @@ import java.util.Map;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileRef;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -53,11 +52,10 @@ public final class ConfigMinimap
      * Create the minimap data from node.
      * 
      * @param configMinimap The minimap configuration media.
-     * @param map The map reference.
      * @return The minimap data.
      * @throws LionEngineException If unable to read data.
      */
-    public static Map<TileRef, ColorRgba> imports(Media configMinimap, MapTile map)
+    public static Map<TileRef, ColorRgba> imports(Media configMinimap)
     {
         final Map<TileRef, ColorRgba> colors = new HashMap<TileRef, ColorRgba>();
         final XmlNode nodeMinimap = Stream.loadXml(configMinimap);

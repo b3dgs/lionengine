@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Test the world class.
@@ -64,7 +65,7 @@ public class WorldTest
         config.setSource(output);
         final World world = new World(config);
 
-        final Media media = new MediaMock("test", true);
+        final Media media = Medias.create("test");
         try
         {
             world.saveToFile(media);
@@ -99,7 +100,7 @@ public class WorldTest
             // Success
         }
 
-        final Media media = new MediaMock("test", true);
+        final Media media = Medias.create("test");
         try
         {
             world.saveToFile(media);
@@ -116,7 +117,7 @@ public class WorldTest
 
         try
         {
-            world.loadFromFile(new MediaMock("type.xml"));
+            world.loadFromFile(Medias.create("type.xml"));
             Assert.fail();
         }
         catch (final LionEngineException exception)

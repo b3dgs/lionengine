@@ -11,8 +11,8 @@
     <suppress checks="AnonInnerLength" files="com.b3dgs.lionengine.audio.wav.Wav" lines="270" />
     <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="200" />
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="219" />
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="271" />
-    <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="319, 328, 336" />
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="270" />
+    <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="318, 327, 335" />
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.ScreenAwt" lines="155, 205" />
 	<suppress checks="MagicNumber" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="61" />
@@ -49,12 +49,12 @@
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.map.TileCollisionModel"
               lines="109, 114, 118, 148, 153, 157" />
     
-    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ClientSocket" lines="66, 166" />
+    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ClientSocket" lines="65, 165" />
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.network.ServerImpl" />
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ClientImpl"
               lines="104, 112, 120, 472, 473, 499, 500" />
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ClientSocket"
-              lines="123, 131, 139, 186, 204" />
+              lines="122, 130, 138, 185, 203" />
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ServerImpl" lines="177, 242, 317" />
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.network.ServerImpl" lines="369" />
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ServerImpl" lines="443, 522" />

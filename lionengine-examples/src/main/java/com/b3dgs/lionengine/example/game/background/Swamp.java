@@ -123,8 +123,8 @@ class Swamp extends BackgroundGame
          */
         Backdrop(int screenWidth)
         {
-            backcolor = createElement("backcolor.png", 0, 0, false);
-            mountain = createElement("mountain.png", 0, 124, false);
+            backcolor = createElement("backcolor.png", 0, 0);
+            mountain = createElement("mountain.png", 0, 124);
             final int x = (int) (208 * scaleH);
             moonOffset = 40;
             moon = Swamp.createElementRastered("moon.png", x, moonOffset, Swamp.MOON_RASTERS);

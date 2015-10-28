@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
 
 /**
@@ -40,6 +41,7 @@ public class CursorTest
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        Medias.setLoadFromJar(CursorTest.class);
     }
 
     /**
@@ -49,6 +51,7 @@ public class CursorTest
     public static void cleanUp()
     {
         Graphics.setFactoryGraphic(null);
+        Medias.setLoadFromJar(null);
     }
 
     /**
@@ -61,7 +64,7 @@ public class CursorTest
         final MouseMock mouse = new MouseMock();
 
         final Cursor cursor = new Cursor();
-        cursor.addImage(0, new MediaMock("cursor.png"));
+        cursor.addImage(0, Medias.create("cursor.png"));
         cursor.setArea(0, 0, 320, 240);
         cursor.setSensibility(1.0, 2.0);
         cursor.setInputDevice(mouse);

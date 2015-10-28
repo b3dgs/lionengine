@@ -131,17 +131,16 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     /**
      * Get the name value read from the stream.
      * 
-     * @param in The input stream.
      * @return The name string.
      * @throws IOException In case of error.
      */
-    private String readString(ObjectInputStream in) throws IOException
+    private String readString() throws IOException
     {
-        final int size = this.in.readByte();
+        final int size = in.readByte();
         if (size > 0)
         {
             final byte[] name = new byte[size];
-            if (this.in.read(name) != -1)
+            if (in.read(name) != -1)
             {
                 return new String(name, NetworkMessage.CHARSET);
             }
@@ -248,7 +247,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         for (int i = 0; i < clientsNumber; i++)
         {
             cid = in.readByte();
-            final String cname = readString(in);
+            final String cname = readString();
             for (final ConnectionListener listener : listeners)
             {
                 listener.notifyClientConnected(Byte.valueOf(cid), cname);
@@ -257,7 +256,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         // Message of the day if has
         if (in.available() > 0)
         {
-            final String motd = readString(in);
+            final String motd = readString();
             for (final ConnectionListener listener : listeners)
             {
                 listener.notifyMessageOfTheDay(motd);
@@ -278,7 +277,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     private void updateOtherClientConnected() throws IOException
     {
         final byte cid = in.readByte();
-        final String cname = readString(in);
+        final String cname = readString();
         for (final ConnectionListener listener : listeners)
         {
             listener.notifyClientConnected(Byte.valueOf(cid), cname);
@@ -293,7 +292,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     private void updateOtherClientDisconnected() throws IOException
     {
         final byte cid = in.readByte();
-        final String cname = readString(in);
+        final String cname = readString();
         for (final ConnectionListener listener : listeners)
         {
             listener.notifyClientDisconnected(Byte.valueOf(cid), cname);
@@ -308,7 +307,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     private void updateOtherClientRenamed() throws IOException
     {
         final byte cid = in.readByte();
-        final String cname = readString(in);
+        final String cname = readString();
         for (final ConnectionListener listener : listeners)
         {
             listener.notifyClientNameChanged(Byte.valueOf(cid), cname);

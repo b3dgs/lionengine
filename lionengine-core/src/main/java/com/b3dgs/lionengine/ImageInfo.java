@@ -233,19 +233,19 @@ public final class ImageInfo
      */
     private void readFormat(InputStream input, int byte1, int byte2, int byte3) throws IOException
     {
-        if (isGif(input, byte1, byte2, byte3))
+        if (isGif(byte1, byte2, byte3))
         {
             readGif(input);
         }
-        else if (isJpg(input, byte1, byte2, byte3))
+        else if (isJpg(byte1, byte2))
         {
             readJpg(input, byte3);
         }
-        else if (isPng(input, byte1, byte2, byte3))
+        else if (isPng(byte1, byte2, byte3))
         {
             readPng(input);
         }
-        else if (isBmp(input, byte1, byte2, byte3))
+        else if (isBmp(byte1, byte2))
         {
             readBmp(input);
         }
@@ -262,14 +262,12 @@ public final class ImageInfo
     /**
      * Check if can read as GIF.
      * 
-     * @param input The input stream.
      * @param byte1 The first byte.
      * @param byte2 The second byte.
      * @param byte3 The third byte.
      * @return <code>true</code> if is gif, <code>false</code> else.
-     * @throws IOException If an error occurred.
      */
-    private static boolean isGif(InputStream input, int byte1, int byte2, int byte3) throws IOException
+    private static boolean isGif(int byte1, int byte2, int byte3)
     {
         return 'G' == byte1 && 'I' == byte2 && 'F' == byte3;
     }
@@ -277,14 +275,11 @@ public final class ImageInfo
     /**
      * Check if can read as JPG.
      * 
-     * @param input The input stream.
      * @param byte1 The first byte.
      * @param byte2 The second byte.
-     * @param byte3 The third byte.
      * @return <code>true</code> if is jpg, <code>false</code> else.
-     * @throws IOException If an error occurred.
      */
-    private static boolean isJpg(InputStream input, int byte1, int byte2, int byte3) throws IOException
+    private static boolean isJpg(int byte1, int byte2)
     {
         return 0xFF == byte1 && 0xD8 == byte2;
     }
@@ -292,14 +287,12 @@ public final class ImageInfo
     /**
      * Check if can read as PNG.
      * 
-     * @param input The input stream.
      * @param byte1 The first byte.
      * @param byte2 The second byte.
      * @param byte3 The third byte.
      * @return <code>true</code> if read, <code>false</code> else.
-     * @throws IOException If an error occurred.
      */
-    private static boolean isPng(InputStream input, int byte1, int byte2, int byte3) throws IOException
+    private static boolean isPng(int byte1, int byte2, int byte3)
     {
         return 137 == byte1 && 80 == byte2 && 78 == byte3;
     }
@@ -307,14 +300,11 @@ public final class ImageInfo
     /**
      * Check if can read as BMP.
      * 
-     * @param input The input stream.
      * @param byte1 The first byte.
      * @param byte2 The second byte.
-     * @param byte3 The third byte.
      * @return <code>true</code> if is bmp, <code>false</code> else.
-     * @throws IOException If an error occurred.
      */
-    private static boolean isBmp(InputStream input, int byte1, int byte2, int byte3) throws IOException
+    private static boolean isBmp(int byte1, int byte2)
     {
         return 66 == byte1 && 77 == byte2;
     }
@@ -378,7 +368,7 @@ public final class ImageInfo
                 success = true;
                 break;
             }
-            final long skipped = input.skip(len - 2);
+            final long skipped = input.skip(len - 2L);
             checkSkippedError(skipped, len - 2);
             current = input.read();
         }
@@ -433,7 +423,7 @@ public final class ImageInfo
      */
     private void readTiff(InputStream input, int byte1) throws IOException
     {
-        final int toSkip = 8;
+        final long toSkip = 8L;
         final boolean bigEndian = 'M' == byte1;
         final int ifd = readInt(input, 4, bigEndian);
         long skipped = input.skip(ifd - toSkip);

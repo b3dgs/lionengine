@@ -50,6 +50,7 @@ public class TextMock implements Text
      * @param size The font size (in pixel).
      * @param style The font style.
      */
+    @SuppressWarnings("unused")
     TextMock(String fontName, int size, TextStyle style)
     {
         this.size = size;

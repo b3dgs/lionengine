@@ -141,7 +141,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 }
             }
             // Prepare first data
-            final ClientSocket client = new ClientSocket(lastId, socket, this);
+            final ClientSocket client = new ClientSocket(lastId, socket);
             client.setState(StateConnection.CONNECTING);
             client.getOut().writeByte(NetworkMessageSystemId.CONNECTING);
             client.getOut().writeByte(client.getId());

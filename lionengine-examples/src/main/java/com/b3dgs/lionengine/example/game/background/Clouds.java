@@ -36,7 +36,7 @@ class Clouds extends CloudsGame
      */
     public Clouds(Media path, int screenWidth, int decY)
     {
-        super(path, 160, 26, screenWidth, decY, false);
+        super(path, 160, 26, screenWidth, decY);
 
         setY(0, 0);
         setY(1, 30);

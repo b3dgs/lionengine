@@ -34,13 +34,12 @@ public final class UtilWorld
     /**
      * Get the location over the mouse.
      * 
-     * @param map The map reference.
      * @param camera The camera reference.
      * @param mx The mouse X.
      * @param my The mouse Y.
      * @return The location found.
      */
-    public static Point getPoint(MapTile map, Camera camera, int mx, int my)
+    public static Point getPoint(Camera camera, int mx, int my)
     {
         final int x = (int) camera.getX() + mx;
         final int y = (int) camera.getY() - my + camera.getHeight();

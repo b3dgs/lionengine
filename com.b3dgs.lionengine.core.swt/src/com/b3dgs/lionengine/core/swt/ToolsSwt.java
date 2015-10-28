@@ -502,7 +502,15 @@ public final class ToolsSwt
         {
             for (int x = 0; x < data.width; x++)
             {
-                flip.setPixel(data.width - x - 1, y, data.getPixel(x, y));
+                final int pixel = data.getPixel(x, y);
+                if (vertical)
+                {
+                    flip.setPixel(data.width - x - 1, y, pixel);
+                }
+                else
+                {
+                    flip.setPixel(x, data.height - y - 1, pixel);
+                }
             }
         }
         return new Image(image.getDevice(), flip);

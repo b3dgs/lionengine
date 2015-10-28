@@ -39,12 +39,11 @@ public final class PropertiesTileCollisionTester extends PropertyTester
     /**
      * Check result depending of selection.
      * 
-     * @param model The properties model.
      * @param data The selection reference.
      * @param property The property to check.
      * @return <code>true</code> if valid, <code>false</code> else.
      */
-    private static boolean check(PropertiesModel model, Object data, String property)
+    private static boolean check(Object data, String property)
     {
         final boolean result;
         if (PROPERTY_FORMULA_ADD.equals(property))
@@ -85,7 +84,7 @@ public final class PropertiesTileCollisionTester extends PropertyTester
         if (!model.isEmpty())
         {
             final Object data = model.getSelectedData();
-            return check(model, data, property);
+            return check(data, property);
         }
         return false;
     }

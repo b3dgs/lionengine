@@ -148,7 +148,7 @@ public class ObjectControl
                 if (setup instanceof SetupSurface)
                 {
                     final ObjectRepresentation object = factory.create(media, ObjectRepresentation.class);
-                    final Point point = UtilWorld.getPoint(map, camera, mx, my);
+                    final Point point = UtilWorld.getPoint(camera, mx, my);
                     object.place(UtilMath.getRounded(point.getX(), map.getTileWidth()),
                                  UtilMath.getRounded(point.getY(), map.getTileHeight()));
                     object.alignToGrid();

@@ -56,10 +56,9 @@ final class ScreenFullSwt extends ScreenSwt
      * Prepare fullscreen mode.
      * 
      * @param output The output resolution
-     * @param depth The bit depth color.
      * @throws LionEngineException If full screen is not supported.
      */
-    private void initFullscreen(Resolution output, int depth)
+    private void initFullscreen(Resolution output)
     {
         try
         {
@@ -89,7 +88,7 @@ final class ScreenFullSwt extends ScreenSwt
     @Override
     protected void setResolution(Resolution output)
     {
-        initFullscreen(output, config.getDepth());
+        initFullscreen(output);
         super.setResolution(output);
     }
 }

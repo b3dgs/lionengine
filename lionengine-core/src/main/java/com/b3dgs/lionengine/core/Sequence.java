@@ -161,6 +161,7 @@ public abstract class Sequence implements Sequencable
      * @param extrp The extrapolation value.
      * @param g The graphic output.
      */
+    @SuppressWarnings("unused")
     protected void onLoaded(double extrp, Graphic g)
     {
         // Nothing by default
@@ -173,6 +174,7 @@ public abstract class Sequence implements Sequencable
      * @param height The new screen height.
      * @param rate The new rate.
      */
+    @SuppressWarnings("unused")
     protected void onResolutionChanged(int width, int height, int rate)
     {
         // Nothing by default
@@ -184,6 +186,7 @@ public abstract class Sequence implements Sequencable
      * @param hasNextSequence <code>true</code> if there is a next sequence, <code>false</code> else (then application
      *            will end definitely).
      */
+    @SuppressWarnings("unused")
     protected void onTerminate(boolean hasNextSequence)
     {
         // Nothing by default

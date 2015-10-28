@@ -270,11 +270,10 @@ public class ObjectGame
     /**
      * Prepare added traits.
      * 
-     * @param setup The setup reference.
      * @param services The services reference.
      * @throws LionEngineException If error when creating instances.
      */
-    void prepareTraits(Setup setup, Services services)
+    void prepareTraits(Services services)
     {
         for (final Trait trait : traitToPrepare)
         {

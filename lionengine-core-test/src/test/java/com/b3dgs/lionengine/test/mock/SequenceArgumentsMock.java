@@ -34,6 +34,8 @@ import com.b3dgs.lionengine.test.util.Constant;
  */
 public class SequenceArgumentsMock extends Sequence
 {
+    /** Argument. */
+    private final Object argument;
     /** Width. */
     private int width;
     /** Height. */
@@ -50,6 +52,7 @@ public class SequenceArgumentsMock extends Sequence
     public SequenceArgumentsMock(Loader loader, Object argument)
     {
         super(loader, Constant.RESOLUTION_320_240);
+        this.argument = argument;
         setExtrapolated(true);
         addKeyListener(null);
         setSystemCursorVisible(true);
@@ -83,5 +86,6 @@ public class SequenceArgumentsMock extends Sequence
         Verbose.info(String.valueOf(height));
         Verbose.info(String.valueOf(config));
         Verbose.info(String.valueOf(getFps()));
+        Verbose.info(argument.toString());
     }
 }

@@ -41,13 +41,12 @@ public abstract class BackgroundGame implements Background
      * @param name The element name.
      * @param x The location x.
      * @param y The location y.
-     * @param alpha The alpha use flag.
      * @return The created element.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static BackgroundElement createElement(String name, int x, int y, boolean alpha)
+    public static BackgroundElement createElement(String name, int x, int y)
     {
-        return new BackgroundElement(x, y, createSprite(Medias.create(name), alpha));
+        return new BackgroundElement(x, y, createSprite(Medias.create(name)));
     }
 
     /**
@@ -57,25 +56,23 @@ public abstract class BackgroundGame implements Background
      * @param name The element name.
      * @param x The location x.
      * @param y The location y.
-     * @param alpha The alpha use flag.
      * @return The created element.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
+    public static BackgroundElement createElement(String path, String name, int x, int y)
            
     {
-        return new BackgroundElement(x, y, createSprite(Medias.create(path, name), alpha));
+        return new BackgroundElement(x, y, createSprite(Medias.create(path, name)));
     }
 
     /**
      * Create a sprite from its filename.
      * 
      * @param media The sprite media.
-     * @param alpha The alpha use flag.
      * @return The sprite instance.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    protected static Sprite createSprite(Media media, boolean alpha)
+    protected static Sprite createSprite(Media media)
     {
         final Sprite sprite = Drawable.loadSprite(media);
         sprite.load();

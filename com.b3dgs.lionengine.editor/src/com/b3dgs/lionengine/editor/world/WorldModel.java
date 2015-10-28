@@ -61,7 +61,7 @@ public class WorldModel
         handler.addRenderable(new ComponentRenderer());
         services.add(handler);
 
-        final Selection selection = new Selection(services);
+        final Selection selection = new Selection();
         services.add(selection);
 
         final ObjectControl objectControl = new ObjectControl(services);

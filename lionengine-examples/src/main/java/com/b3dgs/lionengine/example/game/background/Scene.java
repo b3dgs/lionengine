@@ -55,7 +55,7 @@ class Scene extends Sequence
     {
         super(loader, NATIVE);
         background = new Swamp(getConfig().getSource(), 1.0, 1.0);
-        foreground = new Foreground(getConfig().getSource(), 1.0, 1.0);
+        foreground = new Foreground(getConfig().getSource());
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 

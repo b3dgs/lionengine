@@ -51,8 +51,7 @@ public final class UtilReflection
      * @throws NoSuchMethodException If no constructor found.
      * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
      */
-    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params)
-            throws NoSuchMethodException, LionEngineException
+    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params) throws NoSuchMethodException
     {
         Check.notNull(type);
         try

@@ -171,14 +171,12 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
 
     /**
      * Update the selection.
-     * 
-     * @param click The mouse click.
      * @param oldMx The mouse old x.
      * @param oldMy The mouse old y.
      * @param mx The mouse x.
      * @param my The mouse y.
      */
-    private void updateSelection(int click, int oldMx, int oldMy, int mx, int my)
+    private void updateSelection(int oldMx, int oldMy, int mx, int my)
     {
         if (!objectControl.hasSelection())
         {
@@ -269,7 +267,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
         }
         else if (WorldModel.INSTANCE.isPalette(PaletteType.SELECTION) && click == Mouse.LEFT)
         {
-            updateSelection(click, oldMx, oldMy, mx, my);
+            updateSelection(oldMx, oldMy, mx, my);
         }
     }
 }

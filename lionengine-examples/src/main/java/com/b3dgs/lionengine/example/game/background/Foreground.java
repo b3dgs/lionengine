@@ -64,10 +64,8 @@ class Foreground extends BackgroundGame
      * Constructor.
      * 
      * @param source The resolution source reference.
-     * @param scaleH The horizontal factor.
-     * @param scaleV The vertical factor.
      */
-    public Foreground(Resolution source, double scaleH, double scaleV)
+    public Foreground(Resolution source)
     {
         super(null, 0, 0);
         nominal = 210;
@@ -297,12 +295,11 @@ class Foreground extends BackgroundGame
          * Update water effect.
          * 
          * @param g The graphics output.
-         * @param speed The effect speed.
          * @param frequency The effect frequency.
          * @param amplitude The effect amplitude.
          * @param offsetForce The offset force.
          */
-        private void waterEffect(Graphic g, double speed, double frequency, double amplitude, double offsetForce)
+        private void waterEffect(Graphic g, double frequency, double amplitude, double offsetForce)
         {
             final int oy = py + (int) water.getHeight();
             for (int y = screenHeight - 32 + getNominal() - 210 + oy; y < screenHeight; y++)
@@ -364,7 +361,7 @@ class Foreground extends BackgroundGame
                 }
             }
 
-            waterEffect(g, 0.06, 1.5, 0.8, 3.0);
+            waterEffect(g, 1.5, 0.8, 3.0);
         }
     }
 }

@@ -99,7 +99,7 @@ public final class UtilToolbar
         {
             if (element.getElementId().contains(name))
             {
-                setToolItemText(element, name, text);
+                setToolItemText(element, text);
             }
         }
     }
@@ -130,10 +130,9 @@ public final class UtilToolbar
      * Set the tool item text.
      * 
      * @param element The tool bar element reference.
-     * @param name The element name (relative to the tool bar ID).
      * @param text The text value.
      */
-    private static void setToolItemText(MToolBarElement element, String name, String text)
+    private static void setToolItemText(MToolBarElement element, String text)
     {
         final Object object = element.getWidget();
         if (object instanceof Composite)

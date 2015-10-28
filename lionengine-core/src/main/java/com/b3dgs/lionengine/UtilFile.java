@@ -65,7 +65,7 @@ public final class UtilFile
      * @throws IOException If error.
      * @throws LionEngineException If <code>null</code> arguments.
      */
-    public static void copy(InputStream source, OutputStream destination) throws IOException, LionEngineException
+    public static void copy(InputStream source, OutputStream destination) throws IOException
     {
         Check.notNull(source);
         Check.notNull(destination);

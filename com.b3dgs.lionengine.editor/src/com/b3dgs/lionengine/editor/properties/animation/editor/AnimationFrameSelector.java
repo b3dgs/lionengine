@@ -210,10 +210,8 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
      * Render the world.
      * 
      * @param g The graphic output.
-     * @param width The view width.
-     * @param height The view height.
      */
-    private void render(Graphic g, int width, int height)
+    private void render(Graphic g)
     {
         renderFramesBackground(g);
         renderFramesSelected(g);
@@ -317,7 +315,7 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     {
         final GC gc = paintEvent.gc;
         g.setGraphic(gc);
-        render(g, paintEvent.width, paintEvent.height);
+        render(g);
     }
 
     /*
