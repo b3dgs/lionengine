@@ -79,9 +79,9 @@ public abstract class ScreenBase implements Screen
     public void start()
     {
         final Media icon = config.getIcon();
-        if (icon != null)
+        if (icon != null && icon.getFile().exists())
         {
-            setIcon(icon.getFile().getAbsolutePath());
+            setIcon(icon.getFile().getPath());
         }
     }
 

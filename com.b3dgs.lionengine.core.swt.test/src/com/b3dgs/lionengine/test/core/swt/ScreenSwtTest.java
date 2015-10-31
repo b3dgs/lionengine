@@ -24,7 +24,6 @@ import org.eclipse.swt.SWTError;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -87,20 +86,13 @@ public class ScreenSwtTest
     }
 
     /**
-     * Check support of multiple display before test.
-     */
-    @Before
-    public void check()
-    {
-        checkMultipleDisplaySupport();
-    }
-
-    /**
      * Test the windowed screen.
      */
     @Test(timeout = TIMEOUT)
     public void testWindowed()
     {
+        checkMultipleDisplaySupport();
+
         final Config config = new Config(com.b3dgs.lionengine.test.util.Constant.RESOLUTION_320_240, 32, true);
         config.setIcon(Medias.create(IMAGE));
         testScreen(config);
@@ -112,6 +104,8 @@ public class ScreenSwtTest
     @Test(timeout = TIMEOUT)
     public void testFullscreen()
     {
+        checkMultipleDisplaySupport();
+
         final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         if (gd.isFullScreenSupported())
         {
@@ -132,6 +126,8 @@ public class ScreenSwtTest
     @Test(timeout = TIMEOUT, expected = LionEngineException.class)
     public void testFullscreenFail()
     {
+        checkMultipleDisplaySupport();
+
         final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         final Config config = new Config(resolution, 32, false);
         testScreen(config);
