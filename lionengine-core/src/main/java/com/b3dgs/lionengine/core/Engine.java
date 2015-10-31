@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.core;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
@@ -67,7 +67,6 @@ public abstract class Engine
         {
             throw new LionEngineException(ERROR_STARTED_ALREADY);
         }
-        Verbose.prepareLogger();
         Verbose.info(getStartingMessage(engine));
 
         engine.open();

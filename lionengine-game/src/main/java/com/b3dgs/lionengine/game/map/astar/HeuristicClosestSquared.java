@@ -40,8 +40,8 @@ public final class HeuristicClosestSquared implements Heuristic
     @Override
     public double getCost(int sx, int sy, int dx, int dy)
     {
-        final double x = dx - sx;
-        final double y = dy - sy;
+        final double x = dx - (double) sx;
+        final double y = dy - (double) sy;
         return x * x + y * y;
     }
 }

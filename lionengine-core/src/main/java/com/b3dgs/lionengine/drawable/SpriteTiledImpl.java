@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Tiled sprite implementation.
@@ -149,7 +149,11 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
             final boolean sameTileHeight = sprite.getTileHeight() == getTileHeight();
             final boolean sameHorizontalTiles = sprite.getTilesHorizontal() == getTilesHorizontal();
             final boolean sameVerticalTiles = sprite.getTilesVertical() == getTilesVertical();
-            return sameTileWidth && sameTileHeight && sameHorizontalTiles && sameVerticalTiles && sameSurface;
+
+            final boolean sameSize = sameTileWidth && sameTileHeight;
+            final boolean sameTiles = sameHorizontalTiles && sameVerticalTiles;
+
+            return sameSize && sameTiles && sameSurface;
         }
         return false;
     }

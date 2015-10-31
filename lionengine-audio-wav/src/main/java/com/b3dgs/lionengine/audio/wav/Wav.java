@@ -26,7 +26,8 @@ import java.util.concurrent.Semaphore;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Handle sound fx routine. The sound is expected to be short, as it has to be played quickly. It supports the following
@@ -290,6 +291,7 @@ public final class Wav
                     catch (final InterruptedException exception)
                     {
                         Thread.currentThread().interrupt();
+                        Verbose.exception(exception);
                     }
                     toStop.clear();
                     busySounds.clear();

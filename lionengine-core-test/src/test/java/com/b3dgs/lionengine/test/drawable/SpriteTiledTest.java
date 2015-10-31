@@ -22,11 +22,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.test.util.DrawableTestTool;
 public class SpriteTiledTest
 {
     /** Image media. */
-    private static final Media MEDIA = Medias.create("image.png");
+    private static Media media;
     /** Graphic test output. */
     private static Graphic g;
 
@@ -53,6 +53,8 @@ public class SpriteTiledTest
     {
         Medias.setLoadFromJar(SpriteTiledTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+
+        media = Medias.create("image.png");
         g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
@@ -62,6 +64,8 @@ public class SpriteTiledTest
     @AfterClass
     public static void cleanUp()
     {
+        g.dispose();
+
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
     }
@@ -87,8 +91,8 @@ public class SpriteTiledTest
         // Load from file
         final int tileWidth = 16;
         final int tileHeight = 8;
-        final SpriteTiled spriteB = Drawable.loadSpriteTiled(MEDIA, tileWidth, tileHeight);
-        DrawableTestTool.assertImageInfoCorrect(MEDIA, spriteB);
+        final SpriteTiled spriteB = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
+        DrawableTestTool.assertImageInfoCorrect(media, spriteB);
 
         Assert.assertEquals(tileWidth, spriteB.getTileWidth());
         Assert.assertEquals(tileHeight, spriteB.getTileHeight());
@@ -102,8 +106,8 @@ public class SpriteTiledTest
         Assert.assertFalse(spriteA.equals(spriteB));
 
         // Equals
-        final SpriteTiled spriteD = Drawable.loadSpriteTiled(MEDIA, tileWidth, tileHeight);
-        final SpriteTiled spriteE = Drawable.loadSpriteTiled(MEDIA, tileWidth + 2, tileHeight + 1);
+        final SpriteTiled spriteD = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
+        final SpriteTiled spriteE = Drawable.loadSpriteTiled(media, tileWidth + 2, tileHeight + 1);
         spriteD.load();
         spriteD.prepare();
         spriteE.load();
@@ -122,6 +126,6 @@ public class SpriteTiledTest
         DrawableTestTool.testSpriteTiledLoadError(0, 0);
         DrawableTestTool.testSpriteTiledLoadError(0, 1);
         DrawableTestTool.testSpriteTiledLoadError(1, 0);
-        Assert.assertFalse(spriteB.equals(Drawable.loadSpriteTiled(MEDIA, tileWidth, tileHeight)));
+        Assert.assertFalse(spriteB.equals(Drawable.loadSpriteTiled(media, tileWidth, tileHeight)));
     }
 }

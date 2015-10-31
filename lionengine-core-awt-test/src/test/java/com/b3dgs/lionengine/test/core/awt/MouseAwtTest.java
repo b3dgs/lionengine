@@ -24,8 +24,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.core.awt.MouseAwt;
 

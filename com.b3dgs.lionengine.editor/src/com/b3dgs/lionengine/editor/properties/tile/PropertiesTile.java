@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderTile;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.game.map.TileFeature;
 import com.b3dgs.lionengine.game.map.TileGroup;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -75,9 +75,9 @@ public class PropertiesTile implements PropertiesProviderTile
     public static void changeTileGroup(MapTile map, String oldGroup, String newGroup, Tile tile)
     {
         final Media config = map.getGroupsConfig();
-        final XmlNode root = Stream.loadXml(config);
+        final XmlNode root = Xml.load(config);
         changeTileGroup(root, oldGroup, newGroup, tile);
-        Stream.saveXml(root, config);
+        Xml.save(root, config);
         map.loadGroups(config);
     }
 

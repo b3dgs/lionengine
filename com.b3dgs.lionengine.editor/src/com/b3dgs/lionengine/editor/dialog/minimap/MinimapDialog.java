@@ -28,6 +28,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -37,10 +38,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
@@ -223,7 +223,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
 
         final Label label = new Label(miniShell, SWT.DOUBLE_BUFFERED);
         label.setLayoutData(new GridData(minimap.getWidth(), minimap.getHeight()));
-        label.setImage(ToolsSwt.getBuffer(minimap.getSurface()));
+        label.setImage((Image) minimap.getSurface().getSurface());
         label.addMouseListener(this);
         label.addMouseMoveListener(this);
         label.addMouseWheelListener(this);
@@ -296,7 +296,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
     {
         if (!gc.isDisposed())
         {
-            gc.drawImage(ToolsSwt.getBuffer(minimap.getSurface()), 0, 0);
+            gc.drawImage((Image) minimap.getSurface().getSurface(), 0, 0);
             gc.setForeground(green);
 
             final int width = camera.getWidth() / map.getTileWidth();

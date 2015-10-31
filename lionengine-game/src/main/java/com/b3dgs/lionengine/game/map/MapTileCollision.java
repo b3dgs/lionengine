@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.map;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;

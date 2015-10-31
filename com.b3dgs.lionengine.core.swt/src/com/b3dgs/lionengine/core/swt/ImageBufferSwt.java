@@ -25,9 +25,9 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * Image buffer implementation.
@@ -164,6 +164,13 @@ final class ImageBufferSwt implements ImageBuffer
     public int getHeight()
     {
         return data.height;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Image getSurface()
+    {
+        return image;
     }
 
     @Override

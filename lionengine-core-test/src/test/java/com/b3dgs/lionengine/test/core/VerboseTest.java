@@ -17,16 +17,10 @@
  */
 package com.b3dgs.lionengine.test.core;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.test.mock.SecurityManagerMock;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
@@ -37,26 +31,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 public class VerboseTest
 {
     /**
-     * Prepare test.
-     */
-    @BeforeClass
-    public static void setUp()
-    {
-        UtilReflection.getMethod(Verbose.class, "prepareLogger");
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-    }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        Verbose.set(Verbose.INFORMATION, Verbose.WARNING, Verbose.CRITICAL);
-        Verbose.info("****************************************************************************************");
-    }
-
-    /**
      * Test the verbose level.
      * 
      * @param level The verbose level.
@@ -65,28 +39,10 @@ public class VerboseTest
     {
         Verbose.set(level);
         Verbose.info("info");
+        Verbose.warning("warning");
         Verbose.warning(VerboseTest.class, "testVerbose", "warning");
         Verbose.critical(VerboseTest.class, "testVerbose", "critical");
-        Verbose.exception(VerboseTest.class, "testVerbose", new LionEngineException("exception"), "exception");
-    }
-
-    /**
-     * Prepare the test.
-     */
-    @Before
-    public void prepareTest()
-    {
-        System.setSecurityManager(null);
-        UtilReflection.getMethod(Verbose.class, "prepareLogger");
-    }
-
-    /**
-     * Clean test.
-     */
-    @After
-    public void afterTest()
-    {
-        System.setSecurityManager(null);
+        Verbose.exception(new LionEngineException("exception"), "exception");
     }
 
     /**
@@ -106,18 +62,11 @@ public class VerboseTest
     @Test
     public void testVerbose()
     {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         testVerbose(Verbose.INFORMATION);
         testVerbose(Verbose.WARNING);
         testVerbose(Verbose.CRITICAL);
-    }
-
-    /**
-     * Test the verbose security.
-     */
-    @Test
-    public void testVerboseSecurity()
-    {
-        System.setSecurityManager(new SecurityManagerMock(false));
-        UtilReflection.getMethod(Verbose.class, "prepareLogger");
+        Verbose.set(Verbose.INFORMATION, Verbose.WARNING, Verbose.CRITICAL);
+        Verbose.info("****************************************************************************************");
     }
 }

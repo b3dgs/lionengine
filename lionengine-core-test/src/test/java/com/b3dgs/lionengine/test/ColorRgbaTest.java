@@ -25,11 +25,12 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the color class.
@@ -206,6 +207,18 @@ public class ColorRgbaTest
                 }
             }
         }
+    }
+
+    /**
+     * Test the delta between two colors.
+     */
+    @Test
+    public void testColorDelta()
+    {
+        Assert.assertEquals(Math.sqrt(255 * 255 + 255 * 255 + 255 * 255),
+                            ColorRgba.getDelta(ColorRgba.BLACK, ColorRgba.WHITE),
+                            UtilTests.PRECISION);
+        Assert.assertEquals(0.0, ColorRgba.getDelta(ColorRgba.GRAY, ColorRgba.GRAY), UtilTests.PRECISION);
     }
 
     /**

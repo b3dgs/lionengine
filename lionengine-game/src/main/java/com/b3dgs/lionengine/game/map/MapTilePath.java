@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.map;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;

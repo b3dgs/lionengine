@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.example.game.handler;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;

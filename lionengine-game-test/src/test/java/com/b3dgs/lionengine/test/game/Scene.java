@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.test.game;
 
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 
 /**
@@ -32,15 +32,15 @@ final class Scene extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    Scene(Loader loader)
+    Scene(Context context)
     {
-        super(loader, new Resolution(320, 240, 16));
+        super(context, new Resolution(320, 240, 16));
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         // Load
     }

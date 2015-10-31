@@ -38,6 +38,24 @@ public class ComponentCollision implements ComponentUpdatable
         // Nothing to do
     }
 
+    /**
+     * Check the collision between two collidable.
+     * 
+     * @param objectA The first collidable.
+     * @param objectB The second collidable.
+     */
+    private void checkCollision(Collidable objectA, Collidable objectB)
+    {
+        if (objectA != objectB)
+        {
+            final Collision collision = objectA.collide(objectB);
+            if (collision != null)
+            {
+                objectB.notifyCollided(objectA);
+            }
+        }
+    }
+
     /*
      * ComponentUpdatable
      */
@@ -50,14 +68,7 @@ public class ComponentCollision implements ComponentUpdatable
         {
             for (final Collidable objectB : collidables)
             {
-                if (objectA != objectB)
-                {
-                    final Collision collision = objectA.collide(objectB);
-                    if (collision != null)
-                    {
-                        objectB.notifyCollided(objectA);
-                    }
-                }
+                checkCollision(objectA, objectB);
             }
         }
     }

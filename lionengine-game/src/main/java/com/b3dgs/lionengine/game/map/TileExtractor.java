@@ -23,13 +23,13 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -273,14 +273,12 @@ public final class TileExtractor
             for (int ripH = 0; ripH < ripHorizontalTiles; ripH++)
             {
                 // Skip blank tile of image map (0, 128, 128)
-                if (IGNORED_COLOR_VALUE != surface.getRgb(ripH * tileWidth, ripV * tileHeight))
+                if (IGNORED_COLOR_VALUE != surface.getRgb(ripH * tileWidth, ripV * tileHeight)
+                    && !isExtracted(surface, ripH, ripV))
                 {
-                    if (!isExtracted(surface, ripH, ripV))
-                    {
-                        checkSheetFilled();
-                        final int tileNumber = ripH + ripV * ripHorizontalTiles;
-                        extract(rip, tileNumber);
-                    }
+                    checkSheetFilled();
+                    final int tileNumber = ripH + ripV * ripHorizontalTiles;
+                    extract(rip, tileNumber);
                 }
                 updateProgress();
                 if (canceler != null && canceler.isCanceled())

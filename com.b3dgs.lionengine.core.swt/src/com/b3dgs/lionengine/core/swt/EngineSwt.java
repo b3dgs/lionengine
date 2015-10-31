@@ -21,11 +21,11 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.core.Version;
 
 /**
  * Engine SWT implementation.
@@ -43,7 +43,7 @@ public class EngineSwt extends Engine
      */
     public static void start(String name, Version version)
     {
-        Engine.start(new EngineSwt(name, version, (String) null));
+        Engine.start(new EngineSwt(name, version, Constant.EMPTY_STRING));
     }
 
     /**
@@ -72,6 +72,11 @@ public class EngineSwt extends Engine
         Engine.start(new EngineSwt(name, version, classResource));
     }
 
+    /** String resources directory. */
+    private final String resourcesDir;
+    /** Class resource. */
+    private final Class<?> classResource;
+
     /**
      * Create engine.
      * 
@@ -83,6 +88,11 @@ public class EngineSwt extends Engine
     public EngineSwt(String name, Version version, String resourcesDir)
     {
         super(name, version);
+
+        Check.notNull(resourcesDir);
+
+        this.resourcesDir = resourcesDir;
+        classResource = null;
         Medias.setResourcesDirectory(resourcesDir);
     }
 
@@ -97,7 +107,11 @@ public class EngineSwt extends Engine
     public EngineSwt(String name, Version version, Class<?> classResource)
     {
         super(name, version);
+
         Check.notNull(classResource);
+
+        this.classResource = classResource;
+        resourcesDir = null;
         Medias.setLoadFromJar(classResource);
     }
 
@@ -109,14 +123,14 @@ public class EngineSwt extends Engine
     protected void open()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicSwt());
-        if (Medias.getResourcesDir() != null)
+        if (resourcesDir != null)
         {
             final String workingDir = Constant.getSystemProperty("user.dir", Constant.EMPTY_STRING);
-            Verbose.info("Resources directory = ", UtilFile.getPath(workingDir, Medias.getResourcesDir()));
+            Verbose.info("Resources directory = ", UtilFile.getPath(workingDir, resourcesDir));
         }
-        else if (Medias.getClassResources() != null)
+        else if (classResource != null)
         {
-            Verbose.info("Class resources = ", Medias.getClassResources().getName());
+            Verbose.info("Class resources = ", classResource.getName());
         }
     }
 

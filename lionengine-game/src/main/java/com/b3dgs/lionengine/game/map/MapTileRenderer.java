@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 
 /**
  * Describe how the map tile rendering is performed. This will allow to customize map rendering.

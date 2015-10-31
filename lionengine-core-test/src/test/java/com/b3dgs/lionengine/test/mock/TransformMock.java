@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.test.mock;
 
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.UtilConversion;
-import com.b3dgs.lionengine.core.Transform;
 
 /**
  * Mock transform.

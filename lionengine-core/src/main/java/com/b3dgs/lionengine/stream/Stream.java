@@ -18,19 +18,13 @@
 package com.b3dgs.lionengine.stream;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Stream factory. Can create the following elements:
  * <ul>
  * <li>{@link FileReading}</li>
  * <li>{@link FileWriting}</li>
- * <li>{@link XmlNode}</li>
- * </ul>
- * It can also performs the following operations:
- * <ul>
- * <li>{@link #saveXml(XmlNode, Media)}</li>
- * <li>{@link #loadXml(Media)}</li>
  * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -59,42 +53,6 @@ public final class Stream
     public static FileWriting createFileWriting(Media media)
     {
         return new FileWritingImpl(media);
-    }
-
-    /**
-     * Load an XML file.
-     * 
-     * @param media The XML media path.
-     * @return The XML root node.
-     * @throws LionEngineException If error when opening the media.
-     */
-    public static XmlNode loadXml(Media media)
-    {
-        return XmlFactory.load(media);
-    }
-
-    /**
-     * Save an XML tree to a file.
-     * 
-     * @param root The XML root node.
-     * @param media The output media path.
-     * @throws LionEngineException If error when opening the media.
-     */
-    public static void saveXml(XmlNode root, Media media)
-    {
-        XmlFactory.save(root, media);
-    }
-
-    /**
-     * Create an XML node from a name.
-     * 
-     * @param name The node name.
-     * @return The created node.
-     * @throws LionEngineException If error when creating the node.
-     */
-    public static XmlNode createXmlNode(String name)
-    {
-        return new XmlNodeImpl(name);
     }
 
     /**

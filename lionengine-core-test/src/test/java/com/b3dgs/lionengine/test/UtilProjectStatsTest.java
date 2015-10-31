@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilProjectStats;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
@@ -53,5 +53,14 @@ public class UtilProjectStatsTest
         Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
         UtilProjectStats.countFileLines("null");
         Verbose.info("****************************************************************************************");
+    }
+
+    /**
+     * Test project stats error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testProjectStatsError()
+    {
+        UtilProjectStats.start("|");
     }
 }

@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.game.background;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteParallaxed;
 
@@ -70,7 +70,7 @@ public class Parallax implements BackgroundComponent
      * @throws LionEngineException If arguments are invalid.
      */
     public Parallax(Resolution source, Media media, int parallaxsNumber, int decX, int decY, int sx, int sy)
-           
+
     {
         this.parallaxsNumber = parallaxsNumber;
         parallax = Drawable.loadSpriteParallaxed(media, this.parallaxsNumber, sx, sy);
@@ -110,6 +110,26 @@ public class Parallax implements BackgroundComponent
         amplitude = (int) Math.ceil(w / 2.0) + 1;
     }
 
+    /**
+     * Render parallax line.
+     * 
+     * @param g The graphic output.
+     * @param numLine The current line number.
+     * @param lineY The line y position.
+     */
+    private void renderLine(Graphic g, int numLine, int lineY)
+    {
+        final int lineWidth = parallax.getLineWidth(numLine);
+        for (int j = -amplitude; j < amplitude; j++)
+        {
+            final int lx = (int) (-offsetX + offsetX * j - x[numLine] - x2[numLine] + numLine * (2.56 * factH) * j);
+            if (lx + lineWidth + decX >= 0 && lx <= screenWidth)
+            {
+                parallax.render(g, numLine, lx + decX, lineY);
+            }
+        }
+    }
+
     /*
      * BackgroundComponent
      */
@@ -122,10 +142,10 @@ public class Parallax implements BackgroundComponent
         final double wrapedSpeed = UtilMath.wrapDouble(speed, -speedWrap, speedWrap);
 
         // Move each line, depending of its id and size
-        for (int i = 0; i < parallaxsNumber; i++)
+        for (int lineNum = 0; lineNum < parallaxsNumber; lineNum++)
         {
-            this.x[i] += 0.2 * i * wrapedSpeed * 0.042;
-            x2[i] += wrapedSpeed * 0.25;
+            this.x[lineNum] += 0.2 * lineNum * wrapedSpeed * 0.042;
+            x2[lineNum] += wrapedSpeed * 0.25;
 
             // When line has arrived to its border
             if (this.x[1] >= 2.56 * factH || this.x[1] <= -2.56 * factH)
@@ -136,28 +156,19 @@ public class Parallax implements BackgroundComponent
                     x2[j] = 0.0;
                 }
             }
-            this.y[i] = i + y + mainY;
+            this.y[lineNum] = lineNum + y + (double) mainY;
         }
     }
 
     @Override
     public void render(Graphic g)
     {
-        for (int i = 0; i < parallaxsNumber; i++)
+        for (int numLine = 0; numLine < parallaxsNumber; numLine++)
         {
-            final int ly = (int) y[i];
-            final int lineWidth = parallax.getLineWidth(i);
-
-            if (ly >= 0 && ly < screenHeight)
+            final int lineY = (int) y[numLine];
+            if (lineY >= 0 && lineY < screenHeight)
             {
-                for (int j = -amplitude; j < amplitude; j++)
-                {
-                    final int lx = (int) (-offsetX + offsetX * j - x[i] - x2[i] + i * (2.56 * factH) * j);
-                    if (lx + lineWidth + decX >= 0 && lx <= screenWidth)
-                    {
-                        parallax.render(g, i, lx + decX, ly);
-                    }
-                }
+                renderLine(g, numLine, lineY);
             }
         }
     }

@@ -18,14 +18,14 @@
 package com.b3dgs.lionengine.example.helloworld;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 
 /**
@@ -47,16 +47,16 @@ class Scene extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, NATIVE);
+        super(context, NATIVE);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         text.setText("Hello");
         text.setLocation(getWidth() / 2, getHeight() / 2 - 8);
@@ -80,7 +80,7 @@ class Scene extends Sequence
     }
 
     @Override
-    protected void onTerminate(boolean hasNextSequence)
+    public void onTerminated(boolean hasNextSequence)
     {
         Engine.terminate();
     }

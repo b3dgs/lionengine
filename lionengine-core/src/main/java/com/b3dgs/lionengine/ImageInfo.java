@@ -20,9 +20,6 @@ package com.b3dgs.lionengine;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
-
 /**
  * Get quick information from an image without reading all data.
  * <p>
@@ -181,14 +178,7 @@ public final class ImageInfo
         }
         finally
         {
-            try
-            {
-                input.close();
-            }
-            catch (final IOException exception2)
-            {
-                Verbose.exception(getClass(), "ImageInfo", exception2);
-            }
+            UtilFile.safeClose(input);
         }
     }
 

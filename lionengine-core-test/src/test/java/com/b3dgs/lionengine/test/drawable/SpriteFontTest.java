@@ -23,12 +23,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteFont;
@@ -44,9 +44,9 @@ import com.b3dgs.lionengine.test.util.DrawableTestTool;
 public class SpriteFontTest
 {
     /** Image media. */
-    private static final Media MEDIA = Medias.create("image.png");
+    private static Media media;
     /** Font data. */
-    private static final Media FONT = Medias.create("fontdata.xml");
+    private static Media font;
     /** Graphic test output. */
     private static Graphic g;
 
@@ -58,6 +58,9 @@ public class SpriteFontTest
     {
         Medias.setLoadFromJar(SpriteFontTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+
+        media = Medias.create("image.png");
+        font = Medias.create("fontdata.xml");
         g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
@@ -67,6 +70,8 @@ public class SpriteFontTest
     @AfterClass
     public static void cleanUp()
     {
+        g.dispose();
+
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
     }
@@ -78,8 +83,8 @@ public class SpriteFontTest
     public void testSpriteFont()
     {
         final String text = "a%z";
-        final SpriteFont sprite = Drawable.loadSpriteFont(MEDIA, FONT, 6, 7);
-        Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(MEDIA, FONT, 6, 7)));
+        final SpriteFont sprite = Drawable.loadSpriteFont(media, font, 6, 7);
+        Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(media, font, 6, 7)));
 
         sprite.setOrigin(Origin.TOP_LEFT);
         sprite.setLocation(1.0, 2.0);
@@ -102,13 +107,13 @@ public class SpriteFontTest
         Assert.assertTrue(sprite.getTextWidth(text) >= 1);
         Assert.assertTrue(sprite.getTextHeight(text) >= 0);
 
-        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(MEDIA, FONT, 6, 7)));
+        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(media, font, 6, 7)));
 
         sprite.stretch(90, 110);
-        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(MEDIA, FONT, 6, 7)));
+        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(media, font, 6, 7)));
 
         // Hash code
-        final SpriteFont spriteB = Drawable.loadSpriteFont(MEDIA, FONT, 5, 4);
+        final SpriteFont spriteB = Drawable.loadSpriteFont(media, font, 5, 4);
         Assert.assertTrue(sprite.hashCode() != spriteB.hashCode());
     }
 }

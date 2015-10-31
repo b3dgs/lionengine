@@ -22,8 +22,8 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.stream.FileReading;

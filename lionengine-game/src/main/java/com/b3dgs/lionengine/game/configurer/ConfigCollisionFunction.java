@@ -66,7 +66,7 @@ public final class ConfigCollisionFunction
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(ERROR_TYPE, name);
+            throw new LionEngineException(exception, ERROR_TYPE, name);
         }
     }
 

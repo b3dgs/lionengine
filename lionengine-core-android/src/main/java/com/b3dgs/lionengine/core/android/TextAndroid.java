@@ -23,9 +23,10 @@ import android.graphics.Typeface;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Text;
 
 /**
  * Text implementation.
@@ -39,6 +40,7 @@ final class TextAndroid implements Text
      * 
      * @param style The text style.
      * @return The text style.
+     * @throws LionEngineException If unknown type.
      */
     private static int getStyle(TextStyle style)
     {
@@ -55,7 +57,7 @@ final class TextAndroid implements Text
                 value = Typeface.ITALIC;
                 break;
             default:
-                throw new RuntimeException("Unknown type: " + style);
+                throw new LionEngineException("Unknown type: " + style);
         }
         return value;
     }
@@ -87,6 +89,7 @@ final class TextAndroid implements Text
      * @param fontName The font name.
      * @param size The font size (in pixel).
      * @param style The font style.
+     * @throws LionEngineException If unsupported style type.
      */
     TextAndroid(String fontName, int size, TextStyle style)
     {

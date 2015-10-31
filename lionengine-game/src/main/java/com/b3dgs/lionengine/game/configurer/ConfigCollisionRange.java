@@ -67,7 +67,7 @@ public final class ConfigCollisionRange
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(ERROR_TYPE, axisName);
+            throw new LionEngineException(exception, ERROR_TYPE, axisName);
         }
     }
 

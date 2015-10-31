@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.world.renderer;
 import java.util.Map;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.editor.world.updater.Marker;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.game.Camera;

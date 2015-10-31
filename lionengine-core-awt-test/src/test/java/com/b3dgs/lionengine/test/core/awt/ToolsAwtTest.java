@@ -31,7 +31,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.ToolsAwt;
 import com.b3dgs.lionengine.test.util.UtilTests;

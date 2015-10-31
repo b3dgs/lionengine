@@ -21,14 +21,14 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurer.ConfigPathfinding;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -124,7 +124,7 @@ public class MapTilePathModel implements MapTilePath
     @Override
     public void loadPathfinding(Media pathfindingConfig)
     {
-        final XmlNode nodePathfinding = Stream.loadXml(pathfindingConfig);
+        final XmlNode nodePathfinding = Xml.load(pathfindingConfig);
         final ConfigPathfinding config = ConfigPathfinding.create(nodePathfinding);
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
@@ -303,17 +303,10 @@ public class MapTilePathModel implements MapTilePath
                 if (tile != null)
                 {
                     final TilePath tilePath = tile.getFeature(TilePath.class);
-                    try
+                    if (mover.isBlocking(tilePath.getCategory())
+                        || ignoreObjectId != null && !ids.isEmpty() && !ids.contains(ignoreObjectId))
                     {
-                        if (mover.isBlocking(tilePath.getCategory())
-                            || ignoreObjectId != null && ids.size() > 0 && !ids.contains(ignoreObjectId))
-                        {
-                            return false;
-                        }
-                    }
-                    catch (final LionEngineException exception)
-                    {
-                        return true;
+                        return false;
                     }
                 }
             }

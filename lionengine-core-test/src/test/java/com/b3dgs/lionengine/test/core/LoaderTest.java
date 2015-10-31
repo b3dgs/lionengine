@@ -17,28 +17,32 @@
  */
 package com.b3dgs.lionengine.test.core;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.Screen;
+import com.b3dgs.lionengine.core.TaskFuture;
 import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.test.mock.ScreenMock;
 import com.b3dgs.lionengine.test.mock.SequenceArgumentsMock;
 import com.b3dgs.lionengine.test.mock.SequenceFailMock;
+import com.b3dgs.lionengine.test.mock.SequenceInterruptMock;
+import com.b3dgs.lionengine.test.mock.SequenceMalformedMock;
 import com.b3dgs.lionengine.test.mock.SequenceNextFailMock;
 import com.b3dgs.lionengine.test.mock.SequenceSingleMock;
+import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the loader class.
@@ -60,6 +64,7 @@ public class LoaderTest
     @BeforeClass
     public static void prepareTest()
     {
+        Medias.setLoadFromJar(LoaderTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
@@ -69,35 +74,8 @@ public class LoaderTest
     @AfterClass
     public static void cleanUp()
     {
+        Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
-    }
-
-    /**
-     * Get the renderer field from loader.
-     * 
-     * @param loader The loader reference.
-     * @return The renderer reference.
-     */
-    static Renderer getRenderer(Loader loader)
-    {
-        return UtilReflection.getField(loader, "renderer");
-    }
-
-    /**
-     * Wait for loader to end.
-     * 
-     * @param loader The loader reference.
-     */
-    private static void waitEnd(Loader loader)
-    {
-        try
-        {
-            getRenderer(loader).join();
-        }
-        catch (final InterruptedException exception)
-        {
-            Assert.fail();
-        }
     }
 
     /**
@@ -106,7 +84,8 @@ public class LoaderTest
     @Test(expected = LionEngineException.class)
     public void testNullConfig()
     {
-        Assert.assertNotNull(new Loader(null));
+        final Loader loader = new Loader();
+        loader.start(null, SequenceSingleMock.class).await();
     }
 
     /**
@@ -115,8 +94,8 @@ public class LoaderTest
     @Test(expected = LionEngineException.class)
     public void testNullSequence()
     {
-        final Loader loader = new Loader(CONFIG);
-        loader.start(null);
+        final Loader loader = new Loader();
+        loader.start(CONFIG, null);
     }
 
     /**
@@ -125,23 +104,100 @@ public class LoaderTest
     @Test(expected = LionEngineException.class)
     public void testFailSequence()
     {
-        final Loader loader = new Loader(CONFIG);
-        loader.start(SequenceFailMock.class);
+        final Loader loader = new Loader();
+        loader.start(CONFIG, SequenceFailMock.class).await();
     }
 
     /**
      * Test the loader with fail next sequence.
      */
-    @Test
+    @Test(expected = LionEngineException.class)
     public void testFailNextSequence()
     {
-        final Loader loader = new Loader(CONFIG);
-        final AtomicBoolean uncaught = new AtomicBoolean(false);
-        final Thread.UncaughtExceptionHandler handler = (thread, exception) -> uncaught.set(true);
-        getRenderer(loader).setUncaughtExceptionHandler(handler);
-        loader.start(SequenceNextFailMock.class);
-        waitEnd(loader);
-        Assert.assertTrue(uncaught.get());
+        final Loader loader = new Loader();
+        loader.start(CONFIG, SequenceNextFailMock.class).await();
+    }
+
+    /**
+     * Test the loader with malformed sequence.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testMalformedSequence()
+    {
+        final Loader loader = new Loader();
+        loader.start(CONFIG, SequenceMalformedMock.class).await();
+    }
+
+    /**
+     * Test the loader interrupted.
+     * 
+     * @throws Throwable If error.
+     */
+    @Test(timeout = SequenceInterruptMock.PAUSE_MILLI * 2L, expected = LionEngineException.class)
+    public void testInterrupted() throws Throwable
+    {
+        final AtomicReference<Throwable> exception = new AtomicReference<>();
+        final Semaphore semaphore = new Semaphore(0);
+        final Thread thread = new Thread(() ->
+        {
+            final Loader loader = new Loader();
+            final TaskFuture future = loader.start(CONFIG, SequenceInterruptMock.class);
+            future.await();
+        });
+        thread.setUncaughtExceptionHandler((t, throwable) ->
+        {
+            exception.set(throwable);
+            semaphore.release();
+        });
+        thread.start();
+        UtilTests.pause(SequenceInterruptMock.PAUSE_MILLI / 2L);
+        thread.interrupt();
+        semaphore.acquire();
+        throw exception.get();
+    }
+
+    /**
+     * Test the loader interrupted unchecked exception.
+     * 
+     * @throws Throwable If error.
+     */
+    @Test(timeout = SequenceInterruptMock.PAUSE_MILLI * 2L, expected = Throwable.class)
+    public void testInterruptedUnchecked() throws Throwable
+    {
+        try
+        {
+            Graphics.setFactoryGraphic(new FactoryGraphicMock()
+            {
+                @Override
+                public Screen createScreen(Config config)
+                {
+                    return null;
+                }
+            });
+
+            final AtomicReference<Throwable> exception = new AtomicReference<>();
+            final Semaphore semaphore = new Semaphore(0);
+            final Thread thread = new Thread(() ->
+            {
+                final Loader loader = new Loader();
+                final TaskFuture future = loader.start(CONFIG, SequenceInterruptMock.class);
+                future.await();
+            });
+            thread.setUncaughtExceptionHandler((t, throwable) ->
+            {
+                exception.set(throwable);
+                semaphore.release();
+            });
+            thread.start();
+            UtilTests.pause(SequenceInterruptMock.PAUSE_MILLI / 2L);
+            thread.interrupt();
+            semaphore.acquire();
+            throw exception.get();
+        }
+        finally
+        {
+            Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        }
     }
 
     /**
@@ -150,9 +206,9 @@ public class LoaderTest
     @Test(expected = LionEngineException.class)
     public void testStarted()
     {
-        final Loader loader = new Loader(CONFIG);
-        loader.start(SequenceSingleMock.class);
-        loader.start(SequenceSingleMock.class);
+        final Loader loader = new Loader();
+        loader.start(CONFIG, SequenceSingleMock.class);
+        loader.start(CONFIG, SequenceSingleMock.class);
     }
 
     /**
@@ -164,8 +220,8 @@ public class LoaderTest
         final Config config = new Config(OUTPUT, 16, true);
         config.setIcon(ICON);
 
-        final Loader loader = new Loader(config);
-        loader.start(SequenceSingleMock.class);
+        final Loader loader = new Loader();
+        loader.start(config, SequenceSingleMock.class);
     }
 
     /**
@@ -177,8 +233,8 @@ public class LoaderTest
         final Config config = new Config(OUTPUT, 16, false);
         config.setIcon(ICON);
 
-        final Loader loader = new Loader(config);
-        loader.start(SequenceSingleMock.class);
+        final Loader loader = new Loader();
+        loader.start(config, SequenceSingleMock.class);
     }
 
     /**
@@ -187,9 +243,8 @@ public class LoaderTest
     @Test
     public void testSequenceSingle()
     {
-        final Loader loader = new Loader(CONFIG);
-        loader.start(SequenceSingleMock.class);
-        waitEnd(loader);
+        final Loader loader = new Loader();
+        loader.start(CONFIG, SequenceSingleMock.class).await();
     }
 
     /**
@@ -198,9 +253,62 @@ public class LoaderTest
     @Test
     public void testSequenceArgument()
     {
-        final Loader loader = new Loader(CONFIG);
-        loader.start(SequenceArgumentsMock.class, new Object());
-        waitEnd(loader);
+        final Loader loader = new Loader();
+        loader.start(CONFIG, SequenceArgumentsMock.class, new Object()).await();
+    }
+
+    /**
+     * Test the loader with timed out screen.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSequenceTimeout()
+    {
+        try
+        {
+            ScreenMock.setScreenWait(true);
+            final Loader loader = new Loader();
+            loader.start(CONFIG, SequenceSingleMock.class).await();
+        }
+        finally
+        {
+            ScreenMock.setScreenWait(false);
+        }
+    }
+
+    /**
+     * Test the loader interrupted.
+     * 
+     * @throws Throwable If error.
+     */
+    @Test(timeout = ScreenMock.READY_TIMEOUT * 2L, expected = LionEngineException.class)
+    public void testScreenInterrupted() throws Throwable
+    {
+        try
+        {
+            ScreenMock.setScreenWait(true);
+            final AtomicReference<Throwable> exception = new AtomicReference<>();
+            final Semaphore semaphore = new Semaphore(0);
+            final Thread thread = new Thread(() ->
+            {
+                final Screen screen = Graphics.createScreen(CONFIG);
+                screen.start();
+                screen.awaitReady();
+            });
+            thread.setUncaughtExceptionHandler((t, throwable) ->
+            {
+                exception.set(throwable);
+                semaphore.release();
+            });
+            thread.start();
+            UtilTests.pause(ScreenMock.READY_TIMEOUT / 2L);
+            thread.interrupt();
+            semaphore.acquire();
+            throw exception.get();
+        }
+        finally
+        {
+            ScreenMock.setScreenWait(false);
+        }
     }
 
     /**
@@ -211,9 +319,8 @@ public class LoaderTest
     {
         final Resolution output = new Resolution(320, 240, 0);
         final Config config = new Config(output, 16, true, Filter.BILINEAR);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceSingleMock.class);
-        waitEnd(loader);
+        final Loader loader = new Loader();
+        loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -224,9 +331,8 @@ public class LoaderTest
     {
         final Resolution output = new Resolution(640, 480, 0);
         final Config config = new Config(output, 16, true, Filter.BILINEAR);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceSingleMock.class);
-        waitEnd(loader);
+        final Loader loader = new Loader();
+        loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -237,9 +343,8 @@ public class LoaderTest
     {
         final Resolution output = new Resolution(640, 480, 0);
         final Config config = new Config(output, 16, false, Filter.HQ2X);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceSingleMock.class);
-        waitEnd(loader);
+        final Loader loader = new Loader();
+        loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -250,8 +355,7 @@ public class LoaderTest
     {
         final Resolution output = new Resolution(960, 720, 60);
         final Config config = new Config(output, 16, false, Filter.HQ3X);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceSingleMock.class);
-        waitEnd(loader);
+        final Loader loader = new Loader();
+        loader.start(config, SequenceSingleMock.class).await();
     }
 }

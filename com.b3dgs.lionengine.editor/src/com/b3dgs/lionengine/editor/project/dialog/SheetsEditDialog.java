@@ -32,9 +32,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.configurer.ConfigTileSheets;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -136,7 +136,7 @@ public class SheetsEditDialog extends AbstractDialog
      */
     private void loadData()
     {
-        final XmlNode node = Stream.loadXml(sheets);
+        final XmlNode node = Xml.load(sheets);
         final XmlNode tileSize = node.getChild(ConfigTileSheets.NODE_TILE_SIZE);
         tileWidthText.setText(tileSize.readString(ConfigTileSheets.ATTRIBUTE_TILE_WIDTH));
         tileHeightText.setText(tileSize.readString(ConfigTileSheets.ATTRIBUTE_TILE_HEIGHT));
@@ -177,7 +177,7 @@ public class SheetsEditDialog extends AbstractDialog
     @Override
     protected void onFinish()
     {
-        final XmlNode root = Stream.createXmlNode(ConfigTileSheets.NODE_TILE_SHEETS);
+        final XmlNode root = Xml.create(ConfigTileSheets.NODE_TILE_SHEETS);
         root.writeString(Configurer.HEADER, Engine.WEBSITE);
 
         final XmlNode tileSize = root.createChild(ConfigTileSheets.NODE_TILE_SIZE);
@@ -192,6 +192,6 @@ public class SheetsEditDialog extends AbstractDialog
                 node.setText(button.getText());
             }
         }
-        Stream.saveXml(root, sheets);
+        Xml.save(root, sheets);
     }
 }

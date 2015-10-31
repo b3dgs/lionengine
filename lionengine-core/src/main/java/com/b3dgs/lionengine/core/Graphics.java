@@ -19,10 +19,15 @@ package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -51,12 +56,12 @@ public final class Graphics
     /**
      * Create a screen.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @return The screen instance.
      */
-    public static Screen createScreen(Renderer renderer)
+    public static Screen createScreen(Config config)
     {
-        return factoryGraphic.createScreen(renderer);
+        return factoryGraphic.createScreen(config);
     }
 
     /**
@@ -252,7 +257,7 @@ public final class Graphics
      */
     public static int[][] loadRaster(Media media)
     {
-        final XmlNode raster = Stream.loadXml(media);
+        final XmlNode raster = Xml.load(media);
         final String[] colors =
         {
             "Red", "Green", "Blue"

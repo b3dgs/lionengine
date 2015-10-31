@@ -38,9 +38,9 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * Misc tools for SWT.
@@ -49,9 +49,6 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  */
 public final class ToolsSwt
 {
-    /** Error image buffer implementation. */
-    private static final String ERROR_IMAGE_BUFFER_IMPL = "Unsupported image buffer implementation !";
-
     /**
      * Get a unique display for the thread caller. Create a new one if not existing.
      * 
@@ -88,21 +85,6 @@ public final class ToolsSwt
             return new Image(device, data);
         }
         return image;
-    }
-
-    /**
-     * Get the image buffer.
-     * 
-     * @param image The image buffer.
-     * @return The buffer.
-     */
-    public static Image getBuffer(ImageBuffer image)
-    {
-        if (image instanceof ImageBufferSwt)
-        {
-            return ((ImageBufferSwt) image).getBuffer();
-        }
-        throw new LionEngineException(ERROR_IMAGE_BUFFER_IMPL);
     }
 
     /**

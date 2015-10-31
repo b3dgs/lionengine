@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Represents the transition handling between two different groups of tiles.

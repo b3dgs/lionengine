@@ -34,8 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Config;
 
 /**
  * Mouse implementation.
@@ -96,6 +96,7 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
         final int mouseButtons = getButtonsNumber();
         clicks = new boolean[mouseButtons];
         clicked = new boolean[mouseButtons];
+        robot = createRobot();
         centerX = x;
         centerY = y;
         wx = 0;
@@ -104,16 +105,6 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
         my = 0;
         oldX = x;
         oldY = y;
-        Robot r = null;
-        try
-        {
-            r = new Robot();
-        }
-        catch (final AWTException exception)
-        {
-            Verbose.critical(Mouse.class, "constructor", ERROR_ROBOT);
-        }
-        robot = r;
     }
 
     /**
@@ -125,6 +116,24 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
     {
         xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
         yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
+    }
+
+    /**
+     * Create a mouse robot.
+     * 
+     * @return The created robot, <code>null</code> if not available.
+     */
+    private Robot createRobot()
+    {
+        try
+        {
+            return new Robot();
+        }
+        catch (final AWTException exception)
+        {
+            Verbose.exception(exception, ERROR_ROBOT);
+            return null;
+        }
     }
 
     /**

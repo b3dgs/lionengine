@@ -23,8 +23,15 @@ import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Hq2x;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.Version;
+import com.b3dgs.lionengine.test.mock.ImageBufferMock;
 import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
@@ -46,6 +53,55 @@ public class UtilReflectionTest
     }
 
     /**
+     * Create the create with missing method.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test(expected = NoSuchMethodException.class)
+    public void testCreateNoMethod() throws NoSuchMethodException
+    {
+        Assert.assertNull(UtilReflection.create(Object.class, UtilReflection.getParamTypes(""), ""));
+    }
+
+    /**
+     * Create the create with invalid arguments.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCreateIllegalArgument() throws NoSuchMethodException
+    {
+        final ImageBuffer buffer = new ImageBufferMock(320, 240, Transparency.BITMASK);
+        Assert.assertNull(UtilReflection.create(Hq2x.class, UtilReflection.getParamTypes(buffer), buffer, buffer));
+    }
+
+    /**
+     * Create the create with constructor error.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCreateConstructorError() throws NoSuchMethodException
+    {
+        final ImageBuffer buffer = new ImageBufferMock(320, 240, Transparency.BITMASK);
+        Assert.assertNull(UtilReflection.create(Hq2x.class, UtilReflection.getParamTypes(buffer), (ImageBuffer) null));
+    }
+
+    /**
+     * Create the create with abstract class.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCreateAbstractClass() throws NoSuchMethodException
+    {
+        Assert.assertNull(UtilReflection.create(Engine.class,
+                                                UtilReflection.getParamTypes("", Version.DEFAULT),
+                                                "",
+                                                Version.DEFAULT));
+    }
+
+    /**
      * Test the get parameters types.
      */
     @Test
@@ -60,5 +116,72 @@ public class UtilReflectionTest
         Assert.assertEquals(Integer.class, types[0]);
         Assert.assertEquals(String.class, types[1]);
         Assert.assertEquals(Double.class, types[2]);
+    }
+
+    /**
+     * Test the get method.
+     */
+    @Test
+    public void testGetMethod()
+    {
+        Assert.assertNotNull(UtilReflection.getMethod(new Object(), "toString"));
+        Assert.assertNull(UtilReflection.getMethod(new Object(), "finalize"));
+    }
+
+    /**
+     * Test the get not existing method.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetMethodNotExists()
+    {
+        Assert.assertNotNull(UtilReflection.getMethod(new Object(), "123"));
+    }
+
+    /**
+     * Test the get method with call error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetMethodCallError()
+    {
+        Assert.assertNotNull(UtilReflection.getMethod(Integer.class, "valueOf", ""));
+    }
+
+    /**
+     * Test the get method with invalid parameter.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetMethodInvalidParameter()
+    {
+        Assert.assertNotNull(UtilReflection.getMethod(Integer.class, "valueOf", ""));
+    }
+
+    /**
+     * Test the get field.
+     */
+    @Test
+    public void testGetField()
+    {
+        Assert.assertNotNull(UtilReflection.getField(new Resolution(320, 240, 32), "lock"));
+    }
+
+    /**
+     * Test the get field unknown.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetFieldUnknown()
+    {
+        Assert.assertNotNull(UtilReflection.getField(new Object(), "0"));
+    }
+
+    /**
+     * Test the get compatible constructor not found.
+     * 
+     * @throws NoSuchMethodException If error.
+     */
+    @Test(expected = NoSuchMethodException.class)
+    public void testGetCompatibleConstructorNone() throws NoSuchMethodException
+    {
+        Assert.assertNotNull(UtilReflection.getCompatibleConstructor(String.class,
+                                                                     UtilReflection.getParamTypes(new Integer(1))));
     }
 }

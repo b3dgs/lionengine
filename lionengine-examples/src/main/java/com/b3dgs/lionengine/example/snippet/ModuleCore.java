@@ -147,7 +147,7 @@ public class ModuleCore
     {
         Scene(Loader loader)
         {
-            super(loader, new Resolution(320, 240, 60));
+            super(config, new Resolution(320, 240, 60));
         }
 
         @Override
@@ -298,7 +298,7 @@ public class ModuleCore
 
     void xmlNode()
     {
-        final XmlNode node = Stream.createXmlNode("node");
+        final XmlNode node = XmlFactory.createXmlNode("node");
         node.writeBoolean("value", true);
     }
 

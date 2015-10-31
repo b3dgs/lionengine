@@ -18,14 +18,14 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * Animated sprite implementation.
@@ -217,7 +217,10 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
             final boolean sameHorizontalFrames = sprite.getFramesHorizontal() == getFramesHorizontal();
             final boolean sameVerticalFrames = sprite.getFramesVertical() == getFramesVertical();
 
-            return sameFrameWidth && sameFrameHeight && sameHorizontalFrames && sameVerticalFrames && sameSprite;
+            final boolean sameSize = sameFrameWidth && sameFrameHeight;
+            final boolean sameFrames = sameHorizontalFrames && sameVerticalFrames;
+
+            return sameSize && sameFrames && sameSprite;
         }
         return false;
     }

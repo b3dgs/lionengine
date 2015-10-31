@@ -80,8 +80,12 @@ public class AssignableModel extends TraitModel implements Assignable
     public void update(double extrp)
     {
         if (assign != null
-            && UtilMath.isBetween(cursor.getScreenX(), viewer.getViewX(), viewer.getViewX() + viewer.getWidth())
-            && UtilMath.isBetween(cursor.getScreenY(), viewer.getViewY(), viewer.getViewY() + viewer.getHeight())
+            && UtilMath.isBetween(cursor.getScreenX(),
+                                  viewer.getViewX(),
+                                  viewer.getViewX() + (double) viewer.getWidth())
+            && UtilMath.isBetween(cursor.getScreenY(),
+                                  viewer.getViewY(),
+                                  viewer.getViewY() + (double) viewer.getHeight())
             && cursor.hasClickedOnce(clickAssign))
         {
             assign.assign();

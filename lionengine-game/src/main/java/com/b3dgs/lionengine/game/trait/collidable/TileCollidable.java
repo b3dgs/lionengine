@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.trait.collidable;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.trait.Trait;
 

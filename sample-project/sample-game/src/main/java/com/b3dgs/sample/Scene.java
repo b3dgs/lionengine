@@ -17,9 +17,9 @@
  */
 package com.b3dgs.sample;
 
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 
 /**
@@ -35,15 +35,15 @@ public class Scene extends Sequence
     /**
      * Create the scene.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, RESOLUTION);
+        super(context, RESOLUTION);
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         // Load resources
     }

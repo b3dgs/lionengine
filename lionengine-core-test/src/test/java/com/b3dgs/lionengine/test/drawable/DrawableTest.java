@@ -23,8 +23,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
@@ -38,9 +38,9 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 public class DrawableTest
 {
     /** Surface. */
-    private static final Media MEDIA = Medias.create("image.png");
+    private static Media media;
     /** Font data. */
-    private static final Media FONT = Medias.create("fontdata.xml");
+    private static Media font;
 
     /**
      * Setup test.
@@ -50,6 +50,9 @@ public class DrawableTest
     {
         Medias.setLoadFromJar(DrawableTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+
+        media = Medias.create("image.png");
+        font = Medias.create("fontdata.xml");
     }
 
     /**
@@ -78,8 +81,8 @@ public class DrawableTest
             }
             else
             {
-                Assert.assertNotNull(Drawable.loadImage(MEDIA));
-                Assert.assertNotNull(Drawable.loadImage(Graphics.getImageBuffer(MEDIA)));
+                Assert.assertNotNull(Drawable.loadImage(media));
+                Assert.assertNotNull(Drawable.loadImage(Graphics.getImageBuffer(media)));
             }
         }
         catch (final LionEngineException exception)
@@ -107,8 +110,8 @@ public class DrawableTest
             }
             else
             {
-                Assert.assertNotNull(Drawable.loadSprite(MEDIA));
-                Assert.assertNotNull(Drawable.loadSprite(Graphics.getImageBuffer(MEDIA)));
+                Assert.assertNotNull(Drawable.loadSprite(media));
+                Assert.assertNotNull(Drawable.loadSprite(Graphics.getImageBuffer(media)));
             }
         }
         catch (final LionEngineException exception)
@@ -133,13 +136,13 @@ public class DrawableTest
         {
             if (fail)
             {
-                Assert.assertNotNull(Drawable.loadSpriteAnimated(MEDIA, width, height));
+                Assert.assertNotNull(Drawable.loadSpriteAnimated(media, width, height));
                 Assert.fail();
             }
             else
             {
-                Assert.assertNotNull(Drawable.loadSpriteAnimated(MEDIA, width, height));
-                Assert.assertNotNull(Drawable.loadSpriteAnimated(Graphics.getImageBuffer(MEDIA), width, height));
+                Assert.assertNotNull(Drawable.loadSpriteAnimated(media, width, height));
+                Assert.assertNotNull(Drawable.loadSpriteAnimated(Graphics.getImageBuffer(media), width, height));
             }
         }
         catch (final LionEngineException exception)
@@ -164,13 +167,13 @@ public class DrawableTest
         {
             if (fail)
             {
-                Assert.assertNotNull(Drawable.loadSpriteTiled(MEDIA, width, height));
+                Assert.assertNotNull(Drawable.loadSpriteTiled(media, width, height));
                 Assert.fail();
             }
             else
             {
-                Assert.assertNotNull(Drawable.loadSpriteTiled(MEDIA, width, height));
-                Assert.assertNotNull(Drawable.loadSpriteTiled(Graphics.getImageBuffer(MEDIA), width, height));
+                Assert.assertNotNull(Drawable.loadSpriteTiled(media, width, height));
+                Assert.assertNotNull(Drawable.loadSpriteTiled(Graphics.getImageBuffer(media), width, height));
             }
         }
         catch (final LionEngineException exception)
@@ -193,7 +196,7 @@ public class DrawableTest
     {
         try
         {
-            Assert.assertNotNull(Drawable.loadSpriteFont(MEDIA, FONT, width, height));
+            Assert.assertNotNull(Drawable.loadSpriteFont(media, font, width, height));
             if (fail)
             {
                 Assert.fail();
@@ -220,7 +223,7 @@ public class DrawableTest
     {
         try
         {
-            Assert.assertNotNull(Drawable.loadSpriteParallaxed(MEDIA, lines, sx, sy));
+            Assert.assertNotNull(Drawable.loadSpriteParallaxed(media, lines, sx, sy));
             if (fail)
             {
                 Assert.fail();

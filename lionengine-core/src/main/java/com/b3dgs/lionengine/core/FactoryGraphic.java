@@ -19,30 +19,29 @@ package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
 
 /**
  * Represents the graphic factory.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Renderer
- * @see Screen
- * @see Graphic
- * @see Text
- * @see ImageBuffer
- * @see Transform
  */
 public interface FactoryGraphic
 {
     /**
      * Create a screen.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @return The screen instance.
      */
-    Screen createScreen(Renderer renderer);
+    Screen createScreen(Config config);
 
     /**
      * Create a graphic context.

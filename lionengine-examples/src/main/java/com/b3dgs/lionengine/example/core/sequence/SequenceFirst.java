@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.core.sequence;
 
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * SequenceLinkSimple implementation.
@@ -37,15 +37,15 @@ class SequenceFirst extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public SequenceFirst(Loader loader)
+    public SequenceFirst(Context context)
     {
-        super(loader, new Resolution(320, 100, 32));
+        super(context, new Resolution(320, 100, 32));
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         count = 0;
     }
@@ -67,7 +67,7 @@ class SequenceFirst extends Sequence
     }
 
     @Override
-    protected void onTerminate(boolean hasNextSequence)
+    public void onTerminated(boolean hasNextSequence)
     {
         if (!hasNextSequence)
         {

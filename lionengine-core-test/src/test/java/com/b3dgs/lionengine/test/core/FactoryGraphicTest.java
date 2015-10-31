@@ -27,19 +27,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Hq2x;
-import com.b3dgs.lionengine.Hq3x;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.FactoryMediaDefault;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Hq2x;
+import com.b3dgs.lionengine.core.Hq3x;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.test.util.Constant;
 
@@ -138,7 +137,7 @@ public class FactoryGraphicTest
     @Test
     public void testCreateScreen()
     {
-        Assert.assertNotNull(Graphics.createScreen(new Renderer(CONFIG)));
+        Assert.assertNotNull(Graphics.createScreen(CONFIG));
     }
 
     /**

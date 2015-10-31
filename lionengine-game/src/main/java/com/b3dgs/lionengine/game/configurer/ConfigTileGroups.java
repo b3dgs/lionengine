@@ -22,11 +22,11 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.map.TileGroup;
 import com.b3dgs.lionengine.game.map.TileRef;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -57,7 +57,7 @@ public final class ConfigTileGroups
      */
     public static Collection<TileGroup> imports(Media configGroups)
     {
-        final XmlNode nodeGroups = Stream.loadXml(configGroups);
+        final XmlNode nodeGroups = Xml.load(configGroups);
         final Collection<TileGroup> groups = new ArrayList<TileGroup>();
 
         for (final XmlNode nodeGroup : nodeGroups.getChildren(NODE_GROUP))
@@ -78,7 +78,7 @@ public final class ConfigTileGroups
      */
     public static void exports(Media configGroups, Collection<TileGroup> groups)
     {
-        final XmlNode nodeGroups = Stream.createXmlNode(NODE_GROUPS);
+        final XmlNode nodeGroups = Xml.create(NODE_GROUPS);
         nodeGroups.writeString(Configurer.HEADER, Engine.WEBSITE);
 
         for (final TileGroup group : groups)
@@ -86,7 +86,7 @@ public final class ConfigTileGroups
             exportGroup(nodeGroups, group);
         }
 
-        Stream.saveXml(nodeGroups, configGroups);
+        Xml.save(nodeGroups, configGroups);
     }
 
     /**
@@ -105,9 +105,7 @@ public final class ConfigTileGroups
         }
 
         final String groupName = nodeGroup.readString(ATTRIBUTE_GROUP_NAME);
-        final TileGroup group = new TileGroup(groupName, tiles);
-
-        return group;
+        return new TileGroup(groupName, tiles);
     }
 
     /**

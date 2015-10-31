@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.example.core.minimal;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
@@ -58,7 +58,7 @@ public class AppJava
         final Config config = new Config(output, 16, true);
 
         // Program starter, setup with our configuration. It just needs one sequence reference to start.
-        final Loader loader = new Loader(config);
-        loader.start(Scene.class);
+        final Loader loader = new Loader();
+        loader.start(config, Scene.class);
     }
 }

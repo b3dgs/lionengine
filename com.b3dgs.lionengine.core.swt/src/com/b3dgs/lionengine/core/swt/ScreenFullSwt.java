@@ -23,10 +23,10 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Canvas;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Resolution;
 
 /**
  * Screen implementation.
@@ -43,13 +43,13 @@ final class ScreenFullSwt extends ScreenSwt
     /**
      * Internal constructor.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not
      *             supported.
      */
-    ScreenFullSwt(Renderer renderer)
+    ScreenFullSwt(Config config)
     {
-        super(renderer);
+        super(config);
     }
 
     /**
@@ -69,7 +69,9 @@ final class ScreenFullSwt extends ScreenSwt
                 canvas.setVisible(true);
             }
             canvas.setSize(output.getWidth(), output.getHeight());
-            buffer = Graphics.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
+            buffer = (ImageBufferSwt) Graphics.createImageBuffer(output.getWidth(),
+                                                                 output.getHeight(),
+                                                                 Transparency.OPAQUE);
             frame.pack();
 
             buf = canvas;

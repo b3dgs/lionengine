@@ -27,7 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -85,25 +85,15 @@ public class StreamTest
         {
             // Success
         }
-
-        try
-        {
-            Stream.createXmlNode(null);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
     }
 
     /**
      * Test the constructor.
      * 
-     * @throws Throwable If error.
+     * @throws ReflectiveOperationException If error.
      */
     @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    public void testConstructor() throws ReflectiveOperationException
     {
         UtilTests.testPrivateConstructor(Stream.class);
     }
@@ -117,7 +107,6 @@ public class StreamTest
     public void testFactory() throws IOException
     {
         testFailures();
-        Assert.assertNotNull(Stream.createXmlNode("test"));
         try (FileReading reading = Stream.createFileReading(Medias.create("malformed.xml")))
         {
             Assert.assertNotNull(reading);

@@ -22,12 +22,12 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -56,7 +56,7 @@ public final class ConfigCollisionFormula
      */
     public static ConfigCollisionFormula create(Media config)
     {
-        final XmlNode root = Stream.loadXml(config);
+        final XmlNode root = Xml.load(config);
         final Map<String, CollisionFormula> collisions = new HashMap<String, CollisionFormula>(0);
         for (final XmlNode node : root.getChildren(FORMULA))
         {

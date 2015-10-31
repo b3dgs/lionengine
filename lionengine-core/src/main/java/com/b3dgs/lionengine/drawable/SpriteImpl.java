@@ -23,16 +23,16 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * Sprite implementation.
@@ -43,8 +43,6 @@ class SpriteImpl implements Sprite
 {
     /** Surface already loaded error. */
     private static final String ERROR_LOADED = "Surface has already been loaded !";
-    /** Invalid mirror type. */
-    private static final String ERROR_MIRROR = "Invalid mirror type used: ";
 
     /** Sprite file name. */
     private final Media media;
@@ -125,19 +123,17 @@ class SpriteImpl implements Sprite
      */
     protected final void render(Graphic g, int x, int y, int w, int h, int ox, int oy)
     {
-        switch (mirror)
+        if (Mirror.HORIZONTAL == mirror)
         {
-            case HORIZONTAL:
-                g.drawImage(surface, x, y, x + w, y + h, ox * w + w, oy * h, ox * w, oy * h + h);
-                break;
-            case VERTICAL:
-                g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h + h, ox * w + w, oy * h);
-                break;
-            case NONE:
-                g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h, ox * w + w, oy * h + h);
-                break;
-            default:
-                throw new LionEngineException(ERROR_MIRROR);
+            g.drawImage(surface, x, y, x + w, y + h, ox * w + w, oy * h, ox * w, oy * h + h);
+        }
+        else if (Mirror.VERTICAL == mirror)
+        {
+            g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h + h, ox * w + w, oy * h);
+        }
+        else
+        {
+            g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h, ox * w + w, oy * h + h);
         }
     }
 
@@ -223,7 +219,7 @@ class SpriteImpl implements Sprite
         Check.superiorStrict(widthPercent, 0);
         Check.superiorStrict(heightPercent, 0);
 
-        if (widthPercent != 100 || heightPercent != 100)
+        if (Double.compare(widthPercent, 100) != 0 || Double.compare(heightPercent, 100) != 0)
         {
             final int newWidth = (int) Math.floor(width * widthPercent / 100.0);
             final int newHeight = (int) Math.floor(height * heightPercent / 100.0);

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.SocketException;
 
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Client connection listener thread.
@@ -78,7 +78,7 @@ final class ClientConnecter extends Thread
             }
             catch (final IOException exception)
             {
-                Verbose.exception(ClientConnecter.class, "run", exception);
+                Verbose.exception(exception);
             }
         }
     }

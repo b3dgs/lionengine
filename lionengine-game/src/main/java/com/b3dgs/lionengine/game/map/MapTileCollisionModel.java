@@ -24,16 +24,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -135,7 +135,7 @@ public class MapTileCollisionModel implements MapTileCollision
                 }
                 break;
             default:
-                throw new RuntimeException("Unknown type: " + range.getOutput());
+                throw new LionEngineException("Unknown type: " + range.getOutput());
         }
     }
 
@@ -285,7 +285,7 @@ public class MapTileCollisionModel implements MapTileCollision
         Verbose.info(INFO_LOAD_GROUPS, groupsConfig.getFile().getPath());
         groups.clear();
         this.groupsConfig = groupsConfig;
-        final XmlNode nodeGroups = Stream.loadXml(groupsConfig);
+        final XmlNode nodeGroups = Xml.load(groupsConfig);
         final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(nodeGroups, this);
         for (final CollisionGroup group : groups)
         {
@@ -306,21 +306,31 @@ public class MapTileCollisionModel implements MapTileCollision
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
-                    final TileCollision tileCollision;
-                    if (!tile.hasFeature(TileCollision.class))
-                    {
-                        tileCollision = new TileCollisionModel(tile);
-                        tile.addFeature(tileCollision);
-                    }
-                    else
-                    {
-                        tileCollision = tile.getFeature(TileCollision.class);
-                    }
-                    tileCollision.removeCollisionFormulas();
-                    addTileCollisions(tileCollision, tile);
+                    loadTileCollisions(tile);
                 }
             }
         }
+    }
+
+    /**
+     * Load the tile collisions.
+     * 
+     * @param tile The tile reference.
+     */
+    private void loadTileCollisions(Tile tile)
+    {
+        final TileCollision tileCollision;
+        if (!tile.hasFeature(TileCollision.class))
+        {
+            tileCollision = new TileCollisionModel(tile);
+            tile.addFeature(tileCollision);
+        }
+        else
+        {
+            tileCollision = tile.getFeature(TileCollision.class);
+        }
+        tileCollision.removeCollisionFormulas();
+        addTileCollisions(tileCollision, tile);
     }
 
     /**
@@ -483,21 +493,21 @@ public class MapTileCollisionModel implements MapTileCollision
     {
         if (formulasConfig != null)
         {
-            final XmlNode formulasRoot = Stream.createXmlNode(ConfigCollisionFormula.FORMULAS);
+            final XmlNode formulasRoot = Xml.create(ConfigCollisionFormula.FORMULAS);
             for (final CollisionFormula formula : getCollisionFormulas())
             {
                 ConfigCollisionFormula.export(formulasRoot, formula);
             }
-            Stream.saveXml(formulasRoot, formulasConfig);
+            Xml.save(formulasRoot, formulasConfig);
         }
         if (groupsConfig != null)
         {
-            final XmlNode groupsNode = Stream.createXmlNode(ConfigCollisionGroup.COLLISIONS);
+            final XmlNode groupsNode = Xml.create(ConfigCollisionGroup.COLLISIONS);
             for (final CollisionGroup group : getCollisionGroups())
             {
                 ConfigCollisionGroup.export(groupsNode, group);
             }
-            Stream.saveXml(groupsNode, groupsConfig);
+            Xml.save(groupsNode, groupsConfig);
         }
     }
 
@@ -592,7 +602,7 @@ public class MapTileCollisionModel implements MapTileCollision
                 if (tile != null)
                 {
                     final int x = (int) Math.floor(viewer.getViewpointX(tile.getX()));
-                    final int y = (int) Math.floor(viewer.getViewpointY(tile.getY() + tile.getHeight()));
+                    final int y = (int) Math.floor(viewer.getViewpointY(tile.getY() + (double) tile.getHeight()));
                     renderCollision(g, tile.getFeature(TileCollision.class), x, y);
                 }
             }

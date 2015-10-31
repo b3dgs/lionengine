@@ -53,4 +53,31 @@ public class CoordTest
         Assert.assertEquals(coord.getX(), -1.0, 0.000001);
         Assert.assertEquals(coord.getY(), 1.0, 0.000001);
     }
+
+    /**
+     * Test the coordinate equality.
+     */
+    @Test
+    public void testCoordEquals()
+    {
+        final Coord coord = Geom.createCoord();
+
+        Assert.assertEquals(coord, coord);
+        Assert.assertEquals(Geom.createCoord(), Geom.createCoord());
+        Assert.assertNotEquals(Geom.createCoord(1.0, 0.0), null);
+        Assert.assertNotEquals(Geom.createCoord(1.0, 0.0), new Object());
+        Assert.assertNotEquals(Geom.createCoord(1.0, 0.0), Geom.createCoord());
+        Assert.assertNotEquals(Geom.createCoord(0.0, 1.0), Geom.createCoord());
+    }
+
+    /**
+     * Test the coordinate hash.
+     */
+    @Test
+    public void testCoordHash()
+    {
+        Assert.assertEquals(Geom.createCoord().hashCode(), Geom.createCoord().hashCode());
+        Assert.assertNotEquals(Geom.createCoord(1.0, 0.0).hashCode(), Geom.createCoord().hashCode());
+        Assert.assertNotEquals(Geom.createCoord(0.0, 1.0).hashCode(), Geom.createCoord().hashCode());
+    }
 }

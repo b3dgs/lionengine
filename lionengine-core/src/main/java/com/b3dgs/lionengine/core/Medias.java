@@ -19,8 +19,11 @@ package com.b3dgs.lionengine.core;
 
 import java.io.File;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilFile;
 
 /**
  * Implementation provider for the {@link FactoryMedia}.
@@ -32,25 +35,16 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public final class Medias
 {
+    /** Unable to create media. */
+    private static final String ERROR_CREATE = "Unable to create media from path: ";
+    /** Factory media implementation. */
+    private static volatile FactoryMedia factoryMedia = new FactoryMediaDefault();
+    /** Path separator. */
+    private static volatile String separator = File.separator;
     /** Resources directory. */
     private static volatile String resourcesDir = Constant.EMPTY_STRING;
     /** Class loader. */
     private static volatile Class<?> loader;
-    /** Factory media implementation. */
-    private static volatile FactoryMedia factoryMedia = new FactoryMediaDefault();
-
-    /**
-     * Get a media from an existing file descriptor.
-     * 
-     * @param file The file descriptor.
-     * @return The media instance.
-     */
-    public static synchronized Media get(File file)
-    {
-        final String filename = file.getPath();
-        final String localFile = filename.substring(resourcesDir.length() + filename.lastIndexOf(resourcesDir));
-        return create(localFile);
-    }
 
     /**
      * Create a media.
@@ -59,21 +53,33 @@ public final class Medias
      * @return The media instance.
      * @throws LionEngineException If path is <code>null</code>.
      */
-    public static synchronized Media create(String path)
+    public static synchronized Media create(String... path)
     {
-        return factoryMedia.create(path);
+        if (loader != null)
+        {
+            return factoryMedia.create(separator, loader, path);
+        }
+        else if (resourcesDir != null)
+        {
+            return factoryMedia.create(separator, resourcesDir, path);
+        }
+        throw new LionEngineException(ERROR_CREATE, UtilFile.getPath(path));
     }
 
     /**
-     * Create a media from an abstract path.
+     * Get a media from an existing file descriptor. {@link #setResourcesDirectory(String)} must be activated.
      * 
-     * @param path The media path.
+     * @param file The file descriptor.
      * @return The media instance.
-     * @throws LionEngineException If path is <code>null</code>.
      */
-    public static synchronized Media create(String... path)
+    public static synchronized Media get(File file)
     {
-        return factoryMedia.create(path);
+        Check.notNull(resourcesDir);
+
+        final String filename = file.getPath();
+        final String localFile = filename.substring(resourcesDir.length() + filename.lastIndexOf(resourcesDir));
+
+        return create(localFile);
     }
 
     /**
@@ -87,7 +93,7 @@ public final class Medias
     }
 
     /**
-     * Define resources directory. Root for all medias.
+     * Define resources directory. Root for all medias. Disable the load from JAR.
      * 
      * @param directory The main resources directory (may be <code>null</code>).
      */
@@ -95,12 +101,13 @@ public final class Medias
     {
         if (directory == null)
         {
-            resourcesDir = Constant.EMPTY_STRING;
+            resourcesDir = null;
         }
         else
         {
             resourcesDir = directory + getSeparator();
         }
+        loader = null;
     }
 
     /**
@@ -122,33 +129,33 @@ public final class Medias
     }
 
     /**
+     * Get the resources directory.
+     * 
+     * @return The resources directory.
+     */
+    public static synchronized String getResourcesDirectory()
+    {
+        return resourcesDir;
+    }
+
+    /**
+     * Get the resources loader.
+     * 
+     * @return The resources loader.
+     */
+    public static synchronized Class<?> getResourcesLoader()
+    {
+        return loader;
+    }
+
+    /**
      * Set the path separator.
      * 
      * @param separator The path separator.
      */
     public static synchronized void setSeparator(String separator)
     {
-        factoryMedia.setSeparator(separator);
-    }
-
-    /**
-     * Get current resource directory.
-     * 
-     * @return The resource directory.
-     */
-    public static synchronized String getResourcesDir()
-    {
-        return resourcesDir;
-    }
-
-    /**
-     * Get the resources class loader.
-     * 
-     * @return The class loader to gather resources (can be <code>null</code>).
-     */
-    public static synchronized Class<?> getClassResources()
-    {
-        return loader;
+        Medias.separator = separator;
     }
 
     /**
@@ -158,7 +165,7 @@ public final class Medias
      */
     public static synchronized String getSeparator()
     {
-        return factoryMedia.getSeparator();
+        return separator;
     }
 
     /**

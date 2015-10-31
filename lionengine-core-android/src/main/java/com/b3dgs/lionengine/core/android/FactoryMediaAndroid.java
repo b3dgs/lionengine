@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.core.android;
 
-import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.FactoryMedia;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * Media factory implementation.
@@ -28,24 +28,6 @@ import com.b3dgs.lionengine.core.Media;
  */
 final class FactoryMediaAndroid implements FactoryMedia
 {
-    /**
-     * Remove unwanted end element.
-     * 
-     * @param path The input path.
-     * @return The formatted path.
-     */
-    private static String format(String path)
-    {
-        if (path.endsWith(Constant.SLASH) || path.endsWith("\\"))
-        {
-            return path.substring(0, path.length() - 1);
-        }
-        return path;
-    }
-
-    /** Path separator. */
-    private String separator;
-
     /**
      * Internal constructor.
      */
@@ -59,38 +41,14 @@ final class FactoryMediaAndroid implements FactoryMedia
      */
 
     @Override
-    public Media create(String path)
+    public Media create(String separator, String resourcesDir, String... path)
     {
-        return new MediaAndroid(path);
+        return new MediaAndroid(separator, UtilFile.getPathSeparator(separator, path));
     }
 
     @Override
-    public Media create(String... path)
+    public Media create(String separator, Class<?> loader, String... path)
     {
-        final StringBuilder fullPath = new StringBuilder();
-        for (int i = 0; i < path.length; i++)
-        {
-            if (path[i] != null && path[i].length() > 0)
-            {
-                fullPath.append(format(path[i]));
-                if (i < path.length - 1)
-                {
-                    fullPath.append(getSeparator());
-                }
-            }
-        }
-        return new MediaAndroid(fullPath.toString());
-    }
-
-    @Override
-    public String getSeparator()
-    {
-        return separator;
-    }
-
-    @Override
-    public void setSeparator(String separator)
-    {
-        this.separator = separator;
+        return new MediaAndroid(separator, UtilFile.getPathSeparator(separator, path));
     }
 }

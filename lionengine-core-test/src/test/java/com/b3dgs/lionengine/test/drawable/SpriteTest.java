@@ -22,14 +22,14 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.test.util.DrawableTestTool;
 public class SpriteTest
 {
     /** Image media. */
-    private static final Media MEDIA = Medias.create("image.png");
+    private static Media media;
     /** Graphic test output. */
     private static Graphic g;
 
@@ -57,6 +57,8 @@ public class SpriteTest
     {
         Medias.setLoadFromJar(SpriteTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+
+        media = Medias.create("image.png");
         g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
@@ -66,6 +68,8 @@ public class SpriteTest
     @AfterClass
     public static void cleanUp()
     {
+        g.dispose();
+
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
     }
@@ -96,12 +100,12 @@ public class SpriteTest
         Assert.assertEquals(spriteA, Drawable.loadSprite(spriteA.getSurface()));
 
         // Load from file
-        final Sprite spriteB = Drawable.loadSprite(MEDIA);
-        DrawableTestTool.assertImageInfoCorrect(MEDIA, spriteB);
+        final Sprite spriteB = Drawable.loadSprite(media);
+        DrawableTestTool.assertImageInfoCorrect(media, spriteB);
 
         DrawableTestTool.testSpriteLoading(spriteB);
         DrawableTestTool.testImageRender(g, spriteB);
-        Assert.assertFalse(spriteB.equals(Drawable.loadSprite(MEDIA)));
+        Assert.assertFalse(spriteB.equals(Drawable.loadSprite(media)));
 
         // Hash code
         Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());

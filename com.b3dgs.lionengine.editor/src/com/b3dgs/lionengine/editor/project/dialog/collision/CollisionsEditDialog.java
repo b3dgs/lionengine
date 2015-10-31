@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -98,7 +98,7 @@ public class CollisionsEditDialog extends AbstractDialog
     {
         list.save();
 
-        final XmlNode root = Stream.createXmlNode(ConfigCollisionGroup.COLLISIONS);
+        final XmlNode root = Xml.create(ConfigCollisionGroup.COLLISIONS);
         root.writeString(Configurer.HEADER, Engine.WEBSITE);
 
         for (final TreeItem item : list.getTree().getItems())
@@ -113,7 +113,7 @@ public class CollisionsEditDialog extends AbstractDialog
                 nodeFormula.setText(formula.getName());
             }
         }
-        Stream.saveXml(root, collisions);
+        Xml.save(root, collisions);
 
         final MapTile map = WorldModel.INSTANCE.getMap();
         if (map.hasFeature(MapTileCollision.class))

@@ -44,6 +44,6 @@ public final class HeuristicManhattan implements Heuristic
     @Override
     public double getCost(int sx, int sy, int dx, int dy)
     {
-        return minimumCost * (Math.abs(sx - dx) + Math.abs(sy - dy));
+        return minimumCost * (Math.abs(sx - (double) dx) + Math.abs(sy - (double) dy));
     }
 }

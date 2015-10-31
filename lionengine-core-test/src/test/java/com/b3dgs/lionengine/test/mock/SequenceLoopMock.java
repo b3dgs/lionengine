@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.test.mock;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.test.util.Constant;
 import com.b3dgs.lionengine.test.util.UtilTests;
@@ -42,11 +42,11 @@ public class SequenceLoopMock extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public SequenceLoopMock(Loader loader)
+    public SequenceLoopMock(Context context)
     {
-        super(loader, Constant.RESOLUTION_320_240);
+        super(context, Constant.RESOLUTION_320_240);
     }
 
     /*
@@ -54,7 +54,7 @@ public class SequenceLoopMock extends Sequence
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         timing.start();
     }

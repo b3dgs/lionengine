@@ -19,13 +19,13 @@ package com.b3dgs.lionengine.game;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -150,14 +150,7 @@ public abstract class WorldGame implements Updatable, Renderable
         }
         finally
         {
-            try
-            {
-                writing.close();
-            }
-            catch (final IOException exception2)
-            {
-                Verbose.exception(getClass(), "saveToFile", exception2);
-            }
+            UtilFile.safeClose(writing);
         }
     }
 
@@ -180,14 +173,7 @@ public abstract class WorldGame implements Updatable, Renderable
         }
         finally
         {
-            try
-            {
-                reading.close();
-            }
-            catch (final IOException exception2)
-            {
-                Verbose.exception(getClass(), "loadFromFile", exception2);
-            }
+            UtilFile.safeClose(reading);
         }
     }
 }

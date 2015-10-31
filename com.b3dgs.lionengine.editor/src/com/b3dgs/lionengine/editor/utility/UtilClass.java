@@ -28,14 +28,14 @@ import java.util.jar.JarFile;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.game.configurer.ConfigObject;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -91,7 +91,7 @@ public final class UtilClass
      */
     public static Class<?> get(Media media)
     {
-        final XmlNode root = Stream.loadXml(media);
+        final XmlNode root = Xml.load(media);
         final String className = root.getChild(ConfigObject.CLASS).getText();
         return Project.getActive().getClass(className);
     }
@@ -262,7 +262,7 @@ public final class UtilClass
         }
         catch (final IOException exception)
         {
-            Verbose.exception(UtilClass.class, "getImplementing", exception);
+            Verbose.exception(exception);
         }
         return found;
     }

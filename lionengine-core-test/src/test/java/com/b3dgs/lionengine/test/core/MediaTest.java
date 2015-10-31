@@ -22,13 +22,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
@@ -56,6 +59,31 @@ public class MediaTest
         Medias.setLoadFromJar(null);
     }
 
+    /** Old resources directory. */
+    private String oldDir;
+    /** Old loader. */
+    private Class<?> oldLoader;
+
+    /**
+     * Prepare test.
+     */
+    @Before
+    public void prepareTest()
+    {
+        oldDir = Medias.getResourcesDirectory();
+        oldLoader = Medias.getResourcesLoader();
+    }
+
+    /**
+     * Clean test.
+     */
+    @After
+    public void cleanTest()
+    {
+        Medias.setResourcesDirectory(oldDir);
+        Medias.setLoadFromJar(oldLoader);
+    }
+
     /**
      * Test the path getter.
      */
@@ -75,7 +103,7 @@ public class MediaTest
     {
         final String path = "image.png";
 
-        Assert.assertEquals(new File(MediasTest.class.getResource(path).getFile()), Medias.create(path).getFile());
+        Assert.assertEquals(new File(MediaTest.class.getResource(path).getFile()), Medias.create(path).getFile());
     }
 
     /**
@@ -107,6 +135,24 @@ public class MediaTest
     }
 
     /**
+     * Test the input stream with no existing file.
+     * 
+     * @throws IOException If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testInputStreamNotExists() throws IOException
+    {
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        final Media media = Medias.create("void");
+
+        Assert.assertFalse(media.exists());
+        try (InputStream input = media.getInputStream())
+        {
+            Assert.assertNotNull(input);
+        }
+    }
+
+    /**
      * Test the output stream.
      * 
      * @throws IOException If error.
@@ -123,6 +169,30 @@ public class MediaTest
         Assert.assertTrue(media.getFile().exists());
         Assert.assertTrue(media.getFile().delete());
         Assert.assertFalse(media.getFile().exists());
+    }
+
+    /**
+     * Test media existence.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testExists() throws IOException
+    {
+        Medias.setLoadFromJar(MediasTest.class);
+        Assert.assertFalse(Medias.create("void").exists());
+        Assert.assertTrue(Medias.create("image.png").exists());
+
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+
+        final File file = File.createTempFile("test", ".txt", new File(Medias.getResourcesDirectory()));
+        final Media media = Medias.get(file);
+
+        Assert.assertTrue(file.exists());
+        Assert.assertTrue(media.exists());
+
+        Assert.assertTrue(file.delete());
+        Assert.assertFalse(media.exists());
     }
 
     /**

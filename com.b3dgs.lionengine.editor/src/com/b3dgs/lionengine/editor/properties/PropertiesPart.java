@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilClass;
@@ -102,7 +102,7 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
                 }
                 catch (final ReflectiveOperationException exception)
                 {
-                    Verbose.exception(PropertiesPart.class, "checkPropertiesExtensionPoint", exception);
+                    Verbose.exception(exception);
                 }
             }
         }

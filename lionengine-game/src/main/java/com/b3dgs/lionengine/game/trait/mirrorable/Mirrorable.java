@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.trait.mirrorable;
 
 import com.b3dgs.lionengine.Mirror;
-import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.trait.Trait;
 
 /**

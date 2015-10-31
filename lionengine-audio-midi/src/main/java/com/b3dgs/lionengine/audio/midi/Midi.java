@@ -31,7 +31,7 @@ import javax.sound.midi.Synthesizer;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Handle midi routine. A midi is a light sound, designed to be played as a background music. Midi are played in a
@@ -211,7 +211,7 @@ public final class Midi
      * Set the midi volume.
      * 
      * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
-     * @throws LionEngineException If argument is invalid.
+     * @throws LionEngineException If argument is invalid or midi not available.
      */
     public void setVolume(int volume)
     {
@@ -236,11 +236,11 @@ public final class Midi
             }
             catch (final MidiUnavailableException exception)
             {
-                return;
+                throw new LionEngineException(exception, ERROR_MIDI);
             }
             catch (final InvalidMidiDataException exception)
             {
-                return;
+                throw new LionEngineException(exception, ERROR_MIDI);
             }
         }
         else

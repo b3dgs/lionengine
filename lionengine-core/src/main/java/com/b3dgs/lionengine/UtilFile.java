@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine;
 
 import java.io.BufferedOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,9 +29,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Tools related to files and directories handling.
@@ -52,6 +50,8 @@ public final class UtilFile
     private static final String ERROR_DELETE_FILE = "File not deleted: ";
     /** Error temporary file. */
     private static final String ERROR_TEMP_FILE = "Unable to create temporary file for: ";
+    /** Close stream failure. */
+    private static final String ERROR_CLOSE_STREAM = "Unable to close stream !";
     /** Temporary file prefix. */
     private static final String PREFIX_TEMP = "temp";
     /** Copy buffer. */
@@ -79,6 +79,26 @@ public final class UtilFile
                 break;
             }
             destination.write(buffer, 0, read);
+        }
+    }
+
+    /**
+     * Close and log exception if unable to close.
+     * 
+     * @param closeable The closeable to close.
+     */
+    public static void safeClose(Closeable closeable)
+    {
+        if (closeable != null)
+        {
+            try
+            {
+                closeable.close();
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(exception, ERROR_CLOSE_STREAM);
+            }
         }
     }
 
@@ -184,46 +204,6 @@ public final class UtilFile
     }
 
     /**
-     * Construct a usable path using a list of string, automatically separated by the portable separator. The
-     * constructed path will use local system file separator.
-     * 
-     * @param path The list of directories (if has) and file.
-     * @return The full media path.
-     */
-    public static String getPath(String... path)
-    {
-        return getPathSeparator(File.separator, path);
-    }
-
-    /**
-     * Construct a usable path using a list of string, automatically separated by the portable separator.
-     * 
-     * @param separator The separator to use.
-     * @param path The list of directories (if has) and file.
-     * @return The full media path.
-     */
-    public static String getPathSeparator(String separator, String... path)
-    {
-        final StringBuilder fullPath = new StringBuilder(path.length);
-        for (int i = 0; i < path.length; i++)
-        {
-            if (i == path.length - 1)
-            {
-                fullPath.append(path[i]);
-            }
-            else if (path[i] != null && path[i].length() > 0 && !Medias.getSeparator().equals(path[i]))
-            {
-                fullPath.append(path[i]);
-                if (!fullPath.substring(fullPath.length() - 1, fullPath.length()).equals(separator))
-                {
-                    fullPath.append(separator);
-                }
-            }
-        }
-        return fullPath.toString();
-    }
-
-    /**
      * Get extension from a string (search first dot).
      * 
      * @param file The filename.
@@ -253,24 +233,6 @@ public final class UtilFile
     {
         Check.notNull(file);
         return getExtension(file.getName());
-    }
-
-    /**
-     * Get the filename from a path (last part of a path, after the last separator).
-     * 
-     * @param path The path used to extract filename.
-     * @return The filename extracted from path.
-     * @throws LionEngineException If path is <code>null</code>.
-     */
-    public static String getFilenameFromPath(String path)
-    {
-        Check.notNull(path);
-        final int i = path.lastIndexOf(Medias.getSeparator());
-        if (i > 0)
-        {
-            return path.substring(i + 1, path.length());
-        }
-        return path;
     }
 
     /**
@@ -345,6 +307,46 @@ public final class UtilFile
     }
 
     /**
+     * Construct a usable path using a list of string, automatically separated by the portable separator. The
+     * constructed path will use local system file separator.
+     * 
+     * @param path The list of directories (if has) and file.
+     * @return The full media path.
+     */
+    public static String getPath(String... path)
+    {
+        return getPathSeparator(File.separator, path);
+    }
+
+    /**
+     * Construct a usable path using a list of string, automatically separated by the portable separator.
+     * 
+     * @param separator The separator to use.
+     * @param path The list of directories (if has) and file.
+     * @return The full media path.
+     */
+    public static String getPathSeparator(String separator, String... path)
+    {
+        final StringBuilder fullPath = new StringBuilder(path.length);
+        for (int i = 0; i < path.length; i++)
+        {
+            if (i == path.length - 1)
+            {
+                fullPath.append(path[i]);
+            }
+            else if (path[i] != null && path[i].length() > 0)
+            {
+                fullPath.append(path[i]);
+                if (!fullPath.substring(fullPath.length() - 1, fullPath.length()).equals(separator))
+                {
+                    fullPath.append(separator);
+                }
+            }
+        }
+        return fullPath.toString();
+    }
+
+    /**
      * Delete a directory and all of its content (be careful, it will erase all children, including child directory).
      * 
      * @param directory The directory to delete with all of its content.
@@ -365,7 +367,7 @@ public final class UtilFile
             }
             if (!directory.delete())
             {
-                Verbose.warning(UtilFile.class, "deleteDirectory", ERROR_DELETE_DIRECTORY + directory);
+                Verbose.warning(UtilFile.class, "deleteDirectory", ERROR_DELETE_DIRECTORY, directory.getAbsolutePath());
             }
         }
         else if (directory.isFile())
@@ -386,7 +388,7 @@ public final class UtilFile
         Check.notNull(file);
         if (!file.delete())
         {
-            throw new LionEngineException(ERROR_DELETE_FILE + file);
+            throw new LionEngineException(ERROR_DELETE_FILE, file.getAbsolutePath());
         }
     }
 

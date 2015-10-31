@@ -33,9 +33,10 @@ import javax.swing.WindowConstants;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.ScreenListener;
 
 /**
  * Full screen implementation.
@@ -80,26 +81,36 @@ final class ScreenFullAwt extends ScreenAwt
     /**
      * Internal constructor.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
-    ScreenFullAwt(Renderer renderer)
+    ScreenFullAwt(Config config)
     {
-        super(renderer);
+        super(config);
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         dev = env.getDefaultScreenDevice();
         conf = dev.getDefaultConfiguration();
-        frame = initMainFrame(renderer);
+        frame = initMainFrame();
+    }
+
+    /**
+     * Called when screen is disposed.
+     */
+    void onDisposed()
+    {
+        for (final ScreenListener listener : listeners)
+        {
+            listener.notifyClosed();
+        }
     }
 
     /**
      * Initialize the main frame.
      * 
-     * @param renderer The renderer reference.
      * @return The created main frame.
      * @throws LionEngineException If the engine has not been started.
      */
-    private JFrame initMainFrame(final Renderer renderer)
+    private JFrame initMainFrame()
     {
         final String title = Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion();
         final JFrame frame = new JFrame(title, conf);
@@ -109,7 +120,7 @@ final class ScreenFullAwt extends ScreenAwt
             @Override
             public void windowClosing(WindowEvent event)
             {
-                renderer.end();
+                onDisposed();
             }
         });
         frame.setResizable(false);

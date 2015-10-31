@@ -19,9 +19,6 @@ package com.b3dgs.lionengine;
 
 import java.nio.charset.Charset;
 
-import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Verbose;
-
 /**
  * List of common constants.
  * 
@@ -102,7 +99,7 @@ public final class Constant
         {
             final StringBuilder builder = new StringBuilder(ERROR_PROPERTY);
             builder.append(property).append(" (").append(exception.getClass().getName()).append(")");
-            Verbose.critical(Engine.class, "getSystemProperty", builder.toString());
+            Verbose.critical(Constant.class, "getSystemProperty", builder.toString());
             return def;
         }
     }

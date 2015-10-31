@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.audio.midi;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Midi factory. Allows to create midi player.

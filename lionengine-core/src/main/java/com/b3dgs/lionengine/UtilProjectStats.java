@@ -23,8 +23,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.b3dgs.lionengine.core.Verbose;
-
 /**
  * Used to know the number of code line, and number of files in current project.
  * 
@@ -94,31 +92,17 @@ public final class UtilProjectStats
      */
     public static void countFileLines(String fileName)
     {
-        final String name = "countFileLines";
         BufferedReader in = null;
         try
         {
             in = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), Constant.UTF_8));
-            String s;
             boolean stop = false;
             while (!stop)
             {
-                s = in.readLine();
-                if (s != null)
+                final String line = in.readLine();
+                if (line != null)
                 {
-                    if (s.matches(REGEX_DOC))
-                    {
-                        numberOfLinesDoc++;
-                    }
-                    else if (s.matches(REGEX_SPACES))
-                    {
-                        numberOfLinesEmpty++;
-                    }
-                    else
-                    {
-                        numberOfLinesCode++;
-                    }
-                    numberOfLines++;
+                    countLineTypes(line);
                 }
                 else
                 {
@@ -129,22 +113,34 @@ public final class UtilProjectStats
         }
         catch (final IOException exception)
         {
-            Verbose.exception(UtilProjectStats.class, name, exception);
+            Verbose.exception(exception);
         }
         finally
         {
-            if (in != null)
-            {
-                try
-                {
-                    in.close();
-                }
-                catch (final IOException exception2)
-                {
-                    Verbose.exception(UtilProjectStats.class, name, exception2);
-                }
-            }
+            UtilFile.safeClose(in);
         }
+    }
+
+    /**
+     * Count the line type.
+     * 
+     * @param line The line reference.
+     */
+    private static void countLineTypes(String line)
+    {
+        if (line.matches(REGEX_DOC))
+        {
+            numberOfLinesDoc++;
+        }
+        else if (line.matches(REGEX_SPACES))
+        {
+            numberOfLinesEmpty++;
+        }
+        else
+        {
+            numberOfLinesCode++;
+        }
+        numberOfLines++;
     }
 
     /**

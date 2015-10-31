@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -56,7 +56,7 @@ public class Configurer
 
         this.media = media;
         path = media.getFile().getParent();
-        root = Stream.loadXml(media);
+        root = Xml.load(media);
     }
 
     /**
@@ -66,7 +66,7 @@ public class Configurer
      */
     public void save()
     {
-        Stream.saveXml(root, media);
+        Xml.save(root, media);
     }
 
     /**

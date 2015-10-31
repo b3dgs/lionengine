@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * Represents a 2D vector force, using double precision. This can be used to describe a vectorial force, on 2 axis

@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilConversion;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.object.Services;
@@ -103,7 +103,6 @@ public class MapTileRasteredModel implements MapTileRastered
      * @throws LionEngineException If arguments are invalid.
      */
     private void addRasterSheet(Integer sheet, int fr, int fg, int fb, int er, int eg, int eb)
-           
     {
         final SpriteTiled original = map.getSheet(sheet);
         final ImageBuffer buf = original.getSurface();

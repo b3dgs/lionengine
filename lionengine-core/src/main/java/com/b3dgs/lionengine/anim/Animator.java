@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.anim;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.Updatable;
 
 /**
  * Animator can play an {@link Animation}.

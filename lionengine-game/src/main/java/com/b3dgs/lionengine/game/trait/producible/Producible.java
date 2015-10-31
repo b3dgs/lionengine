@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.trait.producible;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.trait.Trait;
 
 /**

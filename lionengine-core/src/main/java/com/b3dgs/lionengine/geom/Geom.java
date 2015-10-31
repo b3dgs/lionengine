@@ -98,6 +98,37 @@ public final class Geom
     }
 
     /**
+     * Get the intersection point of two lines.
+     * 
+     * @param l1 The first line.
+     * @param l2 The second line.
+     * @return The intersection point.
+     */
+    public static Coord intersection(Line l1, Line l2)
+    {
+        final int x1 = (int) l1.getX1();
+        final int x2 = (int) l1.getX2();
+        final int y1 = (int) l1.getY1();
+        final int y2 = (int) l1.getY2();
+
+        final int x3 = (int) l2.getX1();
+        final int x4 = (int) l2.getX2();
+        final int y3 = (int) l2.getY1();
+        final int y4 = (int) l2.getY2();
+
+        final int d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        if (0 == d)
+        {
+            return Geom.createCoord(0.0, 0.0);
+        }
+
+        final int xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
+        final int yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
+
+        return Geom.createCoord(xi, yi);
+    }
+
+    /**
      * Create a line.
      * 
      * @return The created line.

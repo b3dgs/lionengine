@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.audio.sc68;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Allows to play SonicArranger musics (original Amiga player).

@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.example.game.world;
 
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 
 /**
@@ -41,16 +41,16 @@ class Scene extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, NATIVE);
+        super(context, NATIVE);
         world = new World(getConfig());
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         world.saveToFile(Medias.create("world.lvl"));
         world.loadFromFile(Medias.create("world.lvl"));
@@ -69,7 +69,7 @@ class Scene extends Sequence
     }
 
     @Override
-    protected void onTerminate(boolean hasNextSequence)
+    public void onTerminated(boolean hasNextSequence)
     {
         Engine.terminate();
     }

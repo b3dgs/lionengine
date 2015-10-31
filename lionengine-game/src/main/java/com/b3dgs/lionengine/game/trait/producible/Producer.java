@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.trait.producible;
 
 import java.util.Iterator;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.trait.Trait;
 
 /**

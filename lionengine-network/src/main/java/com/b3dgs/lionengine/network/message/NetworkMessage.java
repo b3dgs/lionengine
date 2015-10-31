@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Network message description.
@@ -49,7 +49,7 @@ public abstract class NetworkMessage
         }
         catch (final UnsupportedCharsetException exception)
         {
-            Verbose.exception(NetworkMessage.class, "getCharset", exception);
+            Verbose.exception(exception);
             return Charset.defaultCharset();
         }
     }

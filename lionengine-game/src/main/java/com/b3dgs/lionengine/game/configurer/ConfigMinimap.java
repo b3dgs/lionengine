@@ -24,9 +24,9 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.map.TileRef;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -58,7 +58,7 @@ public final class ConfigMinimap
     public static Map<TileRef, ColorRgba> imports(Media configMinimap)
     {
         final Map<TileRef, ColorRgba> colors = new HashMap<TileRef, ColorRgba>();
-        final XmlNode nodeMinimap = Stream.loadXml(configMinimap);
+        final XmlNode nodeMinimap = Xml.load(configMinimap);
 
         for (final XmlNode nodeColor : nodeMinimap.getChildren(NODE_COLOR))
         {
@@ -86,7 +86,7 @@ public final class ConfigMinimap
     public static void exports(Media configMinimap, Map<TileRef, ColorRgba> tiles)
     {
         final Map<ColorRgba, Collection<TileRef>> colors = convertToColorKey(tiles);
-        final XmlNode nodeMinimap = Stream.createXmlNode(NODE_MINIMAPS);
+        final XmlNode nodeMinimap = Xml.create(NODE_MINIMAPS);
 
         for (final Map.Entry<ColorRgba, Collection<TileRef>> entry : colors.entrySet())
         {
@@ -103,7 +103,7 @@ public final class ConfigMinimap
             }
         }
 
-        Stream.saveXml(nodeMinimap, configMinimap);
+        Xml.save(nodeMinimap, configMinimap);
     }
 
     /**

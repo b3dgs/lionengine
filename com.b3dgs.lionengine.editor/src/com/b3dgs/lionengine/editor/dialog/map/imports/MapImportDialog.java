@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.sheets.imports.SheetsImportDialog;
 import com.b3dgs.lionengine.editor.project.Project;
@@ -314,12 +314,10 @@ public class MapImportDialog extends AbstractDialog
     protected void onFinish()
     {
         final MapTile map = WorldModel.INSTANCE.getMap();
-        final LevelRipConverter levelRipConverter = new LevelRipConverter(levelRip, sheetsConfig, map);
         final MapImportProgressDialog progress = new MapImportProgressDialog(dialog, levelRip);
 
-        levelRipConverter.addListener(progress);
         progress.open();
-        levelRipConverter.start(progress);
+        LevelRipConverter.start(levelRip, sheetsConfig, map, progress);
         progress.finish();
 
         map.loadGroups(groupsConfig);

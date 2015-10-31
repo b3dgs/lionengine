@@ -21,6 +21,7 @@ import java.util.Collections;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -32,9 +33,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
@@ -166,7 +166,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
                                                                                 map.getTileWidth(),
                                                                                 map.getTileHeight());
             gc.fillRectangle(0, 0, map.getTileWidth(), map.getTileHeight());
-            gc.drawImage(ToolsSwt.getBuffer(buffer), 0, 0);
+            gc.drawImage((Image) buffer.getSurface(), 0, 0);
         }
     }
 

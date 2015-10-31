@@ -25,14 +25,15 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 
 import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageSurface;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Transform;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.
@@ -41,19 +42,8 @@ import com.b3dgs.lionengine.core.Transform;
  */
 final class GraphicSwt implements Graphic
 {
-    /**
-     * Get the image buffer.
-     * 
-     * @param imageBuffer The image buffer.
-     * @return The buffer.
-     */
-    private static Image getBuffer(ImageBuffer imageBuffer)
-    {
-        return ((ImageBufferSwt) imageBuffer).getBuffer();
-    }
-
     /** Flip image cache. */
-    private final Map<ImageBuffer, Image> cacheFlip = new HashMap<ImageBuffer, Image>();
+    private final Map<ImageSurface, Image> cacheFlip = new HashMap<ImageSurface, Image>();
     /** The graphic output. */
     private GC gc;
     /** Device used. */
@@ -115,35 +105,37 @@ final class GraphicSwt implements Graphic
     }
 
     @Override
-    public void drawImage(ImageBuffer image, int x, int y)
+    public void drawImage(ImageSurface image, int x, int y)
     {
-        gc.drawImage(GraphicSwt.getBuffer(image), x, y);
+        gc.drawImage((Image) image.getSurface(), x, y);
     }
 
     @Override
-    public void drawImage(ImageBuffer image, Transform transform, int x, int y)
+    public void drawImage(ImageSurface image, Transform transform, int x, int y)
     {
-        final Image buffer = GraphicSwt.getBuffer(image);
-        final int width = (int) (image.getWidth() * transform.getScaleX());
-        final int height = (int) (image.getHeight() * transform.getScaleY());
-        gc.drawImage(buffer, x, y, image.getWidth(), image.getHeight(), x, y, width, height);
+        final Image buffer = image.getSurface();
+        final Rectangle size = buffer.getBounds();
+        final int width = (int) (size.width * transform.getScaleX());
+        final int height = (int) (size.height * transform.getScaleY());
+        gc.drawImage(buffer, x, y, size.width, size.height, x, y, width, height);
     }
 
     @Override
-    public void drawImage(ImageBuffer image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
+    public void drawImage(ImageSurface image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
     {
+        final Image surface = image.getSurface();
         if (sx2 < sx1)
         {
             if (!cacheFlip.containsKey(image))
             {
-                final Image flip = ToolsSwt.flipHorizontal(getBuffer(image));
+                final Image flip = ToolsSwt.flipHorizontal(surface);
                 cacheFlip.put(image, flip);
             }
             gc.drawImage(cacheFlip.get(image), dx1, dy1);
         }
         else
         {
-            gc.drawImage(GraphicSwt.getBuffer(image), sx1, sy1, sx2 - sx1, sy2 - sy1, dx1, dy1, dx2 - dx1, dy2 - dy1);
+            gc.drawImage(surface, sx1, sy1, sx2 - sx1, sy2 - sy1, dx1, dy1, dx2 - dx1, dy2 - dy1);
         }
     }
 

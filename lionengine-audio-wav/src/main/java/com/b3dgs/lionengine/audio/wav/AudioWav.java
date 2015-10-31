@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.audio.wav;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Wav factory. Allows to create wav player.

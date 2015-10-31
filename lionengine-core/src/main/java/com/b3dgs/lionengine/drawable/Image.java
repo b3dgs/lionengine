@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.drawable;
 
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Resource;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Resource;
 
 /**
  * It allows images loading and rendering. Images can't be resized and can't use any filters.

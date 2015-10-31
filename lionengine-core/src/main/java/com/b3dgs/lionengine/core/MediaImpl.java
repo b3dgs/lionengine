@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -29,6 +28,7 @@ import java.net.URL;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
 
 /**
@@ -45,6 +45,12 @@ final class MediaImpl implements Media
     /** Error open media in JAR. */
     private static final String ERROR_OPEN_MEDIA_JAR = "Resource in JAR not found";
 
+    /** Separator. */
+    private final String separator;
+    /** Resources directory. */
+    private final String resourcesDir;
+    /** Class loader. */
+    private final Class<?> loader;
     /** Media path. */
     private final String path;
     /** Media parent path. */
@@ -53,14 +59,47 @@ final class MediaImpl implements Media
     /**
      * Internal constructor.
      * 
+     * @param separator The separator used.
+     * @param resourcesDir The resources directory path.
      * @param path The media path.
      * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaImpl(String path)
+    MediaImpl(String separator, String resourcesDir, String path)
+    {
+        this(separator, resourcesDir, null, path);
+    }
+
+    /**
+     * Internal constructor.
+     * 
+     * @param separator The separator used.
+     * @param loader The class loader used (can be <code>null</code> if not used).
+     * @param path The media path.
+     * @throws LionEngineException If path in <code>null</code>.
+     */
+    MediaImpl(String separator, Class<?> loader, String path)
+    {
+        this(separator, null, loader, path);
+    }
+
+    /**
+     * Internal constructor.
+     * 
+     * @param separator The separator used.
+     * @param resourcesDir The resources directory path (can be <code>null</code> if not used).
+     * @param loader The class loader used (can be <code>null</code> if not used).
+     * @param path The media path.
+     * @throws LionEngineException If path in <code>null</code>.
+     */
+    private MediaImpl(String separator, String resourcesDir, Class<?> loader, String path)
     {
         Check.notNull(path);
+
+        this.separator = separator;
+        this.resourcesDir = resourcesDir;
+        this.loader = loader;
         this.path = path;
-        final int index = path.lastIndexOf(Medias.getSeparator());
+        final int index = path.lastIndexOf(separator);
         if (index > -1)
         {
             parent = path.substring(0, index);
@@ -68,32 +107,6 @@ final class MediaImpl implements Media
         else
         {
             parent = NO_PARENT;
-        }
-    }
-
-    /**
-     * Check if media exists from jar.
-     * 
-     * @return <code>true</code> if exists, <code>false</code> else.
-     */
-    private boolean existsFromJar()
-    {
-        try
-        {
-            final InputStream input = getInputStream();
-            try
-            {
-                input.close();
-            }
-            catch (final IOException exception)
-            {
-                Verbose.exception(MediaImpl.class, "existsFromJar", exception);
-            }
-            return true;
-        }
-        catch (final LionEngineException exception)
-        {
-            return false;
         }
     }
 
@@ -117,9 +130,9 @@ final class MediaImpl implements Media
     public File getFile()
     {
         final File file;
-        if (Medias.getClassResources() != null)
+        if (loader != null)
         {
-            final URL url = Medias.getClassResources().getResource(path);
+            final URL url = loader.getResource(path);
             if (url == null)
             {
                 file = new File(path);
@@ -131,7 +144,7 @@ final class MediaImpl implements Media
         }
         else
         {
-            file = new File(UtilFile.getPath(Medias.getResourcesDir(), path));
+            file = new File(UtilFile.getPathSeparator(separator, resourcesDir, path));
         }
         return file;
     }
@@ -139,10 +152,9 @@ final class MediaImpl implements Media
     @Override
     public InputStream getInputStream()
     {
-        final String path = UtilFile.getPath(Medias.getResourcesDir(), getPath());
+        final String path = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
         try
         {
-            final Class<?> loader = Medias.getClassResources();
             if (loader != null)
             {
                 final InputStream input = loader.getResourceAsStream(path);
@@ -163,7 +175,7 @@ final class MediaImpl implements Media
     @Override
     public OutputStream getOutputStream()
     {
-        final String path = UtilFile.getPath(Medias.getResourcesDir(), getPath());
+        final String path = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
         try
         {
             return new FileOutputStream(path);
@@ -177,9 +189,10 @@ final class MediaImpl implements Media
     @Override
     public boolean exists()
     {
-        if (Medias.getClassResources() != null)
+        if (loader != null)
         {
-            return existsFromJar();
+            final String path = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
+            return loader.getResource(path) != null;
         }
         return getFile().exists();
     }

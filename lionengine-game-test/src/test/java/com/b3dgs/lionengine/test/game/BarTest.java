@@ -21,8 +21,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.Bar;
+import com.b3dgs.lionengine.test.mock.GraphicMock;
 
 /**
  * Test the bar class.

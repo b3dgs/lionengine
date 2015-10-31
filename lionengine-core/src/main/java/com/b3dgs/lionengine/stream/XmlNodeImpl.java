@@ -36,7 +36,7 @@ import org.w3c.dom.NodeList;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * XML node implementation.
@@ -72,7 +72,7 @@ final class XmlNodeImpl implements XmlNode
         Check.notNull(name);
         try
         {
-            document = XmlFactory.getDocumentFactory().newDocument();
+            document = DocumentFactory.createDocument();
             root = document.createElement(name);
         }
         catch (final DOMException exception)
@@ -110,7 +110,7 @@ final class XmlNodeImpl implements XmlNode
         }
         catch (final XPathExpressionException exception)
         {
-            Verbose.exception(getClass(), "normalize", exception);
+            Verbose.exception(exception);
         }
     }
 

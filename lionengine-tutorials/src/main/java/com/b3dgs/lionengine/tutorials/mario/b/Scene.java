@@ -19,13 +19,13 @@ package com.b3dgs.lionengine.tutorials.mario.b;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
@@ -57,7 +57,7 @@ class Scene extends Sequence
         }
         catch (final IOException exception)
         {
-            Verbose.exception(Scene.class, "importAndSave", exception, "Error on saving map !");
+            Verbose.exception(exception, "Error on saving map !");
         }
     }
 
@@ -69,16 +69,16 @@ class Scene extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, NATIVE);
+        super(context, NATIVE);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         if (!LEVEL.exists())
         {

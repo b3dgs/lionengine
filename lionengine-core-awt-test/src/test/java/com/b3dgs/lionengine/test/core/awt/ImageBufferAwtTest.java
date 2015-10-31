@@ -23,8 +23,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.awt.ToolsAwt;
 
 /**
@@ -45,7 +45,7 @@ public class ImageBufferAwtTest
 
         Assert.assertNotNull(image.createGraphic());
         image.prepare();
-        Assert.assertEquals(buffer, ToolsAwt.getBuffer(image));
+        Assert.assertEquals(buffer, image.getSurface());
 
         Assert.assertEquals(ColorRgba.BLACK.getRgba(), image.getRgb(0, 0));
         Assert.assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));

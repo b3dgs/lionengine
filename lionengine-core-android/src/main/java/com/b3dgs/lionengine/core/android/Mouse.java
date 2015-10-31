@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.core.android;
 
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.InputDevicePointer;
-import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * Mouse input.

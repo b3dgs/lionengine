@@ -25,15 +25,15 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -69,7 +69,7 @@ final class SpriteFontImpl implements SpriteFont
         lineHeight = surface.getTileHeight();
 
         // Load data for each characters
-        final XmlNode letters = Stream.loadXml(mediaData);
+        final XmlNode letters = Xml.load(mediaData);
         final Collection<XmlNode> children = letters.getChildren();
         int id = 0;
 
@@ -143,7 +143,7 @@ final class SpriteFontImpl implements SpriteFont
             for (int j = 0; j < length; j++)
             {
                 final Data d = fontData.get(Character.valueOf(text.charAt(j)));
-                surface.setLocation(x + lx - width, y + ly + d.getHeight());
+                surface.setLocation(x + lx - (double) width, y + ly + (double) d.getHeight());
                 surface.setTile(d.getId());
                 surface.render(g);
                 lx += d.getWidth() + 1;

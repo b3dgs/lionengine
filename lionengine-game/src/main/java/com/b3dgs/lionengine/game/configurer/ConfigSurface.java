@@ -101,13 +101,10 @@ public final class ConfigSurface
      */
     private static String getSurfaceIcon(Configurer configurer)
     {
-        try
+        if (configurer.getRoot().getChild(ConfigSurface.SURFACE).hasAttribute(ConfigSurface.SURFACE_ICON))
         {
             return configurer.getString(ConfigSurface.SURFACE_ICON, ConfigSurface.SURFACE);
         }
-        catch (final LionEngineException exception)
-        {
-            return null;
-        }
+        return null;
     }
 }

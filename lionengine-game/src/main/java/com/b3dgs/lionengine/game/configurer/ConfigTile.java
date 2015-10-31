@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.configurer;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.map.TileRef;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -51,9 +51,7 @@ public final class ConfigTile
 
         final int sheet = nodeTile.readInteger(ATT_TILE_SHEET);
         final int number = nodeTile.readInteger(ATT_TILE_NUMBER);
-        final TileRef tileRef = new TileRef(sheet, number);
-
-        return tileRef;
+        return new TileRef(sheet, number);
     }
 
     /**
@@ -67,7 +65,7 @@ public final class ConfigTile
     {
         Check.notNull(tileRef);
 
-        final XmlNode node = Stream.createXmlNode(NODE_TILE);
+        final XmlNode node = Xml.create(NODE_TILE);
         node.writeInteger(ATT_TILE_SHEET, tileRef.getSheet().intValue());
         node.writeInteger(ATT_TILE_NUMBER, tileRef.getNumber());
 

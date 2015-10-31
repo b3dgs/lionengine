@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.trait.extractable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
@@ -196,7 +197,7 @@ public class ExtractorModel extends TraitModel implements Extractor
                 actionDropingOff(extrp);
                 break;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException("Unknown type: ", state.name());
         }
     }
 

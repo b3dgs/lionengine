@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.project.dialog.formula;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigTileGroups;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -52,7 +52,7 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
      */
     private static void removeFormula(Media formulasConfig, CollisionFormula formula)
     {
-        final XmlNode node = Stream.loadXml(formulasConfig);
+        final XmlNode node = Xml.load(formulasConfig);
         final Collection<XmlNode> toRemove = new ArrayList<>();
         for (final XmlNode nodeFormula : node.getChildren(ConfigCollisionFormula.FORMULA))
         {
@@ -66,7 +66,7 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
             node.removeChild(remove);
         }
         toRemove.clear();
-        Stream.saveXml(node, formulasConfig);
+        Xml.save(node, formulasConfig);
     }
 
     /** Last config used. */

@@ -25,8 +25,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.b3dgs.lionengine.core.Media;
-
 /**
  * Special engine exception implementation which limit the trace to the user side.
  * <p>
@@ -143,12 +141,9 @@ public final class LionEngineException extends RuntimeException
             {
                 add = true;
             }
-            if (add)
+            if (add && !neededTrace.contains(element))
             {
-                if (!neededTrace.contains(element))
-                {
-                    neededTrace.add(element);
-                }
+                neededTrace.add(element);
             }
         }
         return neededTrace.toArray(new StackTraceElement[neededTrace.size()]);
@@ -264,6 +259,27 @@ public final class LionEngineException extends RuntimeException
         return getFilteredTraces(stacks);
     }
 
+    /**
+     * Get the reason description.
+     * 
+     * @return The reason description.
+     */
+    private String getReasonDescription()
+    {
+        if (reason != null)
+        {
+            Throwable current = reason;
+            Throwable last = current;
+            while (current != null)
+            {
+                last = current;
+                current = current.getCause();
+            }
+            return TRACE_REASON + last;
+        }
+        return Constant.EMPTY_STRING;
+    }
+
     /*
      * RuntimeException
      */
@@ -275,28 +291,12 @@ public final class LionEngineException extends RuntimeException
         {
             stream.print(getClass().getSimpleName());
 
-            // Display traces
             boolean first = true;
             for (final StackTraceElement element : stack)
             {
                 if (first)
                 {
-                    final String reasonDesc;
-                    if (reason != null)
-                    {
-                        Throwable current = reason;
-                        Throwable last = current;
-                        while (current != null)
-                        {
-                            last = current;
-                            current = current.getCause();
-                        }
-                        reasonDesc = TRACE_REASON + last;
-                    }
-                    else
-                    {
-                        reasonDesc = Constant.EMPTY_STRING;
-                    }
+                    final String reasonDesc = getReasonDescription();
                     stream.println(Constant.DOUBLE_DOT + message + reasonDesc + Constant.NEW_LINE + TRACE_AT + element);
                 }
                 else
@@ -315,28 +315,12 @@ public final class LionEngineException extends RuntimeException
         {
             writer.print(getClass().getSimpleName());
 
-            // Display traces
             boolean first = true;
             for (final StackTraceElement element : stack)
             {
                 if (first)
                 {
-                    final String reasonDesc;
-                    if (reason != null)
-                    {
-                        Throwable current = reason;
-                        Throwable last = current;
-                        while (current != null)
-                        {
-                            last = current;
-                            current = current.getCause();
-                        }
-                        reasonDesc = TRACE_REASON + last;
-                    }
-                    else
-                    {
-                        reasonDesc = Constant.EMPTY_STRING;
-                    }
+                    final String reasonDesc = getReasonDescription();
                     writer.println(Constant.DOUBLE_DOT + message + reasonDesc + Constant.NEW_LINE + TRACE_AT + element);
                 }
                 else

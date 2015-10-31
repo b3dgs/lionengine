@@ -23,12 +23,12 @@ import java.util.HashSet;
 import java.util.Map;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
@@ -250,7 +250,6 @@ public class PathfindableModel extends TraitModel implements Pathfindable
         final Collection<Integer> cid = mapPath.getObjectsId(path.getX(nextStep), path.getY(nextStep));
         if (sharedPathIds.containsAll(cid))
         {
-            // skip = true;
             setDestination(destX, destY);
         }
         else
@@ -273,8 +272,8 @@ public class PathfindableModel extends TraitModel implements Pathfindable
         final int th = map.getTileHeight();
         for (int i = 0; i < path.getLength(); i++)
         {
-            final int x = (int) viewer.getViewpointX(path.getX(i) * tw);
-            final int y = (int) viewer.getViewpointY(path.getY(i) * th);
+            final int x = (int) viewer.getViewpointX(path.getX(i) * (double) tw);
+            final int y = (int) viewer.getViewpointY(path.getY(i) * (double) th);
             g.drawRect(x, y - th, tw, th, true);
             if (renderDebug)
             {
@@ -494,7 +493,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
             sy = getSpeedX();
         }
         // Diagonal speed
-        if (sx != 0 && sy != 0)
+        if (Double.compare(sx, 0) != 0 && Double.compare(sy, 0) != 0)
         {
             sx *= PathfindableModel.DIAGONAL_SPEED;
             sy *= PathfindableModel.DIAGONAL_SPEED;
@@ -540,7 +539,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
         mapPath = map.getFeature(MapTilePath.class);
         id = owner.getId();
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
-                                          + map.getInTileHeight() * map.getInTileHeight());
+                                          + map.getInTileHeight() * (double) map.getInTileHeight());
         pathfinder = Astar.createPathFinder(map, range, true, Astar.createHeuristicClosest());
         categories = ConfigPathfindable.create(owner.getConfigurer());
 
@@ -714,7 +713,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
         if (checkObjectId(tx, ty))
         {
             removeObjectId(getInTileX(), getInTileY());
-            transformable.setLocation(tx * map.getTileWidth(), ty * map.getTileHeight());
+            transformable.setLocation(tx * (double) map.getTileWidth(), ty * (double) map.getTileHeight());
             assignObjectId(getInTileX(), getInTileY());
         }
     }
@@ -813,7 +812,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
         {
             return categories.get(category).isBlocking();
         }
-        throw new LionEngineException(ERROR_CATEGORY, category);
+        return false;
     }
 
     @Override

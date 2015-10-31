@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.drawable;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Graphic;
 
 /**
  * ParallaxedSprites are used for parallax effect (2.5D perspective). It cuts a sprite surface into an array of lines.
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.core.Graphic;
  * Usage should be as following:
  * </p>
  * <ul>
- * <li>Create the instance with {@link Drawable#loadSpriteParallaxed(com.b3dgs.lionengine.core.Media, int, int, int)}
+ * <li>Create the instance with {@link Drawable#loadSpriteParallaxed(com.b3dgs.lionengine.Media, int, int, int)}
  * </li>
  * <li>Scale if necessary with {@link #stretch(int, int)}</li>
  * <li>Call {@link #load(boolean)}</li>

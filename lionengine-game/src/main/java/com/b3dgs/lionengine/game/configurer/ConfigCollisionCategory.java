@@ -89,7 +89,6 @@ public final class ConfigCollisionCategory
      * @throws LionEngineException If unable to read node.
      */
     public static Collection<CollisionCategory> create(Configurer configurer, MapTileCollision map)
-           
     {
         final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
         for (final XmlNode node : configurer.getRoot().getChildren(CATEGORY))

@@ -26,15 +26,15 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Features;
@@ -334,7 +334,7 @@ public class MapTileGame implements MapTile
 
         this.widthInTile = widthInTile;
         this.heightInTile = heightInTile;
-        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * heightInTile));
+        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * (double) heightInTile));
         tiles = new ArrayList<List<Tile>>(heightInTile);
 
         for (int v = 0; v < heightInTile; v++)
@@ -422,10 +422,8 @@ public class MapTileGame implements MapTile
     public void create(Media levelrip, Media sheetsConfig, Media groupsConfig)
     {
         clear();
-        final LevelRipConverter rip = new LevelRipConverter(levelrip, sheetsConfig, this);
-        rip.start();
 
-        final int errors = rip.getErrors();
+        final int errors = LevelRipConverter.start(levelrip, sheetsConfig, this);
         if (errors > 0)
         {
             Verbose.warning(getClass(), "create", "Number of missing tiles: " + errors);
@@ -546,7 +544,7 @@ public class MapTileGame implements MapTile
 
         widthInTile = newWidth;
         heightInTile = newHeight;
-        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * heightInTile));
+        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * (double) heightInTile));
     }
 
     @Override
@@ -615,14 +613,11 @@ public class MapTileGame implements MapTile
     @Override
     public Tile getTile(int tx, int ty)
     {
-        try
-        {
-            return tiles.get(ty).get(tx);
-        }
-        catch (final IndexOutOfBoundsException exception)
+        if (!UtilMath.isBetween(tx, 0, widthInTile - 1) || !UtilMath.isBetween(ty, 0, heightInTile - 1))
         {
             return null;
         }
+        return tiles.get(ty).get(tx);
     }
 
     @Override
@@ -729,7 +724,7 @@ public class MapTileGame implements MapTile
                 return group;
             }
         }
-        final String tile = "sheet = " + sheet.toString() + ", number = " + String.valueOf(number);
+        final String tile = "sheet = " + sheet.toString() + ", number = " + number;
         throw new LionEngineException(ERROR_GROUP_MISSING, tile);
     }
 

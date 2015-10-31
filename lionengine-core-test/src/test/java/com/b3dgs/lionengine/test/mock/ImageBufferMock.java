@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.test.mock;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * Mock image buffer.
@@ -114,6 +114,12 @@ public class ImageBufferMock implements ImageBuffer
     public int getHeight()
     {
         return height;
+    }
+
+    @Override
+    public <T> T getSurface()
+    {
+        return null;
     }
 
     @Override

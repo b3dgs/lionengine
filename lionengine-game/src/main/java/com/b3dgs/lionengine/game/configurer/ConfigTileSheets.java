@@ -22,10 +22,10 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -57,7 +57,7 @@ public final class ConfigTileSheets
      */
     public static ConfigTileSheets imports(Media configSheets)
     {
-        final XmlNode nodeSheets = Stream.loadXml(configSheets);
+        final XmlNode nodeSheets = Xml.load(configSheets);
 
         final XmlNode nodeTileSize = nodeSheets.getChild(NODE_TILE_SIZE);
         final int tileWidth = nodeTileSize.readInteger(ATTRIBUTE_TILE_WIDTH);
@@ -65,8 +65,7 @@ public final class ConfigTileSheets
 
         final Collection<String> sheets = importSheets(nodeSheets);
 
-        final ConfigTileSheets config = new ConfigTileSheets(tileWidth, tileHeight, sheets);
-        return config;
+        return new ConfigTileSheets(tileWidth, tileHeight, sheets);
     }
 
     /**
@@ -79,9 +78,9 @@ public final class ConfigTileSheets
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Media configSheets, int tileWidth, int tileHeight, Collection<String> sheets)
-           
+
     {
-        final XmlNode nodeSheets = Stream.createXmlNode(NODE_TILE_SHEETS);
+        final XmlNode nodeSheets = Xml.create(NODE_TILE_SHEETS);
         nodeSheets.writeString(Configurer.HEADER, Engine.WEBSITE);
 
         final XmlNode tileSize = nodeSheets.createChild(NODE_TILE_SIZE);
@@ -90,7 +89,7 @@ public final class ConfigTileSheets
 
         exportSheets(nodeSheets, sheets);
 
-        Stream.saveXml(nodeSheets, configSheets);
+        Xml.save(nodeSheets, configSheets);
     }
 
     /**

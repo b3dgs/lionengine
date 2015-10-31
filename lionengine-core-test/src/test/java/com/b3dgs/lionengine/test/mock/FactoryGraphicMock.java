@@ -21,20 +21,20 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Hq2x;
-import com.b3dgs.lionengine.Hq3x;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.FactoryGraphic;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Hq2x;
+import com.b3dgs.lionengine.core.Hq3x;
 import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.Transform;
 
 /**
  * Factory graphic mock.
@@ -56,9 +56,9 @@ public class FactoryGraphicMock implements FactoryGraphic
      */
 
     @Override
-    public Screen createScreen(Renderer renderer)
+    public Screen createScreen(Config config)
     {
-        return new ScreenMock(renderer);
+        return new ScreenMock(config);
     }
 
     @Override

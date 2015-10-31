@@ -27,8 +27,8 @@ import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.dialog.map.collision.assign.MapCollisionAssignDialog;
 import com.b3dgs.lionengine.editor.dialog.sheets.palette.SheetPaletteType;
@@ -63,7 +63,7 @@ import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Line;
 import com.b3dgs.lionengine.geom.Point;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -145,7 +145,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     public void verifyCollision(int offset)
     {
         final Media config = map.getGroupsConfig();
-        final XmlNode groupNode = Stream.loadXml(config);
+        final XmlNode groupNode = Xml.load(config);
         final List<Integer> keys = new ArrayList<>(markers.keySet());
         Collections.sort(keys);
         final int max = keys.size();
@@ -161,7 +161,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         }
         if (!markers.isEmpty())
         {
-            Stream.saveXml(groupNode, config);
+            Xml.save(groupNode, config);
             map.loadGroups(config);
             final MapTileCollision collision = map.getFeature(MapTileCollision.class);
             collision.loadCollisions();
@@ -444,7 +444,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                                                   int index)
     {
         final Media config = collision.getFormulasConfig();
-        final XmlNode root = Stream.loadXml(config);
+        final XmlNode root = Xml.load(config);
         if (ConfigCollisionFormula.has(root, name))
         {
             ConfigCollisionFormula.remove(root, name);
@@ -454,7 +454,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final CollisionFunction updatedFunction = updateFunction(function, index);
         final CollisionFormula formula = new CollisionFormula(name, range, updatedFunction, new CollisionConstraint());
         ConfigCollisionFormula.export(root, formula);
-        Stream.saveXml(root, config);
+        Xml.save(root, config);
 
         return formula;
     }
@@ -497,7 +497,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     private CollisionGroup saveCollisionGroup(MapTileCollision collision, String name, CollisionFormula formula)
     {
         final Media config = collision.getCollisionsConfig();
-        final XmlNode root = Stream.loadXml(config);
+        final XmlNode root = Xml.load(config);
         if (ConfigCollisionGroup.has(root, name))
         {
             ConfigCollisionGroup.remove(root, name);
@@ -505,7 +505,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
 
         final CollisionGroup group = new CollisionGroup(name, Arrays.asList(formula));
         ConfigCollisionGroup.export(root, group);
-        Stream.saveXml(root, config);
+        Xml.save(root, config);
 
         return group;
     }

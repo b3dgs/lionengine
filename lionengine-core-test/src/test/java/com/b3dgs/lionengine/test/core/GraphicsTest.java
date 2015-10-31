@@ -27,20 +27,20 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Hq2x;
-import com.b3dgs.lionengine.Hq3x;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Hq2x;
+import com.b3dgs.lionengine.core.Hq3x;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.test.GraphicTest;
 import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.test.util.UtilTests;
 
@@ -55,11 +55,11 @@ public class GraphicsTest
     private static final Config CONFIG = new Config(new Resolution(320, 240, 60), 32, true);
 
     /** Image. */
-    private static final Media MEDIA_IMAGE = Medias.create("image.png");
+    private static Media mediaImage;
     /** Raster. */
-    private static final Media MEDIA_RASTER = Medias.create("raster.xml");
+    private static Media mediaRaster;
     /** Raster error. */
-    private static final Media RASTER_ERROR = Medias.create("raster_error.xml");
+    private static Media mediaRasterError;
     /** Image. */
     private static ImageBuffer image;
 
@@ -73,7 +73,11 @@ public class GraphicsTest
     {
         Medias.setLoadFromJar(GraphicTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
-        image = Graphics.getImageBuffer(MEDIA_IMAGE);
+
+        mediaImage = Medias.create("image.png");
+        mediaRaster = Medias.create("raster.xml");
+        mediaRasterError = Medias.create("raster_error.xml");
+        image = Graphics.getImageBuffer(mediaImage);
     }
 
     /**
@@ -83,6 +87,7 @@ public class GraphicsTest
     public static void cleanUp()
     {
         image.dispose();
+
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
     }
@@ -122,7 +127,7 @@ public class GraphicsTest
     @Test
     public void testCreateScreen()
     {
-        Assert.assertNotNull(Graphics.createScreen(new Renderer(CONFIG)));
+        Assert.assertNotNull(Graphics.createScreen(CONFIG));
     }
 
     /**
@@ -194,8 +199,8 @@ public class GraphicsTest
     @Test
     public void testGetImageBufferFromMedia()
     {
-        final ImageBuffer imageA = Graphics.getImageBuffer(MEDIA_IMAGE);
-        final ImageBuffer imageB = Graphics.getImageBuffer(MEDIA_IMAGE);
+        final ImageBuffer imageA = Graphics.getImageBuffer(mediaImage);
+        final ImageBuffer imageB = Graphics.getImageBuffer(mediaImage);
 
         Assert.assertNotEquals(imageA, imageB);
         Assert.assertEquals(imageB.getWidth(), imageA.getWidth());
@@ -400,7 +405,7 @@ public class GraphicsTest
     @Test
     public void testLoadRaster()
     {
-        Assert.assertNotNull(Graphics.loadRaster(MEDIA_RASTER));
+        Assert.assertNotNull(Graphics.loadRaster(mediaRaster));
     }
 
     /**
@@ -409,6 +414,6 @@ public class GraphicsTest
     @Test(expected = LionEngineException.class)
     public void testLoadRasterFailure()
     {
-        Assert.assertNotNull(Graphics.loadRaster(RASTER_ERROR));
+        Assert.assertNotNull(Graphics.loadRaster(mediaRasterError));
     }
 }

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.core.android;
 
 import android.view.MotionEvent;
 
-import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.core.Config;
 
 /**
  * Mouse input implementation.

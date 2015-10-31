@@ -20,10 +20,10 @@ package com.b3dgs.lionengine.game.background;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -60,7 +60,6 @@ public abstract class BackgroundGame implements Background
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
     public static BackgroundElement createElement(String path, String name, int x, int y)
-           
     {
         return new BackgroundElement(x, y, createSprite(Medias.create(path, name)));
     }

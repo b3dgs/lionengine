@@ -41,9 +41,9 @@ import javax.imageio.ImageIO;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Misc tools for AWT.
@@ -65,24 +65,6 @@ public final class ToolsAwt
     {
         DIV, DIV, DIV, DIV, DIV, DIV, DIV, DIV, DIV
     };
-    /** Error image buffer implementation. */
-    private static final String ERROR_IMAGE_BUFFER_IMPL = "Unsupported image buffer implementation !";
-
-    /**
-     * Get the image buffer.
-     * 
-     * @param image The image buffer.
-     * @return The buffer.
-     * @throws LionEngineException If unknown implementation.
-     */
-    public static BufferedImage getBuffer(ImageBuffer image)
-    {
-        if (image instanceof ImageBufferAwt)
-        {
-            return ((ImageBufferAwt) image).getBuffer();
-        }
-        throw new LionEngineException(ERROR_IMAGE_BUFFER_IMPL);
-    }
 
     /**
      * Get the image transparency equivalence.
@@ -166,8 +148,7 @@ public final class ToolsAwt
         {
             throw new IOException("Invalid image !");
         }
-        final BufferedImage image = copyImage(buffer, buffer.getTransparency());
-        return image;
+        return copyImage(buffer, buffer.getTransparency());
     }
 
     /**
@@ -455,13 +436,18 @@ public final class ToolsAwt
         {
             final Toolkit toolkit = Toolkit.getDefaultToolkit();
             final Dimension dim = toolkit.getBestCursorSize(1, 1);
-            final BufferedImage cursor = createImage(dim.width, dim.height, Transparency.BITMASK);
-            final BufferedImage buffer = applyMask(cursor, Color.BLACK.getRGB());
+            final BufferedImage c = createImage(Math.max(1, dim.width), Math.max(1, dim.height), Transparency.BITMASK);
+            final BufferedImage buffer = applyMask(c, Color.BLACK.getRGB());
             return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
         }
-        catch (final Throwable exception)
+        catch (final java.awt.HeadlessException exception)
         {
-            Verbose.exception(ToolsAwt.class, "createHiddenCursor", exception);
+            Verbose.exception(exception);
+            return Cursor.getDefaultCursor();
+        }
+        catch (final java.awt.AWTError exception)
+        {
+            Verbose.exception(exception);
             return Cursor.getDefaultCursor();
         }
     }

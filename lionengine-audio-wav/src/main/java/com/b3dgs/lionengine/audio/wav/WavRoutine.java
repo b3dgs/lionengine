@@ -31,11 +31,10 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Sound routine implementation. One sound represents one thread.
@@ -152,7 +151,7 @@ final class WavRoutine extends Thread
             }
             catch (final IOException exception)
             {
-                Verbose.exception(WavRoutine.class, "stopSound", exception);
+                Verbose.exception(exception);
             }
             finally
             {
@@ -314,25 +313,15 @@ final class WavRoutine extends Thread
                 }
                 catch (final UnsupportedAudioFileException exception)
                 {
-                    Verbose.critical(WavRoutine.class,
-                                     "run",
-                                     "Unsupported audio format: ",
-                                     Constant.QUOTE,
-                                     filename,
-                                     Constant.QUOTE);
+                    Verbose.exception(exception, "Unsupported audio format: ", filename);
                 }
                 catch (final LineUnavailableException exception)
                 {
-                    Verbose.critical(WavRoutine.class,
-                                     "run",
-                                     "Unavailable audio line: ",
-                                     Constant.QUOTE,
-                                     filename,
-                                     Constant.QUOTE);
+                    Verbose.exception(exception, "Unavailable audio line: ", filename);
                 }
                 catch (final IOException exception)
                 {
-                    Verbose.exception(WavRoutine.class, "run", exception);
+                    Verbose.exception(exception);
                 }
             }
             isPlaying = false;

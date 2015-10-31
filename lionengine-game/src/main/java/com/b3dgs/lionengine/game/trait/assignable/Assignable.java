@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.trait.assignable;
 
-import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.trait.Trait;
 
 /**

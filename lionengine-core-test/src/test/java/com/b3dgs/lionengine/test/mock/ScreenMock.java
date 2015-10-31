@@ -19,29 +19,23 @@ package com.b3dgs.lionengine.test.mock;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.InputDevice;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
-import com.b3dgs.lionengine.core.Renderer;
-import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.ScreenBase;
+import com.b3dgs.lionengine.core.ScreenListener;
 
 /**
  * Screen mock.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ScreenMock implements Screen
+public class ScreenMock extends ScreenBase
 {
+    /** Max ready time in millisecond. */
+    public static final long READY_TIMEOUT = 100L;
     /** Wait for screen ready. */
     private static final AtomicBoolean READY = new AtomicBoolean(true);
-    /** Max ready time in millisecond. */
-    private static final int READY_TIMEOUT = 100;
-
-    /** Renderer. */
-    private final Renderer renderer;
 
     /**
      * Set the screen ready flag.
@@ -56,22 +50,16 @@ public class ScreenMock implements Screen
     /**
      * Constructor.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      */
-    public ScreenMock(Renderer renderer)
+    public ScreenMock(Config config)
     {
-        this.renderer = renderer;
+        super(config, READY_TIMEOUT);
     }
 
     /*
      * Screen
      */
-
-    @Override
-    public void start()
-    {
-        // Mock
-    }
 
     @Override
     public void preUpdate()
@@ -82,7 +70,11 @@ public class ScreenMock implements Screen
     @Override
     public void update()
     {
-        // Mock
+        for (final ScreenListener listener : listeners)
+        {
+            listener.notifyFocusGained();
+            listener.notifyFocusLost();
+        }
     }
 
     @Override
@@ -116,34 +108,9 @@ public class ScreenMock implements Screen
     }
 
     @Override
-    public void setSequence(Sequence sequence)
-    {
-        sequence.onFocusGained();
-        sequence.onLostFocus();
-    }
-
-    @Override
     public void setIcon(String filename)
     {
         // Mock
-    }
-
-    @Override
-    public Graphic getGraphic()
-    {
-        return new GraphicMock();
-    }
-
-    @Override
-    public Config getConfig()
-    {
-        return renderer.getConfig();
-    }
-
-    @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type)
-    {
-        return null;
     }
 
     @Override
@@ -156,12 +123,6 @@ public class ScreenMock implements Screen
     public int getY()
     {
         return 0;
-    }
-
-    @Override
-    public int getReadyTimeOut()
-    {
-        return READY_TIMEOUT;
     }
 
     @Override

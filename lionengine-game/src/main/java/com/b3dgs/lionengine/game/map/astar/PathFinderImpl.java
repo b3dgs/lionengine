@@ -229,13 +229,11 @@ final class PathFinderImpl implements PathFinder
                 {
                     continue;
                 }
-                if (!allowDiagMovement)
+                if (!allowDiagMovement && x != 0 && y != 0)
                 {
-                    if (x != 0 && y != 0)
-                    {
-                        continue;
-                    }
+                    continue;
                 }
+
                 final int xp = x + current.getX();
                 final int yp = y + current.getY();
 

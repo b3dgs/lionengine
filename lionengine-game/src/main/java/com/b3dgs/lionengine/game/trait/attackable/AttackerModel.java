@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.trait.attackable;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
@@ -249,7 +250,7 @@ public class AttackerModel extends TraitModel implements Attacker
                 updateAttacking();
                 break;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException("Unknown type: ", state.name());
         }
         if (stop)
         {

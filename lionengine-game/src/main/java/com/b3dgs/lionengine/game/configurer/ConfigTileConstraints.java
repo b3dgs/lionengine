@@ -22,11 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.map.TileConstraint;
 import com.b3dgs.lionengine.game.map.TileRef;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -58,7 +58,7 @@ public final class ConfigTileConstraints
         final Map<TileRef, Map<Orientation, TileConstraint>> constraints;
         constraints = new HashMap<TileRef, Map<Orientation, TileConstraint>>();
 
-        final XmlNode root = Stream.loadXml(config);
+        final XmlNode root = Xml.load(config);
 
         for (final XmlNode nodeTileRef : root.getChildren(ConfigTile.NODE_TILE))
         {
@@ -102,7 +102,7 @@ public final class ConfigTileConstraints
      */
     public static XmlNode export(Map<TileRef, Collection<TileConstraint>> constraints)
     {
-        final XmlNode nodeConstraints = Stream.createXmlNode(CONSTRAINTS);
+        final XmlNode nodeConstraints = Xml.create(CONSTRAINTS);
         for (final Map.Entry<TileRef, Collection<TileConstraint>> entry : constraints.entrySet())
         {
             final XmlNode nodeTileRef = ConfigTile.export(entry.getKey());

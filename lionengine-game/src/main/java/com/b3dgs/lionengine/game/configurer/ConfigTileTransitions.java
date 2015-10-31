@@ -23,10 +23,10 @@ import java.util.HashSet;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.map.TileRef;
 import com.b3dgs.lionengine.game.map.TileTransition;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -56,7 +56,7 @@ public final class ConfigTileTransitions
      */
     public static Map<TileTransition, Collection<TileRef>> imports(Media configTransitions)
     {
-        final XmlNode root = Stream.loadXml(configTransitions);
+        final XmlNode root = Xml.load(configTransitions);
         final Collection<XmlNode> nodesTransition = root.getChildren(NODE_TRANSITION);
         final Map<TileTransition, Collection<TileRef>> transitions;
         transitions = new HashMap<TileTransition, Collection<TileRef>>(nodesTransition.size());
@@ -82,9 +82,8 @@ public final class ConfigTileTransitions
      * @throws LionEngineException If error on export.
      */
     public static void exports(Media media, Map<TileTransition, Collection<TileRef>> transitions)
-           
     {
-        final XmlNode nodeTransitions = Stream.createXmlNode(NODE_TRANSITIONS);
+        final XmlNode nodeTransitions = Xml.create(NODE_TRANSITIONS);
 
         for (final Map.Entry<TileTransition, Collection<TileRef>> entry : transitions.entrySet())
         {
@@ -95,7 +94,7 @@ public final class ConfigTileTransitions
             exportTiles(nodeTransition, entry.getValue());
         }
 
-        Stream.saveXml(nodeTransitions, media);
+        Xml.save(nodeTransitions, media);
     }
 
     /**

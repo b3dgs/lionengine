@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.ObjectRepresentation;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
@@ -157,7 +157,7 @@ public class ObjectControl
             }
             catch (final LionEngineException exception)
             {
-                Verbose.exception(ObjectControl.class, "addAt", exception, media.getPath());
+                Verbose.exception(exception, media.getPath());
             }
         }
     }

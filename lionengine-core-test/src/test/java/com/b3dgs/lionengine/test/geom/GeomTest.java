@@ -63,6 +63,21 @@ public class GeomTest
     }
 
     /**
+     * Test the coord intersection function.
+     */
+    @Test
+    public void testCoordIntersection()
+    {
+        final Coord coordZero = Geom.intersection(Geom.createLine(), Geom.createLine());
+        Assert.assertEquals(Geom.createCoord(0.0, 0.0), coordZero);
+
+        final Line line1 = Geom.createLine(1, 2, 3, 4);
+        final Line line2 = Geom.createLine(-1, 2, -3, 4);
+        final Coord coord = Geom.intersection(line1, line2);
+        Assert.assertNotNull(coord);
+    }
+
+    /**
      * Test geom create line.
      */
     @Test

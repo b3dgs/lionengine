@@ -22,7 +22,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.configurer.ConfigTileTransitions;
 
@@ -59,7 +59,7 @@ public class MapTileTransitionModel implements MapTileTransition
     {
         final TileTransition transition = TransitionsExtractor.getTransition(map, tile);
         final Collection<TileRef> tilesRef = transitions.get(transition);
-        if (tilesRef != null && tilesRef.size() > 0)
+        if (tilesRef != null && !tilesRef.isEmpty())
         {
             for (final TileRef tileRef : tilesRef)
             {

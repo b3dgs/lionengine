@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
@@ -343,7 +343,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
                     }
                     catch (final IOException exception)
                     {
-                        Verbose.exception(getClass(), "updateUserMessage", exception);
+                        Verbose.exception(exception);
                     }
                 }
             }
@@ -395,7 +395,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
             }
             catch (final IOException exception)
             {
-                Verbose.exception(getClass(), "sendMessage finally", exception);
+                Verbose.exception(exception);
             }
         }
     }
@@ -500,7 +500,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         catch (final IOException exception)
         {
-            Verbose.exception(ClientImpl.class, "disconnect", exception);
+            Verbose.exception(exception);
         }
         connected = false;
     }

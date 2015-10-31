@@ -22,10 +22,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.configurer.ConfigTileConstraints;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -71,6 +71,17 @@ public class ConstraintsExtractor
     }
 
     /**
+     * Export constraints found.
+     * 
+     * @param media The export media.
+     */
+    public void export(Media media)
+    {
+        final XmlNode root = ConfigTileConstraints.export(constraints);
+        Xml.save(root, media);
+    }
+
+    /**
      * Check the tile neighbors.
      * 
      * @param tile The current tile.
@@ -85,29 +96,31 @@ public class ConstraintsExtractor
             for (int v = ty - 1; v <= ty + 1; v++)
             {
                 final Orientation orientation = Orientation.get(tx, ty, h, v);
-                if (orientation != null)
-                {
-                    final Tile neighbor = map.getTile(h, v);
-                    if (neighbor != null)
-                    {
-                        final TileRef neighborRef = new TileRef(neighbor.getSheet(), neighbor.getNumber());
-                        final TileConstraint constraint = getConstraint(tileRef, orientation);
-                        constraint.add(neighborRef);
-                    }
-                }
+                checkOrientation(orientation, tileRef, h, v);
             }
         }
     }
 
     /**
-     * Export constraints found.
+     * Check the orientation.
      * 
-     * @param media The export media.
+     * @param orientation The current orientation.
+     * @param tileRef The current tile.
+     * @param tx The current horizontal tile index.
+     * @param ty The current vertical tile index.
      */
-    public void export(Media media)
+    private void checkOrientation(Orientation orientation, TileRef tileRef, int tx, int ty)
     {
-        final XmlNode root = ConfigTileConstraints.export(constraints);
-        Stream.saveXml(root, media);
+        if (orientation != null)
+        {
+            final Tile neighbor = map.getTile(tx, ty);
+            if (neighbor != null)
+            {
+                final TileRef neighborRef = new TileRef(neighbor.getSheet(), neighbor.getNumber());
+                final TileConstraint constraint = getConstraint(tileRef, orientation);
+                constraint.add(neighborRef);
+            }
+        }
     }
 
     /**
@@ -135,6 +148,7 @@ public class ConstraintsExtractor
 
         final TileConstraint constraint = new TileConstraint(orientation);
         orientationConstraints.add(constraint);
+
         return constraint;
     }
 }

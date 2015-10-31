@@ -25,10 +25,10 @@ import java.awt.geom.Rectangle2D;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Text;
 
 /**
  * Text implementation.
@@ -139,7 +139,7 @@ final class TextAwt implements Text
 
         final ColorRgba colorOld = g.getColor();
         g.setColor(color);
-        g2d.drawGlyphVector(glyphVector, tx, ty - size / 2);
+        g2d.drawGlyphVector(glyphVector, tx, ty - size / 2.0f);
         g.setColor(colorOld);
     }
 

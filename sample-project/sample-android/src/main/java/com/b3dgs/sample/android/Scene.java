@@ -19,13 +19,13 @@ package com.b3dgs.sample.android;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
 
 /**
  * Game scene implementation.
@@ -42,15 +42,15 @@ public class Scene extends Sequence
     /**
      * Create the scene.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, RESOLUTION);
+        super(context, RESOLUTION);
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         text.setAlign(Align.CENTER);
         text.setColor(ColorRgba.WHITE);

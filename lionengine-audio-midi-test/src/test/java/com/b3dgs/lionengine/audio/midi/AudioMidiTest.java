@@ -32,10 +32,10 @@ public class AudioMidiTest
     /**
      * Test the constructor.
      * 
-     * @throws Throwable If error.
+     * @throws ReflectiveOperationException If error.
      */
     @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    public void testConstructor() throws ReflectiveOperationException
     {
         UtilTests.testPrivateConstructor(AudioMidi.class);
     }

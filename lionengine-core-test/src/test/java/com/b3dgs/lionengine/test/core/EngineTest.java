@@ -23,9 +23,9 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.test.mock.EngineMock;
 import com.b3dgs.lionengine.test.mock.SecurityManagerMock;
 

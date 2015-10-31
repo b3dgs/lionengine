@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.trait.pathfindable;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.game.trait.orientable.Orientable;
@@ -114,7 +114,7 @@ public interface Pathfindable extends Trait, Tiled, Orientable, Updatable, Rende
     void setLocation(int tx, int ty);
 
     /**
-     * Render additional information on path rendering with {@link #render(com.b3dgs.lionengine.core.Graphic)}.
+     * Render additional information on path rendering with {@link #render(com.b3dgs.lionengine.Graphic)}.
      * (Movement cost for each tile is displayed).
      * 
      * @param debug <code>true</code> to show debug information relative to path, <code>false</code> else.
@@ -171,8 +171,7 @@ public interface Pathfindable extends Trait, Tiled, Orientable, Updatable, Rende
      * Check if the category is considered as blocking.
      * 
      * @param category The category the check.
-     * @return <code>true</code> if blocking, <code>false</code> else.
-     * @throws LionEngineException If category has not been found.
+     * @return <code>true</code> if blocking, <code>false</code> else or category not found.
      */
     boolean isBlocking(String category);
 

@@ -173,7 +173,7 @@ public class ModuleGame
 
         public MySequence(Loader loader)
         {
-            super(loader, MySequence.NATIVE);
+            super(config, MySequence.NATIVE);
             // Initialize variables here
         }
 

@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.game.background;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 
@@ -59,7 +59,6 @@ public abstract class CloudsGame implements BackgroundComponent
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
     public CloudsGame(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY)
-           
     {
         this.decY = decY;
         sprite = Drawable.loadSpriteTiled(media, cloudWidth, cloudHeight);

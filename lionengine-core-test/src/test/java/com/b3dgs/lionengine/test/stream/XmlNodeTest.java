@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.test.mock.XmlNodeMock;
 
@@ -61,7 +61,7 @@ public class XmlNodeTest
     @Test
     public void testXmlnode()
     {
-        final XmlNode root = Stream.createXmlNode("root");
+        final XmlNode root = Xml.create("root");
         final XmlNode child1 = root.createChild("child1");
         final XmlNode child2 = root.createChild("child2");
 
@@ -105,7 +105,7 @@ public class XmlNodeTest
     @Test
     public void testXmlNodeRemove()
     {
-        final XmlNode root = Stream.createXmlNode("root");
+        final XmlNode root = Xml.create("root");
         final XmlNode child1 = root.createChild("child1");
         final XmlNode child2 = root.createChild("child2");
 
@@ -125,8 +125,8 @@ public class XmlNodeTest
     @Test
     public void testXmlNodeWriteRead()
     {
-        final XmlNode node = Stream.createXmlNode("node");
-        node.add(Stream.createXmlNode("test"));
+        final XmlNode node = Xml.create("node");
+        node.add(Xml.create("test"));
         try
         {
             node.getChild("void");
@@ -164,7 +164,7 @@ public class XmlNodeTest
     @Test(expected = LionEngineException.class)
     public void testXmlNodeNameError()
     {
-        final XmlNode node = Stream.createXmlNode("%éàç-èyrd");
+        final XmlNode node = Xml.create("%éàç-èyrd");
         Assert.assertNull(node);
     }
 
@@ -174,7 +174,7 @@ public class XmlNodeTest
     @Test(expected = LionEngineException.class)
     public void testXmlNodeWriteError()
     {
-        final XmlNode node = Stream.createXmlNode("test");
+        final XmlNode node = Xml.create("test");
         node.writeString("%éàç-èyrd", "error");
     }
 
@@ -184,7 +184,7 @@ public class XmlNodeTest
     @Test(expected = LionEngineException.class)
     public void testXmlNodeReadError()
     {
-        final XmlNode node = Stream.createXmlNode("test");
+        final XmlNode node = Xml.create("test");
         node.readString("%éàç-èyrd");
     }
 
@@ -194,8 +194,8 @@ public class XmlNodeTest
     @Test
     public void testXmlNodeHas()
     {
-        final XmlNode node = Stream.createXmlNode("test");
-        final XmlNode child = Stream.createXmlNode("child");
+        final XmlNode node = Xml.create("test");
+        final XmlNode child = Xml.create("child");
         node.writeString("attribute", "none");
         node.add(child);
 
@@ -211,7 +211,7 @@ public class XmlNodeTest
     @Test(expected = LionEngineException.class)
     public void testXmlBadImpl()
     {
-        final XmlNode node = Stream.createXmlNode("test");
+        final XmlNode node = Xml.create("test");
         node.removeChild(new XmlNodeMock());
         final XmlNode child = new XmlNodeMock();
         node.add(child);

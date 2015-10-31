@@ -17,14 +17,11 @@
  */
 package com.b3dgs.lionengine.test.mock;
 
-import org.junit.Assert;
-
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.InputDevice;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.test.util.Constant;
 
 /**
@@ -46,17 +43,15 @@ public class SequenceArgumentsMock extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      * @param argument The argument reference.
      */
-    public SequenceArgumentsMock(Loader loader, Object argument)
+    public SequenceArgumentsMock(Context context, Object argument)
     {
-        super(loader, Constant.RESOLUTION_320_240);
+        super(context, Constant.RESOLUTION_320_240);
         this.argument = argument;
         setExtrapolated(true);
-        addKeyListener(null);
         setSystemCursorVisible(true);
-        Assert.assertNull(getInputDevice(InputDevice.class));
     }
 
     /*
@@ -64,7 +59,7 @@ public class SequenceArgumentsMock extends Sequence
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         width = getWidth();
         height = getHeight();

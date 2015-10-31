@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -55,7 +55,7 @@ public final class ConfigCollisionGroup
      */
     public static Collection<CollisionGroup> create(Media config)
     {
-        final XmlNode root = Stream.loadXml(config);
+        final XmlNode root = Xml.load(config);
         final Collection<CollisionGroup> collisions = new ArrayList<CollisionGroup>();
         for (final XmlNode node : root.getChildren(COLLISION))
         {

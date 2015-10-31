@@ -20,11 +20,11 @@ package com.b3dgs.sample.android;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.android.EngineAndroid;
 
 /**
@@ -42,8 +42,8 @@ public final class AppAndroid extends Activity
         EngineAndroid.start("AppAndroid", Version.create(1, 0, 0), this);
         final Resolution output = new Resolution(240, 320, 60);
         final Config config = new Config(output, 32, false);
-        final Loader loader = new Loader(config);
-        loader.start(Scene.class);
+        final Loader loader = new Loader();
+        loader.start(config, Scene.class);
     }
 
     @Override

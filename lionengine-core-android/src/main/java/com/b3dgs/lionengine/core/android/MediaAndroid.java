@@ -24,8 +24,7 @@ import java.io.OutputStream;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Media implementation.
@@ -47,14 +46,16 @@ final class MediaAndroid implements Media
     /**
      * Internal constructor.
      * 
+     * @param separator The path separator.
      * @param path The media path.
      * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaAndroid(String path)
+    MediaAndroid(String separator, String path)
     {
         Check.notNull(path);
+
         this.path = path;
-        final int index = path.lastIndexOf(Medias.getSeparator());
+        final int index = path.lastIndexOf(separator);
         if (index > -1)
         {
             parent = path.substring(0, index);

@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * File modification watcher for project tree.
@@ -170,7 +170,7 @@ public final class FolderModificationWatcher
             }
             catch (final IOException exception)
             {
-                Verbose.exception(getClass(), "createWatchers", exception);
+                Verbose.exception(exception);
             }
         }
 
@@ -187,7 +187,7 @@ public final class FolderModificationWatcher
                 }
                 catch (final IOException exception)
                 {
-                    Verbose.exception(getClass(), "closeTasks", exception);
+                    Verbose.exception(exception);
                     continue;
                 }
             }
@@ -324,7 +324,7 @@ public final class FolderModificationWatcher
                     }
                     catch (final IOException exception)
                     {
-                        Verbose.exception(getClass(), "onCreated", exception);
+                        Verbose.exception(exception);
                     }
                 }
             }

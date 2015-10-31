@@ -21,9 +21,9 @@ import android.app.Activity;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.Version;
 
 /**
  * Engine Android implementation.

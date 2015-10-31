@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.editor.world.renderer;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.WorldModel;

@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectGenerator;
@@ -189,7 +189,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
         }
         catch (final IOException exception)
         {
-            Verbose.exception(getClass(), "generateProperties", exception);
+            Verbose.exception(exception);
             MessageDialog.openError(dialog,
                                     Messages.ImportProjectDialog_ErrorTitle,
                                     Messages.ImportProjectDialog_ErrorText);
@@ -211,7 +211,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
         }
         catch (final IOException exception)
         {
-            Verbose.exception(getClass(), "createProject", exception);
+            Verbose.exception(exception);
             MessageDialog.openError(dialog,
                                     Messages.ImportProjectDialog_ErrorTitle,
                                     Messages.ImportProjectDialog_ErrorText);

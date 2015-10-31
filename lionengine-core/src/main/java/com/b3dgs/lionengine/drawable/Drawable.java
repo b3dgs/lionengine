@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.drawable;
 
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Drawable factory. Can create the following elements:
@@ -112,7 +112,6 @@ public final class Drawable
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
     public static SpriteAnimated loadSpriteAnimated(Media media, int horizontalFrames, int verticalFrames)
-           
     {
         return new SpriteAnimatedImpl(media, horizontalFrames, verticalFrames);
     }
@@ -131,7 +130,6 @@ public final class Drawable
      * @throws LionEngineException If arguments are invalid.
      */
     public static SpriteAnimated loadSpriteAnimated(ImageBuffer surface, int horizontalFrames, int verticalFrames)
-           
     {
         return new SpriteAnimatedImpl(surface, horizontalFrames, verticalFrames);
     }
@@ -167,7 +165,6 @@ public final class Drawable
      * @throws LionEngineException If arguments are invalid.
      */
     public static SpriteTiled loadSpriteTiled(ImageBuffer surface, int tileWidth, int tileHeight)
-           
     {
         return new SpriteTiledImpl(surface, tileWidth, tileHeight);
     }
@@ -186,7 +183,6 @@ public final class Drawable
      * @throws LionEngineException If arguments are invalid.
      */
     public static SpriteParallaxed loadSpriteParallaxed(Media media, int linesNumber, int startWidth, int startHeight)
-           
     {
         return new SpriteParallaxedImpl(media, linesNumber, startWidth, startHeight);
     }
@@ -205,7 +201,6 @@ public final class Drawable
      * @throws LionEngineException If an error occurred when creating the font.
      */
     public static SpriteFont loadSpriteFont(Media media, Media data, int letterWidth, int letterHeight)
-           
     {
         return new SpriteFontImpl(media, data, letterWidth, letterHeight);
     }

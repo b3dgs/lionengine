@@ -33,9 +33,10 @@ import javax.swing.WindowConstants;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.ScreenListener;
 
 /**
  * Windowed screen implementation.
@@ -61,16 +62,28 @@ final class ScreenWindowedAwt extends ScreenAwt
     /**
      * Internal constructor.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
-    ScreenWindowedAwt(Renderer renderer)
+    ScreenWindowedAwt(Config config)
     {
-        super(renderer);
+        super(config);
+
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         dev = env.getDefaultScreenDevice();
         conf = dev.getDefaultConfiguration();
-        frame = initMainFrame(renderer);
+        frame = initMainFrame();
+    }
+
+    /**
+     * Called when screen is disposed.
+     */
+    void onDisposed()
+    {
+        for (final ScreenListener listener : listeners)
+        {
+            listener.notifyClosed();
+        }
     }
 
     /**
@@ -95,15 +108,7 @@ final class ScreenWindowedAwt extends ScreenAwt
             frame.pack();
             frame.setLocationRelativeTo(null);
 
-            // Create buffer
-            try
-            {
-                canvas.createBufferStrategy(2, conf.getBufferCapabilities());
-            }
-            catch (final AWTException exception)
-            {
-                canvas.createBufferStrategy(1);
-            }
+            createBufferStrategy();
             buf = canvas.getBufferStrategy();
 
             // Set input listeners
@@ -119,13 +124,27 @@ final class ScreenWindowedAwt extends ScreenAwt
     }
 
     /**
+     * Create the buffer strategy using default capabilities.
+     */
+    private void createBufferStrategy()
+    {
+        try
+        {
+            canvas.createBufferStrategy(2, conf.getBufferCapabilities());
+        }
+        catch (final AWTException exception)
+        {
+            canvas.createBufferStrategy(1);
+        }
+    }
+
+    /**
      * Initialize the main frame.
      * 
-     * @param renderer The renderer reference.
      * @return The created main frame.
      * @throws LionEngineException If engine has not been started.
      */
-    private JFrame initMainFrame(final Renderer renderer)
+    private JFrame initMainFrame()
     {
         final String title = Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion();
         final JFrame frame = new JFrame(title, conf);
@@ -135,7 +154,7 @@ final class ScreenWindowedAwt extends ScreenAwt
             @Override
             public void windowClosing(WindowEvent event)
             {
-                renderer.end();
+                onDisposed();
             }
         });
         frame.setResizable(false);

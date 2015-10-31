@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.image.BufferedImage;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * Image buffer implementation.
@@ -41,16 +41,6 @@ final class ImageBufferAwt implements ImageBuffer
     ImageBufferAwt(BufferedImage bufferedImage)
     {
         this.bufferedImage = bufferedImage;
-    }
-
-    /**
-     * Get the image buffer.
-     * 
-     * @return The image buffer.
-     */
-    BufferedImage getBuffer()
-    {
-        return bufferedImage;
     }
 
     /*
@@ -109,6 +99,13 @@ final class ImageBufferAwt implements ImageBuffer
     public int getHeight()
     {
         return bufferedImage.getHeight();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public BufferedImage getSurface()
+    {
+        return bufferedImage;
     }
 
     @Override

@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
@@ -274,7 +274,7 @@ public class WorldPart implements Focusable, TileSelectionListener
                 }
                 catch (final ReflectiveOperationException exception)
                 {
-                    Verbose.exception(getClass(), "checkUpdaterExtensionPoint", exception);
+                    Verbose.exception(exception);
                 }
             }
         }
@@ -302,7 +302,7 @@ public class WorldPart implements Focusable, TileSelectionListener
                 }
                 catch (final ReflectiveOperationException exception)
                 {
-                    Verbose.exception(getClass(), "checkRendererExtensionPoint", exception);
+                    Verbose.exception(exception);
                 }
             }
         }

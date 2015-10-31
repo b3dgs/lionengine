@@ -22,13 +22,13 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.test.util.DrawableTestTool;
 public class ImageTest
 {
     /** Image media. */
-    private static final Media MEDIA = Medias.create("image.png");
+    private static Media media;
     /** Graphic test output. */
     private static Graphic g;
 
@@ -56,6 +56,8 @@ public class ImageTest
     {
         Medias.setLoadFromJar(ImageTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+
+        media = Medias.create("image.png");
         g = Graphics.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
@@ -65,6 +67,8 @@ public class ImageTest
     @AfterClass
     public static void cleanUp()
     {
+        g.dispose();
+
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
     }
@@ -150,13 +154,13 @@ public class ImageTest
         Assert.assertEquals(imageB, Drawable.loadImage(imageB.getSurface()));
 
         // Load from file
-        final Image imageC = Drawable.loadImage(MEDIA);
+        final Image imageC = Drawable.loadImage(media);
         imageC.load();
         imageC.prepare();
-        DrawableTestTool.assertImageInfoCorrect(MEDIA, imageC);
+        DrawableTestTool.assertImageInfoCorrect(media, imageC);
         Assert.assertNotNull(imageC.getSurface());
         DrawableTestTool.testImageRender(g, imageC);
-        Assert.assertFalse(imageC.equals(Drawable.loadImage(MEDIA)));
+        Assert.assertFalse(imageC.equals(Drawable.loadImage(media)));
 
         // Equals
         final ImageBuffer surfaceA = Graphics.createImageBuffer(16, 16, Transparency.OPAQUE);

@@ -31,7 +31,7 @@ import org.eclipse.e4.ui.workbench.UIEvents;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.handler.ProjectImportHandler;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
@@ -118,7 +118,7 @@ public class ApplicationConfiguration
             }
             catch (final IOException exception)
             {
-                Verbose.exception(getClass(), "importProject", exception);
+                Verbose.exception(exception);
             }
         }
 

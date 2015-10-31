@@ -21,7 +21,7 @@ package com.b3dgs.lionengine.game.object;
  * Describe the main component requirement, which is aimed to provide updatable feature for an object.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.core.Updatable
+ * @see com.b3dgs.lionengine.Updatable
  */
 public interface ComponentUpdatable
 {

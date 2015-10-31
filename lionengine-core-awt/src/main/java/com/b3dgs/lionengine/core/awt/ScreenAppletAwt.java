@@ -19,12 +19,11 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.IllegalComponentStateException;
 
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Resolution;
 
 /**
  * Applet screen implementation.
@@ -36,18 +35,18 @@ final class ScreenAppletAwt extends ScreenAwt
     /** Applet reference. */
     private final AppletAwt applet;
     /** Image buffer reference. */
-    private ImageBuffer buffer;
+    private ImageBufferAwt buffer;
     /** Graphic buffer reference. */
     private Graphic gbuf;
 
     /**
      * Internal constructor.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      */
-    ScreenAppletAwt(Renderer renderer)
+    ScreenAppletAwt(Config config)
     {
-        super(renderer);
+        super(config);
         applet = config.getApplet(AppletAwt.class);
     }
 
@@ -58,7 +57,9 @@ final class ScreenAppletAwt extends ScreenAwt
      */
     private void initApplet(Resolution output)
     {
-        buffer = Graphics.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
+        buffer = (ImageBufferAwt) Graphics.createImageBuffer(output.getWidth(),
+                                                             output.getHeight(),
+                                                             Transparency.OPAQUE);
         gbuf = buffer.createGraphic();
         graphics.setGraphic(gbuf);
         componentForKeyboard = applet;
@@ -80,7 +81,11 @@ final class ScreenAppletAwt extends ScreenAwt
     @Override
     public void update()
     {
-        applet.getGraphics().drawImage(ToolsAwt.getBuffer(buffer), 0, 0, null);
+        final java.awt.Graphics g = applet.getGraphics();
+        if (g != null)
+        {
+            g.drawImage(buffer.getSurface(), 0, 0, null);
+        }
         graphics.setGraphic(gbuf);
     }
 

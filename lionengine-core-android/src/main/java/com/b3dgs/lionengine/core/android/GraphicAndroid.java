@@ -29,11 +29,11 @@ import android.graphics.Shader.TileMode;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageSurface;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Transform;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.
@@ -42,17 +42,6 @@ import com.b3dgs.lionengine.core.Transform;
  */
 final class GraphicAndroid implements Graphic
 {
-    /**
-     * Get the image buffer.
-     * 
-     * @param imageBuffer The image buffer.
-     * @return The buffer.
-     */
-    private static Bitmap getBuffer(ImageBuffer imageBuffer)
-    {
-        return ((ImageBufferAndroid) imageBuffer).getBuffer();
-    }
-
     /** Paint mode. */
     private final Paint paint;
     /** Last matrix. */
@@ -128,35 +117,41 @@ final class GraphicAndroid implements Graphic
     }
 
     @Override
-    public void drawImage(ImageBuffer image, int x, int y)
+    public void drawImage(ImageSurface image, int x, int y)
     {
         paint.setAlpha(255);
-        g.drawBitmap(GraphicAndroid.getBuffer(image), x, y, paint);
+
+        final Bitmap surface = image.getSurface();
+        g.drawBitmap(surface, x, y, paint);
     }
 
     @Override
-    public void drawImage(ImageBuffer image, Transform transform, int x, int y)
+    public void drawImage(ImageSurface image, Transform transform, int x, int y)
     {
         paint.setAlpha(255);
         scale.setScale((float) transform.getScaleX(), (float) transform.getScaleY());
-        g.drawBitmap(GraphicAndroid.getBuffer(image), scale, paint);
+
+        final Bitmap surface = image.getSurface();
+        g.drawBitmap(surface, scale, paint);
     }
 
     @Override
-    public void drawImage(ImageBuffer image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
+    public void drawImage(ImageSurface image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
     {
         paint.setAlpha(255);
+
+        final Bitmap surface = image.getSurface();
         final Rect dest = new Rect(dx1, dy1, dx2, dy2);
         final Rect src = new Rect(sx1, sy1, sx2, sy2);
         if (sx1 > sx2)
         {
-            final Bitmap bitmap = GraphicAndroid.getBuffer(image);
-            final Bitmap part = Bitmap.createBitmap(bitmap, sx2, sy1, sx1 - sx2, sy2 - sy1, flip, false);
+
+            final Bitmap part = Bitmap.createBitmap(surface, sx2, sy1, sx1 - sx2, sy2 - sy1, flip, false);
             g.drawBitmap(part, dx1, dy1, paint);
         }
         else
         {
-            g.drawBitmap(GraphicAndroid.getBuffer(image), src, dest, paint);
+            g.drawBitmap(surface, src, dest, paint);
         }
     }
 
@@ -166,12 +161,12 @@ final class GraphicAndroid implements Graphic
         if (fill)
         {
             paint.setStyle(Paint.Style.FILL);
-            g.drawRect(x, y, x + width, y + height, paint);
+            g.drawRect(x, y, x + (float) width, y + (float) height, paint);
         }
         else
         {
             paint.setStyle(Paint.Style.STROKE);
-            g.drawRect(x, y, x + width, y + height, paint);
+            g.drawRect(x, y, x + (float) width, y + (float) height, paint);
         }
     }
 
@@ -226,7 +221,7 @@ final class GraphicAndroid implements Graphic
         {
             paint.setStyle(Paint.Style.STROKE);
         }
-        g.drawCircle(x, y, width * height, paint);
+        g.drawCircle(x, y, width * (float) height, paint);
     }
 
     @Override

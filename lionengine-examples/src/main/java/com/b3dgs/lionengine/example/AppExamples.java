@@ -29,8 +29,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Theme;
 import com.b3dgs.lionengine.core.awt.swing.UtilitySwing;
 import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
@@ -61,7 +61,7 @@ import com.b3dgs.lionengine.example.pong.AppPong;
 public class AppExamples
 {
     /** Application name. */
-    public static final String NAME = "LionEngine Examples";
+    public static final String NAME = Engine.NAME + " Examples";
     /** Executor. */
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
@@ -170,7 +170,7 @@ public class AppExamples
             }
             catch (final Exception exception)
             {
-                Verbose.exception(AppExamples.class, "addExample", exception);
+                Verbose.exception(exception);
                 SwingUtilities.invokeLater(() -> UtilitySwing.setEnabled(panel.getComponents(), true));
             }
         });

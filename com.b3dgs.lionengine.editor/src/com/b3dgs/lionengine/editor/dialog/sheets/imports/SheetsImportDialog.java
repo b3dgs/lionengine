@@ -35,8 +35,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
@@ -185,7 +185,7 @@ public class SheetsImportDialog extends AbstractDialog
         }
         catch (final LionEngineException exception)
         {
-            Verbose.exception(getClass(), "onFinish", exception, ERROR_GENERATE);
+            Verbose.exception(exception, ERROR_GENERATE);
         }
     }
 

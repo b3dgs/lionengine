@@ -56,7 +56,6 @@ final class AnimationImpl implements Animation
      * @throws LionEngineException If invalid animation.
      */
     AnimationImpl(String name, int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
-           
     {
         Check.superiorOrEqual(firstFrame, Animation.MINIMUM_FRAME);
         Check.superiorOrEqual(lastFrame, firstFrame);

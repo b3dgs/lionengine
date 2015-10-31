@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.project.dialog.collision;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -47,7 +47,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
      */
     private static void removeCollision(Media collisionsConfig, CollisionGroup collision)
     {
-        final XmlNode node = Stream.loadXml(collisionsConfig);
+        final XmlNode node = Xml.load(collisionsConfig);
         final Collection<XmlNode> toRemove = new ArrayList<>();
         for (final XmlNode nodeFormula : node.getChildren(ConfigCollisionGroup.COLLISION))
         {
@@ -61,7 +61,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
             node.removeChild(remove);
         }
         toRemove.clear();
-        Stream.saveXml(node, collisionsConfig);
+        Xml.save(node, collisionsConfig);
     }
 
     /** Last config used. */

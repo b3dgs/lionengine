@@ -139,12 +139,9 @@ public class Alterable
     public void set(int value)
     {
         cur = value;
-        if (!overMax)
+        if (!overMax && cur > max)
         {
-            if (cur > max)
-            {
-                cur = max;
-            }
+            cur = max;
         }
         if (cur < Alterable.MIN)
         {

@@ -20,13 +20,13 @@ package com.b3dgs.lionengine.editor.world.tester;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -51,7 +51,7 @@ public final class MapTester extends PropertyTester
     {
         try
         {
-            final XmlNode node = Stream.loadXml(media);
+            final XmlNode node = Xml.load(media);
             return ConfigCollisionFormula.FORMULAS.equals(node.getNodeName());
         }
         catch (final LionEngineException exception)
@@ -70,7 +70,7 @@ public final class MapTester extends PropertyTester
     {
         try
         {
-            final XmlNode node = Stream.loadXml(media);
+            final XmlNode node = Xml.load(media);
             return ConfigCollisionGroup.COLLISIONS.equals(node.getNodeName());
         }
         catch (final LionEngineException exception)

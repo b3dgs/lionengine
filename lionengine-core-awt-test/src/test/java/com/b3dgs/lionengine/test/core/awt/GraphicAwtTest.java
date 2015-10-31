@@ -21,7 +21,7 @@ import org.junit.BeforeClass;
 
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.awt.FactoryGraphicAwt;
-import com.b3dgs.lionengine.test.core.GraphicTest;
+import com.b3dgs.lionengine.test.GraphicTest;
 
 /**
  * Test the graphic class.

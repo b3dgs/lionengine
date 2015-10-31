@@ -29,8 +29,8 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
@@ -80,16 +80,29 @@ public class ImageInfoTest
      * Test the image info from its type.
      * 
      * @param type The expected image type.
+     * @param number The number of different files.
      */
-    private static void testImageInfo(String type)
+    private static void testImageInfo(String type, int number)
     {
-        final Media media = Medias.create("image." + type);
-        final ImageInfo info = ImageInfo.get(media);
+        for (int i = 0; i < number; i++)
+        {
+            final String name;
+            if (i == 0)
+            {
+                name = "image";
+            }
+            else
+            {
+                name = "image" + i;
+            }
+            final Media media = Medias.create(name + "." + type);
+            final ImageInfo info = ImageInfo.get(media);
 
-        Assert.assertEquals(64, info.getWidth());
-        Assert.assertEquals(32, info.getHeight());
-        Assert.assertEquals(type, info.getFormat());
-        Assert.assertTrue(ImageInfo.isImage(media));
+            Assert.assertEquals(64, info.getWidth());
+            Assert.assertEquals(32, info.getHeight());
+            Assert.assertEquals(type, info.getFormat());
+            Assert.assertTrue(ImageInfo.isImage(media));
+        }
     }
 
     /**
@@ -126,11 +139,11 @@ public class ImageInfoTest
     @Test
     public void testImageInfo()
     {
-        testImageInfo("png");
-        testImageInfo("gif");
-        testImageInfo("bmp");
-        testImageInfo("jpg");
-        testImageInfo("tiff");
+        testImageInfo("png", 1);
+        testImageInfo("gif", 1);
+        testImageInfo("bmp", 1);
+        testImageInfo("jpg", 3);
+        testImageInfo("tiff", 2);
 
         final ImageInfo info = ImageInfo.get(Medias.create("image.tif"));
         Assert.assertEquals(64, info.getWidth());

@@ -25,20 +25,20 @@ import java.io.OutputStream;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Hq2x;
-import com.b3dgs.lionengine.Hq3x;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.FactoryGraphic;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Hq2x;
+import com.b3dgs.lionengine.core.Hq3x;
 import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.Transform;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Graphic factory implementation.
@@ -65,9 +65,22 @@ public final class FactoryGraphicAwt implements FactoryGraphic
      */
 
     @Override
-    public Screen createScreen(Renderer renderer)
+    public Screen createScreen(Config config)
     {
-        return ScreenAwt.createScreen(renderer);
+        final Screen screen;
+        if (config.getApplet(AppletAwt.class) != null)
+        {
+            screen = new ScreenAppletAwt(config);
+        }
+        else if (config.isWindowed())
+        {
+            screen = new ScreenWindowedAwt(config);
+        }
+        else
+        {
+            screen = new ScreenFullAwt(config);
+        }
+        return screen;
     }
 
     @Override
@@ -109,34 +122,29 @@ public final class FactoryGraphicAwt implements FactoryGraphic
         }
         finally
         {
-            try
-            {
-                input.close();
-            }
-            catch (final IOException exception2)
-            {
-                Verbose.exception(FactoryGraphicAwt.class, "getImage", exception2);
-            }
+            UtilFile.safeClose(input);
         }
     }
 
     @Override
     public ImageBuffer getImageBuffer(ImageBuffer image)
     {
-        return new ImageBufferAwt(ToolsAwt.copyImage(ToolsAwt.getBuffer(image),
-                                                     ToolsAwt.getTransparency(image.getTransparency())));
+        final BufferedImage surface = image.getSurface();
+        return new ImageBufferAwt(ToolsAwt.copyImage(surface, ToolsAwt.getTransparency(image.getTransparency())));
     }
 
     @Override
     public ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
-        return new ImageBufferAwt(ToolsAwt.applyMask(ToolsAwt.getBuffer(image), maskColor.getRgba()));
+        final BufferedImage surface = image.getSurface();
+        return new ImageBufferAwt(ToolsAwt.applyMask(surface, maskColor.getRgba()));
     }
 
     @Override
     public ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
-        final BufferedImage[] images = ToolsAwt.splitImage(ToolsAwt.getBuffer(image), h, v);
+        final BufferedImage surface = image.getSurface();
+        final BufferedImage[] images = ToolsAwt.splitImage(surface, h, v);
         final ImageBuffer[] imageBuffers = new ImageBuffer[h * v];
         for (int i = 0; i < imageBuffers.length; i++)
         {
@@ -148,25 +156,29 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     @Override
     public ImageBuffer rotate(ImageBuffer image, int angle)
     {
-        return new ImageBufferAwt(ToolsAwt.rotate(ToolsAwt.getBuffer(image), angle));
+        final BufferedImage surface = image.getSurface();
+        return new ImageBufferAwt(ToolsAwt.rotate(surface, angle));
     }
 
     @Override
     public ImageBuffer resize(ImageBuffer image, int width, int height)
     {
-        return new ImageBufferAwt(ToolsAwt.resize(ToolsAwt.getBuffer(image), width, height));
+        final BufferedImage surface = image.getSurface();
+        return new ImageBufferAwt(ToolsAwt.resize(surface, width, height));
     }
 
     @Override
     public ImageBuffer flipHorizontal(ImageBuffer image)
     {
-        return new ImageBufferAwt(ToolsAwt.flipHorizontal(ToolsAwt.getBuffer(image)));
+        final BufferedImage surface = image.getSurface();
+        return new ImageBufferAwt(ToolsAwt.flipHorizontal(surface));
     }
 
     @Override
     public ImageBuffer flipVertical(ImageBuffer image)
     {
-        return new ImageBufferAwt(ToolsAwt.flipVertical(ToolsAwt.getBuffer(image)));
+        final BufferedImage surface = image.getSurface();
+        return new ImageBufferAwt(ToolsAwt.flipVertical(surface));
     }
 
     @Override
@@ -179,7 +191,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
                 filtered = image;
                 break;
             case BILINEAR:
-                filtered = new ImageBufferAwt(ToolsAwt.applyBilinearFilter(ToolsAwt.getBuffer(image)));
+                filtered = new ImageBufferAwt(ToolsAwt.applyBilinearFilter((BufferedImage) image.getSurface()));
                 break;
             case HQ2X:
                 final Hq2x hq2x = new Hq2x(image);
@@ -199,10 +211,11 @@ public final class FactoryGraphicAwt implements FactoryGraphic
     public void saveImage(ImageBuffer image, Media media)
     {
         Check.notNull(media);
+        final BufferedImage surface = image.getSurface();
         final OutputStream output = media.getOutputStream();
         try
         {
-            ToolsAwt.saveImage(ToolsAwt.getBuffer(image), output);
+            ToolsAwt.saveImage(surface, output);
         }
         catch (final IOException exception)
         {
@@ -210,20 +223,14 @@ public final class FactoryGraphicAwt implements FactoryGraphic
         }
         finally
         {
-            try
-            {
-                output.close();
-            }
-            catch (final IOException exception2)
-            {
-                Verbose.exception(FactoryGraphicAwt.class, "saveImage", exception2);
-            }
+            UtilFile.safeClose(output);
         }
     }
 
     @Override
     public ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int ref)
     {
-        return new ImageBufferAwt(ToolsAwt.getRasterBuffer(ToolsAwt.getBuffer(image), fr, fg, fb, er, eg, eb, ref));
+        final BufferedImage surface = image.getSurface();
+        return new ImageBufferAwt(ToolsAwt.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, ref));
     }
 }

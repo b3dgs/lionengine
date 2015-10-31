@@ -20,8 +20,9 @@ package com.b3dgs.lionengine.test.core;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.FactoryMedia;
+import com.b3dgs.lionengine.core.FactoryMediaDefault;
 
 /**
  * Test the factory media provider class.
@@ -30,37 +31,30 @@ import com.b3dgs.lionengine.core.Medias;
  */
 public class FactoryMediaTest
 {
-    /** Resources path. */
-    private static final String PATH = "graphic";
+    /** Factory. */
+    private static final FactoryMedia FACTORY = new FactoryMediaDefault();
 
     /**
-     * Test the create media.
+     * Test the create media from resources directory.
      */
     @Test
-    public void testCreateMedia()
+    public void testCreateMediaResources()
     {
-        Assert.assertEquals(PATH, Medias.create(PATH).getPath());
-        Assert.assertEquals(PATH + Medias.getSeparator(), Medias.create(PATH, null).getPath());
+        final Media media = FACTORY.create("/", "rsc", "test.txt");
+        Assert.assertEquals("", media.getParentPath());
+        Assert.assertEquals("test.txt", media.getPath());
+        Assert.assertEquals("rsc" + java.io.File.separator + "test.txt", media.getFile().getPath());
     }
 
     /**
-     * Test the create media path.
+     * Test the create media from loader.
      */
     @Test
-    public void testCreateMediaPath()
+    public void testCreateMediaLoader()
     {
-        Assert.assertEquals(PATH, Medias.create(PATH).getPath());
-    }
-
-    /**
-     * Test the separator.
-     */
-    @Test
-    public void testSeparator()
-    {
-        final String old = Medias.getSeparator();
-        Medias.setSeparator(Constant.PERCENT);
-        Assert.assertEquals("test%toto", Medias.create("test", "toto").getPath());
-        Medias.setSeparator(old);
+        final Media media = FACTORY.create("/", FactoryMediaTest.class, "test.txt");
+        Assert.assertEquals("", media.getParentPath());
+        Assert.assertEquals("test.txt", media.getPath());
+        Assert.assertEquals("test.txt", media.getFile().getPath());
     }
 }

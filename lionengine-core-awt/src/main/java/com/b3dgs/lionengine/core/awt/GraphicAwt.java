@@ -22,14 +22,15 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageSurface;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Transform;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.
@@ -88,13 +89,13 @@ final class GraphicAwt implements Graphic
     }
 
     @Override
-    public void drawImage(ImageBuffer image, int x, int y)
+    public void drawImage(ImageSurface image, int x, int y)
     {
-        g.drawImage(ToolsAwt.getBuffer(image), null, x, y);
+        g.drawImage((BufferedImage) image.getSurface(), null, x, y);
     }
 
     @Override
-    public void drawImage(ImageBuffer image, Transform transform, int x, int y)
+    public void drawImage(ImageSurface image, Transform transform, int x, int y)
     {
         if (lastTransform != transform)
         {
@@ -103,13 +104,13 @@ final class GraphicAwt implements Graphic
             at.scale(transform.getScaleX(), transform.getScaleY());
             op = new AffineTransformOp(at, transform.getInterpolation());
         }
-        g.drawImage(ToolsAwt.getBuffer(image), op, x, y);
+        g.drawImage((BufferedImage) image.getSurface(), op, x, y);
     }
 
     @Override
-    public void drawImage(ImageBuffer image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
+    public void drawImage(ImageSurface image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
     {
-        g.drawImage(ToolsAwt.getBuffer(image), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
+        g.drawImage((BufferedImage) image.getSurface(), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
     }
 
     @Override

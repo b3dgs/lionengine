@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.tutorials.mario.b;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.MapTile;

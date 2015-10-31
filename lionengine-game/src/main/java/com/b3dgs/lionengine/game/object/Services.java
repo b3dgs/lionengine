@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.Featurable;
  * ).
  * <p>
  * Ensure to add any required services before creating an object with the factory, else it will fail with a
- * {@link LionEngineException} when calling {@link Factory#create(com.b3dgs.lionengine.core.Media)}.
+ * {@link LionEngineException} when calling {@link Factory#create(com.b3dgs.lionengine.Media)}.
  * </p>
  * <p>
  * Usage example:

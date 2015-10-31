@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.test.util;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Resolution;
 
 /**
  * List of common constants.

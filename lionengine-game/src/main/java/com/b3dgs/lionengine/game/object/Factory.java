@@ -22,8 +22,8 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.configurer.ConfigObject;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
@@ -68,7 +68,6 @@ public class Factory
      */
     public Factory(Services services)
     {
-        super();
         this.services = services;
         classLoader = ClassLoader.getSystemClassLoader();
     }
@@ -90,14 +89,7 @@ public class Factory
         final Class<?> type = setup.getConfigClass(classLoader);
         try
         {
-            final O object = UtilReflection.create(type, new Class<?>[]
-            {
-                setup.getClass(), Services.class
-            }, setup, services);
-            final Integer id = HandledObjectsImpl.getFreeId();
-            object.setId(id);
-            object.prepareTraits(services);
-            return object;
+            return createObject(type, setup);
         }
         catch (final NoSuchMethodException exception)
         {
@@ -122,14 +114,7 @@ public class Factory
         final Setup setup = getSetup(media);
         try
         {
-            final O object = UtilReflection.create(type, new Class<?>[]
-            {
-                setup.getClass(), Services.class
-            }, setup, services);
-            final Integer id = HandledObjectsImpl.getFreeId();
-            object.setId(id);
-            object.prepareTraits(services);
-            return object;
+            return createObject(type, setup);
         }
         catch (final NoSuchMethodException exception)
         {
@@ -207,5 +192,28 @@ public class Factory
         {
             throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + media.getPath());
         }
+    }
+
+    /**
+     * Create the object.
+     * 
+     * @param <O> The object type.
+     * @param type The object type.
+     * @param setup The associated setup.
+     * @return The object instance.
+     * @throws NoSuchMethodException If missing method.
+     */
+    private <O extends ObjectGame> O createObject(Class<?> type, Setup setup) throws NoSuchMethodException
+    {
+        final O object = UtilReflection.create(type, new Class<?>[]
+        {
+            setup.getClass(), Services.class
+        }, setup, services);
+
+        final Integer id = HandledObjectsImpl.getFreeId();
+        object.setId(id);
+        object.prepareTraits(services);
+
+        return object;
     }
 }

@@ -23,10 +23,9 @@ import java.io.InputStream;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * SC68 player implementation.
@@ -75,14 +74,7 @@ final class Sc68Player implements Sc68
         }
         finally
         {
-            try
-            {
-                input.close();
-            }
-            catch (final IOException exception2)
-            {
-                Verbose.exception(Sc68Player.class, "play", exception2);
-            }
+            UtilFile.safeClose(input);
         }
     }
 

@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.test.core.awt;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.awt.AppletAwt;
 
 /**

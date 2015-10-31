@@ -23,7 +23,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
@@ -264,7 +265,7 @@ public class ProducerModel extends TraitModel implements Producer
                 actionCheck();
                 break;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException("Unknown type: ", state.name());
         }
     }
 

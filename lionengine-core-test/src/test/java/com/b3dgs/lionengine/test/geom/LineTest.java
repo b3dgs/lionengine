@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.test.geom;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.geom.Coord;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Line;
@@ -43,7 +42,7 @@ public class LineTest
 
         final Line line2 = Geom.createLine(0.0, 0.0, 2.0, 0.0);
         final Coord point = Geom.createCoord(1.0, 0.0);
-        final Coord intersect = UtilMath.intersection(line1, line2);
+        final Coord intersect = Geom.intersection(line1, line2);
 
         Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
         Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);

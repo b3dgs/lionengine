@@ -17,12 +17,9 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.util.Collection;
-import java.util.HashSet;
-
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -52,139 +49,140 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  */
 public final class LevelRipConverter
 {
-    /** Progress listener. */
-    private final Collection<ProgressListener> listeners = new HashSet<ProgressListener>();
-    /** Map reference. */
-    private final MapTile map;
-    /** Level rip image. */
-    private final Sprite imageMap;
-    /** Level rip width in tile. */
-    private int imageMapTilesInX;
-    /** Level rip height in tile. */
-    private int imageMapTilesInY;
-    /** Number of errors. */
-    private int errors;
-    /** Progress on horizontal tile. */
-    private int progressTileX;
-    /** Progress on vertical tile. */
-    private int progressTileY;
-    /** Progress max. */
-    private double progressMax;
-    /** Old progress. */
-    private long progressPercentOld;
-    /** Current progress. */
-    private long progress;
-
     /**
-     * Must be called to start conversion.
+     * Run the converter.
      * 
      * @param levelrip The file containing the levelrip as an image.
      * @param sheetsConfig The file that define the sheets configuration.
      * @param map The destination map reference.
+     * @return The total number of not found tiles.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public LevelRipConverter(Media levelrip, Media sheetsConfig, MapTile map)
+    public static int start(Media levelrip, Media sheetsConfig, MapTile map)
     {
-        this.map = map;
+        return start(levelrip, sheetsConfig, map, null, null);
+    }
+
+    /**
+     * Run the converter.
+     * 
+     * @param levelrip The file containing the levelrip as an image.
+     * @param sheetsConfig The file that define the sheets configuration.
+     * @param map The destination map reference.
+     * @param listener The progress listener.
+     * @return The total number of not found tiles.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
+     */
+    public static int start(Media levelrip, Media sheetsConfig, MapTile map, ProgressListener listener)
+    {
+        return start(levelrip, sheetsConfig, map, listener, null);
+    }
+
+    /**
+     * Run the converter.
+     * 
+     * @param levelrip The file containing the levelrip as an image.
+     * @param sheetsConfig The file that define the sheets configuration.
+     * @param map The destination map reference.
+     * @param listener The progress listener.
+     * @param canceler The canceler reference.
+     * @return The total number of not found tiles.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
+     */
+    public static int start(Media levelrip,
+                            Media sheetsConfig,
+                            MapTile map,
+                            ProgressListener listener,
+                            Canceler canceler)
+    {
         map.loadSheets(sheetsConfig);
 
-        imageMap = Drawable.loadSprite(levelrip);
-        errors = 0;
-    }
-
-    /**
-     * Add a listener.
-     * 
-     * @param listener The listener to add.
-     */
-    public void addListener(ProgressListener listener)
-    {
-        listeners.add(listener);
-    }
-
-    /**
-     * Run the converter.
-     */
-    public void start()
-    {
-        start(null);
-    }
-
-    /**
-     * Run the converter.
-     * 
-     * @param canceler The canceler reference.
-     */
-    public void start(Canceler canceler)
-    {
+        final Sprite imageMap = Drawable.loadSprite(levelrip);
         imageMap.load();
         imageMap.prepare();
 
-        imageMapTilesInX = imageMap.getWidth() / map.getTileWidth();
-        imageMapTilesInY = imageMap.getHeight() / map.getTileHeight();
-        map.create(imageMapTilesInX, imageMapTilesInY);
+        final int imageTilesInX = imageMap.getWidth() / map.getTileWidth();
+        final int imageTilesInY = imageMap.getHeight() / map.getTileHeight();
+        map.create(imageTilesInX, imageTilesInY);
 
-        progressMax = imageMapTilesInX * imageMapTilesInY;
-        progress = 0L;
-        progressPercentOld = -1L;
+        final double progressMax = imageTilesInX * (double) imageTilesInY;
+        long progress = 0L;
+        int lastPercent = 0;
+        int errors = 0;
 
         // Check all image tiles
         final ImageBuffer tileRef = imageMap.getSurface();
-        for (progressTileY = 0; progressTileY < imageMapTilesInY; progressTileY++)
+        for (int progressTileY = 0; progressTileY < imageTilesInY; progressTileY++)
         {
-            for (progressTileX = 0; progressTileX < imageMapTilesInX; progressTileX++)
+            for (int progressTileX = 0; progressTileX < imageTilesInX; progressTileX++)
             {
-                final int x = progressTileX * map.getTileWidth();
-                final int y = progressTileY * map.getTileHeight();
-                final int imageColor = tileRef.getRgb(x, y);
-
-                // Skip blank tile of image map
-                if (TileExtractor.IGNORED_COLOR_VALUE != imageColor)
+                if (!checkPixel(map, tileRef, progressTileX, progressTileY))
                 {
-                    // Search if tile is on sheet and get it
-                    final Tile tile = searchForTile(tileRef, progressTileX, progressTileY);
-                    if (tile != null)
-                    {
-                        map.setTile(progressTileX, map.getInTileHeight() - 1 - progressTileY, tile);
-                    }
-                    else
-                    {
-                        errors++;
-                    }
+                    errors++;
                 }
-                updateProgress();
+
+                final int percent = (int) Math.round(progress / progressMax * 100);
+                if (listener != null && percent != lastPercent)
+                {
+                    listener.notifyProgress(percent, progressTileX, progressTileY);
+                }
+                lastPercent = percent;
+                progress++;
+
                 if (canceler != null && canceler.isCanceled())
                 {
-                    return;
+                    return errors;
                 }
             }
         }
+
+        return errors;
     }
 
     /**
-     * Get the error counter (number of not found tiles).
+     * Check the pixel by searching tile on sheet.
      * 
-     * @return The total number of not found tiles.
+     * @param map The destination map reference.
+     * @param tileRef The tile sheet.
+     * @param progressTileX The progress on horizontal tiles.
+     * @param progressTileY The progress on vertical tiles.
+     * @return <code>true</code> if tile found, <code>false</code> else.
      */
-    public int getErrors()
+    private static boolean checkPixel(MapTile map, ImageBuffer tileRef, int progressTileX, int progressTileY)
     {
-        return errors;
+        final int x = progressTileX * map.getTileWidth();
+        final int y = progressTileY * map.getTileHeight();
+        final int pixel = tileRef.getRgb(x, y);
+
+        // Skip blank tile of image map
+        if (TileExtractor.IGNORED_COLOR_VALUE != pixel)
+        {
+            // Search if tile is on sheet and get it
+            final Tile tile = searchForTile(map, tileRef, progressTileX, progressTileY);
+            if (tile == null)
+            {
+                return false;
+            }
+            map.setTile(progressTileX, map.getInTileHeight() - 1 - progressTileY, tile);
+        }
+        return true;
     }
 
     /**
      * Search current tile of image map by checking all surfaces.
      * 
+     * @param map The destination map reference.
      * @param tileSprite The tiled sprite
      * @param x The location x.
      * @param y The location y.
      * @return The tile found.
      */
-    private Tile searchForTile(ImageBuffer tileSprite, int x, int y)
+    private static Tile searchForTile(MapTile map, ImageBuffer tileSprite, int x, int y)
     {
         // Check each tile on each sheet
         for (final Integer sheet : map.getSheets())
         {
-            final Tile tile = checkTile(tileSprite, sheet, x, y);
+            final Tile tile = checkTile(map, tileSprite, sheet, x, y);
             if (tile != null)
             {
                 return tile;
@@ -198,13 +196,14 @@ public final class LevelRipConverter
     /**
      * Check tile of sheet.
      * 
+     * @param map The destination map reference.
      * @param tileSprite The tiled sprite
      * @param sheet The sheet number.
      * @param x The location x.
      * @param y The location y.
      * @return The tile found.
      */
-    private Tile checkTile(ImageBuffer tileSprite, Integer sheet, int x, int y)
+    private static Tile checkTile(MapTile map, ImageBuffer tileSprite, Integer sheet, int x, int y)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
@@ -240,30 +239,11 @@ public final class LevelRipConverter
     }
 
     /**
-     * Update progress and notify if needed.
+     * Private constructor.
      */
-    private void updateProgress()
+    private LevelRipConverter()
     {
-        progress++;
-        final int percent = getProgressPercent();
-        if (percent != progressPercentOld)
-        {
-            for (final ProgressListener listener : listeners)
-            {
-                listener.notifyProgress(percent, progressTileX, progressTileY);
-            }
-            progressPercentOld = percent;
-        }
-    }
-
-    /**
-     * Get percent progress.
-     * 
-     * @return Progress percent.
-     */
-    private int getProgressPercent()
-    {
-        return (int) Math.round(progress / progressMax * 100);
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**

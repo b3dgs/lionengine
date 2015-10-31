@@ -24,7 +24,7 @@ import java.nio.file.Files;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;

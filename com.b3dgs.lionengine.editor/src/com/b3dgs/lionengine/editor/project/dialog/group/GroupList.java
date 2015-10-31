@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.project.dialog.group;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigTileGroups;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGroup;
 import com.b3dgs.lionengine.game.map.TileRef;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -89,7 +89,7 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
     {
         final MapTile map = WorldModel.INSTANCE.getMap();
         final Media config = map.getGroupsConfig();
-        final XmlNode node = Stream.loadXml(config);
+        final XmlNode node = Xml.load(config);
         final Collection<XmlNode> toRemove = new ArrayList<>();
         for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroups.NODE_GROUP))
         {
@@ -103,7 +103,7 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
             node.removeChild(remove);
         }
         toRemove.clear();
-        Stream.saveXml(node, config);
+        Xml.save(node, config);
         map.loadGroups(config);
     }
 }

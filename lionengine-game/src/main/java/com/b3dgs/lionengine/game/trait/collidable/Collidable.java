@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.trait.collidable;
 
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.trait.Trait;
 import com.b3dgs.lionengine.geom.Rectangle;

@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.test.mock;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.test.util.Constant;
 import com.b3dgs.lionengine.test.util.UtilTests;
@@ -31,16 +31,16 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 public class SequenceInterruptMock extends Sequence
 {
     /** Pause time. */
-    private static final int PAUSE_MILLI = 250;
+    public static final long PAUSE_MILLI = 250L;
 
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public SequenceInterruptMock(Loader loader)
+    public SequenceInterruptMock(Context context)
     {
-        super(loader, Constant.RESOLUTION_320_240);
+        super(context, Constant.RESOLUTION_320_240);
     }
 
     /*
@@ -48,7 +48,7 @@ public class SequenceInterruptMock extends Sequence
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         // Mock
     }

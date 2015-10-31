@@ -289,26 +289,6 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get filename from path.
-     */
-    @Test
-    public void testGetFilenameFromPath()
-    {
-        Assert.assertEquals("file.txt", UtilFile.getFilenameFromPath("toto" + Medias.getSeparator() + "file.txt"));
-        Assert.assertEquals("toto%file.txt", UtilFile.getFilenameFromPath("toto%file.txt"));
-        Assert.assertEquals("", UtilFile.getFilenameFromPath(""));
-    }
-
-    /**
-     * Test the get filename from path null.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testGetFilenameFromPathNull()
-    {
-        Assert.assertNull(UtilFile.getFilenameFromPath(null));
-    }
-
-    /**
      * Test the get directories from path.
      * 
      * @throws IOException If error.
@@ -404,12 +384,21 @@ public class UtilFileTest
         final Path folder = Files.createTempDirectory("temp");
         final File file1 = Files.createTempFile(folder, "temp", ".tmp").toFile();
         final File file2 = Files.createTempFile(folder, "temp", ".txt").toFile();
+        final File folder2 = Files.createTempDirectory(folder, "temp").toFile();
+        final File file3 = Files.createTempFile(folder2.toPath(), "temp", ".txt").toFile();
         final File dir = folder.toFile();
 
-        Assert.assertEquals(Arrays.asList(file2), UtilFile.getFilesByExtension(dir, "txt"));
+        final List<File> expected = Arrays.asList(file2, file3);
+        final List<File> result = UtilFile.getFilesByExtension(dir, "txt");
+        Collections.sort(expected);
+        Collections.sort(result);
+
+        Assert.assertEquals(expected, result);
 
         Assert.assertTrue(file1.delete());
         Assert.assertTrue(file2.delete());
+        Assert.assertTrue(file3.delete());
+        Assert.assertTrue(folder2.delete());
         Assert.assertTrue(dir.delete());
     }
 
@@ -424,12 +413,16 @@ public class UtilFileTest
         final Path folder = Files.createTempDirectory("temp");
         final File file1 = Files.createTempFile(folder, "temp", ".tmp").toFile();
         final File file2 = Files.createTempFile(folder, "temp", ".tmp").toFile();
+        final File folder2 = Files.createTempDirectory(folder, "temp").toFile();
+        final File file3 = Files.createTempFile(folder2.toPath(), "temp", ".tmp").toFile();
         final File dir = folder.toFile();
 
         Assert.assertEquals(Arrays.asList(file2), UtilFile.getFilesByName(dir, file2.getName()));
 
         Assert.assertTrue(file1.delete());
         Assert.assertTrue(file2.delete());
+        Assert.assertTrue(file3.delete());
+        Assert.assertTrue(folder2.delete());
         Assert.assertTrue(dir.delete());
     }
 

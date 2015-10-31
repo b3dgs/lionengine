@@ -22,8 +22,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.game.trait.layerable.Layerable;
 import com.b3dgs.lionengine.game.trait.layerable.LayerableListener;
 

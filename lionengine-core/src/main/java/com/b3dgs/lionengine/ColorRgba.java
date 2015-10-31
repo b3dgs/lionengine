@@ -125,9 +125,9 @@ public final class ColorRgba
      */
     public static double getDelta(ColorRgba a, ColorRgba b)
     {
-        final int dr = a.getRed() - b.getRed();
-        final int dg = a.getGreen() - b.getGreen();
-        final int db = a.getBlue() - b.getBlue();
+        final double dr = a.getRed() - (double) b.getRed();
+        final double dg = a.getGreen() - (double) b.getGreen();
+        final double db = a.getBlue() - (double) b.getBlue();
         return Math.sqrt(dr * dr + dg * dg + db * db);
     }
 

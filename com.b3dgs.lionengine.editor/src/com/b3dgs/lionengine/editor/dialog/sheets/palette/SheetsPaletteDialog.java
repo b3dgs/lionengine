@@ -28,6 +28,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -38,13 +39,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
@@ -271,7 +271,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         shell.pack();
         gc = new GC(composite);
         shell.update();
-        gc.drawImage(ToolsSwt.getBuffer(sheet.getSurface()), 0, 0);
+        gc.drawImage((Image) sheet.getSurface().getSurface(), 0, 0);
 
         return sheet.getTilesHorizontal();
     }
@@ -291,7 +291,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         shell.pack();
         gc = new GC(composite);
         shell.update();
-        gc.drawImage(ToolsSwt.getBuffer(sheet), 0, 0);
+        gc.drawImage((Image) sheet.getSurface(), 0, 0);
 
         if (centered.size() < Constant.DECADE)
         {
