@@ -73,7 +73,7 @@ public final class ToolsSwt
      * @return The image.
      * @throws SWTException If error on getting data.
      */
-    public static Image createImage(int width, int height, int transparency) throws SWTException
+    public static Image createImage(int width, int height, int transparency)
     {
         final Device device = getDisplay();
         final Image image = new Image(device, width, height);
@@ -147,7 +147,7 @@ public final class ToolsSwt
      * @return Hidden cursor.
      * @throws SWTException If error on getting data.
      */
-    public static Cursor createHiddenCursor(Device device) throws SWTException
+    public static Cursor createHiddenCursor(Device device)
     {
         final Color white = device.getSystemColor(SWT.COLOR_WHITE);
         final Color black = device.getSystemColor(SWT.COLOR_BLACK);
@@ -168,7 +168,7 @@ public final class ToolsSwt
      * @return The created image from file.
      * @throws SWTException If error on getting data.
      */
-    public static ImageData getImageData(InputStream input) throws SWTException
+    public static ImageData getImageData(InputStream input)
     {
         return new ImageData(input);
     }
@@ -181,7 +181,7 @@ public final class ToolsSwt
      * @return The created image from file.
      * @throws SWTException If error on getting data.
      */
-    public static Image getImage(Device device, InputStream input) throws SWTException
+    public static Image getImage(Device device, InputStream input)
     {
         return new Image(device, input);
     }
@@ -193,7 +193,7 @@ public final class ToolsSwt
      * @return The created image from file.
      * @throws SWTException If error on getting data.
      */
-    public static Image getImage(Image image) throws SWTException
+    public static Image getImage(Image image)
     {
         return new Image(image.getDevice(), image, SWT.IMAGE_COPY);
     }
@@ -205,7 +205,7 @@ public final class ToolsSwt
      * @return The image.
      * @throws SWTException If error on getting data.
      */
-    public static ImageBuffer getImageBuffer(Image image) throws SWTException
+    public static ImageBuffer getImageBuffer(Image image)
     {
         return new ImageBufferSwt(image);
     }
@@ -218,7 +218,7 @@ public final class ToolsSwt
      * @return The masked image.
      * @throws SWTException If error on getting data.
      */
-    public static Image applyMask(Image image, int maskColor) throws SWTException
+    public static Image applyMask(Image image, int maskColor)
     {
         final ImageData sourceData = image.getImageData();
         final int width = sourceData.width;
@@ -240,7 +240,7 @@ public final class ToolsSwt
      * @return The splited images array (can not be empty).
      * @throws SWTException If error on getting data.
      */
-    public static Image[] splitImage(Image image, int h, int v) throws SWTException
+    public static Image[] splitImage(Image image, int h, int v)
     {
         final int total = h * v;
         final ImageData data = image.getImageData();
@@ -272,7 +272,7 @@ public final class ToolsSwt
      * @return The new image with angle applied.
      * @throws SWTException If error on getting data.
      */
-    public static Image rotate(Image image, int angle) throws SWTException
+    public static Image rotate(Image image, int angle)
     {
         final ImageData sourceData = image.getImageData();
         final int width = sourceData.width;
@@ -305,7 +305,7 @@ public final class ToolsSwt
      * @return The new image with new size.
      * @throws SWTException If error on getting data.
      */
-    public static Image resize(Image image, int width, int height) throws SWTException
+    public static Image resize(Image image, int width, int height)
     {
         return new Image(image.getDevice(), image.getImageData().scaledTo(width, height));
     }
@@ -317,7 +317,7 @@ public final class ToolsSwt
      * @return The flipped image as a new instance.
      * @throws SWTException If error on getting data.
      */
-    public static Image flipHorizontal(Image image) throws SWTException
+    public static Image flipHorizontal(Image image)
     {
         return flip(image, false);
     }
@@ -329,7 +329,7 @@ public final class ToolsSwt
      * @return The flipped image as a new instance.
      * @throws SWTException If error on getting data.
      */
-    public static Image flipVertical(Image image) throws SWTException
+    public static Image flipVertical(Image image)
     {
         return flip(image, true);
     }
@@ -341,7 +341,7 @@ public final class ToolsSwt
      * @return The filtered image as a new instance.
      * @throws SWTException If error on getting data.
      */
-    public static Image applyBilinearFilter(Image image) throws SWTException
+    public static Image applyBilinearFilter(Image image)
     {
         final ImageData data = image.getImageData();
         final int width = data.width;
@@ -376,7 +376,7 @@ public final class ToolsSwt
      * @param output The output stream.
      * @throws SWTException If error on getting data.
      */
-    public static void saveImage(Image image, OutputStream output) throws SWTException
+    public static void saveImage(Image image, OutputStream output)
     {
         final ImageLoader imageLoader = new ImageLoader();
         imageLoader.data = new ImageData[]
@@ -401,7 +401,7 @@ public final class ToolsSwt
      * @throws SWTException If error on getting data.
      */
     public static Image getRasterBuffer(Image image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
-            throws SWTException
+
     {
         final ImageData data = image.getImageData();
         final PaletteData palette = data.palette;
@@ -476,7 +476,7 @@ public final class ToolsSwt
      * @return The flipped image data.
      * @throws SWTException If error on getting data.
      */
-    public static Image flip(Image image, boolean vertical) throws SWTException
+    public static Image flip(Image image, boolean vertical)
     {
         final ImageData data = image.getImageData();
         final ImageData flip = image.getImageData();

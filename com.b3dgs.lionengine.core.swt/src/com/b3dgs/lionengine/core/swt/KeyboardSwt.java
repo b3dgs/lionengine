@@ -128,13 +128,10 @@ public final class KeyboardSwt implements Keyboard, KeyListener
     @Override
     public boolean isPressedOnce(Integer key)
     {
-        if (keys.contains(key))
+        if (keys.contains(key) && !pressed.contains(key))
         {
-            if (!pressed.contains(key))
-            {
-                pressed.add(key);
-                return true;
-            }
+            pressed.add(key);
+            return true;
         }
         return false;
     }

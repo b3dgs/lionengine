@@ -110,7 +110,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         {
             final TreeItem item = new TreeItem(tree, SWT.NONE);
             item.setText(group);
-            item.setData(new TileGroup(group, Collections.EMPTY_LIST));
+            item.setData(new TileGroup(group, Collections.emptyList()));
         }
     }
 
