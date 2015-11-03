@@ -361,7 +361,9 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
     {
         if (click && active)
         {
-            camera.setLocation(mx * map.getTileWidth(), (minimap.getHeight() - my) * map.getTileHeight());
+            final double x = mx * (double) map.getTileWidth();
+            final double y = (minimap.getHeight() - my) * (double) map.getTileHeight();
+            camera.setLocation(x, y);
             part.update();
             render();
         }

@@ -144,10 +144,10 @@ public class SheetsEditDialog extends AbstractDialog
         UtilText.registerDirty(tileWidthText, true);
         UtilText.registerDirty(tileHeightText, true);
 
-        final Collection<XmlNode> sheets = node.getChildren();
+        final Collection<XmlNode> nodeSheets = node.getChildren();
         for (final Button button : buttons)
         {
-            for (final XmlNode sheet : sheets)
+            for (final XmlNode sheet : nodeSheets)
             {
                 if (button.getText().equals(sheet.getText()))
                 {

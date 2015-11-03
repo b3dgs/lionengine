@@ -381,7 +381,6 @@ public final class ToolsAwt
                                                 int eb,
                                                 int size)
     {
-        final boolean method = true;
         final BufferedImage raster = createImage(image.getWidth(), image.getHeight(), image.getTransparency());
 
         final int divisorRed = 0x010000;
@@ -392,33 +391,15 @@ public final class ToolsAwt
         final double sg = -((eg - fg) / divisorGreen) / (double) size;
         final double sb = -((eb - fb) / divisorBlue) / (double) size;
 
-        if (method)
+        for (int i = 0; i < raster.getWidth(); i++)
         {
-            for (int i = 0; i < raster.getWidth(); i++)
+            for (int j = 0; j < raster.getHeight(); j++)
             {
-                for (int j = 0; j < raster.getHeight(); j++)
-                {
-                    final int r = (int) (sr * (j % size)) * divisorRed;
-                    final int g = (int) (sg * (j % size)) * divisorGreen;
-                    final int b = (int) (sb * (j % size)) * divisorBlue;
+                final int r = (int) (sr * (j % size)) * divisorRed;
+                final int g = (int) (sg * (j % size)) * divisorGreen;
+                final int b = (int) (sb * (j % size)) * divisorBlue;
 
-                    raster.setRGB(i, j, ColorRgba.filterRgb(image.getRGB(i, j), fr + r, fg + g, fb + b));
-                }
-            }
-        }
-        else
-        {
-            final int[] org = getImageData(image);
-            final int width = raster.getWidth();
-            final int height = raster.getHeight();
-            final int[] pixels = getImageData(raster);
-
-            for (int j = 0; j < height; j++)
-            {
-                for (int i = 0; i < width; i++)
-                {
-                    pixels[j * width + i] = ColorRgba.filterRgb(org[j * width + i], fr, fg, fb);
-                }
+                raster.setRGB(i, j, ColorRgba.filterRgb(image.getRGB(i, j), fr + r, fg + g, fb + b));
             }
         }
 

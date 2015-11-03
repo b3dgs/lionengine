@@ -124,7 +124,7 @@ public class Selection
             startY = sy;
             endX = ex;
             endY = ey;
-            selectionArea.set(startX, startY, endX - startX, endY - startY);
+            selectionArea.set(startX, startY, endX - (double) startX, endY - (double) startY);
             started = false;
             selecting = false;
             selected = true;

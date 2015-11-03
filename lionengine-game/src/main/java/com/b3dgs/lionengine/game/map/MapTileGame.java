@@ -360,14 +360,9 @@ public class MapTileGame implements MapTile
     @Override
     public void load(FileReading file) throws IOException
     {
-        final Media sheetsConfig = Medias.create(file.readString());
-        final Media groupsConfig = Medias.create(file.readString());
-        final int width = file.readShort();
-        final int height = file.readShort();
-
-        create(width, height);
-        loadSheets(sheetsConfig);
-        loadGroups(groupsConfig);
+        create(file.readShort(), file.readShort());
+        loadSheets(Medias.create(file.readString()));
+        loadGroups(Medias.create(file.readString()));
 
         final int t = file.readShort();
         for (int v = 0; v < t; v++)

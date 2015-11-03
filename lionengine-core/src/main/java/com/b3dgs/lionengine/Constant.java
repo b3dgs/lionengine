@@ -99,7 +99,7 @@ public final class Constant
         {
             final StringBuilder builder = new StringBuilder(ERROR_PROPERTY);
             builder.append(property).append(" (").append(exception.getClass().getName()).append(")");
-            Verbose.critical(Constant.class, "getSystemProperty", builder.toString());
+            Verbose.exception(exception, builder.toString());
             return def;
         }
     }

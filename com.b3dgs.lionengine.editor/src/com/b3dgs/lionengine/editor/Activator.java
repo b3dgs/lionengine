@@ -46,14 +46,14 @@ public class Activator implements BundleActivator
     /** Plugin ID. */
     public static final String PLUGIN_ID = "com.b3dgs.lionengine.editor";
     /** Context reference. */
-    private static BundleContext context;
+    private static volatile BundleContext context;
 
     /**
      * Get the context reference.
      * 
      * @return The context reference.
      */
-    public static BundleContext getContext()
+    public static synchronized BundleContext getContext()
     {
         return Activator.context;
     }

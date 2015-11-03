@@ -33,6 +33,7 @@ import javax.swing.WindowConstants;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Resolution;
@@ -134,6 +135,7 @@ final class ScreenWindowedAwt extends ScreenAwt
         }
         catch (final AWTException exception)
         {
+            Verbose.exception(exception);
             canvas.createBufferStrategy(1);
         }
     }

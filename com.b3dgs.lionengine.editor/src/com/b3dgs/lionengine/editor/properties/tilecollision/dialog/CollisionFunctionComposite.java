@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionType;
@@ -48,7 +49,7 @@ public class CollisionFunctionComposite
             case LINEAR:
                 return new CollisionFunctionLinearComposite();
             default:
-                throw new RuntimeException();
+                throw new LionEngineException("Unknown type: ", type.name());
         }
     }
 

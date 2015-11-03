@@ -54,12 +54,9 @@ public final class UtilToolbar
         for (final MToolBarElement element : toolbar.getChildren())
         {
             final String id = element.getElementId().substring(toolbar.getElementId().length() + 1);
-            if (items.isEmpty() || items.contains(id))
+            if (element instanceof MDirectToolItem && (items.isEmpty() || items.contains(id)))
             {
-                if (element instanceof MDirectToolItem)
-                {
-                    ((MDirectToolItem) element).setSelected(selected);
-                }
+                ((MDirectToolItem) element).setSelected(selected);
             }
         }
     }
@@ -76,12 +73,10 @@ public final class UtilToolbar
         final Collection<String> items = Arrays.asList(names);
         for (final MToolBarElement element : toolbar.getChildren())
         {
-            if (items.isEmpty() || toolbarElementContained(element, items))
+            final Object widget = element.getWidget();
+            if (widget instanceof ToolItem && (items.isEmpty() || toolbarElementContained(element, items)))
             {
-                if (element.getWidget() instanceof ToolItem)
-                {
-                    ((ToolItem) element.getWidget()).setEnabled(enabled);
-                }
+                ((ToolItem) widget).setEnabled(enabled);
             }
         }
     }

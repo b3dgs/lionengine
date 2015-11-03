@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,7 +79,8 @@ public final class ConfigTileConstraints
      */
     private static Map<Orientation, TileConstraint> getConstraints(XmlNode nodeTileRef)
     {
-        final Map<Orientation, TileConstraint> constraints = new HashMap<Orientation, TileConstraint>();
+        final Map<Orientation, TileConstraint> constraints;
+        constraints = new EnumMap<Orientation, TileConstraint>(Orientation.class);
         for (final XmlNode nodeConstraint : nodeTileRef.getChildren(CONSTRAINT))
         {
             final Orientation orientation = Orientation.valueOf(nodeConstraint.readString(ORIENTATION));

@@ -239,8 +239,8 @@ public final class LionEngineException extends RuntimeException
         }
         while (current != null)
         {
-            final String message = current.getMessage();
-            if (message != null)
+            final String currentMessage = current.getMessage();
+            if (currentMessage != null)
             {
                 buffer.append(Constant.NEW_LINE + Constant.TAB + Constant.TAB).append(current.getMessage());
             }

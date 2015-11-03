@@ -164,6 +164,7 @@ final class ClientSocket
         }
         catch (final IOException exception)
         {
+            Verbose.exception(exception);
             return new byte[0];
         }
     }

@@ -401,7 +401,6 @@ public final class ToolsSwt
      * @throws SWTException If error on getting data.
      */
     public static Image getRasterBuffer(Image image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
-
     {
         final ImageData data = image.getImageData();
         final PaletteData palette = data.palette;

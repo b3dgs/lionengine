@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -59,7 +59,7 @@ public final class ConfigTileTransitions
         final XmlNode root = Xml.load(configTransitions);
         final Collection<XmlNode> nodesTransition = root.getChildren(NODE_TRANSITION);
         final Map<TileTransition, Collection<TileRef>> transitions;
-        transitions = new HashMap<TileTransition, Collection<TileRef>>(nodesTransition.size());
+        transitions = new EnumMap<TileTransition, Collection<TileRef>>(TileTransition.class);
 
         for (final XmlNode nodeTransition : nodesTransition)
         {

@@ -33,6 +33,7 @@ import javax.swing.WindowConstants;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Resolution;
@@ -166,6 +167,7 @@ final class ScreenFullAwt extends ScreenAwt
         }
         catch (final AWTException exception)
         {
+            Verbose.exception(exception);
             window.createBufferStrategy(1);
         }
         buf = window.getBufferStrategy();

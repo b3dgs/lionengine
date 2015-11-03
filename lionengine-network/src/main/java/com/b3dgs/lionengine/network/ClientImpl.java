@@ -57,7 +57,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     /** Client id. */
     private byte clientId;
     /** Client name. */
-    private String name;
+    private String clientName;
     /** Disconnect flag. */
     private boolean connected;
     /** Ping. */
@@ -80,7 +80,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         bandwidthTimer = new Timing();
         connected = false;
         clientId = -1;
-        name = null;
+        clientName = null;
         bandwidth = 0;
     }
 
@@ -217,7 +217,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
             // Send the name
             out.writeByte(NetworkMessageSystemId.CONNECTING);
             out.writeByte(clientId);
-            final byte[] data = name.getBytes(NetworkMessage.CHARSET);
+            final byte[] data = clientName.getBytes(NetworkMessage.CHARSET);
             out.writeByte(data.length);
             out.write(data);
             out.flush();
@@ -240,7 +240,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         for (final ConnectionListener listener : listeners)
         {
-            listener.notifyConnectionEstablished(Byte.valueOf(clientId), name);
+            listener.notifyConnectionEstablished(Byte.valueOf(clientId), clientName);
         }
         // Read the client list
         final int clientsNumber = in.readByte();
@@ -436,7 +436,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     @Override
     public void setName(String name)
     {
-        this.name = name;
+        this.clientName = name;
         if (!connected)
         {
             return;
@@ -445,7 +445,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         {
             out.write(NetworkMessageSystemId.OTHER_CLIENT_RENAMED);
             out.write(clientId);
-            final byte[] data = this.name.getBytes(NetworkMessage.CHARSET);
+            final byte[] data = this.clientName.getBytes(NetworkMessage.CHARSET);
             out.writeByte(data.length);
             out.write(data);
             out.flush();
@@ -459,7 +459,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     @Override
     public String getName()
     {
-        return name;
+        return clientName;
     }
 
     @Override
@@ -496,6 +496,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         catch (final SocketException exception)
         {
+            Verbose.exception(exception);
             connected = false;
         }
         catch (final IOException exception)

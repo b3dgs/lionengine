@@ -77,7 +77,7 @@ public class WorldSelectedTiles implements WorldRenderListener
             for (int tx = 0; tx < map.getInTileWidth(); tx++)
             {
                 final Tile tile = map.getTile(tx, ty);
-                if (tile != null && CollisionGroup.equals(selectedTile.getGroup(), tile.getGroup()))
+                if (tile != null && CollisionGroup.same(selectedTile.getGroup(), tile.getGroup()))
                 {
                     final int x = (int) (camera.getViewpointX(tile.getX()) * scale);
                     final int y = (int) (camera.getViewpointY(tile.getY()) * scale) - th;

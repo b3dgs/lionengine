@@ -48,8 +48,8 @@ public class RatioTest
     @Test
     public void testRatio()
     {
-        Assert.assertFalse(Ratio.equals(Ratio.R16_10, Ratio.R16_9));
-        Assert.assertTrue(Ratio.equals(Ratio.R4_3, Ratio.R4_3));
-        Assert.assertFalse(Ratio.equals(Ratio.R16_9, Ratio.R4_3));
+        Assert.assertFalse(Ratio.same(Ratio.R16_10, Ratio.R16_9));
+        Assert.assertTrue(Ratio.same(Ratio.R4_3, Ratio.R4_3));
+        Assert.assertFalse(Ratio.same(Ratio.R16_9, Ratio.R4_3));
     }
 }

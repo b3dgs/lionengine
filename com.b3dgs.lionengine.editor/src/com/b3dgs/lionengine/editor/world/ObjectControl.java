@@ -110,7 +110,7 @@ public class ObjectControl
         {
             if (isSelected(object))
             {
-                object.move(mx - oldMx, my - oldMy);
+                object.move(mx - (double) oldMx, my - (double) oldMy);
             }
         }
     }

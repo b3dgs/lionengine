@@ -268,13 +268,13 @@ public abstract class AbstractProjectDialog extends AbstractDialog
     @Override
     protected void createContent(Composite content)
     {
-        final Group project = new Group(content, SWT.SHADOW_NONE);
-        project.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
-        project.setLayout(new GridLayout(1, false));
-        project.setText(Messages.AbstractProjectDialog_Project);
+        final Group projectGroup = new Group(content, SWT.SHADOW_NONE);
+        projectGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
+        projectGroup.setLayout(new GridLayout(1, false));
+        projectGroup.setText(Messages.AbstractProjectDialog_Project);
 
-        createProjectNameArea(project);
-        createProjectLocationArea(project);
+        createProjectNameArea(projectGroup);
+        createProjectLocationArea(projectGroup);
 
         final Group folders = new Group(content, SWT.SHADOW_NONE);
         folders.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));

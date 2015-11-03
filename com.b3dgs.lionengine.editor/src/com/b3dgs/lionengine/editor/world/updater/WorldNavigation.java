@@ -88,7 +88,7 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
     {
         if (WorldModel.INSTANCE.isPalette(PaletteType.HAND) && click > 0)
         {
-            camera.moveLocation(1.0, oldMx - mx, my - oldMy);
+            camera.moveLocation(1.0, oldMx - (double) mx, my - (double) oldMy);
         }
     }
 

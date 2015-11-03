@@ -339,10 +339,10 @@ public final class Project
      */
     public <C> Class<? extends C> getClass(Media media, Class<C> clazz)
     {
-        final String name = media.getPath()
+        final String className = media.getPath()
                                  .replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
                                  .replace(File.separator, Constant.DOT);
-        final Class<?> clazzRef = getClass(name);
+        final Class<?> clazzRef = getClass(className);
         try
         {
             return clazzRef.asSubclass(clazz);

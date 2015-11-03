@@ -72,7 +72,7 @@ public enum FormulaTemplate
     {
         if (Double.isNaN(value))
         {
-            return tileSize - 1;
+            return tileSize - 1.0;
         }
         return value;
     }

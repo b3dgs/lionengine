@@ -93,7 +93,7 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
         final Collection<XmlNode> toRemove = new ArrayList<>();
         for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroups.NODE_GROUP))
         {
-            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME), group.getName()))
+            if (CollisionGroup.same(nodeGroup.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME), group.getName()))
             {
                 toRemove.add(nodeGroup);
             }

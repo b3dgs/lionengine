@@ -68,7 +68,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
     /** Dialog shell. */
     protected final Shell dialog;
     /** Dialog title. */
-    private final String title;
+    private final String dialogTitle;
     /** Header title. */
     private final String headerTitle;
     /** Header description. */
@@ -100,7 +100,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
     public AbstractDialog(Shell parent, String title, String headerTitle, String headerDesc, Image headerIcon)
     {
         super(parent);
-        this.title = title;
+        this.dialogTitle = title;
         this.headerTitle = headerTitle;
         this.headerDesc = headerDesc;
         this.headerIcon = headerIcon;
@@ -293,13 +293,13 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
             dirtyOld = dirty;
             if (dirty)
             {
-                dialog.setText(Constant.STAR + title);
+                dialog.setText(Constant.STAR + dialogTitle);
                 dialog.update();
             }
             else
             {
                 dialog.update();
-                dialog.setText(title);
+                dialog.setText(dialogTitle);
             }
         }
     }

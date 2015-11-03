@@ -90,8 +90,7 @@ public final class UtilCombo
         textLegend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
         textLegend.setText(legend);
 
-        final Combo combo = create(composite, values);
-        return combo;
+        return create(composite, values);
     }
 
     /**

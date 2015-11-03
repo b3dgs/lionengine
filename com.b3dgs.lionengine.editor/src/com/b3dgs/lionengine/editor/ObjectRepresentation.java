@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Camera;
@@ -45,6 +46,9 @@ import com.b3dgs.lionengine.geom.Rectangle;
  */
 public class ObjectRepresentation extends ObjectGame implements Updatable, Renderable
 {
+    /** Error animation. */
+    private static final String ERROR_ANIMATION = "Unable to get animation data from: ";
+
     /**
      * Get the sprite depending of the configuration.
      * 
@@ -61,6 +65,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
         }
         catch (final LionEngineException exception)
         {
+            Verbose.exception(exception, ERROR_ANIMATION, configurer.getMedia().getPath());
             return Drawable.loadSpriteAnimated(surface, 1, 1);
         }
     }

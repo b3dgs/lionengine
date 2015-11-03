@@ -95,7 +95,7 @@ public class PropertiesTile implements PropertiesProviderTile
         for (final XmlNode nodeGroup : root.getChildren(ConfigTileGroups.NODE_GROUP))
         {
             removeOldGroup(nodeGroup, oldGroup, tile);
-            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME), newGroup))
+            if (CollisionGroup.same(nodeGroup.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME), newGroup))
             {
                 final Point point = Geom.createPoint(tile.getSheet().intValue(), tile.getNumber());
                 if (!toAdd.contains(point))
@@ -128,7 +128,7 @@ public class PropertiesTile implements PropertiesProviderTile
     private static void removeOldGroup(XmlNode nodeGroup, String oldGroup, Tile tile)
     {
         final Collection<XmlNode> toRemove = new ArrayList<>();
-        if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME), oldGroup))
+        if (CollisionGroup.same(nodeGroup.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME), oldGroup))
         {
             for (final XmlNode nodeTile : nodeGroup.getChildren(ConfigTile.NODE_TILE))
             {

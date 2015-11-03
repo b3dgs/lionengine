@@ -170,6 +170,7 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
         }
         catch (final HeadlessException exception)
         {
+            Verbose.exception(exception);
             return DEFAULT_BUTTONS;
         }
     }

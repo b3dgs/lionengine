@@ -11,7 +11,7 @@
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.ScreenAwt" lines="155, 205"/>
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="61"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="433"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="414"/>
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="445, 450"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.FactoryGraphicAwt" lines="48"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.swing.UtilitySwing"/>

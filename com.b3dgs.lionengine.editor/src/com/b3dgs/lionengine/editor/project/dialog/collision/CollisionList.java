@@ -51,7 +51,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
         final Collection<XmlNode> toRemove = new ArrayList<>();
         for (final XmlNode nodeFormula : node.getChildren(ConfigCollisionGroup.COLLISION))
         {
-            if (CollisionGroup.equals(nodeFormula.readString(ConfigCollisionGroup.GROUP), collision.getName()))
+            if (CollisionGroup.same(nodeFormula.readString(ConfigCollisionGroup.GROUP), collision.getName()))
             {
                 toRemove.add(nodeFormula);
             }

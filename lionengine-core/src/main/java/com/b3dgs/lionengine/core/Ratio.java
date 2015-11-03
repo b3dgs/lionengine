@@ -45,7 +45,7 @@ public final class Ratio
      * @param ratio2 The ratio2 value.
      * @return <code>true</code> if equals, <code>false</code> else.
      */
-    public static boolean equals(double ratio1, double ratio2)
+    public static boolean same(double ratio1, double ratio2)
     {
         return Double.compare(ratio1, ratio2) == 0;
     }

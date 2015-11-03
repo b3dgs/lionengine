@@ -161,7 +161,9 @@ public final class AnimationRenderer implements PaintListener
      */
     private void render(Graphic g, int width, int height)
     {
-        surface.setLocation(width / 2 - surface.getFrameWidth() / 2, height / 2 - surface.getFrameHeight() / 2);
+        final double x = width / 2 - (double) (surface.getFrameWidth() / 2);
+        final double y = height / 2 - (double) (surface.getFrameHeight() / 2);
+        surface.setLocation(x, y);
         surface.render(g);
     }
 

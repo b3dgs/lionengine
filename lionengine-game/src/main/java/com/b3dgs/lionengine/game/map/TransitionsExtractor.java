@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.map;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -39,7 +39,8 @@ public final class TransitionsExtractor
      */
     public static Map<TileTransition, Collection<TileRef>> getTransitions(MapTile map)
     {
-        final Map<TileTransition, Collection<TileRef>> transitions = new HashMap<TileTransition, Collection<TileRef>>();
+        final Map<TileTransition, Collection<TileRef>> transitions;
+        transitions = new EnumMap<TileTransition, Collection<TileRef>>(TileTransition.class);
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
             for (int tx = 0; tx < map.getInTileWidth(); tx++)

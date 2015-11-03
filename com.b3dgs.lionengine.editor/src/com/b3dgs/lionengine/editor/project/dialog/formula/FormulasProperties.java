@@ -448,8 +448,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         addGroups(constraint, Orientation.WEST, constraintsLeft);
         addGroups(constraint, Orientation.EAST, constraintsRight);
 
-        final CollisionFormula formula = new CollisionFormula(name, range, function, constraint);
-        return formula;
+        return new CollisionFormula(name, range, function, constraint);
     }
 
     /**

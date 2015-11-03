@@ -203,12 +203,12 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         double h = collStart.getX();
         double v = collStart.getY();
 
-        final Map<Integer, Marker> markers = new TreeMap<>();
+        final Map<Integer, Marker> markersFound = new TreeMap<>();
         for (final Tile tile : map.getTilesHit(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY()))
         {
             final int x = (int) UtilMath.getRound(sx, h);
             final int y = (int) UtilMath.getRound(sy, v);
-            checkMarker(markers, tile, x, y);
+            checkMarker(markersFound, tile, x, y);
 
             if (tile == map.getTileAt(x, y))
             {
@@ -216,7 +216,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 v += sy;
             }
         }
-        return markers;
+        return markersFound;
     }
 
     /**
@@ -262,23 +262,33 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 break;
             case EDITION:
                 selectedTile = null;
-                final TileRef ref = SheetsPaletteModel.INSTANCE.getSelectedTile();
-                if (tile != null && ref != null)
-                {
-                    tile.setSheet(ref.getSheet());
-                    tile.setNumber(ref.getNumber());
-
-                    final TileGroup group = map.getGroup(tile.getSheet(), tile.getNumber());
-                    if (group != null)
-                    {
-                        tile.setGroup(group.getName());
-                    }
-
-                    map.getFeature(MapTileTransition.class).resolve(tile);
-                }
+                updateTileEdition(tile);
                 break;
             default:
                 throw new LionEngineException(ERROR_SHEET_PALETTE_TYPE, type.name());
+        }
+    }
+
+    /**
+     * Update the tile edition from palette.
+     * 
+     * @param tile The pointed tile.
+     */
+    private void updateTileEdition(Tile tile)
+    {
+        final TileRef paletteTile = SheetsPaletteModel.INSTANCE.getSelectedTile();
+        if (tile != null && paletteTile != null)
+        {
+            tile.setSheet(paletteTile.getSheet());
+            tile.setNumber(paletteTile.getNumber());
+
+            final TileGroup group = map.getGroup(tile.getSheet(), tile.getNumber());
+            if (group != null)
+            {
+                tile.setGroup(group.getName());
+            }
+
+            map.getFeature(MapTileTransition.class).resolve(tile);
         }
     }
 
@@ -330,12 +340,12 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
             if (Math.abs(x) > Math.abs(y))
             {
                 side = sideX;
-                collEnd = UtilWorld.getPoint(camera, startX + x, startY + (int) function.compute(x * side));
+                collEnd = UtilWorld.getPoint(camera, startX + x, startY + (int) function.compute(x * (double) side));
             }
             else
             {
                 side = sideY;
-                collEnd = UtilWorld.getPoint(camera, startX + (int) function.compute(y * side), startY + y);
+                collEnd = UtilWorld.getPoint(camera, startX + (int) function.compute(y * (double) side), startY + y);
             }
         }
         else
@@ -349,7 +359,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 side = -sideX;
             }
             final int rx = UtilMath.getRounded(x, (int) (1 / function.compute(1)));
-            collEnd = UtilWorld.getPoint(camera, startX + rx, startY + (int) function.compute(rx * side));
+            collEnd = UtilWorld.getPoint(camera, startX + rx, startY + (int) function.compute(rx * (double) side));
         }
     }
 

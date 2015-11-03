@@ -209,9 +209,9 @@ public class Minimap implements Image
         final int th = map.getTileHeight();
 
         int number = 0;
-        for (int x = 0; x < surface.getWidth(); x += tw)
+        for (int i = 0; i < surface.getWidth(); i += tw)
         {
-            for (int y = 0; y < surface.getHeight(); y += th)
+            for (int j = 0; j < surface.getHeight(); j += th)
             {
                 final int h = number * tw % tiles.getWidth();
                 final int v = number / tiles.getTilesHorizontal() * th;

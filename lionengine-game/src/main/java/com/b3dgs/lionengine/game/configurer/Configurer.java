@@ -90,6 +90,16 @@ public class Configurer
     }
 
     /**
+     * Return the associated media.
+     * 
+     * @return The associated media.
+     */
+    public Media getMedia()
+    {
+        return media;
+    }
+
+    /**
      * Get the node text value.
      * 
      * @param path The node path.
@@ -144,7 +154,7 @@ public class Configurer
         }
         catch (final NumberFormatException exception)
         {
-            throw new LionEngineException(exception);
+            throw new LionEngineException(exception, media);
         }
     }
 
@@ -164,7 +174,7 @@ public class Configurer
         }
         catch (final NumberFormatException exception)
         {
-            throw new LionEngineException(exception);
+            throw new LionEngineException(exception, media);
         }
     }
 
@@ -186,7 +196,7 @@ public class Configurer
             }
             catch (final LionEngineException exception)
             {
-                throw new LionEngineException(exception, media, exception.getMessage());
+                throw new LionEngineException(exception, media);
             }
         }
         return node;

@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.project.handler.CollisionsEditHandler;
@@ -64,6 +65,8 @@ public final class ProjectPart implements Focusable
     public static final String ID = Activator.PLUGIN_ID + ".part.project";
     /** Menu ID. */
     public static final String MENU_ID = ProjectPart.ID + ".menu";
+    /** Error open file. */
+    private static final String ERROR_UNABLE_TO_OPEN_FILE = "Unable to open file: ";
 
     /**
      * Update the properties view with the selected media.
@@ -266,6 +269,7 @@ public final class ProjectPart implements Focusable
                 catch (final IOException exception)
                 {
                     // Not able to open the file, just skip
+                    Verbose.warning(ERROR_UNABLE_TO_OPEN_FILE, media.getFile().getAbsolutePath());
                 }
             }
         }

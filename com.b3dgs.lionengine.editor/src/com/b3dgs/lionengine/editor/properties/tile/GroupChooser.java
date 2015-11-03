@@ -119,9 +119,8 @@ public class GroupChooser extends AbstractDialog
         final GroupsEditDialog dialog = new GroupsEditDialog(shell, map.getGroupsConfig());
         dialog.open();
 
-        final Collection<TileGroup> groups = map.getGroups();
         final Collection<String> values = new ArrayList<>();
-        for (final TileGroup group : groups)
+        for (final TileGroup group : map.getGroups())
         {
             values.add(group.getName());
         }

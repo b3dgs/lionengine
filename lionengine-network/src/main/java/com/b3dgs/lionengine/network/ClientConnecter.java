@@ -74,6 +74,7 @@ final class ClientConnecter extends Thread
             }
             catch (final SocketException exception)
             {
+                Verbose.exception(exception);
                 isRunning = false;
             }
             catch (final IOException exception)

@@ -152,19 +152,19 @@ final class MediaImpl implements Media
     @Override
     public InputStream getInputStream()
     {
-        final String path = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
+        final String inputPath = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
         try
         {
             if (loader != null)
             {
-                final InputStream input = loader.getResourceAsStream(path);
+                final InputStream input = loader.getResourceAsStream(inputPath);
                 if (input == null)
                 {
                     throw new LionEngineException(this, ERROR_OPEN_MEDIA_JAR);
                 }
                 return input;
             }
-            return new FileInputStream(path);
+            return new FileInputStream(inputPath);
         }
         catch (final FileNotFoundException exception)
         {
@@ -175,10 +175,10 @@ final class MediaImpl implements Media
     @Override
     public OutputStream getOutputStream()
     {
-        final String path = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
+        final String outputPath = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
         try
         {
-            return new FileOutputStream(path);
+            return new FileOutputStream(outputPath);
         }
         catch (final FileNotFoundException exception)
         {
@@ -191,8 +191,8 @@ final class MediaImpl implements Media
     {
         if (loader != null)
         {
-            final String path = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
-            return loader.getResource(path) != null;
+            final String jarPath = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
+            return loader.getResource(jarPath) != null;
         }
         return getFile().exists();
     }

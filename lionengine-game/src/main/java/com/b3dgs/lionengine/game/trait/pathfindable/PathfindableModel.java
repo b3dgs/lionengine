@@ -544,9 +544,9 @@ public class PathfindableModel extends TraitModel implements Pathfindable
         categories = ConfigPathfindable.create(owner.getConfigurer());
 
         transformable = owner.getTrait(Transformable.class);
-        final OrientableModel orientable = new OrientableModel();
-        orientable.prepare(owner, services);
-        this.orientable = orientable;
+        final OrientableModel orientableModel = new OrientableModel();
+        orientableModel.prepare(owner, services);
+        orientable = orientableModel;
 
         if (owner instanceof PathfindableListener)
         {

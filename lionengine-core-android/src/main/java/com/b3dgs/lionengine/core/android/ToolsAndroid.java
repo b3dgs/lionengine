@@ -224,7 +224,6 @@ public final class ToolsAndroid
      */
     public static Bitmap getRasterBuffer(Bitmap image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
-        final boolean method = true;
         final Bitmap raster = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
 
         final int divisorRed = 0x010000;
@@ -235,36 +234,15 @@ public final class ToolsAndroid
         final double sg = -((eg - fg) / divisorGreen) / (double) refSize;
         final double sb = -((eb - fb) / divisorBlue) / (double) refSize;
 
-        if (method)
+        for (int i = 0; i < raster.getWidth(); i++)
         {
-            for (int i = 0; i < raster.getWidth(); i++)
+            for (int j = 0; j < raster.getHeight(); j++)
             {
-                for (int j = 0; j < raster.getHeight(); j++)
-                {
-                    final int r = (int) (sr * (j % refSize)) * divisorRed;
-                    final int g = (int) (sg * (j % refSize)) * divisorGreen;
-                    final int b = (int) (sb * (j % refSize)) * divisorBlue;
+                final int r = (int) (sr * (j % refSize)) * divisorRed;
+                final int g = (int) (sg * (j % refSize)) * divisorGreen;
+                final int b = (int) (sb * (j % refSize)) * divisorBlue;
 
-                    raster.setPixel(i, j, ColorRgba.filterRgb(image.getPixel(i, j), fr + r, fg + g, fb + b));
-                }
-            }
-        }
-        else
-        {
-            final int bitsPerPixel = 4;
-            final int[] org = new int[image.getWidth() * image.getHeight() * bitsPerPixel];
-            image.getPixels(org, 0, 0, 0, 0, image.getWidth(), image.getHeight());
-            final int width = raster.getWidth();
-            final int height = raster.getHeight();
-            final int[] pixels = new int[width * height * bitsPerPixel];
-            raster.getPixels(org, 0, 0, 0, 0, width, height);
-
-            for (int j = 0; j < height; j++)
-            {
-                for (int i = 0; i < width; i++)
-                {
-                    pixels[j * width + i] = ColorRgba.filterRgb(org[j * width + i], fr, fg, fb);
-                }
+                raster.setPixel(i, j, ColorRgba.filterRgb(image.getPixel(i, j), fr + r, fg + g, fb + b));
             }
         }
 

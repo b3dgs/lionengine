@@ -89,7 +89,7 @@ public final class Resolution
 
         synchronized (lock)
         {
-            if (!Ratio.equals(this.ratio, ratio))
+            if (!Ratio.same(this.ratio, ratio))
             {
                 width = (int) Math.ceil(height * ratio);
                 width = (int) Math.floor(width / 2.0) * 2;

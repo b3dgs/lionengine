@@ -265,12 +265,12 @@ public class WorldPart implements Focusable, TileSelectionListener
         final IConfigurationElement[] elements = registry.getConfigurationElementsFor(WorldUpdater.EXTENSION_ID);
         if (elements.length > 0)
         {
-            final String renderer = elements[0].getAttribute(EXTENSION_UPDATER);
-            if (renderer != null)
+            final String extensionUpdater = elements[0].getAttribute(EXTENSION_UPDATER);
+            if (extensionUpdater != null)
             {
                 try
                 {
-                    return UtilClass.createClass(renderer, WorldUpdater.class, partService);
+                    return UtilClass.createClass(extensionUpdater, WorldUpdater.class, partService);
                 }
                 catch (final ReflectiveOperationException exception)
                 {
@@ -293,12 +293,12 @@ public class WorldPart implements Focusable, TileSelectionListener
         final IConfigurationElement[] elements = registry.getConfigurationElementsFor(WorldRenderer.EXTENSION_ID);
         if (elements.length > 0)
         {
-            final String renderer = elements[0].getAttribute(EXTENSION_RENDERER);
-            if (renderer != null)
+            final String extensionRenderer = elements[0].getAttribute(EXTENSION_RENDERER);
+            if (extensionRenderer != null)
             {
                 try
                 {
-                    return UtilClass.createClass(renderer, WorldRenderer.class, composite, partService);
+                    return UtilClass.createClass(extensionRenderer, WorldRenderer.class, composite, partService);
                 }
                 catch (final ReflectiveOperationException exception)
                 {

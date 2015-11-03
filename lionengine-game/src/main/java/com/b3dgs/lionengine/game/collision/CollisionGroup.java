@@ -50,7 +50,7 @@ public class CollisionGroup implements Nameable
      * @param groupB The second group.
      * @return <code>true</code> if groups are same (<code>null</code> included).
      */
-    public static boolean equals(String groupA, String groupB)
+    public static boolean same(String groupA, String groupB)
     {
         final boolean result;
         if (groupA != null && groupB != null)
