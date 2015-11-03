@@ -71,9 +71,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class WorldInteractionTile implements WorldMouseClickListener, WorldMouseMoveListener
 {
-    /** Error unknown palette type. */
-    private static final String ERROR_SHEET_PALETTE_TYPE = "Unknown sheet palette type: ";
-
     /** Tile selection listener. */
     private final List<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
     /** World part. */
@@ -263,7 +260,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 updateTileEdition(tile);
                 break;
             default:
-                throw new LionEngineException(ERROR_SHEET_PALETTE_TYPE, type.name());
+                throw new LionEngineException(type);
         }
     }
 

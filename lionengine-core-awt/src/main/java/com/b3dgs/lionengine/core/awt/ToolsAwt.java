@@ -85,7 +85,7 @@ public final class ToolsAwt
                 value = Transparency.TRANSLUCENT;
                 break;
             default:
-                throw new LionEngineException("Unknown transparency: ", transparency.name());
+                throw new LionEngineException(transparency);
         }
         return value;
     }

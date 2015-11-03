@@ -263,7 +263,7 @@ public class ProducerModel extends TraitModel implements Producer
                 actionCheck();
                 break;
             default:
-                throw new LionEngineException("Unknown type: ", state.name());
+                throw new LionEngineException(state);
         }
     }
 

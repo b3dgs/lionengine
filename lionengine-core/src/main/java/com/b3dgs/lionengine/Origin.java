@@ -38,9 +38,6 @@ public enum Origin
     /** Center bottom origin point. */
     CENTER_BOTTOM;
 
-    /** Unsupported enum. */
-    private static final String ERROR_ENUM = "Unknown enum type: ";
-
     /**
      * Get the x relative to origin.
      * 
@@ -73,7 +70,7 @@ public enum Origin
                 }
                 break;
             default:
-                throw new LionEngineException(ERROR_ENUM, name());
+                throw new LionEngineException(this);
         }
         return result;
     }
@@ -112,7 +109,7 @@ public enum Origin
                 result = y - height;
                 break;
             default:
-                throw new LionEngineException(ERROR_ENUM, name());
+                throw new LionEngineException(this);
         }
         return result;
     }

@@ -56,7 +56,7 @@ final class TextAwt implements Text
                 value = Font.ITALIC;
                 break;
             default:
-                throw new LionEngineException("Unsupported text style: ", style.name());
+                throw new LionEngineException(style);
         }
         return value;
     }
@@ -132,7 +132,7 @@ final class TextAwt implements Text
                 ty = (int) textSize.getHeight() + y;
                 break;
             default:
-                throw new LionEngineException("Unsupported alignment: ", alignment.name());
+                throw new LionEngineException(alignment);
         }
 
         final ColorRgba colorOld = g.getColor();

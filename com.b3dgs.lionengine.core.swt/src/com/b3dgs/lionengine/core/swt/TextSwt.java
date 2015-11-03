@@ -138,7 +138,7 @@ final class TextSwt implements Text
                 ty = y;
                 break;
             default:
-                throw new LionEngineException("Unknown type: ", alignment.name());
+                throw new LionEngineException(alignment);
         }
         final Color c = new Color(device, color.getRed(), color.getGreen(), color.getBlue());
         gc.setForeground(c);

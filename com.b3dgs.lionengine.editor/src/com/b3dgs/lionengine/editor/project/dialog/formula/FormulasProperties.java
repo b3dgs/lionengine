@@ -60,9 +60,6 @@ import com.b3dgs.lionengine.game.map.TileGroup;
 public class FormulasProperties extends ObjectProperties<CollisionFormula>
                                 implements ObjectListListener<CollisionFormula>
 {
-    /** Unknown function type. */
-    private static final String ERROR_TYPE = "Unknown collision function type: ";
-
     /**
      * Create the constraints list.
      * 
@@ -203,7 +200,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
                 createCollisionFunctionLinear(parent);
                 break;
             default:
-                throw new LionEngineException(ERROR_TYPE, type.name());
+                throw new LionEngineException(type);
         }
     }
 
@@ -342,7 +339,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
                 final double b = Double.parseDouble(linearB.getText());
                 return new CollisionFunctionLinear(a, b);
             default:
-                throw new LionEngineException(ERROR_TYPE, type.name());
+                throw new LionEngineException(type);
         }
     }
 
@@ -371,7 +368,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
                 setValueDefault(linearB, Double.toString(linear.getB()));
                 break;
             default:
-                throw new LionEngineException(ERROR_TYPE, function.getType().name());
+                throw new LionEngineException(function.getType());
         }
     }
 

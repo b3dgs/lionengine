@@ -35,6 +35,8 @@ public final class LionEngineException extends RuntimeException
 {
     /** Error private constructor. */
     public static final String ERROR_PRIVATE_CONSTRUCTOR = "Private constructor !";
+    /** Error unknown enum type. */
+    private static final String ERROR_UNKNOWN_ENUM = "Unknown enum: ";
     /** The main ignored package. */
     private static final String ENGINE_PREFIX = "com.b3dgs.lionengine.";
     /** The list of ignored external packages. */
@@ -173,6 +175,16 @@ public final class LionEngineException extends RuntimeException
     public LionEngineException(Media media, String... messages)
     {
         this(null, media, messages);
+    }
+
+    /**
+     * Create an exception related to an unknown enum type.
+     * 
+     * @param type The unknown enum type.
+     */
+    public LionEngineException(Enum<?> type)
+    {
+        this(ERROR_UNKNOWN_ENUM, type.name());
     }
 
     /**

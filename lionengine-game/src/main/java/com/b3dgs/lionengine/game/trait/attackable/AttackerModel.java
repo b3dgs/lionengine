@@ -248,7 +248,7 @@ public class AttackerModel extends TraitModel implements Attacker
                 updateAttacking();
                 break;
             default:
-                throw new LionEngineException("Unknown type: ", state.name());
+                throw new LionEngineException(state);
         }
         if (stop)
         {

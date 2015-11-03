@@ -200,7 +200,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
                 filtered = hq3x.getScaledImage();
                 break;
             default:
-                throw new LionEngineException("Unknown filter: ", filter.name());
+                throw new LionEngineException(filter);
         }
         return filtered;
     }

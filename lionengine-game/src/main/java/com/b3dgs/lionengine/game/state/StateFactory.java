@@ -31,9 +31,6 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public class StateFactory
 {
-    /** Unknown state. */
-    private static final String ERROR_STATE = "State not found: ";
-
     /** List of available states. */
     private final Map<Enum<?>, State> states;
 
@@ -77,7 +74,7 @@ public class StateFactory
         final State state = states.get(type);
         if (state == null)
         {
-            throw new LionEngineException(ERROR_STATE, type.name());
+            throw new LionEngineException(type);
         }
         state.enter();
         return state;

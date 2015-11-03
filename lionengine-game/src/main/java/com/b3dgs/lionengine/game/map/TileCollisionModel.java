@@ -32,9 +32,6 @@ import com.b3dgs.lionengine.game.collision.CollisionRange;
  */
 public class TileCollisionModel implements TileCollision
 {
-    /** Error type. */
-    private static final String ERROR_TYPE = "Unknown type: ";
-
     /** The collision formulas used. */
     private final Collection<CollisionFormula> formulas = new HashSet<CollisionFormula>();
     /** Tile reference. */
@@ -67,7 +64,7 @@ public class TileCollisionModel implements TileCollision
             case Y:
                 return (int) (y - tile.getY());
             default:
-                throw new LionEngineException(ERROR_TYPE, input.name());
+                throw new LionEngineException(input);
         }
     }
 

@@ -47,7 +47,7 @@ public class CollisionFunctionComposite
             case LINEAR:
                 return new CollisionFunctionLinearComposite();
             default:
-                throw new LionEngineException("Unknown type: ", type.name());
+                throw new LionEngineException(type);
         }
     }
 
