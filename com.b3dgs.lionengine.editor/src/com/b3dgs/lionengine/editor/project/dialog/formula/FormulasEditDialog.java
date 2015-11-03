@@ -40,8 +40,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the formulas edition dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FormulasEditDialog extends AbstractDialog
 {

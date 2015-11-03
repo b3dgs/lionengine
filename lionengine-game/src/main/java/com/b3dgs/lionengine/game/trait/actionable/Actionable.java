@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Represents a clickable action, allows to perform an action on click.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Actionable extends Trait, Updatable
 {

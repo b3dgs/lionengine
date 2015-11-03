@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.game.Attribute;
 
 /**
  * Test attribute class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AttributeTest
 {

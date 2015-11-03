@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Represents the selection area.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Selection
 {

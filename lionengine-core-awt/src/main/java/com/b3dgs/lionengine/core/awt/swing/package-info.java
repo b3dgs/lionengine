@@ -18,7 +18,5 @@
 
 /**
  * Swing utilities package.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.core.awt.swing;

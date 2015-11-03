@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.configurer.Configurer
  */
 public class SetupSurfaceRastered extends SetupSurface

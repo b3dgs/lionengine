@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.Media;
  * <li>{@link FileReading}</li>
  * <li>{@link FileWriting}</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Stream
 {

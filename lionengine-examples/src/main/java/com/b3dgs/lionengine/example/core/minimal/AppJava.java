@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
  * Program starts here. When you start the jvm, ensure that this main function is called.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AppJava
 {

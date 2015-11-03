@@ -35,8 +35,6 @@ import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
 
 /**
  * Test the parallaxed sprite class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SpriteParallaxedTest
 {

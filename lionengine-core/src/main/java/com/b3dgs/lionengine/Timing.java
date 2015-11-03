@@ -44,8 +44,6 @@ package com.b3dgs.lionengine;
  * Assert.assertFalse(timer.isStarted());
  * Assert.assertTrue(timer.get() &gt;= 0);
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Timing
 {

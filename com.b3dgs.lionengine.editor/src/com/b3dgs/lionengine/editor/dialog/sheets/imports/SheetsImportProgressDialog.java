@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.game.map.TileExtractor;
 
 /**
  * Sheets import progress dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SheetsImportProgressDialog extends AbstractProgressDialog
                                         implements TileExtractor.ProgressListener, TileExtractor.Canceler

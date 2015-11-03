@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.game.map.TileRef;
 
 /**
  * Contains the sheets palette data.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SheetsPaletteModel
 {

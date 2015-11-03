@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.UtilFile;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Medias
 {

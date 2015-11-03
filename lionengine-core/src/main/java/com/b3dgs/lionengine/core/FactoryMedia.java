@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Represents the media factory.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface FactoryMedia
 {

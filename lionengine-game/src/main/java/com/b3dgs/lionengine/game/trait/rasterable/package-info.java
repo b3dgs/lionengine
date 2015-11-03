@@ -18,7 +18,5 @@
 
 /**
  * Describe the raster bar representation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait.rasterable;

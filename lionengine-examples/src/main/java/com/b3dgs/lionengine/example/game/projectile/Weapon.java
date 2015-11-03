@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Weapon implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Weapon extends ObjectGame implements Updatable, LauncherListener
 {

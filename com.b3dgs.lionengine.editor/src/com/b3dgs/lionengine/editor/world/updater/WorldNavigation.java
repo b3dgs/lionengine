@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Handle the world navigation by using keyboard arrows key as input or mouse drag.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardListener
 {

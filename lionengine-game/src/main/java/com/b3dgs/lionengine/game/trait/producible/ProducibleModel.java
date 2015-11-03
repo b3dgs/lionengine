@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
  * If the {@link ObjectGame} is a {@link ProducibleListener}, it will automatically
  * {@link #addListener(ProducibleListener)} on it.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ProducibleModel extends TraitModel implements Producible
 {

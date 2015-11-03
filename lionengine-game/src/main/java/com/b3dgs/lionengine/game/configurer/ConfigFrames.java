@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Represents the frames data from a configurer node.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ConfigFrames
 {

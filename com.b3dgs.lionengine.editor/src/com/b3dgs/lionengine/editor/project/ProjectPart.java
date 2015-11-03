@@ -56,8 +56,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Represents the resources explorer, depending of the opened project.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ProjectPart implements Focusable
 {

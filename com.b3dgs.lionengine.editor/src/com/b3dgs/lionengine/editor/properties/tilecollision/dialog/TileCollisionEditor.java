@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.game.collision.CollisionFormula;
 
 /**
  * Dialog for tile collision edition.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TileCollisionEditor extends AbstractEditor
 {

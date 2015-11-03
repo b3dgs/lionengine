@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.geom.Point;
 
 /**
  * Handle the world cursor rendering.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldCursor implements WorldRenderListener
 {

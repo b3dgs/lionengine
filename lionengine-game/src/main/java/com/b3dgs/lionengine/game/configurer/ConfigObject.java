@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * Represents the object configuration data.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  */
 public final class ConfigObject

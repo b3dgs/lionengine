@@ -40,8 +40,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Series of tool functions around the editor related to classes.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilClass
 {

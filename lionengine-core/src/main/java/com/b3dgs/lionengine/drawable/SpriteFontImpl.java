@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Font sprite implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteFontImpl implements SpriteFont
 {
@@ -320,8 +318,6 @@ final class SpriteFontImpl implements SpriteFont
 
     /**
      * Character data.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private static final class Data
     {

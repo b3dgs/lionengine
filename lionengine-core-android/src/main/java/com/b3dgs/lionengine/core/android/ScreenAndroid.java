@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.core.ScreenBase;
 
 /**
  * Screen implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ScreenAndroid extends ScreenBase implements SurfaceHolder.Callback
 {

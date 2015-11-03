@@ -21,8 +21,6 @@ import com.sun.jna.Library;
 
 /**
  * Sc68 binding interface.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 interface Sc68Binding extends Library
 {

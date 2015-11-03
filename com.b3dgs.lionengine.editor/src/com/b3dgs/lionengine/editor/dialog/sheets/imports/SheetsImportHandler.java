@@ -22,8 +22,6 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * Import sheets handler implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SheetsImportHandler
 {

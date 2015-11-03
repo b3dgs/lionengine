@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.core.awt.EngineAwt;
 /**
  * Program starts here.
  * 
- * @version 0.1.0
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AppSample
 {

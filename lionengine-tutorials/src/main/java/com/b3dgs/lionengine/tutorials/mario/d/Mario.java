@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
 
 /**
  * Mario specific implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Mario extends Entity implements CollidableListener
 {

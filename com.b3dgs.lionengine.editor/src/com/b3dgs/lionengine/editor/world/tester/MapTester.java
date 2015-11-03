@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Test if the map has been defined.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MapTester extends PropertyTester
 {

@@ -51,8 +51,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Represents the world, where the global map is displayed.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldPart implements Focusable, TileSelectionListener
 {

@@ -42,8 +42,6 @@ import com.b3dgs.lionengine.Graphic;
  * <p>
  * As the SpriteFont is a sprite, is supports all sprite operations.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface SpriteFont extends Sprite
 {

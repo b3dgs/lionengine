@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Allows to retrieve informations from an external XML configuration file.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.object.Setup
  * @see XmlNode
  */

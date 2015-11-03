@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Client connection listener thread.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ClientConnecter extends Thread
 {

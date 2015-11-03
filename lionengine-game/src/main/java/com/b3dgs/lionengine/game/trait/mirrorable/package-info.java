@@ -18,7 +18,5 @@
 
 /**
  * Describe the {@link com.b3dgs.lionengine.Mirror} capacity.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait.mirrorable;

@@ -18,7 +18,5 @@
 
 /**
  * World rendering package, where world is rendered.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.editor.world.renderer;

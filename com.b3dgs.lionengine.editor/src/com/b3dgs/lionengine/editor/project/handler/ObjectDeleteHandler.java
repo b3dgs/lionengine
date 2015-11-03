@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.editor.project.ProjectModel;
 
 /**
  * Remove an object in the selected folder.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ObjectDeleteHandler
 {

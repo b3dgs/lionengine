@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.core.awt.AppletAwt;
 
 /**
  * Test the applet class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AppletAwtTest
 {

@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
  * Set pointer tile handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SetPointerTileHandler
 {

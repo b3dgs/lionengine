@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the tile groups data from a configurer.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileGroup
  */
 public final class ConfigTileGroups

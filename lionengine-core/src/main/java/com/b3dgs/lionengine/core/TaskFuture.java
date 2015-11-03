@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Represents a task executed asynchronously.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface TaskFuture
 {

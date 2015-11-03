@@ -44,8 +44,6 @@ import com.b3dgs.lionengine.test.util.Constant;
 
 /**
  * Test the factory graphic provider class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryGraphicTest
 {

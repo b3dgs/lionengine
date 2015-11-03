@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.Viewer;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class GraphicAwt implements Graphic
 {

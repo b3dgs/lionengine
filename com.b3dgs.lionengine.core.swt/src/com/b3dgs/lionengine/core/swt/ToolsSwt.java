@@ -44,8 +44,6 @@ import com.b3dgs.lionengine.Transparency;
 
 /**
  * Misc tools for SWT.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ToolsSwt
 {

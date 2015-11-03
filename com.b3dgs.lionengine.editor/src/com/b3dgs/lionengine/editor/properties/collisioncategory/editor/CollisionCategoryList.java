@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Represents the collision category list, allowing to add and remove {@link CollisionCategory}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionCategoryList extends ObjectList<CollisionCategory>
 {

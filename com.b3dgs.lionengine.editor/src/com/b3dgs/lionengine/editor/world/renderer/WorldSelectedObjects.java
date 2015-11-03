@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Handle the objects selection rendering.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldSelectedObjects implements WorldRenderListener
 {

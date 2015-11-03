@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.core.Screen;
 
 /**
  * Factory graphic mock.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryGraphicMock implements FactoryGraphic
 {

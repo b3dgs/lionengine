@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Interrupt sequence mock.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SequenceInterruptMock extends Sequence
 {

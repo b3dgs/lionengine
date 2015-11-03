@@ -34,7 +34,6 @@ import java.io.OutputStream;
  * print(com.b3dgs.lionengine.core.Medias.create()); // print: resources/img/image.png
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.core.Medias
  */
 public interface Media

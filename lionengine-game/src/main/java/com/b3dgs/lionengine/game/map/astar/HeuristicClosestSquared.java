@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.game.map.astar;
 /**
  * A heuristic that uses the tile that is closest to the target as the next best tile. In this case the square root is
  * removed and the distance squared is used instead.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HeuristicClosestSquared implements Heuristic
 {

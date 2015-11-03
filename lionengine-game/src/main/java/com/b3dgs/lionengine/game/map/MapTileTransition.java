@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Represents the transition handling between two different groups of tiles.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface MapTileTransition extends MapTileFeature
 {

@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Contains the objects of the world.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldModel
 {

@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game;
 
 /**
  * Represents a coordinate in tile.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CoordTile
 {

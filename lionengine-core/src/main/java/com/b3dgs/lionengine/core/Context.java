@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Represents the execution context.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Context
 {

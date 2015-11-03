@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Building implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Building extends ObjectGame implements Updatable, Renderable, ProducibleListener
 {

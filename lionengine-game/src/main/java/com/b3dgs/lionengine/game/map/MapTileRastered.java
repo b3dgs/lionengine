@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  * {@link #loadSheets(Media, Media, boolean)}
  * {@link MapTile#setTileRenderer(MapTileRenderer)} // Give reference to the MapTileRastered instance
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface MapTileRastered extends MapTileFeature, MapTileRenderer
 {

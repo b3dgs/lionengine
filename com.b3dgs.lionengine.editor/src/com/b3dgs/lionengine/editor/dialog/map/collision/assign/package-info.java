@@ -18,7 +18,5 @@
 
 /**
  * Map collision assign dialog package.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.editor.dialog.map.collision.assign;

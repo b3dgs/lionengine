@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
 
 /**
  * Represents the mouse input. Gives informations such as mouse click and cursor location.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Mouse extends InputDevicePointer, Updatable
 {

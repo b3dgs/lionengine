@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.trait.orientable.Orientable;
 /**
  * Describe an object which can move on a {@link com.b3dgs.lionengine.game.map.MapTilePath} by using A-Star algorithm.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.map.astar
  */
 public interface Pathfindable extends Trait, Tiled, Orientable, Updatable, Renderable

@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Entity collision editor.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EntityCollisionEditor extends AbstractEditor
 {

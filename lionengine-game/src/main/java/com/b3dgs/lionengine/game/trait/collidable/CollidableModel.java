@@ -59,8 +59,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * If the {@link ObjectGame} is a {@link CollidableListener}, it will automatically
  * {@link #addListener(CollidableListener)} on it.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollidableModel extends TraitModel implements Collidable
 {

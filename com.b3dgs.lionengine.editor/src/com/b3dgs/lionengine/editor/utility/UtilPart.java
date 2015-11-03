@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Series of tool functions around the editor related to part.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilPart
 {

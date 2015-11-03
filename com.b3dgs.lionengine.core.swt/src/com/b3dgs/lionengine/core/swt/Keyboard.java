@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
 
 /**
  * Keyboard input.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Keyboard extends InputDeviceDirectional
 {

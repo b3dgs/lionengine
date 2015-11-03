@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.core.android.EngineAndroid;
 
 /**
  * Android entry point.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AppAndroid extends Activity
 {

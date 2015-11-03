@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Projectile implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Projectile extends ObjectGame implements Updatable, Renderable, CollidableListener
 {

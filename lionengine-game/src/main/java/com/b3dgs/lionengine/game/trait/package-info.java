@@ -21,7 +21,5 @@
  * {@link com.b3dgs.lionengine.game.object.ObjectGame} without changing its interface.
  * It is important to specify which traits are required in the javadoc when using this system, because of the low
  * typing.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait;

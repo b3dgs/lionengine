@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Generate the project tree from the project folder.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ProjectTreeCreator
 {

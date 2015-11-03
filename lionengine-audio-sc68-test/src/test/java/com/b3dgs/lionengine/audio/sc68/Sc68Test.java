@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Test the sc68 player.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Sc68Test
 {

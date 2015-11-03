@@ -40,8 +40,6 @@ import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
  * World implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class World extends WorldGame
 {

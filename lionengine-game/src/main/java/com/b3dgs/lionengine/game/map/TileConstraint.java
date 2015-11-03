@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.game.Orientation;
 
 /**
  * Represents a map tile constraint. It describes the allowed tiles for the specified orientation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TileConstraint
 {

@@ -47,8 +47,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * If the {@link ObjectGame} is a {@link ProducerListener}, it will automatically {@link #addListener(ProducerListener)}
  * on it.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ProducerModel extends TraitModel implements Producer
 {

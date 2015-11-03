@@ -19,7 +19,5 @@
 /**
  * Represents the launch system, by using a {@link com.b3dgs.lionengine.game.trait.launchable.Launchable} and a
  * {@link com.b3dgs.lionengine.game.trait.launchable.Launcher} to throw it.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait.launchable;

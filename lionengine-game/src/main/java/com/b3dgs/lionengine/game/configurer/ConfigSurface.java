@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * Represents the surface data from a configurer.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.object.SetupSurface
  */
 public final class ConfigSurface

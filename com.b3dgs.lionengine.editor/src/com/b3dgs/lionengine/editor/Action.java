@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.editor;
 
 /**
  * Represents the element action.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 @FunctionalInterface
 public interface Action

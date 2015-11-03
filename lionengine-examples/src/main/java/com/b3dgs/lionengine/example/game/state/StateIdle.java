@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
 
 /**
  * Idle state implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateIdle extends StateGame
 {

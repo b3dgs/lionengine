@@ -22,7 +22,6 @@ package com.b3dgs.lionengine.game.trait.assignable;
  * {@link com.b3dgs.lionengine.game.trait.actionable.Action}. Usually a consequence of a
  * click over a button, ready to assign on map (in other this is the second part of the action).
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Assignable
  * @see com.b3dgs.lionengine.game.trait.actionable.Actionable
  * @see com.b3dgs.lionengine.game.trait.actionable.Action

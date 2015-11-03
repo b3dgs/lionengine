@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * SequenceLinkSimple implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class SequenceFirst extends Sequence
 {

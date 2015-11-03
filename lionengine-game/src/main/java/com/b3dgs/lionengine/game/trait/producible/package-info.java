@@ -20,7 +20,5 @@
  * Describe the production capacity of an object by using a {@link com.b3dgs.lionengine.game.trait.producible.Producer}
  * to create new {@link com.b3dgs.lionengine.game.object.ObjectGame} as
  * {@link com.b3dgs.lionengine.game.trait.producible.Producible}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait.producible;

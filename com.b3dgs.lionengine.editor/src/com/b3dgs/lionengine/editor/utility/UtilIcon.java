@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Series of tool functions around the editor related to icons.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilIcon
 {

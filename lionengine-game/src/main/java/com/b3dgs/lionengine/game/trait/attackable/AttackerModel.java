@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Attacker model implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AttackerModel extends TraitModel implements Attacker
 {

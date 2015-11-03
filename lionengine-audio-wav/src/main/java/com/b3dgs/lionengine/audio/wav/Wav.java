@@ -59,8 +59,6 @@ import com.b3dgs.lionengine.Verbose;
  * 
  * sound.stop();
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Wav
 {

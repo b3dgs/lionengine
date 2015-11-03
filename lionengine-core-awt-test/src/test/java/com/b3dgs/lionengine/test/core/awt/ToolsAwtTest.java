@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the tools class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ToolsAwtTest
 {

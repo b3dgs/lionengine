@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.test.util.DrawableTestTool;
 
 /**
  * Test the image class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ImageTest
 {

@@ -21,8 +21,6 @@ import java.util.Random;
 
 /**
  * Random utility class implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilRandom
 {

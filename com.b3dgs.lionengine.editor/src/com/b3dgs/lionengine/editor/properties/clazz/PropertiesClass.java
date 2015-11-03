@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Element properties part.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesClass implements PropertiesProviderObject
 {

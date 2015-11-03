@@ -22,8 +22,6 @@ import java.io.OutputStream;
 
 /**
  * Mock input stream.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class OutputStreamMock extends OutputStream
 {

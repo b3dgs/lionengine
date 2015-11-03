@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.Transform;
 
 /**
  * Transform implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class TransformAwt implements Transform
 {

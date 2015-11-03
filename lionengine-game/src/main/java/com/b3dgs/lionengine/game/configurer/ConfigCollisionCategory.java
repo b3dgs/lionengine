@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the collision category configuration from a configurer.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionCategory
  */
 public final class ConfigCollisionCategory

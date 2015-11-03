@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * List of events listened from an attacker.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface AttackerListener
 {

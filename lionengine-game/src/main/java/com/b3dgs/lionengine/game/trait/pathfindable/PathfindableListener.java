@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.trait.pathfindable;
 
 /**
  * Pathfindable events listener.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface PathfindableListener
 {

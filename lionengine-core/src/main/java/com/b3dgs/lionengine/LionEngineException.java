@@ -30,8 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class LionEngineException extends RuntimeException
 {

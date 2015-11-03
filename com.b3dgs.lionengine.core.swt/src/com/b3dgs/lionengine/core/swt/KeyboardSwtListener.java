@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 
 /**
  * Keyboard listener implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class KeyboardSwtListener implements org.eclipse.swt.events.KeyListener
 {

@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.collision;
 /**
  * List of supported collision function types.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionFunction
  */
 public enum CollisionFunctionType

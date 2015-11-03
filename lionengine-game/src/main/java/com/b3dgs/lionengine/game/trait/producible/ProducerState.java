@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.trait.producible;
 
 /**
  * Producer states.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum ProducerState
 {

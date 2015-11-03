@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 
 /**
  * Represents the abstract project dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class AbstractProjectDialog extends AbstractDialog
 {

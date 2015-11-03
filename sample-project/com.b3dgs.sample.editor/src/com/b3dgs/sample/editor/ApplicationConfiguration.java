@@ -41,8 +41,6 @@ import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
 
 /**
  * Configure the editor with the right name.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ApplicationConfiguration
 {

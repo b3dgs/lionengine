@@ -30,8 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * Call {@link #await()} where resources must be loaded, and access to them with {@link #get()}.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ResourceLoader
 {
@@ -141,8 +139,6 @@ public class ResourceLoader
 
     /**
      * Resource loader thread.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class ResourceLoaderThread extends Thread
     {

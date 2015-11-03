@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.editor.utility.UtilSwt;
 
 /**
  * Abstract editor.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class AbstractEditor implements MDirtyable
 {

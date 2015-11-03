@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.Constant;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Version
 {

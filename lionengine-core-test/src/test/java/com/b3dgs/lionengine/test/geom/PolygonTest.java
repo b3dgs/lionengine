@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Test the polygon class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PolygonTest
 {

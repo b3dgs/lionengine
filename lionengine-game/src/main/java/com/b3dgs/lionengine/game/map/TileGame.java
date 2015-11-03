@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.game.Features;
 
 /**
  * Tile base implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TileGame implements Tile
 {

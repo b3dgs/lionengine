@@ -22,7 +22,6 @@ package com.b3dgs.lionengine.game.map;
  * or a tree area inside a grass area. It supports until 20 links (verticals, horizontal, corners in/out, middle...). It
  * has to be used with a tile based map.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Border20
  */
 public class Border20Map

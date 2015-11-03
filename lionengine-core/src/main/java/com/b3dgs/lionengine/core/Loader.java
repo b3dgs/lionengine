@@ -43,7 +43,6 @@ import com.b3dgs.lionengine.Verbose;
  * This class is Thread-Safe.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Config
  */
 public final class Loader

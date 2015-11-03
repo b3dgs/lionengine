@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.game.background.BackgroundGame;
 
 /**
  * Water foreground implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Foreground extends BackgroundGame
 {
@@ -179,8 +177,6 @@ class Foreground extends BackgroundGame
 
     /**
      * First front component, including water effect.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Primary implements BackgroundComponent
     {
@@ -242,8 +238,6 @@ class Foreground extends BackgroundGame
 
     /**
      * Second front component, including water effect.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Secondary implements BackgroundComponent
     {

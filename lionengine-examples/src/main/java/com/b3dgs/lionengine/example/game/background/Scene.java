@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.background.BackgroundGame;
 /**
  * Game loop designed to handle our world.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
 class Scene extends Sequence

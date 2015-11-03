@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.core.swt.EngineSwt;
 
 /**
  * Plugin activator.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Activator implements BundleActivator
 {

@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the utility project stats class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class UtilProjectStatsTest
 {

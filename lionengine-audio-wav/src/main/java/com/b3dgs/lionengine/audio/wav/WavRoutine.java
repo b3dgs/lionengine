@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Sound routine implementation. One sound represents one thread.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class WavRoutine extends Thread
 {

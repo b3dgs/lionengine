@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Messages internationalization.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Messages extends NLS
 {

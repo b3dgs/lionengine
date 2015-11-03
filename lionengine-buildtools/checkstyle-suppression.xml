@@ -3,64 +3,56 @@
 <!DOCTYPE suppressions PUBLIC "-//Puppy Crawl//DTD Suppressions 1.1//EN" "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.ImageInfo"/>
-    <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.UtilReflection" lines="55"/>
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.Ratio" lines="31,33,35,37"/>
     
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.Hq3x"/>
     <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.Hq2x"/>
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.ScreenAwt" lines="155, 205"/>
-    <suppress checks="MagicNumber" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="61"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="414"/>
-    <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="445, 450"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.FactoryGraphicAwt" lines="48"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="412"/>
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.FactoryGraphicAwt" lines="46"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.swing.UtilitySwing"/>
-    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.Theme" lines="83"/>
+    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.Theme" lines="81"/>
     
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ScreenSwt"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ToolsSwt"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="403"/>
-    <suppress checks="FanOut" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="49"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="49"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="401"/>
+    <suppress checks="FanOut" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="47"/>
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="47"/>
     
     <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.game.object.Factory" lines="71"/>
     <suppress checks="RedundantModifier" files="com.b3dgs.lionengine.game.state.StateAnimationBased" lines="57"/>
     <suppress checks="EmptyBlock" files="com.b3dgs.lionengine.game.state.StateAnimationBased" lines="108"/>
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.map.astar.PathFinderImpl" lines="292"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.map.astar.PathFinderImpl" lines="290"/>
     <suppress checks="StaticImport" files="com.b3dgs.lionengine.game.map.TileTransition"/>
     <suppress checks="[a-zA-Z0-9]*" files="com.b3dgs.lionengine.game.map.Border20Map"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.map.MapTilePathModel" lines="190, 294"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.map.MapTilePathModel" lines="203, 208"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.map.TileCollisionModel" lines="109, 114, 118, 148, 153, 157"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.map.MapTilePathModel" lines="188"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.map.MapTilePathModel" lines="201, 206"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.map.TileCollisionModel" lines="107, 112, 116, 146, 151, 155"/>
     
-    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ClientSocket" lines="65, 165"/>
+    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ClientSocket" lines="63"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.network.ServerImpl"/>
-    <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ClientImpl" lines="104, 112, 120, 472, 473, 499, 500"/>
-    <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ClientSocket" lines="122, 130, 138, 185, 203"/>
-    <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ServerImpl" lines="178, 243, 318"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.network.ServerImpl" lines="370"/>
+    <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ClientImpl" lines="102, 110, 118"/>
+    <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ServerImpl" lines="176, 241, 316"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.network.ServerImpl" lines="368"/>
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.audio.sc68.AudioSc68" lines="87"/>
     <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding"/>
     <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding"/>
     
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.audio.wav.Wav" lines="188, 197"/>
-    <suppress checks="AnonInnerLength" files="com.b3dgs.lionengine.audio.wav.Wav" lines="271"/>
-    <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="200"/>
-    <suppress checks="MagicNumber" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="219"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="269"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.audio.wav.Wav" lines="186, 195"/>
+    <suppress checks="AnonInnerLength" files="com.b3dgs.lionengine.audio.wav.Wav" lines="269"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="267"/>
 
-    <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.test.UtilTests" lines="50"/>
-    
-    <suppress checks="MagicNumber" files="[\\/]com.b3dgs.lionengine.editor[\\/]"/>
-    <suppress checks="EmptyBlock" files="com.b3dgs.lionengine.editor.project.ProjectsPart" lines="261"/>
-    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile" lines="74"/>
+    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile" lines="72"/>
     <suppress checks="FanOut" files="com.b3dgs.lionengine.editor.project.dialog.formula.FormulasProperties"/>
+    
     <suppress checks="StaticVariableName" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
     <suppress checks="VisibilityModifier" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
     <suppress checks="LineLength" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
     <suppress checks="TrailingComment" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
+    <suppress checks="MagicNumber" files="[\\/]com.b3dgs.lionengine.editor[\\/]"/>
     <suppress checks="ClassDataAbstractionCoupling" files="[\\/]com.b3dgs.lionengine.editor[\\/]"/>
     
     <suppress checks="[a-zA-Z0-9]*" files="[\\/]com.b3dgs.lionengine.example[\\/]"/>

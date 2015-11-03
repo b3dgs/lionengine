@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.Updatable;
  * Designed to handle {@link ObjectGame}. Maintain an objects list by updating and rendering them. Modifications on the
  * list can be done at any time because their are applied at the beginning of the next update.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see ObjectGame
  * @see ComponentUpdatable
  * @see ComponentRenderable

@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 
 /**
  * Keyboard listener implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class KeyboardAwtListener implements KeyListener
 {

@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.trait.producible;
 
 /**
  * List of event linked to the producible production progress.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ProducibleListener
 {

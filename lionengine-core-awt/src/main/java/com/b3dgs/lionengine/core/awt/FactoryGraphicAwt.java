@@ -42,8 +42,6 @@ import com.b3dgs.lionengine.core.Screen;
 
 /**
  * Graphic factory implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryGraphicAwt implements FactoryGraphic
 {

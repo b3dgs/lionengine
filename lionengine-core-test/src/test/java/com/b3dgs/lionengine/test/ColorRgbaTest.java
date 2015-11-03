@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the color class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ColorRgbaTest
 {

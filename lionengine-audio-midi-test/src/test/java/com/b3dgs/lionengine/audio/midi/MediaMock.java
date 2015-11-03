@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Media mock.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MediaMock implements Media
 {

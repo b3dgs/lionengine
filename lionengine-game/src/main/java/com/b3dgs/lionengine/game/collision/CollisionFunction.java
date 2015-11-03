@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.collision;
 /**
  * Describe the collision function to apply from an input value.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.configurer.ConfigCollisionFunction
  * @see CollisionFormula
  */

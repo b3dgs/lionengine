@@ -55,8 +55,6 @@ import com.b3dgs.lionengine.example.pong.AppPong;
 
 /**
  * Program starts here.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AppExamples
 {

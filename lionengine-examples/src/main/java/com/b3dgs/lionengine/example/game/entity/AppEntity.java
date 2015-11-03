@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.game.object.Services;
 /**
  * Main class.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
 public class AppEntity

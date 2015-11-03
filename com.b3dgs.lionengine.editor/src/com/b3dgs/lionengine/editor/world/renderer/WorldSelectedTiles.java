@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.geom.Line;
 
 /**
  * Handle the tiles selection rendering.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldSelectedTiles implements WorldRenderListener
 {

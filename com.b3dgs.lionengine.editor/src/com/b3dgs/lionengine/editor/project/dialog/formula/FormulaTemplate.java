@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * List of formula template.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum FormulaTemplate
 {

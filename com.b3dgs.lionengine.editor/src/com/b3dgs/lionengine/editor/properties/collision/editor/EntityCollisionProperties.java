@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.game.Collision;
 
 /**
  * Represents the collisions properties edition view.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EntityCollisionProperties extends ObjectProperties<Collision> implements ObjectListListener<Collision>
 {

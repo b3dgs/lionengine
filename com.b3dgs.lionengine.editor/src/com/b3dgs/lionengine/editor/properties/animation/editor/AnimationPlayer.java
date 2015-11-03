@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Represents the animation player view, where the animation can be controlled.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AnimationPlayer
 {

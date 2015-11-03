@@ -35,8 +35,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Document factory implementation for DOM.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class DocumentFactory
 {

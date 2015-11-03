@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.TextStyle;
 
 /**
  * Mock text.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TextMock implements Text
 {

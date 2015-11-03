@@ -74,7 +74,6 @@ import com.b3dgs.lionengine.core.Graphics;
  * text.draw(g, 0, 0, &quot;World&quot;);
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Align
  * @see Graphics
  */

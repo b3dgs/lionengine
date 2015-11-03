@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.map;
 
 /**
  * Tile feature base interface.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface TileFeature
 {

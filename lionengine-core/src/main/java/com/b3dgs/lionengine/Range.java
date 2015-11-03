@@ -19,8 +19,6 @@ package com.b3dgs.lionengine;
 
 /**
  * Standard range description, with a minimum and a maximum.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Range
 {

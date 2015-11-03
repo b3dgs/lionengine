@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
  * Test world game class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class World extends WorldGame
 {

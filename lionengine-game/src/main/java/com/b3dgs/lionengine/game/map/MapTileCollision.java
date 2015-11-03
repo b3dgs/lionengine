@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 /**
  * Represents the collision feature of a map tile.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionFormula
  * @see CollisionGroup
  */

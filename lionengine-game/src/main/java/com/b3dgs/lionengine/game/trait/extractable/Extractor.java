@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * This interface represents the ability of resource extraction. It is also possible to specify work time.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Extractor extends Trait, Updatable
 {

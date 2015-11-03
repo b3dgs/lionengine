@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.map.astar;
 
 /**
  * A heuristic that uses the tile that is closest to the target as the next best tile.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HeuristicClosest implements Heuristic
 {

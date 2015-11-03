@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.trait.extractable;
 
 /**
  * Extractor states.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum ExtractorState
 {

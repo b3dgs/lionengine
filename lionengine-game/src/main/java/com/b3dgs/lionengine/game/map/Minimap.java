@@ -40,7 +40,6 @@ import com.b3dgs.lionengine.game.configurer.ConfigMinimap;
  * modification occurs on the map.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see MapTile
  */
 public class Minimap implements Image

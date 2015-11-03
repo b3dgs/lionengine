@@ -62,7 +62,6 @@ import com.b3dgs.lionengine.drawable.Image;
  * <li>Change the cursor image if when needed with {@link #setSurfaceId(int)}.</li>
  * </ul>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see InputDevicePointer
  * @see Image
  */

@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.game.map.TileGroup;
 
 /**
  * Represents the groups edition dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class GroupsEditDialog extends AbstractDialog
 {

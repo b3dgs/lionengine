@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the launcher data from a configurer node.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.trait.launchable.Launcher
  */
 public final class ConfigLauncher

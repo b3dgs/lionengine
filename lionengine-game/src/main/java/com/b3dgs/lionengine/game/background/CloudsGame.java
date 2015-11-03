@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
  * This class handle clouds effect.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class CloudsGame implements BackgroundComponent
 {

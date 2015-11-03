@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.test.mock.XmlNodeMock;
 
 /**
  * Test the XML node.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class XmlNodeTest
 {

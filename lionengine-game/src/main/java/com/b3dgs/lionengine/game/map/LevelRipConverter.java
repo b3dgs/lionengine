@@ -44,8 +44,6 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  *     // Error
  * }
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class LevelRipConverter
 {

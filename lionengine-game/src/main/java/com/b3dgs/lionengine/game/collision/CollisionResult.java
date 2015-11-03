@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Represents the map collision results.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionResult
 {

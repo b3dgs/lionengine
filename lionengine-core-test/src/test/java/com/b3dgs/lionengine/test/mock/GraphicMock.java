@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.Viewer;
 
 /**
  * Mock graphic.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class GraphicMock implements Graphic
 {

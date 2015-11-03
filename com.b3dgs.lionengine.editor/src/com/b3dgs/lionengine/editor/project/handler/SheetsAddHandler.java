@@ -42,8 +42,6 @@ import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Add a sheets descriptor in the selected folder.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SheetsAddHandler
 {

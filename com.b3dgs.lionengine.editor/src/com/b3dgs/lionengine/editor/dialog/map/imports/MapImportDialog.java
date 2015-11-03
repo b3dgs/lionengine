@@ -45,8 +45,6 @@ import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Represents the import map dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MapImportDialog extends AbstractDialog
 {

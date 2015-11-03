@@ -35,8 +35,6 @@ import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Test the image info class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ImageInfoTest
 {

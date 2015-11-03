@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Represents an ability of creating new object.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Producer extends Trait, Updatable
 {

@@ -24,7 +24,6 @@ package com.b3dgs.lionengine.game.state;
  * {@link StateTransitionInputChecker}.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see State
  * @see StateTransitionInputChecker
  */

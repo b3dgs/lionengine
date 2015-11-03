@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.map.astar;
 
 /**
  * Represents the data associated to a path.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PathData
 {

@@ -40,8 +40,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * <p>
  * If the {@link ObjectGame} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ActionableModel extends TraitModel implements Actionable
 {

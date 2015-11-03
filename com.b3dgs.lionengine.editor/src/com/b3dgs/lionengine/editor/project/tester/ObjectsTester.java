@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * Test if the folder contains objects.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ObjectsTester extends PropertyTester
 {

@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Jump state implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateJump extends StateGame implements StateInputDirectionalUpdater, TileCollidableListener
 {

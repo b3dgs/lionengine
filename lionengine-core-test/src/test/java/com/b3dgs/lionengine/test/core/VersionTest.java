@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.core.Version;
 
 /**
  * Test version class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class VersionTest
 {

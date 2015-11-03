@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the collisions constraint from a configurer.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionConstraint
  */
 public final class ConfigCollisionConstraint

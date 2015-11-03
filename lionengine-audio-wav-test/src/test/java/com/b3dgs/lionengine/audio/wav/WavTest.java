@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Test wav player.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WavTest
 {

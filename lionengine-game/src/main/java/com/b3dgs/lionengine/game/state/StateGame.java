@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
 /**
  * State base implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see State
  */
 public abstract class StateGame implements State

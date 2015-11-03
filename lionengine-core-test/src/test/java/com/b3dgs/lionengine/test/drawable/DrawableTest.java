@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the drawable package.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class DrawableTest
 {

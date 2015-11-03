@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Properties provider interface. Classes which implement this interface must provide the default public constructor.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface PropertiesProviderTile
 {

@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.core.Config;
 
 /**
  * Mouse input implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MouseAndroid implements Mouse
 {

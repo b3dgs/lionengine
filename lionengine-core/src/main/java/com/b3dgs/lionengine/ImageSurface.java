@@ -19,8 +19,6 @@ package com.b3dgs.lionengine;
 
 /**
  * Represents the surface of an image.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ImageSurface
 {

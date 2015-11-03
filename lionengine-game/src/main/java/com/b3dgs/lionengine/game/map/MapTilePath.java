@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 /**
  * Represents the pathfinding feature of a map tile. It works by using {@link TilePath} feature.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.map.astar
  */
 public interface MapTilePath extends MapTileFeature

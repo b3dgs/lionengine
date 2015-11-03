@@ -44,8 +44,6 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Peon entity implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Peon extends ObjectGame implements Updatable, Renderable, ExtractorChecker, ExtractorListener
 {

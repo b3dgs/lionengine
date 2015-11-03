@@ -60,8 +60,6 @@ import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Minimap dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MinimapDialog implements MouseListener, MouseMoveListener, MouseWheelListener,
                                  WorldMouseMoveListener, WorldMouseScrollListener, WorldKeyboardListener, Focusable

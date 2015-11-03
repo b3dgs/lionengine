@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Handler items implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class HandledObjectsImpl implements HandledObjects
 {

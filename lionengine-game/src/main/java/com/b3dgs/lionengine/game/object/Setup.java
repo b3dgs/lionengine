@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
 /**
  * Define a structure used to create configurer objects.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  */
 public class Setup

@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.core.Version;
 
 /**
  * Plugin activator.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Activator implements BundleActivator
 {

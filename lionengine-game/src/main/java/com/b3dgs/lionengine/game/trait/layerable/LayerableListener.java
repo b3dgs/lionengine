@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * Notify when layer value changed.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface LayerableListener
 {

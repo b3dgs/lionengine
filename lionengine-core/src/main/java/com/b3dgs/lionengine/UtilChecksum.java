@@ -39,8 +39,6 @@ import java.util.Arrays;
  * Assert.assertFalse(checksum.check(other, signature));
  * Assert.assertTrue(checksum.check(integer, test));
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilChecksum
 {

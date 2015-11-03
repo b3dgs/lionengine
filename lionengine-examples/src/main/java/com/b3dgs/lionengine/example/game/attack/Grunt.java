@@ -40,8 +40,6 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Grunt entity implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Grunt extends ObjectGame implements Updatable, Renderable, AttackerChecker, AttackerListener
 {

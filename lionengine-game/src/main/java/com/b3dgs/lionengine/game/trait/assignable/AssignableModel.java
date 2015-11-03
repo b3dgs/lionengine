@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
  * <p>
  * If the {@link ObjectGame} is an {@link Assign}, it will automatically {@link #setAssign(Assign)} on it.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AssignableModel extends TraitModel implements Assignable
 {

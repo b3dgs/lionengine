@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.LionEngineException;
  * Representation of the screen device, supporting different screen rendering type and input devices.
  * A screen is connected to a {@link Sequence} in order to render it.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see InputDevice
  * @see Graphic
  * @see Sequence

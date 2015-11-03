@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.trait.producible;
 
 /**
  * Allows to check if production can be performed.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ProducerChecker
 {

@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Peon entity implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Peon extends ObjectGame implements Updatable, Renderable, SelectorListener
 {

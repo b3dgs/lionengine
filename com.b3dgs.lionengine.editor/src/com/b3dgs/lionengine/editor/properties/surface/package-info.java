@@ -18,7 +18,5 @@
 
 /**
  * Surface property package.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.editor.properties.surface;

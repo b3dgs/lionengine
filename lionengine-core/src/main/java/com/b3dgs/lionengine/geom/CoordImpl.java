@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.geom;
 
 /**
  * Coordinate implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class CoordImpl implements Coord
 {

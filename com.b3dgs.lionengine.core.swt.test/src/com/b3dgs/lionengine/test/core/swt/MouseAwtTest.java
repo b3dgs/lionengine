@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.core.swt.ToolsSwt;
 
 /**
  * Test the mouse class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MouseAwtTest
 {

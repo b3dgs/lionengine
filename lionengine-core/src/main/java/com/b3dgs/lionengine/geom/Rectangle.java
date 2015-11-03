@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.geom;
 
 /**
  * Rectangle interface.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Rectangle
 {

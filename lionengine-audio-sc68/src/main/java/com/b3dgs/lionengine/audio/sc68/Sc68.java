@@ -41,8 +41,6 @@ import com.b3dgs.lionengine.Media;
  * 
  * sc68.stop();
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Sc68
 {

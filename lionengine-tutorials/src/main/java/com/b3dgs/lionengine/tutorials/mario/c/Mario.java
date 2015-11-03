@@ -50,8 +50,6 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Implementation of our controllable entity.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableListener
 {

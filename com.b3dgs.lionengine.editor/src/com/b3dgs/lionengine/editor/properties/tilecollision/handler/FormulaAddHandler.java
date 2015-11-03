@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.game.map.MapTileCollision;
 
 /**
  * Add formula handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FormulaAddHandler
 {

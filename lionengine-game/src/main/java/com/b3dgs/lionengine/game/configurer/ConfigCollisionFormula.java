@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the collisions formula from a configurer.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionFormula
  */
 public final class ConfigCollisionFormula

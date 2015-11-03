@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.trait.actionable;
 
 /**
  * Represents the action, controlled by an {@link Actionable}. Usually after a click over a button.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Action
 {

@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.drawable.SpriteParallaxed;
 
 /**
  * Parallax is used for background depth effect (2.5D).
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Parallax implements BackgroundComponent
 {

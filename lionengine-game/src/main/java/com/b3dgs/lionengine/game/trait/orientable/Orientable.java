@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.game.Tiled;
 /**
  * Represents something which can be oriented.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Orientation
  */
 public interface Orientable

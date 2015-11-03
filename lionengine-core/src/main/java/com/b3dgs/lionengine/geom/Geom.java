@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Geometry factory.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Geom
 {

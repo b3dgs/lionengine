@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.game.Tiled;
 
 /**
  * Extractor events listener.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ExtractorListener
 {

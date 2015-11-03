@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the collisions data from a configurer.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Collision
  */
 public final class ConfigCollisions

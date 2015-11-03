@@ -28,8 +28,6 @@ import java.util.Collection;
  * <p>
  * This allows to know easily which objects are on tile.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface TilePath extends TileFeature
 {

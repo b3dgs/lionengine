@@ -19,7 +19,5 @@
 /**
  * Represents the collisions system, for both collision between objects and with
  * {@link com.b3dgs.lionengine.game.map.TileCollision}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait.collidable;

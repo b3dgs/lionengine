@@ -47,8 +47,6 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Misc tools for AWT.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ToolsAwt
 {

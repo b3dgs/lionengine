@@ -35,8 +35,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Misc tools for Android.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ToolsAndroid
 {

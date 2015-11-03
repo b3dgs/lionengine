@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.Check;
 
 /**
  * Animator implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class AnimatorImpl implements Animator
 {

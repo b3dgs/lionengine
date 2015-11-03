@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.editor.utility.UtilSwt;
 
 /**
  * Represents the about dialog of the application.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AboutDialog
 {

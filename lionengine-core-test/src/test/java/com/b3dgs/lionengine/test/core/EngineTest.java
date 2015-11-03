@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.test.mock.SecurityManagerMock;
 
 /**
  * Test the engine core class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EngineTest
 {

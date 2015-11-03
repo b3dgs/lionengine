@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Midi factory. Allows to create midi player.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AudioMidi
 {

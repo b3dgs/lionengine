@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * Mock sequence with malformed constructor.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SequenceMalformedMock extends Sequence
 {

@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.Graphic;
 /**
  * Describe the main component requirement, which is aimed to provide renderable feature for an object.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.Renderable
  */
 public interface ComponentRenderable

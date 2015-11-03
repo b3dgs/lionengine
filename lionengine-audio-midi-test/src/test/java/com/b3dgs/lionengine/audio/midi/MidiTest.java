@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Test the midi class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MidiTest
 {

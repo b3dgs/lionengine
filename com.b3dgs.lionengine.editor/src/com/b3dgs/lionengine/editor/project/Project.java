@@ -42,8 +42,6 @@ import com.b3dgs.lionengine.editor.utility.UtilClass;
 
 /**
  * Represents a project and its data.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Project
 {

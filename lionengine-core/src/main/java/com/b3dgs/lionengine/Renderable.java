@@ -19,8 +19,6 @@ package com.b3dgs.lionengine;
 
 /**
  * Represents something that can be rendered periodically by using an output graphic context.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Renderable
 {

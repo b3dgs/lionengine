@@ -40,8 +40,6 @@ import com.b3dgs.lionengine.core.swt.ToolsSwt;
 
 /**
  * Test the screen class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ScreenSwtTest
 {

@@ -59,8 +59,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * If the {@link ObjectGame} is a {@link LauncherListener}, it will automatically {@link #addListener(LauncherListener)}
  * on it.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class LauncherModel extends TraitModel implements Launcher
 {

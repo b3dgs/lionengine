@@ -30,8 +30,6 @@ import com.sun.jna.Native;
 
 /**
  * Handle audio sc68.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AudioSc68
 {

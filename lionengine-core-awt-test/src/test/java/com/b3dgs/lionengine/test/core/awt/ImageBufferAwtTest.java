@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.core.awt.ToolsAwt;
 
 /**
  * Test the image buffer class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ImageBufferAwtTest
 {

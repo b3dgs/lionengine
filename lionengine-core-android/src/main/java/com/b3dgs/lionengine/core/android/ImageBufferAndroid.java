@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.Transparency;
 
 /**
  * Image buffer implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ImageBufferAndroid implements ImageBuffer
 {

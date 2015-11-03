@@ -43,7 +43,6 @@ import com.b3dgs.lionengine.core.InputDevice;
  * It is possible to listen to {@link InputDevice}, by implementing children of {@link StateInputUpdater}.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see StateTransition
  * @see StateHandler
  * @see StateFactory

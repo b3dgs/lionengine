@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the pathfinding data from a configurer.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.map.MapTilePath
  */
 public final class ConfigPathfinding

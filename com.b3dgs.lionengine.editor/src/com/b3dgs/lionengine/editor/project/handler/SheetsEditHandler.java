@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.editor.project.dialog.SheetsEditDialog;
 
 /**
  * Edit a sheet in the selected folder.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SheetsEditHandler
 {

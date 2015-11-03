@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Handle the SFX.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum Sfx
 {

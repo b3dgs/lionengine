@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.core.Graphics;
 
 /**
  * Sprite implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class SpriteImpl implements Sprite
 {

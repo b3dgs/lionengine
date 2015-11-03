@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Find all tiles transitions and extract them to an XML file.
  * It will check from an existing map all transitions combination.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileTransition
  */
 public final class ConfigTileTransitions

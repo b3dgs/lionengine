@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Walk state implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileCollidableListener
 {

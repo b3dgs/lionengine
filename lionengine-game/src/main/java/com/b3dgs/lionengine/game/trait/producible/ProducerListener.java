@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * List of event linked to the production.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ProducerListener
 {

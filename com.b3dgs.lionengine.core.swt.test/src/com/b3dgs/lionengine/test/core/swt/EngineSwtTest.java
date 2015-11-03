@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.core.swt.EngineSwt;
 
 /**
  * Test the engine class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EngineSwtTest
 {

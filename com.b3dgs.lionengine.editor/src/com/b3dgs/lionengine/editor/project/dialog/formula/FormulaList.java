@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the formulas list, allowing to add and remove {@link CollisionFormula}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FormulaList extends ObjectList<CollisionFormula> implements ObjectListListener<CollisionFormula>
 {

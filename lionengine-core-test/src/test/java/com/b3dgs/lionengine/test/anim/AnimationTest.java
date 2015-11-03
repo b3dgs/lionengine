@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.anim.Animation;
 
 /**
  * Test the animation class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AnimationTest
 {

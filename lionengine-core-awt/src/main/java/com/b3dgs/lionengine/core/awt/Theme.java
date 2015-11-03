@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Handle java theme selection.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Theme
 {

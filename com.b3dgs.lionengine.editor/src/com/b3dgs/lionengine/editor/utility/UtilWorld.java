@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.geom.Point;
 
 /**
  * Series of tool functions around the editor world.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilWorld
 {

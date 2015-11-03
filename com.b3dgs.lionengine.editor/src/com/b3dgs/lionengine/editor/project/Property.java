@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.UtilFile;
 
 /**
  * Properties type list.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Property
 {

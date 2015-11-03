@@ -37,8 +37,6 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
  * <li>{@link #start(Enum)}</li>
  * <li>{@link #update(double)}</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class StateHandler implements Updatable
 {

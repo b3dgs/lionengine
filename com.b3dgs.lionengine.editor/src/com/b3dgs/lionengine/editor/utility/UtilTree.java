@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.editor.Action;
 
 /**
  * Series of tool functions around the trees.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilTree
 {

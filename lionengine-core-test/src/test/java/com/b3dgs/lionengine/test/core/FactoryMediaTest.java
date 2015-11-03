@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.core.FactoryMediaDefault;
 
 /**
  * Test the factory media provider class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryMediaTest
 {

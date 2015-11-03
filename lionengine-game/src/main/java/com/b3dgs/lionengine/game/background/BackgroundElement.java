@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.drawable.Image;
 
 /**
  * Represents a background element (contained in a background component).
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class BackgroundElement
 {

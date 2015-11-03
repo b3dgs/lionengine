@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.Updatable;
 
 /**
  * Represents something that can be sequencable, updated at a specified rate.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Sequencable extends Updatable, Renderable
 {

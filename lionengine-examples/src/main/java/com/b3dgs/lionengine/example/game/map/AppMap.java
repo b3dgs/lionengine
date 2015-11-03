@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.awt.EngineAwt;
 /**
  * Main class.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
 public class AppMap

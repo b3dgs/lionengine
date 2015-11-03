@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Represents a tile marker.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Marker
 {

@@ -23,8 +23,6 @@ import java.security.Permission;
 
 /**
  * Security manager mock with no access.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SecurityManagerMock extends SecurityManager
 {

@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.test.TextTest;
 
 /**
  * Test the text class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TextAwtTest extends TextTest
 {

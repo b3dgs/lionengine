@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Notify events from the {@link TileCollidable}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface TileCollidableListener
 {

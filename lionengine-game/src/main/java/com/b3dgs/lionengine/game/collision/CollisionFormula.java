@@ -52,7 +52,6 @@ import com.b3dgs.lionengine.Nameable;
  * This will create 4 formulas, defining a collision for each side.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula
  * @see CollisionRange
  * @see CollisionFunction

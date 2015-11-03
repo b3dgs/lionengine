@@ -37,8 +37,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * <ul>
  * <li>{@link MapTile}</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FovableModel extends TraitModel implements Fovable
 {

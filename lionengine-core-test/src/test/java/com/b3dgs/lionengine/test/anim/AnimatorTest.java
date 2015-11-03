@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.anim.Animator;
 
 /**
  * Test the animator.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AnimatorTest
 {

@@ -29,8 +29,6 @@ import org.eclipse.swt.events.KeyListener;
 
 /**
  * Keyboard input implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class KeyboardSwt implements Keyboard, KeyListener
 {

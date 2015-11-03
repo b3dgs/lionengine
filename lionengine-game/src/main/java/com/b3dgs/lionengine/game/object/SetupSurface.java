@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 /**
  * Define a structure used to create multiple objects, sharing the same data and {@link ImageBuffer}.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.configurer.Configurer
  */
 public class SetupSurface extends Setup

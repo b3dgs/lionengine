@@ -43,8 +43,6 @@ import com.b3dgs.lionengine.game.map.TileGroup;
 
 /**
  * Represents the tile group chooser.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class GroupChooser extends AbstractDialog
 {

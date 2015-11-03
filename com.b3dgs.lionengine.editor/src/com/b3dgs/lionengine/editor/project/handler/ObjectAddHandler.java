@@ -43,8 +43,6 @@ import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Add an object in the selected folder.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ObjectAddHandler
 {

@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Listen to tiles selection on map.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface TileSelectionListener
 {

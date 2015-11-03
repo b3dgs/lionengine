@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Represents the new project dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ProjectImportDialog extends AbstractProjectDialog
 {

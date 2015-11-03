@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
 
 /**
  * Layerable model implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class LayerableModel extends TraitModel implements Layerable
 {

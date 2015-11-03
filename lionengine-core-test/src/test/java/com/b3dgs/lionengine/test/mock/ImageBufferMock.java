@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.Transparency;
 
 /**
  * Mock image buffer.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ImageBufferMock implements ImageBuffer
 {

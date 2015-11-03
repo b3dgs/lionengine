@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.trait.attackable;
 
 /**
  * Allows to check if attack can be performed.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface AttackerChecker
 {

@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.game.trait.fovable.Fovable;
  * <li>{@link MapTile#setTileRenderer(MapTileRenderer)} - Fog of war is a {@link MapTileRenderer} which will not
  * override the existing map renderer, but decorate it by rendering fog after the old one.</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FogOfWar implements MapTileRenderer
 {

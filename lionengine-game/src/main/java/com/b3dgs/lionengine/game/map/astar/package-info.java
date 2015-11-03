@@ -18,7 +18,5 @@
 
 /**
  * A-Star algorithm implementation, allowing to search a path on a {@link com.b3dgs.lionengine.game.map.MapTilePath}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.map.astar;

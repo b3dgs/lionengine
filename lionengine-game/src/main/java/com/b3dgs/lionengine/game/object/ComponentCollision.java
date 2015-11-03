@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.game.trait.collidable.Collidable;
  * Default collision component implementation. Designed to check collision between {@link Collidable}.
  * Collision events are notified to {@link com.b3dgs.lionengine.game.trait.collidable.CollidableListener}.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Collidable
  * @see com.b3dgs.lionengine.game.trait.collidable.CollidableListener
  */

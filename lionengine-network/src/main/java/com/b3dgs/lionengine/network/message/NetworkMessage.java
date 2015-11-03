@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Network message description.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class NetworkMessage
 {

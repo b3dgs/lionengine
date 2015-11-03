@@ -43,7 +43,6 @@ import com.b3dgs.lionengine.Updatable;
  * // (loop) ...
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Anim
  * @see Animation
  * @see AnimState

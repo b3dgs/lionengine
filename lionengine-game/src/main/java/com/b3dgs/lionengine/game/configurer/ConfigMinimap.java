@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the minimap configuration.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.map.Minimap
  */
 public final class ConfigMinimap

@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * List of services provided by a weapon.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Attacker extends Trait, Updatable
 {

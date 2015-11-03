@@ -35,8 +35,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * World updater, update the current world.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListener, MouseWheelListener
 {

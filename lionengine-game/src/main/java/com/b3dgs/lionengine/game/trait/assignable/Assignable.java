@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Represents an assignable action, allows to assign an action by click.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Assignable extends Trait, Updatable
 {

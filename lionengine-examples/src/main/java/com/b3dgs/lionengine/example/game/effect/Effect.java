@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Effect base implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Effect extends ObjectGame implements Updatable, Renderable
 {

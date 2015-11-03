@@ -43,7 +43,6 @@ import com.b3dgs.lionengine.editor.utility.UtilTree;
 /**
  * Represents the object list, allowing to add and remove objects.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The object type handled by the list.
  */
 public abstract class ObjectList<T extends Nameable>

@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the collisions list, allowing to add and remove {@link CollisionGroup}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionList extends ObjectList<CollisionGroup> implements ObjectListListener<CollisionGroup>
 {

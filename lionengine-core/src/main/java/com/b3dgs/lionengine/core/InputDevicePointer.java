@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.core;
 
 /**
  * Represents a pointer device, supporting location and click number.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface InputDevicePointer extends InputDevice
 {

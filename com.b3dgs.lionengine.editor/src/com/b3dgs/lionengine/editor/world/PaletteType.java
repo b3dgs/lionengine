@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Represents the different standard palette types.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum PaletteType
 {

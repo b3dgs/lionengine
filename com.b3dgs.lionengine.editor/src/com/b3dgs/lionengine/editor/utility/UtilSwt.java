@@ -35,8 +35,6 @@ import com.b3dgs.lionengine.editor.Focusable;
 
 /**
  * Series of tool functions around the editor related to SWT.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilSwt
 {

@@ -35,8 +35,6 @@ import com.b3dgs.lionengine.test.mock.ViewerMock;
 
 /**
  * Test the graphic class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class GraphicTest
 {

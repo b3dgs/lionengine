@@ -44,8 +44,6 @@ import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Represents the export map tile constraints dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MapConstraintsExportDialog extends AbstractDialog
 {

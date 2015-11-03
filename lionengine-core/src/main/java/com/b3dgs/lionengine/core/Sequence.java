@@ -73,7 +73,6 @@ import com.b3dgs.lionengine.UtilReflection;
  * This class is Thread-Safe.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Loader
  * @see Resolution
  * @see InputDevice

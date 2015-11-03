@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Entity implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Entity extends ObjectGame implements Updatable, Renderable
 {

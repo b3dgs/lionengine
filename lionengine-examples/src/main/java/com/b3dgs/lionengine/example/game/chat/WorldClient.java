@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.stream.FileReading;
 
 /**
  * World implementation using AbstractWorld.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class WorldClient extends World<NetworkedWorldModelClient> implements NetworkedWorldClient, Networkable
 {

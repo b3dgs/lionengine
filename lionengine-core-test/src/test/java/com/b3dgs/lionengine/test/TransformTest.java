@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
 
 /**
  * Test the transform class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TransformTest
 {

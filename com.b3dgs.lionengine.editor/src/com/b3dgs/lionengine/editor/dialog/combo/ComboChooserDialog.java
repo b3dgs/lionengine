@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.editor.utility.UtilSwt;
 
 /**
  * Represents a combo dialog chooser.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ComboChooserDialog extends Dialog
 {

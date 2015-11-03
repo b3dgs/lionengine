@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
 
 /**
  * Represents the collision function linear edition.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionFunctionLinearComposite implements CollisionFunctionTypeComposite
 {

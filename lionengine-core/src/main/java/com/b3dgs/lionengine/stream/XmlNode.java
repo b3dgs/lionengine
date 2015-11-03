@@ -37,8 +37,6 @@ import com.b3dgs.lionengine.LionEngineException;
  * final XmlNode node = XmlFactory.createXmlNode(&quot;node&quot;);
  * node.writeBoolean(&quot;value&quot;, true);
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface XmlNode extends XmlNodeReader
 {

@@ -28,8 +28,6 @@ import java.util.Collection;
 
 /**
  * Utility class related to java reflection.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilReflection
 {

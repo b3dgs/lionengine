@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game;
 
 /**
  * Represents something that can have a tile representation (in location and in size).
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Tiled
 {

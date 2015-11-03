@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Represents a producible object.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Producible extends Trait, Localizable
 {

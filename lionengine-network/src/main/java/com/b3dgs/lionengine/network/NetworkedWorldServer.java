@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Networkable world interface server side.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface NetworkedWorldServer extends NetworkedWorld
 {

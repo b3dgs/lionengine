@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Media implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class MediaAndroid implements Media
 {

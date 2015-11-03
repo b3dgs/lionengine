@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.UtilMath;
 /**
  * Represents a 2D vector force, using double precision. This can be used to describe a vectorial force, on 2 axis
  * (horizontal and vertical). Can be used as a speed.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Force implements Direction, Updatable
 {

@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.test.util.DrawableTestTool;
 
 /**
  * Test the sprite class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SpriteTest
 {

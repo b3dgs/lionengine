@@ -50,8 +50,6 @@ import com.b3dgs.lionengine.game.map.TileExtractor;
 
 /**
  * Import sheets dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SheetsImportDialog extends AbstractDialog
 {

@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Map import progress dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MapImportProgressDialog extends AbstractProgressDialog
                                      implements LevelRipConverter.ProgressListener, LevelRipConverter.Canceler

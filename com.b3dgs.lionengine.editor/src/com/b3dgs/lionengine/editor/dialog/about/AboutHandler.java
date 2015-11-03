@@ -22,8 +22,6 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * About handler implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AboutHandler
 {

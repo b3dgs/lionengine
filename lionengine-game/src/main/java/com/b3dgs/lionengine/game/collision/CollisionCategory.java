@@ -51,7 +51,6 @@ import com.b3dgs.lionengine.game.Axis;
  * collision).
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory
  * @see CollisionFormula
  */

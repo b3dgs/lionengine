@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Map tile path model implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MapTilePathModel implements MapTilePath
 {

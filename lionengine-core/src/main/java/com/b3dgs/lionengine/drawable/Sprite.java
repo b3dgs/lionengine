@@ -55,8 +55,6 @@ import com.b3dgs.lionengine.Mirror;
  * // Render
  * sprite.render(g);
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Sprite extends Image
 {

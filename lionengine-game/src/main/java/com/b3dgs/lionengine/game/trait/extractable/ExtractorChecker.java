@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.trait.extractable;
 
 /**
  * Allows to check if extraction can be performed.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ExtractorChecker
 {

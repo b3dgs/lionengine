@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Disable collisions handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class CollisionsDisableHandler
 {

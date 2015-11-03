@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.core.Version;
 
 /**
  * Engine AWT implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EngineAwt extends Engine
 {

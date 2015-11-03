@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.core.swt.ToolsSwt;
 
 /**
  * Test the key listener.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class KeyboardSwtListenerTest
 {

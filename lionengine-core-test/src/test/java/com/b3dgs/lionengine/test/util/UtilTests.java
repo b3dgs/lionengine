@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.UtilReflection;
 
 /**
  * Set of utility function related to unit test.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilTests
 {

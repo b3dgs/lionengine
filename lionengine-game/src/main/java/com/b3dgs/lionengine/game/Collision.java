@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.Nameable;
  * {@link com.b3dgs.lionengine.game.configurer.ConfigCollisions#getCollision(String)} and
  * {@link com.b3dgs.lionengine.game.trait.collidable.Collidable#addCollision(Collision)}.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.configurer.Configurer
  * @see com.b3dgs.lionengine.game.object.ComponentCollision
  */

@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.geom.Point;
 
 /**
  * Test the point class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PointTest
 {

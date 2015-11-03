@@ -53,8 +53,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Build button action.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class BuildButton extends ObjectGame implements Action, Assign, Updatable, Renderable
 {

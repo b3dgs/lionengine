@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * A star factory.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Astar
 {

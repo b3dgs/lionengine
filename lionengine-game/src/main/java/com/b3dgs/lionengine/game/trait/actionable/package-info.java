@@ -18,7 +18,5 @@
 
 /**
  * Describe the action system, designed to represent a button and its action after a click on it.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait.actionable;

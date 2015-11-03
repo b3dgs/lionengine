@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.Transparency;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Hq2x
 {
@@ -68,8 +66,6 @@ public final class Hq2x
 
     /**
      * The raw scale implementation.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private static final class RawScale2x
     {

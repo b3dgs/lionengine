@@ -36,8 +36,6 @@ import java.io.InputStream;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ImageInfo
 {

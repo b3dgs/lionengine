@@ -45,7 +45,6 @@ import com.b3dgs.lionengine.game.Featurable;
  * private final MapTile map = services.create(MapTileGame.class);
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Factory
  * @see ObjectGame
  */

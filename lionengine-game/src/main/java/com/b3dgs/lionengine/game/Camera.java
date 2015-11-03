@@ -37,8 +37,6 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * <li>{@link #setView(int, int, int, int)}</li>
  * <li>{@link #setLimits(MapTile)}</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Camera implements Viewer
 {

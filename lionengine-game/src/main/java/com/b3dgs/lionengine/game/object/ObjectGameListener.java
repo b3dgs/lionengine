@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.object;
 
 /**
  * Describes the object events.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 interface ObjectGameListener
 {

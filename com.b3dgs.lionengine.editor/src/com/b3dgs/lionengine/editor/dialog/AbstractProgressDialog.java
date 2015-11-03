@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.editor.utility.UtilSwt;
 
 /**
  * Abstract progress dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class AbstractProgressDialog extends AbstractDialog
 {

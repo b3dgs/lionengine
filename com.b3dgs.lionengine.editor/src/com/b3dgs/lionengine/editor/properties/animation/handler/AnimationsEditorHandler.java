@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Start animations editor handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AnimationsEditorHandler
 {

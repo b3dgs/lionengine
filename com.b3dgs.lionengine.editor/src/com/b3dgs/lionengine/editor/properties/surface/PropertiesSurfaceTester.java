@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 
 /**
  * Test the properties node existence.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class PropertiesSurfaceTester extends PropertyTester
 {

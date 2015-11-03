@@ -40,8 +40,6 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * XML node implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class XmlNodeImpl implements XmlNode
 {

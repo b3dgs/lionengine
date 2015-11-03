@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.Range;
  * <li><code>number</code> : tile number inside tilesheet [0 - {@link Integer#MAX_VALUE}].</li>
  * </ul>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Tile
  */
 public class TileRef

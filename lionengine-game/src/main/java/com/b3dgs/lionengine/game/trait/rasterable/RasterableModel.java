@@ -42,8 +42,6 @@ import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
  * <li>{@link Mirrorable}</li>
  * <li>{@link Animator}</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class RasterableModel extends TraitModel implements Rasterable
 {

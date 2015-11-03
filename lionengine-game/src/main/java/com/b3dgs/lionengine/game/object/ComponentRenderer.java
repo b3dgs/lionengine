@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.Renderable;
 
 /**
  * Renderer component implementation which render {@link Renderable} objects.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ComponentRenderer implements ComponentRenderable
 {

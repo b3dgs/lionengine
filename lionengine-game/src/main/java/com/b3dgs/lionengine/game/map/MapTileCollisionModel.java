@@ -52,8 +52,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Map tile collision model implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MapTileCollisionModel implements MapTileCollision
 {

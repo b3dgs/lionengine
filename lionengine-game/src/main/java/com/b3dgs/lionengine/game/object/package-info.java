@@ -23,7 +23,5 @@
  * There is also a component system which can be used by the {@link com.b3dgs.lionengine.game.object.Handler} in order
  * to provide specialized routine.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.object;

@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 
 /**
  * A path finder implementation that uses the AStar heuristic based algorithm to determine a path.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class PathFinderImpl implements PathFinder
 {

@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.test.TransformTest;
 
 /**
  * Test the transform class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TransfortSwtTest extends TransformTest
 {

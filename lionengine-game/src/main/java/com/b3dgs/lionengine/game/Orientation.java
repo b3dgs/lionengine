@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game;
 
 /**
  * List of available orientations.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Orientation
 {

@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.test.mock.GraphicMock;
 
 /**
  * Test the cursor class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CursorTest
 {

@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * State object factory. Provide {@link State} instance from its enum value.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see State
  * @see StateHandler
  */

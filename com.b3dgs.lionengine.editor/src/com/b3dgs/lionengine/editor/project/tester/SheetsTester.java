@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Test if the folder contains tile sheets.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SheetsTester extends PropertyTester
 {

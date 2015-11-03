@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test utility conversion class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class UtilConversionTest
 {

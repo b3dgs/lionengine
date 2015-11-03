@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.test.mock.FactoryGraphicMock;
 
 /**
  * Test the Hq2x filter.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Hq2xTest
 {

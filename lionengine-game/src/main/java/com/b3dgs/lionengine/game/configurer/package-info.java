@@ -20,7 +20,5 @@
  * The configurer package provides many utility classes with usually a single function as
  * {@link com.b3dgs.lionengine.game.configurer.ConfigAnimations#create(Configurer)}, which allows to retrieve data from
  * an external XML file (used to configure and set object properties).
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.configurer;

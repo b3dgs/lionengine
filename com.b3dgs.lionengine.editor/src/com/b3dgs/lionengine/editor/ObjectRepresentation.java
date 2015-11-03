@@ -41,8 +41,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Object representation of any user object. This allows to avoid constructor error, especially with traits.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ObjectRepresentation extends ObjectGame implements Updatable, Renderable
 {

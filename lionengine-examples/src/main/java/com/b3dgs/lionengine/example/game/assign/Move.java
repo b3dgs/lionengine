@@ -41,8 +41,6 @@ import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
 
 /**
  * Move action.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Move extends ObjectGame implements Action, Assign, Updatable, Renderable
 {

@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.game.map.TileCollision;
 
 /**
  * Element properties part.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesTileCollision implements PropertiesProviderTile
 {

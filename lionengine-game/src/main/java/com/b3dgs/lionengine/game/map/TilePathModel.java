@@ -23,8 +23,6 @@ import java.util.Set;
 
 /**
  * Representation of a pathfindable tile.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TilePathModel implements TilePath
 {

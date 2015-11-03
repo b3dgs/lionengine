@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.core.Config;
 
 /**
  * Mouse implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
 {

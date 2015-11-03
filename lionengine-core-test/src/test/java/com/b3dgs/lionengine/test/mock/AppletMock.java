@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.core.Applet;
 
 /**
  * Applet mock.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AppletMock implements Applet<AppletMock>
 {

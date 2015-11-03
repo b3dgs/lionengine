@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.editor.ObjectProperties;
 
 /**
  * Represents the animation properties edition view.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AnimationProperties extends ObjectProperties<Animation> implements ObjectListListener<Animation>
 {

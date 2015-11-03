@@ -42,7 +42,6 @@ import com.b3dgs.lionengine.core.ScreenListener;
 /**
  * Windowed screen implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Keyboard
  * @see Mouse
  */

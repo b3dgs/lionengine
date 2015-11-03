@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.core.Applet;
 
 /**
  * Applet implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AppletAwt extends JApplet implements Applet<AppletAwt>
 {

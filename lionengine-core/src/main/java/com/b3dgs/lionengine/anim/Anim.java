@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.LionEngineException;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Anim
 {

@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the collision range from a configurer node.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionRange
  */
 public final class ConfigCollisionRange

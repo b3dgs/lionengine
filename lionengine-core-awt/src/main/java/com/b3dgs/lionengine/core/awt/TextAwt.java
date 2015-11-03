@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.TextStyle;
 
 /**
  * Text implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class TextAwt implements Text
 {

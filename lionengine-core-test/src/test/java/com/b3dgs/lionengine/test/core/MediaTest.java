@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Test the media class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MediaTest
 {

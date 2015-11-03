@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Wav factory. Allows to create wav player.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AudioWav
 {

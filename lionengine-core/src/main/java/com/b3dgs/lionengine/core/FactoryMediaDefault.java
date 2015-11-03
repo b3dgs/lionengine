@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.UtilFile;
 
 /**
  * Default media factory implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryMediaDefault implements FactoryMedia
 {

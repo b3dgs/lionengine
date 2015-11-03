@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.core.swt.ToolsSwt;
 
 /**
  * Test the image buffer class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ImageBufferSwtTest
 {

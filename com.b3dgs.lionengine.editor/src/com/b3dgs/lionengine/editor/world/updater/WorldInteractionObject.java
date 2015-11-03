@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Handle the interaction with objects.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldInteractionObject implements WorldMouseClickListener, WorldMouseMoveListener
 {

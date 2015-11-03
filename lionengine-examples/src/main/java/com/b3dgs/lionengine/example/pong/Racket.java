@@ -37,8 +37,6 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Racket implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Racket extends ObjectGame implements Updatable, Renderable, CollidableListener
 {

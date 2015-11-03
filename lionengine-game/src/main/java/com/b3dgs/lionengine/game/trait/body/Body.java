@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Represents something designed to receive a gravitational force.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Body extends Trait, Updatable
 {

@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 
 /**
  * Test the properties node existence.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class PropertiesAnimationTester extends PropertyTester
 {

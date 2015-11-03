@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game;
 
 /**
  * Represents something that can have a direction on two axis, such as horizontal and vertical.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Direction
 {

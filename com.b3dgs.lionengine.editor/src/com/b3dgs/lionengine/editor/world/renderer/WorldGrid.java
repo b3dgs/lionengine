@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Handle the grid rendering.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldGrid implements WorldRenderListener
 {

@@ -48,8 +48,6 @@ import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Element properties part.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesPart implements Focusable, PropertiesProviderObject, PropertiesProviderTile
 {

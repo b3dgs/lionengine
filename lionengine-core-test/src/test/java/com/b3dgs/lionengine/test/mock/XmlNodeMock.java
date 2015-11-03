@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Mock node xml.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class XmlNodeMock implements XmlNode
 {

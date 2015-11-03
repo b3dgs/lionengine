@@ -37,8 +37,6 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**
  * Client implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ClientImpl extends NetworkModel<ConnectionListener> implements Client
 {

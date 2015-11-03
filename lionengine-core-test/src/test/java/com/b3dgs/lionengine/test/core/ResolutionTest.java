@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.core.Resolution;
 
 /**
  * Test the resolution class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ResolutionTest
 {

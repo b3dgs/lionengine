@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.Verbose;
  * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
  * library used (as it is done for AWT, SWT and Android engine implementation).
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @version 8.2.0
  * @since 13 June 2010
  */

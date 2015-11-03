@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the utility reflection class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class UtilReflectionTest
 {

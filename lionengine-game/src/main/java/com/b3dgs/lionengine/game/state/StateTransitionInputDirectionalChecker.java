@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
 
 /**
  * Represents the {@link InputDeviceDirectional} updater for the state.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface StateTransitionInputDirectionalChecker extends StateTransitionInputChecker<InputDeviceDirectional>
 {

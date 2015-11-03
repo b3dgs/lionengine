@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 /**
  * Represents something that can be mirrored on different axis.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Mirror
  */
 public interface Mirrorable extends Trait, Updatable

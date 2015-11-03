@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
 
 /**
  * Represents the quick formula assignment area.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FormulaItem
 {

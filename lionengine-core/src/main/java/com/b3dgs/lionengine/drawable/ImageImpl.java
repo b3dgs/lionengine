@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.core.Graphics;
 
 /**
  * Image implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class ImageImpl implements Image
 {

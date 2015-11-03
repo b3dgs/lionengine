@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.Updatable;
 
 /**
  * Updater component implementation which update {@link Updatable} objects with an extrapolation value.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ComponentUpdater implements ComponentUpdatable
 {

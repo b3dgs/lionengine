@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Set frames handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FramesSetHandler
 {

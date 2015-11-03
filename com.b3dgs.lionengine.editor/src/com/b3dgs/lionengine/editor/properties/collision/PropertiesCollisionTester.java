@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 
 /**
  * Test the properties node existence.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class PropertiesCollisionTester extends PropertyTester
 {

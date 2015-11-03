@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.editor.project.Project;
 
 /**
  * Series of tool functions around the editor related to dialogs.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilDialog
 {

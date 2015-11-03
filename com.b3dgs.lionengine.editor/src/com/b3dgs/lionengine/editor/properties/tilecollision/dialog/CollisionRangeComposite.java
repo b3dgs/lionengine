@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.game.collision.CollisionRange;
 
 /**
  * Represents the collision range edition area.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionRangeComposite
 {

@@ -79,8 +79,6 @@ import com.b3dgs.lionengine.stream.Stream;
  *     }
  * }
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class WorldGame implements Updatable, Renderable
 {

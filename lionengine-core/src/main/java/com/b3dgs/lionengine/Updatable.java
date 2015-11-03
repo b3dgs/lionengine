@@ -19,8 +19,6 @@ package com.b3dgs.lionengine;
 
 /**
  * Represents something that can be updated periodically by using a universal update factor machine independent.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Updatable
 {

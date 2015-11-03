@@ -72,8 +72,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * If the {@link ObjectGame} is a {@link PathfindableListener}, it will automatically
  * {@link #addListener(PathfindableListener)} on it.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PathfindableModel extends TraitModel implements Pathfindable
 {

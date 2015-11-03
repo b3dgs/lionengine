@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.game.trait.TraitModel;
  * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
  * with {@link ConfigSize}.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TransformableModel extends TraitModel implements Transformable
 {

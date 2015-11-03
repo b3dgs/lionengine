@@ -22,8 +22,6 @@ package com.b3dgs.lionengine.game.collision;
  * <p>
  * <code>a * input + b</code>
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionFunctionLinear implements CollisionFunction
 {

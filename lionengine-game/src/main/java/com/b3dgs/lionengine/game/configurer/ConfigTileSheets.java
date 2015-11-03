@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the tile sheets data from a configurer.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ConfigTileSheets
 {
@@ -78,7 +76,6 @@ public final class ConfigTileSheets
      * @throws LionEngineException If error on writing.
      */
     public static void exports(Media configSheets, int tileWidth, int tileHeight, Collection<String> sheets)
-
     {
         final XmlNode nodeSheets = Xml.create(NODE_TILE_SHEETS);
         nodeSheets.writeString(Configurer.HEADER, Engine.WEBSITE);

@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.test.mock.AppletMock;
 
 /**
  * Test the config class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ConfigTest
 {

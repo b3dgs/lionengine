@@ -68,8 +68,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Handle the interaction with tiles.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldInteractionTile implements WorldMouseClickListener, WorldMouseMoveListener
 {

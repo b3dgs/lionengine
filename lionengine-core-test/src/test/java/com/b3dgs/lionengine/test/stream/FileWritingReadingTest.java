@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.test.mock.XmlNodeMock;
 
 /**
  * Test the file writing and reading.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FileWritingReadingTest
 {

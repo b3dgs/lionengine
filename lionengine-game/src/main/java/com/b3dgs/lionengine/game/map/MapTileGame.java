@@ -65,7 +65,6 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Tile
  */
 public class MapTileGame implements MapTile

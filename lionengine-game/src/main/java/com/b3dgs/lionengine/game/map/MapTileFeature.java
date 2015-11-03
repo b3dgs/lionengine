@@ -21,8 +21,6 @@ package com.b3dgs.lionengine.game.map;
  * Map tile feature interface. A feature is designed to extend the map tile services dynamically.
  * Feature implementation must provide a public constructor with {@link com.b3dgs.lionengine.game.object.Services} as
  * single argument.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface MapTileFeature
 {

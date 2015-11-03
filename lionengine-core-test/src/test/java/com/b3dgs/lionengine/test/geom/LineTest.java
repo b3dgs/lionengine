@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.geom.Line;
 
 /**
  * Test the line class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class LineTest
 {

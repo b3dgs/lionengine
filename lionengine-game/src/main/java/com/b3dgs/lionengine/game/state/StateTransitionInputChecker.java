@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.core.InputDevice;
  * <li>{@link StateTransitionInputPointerChecker}</li>
  * </ul>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <I> The input device type.
  */
 public interface StateTransitionInputChecker<I extends InputDevice>

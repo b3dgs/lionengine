@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.game.collision.CollisionRange;
 
 /**
  * Tile collision implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TileCollisionModel implements TileCollision
 {

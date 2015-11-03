@@ -41,8 +41,6 @@ import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
  * Represents the abstract dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class AbstractDialog extends Dialog implements MDirtyable
 {

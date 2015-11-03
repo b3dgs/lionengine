@@ -18,7 +18,5 @@
 
 /**
  * Represents the movement over a {@link com.b3dgs.lionengine.game.map.MapTilePath}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait.pathfindable;

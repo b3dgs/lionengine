@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.Nameable;
  * &lt;/lionengine:groups&gt;
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup
  * @see CollisionFormula
  */

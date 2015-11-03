@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Animation editor dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AnimationEditor extends AbstractEditor
 {

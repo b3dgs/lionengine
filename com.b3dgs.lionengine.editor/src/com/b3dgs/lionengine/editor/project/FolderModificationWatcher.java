@@ -43,8 +43,6 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * File modification watcher for project tree.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FolderModificationWatcher
 {
@@ -115,8 +113,6 @@ public final class FolderModificationWatcher
 
     /**
      * Folders modification watcher.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Watcher implements Runnable
     {
@@ -230,8 +226,6 @@ public final class FolderModificationWatcher
 
     /**
      * Represents the watch task for a specific folder.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Task
     {

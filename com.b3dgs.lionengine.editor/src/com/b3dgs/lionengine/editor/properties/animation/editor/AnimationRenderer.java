@@ -41,8 +41,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Animation paint listener, rendering the current animation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AnimationRenderer implements PaintListener
 {

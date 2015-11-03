@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Represents something that have a field of view, able to see until a defined range only.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Fovable extends Trait, Tiled
 {

@@ -20,7 +20,6 @@ package com.b3dgs.lionengine;
 /**
  * Represents a resource which must be loaded before be used. Usually heavy, it may takes some time to load it.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see ResourceLoader
  */
 public interface Resource

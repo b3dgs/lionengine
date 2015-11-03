@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
 
 /**
  * Mouse input.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Mouse extends InputDevicePointer, Updatable
 {

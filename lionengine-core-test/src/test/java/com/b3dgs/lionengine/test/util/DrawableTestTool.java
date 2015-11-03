@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
  * Test tools set for image testing.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class DrawableTestTool
 {

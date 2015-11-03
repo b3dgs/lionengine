@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Represents the animation list, allowing to add and remove {@link Animation}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AnimationList extends ObjectList<Animation>
 {

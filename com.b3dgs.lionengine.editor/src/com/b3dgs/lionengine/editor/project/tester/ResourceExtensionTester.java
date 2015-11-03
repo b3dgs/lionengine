@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.editor.project.Property;
 
 /**
  * Test the resources extension.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ResourceExtensionTester extends PropertyTester
 {

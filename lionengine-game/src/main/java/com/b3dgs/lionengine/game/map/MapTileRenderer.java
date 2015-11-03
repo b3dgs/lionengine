@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.Graphic;
 
 /**
  * Describe how the map tile rendering is performed. This will allow to customize map rendering.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface MapTileRenderer
 {

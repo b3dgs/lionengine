@@ -48,7 +48,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * system, in order to reduce class complexity. The {@link Handler} is designed to work well with that system.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  * @see Factory
  * @see Handler

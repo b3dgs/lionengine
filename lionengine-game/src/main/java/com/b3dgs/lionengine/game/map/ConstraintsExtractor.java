@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Find all tiles constraints and extract them to an XML file.
  * It will check from an existing map all adjacent tiles combination.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ConstraintsExtractor
 {

@@ -45,8 +45,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the utility file class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class UtilFileTest
 {

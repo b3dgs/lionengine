@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * Feature representation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <F> The feature type used.
  */
 public class Features<F>

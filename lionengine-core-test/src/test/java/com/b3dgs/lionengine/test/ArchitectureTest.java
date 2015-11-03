@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test architecture class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ArchitectureTest
 {

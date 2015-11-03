@@ -48,8 +48,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the sheets edition dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SheetsEditDialog extends AbstractDialog
 {

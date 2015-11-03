@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.Range;
 
 /**
  * Test range class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class RangeTest
 {

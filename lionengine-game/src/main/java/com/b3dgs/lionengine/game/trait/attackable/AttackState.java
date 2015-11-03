@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.trait.attackable;
 
 /**
  * Attack state.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum AttackState
 {

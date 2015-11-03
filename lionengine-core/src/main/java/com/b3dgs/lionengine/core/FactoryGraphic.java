@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.Transparency;
 
 /**
  * Represents the graphic factory.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface FactoryGraphic
 {

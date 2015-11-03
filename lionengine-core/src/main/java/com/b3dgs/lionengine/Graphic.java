@@ -20,7 +20,6 @@ package com.b3dgs.lionengine;
 /**
  * Graphic interface representing the screen buffer.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.core.Graphics
  */
 public interface Graphic

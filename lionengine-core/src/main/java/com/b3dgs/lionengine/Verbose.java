@@ -60,8 +60,6 @@ import com.b3dgs.lionengine.core.Engine;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Verbose
 {
@@ -252,8 +250,6 @@ public enum Verbose
 
     /**
      * Verbose formatter.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private static final class VerboseFormatter extends Formatter
     {

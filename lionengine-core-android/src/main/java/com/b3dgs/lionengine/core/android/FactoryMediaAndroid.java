@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.core.FactoryMedia;
 
 /**
  * Media factory implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class FactoryMediaAndroid implements FactoryMedia
 {

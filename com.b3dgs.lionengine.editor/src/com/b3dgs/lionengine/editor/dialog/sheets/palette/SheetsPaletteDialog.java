@@ -60,8 +60,6 @@ import com.b3dgs.lionengine.game.map.TileRef;
 
 /**
  * Sheets palette dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SheetsPaletteDialog implements MouseListener, Focusable
 {

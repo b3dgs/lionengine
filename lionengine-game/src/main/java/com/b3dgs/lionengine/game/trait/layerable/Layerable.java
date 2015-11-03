@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Represents something that can support layer, in order to define an order.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Layerable extends Trait
 {

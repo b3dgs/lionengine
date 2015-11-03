@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.editor.dialog.Messages;
 
 /**
  * Series of tool functions around buttons.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilButton
 {

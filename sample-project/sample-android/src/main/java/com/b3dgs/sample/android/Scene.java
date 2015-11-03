@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * Game scene implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Scene extends Sequence
 {

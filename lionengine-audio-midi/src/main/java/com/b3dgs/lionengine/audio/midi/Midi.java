@@ -60,8 +60,6 @@ import com.b3dgs.lionengine.Media;
  * midi.pause();
  * midi.stop();
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Midi
 {

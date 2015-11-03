@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.core.Version;
 
 /**
  * Engine mock.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EngineMock extends Engine
 {

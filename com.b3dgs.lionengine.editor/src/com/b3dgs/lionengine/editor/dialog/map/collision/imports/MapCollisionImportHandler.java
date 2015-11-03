@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
  * Import map collisions handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MapCollisionImportHandler
 {

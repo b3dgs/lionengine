@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Misc tools for engine image creation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityImage
 {

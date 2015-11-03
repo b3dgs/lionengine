@@ -43,8 +43,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Allows to control the object on the editor with the mouse.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ObjectControl
 {

@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
  * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
  * another one, a simple call to {@link Sequence#end(Class, Object...)} is necessary. This will terminate the current
  * sequence, and start the linked one.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Scene extends Sequence
 {

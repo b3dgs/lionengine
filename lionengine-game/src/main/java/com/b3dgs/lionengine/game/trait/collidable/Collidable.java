@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Represents something which can enter in collision with another.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Collidable extends Trait, Updatable, Renderable, CollidableListener
 {

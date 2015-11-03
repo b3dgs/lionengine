@@ -40,8 +40,6 @@ import com.b3dgs.lionengine.LionEngineException;
  * <li>Call {@link #load(boolean)}</li>
  * <li>Then other functions can be used.</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface SpriteParallaxed
 {

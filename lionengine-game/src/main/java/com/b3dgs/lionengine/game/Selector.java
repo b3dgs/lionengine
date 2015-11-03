@@ -40,7 +40,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * Result can be retrieved by using {@link #addListener(SelectorListener)} to notify them the computed selection.
  * It will be then easy to check if objects are inside this area, and set them as <i>selected</i>.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see SelectorListener
  * @see Cursor
  * @see Viewer

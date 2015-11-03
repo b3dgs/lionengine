@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.test.GraphicTest;
 
 /**
  * Test the graphic class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class GraphicAwtTest extends GraphicTest
 {

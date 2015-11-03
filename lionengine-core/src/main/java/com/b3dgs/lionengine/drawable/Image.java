@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.Viewer;
  * // Render
  * image.render(g);
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Image extends Resource, Localizable, Renderable
 {

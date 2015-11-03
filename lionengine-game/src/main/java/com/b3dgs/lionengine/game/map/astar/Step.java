@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.map.astar;
 
 /**
  * Path step.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Step
 {

@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Represents the collisions list, allowing to add and remove collisions.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EntityCollisionList extends ObjectList<Collision>
 {

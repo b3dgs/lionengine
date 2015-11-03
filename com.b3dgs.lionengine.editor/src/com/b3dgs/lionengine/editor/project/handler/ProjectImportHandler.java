@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Import project handler implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ProjectImportHandler
 {

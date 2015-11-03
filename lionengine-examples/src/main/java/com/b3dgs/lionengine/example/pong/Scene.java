@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.game.object.Services;
 /**
  * This is where the game loop is running.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
 class Scene extends Sequence

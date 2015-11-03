@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * The reading capability of an {@link XmlNode}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface XmlNodeReader
 {

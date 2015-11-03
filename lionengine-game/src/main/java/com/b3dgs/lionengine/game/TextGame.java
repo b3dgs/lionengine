@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.core.Graphics;
  * The use is strictly the same as {@link Text}, just including an additional function which is
  * {@link TextGame#update(Viewer)}, needed to update the text location.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TextGame implements Text
 {

@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**
  * Server implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ServerImpl extends NetworkModel<ClientListener> implements Server
 {

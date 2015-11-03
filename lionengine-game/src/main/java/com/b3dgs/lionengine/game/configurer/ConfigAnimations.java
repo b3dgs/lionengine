@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the animations data from a configurer node.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Animation
  */
 public final class ConfigAnimations

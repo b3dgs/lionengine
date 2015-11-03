@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.UtilFile;
 
 /**
  * SC68 player implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Sc68Player implements Sc68
 {

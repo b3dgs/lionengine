@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the groups list, allowing to add and remove {@link TileGroup}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class GroupList extends ObjectList<TileGroup> implements ObjectListListener<TileGroup>
 {

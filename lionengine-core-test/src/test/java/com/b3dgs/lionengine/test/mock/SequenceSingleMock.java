@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.test.util.Constant;
 
 /**
  * Single sequence mock.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SequenceSingleMock extends Sequence
 {

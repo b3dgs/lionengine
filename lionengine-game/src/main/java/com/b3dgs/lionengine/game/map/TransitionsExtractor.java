@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Find all map transition and extract them.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class TransitionsExtractor
 {

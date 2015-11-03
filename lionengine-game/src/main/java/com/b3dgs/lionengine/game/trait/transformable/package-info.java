@@ -19,7 +19,5 @@
 /**
  * Describe the transformation capacity of an object by using a {@link com.b3dgs.lionengine.game.Direction} to change
  * its location.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait.transformable;

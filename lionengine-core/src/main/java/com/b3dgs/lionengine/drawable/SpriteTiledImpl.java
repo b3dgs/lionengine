@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Tiled sprite implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
 {

@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.game.configurer.ConfigTileTransitions;
 
 /**
  * Map tile transition model implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MapTileTransitionModel implements MapTileTransition
 {

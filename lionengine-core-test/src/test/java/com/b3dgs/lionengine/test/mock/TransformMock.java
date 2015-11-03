@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.UtilConversion;
 
 /**
  * Mock transform.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TransformMock implements Transform
 {

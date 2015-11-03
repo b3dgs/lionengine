@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * SequenceNext implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class SequenceNext extends Sequence
 {

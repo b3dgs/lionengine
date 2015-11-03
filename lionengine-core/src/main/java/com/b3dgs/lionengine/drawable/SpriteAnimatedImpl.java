@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.anim.Animator;
 
 /**
  * Animated sprite implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
 {

@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.Viewer;
 
 /**
  * Viewer mock.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ViewerMock implements Viewer
 {

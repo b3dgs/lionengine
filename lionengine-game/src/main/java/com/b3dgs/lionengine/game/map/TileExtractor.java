@@ -45,8 +45,6 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  * <pre>
  * TileExtractor.start(Medias.create(&quot;level.png&quot;), Medias.create(&quot;sheet.png&quot;), 16, 16, 256, 256);
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class TileExtractor
 {

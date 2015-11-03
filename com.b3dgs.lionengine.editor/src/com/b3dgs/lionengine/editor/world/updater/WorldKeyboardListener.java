@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.editor.world.updater;
 
 /**
  * Listener to keyboard event.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface WorldKeyboardListener
 {

@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.UtilConversion;
 
 /**
  * Transform implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class TransformAndroid implements Transform
 {

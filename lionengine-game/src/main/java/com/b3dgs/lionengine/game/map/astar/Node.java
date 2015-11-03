@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.map.astar;
 
 /**
  * Node in the path.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Node implements Comparable<Node>
 {

@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
 
 /**
  * Mouse pointer mock.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MouseMock implements InputDevicePointer
 {

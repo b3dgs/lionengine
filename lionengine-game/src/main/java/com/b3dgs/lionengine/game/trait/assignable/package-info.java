@@ -20,7 +20,5 @@
  * Describe the assign system, designed to represent to consequence of an
  * {@link com.b3dgs.lionengine.game.trait.actionable.Action} (after the click on the button, where it should be
  * assigned, usually somewhere on the map).
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait.assignable;

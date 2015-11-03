@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
 
 /**
  * Rastered map tile implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MapTileRasteredModel implements MapTileRastered
 {

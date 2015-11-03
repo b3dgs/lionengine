@@ -40,8 +40,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * The factory uses the {@link ClassLoader#getSystemClassLoader()}, but it is possible to set a custom one with
  * {@link #setClassLoader(ClassLoader)}. Should be used in an OSGI environment for example.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Factory
 {

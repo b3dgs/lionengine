@@ -37,8 +37,6 @@ import com.b3dgs.lionengine.UtilFile;
 
 /**
  * XML parser implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Xml
 {

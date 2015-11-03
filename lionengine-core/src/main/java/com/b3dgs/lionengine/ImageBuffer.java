@@ -20,7 +20,6 @@ package com.b3dgs.lionengine;
 /**
  * Represents the image buffer in memory.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.core.Graphics
  */
 public interface ImageBuffer extends ImageSurface

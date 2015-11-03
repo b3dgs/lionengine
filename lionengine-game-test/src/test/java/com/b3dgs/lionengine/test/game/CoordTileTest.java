@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.game.CoordTile;
 
 /**
  * Test coordinate tile class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CoordTileTest
 {

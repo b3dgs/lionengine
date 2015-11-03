@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the tile reference from a configurer.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileRef
  */
 public final class ConfigTile

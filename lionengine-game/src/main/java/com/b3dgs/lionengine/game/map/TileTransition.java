@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.LionEngineException;
  * <li><code>[2]</code> represents the group out.</li>
  * <li><code>[0]</code> represents both in or out.</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum TileTransition
 {

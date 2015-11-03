@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.UtilMath;
 
 /**
  * Surface representing a bar designed to display a kind of progress bar (life...).
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Bar implements Renderable
 {

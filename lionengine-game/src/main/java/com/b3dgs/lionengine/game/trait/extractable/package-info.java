@@ -18,7 +18,5 @@
 
 /**
  * Represents the extraction system, which allows to extract something from another thing.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.trait.extractable;

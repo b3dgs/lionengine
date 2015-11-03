@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.core.Version;
 
 /**
  * Engine Android implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class EngineAndroid extends Engine
 {

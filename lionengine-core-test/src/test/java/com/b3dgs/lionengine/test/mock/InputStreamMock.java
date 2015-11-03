@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.Constant;
 
 /**
  * Mock input stream.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class InputStreamMock extends InputStream
 {

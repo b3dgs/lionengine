@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.game.background.Parallax;
 
 /**
  * Swamp background implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Swamp extends BackgroundGame
 {
@@ -96,8 +94,6 @@ class Swamp extends BackgroundGame
 
     /**
      * Backdrop represents the back background plus top background elements.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Backdrop implements BackgroundComponent
     {

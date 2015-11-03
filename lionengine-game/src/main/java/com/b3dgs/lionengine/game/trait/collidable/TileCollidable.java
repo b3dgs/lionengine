@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Represents something which can enter in collision with a {@link com.b3dgs.lionengine.game.map.TileCollision}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface TileCollidable extends Trait, Updatable
 {

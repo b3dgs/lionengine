@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.Updatable;
 /**
  * Class representing a timed message handler. This allows to prepare a set of timed message that will disappear at the
  * end of their timer.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class TimedMessage implements Updatable, Renderable
 {

@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.stream.Stream;
 
 /**
  * Game loop designed to handle our little world.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Scene extends Sequence
 {

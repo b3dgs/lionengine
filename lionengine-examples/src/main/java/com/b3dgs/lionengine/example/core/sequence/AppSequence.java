@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
  * Program starts here.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AppSequence
 {

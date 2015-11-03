@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.Graphic;
 
 /**
  * Represents the background component interface, which will contain background elements.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface BackgroundComponent
 {

@@ -28,8 +28,6 @@ import java.util.Map;
 
 /**
  * Keyboard AWT implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class KeyboardAwt implements Keyboard, KeyListener
 {

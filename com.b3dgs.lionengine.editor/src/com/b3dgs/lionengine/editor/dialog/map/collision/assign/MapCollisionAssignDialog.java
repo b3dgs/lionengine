@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 
 /**
  * Represents the check assign collision dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MapCollisionAssignDialog extends AbstractDialog
 {

@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.editor.project.dialog.group.GroupsEditDialog;
 
 /**
  * Edit selected group file.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class GroupsEditHandler
 {

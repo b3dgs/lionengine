@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.editor.dialog.sheets.palette;
 
 /**
  * Represents the different standard sheet palette types.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum SheetPaletteType
 {

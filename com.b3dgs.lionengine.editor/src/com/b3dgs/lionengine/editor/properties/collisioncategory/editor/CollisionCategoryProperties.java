@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.game.collision.CollisionGroup;
 
 /**
  * Represents the collision category properties edition view.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionCategoryProperties extends ObjectProperties<CollisionCategory>
                                          implements ObjectListListener<CollisionCategory>

@@ -48,8 +48,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * World paint listener, rendering the current world.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldRenderer implements PaintListener, MouseListener, MouseMoveListener, MouseWheelListener, KeyListener
 {

@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.game.Featurable;
  * Services can be extended by using the {@link TileFeature} layer.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see MapTile
  */
 public interface Tile extends Featurable<TileFeature>

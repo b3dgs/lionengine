@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.core;
 
 /**
  * Listen to screen events.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ScreenListener
 {

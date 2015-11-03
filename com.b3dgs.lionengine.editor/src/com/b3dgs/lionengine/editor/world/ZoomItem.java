@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Represents the zoom item label with its current value.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ZoomItem
 {

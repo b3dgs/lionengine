@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.editor.project.Project;
 
 /**
  * Test if there is an active project.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ProjectTester extends PropertyTester
 {

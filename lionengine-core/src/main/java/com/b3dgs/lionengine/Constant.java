@@ -21,8 +21,6 @@ import java.nio.charset.Charset;
 
 /**
  * List of common constants.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Constant
 {

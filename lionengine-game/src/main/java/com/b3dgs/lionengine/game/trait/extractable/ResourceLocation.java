@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.game.Tiled;
 
 /**
  * Represents the resource location.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ResourceLocation implements Tiled
 {

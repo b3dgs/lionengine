@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.game.trait.layerable.LayerableListener;
 /**
  * Renderer component implementation which render {@link Renderable} objects with {@link Layerable} support to order
  * rendering.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ComponentRendererLayer implements ComponentRenderable, HandlerListener, LayerableListener
 {

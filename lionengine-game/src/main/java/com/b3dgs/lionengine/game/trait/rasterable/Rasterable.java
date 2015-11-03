@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Represents a surface that can be rastered.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Rasterable extends Trait, Updatable, Renderable
 {

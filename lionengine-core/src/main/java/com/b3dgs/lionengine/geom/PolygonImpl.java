@@ -23,8 +23,6 @@ import java.util.Collection;
 
 /**
  * Polygon implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class PolygonImpl implements Polygon
 {

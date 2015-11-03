@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.collision.CollisionFormula;
  * (which represents the object entering in collision).
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionFormula
  */
 public interface TileCollision extends TileFeature

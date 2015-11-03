@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.Timing;
 
 /**
  * Screen base implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class ScreenBase implements Screen
 {

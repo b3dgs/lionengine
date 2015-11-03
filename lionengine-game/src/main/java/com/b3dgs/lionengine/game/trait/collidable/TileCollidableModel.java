@@ -53,8 +53,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
  * If the {@link ObjectGame} is a {@link TileCollidableListener}, it will automatically
  * {@link #addListener(TileCollidableListener)} on it.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TileCollidableModel extends TraitModel implements TileCollidable
 {

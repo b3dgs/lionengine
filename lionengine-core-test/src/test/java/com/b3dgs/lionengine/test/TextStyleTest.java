@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.test.util.UtilTests;
 
 /**
  * Test the text style class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TextStyleTest
 {

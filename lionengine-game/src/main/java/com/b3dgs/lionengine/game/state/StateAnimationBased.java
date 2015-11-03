@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
  * {@link Animation}).
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Util#loadStates(StateAnimationBased[], StateFactory, ObjectGame)
  */
 public interface StateAnimationBased
@@ -51,8 +50,6 @@ public interface StateAnimationBased
 
     /**
      * Utility class to load automatically states from enum.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     final class Util
     {

@@ -48,7 +48,6 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * Note: ground.png, wall.png and water.png are in the same directory of this configuration file.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see MapTileGame
  * @see Minimap
  * @see MapTileFeature

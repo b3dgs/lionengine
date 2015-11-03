@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.game.trait.transformable.Transformable;
 
 /**
  * Extractable model implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ExtractableModel extends TraitModel implements Extractable
 {

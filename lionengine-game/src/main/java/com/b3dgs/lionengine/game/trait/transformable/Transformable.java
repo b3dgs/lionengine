@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Represents something that can be transformed with a translation or a size modification.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Transformable extends Trait, Localizable
 {

@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.trait.collidable;
 
 /**
  * Notify collision events between two {@link Collidable}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface CollidableListener
 {

@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.game.collision.CollisionFunctionType;
 
 /**
  * Represents the collision function edition.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionFunctionComposite
 {
