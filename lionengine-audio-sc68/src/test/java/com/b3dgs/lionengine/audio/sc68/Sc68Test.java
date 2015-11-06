@@ -17,22 +17,44 @@
  */
 package com.b3dgs.lionengine.audio.sc68;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Test the sc68 player.
  */
 public class Sc68Test
 {
-    /** Media music. */
-    private static final Media MUSIC = new MediaMock("music.sc68");
     /** Binding. */
     private static final Sc68 SC68 = AudioSc68.createSc68Player();
+    /** Media music. */
+    private static Media music;
+
+    /**
+     * Prepare tests.
+     */
+    @BeforeClass
+    public static void prepare()
+    {
+        Medias.setLoadFromJar(Sc68Test.class);
+        music = Medias.create("music.sc68");
+    }
+
+    /**
+     * Clean up tests.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setLoadFromJar(null);
+    }
 
     /**
      * Test with <code>null</code> argument.
@@ -74,7 +96,7 @@ public class Sc68Test
     {
         SC68.setVolume(15);
         SC68.setConfig(true, false);
-        Sc68Test.SC68.play(MUSIC);
+        Sc68Test.SC68.play(music);
         Thread.sleep(500);
         SC68.setConfig(false, false);
         SC68.pause();
@@ -97,22 +119,22 @@ public class Sc68Test
     public void testStress() throws InterruptedException
     {
         final Sc68 sc68 = AudioSc68.createSc68Player();
-        sc68.play(MUSIC);
+        sc68.play(music);
         sc68.stop();
-        sc68.play(MUSIC);
+        sc68.play(music);
         Thread.sleep(Constant.HUNDRED);
         sc68.stop();
-        sc68.play(MUSIC);
+        sc68.play(music);
         sc68.pause();
         sc68.resume();
         for (int i = 0; i < 5; i++)
         {
-            sc68.play(MUSIC);
+            sc68.play(music);
             Thread.sleep(Constant.HUNDRED);
         }
         Thread.sleep(250);
         sc68.stop();
-        sc68.play(MUSIC);
+        sc68.play(music);
         sc68.stop();
     }
 }

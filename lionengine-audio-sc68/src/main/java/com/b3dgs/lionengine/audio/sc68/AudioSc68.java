@@ -65,16 +65,17 @@ public final class AudioSc68
     /**
      * Load the library.
      * 
+     * @param name The library name.
      * @param library The library path.
      * @return The library binding.
      * @throws LionEngineException If error on loading.
      */
-    private static Sc68Binding loadLibrary(String library)
+    private static Sc68Binding loadLibrary(String name, String library)
     {
         final InputStream input = AudioSc68.class.getResourceAsStream(library);
         try
         {
-            final File tempLib = UtilFile.getCopy(library, input);
+            final File tempLib = UtilFile.getCopy(name, input);
             Verbose.info("Temporary copy: ", tempLib.getPath());
             final Sc68Binding binding = (Sc68Binding) Native.loadLibrary(tempLib.getCanonicalPath(), Sc68Binding.class);
             Verbose.info("Library ", library, " loaded");
@@ -156,7 +157,7 @@ public final class AudioSc68
         final String name = AudioSc68.LIBRARY_NAME + ext;
         final String library = sys + arch + '/' + name;
         Verbose.info("Load library: ", library);
-        bind = AudioSc68.loadLibrary(library);
+        bind = AudioSc68.loadLibrary(name, library);
     }
 
     /**

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.audio.wav;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,6 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * Test wav player.
@@ -31,7 +33,7 @@ import com.b3dgs.lionengine.Media;
 public class WavTest
 {
     /** Media sound. */
-    private static Media SOUND;
+    private static Media mediaSound;
     /** Wav sound. */
     private static Wav sound;
 
@@ -41,8 +43,18 @@ public class WavTest
     @BeforeClass
     public static void prepareTest()
     {
-        WavTest.SOUND = new MediaMock("sound.wav");
-        WavTest.sound = AudioWav.loadWav(WavTest.SOUND);
+        Medias.setLoadFromJar(WavTest.class);
+        WavTest.mediaSound = Medias.create("sound.wav");
+        WavTest.sound = AudioWav.loadWav(WavTest.mediaSound);
+    }
+
+    /**
+     * Clean up tests.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setLoadFromJar(null);
     }
 
     /**
@@ -97,7 +109,7 @@ public class WavTest
         Thread.sleep(200);
         WavTest.sound.stop();
 
-        final Wav soundSim = AudioWav.loadWav(WavTest.SOUND, 2);
+        final Wav soundSim = AudioWav.loadWav(WavTest.mediaSound, 2);
         soundSim.play();
         soundSim.play(20);
         soundSim.play();
@@ -106,7 +118,7 @@ public class WavTest
         soundSim.play(100);
         soundSim.terminate();
 
-        final Wav soundSim2 = AudioWav.loadWav(WavTest.SOUND, 2);
+        final Wav soundSim2 = AudioWav.loadWav(WavTest.mediaSound, 2);
         soundSim2.setVolume(50);
         soundSim2.play();
         soundSim2.play();
