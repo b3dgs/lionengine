@@ -101,6 +101,20 @@ public final class UtilFile
     }
 
     /**
+     * Close and log exception if unable to close.
+     * 
+     * @param closeable The closeable to close.
+     * @throws IOException If unable to close.
+     */
+    public static void close(Closeable closeable) throws IOException
+    {
+        if (closeable != null)
+        {
+            closeable.close();
+        }
+    }
+
+    /**
      * Get the file name without its extension.
      * <p>
      * Using <code>"image.png"</code> as argument returns <code>"image"</code>.

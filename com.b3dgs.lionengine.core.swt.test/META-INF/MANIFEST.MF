@@ -4,11 +4,11 @@ Bundle-Name: LionEngine Core SWT Test
 Bundle-SymbolicName: com.b3dgs.lionengine.core.swt.test;singleton:=true
 Bundle-Version: 8.2.0.qualifier
 Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.swt,
  com.b3dgs.lionengine.core;bundle-version="8.2.0",
  com.b3dgs.lionengine.core.swt;bundle-version="8.2.0",
- com.b3dgs.lionengine.core.test;bundle-version="8.2.0",
  org.junit;bundle-version="4.12.0"
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/lionengine-core-8.2.0-SNAPSHOT-tests.jar
 Export-Package: com.b3dgs.lionengine.test.core.swt

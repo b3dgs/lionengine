@@ -411,7 +411,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         final TileGroup group = map.getGroup(tile.getSheet(), tile.getNumber());
         for (final TileRef tileRef : group.getTiles())
         {
-            if (isCenter(tileRef, constraints.get(tileRef)))
+            if (constraints.containsKey(tileRef) && isCenter(tileRef, constraints.get(tileRef)))
             {
                 return true;
             }

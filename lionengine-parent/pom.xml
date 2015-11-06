@@ -17,7 +17,7 @@
         <maven.version>3.3.3</maven.version>
         <tycho.version>0.23.1</tycho.version>
         <junit.version>4.12</junit.version>
-        <jacoco.version>0.7.5.201505241946</jacoco.version>
+        <jacoco.version>0.7.4.201502262128</jacoco.version>
         <maven-bundle.version>3.0.0</maven-bundle.version>
         <maven-compiler.version>3.3</maven-compiler.version>
         <maven-osgi-packaging.version>0.11.1</maven-osgi-packaging.version>
@@ -118,6 +118,7 @@
                 <module>../lionengine-buildtools</module>
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
+                <module>../com.b3dgs.lionengine.core.swt.test</module>
             </modules>
         </profile>
         <profile>
@@ -147,136 +148,6 @@
                 <module>../lionengine-examples</module>
                 <module>../lionengine-tutorials</module>
             </modules>
-        </profile>
-        <profile>
-            <id>tests-core</id>
-            <modules>
-                <module>../lionengine-buildtools</module>
-                <module>../lionengine-core-test</module>
-                <module>../lionengine-core-awt-test</module>
-                <module>../lionengine-game-test</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>tests-audio</id>
-            <modules>
-                <module>../lionengine-buildtools</module>
-                <module>../lionengine-audio-wav-test</module>
-                <module>../lionengine-audio-midi-test</module>
-                <module>../lionengine-audio-sc68-test</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>tests-plugins</id>
-            <modules>
-                <module>../lionengine-buildtools</module>
-                <module>../com.b3dgs.lionengine.target</module>
-                <module>../com.b3dgs.lionengine.core.swt</module>
-                <module>../com.b3dgs.lionengine.core.swt.test</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>sonar-core</id>
-            <modules>
-                <module>../lionengine-core</module>
-                <module>../lionengine-core-awt</module>
-                <module>../lionengine-core-android</module>
-                <module>../lionengine-game</module>
-                <module>../lionengine-network</module>
-                <module>../lionengine-audio-wav</module>
-                <module>../lionengine-audio-midi</module>
-                <module>../lionengine-audio-sc68</module>
-                <module>../lionengine-core-test</module>
-                <module>../lionengine-core-awt-test</module>
-                <module>../lionengine-game-test</module>
-                <module>../lionengine-audio-wav-test</module>
-                <module>../lionengine-audio-midi-test</module>
-                <module>../lionengine-audio-sc68-test</module>
-            </modules>
-            <properties>
-                <checkstyle.skip>true</checkstyle.skip>
-                <maven.javadoc.skip>true</maven.javadoc.skip>
-            </properties>
-            <build>
-                <directory>target/sonar</directory>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-dependency-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>unpack-dependencies</goal>
-                                </goals>
-                                <configuration>
-                                    <excludeTransitive>true</excludeTransitive>
-                                    <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>sonar-plugins</id>
-            <modules>
-                <module>../com.b3dgs.lionengine.target</module>
-                <module>../com.b3dgs.lionengine.core.swt</module>
-                <module>../com.b3dgs.lionengine.core.swt.test</module>
-                <module>../com.b3dgs.lionengine.editor</module>
-            </modules>
-            <properties>
-                <checkstyle.skip>true</checkstyle.skip>
-                <maven.javadoc.skip>true</maven.javadoc.skip>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-dependency-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>unpack-dependencies</goal>
-                                </goals>
-                                <configuration>
-                                    <excludeTransitive>true</excludeTransitive>
-                                    <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>lt.velykis.maven</groupId>
-                        <artifactId>pde-target-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>pde-target</id>
-                                <goals>
-                                    <goal>add-pom-dependencies</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
     <dependencies>
@@ -424,19 +295,17 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.15</version>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>integration-tests</id>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
                         <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <argLine>${failsafeArgLine}</argLine>
-                            <skipTests>${skip.integration.tests}</skipTests>
+                            <excludeTransitive>true</excludeTransitive>
+                            <outputDirectory>${project.build.directory}/dependencies</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

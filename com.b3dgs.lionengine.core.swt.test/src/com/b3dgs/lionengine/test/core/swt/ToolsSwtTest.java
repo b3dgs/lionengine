@@ -33,6 +33,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.test.util.UtilTests;
@@ -94,19 +95,29 @@ public class ToolsSwtTest
         image.dispose();
 
         final Media media = Medias.create("image.png");
-        try (InputStream input = media.getInputStream())
+
+        InputStream input = null;
+        try
         {
+            input = media.getInputStream();
             final Image buffer = ToolsSwt.getImage(display, input);
             Assert.assertNotNull(buffer);
 
-            try (InputStream input2 = media.getInputStream())
+            InputStream input2 = null;
+            try
             {
+                input2 = media.getInputStream();
                 Assert.assertNotNull(ToolsSwt.getImageData(input2));
             }
             finally
             {
+                UtilFile.close(input2);
                 buffer.dispose();
             }
+        }
+        finally
+        {
+            UtilFile.close(input);
         }
 
         Assert.assertNotNull(ToolsSwt.createHiddenCursor(display));
@@ -134,23 +145,33 @@ public class ToolsSwtTest
     public void testSave() throws IOException
     {
         final Media media = Medias.create("image.png");
-        try (InputStream input = media.getInputStream())
+
+        InputStream input = null;
+        try
         {
+            input = media.getInputStream();
             final Image image = ToolsSwt.getImage(ToolsSwt.getDisplay(), input);
             Assert.assertNotNull(image);
 
             final Media save = Medias.create("test");
-            try (OutputStream output = save.getOutputStream())
+            OutputStream output = null;
+            try
             {
+                output = save.getOutputStream();
                 ToolsSwt.saveImage(image, output);
             }
             finally
             {
+                UtilFile.close(output);
                 image.dispose();
             }
             Assert.assertTrue(save.getFile().exists());
             Assert.assertTrue(save.getFile().delete());
             Assert.assertFalse(save.getFile().exists());
+        }
+        finally
+        {
+            UtilFile.close(input);
         }
     }
 
@@ -163,10 +184,16 @@ public class ToolsSwtTest
     public void testGetFail() throws IOException
     {
         final Media media = Medias.create("image.xml");
-        try (InputStream input = media.getInputStream())
+        InputStream input = null;
+        try
         {
+            input = media.getInputStream();
             final Image image = ToolsSwt.getImage(ToolsSwt.getDisplay(), input);
             Assert.assertNotNull(image);
+        }
+        finally
+        {
+            UtilFile.close(input);
         }
     }
 
@@ -179,10 +206,16 @@ public class ToolsSwtTest
     public void testGetIoFail() throws IOException
     {
         final Media media = Medias.create("raster.xml");
-        try (InputStream input = media.getInputStream())
+        InputStream input = null;
+        try
         {
+            input = media.getInputStream();
             final Image image = ToolsSwt.getImage(ToolsSwt.getDisplay(), input);
             Assert.assertNotNull(image);
+        }
+        finally
+        {
+            UtilFile.close(input);
         }
     }
 }

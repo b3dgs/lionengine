@@ -2,8 +2,6 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <jdk.version>1.6</jdk.version>
-        <jdk.home>${JDK_6_HOME}</jdk.home>
         <android.version>1.5_r3</android.version>
         <android.sdk>3</android.sdk>
         <android.maven.version>4.0.0-rc.2</android.maven.version>
@@ -38,16 +36,9 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.core.android</Bundle-SymbolicName>
+                        <Import-Package>*</Import-Package>
+                        <Require-Bundle>${project.groupId}.core</Require-Bundle>
                     </instructions>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
-                    <executable>${jdk.home}/bin/javac</executable>
                 </configuration>
             </plugin>
             <plugin>

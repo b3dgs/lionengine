@@ -17,6 +17,13 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
             <version>4.2.0</version>
@@ -30,9 +37,15 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.audio.sc68</Bundle-SymbolicName>
-                        <Import-Package>*,com.sun.jna,org.junit;resolution:=optional</Import-Package>
+                        <Import-Package>
+                            *,
+                            com.sun.jna,
+                            org.junit;resolution:=optional,
+                            com.b3dgs.lionengine.test.util;resolution:=optional
+                        </Import-Package>
                         <Export-Package>com.b3dgs.lionengine.audio.sc68;com.sun.jna</Export-Package>
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+                        <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
                     </instructions>
                 </configuration>
             </plugin>
