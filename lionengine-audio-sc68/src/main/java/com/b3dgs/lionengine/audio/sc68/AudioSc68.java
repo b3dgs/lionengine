@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 import com.b3dgs.lionengine.Architecture;
@@ -77,15 +76,11 @@ public final class AudioSc68
         {
             final File tempLib = UtilFile.getCopy(name, input);
             Verbose.info("Temporary copy: ", tempLib.getPath());
-            final Sc68Binding binding = (Sc68Binding) Native.loadLibrary(tempLib.getCanonicalPath(), Sc68Binding.class);
+            final Sc68Binding binding = (Sc68Binding) Native.loadLibrary(tempLib.getPath(), Sc68Binding.class);
             Verbose.info("Library ", library, " loaded");
             return binding;
         }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, AudioSc68.ERROR_LOAD_LIBRARY, library);
-        }
-        catch (final LinkageError exception)
+        catch (final Throwable exception)
         {
             throw new LionEngineException(exception, AudioSc68.ERROR_LOAD_LIBRARY, library);
         }

@@ -37,7 +37,7 @@
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ServerImpl" lines="176, 241, 316"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.network.ServerImpl" lines="368"/>
     
-    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.audio.sc68.AudioSc68" lines="87"/>
+    <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.audio.sc68.AudioSc68" lines="83"/>
     <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding"/>
     <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding"/>
     
