@@ -35,8 +35,6 @@ public class MidiTest
 {
     /** Media music. */
     private static Media music;
-    /** Media music. */
-    private static Media fail;
     /** Midi music. */
     private static Midi midi;
 
@@ -47,13 +45,11 @@ public class MidiTest
     public static void prepareTest()
     {
         Medias.setLoadFromJar(MidiTest.class);
-        MidiTest.music = Medias.create("music.mid");
-        MidiTest.fail = Medias.create("fail.mid");
-
+        music = Medias.create("music.mid");
         try
         {
-            MidiTest.midi = AudioMidi.loadMidi(MidiTest.music);
-            Assert.assertTrue(MidiTest.midi.getTicks() > 0);
+            midi = AudioMidi.loadMidi(music);
+            Assert.assertTrue(midi.getTicks() > 0);
         }
         catch (final LionEngineException exception)
         {
@@ -119,7 +115,7 @@ public class MidiTest
     @Test(expected = LionEngineException.class)
     public void testNegativeStart()
     {
-        MidiTest.midi.setStart(-1);
+        midi.setStart(-1);
         Assert.fail();
     }
 
@@ -129,7 +125,7 @@ public class MidiTest
     @Test(expected = LionEngineException.class)
     public void testOutOfRangeStart()
     {
-        MidiTest.midi.setStart(Integer.MAX_VALUE);
+        midi.setStart(Integer.MAX_VALUE);
         Assert.fail();
     }
 
@@ -139,7 +135,7 @@ public class MidiTest
     @Test(expected = LionEngineException.class)
     public void testNegativeVolume()
     {
-        MidiTest.midi.setVolume(-1);
+        midi.setVolume(-1);
         Assert.fail();
     }
 
@@ -149,7 +145,7 @@ public class MidiTest
     @Test(expected = LionEngineException.class)
     public void testOutOfRangeVolume()
     {
-        MidiTest.midi.setVolume(101);
+        midi.setVolume(101);
         Assert.fail();
     }
 
@@ -159,7 +155,7 @@ public class MidiTest
     @Test(expected = LionEngineException.class)
     public void testFailMusic()
     {
-        final Midi midi2 = AudioMidi.loadMidi(MidiTest.fail);
+        final Midi midi2 = AudioMidi.loadMidi(Medias.create("fail.mid"));
         midi2.play(false);
         Assert.fail();
     }
@@ -174,32 +170,32 @@ public class MidiTest
     {
         try
         {
-            MidiTest.midi.play(false);
+            midi.play(false);
             Thread.sleep(250);
-            MidiTest.midi.pause();
+            midi.pause();
             Thread.sleep(250);
-            MidiTest.midi.resume();
-            MidiTest.midi.resume();
-            MidiTest.midi.pause();
-            MidiTest.midi.pause();
-            MidiTest.midi.play(true);
-            MidiTest.midi.setVolume(10);
-            MidiTest.midi.stop();
+            midi.resume();
+            midi.resume();
+            midi.pause();
+            midi.pause();
+            midi.play(true);
+            midi.setVolume(10);
+            midi.stop();
         }
         catch (final LionEngineException exception)
         {
             Assert.fail();
         }
 
-        MidiTest.midi.setStart(0);
+        midi.setStart(0);
 
-        MidiTest.testMidiLoop(MidiTest.midi, -1, 0);
-        MidiTest.testMidiLoop(MidiTest.midi, 1, 0);
-        MidiTest.testMidiLoop(MidiTest.midi, 0, Integer.MAX_VALUE);
-        MidiTest.testMidiLoop(MidiTest.midi, -1, -1);
-        MidiTest.testMidiLoop(MidiTest.midi, 0, -1);
+        testMidiLoop(midi, -1, 0);
+        testMidiLoop(midi, 1, 0);
+        testMidiLoop(midi, 0, Integer.MAX_VALUE);
+        testMidiLoop(midi, -1, -1);
+        testMidiLoop(midi, 0, -1);
 
-        final Midi midi2 = AudioMidi.loadMidi(MidiTest.music);
+        final Midi midi2 = AudioMidi.loadMidi(music);
         midi2.setLoop(6100, 8000);
         midi2.setStart(6100);
         midi2.play(true);

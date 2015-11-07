@@ -44,8 +44,8 @@ public class WavTest
     public static void prepareTest()
     {
         Medias.setLoadFromJar(WavTest.class);
-        WavTest.mediaSound = Medias.create("sound.wav");
-        WavTest.sound = AudioWav.loadWav(WavTest.mediaSound);
+        mediaSound = Medias.create("sound.wav");
+        sound = AudioWav.loadWav(mediaSound);
     }
 
     /**
@@ -73,7 +73,7 @@ public class WavTest
     @Test(expected = LionEngineException.class)
     public void testNegativeVolume()
     {
-        WavTest.sound.setVolume(-1);
+        sound.setVolume(-1);
         Assert.fail();
     }
 
@@ -83,7 +83,7 @@ public class WavTest
     @Test(expected = LionEngineException.class)
     public void testOutOfRangeVolume()
     {
-        WavTest.sound.setVolume(101);
+        sound.setVolume(101);
         Assert.fail();
     }
 
@@ -95,21 +95,21 @@ public class WavTest
     @Test
     public void testWav() throws InterruptedException
     {
-        WavTest.sound.setVolume(50);
-        WavTest.sound.setAlignment(Align.LEFT);
-        WavTest.sound.play();
+        sound.setVolume(50);
+        sound.setAlignment(Align.LEFT);
+        sound.play();
         Thread.sleep(200);
 
-        WavTest.sound.setAlignment(Align.CENTER);
-        WavTest.sound.play();
+        sound.setAlignment(Align.CENTER);
+        sound.play();
         Thread.sleep(200);
 
-        WavTest.sound.setAlignment(Align.RIGHT);
-        WavTest.sound.play();
+        sound.setAlignment(Align.RIGHT);
+        sound.play();
         Thread.sleep(200);
-        WavTest.sound.stop();
+        sound.stop();
 
-        final Wav soundSim = AudioWav.loadWav(WavTest.mediaSound, 2);
+        final Wav soundSim = AudioWav.loadWav(mediaSound, 2);
         soundSim.play();
         soundSim.play(20);
         soundSim.play();
@@ -118,7 +118,7 @@ public class WavTest
         soundSim.play(100);
         soundSim.terminate();
 
-        final Wav soundSim2 = AudioWav.loadWav(WavTest.mediaSound, 2);
+        final Wav soundSim2 = AudioWav.loadWav(mediaSound, 2);
         soundSim2.setVolume(50);
         soundSim2.play();
         soundSim2.play();
