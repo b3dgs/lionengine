@@ -32,6 +32,8 @@ import com.sun.jna.Native;
  */
 public final class AudioSc68
 {
+    /** Load library error. */
+    public static final String ERROR_LOAD_LIBRARY = "Error on loading SC68 Library: ";
     /** Standard library name. */
     private static final String LIBRARY_NAME = "sc68player";
     /** DLL extension. */
@@ -46,8 +48,6 @@ public final class AudioSc68
     private static final String ARCHITECTURE_X64 = "x86-64";
     /** 32bits architecture. */
     private static final String ARCHITECTURE_X86 = "x86";
-    /** Load library error. */
-    private static final String ERROR_LOAD_LIBRARY = "Error on loading SC68 Library: ";
 
     /**
      * Create a sc68 player.
@@ -80,7 +80,7 @@ public final class AudioSc68
             Verbose.info("Library ", library, " loaded");
             return binding;
         }
-        catch (final Throwable exception)
+        catch (final LinkageError exception)
         {
             throw new LionEngineException(exception, AudioSc68.ERROR_LOAD_LIBRARY, library);
         }

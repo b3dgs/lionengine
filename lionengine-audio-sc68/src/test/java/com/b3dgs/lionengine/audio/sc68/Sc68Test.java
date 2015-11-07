@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.audio.sc68;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ import com.b3dgs.lionengine.core.Medias;
 public class Sc68Test
 {
     /** Binding. */
-    private static final Sc68 SC68 = AudioSc68.createSc68Player();
+    private static Sc68 sc68;
     /** Media music. */
     private static Media music;
 
@@ -43,8 +44,19 @@ public class Sc68Test
     @BeforeClass
     public static void prepare()
     {
-        Medias.setLoadFromJar(Sc68Test.class);
-        music = Medias.create("music.sc68");
+        try
+        {
+            sc68 = AudioSc68.createSc68Player();
+            Medias.setLoadFromJar(Sc68Test.class);
+            music = Medias.create("music.sc68");
+        }
+        catch (final LionEngineException exception)
+        {
+            final String message = exception.getMessage();
+            Assert.assertTrue(message, message.contains(AudioSc68.ERROR_LOAD_LIBRARY));
+            Assume.assumeFalse("Sc68 not supported on test machine - Test skipped",
+                               message.contains(AudioSc68.ERROR_LOAD_LIBRARY));
+        }
     }
 
     /**
@@ -62,7 +74,7 @@ public class Sc68Test
     @Test(expected = LionEngineException.class)
     public void testNullArgument()
     {
-        SC68.play(null);
+        sc68.play(null);
         Assert.fail();
     }
 
@@ -72,7 +84,7 @@ public class Sc68Test
     @Test(expected = LionEngineException.class)
     public void testNegativeVolume()
     {
-        SC68.setVolume(-1);
+        sc68.setVolume(-1);
         Assert.fail();
     }
 
@@ -82,7 +94,7 @@ public class Sc68Test
     @Test(expected = LionEngineException.class)
     public void testOutOfRangeVolume()
     {
-        SC68.setVolume(101);
+        sc68.setVolume(101);
         Assert.fail();
     }
 
@@ -94,20 +106,20 @@ public class Sc68Test
     @Test
     public void testSc68() throws InterruptedException
     {
-        SC68.setVolume(15);
-        SC68.setConfig(true, false);
-        Sc68Test.SC68.play(music);
+        sc68.setVolume(15);
+        sc68.setConfig(true, false);
+        sc68.play(music);
         Thread.sleep(500);
-        SC68.setConfig(false, false);
-        SC68.pause();
+        sc68.setConfig(false, false);
+        sc68.pause();
         Thread.sleep(500);
-        SC68.setConfig(false, true);
-        SC68.setVolume(30);
-        SC68.resume();
+        sc68.setConfig(false, true);
+        sc68.setVolume(30);
+        sc68.resume();
         Thread.sleep(500);
-        SC68.setConfig(true, true);
-        Assert.assertTrue(SC68.seek() >= 0);
-        SC68.stop();
+        sc68.setConfig(true, true);
+        Assert.assertTrue(sc68.seek() >= 0);
+        sc68.stop();
     }
 
     /**
