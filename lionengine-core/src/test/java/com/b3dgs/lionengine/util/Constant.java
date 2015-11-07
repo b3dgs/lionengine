@@ -15,26 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
-
-import org.junit.Test;
+package com.b3dgs.lionengine.util;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.core.Resolution;
 
 /**
- * Test the audio wav class.
+ * List of common constants.
  */
-public class AudioWavTest
+public final class Constant
 {
+    /** Standard resolution. */
+    public static final Resolution RESOLUTION_320_240 = new Resolution(320, 240, 60);
+    /** Standard resolution. */
+    public static final Resolution RESOLUTION_640_480 = new Resolution(640, 480, 60);
+
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
+     * Private constructor.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    private Constant()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

@@ -15,26 +15,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine;
 
 import org.junit.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the audio wav class.
+ * Test the utility project stats class.
  */
-public class AudioWavTest
+public class UtilProjectStatsTest
 {
     /**
      * Test the constructor.
      * 
-     * @throws Throwable If error.
+     * @throws Exception If error.
      */
     @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        UtilTests.testPrivateConstructor(UtilProjectStats.class);
+    }
+
+    /**
+     * Test project stats.
+     */
+    @Test
+    public void testProjectStats()
+    {
+        UtilProjectStats.start("src");
+
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        UtilProjectStats.countFileLines("null");
+        Verbose.info("****************************************************************************************");
+    }
+
+    /**
+     * Test project stats error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testProjectStatsError()
+    {
+        UtilProjectStats.start("|");
     }
 }

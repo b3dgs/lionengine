@@ -15,26 +15,52 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.game;
 
-import org.junit.Test;
+import java.io.IOException;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.stream.FileReading;
+import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
- * Test the audio wav class.
+ * Test world game class.
  */
-public class AudioWavTest
+public class World extends WorldGame
 {
     /**
-     * Test the constructor.
+     * Constructor.
      * 
-     * @throws Throwable If error.
+     * @param config The config reference.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    public World(Config config)
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        super(config);
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        // Update
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        // Render
+    }
+
+    @Override
+    protected void saving(FileWriting file) throws IOException
+    {
+        // Saving
+    }
+
+    @Override
+    protected void loading(FileReading file) throws IOException
+    {
+        // Loading
     }
 }

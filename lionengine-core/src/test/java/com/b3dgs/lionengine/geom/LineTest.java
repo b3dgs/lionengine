@@ -15,26 +15,30 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.geom;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
-
 /**
- * Test the audio wav class.
+ * Test the line class.
  */
-public class AudioWavTest
+public class LineTest
 {
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
+     * Test the line class.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    @Test
+    public void testLine()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        final Line line1 = Geom.createLine();
+        line1.set(1.0, -1.0, 1.0, 1.0);
+
+        final Line line2 = Geom.createLine(0.0, 0.0, 2.0, 0.0);
+        final Coord point = Geom.createCoord(1.0, 0.0);
+        final Coord intersect = Geom.intersection(line1, line2);
+
+        Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
+        Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
     }
 }

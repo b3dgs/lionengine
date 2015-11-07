@@ -15,26 +15,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.core;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
-
 /**
- * Test the audio wav class.
+ * Test version class.
  */
-public class AudioWavTest
+public class VersionTest
 {
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
+     * Test the version class.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    @Test
+    public void testVersion()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        final Version version = Version.create(3, 2, 1);
+        Assert.assertEquals(3, version.getMajor());
+        Assert.assertEquals(2, version.getMinor());
+        Assert.assertEquals(1, version.getMicro());
+
+        Assert.assertEquals("3.2.1", version.toString());
+
+        final Version version2 = Version.create(1, 3, 2);
+        Assert.assertFalse(version.equals(version2));
+        Assert.assertNotEquals("3.2.1", version2.toString());
     }
 }

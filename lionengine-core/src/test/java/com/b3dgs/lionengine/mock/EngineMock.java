@@ -15,26 +15,46 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.mock;
 
-import org.junit.Test;
-
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.Version;
 
 /**
- * Test the audio wav class.
+ * Engine mock.
  */
-public class AudioWavTest
+public class EngineMock extends Engine
 {
     /**
-     * Test the constructor.
+     * Constructor.
      * 
-     * @throws Throwable If error.
+     * @param name The program name (must not be <code>null</code>).
+     * @param version The program version (must not be <code>null</code>).
+     * @throws LionEngineException If invalid arguments.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    public EngineMock(String name, Version version)
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        super(name, version);
+        Check.notNull(name);
+        Check.notNull(version);
+    }
+
+    /*
+     * Engine
+     */
+
+    @Override
+    protected void open()
+    {
+        Graphics.setFactoryGraphic(new FactoryGraphicMock());
+    }
+
+    @Override
+    protected void close()
+    {
+        Graphics.setFactoryGraphic(null);
     }
 }

@@ -15,26 +15,30 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.game;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.game.Attribute;
 
 /**
- * Test the audio wav class.
+ * Test attribute class.
  */
-public class AudioWavTest
+public class AttributeTest
 {
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
+     * Test attributes functions.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    @Test
+    public void testAttribute()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        final Attribute attribute = new Attribute();
+        Assert.assertEquals(0, attribute.get());
+        final int step = 10;
+        attribute.increase(step);
+        Assert.assertEquals(step, attribute.get());
+        attribute.set(step - 1);
+        Assert.assertEquals(step - 1, attribute.get());
     }
 }

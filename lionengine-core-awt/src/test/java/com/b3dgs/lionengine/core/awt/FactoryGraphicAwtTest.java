@@ -15,26 +15,42 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.core.awt;
 
-import org.junit.Test;
+import java.io.IOException;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import org.junit.Assume;
+import org.junit.BeforeClass;
+
+import com.b3dgs.lionengine.core.FactoryGraphicTest;
+import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.awt.FactoryGraphicAwt;
 
 /**
- * Test the audio wav class.
+ * Test the factory graphic provider class.
  */
-public class AudioWavTest
+public class FactoryGraphicAwtTest extends FactoryGraphicTest
 {
     /**
-     * Test the constructor.
+     * Prepare test.
      * 
-     * @throws Throwable If error.
+     * @throws IOException If error.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    @BeforeClass
+    public static void setUp() throws IOException
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        prepare();
+        Graphics.setFactoryGraphic(new FactoryGraphicAwt());
+        loadResources();
+    }
+
+    /*
+     * FactoryGraphicTest
+     */
+
+    @Override
+    public void testCreateScreen()
+    {
+        Assume.assumeFalse("Unable to perform this test", false);
     }
 }

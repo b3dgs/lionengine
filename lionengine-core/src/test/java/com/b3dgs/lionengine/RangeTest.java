@@ -15,26 +15,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
-
 /**
- * Test the audio wav class.
+ * Test range class.
  */
-public class AudioWavTest
+public class RangeTest
 {
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
+     * Test range functions.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    @Test
+    public void testRange()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        final Range range = new Range();
+        Assert.assertTrue(range.getMin() == 0);
+        Assert.assertTrue(range.getMax() == 0);
+
+        final Range rangeA = new Range(1, 3);
+        Assert.assertTrue(rangeA.getMin() == 1);
+        Assert.assertTrue(rangeA.getMax() == 3);
+
+        rangeA.setMin(0);
+        rangeA.setMax(4);
+        Assert.assertTrue(rangeA.getMin() == 0);
+        Assert.assertTrue(rangeA.getMax() == 4);
     }
 }

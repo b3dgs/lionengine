@@ -15,26 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.game;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.game.CoordTile;
 
 /**
- * Test the audio wav class.
+ * Test coordinate tile class.
  */
-public class AudioWavTest
+public class CoordTileTest
 {
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
+     * Test coordinate tile functions.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    @Test
+    public void testCoordTile()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        final CoordTile coord = new CoordTile(1, 5);
+        Assert.assertTrue(coord.getX() == 1);
+        Assert.assertTrue(coord.getY() == 5);
     }
 }

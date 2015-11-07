@@ -15,26 +15,48 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.mock;
 
-import org.junit.Test;
-
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.util.Constant;
 
 /**
- * Test the audio wav class.
+ * Mock sequence.
  */
-public class AudioWavTest
+public class SequenceFailMock extends Sequence
 {
     /**
-     * Test the constructor.
+     * Constructor.
      * 
-     * @throws Throwable If error.
+     * @param context The context reference.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    public SequenceFailMock(Context context)
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        super(context, Constant.RESOLUTION_320_240);
+    }
+
+    /*
+     * Sequence
+     */
+
+    @Override
+    public void load()
+    {
+        // Mock
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        throw new LionEngineException("expected failure");
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        // Mock
     }
 }

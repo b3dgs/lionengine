@@ -15,26 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.game;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.game.Damages;
 
 /**
- * Test the audio wav class.
+ * Test damages class.
  */
-public class AudioWavTest
+public class DamagesTest
 {
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
+     * Test coordinate tile functions.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    @Test
+    public void testDamages()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        final Damages damages = new Damages();
+        Assert.assertTrue(damages.getMin() == 0);
+        Assert.assertTrue(damages.getMax() == 0);
+        Assert.assertTrue(damages.getLast() == 0);
+        Assert.assertTrue(damages.getRandom() == 0);
+
+        final Damages damagesA = new Damages(1, 3);
+        Assert.assertTrue(damagesA.getMin() == 1);
+        Assert.assertTrue(damagesA.getMax() == 3);
+
+        damagesA.setMin(0);
+        damagesA.setMax(4);
+        Assert.assertTrue(damagesA.getMin() == 0);
+        Assert.assertTrue(damagesA.getMax() == 4);
+
+        final int last = damagesA.getRandom();
+        Assert.assertTrue(damagesA.getLast() == last);
     }
 }

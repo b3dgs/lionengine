@@ -15,26 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.core;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the audio wav class.
+ * Test the ratio.
  */
-public class AudioWavTest
+public class RatioTest
 {
     /**
      * Test the constructor.
      * 
-     * @throws Throwable If error.
+     * @throws Exception If error.
      */
     @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        UtilTests.testPrivateConstructor(Ratio.class);
+    }
+
+    /**
+     * Test the ratio.
+     */
+    @Test
+    public void testRatio()
+    {
+        Assert.assertFalse(Ratio.same(Ratio.R16_10, Ratio.R16_9));
+        Assert.assertTrue(Ratio.same(Ratio.R4_3, Ratio.R4_3));
+        Assert.assertFalse(Ratio.same(Ratio.R16_9, Ratio.R4_3));
     }
 }

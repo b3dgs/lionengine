@@ -15,26 +15,60 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.game;
 
-import org.junit.Test;
-
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.core.InputDevicePointer;
 
 /**
- * Test the audio wav class.
+ * Mouse pointer mock.
  */
-public class AudioWavTest
+public class MouseMock implements InputDevicePointer
 {
-    /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    @Override
+    public int getX()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        return 0;
+    }
+
+    @Override
+    public int getY()
+    {
+        return 0;
+    }
+
+    @Override
+    public int getMoveX()
+    {
+        return 0;
+    }
+
+    @Override
+    public int getMoveY()
+    {
+        return 0;
+    }
+
+    @Override
+    public int getClick()
+    {
+        return 0;
+    }
+
+    @Override
+    public boolean hasClicked(int click)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean hasClickedOnce(int click)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean hasMoved()
+    {
+        return false;
     }
 }

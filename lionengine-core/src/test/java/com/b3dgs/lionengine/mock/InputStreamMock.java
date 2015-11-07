@@ -15,26 +15,46 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.mock;
 
-import org.junit.Test;
+import java.io.IOException;
+import java.io.InputStream;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.Constant;
 
 /**
- * Test the audio wav class.
+ * Mock input stream.
  */
-public class AudioWavTest
+public class InputStreamMock extends InputStream
 {
+    /** Available bytes. */
+    private int available;
+
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
+     * Create mock.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    public InputStreamMock()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        available = Constant.MAX_PORT * 2;
+    }
+
+    @Override
+    public int read() throws IOException
+    {
+        available = Math.max(-1, available--);
+        return available;
+    }
+
+    @Override
+    public int read(byte[] b) throws IOException
+    {
+        available = Math.max(-1, available - b.length);
+        return available;
+    }
+
+    @Override
+    public int available() throws IOException
+    {
+        return available;
     }
 }

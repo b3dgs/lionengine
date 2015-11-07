@@ -15,26 +15,29 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine.game;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.game.Collision;
 
 /**
- * Test the audio wav class.
+ * Test collision data class.
  */
-public class AudioWavTest
+public class CollisionDataTest
 {
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
+     * Test collision data functions.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    @Test
+    public void testCollisionData()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        final Collision collisionData = new Collision(null, 1, 2, 3, 4, true);
+        Assert.assertTrue(collisionData.getOffsetX() == 1);
+        Assert.assertTrue(collisionData.getOffsetY() == 2);
+        Assert.assertTrue(collisionData.getWidth() == 3);
+        Assert.assertTrue(collisionData.getHeight() == 4);
+        Assert.assertTrue(collisionData.hasMirror());
     }
 }

@@ -15,26 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio.wav;
+package com.b3dgs.lionengine;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
-
 /**
- * Test the audio wav class.
+ * Test the gradient color class.
  */
-public class AudioWavTest
+public class GradientColorTest
 {
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
+     * Test the gradient color.
      */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
+    @Test
+    public void testGradientColor()
     {
-        UtilTests.testPrivateConstructor(AudioWav.class);
+        final ColorRgba color1 = ColorRgba.BLACK;
+        final ColorRgba color2 = ColorRgba.WHITE;
+
+        final int x1 = 1;
+        final int y1 = 2;
+        final int x2 = 3;
+        final int y2 = 4;
+        final ColorGradient gradientColor = new ColorGradient(x1, y1, color1, x2, y2, color2);
+
+        Assert.assertEquals(x1, gradientColor.getX1());
+        Assert.assertEquals(y1, gradientColor.getY1());
+        Assert.assertEquals(color1, gradientColor.getColor1());
+
+        Assert.assertEquals(x2, gradientColor.getX2());
+        Assert.assertEquals(y2, gradientColor.getY2());
+        Assert.assertEquals(color2, gradientColor.getColor2());
     }
 }
