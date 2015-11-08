@@ -24,7 +24,6 @@ import java.nio.file.Paths;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -82,14 +81,28 @@ public final class UtilDialog
      */
     public static File selectResourceFolder(Shell parent)
     {
-        final DirectoryDialog fileDialog = new DirectoryDialog(parent, SWT.OPEN);
-        fileDialog.setFilterPath(Project.getActive().getResourcesPath().getAbsolutePath());
-        final String folder = fileDialog.open();
-        if (folder != null)
+        String selection = null;
+        do
         {
-            return new File(folder);
+            final DirectoryDialog fileDialog = new DirectoryDialog(parent, SWT.OPEN);
+            final String path = Project.getActive().getResourcesPath().getAbsolutePath();
+            fileDialog.setFilterPath(path);
+            final String folder = fileDialog.open();
+            if (folder == null)
+            {
+                return null;
+            }
+            if (folder.startsWith(path))
+            {
+                selection = folder;
+            }
+            else
+            {
+                error(parent, Messages.UtilDialog_Error, Messages.UtilDialog_WrongDir);
+            }
         }
-        return null;
+        while (selection == null);
+        return new File(selection);
     }
 
     /**
@@ -103,24 +116,38 @@ public final class UtilDialog
      */
     public static File selectResourceFile(Shell parent, boolean openSave, String[] extensionsName, String[] extensions)
     {
-        final FileDialog fileDialog;
-        if (openSave)
+        String selection = null;
+        do
         {
-            fileDialog = new FileDialog(parent, SWT.OPEN);
+            final FileDialog fileDialog;
+            if (openSave)
+            {
+                fileDialog = new FileDialog(parent, SWT.OPEN);
+            }
+            else
+            {
+                fileDialog = new FileDialog(parent, SWT.SAVE);
+            }
+            final String path = Project.getActive().getResourcesPath().getAbsolutePath();
+            fileDialog.setFilterPath(path);
+            fileDialog.setFilterNames(extensionsName);
+            fileDialog.setFilterExtensions(extensions);
+            final String file = fileDialog.open();
+            if (file == null)
+            {
+                return null;
+            }
+            if (file.startsWith(path))
+            {
+                selection = file;
+            }
+            else
+            {
+                error(parent, Messages.UtilDialog_Error, Messages.UtilDialog_WrongDir);
+            }
         }
-        else
-        {
-            fileDialog = new FileDialog(parent, SWT.SAVE);
-        }
-        fileDialog.setFilterPath(Project.getActive().getResourcesPath().getAbsolutePath());
-        fileDialog.setFilterNames(extensionsName);
-        fileDialog.setFilterExtensions(extensions);
-        final String file = fileDialog.open();
-        if (file != null)
-        {
-            return new File(file);
-        }
-        return null;
+        while (selection == null);
+        return new File(selection);
     }
 
     /**
@@ -133,27 +160,41 @@ public final class UtilDialog
      */
     public static File selectResourceXml(Shell parent, boolean openSave, String description)
     {
-        final FileDialog fileDialog;
-        if (openSave)
+        String selection = null;
+        do
         {
-            fileDialog = new FileDialog(parent, SWT.OPEN);
+            final FileDialog fileDialog;
+            if (openSave)
+            {
+                fileDialog = new FileDialog(parent, SWT.OPEN);
+            }
+            else
+            {
+                fileDialog = new FileDialog(parent, SWT.SAVE);
+            }
+            final String path = Project.getActive().getResourcesPath().getAbsolutePath();
+            fileDialog.setFilterPath(path);
+            fileDialog.setFilterNames(new String[]
+            {
+                description
+            });
+            fileDialog.setFilterExtensions(XML);
+            final String file = fileDialog.open();
+            if (file == null)
+            {
+                return null;
+            }
+            if (file.startsWith(path))
+            {
+                selection = file;
+            }
+            else
+            {
+                error(parent, Messages.UtilDialog_Error, Messages.UtilDialog_WrongDir);
+            }
         }
-        else
-        {
-            fileDialog = new FileDialog(parent, SWT.SAVE);
-        }
-        fileDialog.setFilterPath(Project.getActive().getResourcesPath().getAbsolutePath());
-        fileDialog.setFilterNames(new String[]
-        {
-            description
-        });
-        fileDialog.setFilterExtensions(XML);
-        final String file = fileDialog.open();
-        if (file != null)
-        {
-            return new File(file);
-        }
-        return null;
+        while (selection == null);
+        return new File(selection);
     }
 
     /**
@@ -166,41 +207,57 @@ public final class UtilDialog
      */
     public static File[] selectResourceFiles(Shell parent, String[] extensionsName, String[] extensions)
     {
-        final FileDialog fileDialog = new FileDialog(parent, SWT.OPEN | SWT.MULTI);
-        fileDialog.setFilterPath(Project.getActive().getResourcesPath().getAbsolutePath());
-        fileDialog.setFilterNames(extensionsName);
-        fileDialog.setFilterExtensions(extensions);
-        final String selection = fileDialog.open();
-
-        final String[] names = fileDialog.getFileNames();
-        final File[] files = new File[names.length];
-        for (int i = 0; i < names.length; i++)
+        File[] selection = null;
+        do
         {
-            files[i] = new File(new File(selection).getParentFile(), names[i]);
+            final FileDialog fileDialog = new FileDialog(parent, SWT.OPEN | SWT.MULTI);
+            final String path = Project.getActive().getResourcesPath().getAbsolutePath();
+            fileDialog.setFilterPath(path);
+            fileDialog.setFilterNames(extensionsName);
+            fileDialog.setFilterExtensions(extensions);
+            final String firstFile = fileDialog.open();
+
+            final String[] names = fileDialog.getFileNames();
+            final File[] files = new File[names.length];
+            for (int i = 0; i < names.length; i++)
+            {
+                files[i] = new File(new File(firstFile).getParentFile(), names[i]);
+            }
+            if (firstFile.startsWith(path))
+            {
+                selection = files;
+            }
+            else
+            {
+                error(parent, Messages.UtilDialog_Error, Messages.UtilDialog_WrongDir);
+            }
         }
-        return files;
+        while (selection == null);
+        return selection;
     }
 
     /**
      * Show an info dialog.
      * 
+     * @param parent The parent shell.
      * @param title The info title.
      * @param message The info message.
      */
-    public static void info(String title, String message)
+    public static void info(Shell parent, String title, String message)
     {
-        MessageDialog.openInformation(Display.getDefault().getActiveShell(), title, message);
+        MessageDialog.openInformation(parent, title, message);
     }
 
     /**
      * Show an error dialog.
      * 
+     * @param parent The parent shell.
      * @param title The error title.
      * @param message The error message.
      */
-    public static void error(String title, String message)
+    public static void error(Shell parent, String title, String message)
     {
-        MessageDialog.openError(Display.getDefault().getActiveShell(), title, message);
+        MessageDialog.openError(parent, title, message);
     }
 
     /**

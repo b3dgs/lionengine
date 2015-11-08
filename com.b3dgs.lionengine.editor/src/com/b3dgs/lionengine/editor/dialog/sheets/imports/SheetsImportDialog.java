@@ -352,7 +352,7 @@ public class SheetsImportDialog extends AbstractDialog
             {
                 generateConfig(tw, th, extractFolder);
             }
-            UtilDialog.info(Messages.Title, Messages.Finished);
+            UtilDialog.info(getParent(), Messages.Title, Messages.Finished);
         }
     }
 }
