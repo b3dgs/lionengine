@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.properties;
 import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Properties provider interface. Classes which implement this interface must provide the default public constructor.

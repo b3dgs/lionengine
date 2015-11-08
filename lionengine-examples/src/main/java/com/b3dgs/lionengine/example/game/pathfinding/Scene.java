@@ -33,11 +33,11 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTilePath;
-import com.b3dgs.lionengine.game.map.MapTilePathModel;
-import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
+import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Game loop designed to handle our little world.
@@ -118,7 +118,7 @@ class Scene extends Sequence
         peon.render(g);
         cursor.render(g);
 
-        final Tile tile = map.getTile(cursor.getInTileX(), cursor.getInTileY());
+        final Tile tile = map.getTile(cursor, 0, 0);
         if (tile != null)
         {
             text.drawRect(g, ColorRgba.GREEN, tile.getX(), tile.getY(), map.getTileWidth(), map.getTileHeight());

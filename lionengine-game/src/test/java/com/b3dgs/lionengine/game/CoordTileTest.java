@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.pathfinding.CoordTile;
 
 /**
  * Test coordinate tile class.

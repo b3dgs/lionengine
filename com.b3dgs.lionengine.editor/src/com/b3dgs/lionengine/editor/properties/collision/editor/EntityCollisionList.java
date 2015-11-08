@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.editor.properties.collision.editor;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.collision.object.Collision;
+import com.b3dgs.lionengine.game.collision.object.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**

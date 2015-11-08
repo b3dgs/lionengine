@@ -52,11 +52,11 @@ import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.configurer.ConfigTileConstraints;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileConstraint;
-import com.b3dgs.lionengine.game.map.TileGroup;
-import com.b3dgs.lionengine.game.map.TileRef;
+import com.b3dgs.lionengine.game.tile.ConfigTileConstraints;
+import com.b3dgs.lionengine.game.tile.TileConstraint;
+import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
  * Sheets palette dialog.

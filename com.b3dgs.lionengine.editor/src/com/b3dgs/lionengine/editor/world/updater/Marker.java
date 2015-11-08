@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.world.updater;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Represents a tile marker.

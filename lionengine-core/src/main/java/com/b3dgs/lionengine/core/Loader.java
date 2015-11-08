@@ -96,6 +96,17 @@ public final class Loader
             }
         };
         final Thread thread = new Thread(runnable, Engine.NAME);
+        final AtomicReference<Throwable> reference = new AtomicReference<Throwable>();
+        thread.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
+        {
+            @Override
+            public void uncaughtException(Thread t, Throwable e)
+            {
+                reference.set(e);
+                Verbose.exception(e);
+            }
+        });
+        thread.start();
 
         started = true;
 
@@ -104,7 +115,7 @@ public final class Loader
             @Override
             public void await()
             {
-                check(thread);
+                check(thread, reference);
             }
         };
     }
@@ -119,44 +130,45 @@ public final class Loader
      */
     void handle(Config config, Class<? extends Sequencable> sequenceClass, Object... arguments)
     {
-        final Screen screen = Graphics.createScreen(config);
-        screen.start();
-        screen.awaitReady();
-
-        Sequencable nextSequence = Sequence.create(sequenceClass, screen, arguments);
-        while (nextSequence != null)
+        Screen screen = null;
+        try
         {
-            final Sequencable sequence = nextSequence;
-            final String sequenceName = sequence.getClass().getName();
+            screen = Graphics.createScreen(config);
+            screen.start();
+            screen.awaitReady();
 
-            Verbose.info("Starting sequence: ", sequenceName);
-            sequence.start(screen);
+            Sequencable nextSequence = Sequence.create(sequenceClass, screen, arguments);
+            while (nextSequence != null)
+            {
+                final Sequencable sequence = nextSequence;
+                final String sequenceName = sequence.getClass().getName();
 
-            Verbose.info("Ending sequence: ", sequenceName);
+                Verbose.info("Starting sequence: ", sequenceName);
+                sequence.start(screen);
 
-            nextSequence = sequence.getNextSequence();
-            sequence.onTerminated(nextSequence != null);
+                Verbose.info("Ending sequence: ", sequenceName);
+
+                nextSequence = sequence.getNextSequence();
+                sequence.onTerminated(nextSequence != null);
+            }
         }
-        screen.dispose();
+        finally
+        {
+            if (screen != null)
+            {
+                screen.dispose();
+            }
+        }
     }
 
     /**
      * Check thread execution by waiting its end, and re-throw exception if has.
      * 
      * @param thread The thread reference.
+     * @param reference The thread exception referencer.
      */
-    void check(Thread thread)
+    void check(Thread thread, AtomicReference<Throwable> reference)
     {
-        final AtomicReference<Throwable> reference = new AtomicReference<Throwable>();
-        thread.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
-        {
-            @Override
-            public void uncaughtException(Thread t, Throwable e)
-            {
-                reference.set(e);
-            }
-        });
-        thread.start();
         try
         {
             thread.join();

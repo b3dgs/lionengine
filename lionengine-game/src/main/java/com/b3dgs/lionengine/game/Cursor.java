@@ -23,10 +23,10 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Resource;
+import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
@@ -46,7 +46,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * {@link #setSyncMode(boolean)}).</li>
  * <li><code>sensibility</code>: If the cursor is not synchronized on the system pointer, it can be defined (
  * {@link #setSensibility(double, double)}).</li>
- * <li><code>grid</code>: Represents the map grid, affecting {@link #getInTileX()} and {@link #getInTileY()}.</li>
+ * <li><code>grid</code>: Represents the map grid.</li>
  * <li><code>location</code>: The internal cursor position ({@link #setLocation(int, int)}).</li>
  * <li>
  * <code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
@@ -65,7 +65,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * @see InputDevicePointer
  * @see Image
  */
-public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderable
+public class Cursor implements Resource, Shape, Updatable, Renderable
 {
     /** Surface ID not found error. */
     private static final String ERROR_SURFACE_ID = "Undefined surface id:";
@@ -256,7 +256,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
     }
 
     /**
-     * Set the grid size. Will affect {@link #getInTileX()} and {@link #getInTileY()}.
+     * Set the grid size.
      * 
      * @param width The horizontal grid (strictly positive).
      * @param height The vertical grid (strictly positive).
@@ -472,33 +472,5 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
     public int getHeight()
     {
         return gridHeight;
-    }
-
-    /*
-     * Tiled
-     */
-
-    @Override
-    public int getInTileX()
-    {
-        return (int) viewX / gridWidth;
-    }
-
-    @Override
-    public int getInTileY()
-    {
-        return (int) viewY / gridHeight;
-    }
-
-    @Override
-    public int getInTileWidth()
-    {
-        return 1;
-    }
-
-    @Override
-    public int getInTileHeight()
-    {
-        return 1;
     }
 }

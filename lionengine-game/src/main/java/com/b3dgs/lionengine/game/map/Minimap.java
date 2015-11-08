@@ -31,7 +31,8 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.configurer.ConfigMinimap;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
  * Minimap representation of a map tile. This can be used to represent strategic view of a map.

@@ -248,9 +248,9 @@ public class Handler implements HandledObjects, Updatable, Renderable, ObjectGam
      */
 
     @Override
-    public final void notifyDestroyed(ObjectGame object)
+    public final void notifyDestroyed(Integer objectId)
     {
-        toDelete.add(object.getId());
+        toDelete.add(objectId);
         willDelete = true;
     }
 }

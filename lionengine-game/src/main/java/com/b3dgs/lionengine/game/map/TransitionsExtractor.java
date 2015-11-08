@@ -23,6 +23,9 @@ import java.util.HashSet;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileRef;
+import com.b3dgs.lionengine.game.tile.TileTransition;
 
 /**
  * Find all map transition and extract them.

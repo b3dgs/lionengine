@@ -33,8 +33,8 @@ import com.b3dgs.lionengine.editor.project.dialog.collision.CollisionList;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.collision.CollisionCategory;
-import com.b3dgs.lionengine.game.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionCategory;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 
 /**
  * Represents the collision category properties edition view.

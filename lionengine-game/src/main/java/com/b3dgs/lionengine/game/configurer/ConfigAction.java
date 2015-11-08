@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the action data from a configurer.
  * 
- * @see com.b3dgs.lionengine.game.trait.actionable.Actionable
+ * @see com.b3dgs.lionengine.game.object.trait.actionable.Actionable
  */
 public final class ConfigAction
 {

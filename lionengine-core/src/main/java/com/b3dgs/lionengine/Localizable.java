@@ -35,18 +35,4 @@ public interface Localizable
      * @return The current vertical location.
      */
     double getY();
-
-    /**
-     * Get the current width.
-     * 
-     * @return The current width.
-     */
-    int getWidth();
-
-    /**
-     * Get the current height.
-     * 
-     * @return The current height.
-     */
-    int getHeight();
 }

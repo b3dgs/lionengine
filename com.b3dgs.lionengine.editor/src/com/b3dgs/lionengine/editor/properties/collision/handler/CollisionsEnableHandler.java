@@ -22,8 +22,8 @@ import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.collision.object.Collision;
+import com.b3dgs.lionengine.game.collision.object.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**

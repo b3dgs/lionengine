@@ -184,7 +184,7 @@ public final class LionEngineException extends RuntimeException
      */
     public LionEngineException(Enum<?> type)
     {
-        this(ERROR_UNKNOWN_ENUM, type.name());
+        this(ERROR_UNKNOWN_ENUM, type != null ? type.name() : "null");
     }
 
     /**

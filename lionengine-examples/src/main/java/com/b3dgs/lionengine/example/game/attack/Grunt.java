@@ -29,14 +29,14 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.attackable.Attacker;
-import com.b3dgs.lionengine.game.trait.attackable.AttackerChecker;
-import com.b3dgs.lionengine.game.trait.attackable.AttackerListener;
-import com.b3dgs.lionengine.game.trait.attackable.AttackerModel;
-import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
-import com.b3dgs.lionengine.game.trait.pathfindable.PathfindableModel;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.trait.attackable.Attacker;
+import com.b3dgs.lionengine.game.object.trait.attackable.AttackerChecker;
+import com.b3dgs.lionengine.game.object.trait.attackable.AttackerListener;
+import com.b3dgs.lionengine.game.object.trait.attackable.AttackerModel;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
 
 /**
  * Grunt entity implementation.

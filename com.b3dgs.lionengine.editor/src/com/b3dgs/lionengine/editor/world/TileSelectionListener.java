@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Listen to tiles selection on map.

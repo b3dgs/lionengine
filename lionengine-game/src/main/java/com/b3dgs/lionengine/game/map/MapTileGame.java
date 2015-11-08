@@ -39,9 +39,12 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroups;
-import com.b3dgs.lionengine.game.configurer.ConfigTileSheets;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.tile.ConfigTileGroups;
+import com.b3dgs.lionengine.game.tile.ConfigTileSheets;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileGame;
+import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -804,5 +807,21 @@ public class MapTileGame implements MapTile
     public boolean isCreated()
     {
         return tiles != null;
+    }
+
+    /*
+     * Surface
+     */
+
+    @Override
+    public int getWidth()
+    {
+        return getInTileWidth() * getTileWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return getInTileHeight() * getTileHeight();
     }
 }

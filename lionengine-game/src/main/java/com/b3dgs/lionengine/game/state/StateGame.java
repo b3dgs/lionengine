@@ -97,7 +97,7 @@ public abstract class StateGame implements State
     }
 
     @Override
-    public State checkTransitions(StateFactory factory, InputDevice input)
+    public Enum<?> checkTransitions(InputDevice input)
     {
         for (final StateTransition transition : transitions)
         {
@@ -105,7 +105,7 @@ public abstract class StateGame implements State
                 || check(StateTransitionInputPointerChecker.class, InputDevicePointer.class, input, transition))
             {
                 transition.exit();
-                return factory.getState(transition.getNext());
+                return transition.getNext();
             }
         }
         return null;

@@ -23,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
 /**

@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.mock.GraphicMock;
 
 /**

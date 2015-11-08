@@ -36,8 +36,8 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilTemplate;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroups;
 import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.tile.ConfigTileGroups;
 
 /**
  * Add a groups descriptor in the selected folder.

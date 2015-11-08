@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.mock;
 
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Viewer;
 
 /**
@@ -92,7 +93,7 @@ public class ViewerMock implements Viewer
     }
 
     @Override
-    public boolean isViewable(Localizable localizable, int marginX, int marginY)
+    public boolean isViewable(Shape shape, int marginX, int marginY)
     {
         return false;
     }

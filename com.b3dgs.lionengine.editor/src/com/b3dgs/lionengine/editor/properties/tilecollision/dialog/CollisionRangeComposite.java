@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.collision.CollisionRange;
+import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
 
 /**
  * Represents the collision range edition area.

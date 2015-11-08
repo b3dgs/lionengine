@@ -98,7 +98,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
     public AbstractDialog(Shell parent, String title, String headerTitle, String headerDesc, Image headerIcon)
     {
         super(parent);
-        this.dialogTitle = title;
+        dialogTitle = title;
         this.headerTitle = headerTitle;
         this.headerDesc = headerDesc;
         this.headerIcon = headerIcon;

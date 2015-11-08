@@ -45,8 +45,8 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
-import com.b3dgs.lionengine.game.configurer.ConfigTileSheets;
-import com.b3dgs.lionengine.game.map.TileExtractor;
+import com.b3dgs.lionengine.game.tile.ConfigTileSheets;
+import com.b3dgs.lionengine.game.tile.TileExtractor;
 
 /**
  * Import sheets dialog.

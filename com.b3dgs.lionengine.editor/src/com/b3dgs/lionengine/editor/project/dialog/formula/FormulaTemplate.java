@@ -20,11 +20,11 @@ package com.b3dgs.lionengine.editor.project.dialog.formula;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.collision.CollisionConstraint;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
-import com.b3dgs.lionengine.game.collision.CollisionRange;
+import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**

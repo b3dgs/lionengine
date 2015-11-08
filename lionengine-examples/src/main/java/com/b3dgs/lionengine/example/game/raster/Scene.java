@@ -28,9 +28,9 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileRastered;
-import com.b3dgs.lionengine.game.map.MapTileRasteredModel;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.raster.MapTileRastered;
+import com.b3dgs.lionengine.game.raster.MapTileRasteredModel;
 
 /**
  * Game loop designed to handle our world.

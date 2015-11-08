@@ -72,7 +72,10 @@ public class FactoryGraphicTest
     @AfterClass
     public static void cleanUp()
     {
-        image.dispose();
+        if (image != null)
+        {
+            image.dispose();
+        }
         Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
     }

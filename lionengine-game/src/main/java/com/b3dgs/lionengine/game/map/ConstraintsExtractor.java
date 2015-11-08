@@ -24,7 +24,10 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.configurer.ConfigTileConstraints;
+import com.b3dgs.lionengine.game.tile.ConfigTileConstraints;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileConstraint;
+import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 

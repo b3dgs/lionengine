@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.utility;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
 

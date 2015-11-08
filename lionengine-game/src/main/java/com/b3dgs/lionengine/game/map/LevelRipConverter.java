@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileExtractor;
 
 /**
  * This class allows to convert a map image to a map level format.

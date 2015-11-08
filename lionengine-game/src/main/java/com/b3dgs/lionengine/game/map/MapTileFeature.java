@@ -24,10 +24,5 @@ package com.b3dgs.lionengine.game.map;
  */
 public interface MapTileFeature
 {
-    /**
-     * Get the original map tile reference owned by the feature.
-     * 
-     * @return The map tile reference.
-     */
-    MapTile getMap();
+    // Marker interface
 }

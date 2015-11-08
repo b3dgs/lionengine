@@ -33,9 +33,9 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.map.TransitionsExtractor;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Game loop designed to handle our little world.
@@ -81,8 +81,8 @@ class Scene extends Sequence
      */
     private void renderTileInfo(Graphic g)
     {
-        final int tx = cursor.getInTileX();
-        final int ty = cursor.getInTileY();
+        final int tx = map.getInTileX(cursor);
+        final int ty = map.getInTileY(cursor);
         final Tile tile = map.getTile(tx, ty);
         if (tile != null)
         {

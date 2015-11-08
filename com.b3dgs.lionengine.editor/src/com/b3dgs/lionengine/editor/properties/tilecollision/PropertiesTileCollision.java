@@ -25,10 +25,10 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderTile;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
-import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.map.TileCollision;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.TileCollision;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Element properties part.

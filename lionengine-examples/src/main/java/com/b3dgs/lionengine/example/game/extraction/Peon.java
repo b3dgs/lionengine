@@ -27,20 +27,20 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.layer.Layerable;
+import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.extractable.Extractor;
-import com.b3dgs.lionengine.game.trait.extractable.ExtractorChecker;
-import com.b3dgs.lionengine.game.trait.extractable.ExtractorListener;
-import com.b3dgs.lionengine.game.trait.extractable.ExtractorModel;
-import com.b3dgs.lionengine.game.trait.layerable.Layerable;
-import com.b3dgs.lionengine.game.trait.layerable.LayerableModel;
-import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
-import com.b3dgs.lionengine.game.trait.pathfindable.PathfindableModel;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.trait.extractable.Extractor;
+import com.b3dgs.lionengine.game.object.trait.extractable.ExtractorChecker;
+import com.b3dgs.lionengine.game.object.trait.extractable.ExtractorListener;
+import com.b3dgs.lionengine.game.object.trait.extractable.ExtractorModel;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
+import com.b3dgs.lionengine.game.tile.Tiled;
 
 /**
  * Peon entity implementation.

@@ -24,8 +24,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.editor.utility.UtilText;
-import com.b3dgs.lionengine.game.collision.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
 
 /**
  * Represents the collision function linear edition.

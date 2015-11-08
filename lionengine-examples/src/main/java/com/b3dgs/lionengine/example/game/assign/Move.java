@@ -31,13 +31,13 @@ import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.actionable.Action;
-import com.b3dgs.lionengine.game.trait.actionable.Actionable;
-import com.b3dgs.lionengine.game.trait.actionable.ActionableModel;
-import com.b3dgs.lionengine.game.trait.assignable.Assign;
-import com.b3dgs.lionengine.game.trait.assignable.Assignable;
-import com.b3dgs.lionengine.game.trait.assignable.AssignableModel;
-import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
+import com.b3dgs.lionengine.game.object.trait.actionable.Action;
+import com.b3dgs.lionengine.game.object.trait.actionable.Actionable;
+import com.b3dgs.lionengine.game.object.trait.actionable.ActionableModel;
+import com.b3dgs.lionengine.game.object.trait.assignable.Assign;
+import com.b3dgs.lionengine.game.object.trait.assignable.Assignable;
+import com.b3dgs.lionengine.game.object.trait.assignable.AssignableModel;
+import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 
 /**
  * Move action.
@@ -99,7 +99,7 @@ class Move extends ObjectGame implements Action, Assign, Updatable, Renderable
     {
         for (final Pathfindable pathfindable : handler.get(Pathfindable.class))
         {
-            pathfindable.setDestination(cursor.getInTileX(), cursor.getInTileY());
+            pathfindable.setDestination(cursor);
         }
         cursor.setSurfaceId(0);
         state = actionable;

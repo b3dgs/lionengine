@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Resource;
+import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Viewer;
 
 /**
@@ -40,7 +41,7 @@ import com.b3dgs.lionengine.Viewer;
  * image.render(g);
  * </pre>
  */
-public interface Image extends Resource, Localizable, Renderable
+public interface Image extends Resource, Shape, Renderable
 {
     /**
      * Load surface. This function must be called if the surface is loaded from a file, else the surface will never be

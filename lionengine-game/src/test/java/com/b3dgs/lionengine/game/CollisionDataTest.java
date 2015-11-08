@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.collision.object.Collision;
 
 /**
  * Test collision data class.

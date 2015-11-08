@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilTemplate;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**

@@ -38,9 +38,9 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.configurer.ConfigTileConstraints;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.tile.ConfigTileConstraints;
 
 /**
  * Represents the export map tile constraints dialog.

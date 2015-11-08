@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.editor.dialog.AbstractProgressDialog;
-import com.b3dgs.lionengine.game.map.TileExtractor;
+import com.b3dgs.lionengine.game.tile.TileExtractor;
 
 /**
  * Sheets import progress dialog.

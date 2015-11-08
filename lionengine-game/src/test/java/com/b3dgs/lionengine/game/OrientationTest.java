@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game;
 
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**

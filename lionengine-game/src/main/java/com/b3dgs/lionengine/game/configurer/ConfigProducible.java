@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Represents the producible data from a configurer.
  * 
- * @see com.b3dgs.lionengine.game.trait.producible.Producible
+ * @see com.b3dgs.lionengine.game.object.trait.producible.Producible
  */
 public final class ConfigProducible
 {

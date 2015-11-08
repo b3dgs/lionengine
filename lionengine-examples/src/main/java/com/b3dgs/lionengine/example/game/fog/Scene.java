@@ -32,11 +32,11 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.FogOfWar;
+import com.b3dgs.lionengine.game.map.Fovable;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.trait.fovable.Fovable;
 
 /**
  * Game loop designed to handle our little world.

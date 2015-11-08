@@ -20,7 +20,7 @@ package com.b3dgs.lionengine;
 /**
  * Represents the surface of an image.
  */
-public interface ImageSurface
+public interface ImageSurface extends Surface
 {
     /**
      * Get the image surface.

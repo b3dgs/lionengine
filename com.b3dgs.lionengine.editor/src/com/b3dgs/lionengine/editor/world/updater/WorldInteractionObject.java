@@ -169,6 +169,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
 
     /**
      * Update the selection.
+     * 
      * @param oldMx The mouse old x.
      * @param oldMy The mouse old y.
      * @param mx The mouse x.

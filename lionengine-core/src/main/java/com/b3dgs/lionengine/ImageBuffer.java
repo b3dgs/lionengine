@@ -87,18 +87,4 @@ public interface ImageBuffer extends ImageSurface
      * @return array of RGB pixels.
      */
     int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize);
-
-    /**
-     * Get the surface width.
-     * 
-     * @return The surface width.
-     */
-    int getWidth();
-
-    /**
-     * Get the surface height.
-     * 
-     * @return The surface height.
-     */
-    int getHeight();
 }

@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
-import com.b3dgs.lionengine.game.collision.CollisionConstraint;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
 
 /**
  * Dialog for tile collision edition.

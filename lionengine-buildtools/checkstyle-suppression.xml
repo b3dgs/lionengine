@@ -4,6 +4,7 @@
 <suppressions>
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.ImageInfo"/>
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.Ratio" lines="31,33,35,37"/>
+    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.LionEngineException" lines="187"/>
     
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.Hq3x"/>
     <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.Hq2x"/>
@@ -24,12 +25,12 @@
     <suppress checks="RedundantModifier" files="com.b3dgs.lionengine.game.state.StateAnimationBased" lines="57"/>
     <suppress checks="EmptyBlock" files="com.b3dgs.lionengine.game.state.StateAnimationBased" lines="108"/>
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.map.astar.PathFinderImpl" lines="290"/>
-    <suppress checks="StaticImport" files="com.b3dgs.lionengine.game.map.TileTransition"/>
+    <suppress checks="StaticImport" files="com.b3dgs.lionengine.game.tile.TileTransition"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.collision.tile.TileCollisionModel" lines="102, 107, 111, 141, 146, 150"/>
     <suppress checks="[a-zA-Z0-9]*" files="com.b3dgs.lionengine.game.map.Border20Map"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.map.MapTilePathModel" lines="188"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.map.MapTilePathModel" lines="201, 206"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.map.TileCollisionModel" lines="104, 109, 113, 143, 148, 152"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="187"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="200, 205"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.PathFinderImpl" lines="287"/>
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ClientSocket" lines="63"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.network.ServerImpl"/>

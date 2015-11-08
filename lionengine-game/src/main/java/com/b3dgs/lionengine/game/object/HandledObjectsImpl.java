@@ -27,7 +27,6 @@ import java.util.Queue;
 import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Handler items implementation.

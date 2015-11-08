@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Object minimal representation. Defined by a unique ID, the object is designed to be handled by a {@link Handler} . To
@@ -44,8 +43,8 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * It is possible to retrieve external {@link Services} when object is being constructed.
  * </p>
  * <p>
- * Instead of using traditional interface implementation, it is possible to use {@link com.b3dgs.lionengine.game.trait}
- * system, in order to reduce class complexity. The {@link Handler} is designed to work well with that system.
+ * Instead of using traditional interface implementation, it is possible to use {@link Trait} system, in order to reduce
+ * class complexity. The {@link Handler} is designed to work well with that system.
  * </p>
  * 
  * @see Configurer
@@ -232,7 +231,7 @@ public class ObjectGame
             destroyed = true;
             for (final ObjectGameListener listener : listeners)
             {
-                listener.notifyDestroyed(this);
+                listener.notifyDestroyed(getId());
             }
         }
     }

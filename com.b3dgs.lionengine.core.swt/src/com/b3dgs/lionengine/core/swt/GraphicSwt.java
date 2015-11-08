@@ -25,7 +25,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 
 import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
@@ -112,10 +111,9 @@ final class GraphicSwt implements Graphic
     public void drawImage(ImageSurface image, Transform transform, int x, int y)
     {
         final Image buffer = image.getSurface();
-        final Rectangle size = buffer.getBounds();
-        final int width = (int) (size.width * transform.getScaleX());
-        final int height = (int) (size.height * transform.getScaleY());
-        gc.drawImage(buffer, x, y, size.width, size.height, x, y, width, height);
+        final int width = (int) (image.getWidth() * transform.getScaleX());
+        final int height = (int) (image.getHeight() * transform.getScaleY());
+        gc.drawImage(buffer, x, y, image.getWidth(), image.getHeight(), x, y, width, height);
     }
 
     @Override

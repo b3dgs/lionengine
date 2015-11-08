@@ -75,7 +75,7 @@ class Scene extends Sequence
         minimap.prepare();
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
-        size = map.getInTileWidth() * map.getTileWidth() - camera.getWidth();
+        size = map.getWidth() - camera.getWidth();
         speed = 3;
     }
 

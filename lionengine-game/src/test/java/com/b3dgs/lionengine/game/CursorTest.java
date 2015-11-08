@@ -25,7 +25,6 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.GraphicMock;
 

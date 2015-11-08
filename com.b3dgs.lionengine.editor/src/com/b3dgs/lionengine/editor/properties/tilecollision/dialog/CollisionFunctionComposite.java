@@ -26,8 +26,8 @@ import org.eclipse.swt.widgets.Group;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
-import com.b3dgs.lionengine.game.collision.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.CollisionFunctionType;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionType;
 
 /**
  * Represents the collision function edition.

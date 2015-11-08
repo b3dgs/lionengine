@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
-import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.collision.object.Collision;
 
 /**
  * Represents the collisions properties edition view.

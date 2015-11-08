@@ -26,14 +26,14 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.collision.object.Collidable;
+import com.b3dgs.lionengine.game.collision.object.CollidableListener;
+import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.trait.collidable.Collidable;
-import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
-import com.b3dgs.lionengine.game.trait.collidable.CollidableModel;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
 
 /**
  * Racket implementation.
@@ -127,7 +127,7 @@ class Racket extends ObjectGame implements Updatable, Renderable, CollidableList
     }
 
     @Override
-    public void notifyCollided(Collidable collidable)
+    public void notifyCollided(ObjectGame object)
     {
         // Nothing to do
     }

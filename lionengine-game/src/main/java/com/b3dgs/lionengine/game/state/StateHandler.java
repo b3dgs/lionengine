@@ -163,10 +163,10 @@ public class StateHandler implements Updatable
     {
         if (inputType.isAssignableFrom(input.getClass()))
         {
-            final State next = current.checkTransitions(factory, inputType.cast(input));
-            if (next != null)
+            final Enum<?> type = current.checkTransitions(inputType.cast(input));
+            if (type != null)
             {
-                return next;
+                return factory.getState(type);
             }
         }
         return current;

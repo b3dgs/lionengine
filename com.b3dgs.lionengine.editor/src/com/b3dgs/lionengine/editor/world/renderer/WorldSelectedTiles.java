@@ -24,10 +24,10 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.editor.world.updater.Marker;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.geom.Line;
 
 /**

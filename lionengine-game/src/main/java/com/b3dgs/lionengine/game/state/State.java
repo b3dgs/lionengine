@@ -75,11 +75,10 @@ public interface State extends Updatable
     /**
      * Check the transitions in order to find the next state.
      * 
-     * @param factory The state factory reference.
      * @param input The input device reference.
-     * @return The next state (<code>null</code> if none).
+     * @return The next state type (<code>null</code> if none).
      */
-    State checkTransitions(StateFactory factory, InputDevice input);
+    Enum<?> checkTransitions(InputDevice input);
 
     /**
      * Get the corresponding state enum value.

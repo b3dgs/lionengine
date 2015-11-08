@@ -27,21 +27,22 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.map.MapTilePath;
+import com.b3dgs.lionengine.game.layer.Layerable;
+import com.b3dgs.lionengine.game.layer.LayerableModel;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.actionable.Action;
-import com.b3dgs.lionengine.game.trait.actionable.Actionable;
-import com.b3dgs.lionengine.game.trait.actionable.ActionableModel;
-import com.b3dgs.lionengine.game.trait.assignable.Assign;
-import com.b3dgs.lionengine.game.trait.assignable.Assignable;
-import com.b3dgs.lionengine.game.trait.assignable.AssignableModel;
-import com.b3dgs.lionengine.game.trait.extractable.Extractable;
-import com.b3dgs.lionengine.game.trait.extractable.Extractor;
-import com.b3dgs.lionengine.game.trait.layerable.Layerable;
-import com.b3dgs.lionengine.game.trait.layerable.LayerableModel;
+import com.b3dgs.lionengine.game.object.trait.actionable.Action;
+import com.b3dgs.lionengine.game.object.trait.actionable.Actionable;
+import com.b3dgs.lionengine.game.object.trait.actionable.ActionableModel;
+import com.b3dgs.lionengine.game.object.trait.assignable.Assign;
+import com.b3dgs.lionengine.game.object.trait.assignable.Assignable;
+import com.b3dgs.lionengine.game.object.trait.assignable.AssignableModel;
+import com.b3dgs.lionengine.game.object.trait.extractable.Extractable;
+import com.b3dgs.lionengine.game.object.trait.extractable.Extractor;
+import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
 
 /**
  * Resources button action.
@@ -67,6 +68,8 @@ class Button extends ObjectGame implements Action, Assign, Updatable, Renderable
     private final Cursor cursor;
     /** Handler reference. */
     private final Handler handler;
+    /** Map reference. */
+    private final MapTile map;
     /** Map path reference. */
     private final MapTilePath mapPath;
     /** Current action state. */
@@ -86,6 +89,7 @@ class Button extends ObjectGame implements Action, Assign, Updatable, Renderable
         text = services.get(Text.class);
         cursor = services.get(Cursor.class);
         handler = services.get(Handler.class);
+        map = services.get(MapTile.class);
         mapPath = services.get(MapTilePath.class);
 
         actionable.setClickAction(Mouse.LEFT);
@@ -114,9 +118,11 @@ class Button extends ObjectGame implements Action, Assign, Updatable, Renderable
     @Override
     public void assign()
     {
+        final int tx = map.getInTileX(cursor);
+        final int ty = map.getInTileY(cursor);
         for (final Extractor extractor : handler.get(Extractor.class))
         {
-            for (final Integer id : mapPath.getObjectsId(cursor.getInTileX(), cursor.getInTileY()))
+            for (final Integer id : mapPath.getObjectsId(tx, ty))
             {
                 final ObjectGame object = handler.get(id);
                 if (object.hasTrait(Extractable.class))

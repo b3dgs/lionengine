@@ -24,8 +24,12 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileExtractor;
+import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -53,7 +57,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * @see MapTileFeature
  * @see Tile
  */
-public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTileFeature>
+public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurable<MapTileFeature>
 {
     /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
     int BLOC_SIZE = 256;
@@ -75,8 +79,8 @@ public interface MapTile extends MapTileRenderer, Renderable, Featurable<MapTile
      * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created.
      * Previous map data (if existing) will be cleared.
      * <p>
-     * {@link com.b3dgs.lionengine.game.configurer.ConfigTileSheets#FILENAME} and
-     * {@link com.b3dgs.lionengine.game.configurer.ConfigTileGroups#FILENAME} will be used as default, by calling
+     * {@link com.b3dgs.lionengine.game.tile.ConfigTileSheets#FILENAME} and
+     * {@link com.b3dgs.lionengine.game.tile.ConfigTileGroups#FILENAME} will be used as default, by calling
      * {@link #create(Media, Media, Media)}.
      * </p>
      * 

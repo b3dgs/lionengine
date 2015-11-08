@@ -21,7 +21,6 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Config;
-import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 

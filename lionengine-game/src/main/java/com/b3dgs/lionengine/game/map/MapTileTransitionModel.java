@@ -24,7 +24,10 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.configurer.ConfigTileTransitions;
+import com.b3dgs.lionengine.game.tile.ConfigTileTransitions;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileRef;
+import com.b3dgs.lionengine.game.tile.TileTransition;
 
 /**
  * Map tile transition model implementation.
@@ -104,11 +107,5 @@ public class MapTileTransitionModel implements MapTileTransition
                 }
             }
         }
-    }
-
-    @Override
-    public MapTile getMap()
-    {
-        return map;
     }
 }
