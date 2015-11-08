@@ -26,15 +26,10 @@ import org.eclipse.swt.widgets.Widget;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.swt.EventAction;
-import com.b3dgs.lionengine.core.swt.Keyboard;
-import com.b3dgs.lionengine.core.swt.KeyboardSwt;
-import com.b3dgs.lionengine.core.swt.ToolsSwt;
-
 /**
  * Test the keyboard class.
  */
-public class KeyboardAwtTest
+public class KeyboardSwtTest
 {
     /**
      * Create a key event.
@@ -58,6 +53,7 @@ public class KeyboardAwtTest
     @Test
     public void testNotPressed()
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final KeyboardSwt keyboard = new KeyboardSwt();
 
         Assert.assertFalse(keyboard.isPressed(Keyboard.ALT));
@@ -80,6 +76,7 @@ public class KeyboardAwtTest
     @Test
     public void testPressed()
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final KeyboardSwt keyboard = new KeyboardSwt();
         final Shell shell = new Shell(ToolsSwt.getDisplay());
 
@@ -94,8 +91,6 @@ public class KeyboardAwtTest
         keyboard.keyReleased(createEvent(shell, Keyboard.ALT));
         Assert.assertFalse(keyboard.isPressed(Keyboard.ALT));
         Assert.assertFalse(keyboard.used());
-
-        shell.dispose();
     }
 
     /**
@@ -104,6 +99,7 @@ public class KeyboardAwtTest
     @Test
     public void testDirections()
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final KeyboardSwt keyboard = new KeyboardSwt();
         final Shell shell = new Shell(ToolsSwt.getDisplay());
 
@@ -137,6 +133,7 @@ public class KeyboardAwtTest
     @Test
     public void testEvents()
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final KeyboardSwt keyboard = new KeyboardSwt();
         final Shell shell = new Shell(ToolsSwt.getDisplay());
         final AtomicBoolean left = new AtomicBoolean(false);

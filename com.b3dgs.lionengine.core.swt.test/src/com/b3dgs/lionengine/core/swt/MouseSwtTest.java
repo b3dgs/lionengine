@@ -22,34 +22,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.swt.EventAction;
-import com.b3dgs.lionengine.core.swt.Mouse;
-import com.b3dgs.lionengine.core.swt.MouseSwt;
-import com.b3dgs.lionengine.core.swt.ToolsSwt;
 
 /**
  * Test the mouse class.
  */
-public class MouseAwtTest
+public class MouseSwtTest
 {
-    /** Shell. */
-    private static final Shell SHELL = new Shell(ToolsSwt.getDisplay());
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        SHELL.dispose();
-    }
-
     /**
      * Create a configured test mouse.
      * 
@@ -70,18 +53,19 @@ public class MouseAwtTest
     /**
      * Create a mouse event.
      * 
+     * @param shell The shell reference.
      * @param click The click mouse.
      * @param x The horizontal location.
      * @param y The vertical location.
      * @return The event instance.
      */
-    private static MouseEvent createEvent(int click, int x, int y)
+    private static MouseEvent createEvent(Shell shell, int click, int x, int y)
     {
         final Event event = new Event();
         event.x = x;
         event.y = y;
         event.button = click;
-        event.widget = SHELL;
+        event.widget = shell;
         return new MouseEvent(event);
     }
 
@@ -91,25 +75,29 @@ public class MouseAwtTest
     @Test
     public void testClicked()
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final MouseSwt mouse = createMouse();
+        final Shell shell = new Shell(ToolsSwt.getDisplay());
 
         Assert.assertFalse(mouse.hasClicked(Mouse.LEFT));
-        mouse.mouseDown(createEvent(Mouse.LEFT, 0, 0));
+        mouse.mouseDown(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertTrue(mouse.hasClicked(Mouse.LEFT));
-        mouse.mouseUp(createEvent(Mouse.LEFT, 0, 0));
+        mouse.mouseUp(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertFalse(mouse.hasClicked(Mouse.LEFT));
 
         Assert.assertFalse(mouse.hasClicked(Mouse.RIGHT));
-        mouse.mouseDown(createEvent(Mouse.RIGHT, 0, 0));
+        mouse.mouseDown(createEvent(shell, Mouse.RIGHT, 0, 0));
         Assert.assertTrue(mouse.hasClicked(Mouse.RIGHT));
-        mouse.mouseUp(createEvent(Mouse.RIGHT, 0, 0));
+        mouse.mouseUp(createEvent(shell, Mouse.RIGHT, 0, 0));
         Assert.assertFalse(mouse.hasClicked(Mouse.RIGHT));
 
         Assert.assertFalse(mouse.hasClickedOnce(Mouse.MIDDLE));
-        mouse.mouseDown(createEvent(Mouse.MIDDLE, 0, 0));
+        mouse.mouseDown(createEvent(shell, Mouse.MIDDLE, 0, 0));
         Assert.assertTrue(mouse.hasClickedOnce(Mouse.MIDDLE));
-        mouse.mouseUp(createEvent(Mouse.MIDDLE, 0, 0));
+        mouse.mouseUp(createEvent(shell, Mouse.MIDDLE, 0, 0));
         Assert.assertFalse(mouse.hasClickedOnce(Mouse.MIDDLE));
+
+        shell.dispose();
     }
 
     /**
@@ -118,12 +106,16 @@ public class MouseAwtTest
     @Test
     public void testClick()
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final MouseSwt mouse = createMouse();
+        final Shell shell = new Shell(ToolsSwt.getDisplay());
 
-        mouse.mouseDown(createEvent(Mouse.MIDDLE, 0, 0));
+        mouse.mouseDown(createEvent(shell, Mouse.MIDDLE, 0, 0));
         Assert.assertEquals(Mouse.MIDDLE, mouse.getClick());
-        mouse.mouseUp(createEvent(Mouse.MIDDLE, 0, 0));
+        mouse.mouseUp(createEvent(shell, Mouse.MIDDLE, 0, 0));
         Assert.assertNotEquals(Mouse.MIDDLE, mouse.getClick());
+
+        shell.dispose();
     }
 
     /**
@@ -132,15 +124,19 @@ public class MouseAwtTest
     @Test
     public void testLocation()
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final MouseSwt mouse = createMouse();
+        final Shell shell = new Shell(ToolsSwt.getDisplay());
 
-        mouse.mouseMove(createEvent(Mouse.LEFT, 0, 0));
+        mouse.mouseMove(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertEquals(0, mouse.getX());
         Assert.assertEquals(0, mouse.getY());
 
-        mouse.mouseMove(createEvent(Mouse.LEFT, 10, 20));
+        mouse.mouseMove(createEvent(shell, Mouse.LEFT, 10, 20));
         Assert.assertEquals(10, mouse.getX());
         Assert.assertEquals(20, mouse.getY());
+
+        shell.dispose();
     }
 
     /**
@@ -149,15 +145,19 @@ public class MouseAwtTest
     @Test
     public void testMouse()
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final MouseSwt mouse = createMouse();
+        final Shell shell = new Shell(ToolsSwt.getDisplay());
 
-        mouse.mouseMove(createEvent(0, 0, 0));
-        mouse.mouseMove(createEvent(0, 0, 0));
+        mouse.mouseMove(createEvent(shell, 0, 0, 0));
+        mouse.mouseMove(createEvent(shell, 0, 0, 0));
         mouse.update(1.0);
         Assert.assertEquals(0, mouse.getMoveX());
         Assert.assertEquals(0, mouse.getMoveY());
         Assert.assertTrue(mouse.hasMoved());
         Assert.assertFalse(mouse.hasMoved());
+
+        shell.dispose();
     }
 
     /**
@@ -166,7 +166,9 @@ public class MouseAwtTest
     @Test
     public void testEvent()
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final MouseSwt mouse = createMouse();
+        final Shell shell = new Shell(ToolsSwt.getDisplay());
         final AtomicBoolean left = new AtomicBoolean(false);
 
         mouse.addActionPressed(Mouse.LEFT, new EventAction()
@@ -207,10 +209,12 @@ public class MouseAwtTest
         });
         Assert.assertFalse(left.get());
 
-        mouse.mouseDown(createEvent(Mouse.LEFT, 0, 0));
+        mouse.mouseDown(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertTrue(left.get());
 
-        mouse.mouseUp(createEvent(Mouse.LEFT, 0, 0));
+        mouse.mouseUp(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertFalse(left.get());
+
+        shell.dispose();
     }
 }

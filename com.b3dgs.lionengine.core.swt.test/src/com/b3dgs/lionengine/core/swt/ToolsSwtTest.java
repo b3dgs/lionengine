@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.swt.ToolsSwt;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -80,6 +79,7 @@ public class ToolsSwtTest
     @Test
     public void testUtility() throws IOException
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final Display display = ToolsSwt.getDisplay();
         final Image image = ToolsSwt.createImage(100, 100, SWT.TRANSPARENCY_NONE);
         Assert.assertNotNull(image);
@@ -144,6 +144,7 @@ public class ToolsSwtTest
     @Test
     public void testSave() throws IOException
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final Media media = Medias.create("image.png");
 
         InputStream input = null;
@@ -183,6 +184,7 @@ public class ToolsSwtTest
     @Test(expected = LionEngineException.class)
     public void testGetFail() throws IOException
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final Media media = Medias.create("image.xml");
         InputStream input = null;
         try
@@ -205,6 +207,7 @@ public class ToolsSwtTest
     @Test(expected = SWTException.class)
     public void testGetIoFail() throws IOException
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final Media media = Medias.create("raster.xml");
         InputStream input = null;
         try

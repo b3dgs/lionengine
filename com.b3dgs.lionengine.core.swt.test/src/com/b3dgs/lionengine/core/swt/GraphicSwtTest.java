@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.core.swt;
 
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.b3dgs.lionengine.GraphicTest;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.swt.FactoryGraphicSwt;
 
 /**
  * Test the graphic class.
@@ -35,5 +35,16 @@ public class GraphicSwtTest extends GraphicTest
     public static void setUp()
     {
         Graphics.setFactoryGraphic(new FactoryGraphicSwt());
+    }
+
+    /**
+     * Test the graphic.
+     */
+    @Override
+    @Test
+    public void testGraphic()
+    {
+        ScreenSwtTest.checkMultipleDisplaySupport();
+        super.testGraphic();
     }
 }

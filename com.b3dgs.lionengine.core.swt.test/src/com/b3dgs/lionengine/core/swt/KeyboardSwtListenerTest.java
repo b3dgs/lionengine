@@ -27,9 +27,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
-import com.b3dgs.lionengine.core.swt.Keyboard;
-import com.b3dgs.lionengine.core.swt.KeyboardSwtListener;
-import com.b3dgs.lionengine.core.swt.ToolsSwt;
 
 /**
  * Test the key listener.
@@ -58,6 +55,7 @@ public class KeyboardSwtListenerTest
     @Test
     public void testListener()
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final AtomicBoolean reachedPressed = new AtomicBoolean(false);
         final AtomicBoolean reachedReleased = new AtomicBoolean(false);
 

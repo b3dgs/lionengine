@@ -35,8 +35,6 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Screen;
 import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.core.swt.EngineSwt;
-import com.b3dgs.lionengine.core.swt.ToolsSwt;
 
 /**
  * Test the screen class.
@@ -53,7 +51,7 @@ public class ScreenSwtTest
     /**
      * Check multiple display capability.
      */
-    private static void checkMultipleDisplaySupport()
+    public static void checkMultipleDisplaySupport()
     {
         try
         {
@@ -61,7 +59,7 @@ public class ScreenSwtTest
         }
         catch (final SWTError error)
         {
-            Assume.assumeFalse(ERROR_MULTIPLE_DISPLAY, ERROR_MULTIPLE_DISPLAY.equals(error.getMessage()));
+            Assume.assumeFalse(ERROR_MULTIPLE_DISPLAY, ERROR_MULTIPLE_DISPLAY.contains(error.getMessage()));
         }
     }
 
@@ -119,7 +117,7 @@ public class ScreenSwtTest
     }
 
     /**
-     * Test the full screen.
+     * Test the full screen with wrong resolution.
      */
     @Test(timeout = TIMEOUT, expected = LionEngineException.class)
     public void testFullscreenFail()

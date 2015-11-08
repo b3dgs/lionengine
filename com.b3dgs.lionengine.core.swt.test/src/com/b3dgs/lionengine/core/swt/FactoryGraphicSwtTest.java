@@ -24,7 +24,6 @@ import org.junit.BeforeClass;
 
 import com.b3dgs.lionengine.core.FactoryGraphicTest;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.swt.FactoryGraphicSwt;
 
 /**
  * Test the factory graphic provider class.
@@ -39,6 +38,7 @@ public class FactoryGraphicSwtTest extends FactoryGraphicTest
     @BeforeClass
     public static void setUp() throws IOException
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         prepare();
         Graphics.setFactoryGraphic(new FactoryGraphicSwt());
         loadResources();
