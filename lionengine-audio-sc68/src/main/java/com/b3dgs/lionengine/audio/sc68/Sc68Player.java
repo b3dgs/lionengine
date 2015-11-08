@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.core.Medias;
 final class Sc68Player implements Sc68
 {
     /** Volume max. */
-    private static final int VOLUME_MAX = 0;
+    private static final int VOLUME_MAX = 100;
     /** Info playing. */
     private static final String INFO_PLAYING = "Playing SC68 track: ";
 
