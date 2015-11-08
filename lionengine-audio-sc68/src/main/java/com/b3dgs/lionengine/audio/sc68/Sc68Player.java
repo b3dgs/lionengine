@@ -18,23 +18,52 @@
 package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * SC68 player implementation.
  */
 final class Sc68Player implements Sc68
 {
-    /** Max volume. */
-    private static final int MAX_VOLUME = 100;
+    /** Volume max. */
+    private static final int VOLUME_MAX = 0;
+    /** Info playing. */
+    private static final String INFO_PLAYING = "Playing SC68 track: ";
 
+    /**
+     * Extract music from jar to temp file.
+     * 
+     * @param media The music media.
+     * @return The path of temp file.
+     */
+    private static String extractFromJar(Media media)
+    {
+        InputStream input = null;
+        try
+        {
+            input = media.getInputStream();
+            final File file = UtilFile.getCopy(media.getFile().getName(), input);
+            file.deleteOnExit();
+            return file.getAbsolutePath();
+        }
+        finally
+        {
+            UtilFile.safeClose(input);
+        }
+    }
+
+    /** Music cache. */
+    private final Map<Media, String> cache = new HashMap<Media, String>();
     /** Binding reference. */
     private final Sc68Binding binding;
 
@@ -51,6 +80,18 @@ final class Sc68Player implements Sc68
         this.binding = binding;
     }
 
+    /**
+     * Play the track.
+     * 
+     * @param track The track path.
+     * @param name The track name.
+     */
+    private void play(String track, String name)
+    {
+        Verbose.info(INFO_PLAYING, name);
+        binding.Sc68Play(track);
+    }
+
     /*
      * Sc68
      */
@@ -60,19 +101,18 @@ final class Sc68Player implements Sc68
     {
         Check.notNull(media);
 
-        final InputStream input = media.getInputStream();
-        try
+        final String name = media.getPath();
+        if (Medias.getResourcesLoader() != null)
         {
-            final File music = UtilFile.getCopy(media.getFile().getName(), input);
-            binding.Sc68Play(music.getCanonicalPath());
+            if (!cache.containsKey(media))
+            {
+                cache.put(media, extractFromJar(media));
+            }
+            play(cache.get(media), name);
         }
-        catch (final IOException exception)
+        else
         {
-            throw new LionEngineException(exception, media);
-        }
-        finally
-        {
-            UtilFile.safeClose(input);
+            play(media.getFile().getAbsolutePath(), name);
         }
     }
 
@@ -80,7 +120,7 @@ final class Sc68Player implements Sc68
     public void setVolume(int volume)
     {
         Check.superiorOrEqual(volume, 0);
-        Check.inferiorOrEqual(volume, MAX_VOLUME);
+        Check.inferiorOrEqual(volume, VOLUME_MAX);
 
         binding.Sc68SetVolume(volume);
     }
