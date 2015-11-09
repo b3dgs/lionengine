@@ -26,7 +26,7 @@ import org.junit.Test;
 public class RangeTest
 {
     /**
-     * Test range functions.
+     * Test range constructor.
      */
     @Test
     public void testRange()
@@ -38,10 +38,22 @@ public class RangeTest
         final Range rangeA = new Range(1, 3);
         Assert.assertTrue(rangeA.getMin() == 1);
         Assert.assertTrue(rangeA.getMax() == 3);
+    }
 
-        rangeA.setMin(0);
-        rangeA.setMax(4);
-        Assert.assertTrue(rangeA.getMin() == 0);
-        Assert.assertTrue(rangeA.getMax() == 4);
+    /**
+     * Test range inclusion.
+     */
+    @Test
+    public void testRangeIncludes()
+    {
+        final Range range = new Range(-1, 1);
+        Assert.assertTrue(range.includes(0));
+        Assert.assertTrue(range.includes(0.0));
+        Assert.assertTrue(range.includes(Double.MIN_NORMAL));
+
+        Assert.assertTrue(range.includes(range.getMin() + 0.000000000000001));
+        Assert.assertTrue(range.includes(range.getMax() - 0.000000000000001));
+        Assert.assertFalse(range.includes(range.getMax() + 0.000000000000001));
+        Assert.assertFalse(range.includes(range.getMin() - 0.000000000000001));
     }
 }

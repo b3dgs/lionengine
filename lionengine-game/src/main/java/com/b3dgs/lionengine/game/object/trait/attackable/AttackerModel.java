@@ -44,7 +44,7 @@ public class AttackerModel extends TraitModel implements Attacker
     /** Damages. */
     private final Damages damages = new Damages();
     /** Attack distance allowed. */
-    private final Range distAttack = new Range(1, 1);
+    private Range distAttack = new Range(1, 1);
     /** Animator reference. */
     private Animator animator;
     /** Transformable reference. */
@@ -112,7 +112,7 @@ public class AttackerModel extends TraitModel implements Attacker
      */
     private void checkTargetDistance(double dist)
     {
-        if (dist >= distAttack.getMin() && dist <= distAttack.getMax())
+        if (distAttack.includes(dist))
         {
             if (checker.canAttack())
             {
@@ -272,15 +272,13 @@ public class AttackerModel extends TraitModel implements Attacker
     @Override
     public void setAttackDistance(int min, int max)
     {
-        distAttack.setMin(min);
-        distAttack.setMax(max);
+        distAttack = new Range(min, max);
     }
 
     @Override
     public void setAttackDamages(int min, int max)
     {
-        damages.setMin(min);
-        damages.setMax(max);
+        damages.setDamages(min, max);
     }
 
     @Override

@@ -51,5 +51,6 @@ public class UtilRandomTest
         Assert.assertNotNull(Double.valueOf(UtilRandom.getRandomDouble()));
         Assert.assertTrue(UtilRandom.getRandomInteger(100) <= 100);
         Assert.assertTrue(UtilRandom.getRandomInteger(-100, 100) <= 100);
+        Assert.assertTrue(UtilRandom.getRandomInteger(Range.INT_POSITIVE_STRICT) >= 0);
     }
 }

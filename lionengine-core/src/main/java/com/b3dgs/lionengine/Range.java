@@ -19,6 +19,10 @@ package com.b3dgs.lionengine;
 
 /**
  * Standard range description, with a minimum and a maximum.
+ * 
+ * <p>
+ * This class is Thread-Safe.
+ * </p>
  */
 public class Range
 {
@@ -28,48 +32,32 @@ public class Range
     public static final Range INT_POSITIVE_STRICT = new Range(1, Integer.MAX_VALUE);
 
     /** Minimum value. */
-    private int min;
+    private final int min;
     /** Maximum value. */
-    private int max;
+    private final int max;
 
     /**
-     * Create an empty range.
+     * Create a blank range where min and max are equals to <code>0</code>.
      */
     public Range()
     {
-        min = 0;
-        max = 0;
+        this(0, 0);
     }
 
     /**
      * Create a range.
      * 
-     * @param min The minimum value.
-     * @param max The maximum value.
+     * @param min The minimum value (must be inferior or equal to max).
+     * @param max The maximum value (must be superior or equal to min).
+     * 
+     * @throws LionEngineException If illegal arguments.
      */
     public Range(int min, int max)
     {
-        this.min = min;
-        this.max = max;
-    }
+        Check.inferiorOrEqual(min, max);
+        Check.superiorOrEqual(max, min);
 
-    /**
-     * Set minimum value.
-     * 
-     * @param min The minimum value.
-     */
-    public void setMin(int min)
-    {
         this.min = min;
-    }
-
-    /**
-     * Set maximum value.
-     * 
-     * @param max The maximum value.
-     */
-    public void setMax(int max)
-    {
         this.max = max;
     }
 
@@ -91,5 +79,27 @@ public class Range
     public int getMax()
     {
         return max;
+    }
+
+    /**
+     * Check if value is inside range, min and max included.
+     * 
+     * @param value The value to check.
+     * @return <code>true</code> if value is inside range, <code>false</code> else.
+     */
+    public boolean includes(int value)
+    {
+        return UtilMath.isBetween(value, min, max);
+    }
+
+    /**
+     * Check if value is inside range, min and max included.
+     * 
+     * @param value The value to check.
+     * @return <code>true</code> if value is inside range, <code>false</code> else.
+     */
+    public boolean includes(double value)
+    {
+        return UtilMath.isBetween(value, min, max);
     }
 }

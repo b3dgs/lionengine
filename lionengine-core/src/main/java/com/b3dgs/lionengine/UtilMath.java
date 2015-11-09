@@ -64,7 +64,19 @@ public final class UtilMath
      */
     public static boolean isBetween(double value, double min, double max)
     {
-        return value >= min && value <= max;
+        return Double.compare(value, min) >= 0 && Double.compare(value, max) <= 0;
+    }
+
+    /**
+     * Check if value is between an interval.
+     * 
+     * @param value The value to check.
+     * @param range The range to compare to.
+     * @return <code>true</code> if between, <code>false</code> else.
+     */
+    public static boolean isBetween(double value, Range range)
+    {
+        return isBetween(value, range.getMin(), range.getMax());
     }
 
     /**

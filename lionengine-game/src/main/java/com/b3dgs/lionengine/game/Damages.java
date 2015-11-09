@@ -22,45 +22,64 @@ import com.b3dgs.lionengine.UtilRandom;
 
 /**
  * Represents a container designed to return a random value between a range.
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final Damages dmg = new Damages(1, 3);
- * dmg.getMax(); // returns 3
- * dmg.getRandom(); // returns a value between 1 and 3 included
- * dmg.getLast(); // returns the last value return by getRandom()
- * dmg.setMin(5);
- * dmg.setMax(10);
- * dmg.getMin(); // returns 5
- * dmg.getRandom(); // returns a value between 5 and 10 included
- * </pre>
  */
-public class Damages extends Range
+public class Damages
 {
+    /** Damages range. */
+    private Range range;
     /** Last damages. */
     private int last;
 
     /**
-     * Create a damage handler.
+     * Create a damages handler with zero as default.
      */
     public Damages()
     {
-        super();
+        range = new Range(0, 0);
         last = 0;
     }
 
     /**
-     * Create a damages handler.
+     * Create a damages handler with initial range.
      * 
      * @param min The minimum damages value.
      * @param max The maximum damages value.
      */
     public Damages(int min, int max)
     {
-        super(min, max);
+        range = new Range(min, max);
         last = 0;
+    }
+
+    /**
+     * Set the minimum damage value.
+     * 
+     * @param min The minimum damage value.
+     */
+    public void setMin(int min)
+    {
+        range = new Range(min, range.getMax());
+    }
+
+    /**
+     * Set the maximum damage value.
+     * 
+     * @param max The maximum damage value.
+     */
+    public void setMax(int max)
+    {
+        range = new Range(range.getMin(), max);
+    }
+
+    /**
+     * Set the maximum damage value.
+     * 
+     * @param min The minimum damage value.
+     * @param max The maximum damage value.
+     */
+    public void setDamages(int min, int max)
+    {
+        range = new Range(min, max);
     }
 
     /**
@@ -70,17 +89,47 @@ public class Damages extends Range
      */
     public int getRandom()
     {
-        last = UtilRandom.getRandomInteger(getMin(), getMax());
+        last = UtilRandom.getRandomInteger(range);
         return last;
     }
 
     /**
-     * Get last damages.
+     * Get last damages value.
      * 
-     * @return The last damages.
+     * @return The last damages value.
      */
     public int getLast()
     {
         return last;
+    }
+
+    /**
+     * Get minimum damages value.
+     * 
+     * @return The minimum damages value.
+     */
+    public int getMin()
+    {
+        return range.getMin();
+    }
+
+    /**
+     * Get maximum damages value.
+     * 
+     * @return The maximum damages value.
+     */
+    public int getMax()
+    {
+        return range.getMax();
+    }
+
+    /**
+     * Get the damages range.
+     * 
+     * @return The damages range.
+     */
+    public Range getDamages()
+    {
+        return new Range(range.getMin(), range.getMax());
     }
 }
