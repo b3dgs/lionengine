@@ -22,14 +22,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.tile.ConfigTileConstraints;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileConstraint;
 import com.b3dgs.lionengine.game.tile.TileRef;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Find all tiles constraints and extract them to an XML file.
@@ -37,26 +33,38 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class ConstraintsExtractor
 {
-    /** Map reference. */
-    private final MapTile map;
     /** Constraints found. */
     private final Map<TileRef, Collection<TileConstraint>> constraints;
 
     /**
      * Create the extractor.
-     * 
-     * @param map The map reference.
      */
-    public ConstraintsExtractor(MapTile map)
+    public ConstraintsExtractor()
     {
-        this.map = map;
         constraints = new HashMap<TileRef, Collection<TileConstraint>>();
     }
 
     /**
-     * Check map tile constraints.
+     * Check maps tile constraints and concatenate data.
+     * 
+     * @param maps The maps list.
+     * @return The constraints found.
      */
-    public void check()
+    public Map<TileRef, Collection<TileConstraint>> check(MapTile... maps)
+    {
+        for (final MapTile map : maps)
+        {
+            checkMap(map);
+        }
+        return constraints;
+    }
+
+    /**
+     * Check map tile constraints.
+     * 
+     * @param map The map reference.
+     */
+    private void checkMap(MapTile map)
     {
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
@@ -65,31 +73,21 @@ public class ConstraintsExtractor
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
                 {
-                    checkNeighbor(tile, tx, ty);
+                    checkNeighbor(map, tile, tx, ty);
                 }
             }
         }
     }
 
     /**
-     * Export constraints found.
-     * 
-     * @param media The export media.
-     */
-    public void export(Media media)
-    {
-        final XmlNode root = ConfigTileConstraints.export(constraints);
-        Xml.save(root, media);
-    }
-
-    /**
      * Check the tile neighbors.
      * 
+     * @param map The map reference.
      * @param tile The current tile.
      * @param tx The current horizontal tile index.
      * @param ty The current vertical tile index.
      */
-    private void checkNeighbor(Tile tile, int tx, int ty)
+    private void checkNeighbor(MapTile map, Tile tile, int tx, int ty)
     {
         final TileRef tileRef = new TileRef(tile.getSheet(), tile.getNumber());
         for (int h = tx - 1; h <= tx + 1; h++)
@@ -97,7 +95,7 @@ public class ConstraintsExtractor
             for (int v = ty - 1; v <= ty + 1; v++)
             {
                 final Orientation orientation = Orientation.get(tx, ty, h, v);
-                checkOrientation(orientation, tileRef, h, v);
+                checkOrientation(map, orientation, tileRef, h, v);
             }
         }
     }
@@ -105,12 +103,13 @@ public class ConstraintsExtractor
     /**
      * Check the orientation.
      * 
+     * @param map The map reference.
      * @param orientation The current orientation.
      * @param tileRef The current tile.
      * @param tx The current horizontal tile index.
      * @param ty The current vertical tile index.
      */
-    private void checkOrientation(Orientation orientation, TileRef tileRef, int tx, int ty)
+    private void checkOrientation(MapTile map, Orientation orientation, TileRef tileRef, int tx, int ty)
     {
         if (orientation != null)
         {

@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.editor.dialog.map.constraint;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -25,14 +27,19 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.dialog.sheets.imports.SheetsImportDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
@@ -40,7 +47,10 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.tile.ConfigTileConstraints;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the export map tile constraints dialog.
@@ -50,6 +60,12 @@ public class MapConstraintsExportDialog extends AbstractDialog
     /** Icon. */
     public static final Image ICON = UtilIcon.get("dialog", "import.png");
 
+    /** Level rip list. */
+    private Tree levelRips;
+    /** Add level rip. */
+    private Button addLevelRip;
+    /** Remove level rip. */
+    private Button removeLevelRip;
     /** Constraints location. */
     private Text constraintsLocationText;
     /** Constraints config file. */
@@ -67,6 +83,32 @@ public class MapConstraintsExportDialog extends AbstractDialog
         dialog.setMinimumSize(512, 160);
         finish.setEnabled(true);
         finish.forceFocus();
+    }
+
+    /**
+     * Create the add level rip button.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createButtonAdd(Composite parent)
+    {
+        addLevelRip = new Button(parent, SWT.PUSH);
+        addLevelRip.setImage(ObjectList.ICON_ADD);
+        addLevelRip.setToolTipText(com.b3dgs.lionengine.editor.dialog.sheets.imports.Messages.AddLevelRip);
+        UtilButton.setAction(addLevelRip, () -> onAddLevelRip());
+    }
+
+    /**
+     * Create the remove level rip button.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createButtonRemove(Composite parent)
+    {
+        removeLevelRip = new Button(parent, SWT.PUSH);
+        removeLevelRip.setImage(ObjectList.ICON_REMOVE);
+        removeLevelRip.setToolTipText(com.b3dgs.lionengine.editor.dialog.sheets.imports.Messages.RemoveLevelRip);
+        UtilButton.setAction(removeLevelRip, () -> onRemoveLevelRip());
     }
 
     /**
@@ -136,6 +178,59 @@ public class MapConstraintsExportDialog extends AbstractDialog
         UtilButton.setAction(browse, () -> browseConstraintsLocation());
     }
 
+    /**
+     * Called on add level rip action.
+     */
+    private void onAddLevelRip()
+    {
+        final File[] files = UtilDialog.selectResourceFiles(dialog, new String[]
+        {
+            com.b3dgs.lionengine.editor.dialog.sheets.imports.Messages.LevelRipFileFilter
+        }, SheetsImportDialog.LEVEL_RIP_FILTER);
+        final Project project = Project.getActive();
+        for (final File file : files)
+        {
+            final TreeItem item = new TreeItem(levelRips, SWT.NONE);
+            item.setText(file.getPath());
+
+            final Media media = project.getResourceMedia(file);
+            item.setData(media);
+
+            if (!finish.isEnabled())
+            {
+                checkFinish();
+            }
+        }
+    }
+
+    /**
+     * Called on remove a level rip action.
+     */
+    private void onRemoveLevelRip()
+    {
+        for (final TreeItem item : levelRips.getSelection())
+        {
+            item.setData(null);
+            item.dispose();
+        }
+        if (levelRips.getItems().length == 0)
+        {
+            checkFinish();
+        }
+    }
+
+    /**
+     * Check for finish button enabling.
+     */
+    private void checkFinish()
+    {
+        final boolean hasRips = levelRips.getItems().length > 0;
+        final boolean finished = hasRips;
+
+        finish.setEnabled(finished);
+        tipsLabel.setVisible(!finished);
+    }
+
     /*
      * AbstractDialog
      */
@@ -143,16 +238,40 @@ public class MapConstraintsExportDialog extends AbstractDialog
     @Override
     protected void createContent(Composite content)
     {
+        final Group area = new Group(content, SWT.NONE);
+        area.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        area.setLayout(new GridLayout(1, false));
+        area.setText(com.b3dgs.lionengine.editor.dialog.sheets.imports.Messages.RipsList);
+
+        levelRips = new Tree(area, SWT.SINGLE);
+        levelRips.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        final Composite buttons = new Composite(area, SWT.NONE);
+        buttons.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        buttons.setLayout(new GridLayout(3, false));
+
+        final Label label = new Label(buttons, SWT.NONE);
+        label.setText(com.b3dgs.lionengine.editor.dialog.sheets.imports.Messages.AddRemoveRip);
+
+        createButtonAdd(buttons);
+        createButtonRemove(buttons);
+
         createConstraintsLocationArea(content);
     }
 
     @Override
     protected void onFinish()
     {
-        final MapTile map = WorldModel.INSTANCE.getMap();
-        final ConstraintsExtractor extractor = new ConstraintsExtractor(map);
-
-        extractor.check();
-        extractor.export(constraintsConfig);
+        final Collection<MapTile> maps = new ArrayList<>();
+        for (final TreeItem item : levelRips.getItems())
+        {
+            final Media rip = (Media) item.getData();
+            final MapTile map = new MapTileGame();
+            map.create(rip);
+            maps.add(map);
+        }
+        final ConstraintsExtractor extractor = new ConstraintsExtractor();
+        final XmlNode root = ConfigTileConstraints.export(extractor.check(maps.toArray(new MapTile[maps.size()])));
+        Xml.save(root, constraintsConfig);
     }
 }
