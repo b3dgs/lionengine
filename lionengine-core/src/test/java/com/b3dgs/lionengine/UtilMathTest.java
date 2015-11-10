@@ -61,9 +61,6 @@ public class UtilMathTest
         Assert.assertFalse(UtilMath.isBetween(-0.1, 0.0, 0.2));
 
         Assert.assertFalse(UtilMath.isBetween(0.1, 0.2, 0.1));
-
-        Assert.assertTrue(UtilMath.isBetween(0, Range.INT_POSITIVE));
-        Assert.assertFalse(UtilMath.isBetween(-0.1, Range.INT_POSITIVE_STRICT));
     }
 
     /**

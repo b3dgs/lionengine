@@ -30,6 +30,8 @@ public class Range
     public static final Range INT_POSITIVE = new Range(0, Integer.MAX_VALUE);
     /** Positive integer numbers excluding 0. */
     public static final Range INT_POSITIVE_STRICT = new Range(1, Integer.MAX_VALUE);
+    /** Invalid parameter. */
+    private static final String ERROR_PARAMETER = "Invalid parameter !";
 
     /** Minimum value. */
     private final int min;
@@ -54,9 +56,10 @@ public class Range
      */
     public Range(int min, int max)
     {
-        Check.inferiorOrEqual(min, max);
-        Check.superiorOrEqual(max, min);
-
+        if (min > max || max < min)
+        {
+            throw new LionEngineException(ERROR_PARAMETER);
+        }
         this.min = min;
         this.max = max;
     }
