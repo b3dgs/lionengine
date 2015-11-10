@@ -76,6 +76,8 @@ public final class Constant
     public static final int BYTE_2 = 8;
     /** Byte 1. */
     public static final int BYTE_1 = 0;
+    /** Half value. */
+    public static final double HALF = 0.5;
     /** Error system property. */
     private static final String ERROR_PROPERTY = "Unable to get system property: ";
 

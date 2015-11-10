@@ -239,7 +239,7 @@ class SpriteImpl implements Sprite
     public final void filter(Filter filter)
     {
         lazySurfaceBackup();
-        surface = Graphics.applyFilter(surfaceOriginal, filter);
+        surface = filter.filter(surfaceOriginal);
         width = surface.getWidth();
         height = surface.getHeight();
     }

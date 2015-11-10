@@ -30,9 +30,7 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
-import java.awt.image.ConvolveOp;
 import java.awt.image.DataBufferInt;
-import java.awt.image.Kernel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -56,13 +54,6 @@ public final class ToolsAwt
     private static final GraphicsDevice DEV = ENV.getDefaultScreenDevice();
     /** Graphics configuration. */
     private static final GraphicsConfiguration CONFIG = DEV.getDefaultConfiguration();
-    /** Fraction. */
-    private static final float DIV = 1 / 9f;
-    /** Bilinear filter. */
-    private static final float[] BILINEAR_FILTER = new float[]
-    {
-        DIV, DIV, DIV, DIV, DIV, DIV, DIV, DIV, DIV
-    };
 
     /**
      * Get the image transparency equivalence.
@@ -198,19 +189,6 @@ public final class ToolsAwt
     public static int[] getImageData(BufferedImage image)
     {
         return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-    }
-
-    /**
-     * Apply a bilinear filter to the image.
-     * 
-     * @param image The image reference.
-     * @return The filtered image.
-     */
-    public static BufferedImage applyBilinearFilter(BufferedImage image)
-    {
-        final Kernel kernel = new Kernel(3, 3, BILINEAR_FILTER);
-        final ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
-        return op.filter(image, null);
     }
 
     /**

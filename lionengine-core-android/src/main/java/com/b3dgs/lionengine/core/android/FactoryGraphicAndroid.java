@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core.android;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Media;
@@ -123,12 +122,6 @@ public final class FactoryGraphicAndroid implements FactoryGraphic
     public ImageBuffer flipVertical(ImageBuffer imageBuffer)
     {
         return UtilityImage.flipVertical(imageBuffer);
-    }
-
-    @Override
-    public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter)
-    {
-        return UtilityImage.applyFilter(imageBuffer, filter);
     }
 
     @Override

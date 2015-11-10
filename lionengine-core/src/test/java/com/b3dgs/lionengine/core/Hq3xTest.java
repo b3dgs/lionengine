@@ -83,8 +83,8 @@ public class Hq3xTest
                 }
             }
         }
-        final Hq3x hq3x = new Hq3x(image);
-        final ImageBuffer filtered = hq3x.getScaledImage();
+        final Hq3x hq3x = new Hq3x();
+        final ImageBuffer filtered = hq3x.filter(image);
 
         Assert.assertNotEquals(image, filtered);
         Assert.assertEquals(image.getWidth() * 3, filtered.getWidth());

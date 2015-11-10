@@ -84,7 +84,7 @@ public final class Config
      */
     public Config(Resolution output, int depth, boolean windowed)
     {
-        this(output, depth, windowed, Filter.NONE);
+        this(output, depth, windowed, Filter.NO_FILTER);
     }
 
     /**

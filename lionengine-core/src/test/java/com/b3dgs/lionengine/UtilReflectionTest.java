@@ -24,10 +24,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Hq2x;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.mock.ImageBufferMock;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -65,8 +63,7 @@ public class UtilReflectionTest
     @Test(expected = LionEngineException.class)
     public void testCreateIllegalArgument() throws NoSuchMethodException
     {
-        final ImageBuffer buffer = new ImageBufferMock(320, 240, Transparency.BITMASK);
-        Assert.assertNull(UtilReflection.create(Hq2x.class, UtilReflection.getParamTypes(buffer), buffer, buffer));
+        Assert.assertNull(UtilReflection.create(String.class, UtilReflection.getParamTypes("test"), "test", "test"));
     }
 
     /**
@@ -77,8 +74,7 @@ public class UtilReflectionTest
     @Test(expected = LionEngineException.class)
     public void testCreateConstructorError() throws NoSuchMethodException
     {
-        final ImageBuffer buffer = new ImageBufferMock(320, 240, Transparency.BITMASK);
-        Assert.assertNull(UtilReflection.create(Hq2x.class, UtilReflection.getParamTypes(buffer), (ImageBuffer) null));
+        Assert.assertNull(UtilReflection.create(String.class, UtilReflection.getParamTypes("test"), (String) null));
     }
 
     /**

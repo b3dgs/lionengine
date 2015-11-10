@@ -25,7 +25,6 @@ import org.eclipse.swt.graphics.Image;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
@@ -37,8 +36,6 @@ import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.FactoryGraphic;
-import com.b3dgs.lionengine.core.Hq2x;
-import com.b3dgs.lionengine.core.Hq3x;
 import com.b3dgs.lionengine.core.Screen;
 
 /**
@@ -172,32 +169,6 @@ public final class FactoryGraphicSwt implements FactoryGraphic
     public ImageBuffer flipVertical(ImageBuffer image)
     {
         return new ImageBufferSwt(ToolsSwt.flipVertical((Image) image.getSurface()));
-    }
-
-    @Override
-    public ImageBuffer applyFilter(ImageBuffer image, Filter filter)
-    {
-        final ImageBuffer filtered;
-        switch (filter)
-        {
-            case NONE:
-                filtered = image;
-                break;
-            case BILINEAR:
-                filtered = new ImageBufferSwt(ToolsSwt.applyBilinearFilter((Image) image.getSurface()));
-                break;
-            case HQ2X:
-                final Hq2x hq2x = new Hq2x(image);
-                filtered = hq2x.getScaledImage();
-                break;
-            case HQ3X:
-                final Hq3x hq3x = new Hq3x(image);
-                filtered = hq3x.getScaledImage();
-                break;
-            default:
-                throw new LionEngineException(filter);
-        }
-        return filtered;
     }
 
     @Override

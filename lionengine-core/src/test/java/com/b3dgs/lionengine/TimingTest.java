@@ -30,7 +30,7 @@ public class TimingTest
     /** Pause time value. */
     private static final long PAUSE = 50L;
     /** Time precision (latency margin). */
-    private static final long PRECISION = 5L;
+    private static final long PRECISION = 10L;
 
     /**
      * Test the start timing.

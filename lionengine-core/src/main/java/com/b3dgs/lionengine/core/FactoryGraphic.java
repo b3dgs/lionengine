@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
@@ -145,16 +144,6 @@ public interface FactoryGraphic
      * @return The flipped image buffer as a new instance.
      */
     ImageBuffer flipVertical(ImageBuffer image);
-
-    /**
-     * Apply a filter to the input image buffer.
-     * 
-     * @param image The input image.
-     * @param filter The filter to use.
-     * @return The filtered image as a new instance.
-     * @throws LionEngineException If the filter is not supported.
-     */
-    ImageBuffer applyFilter(ImageBuffer image, Filter filter);
 
     /**
      * Save an image into a file.

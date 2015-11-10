@@ -43,7 +43,7 @@ public class ConfigTest
     @Test(expected = LionEngineException.class)
     public void testFailureResolution()
     {
-        Assert.assertNotNull(new Config(null, 1, true, Filter.NONE));
+        Assert.assertNotNull(new Config(null, 1, true, Filter.NO_FILTER));
     }
 
     /**
@@ -52,7 +52,7 @@ public class ConfigTest
     @Test(expected = LionEngineException.class)
     public void testFailureDepth()
     {
-        Assert.assertNotNull(new Config(OUTPUT, 0, true, Filter.NONE));
+        Assert.assertNotNull(new Config(OUTPUT, 0, true, Filter.NO_FILTER));
     }
 
     /**
@@ -81,7 +81,7 @@ public class ConfigTest
     {
         Assert.assertEquals(32, CONFIG.getDepth());
         Assert.assertTrue(CONFIG.isWindowed());
-        Assert.assertEquals(Filter.NONE, CONFIG.getFilter());
+        Assert.assertEquals(Filter.NO_FILTER, CONFIG.getFilter());
         Assert.assertEquals(OUTPUT, CONFIG.getOutput());
     }
 

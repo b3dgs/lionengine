@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.core;
 
+import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageBuffer;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
 
 /**
@@ -26,42 +28,43 @@ import com.b3dgs.lionengine.Transparency;
  * This class is Thread-Safe.
  * </p>
  */
-public final class Hq3x
+public final class Hq3x implements Filter
 {
     /** Scale factor. */
     public static final int SCALE = 3;
 
-    /** Source data array. */
-    private final int[] srcData;
-    /** Width. */
-    private final int width;
-    /** Height. */
-    private final int height;
-
     /**
      * Create an Hq3x filter.
-     * 
-     * @param srcImage The buffer source.
      */
-    public Hq3x(ImageBuffer srcImage)
+    public Hq3x()
     {
-        width = srcImage.getWidth();
-        height = srcImage.getHeight();
-        srcData = new int[width * height];
-        srcImage.getRgb(0, 0, width, height, srcData, 0, width);
+        // Nothing to do
     }
 
-    /**
-     * Filtered buffer.
-     * 
-     * @return The filtered buffer.
+    /*
+     * Filter
      */
-    public ImageBuffer getScaledImage()
+
+    @Override
+    public ImageBuffer filter(ImageBuffer source)
     {
+        final int width = source.getWidth();
+        final int height = source.getHeight();
+        final int[] srcData = new int[width * height];
+        source.getRgb(0, 0, width, height, srcData, 0, width);
+
         final RawScale3x scaler = new RawScale3x(srcData, width, height);
         final ImageBuffer image = Graphics.createImageBuffer(width * SCALE, height * SCALE, Transparency.OPAQUE);
         image.setRgb(0, 0, width * SCALE, height * SCALE, scaler.getScaledData(), 0, width * SCALE);
         return image;
+    }
+
+    @Override
+    public Transform getTransform(double scaleX, double scaleY)
+    {
+        final Transform transform = Graphics.createTransform();
+        transform.scale(scaleX / SCALE, scaleY / SCALE);
+        return transform;
     }
 
     /**

@@ -26,7 +26,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.GraphicTest;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
@@ -317,45 +316,6 @@ public class GraphicsTest
         for (final ImageBuffer image : split)
         {
             image.dispose();
-        }
-    }
-
-    /**
-     * Test apply filter.
-     */
-    @Test
-    public void testApplyFilter()
-    {
-        for (final Filter filter : Filter.values())
-        {
-            final ImageBuffer filtered = Graphics.applyFilter(image, filter);
-            final int scale;
-            switch (filter)
-            {
-                case NONE:
-                    Assert.assertEquals(image, filtered);
-                    scale = 1;
-                    break;
-                case BILINEAR:
-                    Assert.assertNotEquals(image, filtered);
-                    scale = 1;
-                    break;
-                case HQ2X:
-                    Assert.assertNotEquals(image, filtered);
-                    scale = Hq2x.SCALE;
-                    break;
-                case HQ3X:
-                    Assert.assertNotEquals(image, filtered);
-                    scale = Hq3x.SCALE;
-                    break;
-                default:
-                    scale = 0;
-                    Assert.fail();
-            }
-            Assert.assertEquals(image.getWidth() * scale, filtered.getWidth());
-            Assert.assertEquals(image.getHeight() * scale, filtered.getHeight());
-
-            filtered.dispose();
         }
     }
 

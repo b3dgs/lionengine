@@ -24,7 +24,6 @@ import java.io.OutputStream;
 import android.graphics.Bitmap;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -160,18 +159,6 @@ public final class UtilityImage
     static ImageBuffer flipVertical(ImageBuffer image)
     {
         return new ImageBufferAndroid(ToolsAndroid.flipVertical((Bitmap) image.getSurface()));
-    }
-
-    /**
-     * Apply a filter to the input image.
-     * 
-     * @param image The input image.
-     * @param filter The filter to use.
-     * @return The filtered image as a new instance.
-     */
-    static ImageBuffer applyFilter(ImageBuffer image, Filter filter)
-    {
-        return new ImageBufferAndroid(ToolsAndroid.applyFilter((Bitmap) image.getSurface(), filter));
     }
 
     /**

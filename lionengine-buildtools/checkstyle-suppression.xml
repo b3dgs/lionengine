@@ -8,18 +8,20 @@
     
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.Hq3x"/>
     <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.Hq2x"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.Bilinear" lines="78"/>
+    <suppress checks="NestedForDepth" files="com.b3dgs.lionengine.core.Blur" lines="147"/>
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.ScreenAwt" lines="155, 205"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="412"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.FactoryGraphicAwt" lines="46"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="390"/>
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.FactoryGraphicAwt" lines="43"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.swing.UtilitySwing"/>
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.Theme" lines="81"/>
     
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ScreenSwt"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ToolsSwt"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="401"/>
-    <suppress checks="FanOut" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="47"/>
-    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="47"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="365"/>
+    <suppress checks="FanOut" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="44"/>
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="44"/>
     
     <suppress checks="ThrowsCount" files="com.b3dgs.lionengine.game.object.Factory" lines="71"/>
     <suppress checks="RedundantModifier" files="com.b3dgs.lionengine.game.state.StateAnimationBased" lines="57"/>

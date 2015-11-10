@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.awt.ToolsAwt;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -87,7 +86,6 @@ public class ToolsAwtTest
         Assert.assertNotNull(ToolsAwt.resize(image, 10, 10));
         Assert.assertNotNull(ToolsAwt.rotate(image, 90));
         Assert.assertNotNull(ToolsAwt.splitImage(image, 1, 1));
-        Assert.assertNotNull(ToolsAwt.applyBilinearFilter(image));
         Assert.assertNotNull(ToolsAwt.applyMask(image, ColorRgba.BLACK.getRgba()));
         Assert.assertNotNull(ToolsAwt.applyMask(image, ColorRgba.WHITE.getRgba()));
 

@@ -328,27 +328,70 @@ public class LoaderTest
     }
 
     /**
-     * Test the loader with a bilinear filter.
+     * Test the loader with screen direct.
      */
     @Test
-    public void testFilterBilinear()
+    public void testDirect()
     {
-        final Resolution output = new Resolution(320, 240, 0);
-        final Config config = new Config(output, 16, true, Filter.BILINEAR);
+        final Resolution output = new Resolution(320, 240, 60);
+        final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();
         loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
-     * Test the loader with a bilinear filter and screen scaled.
+     * Test the loader with screen scaled.
      */
     @Test
-    public void testFilterBilinearScaled()
+    public void testScaled()
     {
         final Resolution output = new Resolution(640, 480, 0);
-        final Config config = new Config(output, 16, true, Filter.BILINEAR);
+        final Config config = new Config(output, 16, true, Filter.NO_FILTER);
         final Loader loader = new Loader();
         loader.start(config, SequenceSingleMock.class).await();
+    }
+
+    /**
+     * Test the loader with bilinear filter.
+     */
+    @Test
+    public void testBilinear()
+    {
+        final Resolution output = new Resolution(640, 480, 0);
+        final Config config = new Config(output, 16, true, new Bilinear());
+        final Loader loader = new Loader();
+        loader.start(config, SequenceSingleMock.class).await();
+    }
+
+    /**
+     * Test the loader with blur filter.
+     */
+    @Test
+    public void testBlur()
+    {
+        final Resolution output = new Resolution(640, 480, 0);
+        final Blur blur = new Blur();
+        blur.setEdgeMode(Blur.CLAMP_EDGES);
+        blur.setAlpha(true);
+        final Config config = new Config(output, 16, true, blur);
+        final Loader loader = new Loader();
+        loader.start(config, SequenceSingleMock.class).await();
+
+        blur.setEdgeMode(Blur.WRAP_EDGES);
+        final Config config2 = new Config(output, 16, true, blur);
+        final Loader loader2 = new Loader();
+        loader2.start(config2, SequenceSingleMock.class).await();
+
+        blur.setAlpha(false);
+        final Config config3 = new Config(output, 16, true, blur);
+        final Loader loader3 = new Loader();
+        loader3.start(config3, SequenceSingleMock.class).await();
+
+        blur.setAlpha(true);
+        blur.setRadius(0.5f);
+        final Config config4 = new Config(output, 16, true, blur);
+        final Loader loader4 = new Loader();
+        loader4.start(config4, SequenceSingleMock.class).await();
     }
 
     /**
@@ -358,7 +401,7 @@ public class LoaderTest
     public void testFilterHq2x()
     {
         final Resolution output = new Resolution(640, 480, 0);
-        final Config config = new Config(output, 16, false, Filter.HQ2X);
+        final Config config = new Config(output, 16, false, new Hq2x());
         final Loader loader = new Loader();
         loader.start(config, SequenceSingleMock.class).await();
     }
@@ -370,7 +413,7 @@ public class LoaderTest
     public void testFilterHq3x()
     {
         final Resolution output = new Resolution(960, 720, 60);
-        final Config config = new Config(output, 16, false, Filter.HQ3X);
+        final Config config = new Config(output, 16, false, new Hq3x());
         final Loader loader = new Loader();
         loader.start(config, SequenceSingleMock.class).await();
     }

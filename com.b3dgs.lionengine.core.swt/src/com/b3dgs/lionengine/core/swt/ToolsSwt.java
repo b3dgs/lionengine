@@ -34,7 +34,6 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.ColorRgba;
@@ -330,41 +329,6 @@ public final class ToolsSwt
     public static Image flipVertical(Image image)
     {
         return flip(image, true);
-    }
-
-    /**
-     * Apply a filter to the input image.
-     * 
-     * @param image The input image.
-     * @return The filtered image as a new instance.
-     * @throws SWTException If error on getting data.
-     */
-    public static Image applyBilinearFilter(Image image)
-    {
-        final ImageData data = image.getImageData();
-        final int width = data.width;
-        final int height = data.height;
-
-        final Image filtered = createImage(width * 2, height * 2, SWT.TRANSPARENCY_ALPHA);
-        final GC gc = new GC(filtered);
-        final Device device = gc.getDevice();
-
-        final Transform transform = new Transform(device);
-        transform.scale(2.0f, 2.0f);
-        gc.setTransform(transform);
-        gc.drawImage(image, 0, 0);
-        gc.dispose();
-
-        final Image filtered2 = createImage(width, height, SWT.TRANSPARENCY_ALPHA);
-        final GC gc2 = new GC(filtered2);
-        final Transform transform2 = new Transform(device);
-        final float scale = 0.5f;
-        transform2.scale(scale, scale);
-        gc2.setTransform(transform2);
-        gc2.drawImage(filtered, 0, 0);
-        gc2.dispose();
-
-        return filtered2;
     }
 
     /**

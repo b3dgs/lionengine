@@ -30,7 +30,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -172,27 +171,6 @@ public final class ToolsAndroid
         final Matrix matrix = new Matrix();
         matrix.preScale(1, -1);
         return Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, false);
-    }
-
-    /**
-     * Apply a filter to the input image.
-     * 
-     * @param image The input image.
-     * @param filter The filter to use.
-     * @return The filtered image as a new instance.
-     */
-    public static Bitmap applyFilter(Bitmap image, Filter filter)
-    {
-        switch (filter)
-        {
-            case NONE:
-                return image;
-            case BILINEAR:
-            case HQ2X:
-            case HQ3X:
-            default:
-                throw new LionEngineException("Filter not supported !");
-        }
     }
 
     /**

@@ -17,20 +17,48 @@
  */
 package com.b3dgs.lionengine;
 
+import com.b3dgs.lionengine.core.Graphics;
+
 /**
  * List of supported filters.
  * <p>
  * This class is Thread-Safe.
  * </p>
  */
-public enum Filter
+public interface Filter
 {
     /** No filter. */
-    NONE,
-    /** Bilinear filtering, blurring pixels. */
-    BILINEAR,
-    /** hq2x filtering, giving a special result as a painted image (may be slow !). */
-    HQ2X,
-    /** hq3x filtering, giving a special result as a painted image (may be slow !). */
-    HQ3X;
+    Filter NO_FILTER = new Filter()
+    {
+        @Override
+        public ImageBuffer filter(ImageBuffer source)
+        {
+            return source;
+        }
+
+        @Override
+        public Transform getTransform(double scaleX, double scaleY)
+        {
+            final Transform transform = Graphics.createTransform();
+            transform.scale(scaleX, scaleY);
+            return transform;
+        }
+    };
+
+    /**
+     * Apply a filter to the image source.
+     * 
+     * @param source The image source.
+     * @return The filtered image.
+     */
+    ImageBuffer filter(ImageBuffer source);
+
+    /**
+     * Get the associated transform.
+     * 
+     * @param scaleX The horizontal scale.
+     * @param scaleY The vertical scale.
+     * @return The associated transform.
+     */
+    Transform getTransform(double scaleX, double scaleY);
 }

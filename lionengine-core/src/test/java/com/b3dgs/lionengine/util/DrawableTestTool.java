@@ -269,7 +269,7 @@ public final class DrawableTestTool
         Assert.assertNotSame(surface, sprite.getSurface());
 
         surface = sprite.getSurface();
-        sprite.filter(Filter.BILINEAR);
+        sprite.filter(Filter.NO_FILTER);
         Assert.assertNotSame(surface, sprite.getSurface());
 
         surface = sprite.getSurface();

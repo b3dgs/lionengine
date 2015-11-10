@@ -171,8 +171,6 @@ public abstract class Sequence implements Sequencable, ScreenListener
     private int currentFrameRate;
     /** Image buffer. */
     private ImageBuffer buf;
-    /** Hq3x use flag. */
-    private Filter hqx;
     /** Filter used. */
     private Transform op;
     /** Direct rendering. */
@@ -295,25 +293,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
     {
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
-        final Transform transform = Graphics.createTransform();
-        if (Filter.HQ2X == filter)
-        {
-            hqx = filter;
-            final int scale2x = 2;
-            transform.scale(scaleX / scale2x, scaleY / scale2x);
-        }
-        else if (Filter.HQ3X == filter)
-        {
-            hqx = filter;
-            final int scale3x = 3;
-            transform.scale(scaleX / scale3x, scaleY / scale3x);
-        }
-        else
-        {
-            hqx = null;
-            transform.scale(scaleX, scaleY);
-        }
-        return transform;
+        return filter.getTransform(scaleX, scaleY);
     }
 
     /**
@@ -329,18 +309,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
         else
         {
             render(graphic);
-            if (Filter.HQ2X == filter)
-            {
-                g.drawImage(new Hq2x(buf).getScaledImage(), op, 0, 0);
-            }
-            else if (Filter.HQ3X == filter)
-            {
-                g.drawImage(new Hq3x(buf).getScaledImage(), op, 0, 0);
-            }
-            else
-            {
-                g.drawImage(buf, op, 0, 0);
-            }
+            g.drawImage(filter.filter(buf), op, 0, 0);
         }
     }
 
@@ -495,29 +464,24 @@ public abstract class Sequence implements Sequencable, ScreenListener
         height = source.getHeight();
 
         // Standard rendering
-        if (hqx == null && source.getWidth() == output.getWidth() && source.getHeight() == output.getHeight())
+        if (Filter.NO_FILTER == filter
+            && source.getWidth() == output.getWidth()
+            && source.getHeight() == output.getHeight())
         {
             buf = null;
             op = null;
             graphic.setGraphic(null);
+            directRendering = true;
         }
         // Scaled rendering
         else
         {
             buf = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
-            if (filter == Filter.BILINEAR)
-            {
-                transform.setInterpolation(true);
-            }
-            else
-            {
-                transform.setInterpolation(false);
-            }
             op = transform;
             final Graphic gbuf = buf.createGraphic();
             graphic.setGraphic(gbuf.getGraphic());
+            directRendering = false;
         }
-        directRendering = hqx == null && (op == null || buf == null);
 
         onResolutionChanged(width, height, config.getSource().getRate());
     }
