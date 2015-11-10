@@ -37,7 +37,7 @@ public interface Filter
         @Override
         public Transform getTransform(final double scaleX, final double scaleY)
         {
-            final Transform transform = new Transform()
+            return new Transform()
             {
                 @Override
                 public void setInterpolation(boolean bilinear)
@@ -69,7 +69,6 @@ public interface Filter
                     return 0;
                 }
             };
-            return transform;
         }
     };
 
