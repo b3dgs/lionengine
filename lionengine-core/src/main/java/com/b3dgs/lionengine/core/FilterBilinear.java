@@ -26,12 +26,12 @@ import com.b3dgs.lionengine.UtilMath;
 /**
  * Bilinear filter implementation.
  */
-public class Bilinear implements Filter
+public class FilterBilinear implements Filter
 {
     /**
      * Create the filter.
      */
-    public Bilinear()
+    public FilterBilinear()
     {
         // Nothing to do
     }

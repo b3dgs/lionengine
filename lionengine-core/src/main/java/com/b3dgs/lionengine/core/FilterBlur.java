@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.UtilMath;
 /**
  * Blur filter implementation.
  */
-public class Blur implements Filter
+public class FilterBlur implements Filter
 {
     /** Clamp edges. */
     public static final int CLAMP_EDGES = 0;
@@ -45,7 +45,7 @@ public class Blur implements Filter
     /**
      * Create the filter.
      */
-    public Blur()
+    public FilterBlur()
     {
         radius = RADIUS_DEFAULT;
         alpha = true;

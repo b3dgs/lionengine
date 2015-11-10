@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageSurface;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Transform;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
 
 /**
@@ -100,7 +101,10 @@ final class GraphicAwt implements Graphic
             lastTransform = transform;
             final AffineTransform at = new AffineTransform();
             at.scale(transform.getScaleX(), transform.getScaleY());
-            op = new AffineTransformOp(at, transform.getInterpolation());
+            final int interpolation = UtilMath.fixBetween(transform.getInterpolation(),
+                                                          AffineTransformOp.TYPE_NEAREST_NEIGHBOR,
+                                                          AffineTransformOp.TYPE_BICUBIC);
+            op = new AffineTransformOp(at, interpolation);
         }
         g.drawImage((BufferedImage) image.getSurface(), op, x, y);
     }

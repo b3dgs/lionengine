@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
 /**
- * Test the Hq3x filter.
+ * Test the Hq2x filter.
  */
-public class Hq3xTest
+public class FilterHq2xTest
 {
     /** Image media. */
     private static Media media;
@@ -40,7 +40,7 @@ public class Hq3xTest
     @BeforeClass
     public static void setUp()
     {
-        Medias.setLoadFromJar(Hq3xTest.class);
+        Medias.setLoadFromJar(FilterHq2xTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
 
         media = Medias.create("image.png");
@@ -57,10 +57,10 @@ public class Hq3xTest
     }
 
     /**
-     * Test the Hq3x filter
+     * Test the Hq2x filter
      */
     @Test
-    public void testHq3x()
+    public void testHq2x()
     {
         final ImageBuffer image = Graphics.getImageBuffer(media);
         int i = 0;
@@ -83,11 +83,12 @@ public class Hq3xTest
                 }
             }
         }
-        final Hq3x hq3x = new Hq3x();
-        final ImageBuffer filtered = hq3x.filter(image);
+        final FilterHq2x hq2x = new FilterHq2x();
+        final ImageBuffer filtered = hq2x.filter(image);
 
         Assert.assertNotEquals(image, filtered);
-        Assert.assertEquals(image.getWidth() * 3, filtered.getWidth());
-        Assert.assertEquals(image.getHeight() * 3, filtered.getHeight());
+        Assert.assertNotNull(hq2x.getTransform(1.0, 1.0));
+        Assert.assertEquals(image.getWidth() * 2, filtered.getWidth());
+        Assert.assertEquals(image.getHeight() * 2, filtered.getHeight());
     }
 }

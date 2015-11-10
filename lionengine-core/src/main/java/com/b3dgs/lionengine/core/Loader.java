@@ -158,6 +158,7 @@ public final class Loader
             {
                 screen.dispose();
             }
+            started = false;
         }
     }
 

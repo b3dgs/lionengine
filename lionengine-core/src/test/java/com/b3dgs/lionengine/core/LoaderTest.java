@@ -24,13 +24,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.ScreenMock;
 import com.b3dgs.lionengine.mock.SequenceArgumentsMock;
 import com.b3dgs.lionengine.mock.SequenceFailMock;
+import com.b3dgs.lionengine.mock.SequenceFilterMock;
 import com.b3dgs.lionengine.mock.SequenceInterruptMock;
 import com.b3dgs.lionengine.mock.SequenceMalformedMock;
 import com.b3dgs.lionengine.mock.SequenceNextFailMock;
@@ -346,7 +346,7 @@ public class LoaderTest
     public void testScaled()
     {
         final Resolution output = new Resolution(640, 480, 0);
-        final Config config = new Config(output, 16, true, Filter.NO_FILTER);
+        final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();
         loader.start(config, SequenceSingleMock.class).await();
     }
@@ -358,9 +358,9 @@ public class LoaderTest
     public void testBilinear()
     {
         final Resolution output = new Resolution(640, 480, 0);
-        final Config config = new Config(output, 16, true, new Bilinear());
+        final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class).await();
+        loader.start(config, SequenceFilterMock.class, new FilterBilinear()).await();
     }
 
     /**
@@ -370,28 +370,23 @@ public class LoaderTest
     public void testBlur()
     {
         final Resolution output = new Resolution(640, 480, 0);
-        final Blur blur = new Blur();
-        blur.setEdgeMode(Blur.CLAMP_EDGES);
+        final FilterBlur blur = new FilterBlur();
+        blur.setEdgeMode(FilterBlur.CLAMP_EDGES);
         blur.setAlpha(true);
-        final Config config = new Config(output, 16, true, blur);
-        final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class).await();
+        final Config config = new Config(output, 16, true);
 
-        blur.setEdgeMode(Blur.WRAP_EDGES);
-        final Config config2 = new Config(output, 16, true, blur);
-        final Loader loader2 = new Loader();
-        loader2.start(config2, SequenceSingleMock.class).await();
+        final Loader loader = new Loader();
+        loader.start(config, SequenceFilterMock.class, blur).await();
+
+        blur.setEdgeMode(FilterBlur.WRAP_EDGES);
+        loader.start(config, SequenceFilterMock.class, blur).await();
 
         blur.setAlpha(false);
-        final Config config3 = new Config(output, 16, true, blur);
-        final Loader loader3 = new Loader();
-        loader3.start(config3, SequenceSingleMock.class).await();
+        loader.start(config, SequenceFilterMock.class, blur).await();
 
         blur.setAlpha(true);
         blur.setRadius(0.5f);
-        final Config config4 = new Config(output, 16, true, blur);
-        final Loader loader4 = new Loader();
-        loader4.start(config4, SequenceSingleMock.class).await();
+        loader.start(config, SequenceFilterMock.class, blur).await();
     }
 
     /**
@@ -401,9 +396,9 @@ public class LoaderTest
     public void testFilterHq2x()
     {
         final Resolution output = new Resolution(640, 480, 0);
-        final Config config = new Config(output, 16, false, new Hq2x());
+        final Config config = new Config(output, 16, false);
         final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class).await();
+        loader.start(config, SequenceFilterMock.class, new FilterHq2x()).await();
     }
 
     /**
@@ -413,8 +408,8 @@ public class LoaderTest
     public void testFilterHq3x()
     {
         final Resolution output = new Resolution(960, 720, 60);
-        final Config config = new Config(output, 16, false, new Hq3x());
+        final Config config = new Config(output, 16, false);
         final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class).await();
+        loader.start(config, SequenceFilterMock.class, new FilterHq3x()).await();
     }
 }

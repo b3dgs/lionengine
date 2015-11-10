@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.Transparency;
  * This class is Thread-Safe.
  * </p>
  */
-public final class Hq2x implements Filter
+public final class FilterHq2x implements Filter
 {
     /** Scale factor. */
     public static final int SCALE = 2;
@@ -36,7 +36,7 @@ public final class Hq2x implements Filter
     /**
      * Create an Hq2x filter.
      */
-    public Hq2x()
+    public FilterHq2x()
     {
         // Nothing to do
     }

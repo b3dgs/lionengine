@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.core;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.mock.AppletMock;
@@ -43,7 +42,7 @@ public class ConfigTest
     @Test(expected = LionEngineException.class)
     public void testFailureResolution()
     {
-        Assert.assertNotNull(new Config(null, 1, true, Filter.NO_FILTER));
+        Assert.assertNotNull(new Config(null, 1, true));
     }
 
     /**
@@ -52,16 +51,7 @@ public class ConfigTest
     @Test(expected = LionEngineException.class)
     public void testFailureDepth()
     {
-        Assert.assertNotNull(new Config(OUTPUT, 0, true, Filter.NO_FILTER));
-    }
-
-    /**
-     * Test the config failure filter.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testFailureFilter()
-    {
-        Assert.assertNotNull(new Config(OUTPUT, 1, true, null));
+        Assert.assertNotNull(new Config(OUTPUT, 0, true));
     }
 
     /**
@@ -81,7 +71,6 @@ public class ConfigTest
     {
         Assert.assertEquals(32, CONFIG.getDepth());
         Assert.assertTrue(CONFIG.isWindowed());
-        Assert.assertEquals(Filter.NO_FILTER, CONFIG.getFilter());
         Assert.assertEquals(OUTPUT, CONFIG.getOutput());
     }
 

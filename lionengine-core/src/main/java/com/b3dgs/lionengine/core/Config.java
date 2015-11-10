@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 
@@ -31,7 +30,6 @@ import com.b3dgs.lionengine.Media;
  * screen will be stretched</li>
  * <li>windowed : Allows to set the screen output mode (<code>true</code> for windowed, <code>false</code> for
  * fullscreen)</li>
- * <li>filter : Used only in case of screen stretching, depending of the output resolution</li>
  * <li>applet : Can be used to set the applet reference in case of applet mode</li>
  * </ul>
  * <p>
@@ -48,7 +46,6 @@ import com.b3dgs.lionengine.Media;
  * </p>
  * 
  * @see Resolution
- * @see Filter
  * @see Ratio
  */
 public final class Config
@@ -59,8 +56,6 @@ public final class Config
     private final Object sourceLock = new Object();
     /** Output resolution reference. */
     private final Resolution output;
-    /** Filter reference. */
-    private final Filter filter;
     /** Display depth. */
     private final int depth;
     /** Windowed mode. */
@@ -75,7 +70,7 @@ public final class Config
     private Applet<?> applet;
 
     /**
-     * Create a configuration without filter.
+     * Create a configuration.
      * 
      * @param output The output resolution (used on rendering).
      * @param depth The screen color depth in bits (usually 16 or 32).
@@ -84,28 +79,12 @@ public final class Config
      */
     public Config(Resolution output, int depth, boolean windowed)
     {
-        this(output, depth, windowed, Filter.NO_FILTER);
-    }
-
-    /**
-     * Create a configuration.
-     * 
-     * @param output The output resolution (used on rendering).
-     * @param depth The screen color depth in bits (usually 16 or 32).
-     * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
-     * @param filter The filter mode (must not be null).
-     * @throws LionEngineException If arguments are <code>null</code> or invalid.
-     */
-    public Config(Resolution output, int depth, boolean windowed, Filter filter)
-    {
         Check.notNull(output);
-        Check.notNull(filter);
         Check.superiorStrict(depth, 0);
 
         this.output = output;
         this.depth = depth;
         this.windowed = windowed;
-        this.filter = filter;
 
         setRatioValue(output.getWidth() / (double) output.getHeight());
     }
@@ -228,16 +207,6 @@ public final class Config
     public int getDepth()
     {
         return depth;
-    }
-
-    /**
-     * Get the filter.
-     * 
-     * @return The filter.
-     */
-    public Filter getFilter()
-    {
-        return filter;
     }
 
     /**

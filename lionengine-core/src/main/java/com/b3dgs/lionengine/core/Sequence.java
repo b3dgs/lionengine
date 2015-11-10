@@ -147,8 +147,6 @@ public abstract class Sequence implements Sequencable, ScreenListener
     private final Resolution resolution;
     /** Config reference. */
     private final Config config;
-    /** Filter reference. */
-    private final Filter filter;
     /** Filter graphic. */
     private final Graphic graphic;
     /** Loop time for desired rate. */
@@ -157,6 +155,8 @@ public abstract class Sequence implements Sequencable, ScreenListener
     private final boolean sync;
     /** Output resolution reference. */
     private final Resolution output;
+    /** Filter reference. */
+    private volatile Filter filter = Filter.NO_FILTER;
     /** Rendering width. */
     private int width;
     /** Rendering height. */
@@ -172,7 +172,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
     /** Image buffer. */
     private ImageBuffer buf;
     /** Filter used. */
-    private Transform op;
+    private Transform transform;
     /** Direct rendering. */
     private boolean directRendering;
     /** Source resolution reference. */
@@ -193,12 +193,11 @@ public abstract class Sequence implements Sequencable, ScreenListener
         this.context = context;
         this.resolution = resolution;
         config = context.getConfig();
-        filter = config.getFilter();
+        source = resolution;
         output = config.getOutput();
         sync = config.isWindowed() && output.getRate() > 0;
         width = resolution.getWidth();
         height = resolution.getHeight();
-        extrapolated = false;
 
         // Time needed for a loop to reach desired rate
         if (output.getRate() == 0)
@@ -218,6 +217,24 @@ public abstract class Sequence implements Sequencable, ScreenListener
      * Loading sequence data.
      */
     public abstract void load();
+
+    /**
+     * Set the filter to use.
+     * 
+     * @param filter The filter to use (if <code>null</code> then {@link Filter#NO_FILTER} is used).
+     */
+    public final void setFilter(Filter filter)
+    {
+        if (filter == null)
+        {
+            this.filter = Filter.NO_FILTER;
+        }
+        else
+        {
+            this.filter = filter;
+        }
+        transform = getTransform(this.filter);
+    }
 
     /**
      * Get the rendering width.
@@ -285,11 +302,12 @@ public abstract class Sequence implements Sequencable, ScreenListener
     }
 
     /**
-     * Check the filter level, update the HQX value and apply transform.
+     * Get the transform associated to the filter keeping screen scale independent.
      * 
+     * @param filter The filter reference.
      * @return The associated transform instance.
      */
-    private Transform checkFilter()
+    private Transform getTransform(Filter filter)
     {
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
@@ -309,7 +327,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
         else
         {
             render(graphic);
-            g.drawImage(filter.filter(buf), op, 0, 0);
+            g.drawImage(filter.filter(buf), transform, 0, 0);
         }
     }
 
@@ -456,9 +474,6 @@ public abstract class Sequence implements Sequencable, ScreenListener
         source = config.getSource();
         screen.onSourceChanged(source);
 
-        // Scale factor
-        final Transform transform = checkFilter();
-
         // Store source size
         width = source.getWidth();
         height = source.getHeight();
@@ -469,7 +484,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
             && source.getHeight() == output.getHeight())
         {
             buf = null;
-            op = null;
+            transform = null;
             graphic.setGraphic(null);
             directRendering = true;
         }
@@ -477,7 +492,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
         else
         {
             buf = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
-            op = transform;
+            transform = getTransform(filter);
             final Graphic gbuf = buf.createGraphic();
             graphic.setGraphic(gbuf.getGraphic());
             directRendering = false;

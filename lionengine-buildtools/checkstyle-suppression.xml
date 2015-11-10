@@ -6,10 +6,11 @@
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.Ratio" lines="31,33,35,37"/>
     <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.LionEngineException" lines="187"/>
     
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.Hq3x"/>
-    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.Hq2x"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.Bilinear" lines="78"/>
-    <suppress checks="NestedForDepth" files="com.b3dgs.lionengine.core.Blur" lines="147"/>
+    <suppress checks="AnonInnerLength" files="com.b3dgs.lionengine.Filter" lines="29, 40"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.FilterBilinear" lines="78"/>
+    <suppress checks="NestedForDepth" files="com.b3dgs.lionengine.core.FilterBlur" lines="147"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.FilterHq3x"/>
+    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.FilterHq2x"/>
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.ScreenAwt" lines="155, 205"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="390"/>

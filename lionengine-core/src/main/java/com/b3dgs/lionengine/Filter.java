@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import com.b3dgs.lionengine.core.Graphics;
-
 /**
  * List of supported filters.
  * <p>
@@ -37,10 +35,40 @@ public interface Filter
         }
 
         @Override
-        public Transform getTransform(double scaleX, double scaleY)
+        public Transform getTransform(final double scaleX, final double scaleY)
         {
-            final Transform transform = Graphics.createTransform();
-            transform.scale(scaleX, scaleY);
+            final Transform transform = new Transform()
+            {
+                @Override
+                public void setInterpolation(boolean bilinear)
+                {
+                    // Nothing to do
+                }
+
+                @Override
+                public void scale(double sx, double sy)
+                {
+                    // Nothing to do
+                }
+
+                @Override
+                public double getScaleY()
+                {
+                    return scaleX;
+                }
+
+                @Override
+                public double getScaleX()
+                {
+                    return scaleY;
+                }
+
+                @Override
+                public int getInterpolation()
+                {
+                    return 0;
+                }
+            };
             return transform;
         }
     };

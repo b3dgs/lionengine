@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
 /**
- * Test the Hq2x filter.
+ * Test the Blur filter.
  */
-public class Hq2xTest
+public class FilterBlurTest
 {
     /** Image media. */
     private static Media media;
@@ -40,7 +40,7 @@ public class Hq2xTest
     @BeforeClass
     public static void setUp()
     {
-        Medias.setLoadFromJar(Hq2xTest.class);
+        Medias.setLoadFromJar(FilterBlurTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
 
         media = Medias.create("image.png");
@@ -83,11 +83,21 @@ public class Hq2xTest
                 }
             }
         }
-        final Hq2x hq2x = new Hq2x();
-        final ImageBuffer filtered = hq2x.filter(image);
+        final FilterBlur blur = new FilterBlur();
+        final ImageBuffer filtered = blur.filter(image);
 
         Assert.assertNotEquals(image, filtered);
-        Assert.assertEquals(image.getWidth() * 2, filtered.getWidth());
-        Assert.assertEquals(image.getHeight() * 2, filtered.getHeight());
+        Assert.assertNotNull(blur.getTransform(1.0, 1.0));
+        Assert.assertEquals(image.getWidth(), filtered.getWidth());
+        Assert.assertEquals(image.getHeight(), filtered.getHeight());
+
+        blur.setAlpha(false);
+        Assert.assertNotNull(blur.filter(image));
+
+        blur.setEdgeMode(FilterBlur.WRAP_EDGES);
+        Assert.assertNotNull(blur.filter(image));
+
+        blur.setRadius(1.0f);
+        Assert.assertNotNull(blur.filter(image));
     }
 }
