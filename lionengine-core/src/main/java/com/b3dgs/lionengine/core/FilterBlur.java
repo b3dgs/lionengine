@@ -234,7 +234,7 @@ public class FilterBlur implements Filter
         int index = 0;
         for (int row = -r; row <= r; row++)
         {
-            final float distance = row * row;
+            final float distance = row * (float) row;
             if (distance > radius2)
             {
                 matrix[index] = 0;
