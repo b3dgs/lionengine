@@ -82,32 +82,6 @@ public final class ToolsAwt
     }
 
     /**
-     * Get the transparency equivalence.
-     * 
-     * @param transparency The transparency.
-     * @return The equivalence.
-     */
-    public static com.b3dgs.lionengine.Transparency getTransparency(int transparency)
-    {
-        final com.b3dgs.lionengine.Transparency value;
-        switch (transparency)
-        {
-            case Transparency.OPAQUE:
-                value = com.b3dgs.lionengine.Transparency.OPAQUE;
-                break;
-            case Transparency.BITMASK:
-                value = com.b3dgs.lionengine.Transparency.BITMASK;
-                break;
-            case Transparency.TRANSLUCENT:
-                value = com.b3dgs.lionengine.Transparency.TRANSLUCENT;
-                break;
-            default:
-                value = com.b3dgs.lionengine.Transparency.OPAQUE;
-        }
-        return value;
-    }
-
-    /**
      * Create an image.
      * 
      * @param width The image width.

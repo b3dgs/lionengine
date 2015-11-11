@@ -62,7 +62,7 @@ final class SpriteFontImpl implements SpriteFont
      */
     SpriteFontImpl(Media media, Media mediaData, int tw, int th)
     {
-        surface = Drawable.loadSpriteTiled(media, tw, th);
+        surface = new SpriteTiledImpl(media, tw, th);
         fontData = new TreeMap<Character, Data>();
         lineHeight = surface.getTileHeight();
 

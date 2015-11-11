@@ -109,6 +109,21 @@ final class ImageBufferAwt implements ImageBuffer
     @Override
     public Transparency getTransparency()
     {
-        return ToolsAwt.getTransparency(bufferedImage.getTransparency());
+        final Transparency value;
+        switch (bufferedImage.getTransparency())
+        {
+            case java.awt.Transparency.OPAQUE:
+                value = Transparency.OPAQUE;
+                break;
+            case java.awt.Transparency.BITMASK:
+                value = Transparency.BITMASK;
+                break;
+            case java.awt.Transparency.TRANSLUCENT:
+                value = Transparency.TRANSLUCENT;
+                break;
+            default:
+                value = Transparency.OPAQUE;
+        }
+        return value;
     }
 }

@@ -13,14 +13,14 @@
     <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.core.FilterHq2x"/>
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.ScreenAwt" lines="155, 205"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="390"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.core.awt.ToolsAwt" lines="364"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.FactoryGraphicAwt" lines="43"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.awt.swing.UtilitySwing"/>
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.core.awt.Theme" lines="81"/>
     
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ScreenSwt"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ToolsSwt"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="365"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="338"/>
     <suppress checks="FanOut" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="44"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="44"/>
     

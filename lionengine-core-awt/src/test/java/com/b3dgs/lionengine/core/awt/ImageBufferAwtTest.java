@@ -25,7 +25,6 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.awt.ToolsAwt;
 
 /**
  * Test the image buffer class.
@@ -56,10 +55,5 @@ public class ImageBufferAwtTest
         image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
 
         image.dispose();
-
-        Assert.assertEquals(Transparency.OPAQUE, ToolsAwt.getTransparency(java.awt.Transparency.OPAQUE));
-        Assert.assertEquals(Transparency.BITMASK, ToolsAwt.getTransparency(java.awt.Transparency.BITMASK));
-        Assert.assertEquals(Transparency.TRANSLUCENT, ToolsAwt.getTransparency(java.awt.Transparency.TRANSLUCENT));
-        Assert.assertEquals(Transparency.OPAQUE, ToolsAwt.getTransparency(465546));
     }
 }

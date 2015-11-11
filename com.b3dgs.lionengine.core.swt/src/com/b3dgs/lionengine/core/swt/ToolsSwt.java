@@ -111,33 +111,6 @@ public final class ToolsSwt
     }
 
     /**
-     * Get the transparency equivalence.
-     * 
-     * @param transparency The transparency.
-     * @return The equivalence.
-     */
-    public static Transparency getTransparency(int transparency)
-    {
-        final Transparency value;
-        switch (transparency)
-        {
-            case SWT.TRANSPARENCY_NONE:
-                value = Transparency.OPAQUE;
-                break;
-            case SWT.TRANSPARENCY_MASK:
-                value = Transparency.BITMASK;
-                break;
-            case SWT.TRANSPARENCY_PIXEL:
-            case SWT.TRANSPARENCY_ALPHA:
-                value = Transparency.TRANSLUCENT;
-                break;
-            default:
-                value = Transparency.OPAQUE;
-        }
-        return value;
-    }
-
-    /**
      * Create a hidden cursor.
      * 
      * @param device The device reference.
