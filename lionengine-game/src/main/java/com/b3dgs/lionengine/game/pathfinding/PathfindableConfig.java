@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see com.b3dgs.lionengine.game.collision.object.Collision
  */
-public final class ConfigPathfindable
+public final class PathfindableConfig
 {
     /** Pathfindable node name. */
     public static final String PATHFINDABLE = Configurer.PREFIX + "pathfindable";
@@ -76,7 +76,7 @@ public final class ConfigPathfindable
     /**
      * Disabled constructor.
      */
-    private ConfigPathfindable()
+    private PathfindableConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

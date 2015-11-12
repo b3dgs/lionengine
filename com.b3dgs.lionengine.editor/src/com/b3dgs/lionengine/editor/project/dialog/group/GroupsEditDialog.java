@@ -33,8 +33,8 @@ import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.tile.ConfigTileGroups;
 import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 
 /**
  * Represents the groups edition dialog.
@@ -92,7 +92,7 @@ public class GroupsEditDialog extends AbstractDialog
             groups.add(group);
         }
 
-        ConfigTileGroups.exports(configGroups, groups);
+        TileGroupsConfig.exports(configGroups, groups);
 
         final MapTile map = WorldModel.INSTANCE.getMap();
         map.loadGroups(configGroups);

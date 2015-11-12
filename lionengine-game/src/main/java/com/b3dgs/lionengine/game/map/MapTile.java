@@ -79,8 +79,8 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
      * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created.
      * Previous map data (if existing) will be cleared.
      * <p>
-     * {@link com.b3dgs.lionengine.game.tile.ConfigTileSheets#FILENAME} and
-     * {@link com.b3dgs.lionengine.game.tile.ConfigTileGroups#FILENAME} will be used as default, by calling
+     * {@link com.b3dgs.lionengine.game.tile.TileSheetsConfig#FILENAME} and
+     * {@link com.b3dgs.lionengine.game.tile.TileGroupsConfig#FILENAME} will be used as default, by calling
      * {@link #create(Media, Media, Media)}.
      * </p>
      * 

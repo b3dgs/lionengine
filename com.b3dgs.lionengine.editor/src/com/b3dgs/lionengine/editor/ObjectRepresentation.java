@@ -28,9 +28,9 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -58,7 +58,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     {
         try
         {
-            final ConfigFrames frames = ConfigFrames.create(configurer);
+            final FramesConfig frames = FramesConfig.create(configurer);
             return Drawable.loadSpriteAnimated(surface, frames.getHorizontal(), frames.getVertical());
         }
         catch (final LionEngineException exception)

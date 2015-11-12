@@ -22,10 +22,10 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.collision.tile.CollisionCategory;
+import com.b3dgs.lionengine.game.collision.tile.CollisionCategoryConfig;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionCategory;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Represents the collision category list, allowing to add and remove {@link CollisionCategory}.
@@ -52,7 +52,7 @@ public class CollisionCategoryList extends ObjectList<CollisionCategory>
      */
     public void loadCategories()
     {
-        final Collection<CollisionCategory> categories = ConfigCollisionCategory.create(configurer.getRoot());
+        final Collection<CollisionCategory> categories = CollisionCategoryConfig.create(configurer.getRoot());
         loadObjects(categories);
     }
 

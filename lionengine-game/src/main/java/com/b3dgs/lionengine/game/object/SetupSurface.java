@@ -22,12 +22,11 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 
 /**
  * Define a structure used to create multiple objects, sharing the same data and {@link ImageBuffer}.
  * 
- * @see com.b3dgs.lionengine.game.configurer.Configurer
+ * @see com.b3dgs.lionengine.game.Configurer
  */
 public class SetupSurface extends Setup
 {
@@ -46,7 +45,7 @@ public class SetupSurface extends Setup
     {
         super(config);
         final String conf = config.getPath();
-        final ConfigSurface surfaceData = ConfigSurface.create(getConfigurer());
+        final SurfaceConfig surfaceData = SurfaceConfig.create(getConfigurer());
         final String prefix = conf.substring(0, conf.lastIndexOf(Medias.getSeparator()) + 1);
         surfaceFile = Medias.create(prefix + surfaceData.getImage());
         surface = Graphics.getImageBuffer(surfaceFile);

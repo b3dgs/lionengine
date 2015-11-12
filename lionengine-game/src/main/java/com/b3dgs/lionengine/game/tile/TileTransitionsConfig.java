@@ -24,7 +24,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see TileTransition
  */
-public final class ConfigTileTransitions
+public final class TileTransitionsConfig
 {
     /** Configuration file name. */
     public static final String FILENAME = "transitions.xml";
@@ -64,7 +64,7 @@ public final class ConfigTileTransitions
             final String transitionName = nodeTransition.readString(ATTRIBUTE_TRANSITION_NAME);
             final TileTransition transition = TileTransition.from(transitionName);
 
-            final Collection<XmlNode> nodesTileRef = nodeTransition.getChildren(ConfigTile.NODE_TILE);
+            final Collection<XmlNode> nodesTileRef = nodeTransition.getChildren(TileConfig.NODE_TILE);
             final Collection<TileRef> tilesRef = importTiles(nodesTileRef);
 
             transitions.put(transition, tilesRef);
@@ -106,7 +106,7 @@ public final class ConfigTileTransitions
         final Collection<TileRef> tilesRef = new HashSet<TileRef>(nodesTileRef.size());
         for (final XmlNode nodeTileRef : nodesTileRef)
         {
-            final TileRef tileRef = ConfigTile.create(nodeTileRef);
+            final TileRef tileRef = TileConfig.create(nodeTileRef);
             tilesRef.add(tileRef);
         }
         return tilesRef;
@@ -122,7 +122,7 @@ public final class ConfigTileTransitions
     {
         for (final TileRef tileRef : tilesRef)
         {
-            final XmlNode nodeTileRef = ConfigTile.export(tileRef);
+            final XmlNode nodeTileRef = TileConfig.export(tileRef);
             nodeTransition.add(nodeTileRef);
         }
     }
@@ -130,7 +130,7 @@ public final class ConfigTileTransitions
     /**
      * Disabled constructor.
      */
-    private ConfigTileTransitions()
+    private TileTransitionsConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

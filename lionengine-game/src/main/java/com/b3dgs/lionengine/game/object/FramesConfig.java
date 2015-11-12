@@ -15,14 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurer;
+package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the frames data from a configurer node.
  */
-public final class ConfigFrames
+public final class FramesConfig
 {
     /** Frames node name. */
     public static final String FRAMES = Configurer.PREFIX + "frames";
@@ -38,12 +39,12 @@ public final class ConfigFrames
      * @return The frames data.
      * @throws LionEngineException If unable to read node or not a valid integer.
      */
-    public static ConfigFrames create(Configurer configurer)
+    public static FramesConfig create(Configurer configurer)
     {
-        final int horizontals = configurer.getInteger(ConfigFrames.FRAMES_HORIZONTAL, ConfigFrames.FRAMES);
-        final int verticals = configurer.getInteger(ConfigFrames.FRAMES_VERTICAL, ConfigFrames.FRAMES);
+        final int horizontals = configurer.getInteger(FramesConfig.FRAMES_HORIZONTAL, FramesConfig.FRAMES);
+        final int verticals = configurer.getInteger(FramesConfig.FRAMES_VERTICAL, FramesConfig.FRAMES);
 
-        return new ConfigFrames(horizontals, verticals);
+        return new FramesConfig(horizontals, verticals);
     }
 
     /** The number of horizontal frames. */
@@ -54,7 +55,7 @@ public final class ConfigFrames
     /**
      * Disabled constructor.
      */
-    private ConfigFrames()
+    private FramesConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
@@ -65,7 +66,7 @@ public final class ConfigFrames
      * @param horizontalFrames The horizontal frames value.
      * @param verticalFrames The vertical frames value.
      */
-    private ConfigFrames(int horizontalFrames, int verticalFrames)
+    private FramesConfig(int horizontalFrames, int verticalFrames)
     {
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;

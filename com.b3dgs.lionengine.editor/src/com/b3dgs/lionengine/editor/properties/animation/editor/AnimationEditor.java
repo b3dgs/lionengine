@@ -30,8 +30,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.state.AnimationConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -153,12 +153,12 @@ public class AnimationEditor extends AbstractEditor
         animationList.save();
 
         final XmlNode root = configurer.getRoot();
-        root.removeChildren(ConfigAnimations.ANIMATION);
+        root.removeChildren(AnimationConfig.ANIMATION);
 
         for (final TreeItem item : animationList.getTree().getItems())
         {
             final Animation animation = (Animation) item.getData();
-            ConfigAnimations.export(root, animation);
+            AnimationConfig.export(root, animation);
         }
         configurer.save();
     }

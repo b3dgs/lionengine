@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see Collision
  */
-public final class ConfigCollisions
+public final class CollisionConfig
 {
     /** Collision node name. */
     public static final String COLLISION = Configurer.PREFIX + "collision";
@@ -56,7 +56,7 @@ public final class ConfigCollisions
      * @return The collisions data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigCollisions create(Configurer configurer)
+    public static CollisionConfig create(Configurer configurer)
     {
         final Map<String, Collision> collisions = new HashMap<String, Collision>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(COLLISION))
@@ -65,7 +65,7 @@ public final class ConfigCollisions
             final Collision collision = createCollision(node);
             collisions.put(coll, collision);
         }
-        return new ConfigCollisions(collisions);
+        return new CollisionConfig(collisions);
     }
 
     /**
@@ -110,7 +110,7 @@ public final class ConfigCollisions
     /**
      * Disabled constructor.
      */
-    private ConfigCollisions()
+    private CollisionConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
@@ -120,7 +120,7 @@ public final class ConfigCollisions
      * 
      * @param collisions The collisions mapping.
      */
-    private ConfigCollisions(Map<String, Collision> collisions)
+    private CollisionConfig(Map<String, Collision> collisions)
     {
         this.collisions = collisions;
     }

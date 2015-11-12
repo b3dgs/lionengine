@@ -30,8 +30,8 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilClass;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.configurer.ConfigObject;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.ObjectConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -52,11 +52,11 @@ public class PropertiesClass implements PropertiesProviderObject
      * @param properties The properties tree reference.
      * @param configObject The configObject reference.
      */
-    private static void createAttributeClass(Tree properties, ConfigObject configObject)
+    private static void createAttributeClass(Tree properties, ObjectConfig configObject)
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(classItem, Messages.Properties_Class, configObject.getClassName());
-        classItem.setData(ConfigObject.CLASS);
+        classItem.setData(ObjectConfig.CLASS);
         classItem.setImage(ICON_CLASS);
     }
 
@@ -66,11 +66,11 @@ public class PropertiesClass implements PropertiesProviderObject
      * @param properties The properties tree reference.
      * @param configObject The configObject reference.
      */
-    private static void createAttributeSetup(Tree properties, ConfigObject configObject)
+    private static void createAttributeSetup(Tree properties, ObjectConfig configObject)
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(classItem, Messages.Properties_Setup, configObject.getSetupName());
-        classItem.setData(ConfigObject.SETUP);
+        classItem.setData(ObjectConfig.SETUP);
         classItem.setImage(ICON_SETUP);
     }
 
@@ -98,7 +98,7 @@ public class PropertiesClass implements PropertiesProviderObject
         if (clazz != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode classeNode = root.getChild(ConfigObject.CLASS);
+            final XmlNode classeNode = root.getChild(ObjectConfig.CLASS);
             classeNode.setText(clazz);
             item.setText(PropertiesPart.COLUMN_VALUE, clazz);
             return true;
@@ -130,7 +130,7 @@ public class PropertiesClass implements PropertiesProviderObject
         if (setup != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode setupNode = root.getChild(ConfigObject.SETUP);
+            final XmlNode setupNode = root.getChild(ObjectConfig.SETUP);
             setupNode.setText(setup);
             item.setText(PropertiesPart.COLUMN_VALUE, setup);
             return true;
@@ -154,12 +154,12 @@ public class PropertiesClass implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        final ConfigObject configObject = ConfigObject.create(configurer);
-        if (root.hasChild(ConfigObject.CLASS))
+        final ObjectConfig configObject = ObjectConfig.create(configurer);
+        if (root.hasChild(ObjectConfig.CLASS))
         {
             createAttributeClass(properties, configObject);
         }
-        if (root.hasChild(ConfigObject.SETUP))
+        if (root.hasChild(ObjectConfig.SETUP))
         {
             createAttributeSetup(properties, configObject);
         }
@@ -170,11 +170,11 @@ public class PropertiesClass implements PropertiesProviderObject
     {
         final Object data = item.getData();
         boolean updated = false;
-        if (ConfigObject.CLASS.equals(data))
+        if (ObjectConfig.CLASS.equals(data))
         {
             updated = updateClass(item, configurer);
         }
-        if (ConfigObject.SETUP.equals(data))
+        if (ObjectConfig.SETUP.equals(data))
         {
             updated = updateSetup(item, configurer);
         }

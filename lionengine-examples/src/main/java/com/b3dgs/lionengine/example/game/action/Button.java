@@ -27,11 +27,11 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.game.configurer.ConfigAction;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.trait.actionable.Action;
+import com.b3dgs.lionengine.game.object.trait.actionable.ActionConfig;
 import com.b3dgs.lionengine.game.object.trait.actionable.Actionable;
 import com.b3dgs.lionengine.game.object.trait.actionable.ActionableModel;
 
@@ -69,7 +69,7 @@ class Button extends ObjectGame implements Action, Updatable, Renderable
         super(setup, services);
         text = services.get(Text.class);
         image = Drawable.loadImage(setup.getSurface());
-        name = setup.getConfigurer().getText(ConfigAction.NAME);
+        name = setup.getConfigurer().getText(ActionConfig.NAME);
         actionable.setClickAction(Mouse.LEFT);
     }
 

@@ -15,10 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurer;
+package com.b3dgs.lionengine.game.object.trait.launchable;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.ForceConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -26,7 +28,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see com.b3dgs.lionengine.game.object.trait.launchable.Launchable
  */
-public final class ConfigLaunchable
+public final class LaunchableConfig
 {
     /** Launchable node name. */
     public static final String LAUNCHABLE = Configurer.PREFIX + "launchable";
@@ -42,12 +44,12 @@ public final class ConfigLaunchable
      * @return The launchable data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigLaunchable create(XmlNode node)
+    public static LaunchableConfig create(XmlNode node)
     {
         final String media = node.readString(MEDIA);
-        final int delay = node.readInteger(ConfigLaunchable.DELAY);
+        final int delay = node.readInteger(LaunchableConfig.DELAY);
 
-        return new ConfigLaunchable(media, delay, ConfigForce.create(node));
+        return new LaunchableConfig(media, delay, ForceConfig.create(node));
     }
 
     /** The media value. */
@@ -60,7 +62,7 @@ public final class ConfigLaunchable
     /**
      * Disabled constructor.
      */
-    private ConfigLaunchable()
+    private LaunchableConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
@@ -72,7 +74,7 @@ public final class ConfigLaunchable
      * @param delay The delay value.
      * @param vector The vector force.
      */
-    private ConfigLaunchable(String media, int delay, Force vector)
+    private LaunchableConfig(String media, int delay, Force vector)
     {
         this.media = media;
         this.delay = delay;

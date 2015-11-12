@@ -21,8 +21,8 @@ import java.util.Collection;
 import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see CollisionConstraint
  */
-public final class ConfigCollisionConstraint
+public final class CollisionConstraintConfig
 {
     /** Constraint node. */
     public static final String CONSTRAINT = Configurer.PREFIX + "constraint";
@@ -85,7 +85,7 @@ public final class ConfigCollisionConstraint
     /**
      * Disabled constructor.
      */
-    private ConfigCollisionConstraint()
+    private CollisionConstraintConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

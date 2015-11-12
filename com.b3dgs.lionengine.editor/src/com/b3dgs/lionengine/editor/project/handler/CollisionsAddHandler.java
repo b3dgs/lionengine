@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilTemplate;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**
@@ -81,7 +81,7 @@ public final class CollisionsAddHandler
     public void execute(Shell parent)
     {
         final Media selection = ProjectModel.INSTANCE.getSelection();
-        final String value = ConfigCollisionGroup.FILENAME.replace(Constant.DOT
+        final String value = CollisionGroupConfig.FILENAME.replace(Constant.DOT
                                                                    + Factory.FILE_DATA_EXTENSION,
                                                                    Constant.EMPTY_STRING);
         final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;

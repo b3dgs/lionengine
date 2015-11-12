@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.tile.ConfigTileConstraints;
+import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -171,7 +171,7 @@ public class MapConstraintsExportDialog extends AbstractDialog
         constraintsLocationText.setEditable(false);
 
         final MapTile map = WorldModel.INSTANCE.getMap();
-        constraintsConfig = Medias.create(map.getSheetsConfig().getParentPath(), ConfigTileConstraints.FILENAME);
+        constraintsConfig = Medias.create(map.getSheetsConfig().getParentPath(), TileConstraintsConfig.FILENAME);
         constraintsLocationText.setText(constraintsConfig.getPath());
 
         final Button browse = UtilButton.createBrowse(groupArea);
@@ -271,7 +271,7 @@ public class MapConstraintsExportDialog extends AbstractDialog
             maps.add(map);
         }
         final ConstraintsExtractor extractor = new ConstraintsExtractor();
-        final XmlNode root = ConfigTileConstraints.export(extractor.check(maps.toArray(new MapTile[maps.size()])));
+        final XmlNode root = TileConstraintsConfig.export(extractor.check(maps.toArray(new MapTile[maps.size()])));
         Xml.save(root, constraintsConfig);
     }
 }

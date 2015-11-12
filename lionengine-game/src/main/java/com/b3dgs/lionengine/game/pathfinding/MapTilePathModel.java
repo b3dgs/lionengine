@@ -122,7 +122,7 @@ public class MapTilePathModel implements MapTilePath
     public void loadPathfinding(Media pathfindingConfig)
     {
         final XmlNode nodePathfinding = Xml.load(pathfindingConfig);
-        final ConfigPathfinding config = ConfigPathfinding.create(nodePathfinding);
+        final PathfindingConfig config = PathfindingConfig.create(nodePathfinding);
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
             for (int tx = 0; tx < map.getInTileWidth(); tx++)

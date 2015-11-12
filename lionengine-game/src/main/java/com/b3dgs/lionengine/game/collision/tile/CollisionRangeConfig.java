@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.collision.tile;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see CollisionRange
  */
-public final class ConfigCollisionRange
+public final class CollisionRangeConfig
 {
     /** The range node. */
     public static final String RANGE = Configurer.PREFIX + "range";
@@ -90,7 +90,7 @@ public final class ConfigCollisionRange
     /**
      * Disabled constructor.
      */
-    private ConfigCollisionRange()
+    private CollisionRangeConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

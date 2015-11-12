@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.collision.object.Collision;
-import com.b3dgs.lionengine.game.collision.object.ConfigCollisions;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.collision.object.CollisionConfig;
 
 /**
  * Enable collisions handler.
@@ -49,7 +49,7 @@ public final class CollisionsEnableHandler
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final Collision collision = new Collision("default", 0, 0, 0, 0, false);
-        ConfigCollisions.export(configurer.getRoot(), collision);
+        CollisionConfig.export(configurer.getRoot(), collision);
         configurer.save();
         part.setInput(properties, configurer);
     }

@@ -23,10 +23,10 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.FramesConfig;
+import com.b3dgs.lionengine.game.object.SurfaceConfig;
+import com.b3dgs.lionengine.game.state.AnimationConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -52,16 +52,16 @@ public final class SurfaceRemoveHandler
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final XmlNode root = configurer.getRoot();
-        root.removeChild(ConfigSurface.SURFACE);
-        root.removeChildren(ConfigAnimations.ANIMATION);
+        root.removeChild(SurfaceConfig.SURFACE);
+        root.removeChildren(AnimationConfig.ANIMATION);
         configurer.save();
         for (final TreeItem item : properties.getItems())
         {
             final Object data = item.getData();
-            if (ConfigSurface.SURFACE_IMAGE.equals(data)
-                || ConfigSurface.SURFACE_ICON.equals(data)
-                || ConfigFrames.FRAMES.equals(data)
-                || ConfigAnimations.ANIMATION.equals(data))
+            if (SurfaceConfig.SURFACE_IMAGE.equals(data)
+                || SurfaceConfig.SURFACE_ICON.equals(data)
+                || FramesConfig.FRAMES.equals(data)
+                || AnimationConfig.ANIMATION.equals(data))
             {
                 part.clear(item);
             }

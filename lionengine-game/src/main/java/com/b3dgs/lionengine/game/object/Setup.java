@@ -19,8 +19,7 @@ package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.configurer.ConfigObject;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Define a structure used to create configurer objects.
@@ -90,7 +89,7 @@ public class Setup
     {
         if (clazz == null)
         {
-            final ConfigObject configObject = ConfigObject.create(configurer);
+            final ObjectConfig configObject = ObjectConfig.create(configurer);
             try
             {
                 clazz = classLoader.loadClass(configObject.getClassName());

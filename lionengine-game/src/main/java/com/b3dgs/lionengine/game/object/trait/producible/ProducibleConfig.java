@@ -15,9 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurer;
+package com.b3dgs.lionengine.game.object.trait.producible;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -25,7 +27,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see com.b3dgs.lionengine.game.object.trait.producible.Producible
  */
-public final class ConfigProducible
+public final class ProducibleConfig
 {
     /** Producible root node. */
     public static final String PRODUCIBLE = Configurer.PREFIX + "producible";
@@ -34,19 +36,19 @@ public final class ConfigProducible
 
     /**
      * Create the producible data from node.
-     * Must be compatible with {@link ConfigSize}.
+     * Must be compatible with {@link SizeConfig}.
      *
      * @param configurer The configurer reference.
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigProducible create(Configurer configurer)
+    public static ProducibleConfig create(Configurer configurer)
     {
         final XmlNode node = configurer.getRoot();
-        final ConfigSize size = ConfigSize.create(configurer);
+        final SizeConfig size = SizeConfig.create(configurer);
         final int time = node.getChild(PRODUCIBLE).readInteger(STEPS);
 
-        return new ConfigProducible(time, size.getWidth(), size.getHeight());
+        return new ProducibleConfig(time, size.getWidth(), size.getHeight());
     }
 
     /** Production steps number. */
@@ -59,7 +61,7 @@ public final class ConfigProducible
     /**
      * Disabled constructor.
      */
-    private ConfigProducible()
+    private ProducibleConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
@@ -72,7 +74,7 @@ public final class ConfigProducible
      * @param height The production height.
      * @throws LionEngineException If error when opening the media.
      */
-    private ConfigProducible(int steps, int width, int height)
+    private ProducibleConfig(int steps, int width, int height)
     {
         this.steps = steps;
         this.width = width;

@@ -44,8 +44,8 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * <li>{@link Transformable}</li>
  * </ul>
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
- * with {@link ConfigCollisions}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+ * with {@link CollisionConfig}.
  * </p>
  * <p>
  * The {@link Services} must provide the following services:
@@ -118,7 +118,7 @@ public class CollidableModel extends TraitModel implements Collidable
     {
         super.prepare(owner, services);
         viewer = services.get(Viewer.class);
-        for (final Collision collision : ConfigCollisions.create(owner.getConfigurer()).getCollisions())
+        for (final Collision collision : CollisionConfig.create(owner.getConfigurer()).getCollisions())
         {
             addCollision(collision);
         }

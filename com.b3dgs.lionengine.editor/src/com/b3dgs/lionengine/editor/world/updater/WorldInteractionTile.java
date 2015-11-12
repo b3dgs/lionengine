@@ -46,19 +46,19 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
 import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionFormula;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileTransition;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.tile.ConfigTileGroups;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Line;
@@ -450,15 +450,15 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         final Media config = collision.getFormulasConfig();
         final XmlNode root = Xml.load(config);
-        if (ConfigCollisionFormula.has(root, name))
+        if (CollisionFormulaConfig.has(root, name))
         {
-            ConfigCollisionFormula.remove(root, name);
+            CollisionFormulaConfig.remove(root, name);
         }
 
         final CollisionRange range = new CollisionRange(Axis.Y, 0, map.getTileWidth() - 1, 0, map.getTileHeight() - 1);
         final CollisionFunction updatedFunction = updateFunction(function, index);
         final CollisionFormula formula = new CollisionFormula(name, range, updatedFunction, new CollisionConstraint());
-        ConfigCollisionFormula.export(root, formula);
+        CollisionFormulaConfig.export(root, formula);
         Xml.save(root, config);
 
         return formula;
@@ -503,13 +503,13 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         final Media config = collision.getCollisionsConfig();
         final XmlNode root = Xml.load(config);
-        if (ConfigCollisionGroup.has(root, name))
+        if (CollisionGroupConfig.has(root, name))
         {
-            ConfigCollisionGroup.remove(root, name);
+            CollisionGroupConfig.remove(root, name);
         }
 
         final CollisionGroup group = new CollisionGroup(name, Arrays.asList(formula));
-        ConfigCollisionGroup.export(root, group);
+        CollisionGroupConfig.export(root, group);
         Xml.save(root, config);
 
         return group;
@@ -522,7 +522,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         final Object copy = PropertiesModel.INSTANCE.getCopyData();
         final String group = PropertiesModel.INSTANCE.getCopyText();
-        if (copy != null && selectedTile != null && ConfigTileGroups.NODE_GROUP.equals(copy))
+        if (copy != null && selectedTile != null && TileGroupsConfig.NODE_GROUP.equals(copy))
         {
             PropertiesTile.changeTileGroup(map, selectedTile.getGroup(), group, selectedTile);
         }

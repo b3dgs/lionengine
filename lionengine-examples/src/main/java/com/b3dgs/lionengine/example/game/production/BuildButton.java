@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.configurer.ConfigSize;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -122,7 +122,7 @@ class BuildButton extends ObjectGame implements Action, Assign, Updatable, Rende
     public void execute()
     {
         state = assignable;
-        final ConfigSize size = ConfigSize.create(new Configurer(target));
+        final SizeConfig size = SizeConfig.create(new Configurer(target));
         area = Geom.createRectangle(UtilMath.getRounded(cursor.getX(), cursor.getWidth()),
                                     UtilMath.getRounded(cursor.getY(), cursor.getHeight()),
                                     size.getWidth(),

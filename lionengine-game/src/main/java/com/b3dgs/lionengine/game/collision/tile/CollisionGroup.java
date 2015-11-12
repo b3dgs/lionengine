@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.Nameable;
  * &lt;/lionengine:groups&gt;
  * </pre>
  * 
- * @see ConfigCollisionGroup
+ * @see CollisionGroupConfig
  * @see CollisionFormula
  */
 public class CollisionGroup implements Nameable

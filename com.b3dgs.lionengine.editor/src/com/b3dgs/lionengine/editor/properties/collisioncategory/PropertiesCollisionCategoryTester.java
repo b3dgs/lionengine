@@ -22,8 +22,8 @@ import org.eclipse.core.expressions.PropertyTester;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionCategory;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionCategoryConfig;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 
 /**
  * Test the properties node existence.
@@ -50,25 +50,25 @@ public final class PropertiesCollisionCategoryTester extends PropertyTester
         final boolean result;
         if (PROPERTY_FORMULA_ADD.equals(property))
         {
-            result = ConfigCollisionFormula.FORMULAS.equals(data);
+            result = CollisionFormulaConfig.FORMULAS.equals(data);
         }
         else if (PROPERTY_FORMULA_REMOVE.equals(property))
         {
-            result = ConfigCollisionFormula.FORMULA.equals(data);
+            result = CollisionFormulaConfig.FORMULA.equals(data);
         }
         else if (PROPERTY_FORMULA_EDIT.equals(property))
         {
-            result = ConfigCollisionFormula.FORMULA.equals(data);
+            result = CollisionFormulaConfig.FORMULA.equals(data);
         }
         else if (ObjectsTester.isObjectFile(ProjectModel.INSTANCE.getSelection()))
         {
             if (PROPERTY_FORMULA_ADD.equals(property))
             {
-                result = !model.hasProperty(ConfigCollisionCategory.CATEGORY);
+                result = !model.hasProperty(CollisionCategoryConfig.CATEGORY);
             }
-            else if (PROPERTY_FORMULA_REMOVE.equals(property) && ConfigCollisionCategory.CATEGORY.equals(data))
+            else if (PROPERTY_FORMULA_REMOVE.equals(property) && CollisionCategoryConfig.CATEGORY.equals(data))
             {
-                result = model.hasProperty(ConfigCollisionCategory.CATEGORY);
+                result = model.hasProperty(CollisionCategoryConfig.CATEGORY);
             }
             else
             {

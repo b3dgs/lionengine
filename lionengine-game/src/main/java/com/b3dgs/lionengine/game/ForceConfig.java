@@ -15,10 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurer;
+package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -26,7 +25,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see Force
  */
-public final class ConfigForce
+public final class ForceConfig
 {
     /** Force node name. */
     public static final String FORCE = Configurer.PREFIX + "force";
@@ -60,7 +59,7 @@ public final class ConfigForce
     /**
      * Private constructor.
      */
-    private ConfigForce()
+    private ForceConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.collision.tile;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see CollisionFunction
  */
-public final class ConfigCollisionFunction
+public final class CollisionFunctionConfig
 {
     /** Function node. */
     public static final String FUNCTION = Configurer.PREFIX + "function";
@@ -89,7 +89,7 @@ public final class ConfigCollisionFunction
     /**
      * Disabled constructor.
      */
-    private ConfigCollisionFunction()
+    private CollisionFunctionConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

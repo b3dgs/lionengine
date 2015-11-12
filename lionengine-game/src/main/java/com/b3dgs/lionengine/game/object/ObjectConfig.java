@@ -15,16 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurer;
+package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the object configuration data.
  * 
  * @see Configurer
  */
-public final class ConfigObject
+public final class ObjectConfig
 {
     /** Class attribute name. */
     public static final String CLASS = Configurer.PREFIX + "class";
@@ -38,12 +39,12 @@ public final class ConfigObject
      * @return The object data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigObject create(Configurer configurer)
+    public static ObjectConfig create(Configurer configurer)
     {
         final String clazz = configurer.getText(CLASS);
         final String setup = configurer.getText(SETUP);
 
-        return new ConfigObject(clazz, setup);
+        return new ObjectConfig(clazz, setup);
     }
 
     /** Object class name. */
@@ -54,7 +55,7 @@ public final class ConfigObject
     /**
      * Disabled constructor.
      */
-    private ConfigObject()
+    private ObjectConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
@@ -65,7 +66,7 @@ public final class ConfigObject
      * @param clazz The object class name.
      * @param setup The setup class name.
      */
-    private ConfigObject(String clazz, String setup)
+    private ObjectConfig(String clazz, String setup)
     {
         this.clazz = clazz;
         this.setup = setup;

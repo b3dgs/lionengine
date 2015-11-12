@@ -15,16 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurer;
+package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the surface data from a configurer.
  * 
  * @see com.b3dgs.lionengine.game.object.SetupSurface
  */
-public final class ConfigSurface
+public final class SurfaceConfig
 {
     /** Surface node name. */
     public static final String SURFACE = Configurer.PREFIX + "surface";
@@ -40,11 +41,11 @@ public final class ConfigSurface
      * @return The surface data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigSurface create(Configurer configurer)
+    public static SurfaceConfig create(Configurer configurer)
     {
-        final String surface = configurer.getString(ConfigSurface.SURFACE_IMAGE, ConfigSurface.SURFACE);
+        final String surface = configurer.getString(SurfaceConfig.SURFACE_IMAGE, SurfaceConfig.SURFACE);
 
-        return new ConfigSurface(surface, ConfigSurface.getSurfaceIcon(configurer));
+        return new SurfaceConfig(surface, SurfaceConfig.getSurfaceIcon(configurer));
     }
 
     /** The image descriptor. */
@@ -55,7 +56,7 @@ public final class ConfigSurface
     /**
      * Disabled constructor.
      */
-    private ConfigSurface()
+    private SurfaceConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
@@ -66,7 +67,7 @@ public final class ConfigSurface
      * @param image The image file path.
      * @param icon The icon file path (can be <code>null</code>).
      */
-    private ConfigSurface(String image, String icon)
+    private SurfaceConfig(String image, String icon)
     {
         this.image = image;
         this.icon = icon;
@@ -100,9 +101,9 @@ public final class ConfigSurface
      */
     private static String getSurfaceIcon(Configurer configurer)
     {
-        if (configurer.getRoot().getChild(ConfigSurface.SURFACE).hasAttribute(ConfigSurface.SURFACE_ICON))
+        if (configurer.getRoot().getChild(SurfaceConfig.SURFACE).hasAttribute(SurfaceConfig.SURFACE_ICON))
         {
-            return configurer.getString(ConfigSurface.SURFACE_ICON, ConfigSurface.SURFACE);
+            return configurer.getString(SurfaceConfig.SURFACE_ICON, SurfaceConfig.SURFACE);
         }
         return null;
     }

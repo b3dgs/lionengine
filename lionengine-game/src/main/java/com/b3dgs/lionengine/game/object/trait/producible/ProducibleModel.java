@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.configurer.ConfigProducible;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.TraitModel;
@@ -29,8 +28,8 @@ import com.b3dgs.lionengine.game.object.TraitModel;
 /**
  * Represents a producible object.
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
- * with {@link ConfigProducible}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+ * with {@link ProducibleConfig}.
  * </p>
  * <p>
  * If the {@link ObjectGame} is a {@link ProducibleListener}, it will automatically
@@ -71,7 +70,7 @@ public class ProducibleModel extends TraitModel implements Producible
     {
         super.prepare(owner, services);
 
-        final ConfigProducible configProducible = ConfigProducible.create(owner.getConfigurer());
+        final ProducibleConfig configProducible = ProducibleConfig.create(owner.getConfigurer());
         media = owner.getMedia();
         steps = configProducible.getSteps();
         width = configProducible.getWidth();

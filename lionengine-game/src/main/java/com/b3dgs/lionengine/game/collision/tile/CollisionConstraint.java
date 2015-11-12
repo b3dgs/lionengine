@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.Orientation;
 /**
  * Represents the collision constraints around a collision.
  * 
- * @see ConfigCollisionConstraint
+ * @see CollisionConstraintConfig
  */
 public class CollisionConstraint
 {

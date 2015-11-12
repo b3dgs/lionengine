@@ -22,8 +22,8 @@ import org.eclipse.core.expressions.PropertyTester;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.object.FramesConfig;
+import com.b3dgs.lionengine.game.state.AnimationConfig;
 
 /**
  * Test the properties node existence.
@@ -48,17 +48,17 @@ public final class PropertiesAnimationTester extends PropertyTester
     private static boolean check(PropertiesModel model, Object data, String property)
     {
         final boolean result;
-        if (PROPERTY_ANIMATIONS_ENABLE.equals(property) && model.hasProperty(ConfigFrames.FRAMES))
+        if (PROPERTY_ANIMATIONS_ENABLE.equals(property) && model.hasProperty(FramesConfig.FRAMES))
         {
-            result = !model.hasProperty(ConfigAnimations.ANIMATION);
+            result = !model.hasProperty(AnimationConfig.ANIMATION);
         }
-        else if (PROPERTY_ANIMATIONS_EDIT.equals(property) && ConfigAnimations.ANIMATION.equals(data))
+        else if (PROPERTY_ANIMATIONS_EDIT.equals(property) && AnimationConfig.ANIMATION.equals(data))
         {
-            result = model.hasProperty(ConfigAnimations.ANIMATION);
+            result = model.hasProperty(AnimationConfig.ANIMATION);
         }
-        else if (PROPERTY_ANIMATIONS_DISABLE.equals(property) && ConfigAnimations.ANIMATION.equals(data))
+        else if (PROPERTY_ANIMATIONS_DISABLE.equals(property) && AnimationConfig.ANIMATION.equals(data))
         {
-            result = model.hasProperty(ConfigAnimations.ANIMATION);
+            result = model.hasProperty(AnimationConfig.ANIMATION);
         }
         else
         {

@@ -29,13 +29,13 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.state.AnimationConfig;
 
 /**
  * Effect base implementation.
@@ -65,13 +65,13 @@ class Effect extends ObjectGame implements Updatable, Renderable
         super(setup, services);
         viewer = services.get(Viewer.class);
 
-        final ConfigFrames config = ConfigFrames.create(setup.getConfigurer());
+        final FramesConfig config = FramesConfig.create(setup.getConfigurer());
         final int scale = UtilRandom.getRandomInteger(75) + 50;
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         surface.stretch(scale, scale);
         surface.setOrigin(Origin.MIDDLE);
 
-        final ConfigAnimations configAnimations = ConfigAnimations.create(setup.getConfigurer());
+        final AnimationConfig configAnimations = AnimationConfig.create(setup.getConfigurer());
         animExplode = configAnimations.getAnimation("explode");
     }
 

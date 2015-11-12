@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurer;
+package com.b3dgs.lionengine.game.state;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,6 +24,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -31,7 +32,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see Animation
  */
-public final class ConfigAnimations
+public final class AnimationConfig
 {
     /** Animation node name. */
     public static final String ANIMATION = Configurer.PREFIX + "animation";
@@ -55,7 +56,7 @@ public final class ConfigAnimations
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static ConfigAnimations create(Configurer configurer)
+    public static AnimationConfig create(Configurer configurer)
     {
         final Map<String, Animation> animations = new HashMap<String, Animation>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(ANIMATION))
@@ -64,7 +65,7 @@ public final class ConfigAnimations
             final Animation animation = createAnimation(node);
             animations.put(anim, animation);
         }
-        return new ConfigAnimations(animations);
+        return new AnimationConfig(animations);
     }
 
     /**
@@ -116,7 +117,7 @@ public final class ConfigAnimations
     /**
      * Disabled constructor.
      */
-    private ConfigAnimations()
+    private AnimationConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
@@ -126,7 +127,7 @@ public final class ConfigAnimations
      * 
      * @param animations The animations mapping.
      */
-    private ConfigAnimations(Map<String, Animation> animations)
+    private AnimationConfig(Map<String, Animation> animations)
     {
         this.animations = animations;
     }

@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.properties.tilecollision;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 
 /**
  * Test the properties node existence.
@@ -46,15 +46,15 @@ public final class PropertiesTileCollisionTester extends PropertyTester
         final boolean result;
         if (PROPERTY_FORMULA_ADD.equals(property))
         {
-            result = ConfigCollisionFormula.FORMULAS.equals(data);
+            result = CollisionFormulaConfig.FORMULAS.equals(data);
         }
         else if (PROPERTY_FORMULA_REMOVE.equals(property))
         {
-            result = ConfigCollisionFormula.FORMULA.equals(data);
+            result = CollisionFormulaConfig.FORMULA.equals(data);
         }
         else if (PROPERTY_FORMULA_EDIT.equals(property))
         {
-            result = ConfigCollisionFormula.FORMULA.equals(data);
+            result = CollisionFormulaConfig.FORMULA.equals(data);
         }
         else
         {

@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -48,7 +48,7 @@ public final class FormulasTester extends PropertyTester
         try
         {
             final XmlNode root = Xml.load(media);
-            return ConfigCollisionFormula.FORMULAS.equals(root.getNodeName());
+            return CollisionFormulaConfig.FORMULAS.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)
         {

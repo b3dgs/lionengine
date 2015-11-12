@@ -24,10 +24,10 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.tile.ConfigTileTransitions;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.game.tile.TileTransition;
+import com.b3dgs.lionengine.game.tile.TileTransitionsConfig;
 
 /**
  * Map tile transition model implementation.
@@ -80,13 +80,13 @@ public class MapTileTransitionModel implements MapTileTransition
     @Override
     public void loadTransitions()
     {
-        loadTransitions(Medias.create(map.getSheetsConfig().getParentPath(), ConfigTileTransitions.FILENAME));
+        loadTransitions(Medias.create(map.getSheetsConfig().getParentPath(), TileTransitionsConfig.FILENAME));
     }
 
     @Override
     public void loadTransitions(Media configTransitions)
     {
-        transitions = ConfigTileTransitions.imports(configTransitions);
+        transitions = TileTransitionsConfig.imports(configTransitions);
     }
 
     @Override

@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.configurer.ConfigLaunchable;
-import com.b3dgs.lionengine.game.configurer.ConfigLauncher;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -45,8 +43,8 @@ import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
  * <li>{@link Localizable}</li>
  * </ul>
  * <p>
- * The {@link com.b3dgs.lionengine.game.configurer.Configurer} must provide a valid configuration compatible with
- * {@link ConfigLauncher}.
+ * The {@link com.b3dgs.lionengine.game.Configurer} must provide a valid configuration compatible with
+ * {@link LauncherConfig}.
  * </p>
  * <p>
  * The {@link Services} must provide the following services:
@@ -67,7 +65,7 @@ public class LauncherModel extends TraitModel implements Launcher
     /** Fire timer. */
     private final Timing fire = new Timing();
     /** Launchable configuration. */
-    private Iterable<ConfigLaunchable> launchables;
+    private Iterable<LaunchableConfig> launchables;
     /** Factory reference. */
     private Factory factory;
     /** Handler reference. */
@@ -98,7 +96,7 @@ public class LauncherModel extends TraitModel implements Launcher
      */
     private void fired()
     {
-        for (final ConfigLaunchable launchable : launchables)
+        for (final LaunchableConfig launchable : launchables)
         {
             final Media media = Medias.create(launchable.getMedia());
             final ObjectGame object = factory.create(media);
@@ -186,7 +184,7 @@ public class LauncherModel extends TraitModel implements Launcher
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
 
-        final ConfigLauncher config = ConfigLauncher.create(owner.getConfigurer());
+        final LauncherConfig config = LauncherConfig.create(owner.getConfigurer());
         launchables = config.getLaunchables();
         rate = config.getRate();
         fire.start();

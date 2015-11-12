@@ -259,7 +259,7 @@ public class MapTileCollisionModel implements MapTileCollision
         Verbose.info(INFO_LOAD_FORMULAS, formulasConfig.getFile().getPath());
         formulas.clear();
         this.formulasConfig = formulasConfig;
-        final ConfigCollisionFormula config = ConfigCollisionFormula.create(formulasConfig);
+        final CollisionFormulaConfig config = CollisionFormulaConfig.create(formulasConfig);
         for (final CollisionFormula formula : config.getFormulas().values())
         {
             formulas.put(formula.getName(), formula);
@@ -278,7 +278,7 @@ public class MapTileCollisionModel implements MapTileCollision
         groups.clear();
         this.groupsConfig = groupsConfig;
         final XmlNode nodeGroups = Xml.load(groupsConfig);
-        final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(nodeGroups, this);
+        final Collection<CollisionGroup> groups = CollisionGroupConfig.create(nodeGroups, this);
         for (final CollisionGroup group : groups)
         {
             this.groups.put(group.getName(), group);
@@ -461,8 +461,8 @@ public class MapTileCollisionModel implements MapTileCollision
     public void loadCollisions()
     {
         final String parent = map.getSheetsConfig().getParentPath();
-        loadCollisions(Medias.create(parent, ConfigCollisionFormula.FILENAME),
-                       Medias.create(parent, ConfigCollisionGroup.FILENAME));
+        loadCollisions(Medias.create(parent, CollisionFormulaConfig.FILENAME),
+                       Medias.create(parent, CollisionGroupConfig.FILENAME));
     }
 
     @Override
@@ -485,19 +485,19 @@ public class MapTileCollisionModel implements MapTileCollision
     {
         if (formulasConfig != null)
         {
-            final XmlNode formulasRoot = Xml.create(ConfigCollisionFormula.FORMULAS);
+            final XmlNode formulasRoot = Xml.create(CollisionFormulaConfig.FORMULAS);
             for (final CollisionFormula formula : getCollisionFormulas())
             {
-                ConfigCollisionFormula.export(formulasRoot, formula);
+                CollisionFormulaConfig.export(formulasRoot, formula);
             }
             Xml.save(formulasRoot, formulasConfig);
         }
         if (groupsConfig != null)
         {
-            final XmlNode groupsNode = Xml.create(ConfigCollisionGroup.COLLISIONS);
+            final XmlNode groupsNode = Xml.create(CollisionGroupConfig.COLLISIONS);
             for (final CollisionGroup group : getCollisionGroups())
             {
-                ConfigCollisionGroup.export(groupsNode, group);
+                CollisionGroupConfig.export(groupsNode, group);
             }
             Xml.save(groupsNode, groupsConfig);
         }

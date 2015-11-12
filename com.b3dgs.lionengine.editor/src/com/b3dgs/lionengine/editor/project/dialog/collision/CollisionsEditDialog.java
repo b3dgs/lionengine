@@ -30,12 +30,12 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionFormula;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -96,18 +96,18 @@ public class CollisionsEditDialog extends AbstractDialog
     {
         list.save();
 
-        final XmlNode root = Xml.create(ConfigCollisionGroup.COLLISIONS);
+        final XmlNode root = Xml.create(CollisionGroupConfig.COLLISIONS);
         root.writeString(Configurer.HEADER, Engine.WEBSITE);
 
         for (final TreeItem item : list.getTree().getItems())
         {
             final CollisionGroup collision = (CollisionGroup) item.getData();
-            final XmlNode nodeGroup = root.createChild(ConfigCollisionGroup.COLLISION);
-            nodeGroup.writeString(ConfigCollisionGroup.GROUP, collision.getName());
+            final XmlNode nodeGroup = root.createChild(CollisionGroupConfig.COLLISION);
+            nodeGroup.writeString(CollisionGroupConfig.GROUP, collision.getName());
 
             for (final CollisionFormula formula : collision.getFormulas())
             {
-                final XmlNode nodeFormula = nodeGroup.createChild(ConfigCollisionFormula.FORMULA);
+                final XmlNode nodeFormula = nodeGroup.createChild(CollisionFormulaConfig.FORMULA);
                 nodeFormula.setText(formula.getName());
             }
         }

@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.object.trait.transformable;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
-import com.b3dgs.lionengine.game.configurer.ConfigSize;
+import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.TraitModel;
@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.game.object.TraitModel;
 /**
  * Transformable model implementation.
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
- * with {@link ConfigSize}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+ * with {@link SizeConfig}.
  * </p>
  */
 public class TransformableModel extends TraitModel implements Transformable
@@ -62,7 +62,7 @@ public class TransformableModel extends TraitModel implements Transformable
     {
         super.prepare(owner, services);
 
-        final ConfigSize sizeData = ConfigSize.create(owner.getConfigurer());
+        final SizeConfig sizeData = SizeConfig.create(owner.getConfigurer());
         width = sizeData.getWidth();
         height = sizeData.getHeight();
         oldWidth = width;

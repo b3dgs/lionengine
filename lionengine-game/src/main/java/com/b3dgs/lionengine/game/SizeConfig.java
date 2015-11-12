@@ -15,81 +15,81 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurer;
+package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Represents the offset data from a configurer.
+ * Represents the size data from a configurer.
  * 
  * @see Configurer
  */
-public final class ConfigOffset
+public final class SizeConfig
 {
-    /** Offset node name. */
-    public static final String OFFSET = Configurer.PREFIX + "offset";
-    /** Offset X node name. */
-    public static final String OFFSET_X = "x";
-    /** Offset Y node name. */
-    public static final String OFFSET_Y = "y";
+    /** Size node name. */
+    public static final String SIZE = Configurer.PREFIX + "size";
+    /** Size width node. */
+    public static final String SIZE_WIDTH = "width";
+    /** Size height node. */
+    public static final String SIZE_HEIGHT = "height";
 
     /**
-     * Create the offset data from node.
+     * Create the size data from node.
      * 
      * @param configurer The configurer reference.
-     * @return The offset data.
+     * @return The size data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigOffset create(Configurer configurer)
+    public static SizeConfig create(Configurer configurer)
     {
-        final int offsetX = configurer.getInteger(ConfigOffset.OFFSET_X, ConfigOffset.OFFSET);
-        final int offsetY = configurer.getInteger(ConfigOffset.OFFSET_Y, ConfigOffset.OFFSET);
+        final int width = configurer.getInteger(SizeConfig.SIZE_WIDTH, SizeConfig.SIZE);
+        final int height = configurer.getInteger(SizeConfig.SIZE_HEIGHT, SizeConfig.SIZE);
 
-        return new ConfigOffset(offsetX, offsetY);
+        return new SizeConfig(width, height);
     }
 
-    /** The x value. */
-    private final int x;
-    /** The y value. */
-    private final int y;
+    /** The width value. */
+    private final int width;
+    /** The height value. */
+    private final int height;
 
     /**
      * Disabled constructor.
      */
-    private ConfigOffset()
+    private SizeConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 
     /**
-     * Create an offset configuration.
+     * Create a size configuration.
      * 
-     * @param x The x value.
-     * @param y The y value.
+     * @param width The width value.
+     * @param height The height value.
      */
-    private ConfigOffset(int x, int y)
+    private SizeConfig(int width, int height)
     {
-        this.x = x;
-        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     /**
-     * Get the x value.
+     * Get the width value.
      * 
-     * @return The x value.
+     * @return The width value.
      */
-    public int getX()
+    public int getWidth()
     {
-        return x;
+        return width;
     }
 
     /**
-     * Get the y value.
+     * Get the height value.
      * 
-     * @return The y value.
+     * @return The height value.
      */
-    public int getY()
+    public int getHeight()
     {
-        return y;
+        return height;
     }
 }

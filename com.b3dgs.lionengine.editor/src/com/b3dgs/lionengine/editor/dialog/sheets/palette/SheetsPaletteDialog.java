@@ -53,8 +53,8 @@ import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.tile.ConfigTileConstraints;
 import com.b3dgs.lionengine.game.tile.TileConstraint;
+import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileRef;
 
@@ -135,7 +135,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         gc = new GC(composite);
         tileColor = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
         gridColor = shell.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
-        simple = Medias.create(map.getGroupsConfig().getParentPath(), ConfigTileConstraints.FILENAME).exists();
+        simple = Medias.create(map.getGroupsConfig().getParentPath(), TileConstraintsConfig.FILENAME).exists();
 
         createTypes();
         createBottom();
@@ -360,8 +360,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      */
     private Collection<TileRef> getCenterTiles()
     {
-        final Media media = Medias.create(map.getGroupsConfig().getParentPath(), ConfigTileConstraints.FILENAME);
-        final Map<TileRef, Map<Orientation, TileConstraint>> constraints = ConfigTileConstraints.create(media);
+        final Media media = Medias.create(map.getGroupsConfig().getParentPath(), TileConstraintsConfig.FILENAME);
+        final Map<TileRef, Map<Orientation, TileConstraint>> constraints = TileConstraintsConfig.create(media);
         final Collection<TileRef> centerTiles = new HashSet<>();
 
         for (final Map.Entry<TileRef, Map<Orientation, TileConstraint>> entry : constraints.entrySet())

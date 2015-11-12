@@ -120,7 +120,7 @@ public class Minimap implements Image
      */
     public void loadPixelConfig(Media config)
     {
-        pixels = ConfigMinimap.imports(config);
+        pixels = MinimapConfig.imports(config);
     }
 
     /**
@@ -137,7 +137,7 @@ public class Minimap implements Image
         }
         if (config != null)
         {
-            ConfigMinimap.exports(config, colors);
+            MinimapConfig.exports(config, colors);
         }
         pixels = colors;
         prepare();

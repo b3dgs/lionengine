@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.state;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
@@ -62,7 +61,7 @@ public interface StateAnimationBased
          */
         public static void loadStates(StateAnimationBased[] states, StateFactory factory, ObjectGame object)
         {
-            final ConfigAnimations configAnimations = ConfigAnimations.create(object.getConfigurer());
+            final AnimationConfig configAnimations = AnimationConfig.create(object.getConfigurer());
             for (final StateAnimationBased type : states)
             {
                 try

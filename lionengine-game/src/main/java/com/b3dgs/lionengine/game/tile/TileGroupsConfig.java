@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see TileGroup
  */
-public final class ConfigTileGroups
+public final class TileGroupsConfig
 {
     /** Configuration file name. */
     public static final String FILENAME = "groups.xml";
@@ -96,9 +96,9 @@ public final class ConfigTileGroups
     private static TileGroup importGroup(XmlNode nodeGroup)
     {
         final Collection<TileRef> tiles = new ArrayList<TileRef>();
-        for (final XmlNode nodeTileRef : nodeGroup.getChildren(ConfigTile.NODE_TILE))
+        for (final XmlNode nodeTileRef : nodeGroup.getChildren(TileConfig.NODE_TILE))
         {
-            final TileRef tileRef = ConfigTile.create(nodeTileRef);
+            final TileRef tileRef = TileConfig.create(nodeTileRef);
             tiles.add(tileRef);
         }
 
@@ -119,7 +119,7 @@ public final class ConfigTileGroups
 
         for (final TileRef tileRef : group.getTiles())
         {
-            final XmlNode nodeTileRef = ConfigTile.export(tileRef);
+            final XmlNode nodeTileRef = TileConfig.export(tileRef);
             nodeGroup.add(nodeTileRef);
         }
     }
@@ -127,7 +127,7 @@ public final class ConfigTileGroups
     /**
      * Disabled constructor.
      */
-    private ConfigTileGroups()
+    private TileGroupsConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

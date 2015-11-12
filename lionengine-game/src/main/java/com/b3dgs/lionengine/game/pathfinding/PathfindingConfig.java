@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.tile.ConfigTileGroups;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see com.b3dgs.lionengine.game.pathfinding.MapTilePath
  */
-public final class ConfigPathfinding
+public final class PathfindingConfig
 {
     /** Pathfinding root node. */
     public static final String PATHFINDING = Configurer.PREFIX + "pathfinding";
@@ -48,13 +48,13 @@ public final class ConfigPathfinding
      * @return The collisions group data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigPathfinding create(XmlNode root)
+    public static PathfindingConfig create(XmlNode root)
     {
-        final ConfigPathfinding config = new ConfigPathfinding();
+        final PathfindingConfig config = new PathfindingConfig();
         for (final XmlNode node : root.getChildren(TILE_PATH))
         {
             final String category = node.readString(CATEGORY);
-            for (final XmlNode group : node.getChildren(ConfigTileGroups.NODE_GROUP))
+            for (final XmlNode group : node.getChildren(TileGroupsConfig.NODE_GROUP))
             {
                 config.addGroup(category, group.getText());
             }
@@ -68,7 +68,7 @@ public final class ConfigPathfinding
     /**
      * Constructor.
      */
-    private ConfigPathfinding()
+    private PathfindingConfig()
     {
         categories = new HashMap<String, Collection<String>>();
     }

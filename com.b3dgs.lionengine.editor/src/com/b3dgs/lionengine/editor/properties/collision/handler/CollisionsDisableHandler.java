@@ -24,8 +24,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.collision.object.ConfigCollisions;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.collision.object.CollisionConfig;
 
 /**
  * Disable collisions handler.
@@ -48,13 +48,13 @@ public final class CollisionsDisableHandler
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();
         final Configurer configurer = (Configurer) tree.getData();
-        configurer.getRoot().removeChildren(ConfigCollisions.COLLISION);
+        configurer.getRoot().removeChildren(CollisionConfig.COLLISION);
         configurer.save();
 
         final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         for (final TreeItem item : tree.getItems())
         {
-            if (ConfigCollisions.COLLISION.equals(item.getData()))
+            if (CollisionConfig.COLLISION.equals(item.getData()))
             {
                 part.clear(item);
             }

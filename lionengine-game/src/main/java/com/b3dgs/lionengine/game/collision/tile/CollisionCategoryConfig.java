@@ -22,8 +22,8 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.tile.ConfigTileGroups;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see CollisionCategory
  */
-public final class ConfigCollisionCategory
+public final class CollisionCategoryConfig
 {
     /** Category node name. */
     public static final String CATEGORY = Configurer.PREFIX + "category";
@@ -60,7 +60,7 @@ public final class ConfigCollisionCategory
         for (final XmlNode node : root.getChildren(CATEGORY))
         {
             final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>();
-            for (final XmlNode group : node.getChildren(ConfigTileGroups.NODE_GROUP))
+            for (final XmlNode group : node.getChildren(TileGroupsConfig.NODE_GROUP))
             {
                 final String name = group.getText();
                 groups.add(new CollisionGroup(name, new ArrayList<CollisionFormula>(0)));
@@ -107,7 +107,7 @@ public final class ConfigCollisionCategory
     public static CollisionCategory create(XmlNode root, MapTileCollision map)
     {
         final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>();
-        for (final XmlNode groupNode : root.getChildren(ConfigTileGroups.NODE_GROUP))
+        for (final XmlNode groupNode : root.getChildren(TileGroupsConfig.NODE_GROUP))
         {
             final String groupName = groupNode.getText();
             final CollisionGroup group = map.getCollisionGroup(groupName);
@@ -148,7 +148,7 @@ public final class ConfigCollisionCategory
 
         for (final CollisionGroup group : category.getGroups())
         {
-            final XmlNode groupNode = node.createChild(ConfigTileGroups.NODE_GROUP);
+            final XmlNode groupNode = node.createChild(TileGroupsConfig.NODE_GROUP);
             groupNode.setText(group.getName());
         }
     }
@@ -156,7 +156,7 @@ public final class ConfigCollisionCategory
     /**
      * Disabled constructor.
      */
-    private ConfigCollisionCategory()
+    private CollisionCategoryConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

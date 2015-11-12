@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.object.trait.actionable;
 
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.configurer.ConfigAction;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.TraitModel;
@@ -28,8 +27,8 @@ import com.b3dgs.lionengine.geom.Rectangle;
 /**
  * Actionnable model implementation.
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
- * with {@link ConfigAction}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+ * with {@link ActionConfig}.
  * </p>
  * <p>
  * The {@link Services} must provide the following services:
@@ -71,7 +70,7 @@ public class ActionableModel extends TraitModel implements Actionable
     {
         super.prepare(owner, services);
 
-        final ConfigAction config = ConfigAction.create(owner.getConfigurer());
+        final ActionConfig config = ActionConfig.create(owner.getConfigurer());
         button = Geom.createRectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
         description = config.getDescription();
 

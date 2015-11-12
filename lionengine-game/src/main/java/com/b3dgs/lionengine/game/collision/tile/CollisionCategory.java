@@ -51,7 +51,7 @@ import com.b3dgs.lionengine.game.Axis;
  * collision).
  * </p>
  * 
- * @see ConfigCollisionCategory
+ * @see CollisionCategoryConfig
  * @see CollisionFormula
  */
 public class CollisionCategory implements Nameable

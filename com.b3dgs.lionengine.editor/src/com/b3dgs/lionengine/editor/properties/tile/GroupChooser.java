@@ -37,9 +37,9 @@ import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.tile.ConfigTileGroups;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 
 /**
  * Represents the tile group chooser.
@@ -122,9 +122,9 @@ public class GroupChooser extends AbstractDialog
         {
             values.add(group.getName());
         }
-        if (!values.contains(ConfigTileGroups.REMOVE_GROUP_NAME))
+        if (!values.contains(TileGroupsConfig.REMOVE_GROUP_NAME))
         {
-            values.add(ConfigTileGroups.REMOVE_GROUP_NAME);
+            values.add(TileGroupsConfig.REMOVE_GROUP_NAME);
         }
         loadGroups(values.toArray(new String[values.size()]));
     }

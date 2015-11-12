@@ -25,8 +25,8 @@ import java.util.Map;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.tile.ConfigTile;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.tile.TileConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see com.b3dgs.lionengine.game.map.Minimap
  */
-public final class ConfigMinimap
+public final class MinimapConfig
 {
     /** Minimaps root node. */
     public static final String NODE_MINIMAPS = Configurer.PREFIX + "minimap";
@@ -67,9 +67,9 @@ public final class ConfigMinimap
                                                   nodeColor.readInteger(ATTRIBUTE_COLOR_GREEN),
                                                   nodeColor.readInteger(ATTRIBUTE_COLOR_BLUE));
 
-            for (final XmlNode nodeTileRef : nodeColor.getChildren(ConfigTile.NODE_TILE))
+            for (final XmlNode nodeTileRef : nodeColor.getChildren(TileConfig.NODE_TILE))
             {
-                final TileRef tileRef = ConfigTile.create(nodeTileRef);
+                final TileRef tileRef = TileConfig.create(nodeTileRef);
                 colors.put(tileRef, color);
             }
         }
@@ -99,7 +99,7 @@ public final class ConfigMinimap
 
             for (final TileRef tileRef : entry.getValue())
             {
-                final XmlNode nodeTileRef = ConfigTile.export(tileRef);
+                final XmlNode nodeTileRef = TileConfig.export(tileRef);
                 nodeColor.add(nodeTileRef);
             }
         }
@@ -143,7 +143,7 @@ public final class ConfigMinimap
     /**
      * Disabled constructor.
      */
-    private ConfigMinimap()
+    private MinimapConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

@@ -52,8 +52,8 @@ import com.b3dgs.lionengine.game.tile.Tiled;
  * <li>{@link Orientable}</li>
  * </ul>
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
- * with {@link ConfigPathfindable}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+ * with {@link PathfindableConfig}.
  * </p>
  * <p>
  * The {@link Services} must provide the following services:
@@ -533,7 +533,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
                                           + map.getInTileHeight() * (double) map.getInTileHeight());
         pathfinder = Astar.createPathFinder(map, range, true, Astar.createHeuristicClosest());
-        categories = ConfigPathfindable.create(owner.getConfigurer());
+        categories = PathfindableConfig.create(owner.getConfigurer());
 
         transformable = owner.getTrait(Transformable.class);
         final OrientableModel orientableModel = new OrientableModel();

@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -73,7 +73,7 @@ public final class CollisionsTester extends PropertyTester
         try
         {
             final XmlNode root = Xml.load(media);
-            return ConfigCollisionGroup.COLLISIONS.equals(root.getNodeName());
+            return CollisionGroupConfig.COLLISIONS.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)
         {

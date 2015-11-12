@@ -15,9 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurer;
+package com.b3dgs.lionengine.game.object.trait.actionable;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -25,7 +26,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see com.b3dgs.lionengine.game.object.trait.actionable.Actionable
  */
-public final class ConfigAction
+public final class ActionConfig
 {
     /** Action node name. */
     public static final String ACTION = Configurer.PREFIX + "action";
@@ -51,7 +52,7 @@ public final class ConfigAction
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigAction create(Configurer configurer)
+    public static ActionConfig create(Configurer configurer)
     {
         final XmlNode node = configurer.getRoot();
 
@@ -62,7 +63,7 @@ public final class ConfigAction
         final int width = getTextInt(node, WIDTH);
         final int height = getTextInt(node, HEIGHT);
 
-        return new ConfigAction(name, description, x, y, width, height);
+        return new ActionConfig(name, description, x, y, width, height);
     }
 
     /**
@@ -102,7 +103,7 @@ public final class ConfigAction
     /**
      * Disabled constructor.
      */
-    private ConfigAction()
+    private ActionConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
@@ -117,7 +118,7 @@ public final class ConfigAction
      * @param width The button width.
      * @param height The button height.
      */
-    private ConfigAction(String name, String description, int x, int y, int width, int height)
+    private ActionConfig(String name, String description, int x, int y, int width, int height)
     {
         this.name = name;
         this.description = description;

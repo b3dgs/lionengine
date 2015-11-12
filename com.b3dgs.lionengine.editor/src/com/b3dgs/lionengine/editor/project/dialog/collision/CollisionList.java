@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.Xml;
@@ -47,9 +47,9 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
     {
         final XmlNode node = Xml.load(collisionsConfig);
         final Collection<XmlNode> toRemove = new ArrayList<>();
-        for (final XmlNode nodeFormula : node.getChildren(ConfigCollisionGroup.COLLISION))
+        for (final XmlNode nodeFormula : node.getChildren(CollisionGroupConfig.COLLISION))
         {
-            if (CollisionGroup.same(nodeFormula.readString(ConfigCollisionGroup.GROUP), collision.getName()))
+            if (CollisionGroup.same(nodeFormula.readString(CollisionGroupConfig.GROUP), collision.getName()))
             {
                 toRemove.add(nodeFormula);
             }
@@ -91,7 +91,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
     public void loadCollisions(Media config)
     {
         this.config = config;
-        final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(config);
+        final Collection<CollisionGroup> groups = CollisionGroupConfig.create(config);
         loadObjects(groups);
     }
 

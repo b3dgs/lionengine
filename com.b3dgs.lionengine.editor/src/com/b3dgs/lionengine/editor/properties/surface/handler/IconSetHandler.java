@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.surface.PropertiesSurface;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.SurfaceConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -54,8 +54,8 @@ public final class IconSetHandler
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
-            surfaceNode.writeString(ConfigSurface.SURFACE_ICON, file);
+            final XmlNode surfaceNode = root.getChild(SurfaceConfig.SURFACE);
+            surfaceNode.writeString(SurfaceConfig.SURFACE_ICON, file);
             configurer.save();
             PropertiesSurface.createAttributeIcon(properties, file);
         }

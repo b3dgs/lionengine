@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.tile;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see TileRef
  */
-public final class ConfigTile
+public final class TileConfig
 {
     /** Tile node. */
     public static final String NODE_TILE = Configurer.PREFIX + "tile";
@@ -74,7 +74,7 @@ public final class ConfigTile
     /**
      * Disabled constructor.
      */
-    private ConfigTile()
+    private TileConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

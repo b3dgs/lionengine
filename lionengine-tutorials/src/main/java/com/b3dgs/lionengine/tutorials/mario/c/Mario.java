@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableModel;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -93,7 +93,7 @@ class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableL
         camera = services.get(Camera.class);
         keyboard = services.get(Keyboard.class);
 
-        final ConfigFrames frames = ConfigFrames.create(getConfigurer());
+        final FramesConfig frames = FramesConfig.create(getConfigurer());
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), frames.getHorizontal(), frames.getVertical());
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);

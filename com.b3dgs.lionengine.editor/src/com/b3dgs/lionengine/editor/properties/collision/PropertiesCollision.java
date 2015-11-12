@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.properties.collision.editor.EntityCollisionEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.collision.object.ConfigCollisions;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.collision.object.CollisionConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -46,7 +46,7 @@ public class PropertiesCollision implements PropertiesProviderObject
     {
         final TreeItem animationsItem = new TreeItem(properties, SWT.NONE);
         animationsItem.setText(Messages.Properties_Collisions);
-        animationsItem.setData(ConfigCollisions.COLLISION);
+        animationsItem.setData(CollisionConfig.COLLISION);
         animationsItem.setImage(PropertiesCollision.ICON_COLLISIONS);
     }
 
@@ -66,7 +66,7 @@ public class PropertiesCollision implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        if (root.hasChild(ConfigCollisions.COLLISION))
+        if (root.hasChild(CollisionConfig.COLLISION))
         {
             createAttributeCollisions(properties);
         }
@@ -76,7 +76,7 @@ public class PropertiesCollision implements PropertiesProviderObject
     public boolean updateProperties(TreeItem item, Configurer configurer)
     {
         final Object data = item.getData();
-        if (ConfigCollisions.COLLISION.equals(data))
+        if (CollisionConfig.COLLISION.equals(data))
         {
             final EntityCollisionEditor collisionsEditor = new EntityCollisionEditor(item.getParent(), configurer);
             collisionsEditor.create();

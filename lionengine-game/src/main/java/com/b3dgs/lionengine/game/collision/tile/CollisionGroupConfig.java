@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see CollisionGroup
  */
-public final class ConfigCollisionGroup
+public final class CollisionGroupConfig
 {
     /** Configuration file name. */
     public static final String FILENAME = "collisions.xml";
@@ -57,7 +57,7 @@ public final class ConfigCollisionGroup
         for (final XmlNode node : root.getChildren(COLLISION))
         {
             final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>();
-            for (final XmlNode formula : node.getChildren(ConfigCollisionFormula.FORMULA))
+            for (final XmlNode formula : node.getChildren(CollisionFormulaConfig.FORMULA))
             {
                 final String name = formula.getText();
                 formulas.add(new CollisionFormula(name, null, null, null));
@@ -82,7 +82,7 @@ public final class ConfigCollisionGroup
         for (final XmlNode node : root.getChildren(COLLISION))
         {
             final Collection<CollisionFormula> formulas = new ArrayList<CollisionFormula>();
-            for (final XmlNode formula : node.getChildren(ConfigCollisionFormula.FORMULA))
+            for (final XmlNode formula : node.getChildren(CollisionFormulaConfig.FORMULA))
             {
                 final String name = formula.getText();
                 formulas.add(map.getCollisionFormula(name));
@@ -107,7 +107,7 @@ public final class ConfigCollisionGroup
 
         for (final CollisionFormula formula : group.getFormulas())
         {
-            final XmlNode nodeFormula = node.createChild(ConfigCollisionFormula.FORMULA);
+            final XmlNode nodeFormula = node.createChild(CollisionFormulaConfig.FORMULA);
             nodeFormula.setText(formula.getName());
         }
     }
@@ -151,7 +151,7 @@ public final class ConfigCollisionGroup
     /**
      * Disabled constructor.
      */
-    private ConfigCollisionGroup()
+    private CollisionGroupConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

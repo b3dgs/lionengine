@@ -37,8 +37,8 @@ public interface MapTileCollision extends MapTileFeature, Renderable
      * Load map collision with default files.
      * 
      * <p>
-     * {@link ConfigCollisionFormula#FILENAME} and
-     * {@link ConfigCollisionGroup#FILENAME} will be used as default, by calling
+     * {@link CollisionFormulaConfig#FILENAME} and
+     * {@link CollisionGroupConfig#FILENAME} will be used as default, by calling
      * {@link #loadCollisions(Media, Media)}.
      * </p>
      * 

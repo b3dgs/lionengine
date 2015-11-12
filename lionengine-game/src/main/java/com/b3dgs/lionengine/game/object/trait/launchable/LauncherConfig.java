@@ -15,12 +15,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurer;
+package com.b3dgs.lionengine.game.object.trait.launchable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -28,7 +29,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see com.b3dgs.lionengine.game.object.trait.launchable.Launcher
  */
-public final class ConfigLauncher
+public final class LauncherConfig
 {
     /** Launcher node name. */
     public static final String LAUNCHER = Configurer.PREFIX + "launcher";
@@ -42,28 +43,28 @@ public final class ConfigLauncher
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ConfigLauncher create(Configurer configurer)
+    public static LauncherConfig create(Configurer configurer)
     {
-        final Collection<ConfigLaunchable> launchables = new ArrayList<ConfigLaunchable>();
+        final Collection<LaunchableConfig> launchables = new ArrayList<LaunchableConfig>();
         final XmlNode launcher = configurer.getRoot().getChild(LAUNCHER);
-        for (final XmlNode launchable : launcher.getChildren(ConfigLaunchable.LAUNCHABLE))
+        for (final XmlNode launchable : launcher.getChildren(LaunchableConfig.LAUNCHABLE))
         {
-            launchables.add(ConfigLaunchable.create(launchable));
+            launchables.add(LaunchableConfig.create(launchable));
         }
-        final int rate = configurer.getInteger(ConfigLauncher.RATE, ConfigLauncher.LAUNCHER);
+        final int rate = configurer.getInteger(LauncherConfig.RATE, LauncherConfig.LAUNCHER);
 
-        return new ConfigLauncher(rate, launchables);
+        return new LauncherConfig(rate, launchables);
     }
 
     /** The rate value. */
     private final int rate;
     /** The launchable configurations. */
-    private final Collection<ConfigLaunchable> launchables;
+    private final Collection<LaunchableConfig> launchables;
 
     /**
      * Disabled constructor.
      */
-    private ConfigLauncher()
+    private LauncherConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
@@ -74,7 +75,7 @@ public final class ConfigLauncher
      * @param rate The rate value.
      * @param launchables The launchables reference.
      */
-    private ConfigLauncher(int rate, Collection<ConfigLaunchable> launchables)
+    private LauncherConfig(int rate, Collection<LaunchableConfig> launchables)
     {
         this.rate = rate;
         this.launchables = launchables;
@@ -95,7 +96,7 @@ public final class ConfigLauncher
      * 
      * @return The launchables configuration.
      */
-    public Iterable<ConfigLaunchable> getLaunchables()
+    public Iterable<LaunchableConfig> getLaunchables()
     {
         return launchables;
     }

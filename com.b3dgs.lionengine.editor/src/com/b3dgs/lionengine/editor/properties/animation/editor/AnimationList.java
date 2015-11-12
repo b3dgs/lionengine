@@ -22,8 +22,8 @@ import java.util.Collection;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.state.AnimationConfig;
 
 /**
  * Represents the animation list, allowing to add and remove {@link Animation}.
@@ -50,7 +50,7 @@ public class AnimationList extends ObjectList<Animation>
      */
     public void loadAnimations()
     {
-        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
+        final AnimationConfig configAnimations = AnimationConfig.create(configurer);
         final Collection<Animation> animations = configAnimations.getAnimations();
         loadObjects(animations);
     }

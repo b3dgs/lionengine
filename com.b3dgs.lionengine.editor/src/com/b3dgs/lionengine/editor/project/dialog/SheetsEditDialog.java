@@ -41,8 +41,8 @@ import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.tile.ConfigTileSheets;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.tile.TileSheetsConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -135,9 +135,9 @@ public class SheetsEditDialog extends AbstractDialog
     private void loadData()
     {
         final XmlNode node = Xml.load(sheets);
-        final XmlNode tileSize = node.getChild(ConfigTileSheets.NODE_TILE_SIZE);
-        tileWidthText.setText(tileSize.readString(ConfigTileSheets.ATTRIBUTE_TILE_WIDTH));
-        tileHeightText.setText(tileSize.readString(ConfigTileSheets.ATTRIBUTE_TILE_HEIGHT));
+        final XmlNode tileSize = node.getChild(TileSheetsConfig.NODE_TILE_SIZE);
+        tileWidthText.setText(tileSize.readString(TileSheetsConfig.ATTRIBUTE_TILE_WIDTH));
+        tileHeightText.setText(tileSize.readString(TileSheetsConfig.ATTRIBUTE_TILE_HEIGHT));
 
         UtilText.registerDirty(tileWidthText, true);
         UtilText.registerDirty(tileHeightText, true);
@@ -175,18 +175,18 @@ public class SheetsEditDialog extends AbstractDialog
     @Override
     protected void onFinish()
     {
-        final XmlNode root = Xml.create(ConfigTileSheets.NODE_TILE_SHEETS);
+        final XmlNode root = Xml.create(TileSheetsConfig.NODE_TILE_SHEETS);
         root.writeString(Configurer.HEADER, Engine.WEBSITE);
 
-        final XmlNode tileSize = root.createChild(ConfigTileSheets.NODE_TILE_SIZE);
-        tileSize.writeString(ConfigTileSheets.ATTRIBUTE_TILE_WIDTH, tileWidthText.getText());
-        tileSize.writeString(ConfigTileSheets.ATTRIBUTE_TILE_HEIGHT, tileHeightText.getText());
+        final XmlNode tileSize = root.createChild(TileSheetsConfig.NODE_TILE_SIZE);
+        tileSize.writeString(TileSheetsConfig.ATTRIBUTE_TILE_WIDTH, tileWidthText.getText());
+        tileSize.writeString(TileSheetsConfig.ATTRIBUTE_TILE_HEIGHT, tileHeightText.getText());
 
         for (final Button button : buttons)
         {
             if (button.getSelection())
             {
-                final XmlNode node = root.createChild(ConfigTileSheets.NODE_TILE_SHEET);
+                final XmlNode node = root.createChild(TileSheetsConfig.NODE_TILE_SHEET);
                 node.setText(button.getText());
             }
         }

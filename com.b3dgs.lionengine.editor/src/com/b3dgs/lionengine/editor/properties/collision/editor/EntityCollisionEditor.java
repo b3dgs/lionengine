@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.collision.object.Collision;
-import com.b3dgs.lionengine.game.collision.object.ConfigCollisions;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.collision.object.CollisionConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -84,12 +84,12 @@ public class EntityCollisionEditor extends AbstractEditor
         entityCollisionList.save();
 
         final XmlNode root = configurer.getRoot();
-        root.removeChildren(ConfigCollisions.COLLISION);
+        root.removeChildren(CollisionConfig.COLLISION);
 
         for (final TreeItem item : entityCollisionList.getTree().getItems())
         {
             final Collision collision = (Collision) item.getData();
-            ConfigCollisions.export(root, collision);
+            CollisionConfig.export(root, collision);
         }
         configurer.save();
     }

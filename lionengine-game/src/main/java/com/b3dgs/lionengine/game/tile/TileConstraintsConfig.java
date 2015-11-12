@@ -24,8 +24,8 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @see com.b3dgs.lionengine.game.map.ConstraintsExtractor
  */
-public final class ConfigTileConstraints
+public final class TileConstraintsConfig
 {
     /** Configuration file name. */
     public static final String FILENAME = "constraints.xml";
@@ -59,9 +59,9 @@ public final class ConfigTileConstraints
 
         final XmlNode root = Xml.load(config);
 
-        for (final XmlNode nodeTileRef : root.getChildren(ConfigTile.NODE_TILE))
+        for (final XmlNode nodeTileRef : root.getChildren(TileConfig.NODE_TILE))
         {
-            final TileRef tileRef = ConfigTile.create(nodeTileRef);
+            final TileRef tileRef = TileConfig.create(nodeTileRef);
             constraints.put(tileRef, getConstraints(nodeTileRef));
         }
 
@@ -84,9 +84,9 @@ public final class ConfigTileConstraints
             final Orientation orientation = Orientation.valueOf(nodeConstraint.readString(ORIENTATION));
             final TileConstraint constraint = new TileConstraint(orientation);
 
-            for (final XmlNode tileRefNode : nodeConstraint.getChildren(ConfigTile.NODE_TILE))
+            for (final XmlNode tileRefNode : nodeConstraint.getChildren(TileConfig.NODE_TILE))
             {
-                constraint.add(ConfigTile.create(tileRefNode));
+                constraint.add(TileConfig.create(tileRefNode));
             }
             constraints.put(orientation, constraint);
         }
@@ -105,7 +105,7 @@ public final class ConfigTileConstraints
         final XmlNode nodeConstraints = Xml.create(CONSTRAINTS);
         for (final Map.Entry<TileRef, Collection<TileConstraint>> entry : constraints.entrySet())
         {
-            final XmlNode nodeTileRef = ConfigTile.export(entry.getKey());
+            final XmlNode nodeTileRef = TileConfig.export(entry.getKey());
 
             for (final TileConstraint constraint : entry.getValue())
             {
@@ -130,7 +130,7 @@ public final class ConfigTileConstraints
 
         for (final TileRef tileRef : constraint.getAllowed())
         {
-            final XmlNode nodeAllowed = ConfigTile.export(tileRef);
+            final XmlNode nodeAllowed = TileConfig.export(tileRef);
             nodeOrientation.add(nodeAllowed);
         }
     }
@@ -138,7 +138,7 @@ public final class ConfigTileConstraints
     /**
      * Disabled constructor.
      */
-    private ConfigTileConstraints()
+    private TileConstraintsConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

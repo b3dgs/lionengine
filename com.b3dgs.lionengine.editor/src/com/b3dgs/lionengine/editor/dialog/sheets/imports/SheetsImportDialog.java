@@ -45,8 +45,8 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
-import com.b3dgs.lionengine.game.tile.ConfigTileSheets;
 import com.b3dgs.lionengine.game.tile.TileExtractor;
+import com.b3dgs.lionengine.game.tile.TileSheetsConfig;
 
 /**
  * Import sheets dialog.
@@ -177,9 +177,9 @@ public class SheetsImportDialog extends AbstractDialog
             {
                 sheets.add(media.getFile().getName());
             }
-            final File file = new File(extractFolder.getFile(), ConfigTileSheets.FILENAME);
+            final File file = new File(extractFolder.getFile(), TileSheetsConfig.FILENAME);
             final Media config = Project.getActive().getResourceMedia(file);
-            ConfigTileSheets.exports(config, tw, th, sheets);
+            TileSheetsConfig.exports(config, tw, th, sheets);
         }
         catch (final LionEngineException exception)
         {

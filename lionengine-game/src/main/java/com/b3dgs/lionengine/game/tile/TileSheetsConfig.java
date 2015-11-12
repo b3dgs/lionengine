@@ -25,14 +25,14 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the tile sheets data from a configurer.
  */
-public final class ConfigTileSheets
+public final class TileSheetsConfig
 {
     /** Configuration file name. */
     public static final String FILENAME = "sheets.xml";
@@ -54,7 +54,7 @@ public final class ConfigTileSheets
      * @return The tile sheet configuration.
      * @throws LionEngineException If unable to read data.
      */
-    public static ConfigTileSheets imports(Media configSheets)
+    public static TileSheetsConfig imports(Media configSheets)
     {
         final XmlNode nodeSheets = Xml.load(configSheets);
 
@@ -64,7 +64,7 @@ public final class ConfigTileSheets
 
         final Collection<String> sheets = importSheets(nodeSheets);
 
-        return new ConfigTileSheets(tileWidth, tileHeight, sheets);
+        return new TileSheetsConfig(tileWidth, tileHeight, sheets);
     }
 
     /**
@@ -137,7 +137,7 @@ public final class ConfigTileSheets
      * @param sheets The defined sheets.
      * @throws LionEngineException If invalid size or sheets is <code>null</code>.
      */
-    private ConfigTileSheets(int tileWidth, int tileHeight, Collection<String> sheets)
+    private TileSheetsConfig(int tileWidth, int tileHeight, Collection<String> sheets)
     {
         Check.range(Range.INT_POSITIVE_STRICT, tileWidth);
         Check.range(Range.INT_POSITIVE_STRICT, tileHeight);

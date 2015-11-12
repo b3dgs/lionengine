@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
-import com.b3dgs.lionengine.game.collision.tile.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.tile.ConfigTileGroups;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -52,9 +52,9 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
     {
         final XmlNode node = Xml.load(formulasConfig);
         final Collection<XmlNode> toRemove = new ArrayList<>();
-        for (final XmlNode nodeFormula : node.getChildren(ConfigCollisionFormula.FORMULA))
+        for (final XmlNode nodeFormula : node.getChildren(CollisionFormulaConfig.FORMULA))
         {
-            if (CollisionGroup.same(nodeFormula.readString(ConfigTileGroups.ATTRIBUTE_GROUP_NAME), formula.getName()))
+            if (CollisionGroup.same(nodeFormula.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), formula.getName()))
             {
                 toRemove.add(nodeFormula);
             }
@@ -96,7 +96,7 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
     public void loadFormulas(Media config)
     {
         this.config = config;
-        final ConfigCollisionFormula configCollisionFormula = ConfigCollisionFormula.create(config);
+        final CollisionFormulaConfig configCollisionFormula = CollisionFormulaConfig.create(config);
         final Collection<CollisionFormula> formulas = configCollisionFormula.getFormulas().values();
         loadObjects(formulas);
     }

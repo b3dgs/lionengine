@@ -40,11 +40,11 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.tile.ConfigTileGroups;
-import com.b3dgs.lionengine.game.tile.ConfigTileSheets;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.tile.TileSheetsConfig;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -411,8 +411,8 @@ public class MapTileGame implements MapTile
     public void create(Media levelrip)
     {
         create(levelrip,
-               Medias.create(levelrip.getParentPath(), ConfigTileSheets.FILENAME),
-               Medias.create(levelrip.getParentPath(), ConfigTileGroups.FILENAME));
+               Medias.create(levelrip.getParentPath(), TileSheetsConfig.FILENAME),
+               Medias.create(levelrip.getParentPath(), TileGroupsConfig.FILENAME));
     }
 
     @Override
@@ -454,7 +454,7 @@ public class MapTileGame implements MapTile
     {
         Verbose.info(INFO_LOAD_SHEETS, sheetsConfig.getFile().getPath());
         this.sheetsConfig = sheetsConfig;
-        final ConfigTileSheets config = ConfigTileSheets.imports(sheetsConfig);
+        final TileSheetsConfig config = TileSheetsConfig.imports(sheetsConfig);
 
         tileWidth = config.getTileWidth();
         tileHeight = config.getTileHeight();
@@ -482,7 +482,7 @@ public class MapTileGame implements MapTile
         this.groupsConfig = groupsConfig;
 
         groups.clear();
-        final Collection<TileGroup> groups = ConfigTileGroups.imports(groupsConfig);
+        final Collection<TileGroup> groups = TileGroupsConfig.imports(groupsConfig);
         for (final TileGroup group : groups)
         {
             this.groups.put(group.getName(), group);

@@ -28,13 +28,12 @@ import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.raster.Rasterable;
 
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
  * 
- * @see com.b3dgs.lionengine.game.configurer.Configurer
+ * @see com.b3dgs.lionengine.game.Configurer
  */
 public class SetupSurfaceRastered extends SetupSurface
 {
@@ -103,7 +102,7 @@ public class SetupSurfaceRastered extends SetupSurface
         if (rasterFile != null)
         {
             rastersAnim = new ArrayList<SpriteAnimated>(Rasterable.MAX_RASTERS);
-            final ConfigFrames framesData = ConfigFrames.create(getConfigurer());
+            final FramesConfig framesData = FramesConfig.create(getConfigurer());
             hf = framesData.getHorizontal();
             vf = framesData.getVertical();
             frameHeight = surface.getHeight() / vf;

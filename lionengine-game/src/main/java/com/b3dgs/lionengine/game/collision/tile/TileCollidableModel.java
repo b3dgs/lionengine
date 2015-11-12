@@ -36,8 +36,8 @@ import com.b3dgs.lionengine.game.tile.Tile;
  * <li>{@link Transformable}</li>
  * </ul>
  * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.configurer.Configurer} compatible
- * with {@link ConfigCollisionCategory}.
+ * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+ * with {@link CollisionCategoryConfig}.
  * </p>
  * <p>
  * The {@link Services} must provide the following services:
@@ -118,7 +118,7 @@ public class TileCollidableModel extends TraitModel implements TileCollidable
     {
         transformable = owner.getTrait(Transformable.class);
         map = services.get(MapTileCollision.class);
-        categories = ConfigCollisionCategory.create(owner.getConfigurer(), map);
+        categories = CollisionCategoryConfig.create(owner.getConfigurer(), map);
 
         if (owner instanceof TileCollidableListener)
         {

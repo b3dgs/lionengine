@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.collision.tile;
 /**
  * Describe the collision function to apply from an input value.
  * 
- * @see ConfigCollisionFunction
+ * @see CollisionFunctionConfig
  * @see CollisionFormula
  */
 public interface CollisionFunction
