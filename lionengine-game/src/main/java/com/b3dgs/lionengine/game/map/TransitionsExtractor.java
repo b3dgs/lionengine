@@ -80,6 +80,10 @@ public final class TransitionsExtractor
                 {
                     bits[i] = Boolean.valueOf(neighbor.getGroup().equals(tile.getGroup()));
                 }
+                else if (h < 0 || v < 0 || h >= map.getInTileWidth() || v > map.getInTileHeight())
+                {
+                    bits[i] = Boolean.TRUE;
+                }
                 i++;
             }
         }
