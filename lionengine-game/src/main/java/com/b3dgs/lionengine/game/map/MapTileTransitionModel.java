@@ -17,8 +17,11 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -36,7 +39,9 @@ public class MapTileTransitionModel implements MapTileTransition
 {
     /** Map reference. */
     private final MapTile map;
-    /** Transitions. */
+    /** Tile as key. */
+    private final Map<TileRef, TileTransition> tiles = new HashMap<TileRef, TileTransition>();
+    /** Transitions as key. */
     private Map<TileTransition, Collection<TileRef>> transitions;
 
     /**
@@ -55,12 +60,14 @@ public class MapTileTransitionModel implements MapTileTransition
      * Update the tile depending of its transition.
      * 
      * @param tile The tile reference.
+     * @return <code>true</code> if updated, <code>false</code> if unchanged.
      */
-    private void updateTile(Tile tile)
+    private boolean updateTile(Tile tile)
     {
         final TileTransition transition = TransitionsExtractor.getTransition(map, tile);
         final Collection<TileRef> tilesRef = transitions.get(transition);
-        if (tilesRef != null && !tilesRef.isEmpty())
+        final TileRef ref = new TileRef(tile);
+        if (tilesRef != null && !tilesRef.isEmpty() && !tilesRef.contains(ref))
         {
             for (final TileRef tileRef : tilesRef)
             {
@@ -68,9 +75,11 @@ public class MapTileTransitionModel implements MapTileTransition
                 {
                     tile.setSheet(tileRef.getSheet());
                     tile.setNumber(tileRef.getNumber());
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     /*
@@ -87,13 +96,37 @@ public class MapTileTransitionModel implements MapTileTransition
     public void loadTransitions(Media configTransitions)
     {
         transitions = TileTransitionsConfig.imports(configTransitions);
+        tiles.clear();
+
+        for (final Entry<TileTransition, Collection<TileRef>> entry : transitions.entrySet())
+        {
+            final TileTransition transition = entry.getKey();
+            for (final TileRef tileRef : entry.getValue())
+            {
+                tiles.put(tileRef, transition);
+            }
+        }
     }
 
     @Override
     public void resolve(Tile tile)
     {
-        updateTile(tile);
+        final Collection<Tile> checked = new ArrayList<Tile>();
+        checked.add(tile);
 
+        updateTile(tile);
+        resolve(checked, tile);
+        checked.clear();
+    }
+
+    /**
+     * Resolve unchecked tiles around.
+     * 
+     * @param checked The list of checked tiles.
+     * @param tile The tile to check its neighbor.
+     */
+    private void resolve(Collection<Tile> checked, Tile tile)
+    {
         final int tx = tile.getX() / tile.getWidth();
         final int ty = tile.getY() / tile.getHeight();
         for (int v = ty + 1; v >= ty - 1; v--)
@@ -101,11 +134,26 @@ public class MapTileTransitionModel implements MapTileTransition
             for (int h = tx - 1; h <= tx + 1; h++)
             {
                 final Tile neighbor = map.getTile(h, v);
-                if (neighbor != null && tile.getGroup().equals(tile.getGroup()))
+                if (neighbor != null && !checked.contains(neighbor))
                 {
-                    updateTile(neighbor);
+                    checked.add(neighbor);
+                    if (updateTile(neighbor))
+                    {
+                        resolve(checked, neighbor);
+                    }
                 }
             }
         }
+    }
+
+    @Override
+    public TileTransition getTransition(Tile tile)
+    {
+        final TileRef tileRef = new TileRef(tile);
+        if (tiles.containsKey(tileRef))
+        {
+            return tiles.get(tileRef);
+        }
+        return TileTransition.NONE;
     }
 }

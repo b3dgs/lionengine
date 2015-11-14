@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.map;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileTransition;
 
 /**
  * Represents the transition handling between two different groups of tiles.
@@ -43,4 +44,12 @@ public interface MapTileTransition extends MapTileFeature
      * @param tile The tile to update.
      */
     void resolve(Tile tile);
+
+    /**
+     * Get the tile transition.
+     * 
+     * @param tile The tile reference.
+     * @return The tile transition.
+     */
+    TileTransition getTransition(Tile tile);
 }

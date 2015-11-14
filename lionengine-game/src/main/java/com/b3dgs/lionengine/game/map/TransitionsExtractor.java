@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -33,6 +34,38 @@ import com.b3dgs.lionengine.game.tile.TileTransition;
 public final class TransitionsExtractor
 {
     /**
+     * Check map tile transitions and concatenate data..
+     *
+     * @param maps The maps reference.
+     * @return The transitions found.
+     */
+    public static Map<TileTransition, Collection<TileRef>> getTransitions(MapTile... maps)
+    {
+        final Map<TileTransition, Collection<TileRef>> transitions;
+        transitions = new EnumMap<TileTransition, Collection<TileRef>>(TileTransition.class);
+
+        for (final MapTile map : maps)
+        {
+            final Map<TileTransition, Collection<TileRef>> currents = getTransitions(map);
+            for (final Entry<TileTransition, Collection<TileRef>> entry : currents.entrySet())
+            {
+                final TileTransition transition = entry.getKey();
+                final Collection<TileRef> tiles = entry.getValue();
+                if (transitions.containsKey(transition))
+                {
+                    transitions.get(transition).addAll(tiles);
+                }
+                else
+                {
+                    transitions.put(transition, tiles);
+                }
+            }
+        }
+
+        return transitions;
+    }
+
+    /**
      * Check map tile transitions.
      *
      * @param map The map reference.
@@ -42,9 +75,9 @@ public final class TransitionsExtractor
     {
         final Map<TileTransition, Collection<TileRef>> transitions;
         transitions = new EnumMap<TileTransition, Collection<TileRef>>(TileTransition.class);
-        for (int ty = 0; ty < map.getInTileHeight(); ty++)
+        for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
         {
-            for (int tx = 0; tx < map.getInTileWidth(); tx++)
+            for (int tx = 1; tx < map.getInTileWidth() - 1; tx++)
             {
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
@@ -79,10 +112,6 @@ public final class TransitionsExtractor
                 if (neighbor != null)
                 {
                     bits[i] = Boolean.valueOf(neighbor.getGroup().equals(tile.getGroup()));
-                }
-                else if (h < 0 || v < 0 || h >= map.getInTileWidth() || v > map.getInTileHeight())
-                {
-                    bits[i] = Boolean.TRUE;
                 }
                 i++;
             }

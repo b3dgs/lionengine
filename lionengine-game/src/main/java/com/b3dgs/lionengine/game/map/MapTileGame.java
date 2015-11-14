@@ -157,7 +157,6 @@ public class MapTileGame implements MapTile
     {
         this.services = services;
         viewer = services.get(Viewer.class);
-        sheetsConfig = null;
     }
 
     /**
