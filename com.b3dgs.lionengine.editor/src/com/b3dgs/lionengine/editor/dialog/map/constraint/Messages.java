@@ -36,10 +36,16 @@ public final class Messages extends NLS
     public static String HeaderDesc;
     /** Constraints config file filter. */
     public static String ConstraintsConfigFileFilter;
+    /** Transitions config file filter. */
+    public static String TransitionsConfigFileFilter;
     /** Constraints location. */
     public static String ConstraintsLocation;
+    /** Transitions location. */
+    public static String TransitionsLocation;
     /** Error constraints. */
     public static String ErrorConstraints;
+    /** Error transitions. */
+    public static String ErrorTransitions;
 
     /**
      * Initialize.

@@ -60,6 +60,7 @@ import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
+import com.b3dgs.lionengine.game.tile.TileTransition;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Line;
 import com.b3dgs.lionengine.geom.Point;
@@ -283,7 +284,38 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 tile.setGroup(group.getName());
             }
 
-            map.getFeature(MapTileTransition.class).resolve(tile);
+            final MapTileTransition mapTileTransition = map.getFeature(MapTileTransition.class);
+            checkCenterTile(mapTileTransition, tile, paletteTile);
+            mapTileTransition.resolve(tile);
+        }
+    }
+
+    /**
+     * Check if tile is a center tile in order to update directly its neighbor properly.
+     * 
+     * @param mapTileTransition Map tile transition feature reference.
+     * @param tile The pointed tile.
+     * @param paletteTile The palette tile.
+     */
+    private void checkCenterTile(MapTileTransition mapTileTransition, Tile tile, TileRef paletteTile)
+    {
+        if (TileTransition.CENTER.equals(mapTileTransition.getTransition(tile)))
+        {
+            final int tx = tile.getX() / tile.getWidth();
+            final int ty = tile.getY() / tile.getHeight();
+            for (int v = ty + 1; v >= ty - 1; v--)
+            {
+                for (int h = tx - 1; h <= tx + 1; h++)
+                {
+                    final Tile neighbor = map.getTile(h, v);
+                    if (neighbor != null)
+                    {
+                        neighbor.setSheet(paletteTile.getSheet());
+                        neighbor.setNumber(paletteTile.getNumber());
+                        neighbor.setGroup(tile.getGroup());
+                    }
+                }
+            }
         }
     }
 

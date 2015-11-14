@@ -48,7 +48,9 @@ import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.TransitionsExtractor;
 import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
+import com.b3dgs.lionengine.game.tile.TileTransitionsConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -68,8 +70,12 @@ public class MapConstraintsExportDialog extends AbstractDialog
     private Button removeLevelRip;
     /** Constraints location. */
     private Text constraintsLocationText;
+    /** Transitions location. */
+    private Text transitionsLocationText;
     /** Constraints config file. */
     private Media constraintsConfig;
+    /** Transitions config file. */
+    private Media transitionsConfig;
 
     /**
      * Create an export map tile constraints dialog.
@@ -132,7 +138,19 @@ public class MapConstraintsExportDialog extends AbstractDialog
     }
 
     /**
-     * Called when the groups config location has been selected.
+     * Browse the transitions location.
+     */
+    private void browseTransitionsLocation()
+    {
+        final File file = UtilDialog.selectResourceXml(dialog, false, Messages.TransitionsConfigFileFilter);
+        if (file != null)
+        {
+            onTransitionsConfigLocationSelected(file);
+        }
+    }
+
+    /**
+     * Called when the constraints config location has been selected.
      * 
      * @param path The selected groups config location path.
      */
@@ -153,6 +171,27 @@ public class MapConstraintsExportDialog extends AbstractDialog
     }
 
     /**
+     * Called when the transitions config location has been selected.
+     * 
+     * @param path The selected groups config location path.
+     */
+    private void onTransitionsConfigLocationSelected(File path)
+    {
+        final Project project = Project.getActive();
+        try
+        {
+            transitionsConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
+            transitionsLocationText.setText(transitionsConfig.getPath());
+            finish.setEnabled(true);
+        }
+        catch (final LionEngineException exception)
+        {
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ErrorConstraints);
+        }
+        updateTipsLabel();
+    }
+
+    /**
      * Create the constraints location area.
      * 
      * @param content The content composite.
@@ -161,12 +200,15 @@ public class MapConstraintsExportDialog extends AbstractDialog
     {
         final Composite groupArea = new Composite(content, SWT.NONE);
         groupArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        groupArea.setLayout(new GridLayout(3, false));
+        groupArea.setLayout(new GridLayout(1, false));
 
-        final Label locationLabel = new Label(groupArea, SWT.NONE);
+        final Composite constraintsArea = new Composite(groupArea, SWT.NONE);
+        constraintsArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        constraintsArea.setLayout(new GridLayout(3, false));
+        final Label locationLabel = new Label(constraintsArea, SWT.NONE);
         locationLabel.setText(Messages.ConstraintsLocation);
 
-        constraintsLocationText = new Text(groupArea, SWT.BORDER);
+        constraintsLocationText = new Text(constraintsArea, SWT.BORDER);
         constraintsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         constraintsLocationText.setEditable(false);
 
@@ -174,8 +216,24 @@ public class MapConstraintsExportDialog extends AbstractDialog
         constraintsConfig = Medias.create(map.getSheetsConfig().getParentPath(), TileConstraintsConfig.FILENAME);
         constraintsLocationText.setText(constraintsConfig.getPath());
 
-        final Button browse = UtilButton.createBrowse(groupArea);
-        UtilButton.setAction(browse, () -> browseConstraintsLocation());
+        final Button browseConstraints = UtilButton.createBrowse(constraintsArea);
+        UtilButton.setAction(browseConstraints, () -> browseConstraintsLocation());
+
+        final Composite transitionsArea = new Composite(groupArea, SWT.NONE);
+        transitionsArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        transitionsArea.setLayout(new GridLayout(3, false));
+        final Label transitionLabel = new Label(transitionsArea, SWT.NONE);
+        transitionLabel.setText(Messages.TransitionsLocation);
+
+        transitionsLocationText = new Text(transitionsArea, SWT.BORDER);
+        transitionsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        transitionsLocationText.setEditable(false);
+
+        final Button browseTransitions = UtilButton.createBrowse(transitionsArea);
+        UtilButton.setAction(browseTransitions, () -> browseTransitionsLocation());
+
+        transitionsConfig = Medias.create(map.getSheetsConfig().getParentPath(), TileTransitionsConfig.FILENAME);
+        transitionsLocationText.setText(transitionsConfig.getPath());
     }
 
     /**
@@ -270,8 +328,12 @@ public class MapConstraintsExportDialog extends AbstractDialog
             map.create(rip);
             maps.add(map);
         }
+        final MapTile[] mapsArray = maps.toArray(new MapTile[maps.size()]);
+
         final ConstraintsExtractor extractor = new ConstraintsExtractor();
-        final XmlNode root = TileConstraintsConfig.export(extractor.check(maps.toArray(new MapTile[maps.size()])));
+        final XmlNode root = TileConstraintsConfig.export(extractor.check(mapsArray));
         Xml.save(root, constraintsConfig);
+
+        TileTransitionsConfig.exports(transitionsConfig, TransitionsExtractor.getTransitions(mapsArray));
     }
 }
