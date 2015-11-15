@@ -48,7 +48,7 @@ public final class UtilDialog
      * @param path The starting path.
      * @param openSave <code>true</code> to open, <code>false</code> to save.
      * @param extensions The filtered extensions.
-     * @return The selected file path.
+     * @return The selected file path, <code>null</code> if none.
      */
     public static String selectFile(Shell shell, String path, boolean openSave, String... extensions)
     {
@@ -216,7 +216,10 @@ public final class UtilDialog
             fileDialog.setFilterNames(extensionsName);
             fileDialog.setFilterExtensions(extensions);
             final String firstFile = fileDialog.open();
-
+            if (firstFile == null)
+            {
+                return new File[0];
+            }
             final String[] names = fileDialog.getFileNames();
             final File[] files = new File[names.length];
             for (int i = 0; i < names.length; i++)
