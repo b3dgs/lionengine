@@ -21,7 +21,6 @@ import org.junit.BeforeClass;
 
 import com.b3dgs.lionengine.TransformTest;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.swt.FactoryGraphicSwt;
 
 /**
  * Test the transform class.
