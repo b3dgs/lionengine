@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileConfig;
 import com.b3dgs.lionengine.game.tile.TileFeature;
@@ -70,7 +70,7 @@ public class PropertiesTile implements PropertiesProviderTile
      * @param newGroup The new group name (empty to remove it).
      * @param tile The tile reference.
      */
-    public static void changeTileGroup(MapTile map, String oldGroup, String newGroup, Tile tile)
+    public static void changeTileGroup(MapTileGroup map, String oldGroup, String newGroup, Tile tile)
     {
         final Media config = map.getGroupsConfig();
         final XmlNode root = Xml.load(config);
@@ -153,7 +153,7 @@ public class PropertiesTile implements PropertiesProviderTile
      */
     private static void onDoubleClick(Tree properties, TreeItem selection, Tile tile)
     {
-        final MapTile map = WorldModel.INSTANCE.getMap();
+        final MapTileGroup map = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
         final Collection<TileGroup> groups = map.getGroups();
         final Collection<String> values = new ArrayList<>();
         for (final TileGroup group : groups)

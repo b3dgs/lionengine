@@ -30,6 +30,8 @@ import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
 
@@ -53,6 +55,8 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map group reference. */
+    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
     /** Map collision. */
     private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
     /** Keyboard reference. */
@@ -79,7 +83,8 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"));
-        mapCollision.loadCollisions();
+        mapGroup.loadGroups(Medias.create("groups.xml"));
+        mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
         mapCollision.createCollisionDraw();
 
         camera.setIntervals(16, 0);

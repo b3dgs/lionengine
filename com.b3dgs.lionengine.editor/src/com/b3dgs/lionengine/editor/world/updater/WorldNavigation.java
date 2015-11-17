@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.editor.world.updater;
 
 import com.b3dgs.lionengine.core.swt.Keyboard;
+import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
-import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Services;
@@ -64,6 +64,8 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
     private final MapTile map;
     /** World zoom. */
     private final WorldZoom zoom;
+    /** Palette model. */
+    private final PaletteModel palette;
 
     /**
      * Create the world navigation.
@@ -75,6 +77,7 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
         zoom = services.get(WorldZoom.class);
+        palette = services.get(PaletteModel.class);
     }
 
     /*
@@ -84,7 +87,7 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        if (WorldModel.INSTANCE.isPalette(PaletteType.HAND) && click > 0)
+        if (palette.isPalette(PaletteType.HAND) && click > 0)
         {
             camera.moveLocation(1.0, oldMx - (double) mx, my - (double) oldMy);
         }

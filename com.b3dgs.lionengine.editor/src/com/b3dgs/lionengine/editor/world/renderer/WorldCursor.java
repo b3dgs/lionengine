@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.editor.world.renderer;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
+import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
-import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -45,6 +45,8 @@ public class WorldCursor implements WorldRenderListener
     private final Camera camera;
     /** Updater reference. */
     private final WorldUpdater world;
+    /** Palette model. */
+    private final PaletteModel palette;
 
     /**
      * Create the renderer.
@@ -56,6 +58,7 @@ public class WorldCursor implements WorldRenderListener
         map = services.get(MapTile.class);
         camera = services.get(Camera.class);
         world = services.get(WorldUpdater.class);
+        palette = services.get(PaletteModel.class);
     }
 
     /**
@@ -102,7 +105,7 @@ public class WorldCursor implements WorldRenderListener
     @Override
     public void onRender(Graphic g, int width, int height, double scale, int tw, int th)
     {
-        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_TILE))
+        if (palette.isPalette(PaletteType.POINTER_TILE))
         {
             final Tile tile = UtilWorld.getTile(map, camera, world.getMouseX(), world.getMouseY());
             if (tile != null)

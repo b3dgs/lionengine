@@ -122,7 +122,7 @@ public class MapTileRasteredModel implements MapTileRastered
      */
 
     @Override
-    public void loadSheets(Media sheetsConfig, Media rasterConfig, boolean smooth)
+    public void loadSheets(Media rasterConfig, boolean smooth)
     {
         this.smooth = smooth;
 

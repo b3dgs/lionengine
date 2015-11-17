@@ -17,24 +17,40 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.game.tile.Tile;
-
 /**
- * Listen to tiles selection on map.
+ * Represents the palette model.
  */
-public interface TileSelectionListener
+public class PaletteModel
 {
-    /**
-     * Called when a tile is selected.
-     * 
-     * @param tile The selected tile from map.
-     */
-    void notifyTileSelected(Tile tile);
+    /** Selected palette. */
+    private Enum<?> palette;
 
     /**
-     * Called when selected tile group changed.
-     * 
-     * @param group The new tile group selection.
+     * Create the model.
      */
-    void notifyTileGroupSelected(String group);
+    public PaletteModel()
+    {
+        palette = PaletteType.POINTER_OBJECT;
+    }
+
+    /**
+     * Set the selected palette.
+     * 
+     * @param palette The selected palette.
+     */
+    public void setSelectedPalette(Enum<?> palette)
+    {
+        this.palette = palette;
+    }
+
+    /**
+     * Check if current palette is the specified type.
+     * 
+     * @param type The expected type.
+     * @return <code>true</code> if right type, <code>false</code> else.
+     */
+    public boolean isPalette(PaletteType type)
+    {
+        return palette.equals(type);
+    }
 }

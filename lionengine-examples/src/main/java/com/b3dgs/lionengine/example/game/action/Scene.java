@@ -89,7 +89,7 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        map.create(Medias.create("level.png"));
+        map.create(Medias.create("level.png"), 16, 16, 16);
         hud.load();
         hud.prepare();
         text.setLocation(74, 192);

@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -41,7 +42,6 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
@@ -51,8 +51,9 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.TileConstraint;
 import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroup;
@@ -86,6 +87,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     private final SheetsPaletteModel model = SheetsPaletteModel.INSTANCE;
     /** Map reference. */
     private final MapTile map = WorldModel.INSTANCE.getMap();
+    /** Map tile group. */
+    private final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
     /** Shell dialog. */
     private final Shell shell;
     /** Tile color. */
@@ -135,7 +138,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         gc = new GC(composite);
         tileColor = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
         gridColor = shell.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
-        simple = Medias.create(map.getGroupsConfig().getParentPath(), TileConstraintsConfig.FILENAME).exists();
+        simple = Medias.create(mapGroup.getGroupsConfig().getParentPath(), TileConstraintsConfig.FILENAME).exists();
 
         createTypes();
         createBottom();
@@ -360,11 +363,10 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      */
     private Collection<TileRef> getCenterTiles()
     {
-        final Media media = Medias.create(map.getGroupsConfig().getParentPath(), TileConstraintsConfig.FILENAME);
-        final Map<TileRef, Map<Orientation, TileConstraint>> constraints = TileConstraintsConfig.create(media);
+        final Map<TileRef, Collection<TileConstraint>> constraints = ConstraintsExtractor.getConstraints(map);
         final Collection<TileRef> centerTiles = new HashSet<>();
 
-        for (final Map.Entry<TileRef, Map<Orientation, TileConstraint>> entry : constraints.entrySet())
+        for (final Entry<TileRef, Collection<TileConstraint>> entry : constraints.entrySet())
         {
             final TileRef tile = entry.getKey();
             if ((isCenter(tile, entry.getValue()) || !hasCenter(tile, constraints)) && !existsGroup(tile, centerTiles))
@@ -382,10 +384,10 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      * @param constraints The constraints.
      * @return <code>true</code> if center, <code>false</code> else.
      */
-    private boolean isCenter(TileRef tile, Map<Orientation, TileConstraint> constraints)
+    private boolean isCenter(TileRef tile, Collection<TileConstraint> constraints)
     {
         int check = 0;
-        for (final TileConstraint constraint : constraints.values())
+        for (final TileConstraint constraint : constraints)
         {
             for (final TileRef allowed : constraint.getAllowed())
             {
@@ -406,9 +408,9 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      * @param constraints The associated constraints.
      * @return <code>true</code> if one tile center exists at least, <code>false</code> else.
      */
-    private boolean hasCenter(TileRef tile, Map<TileRef, Map<Orientation, TileConstraint>> constraints)
+    private boolean hasCenter(TileRef tile, Map<TileRef, Collection<TileConstraint>> constraints)
     {
-        final TileGroup group = map.getGroup(tile.getSheet(), tile.getNumber());
+        final TileGroup group = mapGroup.getGroup(tile.getSheet(), tile.getNumber());
         for (final TileRef tileRef : group.getTiles())
         {
             if (constraints.containsKey(tileRef) && isCenter(tileRef, constraints.get(tileRef)))
@@ -428,8 +430,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      */
     private boolean sameGroup(TileRef tile1, TileRef tile2)
     {
-        final String group1 = map.getGroup(tile1.getSheet(), tile1.getNumber()).getName();
-        final String group2 = map.getGroup(tile2.getSheet(), tile2.getNumber()).getName();
+        final String group1 = mapGroup.getGroup(tile1.getSheet(), tile1.getNumber()).getName();
+        final String group2 = mapGroup.getGroup(tile2.getSheet(), tile2.getNumber()).getName();
         return group1.equals(group2);
     }
 

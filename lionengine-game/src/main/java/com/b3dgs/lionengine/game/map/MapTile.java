@@ -28,28 +28,16 @@ import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.game.tile.TileExtractor;
-import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TilesExtractor;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
  * Describe a map using tile for its representation. This is the lower level interface to describe a 2D map using tiles.
- * Each tiles are stored vertically and then horizontally. A sheet id represents a tilesheet number (surface number
- * containing tiles). A map can have one or more sheets. The map picks its resources from a sheets folder, which
- * must contains the files images. Example of a sheet configuration file:
- * 
- * <pre>
- * &lt;lionengine:sheets xmlns:lionengine="http://lionengine.b3dgs.com"&gt;
- *    &lt;lionengine:tileSize width="16" height="16"/&gt;
- *    &lt;lionengine:sheet&gt;ground.png&lt;/lionengine:sheet&gt;
- *    &lt;lionengine:sheet&gt;wall.png&lt;/lionengine:sheet&gt;
- *    &lt;lionengine:sheet&gt;water.png&lt;/lionengine:sheet&gt;
- * &lt;/lionengine:sheets&gt;
- * </pre>
- * 
+ * Each tiles are stored vertically and then horizontally.
  * <p>
- * Note: ground.png, wall.png and water.png are in the same directory of this configuration file.
+ * A sheet id represents a tilesheet number (surface number containing tiles). A map can have one or more
+ * sheets. The map picks its resources from a sheets folder, which must contains the files images.
  * </p>
  * 
  * @see MapTileGame
@@ -63,50 +51,64 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
     int BLOC_SIZE = 256;
 
     /**
-     * Create and prepare map memory area. Must be called before assigning tiles.
-     * Previous map data (if existing) will be cleared.
+     * Create and prepare map memory area. Must be called before assigning tiles ({@link #setTile(int, int, Tile)}).
+     * Previous map data (if existing) will be cleared ({@link #clear()}).
      * 
      * @param widthInTile The map width in tile (must be strictly positive).
      * @param heightInTile The map height in tile (must be strictly positive).
-     * @throws LionEngineException If size if invalid.
-     * @see #create(Media, Media, Media)
+     * @throws LionEngineException If size is invalid.
+     * @see #create(Media)
+     * @see #create(Media, Media)
      */
     void create(int widthInTile, int heightInTile);
 
     /**
-     * Create a map from a level rip and the associated tiles directory.
-     * A level rip is an image file (*.PNG, *.BMP) that represents the full map in one time.
-     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created.
-     * Previous map data (if existing) will be cleared.
+     * Create a map from a level rip which should be an image file (*.PNG, *.BMP) that represents the full map.
+     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
+     * {@link #create(int, int)}).
+     * 
+     * @param levelrip The file describing the levelrip as a single image.
+     * @param tileWidth The tile width.
+     * @param tileHeight The tile height.
+     * @param horizontalTiles The number of horizontal tiles on sheets.
+     * @throws LionEngineException If error when importing map.
+     * @see TilesExtractor
+     * @see LevelRipConverter
+     */
+    void create(Media levelrip, int tileWidth, int tileHeight, int horizontalTiles);
+
+    /**
+     * Create a map from a level rip which should be an image file (*.PNG, *.BMP) that represents the full map.
+     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
+     * {@link #create(int, int)}).
      * <p>
-     * {@link com.b3dgs.lionengine.game.tile.TileSheetsConfig#FILENAME} and
-     * {@link com.b3dgs.lionengine.game.tile.TileGroupsConfig#FILENAME} will be used as default, by calling
-     * {@link #create(Media, Media, Media)}.
+     * {@link TileSheetsConfig#FILENAME} and {@link com.b3dgs.lionengine.game.tile.TileGroupsConfig#FILENAME} will be
+     * used as default, by calling {@link #create(Media, Media)}.
+     * </p>
+     * <p>
+     * If configuration files are missing, data will be extracted on the fly but not saved to file.
      * </p>
      * 
      * @param levelrip The file describing the levelrip as a single image.
      * @throws LionEngineException If error when importing map.
-     * @see #create(int, int)
+     * @see TilesExtractor
      * @see LevelRipConverter
-     * @see TileExtractor
      */
     void create(Media levelrip);
 
     /**
-     * Create a map from a level rip and the associated tiles directory.
-     * A level rip is an image file (*.PNG, *.BMP) that represents the full map in one time.
-     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created.
-     * Previous map data (if existing) will be cleared.
+     * Create a map from a level rip and the associated tiles configuration file.
+     * A level rip is an image file (*.PNG, *.BMP) that represents the full map.
+     * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
+     * {@link #create(int, int)}).
      * 
      * @param levelrip The file describing the levelrip as a single image.
      * @param sheetsConfig The file that define the sheets configuration.
-     * @param groupsConfig The tile collision groups descriptor.
      * @throws LionEngineException If error when importing map.
-     * @see #create(int, int)
+     * @see TilesExtractor
      * @see LevelRipConverter
-     * @see TileExtractor
      */
-    void create(Media levelrip, Media sheetsConfig, Media groupsConfig);
+    void create(Media levelrip, Media sheetsConfig);
 
     /**
      * Create a feature from its type, and automatically {@link #addFeature} it.
@@ -129,6 +131,16 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
     Tile createTile();
 
     /**
+     * Load map sheets (tiles surfaces). Must be called before rendering map.
+     * Clear previous sheets if has.
+     * 
+     * @param tileWidth The tile width.
+     * @param tileHeight The tile height.
+     * @param sheets The sheets reference.
+     */
+    void loadSheets(int tileWidth, int tileHeight, Collection<SpriteTiled> sheets);
+
+    /**
      * Load map sheets (tiles surfaces) from directory. Must be called before rendering map.
      * Clear previous sheets if has.
      * 
@@ -136,14 +148,6 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
      * @throws LionEngineException If error when reading sheets.
      */
     void loadSheets(Media sheetsConfig);
-
-    /**
-     * Load tiles group from an external file.
-     * 
-     * @param groupsConfig The tile collision groups descriptor.
-     * @throws LionEngineException If error when reading groups.
-     */
-    void loadGroups(Media groupsConfig);
 
     /**
      * Load a map from a specified file as binary data.
@@ -290,13 +294,6 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
     Media getSheetsConfig();
 
     /**
-     * Get the groups configuration media file.
-     * 
-     * @return The groups configuration media file.
-     */
-    Media getGroupsConfig();
-
-    /**
      * Get list of sheets id.
      * 
      * @return The set of sheets id.
@@ -311,32 +308,6 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
      * @throws LionEngineException If sheet not found.
      */
     SpriteTiled getSheet(Integer sheet);
-
-    /**
-     * Get the group from its name.
-     * 
-     * @param name The group name.
-     * @return The supported group reference.
-     * @throws LionEngineException If group not found.
-     */
-    TileGroup getGroup(String name);
-
-    /**
-     * Get the group from its tile reference.
-     * 
-     * @param sheet The sheet number.
-     * @param number The tile number.
-     * @return The supported group reference.
-     * @throws LionEngineException If group not found.
-     */
-    TileGroup getGroup(Integer sheet, int number);
-
-    /**
-     * Get the groups list.
-     * 
-     * @return The groups list.
-     */
-    Collection<TileGroup> getGroups();
 
     /**
      * Get the number of used sheets.

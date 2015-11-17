@@ -40,8 +40,9 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.game.tile.TileSheetsConfig;
 
 /**
  * Represents the import map dialog.
@@ -315,9 +316,10 @@ public class MapImportDialog extends AbstractDialog
         final MapImportProgressDialog progress = new MapImportProgressDialog(dialog, levelRip);
 
         progress.open();
-        LevelRipConverter.start(levelRip, sheetsConfig, map, progress);
+        map.loadSheets(sheetsConfig);
+        LevelRipConverter.start(levelRip, map, progress);
         progress.finish();
 
-        map.loadGroups(groupsConfig);
+        map.getFeature(MapTileGroup.class).loadGroups(groupsConfig);
     }
 }

@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -46,6 +47,10 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Map tile collision model implementation.
+ * 
+ * <p>
+ * The map must have the {@link MapTileGroup} feature.
+ * </p>
  */
 public class MapTileCollisionModel implements MapTileCollision
 {
@@ -221,6 +226,8 @@ public class MapTileCollisionModel implements MapTileCollision
     private final Map<String, CollisionGroup> groups = new HashMap<String, CollisionGroup>();
     /** Map reference. */
     private final MapTile map;
+    /** Map tile group. */
+    private final MapTileGroup mapGroup;
     /** Viewer reference. */
     private final Viewer viewer;
     /** Collision draw cache. */
@@ -237,6 +244,7 @@ public class MapTileCollisionModel implements MapTileCollision
      * </p>
      * <ul>
      * <li>{@link MapTile}</li>
+     * <li>{@link MapTileGroup}</li>
      * <li>{@link Viewer}</li>
      * </ul>
      * 
@@ -246,6 +254,7 @@ public class MapTileCollisionModel implements MapTileCollision
     public MapTileCollisionModel(Services services)
     {
         map = services.get(MapTile.class);
+        mapGroup = services.get(MapTileGroup.class);
         viewer = services.get(Viewer.class);
     }
 
@@ -335,7 +344,7 @@ public class MapTileCollisionModel implements MapTileCollision
     {
         for (final CollisionGroup collision : getCollisionGroups())
         {
-            final TileGroup group = map.getGroup(collision.getName());
+            final TileGroup group = mapGroup.getGroup(collision.getName());
             if (group.contains(tile))
             {
                 for (final CollisionFormula formula : collision.getFormulas())

@@ -96,11 +96,11 @@ public final class TileConstraintsConfig
     /**
      * Export the tile constraints as a node.
      * 
+     * @param constraintsConfig The constraints configuration media.
      * @param constraints The tile constraints to export.
-     * @return The exported node.
      * @throws LionEngineException If error on writing.
      */
-    public static XmlNode export(Map<TileRef, Collection<TileConstraint>> constraints)
+    public static void export(Media constraintsConfig, Map<TileRef, Collection<TileConstraint>> constraints)
     {
         final XmlNode nodeConstraints = Xml.create(CONSTRAINTS);
         for (final Map.Entry<TileRef, Collection<TileConstraint>> entry : constraints.entrySet())
@@ -114,7 +114,7 @@ public final class TileConstraintsConfig
 
             nodeConstraints.add(nodeTileRef);
         }
-        return nodeConstraints;
+        Xml.save(nodeConstraints, constraintsConfig);
     }
 
     /**

@@ -24,11 +24,11 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.game.tile.TileExtractor;
+import com.b3dgs.lionengine.game.tile.TilesExtractor;
 
 /**
  * This class allows to convert a map image to a map level format.
- * The color [0-128-128] ({@link TileExtractor#IGNORED_COLOR_VALUE}) is ignored (can be used to skip tile, in order to
+ * The color [0-128-128] ({@link TilesExtractor#IGNORED_COLOR_VALUE}) is ignored (can be used to skip tile, in order to
  * improve performance).
  * <p>
  * Example:
@@ -53,50 +53,41 @@ public final class LevelRipConverter
      * Run the converter.
      * 
      * @param levelrip The file containing the levelrip as an image.
-     * @param sheetsConfig The file that define the sheets configuration.
      * @param map The destination map reference.
      * @return The total number of not found tiles.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static int start(Media levelrip, Media sheetsConfig, MapTile map)
+    public static int start(Media levelrip, MapTile map)
     {
-        return start(levelrip, sheetsConfig, map, null, null);
+        return start(levelrip, map, null, null);
     }
 
     /**
      * Run the converter.
      * 
      * @param levelrip The file containing the levelrip as an image.
-     * @param sheetsConfig The file that define the sheets configuration.
      * @param map The destination map reference.
      * @param listener The progress listener.
      * @return The total number of not found tiles.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static int start(Media levelrip, Media sheetsConfig, MapTile map, ProgressListener listener)
+    public static int start(Media levelrip, MapTile map, ProgressListener listener)
     {
-        return start(levelrip, sheetsConfig, map, listener, null);
+        return start(levelrip, map, listener, null);
     }
 
     /**
      * Run the converter.
      * 
      * @param levelrip The file containing the levelrip as an image.
-     * @param sheetsConfig The file that define the sheets configuration.
      * @param map The destination map reference.
      * @param listener The progress listener.
      * @param canceler The canceler reference.
      * @return The total number of not found tiles.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static int start(Media levelrip,
-                            Media sheetsConfig,
-                            MapTile map,
-                            ProgressListener listener,
-                            Canceler canceler)
+    public static int start(Media levelrip, MapTile map, ProgressListener listener, Canceler canceler)
     {
-        map.loadSheets(sheetsConfig);
-
         final Sprite imageMap = Drawable.loadSprite(levelrip);
         imageMap.load();
         imageMap.prepare();
@@ -110,7 +101,6 @@ public final class LevelRipConverter
         int lastPercent = 0;
         int errors = 0;
 
-        // Check all image tiles
         final ImageBuffer tileRef = imageMap.getSurface();
         for (int progressTileY = 0; progressTileY < imageTilesInY; progressTileY++)
         {
@@ -131,11 +121,13 @@ public final class LevelRipConverter
 
                 if (canceler != null && canceler.isCanceled())
                 {
+                    tileRef.dispose();
                     return errors;
                 }
             }
         }
 
+        tileRef.dispose();
         return errors;
     }
 
@@ -155,7 +147,7 @@ public final class LevelRipConverter
         final int pixel = tileRef.getRgb(x, y);
 
         // Skip blank tile of image map
-        if (TileExtractor.IGNORED_COLOR_VALUE != pixel)
+        if (TilesExtractor.IGNORED_COLOR_VALUE != pixel)
         {
             // Search if tile is on sheet and get it
             final Tile tile = searchForTile(map, tileRef, progressTileX, progressTileY);
@@ -225,7 +217,7 @@ public final class LevelRipConverter
                 final int xb = surfaceCurrentTileX * tw;
                 final int yb = surfaceCurrentTileY * th;
 
-                if (TileExtractor.compareTile(tw, th, tileSprite, xa, ya, sheetImage, xb, yb))
+                if (TilesExtractor.compareTile(tw, th, tileSprite, xa, ya, sheetImage, xb, yb))
                 {
                     final Tile tile = map.createTile();
                     tile.setSheet(sheet);

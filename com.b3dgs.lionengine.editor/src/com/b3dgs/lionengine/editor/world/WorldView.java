@@ -17,24 +17,34 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Listen to tiles selection on map.
+ * Represents the world view.
  */
-public interface TileSelectionListener
+public interface WorldView
 {
     /**
-     * Called when a tile is selected.
-     * 
-     * @param tile The selected tile from map.
+     * Update the view.
      */
-    void notifyTileSelected(Tile tile);
+    void update();
 
     /**
-     * Called when selected tile group changed.
+     * Set the tool item text.
      * 
-     * @param group The new tile group selection.
+     * @param item The item id extract.
+     * @param text The item text.
      */
-    void notifyTileGroupSelected(String group);
+    void setToolItemText(String item, String text);
+
+    /**
+     * Get the tool item.
+     * 
+     * @param <T> The element type.
+     * @param item The item id extract.
+     * @param clazz The element class.
+     * @return The composite found.
+     * @throws LionEngineException If not found.
+     */
+    <T> T getToolItem(String item, Class<T> clazz);
 }

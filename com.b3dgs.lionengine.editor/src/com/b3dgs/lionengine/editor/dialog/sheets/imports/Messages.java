@@ -46,6 +46,8 @@ public final class Messages extends NLS
     public static String RemoveLevelRip;
     /** No level rip defined. */
     public static String NoLevelRipDefined;
+    /** Config. */
+    public static String Config;
     /** Tile width. */
     public static String TileWidth;
     /** Tile height. */
@@ -54,14 +56,12 @@ public final class Messages extends NLS
     public static String HorizontalTiles;
     /** Vertical tiles. */
     public static String VerticalTiles;
-    /** Extract to. */
-    public static String ExtractTo;
-    /** Generate sheets config. */
-    public static String GenerateSheetsConfig;
-    /** Import sheets finished. */
-    public static String Finished;
+    /** Extraction destination. */
+    public static String Destination;
     /** Import sheets progress. */
     public static String Progress;
+    /** Next. */
+    public static String Next;
 
     /**
      * Initialize.

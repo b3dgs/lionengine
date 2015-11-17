@@ -22,6 +22,7 @@ import java.io.IOException;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -29,6 +30,8 @@ import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -50,6 +53,8 @@ class World extends WorldGame
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map group reference. */
+    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
     /** Map collision. */
     private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
     /** Mario reference. */
@@ -97,6 +102,7 @@ class World extends WorldGame
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
+        mapGroup.loadGroups(Medias.create("groups.xml"));
         mapCollision.loadCollisions();
 
         camera.setIntervals(16, 0);

@@ -18,15 +18,18 @@
 package com.b3dgs.lionengine.game.map;
 
 import java.util.Collection;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.game.tile.TileTransition;
+import com.b3dgs.lionengine.game.tile.TileTransitionType;
 
 /**
  * Find all map transition and extract them.
@@ -36,13 +39,40 @@ public final class TransitionsExtractor
     /**
      * Check map tile transitions and concatenate data..
      *
+     * @param levels The level rips used.
+     * @param sheetsMedia The sheets media.
+     * @param groupsMedia The groups media.
+     * @return The transitions found.
+     */
+    public static Map<TileTransition, Collection<TileRef>> getTransitions(Media[] levels,
+                                                                          Media sheetsMedia,
+                                                                          Media groupsMedia)
+    {
+        final Collection<MapTile> mapsSet = new HashSet<MapTile>();
+        for (final Media level : levels)
+        {
+            final MapTile map = new MapTileGame();
+            map.create(level, sheetsMedia);
+
+            final MapTileGroup mapGroup = new MapTileGroupModel(map);
+            mapGroup.loadGroups(groupsMedia);
+            map.addFeature(mapGroup);
+            mapsSet.add(map);
+        }
+        final MapTile[] maps = mapsSet.toArray(new MapTile[mapsSet.size()]);
+        return getTransitions(maps);
+    }
+
+    /**
+     * Check map tile transitions and concatenate data..
+     *
      * @param maps The maps reference.
      * @return The transitions found.
      */
     public static Map<TileTransition, Collection<TileRef>> getTransitions(MapTile... maps)
     {
         final Map<TileTransition, Collection<TileRef>> transitions;
-        transitions = new EnumMap<TileTransition, Collection<TileRef>>(TileTransition.class);
+        transitions = new HashMap<TileTransition, Collection<TileRef>>();
 
         for (final MapTile map : maps)
         {
@@ -74,7 +104,7 @@ public final class TransitionsExtractor
     public static Map<TileTransition, Collection<TileRef>> getTransitions(MapTile map)
     {
         final Map<TileTransition, Collection<TileRef>> transitions;
-        transitions = new EnumMap<TileTransition, Collection<TileRef>>(TileTransition.class);
+        transitions = new HashMap<TileTransition, Collection<TileRef>>();
         for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
         {
             for (int tx = 1; tx < map.getInTileWidth() - 1; tx++)
@@ -83,8 +113,11 @@ public final class TransitionsExtractor
                 if (tile != null)
                 {
                     final TileTransition transition = getTransition(map, tile);
-                    final Collection<TileRef> tiles = getTiles(transitions, transition);
-                    tiles.add(new TileRef(tile));
+                    if (!TileTransitionType.NONE.equals(transition.getType()))
+                    {
+                        final Collection<TileRef> tiles = getTiles(transitions, transition);
+                        tiles.add(new TileRef(tile));
+                    }
                 }
             }
         }
@@ -100,9 +133,11 @@ public final class TransitionsExtractor
      */
     public static TileTransition getTransition(MapTile map, Tile tile)
     {
-        final Boolean[] bits = new Boolean[TileTransition.BITS];
+        final String groupIn = tile.getGroup();
+        final Boolean[] bits = new Boolean[TileTransitionType.BITS];
         final int tx = tile.getX() / tile.getWidth();
         final int ty = tile.getY() / tile.getHeight();
+        String groupOut = null;
         int i = 0;
         for (int v = ty + 1; v >= ty - 1; v--)
         {
@@ -111,12 +146,29 @@ public final class TransitionsExtractor
                 final Tile neighbor = map.getTile(h, v);
                 if (neighbor != null)
                 {
-                    bits[i] = Boolean.valueOf(neighbor.getGroup().equals(tile.getGroup()));
+                    final String groupNeighbor = neighbor.getGroup();
+                    if (groupOut == null && !groupNeighbor.equals(groupIn))
+                    {
+                        groupOut = groupNeighbor;
+                    }
+                    if (groupOut == null || groupNeighbor.equals(groupOut) || groupNeighbor.equals(groupIn))
+                    {
+                        bits[i] = Boolean.valueOf(CollisionGroup.same(neighbor.getGroup(), tile.getGroup()));
+                    }
+                    else
+                    {
+                        return new TileTransition(TileTransitionType.NONE, groupIn, groupOut);
+                    }
                 }
                 i++;
             }
         }
-        return TileTransition.from(bits);
+        final TileTransitionType type = TileTransitionType.from(bits);
+        if (groupOut == null)
+        {
+            groupOut = groupIn;
+        }
+        return new TileTransition(type, groupIn, groupOut);
     }
 
     /**
@@ -137,7 +189,7 @@ public final class TransitionsExtractor
     }
 
     /**
-     * Utility class.
+     * Private constructor.
      */
     private TransitionsExtractor()
     {

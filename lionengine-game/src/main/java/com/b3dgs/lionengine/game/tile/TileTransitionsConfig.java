@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.tile;
 
 import java.util.Collection;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Find all tiles transitions and extract them to an XML file.
  * It will check from an existing map all transitions combination.
  * 
- * @see TileTransition
+ * @see TileTransitionType
  */
 public final class TileTransitionsConfig
 {
@@ -42,8 +42,12 @@ public final class TileTransitionsConfig
     public static final String NODE_TRANSITIONS = Configurer.PREFIX + "transitions";
     /** Transition node. */
     public static final String NODE_TRANSITION = Configurer.PREFIX + "transition";
-    /** Attribute transition name. */
-    public static final String ATTRIBUTE_TRANSITION_NAME = "name";
+    /** Attribute transition type. */
+    public static final String ATTRIBUTE_TRANSITION_TYPE = "type";
+    /** Attribute group in. */
+    public static final String ATTRIBUTE_GROUP_IN = "in";
+    /** Attribute group out. */
+    public static final String ATTRIBUTE_GROUP_OUT = "out";
 
     /**
      * Import all transitions from configuration.
@@ -57,12 +61,15 @@ public final class TileTransitionsConfig
         final XmlNode root = Xml.load(configTransitions);
         final Collection<XmlNode> nodesTransition = root.getChildren(NODE_TRANSITION);
         final Map<TileTransition, Collection<TileRef>> transitions;
-        transitions = new EnumMap<TileTransition, Collection<TileRef>>(TileTransition.class);
+        transitions = new HashMap<TileTransition, Collection<TileRef>>();
 
         for (final XmlNode nodeTransition : nodesTransition)
         {
-            final String transitionName = nodeTransition.readString(ATTRIBUTE_TRANSITION_NAME);
-            final TileTransition transition = TileTransition.from(transitionName);
+            final String groupIn = nodeTransition.readString(ATTRIBUTE_GROUP_IN);
+            final String groupOut = nodeTransition.readString(ATTRIBUTE_GROUP_OUT);
+            final String transitionType = nodeTransition.readString(ATTRIBUTE_TRANSITION_TYPE);
+            final TileTransitionType type = TileTransitionType.from(transitionType);
+            final TileTransition transition = new TileTransition(type, groupIn, groupOut);
 
             final Collection<XmlNode> nodesTileRef = nodeTransition.getChildren(TileConfig.NODE_TILE);
             final Collection<TileRef> tilesRef = importTiles(nodesTileRef);
@@ -87,7 +94,9 @@ public final class TileTransitionsConfig
         {
             final TileTransition transition = entry.getKey();
             final XmlNode nodeTransition = nodeTransitions.createChild(NODE_TRANSITION);
-            nodeTransition.writeString(ATTRIBUTE_TRANSITION_NAME, transition.name());
+            nodeTransition.writeString(ATTRIBUTE_TRANSITION_TYPE, transition.getType().name());
+            nodeTransition.writeString(ATTRIBUTE_GROUP_IN, transition.getGroupIn());
+            nodeTransition.writeString(ATTRIBUTE_GROUP_OUT, transition.getGroupOut());
 
             exportTiles(nodeTransition, entry.getValue());
         }

@@ -86,7 +86,7 @@ class Scene extends Sequence
     @Override
     public void load()
     {
-        map.create(Medias.create("map", "level.png"));
+        map.create(Medias.create("level.png"), 16, 16, 16);
         minimap.load();
         minimap.automaticColor(null);
         minimap.prepare();

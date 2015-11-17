@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
@@ -85,8 +85,8 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
     @Override
     public void notifyObjectDeleted(TileGroup group)
     {
-        final MapTile map = WorldModel.INSTANCE.getMap();
-        final Media config = map.getGroupsConfig();
+        final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
+        final Media config = mapGroup.getGroupsConfig();
         final XmlNode node = Xml.load(config);
         final Collection<XmlNode> toRemove = new ArrayList<>();
         for (final XmlNode nodeGroup : node.getChildren(TileGroupsConfig.NODE_GROUP))
@@ -102,6 +102,6 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
         }
         toRemove.clear();
         Xml.save(node, config);
-        map.loadGroups(config);
+        mapGroup.loadGroups(config);
     }
 }

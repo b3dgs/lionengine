@@ -20,8 +20,11 @@ package com.b3dgs.lionengine.game.map;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileConstraint;
@@ -31,30 +34,40 @@ import com.b3dgs.lionengine.game.tile.TileRef;
  * Find all tiles constraints and extract them to an XML file.
  * It will check from an existing map all adjacent tiles combination.
  */
-public class ConstraintsExtractor
+public final class ConstraintsExtractor
 {
-    /** Constraints found. */
-    private final Map<TileRef, Collection<TileConstraint>> constraints;
-
     /**
-     * Create the extractor.
+     * Get maps tile constraints and concatenate data from each map.
+     * 
+     * @param levels The level rips used.
+     * @param sheetsMedia The sheets media.
+     * @return The constraints found.
      */
-    public ConstraintsExtractor()
+    public static Map<TileRef, Collection<TileConstraint>> getConstraints(Media[] levels, Media sheetsMedia)
     {
-        constraints = new HashMap<TileRef, Collection<TileConstraint>>();
+        final Collection<MapTile> mapsSet = new HashSet<MapTile>();
+        for (final Media level : levels)
+        {
+            final MapTile map = new MapTileGame();
+            map.create(level, sheetsMedia);
+            mapsSet.add(map);
+        }
+        final MapTile[] maps = mapsSet.toArray(new MapTile[mapsSet.size()]);
+        return getConstraints(maps);
     }
 
     /**
-     * Check maps tile constraints and concatenate data.
+     * Get maps tile constraints and concatenate data from each map.
      * 
      * @param maps The maps list.
      * @return The constraints found.
      */
-    public Map<TileRef, Collection<TileConstraint>> check(MapTile... maps)
+    public static Map<TileRef, Collection<TileConstraint>> getConstraints(MapTile... maps)
     {
+        final Map<TileRef, Collection<TileConstraint>> constraints = new HashMap<TileRef, Collection<TileConstraint>>();
         for (final MapTile map : maps)
         {
-            checkMap(map);
+            checkConstraints(constraints, map);
         }
         return constraints;
     }
@@ -62,9 +75,10 @@ public class ConstraintsExtractor
     /**
      * Check map tile constraints.
      * 
+     * @param constraints The current constraints.
      * @param map The map reference.
      */
-    private void checkMap(MapTile map)
+    private static void checkConstraints(Map<TileRef, Collection<TileConstraint>> constraints, MapTile map)
     {
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
@@ -73,7 +87,7 @@ public class ConstraintsExtractor
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
                 {
-                    checkNeighbor(map, tile, tx, ty);
+                    checkNeighbor(constraints, map, tile, tx, ty);
                 }
             }
         }
@@ -82,12 +96,17 @@ public class ConstraintsExtractor
     /**
      * Check the tile neighbors.
      * 
+     * @param constraints The current constraints.
      * @param map The map reference.
      * @param tile The current tile.
      * @param tx The current horizontal tile index.
      * @param ty The current vertical tile index.
      */
-    private void checkNeighbor(MapTile map, Tile tile, int tx, int ty)
+    private static void checkNeighbor(Map<TileRef, Collection<TileConstraint>> constraints,
+                                      MapTile map,
+                                      Tile tile,
+                                      int tx,
+                                      int ty)
     {
         final TileRef tileRef = new TileRef(tile.getSheet(), tile.getNumber());
         for (int h = tx - 1; h <= tx + 1; h++)
@@ -95,7 +114,7 @@ public class ConstraintsExtractor
             for (int v = ty - 1; v <= ty + 1; v++)
             {
                 final Orientation orientation = Orientation.get(tx, ty, h, v);
-                checkOrientation(map, orientation, tileRef, h, v);
+                checkOrientation(constraints, map, orientation, tileRef, h, v);
             }
         }
     }
@@ -103,13 +122,19 @@ public class ConstraintsExtractor
     /**
      * Check the orientation.
      * 
+     * @param constraints The current constraints.
      * @param map The map reference.
      * @param orientation The current orientation.
      * @param tileRef The current tile.
      * @param tx The current horizontal tile index.
      * @param ty The current vertical tile index.
      */
-    private void checkOrientation(MapTile map, Orientation orientation, TileRef tileRef, int tx, int ty)
+    private static void checkOrientation(Map<TileRef, Collection<TileConstraint>> constraints,
+                                         MapTile map,
+                                         Orientation orientation,
+                                         TileRef tileRef,
+                                         int tx,
+                                         int ty)
     {
         if (orientation != null)
         {
@@ -117,7 +142,7 @@ public class ConstraintsExtractor
             if (neighbor != null)
             {
                 final TileRef neighborRef = new TileRef(neighbor.getSheet(), neighbor.getNumber());
-                final TileConstraint constraint = getConstraint(tileRef, orientation);
+                final TileConstraint constraint = getConstraint(constraints, tileRef, orientation);
                 constraint.add(neighborRef);
             }
         }
@@ -126,11 +151,14 @@ public class ConstraintsExtractor
     /**
      * Get the constraint for the specified tile. Create an empty one if key does not already exists.
      * 
+     * @param constraints The current constraints.
      * @param tile The tile reference.
      * @param orientation The constraint orientation.
      * @return The associated constraint.
      */
-    private TileConstraint getConstraint(TileRef tile, Orientation orientation)
+    private static TileConstraint getConstraint(Map<TileRef, Collection<TileConstraint>> constraints,
+                                                TileRef tile,
+                                                Orientation orientation)
     {
         if (!constraints.containsKey(tile))
         {
@@ -150,5 +178,13 @@ public class ConstraintsExtractor
         orientationConstraints.add(constraint);
 
         return constraint;
+    }
+
+    /**
+     * Private constructor.
+     */
+    private ConstraintsExtractor()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

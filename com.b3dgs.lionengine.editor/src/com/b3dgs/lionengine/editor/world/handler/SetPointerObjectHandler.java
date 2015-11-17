@@ -23,9 +23,11 @@ import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.editor.utility.UtilToolbar;
+import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Set pointer object handler.
@@ -68,8 +70,9 @@ public final class SetPointerObjectHandler
             }
         }
         final PaletteType type = PaletteType.POINTER_OBJECT;
-        WorldModel.INSTANCE.setSelectedPalette(type);
-        final WorldPart view = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+        final Services services = WorldModel.INSTANCE.getServices();
+        services.get(PaletteModel.class).setSelectedPalette(type);
+        final WorldPart view = services.get(WorldPart.class);
         view.setCursor(type.getCursor());
     }
 }

@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
@@ -113,12 +113,12 @@ public class GroupChooser extends AbstractDialog
      */
     private void addGroup(Shell shell)
     {
-        final MapTile map = WorldModel.INSTANCE.getMap();
-        final GroupsEditDialog dialog = new GroupsEditDialog(shell, map.getGroupsConfig());
+        final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
+        final GroupsEditDialog dialog = new GroupsEditDialog(shell, mapGroup.getGroupsConfig());
         dialog.open();
 
         final Collection<String> values = new ArrayList<>();
-        for (final TileGroup group : map.getGroups())
+        for (final TileGroup group : mapGroup.getGroups())
         {
             values.add(group.getName());
         }

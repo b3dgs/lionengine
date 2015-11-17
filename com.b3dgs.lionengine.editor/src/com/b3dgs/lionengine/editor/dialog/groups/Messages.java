@@ -15,26 +15,39 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.dialog.groups;
 
-import com.b3dgs.lionengine.game.tile.Tile;
+import java.util.Locale;
+
+import org.eclipse.osgi.util.NLS;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Listen to tiles selection on map.
+ * Messages internationalization.
  */
-public interface TileSelectionListener
+public final class Messages extends NLS
 {
-    /**
-     * Called when a tile is selected.
-     * 
-     * @param tile The selected tile from map.
-     */
-    void notifyTileSelected(Tile tile);
+    /** Dialog title. */
+    public static String Title;
+    /** Title header. */
+    public static String HeaderTitle;
+    /** Description header. */
+    public static String HeaderDesc;
 
     /**
-     * Called when selected tile group changed.
-     * 
-     * @param group The new tile group selection.
+     * Initialize.
      */
-    void notifyTileGroupSelected(String group);
+    static
+    {
+        NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Messages()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+    }
 }

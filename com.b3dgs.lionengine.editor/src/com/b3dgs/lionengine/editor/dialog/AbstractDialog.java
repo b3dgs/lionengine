@@ -97,12 +97,27 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
      */
     public AbstractDialog(Shell parent, String title, String headerTitle, String headerDesc, Image headerIcon)
     {
+        this(parent, title, headerTitle, headerDesc, headerIcon, SWT.DIALOG_TRIM);
+    }
+
+    /**
+     * Dialog constructor base.
+     * 
+     * @param parent The parent reference.
+     * @param title The dialog title.
+     * @param headerTitle The header title.
+     * @param headerDesc The header description.
+     * @param headerIcon The header icon.
+     * @param type The dialogue type.
+     */
+    public AbstractDialog(Shell parent, String title, String headerTitle, String headerDesc, Image headerIcon, int type)
+    {
         super(parent);
         dialogTitle = title;
         this.headerTitle = headerTitle;
         this.headerDesc = headerDesc;
         this.headerIcon = headerIcon;
-        dialog = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+        dialog = new Shell(parent, type | SWT.APPLICATION_MODAL);
         dialog.setMinimumSize(640, 100);
         dialog.setLayout(UtilSwt.borderless());
         dialog.setText(title);

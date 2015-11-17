@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.map.MapTileRenderer;
  * </p>
  * 
  * <pre>
- * {@link #loadSheets(Media, Media, boolean)}
+ * {@link #loadSheets(Media, boolean)}
  * {@link MapTile#setTileRenderer(MapTileRenderer)} // Give reference to the MapTileRastered instance
  * </pre>
  */
@@ -41,12 +41,11 @@ public interface MapTileRastered extends MapTileFeature, MapTileRenderer
     /**
      * Load tile sheets as rastered.
      * 
-     * @param sheetsConfig The file that define the sheets configuration.
      * @param rasterConfig The raster file that define the colors.
      * @param smooth <code>true</code> for a smoothed raster (may be slower), <code>false</code> else.
      * @throws LionEngineException If error when reading sheets.
      */
-    void loadSheets(Media sheetsConfig, Media rasterConfig, boolean smooth);
+    void loadSheets(Media rasterConfig, boolean smooth);
 
     /**
      * Get raster index from input tile (depending of its height).

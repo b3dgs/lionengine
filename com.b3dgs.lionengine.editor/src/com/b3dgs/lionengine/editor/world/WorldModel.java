@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor.world;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
@@ -46,8 +47,6 @@ public class WorldModel
     private final MapTile map = services.create(MapTileGame.class);
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
-    /** Selected palette. */
-    private Enum<?> palette = PaletteType.POINTER_OBJECT;
 
     /**
      * Constructor.
@@ -58,6 +57,7 @@ public class WorldModel
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());
         services.add(handler);
+        services.add(new PaletteModel());
 
         final Selection selection = new Selection();
         services.add(selection);
@@ -65,17 +65,8 @@ public class WorldModel
         final ObjectControl objectControl = new ObjectControl(services);
         services.add(objectControl);
 
-        map.addFeature(new MapTileTransitionModel(map));
-    }
-
-    /**
-     * Set the selected palette.
-     * 
-     * @param palette The selected palette.
-     */
-    public void setSelectedPalette(Enum<?> palette)
-    {
-        this.palette = palette;
+        map.addFeature(new MapTileGroupModel(services));
+        map.addFeature(new MapTileTransitionModel(services));
     }
 
     /**
@@ -126,26 +117,5 @@ public class WorldModel
     public Minimap getMinimap()
     {
         return minimap;
-    }
-
-    /**
-     * Get the selected palette.
-     * 
-     * @return The selected palette.
-     */
-    public Enum<?> getSelectedPalette()
-    {
-        return palette;
-    }
-
-    /**
-     * Check if current palette is the specified type.
-     * 
-     * @param type The expected type.
-     * @return <code>true</code> if right type, <code>false</code> else.
-     */
-    public boolean isPalette(PaletteType type)
-    {
-        return palette.equals(type);
     }
 }

@@ -27,8 +27,6 @@ import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
@@ -38,6 +36,7 @@ import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.world.Selection;
+import com.b3dgs.lionengine.editor.world.WorldView;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
 import com.b3dgs.lionengine.game.Camera;
@@ -74,7 +73,7 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     /** Scale transform. */
     private final Transform transform = Graphics.createTransform();
     /** The parent. */
-    private final Composite parent;
+    private final WorldView worldView;
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
@@ -99,34 +98,23 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     /**
      * Create a world renderer with grid enabled.
      * 
-     * @param parent The parent container.
      * @param partService The part services reference.
      * @param services The services reference.
      */
-    public WorldRenderer(Composite parent, EPartService partService, Services services)
+    public WorldRenderer(EPartService partService, Services services)
     {
-        this.parent = parent;
         this.partService = partService;
-        grid = new WorldGrid(services);
-        cursor = new WorldCursor(services);
-        selectedTiles = new WorldSelectedTiles(services);
-        selectedObjects = new WorldSelectedObjects(services);
+        grid = services.create(WorldGrid.class);
+        cursor = services.create(WorldCursor.class);
+        selectedTiles = services.create(WorldSelectedTiles.class);
+        selectedObjects = services.create(WorldSelectedObjects.class);
+        worldView = services.get(WorldView.class);
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
         handler = services.get(Handler.class);
         selection = services.get(Selection.class);
         worldUpdater = services.get(WorldUpdater.class);
         zoom = services.get(WorldZoom.class);
-    }
-
-    /**
-     * Get the view location.
-     * 
-     * @return The view location.
-     */
-    public Point getLocation()
-    {
-        return parent.toDisplay(parent.getClientArea().x, parent.getClientArea().y);
     }
 
     /**
@@ -167,17 +155,6 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
             {
                 map.getFeature(MapTileCollision.class).render(g);
             }
-        }
-    }
-
-    /**
-     * Update the rendering.
-     */
-    private void updateRender()
-    {
-        if (!parent.isDisposed())
-        {
-            parent.redraw();
         }
     }
 
@@ -225,13 +202,13 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     @Override
     public void mouseDown(MouseEvent mouseEvent)
     {
-        updateRender();
+        worldView.update();
     }
 
     @Override
     public void mouseUp(MouseEvent mouseEvent)
     {
-        updateRender();
+        worldView.update();
     }
 
     @Override
@@ -247,7 +224,7 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     @Override
     public void mouseMove(MouseEvent mouseEvent)
     {
-        updateRender();
+        worldView.update();
     }
 
     /*
@@ -257,7 +234,7 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     @Override
     public void mouseScrolled(MouseEvent event)
     {
-        updateRender();
+        worldView.update();
     }
 
     /*
@@ -267,7 +244,7 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     @Override
     public void keyPressed(KeyEvent event)
     {
-        updateRender();
+        worldView.update();
     }
 
     @Override

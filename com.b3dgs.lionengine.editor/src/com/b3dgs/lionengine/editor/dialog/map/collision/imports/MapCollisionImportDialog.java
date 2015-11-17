@@ -46,6 +46,7 @@ import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 
 /**
  * Represents the import map dialog.
@@ -248,7 +249,7 @@ public class MapCollisionImportDialog extends AbstractDialog
     {
         final Project project = Project.getActive();
         final MapTile map = WorldModel.INSTANCE.getMap();
-        final File parentFile = map.getGroupsConfig().getFile().getParentFile();
+        final File parentFile = map.getFeature(MapTileGroup.class).getGroupsConfig().getFile().getParentFile();
 
         final File formulas = new File(parentFile, CollisionFormulaConfig.FILENAME);
         if (MapTester.isFormulasConfig(project.getResourceMedia(formulas)))

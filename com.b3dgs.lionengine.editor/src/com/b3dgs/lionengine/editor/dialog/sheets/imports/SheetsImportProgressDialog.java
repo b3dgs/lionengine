@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.dialog.sheets.imports;
 
+import java.util.Collection;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -28,75 +30,111 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.editor.dialog.AbstractProgressDialog;
-import com.b3dgs.lionengine.game.tile.TileExtractor;
+import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.game.tile.TilesExtractor;
 
 /**
  * Sheets import progress dialog.
  */
 public class SheetsImportProgressDialog extends AbstractProgressDialog
-                                        implements TileExtractor.ProgressListener, TileExtractor.Canceler
+                                        implements TilesExtractor.ProgressListener, TilesExtractor.Canceler
 {
     /** Image width. */
-    private final int width;
-    /** Image height. */
-    private final int height;
+    private final int horizontalTiles;
+    /** Label reference. */
+    private Label label;
     /** Current sheets area. */
     private GC gc;
-    /** Last image. */
-    private ImageBuffer last;
+    /** Old height. */
+    private int oldHeight = Integer.MIN_VALUE;
 
     /**
      * Create the dialog.
      * 
      * @param parent The parent reference.
-     * @param width Image width.
-     * @param height Image height.
+     * @param horizontalTiles The horizontal tiles per line.
      */
-    public SheetsImportProgressDialog(Shell parent, int width, int height)
+    public SheetsImportProgressDialog(Shell parent, int horizontalTiles)
     {
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.Progress, SheetsImportDialog.ICON);
-        this.width = width;
-        this.height = height;
+        this.horizontalTiles = horizontalTiles;
+
         createDialog();
         finish.dispose();
         cancel.getParent().setLayout(new GridLayout(1, false));
         cancel.getParent().layout();
-        dialog.setMinimumSize(128, 128);
+        dialog.setMinimumSize(256, 256);
     }
+
+    /**
+     * Update the rendering size depending of the tiles.
+     * 
+     * @param tiles The tiles collection.
+     */
+    private void updateSize(Collection<ImageBuffer> tiles)
+    {
+        final int height = (int) Math.floor(tiles.size() / (double) horizontalTiles);
+        if (height > oldHeight && tiles.size() > 0)
+        {
+            if (gc != null)
+            {
+                gc.dispose();
+            }
+            final ImageBuffer tile = tiles.iterator().next();
+            label.setLayoutData(new GridData(horizontalTiles * tile.getWidth(), (height + 1) * tile.getHeight()));
+            label.getParent().pack(true);
+            gc = new GC(label);
+            oldHeight = height;
+        }
+    }
+
+    /*
+     * AbstractProgressDialog
+     */
 
     @Override
     protected void createProgressContent(Composite content)
     {
-        final Label label = new Label(dialog, SWT.NONE);
-        label.setLayoutData(new GridData(width, height));
-        gc = new GC(label);
+        label = new Label(dialog, SWT.NONE);
     }
 
     @Override
     protected void onTerminated()
     {
-        // Nothing to do
-    }
-
-    @Override
-    public void notifyProgress(int percent, ImageBuffer current)
-    {
-        if (!isDisposed())
+        if (gc != null)
         {
-            setProgress(percent);
-            if (last != current)
-            {
-                last = current;
-                gc.fillRectangle(0, 0, current.getWidth(), current.getHeight());
-            }
-            gc.drawImage((Image) current.getSurface(), 0, 0);
-            dialog.getDisplay().readAndDispatch();
+            gc.dispose();
         }
     }
 
+    /*
+     * ProgressListener
+     */
+
     @Override
-    public void notifyExtracted(ImageBuffer sheet)
+    public void notifyProgress(int percent, Collection<ImageBuffer> tiles)
     {
-        // Nothing to do
+        setProgress(percent);
+
+        dialog.getDisplay().asyncExec(() ->
+        {
+            if (!isDisposed())
+            {
+                updateSize(tiles);
+                int i = 0;
+                for (final ImageBuffer tile : tiles)
+                {
+                    final int x = i % horizontalTiles;
+                    final int y = (int) Math.floor(i / (double) horizontalTiles);
+
+                    gc.drawImage((Image) tile.getSurface(), x * tile.getWidth(), y * tile.getHeight());
+                    i++;
+                }
+
+                dialog.update();
+                UtilSwt.center(dialog);
+            }
+        });
+        dialog.getDisplay().readAndDispatch();
     }
 }

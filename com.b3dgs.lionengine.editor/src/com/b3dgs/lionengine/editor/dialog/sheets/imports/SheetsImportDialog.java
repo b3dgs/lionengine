@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor.dialog.sheets.imports;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -34,55 +35,60 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.dialog.groups.TileGroupEditDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
-import com.b3dgs.lionengine.game.tile.TileExtractor;
-import com.b3dgs.lionengine.game.tile.TileSheetsConfig;
+import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
+import com.b3dgs.lionengine.game.map.SheetsExtractor;
+import com.b3dgs.lionengine.game.map.TileSheetsConfig;
+import com.b3dgs.lionengine.game.map.TransitionsExtractor;
+import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
+import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.tile.TileTransitionsConfig;
+import com.b3dgs.lionengine.game.tile.TilesExtractor;
 
 /**
  * Import sheets dialog.
  */
 public class SheetsImportDialog extends AbstractDialog
 {
+    /** Sheets default extension. */
+    public static final String SHEET_EXTENSION = ".png";
     /** Level rip filter. */
     public static final String[] LEVEL_RIP_FILTER = new String[]
     {
-        "*.bmp;*.png"
+        "*.bmp;*"
+      + SHEET_EXTENSION
     };
     /** Icon. */
     static final Image ICON = UtilIcon.get("dialog", "import.png");
-    /** Error on config file generation. */
-    private static final String ERROR_GENERATE = "Unable to generate sheets config file !";
 
     /** Level rip list. */
     private Tree levelRips;
-    /** Destination folder. */
-    private Text folderText;
     /** Tile width. */
     private Text widthText;
     /** Tile height. */
     private Text heightText;
     /** Horizontal tiles. */
     private Text horizontalText;
-    /** Vertical tiles. */
-    private Text verticalText;
-    /** Generate sheets config. */
-    private Button generate;
     /** Add level rip. */
     private Button addLevelRip;
     /** Remove level rip. */
     private Button removeLevelRip;
-    /** Tile extractor. */
-    private TileExtractor extractor;
+    /** Extraction destination location. */
+    private Text destinationText;
 
     /**
      * Create the dialog.
@@ -96,6 +102,8 @@ public class SheetsImportDialog extends AbstractDialog
         createDialog();
         setTipsMessage(ICON_ERROR, Messages.NoLevelRipDefined);
         tipsLabel.setVisible(true);
+        finish.setText(Messages.Next);
+        dialog.setMinimumSize(192, 192);
     }
 
     /**
@@ -110,25 +118,38 @@ public class SheetsImportDialog extends AbstractDialog
         final Project project = Project.getActive();
         for (final File file : files)
         {
-            final TreeItem item = new TreeItem(levelRips, SWT.NONE);
-            item.setText(file.getPath());
-
             final Media media = project.getResourceMedia(file);
-            item.setData(media);
-
-            if (!finish.isEnabled())
+            final String path = media.getPath();
+            if (!containsItem(path))
             {
-                checkFinish();
-            }
+                final TreeItem item = new TreeItem(levelRips, SWT.NONE);
+                item.setText(path);
+                item.setData(media);
 
-            if (folderText.getData() == null)
-            {
-                final File parent = file.getParentFile();
-                folderText.setText(parent.getPath());
-                final Media extractFolder = project.getResourceMedia(parent);
-                folderText.setData(extractFolder);
+                if (!finish.isEnabled())
+                {
+                    checkFinish();
+                }
             }
         }
+    }
+
+    /**
+     * Check if tree contains item value.
+     * 
+     * @param value The value to check.
+     * @return <code>true</code> if value is contained by tree, <code>false</code> else.
+     */
+    private boolean containsItem(String value)
+    {
+        for (final TreeItem item : levelRips.getItems())
+        {
+            if (item.getText().equals(value))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -155,35 +176,8 @@ public class SheetsImportDialog extends AbstractDialog
         final File file = UtilDialog.selectResourceFolder(dialog);
         if (file != null)
         {
-            folderText.setText(file.getPath());
             final Media extractFolder = Project.getActive().getResourceMedia(file);
-            folderText.setData(extractFolder);
-        }
-    }
-
-    /**
-     * Generate config file.
-     * 
-     * @param tw The tile width.
-     * @param th The tile height.
-     * @param extractFolder The extraction folder.
-     */
-    private void generateConfig(int tw, int th, Media extractFolder)
-    {
-        try
-        {
-            final Collection<String> sheets = new ArrayList<>();
-            for (final Media media : extractor.getGeneratedSheets())
-            {
-                sheets.add(media.getFile().getName());
-            }
-            final File file = new File(extractFolder.getFile(), TileSheetsConfig.FILENAME);
-            final Media config = Project.getActive().getResourceMedia(file);
-            TileSheetsConfig.exports(config, tw, th, sheets);
-        }
-        catch (final LionEngineException exception)
-        {
-            Verbose.exception(exception, ERROR_GENERATE);
+            destinationText.setText(extractFolder.getPath());
         }
     }
 
@@ -194,8 +188,8 @@ public class SheetsImportDialog extends AbstractDialog
     {
         final boolean hasRips = levelRips.getItems().length > 0;
         final boolean hasSize = !widthText.getText().isEmpty() && !heightText.getText().isEmpty();
-        final boolean hasNumbers = !horizontalText.getText().isEmpty() && !verticalText.getText().isEmpty();
-        final boolean finished = hasRips && !folderText.getText().isEmpty() && hasSize && hasNumbers;
+        final boolean hasNumber = !horizontalText.getText().isEmpty();
+        final boolean finished = hasRips && hasSize && hasNumber && !destinationText.getText().isEmpty();
 
         finish.setEnabled(finished);
         tipsLabel.setVisible(!finished);
@@ -239,11 +233,12 @@ public class SheetsImportDialog extends AbstractDialog
         area.setLayout(new GridLayout(3, false));
 
         final Label locationLabel = new Label(area, SWT.NONE);
-        locationLabel.setText(Messages.ExtractTo);
+        locationLabel.setText(Messages.Destination);
 
-        folderText = new Text(area, SWT.BORDER);
-        folderText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textCheckFinish(folderText);
+        destinationText = new Text(area, SWT.BORDER);
+        destinationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        destinationText.setEditable(false);
+        textCheckFinish(destinationText);
 
         final Button browse = UtilButton.createBrowse(area);
         browse.forceFocus();
@@ -259,25 +254,29 @@ public class SheetsImportDialog extends AbstractDialog
     {
         final Group config = new Group(parent, SWT.NONE);
         config.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        config.setLayout(new GridLayout(2, true));
+        config.setLayout(new GridLayout(3, false));
+        config.setText(Messages.Config);
 
-        widthText = UtilText.create(Messages.TileWidth, config);
-        widthText.addVerifyListener(UtilText.createVerify(widthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
-        textCheckFinish(widthText);
+        widthText = createText(Messages.TileWidth, config);
+        heightText = createText(Messages.TileHeight, config);
+        horizontalText = createText(Messages.HorizontalTiles, config);
+    }
 
-        heightText = UtilText.create(Messages.TileHeight, config);
-        heightText.addVerifyListener(UtilText.createVerify(heightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
-        textCheckFinish(heightText);
-
-        horizontalText = UtilText.create(Messages.HorizontalTiles, config);
-        horizontalText.addVerifyListener(UtilText.createVerify(horizontalText,
-                                                               InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
-        textCheckFinish(horizontalText);
-
-        verticalText = UtilText.create(Messages.VerticalTiles, config);
-        verticalText.addVerifyListener(UtilText.createVerify(verticalText,
-                                                             InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
-        textCheckFinish(verticalText);
+    /**
+     * Create a checked input text accepting strictly positive values.
+     * 
+     * @param title The text title.
+     * @param parent The composite parent.
+     * @return The created checked text.
+     */
+    private Text createText(String title, Composite parent)
+    {
+        final Text text = UtilText.create(title, parent);
+        ((GridData) text.getLayoutData()).minimumWidth = 24;
+        ((GridData) text.getLayoutData()).widthHint = 24;
+        text.addVerifyListener(UtilText.createVerify(text, InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        textCheckFinish(text);
+        return text;
     }
 
     /**
@@ -290,6 +289,98 @@ public class SheetsImportDialog extends AbstractDialog
         text.addModifyListener(event -> checkFinish());
     }
 
+    /**
+     * Extract unique tiles from set of levels depending of tile size.
+     * 
+     * @param tw The tile width.
+     * @param th The tile height.
+     * @param levels The levels list.
+     * @return The extracted unique tiles, empty list if canceled or if nothing has been found.
+     */
+    private Collection<ImageBuffer> extractTiles(int tw, int th, Media[] levels)
+    {
+        final int horizontals = Integer.parseInt(horizontalText.getText());
+        final TilesExtractor tilesExtractor = new TilesExtractor();
+        final SheetsImportProgressDialog tilesExtractorProgress = new SheetsImportProgressDialog(dialog, horizontals);
+        tilesExtractor.addListener(tilesExtractorProgress);
+        tilesExtractorProgress.open();
+
+        final Collection<ImageBuffer> tiles = tilesExtractor.extract(tilesExtractorProgress, tw, th, levels);
+        tilesExtractorProgress.finish();
+
+        if (tilesExtractorProgress.isCanceled())
+        {
+            return Collections.emptyList();
+        }
+        return tiles;
+    }
+
+    /**
+     * Save extractions data to media file.
+     * 
+     * @param tw The tile width.
+     * @param th The tile height.
+     * @param levels The level rips used.
+     * @param sheets The sheets list.
+     * @param groups The groups list.
+     */
+    private void saveData(int tw, int th, Media[] levels, Collection<SpriteTiled> sheets, Collection<TileGroup> groups)
+    {
+        final String folder = destinationText.getText();
+        int i = 0;
+        for (final SpriteTiled sheet : sheets)
+        {
+            Graphics.saveImage(sheet.getSurface(), Medias.create(folder, i + SHEET_EXTENSION));
+            i++;
+        }
+
+        final Media sheetsMedia = Medias.create(folder, TileSheetsConfig.FILENAME);
+        TileSheetsConfig.exports(sheetsMedia, tw, th, getTileSheets(sheets));
+
+        final Media groupsMedia = Medias.create(folder, TileGroupsConfig.FILENAME);
+        TileGroupsConfig.exports(groupsMedia, groups);
+
+        final Media transitionsMedia = Medias.create(folder, TileTransitionsConfig.FILENAME);
+        TileTransitionsConfig.exports(transitionsMedia,
+                                      TransitionsExtractor.getTransitions(levels, sheetsMedia, groupsMedia));
+
+        final Media constraintsMedia = Medias.create(folder, TileConstraintsConfig.FILENAME);
+        TileConstraintsConfig.export(constraintsMedia, ConstraintsExtractor.getConstraints(levels, sheetsMedia));
+    }
+
+    /**
+     * Get the current level rips list as array of media.
+     * 
+     * @return The level rip medias.
+     */
+    private Media[] getLevelRips()
+    {
+        final Collection<Media> medias = new ArrayList<>();
+        for (final TreeItem item : levelRips.getItems())
+        {
+            medias.add((Media) item.getData());
+        }
+        return medias.toArray(new Media[medias.size()]);
+    }
+
+    /**
+     * Get the tile sheets list.
+     * 
+     * @param sheets The sheets image.
+     * @return The sheets name list.
+     */
+    private Collection<String> getTileSheets(Collection<SpriteTiled> sheets)
+    {
+        final Collection<String> sheetsName = new ArrayList<>();
+        final int size = sheets.size();
+        for (int i = 0; i < size; i++)
+        {
+            sheetsName.add(i + SHEET_EXTENSION);
+        }
+        return sheetsName;
+
+    }
+
     /*
      * AbstractDialog
      */
@@ -297,13 +388,15 @@ public class SheetsImportDialog extends AbstractDialog
     @Override
     protected void createContent(Composite content)
     {
+        content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
         final Group area = new Group(content, SWT.NONE);
-        area.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        area.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         area.setLayout(new GridLayout(1, false));
         area.setText(Messages.RipsList);
 
         levelRips = new Tree(area, SWT.SINGLE);
-        levelRips.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        levelRips.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         final Composite buttons = new Composite(area, SWT.NONE);
         buttons.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -315,44 +408,29 @@ public class SheetsImportDialog extends AbstractDialog
         createButtonAdd(buttons);
         createButtonRemove(buttons);
 
-        final Composite config = new Composite(content, SWT.NONE);
-        config.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        config.setLayout(new GridLayout(1, false));
-
-        createExtractLocationArea(config);
-        createTextConfig(config);
-
-        generate = UtilButton.createCheck(Messages.GenerateSheetsConfig, config);
+        createTextConfig(content);
+        createExtractLocationArea(content);
     }
 
     @Override
     protected void onFinish()
     {
-        final Media extractFolder = (Media) folderText.getData();
         final int tw = Integer.parseInt(widthText.getText());
         final int th = Integer.parseInt(heightText.getText());
-        final int h = Integer.parseInt(horizontalText.getText());
-        final int v = Integer.parseInt(verticalText.getText());
+        final Media[] levels = getLevelRips();
 
-        extractor = new TileExtractor(extractFolder, tw, th, h, v);
-        for (final TreeItem item : levelRips.getItems())
+        final Collection<ImageBuffer> tiles = extractTiles(tw, th, levels);
+        if (!tiles.isEmpty())
         {
-            extractor.addRip((Media) item.getData());
-        }
+            final Collection<SpriteTiled> sheets = SheetsExtractor.extract(tiles, 16);
+            final TileGroupEditDialog tileGroupEdit = new TileGroupEditDialog(getParent());
+            tileGroupEdit.load(tw, th, sheets, levels);
+            tileGroupEdit.open();
 
-        final SheetsImportProgressDialog progress = new SheetsImportProgressDialog(dialog, tw * h, th * v);
-        extractor.addListener(progress);
-        progress.open();
-        extractor.start(progress);
-        progress.finish();
-
-        if (!progress.isCanceled())
-        {
-            if (generate.getSelection())
+            if (!tileGroupEdit.isCanceled())
             {
-                generateConfig(tw, th, extractFolder);
+                saveData(tw, th, levels, sheets, tileGroupEdit.getGroups());
             }
-            UtilDialog.info(getParent(), Messages.Title, Messages.Finished);
         }
     }
 }

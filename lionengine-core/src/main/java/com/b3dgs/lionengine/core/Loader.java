@@ -158,6 +158,10 @@ public final class Loader
             {
                 screen.dispose();
             }
+            if (Engine.isStarted())
+            {
+            Engine.terminate();
+            }
             started = false;
         }
     }

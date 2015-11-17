@@ -29,6 +29,7 @@ import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -44,6 +45,7 @@ import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilToolbar;
 import com.b3dgs.lionengine.editor.world.renderer.WorldRenderer;
+import com.b3dgs.lionengine.editor.world.renderer.WorldSelectedTiles;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.game.object.Services;
@@ -52,7 +54,7 @@ import com.b3dgs.lionengine.game.tile.Tile;
 /**
  * Represents the world, where the global map is displayed.
  */
-public class WorldPart implements Focusable, TileSelectionListener
+public class WorldPart implements WorldView, Focusable, TileSelectionListener
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.world";
@@ -62,6 +64,38 @@ public class WorldPart implements Focusable, TileSelectionListener
     private static final String EXTENSION_RENDERER = "renderer";
     /** Item not found. */
     private static final String ERROR_ITEM = "Item not found: ";
+
+    /**
+     * Create the world part.
+     * 
+     * @param parent The composite parent.
+     * @param updater The updater reference.
+     * @param renderer The renderer reference.
+     * @return The created part.
+     */
+    public static Composite createPart(Composite parent, WorldUpdater updater, WorldRenderer renderer)
+    {
+        final GridLayout layout = new GridLayout(1, false);
+        layout.marginHeight = 1;
+        layout.verticalSpacing = 1;
+        parent.setLayout(layout);
+
+        final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        composite.addMouseListener(updater);
+        composite.addMouseMoveListener(updater);
+        composite.addMouseWheelListener(updater);
+        composite.addKeyListener(updater);
+
+        composite.addPaintListener(renderer);
+        composite.addMouseListener(renderer);
+        composite.addMouseMoveListener(renderer);
+        composite.addMouseWheelListener(renderer);
+        composite.addKeyListener(renderer);
+
+        return composite;
+    }
 
     /** Part service. */
     @Inject
@@ -94,42 +128,21 @@ public class WorldPart implements Focusable, TileSelectionListener
         layout.verticalSpacing = 1;
         parent.setLayout(layout);
 
-        composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        composite.addMouseTrackListener(UtilSwt.createFocusListener(this));
-
         final Services services = WorldModel.INSTANCE.getServices();
         services.add(this);
 
         updater = checkUpdaterExtensionPoint(services);
-        composite.addMouseListener(updater);
-        composite.addMouseMoveListener(updater);
-        composite.addMouseWheelListener(updater);
-        composite.addKeyListener(updater);
         services.add(updater);
+        renderer = checkRendererExtensionPoint(services);
+
+        composite = createPart(parent, updater, renderer);
+        composite.addMouseTrackListener(UtilSwt.createFocusListener(this));
 
         final WorldInteractionTile tileInteraction = services.get(WorldInteractionTile.class);
         tileInteraction.addListener(this);
-
-        renderer = checkRendererExtensionPoint(services);
-        composite.addPaintListener(renderer);
-        composite.addMouseListener(renderer);
-        composite.addMouseMoveListener(renderer);
-        composite.addMouseWheelListener(renderer);
-        composite.addKeyListener(renderer);
+        tileInteraction.addListener(services.get(WorldSelectedTiles.class));
 
         Display.getDefault().asyncExec(() -> setToolBarEnabled(false));
-    }
-
-    /**
-     * Update the view.
-     */
-    public void update()
-    {
-        if (!composite.isDisposed())
-        {
-            composite.redraw();
-        }
     }
 
     /**
@@ -170,48 +183,6 @@ public class WorldPart implements Focusable, TileSelectionListener
     }
 
     /**
-     * Set the tool item text.
-     * 
-     * @param item The item id extract.
-     * @param text The item text.
-     */
-    public void setToolItemText(String item, String text)
-    {
-        final MPart part = partService.findPart(WorldPart.ID);
-        if (part != null)
-        {
-            final MToolBar toolBar = part.getToolbar();
-            if (toolBar != null)
-            {
-                UtilToolbar.setToolItemText(toolBar, item, text);
-            }
-        }
-    }
-
-    /**
-     * Get the tool item.
-     * 
-     * @param <T> The element type.
-     * @param item The item id extract.
-     * @param clazz The element class.
-     * @return The composite found.
-     * @throws LionEngineException If not found.
-     */
-    public <T> T getToolItem(String item, Class<T> clazz)
-    {
-        final MPart part = partService.findPart(WorldPart.ID);
-        if (part != null)
-        {
-            final MToolBar toolBar = part.getToolbar();
-            if (toolBar != null)
-            {
-                return UtilToolbar.getToolItem(toolBar, item, clazz);
-            }
-        }
-        throw new LionEngineException(ERROR_ITEM, item);
-    }
-
-    /**
      * Set the current cursor.
      * 
      * @param cursor The cursor to set.
@@ -219,6 +190,16 @@ public class WorldPart implements Focusable, TileSelectionListener
     public void setCursor(Cursor cursor)
     {
         composite.setCursor(cursor);
+    }
+
+    /**
+     * Get the view location.
+     * 
+     * @return The view location.
+     */
+    public Point getLocation()
+    {
+        return composite.toDisplay(composite.getClientArea().x, composite.getClientArea().y);
     }
 
     /**
@@ -268,7 +249,7 @@ public class WorldPart implements Focusable, TileSelectionListener
             {
                 try
                 {
-                    return UtilClass.createClass(extensionUpdater, WorldUpdater.class, partService);
+                    return UtilClass.createClass(extensionUpdater, WorldUpdater.class, partService, services);
                 }
                 catch (final ReflectiveOperationException exception)
                 {
@@ -296,7 +277,7 @@ public class WorldPart implements Focusable, TileSelectionListener
             {
                 try
                 {
-                    return UtilClass.createClass(extensionRenderer, WorldRenderer.class, composite, partService);
+                    return UtilClass.createClass(extensionRenderer, WorldRenderer.class, partService, services);
                 }
                 catch (final ReflectiveOperationException exception)
                 {
@@ -304,7 +285,49 @@ public class WorldPart implements Focusable, TileSelectionListener
                 }
             }
         }
-        return new WorldRenderer(composite, partService, services);
+        return new WorldRenderer(partService, services);
+    }
+
+    /*
+     * WorldView
+     */
+
+    @Override
+    public void update()
+    {
+        if (!composite.isDisposed())
+        {
+            composite.redraw();
+        }
+    }
+
+    @Override
+    public void setToolItemText(String item, String text)
+    {
+        final MPart part = partService.findPart(WorldPart.ID);
+        if (part != null)
+        {
+            final MToolBar toolBar = part.getToolbar();
+            if (toolBar != null)
+            {
+                UtilToolbar.setToolItemText(toolBar, item, text);
+            }
+        }
+    }
+
+    @Override
+    public <T> T getToolItem(String item, Class<T> clazz)
+    {
+        final MPart part = partService.findPart(WorldPart.ID);
+        if (part != null)
+        {
+            final MToolBar toolBar = part.getToolbar();
+            if (toolBar != null)
+            {
+                return UtilToolbar.getToolItem(toolBar, item, clazz);
+            }
+        }
+        throw new LionEngineException(ERROR_ITEM, item);
     }
 
     /*
@@ -323,5 +346,11 @@ public class WorldPart implements Focusable, TileSelectionListener
         {
             part.clear();
         }
+    }
+
+    @Override
+    public void notifyTileGroupSelected(String group)
+    {
+        // Nothing to do
     }
 }

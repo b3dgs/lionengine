@@ -48,7 +48,6 @@ import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.editor.world.renderer.WorldRenderer;
 import com.b3dgs.lionengine.editor.world.updater.WorldKeyboardListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseScrollListener;
@@ -228,20 +227,20 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         label.addMouseTrackListener(UtilSwt.createFocusListener(() -> label.forceFocus()));
         label.addDisposeListener(event -> part.getUpdater().removeListeners(MinimapDialog.this));
 
-        final WorldRenderer renderer = part.getRenderer();
-        miniShell.setLocation(renderer.getLocation());
+        final WorldPart worldPart = part;
+        miniShell.setLocation(worldPart.getLocation());
         parent.addControlListener(new ControlListener()
         {
             @Override
             public void controlResized(ControlEvent event)
             {
-                parent.getDisplay().asyncExec(() -> miniShell.setLocation(renderer.getLocation()));
+                parent.getDisplay().asyncExec(() -> miniShell.setLocation(worldPart.getLocation()));
             }
 
             @Override
             public void controlMoved(ControlEvent event)
             {
-                miniShell.setLocation(renderer.getLocation());
+                miniShell.setLocation(worldPart.getLocation());
             }
         });
         miniShell.pack();

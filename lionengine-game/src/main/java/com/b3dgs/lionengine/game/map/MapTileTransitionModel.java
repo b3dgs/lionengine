@@ -27,33 +27,51 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.game.tile.TileTransition;
+import com.b3dgs.lionengine.game.tile.TileTransitionType;
 import com.b3dgs.lionengine.game.tile.TileTransitionsConfig;
 
 /**
  * Map tile transition model implementation.
+ * 
+ * <p>
+ * The map must have the {@link MapTileGroup} feature.
+ * </p>
  */
 public class MapTileTransitionModel implements MapTileTransition
 {
     /** Map reference. */
     private final MapTile map;
+    /** Map tile group. */
+    private final MapTileGroup mapTileGroup;
     /** Tile as key. */
     private final Map<TileRef, TileTransition> tiles = new HashMap<TileRef, TileTransition>();
     /** Transitions as key. */
     private Map<TileTransition, Collection<TileRef>> transitions;
 
     /**
-     * Create the model.
+     * Create a map tile path.
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * <p>
+     * {@link MapTileGroup}
+     * </p>
+     * </ul>
      * 
-     * @param map The map reference.
-     * @throws LionEngineException If <code>null</code> map.
+     * @param services The services reference.
+     * @throws LionEngineException If services not found.
      */
-    public MapTileTransitionModel(MapTile map)
+    public MapTileTransitionModel(Services services)
     {
-        Check.notNull(map);
-        this.map = map;
+        Check.notNull(services);
+        map = services.get(MapTile.class);
+        mapTileGroup = map.getFeature(MapTileGroup.class);
     }
 
     /**
@@ -71,7 +89,7 @@ public class MapTileTransitionModel implements MapTileTransition
         {
             for (final TileRef tileRef : tilesRef)
             {
-                if (map.getGroup(tileRef.getSheet(), tileRef.getNumber()).getName().equals(tile.getGroup()))
+                if (mapTileGroup.getGroup(tileRef.getSheet(), tileRef.getNumber()).getName().equals(tile.getGroup()))
                 {
                     tile.setSheet(tileRef.getSheet());
                     tile.setNumber(tileRef.getNumber());
@@ -154,6 +172,6 @@ public class MapTileTransitionModel implements MapTileTransition
         {
             return tiles.get(tileRef);
         }
-        return TileTransition.NONE;
+        return new TileTransition(TileTransitionType.NONE, tile.getGroup(), tile.getGroup());
     }
 }

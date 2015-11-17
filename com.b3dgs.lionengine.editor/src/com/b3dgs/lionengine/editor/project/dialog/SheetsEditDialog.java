@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.tile.TileSheetsConfig;
+import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 

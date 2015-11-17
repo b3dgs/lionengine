@@ -27,6 +27,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
@@ -42,15 +43,13 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
-import com.b3dgs.lionengine.game.tile.TileGroup;
-import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.game.tile.TileSheetsConfig;
+import com.b3dgs.lionengine.game.tile.TilesExtractor;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to
- * store sheets references (SpriteTiled), and collisions.
+ * store sheets references ({@link SpriteTiled}), and collisions.
  * <p>
  * The way to prepare a map is the following:
  * </p>
@@ -58,11 +57,10 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * <pre>
  * {@link #create(int, int)} // prepare memory to store tiles
  * {@link #loadSheets(Media)} // load tile sheets
- * {@link #loadGroups(Media)} // load tile groups
  * </pre>
  * 
  * <p>
- * Or import a map from a level rip with {@link #create(Media, Media, Media)}.
+ * Or import a map from a level rip with {@link #create(Media, Media)}.
  * </p>
  * <p>
  * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
@@ -72,50 +70,21 @@ import com.b3dgs.lionengine.stream.FileWriting;
  */
 public class MapTileGame implements MapTile
 {
-    /** Info loading sheets. */
-    private static final String INFO_LOAD_SHEETS = "Loading sheets from: ";
-    /** Info loading groups. */
-    private static final String INFO_LOAD_GROUPS = "Loading groups from: ";
     /** Error sheet missing message. */
     private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
-    /** Error group missing message. */
-    private static final String ERROR_GROUP_MISSING = "Group missing: ";
     /** Construction error. */
     private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
-
-    /**
-     * Find group for tile.
-     * 
-     * @param tile The tile reference.
-     * @param groups The groups list.
-     * @return The tile group, <code>null</code> if none.
-     */
-    private static String getGroup(Tile tile, Collection<TileGroup> groups)
-    {
-        for (final TileGroup group : groups)
-        {
-            if (group.contains(tile))
-            {
-                return group.getName();
-            }
-        }
-        return null;
-    }
 
     /** Sheets list. */
     private final Map<Integer, SpriteTiled> sheets = new HashMap<Integer, SpriteTiled>();
     /** Features list. */
     private final Features<MapTileFeature> features = new Features<MapTileFeature>(MapTileFeature.class);
-    /** Tile groups list. */
-    private final Map<String, TileGroup> groups = new HashMap<String, TileGroup>();
     /** Viewer reference. */
     private final Viewer viewer;
     /** Services reference. */
     private final Services services;
     /** Sheet configuration file. */
     private Media sheetsConfig;
-    /** Groups configuration file. */
-    private Media groupsConfig;
     /** Tile width. */
     private int tileWidth;
     /** Tile height. */
@@ -205,7 +174,7 @@ public class MapTileGame implements MapTile
      * <pre>
      * (integer) sheet number
      * (integer) index number inside sheet
-     * (integer) tile location x % AbstractMapTile.BLOC_SIZE
+     * (integer) tile location x % MapTile.BLOC_SIZE
      * (integer tile location y
      * </pre>
      * 
@@ -217,7 +186,7 @@ public class MapTileGame implements MapTile
     {
         file.writeInteger(tile.getSheet().intValue());
         file.writeInteger(tile.getNumber());
-        file.writeInteger(tile.getX() / tileWidth % MapTile.BLOC_SIZE);
+        file.writeInteger(tile.getX() / tileWidth % BLOC_SIZE);
         file.writeInteger(tile.getY() / tileHeight);
     }
 
@@ -242,7 +211,7 @@ public class MapTileGame implements MapTile
 
         final int sheet = file.readInteger();
         final int number = file.readInteger();
-        final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
+        final int x = file.readInteger() * tileWidth + i * BLOC_SIZE * getTileWidth();
         final int y = file.readInteger() * tileHeight;
         final Tile tile = createTile();
 
@@ -323,6 +292,45 @@ public class MapTileGame implements MapTile
         }
     }
 
+    /**
+     * Resize map with new size.
+     * 
+     * @param newWidth The new width in tile.
+     * @param newHeight The new height in tile.
+     */
+    private void resize(int newWidth, int newHeight)
+    {
+        final int oldWidth = widthInTile;
+        final int oldheight = heightInTile;
+
+        // Adjust height
+        for (int v = 0; v < newHeight - oldheight; v++)
+        {
+            tiles.add(new ArrayList<Tile>(newWidth));
+        }
+        // Adjust width
+        for (int v = 0; v < newHeight; v++)
+        {
+            final int width;
+            if (v < oldheight)
+            {
+                width = newWidth - oldWidth;
+            }
+            else
+            {
+                width = newWidth;
+            }
+            for (int h = 0; h < width; h++)
+            {
+                tiles.get(v).add(null);
+            }
+        }
+
+        widthInTile = newWidth;
+        heightInTile = newHeight;
+        radius = (int) Math.ceil(StrictMath.sqrt(newWidth * (double) newWidth + newHeight * (double) newHeight));
+    }
+
     /*
      * MapTile
      */
@@ -336,6 +344,7 @@ public class MapTileGame implements MapTile
         this.widthInTile = widthInTile;
         this.heightInTile = heightInTile;
         radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * (double) heightInTile));
+        clear();
         tiles = new ArrayList<List<Tile>>(heightInTile);
 
         for (int v = 0; v < heightInTile; v++)
@@ -361,9 +370,8 @@ public class MapTileGame implements MapTile
     @Override
     public void load(FileReading file) throws IOException
     {
-        create(file.readShort(), file.readShort());
+        create(file.readInteger(), file.readInteger());
         loadSheets(Medias.create(file.readString()));
-        loadGroups(Medias.create(file.readString()));
 
         final int t = file.readShort();
         for (int v = 0; v < t; v++)
@@ -388,12 +396,11 @@ public class MapTileGame implements MapTile
     public void save(FileWriting file) throws IOException
     {
         // Header
+        file.writeInteger(widthInTile);
+        file.writeInteger(heightInTile);
         file.writeString(sheetsConfig.getPath());
-        file.writeString(groupsConfig.getPath());
-        file.writeShort((short) widthInTile);
-        file.writeShort((short) heightInTile);
 
-        final int step = MapTile.BLOC_SIZE;
+        final int step = BLOC_SIZE;
         final int x = Math.min(step, widthInTile);
         final int t = (int) Math.ceil(widthInTile / (double) step);
 
@@ -402,31 +409,43 @@ public class MapTileGame implements MapTile
         {
             final int count = countTiles(x, step, s);
             file.writeShort((short) count);
-            saveTiles(file, t, step, s);
+            saveTiles(file, Math.min(widthInTile, BLOC_SIZE), step, s);
         }
+    }
+
+    @Override
+    public void create(Media levelrip, int tileWidth, int tileHeight, int horizontalTiles)
+    {
+        final TilesExtractor tilesExtractor = new TilesExtractor();
+        final Collection<ImageBuffer> tiles = tilesExtractor.extract(tileWidth, tileHeight, levelrip);
+        loadSheets(tileWidth, tileHeight, SheetsExtractor.extract(tiles, horizontalTiles));
+
+        for (final ImageBuffer tile : tiles)
+        {
+            tile.dispose();
+        }
+
+        LevelRipConverter.start(levelrip, this);
     }
 
     @Override
     public void create(Media levelrip)
     {
-        create(levelrip,
-               Medias.create(levelrip.getParentPath(), TileSheetsConfig.FILENAME),
-               Medias.create(levelrip.getParentPath(), TileGroupsConfig.FILENAME));
+        create(levelrip, Medias.create(levelrip.getParentPath(), TileSheetsConfig.FILENAME));
     }
 
     @Override
-    public void create(Media levelrip, Media sheetsConfig, Media groupsConfig)
+    public void create(Media levelrip, Media sheetsConfig)
     {
         clear();
 
-        final int errors = LevelRipConverter.start(levelrip, sheetsConfig, this);
+        loadSheets(sheetsConfig);
+        final int errors = LevelRipConverter.start(levelrip, this);
         if (errors > 0)
         {
             Verbose.warning(getClass(), "create", "Number of missing tiles: " + errors);
         }
         this.sheetsConfig = sheetsConfig;
-        this.groupsConfig = groupsConfig;
-        loadGroups(groupsConfig);
     }
 
     @Override
@@ -449,16 +468,27 @@ public class MapTileGame implements MapTile
     }
 
     @Override
+    public void loadSheets(int tileWidth, int tileHeight, Collection<SpriteTiled> sheets)
+    {
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+        int sheetId = 0;
+        for (final SpriteTiled sheet : sheets)
+        {
+            this.sheets.put(Integer.valueOf(sheetId), sheet);
+            sheetId++;
+        }
+    }
+
+    @Override
     public void loadSheets(Media sheetsConfig)
     {
-        Verbose.info(INFO_LOAD_SHEETS, sheetsConfig.getFile().getPath());
         this.sheetsConfig = sheetsConfig;
-        final TileSheetsConfig config = TileSheetsConfig.imports(sheetsConfig);
 
+        final TileSheetsConfig config = TileSheetsConfig.imports(sheetsConfig);
         tileWidth = config.getTileWidth();
         tileHeight = config.getTileHeight();
 
-        // Load sheets from list
         final String path = sheetsConfig.getPath();
         final String folder = path.substring(0, path.length() - sheetsConfig.getFile().getName().length());
         sheets.clear();
@@ -475,72 +505,27 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public void loadGroups(Media groupsConfig)
-    {
-        Verbose.info(INFO_LOAD_GROUPS, groupsConfig.getFile().getPath());
-        this.groupsConfig = groupsConfig;
-
-        groups.clear();
-        final Collection<TileGroup> groups = TileGroupsConfig.imports(groupsConfig);
-        for (final TileGroup group : groups)
-        {
-            this.groups.put(group.getName(), group);
-        }
-
-        for (int ty = 0; ty < heightInTile; ty++)
-        {
-            for (int tx = 0; tx < widthInTile; tx++)
-            {
-                final Tile tile = getTile(tx, ty);
-                if (tile != null)
-                {
-                    tile.setGroup(getGroup(tile, groups));
-                }
-            }
-        }
-        groups.clear();
-    }
-
-    @Override
     public void append(MapTile map, int offsetX, int offsetY)
     {
         Check.notNull(map);
 
-        final int newWidth = widthInTile - (widthInTile - offsetX) + map.getInTileWidth();
-        final int newHeight = heightInTile - (heightInTile - offsetY) + map.getInTileHeight();
+        final int newWidth = Math.max(widthInTile, widthInTile - (widthInTile - offsetX) + map.getInTileWidth());
+        final int newHeight = Math.max(heightInTile, heightInTile - (heightInTile - offsetY) + map.getInTileHeight());
+        resize(newWidth, newHeight);
 
-        // Adjust height
-        final int sizeV = tiles.size();
-        for (int v = 0; v < newHeight - sizeV; v++)
+        for (int v = 0; v < map.getInTileHeight(); v++)
         {
-            tiles.add(new ArrayList<Tile>(newWidth));
-        }
-
-        for (int cty = 0; cty < map.getInTileHeight(); cty++)
-        {
-            final int ty = offsetY + cty;
-
-            // Adjust width
-            final int sizeH = tiles.get(ty).size();
-            for (int h = 0; h < newWidth - sizeH; h++)
+            final int ty = offsetY + v;
+            for (int h = 0; h < map.getInTileWidth(); h++)
             {
-                tiles.get(ty).add(null);
-            }
-
-            for (int ctx = 0; ctx < map.getInTileWidth(); ctx++)
-            {
-                final int tx = offsetX + ctx;
-                final Tile tile = map.getTile(ctx, cty);
+                final int tx = offsetX + h;
+                final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
                     setTile(tx, ty, tile);
                 }
             }
         }
-
-        widthInTile = newWidth;
-        heightInTile = newHeight;
-        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * (double) heightInTile));
     }
 
     @Override
@@ -564,6 +549,10 @@ public class MapTileGame implements MapTile
     public void addFeature(MapTileFeature feature)
     {
         features.add(feature);
+        if (services != null)
+        {
+            services.add(feature);
+        }
     }
 
     @Override
@@ -679,12 +668,6 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public Media getGroupsConfig()
-    {
-        return groupsConfig;
-    }
-
-    @Override
     public Collection<Integer> getSheets()
     {
         return sheets.keySet();
@@ -698,36 +681,6 @@ public class MapTileGame implements MapTile
             throw new LionEngineException(ERROR_SHEET_MISSING, sheet.toString());
         }
         return sheets.get(sheet);
-    }
-
-    @Override
-    public TileGroup getGroup(String name)
-    {
-        if (groups.containsKey(name))
-        {
-            return groups.get(name);
-        }
-        throw new LionEngineException(ERROR_GROUP_MISSING, name);
-    }
-
-    @Override
-    public TileGroup getGroup(Integer sheet, int number)
-    {
-        for (final TileGroup group : groups.values())
-        {
-            if (group.contains(sheet, number))
-            {
-                return group;
-            }
-        }
-        final String tile = "sheet = " + sheet.toString() + ", number = " + number;
-        throw new LionEngineException(ERROR_GROUP_MISSING, tile);
-    }
-
-    @Override
-    public Collection<TileGroup> getGroups()
-    {
-        return groups.values();
     }
 
     @Override

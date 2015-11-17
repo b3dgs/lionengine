@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
@@ -94,6 +95,7 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("map", "level.png"));
+        map.createFeature(MapTileGroupModel.class).loadGroups(Medias.create("map", "groups.xml"));
         mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
 
         hud.load();
