@@ -211,7 +211,7 @@ final class WavRoutine extends Thread
         if (sourceDataLine.isControlSupported(FloatControl.Type.MASTER_GAIN))
         {
             final FloatControl gainControl = (FloatControl) sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
-            final double gain = UtilMath.fixBetween(volume / 100.0, 0.0, 100.0);
+            final double gain = UtilMath.clamp(volume / 100.0, 0.0, 100.0);
             final double dB = Math.log(gain) / Math.log(10.0) * 20.0;
             gainControl.setValue((float) dB);
         }

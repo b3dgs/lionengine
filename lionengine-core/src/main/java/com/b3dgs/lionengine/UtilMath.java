@@ -75,7 +75,7 @@ public final class UtilMath
      * @param max The maximum value.
      * @return The fixed value.
      */
-    public static int fixBetween(int value, int min, int max)
+    public static int clamp(int value, int min, int max)
     {
         final int fixed;
         if (value < min)
@@ -101,7 +101,7 @@ public final class UtilMath
      * @param max The maximum value.
      * @return The fixed value.
      */
-    public static double fixBetween(double value, double min, double max)
+    public static double clamp(double value, double min, double max)
     {
         final double fixed;
         if (value < min)

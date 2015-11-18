@@ -203,8 +203,8 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      */
     public void setLocation(int x, int y)
     {
-        this.x = UtilMath.fixBetween(x, minX, maxX);
-        this.y = UtilMath.fixBetween(y, minY, maxY);
+        this.x = UtilMath.clamp(x, minX, maxX);
+        this.y = UtilMath.clamp(y, minY, maxY);
     }
 
     /**
@@ -419,8 +419,8 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
             offY = (int) viewer.getY();
         }
 
-        x = UtilMath.fixBetween(x, minX, maxX);
-        y = UtilMath.fixBetween(y, minY, maxY);
+        x = UtilMath.clamp(x, minX, maxX);
+        y = UtilMath.clamp(y, minY, maxY);
         viewX = x + offX;
         if (viewer != null)
         {

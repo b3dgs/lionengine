@@ -97,7 +97,7 @@ public class FilterBilinear implements Filter
 
             for (int i = -radius; i <= radius; i++)
             {
-                final int rgb = in[inIndex + UtilMath.fixBetween(i, 0, width - 1)];
+                final int rgb = in[inIndex + UtilMath.clamp(i, 0, width - 1)];
                 ta += rgb >> Constant.BYTE_4 & 0xff;
                 tr += rgb >> Constant.BYTE_3 & 0xff;
                 tg += rgb >> Constant.BYTE_2 & 0xff;

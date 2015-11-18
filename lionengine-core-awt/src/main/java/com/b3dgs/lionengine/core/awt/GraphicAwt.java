@@ -101,9 +101,9 @@ final class GraphicAwt implements Graphic
             lastTransform = transform;
             final AffineTransform at = new AffineTransform();
             at.scale(transform.getScaleX(), transform.getScaleY());
-            final int interpolation = UtilMath.fixBetween(transform.getInterpolation(),
-                                                          AffineTransformOp.TYPE_NEAREST_NEIGHBOR,
-                                                          AffineTransformOp.TYPE_BICUBIC);
+            final int interpolation = UtilMath.clamp(transform.getInterpolation(),
+                                                     AffineTransformOp.TYPE_NEAREST_NEIGHBOR,
+                                                     AffineTransformOp.TYPE_BICUBIC);
             op = new AffineTransformOp(at, interpolation);
         }
         g.drawImage((BufferedImage) image.getSurface(), op, x, y);

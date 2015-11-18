@@ -130,7 +130,7 @@ public class RasterableModel extends TraitModel implements Rasterable
         {
             index = Rasterable.MAX_RASTERS_M - (index - Rasterable.MAX_RASTERS);
         }
-        return UtilMath.fixBetween(index, 0, Rasterable.MAX_RASTERS);
+        return UtilMath.clamp(index, 0, Rasterable.MAX_RASTERS);
     }
 
     @Override

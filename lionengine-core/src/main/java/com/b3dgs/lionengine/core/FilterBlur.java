@@ -265,7 +265,7 @@ public class FilterBlur implements Filter
      */
     private static int clamp(int value)
     {
-        return UtilMath.fixBetween(value, 0, 255);
+        return UtilMath.clamp(value, 0, 255);
     }
 
     /**

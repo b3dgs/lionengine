@@ -79,9 +79,9 @@ public final class ColorRgba
         }
 
         final int a = rgb & MAX_ALPHA;
-        final int r = UtilMath.fixBetween((rgb & MAX_RED) + fr, MIN_COLOR, MAX_RED);
-        final int g = UtilMath.fixBetween((rgb & MAX_GREEN) + fg, MIN_COLOR, MAX_GREEN);
-        final int b = UtilMath.fixBetween((rgb & MAX_BLUE) + fb, MIN_COLOR, MAX_BLUE);
+        final int r = UtilMath.clamp((rgb & MAX_RED) + fr, MIN_COLOR, MAX_RED);
+        final int g = UtilMath.clamp((rgb & MAX_GREEN) + fg, MIN_COLOR, MAX_GREEN);
+        final int b = UtilMath.clamp((rgb & MAX_BLUE) + fb, MIN_COLOR, MAX_BLUE);
 
         return a | r | g | b;
     }
@@ -106,10 +106,10 @@ public final class ColorRgba
         final int green = mask(value >> Constant.BYTE_2);
         final int blue = mask(value >> Constant.BYTE_1);
 
-        final int alphaMask = mask(UtilMath.fixBetween(alpha, 0, 255)) << Constant.BYTE_4;
-        final int redMask = mask(UtilMath.fixBetween(red + r, 0, 255)) << Constant.BYTE_3;
-        final int greenMask = mask(UtilMath.fixBetween(green + g, 0, 255)) << Constant.BYTE_2;
-        final int blueMask = mask(UtilMath.fixBetween(blue + b, 0, 255)) << Constant.BYTE_1;
+        final int alphaMask = mask(UtilMath.clamp(alpha, 0, 255)) << Constant.BYTE_4;
+        final int redMask = mask(UtilMath.clamp(red + r, 0, 255)) << Constant.BYTE_3;
+        final int greenMask = mask(UtilMath.clamp(green + g, 0, 255)) << Constant.BYTE_2;
+        final int blueMask = mask(UtilMath.clamp(blue + b, 0, 255)) << Constant.BYTE_1;
 
         return alphaMask | redMask | greenMask | blueMask;
     }

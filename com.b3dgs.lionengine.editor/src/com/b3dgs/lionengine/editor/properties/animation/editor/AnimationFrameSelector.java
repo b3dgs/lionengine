@@ -156,7 +156,7 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     {
         if (!clicked && isOverSurface() && animationList.getSelectedObject() != null)
         {
-            selectedInitialFrame = UtilMath.fixBetween(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
+            selectedInitialFrame = UtilMath.clamp(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
             selectedFirstFrame = selectedInitialFrame;
             selectedLastFrame = selectedFirstFrame;
             clicked = true;
@@ -170,7 +170,7 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     {
         if (clicked)
         {
-            selectedLastFrame = UtilMath.fixBetween(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
+            selectedLastFrame = UtilMath.clamp(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
             if (selectedInitialFrame > selectedLastFrame)
             {
                 selectedFirstFrame = selectedLastFrame;

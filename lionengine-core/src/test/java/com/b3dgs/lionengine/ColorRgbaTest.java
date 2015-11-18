@@ -192,9 +192,9 @@ public class ColorRgbaTest
                         if (!(a == 0 && (r > 0 || g > 0 || b > 0)))
                         {
                             Assert.assertEquals(color.getAlpha(), colorInc.getAlpha());
-                            Assert.assertEquals(UtilMath.fixBetween(color.getRed() + r, 0, 255), colorInc.getRed());
-                            Assert.assertEquals(UtilMath.fixBetween(color.getGreen() + g, 0, 255), colorInc.getGreen());
-                            Assert.assertEquals(UtilMath.fixBetween(color.getBlue() + b, 0, 255), colorInc.getBlue());
+                            Assert.assertEquals(UtilMath.clamp(color.getRed() + r, 0, 255), colorInc.getRed());
+                            Assert.assertEquals(UtilMath.clamp(color.getGreen() + g, 0, 255), colorInc.getGreen());
+                            Assert.assertEquals(UtilMath.clamp(color.getBlue() + b, 0, 255), colorInc.getBlue());
                         }
                     }
                 }

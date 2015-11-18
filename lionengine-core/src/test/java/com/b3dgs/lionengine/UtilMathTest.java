@@ -64,20 +64,20 @@ public class UtilMathTest
     }
 
     /**
-     * Test the fix between function.
+     * Test the clamp function.
      */
     @Test
-    public void testFixBetween()
+    public void testClamp()
     {
-        Assert.assertEquals(0, UtilMath.fixBetween(-10, 0, 10));
-        Assert.assertEquals(10, UtilMath.fixBetween(50, 0, 10));
-        Assert.assertEquals(10, UtilMath.fixBetween(10, 0, 10));
-        Assert.assertEquals(0, UtilMath.fixBetween(0, 0, 10));
+        Assert.assertEquals(0, UtilMath.clamp(-10, 0, 10));
+        Assert.assertEquals(10, UtilMath.clamp(50, 0, 10));
+        Assert.assertEquals(10, UtilMath.clamp(10, 0, 10));
+        Assert.assertEquals(0, UtilMath.clamp(0, 0, 10));
 
-        Assert.assertEquals(0.0, UtilMath.fixBetween(-10.0, 0.0, 10.0), UtilTests.PRECISION);
-        Assert.assertEquals(10.0, UtilMath.fixBetween(50.0, 0.0, 10.0), UtilTests.PRECISION);
-        Assert.assertEquals(10.0, UtilMath.fixBetween(10.0, 0.0, 10.0), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, UtilMath.fixBetween(0.0, 0.0, 10.0), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.clamp(-10.0, 0.0, 10.0), UtilTests.PRECISION);
+        Assert.assertEquals(10.0, UtilMath.clamp(50.0, 0.0, 10.0), UtilTests.PRECISION);
+        Assert.assertEquals(10.0, UtilMath.clamp(10.0, 0.0, 10.0), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.clamp(0.0, 0.0, 10.0), UtilTests.PRECISION);
     }
 
     /**

@@ -67,7 +67,7 @@ public abstract class BackgroundElementRastered extends BackgroundElement
      */
     public Sprite getRaster(int id)
     {
-        return rasters.get(UtilMath.fixBetween(id, 0, rasters.size() - 1));
+        return rasters.get(UtilMath.clamp(id, 0, rasters.size() - 1));
     }
 
     /**

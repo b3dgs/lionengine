@@ -66,7 +66,7 @@ public class ZoomItem
         final int percent;
         if (value < WorldZoom.ZOOM_MIN || value > WorldZoom.ZOOM_MAX)
         {
-            percent = UtilMath.fixBetween(value, WorldZoom.ZOOM_MIN, WorldZoom.ZOOM_MAX);
+            percent = UtilMath.clamp(value, WorldZoom.ZOOM_MIN, WorldZoom.ZOOM_MAX);
             zoomValue.setText(String.valueOf(percent));
         }
         else

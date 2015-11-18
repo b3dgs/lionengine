@@ -184,8 +184,8 @@ public class Selector implements Updatable, Renderable
     {
         final double viewX = viewer.getViewX() + viewer.getX();
         final double viewY = viewer.getY() - viewer.getViewY();
-        final double currentX = UtilMath.fixBetween(cursor.getX(), viewX, viewX + viewer.getWidth());
-        final double currentY = UtilMath.fixBetween(cursor.getY(), viewY, viewY + viewer.getHeight());
+        final double currentX = UtilMath.clamp(cursor.getX(), viewX, viewX + viewer.getWidth());
+        final double currentY = UtilMath.clamp(cursor.getY(), viewY, viewY + viewer.getHeight());
 
         double selectX = startX;
         double selectY = startY;

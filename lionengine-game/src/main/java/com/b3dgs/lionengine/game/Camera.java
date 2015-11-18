@@ -199,8 +199,8 @@ public class Camera implements Viewer
     {
         this.x = x;
         this.y = y;
-        this.width = UtilMath.fixBetween(width, 0, Integer.MAX_VALUE);
-        this.height = UtilMath.fixBetween(height, 0, Integer.MAX_VALUE);
+        this.width = UtilMath.clamp(width, 0, Integer.MAX_VALUE);
+        this.height = UtilMath.clamp(height, 0, Integer.MAX_VALUE);
     }
 
     /**

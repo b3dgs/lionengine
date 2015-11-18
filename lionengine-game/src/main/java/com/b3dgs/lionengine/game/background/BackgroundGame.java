@@ -174,7 +174,7 @@ public abstract class BackgroundGame implements Background
         }
         else
         {
-            final double currentY = UtilMath.fixBetween(y, minY, maxY);
+            final double currentY = UtilMath.clamp(y, minY, maxY);
             py = (int) (currentY / maxY * lowest) - lowest + offsetY;
             if (py > 0)
             {

@@ -108,7 +108,7 @@ public class WorldZoom implements WorldMouseClickListener, WorldMouseScrollListe
      */
     public void setPercent(int percent)
     {
-        zoomPercent = UtilMath.fixBetween(percent, ZOOM_MIN, ZOOM_MAX);
+        zoomPercent = UtilMath.clamp(percent, ZOOM_MIN, ZOOM_MAX);
     }
 
     /**
