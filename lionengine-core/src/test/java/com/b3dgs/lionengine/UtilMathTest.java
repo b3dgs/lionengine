@@ -100,15 +100,46 @@ public class UtilMathTest
     }
 
     /**
-     * Test the distance function.
+     * Test the distance function between two points.
      */
     @Test
-    public void testDistance()
+    public void testDistancePointPoint()
     {
-        Assert.assertEquals(2.0, UtilMath.getDistance(4, 6, 6, 6), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0.0, 0.0), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, UtilMath.getDistance(0.0, 0.0, 1.0, 0.0), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, UtilMath.getDistance(0.0, 0.0, 0.0, 1.0), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, UtilMath.getDistance(1.0, 0.0, 0.0, 0.0), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, UtilMath.getDistance(0.0, 1.0, 0.0, 0.0), UtilTests.PRECISION);
+        Assert.assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 2.0, 2.0), UtilTests.PRECISION);
         Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, UtilMath.getDistance(4, 6, 2, 2, 6, 6, 2, 2), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 2, 2, 6.0, 6.0, 2, 2), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, UtilMath.getDistance(-4.0, -6.0, -6.0, -6.0), UtilTests.PRECISION);
+    }
+
+    /**
+     * Test the distance function from point to area.
+     */
+    @Test
+    public void testDistancePointArea()
+    {
+        Assert.assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0.0, 0.0, 0, 0), UtilTests.PRECISION);
+        Assert.assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 2.0, 2.0, 1, 1), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0, 2, 2), UtilTests.PRECISION);
+        Assert.assertEquals(2.0, UtilMath.getDistance(-2.0, -6.0, -6.0, -6.0, 2, 2), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.getDistance(3.0, 3.0, 0.0, 0.0, 3, 3), UtilTests.PRECISION);
+    }
+
+    /**
+     * Test the distance function from area to area.
+     */
+    @Test
+    public void testDistanceAreaArea()
+    {
+        Assert.assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 0, 0, 0.0, 0.0, 0, 0), UtilTests.PRECISION);
+        Assert.assertEquals(Math.sqrt(2), UtilMath.getDistance(1.0, 1.0, 0, 0, 2.0, 2.0, 0, 0), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.getDistance(1.0, 1.0, 1, 1, 2.0, 2.0, 1, 1), UtilTests.PRECISION);
+        Assert.assertEquals(4.0, UtilMath.getDistance(4.0, 6.0, 2, 2, 4.0, 12.0, 2, 2), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 3, 3, 3.0, 3.0, 3, 3), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.getDistance(0.0, 0.0, 3, 3, -3.0, -3.0, 3, 3), UtilTests.PRECISION);
     }
 
     /**

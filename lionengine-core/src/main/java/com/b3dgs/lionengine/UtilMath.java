@@ -136,27 +136,13 @@ public final class UtilMath
     }
 
     /**
-     * Get integer distance of two points.
-     * 
-     * @param x1 The point 1 x.
-     * @param y1 The point 1 y.
-     * @param x2 The point 2 x.
-     * @param y2 The point 2 y.
-     * @return The distance between point 1 and 2.
-     */
-    public static double getDistance(int x1, int y1, int x2, int y2)
-    {
-        return StrictMath.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - (double) y1));
-    }
-
-    /**
      * Get distance of two points.
      * 
      * @param x1 The point 1 x.
      * @param y1 The point 1 y.
      * @param x2 The point 2 x.
      * @param y2 The point 2 y.
-     * @return The distance between point 1 and 2.
+     * @return The distance between them.
      */
     public static double getDistance(double x1, double y1, double x2, double y2)
     {
@@ -164,24 +150,25 @@ public final class UtilMath
     }
 
     /**
-     * Get distance in from area to area.
+     * Get distance from point to area.
      * 
      * @param x1 The first area x.
      * @param y1 The first area y.
-     * @param w1 The first area width.
-     * @param h1 The first area height.
      * @param x2 The second area x.
      * @param y2 The second area y.
      * @param w2 The second area width.
      * @param h2 The second area height.
-     * @return The number of tiles between them.
+     * @return The distance between them.
      */
-    public static double getDistance(double x1, double y1, int w1, int h1, double x2, double y2, int w2, int h2)
+    public static double getDistance(double x1, double y1, double x2, double y2, int w2, int h2)
     {
-        double min = Double.MAX_VALUE;
-        for (double x = x2; x < x2 + w2; x++)
+        final double maxX = x2 + w2;
+        final double maxY = y2 + h2;
+
+        double min = getDistance(x1, y1, x2, y2);
+        for (double x = x2; x <= maxX; x++)
         {
-            for (double y = y2; y < y2 + h2; y++)
+            for (double y = y2; y <= maxY; y++)
             {
                 final double dist = getDistance(x1, y1, x, y);
                 if (dist < min)
@@ -194,26 +181,29 @@ public final class UtilMath
     }
 
     /**
-     * Get distance in tile between the area.
+     * Get distance between two areas.
      * 
-     * @param tx1 The first tile x.
-     * @param ty1 The first tile y.
-     * @param tw1 The first width in tile.
-     * @param th1 The first height in tile.
-     * @param tx2 The second tile x.
-     * @param ty2 The second tile y.
-     * @param tw2 The second width in tile.
-     * @param th2 The second height in tile.
-     * @return The number of tiles between them.
+     * @param x1 The first area x.
+     * @param y1 The first area y.
+     * @param w1 The first area width.
+     * @param h1 The first area height.
+     * @param x2 The second area x.
+     * @param y2 The second area y.
+     * @param w2 The second area width.
+     * @param h2 The second area height.
+     * @return The distance between them.
      */
-    public static double getDistance(int tx1, int ty1, int tw1, int th1, int tx2, int ty2, int tw2, int th2)
+    public static double getDistance(double x1, double y1, int w1, int h1, double x2, double y2, int w2, int h2)
     {
-        double min = Double.MAX_VALUE;
-        for (int h = tx2; h < tx2 + tw2; h++)
+        final double maxX = x2 + w2;
+        final double maxY = y2 + h2;
+
+        double min = getDistance(x1, y1, x2, y2);
+        for (double x = x2; x <= maxX; x++)
         {
-            for (int v = ty2; v < ty2 + th2; v++)
+            for (double y = y2; y <= maxY; y++)
             {
-                final double dist = getDistance(tx1, ty1, h, v);
+                final double dist = getDistance(x, y, x1, y1, w1, h1);
                 if (dist < min)
                 {
                     min = dist;
