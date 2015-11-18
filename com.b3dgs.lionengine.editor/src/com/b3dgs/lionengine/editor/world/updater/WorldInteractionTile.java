@@ -55,6 +55,7 @@ import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.MapTileTransition;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -246,7 +247,14 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
             for (final TileSelectionListener listener : tileSelectionListeners)
             {
                 listener.notifyTileSelected(selectedTile);
-                listener.notifyTileGroupSelected(selectedTile.getGroup());
+                if (selectedTile != null)
+                {
+                    listener.notifyTileGroupSelected(selectedTile.getGroup());
+                }
+                else
+                {
+                    listener.notifyTileGroupSelected(MapTileGroupModel.NO_GROUP_NAME);
+                }
             }
         }
     }
