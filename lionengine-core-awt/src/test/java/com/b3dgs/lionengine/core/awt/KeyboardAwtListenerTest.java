@@ -23,8 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
-import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.core.awt.KeyboardAwtListener;
 
 /**
  * Test the key listener.

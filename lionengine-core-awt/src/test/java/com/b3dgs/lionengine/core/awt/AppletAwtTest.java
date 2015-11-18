@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.awt.AppletAwt;
 
 /**
  * Test the applet class.

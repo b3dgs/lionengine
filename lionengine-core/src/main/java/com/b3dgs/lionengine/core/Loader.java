@@ -160,7 +160,7 @@ public final class Loader
             }
             if (Engine.isStarted())
             {
-            Engine.terminate();
+                Engine.terminate();
             }
             started = false;
         }

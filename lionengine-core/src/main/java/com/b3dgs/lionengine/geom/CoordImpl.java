@@ -92,12 +92,12 @@ final class CoordImpl implements Coord
         int result = 1;
         long temp;
         temp = Double.doubleToLongBits(x);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + (int) (temp ^ temp >>> 32);
         temp = Double.doubleToLongBits(y);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + (int) (temp ^ temp >>> 32);
         return result;
     }
-    
+
     @Override
     public boolean equals(Object obj)
     {

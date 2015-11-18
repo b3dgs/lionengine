@@ -24,10 +24,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.awt.EventAction;
-import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.core.awt.KeyboardAwt;
-
 /**
  * Test the keyboard class.
  */

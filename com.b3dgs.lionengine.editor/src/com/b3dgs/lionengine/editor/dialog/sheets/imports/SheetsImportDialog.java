@@ -66,11 +66,12 @@ public class SheetsImportDialog extends AbstractDialog
 {
     /** Sheets default extension. */
     public static final String SHEET_EXTENSION = ".png";
+    /** File filter. */
+    public static final String FILES_FILTER = "*.bmp;*" + SHEET_EXTENSION;
     /** Level rip filter. */
     public static final String[] LEVEL_RIP_FILTER = new String[]
     {
-        "*.bmp;*"
-      + SHEET_EXTENSION
+        FILES_FILTER
     };
     /** Icon. */
     static final Image ICON = UtilIcon.get("dialog", "import.png");
@@ -98,7 +99,6 @@ public class SheetsImportDialog extends AbstractDialog
     public SheetsImportDialog(Shell parent)
     {
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
-
         createDialog();
         setTipsMessage(ICON_ERROR, Messages.NoLevelRipDefined);
         tipsLabel.setVisible(true);

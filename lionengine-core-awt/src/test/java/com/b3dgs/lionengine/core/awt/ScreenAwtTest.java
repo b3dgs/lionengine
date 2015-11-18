@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Screen;
 import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.core.awt.AppletAwt;
-import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
  * Test the screen class.

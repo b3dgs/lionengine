@@ -434,7 +434,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     @Override
     public void setName(String name)
     {
-        this.clientName = name;
+        clientName = name;
         if (!connected)
         {
             return;
@@ -443,7 +443,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         {
             out.write(NetworkMessageSystemId.OTHER_CLIENT_RENAMED);
             out.write(clientId);
-            final byte[] data = this.clientName.getBytes(NetworkMessage.CHARSET);
+            final byte[] data = clientName.getBytes(NetworkMessage.CHARSET);
             out.writeByte(data.length);
             out.write(data);
             out.flush();
