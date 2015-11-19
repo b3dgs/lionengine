@@ -19,4 +19,4 @@
 /**
  * Sheets import dialog package.
  */
-package com.b3dgs.lionengine.editor.dialog.sheets.imports;
+package com.b3dgs.lionengine.editor.dialog.map.groups;

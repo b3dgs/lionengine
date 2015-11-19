@@ -15,26 +15,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.map.imports;
+package com.b3dgs.lionengine.editor.dialog.map.groups;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.editor.world.WorldPart;
-
 /**
- * Import map handler.
+ * Edit tile groups handler implementation.
  */
-public final class MapImportHandler
+public final class GroupsEditHandler
 {
     /** Element ID. */
-    public static final String ID = "menu.map.import";
+    public static final String ID = "menu.map.edit-groups";
 
     /**
      * Create handler.
      */
-    public MapImportHandler()
+    public GroupsEditHandler()
     {
         // Nothing to do
     }
@@ -47,10 +44,7 @@ public final class MapImportHandler
     @Execute
     public void execute(Shell shell)
     {
-        final MapImportDialog importMapDialog = new MapImportDialog(shell);
-        importMapDialog.open();
-
-        final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
-        part.update();
+        final GroupsEditDialog groupsEdit = new GroupsEditDialog(shell);
+        groupsEdit.open();
     }
 }

@@ -51,7 +51,7 @@ import com.b3dgs.lionengine.game.map.MapTileGroup;
 /**
  * Represents the import map dialog.
  */
-public class MapCollisionImportDialog extends AbstractDialog
+public class CollisionImportDialog extends AbstractDialog
 {
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "import.png");
@@ -74,7 +74,7 @@ public class MapCollisionImportDialog extends AbstractDialog
      * 
      * @param parent The shell parent.
      */
-    public MapCollisionImportDialog(Shell parent)
+    public CollisionImportDialog(Shell parent)
     {
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
         createDialog();

@@ -17,6 +17,6 @@
  */
 
 /**
- * Sheets palette dialog package.
+ * Map dialogs package.
  */
-package com.b3dgs.lionengine.editor.dialog.sheets.palette;
+package com.b3dgs.lionengine.editor.dialog.map;

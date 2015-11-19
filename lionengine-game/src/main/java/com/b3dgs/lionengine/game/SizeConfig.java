@@ -54,20 +54,12 @@ public final class SizeConfig
     private final int height;
 
     /**
-     * Disabled constructor.
-     */
-    private SizeConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
      * Create a size configuration.
      * 
      * @param width The width value.
      * @param height The height value.
      */
-    private SizeConfig(int width, int height)
+    public SizeConfig(int width, int height)
     {
         this.width = width;
         this.height = height;

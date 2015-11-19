@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.dialog.sheets.imports.SheetsImportDialog;
+import com.b3dgs.lionengine.editor.dialog.LevelRipsWidget;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
@@ -56,7 +56,7 @@ import com.b3dgs.lionengine.game.tile.TileTransitionsConfig;
 /**
  * Represents the export map tile constraints dialog.
  */
-public class MapConstraintsExportDialog extends AbstractDialog
+public class ConstraintsExtractDialog extends AbstractDialog
 {
     /** Icon. */
     public static final Image ICON = UtilIcon.get("dialog", "import.png");
@@ -89,7 +89,7 @@ public class MapConstraintsExportDialog extends AbstractDialog
      * 
      * @param parent The shell parent.
      */
-    public MapConstraintsExportDialog(Shell parent)
+    public ConstraintsExtractDialog(Shell parent)
     {
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
         createDialog();
@@ -107,7 +107,7 @@ public class MapConstraintsExportDialog extends AbstractDialog
     {
         addLevelRip = new Button(parent, SWT.PUSH);
         addLevelRip.setImage(ObjectList.ICON_ADD);
-        addLevelRip.setToolTipText(com.b3dgs.lionengine.editor.dialog.sheets.imports.Messages.AddLevelRip);
+        addLevelRip.setToolTipText(com.b3dgs.lionengine.editor.dialog.map.sheets.extract.Messages.AddLevelRip);
         UtilButton.setAction(addLevelRip, () -> onAddLevelRip());
     }
 
@@ -120,7 +120,7 @@ public class MapConstraintsExportDialog extends AbstractDialog
     {
         removeLevelRip = new Button(parent, SWT.PUSH);
         removeLevelRip.setImage(ObjectList.ICON_REMOVE);
-        removeLevelRip.setToolTipText(com.b3dgs.lionengine.editor.dialog.sheets.imports.Messages.RemoveLevelRip);
+        removeLevelRip.setToolTipText(com.b3dgs.lionengine.editor.dialog.map.sheets.extract.Messages.RemoveLevelRip);
         UtilButton.setAction(removeLevelRip, () -> onRemoveLevelRip());
     }
 
@@ -371,8 +371,8 @@ public class MapConstraintsExportDialog extends AbstractDialog
     {
         final File[] files = UtilDialog.selectResourceFiles(dialog, new String[]
         {
-            com.b3dgs.lionengine.editor.dialog.sheets.imports.Messages.LevelRipFileFilter
-        }, SheetsImportDialog.LEVEL_RIP_FILTER);
+            com.b3dgs.lionengine.editor.dialog.map.sheets.extract.Messages.LevelRipFileFilter
+        }, LevelRipsWidget.LEVEL_RIP_FILTER);
         final Project project = Project.getActive();
         for (final File file : files)
         {
@@ -427,7 +427,7 @@ public class MapConstraintsExportDialog extends AbstractDialog
         final Group area = new Group(content, SWT.NONE);
         area.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         area.setLayout(new GridLayout(1, false));
-        area.setText(com.b3dgs.lionengine.editor.dialog.sheets.imports.Messages.RipsList);
+        area.setText(com.b3dgs.lionengine.editor.dialog.map.sheets.extract.Messages.RipsList);
 
         levelRips = new Tree(area, SWT.SINGLE);
         levelRips.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -437,7 +437,7 @@ public class MapConstraintsExportDialog extends AbstractDialog
         buttons.setLayout(new GridLayout(3, false));
 
         final Label label = new Label(buttons, SWT.NONE);
-        label.setText(com.b3dgs.lionengine.editor.dialog.sheets.imports.Messages.AddRemoveRip);
+        label.setText(com.b3dgs.lionengine.editor.dialog.map.sheets.extract.Messages.AddRemoveRip);
 
         createButtonAdd(buttons);
         createButtonRemove(buttons);

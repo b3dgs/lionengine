@@ -15,8 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.groups;
+package com.b3dgs.lionengine.editor.dialog.map.groups;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,15 +34,21 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.dialog.BrowseWidget;
+import com.b3dgs.lionengine.editor.dialog.LevelRipsWidget;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupList;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.world.ObjectControl;
@@ -60,28 +67,36 @@ import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
- * Edit map tile group dialog.
+ * Edit map tile groups dialog.
  */
-public class TileGroupEditDialog extends AbstractDialog implements WorldView, Focusable, KeyListener,
-                                 TileSelectionListener, ObjectListListener<TileGroup>
+public class GroupsEditDialog extends AbstractDialog implements WorldView, Focusable, KeyListener,
+                              TileSelectionListener, ObjectListListener<TileGroup>
 {
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "import.png");
 
     /** Service reference. */
     private final Services services = new Services();
-    /** Map reference. */
-    private final MapTile map;
     /** Groups list. */
     private final GroupList groupList = new GroupList();
+    /** Map reference. */
+    private final MapTile map;
+    /** Level rips area. */
+    private Composite levelsArea;
+    /** Level rips widget. */
+    private LevelRipsWidget levelRips;
+    /** Sheets config. */
+    private BrowseWidget sheetsConfig;
     /** World view. */
     private Composite view;
     /** Part service. */
@@ -93,7 +108,7 @@ public class TileGroupEditDialog extends AbstractDialog implements WorldView, Fo
      * 
      * @param parent The parent reference.
      */
-    public TileGroupEditDialog(Shell parent)
+    public GroupsEditDialog(Shell parent)
     {
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON, SWT.SHELL_TRIM);
 
@@ -111,7 +126,29 @@ public class TileGroupEditDialog extends AbstractDialog implements WorldView, Fo
 
         createDialog();
         dialog.setMinimumSize(640, 448);
-        finish.setEnabled(true);
+        finish.setEnabled(false);
+    }
+
+    /**
+     * Save groups defined.
+     */
+    public void save()
+    {
+        final Media groupsMedia = Medias.create(sheetsConfig.getMedia().getParentPath(), TileGroupsConfig.FILENAME);
+        TileGroupsConfig.exports(groupsMedia, getGroups());
+    }
+
+    /**
+     * Show the world view.
+     */
+    public void showWorldView()
+    {
+        final Composite content = levelsArea.getParent();
+        levelsArea.dispose();
+        createWorldView(content);
+
+        setFinishEnabled(true);
+        content.layout(true, true);
     }
 
     /**
@@ -157,7 +194,6 @@ public class TileGroupEditDialog extends AbstractDialog implements WorldView, Fo
                 count = 0;
             }
         }
-        update();
     }
 
     /**
@@ -185,6 +221,29 @@ public class TileGroupEditDialog extends AbstractDialog implements WorldView, Fo
             groups.add(new TileGroup(entry.getKey(), entry.getValue()));
         }
         return groups;
+    }
+
+    /**
+     * Load sheets from configuration file.
+     * 
+     * @param config The configuration file.
+     * @param folder The folder root.
+     * @return The loaded sheets.
+     */
+    private Collection<SpriteTiled> loadSheets(TileSheetsConfig config, String folder)
+    {
+        final int tw = config.getTileWidth();
+        final int th = config.getTileHeight();
+        final Collection<SpriteTiled> sheets = new ArrayList<>();
+        for (final String sheet : config.getSheets())
+        {
+            final Media media = Medias.create(folder, sheet);
+            final SpriteTiled surface = Drawable.loadSpriteTiled(media, tw, th);
+            surface.load();
+            surface.prepare();
+            sheets.add(surface);
+        }
+        return sheets;
     }
 
     /**
@@ -222,30 +281,56 @@ public class TileGroupEditDialog extends AbstractDialog implements WorldView, Fo
         return null;
     }
 
-    /*
-     * AbstractDialog
+    /**
+     * Create the levels chooser area.
+     * 
+     * @param parent The parent composite.
+     * @return The created area.
      */
-
-    @Override
-    protected void createContent(Composite content)
+    private Composite createLevelsArea(Composite parent)
     {
-        content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        levelsArea = new Composite(parent, SWT.NONE);
+        levelsArea.setLayout(new GridLayout(1, false));
+        levelsArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        levelRips = new LevelRipsWidget(levelsArea);
+        sheetsConfig = new BrowseWidget(levelsArea,
+                                        com.b3dgs.lionengine.editor.dialog.map.imports.Messages.SheetsLocation,
+                                        com.b3dgs.lionengine.editor.dialog.map.imports.Messages.SheetsConfigFileFilter,
+                                        true);
+        return levelsArea;
+    }
 
-        final Composite area = new Composite(content, SWT.NONE);
-        area.setLayout(new GridLayout(2, false));
-        area.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        final Composite areaList = new Composite(area, SWT.NONE);
+    /**
+     * Create the group list area.
+     * 
+     * @param parent The parent composite.
+     */
+    private void createGroupsList(Composite parent)
+    {
+        final Composite areaList = new Composite(parent, SWT.NONE);
         areaList.setLayout(new GridLayout(1, false));
         areaList.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true));
         groupList.create(areaList);
         groupList.addListener(this);
+    }
 
-        services.add(this);
+    /**
+     * Create the world view area.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createWorldView(Composite parent)
+    {
+        final Composite area = new Composite(parent, SWT.NONE);
+        area.setLayout(new GridLayout(2, false));
+        area.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        createGroupsList(area);
 
         final Composite areaView = new Composite(area, SWT.BORDER);
         areaView.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+        services.add(this);
         final WorldUpdater updater = new WorldUpdater(partService, services);
         services.add(updater);
         final WorldRenderer renderer = new WorldRenderer(partService, services);
@@ -256,6 +341,32 @@ public class TileGroupEditDialog extends AbstractDialog implements WorldView, Fo
 
         final WorldInteractionTile tileInteraction = services.get(WorldInteractionTile.class);
         tileInteraction.addListener(this);
+    }
+
+    /*
+     * AbstractDialog
+     */
+
+    @Override
+    protected void createContent(Composite content)
+    {
+        content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        final Composite levelsArea = createLevelsArea(content);
+        final Button accept = UtilButton.create(levelsArea,
+                                                com.b3dgs.lionengine.editor.dialog.Messages.Finish,
+                                                AbstractDialog.ICON_OK);
+        UtilButton.setAction(accept, () ->
+        {
+            final Media sheetsMedia = sheetsConfig.getMedia();
+            final TileSheetsConfig config = TileSheetsConfig.imports(sheetsMedia);
+            final int tw = config.getTileWidth();
+            final int th = config.getTileHeight();
+
+            load(tw, th, loadSheets(config, sheetsMedia.getParentPath()), levelRips.getLevelRips());
+            showWorldView();
+            update();
+        });
     }
 
     @Override

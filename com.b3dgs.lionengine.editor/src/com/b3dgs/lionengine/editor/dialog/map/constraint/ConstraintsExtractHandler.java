@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.map.collision.imports;
+package com.b3dgs.lionengine.editor.dialog.map.constraint;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
@@ -24,14 +24,17 @@ import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
- * Import map collisions handler.
+ * Export map tile constraints handler.
  */
-public final class MapCollisionImportHandler
+public final class ConstraintsExtractHandler
 {
+    /** Element ID. */
+    public static final String ID = "menu.map.extract-constraints";
+
     /**
      * Create handler.
      */
-    public MapCollisionImportHandler()
+    public ConstraintsExtractHandler()
     {
         // Nothing to do
     }
@@ -44,7 +47,7 @@ public final class MapCollisionImportHandler
     @Execute
     public void execute(Shell shell)
     {
-        final MapCollisionImportDialog dialog = new MapCollisionImportDialog(shell);
+        final ConstraintsExtractDialog dialog = new ConstraintsExtractDialog(shell);
         dialog.open();
 
         final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);

@@ -15,15 +15,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.sheets.palette;
 
 /**
- * Represents the different standard sheet palette types.
+ * Sheets palette dialog package.
  */
-public enum SheetPaletteType
-{
-    /** Tile selection. Allows to interact with tiles. */
-    SELECTION,
-    /** Tile edition. Allows to place tiles. */
-    EDITION;
-}
+package com.b3dgs.lionengine.editor.dialog.map.sheets.palette;

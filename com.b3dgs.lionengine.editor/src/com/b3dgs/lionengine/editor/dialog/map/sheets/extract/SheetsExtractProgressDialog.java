@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.sheets.imports;
+package com.b3dgs.lionengine.editor.dialog.map.sheets.extract;
 
 import java.util.Collection;
 
@@ -34,10 +34,10 @@ import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
 
 /**
- * Sheets import progress dialog.
+ * Extract sheets progress dialog.
  */
-public class SheetsImportProgressDialog extends AbstractProgressDialog
-                                        implements TilesExtractor.ProgressListener, TilesExtractor.Canceler
+public class SheetsExtractProgressDialog extends AbstractProgressDialog
+                                         implements TilesExtractor.ProgressListener, TilesExtractor.Canceler
 {
     /** Image width. */
     private final int horizontalTiles;
@@ -54,9 +54,9 @@ public class SheetsImportProgressDialog extends AbstractProgressDialog
      * @param parent The parent reference.
      * @param horizontalTiles The horizontal tiles per line.
      */
-    public SheetsImportProgressDialog(Shell parent, int horizontalTiles)
+    public SheetsExtractProgressDialog(Shell parent, int horizontalTiles)
     {
-        super(parent, Messages.Title, Messages.HeaderTitle, Messages.Progress, SheetsImportDialog.ICON);
+        super(parent, Messages.Title, Messages.HeaderTitle, Messages.Progress, SheetsExtractDialog.ICON);
         this.horizontalTiles = horizontalTiles;
 
         createDialog();

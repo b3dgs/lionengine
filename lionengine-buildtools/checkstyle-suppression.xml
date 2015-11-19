@@ -49,8 +49,8 @@
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="267"/>
 
     <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile"/>
-    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.dialog.groups.TileGroupEditDialog"/>
-    <suppress checks="FanOut" files="com.b3dgs.lionengine.editor.project.dialog.formula.FormulasProperties"/>
+    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.dialog.map.groups.GroupsEditDialog"/>    
+    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.project.dialog.formula.FormulasProperties"/>
     
     <suppress checks="StaticVariableName" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
     <suppress checks="VisibilityModifier" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>

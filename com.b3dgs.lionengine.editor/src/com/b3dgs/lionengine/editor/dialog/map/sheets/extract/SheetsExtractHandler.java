@@ -15,26 +15,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.map.constraint;
+package com.b3dgs.lionengine.editor.dialog.map.sheets.extract;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.editor.world.WorldPart;
-
 /**
- * Export map tile constraints handler.
+ * Extract sheets handler implementation.
  */
-public final class MapConstraintsExportHandler
+public final class SheetsExtractHandler
 {
     /** Element ID. */
-    public static final String ID = "export-map-tile-constraints";
+    public static final String ID = "menu.map.extract-sheets";
 
     /**
      * Create handler.
      */
-    public MapConstraintsExportHandler()
+    public SheetsExtractHandler()
     {
         // Nothing to do
     }
@@ -47,10 +44,8 @@ public final class MapConstraintsExportHandler
     @Execute
     public void execute(Shell shell)
     {
-        final MapConstraintsExportDialog dialog = new MapConstraintsExportDialog(shell);
+        final SheetsExtractDialog dialog = new SheetsExtractDialog(shell);
         dialog.open();
-
-        final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
-        part.update();
+        dialog.save();
     }
 }

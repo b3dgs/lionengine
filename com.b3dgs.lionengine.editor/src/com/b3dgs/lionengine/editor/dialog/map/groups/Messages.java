@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.groups;
+package com.b3dgs.lionengine.editor.dialog.map.groups;
 
 import java.util.Locale;
 
@@ -34,6 +34,8 @@ public final class Messages extends NLS
     public static String HeaderTitle;
     /** Description header. */
     public static String HeaderDesc;
+    /** Sheets configuration file. */
+    public static String SheetsConfig;
 
     /**
      * Initialize.

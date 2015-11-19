@@ -15,23 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.sheets.imports;
+package com.b3dgs.lionengine.editor.dialog.map.sheets.palette;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Import sheets handler implementation.
+ * Show hide sheets palette handler implementation.
  */
-public final class SheetsImportHandler
+public final class SheetsPaletteHandler
 {
-    /** Element ID. */
-    public static final String ID = "import-sheets";
-
     /**
      * Create handler.
      */
-    public SheetsImportHandler()
+    public SheetsPaletteHandler()
     {
         // Nothing to do
     }
@@ -44,7 +41,6 @@ public final class SheetsImportHandler
     @Execute
     public void execute(Shell shell)
     {
-        final SheetsImportDialog importSheetsDialog = new SheetsImportDialog(shell);
-        importSheetsDialog.open();
+        SheetsPaletteDialog.open(shell);
     }
 }

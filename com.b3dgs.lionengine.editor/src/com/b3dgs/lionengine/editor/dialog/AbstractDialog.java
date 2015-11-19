@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.editor.dialog;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
@@ -122,6 +124,14 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
         dialog.setLayout(UtilSwt.borderless());
         dialog.setText(title);
         dialog.setImage(headerIcon);
+        dialog.addShellListener(new ShellAdapter()
+        {
+            @Override
+            public void shellClosed(ShellEvent event)
+            {
+                canceled = true;
+            }
+        });
     }
 
     /**

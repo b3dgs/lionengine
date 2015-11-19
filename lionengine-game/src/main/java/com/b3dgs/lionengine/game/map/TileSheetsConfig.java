@@ -137,7 +137,7 @@ public final class TileSheetsConfig
      * @param sheets The defined sheets.
      * @throws LionEngineException If invalid size or sheets is <code>null</code>.
      */
-    private TileSheetsConfig(int tileWidth, int tileHeight, Collection<String> sheets)
+    public TileSheetsConfig(int tileWidth, int tileHeight, Collection<String> sheets)
     {
         Check.range(Range.INT_POSITIVE_STRICT, tileWidth);
         Check.range(Range.INT_POSITIVE_STRICT, tileHeight);

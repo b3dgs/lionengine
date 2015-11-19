@@ -15,20 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.sheets.palette;
+package com.b3dgs.lionengine.editor.dialog.map.collision.imports;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
+
 /**
- * Show hide sheets palette handler implementation.
+ * Import map collisions handler.
  */
-public final class SheetsPaletteHandler
+public final class CollisionImportHandler
 {
+    /** Element ID. */
+    public static final String ID = "menu.map.import-collision";
+
     /**
      * Create handler.
      */
-    public SheetsPaletteHandler()
+    public CollisionImportHandler()
     {
         // Nothing to do
     }
@@ -41,6 +47,10 @@ public final class SheetsPaletteHandler
     @Execute
     public void execute(Shell shell)
     {
-        SheetsPaletteDialog.open(shell);
+        final CollisionImportDialog dialog = new CollisionImportDialog(shell);
+        dialog.open();
+
+        final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+        part.update();
     }
 }
