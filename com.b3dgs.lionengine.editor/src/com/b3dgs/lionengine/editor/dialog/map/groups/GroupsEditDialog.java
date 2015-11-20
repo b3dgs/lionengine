@@ -45,8 +45,8 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.dialog.BrowseWidget;
-import com.b3dgs.lionengine.editor.dialog.LevelRipsWidget;
+import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
+import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupList;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
@@ -96,7 +96,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
     /** Level rips widget. */
     private LevelRipsWidget levelRips;
     /** Sheets config. */
-    private BrowseWidget sheetsConfig;
+    private BrowseWidget sheets;
     /** World view. */
     private Composite view;
     /** Part service. */
@@ -134,7 +134,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
      */
     public void save()
     {
-        final Media groupsMedia = Medias.create(sheetsConfig.getMedia().getParentPath(), TileGroupsConfig.FILENAME);
+        final Media groupsMedia = Medias.create(sheets.getMedia().getParentPath(), TileGroupsConfig.FILENAME);
         TileGroupsConfig.exports(groupsMedia, getGroups());
     }
 
@@ -293,7 +293,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         levelsArea.setLayout(new GridLayout(1, false));
         levelsArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         levelRips = new LevelRipsWidget(levelsArea);
-        sheetsConfig = new BrowseWidget(levelsArea,
+        sheets = new BrowseWidget(levelsArea,
                                         com.b3dgs.lionengine.editor.dialog.map.imports.Messages.SheetsLocation,
                                         com.b3dgs.lionengine.editor.dialog.map.imports.Messages.SheetsConfigFileFilter,
                                         true);
@@ -358,7 +358,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
                                                 AbstractDialog.ICON_OK);
         UtilButton.setAction(accept, () ->
         {
-            final Media sheetsMedia = sheetsConfig.getMedia();
+            final Media sheetsMedia = sheets.getMedia();
             final TileSheetsConfig config = TileSheetsConfig.imports(sheetsMedia);
             final int tw = config.getTileWidth();
             final int th = config.getTileHeight();

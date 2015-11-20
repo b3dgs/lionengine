@@ -47,10 +47,10 @@ public final class CollisionImportHandler
     @Execute
     public void execute(Shell shell)
     {
-        final CollisionImportDialog dialog = new CollisionImportDialog(shell);
-        dialog.open();
+        final CollisionImportDialog collisionImportDialog = new CollisionImportDialog(shell);
+        collisionImportDialog.open();
 
-        final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
-        part.update();
+        final WorldPart worldPart = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+        worldPart.update();
     }
 }

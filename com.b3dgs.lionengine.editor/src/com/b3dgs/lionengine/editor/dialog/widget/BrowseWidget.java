@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog;
+package com.b3dgs.lionengine.editor.dialog.widget;
 
 import java.io.File;
 import java.util.Collection;
@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
@@ -41,6 +42,8 @@ public class BrowseWidget
 {
     /** Listeners. */
     private final Collection<BrowseWidgetListener> listeners = new HashSet<>();
+    /** Text location value. */
+    private final Text location;
     /** Selected media. */
     private Media media;
 
@@ -52,7 +55,7 @@ public class BrowseWidget
      */
     public BrowseWidget(Composite parent, String label)
     {
-        this(parent, label, null, true);
+        this(parent, label, null, null, true);
     }
 
     /**
@@ -65,18 +68,33 @@ public class BrowseWidget
      */
     public BrowseWidget(Composite parent, String label, String filter, boolean open)
     {
+        this(parent, label, filter, null, open);
+    }
+
+    /**
+     * Create the widget.
+     * 
+     * @param parent The parent composite.
+     * @param label The browse label text.
+     * @param filter The file filter description.
+     * @param types The file types.
+     * @param open <code>true</code> to open, <code>false</code> to save.
+     */
+    public BrowseWidget(Composite parent, String label, String filter, String[] types, boolean open)
+    {
         final Composite area = new Composite(parent, SWT.NONE);
         area.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         area.setLayout(new GridLayout(3, false));
         final Label locationLabel = new Label(area, SWT.NONE);
         locationLabel.setText(label);
 
-        final Text location = new Text(area, SWT.BORDER);
+        location = new Text(area, SWT.BORDER);
         location.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         location.setEditable(false);
+        location.addDisposeListener(event -> listeners.clear());
 
         final Button browse = UtilButton.createBrowse(area);
-        UtilButton.setAction(browse, () -> onBrowse(location, filter, open));
+        UtilButton.setAction(browse, () -> onBrowse(location, filter, types, open));
     }
 
     /**
@@ -100,6 +118,24 @@ public class BrowseWidget
     }
 
     /**
+     * Set the text location.
+     * 
+     * @param path The path value.
+     */
+    public void setLocation(String path)
+    {
+        if (location != null && !location.isDisposed())
+        {
+            location.setText(path);
+            media = Medias.create(path);
+            for (final BrowseWidgetListener listener : listeners)
+            {
+                listener.notifyMediaSelected(media);
+            }
+        }
+    }
+
+    /**
      * Get the selected media.
      * 
      * @return The selected media, <code>null</code> if none.
@@ -114,25 +150,31 @@ public class BrowseWidget
      * 
      * @param location The location text reference.
      * @param filter The file filter description.
+     * @param types The file types.
      * @param open <code>true</code> to open, <code>false</code> to save.
      */
-    private void onBrowse(Text location, String filter, boolean open)
+    private void onBrowse(Text location, String filter, String[] types, boolean open)
     {
         final File file;
         if (filter == null)
         {
             file = UtilDialog.selectResourceFolder(location.getShell());
         }
-        else
+        else if (types == null)
         {
             file = UtilDialog.selectResourceXml(location.getShell(), open, filter);
         }
+        else
+        {
+            file = UtilDialog.selectResourceFile(location.getShell(), open, new String[]
+            {
+                filter
+            }, types);
+        }
         if (file != null)
         {
-            final Project project = Project.getActive();
-            media = project.getResourceMedia(file);
+            media = Project.getActive().getResourceMedia(file);
             location.setText(media.getPath());
-            location.setData(media);
 
             for (final BrowseWidgetListener listener : listeners)
             {

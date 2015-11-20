@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog;
+package com.b3dgs.lionengine.editor.dialog.widget;
 
 import java.io.File;
 import java.util.Collection;
@@ -76,6 +76,7 @@ public class LevelRipsWidget
 
         levelRips = new Tree(area, SWT.SINGLE);
         levelRips.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        levelRips.addDisposeListener(event -> listeners.clear());
 
         final Composite buttons = new Composite(area, SWT.NONE);
         buttons.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

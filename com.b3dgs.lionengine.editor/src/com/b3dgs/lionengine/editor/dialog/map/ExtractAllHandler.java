@@ -53,21 +53,21 @@ public final class ExtractAllHandler
     /**
      * Save all level data.
      * 
-     * @param sheetsDialog The sheets dialog.
-     * @param groupsDialog The groups dialog.
+     * @param sheetsExtractDialog The sheets dialog.
+     * @param groupsEditDialog The groups dialog.
      * @param levels The level rip medias.
      */
-    private void saveAll(SheetsExtractDialog sheetsDialog, GroupsEditDialog groupsDialog, Media[] levels)
+    private void saveAll(SheetsExtractDialog sheetsExtractDialog, GroupsEditDialog groupsEditDialog, Media[] levels)
     {
-        final String folder = sheetsDialog.getFolder();
+        final String folder = sheetsExtractDialog.getFolder();
 
         final Media sheets = Medias.create(folder, TileSheetsConfig.FILENAME);
         final Media groups = Medias.create(folder, TileGroupsConfig.FILENAME);
         final Media constraints = Medias.create(folder, TileConstraintsConfig.FILENAME);
         final Media transitions = Medias.create(folder, TileTransitionsConfig.FILENAME);
 
-        sheetsDialog.save();
-        groupsDialog.save();
+        sheetsExtractDialog.save();
+        groupsEditDialog.save();
         TileConstraintsConfig.export(constraints, ConstraintsExtractor.getConstraints(levels, sheets));
         TileTransitionsConfig.exports(transitions, TransitionsExtractor.getTransitions(levels, sheets, groups));
     }
@@ -80,25 +80,25 @@ public final class ExtractAllHandler
     @Execute
     public void execute(Shell shell)
     {
-        final SheetsExtractDialog sheetsDialog = new SheetsExtractDialog(shell);
-        sheetsDialog.open();
+        final SheetsExtractDialog sheetsExtractDialog = new SheetsExtractDialog(shell);
+        sheetsExtractDialog.open();
 
-        final Collection<SpriteTiled> sheets = sheetsDialog.getSheets();
+        final Collection<SpriteTiled> sheets = sheetsExtractDialog.getSheets();
         if (!sheets.isEmpty())
         {
-            final TileSheetsConfig sheetsConfig = sheetsDialog.getConfig();
+            final TileSheetsConfig sheetsConfig = sheetsExtractDialog.getConfig();
             final int tw = sheetsConfig.getTileWidth();
             final int th = sheetsConfig.getTileHeight();
-            final Media[] levels = sheetsDialog.getLevelRips();
+            final Media[] levels = sheetsExtractDialog.getLevelRips();
 
-            final GroupsEditDialog groupsEdit = new GroupsEditDialog(shell);
-            groupsEdit.load(tw, th, sheets, levels);
-            groupsEdit.showWorldView();
-            groupsEdit.open();
+            final GroupsEditDialog groupsEditDialog = new GroupsEditDialog(shell);
+            groupsEditDialog.load(tw, th, sheets, levels);
+            groupsEditDialog.showWorldView();
+            groupsEditDialog.open();
 
-            if (!groupsEdit.isCanceled())
+            if (!groupsEditDialog.isCanceled())
             {
-                saveAll(sheetsDialog, groupsEdit, levels);
+                saveAll(sheetsExtractDialog, groupsEditDialog, levels);
             }
         }
     }

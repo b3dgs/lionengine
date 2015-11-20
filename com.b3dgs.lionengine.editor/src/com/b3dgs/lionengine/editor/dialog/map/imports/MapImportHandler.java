@@ -50,7 +50,7 @@ public final class MapImportHandler
         final MapImportDialog importMapDialog = new MapImportDialog(shell);
         importMapDialog.open();
 
-        final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
-        part.update();
+        final WorldPart worldPart = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+        worldPart.update();
     }
 }

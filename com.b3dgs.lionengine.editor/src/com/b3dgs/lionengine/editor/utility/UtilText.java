@@ -73,7 +73,18 @@ public final class UtilText
         {
             final String init = text.getText();
             final String newText = init.substring(0, event.start) + event.text + init.substring(event.end);
-            event.doit = newText.matches(match) || newText.isEmpty();
+            if (newText.matches(match) || newText.isEmpty())
+            {
+                try
+                {
+                    Integer.parseInt(newText);
+                    event.doit = true;
+                }
+                catch (final NumberFormatException exception)
+                {
+                    event.doit = false;
+                }
+            }
         };
     }
 

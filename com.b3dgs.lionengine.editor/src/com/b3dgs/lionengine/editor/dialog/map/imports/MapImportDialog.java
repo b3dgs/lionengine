@@ -17,25 +17,14 @@
  */
 package com.b3dgs.lionengine.editor.dialog.map.imports;
 
-import java.io.File;
-
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.dialog.LevelRipsWidget;
-import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.utility.UtilButton;
-import com.b3dgs.lionengine.editor.utility.UtilDialog;
+import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
+import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
@@ -53,17 +42,11 @@ public class MapImportDialog extends AbstractDialog
     public static final Image ICON = UtilIcon.get("dialog", "import.png");
 
     /** Level rip location. */
-    private Text levelRipLocationText;
+    private BrowseWidget levelRip;
     /** Sheets location. */
-    private Text sheetsLocationText;
+    private BrowseWidget sheets;
     /** Groups location. */
-    private Text groupsLocationText;
-    /** Level rip file. */
-    private Media levelRip;
-    /** Sheets config file. */
-    private Media sheetsConfig;
-    /** Groups config file. */
-    private Media groupsConfig;
+    private BrowseWidget groups;
 
     /**
      * Create an import map dialog.
@@ -80,221 +63,11 @@ public class MapImportDialog extends AbstractDialog
     }
 
     /**
-     * Update the tips label.
+     * Check if can enable finish button.
      */
-    private void updateTipsLabel()
+    private void checkFinish()
     {
-        tipsLabel.setVisible(false);
-    }
-
-    /**
-     * Browse the level rip location.
-     */
-    private void browseLevelRipLocation()
-    {
-        final File file = UtilDialog.selectResourceFile(dialog, true, new String[]
-        {
-            Messages.LevelRipFileFilter
-        }, LevelRipsWidget.LEVEL_RIP_FILTER);
-        if (file != null)
-        {
-            onLevelRipLocationSelected(file);
-        }
-    }
-
-    /**
-     * Browse the sheets location.
-     */
-    private void browseSheetsLocation()
-    {
-        final File file = UtilDialog.selectResourceXml(dialog, false, Messages.SheetsConfigFileFilter);
-        if (file != null)
-        {
-            onSheetsConfigLocationSelected(file);
-        }
-    }
-
-    /**
-     * Browse the groups location.
-     */
-    private void browseGroupsLocation()
-    {
-        final File file = UtilDialog.selectResourceXml(dialog, false, Messages.GroupsConfigFileFilter);
-        if (file != null)
-        {
-            onGroupsConfigLocationSelected(file);
-        }
-    }
-
-    /**
-     * Called when the level rip location has been selected.
-     * 
-     * @param path The level rip location path.
-     */
-    private void onLevelRipLocationSelected(File path)
-    {
-        final Project project = Project.getActive();
-        try
-        {
-            levelRip = project.getResourceMedia(new File(path.getAbsolutePath()));
-            levelRipLocationText.setText(levelRip.getPath());
-        }
-        catch (final LionEngineException exception)
-        {
-            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ErrorLevelRip);
-        }
-        loadDefaults();
-        updateTipsLabel();
-        finish.setEnabled(levelRip != null && sheetsConfig != null && groupsConfig != null);
-    }
-
-    /**
-     * Called when the sheets config location has been selected.
-     * 
-     * @param path The selected sheets config location path.
-     */
-    private void onSheetsConfigLocationSelected(File path)
-    {
-        final Project project = Project.getActive();
-        boolean validSheets = false;
-        try
-        {
-            sheetsConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
-            sheetsLocationText.setText(sheetsConfig.getPath());
-            final File sheets = sheetsConfig.getFile();
-            if (!sheets.isFile())
-            {
-                setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ErrorSheets);
-            }
-            validSheets = sheets.isFile();
-        }
-        catch (final LionEngineException exception)
-        {
-            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ErrorSheets);
-        }
-        updateTipsLabel();
-
-        final boolean isValid = levelRip != null && sheetsConfig != null && validSheets;
-        finish.setEnabled(isValid);
-    }
-
-    /**
-     * Called when the groups config location has been selected.
-     * 
-     * @param path The selected groups config location path.
-     */
-    private void onGroupsConfigLocationSelected(File path)
-    {
-        final Project project = Project.getActive();
-        boolean validGroups = false;
-        try
-        {
-            groupsConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
-            groupsLocationText.setText(groupsConfig.getPath());
-            final File groups = groupsConfig.getFile();
-            if (!groups.isFile())
-            {
-                setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ErrorGroups);
-            }
-            validGroups = groups.isFile();
-        }
-        catch (final LionEngineException exception)
-        {
-            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ErrorGroups);
-        }
-        updateTipsLabel();
-
-        final boolean isValid = levelRip != null && groupsConfig != null && validGroups;
-        finish.setEnabled(isValid);
-    }
-
-    /**
-     * Create the level rip location area.
-     * 
-     * @param content The content composite.
-     */
-    private void createLevelRipLocationArea(Composite content)
-    {
-        final Composite levelRipArea = new Composite(content, SWT.NONE);
-        levelRipArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        levelRipArea.setLayout(new GridLayout(3, false));
-
-        final Label locationLabel = new Label(levelRipArea, SWT.NONE);
-        locationLabel.setText(Messages.LevelRipLocation);
-
-        levelRipLocationText = new Text(levelRipArea, SWT.BORDER);
-        levelRipLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        levelRipLocationText.setEditable(false);
-
-        final Button browse = UtilButton.createBrowse(levelRipArea);
-        UtilButton.setAction(browse, () -> browseLevelRipLocation());
-    }
-
-    /**
-     * Create the sheets location area.
-     * 
-     * @param content The content composite.
-     */
-    private void createSheetsLocationArea(Composite content)
-    {
-        final Composite sheetArea = new Composite(content, SWT.NONE);
-        sheetArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        sheetArea.setLayout(new GridLayout(3, false));
-
-        final Label locationLabel = new Label(sheetArea, SWT.NONE);
-        locationLabel.setText(Messages.SheetsLocation);
-
-        sheetsLocationText = new Text(sheetArea, SWT.BORDER);
-        sheetsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        sheetsLocationText.setEditable(false);
-
-        final Button browse = UtilButton.createBrowse(sheetArea);
-        UtilButton.setAction(browse, () -> browseSheetsLocation());
-    }
-
-    /**
-     * Create the groups location area.
-     * 
-     * @param content The content composite.
-     */
-    private void createGroupsLocationArea(Composite content)
-    {
-        final Composite groupArea = new Composite(content, SWT.NONE);
-        groupArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        groupArea.setLayout(new GridLayout(3, false));
-
-        final Label locationLabel = new Label(groupArea, SWT.NONE);
-        locationLabel.setText(Messages.GroupsLocation);
-
-        groupsLocationText = new Text(groupArea, SWT.BORDER);
-        groupsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        groupsLocationText.setEditable(false);
-
-        final Button browse = UtilButton.createBrowse(groupArea);
-        UtilButton.setAction(browse, () -> browseGroupsLocation());
-    }
-
-    /**
-     * Load default sheets and config file.
-     */
-    private void loadDefaults()
-    {
-        if (sheetsConfig == null)
-        {
-            final File defaultSheetFile = new File(levelRip.getFile().getParentFile(), TileSheetsConfig.FILENAME);
-            if (defaultSheetFile.isFile())
-            {
-                onSheetsConfigLocationSelected(defaultSheetFile);
-            }
-        }
-        if (groupsConfig == null)
-        {
-            final File defaultGroupsFile = new File(levelRip.getFile().getParentFile(), TileGroupsConfig.FILENAME);
-            if (defaultGroupsFile.isFile())
-            {
-                onGroupsConfigLocationSelected(defaultGroupsFile);
-            }
-        }
+        finish.setEnabled(levelRip.getMedia() != null && sheets.getMedia() != null && groups.getMedia() != null);
     }
 
     /*
@@ -304,22 +77,43 @@ public class MapImportDialog extends AbstractDialog
     @Override
     protected void createContent(Composite content)
     {
-        createLevelRipLocationArea(content);
-        createSheetsLocationArea(content);
-        createGroupsLocationArea(content);
+        levelRip = new BrowseWidget(content,
+                                    Messages.LevelRipLocation,
+                                    Messages.LevelRipFileFilter,
+                                    LevelRipsWidget.LEVEL_RIP_FILTER,
+                                    true);
+        levelRip.addListener(media ->
+        {
+            if (sheets.getMedia() == null)
+            {
+                sheets.setLocation(UtilFile.getPath(media.getParentPath(), TileSheetsConfig.FILENAME));
+            }
+            if (groups.getMedia() == null)
+            {
+                groups.setLocation(UtilFile.getPath(media.getParentPath(), TileGroupsConfig.FILENAME));
+            }
+            checkFinish();
+        });
+
+        sheets = new BrowseWidget(content, Messages.SheetsLocation, Messages.SheetsConfigFileFilter, false);
+        sheets.addListener(media -> checkFinish());
+
+        groups = new BrowseWidget(content, Messages.GroupsLocation, Messages.GroupsConfigFileFilter, false);
+        groups.addListener(media -> checkFinish());
     }
 
     @Override
     protected void onFinish()
     {
         final MapTile map = WorldModel.INSTANCE.getMap();
-        final MapImportProgressDialog progress = new MapImportProgressDialog(dialog, levelRip);
-
+        final MapImportProgressDialog progress = new MapImportProgressDialog(dialog, levelRip.getMedia());
         progress.open();
-        map.loadSheets(sheetsConfig);
-        LevelRipConverter.start(levelRip, map, progress);
+
+        map.loadSheets(sheets.getMedia());
+
+        LevelRipConverter.start(levelRip.getMedia(), map, progress);
         progress.finish();
 
-        map.getFeature(MapTileGroup.class).loadGroups(groupsConfig);
+        map.getFeature(MapTileGroup.class).loadGroups(groups.getMedia());
     }
 }

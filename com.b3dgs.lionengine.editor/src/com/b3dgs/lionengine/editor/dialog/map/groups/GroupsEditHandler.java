@@ -44,7 +44,7 @@ public final class GroupsEditHandler
     @Execute
     public void execute(Shell shell)
     {
-        final GroupsEditDialog groupsEdit = new GroupsEditDialog(shell);
-        groupsEdit.open();
+        final GroupsEditDialog groupsEditDialog = new GroupsEditDialog(shell);
+        groupsEditDialog.open();
     }
 }

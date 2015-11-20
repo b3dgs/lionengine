@@ -44,8 +44,8 @@ public final class SheetsExtractHandler
     @Execute
     public void execute(Shell shell)
     {
-        final SheetsExtractDialog dialog = new SheetsExtractDialog(shell);
-        dialog.open();
-        dialog.save();
+        final SheetsExtractDialog sheetsExtractDialog = new SheetsExtractDialog(shell);
+        sheetsExtractDialog.open();
+        sheetsExtractDialog.save();
     }
 }

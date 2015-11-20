@@ -19,22 +19,14 @@ package com.b3dgs.lionengine.editor.dialog.map.collision.imports;
 
 import java.io.File;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.utility.UtilButton;
-import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
@@ -56,18 +48,10 @@ public class CollisionImportDialog extends AbstractDialog
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "import.png");
 
-    /** World part reference. */
-    private final WorldPart part;
     /** Formulas config file location. */
-    private Text formulasText;
+    private BrowseWidget formulas;
     /** Collisions config file location. */
-    private Text collisionsText;
-    /** Formulas config file. */
-    private Media formulasConfig;
-    /** Collisions config file. */
-    private Media collisionsConfig;
-    /** Found. */
-    private boolean found;
+    private BrowseWidget collisions;
 
     /**
      * Create an import map dialog.
@@ -79,7 +63,6 @@ public class CollisionImportDialog extends AbstractDialog
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
         createDialog();
         dialog.setMinimumSize(512, 160);
-        part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
         finish.setEnabled(false);
         finish.forceFocus();
         loadDefaults();
@@ -92,7 +75,7 @@ public class CollisionImportDialog extends AbstractDialog
      */
     public Media getFormulasLocation()
     {
-        return formulasConfig;
+        return formulas.getMedia();
     }
 
     /**
@@ -102,144 +85,7 @@ public class CollisionImportDialog extends AbstractDialog
      */
     public Media getCollisionsLocation()
     {
-        return collisionsConfig;
-    }
-
-    /**
-     * Check if import is found.
-     * 
-     * @return <code>true</code> if found, <code>false</code> else.
-     */
-    public boolean isFound()
-    {
-        return found;
-    }
-
-    /**
-     * Update the tips label.
-     */
-    private void updateTipsLabel()
-    {
-        tipsLabel.setVisible(false);
-    }
-
-    /**
-     * Browse the formulas location.
-     */
-    private void browseFormulasLocation()
-    {
-        final File file = UtilDialog.selectResourceXml(dialog, true, Messages.FormulasConfigFileFilter);
-        if (file != null)
-        {
-            onFormulasConfigLocationSelected(file);
-        }
-    }
-
-    /**
-     * Browse the collision location.
-     */
-    private void browseCollisionLocation()
-    {
-        final File file = UtilDialog.selectResourceXml(dialog, true, Messages.CollisionsFileFilter);
-        if (file != null)
-        {
-            onCollisionsConfigLocationSelected(file);
-        }
-    }
-
-    /**
-     * Called when the formulas config file location has been selected.
-     * 
-     * @param path The selected formulas config file location path.
-     */
-    private void onFormulasConfigLocationSelected(File path)
-    {
-        final Project project = Project.getActive();
-        boolean validSheets = false;
-        try
-        {
-            formulasConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
-            formulasText.setText(formulasConfig.getPath());
-            final File sheets = formulasConfig.getFile();
-            if (!sheets.isFile())
-            {
-                setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ErrorFormulas);
-            }
-            validSheets = sheets.isFile();
-        }
-        catch (final LionEngineException exception)
-        {
-            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ErrorFormulas);
-        }
-        updateTipsLabel();
-
-        final boolean isValid = collisionsConfig != null && formulasConfig != null && validSheets;
-        finish.setEnabled(isValid);
-    }
-
-    /**
-     * Called when the collision config file location has been selected.
-     * 
-     * @param path The collision config file location path.
-     */
-    private void onCollisionsConfigLocationSelected(File path)
-    {
-        final Project project = Project.getActive();
-        try
-        {
-            collisionsConfig = project.getResourceMedia(new File(path.getAbsolutePath()));
-            collisionsText.setText(collisionsConfig.getPath());
-        }
-        catch (final LionEngineException exception)
-        {
-            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ErrorCollisions);
-        }
-        updateTipsLabel();
-        finish.setEnabled(collisionsConfig != null && formulasConfig != null);
-    }
-
-    /**
-     * Create the formulas location area.
-     * 
-     * @param content The content composite.
-     */
-    private void createFormulasLocationArea(Composite content)
-    {
-        final Composite sheetArea = new Composite(content, SWT.NONE);
-        sheetArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        sheetArea.setLayout(new GridLayout(3, false));
-
-        final Label locationLabel = new Label(sheetArea, SWT.NONE);
-        locationLabel.setText(Messages.FormulasLocation);
-
-        formulasText = new Text(sheetArea, SWT.BORDER);
-        formulasText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        formulasText.setEditable(false);
-
-        final Button browse = UtilButton.createBrowse(sheetArea);
-        UtilButton.setAction(browse, () -> browseFormulasLocation());
-    }
-
-    /**
-     * Create the collision location area.
-     * 
-     * @param content The content composite.
-     */
-    private void createCollisionLocationArea(Composite content)
-    {
-        final Composite collisionArea = new Composite(content, SWT.NONE);
-        collisionArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        collisionArea.setLayout(new GridLayout(3, false));
-
-        final Label locationLabel = new Label(collisionArea, SWT.NONE);
-        locationLabel.setText(Messages.CollisionsLocation);
-
-        collisionsText = new Text(collisionArea, SWT.BORDER);
-        collisionsText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        collisionsText.setEditable(false);
-
-        final Button browse = UtilButton.createBrowse(collisionArea);
-        UtilButton.setAction(browse, () -> browseCollisionLocation());
+        return collisions.getMedia();
     }
 
     /**
@@ -254,14 +100,22 @@ public class CollisionImportDialog extends AbstractDialog
         final File formulas = new File(parentFile, CollisionFormulaConfig.FILENAME);
         if (MapTester.isFormulasConfig(project.getResourceMedia(formulas)))
         {
-            onFormulasConfigLocationSelected(formulas);
+            this.formulas.setLocation(project.getResourceMedia(formulas).getPath());
         }
 
         final File collisions = new File(parentFile, CollisionGroupConfig.FILENAME);
         if (MapTester.isCollisionsConfig(project.getResourceMedia(collisions)))
         {
-            onCollisionsConfigLocationSelected(collisions);
+            this.collisions.setLocation(project.getResourceMedia(collisions).getPath());
         }
+    }
+
+    /**
+     * Check if can enable finish button.
+     */
+    private void checkFinish()
+    {
+        finish.setEnabled(formulas.getMedia() != null && collisions.getMedia() != null);
     }
 
     /*
@@ -271,27 +125,27 @@ public class CollisionImportDialog extends AbstractDialog
     @Override
     protected void createContent(Composite content)
     {
-        createFormulasLocationArea(content);
-        createCollisionLocationArea(content);
+        formulas = new BrowseWidget(content, Messages.FormulasLocation, Messages.FormulasConfigFileFilter, true);
+        formulas.addListener(media -> checkFinish());
+
+        collisions = new BrowseWidget(content, Messages.CollisionsLocation, Messages.CollisionsFileFilter, true);
+        collisions.addListener(media -> checkFinish());
     }
 
     @Override
     protected void onFinish()
     {
-        found = formulasConfig != null && collisionsConfig != null;
-        if (found)
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        if (!map.hasFeature(MapTileCollision.class))
         {
-            final MapTile map = WorldModel.INSTANCE.getMap();
-            if (!map.hasFeature(MapTileCollision.class))
-            {
-                map.createFeature(MapTileCollisionModel.class);
-            }
-            final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
-            mapCollision.loadCollisions();
-            mapCollision.createCollisionDraw();
-
-            part.setToolItemEnabled(SetShowCollisionsHandler.ID, true);
-            part.setToolItemEnabled(SetPointerCollisionHandler.ID, true);
+            map.createFeature(MapTileCollisionModel.class);
         }
+        final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
+        mapCollision.loadCollisions();
+        mapCollision.createCollisionDraw();
+
+        final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+        part.setToolItemEnabled(SetShowCollisionsHandler.ID, true);
+        part.setToolItemEnabled(SetPointerCollisionHandler.ID, true);
     }
 }

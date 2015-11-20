@@ -47,10 +47,10 @@ public final class ConstraintsExtractHandler
     @Execute
     public void execute(Shell shell)
     {
-        final ConstraintsExtractDialog dialog = new ConstraintsExtractDialog(shell);
-        dialog.open();
+        final ConstraintsExtractDialog constraintsExtractDialog = new ConstraintsExtractDialog(shell);
+        constraintsExtractDialog.open();
 
-        final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
-        part.update();
+        final WorldPart worldPart = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+        worldPart.update();
     }
 }
