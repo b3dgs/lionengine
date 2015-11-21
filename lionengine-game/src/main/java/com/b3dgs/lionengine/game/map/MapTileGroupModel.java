@@ -21,10 +21,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
@@ -38,58 +38,21 @@ public class MapTileGroupModel implements MapTileGroup
     /** No group name. */
     public static final String NO_GROUP_NAME = "none";
 
-    /**
-     * Find group for tile.
-     * 
-     * @param tile The tile reference.
-     * @param groups The groups list.
-     * @return The tile group, <code>null</code> if none.
-     */
-    private static String getGroup(Tile tile, Collection<TileGroup> groups)
-    {
-        for (final TileGroup group : groups)
-        {
-            if (group.contains(tile))
-            {
-                return group.getName();
-            }
-        }
-        return null;
-    }
-
-    /** Map reference. */
-    private final MapTile map;
-    /** Tile groups list. */
-    private final Map<String, TileGroup> groups = new HashMap<String, TileGroup>();
+    /** Group tiles mapping. */
+    private final Map<String, Collection<TileRef>> groupTiles = new HashMap<String, Collection<TileRef>>();
+    /** Tiles group mapping. */
+    private final Map<TileRef, String> tilesGroup = new HashMap<TileRef, String>();
     /** Groups configuration file. */
     private Media groupsConfig;
 
     /**
      * Create a map tile group.
      * 
-     * @param map The map reference.
      * @throws LionEngineException If services not found.
      */
-    public MapTileGroupModel(MapTile map)
+    public MapTileGroupModel()
     {
-        this.map = map;
-    }
-
-    /**
-     * Create a map tile group.
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link MapTile}</li>
-     * </ul>
-     * 
-     * @param services The services reference.
-     * @throws LionEngineException If services not found.
-     */
-    public MapTileGroupModel(Services services)
-    {
-        map = services.get(MapTile.class);
+        // Nothing to do
     }
 
     /*
@@ -101,35 +64,35 @@ public class MapTileGroupModel implements MapTileGroup
     {
         this.groupsConfig = groupsConfig;
 
-        groups.clear();
-        final Collection<TileGroup> groups = TileGroupsConfig.imports(groupsConfig);
-        final Collection<TileRef> tilesNoGroup = new HashSet<TileRef>();
-        final TileGroup none = new TileGroup(NO_GROUP_NAME, tilesNoGroup);
-        groups.add(none);
-        for (final TileGroup group : groups)
-        {
-            this.groups.put(group.getName(), group);
-        }
+        groupTiles.clear();
+        tilesGroup.clear();
 
-        final int widthInTile = map.getInTileWidth();
-        final int heightInTile = map.getInTileHeight();
-        for (int ty = 0; ty < heightInTile; ty++)
+        for (final TileGroup group : TileGroupsConfig.imports(groupsConfig))
         {
-            for (int tx = 0; tx < widthInTile; tx++)
+            final String name = group.getName();
+            groupTiles.put(name, group.getTiles());
+            for (final TileRef tile : group.getTiles())
             {
-                final Tile tile = map.getTile(tx, ty);
-                if (tile != null)
-                {
-                    final String group = getGroup(tile, groups);
-                    if (group == null)
-                    {
-                        tilesNoGroup.add(new TileRef(tile));
-                    }
-                    tile.setGroup(group);
-                }
+                tilesGroup.put(tile, name);
             }
         }
-        groups.clear();
+    }
+
+    @Override
+    public void changeGroup(Tile tile, String group)
+    {
+        final TileRef ref = new TileRef(tile);
+        final String oldGroup = getGroup(tile);
+        tilesGroup.put(ref, group);
+        if (groupTiles.containsKey(oldGroup))
+        {
+            groupTiles.get(oldGroup).remove(ref);
+        }
+        if (!groupTiles.containsKey(group))
+        {
+            groupTiles.put(group, new HashSet<TileRef>());
+        }
+        groupTiles.get(group).add(ref);
     }
 
     @Override
@@ -139,31 +102,43 @@ public class MapTileGroupModel implements MapTileGroup
     }
 
     @Override
-    public TileGroup getGroup(String name)
+    public Collection<TileRef> getGroup(String name)
     {
-        if (groups.containsKey(name))
+        if (groupTiles.containsKey(name))
         {
-            return groups.get(name);
+            return groupTiles.get(name);
         }
-        return groups.get(NO_GROUP_NAME);
+        return groupTiles.get(NO_GROUP_NAME);
     }
 
     @Override
-    public TileGroup getGroup(Integer sheet, int number)
+    public String getGroup(Tile tile)
     {
-        for (final TileGroup group : groups.values())
+        final TileRef ref = new TileRef(tile);
+        if (tilesGroup.containsKey(ref))
         {
-            if (group.contains(sheet, number))
+            return tilesGroup.get(ref);
+        }
+        return NO_GROUP_NAME;
+    }
+
+    @Override
+    public String getGroup(Integer sheet, int number)
+    {
+        final TileRef ref = new TileRef(sheet, number);
+        for (final Entry<TileRef, String> tile : tilesGroup.entrySet())
+        {
+            if (tile.getKey().equals(ref))
             {
-                return group;
+                return tile.getValue();
             }
         }
-        return groups.get(NO_GROUP_NAME);
+        return NO_GROUP_NAME;
     }
 
     @Override
-    public Collection<TileGroup> getGroups()
+    public Collection<String> getGroups()
     {
-        return groups.values();
+        return groupTiles.keySet();
     }
 }

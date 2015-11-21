@@ -21,7 +21,8 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
  * Represents the group definition for each tile.
@@ -37,6 +38,14 @@ public interface MapTileGroup extends MapTileFeature
     void loadGroups(Media groupsConfig);
 
     /**
+     * Change the group of the tile.
+     * 
+     * @param tile The tile to change its group.
+     * @param group The group destination name.
+     */
+    void changeGroup(Tile tile, String group);
+
+    /**
      * Get the groups configuration media file.
      * 
      * @return The groups configuration media file.
@@ -44,26 +53,34 @@ public interface MapTileGroup extends MapTileFeature
     Media getGroupsConfig();
 
     /**
-     * Get the group from its name.
+     * Get the tiles from group name.
      * 
      * @param name The group name.
-     * @return The supported group reference.
+     * @return The associated tiles.
      */
-    TileGroup getGroup(String name);
+    Collection<TileRef> getGroup(String name);
 
     /**
-     * Get the group from its tile reference.
+     * Get the group name of the tile.
+     * 
+     * @param tile The tile reference.
+     * @return The associated group name.
+     */
+    String getGroup(Tile tile);
+
+    /**
+     * Get the group name from the sheet and number value.
      * 
      * @param sheet The sheet number.
-     * @param number The tile number.
-     * @return The supported group reference.
+     * @param number The tile number on sheet.
+     * @return The associated group name.
      */
-    TileGroup getGroup(Integer sheet, int number);
+    String getGroup(Integer sheet, int number);
 
     /**
      * Get the groups list.
      * 
      * @return The groups list.
      */
-    Collection<TileGroup> getGroups();
+    Collection<String> getGroups();
 }

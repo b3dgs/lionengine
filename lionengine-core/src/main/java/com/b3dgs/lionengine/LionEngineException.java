@@ -57,7 +57,7 @@ public final class LionEngineException extends RuntimeException
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599464L;
     /** Activate the ignore flag. */
-    private static final AtomicBoolean IGNORE_ENGINE_TRACE = new AtomicBoolean(true);
+    private static final AtomicBoolean IGNORE_ENGINE_TRACE = new AtomicBoolean(false);
     /** Trace reason. */
     private static final String TRACE_REASON = "\n\tReason: ";
     /** Trace at. */

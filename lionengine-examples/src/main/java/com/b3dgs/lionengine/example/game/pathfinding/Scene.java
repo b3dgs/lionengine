@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
@@ -62,6 +63,8 @@ class Scene extends Sequence
     private final Cursor cursor = services.create(Cursor.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map group reference. */
+    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
     /** Map path. */
     private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
     /** Keyboard reference. */
@@ -87,7 +90,7 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"));
-        map.createFeature(MapTileGroupModel.class).loadGroups(Medias.create("groups.xml"));
+        mapGroup.loadGroups(Medias.create("groups.xml"));
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
         cursor.addImage(0, Medias.create("cursor.png"));
@@ -123,7 +126,12 @@ class Scene extends Sequence
         final Tile tile = map.getTile(cursor, 0, 0);
         if (tile != null)
         {
-            text.drawRect(g, ColorRgba.GREEN, tile.getX(), tile.getY(), map.getTileWidth(), map.getTileHeight());
+            text.drawRect(g,
+                          ColorRgba.GREEN,
+                          (int) tile.getX(),
+                          (int) tile.getY(),
+                          map.getTileWidth(),
+                          map.getTileHeight());
             text.setColor(ColorRgba.YELLOW);
         }
     }

@@ -49,7 +49,8 @@ public interface MapTileTransition extends MapTileFeature
      * Get the tile transition.
      * 
      * @param tile The tile reference.
-     * @return The tile transition.
+     * @param group The transition with this group.
+     * @return The tile transition with the group.
      */
-    TileTransition getTransition(Tile tile);
+    TileTransition getTransition(Tile tile, String group);
 }

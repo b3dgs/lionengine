@@ -50,7 +50,7 @@ public interface MapTileRastered extends MapTileFeature, MapTileRenderer
     /**
      * Get raster index from input tile (depending of its height).
      * 
-     * @param ty The vertical tile location.
+     * @param ty The vertical tile location in tile.
      * @return The raster index.
      */
     int getRasterIndex(int ty);

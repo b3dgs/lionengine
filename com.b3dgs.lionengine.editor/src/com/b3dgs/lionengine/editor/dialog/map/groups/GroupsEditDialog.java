@@ -66,6 +66,7 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -91,6 +92,8 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
     private final GroupList groupList = new GroupList();
     /** Map reference. */
     private final MapTile map;
+    /** Map group. */
+    private final MapTileGroup mapGroup;
     /** Level rips area. */
     private Composite levelsArea;
     /** Level rips widget. */
@@ -116,7 +119,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         services.add(new Handler());
         services.add(new Factory(services));
         map = services.create(MapTileGame.class);
-        map.addFeature(new MapTileGroupModel(services));
+        mapGroup = map.createFeature(MapTileGroupModel.class);
         services.add(new Selection());
         services.add(new ObjectControl(services));
 
@@ -136,6 +139,16 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
     {
         final Media groupsMedia = Medias.create(sheets.getMedia().getParentPath(), TileGroupsConfig.FILENAME);
         TileGroupsConfig.exports(groupsMedia, getGroups());
+    }
+
+    /**
+     * Set the save folder destination.
+     * 
+     * @param destination The destination folder.
+     */
+    public void setLocation(String destination)
+    {
+        sheets.setLocation(destination);
     }
 
     /**
@@ -254,7 +267,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
      */
     private void addToGroup(Map<String, Collection<TileRef>> groups, Tile tile)
     {
-        final String group = tile.getGroup();
+        final String group = mapGroup.getGroup(tile);
         if (group != null)
         {
             if (!groups.containsKey(group))
@@ -294,9 +307,9 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         levelsArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         levelRips = new LevelRipsWidget(levelsArea);
         sheets = new BrowseWidget(levelsArea,
-                                        com.b3dgs.lionengine.editor.dialog.map.imports.Messages.SheetsLocation,
-                                        com.b3dgs.lionengine.editor.dialog.map.imports.Messages.SheetsConfigFileFilter,
-                                        true);
+                                  com.b3dgs.lionengine.editor.dialog.map.imports.Messages.SheetsLocation,
+                                  com.b3dgs.lionengine.editor.dialog.map.imports.Messages.SheetsConfigFileFilter,
+                                  true);
         return levelsArea;
     }
 
@@ -341,6 +354,13 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
 
         final WorldInteractionTile tileInteraction = services.get(WorldInteractionTile.class);
         tileInteraction.addListener(this);
+
+        final Media groupConfig = Medias.create(sheets.getMedia().getParentPath(), TileGroupsConfig.FILENAME);
+        if (groupConfig.exists())
+        {
+            mapGroup.loadGroups(groupConfig);
+            groupList.loadGroups(groupConfig);
+        }
     }
 
     /*
@@ -430,7 +450,8 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
     @Override
     public void notifyTileSelected(Tile tile)
     {
-        tile.setGroup(getSelectedGroup());
+        final String newGroup = getSelectedGroup();
+        mapGroup.changeGroup(tile, newGroup);
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
             for (int tx = 0; tx < map.getInTileWidth(); tx++)
@@ -440,7 +461,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
                     && current.getSheet().equals(tile.getSheet())
                     && current.getNumber() == tile.getNumber())
                 {
-                    current.setGroup(tile.getGroup());
+                    mapGroup.changeGroup(current, newGroup);
                 }
             }
         }

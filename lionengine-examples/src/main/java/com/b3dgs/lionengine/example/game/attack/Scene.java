@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
@@ -59,6 +60,8 @@ class Scene extends Sequence
     private final Handler handler = services.create(Handler.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map group reference. */
+    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
     /** Map path. */
     private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
     /** Keyboard reference. */
@@ -82,7 +85,7 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"));
-        map.createFeature(MapTileGroupModel.class).loadGroups(Medias.create("groups.xml"));
+        mapGroup.loadGroups(Medias.create("groups.xml"));
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
         camera.setView(0, 0, getWidth(), getHeight());

@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.Tiled;
@@ -37,6 +39,8 @@ public class MapTilePathModel implements MapTilePath
 {
     /** Map reference. */
     private final MapTile map;
+    /** Map group reference. */
+    private final MapTileGroup mapGroup;
 
     /**
      * Create a map tile path.
@@ -53,6 +57,7 @@ public class MapTilePathModel implements MapTilePath
     public MapTilePathModel(Services services)
     {
         map = services.get(MapTile.class);
+        mapGroup = map.getFeature(MapTileGroupModel.class);
     }
 
     /**
@@ -133,7 +138,7 @@ public class MapTilePathModel implements MapTilePath
                     final TilePath tilePath = new TilePathModel();
                     tile.addFeature(tilePath);
 
-                    final String group = tile.getGroup();
+                    final String group = mapGroup.getGroup(tile);
                     final String category = config.getCategory(group);
                     if (category != null)
                     {

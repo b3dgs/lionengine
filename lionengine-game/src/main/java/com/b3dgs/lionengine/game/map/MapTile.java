@@ -51,7 +51,7 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
     int BLOC_SIZE = 256;
 
     /**
-     * Create and prepare map memory area. Must be called before assigning tiles ({@link #setTile(int, int, Tile)}).
+     * Create and prepare map memory area. Must be called before assigning tiles ({@link #setTile(Tile)}).
      * Previous map data (if existing) will be cleared ({@link #clear()}).
      * 
      * @param widthInTile The map width in tile (must be strictly positive).
@@ -126,9 +126,14 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
     /**
      * Create a tile.
      * 
+     * @param sheet The sheet number (must be positive or equal to 0).
+     * @param number The tile number on sheet (must be positive or equal to 0).
+     * @param x The horizontal location.
+     * @param y The vertical location.
      * @return The created tile.
+     * @throws LionEngineException If invalid arguments.
      */
-    Tile createTile();
+    Tile createTile(Integer sheet, int number, double x, double y);
 
     /**
      * Load map sheets (tiles surfaces). Must be called before rendering map.
@@ -222,13 +227,17 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
 
     /**
      * Set a tile at specified map location.
+     * <p>
+     * The tile location must be between 0 and map size ({@link #getInTileWidth()}, {@link #getInTileHeight()}).
+     * </p>
+     * <p>
+     * If a tile exists at the tile location, it will be removed.
+     * </p>
      * 
-     * @param tx The horizontal tile index location [0 - {@link #getInTileWidth()} excluded].
-     * @param ty The vertical tile index location [0 - {@link #getInTileHeight()} excluded].
      * @param tile The tile reference.
      * @throws LionEngineException If outside map range.
      */
-    void setTile(int tx, int ty, Tile tile);
+    void setTile(Tile tile);
 
     /**
      * Get tile from specified map location (in tile index). If the returned tile is equal to <code>null</code>, this

@@ -186,8 +186,8 @@ public class MapTileGame implements MapTile
     {
         file.writeInteger(tile.getSheet().intValue());
         file.writeInteger(tile.getNumber());
-        file.writeInteger(tile.getX() / tileWidth % BLOC_SIZE);
-        file.writeInteger(tile.getY() / tileHeight);
+        file.writeInteger(tile.getInTileX() % BLOC_SIZE);
+        file.writeInteger(tile.getInTileY());
     }
 
     /**
@@ -209,18 +209,11 @@ public class MapTileGame implements MapTile
     {
         Check.notNull(file);
 
-        final int sheet = file.readInteger();
+        final Integer sheet = Integer.valueOf(file.readInteger());
         final int number = file.readInteger();
-        final int x = file.readInteger() * tileWidth + i * BLOC_SIZE * getTileWidth();
-        final int y = file.readInteger() * tileHeight;
-        final Tile tile = createTile();
-
-        tile.setSheet(Integer.valueOf(sheet));
-        tile.setNumber(number);
-        tile.setX(x);
-        tile.setY(y);
-
-        return tile;
+        final int x = file.readInteger() * getTileWidth() + i * BLOC_SIZE * getTileWidth();
+        final int y = file.readInteger() * getTileHeight();
+        return createTile(sheet, number, x, y);
     }
 
     /**
@@ -238,8 +231,8 @@ public class MapTileGame implements MapTile
         final Tile tile = getTile(tx, ty);
         if (tile != null)
         {
-            final int x = tile.getX() - sx;
-            final int y = -tile.getY() - tile.getHeight() + sy + screenHeight;
+            final int x = (int) tile.getX() - sx;
+            final int y = -(int) tile.getY() - tile.getHeight() + sy + screenHeight;
             renderer.renderTile(g, tile, x, y);
         }
     }
@@ -257,7 +250,7 @@ public class MapTileGame implements MapTile
         int count = 0;
         for (int tx = 0; tx < widthInTile; tx++)
         {
-            for (int ty = 0; ty < heightInTile; ty++)
+            for (int ty = 0; ty < getInTileHeight(); ty++)
             {
                 if (getTile(tx + s * step, ty) != null)
                 {
@@ -281,7 +274,7 @@ public class MapTileGame implements MapTile
     {
         for (int tx = 0; tx < widthInTile; tx++)
         {
-            for (int ty = 0; ty < heightInTile; ty++)
+            for (int ty = 0; ty < getInTileHeight(); ty++)
             {
                 final Tile tile = getTile(tx + s * step, ty);
                 if (tile != null)
@@ -362,16 +355,24 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public Tile createTile()
+    public Tile createTile(Integer sheet, int number, double x, double y)
     {
-        return new TileGame(tileWidth, tileHeight);
+        return new TileGame(sheet, number, x, y, tileWidth, tileHeight);
     }
 
     @Override
     public void load(FileReading file) throws IOException
     {
         create(file.readInteger(), file.readInteger());
-        loadSheets(Medias.create(file.readString()));
+        if (file.readBoolean())
+        {
+            loadSheets(Medias.create(file.readString()));
+        }
+        else
+        {
+            tileWidth = file.readInteger();
+            tileHeight = file.readInteger();
+        }
 
         final int t = file.readShort();
         for (int v = 0; v < t; v++)
@@ -384,8 +385,8 @@ public class MapTileGame implements MapTile
                 {
                     throw new IOException(ERROR_SHEET_MISSING + Constant.DOUBLE_DOT + tile.getSheet().toString());
                 }
-                final int tx = tile.getX() / getTileWidth();
-                final int ty = tile.getY() / getTileHeight();
+                final int tx = tile.getInTileX();
+                final int ty = tile.getInTileY();
                 final List<Tile> list = tiles.get(ty);
                 list.set(tx, tile);
             }
@@ -398,7 +399,18 @@ public class MapTileGame implements MapTile
         // Header
         file.writeInteger(widthInTile);
         file.writeInteger(heightInTile);
-        file.writeString(sheetsConfig.getPath());
+
+        final boolean hasConfig = sheetsConfig != null;
+        file.writeBoolean(hasConfig);
+        if (hasConfig)
+        {
+            file.writeString(sheetsConfig.getPath());
+        }
+        else
+        {
+            file.writeInteger(tileWidth);
+            file.writeInteger(tileHeight);
+        }
 
         final int step = BLOC_SIZE;
         final int x = Math.min(step, widthInTile);
@@ -463,7 +475,17 @@ public class MapTileGame implements MapTile
         }
         catch (final NoSuchMethodException exception)
         {
-            throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + feature);
+            try
+            {
+                final F instance = UtilReflection.create(feature, new Class<?>[0]);
+                services.add(instance);
+                addFeature(instance);
+                return instance;
+            }
+            catch (final NoSuchMethodException exception2)
+            {
+                throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + feature);
+            }
         }
     }
 
@@ -522,7 +544,9 @@ public class MapTileGame implements MapTile
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
-                    setTile(tx, ty, tile);
+                    final double x = tx * (double) tileWidth;
+                    final double y = ty * (double) tileHeight;
+                    setTile(createTile(tile.getSheet(), tile.getNumber(), x, y));
                 }
             }
         }
@@ -585,20 +609,20 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public void setTile(int tx, int ty, Tile tile)
+    public void setTile(Tile tile)
     {
+        final int tx = tile.getInTileX();
+        final int ty = tile.getInTileY();
         Check.inferiorStrict(tx, getInTileWidth());
         Check.inferiorStrict(ty, getInTileHeight());
 
-        tile.setX(tx * tileWidth);
-        tile.setY(ty * tileHeight);
         tiles.get(ty).set(tx, tile);
     }
 
     @Override
     public Tile getTile(int tx, int ty)
     {
-        if (!UtilMath.isBetween(tx, 0, widthInTile - 1) || !UtilMath.isBetween(ty, 0, heightInTile - 1))
+        if (!UtilMath.isBetween(tx, 0, getInTileWidth() - 1) || !UtilMath.isBetween(ty, 0, getInTileHeight() - 1))
         {
             return null;
         }

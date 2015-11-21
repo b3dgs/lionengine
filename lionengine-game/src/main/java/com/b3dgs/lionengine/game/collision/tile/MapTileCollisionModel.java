@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -143,10 +143,10 @@ public class MapTileCollisionModel implements MapTileCollision
      * @param tile The tile to check with.
      * @return <code>true</code> if can be ignored, <code>false</code> else.
      */
-    private static boolean checkConstraint(Collection<String> constraints, Tile tile)
+    private boolean checkConstraint(Collection<String> constraints, Tile tile)
     {
         return tile != null
-               && constraints.contains(tile.getGroup())
+               && constraints.contains(mapGroup.getGroup(tile))
                && !tile.getFeature(TileCollision.class).getCollisionFormulas().isEmpty();
     }
 
@@ -342,10 +342,11 @@ public class MapTileCollisionModel implements MapTileCollision
      */
     private void addTileCollisions(TileCollision tileCollision, Tile tile)
     {
+        final TileRef ref = new TileRef(tile);
         for (final CollisionGroup collision : getCollisionGroups())
         {
-            final TileGroup group = mapGroup.getGroup(collision.getName());
-            if (group.contains(tile))
+            final Collection<TileRef> group = mapGroup.getGroup(collision.getName());
+            if (group.contains(ref))
             {
                 for (final CollisionFormula formula : collision.getFormulas())
                 {
@@ -603,7 +604,7 @@ public class MapTileCollisionModel implements MapTileCollision
                 if (tile != null)
                 {
                     final int x = (int) Math.floor(viewer.getViewpointX(tile.getX()));
-                    final int y = (int) Math.floor(viewer.getViewpointY(tile.getY() + (double) tile.getHeight()));
+                    final int y = (int) Math.floor(viewer.getViewpointY(tile.getY() + tile.getHeight()));
                     renderCollision(g, tile.getFeature(TileCollision.class), x, y);
                 }
             }

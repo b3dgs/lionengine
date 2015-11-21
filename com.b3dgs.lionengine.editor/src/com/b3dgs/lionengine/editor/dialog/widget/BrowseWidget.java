@@ -124,10 +124,10 @@ public class BrowseWidget
      */
     public void setLocation(String path)
     {
+        media = Medias.create(path);
         if (location != null && !location.isDisposed())
         {
             location.setText(path);
-            media = Medias.create(path);
             for (final BrowseWidgetListener listener : listeners)
             {
                 listener.notifyMediaSelected(media);

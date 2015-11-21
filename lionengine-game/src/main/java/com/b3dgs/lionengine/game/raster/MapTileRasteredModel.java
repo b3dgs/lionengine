@@ -142,7 +142,7 @@ public class MapTileRasteredModel implements MapTileRastered
     {
         final Integer sheet = tile.getSheet();
         final int number = tile.getNumber();
-        final SpriteTiled raster = getRasterSheet(sheet, getRasterIndex(tile.getY()));
+        final SpriteTiled raster = getRasterSheet(sheet, getRasterIndex(tile.getInTileY()));
         raster.setLocation(x, y);
         raster.setTile(number);
         raster.render(g);
@@ -151,8 +151,7 @@ public class MapTileRasteredModel implements MapTileRastered
     @Override
     public int getRasterIndex(int ty)
     {
-        final int value = ty / map.getTileHeight();
-        int index = value % Rasterable.MAX_RASTERS_R;
+        int index = ty % Rasterable.MAX_RASTERS_R;
         if (!smooth && index > Rasterable.MAX_RASTERS_M)
         {
             index = Rasterable.MAX_RASTERS_M - (index - Rasterable.MAX_RASTERS);

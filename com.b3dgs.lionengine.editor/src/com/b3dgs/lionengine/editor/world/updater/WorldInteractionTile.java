@@ -59,7 +59,6 @@ import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.MapTileTransition;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.game.tile.TileTransitionType;
@@ -249,7 +248,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 listener.notifyTileSelected(selectedTile);
                 if (selectedTile != null)
                 {
-                    listener.notifyTileGroupSelected(selectedTile.getGroup());
+                    listener.notifyTileGroupSelected(mapGroup.getGroup(selectedTile));
                 }
                 else
                 {
@@ -291,14 +290,14 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final TileRef paletteTile = SheetsPaletteModel.INSTANCE.getSelectedTile();
         if (tile != null && paletteTile != null)
         {
-            tile.setSheet(paletteTile.getSheet());
-            tile.setNumber(paletteTile.getNumber());
-
-            final TileGroup group = mapGroup.getGroup(tile.getSheet(), tile.getNumber());
-            tile.setGroup(group.getName());
+            final Tile newTile = map.createTile(paletteTile.getSheet(),
+                                                paletteTile.getNumber(),
+                                                tile.getX(),
+                                                tile.getY());
+            map.setTile(newTile);
 
             final MapTileTransition mapTileTransition = map.getFeature(MapTileTransition.class);
-            checkCenterTile(mapTileTransition, tile, paletteTile);
+            checkCenterTile(mapTileTransition, newTile, paletteTile);
             mapTileTransition.resolve(tile);
         }
     }
@@ -312,10 +311,10 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void checkCenterTile(MapTileTransition mapTileTransition, Tile tile, TileRef paletteTile)
     {
-        if (TileTransitionType.CENTER.equals(mapTileTransition.getTransition(tile).getType()))
+        if (TileTransitionType.CENTER.equals(mapTileTransition.getTransition(tile, mapGroup.getGroup(tile)).getType()))
         {
-            final int tx = tile.getX() / tile.getWidth();
-            final int ty = tile.getY() / tile.getHeight();
+            final int tx = tile.getInTileX();
+            final int ty = tile.getInTileY();
             for (int v = ty + 1; v >= ty - 1; v--)
             {
                 for (int h = tx - 1; h <= tx + 1; h++)
@@ -323,9 +322,10 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                     final Tile neighbor = map.getTile(h, v);
                     if (neighbor != null)
                     {
-                        neighbor.setSheet(paletteTile.getSheet());
-                        neighbor.setNumber(paletteTile.getNumber());
-                        neighbor.setGroup(tile.getGroup());
+                        map.setTile(map.createTile(paletteTile.getSheet(),
+                                                   paletteTile.getNumber(),
+                                                   neighbor.getX(),
+                                                   neighbor.getY()));
                     }
                 }
             }
@@ -413,7 +413,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void checkMarker(Map<Integer, Marker> markers, Tile tile, int x, int y)
     {
-        final Marker marker = new Marker(x - tile.getX(), y - tile.getY());
+        final Marker marker = new Marker(x - (int) tile.getX(), y - (int) tile.getY());
         final Integer key = containsMarker(markers, marker);
 
         if (key != null)
@@ -473,9 +473,10 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final CollisionFormula formula = saveCollisionFormula(collision, fullName, function, index);
         final CollisionGroup group = saveCollisionGroup(collision, fullName, formula);
 
-        if (!group.getName().equals(tile.getGroup()))
+        final String tileGroup = mapGroup.getGroup(tile);
+        if (!group.getName().equals(tileGroup))
         {
-            PropertiesTile.changeTileGroup(groupNode, tile.getGroup(), group.getName(), tile);
+            PropertiesTile.changeTileGroup(groupNode, tileGroup, group.getName(), tile);
         }
     }
 
@@ -569,7 +570,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final String group = PropertiesModel.INSTANCE.getCopyText();
         if (copy != null && selectedTile != null && TileGroupsConfig.NODE_GROUP.equals(copy))
         {
-            PropertiesTile.changeTileGroup(mapGroup, selectedTile.getGroup(), group, selectedTile);
+            PropertiesTile.changeTileGroup(mapGroup, mapGroup.getGroup(selectedTile), group, selectedTile);
         }
     }
 

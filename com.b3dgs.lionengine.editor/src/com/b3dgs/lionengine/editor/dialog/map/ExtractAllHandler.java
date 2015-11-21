@@ -92,6 +92,7 @@ public final class ExtractAllHandler
             final Media[] levels = sheetsExtractDialog.getLevelRips();
 
             final GroupsEditDialog groupsEditDialog = new GroupsEditDialog(shell);
+            groupsEditDialog.setLocation(sheetsExtractDialog.getFolder());
             groupsEditDialog.load(tw, th, sheets, levels);
             groupsEditDialog.showWorldView();
             groupsEditDialog.open();

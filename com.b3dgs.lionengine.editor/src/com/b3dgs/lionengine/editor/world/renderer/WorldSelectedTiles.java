@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.geom.Line;
@@ -43,6 +44,8 @@ public class WorldSelectedTiles implements WorldRenderListener, TileSelectionLis
 
     /** Map reference. */
     private final MapTile map;
+    /** Map group. */
+    private final MapTileGroup mapGroup;
     /** Camera reference. */
     private final Camera camera;
     /** Tile interaction. */
@@ -60,6 +63,7 @@ public class WorldSelectedTiles implements WorldRenderListener, TileSelectionLis
     public WorldSelectedTiles(Services services)
     {
         map = services.get(MapTile.class);
+        mapGroup = services.get(MapTileGroup.class);
         camera = services.get(Camera.class);
         interactionTile = services.get(WorldInteractionTile.class);
     }
@@ -80,7 +84,7 @@ public class WorldSelectedTiles implements WorldRenderListener, TileSelectionLis
             for (int tx = 0; tx < map.getInTileWidth(); tx++)
             {
                 final Tile tile = map.getTile(tx, ty);
-                if (tile != null && CollisionGroup.same(selectedGroup, tile.getGroup()))
+                if (tile != null && CollisionGroup.same(selectedGroup, mapGroup.getGroup(tile)))
                 {
                     final int x = (int) (camera.getViewpointX(tile.getX()) * scale);
                     final int y = (int) (camera.getViewpointY(tile.getY()) * scale) - th;

@@ -65,7 +65,7 @@ public class WorldModel
         final ObjectControl objectControl = new ObjectControl(services);
         services.add(objectControl);
 
-        map.addFeature(new MapTileGroupModel(services));
+        map.addFeature(new MapTileGroupModel());
         map.addFeature(new MapTileTransitionModel(services));
     }
 

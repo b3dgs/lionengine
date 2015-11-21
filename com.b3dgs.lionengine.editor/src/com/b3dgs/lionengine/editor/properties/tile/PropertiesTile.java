@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileConfig;
 import com.b3dgs.lionengine.game.tile.TileFeature;
-import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
@@ -153,12 +152,11 @@ public class PropertiesTile implements PropertiesProviderTile
      */
     private static void onDoubleClick(Tree properties, TreeItem selection, Tile tile)
     {
-        final MapTileGroup map = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
-        final Collection<TileGroup> groups = map.getGroups();
+        final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
         final Collection<String> values = new ArrayList<>();
-        for (final TileGroup group : groups)
+        for (final String group : mapGroup.getGroups())
         {
-            values.add(group.getName());
+            values.add(group);
         }
         if (!values.contains(TileGroupsConfig.REMOVE_GROUP_NAME))
         {
@@ -166,11 +164,11 @@ public class PropertiesTile implements PropertiesProviderTile
         }
         final GroupChooser chooser = new GroupChooser(properties.getShell(), values);
         chooser.open();
-        final String oldGroup = tile.getGroup();
+        final String oldGroup = mapGroup.getGroup(tile);
         final String newGroup = chooser.getChoice();
         if (newGroup != null)
         {
-            changeTileGroup(map, oldGroup, newGroup, tile);
+            changeTileGroup(mapGroup, oldGroup, newGroup, tile);
             selection.setText(PropertiesPart.COLUMN_VALUE, newGroup);
 
             final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
@@ -209,7 +207,8 @@ public class PropertiesTile implements PropertiesProviderTile
     private static void createAttributeTileGroup(final Tree properties, final Tile tile)
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(item, Messages.Properties_TileGroup, tile.getGroup());
+        final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
+        PropertiesPart.createLine(item, Messages.Properties_TileGroup, mapGroup.getGroup(tile));
         item.setData(TileGroupsConfig.NODE_GROUP);
         item.setImage(PropertiesTile.ICON_GROUP);
 

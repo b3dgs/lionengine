@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.map;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -46,9 +47,9 @@ public class MapTileTransitionModel implements MapTileTransition
     /** Map reference. */
     private final MapTile map;
     /** Map tile group. */
-    private final MapTileGroup mapTileGroup;
+    private final MapTileGroup mapGroup;
     /** Tile as key. */
-    private final Map<TileRef, TileTransition> tiles = new HashMap<TileRef, TileTransition>();
+    private final Map<TileRef, Collection<TileTransition>> tiles = new HashMap<TileRef, Collection<TileTransition>>();
     /** Transitions as key. */
     private Map<TileTransition, Collection<TileRef>> transitions;
 
@@ -71,7 +72,7 @@ public class MapTileTransitionModel implements MapTileTransition
     {
         Check.notNull(services);
         map = services.get(MapTile.class);
-        mapTileGroup = map.getFeature(MapTileGroup.class);
+        mapGroup = map.getFeature(MapTileGroup.class);
     }
 
     /**
@@ -89,10 +90,9 @@ public class MapTileTransitionModel implements MapTileTransition
         {
             for (final TileRef tileRef : tilesRef)
             {
-                if (mapTileGroup.getGroup(tileRef.getSheet(), tileRef.getNumber()).getName().equals(tile.getGroup()))
+                if (mapGroup.getGroup(tileRef.getSheet(), tileRef.getNumber()).equals(mapGroup.getGroup(tile)))
                 {
-                    tile.setSheet(tileRef.getSheet());
-                    tile.setNumber(tileRef.getNumber());
+                    map.setTile(map.createTile(tileRef.getSheet(), tileRef.getNumber(), tile.getX(), tile.getY()));
                     return true;
                 }
             }
@@ -121,7 +121,11 @@ public class MapTileTransitionModel implements MapTileTransition
             final TileTransition transition = entry.getKey();
             for (final TileRef tileRef : entry.getValue())
             {
-                tiles.put(tileRef, transition);
+                if (!tiles.containsKey(tileRef))
+                {
+                    tiles.put(tileRef, new HashSet<TileTransition>());
+                }
+                tiles.get(tileRef).add(transition);
             }
         }
     }
@@ -145,8 +149,8 @@ public class MapTileTransitionModel implements MapTileTransition
      */
     private void resolve(Collection<Tile> checked, Tile tile)
     {
-        final int tx = tile.getX() / tile.getWidth();
-        final int ty = tile.getY() / tile.getHeight();
+        final int tx = tile.getInTileX();
+        final int ty = tile.getInTileY();
         for (int v = ty + 1; v >= ty - 1; v--)
         {
             for (int h = tx - 1; h <= tx + 1; h++)
@@ -165,13 +169,21 @@ public class MapTileTransitionModel implements MapTileTransition
     }
 
     @Override
-    public TileTransition getTransition(Tile tile)
+    public TileTransition getTransition(Tile tile, String group)
     {
+        final String groupIn = mapGroup.getGroup(tile);
         final TileRef tileRef = new TileRef(tile);
         if (tiles.containsKey(tileRef))
         {
-            return tiles.get(tileRef);
+            for (final TileTransition transition : tiles.get(tileRef))
+            {
+                if (transition.getGroupIn().equals(groupIn) && transition.getGroupOut().equals(group)
+                    || transition.getGroupIn().equals(group) && transition.getGroupOut().equals(groupIn))
+                {
+                    return transition;
+                }
+            }
         }
-        return new TileTransition(TileTransitionType.NONE, tile.getGroup(), tile.getGroup());
+        return new TileTransition(TileTransitionType.NONE, groupIn, groupIn);
     }
 }

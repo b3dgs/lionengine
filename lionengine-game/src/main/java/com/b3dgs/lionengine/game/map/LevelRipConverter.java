@@ -155,7 +155,7 @@ public final class LevelRipConverter
             {
                 return false;
             }
-            map.setTile(progressTileX, map.getInTileHeight() - 1 - progressTileY, tile);
+            map.setTile(tile);
         }
         return true;
     }
@@ -219,11 +219,7 @@ public final class LevelRipConverter
 
                 if (TilesExtractor.compareTile(tw, th, tileSprite, xa, ya, sheetImage, xb, yb))
                 {
-                    final Tile tile = map.createTile();
-                    tile.setSheet(sheet);
-                    tile.setNumber(number);
-
-                    return tile;
+                    return map.createTile(sheet, number, xa, (map.getInTileHeight() - 1 - y) * th);
                 }
             }
         }

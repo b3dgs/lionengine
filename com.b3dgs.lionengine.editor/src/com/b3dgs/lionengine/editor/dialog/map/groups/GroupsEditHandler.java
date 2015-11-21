@@ -46,5 +46,9 @@ public final class GroupsEditHandler
     {
         final GroupsEditDialog groupsEditDialog = new GroupsEditDialog(shell);
         groupsEditDialog.open();
+        if (!groupsEditDialog.isCanceled())
+        {
+            groupsEditDialog.save();
+        }
     }
 }

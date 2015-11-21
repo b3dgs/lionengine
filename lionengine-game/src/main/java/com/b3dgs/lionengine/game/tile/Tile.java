@@ -17,17 +17,20 @@
  */
 package com.b3dgs.lionengine.game.tile;
 
+import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.game.Featurable;
 
 /**
  * Tile representation with the following data:
  * <ul>
+ * <li><code>size</code> : tile size</li>
  * <li><code>sheet</code> : tile sheet number</li>
  * <li><code>number</code> : tile number inside tilesheet</li>
  * <li><code>x and y</code> : real location on map</li>
  * </ul>
  * <p>
- * A tile represents a surface reference, localized on a {@link com.b3dgs.lionengine.game.map.MapTile}.
+ * A tile represents a surface, localized on a {@link com.b3dgs.lionengine.game.map.MapTile}.
  * </p>
  * <p>
  * Services can be extended by using the {@link TileFeature} layer.
@@ -35,57 +38,8 @@ import com.b3dgs.lionengine.game.Featurable;
  * 
  * @see com.b3dgs.lionengine.game.map.MapTile
  */
-public interface Tile extends Featurable<TileFeature>
+public interface Tile extends Surface, Localizable, Tiled, Featurable<TileFeature>
 {
-    /**
-     * Set sheet number.
-     * 
-     * @param sheet The sheet number (must not be <code>null</code>).
-     */
-    void setSheet(Integer sheet);
-
-    /**
-     * Set the group name.
-     * 
-     * @param name The group name.
-     */
-    void setGroup(String name);
-
-    /**
-     * Set tile index inside sheet.
-     * 
-     * @param number The tile index.
-     */
-    void setNumber(int number);
-
-    /**
-     * Set tile location x.
-     * 
-     * @param x The tile location x.
-     */
-    void setX(int x);
-
-    /**
-     * Set tile location y.
-     * 
-     * @param y The tile location y.
-     */
-    void setY(int y);
-
-    /**
-     * Get the width.
-     * 
-     * @return The tile width.
-     */
-    int getWidth();
-
-    /**
-     * Get the height.
-     * 
-     * @return The tile height.
-     */
-    int getHeight();
-
     /**
      * Get sheet number.
      * 
@@ -94,30 +48,9 @@ public interface Tile extends Featurable<TileFeature>
     Integer getSheet();
 
     /**
-     * Get the group name.
-     * 
-     * @return The group name.
-     */
-    String getGroup();
-
-    /**
      * Get tile index number.
      * 
      * @return The tile index number.
      */
     int getNumber();
-
-    /**
-     * Get tile location x.
-     * 
-     * @return The tile location x.
-     */
-    int getX();
-
-    /**
-     * Get tile location y.
-     * 
-     * @return The tile location y.
-     */
-    int getY();
 }

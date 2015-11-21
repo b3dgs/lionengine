@@ -26,41 +26,53 @@ import com.b3dgs.lionengine.game.Features;
  */
 public class TileGame implements Tile
 {
+    /** Features list. */
+    private final Features<TileFeature> features = new Features<TileFeature>(TileFeature.class);
+    /** Tile sheet number where tile is contained. */
+    private final Integer sheet;
+    /** Position number in the tilesheet. */
+    private final int number;
+    /** Horizontal location on map. */
+    private final double x;
+    /** Vertical location on map. */
+    private final double y;
     /** Tile width. */
     private final int width;
     /** Tile height. */
     private final int height;
-    /** Features list. */
-    private final Features<TileFeature> features;
-    /** Tile sheet number where tile is contained. */
-    private Integer sheet;
-    /** Group name. */
-    private String group;
-    /** Position number in the tilesheet. */
-    private int number;
-    /** Horizontal location on map. */
-    private int x;
-    /** Vertical location on map. */
-    private int y;
+    /** In tile x. */
+    private final int inTileX;
+    /** In tile y. */
+    private final int inTileY;
 
     /**
      * Create a tile.
      * 
+     * @param sheet The sheet number (must be positive or equal to 0).
+     * @param number The tile number on sheet (must be positive or equal to 0).
+     * @param x The horizontal location.
+     * @param y The vertical location.
      * @param width The tile width (must be strictly positive).
      * @param height The tile height (must be strictly positive).
-     * @throws LionEngineException If tile size is not correct.
+     * @throws LionEngineException If invalid arguments.
      */
-    public TileGame(int width, int height)
+    public TileGame(Integer sheet, int number, double x, double y, int width, int height)
     {
+        Check.notNull(sheet);
+        Check.superiorOrEqual(sheet.intValue(), 0);
+        Check.superiorOrEqual(number, 0);
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);
 
+        this.sheet = sheet;
+        this.number = number;
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
-        features = new Features<TileFeature>(TileFeature.class);
-        sheet = Integer.valueOf(0);
-        x = 0;
-        y = 0;
+
+        inTileX = (int) Math.floor(x / width);
+        inTileY = (int) Math.floor(y / height);
     }
 
     /*
@@ -74,35 +86,27 @@ public class TileGame implements Tile
     }
 
     @Override
-    public void setSheet(Integer sheet)
+    public Integer getSheet()
     {
-        Check.notNull(sheet);
-        this.sheet = sheet;
+        return sheet;
     }
 
     @Override
-    public void setGroup(String name)
+    public int getNumber()
     {
-        group = name;
+        return number;
     }
 
     @Override
-    public void setNumber(int number)
+    public double getX()
     {
-        Check.superiorOrEqual(number, 0);
-        this.number = number;
+        return x;
     }
 
     @Override
-    public void setX(int x)
+    public double getY()
     {
-        this.x = x;
-    }
-
-    @Override
-    public void setY(int y)
-    {
-        this.y = y;
+        return y;
     }
 
     @Override
@@ -118,33 +122,27 @@ public class TileGame implements Tile
     }
 
     @Override
-    public Integer getSheet()
+    public int getInTileX()
     {
-        return sheet;
+        return inTileX;
     }
 
     @Override
-    public String getGroup()
+    public int getInTileY()
     {
-        return group;
+        return inTileY;
     }
 
     @Override
-    public int getNumber()
+    public int getInTileWidth()
     {
-        return number;
+        return 1;
     }
 
     @Override
-    public int getX()
+    public int getInTileHeight()
     {
-        return x;
-    }
-
-    @Override
-    public int getY()
-    {
-        return y;
+        return 1;
     }
 
     @Override

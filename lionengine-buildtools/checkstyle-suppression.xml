@@ -31,8 +31,8 @@
     <suppress checks="StaticImport" files="com.b3dgs.lionengine.game.tile.TileTransition"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.collision.tile.TileCollisionModel" lines="102, 107, 111, 141, 146, 150"/>
     <suppress checks="[a-zA-Z0-9]*" files="com.b3dgs.lionengine.game.map.Border20Map"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="187"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="200, 205"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="192"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="205, 210"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.PathFinderImpl" lines="287"/>
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ClientSocket" lines="63"/>

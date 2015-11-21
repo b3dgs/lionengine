@@ -56,7 +56,6 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.TileConstraint;
 import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
-import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
@@ -410,8 +409,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      */
     private boolean hasCenter(TileRef tile, Map<TileRef, Collection<TileConstraint>> constraints)
     {
-        final TileGroup group = mapGroup.getGroup(tile.getSheet(), tile.getNumber());
-        for (final TileRef tileRef : group.getTiles())
+        final String group = mapGroup.getGroup(tile.getSheet(), tile.getNumber());
+        for (final TileRef tileRef : mapGroup.getGroup(group))
         {
             if (constraints.containsKey(tileRef) && isCenter(tileRef, constraints.get(tileRef)))
             {
@@ -430,8 +429,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      */
     private boolean sameGroup(TileRef tile1, TileRef tile2)
     {
-        final String group1 = mapGroup.getGroup(tile1.getSheet(), tile1.getNumber()).getName();
-        final String group2 = mapGroup.getGroup(tile2.getSheet(), tile2.getNumber()).getName();
+        final String group1 = mapGroup.getGroup(tile1.getSheet(), tile1.getNumber());
+        final String group2 = mapGroup.getGroup(tile2.getSheet(), tile2.getNumber());
         return group1.equals(group2);
     }
 

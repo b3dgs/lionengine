@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.TransitionsExtractor;
 import com.b3dgs.lionengine.game.object.Services;
@@ -58,6 +59,8 @@ class Scene extends Sequence
     private final Cursor cursor = services.create(Cursor.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map reference. */
+    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
@@ -95,8 +98,8 @@ class Scene extends Sequence
             text.draw(g, x + 20, y + 25, "Tile number: " + tile.getNumber());
             text.draw(g, x + 20, y + 15, "X = " + tx + " | Y = " + ty);
             text.draw(g, x + 20, y + 5, "RX = " + cursor.getX() + " | RY = " + cursor.getY());
-            text.draw(g, x + 20, y - 5, "Group: " + tile.getGroup());
-            text.draw(g, x + 20, y - 15, "Transition: " + TransitionsExtractor.getTransition(map, tile));
+            text.draw(g, x + 20, y - 5, "Group: " + mapGroup.getGroup(tile));
+            text.draw(g, x + 20, y - 15, "Transition: " + TransitionsExtractor.getTransition(map, tile).getType());
         }
     }
 

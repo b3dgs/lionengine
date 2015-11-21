@@ -248,8 +248,8 @@ public class FogOfWar implements MapTileRenderer
     {
         renderer.renderTile(g, tile, x, y);
 
-        final int tx = tile.getX() / tile.getWidth();
-        final int ty = tile.getY() / tile.getHeight();
+        final int tx = tile.getInTileX();
+        final int ty = tile.getInTileY();
         final Border20 vid = Border20Map.get(visited, tx, ty);
         final Border20 fid = Border20Map.get(fog, tx, ty);
 

@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 
 /**
@@ -93,11 +92,12 @@ public class GroupChooser extends AbstractDialog
         Arrays.sort(groups);
         combo.setItems(groups);
 
+        final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
         final WorldInteractionTile interaction = WorldModel.INSTANCE.getServices().get(WorldInteractionTile.class);
         final Tile tile = interaction.getSelection();
-        if (tile != null && tile.getGroup() != null)
+        if (tile != null)
         {
-            combo.setText(tile.getGroup());
+            combo.setText(mapGroup.getGroup(tile));
         }
         else if (groups.length > 0)
         {
@@ -118,9 +118,9 @@ public class GroupChooser extends AbstractDialog
         dialog.open();
 
         final Collection<String> values = new ArrayList<>();
-        for (final TileGroup group : mapGroup.getGroups())
+        for (final String group : mapGroup.getGroups())
         {
-            values.add(group.getName());
+            values.add(group);
         }
         if (!values.contains(TileGroupsConfig.REMOVE_GROUP_NAME))
         {

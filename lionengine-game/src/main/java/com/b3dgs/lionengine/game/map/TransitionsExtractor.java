@@ -54,7 +54,7 @@ public final class TransitionsExtractor
             final MapTile map = new MapTileGame();
             map.create(level, sheetsMedia);
 
-            final MapTileGroup mapGroup = new MapTileGroupModel(map);
+            final MapTileGroup mapGroup = new MapTileGroupModel();
             mapGroup.loadGroups(groupsMedia);
             map.addFeature(mapGroup);
             mapsSet.add(map);
@@ -133,10 +133,11 @@ public final class TransitionsExtractor
      */
     public static TileTransition getTransition(MapTile map, Tile tile)
     {
-        final String groupIn = tile.getGroup();
+        final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
+        final String groupIn = mapGroup.getGroup(tile);
         final Boolean[] bits = new Boolean[TileTransitionType.BITS];
-        final int tx = tile.getX() / tile.getWidth();
-        final int ty = tile.getY() / tile.getHeight();
+        final int tx = tile.getInTileX();
+        final int ty = tile.getInTileY();
         String groupOut = null;
         int i = 0;
         for (int v = ty + 1; v >= ty - 1; v--)
@@ -146,14 +147,14 @@ public final class TransitionsExtractor
                 final Tile neighbor = map.getTile(h, v);
                 if (neighbor != null)
                 {
-                    final String groupNeighbor = neighbor.getGroup();
+                    final String groupNeighbor = mapGroup.getGroup(neighbor);
                     if (groupOut == null && !groupNeighbor.equals(groupIn))
                     {
                         groupOut = groupNeighbor;
                     }
                     if (groupOut == null || groupNeighbor.equals(groupOut) || groupNeighbor.equals(groupIn))
                     {
-                        bits[i] = Boolean.valueOf(CollisionGroup.same(neighbor.getGroup(), tile.getGroup()));
+                        bits[i] = Boolean.valueOf(CollisionGroup.same(groupNeighbor, groupIn));
                     }
                     else
                     {
