@@ -66,6 +66,14 @@ public interface MapTileGroup extends MapTileFeature
      * @param tile The tile reference.
      * @return The associated group name.
      */
+    String getGroup(TileRef tile);
+
+    /**
+     * Get the group name of the tile.
+     * 
+     * @param tile The tile reference.
+     * @return The associated group name.
+     */
     String getGroup(Tile tile);
 
     /**

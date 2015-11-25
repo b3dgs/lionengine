@@ -112,14 +112,19 @@ public class MapTileGroupModel implements MapTileGroup
     }
 
     @Override
-    public String getGroup(Tile tile)
+    public String getGroup(TileRef tile)
     {
-        final TileRef ref = new TileRef(tile);
-        if (tilesGroup.containsKey(ref))
+        if (tilesGroup.containsKey(tile))
         {
-            return tilesGroup.get(ref);
+            return tilesGroup.get(tile);
         }
         return NO_GROUP_NAME;
+    }
+
+    @Override
+    public String getGroup(Tile tile)
+    {
+        return getGroup(new TileRef(tile));
     }
 
     @Override

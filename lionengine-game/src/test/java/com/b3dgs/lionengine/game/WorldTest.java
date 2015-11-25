@@ -41,6 +41,7 @@ public class WorldTest
     @BeforeClass
     public static void setUp()
     {
+        Medias.setLoadFromJar(WorldTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
     }
 
@@ -50,6 +51,7 @@ public class WorldTest
     @AfterClass
     public static void cleanUp()
     {
+        Medias.setLoadFromJar(null);
         Graphics.setFactoryGraphic(null);
     }
 

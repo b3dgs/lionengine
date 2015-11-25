@@ -112,15 +112,25 @@ public final class TransitionsExtractor
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
                 {
-                    final TileTransition transition = getTransition(map, tile);
-                    if (!TileTransitionType.NONE.equals(transition.getType()))
-                    {
-                        final Collection<TileRef> tiles = getTiles(transitions, transition);
-                        tiles.add(new TileRef(tile));
-                    }
+                    checkTileTransition(transitions, map, tile);
                 }
             }
         }
+        return transitions;
+    }
+
+    /**
+     * Get the tile transitions on both sides.
+     * 
+     * @param map The map reference.
+     * @param tile The current tile.
+     * @return The tile transition.
+     */
+    public static TileTransition[] getTransition(MapTile map, Tile tile)
+    {
+        final TileTransition[] transitions = new TileTransition[2];
+        transitions[0] = getTransition(map, tile, false);
+        transitions[1] = getTransition(map, tile, true);
         return transitions;
     }
 
@@ -129,16 +139,17 @@ public final class TransitionsExtractor
      * 
      * @param map The map reference.
      * @param tile The current tile.
+     * @param inverted <code>true</code> to get inverted transition, <code>false</code> for normal.
      * @return The tile transition.
      */
-    public static TileTransition getTransition(MapTile map, Tile tile)
+    public static TileTransition getTransition(MapTile map, Tile tile, boolean inverted)
     {
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
-        final String groupIn = mapGroup.getGroup(tile);
-        final Boolean[] bits = new Boolean[TileTransitionType.BITS];
+        final String groupA = mapGroup.getGroup(tile);
+        final Boolean[] bytes = new Boolean[TileTransitionType.BITS];
         final int tx = tile.getInTileX();
         final int ty = tile.getInTileY();
-        String groupOut = null;
+        String groupB = null;
         int i = 0;
         for (int v = ty + 1; v >= ty - 1; v--)
         {
@@ -148,28 +159,96 @@ public final class TransitionsExtractor
                 if (neighbor != null)
                 {
                     final String groupNeighbor = mapGroup.getGroup(neighbor);
-                    if (groupOut == null && !groupNeighbor.equals(groupIn))
+                    if (groupB == null && !groupNeighbor.equals(groupA))
                     {
-                        groupOut = groupNeighbor;
+                        groupB = groupNeighbor;
                     }
-                    if (groupOut == null || groupNeighbor.equals(groupOut) || groupNeighbor.equals(groupIn))
+                    if (groupB == null || groupNeighbor.equals(groupB) || groupNeighbor.equals(groupA))
                     {
-                        bits[i] = Boolean.valueOf(CollisionGroup.same(groupNeighbor, groupIn));
+                        bytes[i] = Boolean.valueOf(CollisionGroup.same(groupNeighbor, groupA));
                     }
                     else
                     {
-                        return new TileTransition(TileTransitionType.NONE, groupIn, groupOut);
+                        bytes[i] = null;
                     }
                 }
                 i++;
             }
         }
-        final TileTransitionType type = TileTransitionType.from(bits);
-        if (groupOut == null)
+        return getTransition(groupA, groupB, bytes, inverted);
+    }
+
+    /**
+     * Find tile transition and add it to the collection.
+     * 
+     * @param transitions The transitions collection.
+     * @param map The map reference.
+     * @param tile The tile to check.
+     */
+    private static void checkTileTransition(Map<TileTransition, Collection<TileRef>> transitions,
+                                            MapTile map,
+                                            Tile tile)
+    {
+        final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
+        final TileRef ref = new TileRef(tile);
+        final String groupRef = mapGroup.getGroup(ref);
+        for (final TileTransition transition : getTransition(map, tile))
         {
-            groupOut = groupIn;
+            if (!TileTransitionType.NONE.equals(transition.getType()) && groupRef.equals(transition.getGroupOut()))
+            {
+                final Collection<TileRef> tiles = getTiles(transitions, transition);
+                tiles.add(ref);
+            }
         }
-        return new TileTransition(type, groupIn, groupOut);
+    }
+
+    /**
+     * Get the transition type from its bytes array.
+     * 
+     * @param bytes The bytes array.
+     * @param inverted <code>true</code> to get inverted transition, <code>false</code> for normal.
+     * @return The transition type.
+     */
+    private static TileTransitionType getTransitionType(Boolean[] bytes, boolean inverted)
+    {
+        if (inverted)
+        {
+            final Boolean[] bitsInv = new Boolean[bytes.length];
+            for (int j = 0; j < bitsInv.length; j++)
+            {
+                bitsInv[j] = bytes[bytes.length - j - 1];
+            }
+            return TileTransitionType.from(bitsInv);
+        }
+        return TileTransitionType.from(bytes);
+    }
+
+    /**
+     * Get the tile transition from raw data.
+     * 
+     * @param groupA The first group.
+     * @param groupB The second group.
+     * @param bytes The bytes array.
+     * @param inverted <code>true</code> to get inverted transition, <code>false</code> for normal.
+     * @return The tile transition.
+     */
+    private static TileTransition getTransition(String groupA, String groupB, Boolean[] bytes, boolean inverted)
+    {
+        final TileTransitionType type = getTransitionType(bytes, inverted);
+        final String group;
+        if (groupB == null)
+        {
+            group = groupA;
+        }
+        else
+        {
+            group = groupB;
+        }
+        if (inverted)
+        {
+            return new TileTransition(type, group, groupA);
+        }
+        return new TileTransition(type, groupA, group);
     }
 
     /**

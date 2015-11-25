@@ -162,4 +162,51 @@ public class TileGame implements Tile
     {
         return features.contains(feature);
     }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + height;
+        result = prime * result + inTileX;
+        result = prime * result + inTileY;
+        result = prime * result + number;
+        result = prime * result + sheet.hashCode();
+        result = prime * result + width;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(y);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || !(obj instanceof TileGame))
+        {
+            return false;
+        }
+        final TileGame other = (TileGame) obj;
+        if (!sheet.equals(other.sheet)
+            || number != other.number
+            || width != other.width
+            || height != other.height
+            || inTileX != other.inTileX
+            || inTileY != other.inTileY)
+        {
+            return false;
+        }
+        return true;
+    }
 }

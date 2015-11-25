@@ -17,8 +17,11 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import java.util.Collection;
+
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.game.tile.TileTransition;
 
 /**
@@ -52,5 +55,22 @@ public interface MapTileTransition extends MapTileFeature
      * @param group The transition with this group.
      * @return The tile transition with the group.
      */
+    TileTransition getTransition(TileRef tile, String group);
+
+    /**
+     * Get the tile transition.
+     * 
+     * @param tile The tile reference.
+     * @param group The transition with this group.
+     * @return The tile transition with the group.
+     */
     TileTransition getTransition(Tile tile, String group);
+
+    /**
+     * Get the tiles associated to the transition.
+     * 
+     * @param transition The transition reference.
+     * @return The associated tiles.
+     */
+    Collection<TileRef> getTiles(TileTransition transition);
 }

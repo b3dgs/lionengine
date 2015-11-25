@@ -91,11 +91,11 @@ public class TileTransition
         result = prime * result;
         if (groupIn != null)
         {
-            result += groupIn.hashCode();
+            result = prime * result + groupIn.hashCode();
         }
         if (groupOut != null)
         {
-            result += groupOut.hashCode();
+            result = prime * result + groupOut.hashCode();
         }
         result = prime * result + type.hashCode();
         return result;
@@ -114,12 +114,9 @@ public class TileTransition
         }
         final TileTransition other = (TileTransition) obj;
 
-        final boolean symetric = CollisionGroup.same(groupIn, other.groupIn)
-                                 && CollisionGroup.same(groupOut, other.groupOut);
+        final boolean sameGroups = CollisionGroup.same(groupIn, other.groupIn)
+                                   && CollisionGroup.same(groupOut, other.groupOut);
 
-        final boolean asymetric = CollisionGroup.same(groupIn, other.groupOut)
-                                  && CollisionGroup.same(groupOut, other.groupIn);
-
-        return (symetric || asymetric) && type.equals(other.type);
+        return sameGroups && type.equals(other.type);
     }
 }

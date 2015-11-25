@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.TransitionsExtractor;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileTransitionType;
 
 /**
  * Game loop designed to handle our little world.
@@ -92,14 +93,17 @@ class Scene extends Sequence
         {
             final int x = tx * map.getTileWidth();
             final int y = ty * map.getTileHeight();
+            final TileTransitionType typeIn = TransitionsExtractor.getTransition(map, tile, false).getType();
+            final TileTransitionType typeOut = TransitionsExtractor.getTransition(map, tile, true).getType();
 
             text.drawRect(g, ColorRgba.GREEN, x, y, map.getTileWidth(), map.getTileHeight());
             text.setColor(ColorRgba.YELLOW);
-            text.draw(g, x + 20, y + 25, "Tile number: " + tile.getNumber());
-            text.draw(g, x + 20, y + 15, "X = " + tx + " | Y = " + ty);
-            text.draw(g, x + 20, y + 5, "RX = " + cursor.getX() + " | RY = " + cursor.getY());
-            text.draw(g, x + 20, y - 5, "Group: " + mapGroup.getGroup(tile));
-            text.draw(g, x + 20, y - 15, "Transition: " + TransitionsExtractor.getTransition(map, tile).getType());
+            text.draw(g, x + 20, y + 35, "Tile number: " + tile.getNumber());
+            text.draw(g, x + 20, y + 25, "X = " + tx + " | Y = " + ty);
+            text.draw(g, x + 20, y + 15, "RX = " + cursor.getX() + " | RY = " + cursor.getY());
+            text.draw(g, x + 20, y + 5, "Group: " + mapGroup.getGroup(tile));
+            text.draw(g, x + 20, y - 5, "Transition In: " + typeIn);
+            text.draw(g, x + 20, y - 15, "Transition Out: " + typeOut);
         }
     }
 
