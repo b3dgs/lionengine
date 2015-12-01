@@ -17,10 +17,14 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -50,6 +54,8 @@ public class MapTileTransitionModel implements MapTileTransition
     private final MapTileGroup mapGroup;
     /** Tile as key. */
     private final Map<TileRef, Collection<TileTransition>> tiles = new HashMap<TileRef, Collection<TileTransition>>();
+    /** Groups transitive transitions. */
+    private final Map<GroupTransition, Collection<GroupTransition>> transitives;
     /** Transitions as key. */
     private Map<TileTransition, Collection<TileRef>> transitions;
 
@@ -71,8 +77,100 @@ public class MapTileTransitionModel implements MapTileTransition
     public MapTileTransitionModel(Services services)
     {
         Check.notNull(services);
+        transitives = new HashMap<GroupTransition, Collection<GroupTransition>>();
         map = services.get(MapTile.class);
         mapGroup = map.getFeature(MapTileGroup.class);
+    }
+
+    /**
+     * Check if tile is a center tile in order to update directly its neighbor properly.
+     * 
+     * @param tile The tile reference.
+     */
+    private void checkCenterTile(Tile tile)
+    {
+        final String group = mapGroup.getGroup(tile);
+        final TileTransition transition = getTransition(tile, group);
+        if (TileTransitionType.CENTER.equals(transition.getType()))
+        {
+            final int tx = tile.getInTileX();
+            final int ty = tile.getInTileY();
+            for (int v = ty + 1; v >= ty - 1; v--)
+            {
+                for (int h = tx - 1; h <= tx + 1; h++)
+                {
+                    final Tile neighbor = map.getTile(h, v);
+                    checkCenterTile(tile, neighbor);
+                }
+            }
+        }
+        checkTransitives(tile);
+    }
+
+    /**
+     * Check transitive tiles.
+     * 
+     * @param tile The tile reference.
+     */
+    private void checkTransitives(Tile tile)
+    {
+        final int tx = tile.getInTileX();
+        final int ty = tile.getInTileY();
+        for (int v = ty + 2; v >= ty - 2; v--)
+        {
+            checkTransitives(tile, tx - 2, v);
+            checkTransitives(tile, tx + 2, v);
+        }
+        for (int h = tx - 2; h <= tx + 2; h++)
+        {
+            checkTransitives(tile, h, ty - 2);
+            checkTransitives(tile, h, ty + 2);
+        }
+    }
+
+    /**
+     * Check transitive tiles.
+     * 
+     * @param tile The tile reference.
+     * @param tx The horizontal index neighbor.
+     * @param ty The vertical index neighbor.
+     */
+    private void checkTransitives(Tile tile, int tx, int ty)
+    {
+        final Tile neighbor = map.getTile(tx, ty);
+        final String group = mapGroup.getGroup(neighbor);
+        if (neighbor != null)
+        {
+            for (final GroupTransition current : getTransitives(mapGroup.getGroup(tile), mapGroup.getGroup(neighbor)))
+            {
+                for (final TileRef ref : mapGroup.getGroup(current.getGroupOut()))
+                {
+                    if (!group.equals(current.getGroupOut())
+                        && TileTransitionType.CENTER.equals(getTransition(ref, current.getGroupOut()).getType()))
+                    {
+                        map.setTile(map.createTile(ref.getSheet(), ref.getNumber(), neighbor.getX(), neighbor.getY()));
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * Check if tile is a center tile in order to update directly its neighbor properly.
+     * 
+     * @param tile The tile reference.
+     * @param neighbor The tile neighbor reference.
+     */
+    private void checkCenterTile(Tile tile, Tile neighbor)
+    {
+        final String group = mapGroup.getGroup(tile);
+        if (neighbor != null
+            && !isTransitionInverted(neighbor, group)
+            && !TileTransitionType.CENTER.equals(getTransition(neighbor, group).getType()))
+        {
+            map.setTile(map.createTile(tile.getSheet(), tile.getNumber(), neighbor.getX(), neighbor.getY()));
+        }
     }
 
     /**
@@ -134,9 +232,9 @@ public class MapTileTransitionModel implements MapTileTransition
         final Collection<Tile> todo = new HashSet<Tile>();
         final int tx = tile.getInTileX();
         final int ty = tile.getInTileY();
-        for (int v = ty + 1; v >= ty - 1; v--)
+        for (int v = ty + 2; v >= ty - 2; v--)
         {
-            for (int h = tx - 1; h <= tx + 1; h++)
+            for (int h = tx - 2; h <= tx + 2; h++)
             {
                 final Tile neighbor = map.getTile(h, v);
                 if (neighbor != null && !checked.contains(neighbor))
@@ -205,6 +303,20 @@ public class MapTileTransitionModel implements MapTileTransition
         }
     }
 
+    /**
+     * Check if tile is an inverted transition compared to the group.
+     * 
+     * @param tile The tile to check.
+     * @param group The group to check with.
+     * @return <code>true</code> if transition is inverted, <code>false</code> else.
+     */
+    private boolean isTransitionInverted(Tile tile, String group)
+    {
+        final TileTransition neighborTransition = TransitionsExtractor.getTransition(map, tile, false);
+        final Iterator<TileRef> iterator = getTiles(neighborTransition).iterator();
+        return iterator.hasNext() && TileTransitionType.CENTER.equals(getTransition(iterator.next(), group).getType());
+    }
+
     /*
      * MapTileTransition
      */
@@ -220,6 +332,7 @@ public class MapTileTransitionModel implements MapTileTransition
     {
         transitions = TileTransitionsConfig.imports(configTransitions);
         tiles.clear();
+        transitives.clear();
 
         for (final Entry<TileTransition, Collection<TileRef>> entry : transitions.entrySet())
         {
@@ -233,6 +346,106 @@ public class MapTileTransitionModel implements MapTileTransition
                 tiles.get(tileRef).add(transition);
             }
         }
+
+        for (final String groupIn : mapGroup.getGroups())
+        {
+            for (final String groupOut : mapGroup.getGroups())
+            {
+                if (!groupIn.equals(groupOut))
+                {
+                    findTransitives(groupIn, groupOut);
+                }
+            }
+        }
+    }
+
+    /**
+     * Find transitive groups.
+     * 
+     * @param groupIn The first group.
+     * @param groupOut The last group.
+     */
+    private void findTransitives(String groupIn, String groupOut)
+    {
+        final GroupTransition groupTransition = new GroupTransition(groupIn, groupOut);
+        if (!transitives.containsKey(groupTransition))
+        {
+            transitives.put(groupTransition, new ArrayList<GroupTransition>());
+        }
+
+        final Collection<GroupTransition> localChecked = new HashSet<GroupTransition>();
+        final Collection<GroupTransition> found = transitives.get(groupTransition);
+
+        final Deque<GroupTransition> collect = new LinkedList<GroupTransition>();
+        checkTransitive(groupIn, groupIn, groupOut, localChecked, collect, true);
+
+        found.addAll(collect);
+
+        localChecked.clear();
+    }
+
+    /**
+     * Check transitive groups.
+     * 
+     * @param groupStart The first group.
+     * @param groupIn The local group in.
+     * @param groupEnd The last group.
+     * @param localChecked Current checked transitions.
+     * @param found Transitions found.
+     * @param first <code>true</code> if first pass, <code>false</code> else.
+     * @return <code>true</code> if transitive valid, <code>false</code> else.
+     */
+    private boolean checkTransitive(String groupStart,
+                                    String groupIn,
+                                    String groupEnd,
+                                    Collection<GroupTransition> localChecked,
+                                    Deque<GroupTransition> found,
+                                    boolean first)
+    {
+        boolean ok = false;
+        for (final String groupOut : mapGroup.getGroups())
+        {
+            if (first && groupIn.equals(groupStart) || !first && !groupIn.equals(groupOut))
+            {
+                final GroupTransition transitive = new GroupTransition(groupIn, groupOut);
+                if (!localChecked.contains(transitive))
+                {
+                    localChecked.add(transitive);
+
+                    int count = 0;
+                    for (final TileTransition transition : transitions.keySet())
+                    {
+                        if (transition.getType().isArea()
+                            && !groupOut.equals(groupStart)
+                            && !groupIn.equals(groupEnd)
+                            && groupIn.equals(transition.getGroupIn())
+                            && groupOut.equals(transition.getGroupOut()))
+                        {
+                            count++;
+                        }
+                    }
+                    final boolean nextFirst;
+                    if (count >= 8 && (found.size() == 0 || found.getLast().getGroupOut().equals(groupIn)))
+                    {
+                        found.add(transitive);
+                        nextFirst = false;
+                    }
+                    else
+                    {
+                        nextFirst = first;
+                    }
+                    if (groupOut.equals(groupEnd))
+                    {
+                        ok = true;
+                    }
+                    else
+                    {
+                        checkTransitive(groupStart, groupOut, groupEnd, localChecked, found, nextFirst);
+                    }
+                }
+            }
+        }
+        return ok;
     }
 
     @Override
@@ -241,11 +454,13 @@ public class MapTileTransitionModel implements MapTileTransition
         final Collection<Tile> checked = new HashSet<Tile>();
         checked.add(tile);
 
+        checkCenterTile(tile);
+
         updateTile(tile);
         resolve(checked, tile);
 
         final Collection<Tile> fixed = new HashSet<Tile>();
-        fixNeigbor(tile, tile, fixed, 2);
+        fixNeigbor(tile, tile, fixed, 3);
         for (final Tile ref : checked)
         {
             fix(tile, ref, fixed);
@@ -276,6 +491,17 @@ public class MapTileTransitionModel implements MapTileTransition
     public TileTransition getTransition(Tile tile, String group)
     {
         return getTransition(new TileRef(tile), group);
+    }
+
+    @Override
+    public Collection<GroupTransition> getTransitives(String groupIn, String groupOut)
+    {
+        final GroupTransition transition = new GroupTransition(groupIn, groupOut);
+        if (!transitives.containsKey(transition))
+        {
+            return Collections.emptyList();
+        }
+        return transitives.get(transition);
     }
 
     @Override

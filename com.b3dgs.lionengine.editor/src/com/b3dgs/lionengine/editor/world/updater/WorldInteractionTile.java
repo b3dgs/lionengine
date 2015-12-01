@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor.world.updater;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -58,13 +57,10 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.MapTileTransition;
-import com.b3dgs.lionengine.game.map.TransitionsExtractor;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
-import com.b3dgs.lionengine.game.tile.TileTransition;
-import com.b3dgs.lionengine.game.tile.TileTransitionType;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Line;
 import com.b3dgs.lionengine.geom.Point;
@@ -290,69 +286,15 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void updateTileEdition(Tile tile)
     {
-        final TileRef paletteTile = SheetsPaletteModel.INSTANCE.getSelectedTile();
-        if (tile != null && paletteTile != null)
+        final TileRef palette = SheetsPaletteModel.INSTANCE.getSelectedTile();
+        if (tile != null && palette != null)
         {
-            final Tile newTile = map.createTile(paletteTile.getSheet(),
-                                                paletteTile.getNumber(),
-                                                tile.getX(),
-                                                tile.getY());
+            final Tile newTile = map.createTile(palette.getSheet(), palette.getNumber(), tile.getX(), tile.getY());
             map.setTile(newTile);
 
             final MapTileTransition mapTileTransition = map.getFeature(MapTileTransition.class);
-            checkCenterTile(mapTileTransition, newTile, paletteTile);
             mapTileTransition.resolve(newTile);
         }
-    }
-
-    /**
-     * Check if tile is a center tile in order to update directly its neighbor properly.
-     * 
-     * @param mapTransition Map tile transition feature reference.
-     * @param tile The pointed tile.
-     * @param paletteTile The palette tile.
-     */
-    private void checkCenterTile(MapTileTransition mapTransition, Tile tile, TileRef paletteTile)
-    {
-        final String group = mapGroup.getGroup(paletteTile);
-        final TileTransition transition = mapTransition.getTransition(tile, group);
-        if (TileTransitionType.CENTER.equals(transition.getType()))
-        {
-            final int tx = tile.getInTileX();
-            final int ty = tile.getInTileY();
-            for (int v = ty + 1; v >= ty - 1; v--)
-            {
-                for (int h = tx - 1; h <= tx + 1; h++)
-                {
-                    final Tile neighbor = map.getTile(h, v);
-                    if (neighbor != null
-                        && !isTransitionInverted(mapTransition, neighbor, group)
-                        && !TileTransitionType.CENTER.equals(mapTransition.getTransition(neighbor, group).getType()))
-                    {
-                        map.setTile(map.createTile(paletteTile.getSheet(),
-                                                   paletteTile.getNumber(),
-                                                   neighbor.getX(),
-                                                   neighbor.getY()));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Check if tile is an inverted transition compared to the group.
-     * 
-     * @param mapTransition Map tile transition feature reference.
-     * @param tile The tile to check.
-     * @param group The group to check with.
-     * @return <code>true</code> if transition is inverted, <code>false</code> else.
-     */
-    private boolean isTransitionInverted(MapTileTransition mapTransition, Tile tile, String group)
-    {
-        final TileTransition neighborTransition = TransitionsExtractor.getTransition(map, tile, false);
-        final Iterator<TileRef> iterator = mapTransition.getTiles(neighborTransition).iterator();
-        return iterator.hasNext()
-               && TileTransitionType.CENTER.equals(mapTransition.getTransition(iterator.next(), group).getType());
     }
 
     /**

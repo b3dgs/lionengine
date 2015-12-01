@@ -67,6 +67,15 @@ public interface MapTileTransition extends MapTileFeature
     TileTransition getTransition(Tile tile, String group);
 
     /**
+     * Get the transitive groups list to reach a group from another.
+     * 
+     * @param groupIn The first group.
+     * @param groupOut The last group.
+     * @return The transitive groups.
+     */
+    Collection<GroupTransition> getTransitives(String groupIn, String groupOut);
+
+    /**
      * Get the tiles associated to the transition.
      * 
      * @param transition The transition reference.

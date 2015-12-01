@@ -49,7 +49,7 @@ public enum TileTransitionType
      * [1][1][1]
      * </pre>
      */
-    TOP(null, FALSE, null, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+    TOP(true, null, FALSE, null, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
 
     /**
      * Transition on bottom.
@@ -60,7 +60,7 @@ public enum TileTransitionType
      * [0][2][0]
      * </pre>
      */
-    BOTTOM(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, null, FALSE, null),
+    BOTTOM(true, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, null, FALSE, null),
 
     /**
      * Transition on left.
@@ -71,7 +71,7 @@ public enum TileTransitionType
      * [0][1][1]
      * </pre>
      */
-    LEFT(null, TRUE, TRUE, FALSE, TRUE, TRUE, null, TRUE, TRUE),
+    LEFT(true, null, TRUE, TRUE, FALSE, TRUE, TRUE, null, TRUE, TRUE),
 
     /**
      * Transition on right.
@@ -82,7 +82,7 @@ public enum TileTransitionType
      * [1][1][0]
      * </pre>
      */
-    RIGHT(TRUE, TRUE, null, TRUE, TRUE, FALSE, TRUE, TRUE, null),
+    RIGHT(true, TRUE, TRUE, null, TRUE, TRUE, FALSE, TRUE, TRUE, null),
 
     /*
      * Borders
@@ -97,7 +97,7 @@ public enum TileTransitionType
      * [0][1][1]
      * </pre>
      */
-    TOP_LEFT(null, FALSE, null, FALSE, TRUE, TRUE, null, TRUE, TRUE),
+    TOP_LEFT(true, null, FALSE, null, FALSE, TRUE, TRUE, null, TRUE, TRUE),
 
     /**
      * Transition on top-right.
@@ -108,7 +108,7 @@ public enum TileTransitionType
      * [1][1][0]
      * </pre>
      */
-    TOP_RIGHT(null, FALSE, null, TRUE, TRUE, FALSE, TRUE, TRUE, null),
+    TOP_RIGHT(true, null, FALSE, null, TRUE, TRUE, FALSE, TRUE, TRUE, null),
 
     /**
      * Transition on bottom-left.
@@ -119,7 +119,7 @@ public enum TileTransitionType
      * [0][2][0]
      * </pre>
      */
-    BOTTOM_LEFT(null, TRUE, TRUE, FALSE, TRUE, TRUE, null, FALSE, null),
+    BOTTOM_LEFT(true, null, TRUE, TRUE, FALSE, TRUE, TRUE, null, FALSE, null),
 
     /**
      * Transition on bottom-right.
@@ -130,7 +130,7 @@ public enum TileTransitionType
      * [0][2][0]
      * </pre>
      */
-    BOTTOM_RIGHT(TRUE, TRUE, null, TRUE, TRUE, FALSE, null, FALSE, null),
+    BOTTOM_RIGHT(true, TRUE, TRUE, null, TRUE, TRUE, FALSE, null, FALSE, null),
 
     /*
      * Corners
@@ -145,7 +145,7 @@ public enum TileTransitionType
      * [1][1][1]
      * </pre>
      */
-    CORNER_TOP_LEFT(FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+    CORNER_TOP_LEFT(false, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
 
     /**
      * Transition on corner top-right.
@@ -156,7 +156,7 @@ public enum TileTransitionType
      * [1][1][1]
      * </pre>
      */
-    CORNER_TOP_RIGHT(TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+    CORNER_TOP_RIGHT(false, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
 
     /**
      * Transition on corner down-left.
@@ -167,7 +167,7 @@ public enum TileTransitionType
      * [2][1][1]
      * </pre>
      */
-    CORNER_BOTTOM_LEFT(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE),
+    CORNER_BOTTOM_LEFT(false, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE),
 
     /**
      * Transition on corner down-right.
@@ -178,7 +178,7 @@ public enum TileTransitionType
      * [1][1][2]
      * </pre>
      */
-    CORNER_BOTTOM_RIGHT(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE),
+    CORNER_BOTTOM_RIGHT(false, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE),
 
     /*
      * Corner inside
@@ -193,7 +193,7 @@ public enum TileTransitionType
      * [1][1][2]
      * </pre>
      */
-    CORNER_IN_TOP_LEFT_BOTTOM_RIGHT(FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE),
+    CORNER_IN_TOP_LEFT_BOTTOM_RIGHT(false, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE),
 
     /**
      * Transition on corner in top-right, bottom-left.
@@ -204,7 +204,7 @@ public enum TileTransitionType
      * [2][1][1]
      * </pre>
      */
-    CORNER_IN_TOP_RIGHT_BOTTOM_LEFT(TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE),
+    CORNER_IN_TOP_RIGHT_BOTTOM_LEFT(false, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE),
 
     /*
      * Corners outside
@@ -219,7 +219,7 @@ public enum TileTransitionType
      * [1][2][2]
      * </pre>
      */
-    CORNER_OUT_TOP_LEFT_BOTTOM_RIGHT(FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE),
+    CORNER_OUT_TOP_LEFT_BOTTOM_RIGHT(false, FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE),
 
     /**
      * Transition on corner out top-left, bottom-right.
@@ -230,7 +230,7 @@ public enum TileTransitionType
      * [2][2][1]
      * </pre>
      */
-    CORNER_OUT_TOP_RIGHT_BOTTOM_LEFT(TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE),
+    CORNER_OUT_TOP_RIGHT_BOTTOM_LEFT(false, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE),
 
     /*
      * Horizontal - Vertical Middle
@@ -245,7 +245,7 @@ public enum TileTransitionType
      * [2][1][2]
      * </pre>
      */
-    TOP_MIDDLE(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE),
+    TOP_MIDDLE(false, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE),
 
     /**
      * Transition on bottom middle.
@@ -256,7 +256,7 @@ public enum TileTransitionType
      * [2][2][2]
      * </pre>
      */
-    BOTTOM_MIDDLE(FALSE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE),
+    BOTTOM_MIDDLE(false, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE),
 
     /**
      * Transition on left middle.
@@ -267,7 +267,7 @@ public enum TileTransitionType
      * [2][2][2]
      * </pre>
      */
-    LEFT_MIDDLE(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE),
+    LEFT_MIDDLE(false, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE),
 
     /**
      * Transition on right middle.
@@ -278,7 +278,7 @@ public enum TileTransitionType
      * [2][2][2]
      * </pre>
      */
-    RIGHT_MIDDLE(FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE),
+    RIGHT_MIDDLE(false, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE),
 
     /*
      * Axis
@@ -293,7 +293,7 @@ public enum TileTransitionType
      * [0][1][0]
      * </pre>
      */
-    VERTICAL(null, TRUE, null, FALSE, TRUE, FALSE, null, TRUE, null),
+    VERTICAL(false, null, TRUE, null, FALSE, TRUE, FALSE, null, TRUE, null),
 
     /**
      * Horizontal.
@@ -304,7 +304,7 @@ public enum TileTransitionType
      * [0][2][0]
      * </pre>
      */
-    HORIZONTAL(null, FALSE, null, TRUE, TRUE, TRUE, null, FALSE, null),
+    HORIZONTAL(false, null, FALSE, null, TRUE, TRUE, TRUE, null, FALSE, null),
 
     /**
      * Angle top left.
@@ -315,7 +315,7 @@ public enum TileTransitionType
      * [2][1][2]
      * </pre>
      */
-    ANGLE_TOP_LEFT(FALSE, FALSE, null, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE),
+    ANGLE_TOP_LEFT(false, FALSE, FALSE, null, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE),
 
     /**
      * Angle top right.
@@ -326,7 +326,7 @@ public enum TileTransitionType
      * [2][1][2]
      * </pre>
      */
-    ANGLE_TOP_RIGHT(FALSE, FALSE, null, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
+    ANGLE_TOP_RIGHT(false, FALSE, FALSE, null, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
 
     /**
      * Angle down left.
@@ -337,7 +337,7 @@ public enum TileTransitionType
      * [2][2][0]
      * </pre>
      */
-    ANGLE_DOWN_LEFT(FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, null),
+    ANGLE_DOWN_LEFT(false, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, null),
 
     /**
      * Angle down right.
@@ -348,7 +348,7 @@ public enum TileTransitionType
      * [2][2][0]
      * </pre>
      */
-    ANGLE_DOWN_RIGHT(FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, null),
+    ANGLE_DOWN_RIGHT(false, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, null),
 
     /**
      * Diagonal top left.
@@ -359,7 +359,7 @@ public enum TileTransitionType
      * [0][1][2]
      * </pre>
      */
-    DIAGONAL_TOP_LEFT(FALSE, FALSE, null, FALSE, TRUE, TRUE, null, TRUE, FALSE),
+    DIAGONAL_TOP_LEFT(false, FALSE, FALSE, null, FALSE, TRUE, TRUE, null, TRUE, FALSE),
 
     /**
      * Diagonal top right.
@@ -370,7 +370,7 @@ public enum TileTransitionType
      * [2][1][0]
      * </pre>
      */
-    DIAGONAL_TOP_RIGHT(null, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, null),
+    DIAGONAL_TOP_RIGHT(false, null, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, null),
 
     /**
      * Diagonal bottom left.
@@ -381,7 +381,7 @@ public enum TileTransitionType
      * [2][2][0]
      * </pre>
      */
-    DIAGONAL_BOTTOM_LEFT(null, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, null),
+    DIAGONAL_BOTTOM_LEFT(false, null, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, null),
 
     /**
      * Diagonal bottom right.
@@ -392,7 +392,7 @@ public enum TileTransitionType
      * [0][2][2]
      * </pre>
      */
-    DIAGONAL_BOTTOM_RIGHT(FALSE, TRUE, null, TRUE, TRUE, FALSE, null, FALSE, FALSE),
+    DIAGONAL_BOTTOM_RIGHT(false, FALSE, TRUE, null, TRUE, TRUE, FALSE, null, FALSE, FALSE),
 
     /**
      * No transition, center part.
@@ -403,10 +403,10 @@ public enum TileTransitionType
      * [1][1][1]
      * </pre>
      */
-    CENTER(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+    CENTER(false, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
 
     /** None. */
-    NONE;
+    NONE(false);
 
     /** Bit numbers. */
     public static final int BITS = 9;
@@ -451,6 +451,27 @@ public enum TileTransitionType
     }
 
     /**
+     * Get the transition type from its bytes array.
+     * 
+     * @param bytes The bytes array.
+     * @param inverted <code>true</code> to get inverted transition, <code>false</code> for normal.
+     * @return The transition type.
+     */
+    public static TileTransitionType from(Boolean[] bytes, boolean inverted)
+    {
+        if (inverted)
+        {
+            final Boolean[] bitsInv = new Boolean[bytes.length];
+            for (int j = 0; j < bitsInv.length; j++)
+            {
+                bitsInv[j] = bytes[bytes.length - j - 1];
+            }
+            return TileTransitionType.from(bitsInv);
+        }
+        return TileTransitionType.from(bytes);
+    }
+
+    /**
      * Check if equals, considering <code>null</code> as possible.
      * 
      * @param a The first boolean.
@@ -475,17 +496,21 @@ public enum TileTransitionType
         return equals;
     }
 
+    /** Area flag. */
+    private final boolean area;
     /** Bit table representing the transition. */
     private final Boolean[] table;
 
     /**
      * Create the tile transition.
      * 
+     * @param area <code>true</code> if represents the minimum transition area, <code>false</code> else.
      * @param bits Bits defining transition.
      * @throws LionEngineException If invalid bits number.
      */
-    TileTransitionType(Boolean... bits)
+    TileTransitionType(boolean area, Boolean... bits)
     {
+        this.area = area;
         table = bits;
     }
 
@@ -514,5 +539,25 @@ public enum TileTransitionType
             equals = true;
         }
         return equals;
+    }
+
+    /**
+     * Get the reversed transition type.
+     * 
+     * @return The reversed transition type.
+     */
+    public TileTransitionType reverse()
+    {
+        return from(table, true);
+    }
+
+    /**
+     * Check if transition is area.
+     * 
+     * @return <code>true</code> if area, <code>false</code> else.
+     */
+    public boolean isArea()
+    {
+        return area;
     }
 }

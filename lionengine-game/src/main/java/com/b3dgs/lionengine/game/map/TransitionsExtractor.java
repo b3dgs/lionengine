@@ -203,27 +203,6 @@ public final class TransitionsExtractor
     }
 
     /**
-     * Get the transition type from its bytes array.
-     * 
-     * @param bytes The bytes array.
-     * @param inverted <code>true</code> to get inverted transition, <code>false</code> for normal.
-     * @return The transition type.
-     */
-    private static TileTransitionType getTransitionType(Boolean[] bytes, boolean inverted)
-    {
-        if (inverted)
-        {
-            final Boolean[] bitsInv = new Boolean[bytes.length];
-            for (int j = 0; j < bitsInv.length; j++)
-            {
-                bitsInv[j] = bytes[bytes.length - j - 1];
-            }
-            return TileTransitionType.from(bitsInv);
-        }
-        return TileTransitionType.from(bytes);
-    }
-
-    /**
      * Get the tile transition from raw data.
      * 
      * @param groupA The first group.
@@ -234,7 +213,7 @@ public final class TransitionsExtractor
      */
     private static TileTransition getTransition(String groupA, String groupB, Boolean[] bytes, boolean inverted)
     {
-        final TileTransitionType type = getTransitionType(bytes, inverted);
+        final TileTransitionType type = TileTransitionType.from(bytes, inverted);
         final String group;
         if (groupB == null)
         {

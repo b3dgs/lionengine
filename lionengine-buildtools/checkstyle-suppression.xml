@@ -34,6 +34,7 @@
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="192"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="205, 210"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.PathFinderImpl" lines="287"/>
+    <suppress checks="[a-zA-Z0-9]*" files="com.b3dgs.lionengine.game.map.MapTileTransitionModel"/>
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ClientSocket" lines="63"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.network.ServerImpl"/>
