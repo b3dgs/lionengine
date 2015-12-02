@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map;
+package com.b3dgs.lionengine.game.map.transition;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,10 +26,12 @@ import java.util.Map.Entry;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileRef;
-import com.b3dgs.lionengine.game.tile.TileTransition;
-import com.b3dgs.lionengine.game.tile.TileTransitionType;
 
 /**
  * Find all map transition and extract them.
@@ -44,9 +46,9 @@ public final class TransitionsExtractor
      * @param groupsMedia The groups media.
      * @return The transitions found.
      */
-    public static Map<TileTransition, Collection<TileRef>> getTransitions(Media[] levels,
-                                                                          Media sheetsMedia,
-                                                                          Media groupsMedia)
+    public static Map<Transition, Collection<TileRef>> getTransitions(Media[] levels,
+                                                                      Media sheetsMedia,
+                                                                      Media groupsMedia)
     {
         final Collection<MapTile> mapsSet = new HashSet<MapTile>();
         for (final Media level : levels)
@@ -69,17 +71,17 @@ public final class TransitionsExtractor
      * @param maps The maps reference.
      * @return The transitions found.
      */
-    public static Map<TileTransition, Collection<TileRef>> getTransitions(MapTile... maps)
+    public static Map<Transition, Collection<TileRef>> getTransitions(MapTile... maps)
     {
-        final Map<TileTransition, Collection<TileRef>> transitions;
-        transitions = new HashMap<TileTransition, Collection<TileRef>>();
+        final Map<Transition, Collection<TileRef>> transitions;
+        transitions = new HashMap<Transition, Collection<TileRef>>();
 
         for (final MapTile map : maps)
         {
-            final Map<TileTransition, Collection<TileRef>> currents = getTransitions(map);
-            for (final Entry<TileTransition, Collection<TileRef>> entry : currents.entrySet())
+            final Map<Transition, Collection<TileRef>> currents = getTransitions(map);
+            for (final Entry<Transition, Collection<TileRef>> entry : currents.entrySet())
             {
-                final TileTransition transition = entry.getKey();
+                final Transition transition = entry.getKey();
                 final Collection<TileRef> tiles = entry.getValue();
                 if (transitions.containsKey(transition))
                 {
@@ -101,10 +103,10 @@ public final class TransitionsExtractor
      * @param map The map reference.
      * @return The transitions found.
      */
-    public static Map<TileTransition, Collection<TileRef>> getTransitions(MapTile map)
+    public static Map<Transition, Collection<TileRef>> getTransitions(MapTile map)
     {
-        final Map<TileTransition, Collection<TileRef>> transitions;
-        transitions = new HashMap<TileTransition, Collection<TileRef>>();
+        final Map<Transition, Collection<TileRef>> transitions;
+        transitions = new HashMap<Transition, Collection<TileRef>>();
         for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
         {
             for (int tx = 1; tx < map.getInTileWidth() - 1; tx++)
@@ -126,9 +128,9 @@ public final class TransitionsExtractor
      * @param tile The current tile.
      * @return The tile transition.
      */
-    public static TileTransition[] getTransition(MapTile map, Tile tile)
+    public static Transition[] getTransition(MapTile map, Tile tile)
     {
-        final TileTransition[] transitions = new TileTransition[2];
+        final Transition[] transitions = new Transition[2];
         transitions[0] = getTransition(map, tile, false);
         transitions[1] = getTransition(map, tile, true);
         return transitions;
@@ -142,11 +144,11 @@ public final class TransitionsExtractor
      * @param inverted <code>true</code> to get inverted transition, <code>false</code> for normal.
      * @return The tile transition.
      */
-    public static TileTransition getTransition(MapTile map, Tile tile, boolean inverted)
+    public static Transition getTransition(MapTile map, Tile tile, boolean inverted)
     {
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
         final String groupA = mapGroup.getGroup(tile);
-        final Boolean[] bytes = new Boolean[TileTransitionType.BITS];
+        final Boolean[] bytes = new Boolean[TransitionType.BITS];
         final int tx = tile.getInTileX();
         final int ty = tile.getInTileY();
         String groupB = null;
@@ -185,16 +187,14 @@ public final class TransitionsExtractor
      * @param map The map reference.
      * @param tile The tile to check.
      */
-    private static void checkTileTransition(Map<TileTransition, Collection<TileRef>> transitions,
-                                            MapTile map,
-                                            Tile tile)
+    private static void checkTileTransition(Map<Transition, Collection<TileRef>> transitions, MapTile map, Tile tile)
     {
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
         final TileRef ref = new TileRef(tile);
         final String groupRef = mapGroup.getGroup(ref);
-        for (final TileTransition transition : getTransition(map, tile))
+        for (final Transition transition : getTransition(map, tile))
         {
-            if (!TileTransitionType.NONE.equals(transition.getType()) && groupRef.equals(transition.getGroupOut()))
+            if (!TransitionType.NONE.equals(transition.getType()) && groupRef.equals(transition.getOut()))
             {
                 final Collection<TileRef> tiles = getTiles(transitions, transition);
                 tiles.add(ref);
@@ -211,9 +211,9 @@ public final class TransitionsExtractor
      * @param inverted <code>true</code> to get inverted transition, <code>false</code> for normal.
      * @return The tile transition.
      */
-    private static TileTransition getTransition(String groupA, String groupB, Boolean[] bytes, boolean inverted)
+    private static Transition getTransition(String groupA, String groupB, Boolean[] bytes, boolean inverted)
     {
-        final TileTransitionType type = TileTransitionType.from(bytes, inverted);
+        final TransitionType type = TransitionType.from(bytes, inverted);
         final String group;
         if (groupB == null)
         {
@@ -225,9 +225,9 @@ public final class TransitionsExtractor
         }
         if (inverted)
         {
-            return new TileTransition(type, group, groupA);
+            return new Transition(type, group, groupA);
         }
-        return new TileTransition(type, groupA, group);
+        return new Transition(type, groupA, group);
     }
 
     /**
@@ -237,8 +237,7 @@ public final class TransitionsExtractor
      * @param transition The transition type.
      * @return The associated tiles.
      */
-    private static Collection<TileRef> getTiles(Map<TileTransition, Collection<TileRef>> transitions,
-                                                TileTransition transition)
+    private static Collection<TileRef> getTiles(Map<Transition, Collection<TileRef>> transitions, Transition transition)
     {
         if (!transitions.containsKey(transition))
         {

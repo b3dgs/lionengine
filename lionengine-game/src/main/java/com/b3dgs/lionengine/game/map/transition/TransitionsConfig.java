@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.tile;
+package com.b3dgs.lionengine.game.map.transition;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,6 +25,8 @@ import java.util.Map;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.tile.TileConfig;
+import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -32,9 +34,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Find all tiles transitions and extract them to an XML file.
  * It will check from an existing map all transitions combination.
  * 
- * @see TileTransitionType
+ * @see TransitionType
  */
-public final class TileTransitionsConfig
+public final class TransitionsConfig
 {
     /** Configuration file name. */
     public static final String FILENAME = "transitions.xml";
@@ -56,20 +58,20 @@ public final class TileTransitionsConfig
      * @return The transitions imported.
      * @throws LionEngineException If unable to read data.
      */
-    public static Map<TileTransition, Collection<TileRef>> imports(Media configTransitions)
+    public static Map<Transition, Collection<TileRef>> imports(Media configTransitions)
     {
         final XmlNode root = Xml.load(configTransitions);
         final Collection<XmlNode> nodesTransition = root.getChildren(NODE_TRANSITION);
-        final Map<TileTransition, Collection<TileRef>> transitions;
-        transitions = new HashMap<TileTransition, Collection<TileRef>>();
+        final Map<Transition, Collection<TileRef>> transitions;
+        transitions = new HashMap<Transition, Collection<TileRef>>();
 
         for (final XmlNode nodeTransition : nodesTransition)
         {
             final String groupIn = nodeTransition.readString(ATTRIBUTE_GROUP_IN);
             final String groupOut = nodeTransition.readString(ATTRIBUTE_GROUP_OUT);
             final String transitionType = nodeTransition.readString(ATTRIBUTE_TRANSITION_TYPE);
-            final TileTransitionType type = TileTransitionType.from(transitionType);
-            final TileTransition transition = new TileTransition(type, groupIn, groupOut);
+            final TransitionType type = TransitionType.from(transitionType);
+            final Transition transition = new Transition(type, groupIn, groupOut);
 
             final Collection<XmlNode> nodesTileRef = nodeTransition.getChildren(TileConfig.NODE_TILE);
             final Collection<TileRef> tilesRef = importTiles(nodesTileRef);
@@ -86,17 +88,17 @@ public final class TileTransitionsConfig
      * @param transitions The transitions reference.
      * @throws LionEngineException If error on export.
      */
-    public static void exports(Media media, Map<TileTransition, Collection<TileRef>> transitions)
+    public static void exports(Media media, Map<Transition, Collection<TileRef>> transitions)
     {
         final XmlNode nodeTransitions = Xml.create(NODE_TRANSITIONS);
 
-        for (final Map.Entry<TileTransition, Collection<TileRef>> entry : transitions.entrySet())
+        for (final Map.Entry<Transition, Collection<TileRef>> entry : transitions.entrySet())
         {
-            final TileTransition transition = entry.getKey();
+            final Transition transition = entry.getKey();
             final XmlNode nodeTransition = nodeTransitions.createChild(NODE_TRANSITION);
             nodeTransition.writeString(ATTRIBUTE_TRANSITION_TYPE, transition.getType().name());
-            nodeTransition.writeString(ATTRIBUTE_GROUP_IN, transition.getGroupIn());
-            nodeTransition.writeString(ATTRIBUTE_GROUP_OUT, transition.getGroupOut());
+            nodeTransition.writeString(ATTRIBUTE_GROUP_IN, transition.getIn());
+            nodeTransition.writeString(ATTRIBUTE_GROUP_OUT, transition.getOut());
 
             exportTiles(nodeTransition, entry.getValue());
         }
@@ -139,7 +141,7 @@ public final class TileTransitionsConfig
     /**
      * Disabled constructor.
      */
-    private TileTransitionsConfig()
+    private TransitionsConfig()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }

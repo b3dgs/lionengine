@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map;
+package com.b3dgs.lionengine.game.map.transition;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -51,7 +51,7 @@ public class GroupTransition
      * 
      * @return The first group.
      */
-    public String getGroupIn()
+    public String getIn()
     {
         return groupIn;
     }
@@ -61,7 +61,7 @@ public class GroupTransition
      * 
      * @return The second group.
      */
-    public String getGroupOut()
+    public String getOut()
     {
         return groupOut;
     }

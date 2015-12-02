@@ -15,14 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map;
+package com.b3dgs.lionengine.game.map.transition;
 
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.map.MapTileFeature;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileRef;
-import com.b3dgs.lionengine.game.tile.TileTransition;
 
 /**
  * Represents the transition handling between two different groups of tiles.
@@ -55,7 +55,7 @@ public interface MapTileTransition extends MapTileFeature
      * @param group The transition with this group.
      * @return The tile transition with the group.
      */
-    TileTransition getTransition(TileRef tile, String group);
+    Transition getTransition(TileRef tile, String group);
 
     /**
      * Get the tile transition.
@@ -64,7 +64,7 @@ public interface MapTileTransition extends MapTileFeature
      * @param group The transition with this group.
      * @return The tile transition with the group.
      */
-    TileTransition getTransition(Tile tile, String group);
+    Transition getTransition(Tile tile, String group);
 
     /**
      * Get the transitive groups list to reach a group from another.
@@ -76,10 +76,17 @@ public interface MapTileTransition extends MapTileFeature
     Collection<GroupTransition> getTransitives(String groupIn, String groupOut);
 
     /**
+     * Get all supported transitions.
+     * 
+     * @return The defined transitions.
+     */
+    Collection<Transition> getTransitions();
+
+    /**
      * Get the tiles associated to the transition.
      * 
      * @param transition The transition reference.
      * @return The associated tiles.
      */
-    Collection<TileRef> getTiles(TileTransition transition);
+    Collection<TileRef> getTiles(Transition transition);
 }

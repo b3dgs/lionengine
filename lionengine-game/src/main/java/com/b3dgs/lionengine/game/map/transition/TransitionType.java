@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.tile;
+package com.b3dgs.lionengine.game.map.transition;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * <li><code>[0]</code> represents both in or out.</li>
  * </ul>
  */
-public enum TileTransitionType
+public enum TransitionType
 {
     /*
      * Horizontal - Vertical
@@ -410,6 +410,8 @@ public enum TileTransitionType
 
     /** Bit numbers. */
     public static final int BITS = 9;
+    /** Area transitions count. Number of transition for area linking (horizontal, vertical and borders). */
+    public static final int AREA_TRANSITIONS = 8;
     /** Error transition name. */
     private static final String ERROR_TRANSITION_NAME = "Unknown transition name: ";
 
@@ -420,11 +422,11 @@ public enum TileTransitionType
      * @return The transition enum value.
      * @throws LionEngineException If invalid name.
      */
-    public static TileTransitionType from(String name)
+    public static TransitionType from(String name)
     {
         try
         {
-            return TileTransitionType.valueOf(name);
+            return TransitionType.valueOf(name);
         }
         catch (final IllegalArgumentException exception)
         {
@@ -438,16 +440,16 @@ public enum TileTransitionType
      * @param bits The bits sequence representing the transition.
      * @return The transition enum.
      */
-    public static TileTransitionType from(Boolean... bits)
+    public static TransitionType from(Boolean... bits)
     {
-        for (final TileTransitionType transition : values())
+        for (final TransitionType transition : values())
         {
             if (transition.is(bits))
             {
                 return transition;
             }
         }
-        return TileTransitionType.NONE;
+        return TransitionType.NONE;
     }
 
     /**
@@ -457,7 +459,7 @@ public enum TileTransitionType
      * @param inverted <code>true</code> to get inverted transition, <code>false</code> for normal.
      * @return The transition type.
      */
-    public static TileTransitionType from(Boolean[] bytes, boolean inverted)
+    public static TransitionType from(Boolean[] bytes, boolean inverted)
     {
         if (inverted)
         {
@@ -466,9 +468,9 @@ public enum TileTransitionType
             {
                 bitsInv[j] = bytes[bytes.length - j - 1];
             }
-            return TileTransitionType.from(bitsInv);
+            return TransitionType.from(bitsInv);
         }
-        return TileTransitionType.from(bytes);
+        return TransitionType.from(bytes);
     }
 
     /**
@@ -508,7 +510,7 @@ public enum TileTransitionType
      * @param bits Bits defining transition.
      * @throws LionEngineException If invalid bits number.
      */
-    TileTransitionType(boolean area, Boolean... bits)
+    TransitionType(boolean area, Boolean... bits)
     {
         this.area = area;
         table = bits;
@@ -546,7 +548,7 @@ public enum TileTransitionType
      * 
      * @return The reversed transition type.
      */
-    public TileTransitionType reverse()
+    public TransitionType reverse()
     {
         return from(table, true);
     }

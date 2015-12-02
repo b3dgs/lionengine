@@ -35,10 +35,10 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.TransitionsExtractor;
+import com.b3dgs.lionengine.game.map.transition.TransitionType;
+import com.b3dgs.lionengine.game.map.transition.TransitionsExtractor;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.game.tile.TileTransitionType;
 
 /**
  * Game loop designed to handle our little world.
@@ -93,8 +93,8 @@ class Scene extends Sequence
         {
             final int x = tx * map.getTileWidth();
             final int y = ty * map.getTileHeight();
-            final TileTransitionType typeIn = TransitionsExtractor.getTransition(map, tile, false).getType();
-            final TileTransitionType typeOut = TransitionsExtractor.getTransition(map, tile, true).getType();
+            final TransitionType typeIn = TransitionsExtractor.getTransition(map, tile, false).getType();
+            final TransitionType typeOut = TransitionsExtractor.getTransition(map, tile, true).getType();
 
             text.drawRect(g, ColorRgba.GREEN, x, y, map.getTileWidth(), map.getTileHeight());
             text.setColor(ColorRgba.YELLOW);

@@ -15,23 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.tile;
+package com.b3dgs.lionengine.game.map.transition;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 
 /**
  * Represents a tile transition from two groups.
  */
-public class TileTransition
+public class Transition
 {
     /** The transition type. */
-    private final TileTransitionType type;
-    /** The group in. */
-    private final String groupIn;
-    /** The group out. */
-    private final String groupOut;
+    private final TransitionType type;
+    /** Group transition. */
+    private final GroupTransition groups;
 
     /**
      * Create the transition.
@@ -39,15 +36,16 @@ public class TileTransition
      * @param type The transition type.
      * @param groupIn The group inside.
      * @param groupOut The group outside.
-     * @throws LionEngineException If <code>null</code> type.
+     * @throws LionEngineException If <code>null</code> arguments.
      */
-    public TileTransition(TileTransitionType type, String groupIn, String groupOut)
+    public Transition(TransitionType type, String groupIn, String groupOut)
     {
         Check.notNull(type);
+        Check.notNull(groupIn);
+        Check.notNull(groupOut);
 
         this.type = type;
-        this.groupIn = groupIn;
-        this.groupOut = groupOut;
+        groups = new GroupTransition(groupIn, groupOut);
     }
 
     /**
@@ -55,7 +53,7 @@ public class TileTransition
      * 
      * @return The transition type.
      */
-    public TileTransitionType getType()
+    public TransitionType getType()
     {
         return type;
     }
@@ -65,9 +63,9 @@ public class TileTransition
      * 
      * @return The group inside.
      */
-    public String getGroupIn()
+    public String getIn()
     {
-        return groupIn;
+        return groups.getIn();
     }
 
     /**
@@ -75,9 +73,9 @@ public class TileTransition
      * 
      * @return The group outside.
      */
-    public String getGroupOut()
+    public String getOut()
     {
-        return groupOut;
+        return groups.getOut();
     }
 
     /*
@@ -88,15 +86,7 @@ public class TileTransition
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result;
-        if (groupIn != null)
-        {
-            result = prime * result + groupIn.hashCode();
-        }
-        if (groupOut != null)
-        {
-            result = prime * result + groupOut.hashCode();
-        }
+        result = prime * result + groups.hashCode();
         result = prime * result + type.hashCode();
         return result;
     }
@@ -108,15 +98,17 @@ public class TileTransition
         {
             return true;
         }
-        if (obj == null || !(obj instanceof TileTransition))
+        if (obj == null || !(obj instanceof Transition))
         {
             return false;
         }
-        final TileTransition other = (TileTransition) obj;
+        final Transition other = (Transition) obj;
+        return groups.equals(other.groups) && type.equals(other.type);
+    }
 
-        final boolean sameGroups = CollisionGroup.same(groupIn, other.groupIn)
-                                   && CollisionGroup.same(groupOut, other.groupOut);
-
-        return sameGroups && type.equals(other.type);
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(type.name()).append(" ").append(groups.toString()).toString();
     }
 }

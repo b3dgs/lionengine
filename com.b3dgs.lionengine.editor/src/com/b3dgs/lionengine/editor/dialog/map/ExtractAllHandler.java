@@ -29,10 +29,10 @@ import com.b3dgs.lionengine.editor.dialog.map.groups.GroupsEditDialog;
 import com.b3dgs.lionengine.editor.dialog.map.sheets.extract.SheetsExtractDialog;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
-import com.b3dgs.lionengine.game.map.TransitionsExtractor;
+import com.b3dgs.lionengine.game.map.transition.TransitionsConfig;
+import com.b3dgs.lionengine.game.map.transition.TransitionsExtractor;
 import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.game.tile.TileTransitionsConfig;
 
 /**
  * Export map tile constraints handler.
@@ -64,12 +64,12 @@ public final class ExtractAllHandler
         final Media sheets = Medias.create(folder, TileSheetsConfig.FILENAME);
         final Media groups = Medias.create(folder, TileGroupsConfig.FILENAME);
         final Media constraints = Medias.create(folder, TileConstraintsConfig.FILENAME);
-        final Media transitions = Medias.create(folder, TileTransitionsConfig.FILENAME);
+        final Media transitions = Medias.create(folder, TransitionsConfig.FILENAME);
 
         sheetsExtractDialog.save();
         groupsEditDialog.save();
         TileConstraintsConfig.export(constraints, ConstraintsExtractor.getConstraints(levels, sheets));
-        TileTransitionsConfig.exports(transitions, TransitionsExtractor.getTransitions(levels, sheets, groups));
+        TransitionsConfig.exports(transitions, TransitionsExtractor.getTransitions(levels, sheets, groups));
     }
 
     /**

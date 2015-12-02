@@ -29,10 +29,10 @@ import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
 import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget.LevelRipsWidgetListener;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
-import com.b3dgs.lionengine.game.map.TransitionsExtractor;
+import com.b3dgs.lionengine.game.map.transition.TransitionsConfig;
+import com.b3dgs.lionengine.game.map.transition.TransitionsExtractor;
 import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.game.tile.TileTransitionsConfig;
 
 /**
  * Represents the export map tile constraints dialog.
@@ -126,7 +126,7 @@ public class ConstraintsExtractDialog extends AbstractDialog
             }
             if (transitions.getMedia() == null)
             {
-                transitions.setLocation(UtilFile.getPath(folder, TileTransitionsConfig.FILENAME));
+                transitions.setLocation(UtilFile.getPath(folder, TransitionsConfig.FILENAME));
             }
             checkFinish();
         });
@@ -148,15 +148,15 @@ public class ConstraintsExtractDialog extends AbstractDialog
         groups.addListener(media -> checkFinish());
 
         constraints = new BrowseWidget(content,
-                                               Messages.ConstraintsLocation,
-                                               Messages.ConstraintsConfigFileFilter,
-                                               false);
+                                       Messages.ConstraintsLocation,
+                                       Messages.ConstraintsConfigFileFilter,
+                                       false);
         constraints.addListener(media -> checkFinish());
 
         transitions = new BrowseWidget(content,
-                                               Messages.TransitionsLocation,
-                                               Messages.TransitionsConfigFileFilter,
-                                               false);
+                                       Messages.TransitionsLocation,
+                                       Messages.TransitionsConfigFileFilter,
+                                       false);
         transitions.addListener(media -> checkFinish());
     }
 
@@ -167,10 +167,9 @@ public class ConstraintsExtractDialog extends AbstractDialog
         final Media sheetsConfig = sheets.getMedia();
         final Media groupsConfig = groups.getMedia();
 
-        TileConstraintsConfig.export(constraints.getMedia(),
-                                     ConstraintsExtractor.getConstraints(levels, sheetsConfig));
+        TileConstraintsConfig.export(constraints.getMedia(), ConstraintsExtractor.getConstraints(levels, sheetsConfig));
 
-        TileTransitionsConfig.exports(transitions.getMedia(),
-                                      TransitionsExtractor.getTransitions(levels, sheetsConfig, groupsConfig));
+        TransitionsConfig.exports(transitions.getMedia(),
+                                  TransitionsExtractor.getTransitions(levels, sheetsConfig, groupsConfig));
     }
 }
