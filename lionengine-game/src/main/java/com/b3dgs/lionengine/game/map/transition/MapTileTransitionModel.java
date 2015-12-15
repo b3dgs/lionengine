@@ -173,13 +173,16 @@ public class MapTileTransitionModel implements MapTileTransition
      */
     private boolean updateTile(Tile tile, Transition transition, Collection<TileRef> tilesRef)
     {
-        for (final TileRef tileRef : tilesRef)
+        if (!tilesRef.contains(new TileRef(tile)))
         {
-            final TransitionType type = getTransition(tileRef, transition.getOut()).getType();
-            if (!TransitionType.CENTER.equals(type))
+            for (final TileRef tileRef : tilesRef)
             {
-                map.setTile(map.createTile(tileRef.getSheet(), tileRef.getNumber(), tile.getX(), tile.getY()));
-                return true;
+                final TransitionType type = getTransition(tileRef, transition.getOut()).getType();
+                if (!TransitionType.CENTER.equals(type))
+                {
+                    map.setTile(map.createTile(tileRef.getSheet(), tileRef.getNumber(), tile.getX(), tile.getY()));
+                    return true;
+                }
             }
         }
         return false;
