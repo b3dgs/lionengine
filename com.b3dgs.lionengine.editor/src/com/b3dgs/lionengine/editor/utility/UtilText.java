@@ -77,13 +77,17 @@ public final class UtilText
             {
                 try
                 {
-                    Integer.parseInt(newText);
+                    Double.parseDouble(newText);
                     event.doit = true;
                 }
                 catch (final NumberFormatException exception)
                 {
                     event.doit = false;
                 }
+            }
+            else
+            {
+                event.doit = false;
             }
         };
     }
