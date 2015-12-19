@@ -40,7 +40,7 @@ class Scene extends Sequence
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
     /** Level file. */
-    private static final Media LEVEL = Medias.create("level.lvl");
+    private static final Media LEVEL = Medias.create("map", "level.lvl");
 
     /**
      * Import and save the level.
@@ -48,7 +48,7 @@ class Scene extends Sequence
     private static void importAndSave()
     {
         final MapTile map = new MapTileGame();
-        map.create(Medias.create("level.png"));
+        map.create(Medias.create("map", "level.png"));
         try (FileWriting file = Stream.createFileWriting(LEVEL))
         {
             map.save(file);

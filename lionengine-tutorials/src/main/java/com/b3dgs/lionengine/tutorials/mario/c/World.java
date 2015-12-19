@@ -102,7 +102,7 @@ class World extends WorldGame
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
-        mapGroup.loadGroups(Medias.create("groups.xml"));
+        mapGroup.loadGroups(Medias.create("map", "groups.xml"));
         mapCollision.loadCollisions();
 
         camera.setIntervals(16, 0);

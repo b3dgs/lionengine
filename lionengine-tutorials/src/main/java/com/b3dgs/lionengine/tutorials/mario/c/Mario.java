@@ -54,7 +54,7 @@ import com.b3dgs.lionengine.game.tile.Tile;
 class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableListener
 {
     /** Object media. */
-    public static final Media MEDIA = Medias.create("Mario.xml");
+    public static final Media MEDIA = Medias.create("entity", "Mario.xml");
     /** Ground location y. */
     private static final int GROUND = 32;
 
