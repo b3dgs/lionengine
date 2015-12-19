@@ -41,9 +41,9 @@ import com.b3dgs.lionengine.game.tile.Tile;
 class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileCollidableListener
 {
     /** Horizontal collision. */
-    final AtomicBoolean collide = new AtomicBoolean();
+    private final AtomicBoolean collide = new AtomicBoolean();
     /** Movement force. */
-    final Force movement;
+    private final Force movement;
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
     /** Animator reference. */

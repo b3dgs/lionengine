@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.audio.sc68.AudioSc68;
 import com.b3dgs.lionengine.audio.sc68.Sc68;
 import com.b3dgs.lionengine.core.Medias;
 
-@SuppressWarnings("all")
 public class ModuleSc68
 {
     /*

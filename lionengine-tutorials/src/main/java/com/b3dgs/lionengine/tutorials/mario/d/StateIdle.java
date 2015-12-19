@@ -38,9 +38,9 @@ import com.b3dgs.lionengine.game.tile.Tile;
 class StateIdle extends StateGame implements TileCollidableListener
 {
     /** Can jump flag. */
-    final AtomicBoolean canJump = new AtomicBoolean(false);
+    private final AtomicBoolean canJump = new AtomicBoolean(false);
     /** Jump force. */
-    final Force jump;
+    private final Force jump;
     /** Transformable reference. */
     private final Transformable transformable;
     /** Animator reference. */

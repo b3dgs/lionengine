@@ -19,13 +19,13 @@ package com.b3dgs.lionengine.example.snippet;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Attribute;
@@ -34,19 +34,17 @@ import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileExtractor;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateTransition;
 import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
+import com.b3dgs.lionengine.game.tile.TilesExtractor;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
 
-@SuppressWarnings("all")
 public class ModuleGame
 {
-    class World
-            extends WorldGame
+    class World extends WorldGame
     {
         World(Config config)
         {
@@ -80,8 +78,7 @@ public class ModuleGame
         TEST2;
     }
 
-    class StateTest
-            extends StateGame
+    class StateTest extends StateGame
     {
         public StateTest()
         {
@@ -99,9 +96,7 @@ public class ModuleGame
         {
         }
 
-        private final class TransitionTest
-                extends StateTransition
-                implements StateTransitionInputDirectionalChecker
+        private final class TransitionTest extends StateTransition implements StateTransitionInputDirectionalChecker
         {
             public TransitionTest()
             {
@@ -166,19 +161,18 @@ public class ModuleGame
         gold.canSpend(100); // returns false
     }
 
-    public static class MySequence
-            extends Sequence
+    public static class MySequence extends Sequence
     {
         private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-        public MySequence(Loader loader)
+        public MySequence(Context context)
         {
-            super(config, MySequence.NATIVE);
+            super(context, MySequence.NATIVE);
             // Initialize variables here
         }
 
         @Override
-        protected void load()
+        public void load()
         {
             // Load resources here
         }
@@ -196,10 +190,9 @@ public class ModuleGame
         }
     }
 
-    private void ripLevel(Media levelrip, Media tilesheet, Media output)
+    private void ripLevel(Media levelrip, Media output)
     {
-        final LevelRipConverter rip = new LevelRipConverter(levelrip, tilesheet, map);
-        rip.start();
+        LevelRipConverter.start(levelrip, map);
         try (FileWriting file = Stream.createFileWriting(output))
         {
             map.save(file);
@@ -210,8 +203,9 @@ public class ModuleGame
         }
     }
 
-    private void utilityTileExtractor()
+    private void tileExtractor()
     {
-        TileExtractor.start(Medias.create("level.png"), Medias.create("sheet.png"), 16, 16, 256, 256);
+        final TilesExtractor tilesExtractor = new TilesExtractor();
+        tilesExtractor.extract(16, 16, Medias.create("level.png"));
     }
 }

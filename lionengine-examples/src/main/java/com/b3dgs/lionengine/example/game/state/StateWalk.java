@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
 class StateWalk extends StateGame implements StateInputDirectionalUpdater
 {
     /** Movement force. */
-    final Force movement;
+    private final Force movement;
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
     /** Animator reference. */

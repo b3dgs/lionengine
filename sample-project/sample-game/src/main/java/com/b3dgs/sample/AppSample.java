@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
  * Program starts here.
- * 
  */
 public final class AppSample
 {

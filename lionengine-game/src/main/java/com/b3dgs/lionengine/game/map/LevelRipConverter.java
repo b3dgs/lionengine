@@ -30,22 +30,6 @@ import com.b3dgs.lionengine.game.tile.TilesExtractor;
  * This class allows to convert a map image to a map level format.
  * The color [0-128-128] ({@link TilesExtractor#IGNORED_COLOR_VALUE}) is ignored (can be used to skip tile, in order to
  * improve performance).
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final LevelRipConverter rip = new LevelRipConverter(levelrip, tilesheet, map);
- * rip.start();
- * try (FileWriting file = Stream.createFileWriting(output))
- * {
- *     map.save(file);
- * }
- * catch (final IOException exception)
- * {
- *     // Error
- * }
- * </pre>
  */
 public final class LevelRipConverter
 {

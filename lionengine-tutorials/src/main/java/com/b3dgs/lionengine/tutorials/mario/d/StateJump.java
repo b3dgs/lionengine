@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.game.tile.Tile;
 class StateJump extends StateGame implements StateInputDirectionalUpdater, TileCollidableListener
 {
     /** On ground. */
-    final AtomicBoolean ground = new AtomicBoolean();
+    private final AtomicBoolean ground = new AtomicBoolean();
     /** Transformable reference. */
     private final Transformable transformable;
     /** The body reference. */

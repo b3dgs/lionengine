@@ -23,26 +23,27 @@ import org.junit.Assert;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Checksum;
-import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.UtilChecksum;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.core.Version;
+import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -55,19 +56,14 @@ import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
-@SuppressWarnings("all")
 public class ModuleCore
 {
     int value = 0;
     double extrp = 0f;
     Graphic g = null;
-
-    class MyClass
-    {
-
-    }
 
     /*
      * Snippet code
@@ -76,13 +72,15 @@ public class ModuleCore
     private final Services services = new Services();
     private final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
 
-    private final Factory factory = services.create(Factory.class); // Already added !
-    private final Camera camera = services.create(Camera.class); // Already added !
-    private final Handler handler = services.create(Handler.class); // Already added !
+    // Method 1
+    private final Factory factory1 = services.create(Factory.class); // Already added !
+    private final Camera camera1 = services.create(Camera.class); // Already added !
+    private final Handler handler1 = services.create(Handler.class); // Already added !
 
-    private final Factory factory = new Factory(services);
-    private final Camera camera = new Camera();
-    private final Handler handler = new Handler();
+    // Method 2
+    private final Factory factory2 = new Factory(services);
+    private final Camera camera2 = new Camera();
+    private final Handler handler2 = new Handler();
 
     void services()
     {
@@ -100,16 +98,15 @@ public class ModuleCore
 
     void checksum()
     {
-        final Checksum checksum = Checksum.createSha256();
         final int integer = 489464795;
         final String value = "keyToBeEncoded";
         final String other = "anotherKey";
-        final String signature = checksum.getSha256(value);
-        final String test = checksum.getSha256(integer);
+        final String signature = UtilChecksum.getSha256(value);
+        final String test = UtilChecksum.getSha256(integer);
 
-        Assert.assertTrue(checksum.check(value, signature));
-        Assert.assertFalse(checksum.check(other, signature));
-        Assert.assertTrue(checksum.check(integer, test));
+        Assert.assertTrue(UtilChecksum.checkSha256(value, signature));
+        Assert.assertFalse(UtilChecksum.checkSha256(other, signature));
+        Assert.assertTrue(UtilChecksum.checkSha256(integer, test));
     }
 
     void config()
@@ -131,8 +128,8 @@ public class ModuleCore
         EngineAwt.start("First Code", Version.create(1, 0, 0), "resources");
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader(config);
-        loader.start(Scene.class);
+        final Loader loader = new Loader();
+        loader.start(config, Scene.class);
     }
 
     void media()
@@ -142,16 +139,15 @@ public class ModuleCore
         System.out.println(Medias.create()); // print: resources/img/image.png
     }
 
-    final class Scene
-            extends Sequence
+    class Scene extends Sequence
     {
-        Scene(Loader loader)
+        Scene(Context context)
         {
-            super(config, new Resolution(320, 240, 60));
+            super(context, new Resolution(320, 240, 60));
         }
 
         @Override
-        protected void load()
+        public void load()
         {
         }
 
@@ -210,13 +206,14 @@ public class ModuleCore
         try
         {
             Thread.sleep(1000);
-            Verbose.warning(MyClass.class, "function", "Warning level here");
-            Verbose.critical(MyClass.class, "function", "Critical level here");
+            Verbose.warning("Warning level here");
+            Verbose.warning(ModuleCore.class, "function", "Warning level here");
+            Verbose.critical(ModuleCore.class, "function", "Critical level here");
         }
         catch (final InterruptedException exception)
         {
             Thread.currentThread().interrupt();
-            Verbose.exception(MyClass.class, "function", exception);
+            Verbose.exception(exception);
         }
     }
 
@@ -298,7 +295,7 @@ public class ModuleCore
 
     void xmlNode()
     {
-        final XmlNode node = XmlFactory.createXmlNode("node");
+        final XmlNode node = Xml.create("node");
         node.writeBoolean("value", true);
     }
 
@@ -316,7 +313,8 @@ public class ModuleCore
     {
         // Load
         final Sprite sprite = Drawable.loadSprite(Medias.create("sprite.png"));
-        sprite.load(false);
+        sprite.load();
+        sprite.prepare();
         sprite.setLocation(64, 280);
 
         // Render
@@ -327,7 +325,8 @@ public class ModuleCore
     {
         // Load
         final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Medias.create("tilesheet.png"), 16, 16);
-        tilesheet.load(false);
+        tilesheet.load();
+        tilesheet.prepare();
         tilesheet.setLocation(300, 300);
         tilesheet.setTile(1);
 
@@ -339,7 +338,9 @@ public class ModuleCore
     {
         // Load
         final SpriteAnimated animation = Drawable.loadSpriteAnimated(Medias.create("animation.png"), 7, 1);
-        animation.load(false);
+        animation.load();
+        animation.prepare();
+
         final Animation anim = Anim.createAnimation(null, 4, 6, 0.125, false, true);
         animation.play(anim);
         animation.setLocation(160, 300);

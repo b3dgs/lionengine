@@ -78,25 +78,7 @@ public class AppExamples
         final JPanel panel = new JPanel(true);
         panel.setLayout(new GridLayout(4, 4));
 
-        addExample(panel, "Hello World", AppHelloWorld.class);
-        addExample(panel, "Drawable", AppDrawable.class);
-        addExample(panel, "Action", AppAction.class);
-        addExample(panel, "Assign", AppAssign.class);
-        addExample(panel, "Attack", AppAttack.class);
-        addExample(panel, "Background", AppBackground.class);
-        addExample(panel, "Collision", AppCollision.class);
-        addExample(panel, "Cursor", AppCursor.class);
-        addExample(panel, "Effect", AppEffect.class);
-        addExample(panel, "Fog", AppFog.class);
-        addExample(panel, "Map", AppMap.class);
-        addExample(panel, "Pathfinding", AppPathfinding.class);
-        addExample(panel, "Production", AppProduction.class);
-        addExample(panel, "Extraction", AppExtraction.class);
-        addExample(panel, "Projectile", AppProjectile.class);
-        addExample(panel, "Raster", AppRaster.class);
-        addExample(panel, "Selector", AppSelector.class);
-        addExample(panel, "State", AppState.class);
-        addExample(panel, "Pong", AppPong.class);
+        addExamples(panel);
 
         final JButton exit = new JButton("Exit");
         exit.addActionListener(event -> terminate(frame));
@@ -173,5 +155,33 @@ public class AppExamples
             }
         });
         panel.add(drawable);
+    }
+
+    /**
+     * Add all examples.
+     * 
+     * @param panel The panel reference.
+     */
+    private static void addExamples(JPanel panel)
+    {
+        addExample(panel, "Hello World", AppHelloWorld.class);
+        addExample(panel, "Drawable", AppDrawable.class);
+        addExample(panel, "Action", AppAction.class);
+        addExample(panel, "Assign", AppAssign.class);
+        addExample(panel, "Attack", AppAttack.class);
+        addExample(panel, "Background", AppBackground.class);
+        addExample(panel, "Collision", AppCollision.class);
+        addExample(panel, "Cursor", AppCursor.class);
+        addExample(panel, "Effect", AppEffect.class);
+        addExample(panel, "Fog", AppFog.class);
+        addExample(panel, "Map", AppMap.class);
+        addExample(panel, "Pathfinding", AppPathfinding.class);
+        addExample(panel, "Production", AppProduction.class);
+        addExample(panel, "Extraction", AppExtraction.class);
+        addExample(panel, "Projectile", AppProjectile.class);
+        addExample(panel, "Raster", AppRaster.class);
+        addExample(panel, "Selector", AppSelector.class);
+        addExample(panel, "State", AppState.class);
+        addExample(panel, "Pong", AppPong.class);
     }
 }

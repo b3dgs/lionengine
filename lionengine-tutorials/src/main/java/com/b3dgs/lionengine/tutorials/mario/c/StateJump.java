@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.tile.Tile;
 class StateJump extends StateGame implements StateInputDirectionalUpdater, TileCollidableListener
 {
     /** Jump force. */
-    final Force jump;
+    private final Force jump;
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
     /** Animator reference. */
