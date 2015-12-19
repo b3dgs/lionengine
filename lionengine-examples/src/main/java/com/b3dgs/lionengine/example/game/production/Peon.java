@@ -17,38 +17,36 @@
  */
 package com.b3dgs.lionengine.example.game.production;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.layer.Layerable;
+import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.layerable.Layerable;
-import com.b3dgs.lionengine.game.trait.layerable.LayerableModel;
-import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
-import com.b3dgs.lionengine.game.trait.pathfindable.PathfindableModel;
-import com.b3dgs.lionengine.game.trait.producible.Producer;
-import com.b3dgs.lionengine.game.trait.producible.ProducerChecker;
-import com.b3dgs.lionengine.game.trait.producible.ProducerListener;
-import com.b3dgs.lionengine.game.trait.producible.ProducerModel;
-import com.b3dgs.lionengine.game.trait.producible.Producible;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.trait.producible.Producer;
+import com.b3dgs.lionengine.game.object.trait.producible.ProducerChecker;
+import com.b3dgs.lionengine.game.object.trait.producible.ProducerListener;
+import com.b3dgs.lionengine.game.object.trait.producible.ProducerModel;
+import com.b3dgs.lionengine.game.object.trait.producible.Producible;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.pathfinding.CoordTile;
+import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
+import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
 
 /**
  * Peon entity implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker, ProducerListener
 {
@@ -65,6 +63,8 @@ class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker,
     private final Layerable layerable = addTrait(new LayerableModel());
     /** Surface reference. */
     private final SpriteAnimated surface;
+    /** Map tile referene. */
+    private final MapTile map;
     /** Map tile reference. */
     private final MapTilePath mapPath;
     /** Viewer reference. */
@@ -82,6 +82,7 @@ class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker,
     {
         super(setup, services);
         viewer = services.get(Viewer.class);
+        map = services.get(MapTile.class);
         mapPath = services.get(MapTilePath.class);
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
@@ -141,7 +142,6 @@ class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker,
     @Override
     public void notifyProduced(Producible producible, ObjectGame object)
     {
-        final MapTile map = mapPath.getMap();
         final CoordTile coord = mapPath.getFreeTileAround(pathfindable,
                                                           (int) producible.getX() / map.getTileWidth(),
                                                           (int) producible.getY() / map.getTileHeight(),

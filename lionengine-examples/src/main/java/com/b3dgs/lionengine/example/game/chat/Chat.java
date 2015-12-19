@@ -23,10 +23,10 @@ import java.util.LinkedList;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.network.ConnectionListener;
 import com.b3dgs.lionengine.network.message.NetworkMessageChat;
@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.network.purview.NetworkChat;
 
 /**
  * Chat implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Chat extends NetworkChat implements ConnectionListener
 {

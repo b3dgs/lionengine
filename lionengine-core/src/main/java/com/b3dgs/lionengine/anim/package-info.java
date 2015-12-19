@@ -18,7 +18,5 @@
 
 /**
  * Animation dedicated package, to handle animation computing and state.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.anim;

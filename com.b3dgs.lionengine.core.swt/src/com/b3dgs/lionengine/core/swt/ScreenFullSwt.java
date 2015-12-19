@@ -23,15 +23,14 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Canvas;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Resolution;
 
 /**
  * Screen implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Keyboard
  * @see Mouse
  */
@@ -43,23 +42,22 @@ final class ScreenFullSwt extends ScreenSwt
     /**
      * Internal constructor.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not
      *             supported.
      */
-    ScreenFullSwt(Renderer renderer) throws LionEngineException
+    ScreenFullSwt(Config config)
     {
-        super(renderer);
+        super(config);
     }
 
     /**
      * Prepare fullscreen mode.
      * 
      * @param output The output resolution
-     * @param depth The bit depth color.
      * @throws LionEngineException If full screen is not supported.
      */
-    private void initFullscreen(Resolution output, int depth) throws LionEngineException
+    private void initFullscreen(Resolution output)
     {
         try
         {
@@ -70,7 +68,9 @@ final class ScreenFullSwt extends ScreenSwt
                 canvas.setVisible(true);
             }
             canvas.setSize(output.getWidth(), output.getHeight());
-            buffer = Graphics.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
+            buffer = (ImageBufferSwt) Graphics.createImageBuffer(output.getWidth(),
+                                                                 output.getHeight(),
+                                                                 Transparency.OPAQUE);
             frame.pack();
 
             buf = canvas;
@@ -87,9 +87,9 @@ final class ScreenFullSwt extends ScreenSwt
     }
 
     @Override
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
-        initFullscreen(output, config.getDepth());
+        initFullscreen(output);
         super.setResolution(output);
     }
 }

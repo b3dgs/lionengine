@@ -18,30 +18,26 @@
 package com.b3dgs.lionengine.core.android;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.FactoryGraphic;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.Transform;
 
 /**
  * Graphic factory implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryGraphicAndroid implements FactoryGraphic
+public final class FactoryGraphicAndroid implements FactoryGraphic
 {
     /**
      * Internal constructor.
      */
-    FactoryGraphicAndroid()
+    public FactoryGraphicAndroid()
     {
         // Nothing to do
     }
@@ -51,9 +47,9 @@ final class FactoryGraphicAndroid implements FactoryGraphic
      */
 
     @Override
-    public Screen createScreen(Renderer renderer)
+    public Screen createScreen(Config config)
     {
-        return new ScreenAndroid(renderer);
+        return new ScreenAndroid(config);
     }
 
     @Override
@@ -81,7 +77,7 @@ final class FactoryGraphicAndroid implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media) throws LionEngineException
+    public ImageBuffer getImageBuffer(Media media)
     {
         return UtilityImage.getImage(media);
     }
@@ -129,13 +125,7 @@ final class FactoryGraphicAndroid implements FactoryGraphic
     }
 
     @Override
-    public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter)
-    {
-        return UtilityImage.applyFilter(imageBuffer, filter);
-    }
-
-    @Override
-    public void saveImage(ImageBuffer imageBuffer, Media media) throws LionEngineException
+    public void saveImage(ImageBuffer imageBuffer, Media media)
     {
         UtilityImage.saveImage(imageBuffer, media);
     }

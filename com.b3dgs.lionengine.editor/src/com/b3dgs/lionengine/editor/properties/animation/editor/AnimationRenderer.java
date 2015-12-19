@@ -27,22 +27,20 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.swt.UtilityMedia;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.FramesConfig;
+import com.b3dgs.lionengine.game.object.SurfaceConfig;
 
 /**
  * Animation paint listener, rendering the current animation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AnimationRenderer implements PaintListener
 {
@@ -78,9 +76,9 @@ public final class AnimationRenderer implements PaintListener
         this.parent = parent;
         animationRunner = new AnimationRunner(parent.getDisplay());
         g = Graphics.createGraphic();
-        final ConfigSurface configSurface = ConfigSurface.create(configurer);
-        final Media media = UtilityMedia.get(new File(configurer.getPath(), configSurface.getImage()));
-        final ConfigFrames framesData = ConfigFrames.create(configurer);
+        final SurfaceConfig configSurface = SurfaceConfig.create(configurer);
+        final Media media = Medias.get(new File(configurer.getPath(), configSurface.getImage()));
+        final FramesConfig framesData = FramesConfig.create(configurer);
         surface = Drawable.loadSpriteAnimated(media, framesData.getHorizontal(), framesData.getVertical());
         surface.load();
         surface.prepare();
@@ -161,7 +159,9 @@ public final class AnimationRenderer implements PaintListener
      */
     private void render(Graphic g, int width, int height)
     {
-        surface.setLocation(width / 2 - surface.getFrameWidth() / 2, height / 2 - surface.getFrameHeight() / 2);
+        final double x = width / 2 - (double) (surface.getFrameWidth() / 2);
+        final double y = height / 2 - (double) (surface.getFrameHeight() / 2);
+        surface.setLocation(x, y);
         surface.render(g);
     }
 

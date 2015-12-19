@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Cancel action.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Cancel extends Button
 {

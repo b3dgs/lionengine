@@ -23,28 +23,24 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * Sprite implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class SpriteImpl implements Sprite
 {
     /** Surface already loaded error. */
     private static final String ERROR_LOADED = "Surface has already been loaded !";
-    /** Invalid mirror type. */
-    private static final String ERROR_MIRROR = "Invalid mirror type used: ";
 
     /** Sprite file name. */
     private final Media media;
@@ -79,7 +75,7 @@ class SpriteImpl implements Sprite
      * @param media The sprite media.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    SpriteImpl(Media media) throws LionEngineException
+    SpriteImpl(Media media)
     {
         Check.notNull(media);
 
@@ -98,7 +94,7 @@ class SpriteImpl implements Sprite
      * @param surface The surface to share.
      * @throws LionEngineException If surface is <code>null</code>.
      */
-    SpriteImpl(ImageBuffer surface) throws LionEngineException
+    SpriteImpl(ImageBuffer surface)
     {
         Check.notNull(surface);
 
@@ -123,21 +119,19 @@ class SpriteImpl implements Sprite
      * @param oy The vertical offset (height count).
      * @throws LionEngineException If mirror error.
      */
-    protected final void render(Graphic g, int x, int y, int w, int h, int ox, int oy) throws LionEngineException
+    protected final void render(Graphic g, int x, int y, int w, int h, int ox, int oy)
     {
-        switch (mirror)
+        if (Mirror.HORIZONTAL == mirror)
         {
-            case HORIZONTAL:
-                g.drawImage(surface, x, y, x + w, y + h, ox * w + w, oy * h, ox * w, oy * h + h);
-                break;
-            case VERTICAL:
-                g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h + h, ox * w + w, oy * h);
-                break;
-            case NONE:
-                g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h, ox * w + w, oy * h + h);
-                break;
-            default:
-                throw new LionEngineException(ERROR_MIRROR);
+            g.drawImage(surface, x, y, x + w, y + h, ox * w + w, oy * h, ox * w, oy * h + h);
+        }
+        else if (Mirror.VERTICAL == mirror)
+        {
+            g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h + h, ox * w + w, oy * h);
+        }
+        else
+        {
+            g.drawImage(surface, x, y, x + w, y + h, ox * w, oy * h, ox * w + w, oy * h + h);
         }
     }
 
@@ -202,7 +196,7 @@ class SpriteImpl implements Sprite
      */
 
     @Override
-    public synchronized void load() throws LionEngineException
+    public synchronized void load()
     {
         if (surface != null)
         {
@@ -212,18 +206,18 @@ class SpriteImpl implements Sprite
     }
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         surface.prepare();
     }
 
     @Override
-    public final void stretch(double widthPercent, double heightPercent) throws LionEngineException
+    public final void stretch(double widthPercent, double heightPercent)
     {
         Check.superiorStrict(widthPercent, 0);
         Check.superiorStrict(heightPercent, 0);
 
-        if (widthPercent != 100 || heightPercent != 100)
+        if (Double.compare(widthPercent, 100) != 0 || Double.compare(heightPercent, 100) != 0)
         {
             final int newWidth = (int) Math.floor(width * widthPercent / 100.0);
             final int newHeight = (int) Math.floor(height * heightPercent / 100.0);
@@ -242,10 +236,10 @@ class SpriteImpl implements Sprite
     }
 
     @Override
-    public final void filter(Filter filter) throws LionEngineException
+    public final void filter(Filter filter)
     {
         lazySurfaceBackup();
-        surface = Graphics.applyFilter(surfaceOriginal, filter);
+        surface = filter.filter(surfaceOriginal);
         width = surface.getWidth();
         height = surface.getHeight();
     }
@@ -284,7 +278,7 @@ class SpriteImpl implements Sprite
     }
 
     @Override
-    public final void setAlpha(int alpha) throws LionEngineException
+    public final void setAlpha(int alpha)
     {
         Check.superiorOrEqual(alpha, 0);
         Check.inferiorOrEqual(alpha, 255);

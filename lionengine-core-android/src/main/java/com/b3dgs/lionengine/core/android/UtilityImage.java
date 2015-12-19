@@ -24,15 +24,12 @@ import java.io.OutputStream;
 import android.graphics.Bitmap;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Misc tools for engine image creation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityImage
 {
@@ -40,23 +37,6 @@ public final class UtilityImage
     private static final String ERROR_IMAGE_READING = "Error on reading image !";
     /** Save image message. */
     private static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
-    /** Error image buffer implementation. */
-    private static final String ERROR_IMAGE_BUFFER_IMPL = "Unsupported image buffer implementation !";
-
-    /**
-     * Get the image.
-     * 
-     * @param image The image.
-     * @return The buffer.
-     */
-    static Bitmap getBuffer(ImageBuffer image)
-    {
-        if (image instanceof ImageBufferAndroid)
-        {
-            return ((ImageBufferAndroid) image).getBuffer();
-        }
-        throw new LionEngineException(UtilityImage.ERROR_IMAGE_BUFFER_IMPL);
-    }
 
     /**
      * Create an image.
@@ -77,7 +57,7 @@ public final class UtilityImage
      * @return The created image from file.
      * @throws LionEngineException If an error occurred when reading the image.
      */
-    static ImageBuffer getImage(Media media) throws LionEngineException
+    static ImageBuffer getImage(Media media)
     {
         try
         {
@@ -100,7 +80,7 @@ public final class UtilityImage
      */
     static ImageBuffer getImage(ImageBuffer image)
     {
-        return new ImageBufferAndroid(UtilityImage.getBuffer(image));
+        return new ImageBufferAndroid((Bitmap) image.getSurface());
     }
 
     /**
@@ -112,7 +92,7 @@ public final class UtilityImage
      */
     static ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
-        return new ImageBufferAndroid(ToolsAndroid.applyMask(UtilityImage.getBuffer(image), maskColor.getRgba()));
+        return new ImageBufferAndroid(ToolsAndroid.applyMask((Bitmap) image.getSurface(), maskColor.getRgba()));
     }
 
     /**
@@ -125,7 +105,7 @@ public final class UtilityImage
      */
     static ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
-        final Bitmap[] bitmaps = ToolsAndroid.splitImage(UtilityImage.getBuffer(image), h, v);
+        final Bitmap[] bitmaps = ToolsAndroid.splitImage((Bitmap) image.getSurface(), h, v);
         final ImageBuffer[] images = new ImageBuffer[bitmaps.length];
         for (int i = 0; i < images.length; i++)
         {
@@ -143,7 +123,7 @@ public final class UtilityImage
      */
     static ImageBuffer rotate(ImageBuffer image, int angle)
     {
-        return new ImageBufferAndroid(ToolsAndroid.rotate(UtilityImage.getBuffer(image), angle));
+        return new ImageBufferAndroid(ToolsAndroid.rotate((Bitmap) image.getSurface(), angle));
     }
 
     /**
@@ -156,7 +136,7 @@ public final class UtilityImage
      */
     static ImageBuffer resize(ImageBuffer image, int width, int height)
     {
-        return new ImageBufferAndroid(ToolsAndroid.resize(UtilityImage.getBuffer(image), width, height));
+        return new ImageBufferAndroid(ToolsAndroid.resize((Bitmap) image.getSurface(), width, height));
     }
 
     /**
@@ -167,7 +147,7 @@ public final class UtilityImage
      */
     static ImageBuffer flipHorizontal(ImageBuffer image)
     {
-        return new ImageBufferAndroid(ToolsAndroid.flipHorizontal(UtilityImage.getBuffer(image)));
+        return new ImageBufferAndroid(ToolsAndroid.flipHorizontal((Bitmap) image.getSurface()));
     }
 
     /**
@@ -178,19 +158,7 @@ public final class UtilityImage
      */
     static ImageBuffer flipVertical(ImageBuffer image)
     {
-        return new ImageBufferAndroid(ToolsAndroid.flipVertical(UtilityImage.getBuffer(image)));
-    }
-
-    /**
-     * Apply a filter to the input image.
-     * 
-     * @param image The input image.
-     * @param filter The filter to use.
-     * @return The filtered image as a new instance.
-     */
-    static ImageBuffer applyFilter(ImageBuffer image, Filter filter)
-    {
-        return new ImageBufferAndroid(ToolsAndroid.applyFilter(UtilityImage.getBuffer(image), filter));
+        return new ImageBufferAndroid(ToolsAndroid.flipVertical((Bitmap) image.getSurface()));
     }
 
     /**
@@ -200,10 +168,10 @@ public final class UtilityImage
      * @param media The output media.
      * @throws LionEngineException If an error occurred when saving the image.
      */
-    static void saveImage(ImageBuffer image, Media media) throws LionEngineException
+    static void saveImage(ImageBuffer image, Media media)
     {
         final OutputStream output = media.getOutputStream();
-        if (ToolsAndroid.saveImage(UtilityImage.getBuffer(image), output))
+        if (ToolsAndroid.saveImage((Bitmap) image.getSurface(), output))
         {
             try
             {
@@ -232,7 +200,7 @@ public final class UtilityImage
      */
     static ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
-        final Bitmap bitmap = UtilityImage.getBuffer(image);
+        final Bitmap bitmap = (Bitmap) image.getSurface();
         return new ImageBufferAndroid(ToolsAndroid.getRasterBuffer(bitmap, fr, fg, fb, er, eg, eb, refSize));
     }
 

@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.audio.sc68;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Allows to play SonicArranger musics (original Amiga player).
@@ -41,8 +41,6 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * sc68.stop();
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Sc68
 {
@@ -52,7 +50,7 @@ public interface Sc68
      * @param media The music media.
      * @throws LionEngineException If media is <code>null</code>
      */
-    void play(Media media) throws LionEngineException;
+    void play(Media media);
 
     /**
      * Set player volume (between 0 and 100, as a percent).
@@ -60,7 +58,7 @@ public interface Sc68
      * @param volume The music volume [0-100].
      * @throws LionEngineException If argument is invalid.
      */
-    void setVolume(int volume) throws LionEngineException;
+    void setVolume(int volume);
 
     /**
      * Configure the audio output.

@@ -18,7 +18,5 @@
 
 /**
  * Represents the network capacity of an object.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.network.purview;

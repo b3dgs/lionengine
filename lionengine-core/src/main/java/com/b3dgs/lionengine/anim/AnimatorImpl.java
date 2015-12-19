@@ -18,12 +18,9 @@
 package com.b3dgs.lionengine.anim;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Animator implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class AnimatorImpl implements Animator
 {
@@ -131,7 +128,7 @@ final class AnimatorImpl implements Animator
      */
 
     @Override
-    public void play(Animation anim) throws LionEngineException
+    public void play(Animation anim)
     {
         Check.notNull(anim);
 
@@ -170,7 +167,7 @@ final class AnimatorImpl implements Animator
     }
 
     @Override
-    public void setAnimSpeed(double speed) throws LionEngineException
+    public void setAnimSpeed(double speed)
     {
         Check.superiorOrEqual(speed, 0.0);
 
@@ -178,7 +175,7 @@ final class AnimatorImpl implements Animator
     }
 
     @Override
-    public void setFrame(int frame) throws LionEngineException
+    public void setFrame(int frame)
     {
         Check.superiorOrEqual(frame, Animation.MINIMUM_FRAME);
 

@@ -17,21 +17,17 @@
  */
 package com.b3dgs.lionengine.editor.world.updater;
 
+import java.util.Locale;
+
 import org.eclipse.osgi.util.NLS;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Messages internationalization.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Messages extends NLS
 {
-    /** Bundle name. */
-    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".world.updater.messages"; //$NON-NLS-1$
-
     /** Offset number. */
     public static String WorldInteractionTile_Offset;
     /** Invalid offset. */
@@ -42,7 +38,7 @@ public final class Messages extends NLS
      */
     static
     {
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
     }
 
     /**

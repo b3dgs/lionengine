@@ -36,12 +36,10 @@ import org.w3c.dom.NodeList;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * XML node implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class XmlNodeImpl implements XmlNode
 {
@@ -67,12 +65,12 @@ final class XmlNodeImpl implements XmlNode
      * @param name The node name.
      * @throws LionEngineException If error when creating the node.
      */
-    XmlNodeImpl(String name) throws LionEngineException
+    XmlNodeImpl(String name)
     {
         Check.notNull(name);
         try
         {
-            document = XmlFactory.getDocumentFactory().newDocument();
+            document = DocumentFactory.createDocument();
             root = document.createElement(name);
         }
         catch (final DOMException exception)
@@ -110,7 +108,7 @@ final class XmlNodeImpl implements XmlNode
         }
         catch (final XPathExpressionException exception)
         {
-            Verbose.exception(getClass(), "normalize", exception);
+            Verbose.exception(exception);
         }
     }
 
@@ -131,7 +129,7 @@ final class XmlNodeImpl implements XmlNode
      * @return The attribute value.
      * @throws LionEngineException If attribute is not valid or does not exist.
      */
-    private String getValue(String attribute) throws LionEngineException
+    private String getValue(String attribute)
     {
         if (root.hasAttribute(attribute))
         {
@@ -147,7 +145,7 @@ final class XmlNodeImpl implements XmlNode
      * @param content The content value.
      * @throws LionEngineException If error when setting the attribute.
      */
-    private void write(String attribute, String content) throws LionEngineException
+    private void write(String attribute, String content)
     {
         try
         {
@@ -172,7 +170,7 @@ final class XmlNodeImpl implements XmlNode
     }
 
     @Override
-    public void add(XmlNode node) throws LionEngineException
+    public void add(XmlNode node)
     {
         if (node instanceof XmlNodeImpl)
         {
@@ -183,55 +181,55 @@ final class XmlNodeImpl implements XmlNode
     }
 
     @Override
-    public void setText(String text) throws LionEngineException
+    public void setText(String text)
     {
         root.setTextContent(text);
     }
 
     @Override
-    public void writeBoolean(String attribute, boolean content) throws LionEngineException
+    public void writeBoolean(String attribute, boolean content)
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeByte(String attribute, byte content) throws LionEngineException
+    public void writeByte(String attribute, byte content)
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeShort(String attribute, short content) throws LionEngineException
+    public void writeShort(String attribute, short content)
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeInteger(String attribute, int content) throws LionEngineException
+    public void writeInteger(String attribute, int content)
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeLong(String attribute, long content) throws LionEngineException
+    public void writeLong(String attribute, long content)
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeFloat(String attribute, float content) throws LionEngineException
+    public void writeFloat(String attribute, float content)
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeDouble(String attribute, double content) throws LionEngineException
+    public void writeDouble(String attribute, double content)
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeString(String attribute, String content) throws LionEngineException
+    public void writeString(String attribute, String content)
     {
         if (content == null)
         {
@@ -244,49 +242,49 @@ final class XmlNodeImpl implements XmlNode
     }
 
     @Override
-    public boolean readBoolean(String attribute) throws LionEngineException
+    public boolean readBoolean(String attribute)
     {
         return Boolean.parseBoolean(getValue(attribute));
     }
 
     @Override
-    public byte readByte(String attribute) throws LionEngineException
+    public byte readByte(String attribute)
     {
         return Byte.parseByte(getValue(attribute));
     }
 
     @Override
-    public short readShort(String attribute) throws LionEngineException
+    public short readShort(String attribute)
     {
         return Short.parseShort(getValue(attribute));
     }
 
     @Override
-    public int readInteger(String attribute) throws LionEngineException
+    public int readInteger(String attribute)
     {
         return Integer.parseInt(getValue(attribute));
     }
 
     @Override
-    public long readLong(String attribute) throws LionEngineException
+    public long readLong(String attribute)
     {
         return Long.parseLong(getValue(attribute));
     }
 
     @Override
-    public float readFloat(String attribute) throws LionEngineException
+    public float readFloat(String attribute)
     {
         return Float.parseFloat(getValue(attribute));
     }
 
     @Override
-    public double readDouble(String attribute) throws LionEngineException
+    public double readDouble(String attribute)
     {
         return Double.parseDouble(getValue(attribute));
     }
 
     @Override
-    public String readString(String attribute) throws LionEngineException
+    public String readString(String attribute)
     {
         final String value = getValue(attribute);
         if (XmlNode.NULL.equals(value))
@@ -303,7 +301,7 @@ final class XmlNodeImpl implements XmlNode
     }
 
     @Override
-    public void removeChild(String child) throws LionEngineException
+    public void removeChild(String child)
     {
         final XmlNode node = getChild(child);
         root.removeChild(((XmlNodeImpl) node).getElement());
@@ -340,7 +338,7 @@ final class XmlNodeImpl implements XmlNode
     }
 
     @Override
-    public XmlNode getChild(String name) throws LionEngineException
+    public XmlNode getChild(String name)
     {
         final NodeList list = root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
@@ -362,7 +360,7 @@ final class XmlNodeImpl implements XmlNode
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element)
+            if (root.equals(node.getParentNode()) && node instanceof Element)
             {
                 nodes.add(new XmlNodeImpl(document, (Element) node));
             }
@@ -378,7 +376,7 @@ final class XmlNodeImpl implements XmlNode
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element)
+            if (root.equals(node.getParentNode()) && node instanceof Element)
             {
                 nodes.add(new XmlNodeImpl(document, (Element) node));
             }
@@ -412,7 +410,7 @@ final class XmlNodeImpl implements XmlNode
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element && node.getNodeName().equals(child))
+            if (root.equals(node.getParentNode()) && node instanceof Element && node.getNodeName().equals(child))
             {
                 return true;
             }

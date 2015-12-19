@@ -17,11 +17,12 @@
  */
 package com.b3dgs.lionengine.example.game.handler;
 
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.core.Version;
+import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Handler;
@@ -31,7 +32,6 @@ import com.b3dgs.lionengine.game.object.Setup;
 /**
  * Main class.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
 public class AppHandler
@@ -43,7 +43,7 @@ public class AppHandler
      */
     public static void main(String[] args)
     {
-        Engine.start("Handler", Version.create(1, 0, 0), AppHandler.class);
+        EngineAwt.start("Handler", Version.create(1, 0, 0), AppHandler.class);
 
         final Graphic g = Graphics.createGraphic();
         final Services services = new Services();

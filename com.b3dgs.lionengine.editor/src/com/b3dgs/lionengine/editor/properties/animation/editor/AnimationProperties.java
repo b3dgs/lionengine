@@ -31,25 +31,23 @@ import com.b3dgs.lionengine.editor.ObjectProperties;
 
 /**
  * Represents the animation properties edition view.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AnimationProperties extends ObjectProperties<Animation> implements ObjectListListener<Animation>
 {
     /** Maximum frame. */
-    final int maxFrame;
+    private final int maxFrame;
     /** Animation frame selector. */
-    AnimationFrameSelector animationFrameSelector;
+    private AnimationFrameSelector animationFrameSelector;
     /** First frame. */
-    Text firstFrame;
+    private Text firstFrame;
     /** Last frame. */
-    Text lastFrame;
+    private Text lastFrame;
     /** Animation speed. */
-    Text speed;
+    private Text speed;
     /** Animation reverse. */
-    Button reverseAnim;
+    private Button reverseAnim;
     /** Animation repeat. */
-    Button repeatAnim;
+    private Button repeatAnim;
 
     /**
      * Create an animation properties and associate its renderer to retrieve the maximum frames number.
@@ -114,13 +112,10 @@ public class AnimationProperties extends ObjectProperties<Animation> implements 
     {
         final int first = Math.max(Animation.MINIMUM_FRAME, Math.min(Integer.parseInt(firstFrame.getText()), maxFrame));
         final int last = Math.max(Animation.MINIMUM_FRAME, Math.min(Integer.parseInt(lastFrame.getText()), maxFrame));
-        final Animation animation = Anim.createAnimation(name,
-                                                         Math.min(first, last),
-                                                         Math.max(first, last),
-                                                         Double.parseDouble(speed.getText()),
-                                                         reverseAnim.getSelection(),
-                                                         repeatAnim.getSelection());
-        return animation;
+        final double speed = Double.parseDouble(this.speed.getText());
+        final boolean reverse = reverseAnim.getSelection();
+        final boolean repeat = repeatAnim.getSelection();
+        return Anim.createAnimation(name, Math.min(first, last), Math.max(first, last), speed, reverse, repeat);
     }
 
     /*

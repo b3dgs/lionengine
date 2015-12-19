@@ -33,17 +33,15 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilTemplate;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Add a sheets descriptor in the selected folder.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SheetsAddHandler
 {
@@ -98,9 +96,9 @@ public final class SheetsAddHandler
         final Media selection = ProjectModel.INSTANCE.getSelection();
         final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
         final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
-        final String value = MapTile.DEFAULT_SHEETS_FILE.replace(Constant.DOT
-                                                                 + Factory.FILE_DATA_EXTENSION,
-                                                                 Constant.EMPTY_STRING);
+        final String value = TileSheetsConfig.FILENAME.replace(Constant.DOT
+                                                               + Factory.FILE_DATA_EXTENSION,
+                                                               Constant.EMPTY_STRING);
         final InputDialog inputDialog = new InputDialog(parent,
                                                         Messages.AddSheets_Title,
                                                         Messages.AddSheets_Text,

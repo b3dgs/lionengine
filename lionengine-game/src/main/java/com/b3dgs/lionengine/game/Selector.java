@@ -21,11 +21,11 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -40,7 +40,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * Result can be retrieved by using {@link #addListener(SelectorListener)} to notify them the computed selection.
  * It will be then easy to check if objects are inside this area, and set them as <i>selected</i>.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see SelectorListener
  * @see Cursor
  * @see Viewer
@@ -185,8 +184,8 @@ public class Selector implements Updatable, Renderable
     {
         final double viewX = viewer.getViewX() + viewer.getX();
         final double viewY = viewer.getY() - viewer.getViewY();
-        final double currentX = UtilMath.fixBetween(cursor.getX(), viewX, viewX + viewer.getWidth());
-        final double currentY = UtilMath.fixBetween(cursor.getY(), viewY, viewY + viewer.getHeight());
+        final double currentX = UtilMath.clamp(cursor.getX(), viewX, viewX + viewer.getWidth());
+        final double currentY = UtilMath.clamp(cursor.getY(), viewY, viewY + viewer.getHeight());
 
         double selectX = startX;
         double selectY = startY;

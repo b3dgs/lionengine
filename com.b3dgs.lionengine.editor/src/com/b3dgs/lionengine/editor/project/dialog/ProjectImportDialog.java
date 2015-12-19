@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectGenerator;
@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Represents the new project dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ProjectImportDialog extends AbstractProjectDialog
 {
@@ -94,7 +92,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     /**
      * Check if the sources folder already exists.
      */
-    void checkClassesExistence()
+    private void checkClassesExistence()
     {
         final String text = projectClassesText.getText();
         if (!text.isEmpty())
@@ -111,7 +109,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     /**
      * Check if the libraries folder already exists.
      */
-    void checkLibrariesExistence()
+    private void checkLibrariesExistence()
     {
         final String text = projectLibrariesText.getText();
         if (!text.isEmpty())
@@ -128,7 +126,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     /**
      * Check if the resources folder already exists.
      */
-    void checkResourcesExistence()
+    private void checkResourcesExistence()
     {
         final String text = projectResourcesText.getText();
         if (!text.isEmpty())
@@ -145,7 +143,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     /**
      * Update the tips label.
      */
-    void updateTipsLabel()
+    private void updateTipsLabel()
     {
         tipsLabel.setVisible(false);
         boolean enabled = true;
@@ -189,7 +187,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
         }
         catch (final IOException exception)
         {
-            Verbose.exception(getClass(), "generateProperties", exception);
+            Verbose.exception(exception);
             MessageDialog.openError(dialog,
                                     Messages.ImportProjectDialog_ErrorTitle,
                                     Messages.ImportProjectDialog_ErrorText);
@@ -211,7 +209,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
         }
         catch (final IOException exception)
         {
-            Verbose.exception(getClass(), "createProject", exception);
+            Verbose.exception(exception);
             MessageDialog.openError(dialog,
                                     Messages.ImportProjectDialog_ErrorTitle,
                                     Messages.ImportProjectDialog_ErrorText);

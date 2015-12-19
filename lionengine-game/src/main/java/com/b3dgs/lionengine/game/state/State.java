@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.state;
 
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.InputDevice;
-import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * States are designed to implement easily a gameplay by reducing implementation complexity.
@@ -43,7 +43,6 @@ import com.b3dgs.lionengine.core.Updatable;
  * It is possible to listen to {@link InputDevice}, by implementing children of {@link StateInputUpdater}.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see StateTransition
  * @see StateHandler
  * @see StateFactory
@@ -76,11 +75,10 @@ public interface State extends Updatable
     /**
      * Check the transitions in order to find the next state.
      * 
-     * @param factory The state factory reference.
      * @param input The input device reference.
-     * @return The next state (<code>null</code> if none).
+     * @return The next state type (<code>null</code> if none).
      */
-    State checkTransitions(StateFactory factory, InputDevice input);
+    Enum<?> checkTransitions(InputDevice input);
 
     /**
      * Get the corresponding state enum value.

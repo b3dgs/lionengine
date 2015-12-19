@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
 
 /**
  * Represents the keyboard input. Gives informations such as pressed key and code.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Keyboard extends InputDeviceDirectional
 {

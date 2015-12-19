@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.object;
 
 /**
  * Describe the {@link Handler} events.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface HandlerListener
 {

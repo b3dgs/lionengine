@@ -24,12 +24,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Transparency;
 
 /**
  * Test the image buffer class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ImageBufferSwtTest
 {
@@ -39,14 +38,14 @@ public class ImageBufferSwtTest
     @Test
     public void testImage()
     {
-        final Image buffer = UtilityImage.createImage(100, 100, SWT.TRANSPARENCY_NONE);
+        final Image buffer = ToolsSwt.createImage(100, 100, SWT.TRANSPARENCY_NONE);
         final ImageData data = buffer.getImageData();
-        final ImageBufferSwt image = new ImageBufferSwt(buffer);
+        final ImageBuffer image = ToolsSwt.getImageBuffer(buffer);
 
         Assert.assertNotNull(image.createGraphic());
 
         image.prepare();
-        Assert.assertNotEquals(buffer, image.getBuffer());
+        Assert.assertNotEquals(buffer, image.getSurface());
 
         Assert.assertEquals(-1, image.getRgb(0, 0));
         Assert.assertNotNull(image.getRgb(0, 0, 1, 1, new int[1], 0, 0));
@@ -59,10 +58,5 @@ public class ImageBufferSwtTest
         image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
 
         image.dispose();
-
-        Assert.assertEquals(Transparency.OPAQUE, ImageBufferSwt.getTransparency(SWT.TRANSPARENCY_NONE));
-        Assert.assertEquals(Transparency.BITMASK, ImageBufferSwt.getTransparency(SWT.TRANSPARENCY_MASK));
-        Assert.assertEquals(Transparency.TRANSLUCENT, ImageBufferSwt.getTransparency(SWT.TRANSPARENCY_ALPHA));
-        Assert.assertEquals(Transparency.OPAQUE, ImageBufferSwt.getTransparency(465546));
     }
 }

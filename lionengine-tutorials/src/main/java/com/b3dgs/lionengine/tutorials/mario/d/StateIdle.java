@@ -24,25 +24,23 @@ import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
+import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateTransition;
 import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
-import com.b3dgs.lionengine.game.trait.collidable.TileCollidable;
-import com.b3dgs.lionengine.game.trait.collidable.TileCollidableListener;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Idle state implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateIdle extends StateGame implements TileCollidableListener
 {
     /** Can jump flag. */
-    final AtomicBoolean canJump = new AtomicBoolean(false);
+    private final AtomicBoolean canJump = new AtomicBoolean(false);
     /** Jump force. */
-    final Force jump;
+    private final Force jump;
     /** Transformable reference. */
     private final Transformable transformable;
     /** Animator reference. */

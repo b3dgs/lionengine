@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.editor;
 
 /**
  * Represents a part which can be focused on mouse enter.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Focusable
 {

@@ -24,15 +24,14 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Monitor;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Resolution;
 
 /**
  * Screen implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Keyboard
  * @see Mouse
  */
@@ -44,13 +43,13 @@ final class ScreenWindowedSwt extends ScreenSwt
     /**
      * Internal constructor.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not
      *             supported.
      */
-    ScreenWindowedSwt(Renderer renderer) throws LionEngineException
+    ScreenWindowedSwt(Config config)
     {
-        super(renderer);
+        super(config);
     }
 
     /**
@@ -59,7 +58,7 @@ final class ScreenWindowedSwt extends ScreenSwt
      * @param output The output resolution
      * @throws LionEngineException If windowed is not supported.
      */
-    private void initWindowed(Resolution output) throws LionEngineException
+    private void initWindowed(Resolution output)
     {
         try
         {
@@ -70,7 +69,9 @@ final class ScreenWindowedSwt extends ScreenSwt
                 canvas.setVisible(true);
             }
             canvas.setSize(output.getWidth(), output.getHeight());
-            buffer = Graphics.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
+            buffer = (ImageBufferSwt) Graphics.createImageBuffer(output.getWidth(),
+                                                                 output.getHeight(),
+                                                                 Transparency.OPAQUE);
             frame.pack();
 
             final Monitor primary = frame.getDisplay().getPrimaryMonitor();
@@ -89,7 +90,7 @@ final class ScreenWindowedSwt extends ScreenSwt
     }
 
     @Override
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
         initWindowed(output);
         super.setResolution(output);

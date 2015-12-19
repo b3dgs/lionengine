@@ -26,27 +26,25 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderTile;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.game.collision.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.TileGroup;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.map.TileFeature;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileConfig;
+import com.b3dgs.lionengine.game.tile.TileFeature;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Element properties part.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesTile implements PropertiesProviderTile
 {
@@ -71,12 +69,12 @@ public class PropertiesTile implements PropertiesProviderTile
      * @param newGroup The new group name (empty to remove it).
      * @param tile The tile reference.
      */
-    public static void changeTileGroup(MapTile map, String oldGroup, String newGroup, Tile tile)
+    public static void changeTileGroup(MapTileGroup map, String oldGroup, String newGroup, Tile tile)
     {
         final Media config = map.getGroupsConfig();
-        final XmlNode root = Stream.loadXml(config);
+        final XmlNode root = Xml.load(config);
         changeTileGroup(root, oldGroup, newGroup, tile);
-        Stream.saveXml(root, config);
+        Xml.save(root, config);
         map.loadGroups(config);
     }
 
@@ -91,10 +89,10 @@ public class PropertiesTile implements PropertiesProviderTile
     public static void changeTileGroup(XmlNode root, String oldGroup, String newGroup, Tile tile)
     {
         final Collection<Point> toAdd = new HashSet<>();
-        for (final XmlNode nodeGroup : root.getChildren(ConfigTileGroup.GROUP))
+        for (final XmlNode nodeGroup : root.getChildren(TileGroupsConfig.NODE_GROUP))
         {
             removeOldGroup(nodeGroup, oldGroup, tile);
-            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), newGroup))
+            if (CollisionGroup.same(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), newGroup))
             {
                 final Point point = Geom.createPoint(tile.getSheet().intValue(), tile.getNumber());
                 if (!toAdd.contains(point))
@@ -104,14 +102,14 @@ public class PropertiesTile implements PropertiesProviderTile
             }
 
         }
-        if (!ConfigTileGroup.REMOVE_GROUP_NAME.equals(newGroup))
+        if (!TileGroupsConfig.REMOVE_GROUP_NAME.equals(newGroup))
         {
             final XmlNode newNode = getNewNode(root, newGroup);
             for (final Point current : toAdd)
             {
-                final XmlNode node = newNode.createChild(ConfigTileGroup.TILE);
-                node.writeInteger(ConfigTileGroup.SHEET, current.getX());
-                node.writeInteger(ConfigTileGroup.NUMBER, current.getY());
+                final XmlNode node = newNode.createChild(TileConfig.NODE_TILE);
+                node.writeInteger(TileConfig.ATT_TILE_SHEET, current.getX());
+                node.writeInteger(TileConfig.ATT_TILE_NUMBER, current.getY());
             }
         }
         toAdd.clear();
@@ -127,12 +125,12 @@ public class PropertiesTile implements PropertiesProviderTile
     private static void removeOldGroup(XmlNode nodeGroup, String oldGroup, Tile tile)
     {
         final Collection<XmlNode> toRemove = new ArrayList<>();
-        if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), oldGroup))
+        if (CollisionGroup.same(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), oldGroup))
         {
-            for (final XmlNode nodeTile : nodeGroup.getChildren(ConfigTileGroup.TILE))
+            for (final XmlNode nodeTile : nodeGroup.getChildren(TileConfig.NODE_TILE))
             {
-                if (nodeTile.readInteger(ConfigTileGroup.SHEET) == tile.getSheet().intValue()
-                    && nodeTile.readInteger(ConfigTileGroup.NUMBER) == tile.getNumber())
+                if (nodeTile.readInteger(TileConfig.ATT_TILE_SHEET) == tile.getSheet().intValue()
+                    && nodeTile.readInteger(TileConfig.ATT_TILE_NUMBER) == tile.getNumber())
                 {
                     toRemove.add(nodeTile);
                 }
@@ -152,26 +150,25 @@ public class PropertiesTile implements PropertiesProviderTile
      * @param selection The selected item.
      * @param tile The selected tile.
      */
-    static void onDoubleClick(Tree properties, TreeItem selection, Tile tile)
+    private static void onDoubleClick(Tree properties, TreeItem selection, Tile tile)
     {
-        final MapTile map = WorldModel.INSTANCE.getMap();
-        final Collection<TileGroup> groups = map.getGroups();
+        final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
         final Collection<String> values = new ArrayList<>();
-        for (final TileGroup group : groups)
+        for (final String group : mapGroup.getGroups())
         {
-            values.add(group.getName());
+            values.add(group);
         }
-        if (!values.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
+        if (!values.contains(TileGroupsConfig.REMOVE_GROUP_NAME))
         {
-            values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
+            values.add(TileGroupsConfig.REMOVE_GROUP_NAME);
         }
         final GroupChooser chooser = new GroupChooser(properties.getShell(), values);
         chooser.open();
-        final String oldGroup = tile.getGroup();
+        final String oldGroup = mapGroup.getGroup(tile);
         final String newGroup = chooser.getChoice();
         if (newGroup != null)
         {
-            changeTileGroup(map, oldGroup, newGroup, tile);
+            changeTileGroup(mapGroup, oldGroup, newGroup, tile);
             selection.setText(PropertiesPart.COLUMN_VALUE, newGroup);
 
             final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
@@ -188,15 +185,15 @@ public class PropertiesTile implements PropertiesProviderTile
      */
     private static XmlNode getNewNode(XmlNode node, String newGroup)
     {
-        for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroup.GROUP))
+        for (final XmlNode nodeGroup : node.getChildren(TileGroupsConfig.NODE_GROUP))
         {
-            if (newGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME)))
+            if (newGroup.equals(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME)))
             {
                 return nodeGroup;
             }
         }
-        final XmlNode newGroupNode = node.createChild(ConfigTileGroup.GROUP);
-        newGroupNode.writeString(ConfigTileGroup.NAME, newGroup);
+        final XmlNode newGroupNode = node.createChild(TileGroupsConfig.NODE_GROUP);
+        newGroupNode.writeString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME, newGroup);
 
         return newGroupNode;
     }
@@ -210,8 +207,9 @@ public class PropertiesTile implements PropertiesProviderTile
     private static void createAttributeTileGroup(final Tree properties, final Tile tile)
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(item, Messages.Properties_TileGroup, tile.getGroup());
-        item.setData(ConfigTileGroup.GROUP);
+        final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
+        PropertiesPart.createLine(item, Messages.Properties_TileGroup, mapGroup.getGroup(tile));
+        item.setData(TileGroupsConfig.NODE_GROUP);
         item.setImage(PropertiesTile.ICON_GROUP);
 
         properties.addListener(SWT.MouseDoubleClick, event ->
@@ -235,7 +233,7 @@ public class PropertiesTile implements PropertiesProviderTile
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileSheet, String.valueOf(tile.getSheet()));
-        item.setData(ConfigTileGroup.SHEET);
+        item.setData(TileConfig.ATT_TILE_SHEET);
         item.setImage(PropertiesTile.ICON_SHEET);
     }
 
@@ -249,7 +247,7 @@ public class PropertiesTile implements PropertiesProviderTile
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileNumber, String.valueOf(tile.getNumber()));
-        item.setData(ConfigTileGroup.NUMBER);
+        item.setData(TileConfig.ATT_TILE_NUMBER);
         item.setImage(PropertiesTile.ICON_NUMBER);
     }
 
@@ -263,7 +261,7 @@ public class PropertiesTile implements PropertiesProviderTile
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(item, Messages.Properties_TileSize, tile.getWidth() + " * " + tile.getHeight());
-        item.setData(ConfigTileGroup.TILE);
+        item.setData(TileConfig.NODE_TILE);
         item.setImage(PropertiesTile.ICON_SIZE);
     }
 

@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * Feature representation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <F> The feature type used.
  */
 public class Features<F>
@@ -73,7 +72,7 @@ public class Features<F>
      * @return The feature instance.
      * @throws LionEngineException If the feature was not found.
      */
-    public final <C> C get(Class<C> feature) throws LionEngineException
+    public final <C> C get(Class<C> feature)
     {
         final C found = getFeature(feature);
         if (found == null)

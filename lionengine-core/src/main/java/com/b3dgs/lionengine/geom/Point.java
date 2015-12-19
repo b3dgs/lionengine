@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.geom;
 
 /**
  * Represents a point using int precision.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Point
 {

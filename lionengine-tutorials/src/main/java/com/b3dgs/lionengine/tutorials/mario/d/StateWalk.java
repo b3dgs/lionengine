@@ -26,31 +26,29 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
+import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
+import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
 import com.b3dgs.lionengine.game.state.StateTransition;
 import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
-import com.b3dgs.lionengine.game.trait.collidable.TileCollidable;
-import com.b3dgs.lionengine.game.trait.collidable.TileCollidableListener;
-import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Walk state implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileCollidableListener
 {
     /** Horizontal collision. */
-    final AtomicBoolean collide = new AtomicBoolean(false);
+    private final AtomicBoolean collide = new AtomicBoolean(false);
     /** Can jump flag. */
-    final AtomicBoolean canJump = new AtomicBoolean(false);
+    private final AtomicBoolean canJump = new AtomicBoolean(false);
     /** Movement force. */
-    final Force movement;
+    private final Force movement;
     /** Jump force. */
-    final Force jump;
+    private final Force jump;
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
     /** Animator reference. */

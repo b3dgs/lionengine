@@ -17,34 +17,41 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.eclipse.swt.SWTException;
+import org.eclipse.swt.graphics.Image;
+
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Hq2x;
-import com.b3dgs.lionengine.Hq3x;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.FactoryGraphic;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.Transform;
 
 /**
  * Graphic factory implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryGraphicSwt implements FactoryGraphic
+public final class FactoryGraphicSwt implements FactoryGraphic
 {
+    /** Reading image message. */
+    private static final String ERROR_IMAGE_READING = "Error on reading image !";
+    /** Save image message. */
+    private static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
+
     /**
-     * Internal constructor.
+     * Constructor.
      */
-    FactoryGraphicSwt()
+    public FactoryGraphicSwt()
     {
         // Nothing to do
     }
@@ -54,14 +61,13 @@ final class FactoryGraphicSwt implements FactoryGraphic
      */
 
     @Override
-    public Screen createScreen(Renderer renderer)
+    public Screen createScreen(Config config)
     {
-        final Config config = renderer.getConfig();
         if (config.isWindowed())
         {
-            return new ScreenWindowedSwt(renderer);
+            return new ScreenWindowedSwt(config);
         }
-        return new ScreenFullSwt(renderer);
+        return new ScreenFullSwt(config);
     }
 
     @Override
@@ -79,98 +85,113 @@ final class FactoryGraphicSwt implements FactoryGraphic
     @Override
     public Text createText(String fontName, int size, TextStyle style)
     {
-        return UtilityImage.createText(fontName, size, style);
+        return new TextSwt(ToolsSwt.getDisplay(), fontName, size, style);
     }
 
     @Override
     public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
-        return UtilityImage.createImage(width, height, transparency);
+        Check.superiorOrEqual(width, 0);
+        Check.superiorOrEqual(height, 0);
+
+        final Image image = ToolsSwt.createImage(width, height, ToolsSwt.getTransparency(transparency));
+        final ImageBufferSwt buffer = new ImageBufferSwt(image);
+
+        final Graphic g = buffer.createGraphic();
+        g.setColor(ColorRgba.BLACK);
+        g.drawRect(0, 0, width, height, true);
+        g.dispose();
+
+        return buffer;
     }
 
     @Override
     public ImageBuffer getImageBuffer(Media media)
     {
-        return UtilityImage.getImage(media);
-    }
-
-    @Override
-    public ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
-    {
-        return UtilityImage.getImage(imageBuffer);
-    }
-
-    @Override
-    public ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
-    {
-        return UtilityImage.applyMask(imageBuffer, maskColor);
-    }
-
-    @Override
-    public ImageBuffer[] splitImage(ImageBuffer imageBuffer, int h, int v)
-    {
-        return UtilityImage.splitImage(imageBuffer, h, v);
-    }
-
-    @Override
-    public ImageBuffer rotate(ImageBuffer imageBuffer, int angle)
-    {
-        return UtilityImage.rotate(imageBuffer, angle);
-    }
-
-    @Override
-    public ImageBuffer resize(ImageBuffer imageBuffer, int width, int height)
-    {
-        return UtilityImage.resize(imageBuffer, width, height);
-    }
-
-    @Override
-    public ImageBuffer flipHorizontal(ImageBuffer imageBuffer)
-    {
-        return UtilityImage.flipHorizontal(imageBuffer);
-    }
-
-    @Override
-    public ImageBuffer flipVertical(ImageBuffer imageBuffer)
-    {
-        return UtilityImage.flipVertical(imageBuffer);
-    }
-
-    @Override
-    public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter) throws LionEngineException
-    {
-        final ImageBuffer filtered;
-        switch (filter)
+        final InputStream input = media.getInputStream();
+        try
         {
-            case NONE:
-                filtered = imageBuffer;
-                break;
-            case BILINEAR:
-                filtered = UtilityImage.applyBilinearFilter(imageBuffer);
-                break;
-            case HQ2X:
-                final Hq2x hq2x = new Hq2x(imageBuffer);
-                filtered = hq2x.getScaledImage();
-                break;
-            case HQ3X:
-                final Hq3x hq3x = new Hq3x(imageBuffer);
-                filtered = hq3x.getScaledImage();
-                break;
-            default:
-                throw new RuntimeException();
+            return new ImageBufferSwt(ToolsSwt.getDisplay(), ToolsSwt.getImageData(input));
         }
-        return filtered;
+        catch (final SWTException exception)
+        {
+            throw new LionEngineException(exception, ERROR_IMAGE_READING);
+        }
+        finally
+        {
+            UtilFile.safeClose(input);
+        }
     }
 
     @Override
-    public void saveImage(ImageBuffer imageBuffer, Media media)
+    public ImageBuffer getImageBuffer(ImageBuffer image)
     {
-        UtilityImage.saveImage(imageBuffer, media);
+        return new ImageBufferSwt(ToolsSwt.getImage((Image) image.getSurface()));
     }
 
     @Override
-    public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb, int ref)
+    public ImageBuffer applyMask(ImageBuffer image, ColorRgba maskColor)
     {
-        return UtilityImage.getRasterBuffer(imageBuffer, fr, fg, fb, er, eg, eb, ref);
+        return new ImageBufferSwt(ToolsSwt.applyMask((Image) image.getSurface(), maskColor.getRgba()));
+    }
+
+    @Override
+    public ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
+    {
+        final Image[] images = ToolsSwt.splitImage((Image) image.getSurface(), h, v);
+        final ImageBuffer[] imageBuffers = new ImageBuffer[images.length];
+        for (int i = 0; i < imageBuffers.length; i++)
+        {
+            imageBuffers[i] = new ImageBufferSwt(images[i]);
+        }
+        return imageBuffers;
+    }
+
+    @Override
+    public ImageBuffer rotate(ImageBuffer image, int angle)
+    {
+        return new ImageBufferSwt(ToolsSwt.rotate((Image) image.getSurface(), angle));
+    }
+
+    @Override
+    public ImageBuffer resize(ImageBuffer image, int width, int height)
+    {
+        return new ImageBufferSwt(ToolsSwt.resize((Image) image.getSurface(), width, height));
+    }
+
+    @Override
+    public ImageBuffer flipHorizontal(ImageBuffer image)
+    {
+        return new ImageBufferSwt(ToolsSwt.flipHorizontal((Image) image.getSurface()));
+    }
+
+    @Override
+    public ImageBuffer flipVertical(ImageBuffer image)
+    {
+        return new ImageBufferSwt(ToolsSwt.flipVertical((Image) image.getSurface()));
+    }
+
+    @Override
+    public void saveImage(ImageBuffer image, Media media)
+    {
+        final OutputStream output = media.getOutputStream();
+        try
+        {
+            ToolsSwt.saveImage((Image) image.getSurface(), output);
+        }
+        catch (final SWTException exception)
+        {
+            throw new LionEngineException(exception, ERROR_IMAGE_SAVE);
+        }
+        finally
+        {
+            UtilFile.safeClose(output);
+        }
+    }
+
+    @Override
+    public ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int ref)
+    {
+        return new ImageBufferSwt(ToolsSwt.getRasterBuffer((Image) image.getSurface(), fr, fg, fb, er, eg, eb, ref));
     }
 }

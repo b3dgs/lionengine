@@ -43,7 +43,6 @@ import com.b3dgs.lionengine.editor.utility.UtilTree;
 /**
  * Represents the object list, allowing to add and remove objects.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The object type handled by the list.
  */
 public abstract class ObjectList<T extends Nameable>
@@ -62,15 +61,15 @@ public abstract class ObjectList<T extends Nameable>
     /** Class type. */
     final Class<T> type;
     /** Properties. */
-    final ObjectProperties<T> properties;
+    private final ObjectProperties<T> properties;
     /** Objects list. */
     Tree objectsTree;
     /** Selected item. */
-    TreeItem selectedItem;
+    private TreeItem selectedItem;
     /** Selected data. */
-    T selectedObject;
+    private T selectedObject;
     /** Selected data backup. */
-    T selectedObjectBackup;
+    private T selectedObjectBackup;
 
     /**
      * Create an object list.
@@ -164,14 +163,7 @@ public abstract class ObjectList<T extends Nameable>
         data.minimumWidth = 128;
         data.minimumHeight = 96;
         objectsTree.setLayoutData(data);
-        objectsTree.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                onSelection();
-            }
-        });
+        UtilTree.setAction(objectsTree, () -> onSelection());
     }
 
     /**

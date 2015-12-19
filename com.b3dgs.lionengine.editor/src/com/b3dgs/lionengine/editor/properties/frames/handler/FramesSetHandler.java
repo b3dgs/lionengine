@@ -28,14 +28,12 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.frames.Messages;
 import com.b3dgs.lionengine.editor.properties.frames.PropertiesFrames;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Set frames handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FramesSetHandler
 {
@@ -79,9 +77,9 @@ public class FramesSetHandler
             if (verticalFrames.open() == Window.OK)
             {
                 final XmlNode root = configurer.getRoot();
-                final XmlNode frames = root.createChild(ConfigFrames.FRAMES);
-                frames.writeString(ConfigFrames.FRAMES_HORIZONTAL, horizontalFrames.getValue());
-                frames.writeString(ConfigFrames.FRAMES_VERTICAL, verticalFrames.getValue());
+                final XmlNode frames = root.createChild(FramesConfig.FRAMES);
+                frames.writeString(FramesConfig.FRAMES_HORIZONTAL, horizontalFrames.getValue());
+                frames.writeString(FramesConfig.FRAMES_VERTICAL, verticalFrames.getValue());
 
                 PropertiesFrames.updateSize(configurer, root, frames);
 

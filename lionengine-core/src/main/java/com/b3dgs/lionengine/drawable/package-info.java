@@ -18,7 +18,5 @@
 
 /**
  * Classic drawable classes for a ready to use image manipulation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.drawable;

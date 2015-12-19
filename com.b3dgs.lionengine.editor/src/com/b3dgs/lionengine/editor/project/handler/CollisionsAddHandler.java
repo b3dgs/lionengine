@@ -32,17 +32,15 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilTemplate;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Add a collisions descriptor in the selected folder.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class CollisionsAddHandler
 {
@@ -83,9 +81,9 @@ public final class CollisionsAddHandler
     public void execute(Shell parent)
     {
         final Media selection = ProjectModel.INSTANCE.getSelection();
-        final String value = MapTileCollision.DEFAULT_COLLISIONS_FILE.replace(Constant.DOT
-                                                                              + Factory.FILE_DATA_EXTENSION,
-                                                                              Constant.EMPTY_STRING);
+        final String value = CollisionGroupConfig.FILENAME.replace(Constant.DOT
+                                                                   + Factory.FILE_DATA_EXTENSION,
+                                                                   Constant.EMPTY_STRING);
         final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
         final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
         final InputDialog inputDialog = new InputDialog(parent,

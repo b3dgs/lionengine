@@ -17,31 +17,32 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.BeforeClass;
+
+import com.b3dgs.lionengine.TransformTest;
+import com.b3dgs.lionengine.core.Graphics;
 
 /**
  * Test the transform class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TransfortSwtTest
+public class TransfortSwtTest extends TransformTest
 {
     /**
-     * Test the transformations.
+     * Prepare test.
      */
-    @Test
-    public void testTransform()
+    @BeforeClass
+    public static void setUp()
     {
-        final TransformSwt transform = new TransformSwt();
-        transform.scale(2.0, 3.0);
-        transform.setInterpolation(true);
+        Graphics.setFactoryGraphic(new FactoryGraphicSwt());
+    }
 
-        Assert.assertEquals(2.0, transform.getScaleX(), 0.1);
-        Assert.assertEquals(3.0, transform.getScaleY(), 0.1);
-        Assert.assertEquals(1, transform.getInterpolation());
+    /*
+     * TransformTest
+     */
 
-        transform.setInterpolation(false);
-        Assert.assertEquals(0, transform.getInterpolation());
+    @Override
+    protected int getInterpolation(int value)
+    {
+        return value;
     }
 }

@@ -17,62 +17,23 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.BeforeClass;
 
-import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.TextTest;
+import com.b3dgs.lionengine.core.Graphics;
 
 /**
  * Test the text class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TextSwtTest
+public class TextSwtTest extends TextTest
 {
     /**
-     * Test the text.
+     * Prepare test.
      */
-    @Test
-    public void testText()
+    @BeforeClass
+    public static void setUp()
     {
-        final Display display = UtilityImage.getDisplay();
-        final TextSwt text = new TextSwt(display, Text.DIALOG, 10, TextStyle.NORMAL);
-        final TextSwt textIta = new TextSwt(display, Text.DIALOG, 10, TextStyle.BOLD);
-        final TextSwt textBold = new TextSwt(display, Text.DIALOG, 10, TextStyle.ITALIC);
-        final Image buffer = UtilityImage.createImage(100, 100, SWT.TRANSPARENCY_NONE);
-        final GC gc = new GC(buffer);
-        final GraphicSwt g = new GraphicSwt(gc);
-
-        text.draw(g, 0, 0, "test");
-        text.draw(g, 0, 0, Align.LEFT, "test");
-        textIta.draw(g, 0, 0, Align.CENTER, "test");
-        textBold.draw(g, 0, 0, Align.RIGHT, "test");
-
-        textIta.setText("toto");
-        textIta.setAlign(Align.CENTER);
-        textIta.setColor(ColorRgba.BLACK);
-        textIta.setLocation(10, 20);
-        textIta.render(g);
-
-        Assert.assertEquals(10, textIta.getLocationX());
-        Assert.assertEquals(20, textIta.getLocationY());
-        Assert.assertEquals(10, textIta.getSize());
-
-        Assert.assertEquals(3, text.getStringWidth(g, Constant.SPACE));
-        Assert.assertEquals(11, text.getStringHeight(g, "test"));
-
-        Assert.assertEquals(18, textIta.getWidth());
-        Assert.assertEquals(11, textIta.getHeight());
-
-        g.dispose();
-        buffer.dispose();
+        Graphics.setFactoryGraphic(new FactoryGraphicSwt());
+        prepare();
     }
 }

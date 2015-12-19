@@ -18,19 +18,17 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * Animated sprite implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
 {
@@ -53,7 +51,7 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
      * @param verticalFrames The number of vertical frames.
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
-    SpriteAnimatedImpl(Media media, int horizontalFrames, int verticalFrames) throws LionEngineException
+    SpriteAnimatedImpl(Media media, int horizontalFrames, int verticalFrames)
     {
         super(media);
 
@@ -75,7 +73,7 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
      * @param verticalFrames The number of vertical frames.
      * @throws LionEngineException If arguments are invalid.
      */
-    SpriteAnimatedImpl(ImageBuffer surface, int horizontalFrames, int verticalFrames) throws LionEngineException
+    SpriteAnimatedImpl(ImageBuffer surface, int horizontalFrames, int verticalFrames)
     {
         super(surface);
 
@@ -92,7 +90,7 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
      */
 
     @Override
-    public void play(Animation animation) throws LionEngineException
+    public void play(Animation animation)
     {
         animator.play(animation);
     }
@@ -122,13 +120,13 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
     }
 
     @Override
-    public void setAnimSpeed(double speed) throws LionEngineException
+    public void setAnimSpeed(double speed)
     {
         animator.setAnimSpeed(speed);
     }
 
     @Override
-    public void setFrame(int frame) throws LionEngineException
+    public void setFrame(int frame)
     {
         animator.setFrame(frame);
     }
@@ -217,7 +215,10 @@ final class SpriteAnimatedImpl extends SpriteImpl implements SpriteAnimated
             final boolean sameHorizontalFrames = sprite.getFramesHorizontal() == getFramesHorizontal();
             final boolean sameVerticalFrames = sprite.getFramesVertical() == getFramesVertical();
 
-            return sameFrameWidth && sameFrameHeight && sameHorizontalFrames && sameVerticalFrames && sameSprite;
+            final boolean sameSize = sameFrameWidth && sameFrameHeight;
+            final boolean sameFrames = sameHorizontalFrames && sameVerticalFrames;
+
+            return sameSize && sameFrames && sameSprite;
         }
         return false;
     }

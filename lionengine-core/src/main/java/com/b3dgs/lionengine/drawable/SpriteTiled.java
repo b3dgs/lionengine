@@ -34,8 +34,6 @@ package com.b3dgs.lionengine.drawable;
  * // Render
  * tilesheet.render(g);
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface SpriteTiled extends Sprite
 {

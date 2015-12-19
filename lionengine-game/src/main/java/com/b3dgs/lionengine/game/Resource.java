@@ -32,8 +32,6 @@ package com.b3dgs.lionengine.game;
  * gold.spend(25); // returns 75
  * gold.canSpend(100); // returns false
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Resource
 {

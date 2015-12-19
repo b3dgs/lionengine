@@ -17,13 +17,11 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.InputDevicePointer;
-import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * Mouse input.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Mouse extends InputDevicePointer, Updatable
 {

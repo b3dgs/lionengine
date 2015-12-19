@@ -17,26 +17,31 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
 
 /**
  * Representation of the screen device, supporting different screen rendering type and input devices.
  * A screen is connected to a {@link Sequence} in order to render it.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see InputDevice
  * @see Graphic
  * @see Sequence
  * @see Graphics
  */
-public interface Screen
+public interface Screen extends Context
 {
     /**
      * Start the main frame if has.
      */
     void start();
+
+    /**
+     * Wait until screen get ready.
+     * 
+     * @throws LionEngineException If screen not ready before time out.
+     */
+    void awaitReady();
 
     /**
      * Pre update, specially called before the main {@link #update()} in order to prepare it if necessary.
@@ -69,18 +74,25 @@ public interface Screen
     void showCursor();
 
     /**
+     * Add a screen listener.
+     * 
+     * @param listener The screen listener to add.
+     */
+    void addListener(ScreenListener listener);
+
+    /**
+     * Remove a screen listener.
+     * 
+     * @param listener The screen listener to remove.
+     */
+    void removeListener(ScreenListener listener);
+
+    /**
      * Add a key listener.
      * 
      * @param listener The listener to add.
      */
     void addKeyListener(InputDeviceKeyListener listener);
-
-    /**
-     * Set sequence reference.
-     * 
-     * @param sequence The sequence reference.
-     */
-    void setSequence(Sequence sequence);
 
     /**
      * Set icon from file.
@@ -97,23 +109,6 @@ public interface Screen
     Graphic getGraphic();
 
     /**
-     * Get the config.
-     * 
-     * @return The config.
-     */
-    Config getConfig();
-
-    /**
-     * Get the input device instance from its type.
-     * 
-     * @param <T> The input device.
-     * @param type The input device type.
-     * @return The input instance reference.
-     * @throws LionEngineException If device not found.
-     */
-    <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException;
-
-    /**
      * Get main frame location x.
      * 
      * @return The main frame location x.
@@ -126,6 +121,13 @@ public interface Screen
      * @return The main frame location y.
      */
     int getY();
+
+    /**
+     * Get the maximum time in milliseconds for screen to be ready.
+     * 
+     * @return The maximum time in milliseconds for screen to get ready.
+     */
+    long getReadyTimeOut();
 
     /**
      * Check if screen is ready.

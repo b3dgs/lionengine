@@ -17,21 +17,17 @@
  */
 package com.b3dgs.lionengine.editor.project.dialog.formula;
 
+import java.util.Locale;
+
 import org.eclipse.osgi.util.NLS;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Messages internationalization.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Messages extends NLS
 {
-    /** Bundle name. */
-    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".project.dialog.formula.messages"; //$NON-NLS-1$
-
     /** Edit formulas dialog title. */
     public static String EditFormulasDialog_Title;
     /** Edit formulas dialog title header. */
@@ -78,7 +74,7 @@ public final class Messages extends NLS
      */
     static
     {
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
     }
 
     /**

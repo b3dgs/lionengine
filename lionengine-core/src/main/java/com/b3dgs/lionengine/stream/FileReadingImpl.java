@@ -23,12 +23,10 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * File reading implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class FileReadingImpl implements FileReading
 {
@@ -41,7 +39,7 @@ final class FileReadingImpl implements FileReading
      * @param media The media path.
      * @throws LionEngineException If error when opening the media.
      */
-    FileReadingImpl(Media media) throws LionEngineException
+    FileReadingImpl(Media media)
     {
         Check.notNull(media);
 

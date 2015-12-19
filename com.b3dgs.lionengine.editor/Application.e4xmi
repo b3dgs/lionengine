@@ -52,9 +52,6 @@
                   <children xsi:type="menu:ToolBarSeparator" xmi:id="_lbTbUEGjEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.separator0"/>
                   <children xsi:type="menu:DirectToolItem" xmi:id="_6lxSEPcKEeS8L5kniFEmyw" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.grid" label="%toolbar.world.grid" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/grid.png" tooltip="%toolbar.world.grid-tip" selected="true" type="Check" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.SetGridHandler"/>
                   <children xsi:type="menu:DirectToolItem" xmi:id="_uZR-IEvDEeSHc9sOFbIdbg" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.collisions" label="%toolbar.world.collisions" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/collisions.png" tooltip="%toolbar.world.collisions-tip" type="Check" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler"/>
-                  <children xsi:type="menu:ToolBarSeparator" xmi:id="_nudHgEGUEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.separator2"/>
-                  <children xsi:type="menu:DirectToolItem" xmi:id="_n8HC4AauEeW4xftU0CS5Cg" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.import-sheets" label="%toolbar.world.import-sheets" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/sheets-import.png" tooltip="%toolbar.world.import-sheets-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.SheetsImportHandler"/>
-                  <children xsi:type="menu:DirectToolItem" xmi:id="_5ARyAEvDEeSHc9sOFbIdbg" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.import-map" label="%toolbar.world.import-map" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/import-map.png" tooltip="%toolbar.world.import-map-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.MapImportHandler"/>
                   <children xsi:type="menu:ToolBarSeparator" xmi:id="_87SpcC04EeWwF4XM7TtFkA" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.separator3"/>
                   <children xsi:type="menu:ToolControl" xmi:id="_vjI8kC04EeWwF4XM7TtFkA" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.formulas" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.FormulaItem"/>
                   <children xsi:type="menu:DirectToolItem" xmi:id="_h0Q3MC74EeWyPvj7cQydgg" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.pointer-collision" label="%toolbar.world.pointer-collision" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/pointer-collision.png" tooltip="%toolbar.world.pointer-collision-tip" type="Check" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler"/>
@@ -122,20 +119,40 @@
       </children>
     </children>
     <mainMenu xmi:id="_RgxMyccnEeO6QsMPtNpkHg" elementId="menu:org.eclipse.ui.main.menu">
-      <children xsi:type="menu:Menu" xmi:id="_RgxMyscnEeO6QsMPtNpkHg" label="%menu.file">
+      <children xsi:type="menu:Menu" xmi:id="_RgxMyscnEeO6QsMPtNpkHg" label="%menu.file" iconURI="">
         <children xsi:type="menu:DirectMenuItem" xmi:id="_Mdn1YEsdEeS9gtv_zEGnhw" elementId="" label="%menu.file.import-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/menu/project-import.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ProjectImportHandler"/>
         <children xsi:type="menu:DirectMenuItem" xmi:id="_R5dL8EsdEeS9gtv_zEGnhw" elementId="" label="%menu.file.exit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/dialog/exit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handler.ExitHandler"/>
       </children>
-      <children xsi:type="menu:Menu" xmi:id="_NQqXgB9mEeWl-qhW9GtH-g" elementId="" label="%menu.map">
-        <children xsi:type="menu:DirectMenuItem" xmi:id="_Uq-0AB9mEeWl-qhW9GtH-g" elementId="" label="%menu.map.import-map-collision" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/import-map.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.handler.MapCollisionImportHandler">
+      <children xsi:type="menu:Menu" xmi:id="_NQqXgB9mEeWl-qhW9GtH-g" elementId="" label="%menu.map" iconURI="">
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_RAcBwI48EeWQ4d0z5MM9kQ" elementId="com.b3dgs.lionengine.editor.menu.map.extract-sheets" label="%menu.map.extract-sheets" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/extract-sheets.png" tooltip="%menu.map.extract-sheets-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.map.sheets.extract.SheetsExtractHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_RAcBwY48EeWQ4d0z5MM9kQ" coreExpressionId="com.b3dgs.lionengine.editor.project.active"/>
+        </children>
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_yqD-UHaDEeWb3pFgi6m6GA" elementId="com.b3dgs.lionengine.editor.menu.map.edit-groups" label="%menu.map.edit-groups" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/extract-sheets.png" tooltip="%menu.map.edit-groups-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.map.groups.GroupsEditHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_G3IpsHaGEeWb3pFgi6m6GA" coreExpressionId="com.b3dgs.lionengine.editor.project.active"/>
+        </children>
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_84AHoG0wEeWUnr4kweo3Wg" elementId="com.b3dgs.lionengine.editor.menu.map.extract-constraints" label="%menu.map.extract-constraints" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/import-map.png" tooltip="%menu.map.extract-constraints-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.map.constraint.ConstraintsExtractHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_84AHoW0wEeWUnr4kweo3Wg" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
+        </children>
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_U57dwI7qEeWO_qdlkKwzcA" elementId="com.b3dgs.lionengine.editor.menu.map.extract-all" label="%menu.map.extract-all" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/import-map.png" tooltip="%menu.map.extract-all-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.map.ExtractAllHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_U57dwY7qEeWO_qdlkKwzcA" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
+        </children>
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_Uq-0AB9mEeWl-qhW9GtH-g" elementId="com.b3dgs.lionengine.editor.menu.map.import-collision" label="%menu.map.import-collision" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/import-map.png" tooltip="%menu.map.import-collision-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.map.collision.imports.CollisionImportHandler">
           <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_CafCsB9nEeWl-qhW9GtH-g" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
         </children>
-        <children xsi:type="menu:DirectMenuItem" xmi:id="_9RiFUF6zEeWkWPaLeuAPFA" elementId="" label="%menu.map.minimap" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/minimap.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handler.MinimapHandler">
-          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_9RiFUV6zEeWkWPaLeuAPFA" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_yt8YwHaDEeWb3pFgi6m6GA" elementId="com.b3dgs.lionengine.editor.menu.map.import" label="%menu.map.import" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/import-map.png" tooltip="%menu.map.import-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.map.imports.MapImportHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_DRupQHaGEeWb3pFgi6m6GA" coreExpressionId="com.b3dgs.lionengine.editor.project.active"/>
+        </children>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_pXb_8G9-EeWXTKDefNFrEg" elementId="" label="%menu.view">
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_pXb_9W9-EeWXTKDefNFrEg" elementId="" label="%menu.view.minimap" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/menu/minimap.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.minimap.MinimapHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_pXb_9m9-EeWXTKDefNFrEg" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
+        </children>
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_rOSM0G9-EeWXTKDefNFrEg" elementId="" label="%menu.view.palette" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/menu/palette.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.map.sheets.palette.SheetsPaletteHandler">
+          <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_rOSM0W9-EeWXTKDefNFrEg" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
         </children>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_RgxMzscnEeO6QsMPtNpkHg" label="%menu.help" mnemonics="">
-        <children xsi:type="menu:DirectMenuItem" xmi:id="_VgEtUEsdEeS9gtv_zEGnhw" elementId="" label="%menu.help.about" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/dialog/info.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handler.AboutHandler"/>
+        <children xsi:type="menu:DirectMenuItem" xmi:id="_VgEtUEsdEeS9gtv_zEGnhw" elementId="" label="%menu.help.about" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/dialog/info.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.dialog.about.AboutHandler"/>
       </children>
     </mainMenu>
   </children>

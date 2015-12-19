@@ -25,8 +25,6 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -34,13 +32,12 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import com.b3dgs.lionengine.game.collision.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
+import com.b3dgs.lionengine.editor.utility.UtilCombo;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
 
 /**
  * Represents the quick formula assignment area.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FormulaItem
 {
@@ -56,11 +53,9 @@ public class FormulaItem
     private static final int COMBO_MIN_WIDTH = 128;
 
     /** Loaded data. */
-    final Map<String, CollisionFunction> values = new HashMap<>();
+    private final Map<String, CollisionFunction> values = new HashMap<>();
     /** The combo item. */
-    Combo combo;
-    /** Last loaded. */
-    long lastModified;
+    private Combo combo;
 
     /**
      * Create item.
@@ -122,14 +117,7 @@ public class FormulaItem
         combo = new Combo(parent, SWT.SINGLE | SWT.READ_ONLY);
         combo.setFont(font);
         combo.setLayoutData(new GridData(COMBO_MIN_WIDTH, TEXT_HEIGHT));
-        combo.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                combo.setData(values.get(combo.getText()));
-            }
-        });
+        UtilCombo.setAction(combo, () -> combo.setData(values.get(combo.getText())));
         values.clear();
         values.put("Line", LINE);
         values.put("Slope", SLOPE);

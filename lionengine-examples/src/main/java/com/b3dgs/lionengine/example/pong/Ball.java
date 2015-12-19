@@ -18,29 +18,26 @@
 package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.collision.object.Collidable;
+import com.b3dgs.lionengine.game.collision.object.CollidableListener;
+import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.trait.collidable.Collidable;
-import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
-import com.b3dgs.lionengine.game.trait.collidable.CollidableModel;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
 
 /**
  * Ball implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Ball extends ObjectGame implements Updatable, Renderable, CollidableListener
 {
@@ -63,7 +60,7 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
     /**
      * {@link ObjectGame#ObjectGame(Setup, Services)}
      */
-    public Ball(Setup setup, Services services) throws LionEngineException
+    public Ball(Setup setup, Services services)
     {
         super(setup, services);
         viewer = services.get(Viewer.class);
@@ -111,22 +108,22 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
     }
 
     @Override
-    public void notifyCollided(Collidable collidable)
+    public void notifyCollided(ObjectGame object)
     {
-        final Transformable object = collidable.getOwner().getTrait(Transformable.class);
+        final Transformable transformable = object.getTrait(Transformable.class);
         int side = 0;
         if (transformable.getX() < transformable.getOldX())
         {
-            transformable.teleportX(object.getX() + object.getWidth() / 2 + transformable.getWidth() / 2);
+            transformable.teleportX(transformable.getX() + transformable.getWidth() / 2 + transformable.getWidth() / 2);
             side = 1;
         }
         if (transformable.getX() > transformable.getOldX())
         {
-            transformable.teleportX(object.getX() - object.getWidth() / 2 - transformable.getWidth() / 2);
+            transformable.teleportX(transformable.getX() - transformable.getWidth() / 2 - transformable.getWidth() / 2);
             side = -1;
         }
 
-        final double diff = object.getY() - transformable.getY();
+        final double diff = transformable.getY() - transformable.getY();
         final int angle = (int) Math.round(diff * 10);
         force.setDestination(speed * UtilMath.cos(angle) * side, speed * UtilMath.sin(angle));
     }

@@ -25,15 +25,13 @@ import java.awt.geom.Rectangle2D;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Text;
 
 /**
  * Text implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class TextAwt implements Text
 {
@@ -58,7 +56,7 @@ final class TextAwt implements Text
                 value = Font.ITALIC;
                 break;
             default:
-                throw new LionEngineException("Unsupported text style: ", style.name());
+                throw new LionEngineException(style);
         }
         return value;
     }
@@ -134,12 +132,12 @@ final class TextAwt implements Text
                 ty = (int) textSize.getHeight() + y;
                 break;
             default:
-                throw new LionEngineException("Unsupported alignment: ", alignment.name());
+                throw new LionEngineException(alignment);
         }
 
         final ColorRgba colorOld = g.getColor();
         g.setColor(color);
-        g2d.drawGlyphVector(glyphVector, tx, ty - size / 2);
+        g2d.drawGlyphVector(glyphVector, tx, ty - size / 2.0f);
         g.setColor(colorOld);
     }
 

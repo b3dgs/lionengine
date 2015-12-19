@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Static functions displaying message on screen.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityMessageBox
 {

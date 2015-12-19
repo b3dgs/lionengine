@@ -49,7 +49,6 @@ import com.b3dgs.lionengine.Nameable;
  * print(animation.getRepeat()); // true
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Anim
  * @see Animator
  * @see AnimState

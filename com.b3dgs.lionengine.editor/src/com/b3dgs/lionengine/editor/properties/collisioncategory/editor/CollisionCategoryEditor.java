@@ -26,15 +26,13 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.collision.CollisionCategory;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.collision.tile.CollisionCategory;
+import com.b3dgs.lionengine.game.collision.tile.CollisionCategoryConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Collision category editor dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionCategoryEditor extends AbstractEditor
 {
@@ -85,12 +83,12 @@ public class CollisionCategoryEditor extends AbstractEditor
         categoryList.save();
 
         final XmlNode root = configurer.getRoot();
-        root.removeChildren(ConfigCollisionCategory.CATEGORY);
+        root.removeChildren(CollisionCategoryConfig.CATEGORY);
 
         for (final TreeItem item : categoryList.getTree().getItems())
         {
             final CollisionCategory category = (CollisionCategory) item.getData();
-            ConfigCollisionCategory.export(root, category);
+            CollisionCategoryConfig.export(root, category);
         }
         configurer.save();
     }

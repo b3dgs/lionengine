@@ -21,8 +21,6 @@ import com.sun.jna.Library;
 
 /**
  * Sc68 binding interface.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 interface Sc68Binding extends Library
 {
@@ -44,9 +42,9 @@ interface Sc68Binding extends Library
      * Configure the audio output.
      * 
      * @param interpolation <code>1</code> to use interpolation, <code>0</code> else.
-     * @param stereo_join <code>1</code> to join stereo, <code>0</code> else.
+     * @param stereoJoin <code>1</code> to join stereo, <code>0</code> else.
      */
-    void Sc68Config(int interpolation, int stereo_join);
+    void Sc68Config(int interpolation, int stereoJoin);
 
     /**
      * Pause track.

@@ -33,17 +33,15 @@ import org.osgi.framework.wiring.BundleWiring;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.utility.UtilClass;
 
 /**
  * Represents a project and its data.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Project
 {
@@ -79,7 +77,7 @@ public final class Project
      */
     public static Project getActive()
     {
-        return Project.activeProject;
+        return activeProject;
     }
 
     /**
@@ -91,22 +89,22 @@ public final class Project
      */
     public static Project create(File projectPath) throws IOException
     {
-        Verbose.info(Project.VERBOSE_READ_PROJECT_PROPERTIES, projectPath.getAbsolutePath());
-        try (InputStream input = new FileInputStream(new File(projectPath, Project.PROPERTIES_FILE)))
+        Verbose.info(VERBOSE_READ_PROJECT_PROPERTIES, projectPath.getAbsolutePath());
+        try (InputStream input = new FileInputStream(new File(projectPath, PROPERTIES_FILE)))
         {
             final Properties properties = new Properties();
             properties.load(input);
 
-            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES);
-            final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES);
-            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES);
+            final String classes = properties.getProperty(PROPERTY_PROJECT_CLASSES);
+            final String libraries = properties.getProperty(PROPERTY_PROJECT_LIBRARIES);
+            final String resources = properties.getProperty(PROPERTY_PROJECT_RESOURCES);
 
             final Project project = new Project(projectPath);
             project.setName(projectPath.getName());
             project.setClasses(classes, libraries);
             project.setResources(resources);
 
-            Project.activeProject = project;
+            activeProject = project;
 
             return project;
         }
@@ -121,7 +119,7 @@ public final class Project
      * @return The relative media.
      * @throws LionEngineException If not relative to expected folder.
      */
-    private static Media getRelativeMedia(File file, File from, String error) throws LionEngineException
+    private static Media getRelativeMedia(File file, File from, String error)
     {
         final String fromPath = from.getPath();
         final String path = file.getAbsolutePath();
@@ -191,7 +189,7 @@ public final class Project
         }
         else
         {
-            Verbose.warning(getClass(), "setClasses", Project.WARNING_BUNDLE);
+            Verbose.warning(getClass(), "setClasses", WARNING_BUNDLE);
         }
     }
 
@@ -212,9 +210,9 @@ public final class Project
      * @return The relative class media.
      * @throws LionEngineException If not relative to the expected folder.
      */
-    public Media getClassMedia(File file) throws LionEngineException
+    public Media getClassMedia(File file)
     {
-        return Project.getRelativeMedia(file, getClassesPath(), Project.ERROR_MEDIA_RELATIVE_TO_CLASS);
+        return getRelativeMedia(file, getClassesPath(), ERROR_MEDIA_RELATIVE_TO_CLASS);
     }
 
     /**
@@ -224,9 +222,9 @@ public final class Project
      * @return The relative media.
      * @throws LionEngineException If not relative to expected folder.
      */
-    public Media getResourceMedia(File file) throws LionEngineException
+    public Media getResourceMedia(File file)
     {
-        return Project.getRelativeMedia(file, getResourcesPath(), Project.ERROR_MEDIA_RELATIVE_TO_RESOURCES);
+        return getRelativeMedia(file, getResourcesPath(), ERROR_MEDIA_RELATIVE_TO_RESOURCES);
     }
 
     /**
@@ -316,7 +314,7 @@ public final class Project
      * @return The loaded class.
      * @throws LionEngineException If error when loading the class.
      */
-    public Class<?> getClass(String name) throws LionEngineException
+    public Class<?> getClass(String name)
     {
         try
         {
@@ -324,7 +322,7 @@ public final class Project
         }
         catch (final ClassNotFoundException | NoClassDefFoundError exception)
         {
-            throw new LionEngineException(exception, Project.ERROR_LOAD_CLASS, name);
+            throw new LionEngineException(exception, ERROR_LOAD_CLASS, name);
         }
     }
 
@@ -337,19 +335,19 @@ public final class Project
      * @return The class reference.
      * @throws LionEngineException If not able to load the class.
      */
-    public <C> Class<? extends C> getClass(Media media, Class<C> clazz) throws LionEngineException
+    public <C> Class<? extends C> getClass(Media media, Class<C> clazz)
     {
-        final String name = media.getPath()
-                                 .replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
-                                 .replace(File.separator, Constant.DOT);
-        final Class<?> clazzRef = getClass(name);
+        final String className = media.getPath()
+                                      .replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
+                                      .replace(File.separator, Constant.DOT);
+        final Class<?> clazzRef = getClass(className);
         try
         {
             return clazzRef.asSubclass(clazz);
         }
         catch (final LionEngineException exception)
         {
-            throw new LionEngineException(exception, media, Project.ERROR_CLASS_CAST, clazz.getName());
+            throw new LionEngineException(exception, media, ERROR_CLASS_CAST, clazz.getName());
         }
     }
 
@@ -362,7 +360,7 @@ public final class Project
      * @return The class instance.
      * @throws LionEngineException If not able to create the class.
      */
-    public <C> C getInstance(Media media, Class<C> clazz) throws LionEngineException
+    public <C> C getInstance(Media media, Class<C> clazz)
     {
         final Class<? extends C> clazzRef = getClass(media, clazz);
         try
@@ -372,7 +370,7 @@ public final class Project
         }
         catch (final ReflectiveOperationException exception)
         {
-            throw new LionEngineException(exception, Project.ERROR_LOAD_CLASS, name);
+            throw new LionEngineException(exception, ERROR_LOAD_CLASS, name);
         }
     }
 

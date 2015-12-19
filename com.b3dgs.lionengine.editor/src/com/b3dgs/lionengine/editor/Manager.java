@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.editor.utility.UtilPart;
 
 /**
  * Manage the product life cycle.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 @SuppressWarnings("restriction")
 public class Manager

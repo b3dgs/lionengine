@@ -19,12 +19,10 @@ package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Describe the project model.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ProjectModel
 {

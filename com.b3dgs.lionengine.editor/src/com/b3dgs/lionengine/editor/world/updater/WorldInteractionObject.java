@@ -24,16 +24,14 @@ import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.ObjectRepresentation;
 import com.b3dgs.lionengine.editor.world.ObjectControl;
 import com.b3dgs.lionengine.editor.world.ObjectSelectionListener;
+import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.Selection;
-import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Handle the interaction with objects.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldInteractionObject implements WorldMouseClickListener, WorldMouseMoveListener
 {
@@ -43,6 +41,8 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     private final Selection selection;
     /** Object controller. */
     private final ObjectControl objectControl;
+    /** Palette model. */
+    private final PaletteModel palette;
 
     /**
      * Create the interactions handler.
@@ -53,6 +53,7 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     {
         objectControl = services.get(ObjectControl.class);
         selection = services.get(Selection.class);
+        palette = services.get(PaletteModel.class);
     }
 
     /**
@@ -172,13 +173,12 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     /**
      * Update the selection.
      * 
-     * @param click The mouse click.
      * @param oldMx The mouse old x.
      * @param oldMy The mouse old y.
      * @param mx The mouse x.
      * @param my The mouse y.
      */
-    private void updateSelection(int click, int oldMx, int oldMy, int mx, int my)
+    private void updateSelection(int oldMx, int oldMy, int mx, int my)
     {
         if (!objectControl.hasSelection())
         {
@@ -232,12 +232,12 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     @Override
     public void onMousePressed(int click, int mx, int my)
     {
-        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_OBJECT))
+        if (palette.isPalette(PaletteType.POINTER_OBJECT))
         {
             controlObject(click, mx, my);
             selectObject(mx, my);
         }
-        else if (WorldModel.INSTANCE.isPalette(PaletteType.SELECTION))
+        else if (palette.isPalette(PaletteType.SELECTION))
         {
             startSelection(mx, my);
         }
@@ -246,11 +246,11 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     @Override
     public void onMouseReleased(int click, int mx, int my)
     {
-        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_OBJECT))
+        if (palette.isPalette(PaletteType.POINTER_OBJECT))
         {
             endDragging();
         }
-        else if (WorldModel.INSTANCE.isPalette(PaletteType.SELECTION))
+        else if (palette.isPalette(PaletteType.SELECTION))
         {
             endSelection(mx, my);
         }
@@ -263,13 +263,13 @@ public class WorldInteractionObject implements WorldMouseClickListener, WorldMou
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_OBJECT))
+        if (palette.isPalette(PaletteType.POINTER_OBJECT))
         {
             updateDragging(click, oldMx, oldMy, mx, my);
         }
-        else if (WorldModel.INSTANCE.isPalette(PaletteType.SELECTION) && click == Mouse.LEFT)
+        else if (palette.isPalette(PaletteType.SELECTION) && click == Mouse.LEFT)
         {
-            updateSelection(click, oldMx, oldMy, mx, my);
+            updateSelection(oldMx, oldMy, mx, my);
         }
     }
 }

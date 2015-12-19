@@ -24,8 +24,6 @@ import javax.swing.JComboBox;
 
 /**
  * Combo action listener.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ComboListener implements ActionListener
 {

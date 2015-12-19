@@ -17,22 +17,20 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.collision.object.CollidableListener;
+import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
-import com.b3dgs.lionengine.game.trait.collidable.Collidable;
-import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Goomba specific implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Goomba extends Entity implements InputDeviceDirectional, CollidableListener
 {
@@ -105,15 +103,15 @@ class Goomba extends Entity implements InputDeviceDirectional, CollidableListene
     }
 
     @Override
-    public void notifyCollided(Collidable collidable)
+    public void notifyCollided(ObjectGame object)
     {
-        final Entity target = collidable.getOwner();
+        final Entity target = (Entity) object;
         final Transformable collider = target.getTrait(Transformable.class);
         if (collider.getY() < collider.getOldY() && collider.getY() > transformable.getY())
         {
             collider.teleportY(transformable.getY() + transformable.getHeight());
             target.jump();
-            this.collidable.setEnabled(false);
+            collidable.setEnabled(false);
             changeState(GoombaState.DEATH);
             Sfx.CRUSH.play();
         }

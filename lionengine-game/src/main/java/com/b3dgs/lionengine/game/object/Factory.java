@@ -22,10 +22,9 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilReflection;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.configurer.ConfigObject;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Performs a list of {@link Setup} considering their corresponding {@link Media} pointing to an XML file. This way it
@@ -40,8 +39,6 @@ import com.b3dgs.lionengine.game.configurer.Configurer;
  * The factory uses the {@link ClassLoader#getSystemClassLoader()}, but it is possible to set a custom one with
  * {@link #setClassLoader(ClassLoader)}. Should be used in an OSGI environment for example.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Factory
 {
@@ -68,7 +65,6 @@ public class Factory
      */
     public Factory(Services services)
     {
-        super();
         this.services = services;
         classLoader = ClassLoader.getSystemClassLoader();
     }
@@ -84,20 +80,13 @@ public class Factory
      *             missing service.
      * @see ObjectGame#ObjectGame(Setup, Services)
      */
-    public <O extends ObjectGame> O create(Media media) throws LionEngineException
+    public <O extends ObjectGame> O create(Media media)
     {
         final Setup setup = getSetup(media);
         final Class<?> type = setup.getConfigClass(classLoader);
         try
         {
-            final O object = UtilReflection.create(type, new Class<?>[]
-            {
-                setup.getClass(), Services.class
-            }, setup, services);
-            final Integer id = HandledObjectsImpl.getFreeId();
-            object.setId(id);
-            object.prepareTraits(setup, services);
-            return object;
+            return createObject(type, setup);
         }
         catch (final NoSuchMethodException exception)
         {
@@ -117,19 +106,12 @@ public class Factory
      *             missing service.
      * @see ObjectGame#ObjectGame(Setup, Services)
      */
-    public <O extends ObjectGame> O create(Media media, Class<O> type) throws LionEngineException
+    public <O extends ObjectGame> O create(Media media, Class<O> type)
     {
         final Setup setup = getSetup(media);
         try
         {
-            final O object = UtilReflection.create(type, new Class<?>[]
-            {
-                setup.getClass(), Services.class
-            }, setup, services);
-            final Integer id = HandledObjectsImpl.getFreeId();
-            object.setId(id);
-            object.prepareTraits(setup, services);
-            return object;
+            return createObject(type, setup);
         }
         catch (final NoSuchMethodException exception)
         {
@@ -166,7 +148,7 @@ public class Factory
      * @return The setup reference.
      * @throws LionEngineException If no setup found for the media.
      */
-    public Setup getSetup(Media media) throws LionEngineException
+    public Setup getSetup(Media media)
     {
         Check.notNull(media);
         if (!setups.containsKey(media))
@@ -192,7 +174,7 @@ public class Factory
         final Configurer configurer = new Configurer(media);
         try
         {
-            final ConfigObject configObject = ConfigObject.create(configurer);
+            final ObjectConfig configObject = ObjectConfig.create(configurer);
             final Class<?> setupClass = classLoader.loadClass(configObject.getSetupName());
             return UtilReflection.create(setupClass, new Class<?>[]
             {
@@ -207,5 +189,28 @@ public class Factory
         {
             throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + media.getPath());
         }
+    }
+
+    /**
+     * Create the object.
+     * 
+     * @param <O> The object type.
+     * @param type The object type.
+     * @param setup The associated setup.
+     * @return The object instance.
+     * @throws NoSuchMethodException If missing method.
+     */
+    private <O extends ObjectGame> O createObject(Class<?> type, Setup setup) throws NoSuchMethodException
+    {
+        final O object = UtilReflection.create(type, new Class<?>[]
+        {
+            setup.getClass(), Services.class
+        }, setup, services);
+
+        final Integer id = HandledObjectsImpl.getFreeId();
+        object.setId(id);
+        object.prepareTraits(services);
+
+        return object;
     }
 }

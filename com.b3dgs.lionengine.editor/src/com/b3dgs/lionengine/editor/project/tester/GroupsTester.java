@@ -20,17 +20,15 @@ package com.b3dgs.lionengine.editor.project.tester;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Test if the folder contains groups file.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class GroupsTester extends PropertyTester
 {
@@ -49,8 +47,8 @@ public final class GroupsTester extends PropertyTester
     {
         try
         {
-            final XmlNode root = Stream.loadXml(media);
-            return ConfigTileGroup.GROUPS.equals(root.getNodeName());
+            final XmlNode root = Xml.load(media);
+            return TileGroupsConfig.NODE_GROUPS.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)
         {

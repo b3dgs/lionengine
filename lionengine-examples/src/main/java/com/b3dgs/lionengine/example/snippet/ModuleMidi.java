@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.audio.midi.AudioMidi;
 import com.b3dgs.lionengine.audio.midi.Midi;
 import com.b3dgs.lionengine.core.Medias;
 
-@SuppressWarnings("all")
 public class ModuleMidi
 {
     /*

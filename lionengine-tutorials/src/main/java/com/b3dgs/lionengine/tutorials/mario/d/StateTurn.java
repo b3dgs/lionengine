@@ -22,23 +22,21 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
 import com.b3dgs.lionengine.game.state.StateTransition;
 import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
-import com.b3dgs.lionengine.game.trait.mirrorable.Mirrorable;
 
 /**
  * Turn state implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateTurn extends StateGame implements StateInputDirectionalUpdater
 {
     /** Mirrorable reference. */
-    final Mirrorable mirrorable;
+    private final Mirrorable mirrorable;
     /** Movement force. */
-    final Force movement;
+    private final Force movement;
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */

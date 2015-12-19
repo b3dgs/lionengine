@@ -23,14 +23,12 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.SurfaceConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Remove icon handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class IconRemoveHandler
 {
@@ -52,12 +50,12 @@ public final class IconRemoveHandler
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final XmlNode root = configurer.getRoot();
-        final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
-        surfaceNode.removeAttribute(ConfigSurface.SURFACE_ICON);
+        final XmlNode surfaceNode = root.getChild(SurfaceConfig.SURFACE);
+        surfaceNode.removeAttribute(SurfaceConfig.SURFACE_ICON);
         configurer.save();
         for (final TreeItem item : properties.getItems())
         {
-            if (ConfigSurface.SURFACE_ICON.equals(item.getData()))
+            if (SurfaceConfig.SURFACE_ICON.equals(item.getData()))
             {
                 part.clear(item);
             }

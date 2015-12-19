@@ -19,15 +19,13 @@ package com.b3dgs.lionengine.game.object;
 
 /**
  * Describes the object events.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 interface ObjectGameListener
 {
     /**
      * Called when object is destroyed (after a call to {@link ObjectGame#destroy()}.
      * 
-     * @param object The destroyed object.
+     * @param objectId The destroyed object id.
      */
-    void notifyDestroyed(ObjectGame object);
+    void notifyDestroyed(Integer objectId);
 }

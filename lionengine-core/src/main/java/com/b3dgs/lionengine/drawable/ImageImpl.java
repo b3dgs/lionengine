@@ -18,20 +18,18 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * Image implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class ImageImpl implements Image
 {
@@ -65,7 +63,7 @@ class ImageImpl implements Image
      * @param media The image media.
      * @throws LionEngineException If the media is <code>null</code>.
      */
-    ImageImpl(Media media) throws LionEngineException
+    ImageImpl(Media media)
     {
         Check.notNull(media);
         this.media = media;
@@ -81,7 +79,7 @@ class ImageImpl implements Image
      * @param surface The surface to share.
      * @throws LionEngineException If the surface is <code>null</code>.
      */
-    ImageImpl(ImageBuffer surface) throws LionEngineException
+    ImageImpl(ImageBuffer surface)
     {
         Check.notNull(surface);
 
@@ -96,7 +94,7 @@ class ImageImpl implements Image
      */
 
     @Override
-    public synchronized void load() throws LionEngineException
+    public synchronized void load()
     {
         if (surface != null)
         {
@@ -106,7 +104,7 @@ class ImageImpl implements Image
     }
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         surface.prepare();
     }

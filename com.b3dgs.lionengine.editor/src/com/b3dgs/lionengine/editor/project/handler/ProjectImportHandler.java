@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.project.handler;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.core.swt.UtilityMedia;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.ProjectPart;
@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Import project handler implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ProjectImportHandler
 {
@@ -54,7 +52,7 @@ public final class ProjectImportHandler
         worldPart.setToolItemEnabled(SetShowCollisionsHandler.ID, false);
         worldPart.setToolItemEnabled(SetPointerCollisionHandler.ID, false);
 
-        UtilityMedia.setResourcesDirectory(project.getResourcesPath().getPath());
+        Medias.setResourcesDirectory(project.getResourcesPath().getPath());
 
         final ProjectPart projectPart = UtilPart.getPart(ProjectPart.ID, ProjectPart.class);
         ProjectModel.INSTANCE.setRoot(project.getPath());

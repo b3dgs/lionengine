@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.network.message;
 
 /**
  * The network message decoder will return the network message instance from its type.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface NetworkMessageDecoder
 {

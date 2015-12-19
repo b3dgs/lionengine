@@ -22,8 +22,6 @@ import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Copy selected property handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class PropertyCopyHandler
 {

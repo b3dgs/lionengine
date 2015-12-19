@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.core.awt.swing;
 
 /**
  * Action combo abstract class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ActionCombo
 {

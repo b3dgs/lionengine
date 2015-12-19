@@ -25,14 +25,12 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.properties.collisioncategory.editor.CollisionCategoryEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.collision.tile.CollisionCategoryConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Element properties part.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesCollisionCategory implements PropertiesProviderObject
 {
@@ -48,7 +46,7 @@ public class PropertiesCollisionCategory implements PropertiesProviderObject
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         item.setText(Messages.Properties_CollisionCategory);
-        item.setData(ConfigCollisionCategory.CATEGORY);
+        item.setData(CollisionCategoryConfig.CATEGORY);
         item.setImage(ICON_CATEGORY);
     }
 
@@ -68,7 +66,7 @@ public class PropertiesCollisionCategory implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        if (root.hasChild(ConfigCollisionCategory.CATEGORY))
+        if (root.hasChild(CollisionCategoryConfig.CATEGORY))
         {
             createAttributeCollisionCategories(properties);
         }
@@ -78,7 +76,7 @@ public class PropertiesCollisionCategory implements PropertiesProviderObject
     public boolean updateProperties(TreeItem item, Configurer configurer)
     {
         final Object data = item.getData();
-        if (ConfigCollisionCategory.CATEGORY.equals(data))
+        if (CollisionCategoryConfig.CATEGORY.equals(data))
         {
             final CollisionCategoryEditor editor = new CollisionCategoryEditor(item.getParent(), configurer);
             editor.create();

@@ -19,14 +19,12 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Renderable;
 
 /**
  * Surface representing a bar designed to display a kind of progress bar (life...).
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Bar implements Renderable
 {
@@ -229,7 +227,7 @@ public class Bar implements Renderable
      */
     public void setWidthPercent(int widthPercent)
     {
-        pWidth = UtilMath.fixBetween(widthPercent, 0, 100);
+        pWidth = UtilMath.clamp(widthPercent, 0, 100);
     }
 
     /**
@@ -239,7 +237,7 @@ public class Bar implements Renderable
      */
     public void setHeightPercent(int heightPercent)
     {
-        pHeight = UtilMath.fixBetween(heightPercent, 0, 100);
+        pHeight = UtilMath.clamp(heightPercent, 0, 100);
     }
 
     /**

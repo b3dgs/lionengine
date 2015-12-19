@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.LionEngineException;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Anim
 {
@@ -51,7 +49,7 @@ public final class Anim
                                             int lastFrame,
                                             double speed,
                                             boolean reverse,
-                                            boolean repeat) throws LionEngineException
+                                            boolean repeat)
     {
         return new AnimationImpl(name, firstFrame, lastFrame, speed, reverse, repeat);
     }

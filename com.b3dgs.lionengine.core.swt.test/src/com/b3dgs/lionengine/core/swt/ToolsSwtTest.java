@@ -32,14 +32,13 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.util.UtilTests;
 
 /**
  * Test the tools class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ToolsSwtTest
 {
@@ -49,7 +48,7 @@ public class ToolsSwtTest
     @BeforeClass
     public static void prepare()
     {
-        Medias.setFactoryMedia(new FactoryMediaSwt());
+        Medias.setLoadFromJar(ToolsSwtTest.class);
     }
 
     /**
@@ -58,7 +57,7 @@ public class ToolsSwtTest
     @AfterClass
     public static void cleanUp()
     {
-        Medias.setFactoryMedia(null);
+        Medias.setLoadFromJar(null);
     }
 
     /**
@@ -76,13 +75,13 @@ public class ToolsSwtTest
      * Test the utility.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test
-    public void testUtility() throws LionEngineException, IOException
+    public void testUtility() throws IOException
     {
-        final Display display = UtilityImage.getDisplay();
-        final Image image = UtilityImage.createImage(100, 100, SWT.TRANSPARENCY_NONE);
+        ScreenSwtTest.checkMultipleDisplaySupport();
+        final Display display = ToolsSwt.getDisplay();
+        final Image image = ToolsSwt.createImage(100, 100, SWT.TRANSPARENCY_NONE);
         Assert.assertNotNull(image);
         Assert.assertNotNull(ToolsSwt.getRasterBuffer(image, 1, 1, 1, 1, 1, 1, 1));
         Assert.assertNotNull(ToolsSwt.flipHorizontal(image));
@@ -90,25 +89,34 @@ public class ToolsSwtTest
         Assert.assertNotNull(ToolsSwt.resize(image, 10, 10));
         Assert.assertNotNull(ToolsSwt.rotate(image, 90));
         Assert.assertNotNull(ToolsSwt.splitImage(image, 1, 1));
-        Assert.assertNotNull(ToolsSwt.applyBilinearFilter(image));
         Assert.assertNotNull(ToolsSwt.applyMask(image, ColorRgba.BLACK.getRgba()));
         Assert.assertNotNull(ToolsSwt.applyMask(image, ColorRgba.WHITE.getRgba()));
         image.dispose();
 
-        final Media media = MediaSwtTest.create("image.png");
-        try (InputStream input = media.getInputStream())
+        final Media media = Medias.create("image.png");
+
+        InputStream input = null;
+        try
         {
+            input = media.getInputStream();
             final Image buffer = ToolsSwt.getImage(display, input);
             Assert.assertNotNull(buffer);
 
-            try (InputStream input2 = media.getInputStream())
+            InputStream input2 = null;
+            try
             {
+                input2 = media.getInputStream();
                 Assert.assertNotNull(ToolsSwt.getImageData(input2));
             }
             finally
             {
+                UtilFile.close(input2);
                 buffer.dispose();
             }
+        }
+        finally
+        {
+            UtilFile.close(input);
         }
 
         Assert.assertNotNull(ToolsSwt.createHiddenCursor(display));
@@ -120,7 +128,7 @@ public class ToolsSwtTest
     @Test
     public void testCopy()
     {
-        final Image image = UtilityImage.createImage(100, 100, SWT.TRANSPARENCY_NONE);
+        final Image image = ToolsSwt.createImage(100, 100, SWT.TRANSPARENCY_NONE);
         final Image copy = ToolsSwt.getImage(image);
         Assert.assertEquals(image.getImageData().width, copy.getImageData().width);
         image.dispose();
@@ -131,29 +139,39 @@ public class ToolsSwtTest
      * Test the save.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test
-    public void testSave() throws LionEngineException, IOException
+    public void testSave() throws IOException
     {
-        final Media media = MediaSwtTest.create("image.png");
-        try (InputStream input = media.getInputStream())
+        ScreenSwtTest.checkMultipleDisplaySupport();
+        final Media media = Medias.create("image.png");
+
+        InputStream input = null;
+        try
         {
-            final Image image = ToolsSwt.getImage(UtilityImage.getDisplay(), input);
+            input = media.getInputStream();
+            final Image image = ToolsSwt.getImage(ToolsSwt.getDisplay(), input);
             Assert.assertNotNull(image);
 
             final Media save = Medias.create("test");
-            try (OutputStream output = save.getOutputStream())
+            OutputStream output = null;
+            try
             {
+                output = save.getOutputStream();
                 ToolsSwt.saveImage(image, output);
             }
             finally
             {
+                UtilFile.close(output);
                 image.dispose();
             }
             Assert.assertTrue(save.getFile().exists());
             Assert.assertTrue(save.getFile().delete());
             Assert.assertFalse(save.getFile().exists());
+        }
+        finally
+        {
+            UtilFile.close(input);
         }
     }
 
@@ -161,16 +179,22 @@ public class ToolsSwtTest
      * Test the get fail.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test(expected = LionEngineException.class)
-    public void testGetFail() throws LionEngineException, IOException
+    public void testGetFail() throws IOException
     {
+        ScreenSwtTest.checkMultipleDisplaySupport();
         final Media media = Medias.create("image.xml");
-        try (InputStream input = media.getInputStream())
+        InputStream input = null;
+        try
         {
-            final Image image = ToolsSwt.getImage(UtilityImage.getDisplay(), input);
+            input = media.getInputStream();
+            final Image image = ToolsSwt.getImage(ToolsSwt.getDisplay(), input);
             Assert.assertNotNull(image);
+        }
+        finally
+        {
+            UtilFile.close(input);
         }
     }
 
@@ -178,16 +202,22 @@ public class ToolsSwtTest
      * Test the get fail IO.
      * 
      * @throws IOException If error.
-     * @throws LionEngineException If error.
      */
     @Test(expected = SWTException.class)
-    public void testGetIoFail() throws LionEngineException, IOException
+    public void testGetIoFail() throws IOException
     {
-        final Media media = MediaSwtTest.create("raster.xml");
-        try (InputStream input = media.getInputStream())
+        ScreenSwtTest.checkMultipleDisplaySupport();
+        final Media media = Medias.create("raster.xml");
+        InputStream input = null;
+        try
         {
-            final Image image = ToolsSwt.getImage(UtilityImage.getDisplay(), input);
+            input = media.getInputStream();
+            final Image image = ToolsSwt.getImage(ToolsSwt.getDisplay(), input);
             Assert.assertNotNull(image);
+        }
+        finally
+        {
+            UtilFile.close(input);
         }
     }
 }

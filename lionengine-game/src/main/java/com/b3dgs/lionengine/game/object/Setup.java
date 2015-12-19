@@ -18,14 +18,12 @@
 package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.configurer.ConfigObject;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Define a structure used to create configurer objects.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  */
 public class Setup
@@ -46,7 +44,7 @@ public class Setup
      * @param config The config media.
      * @throws LionEngineException If error when opening the media.
      */
-    public Setup(Media config) throws LionEngineException
+    public Setup(Media config)
     {
         configurer = new Configurer(config);
         configFile = config;
@@ -87,11 +85,11 @@ public class Setup
      * @return The class mapped to the setup.
      * @throws LionEngineException If the class was not found by the class loader.
      */
-    public final Class<?> getConfigClass(ClassLoader classLoader) throws LionEngineException
+    public final Class<?> getConfigClass(ClassLoader classLoader)
     {
         if (clazz == null)
         {
-            final ConfigObject configObject = ConfigObject.create(configurer);
+            final ObjectConfig configObject = ObjectConfig.create(configurer);
             try
             {
                 clazz = classLoader.loadClass(configObject.getClassName());

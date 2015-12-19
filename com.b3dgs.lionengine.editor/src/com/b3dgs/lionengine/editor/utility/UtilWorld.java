@@ -20,27 +20,24 @@ package com.b3dgs.lionengine.editor.utility;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
 
 /**
  * Series of tool functions around the editor world.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilWorld
 {
     /**
      * Get the location over the mouse.
      * 
-     * @param map The map reference.
      * @param camera The camera reference.
      * @param mx The mouse X.
      * @param my The mouse Y.
      * @return The location found.
      */
-    public static Point getPoint(MapTile map, Camera camera, int mx, int my)
+    public static Point getPoint(Camera camera, int mx, int my)
     {
         final int x = (int) camera.getX() + mx;
         final int y = (int) camera.getY() - my + camera.getHeight();

@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game;
 
 /**
  * List of available orientations.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Orientation
 {
@@ -58,5 +56,65 @@ public enum Orientation
     public static Orientation next(Orientation from, int offset)
     {
         return Orientation.ORIENTATIONS[(from.ordinal() + offset) % Orientation.ORIENTATIONS_NUMBER];
+    }
+
+    /**
+     * Get the orientation depending of the current tile index and destination tile index.
+     * 
+     * @param stx The starting horizontal tile index.
+     * @param sty The starting vertical tile index.
+     * @param dtx The destination horizontal tile index.
+     * @param dty The destination vertical tile index.
+     * @return The corresponding orientation (<code>null</code> if unchanged).
+     */
+    public static Orientation get(int stx, int sty, int dtx, int dty)
+    {
+        final Orientation orientation;
+        if (sty < dty)
+        {
+            if (stx < dtx)
+            {
+                orientation = Orientation.NORTH_EAST;
+            }
+            else if (stx > dtx)
+            {
+                orientation = Orientation.NORTH_WEST;
+            }
+            else
+            {
+                orientation = Orientation.NORTH;
+            }
+        }
+        else if (sty > dty)
+        {
+            if (stx > dtx)
+            {
+                orientation = Orientation.SOUTH_WEST;
+            }
+            else if (stx < dtx)
+            {
+                orientation = Orientation.SOUTH_EAST;
+            }
+            else
+            {
+                orientation = Orientation.SOUTH;
+            }
+        }
+        else
+        {
+            if (stx < dtx)
+            {
+                orientation = Orientation.EAST;
+            }
+            else if (stx > dtx)
+            {
+                orientation = Orientation.WEST;
+            }
+            else
+            {
+                orientation = null;
+            }
+        }
+        return orientation;
     }
 }

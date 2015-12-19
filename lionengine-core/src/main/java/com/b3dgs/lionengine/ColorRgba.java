@@ -22,8 +22,6 @@ package com.b3dgs.lionengine;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ColorRgba
 {
@@ -81,9 +79,9 @@ public final class ColorRgba
         }
 
         final int a = rgb & MAX_ALPHA;
-        final int r = UtilMath.fixBetween((rgb & MAX_RED) + fr, MIN_COLOR, MAX_RED);
-        final int g = UtilMath.fixBetween((rgb & MAX_GREEN) + fg, MIN_COLOR, MAX_GREEN);
-        final int b = UtilMath.fixBetween((rgb & MAX_BLUE) + fb, MIN_COLOR, MAX_BLUE);
+        final int r = UtilMath.clamp((rgb & MAX_RED) + fr, MIN_COLOR, MAX_RED);
+        final int g = UtilMath.clamp((rgb & MAX_GREEN) + fg, MIN_COLOR, MAX_GREEN);
+        final int b = UtilMath.clamp((rgb & MAX_BLUE) + fb, MIN_COLOR, MAX_BLUE);
 
         return a | r | g | b;
     }
@@ -108,12 +106,27 @@ public final class ColorRgba
         final int green = mask(value >> Constant.BYTE_2);
         final int blue = mask(value >> Constant.BYTE_1);
 
-        final int alphaMask = mask(UtilMath.fixBetween(alpha, 0, 255)) << Constant.BYTE_4;
-        final int redMask = mask(UtilMath.fixBetween(red + r, 0, 255)) << Constant.BYTE_3;
-        final int greenMask = mask(UtilMath.fixBetween(green + g, 0, 255)) << Constant.BYTE_2;
-        final int blueMask = mask(UtilMath.fixBetween(blue + b, 0, 255)) << Constant.BYTE_1;
+        final int alphaMask = mask(UtilMath.clamp(alpha, 0, 255)) << Constant.BYTE_4;
+        final int redMask = mask(UtilMath.clamp(red + r, 0, 255)) << Constant.BYTE_3;
+        final int greenMask = mask(UtilMath.clamp(green + g, 0, 255)) << Constant.BYTE_2;
+        final int blueMask = mask(UtilMath.clamp(blue + b, 0, 255)) << Constant.BYTE_1;
 
         return alphaMask | redMask | greenMask | blueMask;
+    }
+
+    /**
+     * Return the delta between two colors.
+     * 
+     * @param a The first color.
+     * @param b The second color.
+     * @return The delta between the two colors.
+     */
+    public static double getDelta(ColorRgba a, ColorRgba b)
+    {
+        final double dr = a.getRed() - (double) b.getRed();
+        final double dg = a.getGreen() - (double) b.getGreen();
+        final double db = a.getBlue() - (double) b.getBlue();
+        return Math.sqrt(dr * dr + dg * dg + db * db);
     }
 
     /**
@@ -204,7 +217,7 @@ public final class ColorRgba
      * @param b The blue value [0-255].
      * @throws LionEngineException If color value is not in a valid range.
      */
-    public ColorRgba(int r, int g, int b) throws LionEngineException
+    public ColorRgba(int r, int g, int b)
     {
         this(r, g, b, 255);
     }
@@ -218,7 +231,7 @@ public final class ColorRgba
      * @param a The alpha value [0-255].
      * @throws LionEngineException If color value is not in a valid range.
      */
-    public ColorRgba(int r, int g, int b, int a) throws LionEngineException
+    public ColorRgba(int r, int g, int b, int a)
     {
         Check.superiorOrEqual(r, 0);
         Check.inferiorOrEqual(r, 255);

@@ -24,13 +24,10 @@ import java.io.OutputStream;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Media implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class MediaAndroid implements Media
 {
@@ -47,14 +44,16 @@ final class MediaAndroid implements Media
     /**
      * Internal constructor.
      * 
+     * @param separator The path separator.
      * @param path The media path.
      * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaAndroid(String path) throws LionEngineException
+    MediaAndroid(String separator, String path)
     {
         Check.notNull(path);
+
         this.path = path;
-        final int index = path.lastIndexOf(Medias.getSeparator());
+        final int index = path.lastIndexOf(separator);
         if (index > -1)
         {
             parent = path.substring(0, index);
@@ -89,13 +88,13 @@ final class MediaAndroid implements Media
     }
 
     @Override
-    public InputStream getInputStream() throws LionEngineException
+    public InputStream getInputStream()
     {
         return UtilityMedia.getStream(this, MediaAndroid.class.getName(), false);
     }
 
     @Override
-    public OutputStream getOutputStream() throws LionEngineException
+    public OutputStream getOutputStream()
     {
         return UtilityMedia.getOutputStream(this, MediaAndroid.class.getName(), false);
     }

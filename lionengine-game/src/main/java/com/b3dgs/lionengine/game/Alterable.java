@@ -37,7 +37,6 @@ package com.b3dgs.lionengine.game;
  * life.isEmpty(); // returns true
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Attribute
  */
 public class Alterable
@@ -139,12 +138,9 @@ public class Alterable
     public void set(int value)
     {
         cur = value;
-        if (!overMax)
+        if (!overMax && cur > max)
         {
-            if (cur > max)
-            {
-                cur = max;
-            }
+            cur = max;
         }
         if (cur < Alterable.MIN)
         {

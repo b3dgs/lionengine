@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.Featurable;
  * ).
  * <p>
  * Ensure to add any required services before creating an object with the factory, else it will fail with a
- * {@link LionEngineException} when calling {@link Factory#create(com.b3dgs.lionengine.core.Media)}.
+ * {@link LionEngineException} when calling {@link Factory#create(com.b3dgs.lionengine.Media)}.
  * </p>
  * <p>
  * Usage example:
@@ -45,7 +45,6 @@ import com.b3dgs.lionengine.game.Featurable;
  * private final MapTile map = services.create(MapTileGame.class);
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Factory
  * @see ObjectGame
  */
@@ -106,7 +105,7 @@ public class Services
      * @return The service instance already added.
      * @throws LionEngineException If unable to create service or if <code>null</code>.
      */
-    public <S> S create(Class<S> service) throws LionEngineException
+    public <S> S create(Class<S> service)
     {
         Check.notNull(service);
         try
@@ -162,7 +161,7 @@ public class Services
      * @return The added service (same as source).
      * @throws LionEngineException If service is <code>null</code>.
      */
-    public <S> S add(S service) throws LionEngineException
+    public <S> S add(S service)
     {
         Check.notNull(service);
         services.add(service);
@@ -195,7 +194,7 @@ public class Services
      * @return The service implementation found.
      * @throws LionEngineException If service not found or <code>null</code>.
      */
-    public <S> S get(Class<S> service) throws LionEngineException
+    public <S> S get(Class<S> service)
     {
         Check.notNull(service);
         for (final Object object : services)

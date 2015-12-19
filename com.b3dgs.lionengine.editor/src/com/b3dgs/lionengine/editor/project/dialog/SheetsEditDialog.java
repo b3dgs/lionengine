@@ -32,24 +32,22 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.swt.UtilityMedia;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.map.TileSheetsConfig;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the sheets edition dialog.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SheetsEditDialog extends AbstractDialog
 {
@@ -57,7 +55,7 @@ public class SheetsEditDialog extends AbstractDialog
     private static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
     /** Sheets media. */
-    final Media sheets;
+    private final Media sheets;
     /** Buttons list. */
     private final Collection<Button> buttons = new ArrayList<>();
     /** Tile width text. */
@@ -118,7 +116,7 @@ public class SheetsEditDialog extends AbstractDialog
 
         for (final File file : UtilFile.getFiles(sheets.getFile().getParentFile()))
         {
-            final Media media = UtilityMedia.get(file);
+            final Media media = Medias.get(file);
             if (ImageInfo.isImage(media))
             {
                 final Button check = new Button(tileSheetsArea, SWT.CHECK);
@@ -136,18 +134,18 @@ public class SheetsEditDialog extends AbstractDialog
      */
     private void loadData()
     {
-        final XmlNode node = Stream.loadXml(sheets);
-        final XmlNode tileSize = node.getChild(MapTile.NODE_TILE_SIZE);
-        tileWidthText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_WIDTH));
-        tileHeightText.setText(tileSize.readString(MapTile.ATTRIBUTE_TILE_HEIGHT));
+        final XmlNode node = Xml.load(sheets);
+        final XmlNode tileSize = node.getChild(TileSheetsConfig.NODE_TILE_SIZE);
+        tileWidthText.setText(tileSize.readString(TileSheetsConfig.ATTRIBUTE_TILE_WIDTH));
+        tileHeightText.setText(tileSize.readString(TileSheetsConfig.ATTRIBUTE_TILE_HEIGHT));
 
         UtilText.registerDirty(tileWidthText, true);
         UtilText.registerDirty(tileHeightText, true);
 
-        final Collection<XmlNode> sheets = node.getChildren();
+        final Collection<XmlNode> nodeSheets = node.getChildren();
         for (final Button button : buttons)
         {
-            for (final XmlNode sheet : sheets)
+            for (final XmlNode sheet : nodeSheets)
             {
                 if (button.getText().equals(sheet.getText()))
                 {
@@ -177,21 +175,21 @@ public class SheetsEditDialog extends AbstractDialog
     @Override
     protected void onFinish()
     {
-        final XmlNode root = Stream.createXmlNode(MapTile.NODE_TILE_SHEETS);
-        root.writeString(Configurer.HEADER, EngineCore.WEBSITE);
+        final XmlNode root = Xml.create(TileSheetsConfig.NODE_TILE_SHEETS);
+        root.writeString(Configurer.HEADER, Engine.WEBSITE);
 
-        final XmlNode tileSize = root.createChild(MapTile.NODE_TILE_SIZE);
-        tileSize.writeString(MapTile.ATTRIBUTE_TILE_WIDTH, tileWidthText.getText());
-        tileSize.writeString(MapTile.ATTRIBUTE_TILE_HEIGHT, tileHeightText.getText());
+        final XmlNode tileSize = root.createChild(TileSheetsConfig.NODE_TILE_SIZE);
+        tileSize.writeString(TileSheetsConfig.ATTRIBUTE_TILE_WIDTH, tileWidthText.getText());
+        tileSize.writeString(TileSheetsConfig.ATTRIBUTE_TILE_HEIGHT, tileHeightText.getText());
 
         for (final Button button : buttons)
         {
             if (button.getSelection())
             {
-                final XmlNode node = root.createChild(MapTile.NODE_TILE_SHEET);
+                final XmlNode node = root.createChild(TileSheetsConfig.NODE_TILE_SHEET);
                 node.setText(button.getText());
             }
         }
-        Stream.saveXml(root, sheets);
+        Xml.save(root, sheets);
     }
 }
