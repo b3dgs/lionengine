@@ -203,7 +203,7 @@ public final class LevelRipConverter
 
                 if (TilesExtractor.compareTile(tw, th, tileSprite, xa, ya, sheetImage, xb, yb))
                 {
-                    return map.createTile(sheet, number, xa, (map.getInTileHeight() - 1 - y) * th);
+                    return map.createTile(sheet, number, xa, (map.getInTileHeight() - 1.0 - y) * th);
                 }
             }
         }
