@@ -1,5 +1,5 @@
 # LionEngine
-[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.2.0)](https://travis-ci.org/b3dgs/lionengine)
+[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.2.1)](https://travis-ci.org/b3dgs/lionengine)
 <table>
     <tr>
         <td>
@@ -115,7 +115,7 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 ## Download
 
 * [Go to website](http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
-* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_8.1.0_lib.zip)
+* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_8.2.0_lib.zip)
 
 ## Installation
 
