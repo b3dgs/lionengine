@@ -30,6 +30,8 @@ public final class Messages extends NLS
 {
     /** Cancel button. */
     public static String Cancel;
+    /** Next button. */
+    public static String Next;
     /** Finish button. */
     public static String Finish;
     /** Browse button. */

@@ -215,7 +215,7 @@ public final class FolderModificationWatcher
                 }
                 catch (final InterruptedException exception)
                 {
-                    Thread.interrupted();
+                    Thread.currentThread().interrupt();
                     break;
                 }
             }
@@ -352,7 +352,7 @@ public final class FolderModificationWatcher
             final File parent = path.getParentFile();
             if (parent != null)
             {
-                final String keyParent = parent.getName();
+                final String keyParent = Project.getActive().getResourceMedia(path).getParentPath();
                 tree.getDisplay().asyncExec(() -> onCreated(path, keyParent));
             }
         }

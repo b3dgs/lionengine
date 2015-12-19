@@ -107,7 +107,7 @@ public final class ProjectPart implements Focusable
     /** Watcher. */
     private final FolderModificationWatcher watcher;
     /** Tree viewer. */
-    Tree tree;
+    private Tree tree;
     /** Tree creator. */
     private ProjectTreeCreator projectTreeCreator;
 

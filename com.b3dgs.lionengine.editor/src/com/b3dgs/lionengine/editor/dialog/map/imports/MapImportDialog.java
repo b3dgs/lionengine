@@ -106,14 +106,17 @@ public class MapImportDialog extends AbstractDialog
     protected void onFinish()
     {
         final MapTile map = WorldModel.INSTANCE.getMap();
+        map.loadSheets(sheets.getMedia());
+
         final MapImportProgressDialog progress = new MapImportProgressDialog(dialog, levelRip.getMedia());
         progress.open();
-
-        map.loadSheets(sheets.getMedia());
 
         LevelRipConverter.start(levelRip.getMedia(), map, progress);
         progress.finish();
 
-        map.getFeature(MapTileGroup.class).loadGroups(groups.getMedia());
+        if (groups.getMedia().exists())
+        {
+            map.getFeature(MapTileGroup.class).loadGroups(groups.getMedia());
+        }
     }
 }

@@ -47,6 +47,7 @@ import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
+import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget.LevelRipsWidgetListener;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupList;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
@@ -98,6 +99,8 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
     private Composite levelsArea;
     /** Level rips widget. */
     private LevelRipsWidget levelRips;
+    /** Next button. */
+    private Button next;
     /** Sheets config. */
     private BrowseWidget sheets;
     /** World view. */
@@ -305,12 +308,37 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         levelsArea = new Composite(parent, SWT.NONE);
         levelsArea.setLayout(new GridLayout(1, false));
         levelsArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
         levelRips = new LevelRipsWidget(levelsArea);
+        levelRips.addListener(new LevelRipsWidgetListener()
+        {
+            @Override
+            public void notifyLevelRipAdded(Media media)
+            {
+                checkNextEnabled();
+            }
+
+            @Override
+            public void notifyLevelRipRemoved(Media media)
+            {
+                checkNextEnabled();
+            }
+        });
+
         sheets = new BrowseWidget(levelsArea,
                                   com.b3dgs.lionengine.editor.dialog.map.imports.Messages.SheetsLocation,
                                   com.b3dgs.lionengine.editor.dialog.map.imports.Messages.SheetsConfigFileFilter,
                                   true);
+        sheets.addListener(media -> checkNextEnabled());
         return levelsArea;
+    }
+
+    /**
+     * Check if button next can be enabled or not.
+     */
+    private void checkNextEnabled()
+    {
+        next.setEnabled(levelRips.getLevelRips().length > 0 && sheets.getMedia() != null);
     }
 
     /**
@@ -373,10 +401,9 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         final Composite levelsArea = createLevelsArea(content);
-        final Button accept = UtilButton.create(levelsArea,
-                                                com.b3dgs.lionengine.editor.dialog.Messages.Finish,
-                                                AbstractDialog.ICON_OK);
-        UtilButton.setAction(accept, () ->
+        next = UtilButton.create(levelsArea, com.b3dgs.lionengine.editor.dialog.Messages.Next, AbstractDialog.ICON_OK);
+        next.setEnabled(false);
+        UtilButton.setAction(next, () ->
         {
             final Media sheetsMedia = sheets.getMedia();
             final TileSheetsConfig config = TileSheetsConfig.imports(sheetsMedia);
