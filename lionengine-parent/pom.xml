@@ -14,7 +14,7 @@
         <working.dir>${project.basedir}</working.dir>
         <project.build.sourceEncoding>${encoding.type}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${encoding.type}</project.reporting.outputEncoding>
-        <maven.version>3.3.3</maven.version>
+        <maven.version>3.3.9</maven.version>
         <tycho.version>0.23.1</tycho.version>
         <junit.version>4.12</junit.version>
         <jacoco.version>0.7.4.201502262128</jacoco.version>
@@ -32,12 +32,12 @@
         <maven-install.version>2.5.2</maven-install.version>
         <maven-resources.version>2.7</maven-resources.version>
         <maven-dependency.version>2.10</maven-dependency.version>
-        <maven-release.version>2.4.2</maven-release.version>
+        <maven-release.version>2.5.3</maven-release.version>
         <checkstyle.version>6.11.1</checkstyle.version>
         <maven-eclipse.version>2.10</maven-eclipse.version>
         <pde-target-maven.version>1.0.1</pde-target-maven.version>
-        <maven-gpg.version>1.5</maven-gpg.version>
-        <nexus-staging-maven.version>1.6.3</nexus-staging-maven.version>
+        <maven-gpg.version>1.6</maven-gpg.version>
+        <nexus-staging-maven.version>1.6.6</nexus-staging-maven.version>
     </properties>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
