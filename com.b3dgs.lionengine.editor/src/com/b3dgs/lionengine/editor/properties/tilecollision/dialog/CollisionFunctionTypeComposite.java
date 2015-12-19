@@ -19,12 +19,10 @@ package com.b3dgs.lionengine.editor.properties.tilecollision.dialog;
 
 import org.eclipse.swt.widgets.Composite;
 
-import com.b3dgs.lionengine.game.collision.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
 
 /**
  * Represents the collision function linear edition.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface CollisionFunctionTypeComposite
 {

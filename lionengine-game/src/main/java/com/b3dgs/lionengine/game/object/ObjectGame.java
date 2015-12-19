@@ -25,10 +25,9 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Features;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Object minimal representation. Defined by a unique ID, the object is designed to be handled by a {@link Handler} . To
@@ -44,11 +43,10 @@ import com.b3dgs.lionengine.game.trait.Trait;
  * It is possible to retrieve external {@link Services} when object is being constructed.
  * </p>
  * <p>
- * Instead of using traditional interface implementation, it is possible to use {@link com.b3dgs.lionengine.game.trait}
- * system, in order to reduce class complexity. The {@link Handler} is designed to work well with that system.
+ * Instead of using traditional interface implementation, it is possible to use {@link Trait} system, in order to reduce
+ * class complexity. The {@link Handler} is designed to work well with that system.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  * @see Factory
  * @see Handler
@@ -82,7 +80,7 @@ public class ObjectGame
      * @param services The services reference (external services provider).
      * @throws LionEngineException If setup or service is <code>null</code>.
      */
-    public ObjectGame(Setup setup, Services services) throws LionEngineException
+    public ObjectGame(Setup setup, Services services)
     {
         Check.notNull(setup);
         Check.notNull(services);
@@ -150,7 +148,7 @@ public class ObjectGame
      * @return The trait instance.
      * @throws LionEngineException If feature was not found.
      */
-    public final <T> T getTrait(Class<T> trait) throws LionEngineException
+    public final <T> T getTrait(Class<T> trait)
     {
         final T found;
         if (trait.isAssignableFrom(getClass()))
@@ -233,7 +231,7 @@ public class ObjectGame
             destroyed = true;
             for (final ObjectGameListener listener : listeners)
             {
-                listener.notifyDestroyed(this);
+                listener.notifyDestroyed(getId());
             }
         }
     }
@@ -270,11 +268,10 @@ public class ObjectGame
     /**
      * Prepare added traits.
      * 
-     * @param setup The setup reference.
      * @param services The services reference.
      * @throws LionEngineException If error when creating instances.
      */
-    void prepareTraits(Setup setup, Services services) throws LionEngineException
+    void prepareTraits(Services services)
     {
         for (final Trait trait : traitToPrepare)
         {

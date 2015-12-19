@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
  * Set grid handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SetGridHandler
 {

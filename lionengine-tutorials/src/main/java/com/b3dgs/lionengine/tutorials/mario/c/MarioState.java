@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.game.state.StateAnimationBased;
 
 /**
  * List of mario states.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum MarioState implements StateAnimationBased
 {

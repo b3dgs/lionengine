@@ -17,28 +17,26 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.game.configurer.ConfigAction;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.actionable.Action;
-import com.b3dgs.lionengine.game.trait.actionable.Actionable;
-import com.b3dgs.lionengine.game.trait.actionable.ActionableModel;
+import com.b3dgs.lionengine.game.object.trait.actionable.Action;
+import com.b3dgs.lionengine.game.object.trait.actionable.ActionConfig;
+import com.b3dgs.lionengine.game.object.trait.actionable.Actionable;
+import com.b3dgs.lionengine.game.object.trait.actionable.ActionableModel;
 
 /**
  * Abstract button action.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Button extends ObjectGame implements Action, Updatable, Renderable
 {
@@ -71,7 +69,7 @@ class Button extends ObjectGame implements Action, Updatable, Renderable
         super(setup, services);
         text = services.get(Text.class);
         image = Drawable.loadImage(setup.getSurface());
-        name = setup.getConfigurer().getText(ConfigAction.NAME);
+        name = setup.getConfigurer().getText(ActionConfig.NAME);
         actionable.setClickAction(Mouse.LEFT);
     }
 

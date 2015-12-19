@@ -27,8 +27,6 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * Disactivable combo box implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class DisactivableComboBox extends JLabel implements ListCellRenderer
 {

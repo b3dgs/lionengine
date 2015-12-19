@@ -17,19 +17,15 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * Properties type list.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Property
 {
@@ -51,8 +47,6 @@ public enum Property
 
     /** Extension list. */
     private final Collection<String> extensions;
-    /** Class parent. */
-    private final Class<?> parent;
 
     /**
      * Private constructor.
@@ -61,28 +55,6 @@ public enum Property
      */
     Property(String... extensions)
     {
-        this(null, extensions);
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param parent The excepted parent class.
-     */
-    Property(Class<?> parent)
-    {
-        this(parent, "class");
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param extensions The extensions list associated to the property.
-     * @param parent The excepted parent class.
-     */
-    Property(Class<?> parent, String... extensions)
-    {
-        this.parent = parent;
         this.extensions = new ArrayList<>(extensions.length);
         for (final String extension : extensions)
         {
@@ -98,11 +70,7 @@ public enum Property
      */
     public boolean is(Media file)
     {
-        if (parent == null)
-        {
-            return isExtension(file);
-        }
-        return isExtension(file) && isParent(file);
+        return isExtension(file);
     }
 
     /**
@@ -142,27 +110,5 @@ public enum Property
             }
         }
         return false;
-    }
-
-    /**
-     * Check if the file is this parent.
-     * 
-     * @param file The file to test.
-     * @return <code>true</code> if this is parent, <code>false</code> else.
-     */
-    private boolean isParent(Media file)
-    {
-        final String name = file.getPath()
-                                .replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
-                                .replace(File.separator, Constant.DOT);
-        try
-        {
-            final Class<?> clazz = Project.getActive().getClass(name);
-            return parent.isAssignableFrom(clazz);
-        }
-        catch (final LionEngineException exception)
-        {
-            return false;
-        }
     }
 }

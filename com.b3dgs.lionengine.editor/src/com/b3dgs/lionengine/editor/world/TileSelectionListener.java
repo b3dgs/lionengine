@@ -17,12 +17,10 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Listen to tiles selection on map.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface TileSelectionListener
 {
@@ -32,4 +30,11 @@ public interface TileSelectionListener
      * @param tile The selected tile from map.
      */
     void notifyTileSelected(Tile tile);
+
+    /**
+     * Called when selected tile group changed.
+     * 
+     * @param group The new tile group selection.
+     */
+    void notifyTileGroupSelected(String group);
 }

@@ -27,8 +27,6 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * Combo renderer implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ComboRenderer extends JLabel implements ListCellRenderer
 {

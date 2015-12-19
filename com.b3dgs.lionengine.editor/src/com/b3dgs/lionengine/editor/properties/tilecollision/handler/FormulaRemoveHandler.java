@@ -22,13 +22,11 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.project.dialog.formula.FormulasEditDialog;
 import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
 
 /**
  * Remove formula handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FormulaRemoveHandler
 {

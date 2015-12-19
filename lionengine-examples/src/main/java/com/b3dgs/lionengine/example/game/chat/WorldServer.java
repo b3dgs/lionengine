@@ -17,15 +17,13 @@
  */
 package com.b3dgs.lionengine.example.game.chat;
 
-import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
 import com.b3dgs.lionengine.network.NetworkedWorldServer;
 
 /**
  * World server implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class WorldServer extends World<NetworkedWorldModelServer> implements NetworkedWorldServer
 {

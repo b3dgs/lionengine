@@ -17,21 +17,17 @@
  */
 package com.b3dgs.lionengine.editor.properties.tilecollision.dialog;
 
+import java.util.Locale;
+
 import org.eclipse.osgi.util.NLS;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Messages internationalization.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Messages extends NLS
 {
-    /** Bundle name. */
-    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".properties.tilecollision.dialog.messages"; //$NON-NLS-1$
-
     /** Tile collision dialog title. */
     public static String Dialog_TileCollision_Title;
     /** Tile collision dialog header title. */
@@ -67,7 +63,7 @@ public final class Messages extends NLS
      */
     static
     {
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+        NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
     }
 
     /**

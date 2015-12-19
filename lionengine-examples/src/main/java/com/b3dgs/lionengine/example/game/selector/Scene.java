@@ -18,12 +18,12 @@
 package com.b3dgs.lionengine.example.game.selector;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Selector;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTilePath;
-import com.b3dgs.lionengine.game.map.MapTilePathModel;
 import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
@@ -42,7 +40,6 @@ import com.b3dgs.lionengine.game.object.Services;
 /**
  * Game loop designed to handle our little world.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
 class Scene extends Sequence
@@ -60,8 +57,6 @@ class Scene extends Sequence
     private final Cursor cursor = services.create(Cursor.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map path. */
-    private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
     /** Selector reference. */
@@ -78,25 +73,22 @@ class Scene extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, NATIVE);
+        super(context, NATIVE);
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
-    protected void load()
+    public void load()
     {
-        map.create(Medias.create("map", "level.png"),
-                   Medias.create("map", "sheets.xml"),
-                   Medias.create("map", "groups.xml"));
-        mapPath.loadPathfinding(Medias.create("map", "pathfinding.xml"));
-        minimap.loadPixelConfig(Medias.create("map", "minimap.xml"));
+        map.create(Medias.create("level.png"), 16, 16, 16);
         minimap.load();
+        minimap.automaticColor(null);
         minimap.prepare();
         minimap.setLocation(3, 6);
 
@@ -159,7 +151,7 @@ class Scene extends Sequence
     }
 
     @Override
-    protected void onTerminate(boolean hasNextSequence)
+    public void onTerminated(boolean hasNextSequence)
     {
         Engine.terminate();
     }

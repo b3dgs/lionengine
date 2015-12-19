@@ -21,16 +21,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Resource;
+import com.b3dgs.lionengine.Shape;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevicePointer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Resource;
-import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 
@@ -46,7 +46,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * {@link #setSyncMode(boolean)}).</li>
  * <li><code>sensibility</code>: If the cursor is not synchronized on the system pointer, it can be defined (
  * {@link #setSensibility(double, double)}).</li>
- * <li><code>grid</code>: Represents the map grid, affecting {@link #getInTileX()} and {@link #getInTileY()}.</li>
+ * <li><code>grid</code>: Represents the map grid.</li>
  * <li><code>location</code>: The internal cursor position ({@link #setLocation(int, int)}).</li>
  * <li>
  * <code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
@@ -62,11 +62,10 @@ import com.b3dgs.lionengine.drawable.Image;
  * <li>Change the cursor image if when needed with {@link #setSurfaceId(int)}.</li>
  * </ul>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see InputDevicePointer
  * @see Image
  */
-public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderable
+public class Cursor implements Resource, Shape, Updatable, Renderable
 {
     /** Surface ID not found error. */
     private static final String ERROR_SURFACE_ID = "Undefined surface id:";
@@ -140,7 +139,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      * @param media The cursor media.
      * @throws LionEngineException If invalid media.
      */
-    public void addImage(int id, Media media) throws LionEngineException
+    public void addImage(int id, Media media)
     {
         final Integer key = Integer.valueOf(id);
         surfaces.put(key, Drawable.loadImage(media));
@@ -156,7 +155,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      * @param pointer The pointer reference (must not be <code>null</code>).
      * @throws LionEngineException If invalid pointer.
      */
-    public void setInputDevice(InputDevicePointer pointer) throws LionEngineException
+    public void setInputDevice(InputDevicePointer pointer)
     {
         Check.notNull(pointer);
         this.pointer = pointer;
@@ -168,7 +167,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      * @param viewer The viewer reference.
      * @throws LionEngineException If invalid viewer.
      */
-    public void setViewer(Viewer viewer) throws LionEngineException
+    public void setViewer(Viewer viewer)
     {
         Check.notNull(pointer);
         this.viewer = viewer;
@@ -204,8 +203,8 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      */
     public void setLocation(int x, int y)
     {
-        this.x = UtilMath.fixBetween(x, minX, maxX);
-        this.y = UtilMath.fixBetween(y, minY, maxY);
+        this.x = UtilMath.clamp(x, minX, maxX);
+        this.y = UtilMath.clamp(y, minY, maxY);
     }
 
     /**
@@ -214,7 +213,7 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
      * @param surfaceId The surface id number (must be strictly positive).
      * @throws LionEngineException If invalid id value or not found.
      */
-    public void setSurfaceId(int surfaceId) throws LionEngineException
+    public void setSurfaceId(int surfaceId)
     {
         Check.superiorOrEqual(surfaceId, 0);
         this.surfaceId = Integer.valueOf(surfaceId);
@@ -257,13 +256,13 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
     }
 
     /**
-     * Set the grid size. Will affect {@link #getInTileX()} and {@link #getInTileY()}.
+     * Set the grid size.
      * 
      * @param width The horizontal grid (strictly positive).
      * @param height The vertical grid (strictly positive).
      * @throws LionEngineException If grid is not strictly positive.
      */
-    public void setGrid(int width, int height) throws LionEngineException
+    public void setGrid(int width, int height)
     {
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);
@@ -420,8 +419,8 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
             offY = (int) viewer.getY();
         }
 
-        x = UtilMath.fixBetween(x, minX, maxX);
-        y = UtilMath.fixBetween(y, minY, maxY);
+        x = UtilMath.clamp(x, minX, maxX);
+        y = UtilMath.clamp(y, minY, maxY);
         viewX = x + offX;
         if (viewer != null)
         {
@@ -473,33 +472,5 @@ public class Cursor implements Resource, Localizable, Tiled, Updatable, Renderab
     public int getHeight()
     {
         return gridHeight;
-    }
-
-    /*
-     * Tiled
-     */
-
-    @Override
-    public int getInTileX()
-    {
-        return (int) viewX / gridWidth;
-    }
-
-    @Override
-    public int getInTileY()
-    {
-        return (int) viewY / gridHeight;
-    }
-
-    @Override
-    public int getInTileWidth()
-    {
-        return 1;
-    }
-
-    @Override
-    public int getInTileHeight()
-    {
-        return 1;
     }
 }

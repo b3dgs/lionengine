@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.drawable;
 
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Drawable factory. Can create the following elements:
@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.core.Media;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Drawable
 {
@@ -49,7 +47,7 @@ public final class Drawable
      * @return The loaded image.
      * @throws LionEngineException If an error occurred when reading the image.
      */
-    public static Image loadImage(Media media) throws LionEngineException
+    public static Image loadImage(Media media)
     {
         return new ImageImpl(media);
     }
@@ -64,7 +62,7 @@ public final class Drawable
      * @return The loaded image.
      * @throws LionEngineException If the surface is <code>null</code>.
      */
-    public static Image loadImage(ImageBuffer surface) throws LionEngineException
+    public static Image loadImage(ImageBuffer surface)
     {
         return new ImageImpl(surface);
     }
@@ -79,7 +77,7 @@ public final class Drawable
      * @return The loaded sprite.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static Sprite loadSprite(Media media) throws LionEngineException
+    public static Sprite loadSprite(Media media)
     {
         return new SpriteImpl(media);
     }
@@ -94,7 +92,7 @@ public final class Drawable
      * @return The loaded sprite.
      * @throws LionEngineException If surface is <code>null</code>.
      */
-    public static Sprite loadSprite(ImageBuffer surface) throws LionEngineException
+    public static Sprite loadSprite(ImageBuffer surface)
     {
         return new SpriteImpl(surface);
     }
@@ -112,7 +110,6 @@ public final class Drawable
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
     public static SpriteAnimated loadSpriteAnimated(Media media, int horizontalFrames, int verticalFrames)
-            throws LionEngineException
     {
         return new SpriteAnimatedImpl(media, horizontalFrames, verticalFrames);
     }
@@ -131,7 +128,6 @@ public final class Drawable
      * @throws LionEngineException If arguments are invalid.
      */
     public static SpriteAnimated loadSpriteAnimated(ImageBuffer surface, int horizontalFrames, int verticalFrames)
-            throws LionEngineException
     {
         return new SpriteAnimatedImpl(surface, horizontalFrames, verticalFrames);
     }
@@ -148,7 +144,7 @@ public final class Drawable
      * @return The loaded tiled sprite.
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
-    public static SpriteTiled loadSpriteTiled(Media media, int tileWidth, int tileHeight) throws LionEngineException
+    public static SpriteTiled loadSpriteTiled(Media media, int tileWidth, int tileHeight)
     {
         return new SpriteTiledImpl(media, tileWidth, tileHeight);
     }
@@ -167,7 +163,6 @@ public final class Drawable
      * @throws LionEngineException If arguments are invalid.
      */
     public static SpriteTiled loadSpriteTiled(ImageBuffer surface, int tileWidth, int tileHeight)
-            throws LionEngineException
     {
         return new SpriteTiledImpl(surface, tileWidth, tileHeight);
     }
@@ -186,7 +181,6 @@ public final class Drawable
      * @throws LionEngineException If arguments are invalid.
      */
     public static SpriteParallaxed loadSpriteParallaxed(Media media, int linesNumber, int startWidth, int startHeight)
-            throws LionEngineException
     {
         return new SpriteParallaxedImpl(media, linesNumber, startWidth, startHeight);
     }
@@ -205,7 +199,6 @@ public final class Drawable
      * @throws LionEngineException If an error occurred when creating the font.
      */
     public static SpriteFont loadSpriteFont(Media media, Media data, int letterWidth, int letterHeight)
-            throws LionEngineException
     {
         return new SpriteFontImpl(media, data, letterWidth, letterHeight);
     }

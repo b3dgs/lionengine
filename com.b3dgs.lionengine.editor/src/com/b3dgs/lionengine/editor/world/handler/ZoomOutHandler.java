@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Zoom out handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ZoomOutHandler
 {

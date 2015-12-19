@@ -20,10 +20,10 @@ package com.b3dgs.lionengine.game.map;
 import java.util.Arrays;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.trait.fovable.Fovable;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.Tiled;
 
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).
@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.game.trait.fovable.Fovable;
  * <li>{@link MapTile#setTileRenderer(MapTileRenderer)} - Fog of war is a {@link MapTileRenderer} which will not
  * override the existing map renderer, but decorate it by rendering fog after the old one.</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FogOfWar implements MapTileRenderer
 {
@@ -250,8 +248,8 @@ public class FogOfWar implements MapTileRenderer
     {
         renderer.renderTile(g, tile, x, y);
 
-        final int tx = tile.getX() / tile.getWidth();
-        final int ty = tile.getY() / tile.getHeight();
+        final int tx = tile.getInTileX();
+        final int ty = tile.getInTileY();
         final Border20 vid = Border20Map.get(visited, tx, ty);
         final Border20 fid = Border20Map.get(fog, tx, ty);
 

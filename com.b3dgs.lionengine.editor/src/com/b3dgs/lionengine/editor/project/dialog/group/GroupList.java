@@ -20,22 +20,20 @@ package com.b3dgs.lionengine.editor.project.dialog.group;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.TileGroup;
-import com.b3dgs.lionengine.game.collision.TileGroup.TileRef;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.tile.TileRef;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the groups list, allowing to add and remove {@link TileGroup}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class GroupList extends ObjectList<TileGroup> implements ObjectListListener<TileGroup>
 {
@@ -54,7 +52,7 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
      */
     public void loadGroups(Media config)
     {
-        final Collection<TileGroup> groups = ConfigTileGroup.create(Stream.loadXml(config));
+        final Collection<TileGroup> groups = TileGroupsConfig.imports(config);
         loadObjects(groups);
     }
 
@@ -87,13 +85,13 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
     @Override
     public void notifyObjectDeleted(TileGroup group)
     {
-        final MapTile map = WorldModel.INSTANCE.getMap();
-        final Media config = map.getGroupsConfig();
-        final XmlNode node = Stream.loadXml(config);
+        final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
+        final Media config = mapGroup.getGroupsConfig();
+        final XmlNode node = Xml.load(config);
         final Collection<XmlNode> toRemove = new ArrayList<>();
-        for (final XmlNode nodeGroup : node.getChildren(ConfigTileGroup.GROUP))
+        for (final XmlNode nodeGroup : node.getChildren(TileGroupsConfig.NODE_GROUP))
         {
-            if (CollisionGroup.equals(nodeGroup.readString(ConfigTileGroup.NAME), group.getName()))
+            if (CollisionGroup.same(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), group.getName()))
             {
                 toRemove.add(nodeGroup);
             }
@@ -103,7 +101,7 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
             node.removeChild(remove);
         }
         toRemove.clear();
-        Stream.saveXml(node, config);
-        map.loadGroups(config);
+        Xml.save(node, config);
+        mapGroup.loadGroups(config);
     }
 }

@@ -17,16 +17,15 @@
  */
 package com.b3dgs.lionengine.example.game.world;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.Version;
+import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
  * Main class.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
 public class AppWorld
@@ -38,10 +37,10 @@ public class AppWorld
      */
     public static void main(String[] args)
     {
-        Engine.start("World", Version.create(1, 0, 0), AppWorld.class);
+        EngineAwt.start("World", Version.create(1, 0, 0), AppWorld.class);
         final Resolution output = new Resolution(320, 240, 60);
         final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader(config);
-        loader.start(Scene.class);
+        final Loader loader = new Loader();
+        loader.start(config, Scene.class);
     }
 }

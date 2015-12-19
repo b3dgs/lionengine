@@ -22,12 +22,10 @@ import org.eclipse.core.expressions.PropertyTester;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.collision.object.CollisionConfig;
 
 /**
  * Test the properties node existence.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class PropertiesCollisionTester extends PropertyTester
 {
@@ -51,15 +49,15 @@ public final class PropertiesCollisionTester extends PropertyTester
         final boolean result;
         if (PROPERTY_COLLISIONS_ENABLE.equals(property))
         {
-            result = !model.hasProperty(ConfigCollisions.COLLISION);
+            result = !model.hasProperty(CollisionConfig.COLLISION);
         }
-        else if (PROPERTY_COLLISIONS_EDIT.equals(property) && ConfigCollisions.COLLISION.equals(data))
+        else if (PROPERTY_COLLISIONS_EDIT.equals(property) && CollisionConfig.COLLISION.equals(data))
         {
-            result = model.hasProperty(ConfigCollisions.COLLISION);
+            result = model.hasProperty(CollisionConfig.COLLISION);
         }
-        else if (PROPERTY_COLLISIONS_DISABLE.equals(property) && ConfigCollisions.COLLISION.equals(data))
+        else if (PROPERTY_COLLISIONS_DISABLE.equals(property) && CollisionConfig.COLLISION.equals(data))
         {
-            result = model.hasProperty(ConfigCollisions.COLLISION);
+            result = model.hasProperty(CollisionConfig.COLLISION);
         }
         else
         {

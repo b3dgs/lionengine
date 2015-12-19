@@ -32,11 +32,10 @@ import org.eclipse.swt.widgets.Label;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
+import com.b3dgs.lionengine.editor.Action;
 
 /**
  * Series of tool functions around combo.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilCombo
 {
@@ -64,14 +63,7 @@ public final class UtilCombo
             combo.setText(items[0]);
             combo.setData(links.get(items[0]));
         }
-        combo.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                combo.setData(links.get(combo.getText()));
-            }
-        });
+        UtilCombo.setAction(combo, () -> combo.setData(links.get(combo.getText())));
         combo.addModifyListener(e -> combo.setData(links.get(combo.getText())));
         return combo;
     }
@@ -96,8 +88,7 @@ public final class UtilCombo
         textLegend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
         textLegend.setText(legend);
 
-        final Combo combo = create(composite, values);
-        return combo;
+        return create(composite, values);
     }
 
     /**
@@ -132,6 +123,24 @@ public final class UtilCombo
         registerDirty(combo, false);
         combo.setText(value);
         registerDirty(combo, true);
+    }
+
+    /**
+     * Set the combo action.
+     * 
+     * @param combo The combo reference.
+     * @param action The combo action.
+     */
+    public static void setAction(Combo combo, Action action)
+    {
+        combo.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent event)
+            {
+                action.perform();
+            }
+        });
     }
 
     /**

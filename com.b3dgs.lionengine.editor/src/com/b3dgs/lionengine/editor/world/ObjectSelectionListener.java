@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.editor.ObjectRepresentation;
 
 /**
  * Listen to objects selection on map.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ObjectSelectionListener
 {

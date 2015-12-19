@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * List of services provided by a client.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 interface Client extends Networker<ConnectionListener>
 {
@@ -33,7 +31,7 @@ interface Client extends Networker<ConnectionListener>
      * @param port The server port.
      * @throws LionEngineException If unable to connect.
      */
-    void connect(String ip, int port) throws LionEngineException;
+    void connect(String ip, int port);
 
     /**
      * Check if the client is connected to a server.

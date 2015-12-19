@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.editor.world.updater;
 
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.editor.world.WorldView;
 import com.b3dgs.lionengine.editor.world.ZoomItem;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Handle the world zoom capability.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldZoom implements WorldMouseClickListener, WorldMouseScrollListener
 {
@@ -39,7 +37,7 @@ public class WorldZoom implements WorldMouseClickListener, WorldMouseScrollListe
     public static final int ZOOM_MIN = 25;
 
     /** World part. */
-    private final WorldPart part;
+    private final WorldView view;
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
@@ -58,7 +56,7 @@ public class WorldZoom implements WorldMouseClickListener, WorldMouseScrollListe
      */
     public WorldZoom(Services services)
     {
-        part = services.get(WorldPart.class);
+        view = services.get(WorldView.class);
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
         zoomPercent = ZOOM_DEFAULT;
@@ -110,7 +108,7 @@ public class WorldZoom implements WorldMouseClickListener, WorldMouseScrollListe
      */
     public void setPercent(int percent)
     {
-        zoomPercent = UtilMath.fixBetween(percent, ZOOM_MIN, ZOOM_MAX);
+        zoomPercent = UtilMath.clamp(percent, ZOOM_MIN, ZOOM_MAX);
     }
 
     /**
@@ -186,7 +184,7 @@ public class WorldZoom implements WorldMouseClickListener, WorldMouseScrollListe
                 zoomOut();
             }
 
-            part.setToolItemText(ZoomItem.ID, String.valueOf(zoomPercent));
+            view.setToolItemText(ZoomItem.ID, String.valueOf(zoomPercent));
             updateScrollToCursor(mx, my);
         }
     }

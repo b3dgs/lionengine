@@ -22,8 +22,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Geometry factory.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Geom
 {
@@ -44,7 +42,7 @@ public final class Geom
      * @return The created point.
      * @throws LionEngineException If point is invalid.
      */
-    public static Point createPoint(Point point) throws LionEngineException
+    public static Point createPoint(Point point)
     {
         Check.notNull(point);
         return new PointImpl(point.getX(), point.getY());
@@ -79,7 +77,7 @@ public final class Geom
      * @return The created coord.
      * @throws LionEngineException If coord is invalid.
      */
-    public static Coord createCoord(Coord coord) throws LionEngineException
+    public static Coord createCoord(Coord coord)
     {
         Check.notNull(coord);
         return new CoordImpl(coord.getX(), coord.getY());
@@ -95,6 +93,37 @@ public final class Geom
     public static Coord createCoord(double x, double y)
     {
         return new CoordImpl(x, y);
+    }
+
+    /**
+     * Get the intersection point of two lines.
+     * 
+     * @param l1 The first line.
+     * @param l2 The second line.
+     * @return The intersection point.
+     */
+    public static Coord intersection(Line l1, Line l2)
+    {
+        final int x1 = (int) l1.getX1();
+        final int x2 = (int) l1.getX2();
+        final int y1 = (int) l1.getY1();
+        final int y2 = (int) l1.getY2();
+
+        final int x3 = (int) l2.getX1();
+        final int x4 = (int) l2.getX2();
+        final int y3 = (int) l2.getY1();
+        final int y4 = (int) l2.getY2();
+
+        final int d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        if (0 == d)
+        {
+            return Geom.createCoord(0.0, 0.0);
+        }
+
+        final int xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
+        final int yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
+
+        return Geom.createCoord(xi, yi);
     }
 
     /**
@@ -114,7 +143,7 @@ public final class Geom
      * @return The created line.
      * @throws LionEngineException If line is invalid.
      */
-    public static Line createLine(Line line) throws LionEngineException
+    public static Line createLine(Line line)
     {
         Check.notNull(line);
         return new LineImpl(line.getX1(), line.getY1(), line.getX2(), line.getY2());
@@ -151,7 +180,7 @@ public final class Geom
      * @return The created rectangle.
      * @throws LionEngineException If rectangle is invalid.
      */
-    public static Rectangle createRectangle(Rectangle rectangle) throws LionEngineException
+    public static Rectangle createRectangle(Rectangle rectangle)
     {
         Check.notNull(rectangle);
         return new RectangleImpl(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());

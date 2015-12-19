@@ -19,15 +19,15 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.midi.AudioMidi;
 import com.b3dgs.lionengine.audio.midi.Midi;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.stream.Stream;
 
 /**
  * Game loop designed to handle our little world.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Scene extends Sequence
 {
@@ -56,11 +54,11 @@ class Scene extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, NATIVE);
+        super(context, NATIVE);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
@@ -70,16 +68,14 @@ class Scene extends Sequence
     private static void importAndSave()
     {
         final MapTile map = new MapTileGame();
-        map.create(Medias.create("map", "level.png"),
-                   Medias.create("map", "sheets.xml"),
-                   Medias.create("map", "groups.xml"));
+        map.create(Medias.create("map", "level.png"));
         try (FileWriting file = Stream.createFileWriting(LEVEL))
         {
             map.save(file);
         }
         catch (final IOException exception)
         {
-            Verbose.exception(Scene.class, "importAndSave", exception, "Error on saving map !");
+            Verbose.exception(exception, "Error on saving map !");
         }
     }
 
@@ -88,7 +84,7 @@ class Scene extends Sequence
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         if (!LEVEL.exists())
         {
@@ -112,7 +108,7 @@ class Scene extends Sequence
     }
 
     @Override
-    protected void onTerminate(boolean hasNextSequence)
+    public void onTerminated(boolean hasNextSequence)
     {
         music.stop();
         Sfx.terminateAll();

@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
         <artifactId>lionengine-parent</artifactId>
-        <version>8.1.0</version>
+        <version>8.2.0</version>
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-audio-midi</artifactId>
@@ -15,6 +15,13 @@
             <groupId>com.b3dgs.lionengine</groupId>
             <artifactId>lionengine-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.b3dgs.lionengine</groupId>
+            <artifactId>lionengine-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -24,6 +31,11 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.audio.midi</Bundle-SymbolicName>
+                        <Import-Package>
+                            *,
+                            com.b3dgs.lionengine.test.util;resolution:=optional
+                        </Import-Package>
+                        <Require-Bundle>${project.groupId}.core, org.junit;resolution:=optional</Require-Bundle>
                     </instructions>
                 </configuration>
             </plugin>

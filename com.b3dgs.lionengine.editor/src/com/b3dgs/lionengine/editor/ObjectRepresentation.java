@@ -17,34 +17,36 @@
  */
 package com.b3dgs.lionengine.editor;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Object representation of any user object. This allows to avoid constructor error, especially with traits.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ObjectRepresentation extends ObjectGame implements Updatable, Renderable
 {
+    /** Error animation. */
+    private static final String ERROR_ANIMATION = "Unable to get animation data from: ";
+
     /**
      * Get the sprite depending of the configuration.
      * 
@@ -56,11 +58,12 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     {
         try
         {
-            final ConfigFrames frames = ConfigFrames.create(configurer);
+            final FramesConfig frames = FramesConfig.create(configurer);
             return Drawable.loadSpriteAnimated(surface, frames.getHorizontal(), frames.getVertical());
         }
         catch (final LionEngineException exception)
         {
+            Verbose.exception(exception, ERROR_ANIMATION, configurer.getMedia().getPath());
             return Drawable.loadSpriteAnimated(surface, 1, 1);
         }
     }
@@ -83,7 +86,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
      * @param services The services reference.
      * @throws LionEngineException If error.
      */
-    public ObjectRepresentation(SetupSurface setup, Services services) throws LionEngineException
+    public ObjectRepresentation(SetupSurface setup, Services services)
     {
         super(setup, services);
         surface = getSprite(setup.getConfigurer(), setup.getSurface());

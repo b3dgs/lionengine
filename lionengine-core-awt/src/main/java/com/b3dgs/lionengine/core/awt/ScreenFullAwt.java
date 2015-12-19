@@ -33,14 +33,15 @@ import javax.swing.WindowConstants;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.ScreenListener;
 
 /**
  * Full screen implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Keyboard
  * @see Mouse
  */
@@ -80,28 +81,38 @@ final class ScreenFullAwt extends ScreenAwt
     /**
      * Internal constructor.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
-    ScreenFullAwt(Renderer renderer) throws LionEngineException
+    ScreenFullAwt(Config config)
     {
-        super(renderer);
+        super(config);
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         dev = env.getDefaultScreenDevice();
         conf = dev.getDefaultConfiguration();
-        frame = initMainFrame(renderer);
+        frame = initMainFrame();
+    }
+
+    /**
+     * Called when screen is disposed.
+     */
+    void onDisposed()
+    {
+        for (final ScreenListener listener : listeners)
+        {
+            listener.notifyClosed();
+        }
     }
 
     /**
      * Initialize the main frame.
      * 
-     * @param renderer The renderer reference.
      * @return The created main frame.
      * @throws LionEngineException If the engine has not been started.
      */
-    private JFrame initMainFrame(final Renderer renderer) throws LionEngineException
+    private JFrame initMainFrame()
     {
-        final String title = EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion();
+        final String title = Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion();
         final JFrame frame = new JFrame(title, conf);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter()
@@ -109,7 +120,7 @@ final class ScreenFullAwt extends ScreenAwt
             @Override
             public void windowClosing(WindowEvent event)
             {
-                renderer.end();
+                onDisposed();
             }
         });
         frame.setResizable(false);
@@ -126,7 +137,7 @@ final class ScreenFullAwt extends ScreenAwt
      * @param depth The bit depth color.
      * @throws LionEngineException If unsupported resolution.
      */
-    private void initFullscreen(Resolution output, int depth) throws LionEngineException
+    private void initFullscreen(Resolution output, int depth)
     {
         window = new java.awt.Window(frame, conf);
         window.setBackground(Color.BLACK);
@@ -155,6 +166,7 @@ final class ScreenFullAwt extends ScreenAwt
         }
         catch (final AWTException exception)
         {
+            Verbose.exception(exception);
             window.createBufferStrategy(1);
         }
         buf = window.getBufferStrategy();
@@ -266,7 +278,7 @@ final class ScreenFullAwt extends ScreenAwt
     }
 
     @Override
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
         initFullscreen(output, config.getDepth());
         super.setResolution(output);

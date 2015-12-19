@@ -32,16 +32,14 @@ import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.ConfigSize;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.SizeConfig;
+import com.b3dgs.lionengine.game.object.FramesConfig;
+import com.b3dgs.lionengine.game.object.SurfaceConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Element properties part.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesFrames implements PropertiesProviderObject
 {
@@ -58,22 +56,22 @@ public class PropertiesFrames implements PropertiesProviderObject
     {
         final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
         iconItem.setText(Messages.Properties_Frames);
-        iconItem.setData(ConfigFrames.FRAMES);
+        iconItem.setData(FramesConfig.FRAMES);
         iconItem.setImage(PropertiesFrames.ICON_FRAMES);
 
-        final ConfigFrames configFrames = ConfigFrames.create(configurer);
+        final FramesConfig configFrames = FramesConfig.create(configurer);
 
         final TreeItem framesHorizontal = new TreeItem(iconItem, SWT.NONE);
         PropertiesPart.createLine(framesHorizontal,
                                   Messages.Properties_Frames_Horizontal,
                                   String.valueOf(configFrames.getHorizontal()));
-        framesHorizontal.setData(ConfigFrames.FRAMES_HORIZONTAL);
+        framesHorizontal.setData(FramesConfig.FRAMES_HORIZONTAL);
 
         final TreeItem framesVertical = new TreeItem(iconItem, SWT.NONE);
         PropertiesPart.createLine(framesVertical,
                                   Messages.Properties_Frames_Vertical,
                                   String.valueOf(configFrames.getVertical()));
-        framesVertical.setData(ConfigFrames.FRAMES_VERTICAL);
+        framesVertical.setData(FramesConfig.FRAMES_VERTICAL);
     }
 
     /**
@@ -94,7 +92,7 @@ public class PropertiesFrames implements PropertiesProviderObject
         if (frames.open() == Window.OK)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode framesNode = root.getChild(ConfigFrames.FRAMES);
+            final XmlNode framesNode = root.getChild(FramesConfig.FRAMES);
             framesNode.writeString((String) item.getData(), frames.getValue());
             item.setText(PropertiesPart.COLUMN_VALUE, frames.getValue());
             updateSize(configurer, root, framesNode);
@@ -115,22 +113,22 @@ public class PropertiesFrames implements PropertiesProviderObject
     {
         final XmlNode size;
         final File file = new File(configurer.getPath(),
-                                   root.getChild(ConfigSurface.SURFACE).readString(ConfigSurface.SURFACE_IMAGE));
+                                   root.getChild(SurfaceConfig.SURFACE).readString(SurfaceConfig.SURFACE_IMAGE));
         final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(file));
-        if (!root.hasChild(ConfigSize.SIZE))
+        if (!root.hasChild(SizeConfig.SIZE))
         {
-            size = root.createChild(ConfigSize.SIZE);
-            size.writeInteger(ConfigSize.SIZE_WIDTH, info.getWidth());
-            size.writeInteger(ConfigSize.SIZE_HEIGHT, info.getHeight());
+            size = root.createChild(SizeConfig.SIZE);
+            size.writeInteger(SizeConfig.SIZE_WIDTH, info.getWidth());
+            size.writeInteger(SizeConfig.SIZE_HEIGHT, info.getHeight());
         }
         else
         {
-            size = root.getChild(ConfigSize.SIZE);
+            size = root.getChild(SizeConfig.SIZE);
         }
-        size.writeInteger(ConfigSize.SIZE_WIDTH,
-                          info.getWidth() / framesNode.readInteger(ConfigFrames.FRAMES_HORIZONTAL));
-        size.writeInteger(ConfigSize.SIZE_HEIGHT,
-                          info.getHeight() / framesNode.readInteger(ConfigFrames.FRAMES_VERTICAL));
+        size.writeInteger(SizeConfig.SIZE_WIDTH,
+                          info.getWidth() / framesNode.readInteger(FramesConfig.FRAMES_HORIZONTAL));
+        size.writeInteger(SizeConfig.SIZE_HEIGHT,
+                          info.getHeight() / framesNode.readInteger(FramesConfig.FRAMES_VERTICAL));
     }
 
     /**
@@ -149,7 +147,7 @@ public class PropertiesFrames implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        if (root.hasChild(ConfigFrames.FRAMES))
+        if (root.hasChild(FramesConfig.FRAMES))
         {
             createAttributeFrames(properties, configurer);
         }
@@ -160,7 +158,7 @@ public class PropertiesFrames implements PropertiesProviderObject
     {
         final Object data = item.getData();
         boolean updated = false;
-        if (ConfigFrames.FRAMES_HORIZONTAL.equals(data) || ConfigFrames.FRAMES_VERTICAL.equals(data))
+        if (FramesConfig.FRAMES_HORIZONTAL.equals(data) || FramesConfig.FRAMES_VERTICAL.equals(data))
         {
             updated = updateFrames(item, configurer);
         }

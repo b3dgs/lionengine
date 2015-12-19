@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.audio.wav.AudioWav;
 import com.b3dgs.lionengine.audio.wav.Wav;
 import com.b3dgs.lionengine.core.Medias;
 
-@SuppressWarnings("all")
 public class ModuleWav
 {
     /*

@@ -18,14 +18,14 @@
 package com.b3dgs.lionengine.example.game.cursor;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
@@ -33,13 +33,16 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.transition.TransitionType;
+import com.b3dgs.lionengine.game.map.transition.TransitionsExtractor;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Game loop designed to handle our little world.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
 class Scene extends Sequence
@@ -48,7 +51,7 @@ class Scene extends Sequence
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** Text reference. */
-    private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
+    private final TextGame text = new TextGame(Text.DIALOG, 9, TextStyle.NORMAL);
     /** Services reference. */
     private final Services services = new Services();
     /** Camera reference. */
@@ -57,6 +60,8 @@ class Scene extends Sequence
     private final Cursor cursor = services.create(Cursor.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map reference. */
+    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
@@ -65,11 +70,11 @@ class Scene extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, NATIVE);
+        super(context, NATIVE);
         setSystemCursorVisible(false);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
@@ -81,27 +86,32 @@ class Scene extends Sequence
      */
     private void renderTileInfo(Graphic g)
     {
-        final int tx = cursor.getInTileX();
-        final int ty = cursor.getInTileY();
+        final int tx = map.getInTileX(cursor);
+        final int ty = map.getInTileY(cursor);
         final Tile tile = map.getTile(tx, ty);
         if (tile != null)
         {
             final int x = tx * map.getTileWidth();
             final int y = ty * map.getTileHeight();
+            final TransitionType typeIn = TransitionsExtractor.getTransition(map, tile, false).getType();
+            final TransitionType typeOut = TransitionsExtractor.getTransition(map, tile, true).getType();
 
             text.drawRect(g, ColorRgba.GREEN, x, y, map.getTileWidth(), map.getTileHeight());
             text.setColor(ColorRgba.YELLOW);
-            text.draw(g, x + 20, y + 25, "Tile number: " + tile.getNumber());
-            text.draw(g, x + 20, y + 15, "X = " + tx + " | Y = " + ty);
-            text.draw(g, x + 20, y + 5, "RX = " + cursor.getX() + " | RY = " + cursor.getY());
-            text.draw(g, x + 20, y - 5, "Group: " + tile.getGroup());
+            text.draw(g, x + 20, y + 35, "Tile number: " + tile.getNumber());
+            text.draw(g, x + 20, y + 25, "X = " + tx + " | Y = " + ty);
+            text.draw(g, x + 20, y + 15, "RX = " + cursor.getX() + " | RY = " + cursor.getY());
+            text.draw(g, x + 20, y + 5, "Group: " + mapGroup.getGroup(tile));
+            text.draw(g, x + 20, y - 5, "Transition In: " + typeIn);
+            text.draw(g, x + 20, y - 15, "Transition Out: " + typeOut);
         }
     }
 
     @Override
-    protected void load()
+    public void load()
     {
-        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        map.create(Medias.create("level.png"));
+        map.createFeature(MapTileGroupModel.class).loadGroups(Medias.create("groups.xml"));
 
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load();
@@ -148,7 +158,7 @@ class Scene extends Sequence
     }
 
     @Override
-    protected void onTerminate(boolean hasNextSequence)
+    public void onTerminated(boolean hasNextSequence)
     {
         Engine.terminate();
     }

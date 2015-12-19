@@ -18,26 +18,52 @@
 package com.b3dgs.lionengine.audio.sc68;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Medias;
 
 /**
  * SC68 player implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Sc68Player implements Sc68
 {
-    /** Max volume. */
-    private static final int MAX_VOLUME = 100;
+    /** Volume max. */
+    private static final int VOLUME_MAX = 100;
+    /** Info playing. */
+    private static final String INFO_PLAYING = "Playing SC68 track: ";
 
+    /**
+     * Extract music from jar to temp file.
+     * 
+     * @param media The music media.
+     * @return The path of temp file.
+     */
+    private static String extractFromJar(Media media)
+    {
+        InputStream input = null;
+        try
+        {
+            input = media.getInputStream();
+            final File file = UtilFile.getCopy(media.getFile().getName(), input);
+            file.deleteOnExit();
+            return file.getAbsolutePath();
+        }
+        finally
+        {
+            UtilFile.safeClose(input);
+        }
+    }
+
+    /** Music cache. */
+    private final Map<Media, String> cache = new HashMap<Media, String>();
     /** Binding reference. */
     private final Sc68Binding binding;
 
@@ -47,11 +73,23 @@ final class Sc68Player implements Sc68
      * @param binding The binding reference.
      * @throws LionEngineException If binding is <code>null</code>
      */
-    Sc68Player(Sc68Binding binding) throws LionEngineException
+    Sc68Player(Sc68Binding binding)
     {
         Check.notNull(binding);
 
         this.binding = binding;
+    }
+
+    /**
+     * Play the track.
+     * 
+     * @param track The track path.
+     * @param name The track name.
+     */
+    private void play(String track, String name)
+    {
+        Verbose.info(INFO_PLAYING, name);
+        binding.Sc68Play(track);
     }
 
     /*
@@ -59,38 +97,30 @@ final class Sc68Player implements Sc68
      */
 
     @Override
-    public void play(Media media) throws LionEngineException
+    public void play(Media media)
     {
         Check.notNull(media);
 
-        final InputStream input = media.getInputStream();
-        try
+        final String name = media.getPath();
+        if (Medias.getResourcesLoader() != null)
         {
-            final File music = UtilFile.getCopy(media.getFile().getName(), input);
-            binding.Sc68Play(music.getCanonicalPath());
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, media);
-        }
-        finally
-        {
-            try
+            if (!cache.containsKey(media))
             {
-                input.close();
+                cache.put(media, extractFromJar(media));
             }
-            catch (final IOException exception2)
-            {
-                Verbose.exception(Sc68Player.class, "play", exception2);
-            }
+            play(cache.get(media), name);
+        }
+        else
+        {
+            play(media.getFile().getAbsolutePath(), name);
         }
     }
 
     @Override
-    public void setVolume(int volume) throws LionEngineException
+    public void setVolume(int volume)
     {
         Check.superiorOrEqual(volume, 0);
-        Check.inferiorOrEqual(volume, MAX_VOLUME);
+        Check.inferiorOrEqual(volume, VOLUME_MAX);
 
         binding.Sc68SetVolume(volume);
     }

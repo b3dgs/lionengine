@@ -17,14 +17,12 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * Represents a 2D vector force, using double precision. This can be used to describe a vectorial force, on 2 axis
  * (horizontal and vertical). Can be used as a speed.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Force implements Direction, Updatable
 {
@@ -367,8 +365,8 @@ public class Force implements Direction, Updatable
             maxH = directionMax.getDirectionHorizontal();
             maxV = directionMax.getDirectionVertical();
         }
-        fh = UtilMath.fixBetween(fh, minH, maxH);
-        fv = UtilMath.fixBetween(fv, minV, maxV);
+        fh = UtilMath.clamp(fh, minH, maxH);
+        fv = UtilMath.clamp(fv, minV, maxV);
     }
 
     /*

@@ -19,13 +19,11 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.event.MouseEvent;
 
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.InputDevicePointer;
-import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * Represents the mouse input. Gives informations such as mouse click and cursor location.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Mouse extends InputDevicePointer, Updatable
 {

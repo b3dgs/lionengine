@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.object;
 /**
  * Represents the objects handled by the handler, providing quick access to them from their type.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see ObjectGame
  */
 public interface HandledObjects

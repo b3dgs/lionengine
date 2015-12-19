@@ -23,8 +23,6 @@ import android.view.SurfaceView;
 
 /**
  * Surface view implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ViewAndroid extends SurfaceView
 {

@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Series of tool functions around the editor related to part.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilPart
 {
@@ -56,7 +54,7 @@ public final class UtilPart
      * @return The part class instance.
      * @throws LionEngineException If part can not be found.
      */
-    public static <C> C getPart(String id, Class<C> clazz) throws LionEngineException
+    public static <C> C getPart(String id, Class<C> clazz)
     {
         final IEclipseContext activeContext = app.getContext().getActiveLeaf();
         final EPartService partService = activeContext.get(EPartService.class);

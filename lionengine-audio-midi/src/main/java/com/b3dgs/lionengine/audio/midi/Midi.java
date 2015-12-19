@@ -31,7 +31,7 @@ import javax.sound.midi.Synthesizer;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Handle midi routine. A midi is a light sound, designed to be played as a background music. Midi are played in a
@@ -60,8 +60,6 @@ import com.b3dgs.lionengine.core.Media;
  * midi.pause();
  * midi.stop();
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Midi
 {
@@ -83,7 +81,7 @@ public final class Midi
      * @return The opened sequence instance.
      * @throws LionEngineException If media is <code>null</code> or invalid midi.
      */
-    private static Sequence openSequence(Media media) throws LionEngineException
+    private static Sequence openSequence(Media media)
     {
         Check.notNull(media);
 
@@ -118,7 +116,7 @@ public final class Midi
      * @param media The media midi to play.
      * @throws LionEngineException If media is <code>null</code> or invalid midi.
      */
-    Midi(Media media) throws LionEngineException
+    Midi(Media media)
     {
         try
         {
@@ -182,7 +180,7 @@ public final class Midi
      * @param tick The starting tick <code>[0 - {@link #getTicks()}]</code>.
      * @throws LionEngineException If argument is invalid.
      */
-    public void setStart(long tick) throws LionEngineException
+    public void setStart(long tick)
     {
         Check.superiorOrEqual(tick, 0);
         Check.inferiorOrEqual(tick, ticks);
@@ -197,7 +195,7 @@ public final class Midi
      * @param last The last tick <code>[first - {@link #getTicks()}}]</code>.
      * @throws LionEngineException If arguments are invalid.
      */
-    public void setLoop(long first, long last) throws LionEngineException
+    public void setLoop(long first, long last)
     {
         Check.superiorOrEqual(first, 0);
         Check.inferiorOrEqual(first, last);
@@ -211,9 +209,9 @@ public final class Midi
      * Set the midi volume.
      * 
      * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
-     * @throws LionEngineException If argument is invalid.
+     * @throws LionEngineException If argument is invalid or midi not available.
      */
-    public void setVolume(int volume) throws LionEngineException
+    public void setVolume(int volume)
     {
         Check.superiorOrEqual(volume, Midi.VOLUME_MIN);
         Check.inferiorOrEqual(volume, Midi.VOLUME_MAX);
@@ -236,11 +234,11 @@ public final class Midi
             }
             catch (final MidiUnavailableException exception)
             {
-                return;
+                throw new LionEngineException(exception, ERROR_MIDI);
             }
             catch (final InvalidMidiDataException exception)
             {
-                return;
+                throw new LionEngineException(exception, ERROR_MIDI);
             }
         }
         else

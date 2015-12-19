@@ -44,8 +44,6 @@ import java.io.IOException;
  *     Assert.fail(exception.getMessage());
  * }
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface FileReading extends Closeable
 {

@@ -18,11 +18,10 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Shape;
+import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
 
 /**
  * Standard camera, able to handle movement, and both vertical/horizontal interval. Camera can be used to move
@@ -35,17 +34,15 @@ import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
  * <li>{@link #Camera()}</li>
  * <li>{@link #setIntervals(int, int)}</li>
  * <li>{@link #setView(int, int, int, int)}</li>
- * <li>{@link #setLimits(MapTile)}</li>
+ * <li>{@link #setLimits(Surface)}</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Camera implements Viewer
 {
     /** Current location. */
-    private final Transformable transformable;
+    private final Mover mover;
     /** Current offset location. */
-    private final Transformable offset;
+    private final Mover offset;
     /** Intervals horizontal value. */
     private int intervalHorizontal;
     /** Intervals vertical value. */
@@ -58,32 +55,32 @@ public class Camera implements Viewer
     private int width;
     /** Camera view height. */
     private int height;
-    /** Map limits left. */
-    private int mapLeftLimit;
-    /** Map limits right. */
-    private int mapRightLimit;
-    /** Map limits up. */
-    private int mapUpLimit;
-    /** Map limits down. */
-    private int mapDownLimit;
+    /** Limit left. */
+    private int limitLeft;
+    /** Limit right. */
+    private int limitRight;
+    /** Limit top. */
+    private int limitTop;
+    /** Limit bottom. */
+    private int limitBottom;
 
     /**
      * Create a camera.
      */
     public Camera()
     {
-        transformable = new TransformableModel();
-        offset = new TransformableModel();
+        mover = new MoverModel();
+        offset = new MoverModel();
         intervalHorizontal = 0;
         intervalVertical = 0;
         x = 0;
         y = 0;
         width = 0;
         height = 0;
-        mapLeftLimit = Integer.MIN_VALUE;
-        mapRightLimit = Integer.MAX_VALUE;
-        mapUpLimit = Integer.MAX_VALUE;
-        mapDownLimit = Integer.MIN_VALUE;
+        limitLeft = Integer.MIN_VALUE;
+        limitRight = Integer.MAX_VALUE;
+        limitTop = Integer.MAX_VALUE;
+        limitBottom = Integer.MIN_VALUE;
     }
 
     /**
@@ -121,8 +118,8 @@ public class Camera implements Viewer
      */
     public void moveLocation(double extrp, double vx, double vy)
     {
-        checkHorizontalLimit(vx);
-        checkVerticalLimit(vy);
+        checkHorizontalLimit(extrp, vx);
+        checkVerticalLimit(extrp, vy);
     }
 
     /**
@@ -133,8 +130,8 @@ public class Camera implements Viewer
      */
     public void setLocation(double x, double y)
     {
-        final double dx = x - width / 2.0 - (transformable.getX() + offset.getX());
-        final double dy = y - height / 2.0 - (transformable.getY() + offset.getY());
+        final double dx = x - width / 2.0 - (mover.getX() + offset.getX());
+        final double dy = y - height / 2.0 - (mover.getY() + offset.getY());
         moveLocation(1, dx, dy);
     }
 
@@ -147,7 +144,7 @@ public class Camera implements Viewer
     public void teleport(double x, double y)
     {
         offset.teleport(0, 0);
-        transformable.teleport(x, y);
+        mover.teleport(x, y);
     }
 
     /**
@@ -172,15 +169,15 @@ public class Camera implements Viewer
     }
 
     /**
-     * Define the rendering area. Useful to apply an offset during map rendering, in order to avoid hiding map part.
+     * Define the rendering area. Useful to apply an offset during rendering, in order to avoid hiding part.
      * <p>
      * For example:
      * </p>
      * <ul>
-     * <li>If the view set is <code>(0, 0, 320, 240)</code>, and the map tile size is <code>16</code>, then
+     * <li>If the view set is <code>(0, 0, 320, 240)</code>, and the tile size is <code>16</code>, then
      * <code>20</code> horizontal tiles and <code>15</code> vertical tiles will be rendered from <code>0, 0</code>
      * (screen top-left).</li>
-     * <li>If the view set is <code>(64, 64, 240, 160)</code>, and the map tile size is <code>16</code>, then
+     * <li>If the view set is <code>(64, 64, 240, 160)</code>, and the tile size is <code>16</code>, then
      * <code>15</code> horizontal tiles and <code>10</code> vertical tiles will be rendered from <code>64, 64</code>
      * (screen top-left).</li>
      * </ul>
@@ -202,25 +199,25 @@ public class Camera implements Viewer
     {
         this.x = x;
         this.y = y;
-        this.width = UtilMath.fixBetween(width, 0, Integer.MAX_VALUE);
-        this.height = UtilMath.fixBetween(height, 0, Integer.MAX_VALUE);
+        this.width = UtilMath.clamp(width, 0, Integer.MAX_VALUE);
+        this.height = UtilMath.clamp(height, 0, Integer.MAX_VALUE);
     }
 
     /**
-     * Define the map borders. This function will allow to let the camera know the map size, and so, know which part of
-     * the map can be viewed without being outside the map extremity.
+     * Define the maximum view limit. This function will allow to let the camera know the max rendering size, and so,
+     * know which part can be viewed without being outside the extremity.
      * <p>
      * Note: Must be called after set view ({@link #setView(int, int, int, int)}).
      * </p>
      * 
-     * @param map The map reference.
+     * @param surface The surface reference.
      */
-    public void setLimits(MapTile map)
+    public void setLimits(Surface surface)
     {
-        mapUpLimit = UtilMath.fixBetween(map.getInTileHeight() * map.getTileHeight() - height, 0, Integer.MAX_VALUE);
-        mapLeftLimit = 0;
-        mapRightLimit = map.getInTileWidth() * map.getTileWidth() - width;
-        mapDownLimit = 0;
+        limitRight = Math.max(0, surface.getWidth() - width);
+        limitLeft = 0;
+        limitTop = Math.max(0, surface.getHeight() - height);
+        limitBottom = 0;
         moveLocation(1.0, 0.0, 0.0);
     }
 
@@ -231,7 +228,7 @@ public class Camera implements Viewer
      */
     public double getMovementHorizontal()
     {
-        return transformable.getX() - transformable.getOldX();
+        return mover.getX() - mover.getOldX();
     }
 
     /**
@@ -241,23 +238,24 @@ public class Camera implements Viewer
      */
     public double getMovementVertical()
     {
-        return transformable.getY() - transformable.getOldY();
+        return mover.getY() - mover.getOldY();
     }
 
     /**
      * Check horizontal limit on move.
      * 
+     * @param extrp The extrapolation value.
      * @param vx The horizontal movement.
      */
-    private void checkHorizontalLimit(double vx)
+    private void checkHorizontalLimit(double extrp, double vx)
     {
         // Inside interval
-        if (transformable.getX() >= mapLeftLimit
-            && transformable.getX() <= mapRightLimit
-            && mapLeftLimit != Integer.MIN_VALUE
-            && mapRightLimit != Integer.MAX_VALUE)
+        if (mover.getX() >= limitLeft
+            && mover.getX() <= limitRight
+            && limitLeft != Integer.MIN_VALUE
+            && limitRight != Integer.MAX_VALUE)
         {
-            offset.moveLocation(1, vx, 0);
+            offset.moveLocation(extrp, vx, 0);
 
             // Block offset on its limits
             if (offset.getX() < -intervalHorizontal)
@@ -272,7 +270,7 @@ public class Camera implements Viewer
         // Outside interval
         if ((int) offset.getX() == -intervalHorizontal || (int) offset.getX() == intervalHorizontal)
         {
-            transformable.moveLocation(1, vx, 0);
+            mover.moveLocation(extrp, vx, 0);
         }
         applyHorizontalLimit();
     }
@@ -280,17 +278,18 @@ public class Camera implements Viewer
     /**
      * Check vertical limit on move.
      * 
+     * @param extrp The extrapolation value.
      * @param vy The vertical movement.
      */
-    private void checkVerticalLimit(double vy)
+    private void checkVerticalLimit(double extrp, double vy)
     {
         // Inside interval
-        if (transformable.getY() >= mapDownLimit
-            && transformable.getY() <= mapUpLimit
-            && mapDownLimit != Integer.MIN_VALUE
-            && mapUpLimit != Integer.MAX_VALUE)
+        if (mover.getY() >= limitBottom
+            && mover.getY() <= limitTop
+            && limitBottom != Integer.MIN_VALUE
+            && limitTop != Integer.MAX_VALUE)
         {
-            offset.moveLocation(1, 0, vy);
+            offset.moveLocation(extrp, 0, vy);
 
             // Block offset on its limits
             if (offset.getY() < -intervalVertical)
@@ -305,7 +304,7 @@ public class Camera implements Viewer
         // Outside interval
         if ((int) offset.getY() == -intervalVertical || (int) offset.getY() == intervalVertical)
         {
-            transformable.moveLocation(1, 0, vy);
+            mover.moveLocation(extrp, 0, vy);
         }
         applyVerticalLimit();
     }
@@ -316,17 +315,17 @@ public class Camera implements Viewer
     private void applyHorizontalLimit()
     {
         // Apply limit
-        if (transformable.getX() < mapLeftLimit && mapLeftLimit != Integer.MIN_VALUE)
+        if (mover.getX() < limitLeft && limitLeft != Integer.MIN_VALUE)
         {
-            transformable.teleportX(mapLeftLimit);
+            mover.teleportX(limitLeft);
         }
-        else if (transformable.getX() > mapRightLimit && mapRightLimit != Integer.MAX_VALUE)
+        else if (mover.getX() > limitRight && limitRight != Integer.MAX_VALUE)
         {
-            transformable.teleportX(mapRightLimit);
+            mover.teleportX(limitRight);
         }
         else
         {
-            transformable.moveLocation(1, Direction.ZERO);
+            mover.moveLocation(1, Direction.ZERO);
         }
     }
 
@@ -335,17 +334,17 @@ public class Camera implements Viewer
      */
     private void applyVerticalLimit()
     {
-        if (transformable.getY() < mapDownLimit && mapDownLimit != Integer.MIN_VALUE)
+        if (mover.getY() < limitBottom && limitBottom != Integer.MIN_VALUE)
         {
-            transformable.teleportY(mapDownLimit);
+            mover.teleportY(limitBottom);
         }
-        else if (transformable.getY() > mapUpLimit && mapUpLimit != Integer.MAX_VALUE)
+        else if (mover.getY() > limitTop && limitTop != Integer.MAX_VALUE)
         {
-            transformable.teleportY(mapUpLimit);
+            mover.teleportY(limitTop);
         }
         else
         {
-            transformable.moveLocation(1, Direction.ZERO);
+            mover.moveLocation(1, Direction.ZERO);
         }
     }
 
@@ -374,13 +373,13 @@ public class Camera implements Viewer
     @Override
     public double getX()
     {
-        return transformable.getX() - getViewX();
+        return mover.getX() - getViewX();
     }
 
     @Override
     public double getY()
     {
-        return transformable.getY() + getViewY();
+        return mover.getY() + getViewY();
     }
 
     @Override
@@ -408,11 +407,11 @@ public class Camera implements Viewer
     }
 
     @Override
-    public boolean isViewable(Localizable localizable, int radiusX, int radiusY)
+    public boolean isViewable(Shape shape, int radiusX, int radiusY)
     {
-        return localizable.getX() + localizable.getWidth() + radiusX >= getX()
-               && localizable.getX() - localizable.getWidth() - radiusX <= getX() + width
-               && localizable.getY() + localizable.getHeight() + radiusY >= getY()
-               && localizable.getY() - localizable.getHeight() * 2 - radiusY <= getY() + height;
+        return shape.getX() + shape.getWidth() + radiusX >= getX()
+               && shape.getX() - shape.getWidth() - radiusX <= getX() + width
+               && shape.getY() + shape.getHeight() + radiusY >= getY()
+               && shape.getY() - shape.getHeight() * 2 - radiusY <= getY() + height;
     }
 }

@@ -21,15 +21,13 @@ import java.util.Locale;
 
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.Property;
 
 /**
  * Test the resources extension.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ResourceExtensionTester extends PropertyTester
 {
@@ -56,7 +54,7 @@ public final class ResourceExtensionTester extends PropertyTester
         }
         catch (final IllegalArgumentException exception)
         {
-            Verbose.exception(ResourceExtensionTester.class, "test", exception);
+            Verbose.exception(exception);
             return false;
         }
     }

@@ -17,13 +17,11 @@
  */
 package com.b3dgs.lionengine.core.android;
 
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.UtilConversion;
-import com.b3dgs.lionengine.core.Transform;
 
 /**
  * Transform implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class TransformAndroid implements Transform
 {

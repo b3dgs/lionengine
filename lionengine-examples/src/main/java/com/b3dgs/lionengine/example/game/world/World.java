@@ -19,19 +19,17 @@ package com.b3dgs.lionengine.example.game.world;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
  * World implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class World extends WorldGame
 {

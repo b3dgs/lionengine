@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.core;
 
 /**
  * Represents an input device, such as mouse, keyboard, joypad...
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface InputDevice
 {

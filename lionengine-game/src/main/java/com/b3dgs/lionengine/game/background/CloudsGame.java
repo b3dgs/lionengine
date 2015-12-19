@@ -17,17 +17,15 @@
  */
 package com.b3dgs.lionengine.game.background;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
  * This class handle clouds effect.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class CloudsGame implements BackgroundComponent
 {
@@ -56,11 +54,9 @@ public abstract class CloudsGame implements BackgroundComponent
      * @param cloudHeight The image height.
      * @param screenWidth The screen height.
      * @param decY The vertical offset.
-     * @param alpha <code>true</code> if clouds surface uses alpha, <code>false</code> else.
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
-    public CloudsGame(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY, boolean alpha)
-            throws LionEngineException
+    public CloudsGame(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY)
     {
         this.decY = decY;
         sprite = Drawable.loadSpriteTiled(media, cloudWidth, cloudHeight);

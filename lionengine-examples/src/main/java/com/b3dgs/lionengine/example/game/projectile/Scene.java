@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.object.ComponentCollision;
+import com.b3dgs.lionengine.game.collision.object.ComponentCollision;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.game.object.Services;
 /**
  * Scene implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
 class Scene extends Sequence
@@ -53,16 +52,16 @@ class Scene extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, new Resolution(320, 240, 60));
+        super(context, new Resolution(320, 240, 60));
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         final Ship ship1 = factory.create(Ship.MEDIA);
         final Ship ship2 = factory.create(Ship.MEDIA);
@@ -94,7 +93,7 @@ class Scene extends Sequence
     }
 
     @Override
-    protected void onTerminate(boolean hasNextSequence)
+    public void onTerminated(boolean hasNextSequence)
     {
         Engine.terminate();
     }

@@ -1,5 +1,5 @@
 # LionEngine
-[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.1.0)](https://travis-ci.org/b3dgs/lionengine)
+[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.2.0)](https://travis-ci.org/b3dgs/lionengine)
 <table>
     <tr>
         <td>
@@ -150,32 +150,31 @@ public final class AppJava
 {
     public static void main(String[] args)
     {
-        Engine.start("AppJava", Version.create(1, 0, 0), "resources");
+        EngineAwt.start("AppJava", Version.create(1, 0, 0), "resources");
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader(config);
-        loader.start(Scene.class);
+        final Loader loader = new Loader();
+        loader.start(config, Scene.class);
     }
 }
 ```
 
 * Using __lionengine-core-android__
 ```java
-public final class AppAndroid
-        extends Activity
+public final class AppAndroid extends Activity
 {
     @Override
     protected void onPostCreate(Bundle savedInstanceState)
     {
         super.onPostCreate(savedInstanceState);
- 
-        Engine.start("AppAndroid", Version.create(1, 0, 0), this);
-        final Resolution output = new Resolution(800, 480, 60);
+
+        EngineAndroid.start("AppAndroid", Version.create(1, 0, 0), this);
+        final Resolution output = new Resolution(240, 320, 60);
         final Config config = new Config(output, 32, false);
-        final Loader loader = new Loader(config);
-        loader.start(Menu.class);
+        final Loader loader = new Loader();
+        loader.start(config, Scene.class);
     }
- 
+
     @Override
     public void finish()
     {
@@ -187,38 +186,31 @@ public final class AppAndroid
 
 #### Minimal sequence
 ```java
-class Scene
-        extends Sequence
+public class Scene extends Sequence
 {
-    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    public static final Resolution RESOLUTION = new Resolution(320, 240, 60);
 
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
-
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, Scene.NATIVE);
+        super(context, RESOLUTION);
     }
 
     @Override
-    protected void load()
+    public void load()
     {
-        // Load
+        // Load resources
     }
 
     @Override
     public void update(double extrp)
     {
-        if (keyboard.isPressed(Keyboard.ESCAPE))
-        {
-            end();
-        }
-        // Update
+        // Update game
     }
 
     @Override
     public void render(Graphic g)
     {
-        // Render
+        // Render game
     }
 }
 ```

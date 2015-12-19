@@ -18,12 +18,10 @@
 package com.b3dgs.lionengine.audio.midi;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Midi factory. Allows to create midi player.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AudioMidi
 {
@@ -34,7 +32,7 @@ public final class AudioMidi
      * @return The loaded midi.
      * @throws LionEngineException If media is <code>null</code> or invalid midi or no midi player is available.
      */
-    public static Midi loadMidi(Media media) throws LionEngineException
+    public static Midi loadMidi(Media media)
     {
         return new Midi(media);
     }

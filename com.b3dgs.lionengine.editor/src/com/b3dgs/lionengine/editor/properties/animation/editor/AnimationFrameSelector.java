@@ -30,21 +30,19 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.swt.UtilityMedia;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.FramesConfig;
+import com.b3dgs.lionengine.game.object.SurfaceConfig;
 
 /**
  * Animation paint listener, rendering the current animation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AnimationFrameSelector implements PaintListener, MouseListener, MouseMoveListener
 {
@@ -56,10 +54,9 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     private static final ColorRgba COLOR_FRAME_SELECTED = new ColorRgba(192, 240, 192, 192);
 
     /** The parent. */
-    final Composite parent;
+    private final Composite parent;
     /** The surface. */
-    final Sprite surface;
-
+    private final Sprite surface;
     /** Graphic reference. */
     private final Graphic g;
     /** Horizontal frames. */
@@ -97,9 +94,9 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     {
         this.parent = parent;
         g = Graphics.createGraphic();
-        final ConfigSurface configSurface = ConfigSurface.create(configurer);
-        final Media media = UtilityMedia.get(new File(configurer.getPath(), configSurface.getImage()));
-        final ConfigFrames framesData = ConfigFrames.create(configurer);
+        final SurfaceConfig configSurface = SurfaceConfig.create(configurer);
+        final Media media = Medias.get(new File(configurer.getPath(), configSurface.getImage()));
+        final FramesConfig framesData = FramesConfig.create(configurer);
         horizontalFrames = framesData.getHorizontal();
         verticalFrames = framesData.getVertical();
         surface = Drawable.loadSprite(media);
@@ -159,7 +156,7 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     {
         if (!clicked && isOverSurface() && animationList.getSelectedObject() != null)
         {
-            selectedInitialFrame = UtilMath.fixBetween(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
+            selectedInitialFrame = UtilMath.clamp(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
             selectedFirstFrame = selectedInitialFrame;
             selectedLastFrame = selectedFirstFrame;
             clicked = true;
@@ -173,7 +170,7 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     {
         if (clicked)
         {
-            selectedLastFrame = UtilMath.fixBetween(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
+            selectedLastFrame = UtilMath.clamp(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
             if (selectedInitialFrame > selectedLastFrame)
             {
                 selectedFirstFrame = selectedLastFrame;
@@ -211,10 +208,8 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
      * Render the world.
      * 
      * @param g The graphic output.
-     * @param width The view width.
-     * @param height The view height.
      */
-    private void render(Graphic g, int width, int height)
+    private void render(Graphic g)
     {
         renderFramesBackground(g);
         renderFramesSelected(g);
@@ -318,7 +313,7 @@ public final class AnimationFrameSelector implements PaintListener, MouseListene
     {
         final GC gc = paintEvent.gc;
         g.setGraphic(gc);
-        render(g, paintEvent.width, paintEvent.height);
+        render(g);
     }
 
     /*

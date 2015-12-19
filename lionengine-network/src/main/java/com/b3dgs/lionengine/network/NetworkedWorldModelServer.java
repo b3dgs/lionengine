@@ -17,13 +17,10 @@
  */
 package com.b3dgs.lionengine.network;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**
  * Networkable world implementation server side.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class NetworkedWorldModelServer extends NetworkedWorldModel<ClientListener, ServerImpl>
                                        implements NetworkedWorldServer
@@ -43,7 +40,7 @@ public class NetworkedWorldModelServer extends NetworkedWorldModel<ClientListene
      */
 
     @Override
-    public void startServer(String name, int port, String messageOfTheDay) throws LionEngineException
+    public void startServer(String name, int port, String messageOfTheDay)
     {
         for (final ClientListener listener : listeners)
         {

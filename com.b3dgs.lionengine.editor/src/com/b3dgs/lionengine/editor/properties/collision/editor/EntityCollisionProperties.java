@@ -26,25 +26,23 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
-import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.collision.object.Collision;
 
 /**
  * Represents the collisions properties edition view.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EntityCollisionProperties extends ObjectProperties<Collision> implements ObjectListListener<Collision>
 {
     /** Horizontal offset. */
-    Text offsetX;
+    private Text offsetX;
     /** Vertical offset. */
-    Text offsetY;
+    private Text offsetY;
     /** Collision width.. */
-    Text width;
+    private Text width;
     /** Collision height. */
-    Text height;
+    private Text height;
     /** Mirror flag. */
-    Button mirror;
+    private Button mirror;
 
     /**
      * Create an entity collision properties.
@@ -90,13 +88,12 @@ public class EntityCollisionProperties extends ObjectProperties<Collision> imple
     @Override
     protected Collision createObject(String name)
     {
-        final Collision collision = new Collision(name,
-                                                  Integer.parseInt(offsetX.getText()),
-                                                  Integer.parseInt(offsetY.getText()),
-                                                  Integer.parseInt(width.getText()),
-                                                  Integer.parseInt(height.getText()),
-                                                  mirror.getSelection());
-        return collision;
+        return new Collision(name,
+                             Integer.parseInt(offsetX.getText()),
+                             Integer.parseInt(offsetY.getText()),
+                             Integer.parseInt(width.getText()),
+                             Integer.parseInt(height.getText()),
+                             mirror.getSelection());
     }
 
     /*

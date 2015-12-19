@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.LionEngineException;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class AnimationImpl implements Animation
 {
@@ -56,7 +54,6 @@ final class AnimationImpl implements Animation
      * @throws LionEngineException If invalid animation.
      */
     AnimationImpl(String name, int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
-            throws LionEngineException
     {
         Check.superiorOrEqual(firstFrame, Animation.MINIMUM_FRAME);
         Check.superiorOrEqual(lastFrame, firstFrame);

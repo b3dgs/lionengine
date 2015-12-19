@@ -18,25 +18,26 @@
 package com.b3dgs.lionengine.example.game.collision;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Context;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
 class Scene extends Sequence
@@ -54,6 +55,8 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map group reference. */
+    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
     /** Map collision. */
     private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
     /** Keyboard reference. */
@@ -64,11 +67,11 @@ class Scene extends Sequence
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param context The context reference.
      */
-    public Scene(Loader loader)
+    public Scene(Context context)
     {
-        super(loader, NATIVE);
+        super(context, NATIVE);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
@@ -77,9 +80,10 @@ class Scene extends Sequence
      */
 
     @Override
-    protected void load()
+    public void load()
     {
-        map.create(Medias.create("level.png"), Medias.create("sheets.xml"), Medias.create("groups.xml"));
+        map.create(Medias.create("level.png"));
+        mapGroup.loadGroups(Medias.create("groups.xml"));
         mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
         mapCollision.createCollisionDraw();
 
@@ -109,7 +113,7 @@ class Scene extends Sequence
     }
 
     @Override
-    protected void onTerminate(boolean hasNextSequence)
+    public void onTerminated(boolean hasNextSequence)
     {
         Engine.terminate();
     }

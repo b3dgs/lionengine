@@ -20,12 +20,10 @@ package com.b3dgs.lionengine.editor.properties.tilecollision;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 
 /**
  * Test the properties node existence.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class PropertiesTileCollisionTester extends PropertyTester
 {
@@ -39,25 +37,24 @@ public final class PropertiesTileCollisionTester extends PropertyTester
     /**
      * Check result depending of selection.
      * 
-     * @param model The properties model.
      * @param data The selection reference.
      * @param property The property to check.
      * @return <code>true</code> if valid, <code>false</code> else.
      */
-    private static boolean check(PropertiesModel model, Object data, String property)
+    private static boolean check(Object data, String property)
     {
         final boolean result;
         if (PROPERTY_FORMULA_ADD.equals(property))
         {
-            result = ConfigCollisionFormula.FORMULAS.equals(data);
+            result = CollisionFormulaConfig.FORMULAS.equals(data);
         }
         else if (PROPERTY_FORMULA_REMOVE.equals(property))
         {
-            result = ConfigCollisionFormula.FORMULA.equals(data);
+            result = CollisionFormulaConfig.FORMULA.equals(data);
         }
         else if (PROPERTY_FORMULA_EDIT.equals(property))
         {
-            result = ConfigCollisionFormula.FORMULA.equals(data);
+            result = CollisionFormulaConfig.FORMULA.equals(data);
         }
         else
         {
@@ -85,7 +82,7 @@ public final class PropertiesTileCollisionTester extends PropertyTester
         if (!model.isEmpty())
         {
             final Object data = model.getSelectedData();
-            return check(model, data, property);
+            return check(data, property);
         }
         return false;
     }

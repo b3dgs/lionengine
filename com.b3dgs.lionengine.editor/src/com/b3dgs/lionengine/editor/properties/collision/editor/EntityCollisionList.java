@@ -20,14 +20,12 @@ package com.b3dgs.lionengine.editor.properties.collision.editor;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.collision.object.Collision;
+import com.b3dgs.lionengine.game.collision.object.CollisionConfig;
 
 /**
  * Represents the collisions list, allowing to add and remove collisions.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EntityCollisionList extends ObjectList<Collision>
 {
@@ -51,7 +49,7 @@ public class EntityCollisionList extends ObjectList<Collision>
      */
     public void loadCollisions()
     {
-        final ConfigCollisions configCollisions = ConfigCollisions.create(configurer);
+        final CollisionConfig configCollisions = CollisionConfig.create(configurer);
         final Collection<Collision> collisions = configCollisions.getCollisions();
         loadObjects(collisions);
     }

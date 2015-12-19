@@ -19,12 +19,10 @@ package com.b3dgs.lionengine.core.android;
 
 import android.view.MotionEvent;
 
-import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.core.Config;
 
 /**
  * Mouse input implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MouseAndroid implements Mouse
 {
@@ -54,7 +52,7 @@ public final class MouseAndroid implements Mouse
     /**
      * Internal constructor.
      */
-    MouseAndroid()
+    public MouseAndroid()
     {
         super();
         x = 0;
@@ -99,7 +97,7 @@ public final class MouseAndroid implements Mouse
      * 
      * @param config The config.
      */
-    void setConfig(Config config)
+    public void setConfig(Config config)
     {
         xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
         yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();

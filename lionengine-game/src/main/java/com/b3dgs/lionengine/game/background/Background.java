@@ -17,12 +17,10 @@
  */
 package com.b3dgs.lionengine.game.background;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 
 /**
  * Describe a standard interface for a scrolling background, depending of a speed and a vertical location.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Background
 {

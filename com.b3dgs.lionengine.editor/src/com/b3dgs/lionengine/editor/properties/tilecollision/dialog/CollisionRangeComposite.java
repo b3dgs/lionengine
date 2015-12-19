@@ -28,12 +28,10 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.collision.CollisionRange;
+import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
 
 /**
  * Represents the collision range edition area.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionRangeComposite
 {
@@ -110,11 +108,10 @@ public class CollisionRangeComposite
      */
     public CollisionRange get()
     {
-        final CollisionRange range = new CollisionRange(Axis.valueOf(comboRange.getText()),
-                                                        Integer.parseInt(textRangeMinX.getText()),
-                                                        Integer.parseInt(textRangeMaxX.getText()),
-                                                        Integer.parseInt(textRangeMinY.getText()),
-                                                        Integer.parseInt(textRangeMaxY.getText()));
-        return range;
+        return new CollisionRange(Axis.valueOf(comboRange.getText()),
+                                  Integer.parseInt(textRangeMinX.getText()),
+                                  Integer.parseInt(textRangeMaxX.getText()),
+                                  Integer.parseInt(textRangeMinY.getText()),
+                                  Integer.parseInt(textRangeMaxY.getText()));
     }
 }

@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.network.purview.Networkable;
 /**
  * Networked world base implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <L> Listener type.
  * @param <N> Network implementation.
  */

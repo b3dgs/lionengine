@@ -18,31 +18,27 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
 
 /**
  * Represents the graphic factory.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Renderer
- * @see Screen
- * @see Graphic
- * @see Text
- * @see ImageBuffer
- * @see Transform
  */
 public interface FactoryGraphic
 {
     /**
      * Create a screen.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @return The screen instance.
      */
-    Screen createScreen(Renderer renderer);
+    Screen createScreen(Config config);
 
     /**
      * Create a graphic context.
@@ -85,7 +81,7 @@ public interface FactoryGraphic
      * @return The created image buffer from file.
      * @throws LionEngineException If an error occurred when reading the image.
      */
-    ImageBuffer getImageBuffer(Media media) throws LionEngineException;
+    ImageBuffer getImageBuffer(Media media);
 
     /**
      * Get an image buffer from an image buffer.
@@ -150,23 +146,13 @@ public interface FactoryGraphic
     ImageBuffer flipVertical(ImageBuffer image);
 
     /**
-     * Apply a filter to the input image buffer.
-     * 
-     * @param image The input image.
-     * @param filter The filter to use.
-     * @return The filtered image as a new instance.
-     * @throws LionEngineException If the filter is not supported.
-     */
-    ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException;
-
-    /**
      * Save an image into a file.
      * 
      * @param image The image to save.
      * @param media The output media.
      * @throws LionEngineException If an error occurred when saving the image.
      */
-    void saveImage(ImageBuffer image, Media media) throws LionEngineException;
+    void saveImage(ImageBuffer image, Media media);
 
     /**
      * Get raster buffer from data.

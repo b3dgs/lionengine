@@ -18,43 +18,32 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Represents the media factory.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface FactoryMedia
 {
     /**
-     * Create a media.
+     * Create a media from an abstract path.
      * 
+     * @param separator The separator used.
+     * @param resourcesDir The resources directory path.
      * @param path The media path.
-     * @return The media instance.
+     * @return The created media.
      * @throws LionEngineException If path is <code>null</code>.
      */
-    Media create(String path) throws LionEngineException;
+    Media create(String separator, String resourcesDir, String... path);
 
     /**
      * Create a media from an abstract path.
      * 
+     * @param separator The separator used.
+     * @param loader The class loader used (can be <code>null</code> if not used).
      * @param path The media path.
-     * @return The media instance.
+     * @return The created media.
      * @throws LionEngineException If path is <code>null</code>.
      */
-    Media create(String... path) throws LionEngineException;
-
-    /**
-     * Get the path separator.
-     * 
-     * @return The path separator.
-     */
-    String getSeparator();
-
-    /**
-     * Set the path separator.
-     * 
-     * @param separator The path separator.
-     */
-    void setSeparator(String separator);
+    Media create(String separator, Class<?> loader, String... path);
 }

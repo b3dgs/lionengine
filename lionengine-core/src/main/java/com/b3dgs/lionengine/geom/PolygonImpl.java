@@ -23,8 +23,6 @@ import java.util.Collection;
 
 /**
  * Polygon implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class PolygonImpl implements Polygon
 {
@@ -51,11 +49,13 @@ final class PolygonImpl implements Polygon
             final double x = xpoints[i];
             boundsMinX = Math.min(boundsMinX, x);
             boundsMaxX = Math.max(boundsMaxX, x);
+
             final double y = ypoints[i];
             boundsMinY = Math.min(boundsMinY, y);
             boundsMaxY = Math.max(boundsMaxY, y);
         }
-        return Geom.createRectangle(boundsMinX, boundsMinY, boundsMaxX - boundsMinX, boundsMaxY - boundsMinY);
+
+        return new RectangleImpl(boundsMinX, boundsMinY, boundsMaxX - boundsMinX, boundsMaxY - boundsMinY);
     }
 
     /** The array of coordinates X. */
@@ -160,7 +160,7 @@ final class PolygonImpl implements Polygon
         final Collection<Line> list = new ArrayList<Line>(npoints);
         for (int i = 0; i < npoints / 2; i++)
         {
-            list.add(Geom.createLine(xpoints[i], ypoints[i], xpoints[i + npoints / 2], ypoints[i + npoints / 2]));
+            list.add(new LineImpl(xpoints[i], ypoints[i], xpoints[i + npoints / 2], ypoints[i + npoints / 2]));
         }
         return list;
     }

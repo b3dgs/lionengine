@@ -20,17 +20,15 @@ package com.b3dgs.lionengine.editor.project.tester;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.game.map.TileSheetsConfig;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Test if the folder contains tile sheets.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SheetsTester extends PropertyTester
 {
@@ -49,8 +47,8 @@ public final class SheetsTester extends PropertyTester
     {
         try
         {
-            final XmlNode root = Stream.loadXml(media);
-            return MapTile.NODE_TILE_SHEETS.equals(root.getNodeName());
+            final XmlNode root = Xml.load(media);
+            return TileSheetsConfig.FILENAME.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)
         {

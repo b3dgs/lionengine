@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game.state;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
@@ -30,7 +29,6 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
  * {@link Animation}).
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Util#loadStates(StateAnimationBased[], StateFactory, ObjectGame)
  */
 public interface StateAnimationBased
@@ -51,8 +49,6 @@ public interface StateAnimationBased
 
     /**
      * Utility class to load automatically states from enum.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     final class Util
     {
@@ -65,7 +61,7 @@ public interface StateAnimationBased
          */
         public static void loadStates(StateAnimationBased[] states, StateFactory factory, ObjectGame object)
         {
-            final ConfigAnimations configAnimations = ConfigAnimations.create(object.getConfigurer());
+            final AnimationConfig configAnimations = AnimationConfig.create(object.getConfigurer());
             for (final StateAnimationBased type : states)
             {
                 try

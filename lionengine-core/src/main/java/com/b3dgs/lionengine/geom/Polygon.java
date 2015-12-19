@@ -21,8 +21,6 @@ import java.util.Collection;
 
 /**
  * Polygon interface.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Polygon
 {

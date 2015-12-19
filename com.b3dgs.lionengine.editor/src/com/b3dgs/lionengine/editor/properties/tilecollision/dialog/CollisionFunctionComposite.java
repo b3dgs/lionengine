@@ -18,22 +18,19 @@
 package com.b3dgs.lionengine.editor.properties.tilecollision.dialog;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
-import com.b3dgs.lionengine.game.collision.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.CollisionFunctionType;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionType;
 
 /**
  * Represents the collision function edition.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionFunctionComposite
 {
@@ -43,23 +40,23 @@ public class CollisionFunctionComposite
      * @param type The function type.
      * @return The function composite.
      */
-    static CollisionFunctionTypeComposite createComposite(CollisionFunctionType type)
+    private static CollisionFunctionTypeComposite createComposite(CollisionFunctionType type)
     {
         switch (type)
         {
             case LINEAR:
                 return new CollisionFunctionLinearComposite();
             default:
-                throw new RuntimeException();
+                throw new LionEngineException(type);
         }
     }
 
     /** Function type. */
-    Combo comboFunction;
+    private Combo comboFunction;
     /** Current function composite. */
-    CollisionFunctionTypeComposite current;
+    private CollisionFunctionTypeComposite current;
     /** Old function. */
-    CollisionFunction old;
+    private CollisionFunction old;
 
     /**
      * Create composite.
@@ -95,19 +92,15 @@ public class CollisionFunctionComposite
         group.setText(Messages.Dialog_TileCollision_Function);
 
         comboFunction = UtilCombo.create(group, CollisionFunctionType.values());
-        comboFunction.addSelectionListener(new SelectionAdapter()
+        UtilCombo.setAction(comboFunction, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent event)
+            if (current != null)
             {
-                if (current != null)
-                {
-                    current.dispose();
-                }
-                current = createComposite((CollisionFunctionType) comboFunction.getData());
-                current.create(group);
-                current.load(old);
+                current.dispose();
             }
+            current = createComposite((CollisionFunctionType) comboFunction.getData());
+            current.create(group);
+            current.load(old);
         });
         current = createComposite((CollisionFunctionType) comboFunction.getData());
         current.create(group);

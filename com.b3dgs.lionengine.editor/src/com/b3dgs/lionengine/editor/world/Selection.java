@@ -18,15 +18,12 @@
 package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Represents the selection area.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Selection
 {
@@ -49,10 +46,8 @@ public class Selection
 
     /**
      * Create the selection updater.
-     * 
-     * @param services The services reference.
      */
-    public Selection(Services services)
+    public Selection()
     {
         selectionArea = Geom.createRectangle();
     }
@@ -127,7 +122,7 @@ public class Selection
             startY = sy;
             endX = ex;
             endY = ey;
-            selectionArea.set(startX, startY, endX - startX, endY - startY);
+            selectionArea.set(startX, startY, endX - (double) startX, endY - (double) startY);
             started = false;
             selecting = false;
             selected = true;

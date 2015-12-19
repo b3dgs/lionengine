@@ -18,7 +18,5 @@
 
 /**
  * Sc68 audio provider.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.audio.sc68;

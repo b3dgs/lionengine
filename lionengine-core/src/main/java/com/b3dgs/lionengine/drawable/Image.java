@@ -17,13 +17,14 @@
  */
 package com.b3dgs.lionengine.drawable;
 
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Resource;
+import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Resource;
 
 /**
  * It allows images loading and rendering. Images can't be resized and can't use any filters.
@@ -39,10 +40,8 @@ import com.b3dgs.lionengine.core.Resource;
  * // Render
  * image.render(g);
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Image extends Resource, Localizable, Renderable
+public interface Image extends Resource, Shape, Renderable
 {
     /**
      * Load surface. This function must be called if the surface is loaded from a file, else the surface will never be
@@ -59,7 +58,7 @@ public interface Image extends Resource, Localizable, Renderable
      * @throws LionEngineException If an error occurred when reading the image or already loaded.
      */
     @Override
-    void load() throws LionEngineException;
+    void load();
 
     /**
      * Prepare loaded surface to be displayed. Must be called only one time, after {@link #load()}. It will
@@ -67,7 +66,7 @@ public interface Image extends Resource, Localizable, Renderable
      * 
      * @throws LionEngineException If error on preparing.
      */
-    void prepare() throws LionEngineException;
+    void prepare();
 
     /**
      * Set the origin location type, related to surface area. The type will affect the defined location and the

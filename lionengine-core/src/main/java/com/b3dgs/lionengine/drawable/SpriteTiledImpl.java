@@ -18,15 +18,13 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Tiled sprite implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
 {
@@ -45,7 +43,7 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
      * @param tileHeight The tile height.
      * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
-    SpriteTiledImpl(Media media, int tileWidth, int tileHeight) throws LionEngineException
+    SpriteTiledImpl(Media media, int tileWidth, int tileHeight)
     {
         super(media);
         Check.superiorStrict(tileWidth, 0);
@@ -63,7 +61,7 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
      * @param tileHeight The tile height.
      * @throws LionEngineException If arguments are invalid.
      */
-    SpriteTiledImpl(ImageBuffer surface, int tileWidth, int tileHeight) throws LionEngineException
+    SpriteTiledImpl(ImageBuffer surface, int tileWidth, int tileHeight)
     {
         super(surface);
         Check.superiorStrict(tileWidth, 0);
@@ -149,7 +147,11 @@ final class SpriteTiledImpl extends SpriteImpl implements SpriteTiled
             final boolean sameTileHeight = sprite.getTileHeight() == getTileHeight();
             final boolean sameHorizontalTiles = sprite.getTilesHorizontal() == getTilesHorizontal();
             final boolean sameVerticalTiles = sprite.getTilesVertical() == getTilesVertical();
-            return sameTileWidth && sameTileHeight && sameHorizontalTiles && sameVerticalTiles && sameSurface;
+
+            final boolean sameSize = sameTileWidth && sameTileHeight;
+            final boolean sameTiles = sameHorizontalTiles && sameVerticalTiles;
+
+            return sameSize && sameTiles && sameSurface;
         }
         return false;
     }

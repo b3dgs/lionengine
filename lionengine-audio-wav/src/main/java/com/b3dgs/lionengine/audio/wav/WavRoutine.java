@@ -31,16 +31,13 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Sound routine implementation. One sound represents one thread.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class WavRoutine extends Thread
 {
@@ -152,7 +149,7 @@ final class WavRoutine extends Thread
             }
             catch (final IOException exception)
             {
-                Verbose.exception(WavRoutine.class, "stopSound", exception);
+                Verbose.exception(exception);
             }
             finally
             {
@@ -196,8 +193,7 @@ final class WavRoutine extends Thread
      * @throws LineUnavailableException The no audio line available.
      * @throws LionEngineException If error when getting the stream.
      */
-    private void openStream()
-            throws UnsupportedAudioFileException, IOException, LineUnavailableException, LionEngineException
+    private void openStream() throws UnsupportedAudioFileException, IOException, LineUnavailableException
     {
         audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(media.getInputStream()));
         final AudioFormat audioFormat = audioInputStream.getFormat();
@@ -215,7 +211,7 @@ final class WavRoutine extends Thread
         if (sourceDataLine.isControlSupported(FloatControl.Type.MASTER_GAIN))
         {
             final FloatControl gainControl = (FloatControl) sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
-            final double gain = UtilMath.fixBetween(volume / 100.0, 0.0, 100.0);
+            final double gain = UtilMath.clamp(volume / 100.0, 0.0, 100.0);
             final double dB = Math.log(gain) / Math.log(10.0) * 20.0;
             gainControl.setValue((float) dB);
         }
@@ -315,25 +311,15 @@ final class WavRoutine extends Thread
                 }
                 catch (final UnsupportedAudioFileException exception)
                 {
-                    Verbose.critical(WavRoutine.class,
-                                     "run",
-                                     "Unsupported audio format: ",
-                                     Constant.QUOTE,
-                                     filename,
-                                     Constant.QUOTE);
+                    Verbose.exception(exception, "Unsupported audio format: ", filename);
                 }
                 catch (final LineUnavailableException exception)
                 {
-                    Verbose.critical(WavRoutine.class,
-                                     "run",
-                                     "Unavailable audio line: ",
-                                     Constant.QUOTE,
-                                     filename,
-                                     Constant.QUOTE);
+                    Verbose.exception(exception, "Unavailable audio line: ", filename);
                 }
                 catch (final IOException exception)
                 {
-                    Verbose.exception(WavRoutine.class, "run", exception);
+                    Verbose.exception(exception);
                 }
             }
             isPlaying = false;

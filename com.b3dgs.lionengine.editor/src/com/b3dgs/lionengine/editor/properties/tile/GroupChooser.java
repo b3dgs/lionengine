@@ -22,8 +22,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -34,23 +32,21 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.dialog.group.GroupsEditDialog;
+import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
-import com.b3dgs.lionengine.game.collision.TileGroup;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 
 /**
  * Represents the tile group chooser.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class GroupChooser extends AbstractDialog
 {
     /** Groups values. */
-    final String[] groups;
+    private final String[] groups;
     /** Combo box. */
     private Combo combo;
     /** Choice value. */
@@ -90,17 +86,18 @@ public class GroupChooser extends AbstractDialog
      * 
      * @param groups The groups to load.
      */
-    void loadGroups(String[] groups)
+    private void loadGroups(String[] groups)
     {
         UtilCombo.registerDirty(combo, false);
         Arrays.sort(groups);
         combo.setItems(groups);
 
+        final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
         final WorldInteractionTile interaction = WorldModel.INSTANCE.getServices().get(WorldInteractionTile.class);
         final Tile tile = interaction.getSelection();
-        if (tile != null && tile.getGroup() != null)
+        if (tile != null)
         {
-            combo.setText(tile.getGroup());
+            combo.setText(mapGroup.getGroup(tile));
         }
         else if (groups.length > 0)
         {
@@ -114,21 +111,20 @@ public class GroupChooser extends AbstractDialog
      * 
      * @param shell The shell reference.
      */
-    void addGroup(Shell shell)
+    private void addGroup(Shell shell)
     {
-        final MapTile map = WorldModel.INSTANCE.getMap();
-        final GroupsEditDialog dialog = new GroupsEditDialog(shell, map.getGroupsConfig());
+        final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
+        final GroupsEditDialog dialog = new GroupsEditDialog(shell, mapGroup.getGroupsConfig());
         dialog.open();
 
-        final Collection<TileGroup> groups = map.getGroups();
         final Collection<String> values = new ArrayList<>();
-        for (final TileGroup group : groups)
+        for (final String group : mapGroup.getGroups())
         {
-            values.add(group.getName());
+            values.add(group);
         }
-        if (!values.contains(ConfigTileGroup.REMOVE_GROUP_NAME))
+        if (!values.contains(TileGroupsConfig.REMOVE_GROUP_NAME))
         {
-            values.add(ConfigTileGroup.REMOVE_GROUP_NAME);
+            values.add(TileGroupsConfig.REMOVE_GROUP_NAME);
         }
         loadGroups(values.toArray(new String[values.size()]));
     }
@@ -152,14 +148,7 @@ public class GroupChooser extends AbstractDialog
 
         final Button add = new Button(composite, SWT.PUSH);
         add.setText(Messages.GroupChooser_Add);
-        add.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                addGroup(add.getShell());
-            }
-        });
+        UtilButton.setAction(add, () -> addGroup(add.getShell()));
     }
 
     @Override

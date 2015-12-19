@@ -22,39 +22,25 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Version;
 
 /**
  * Test the engine class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EngineSwtTest
 {
     /**
-     * Test the constructor.
-     * 
-     * @throws Throwable If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Throwable
-    {
-        UtilTests.testPrivateConstructor(Engine.class);
-    }
-
-    /**
-     * Test the engine.
+     * Test the engine start without resources.
      */
     @Test(expected = LionEngineException.class)
     public void testEngineNullResources()
     {
-        Engine.start(EngineSwtTest.class.getName(), Version.DEFAULT, (String) null);
+        EngineSwt.start(EngineSwtTest.class.getName(), Version.DEFAULT, (String) null);
         try
         {
-            Assert.assertTrue(EngineCore.isStarted());
-            Engine.start(EngineSwtTest.class.getName(), Version.DEFAULT, (String) null);
+            Assert.assertTrue(Engine.isStarted());
+            EngineSwt.start(EngineSwtTest.class.getName(), Version.DEFAULT, (String) null);
         }
         finally
         {
@@ -63,16 +49,16 @@ public class EngineSwtTest
     }
 
     /**
-     * Test the engine.
+     * Test the engine start with resources.
      */
     @Test(expected = LionEngineException.class)
     public void testEngineResources()
     {
-        Engine.start(EngineSwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
+        EngineSwt.start(EngineSwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
         try
         {
-            Assert.assertTrue(EngineCore.isStarted());
-            Engine.start(EngineSwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
+            Assert.assertTrue(Engine.isStarted());
+            EngineSwt.start(EngineSwtTest.class.getName(), Version.DEFAULT, Constant.EMPTY_STRING);
         }
         finally
         {
@@ -86,11 +72,11 @@ public class EngineSwtTest
     @Test(expected = LionEngineException.class)
     public void testEngineClass()
     {
-        Engine.start(EngineSwtTest.class.getName(), Version.DEFAULT, EngineSwtTest.class);
+        EngineSwt.start(EngineSwtTest.class.getName(), Version.DEFAULT, EngineSwtTest.class);
         try
         {
-            Assert.assertTrue(EngineCore.isStarted());
-            Engine.start(EngineSwtTest.class.getName(), Version.DEFAULT, EngineSwtTest.class);
+            Assert.assertTrue(Engine.isStarted());
+            EngineSwt.start(EngineSwtTest.class.getName(), Version.DEFAULT, EngineSwtTest.class);
         }
         finally
         {

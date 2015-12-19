@@ -51,7 +51,6 @@ import com.b3dgs.lionengine.anim.Animator;
  * animation.render(g);
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Animator
  * @see com.b3dgs.lionengine.anim.Animation
  * @see com.b3dgs.lionengine.anim.AnimState

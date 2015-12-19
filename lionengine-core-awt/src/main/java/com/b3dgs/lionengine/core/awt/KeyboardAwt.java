@@ -27,11 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Keyboard implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
+ * Keyboard AWT implementation.
  */
-final class KeyboardAwt implements Keyboard, KeyListener
+public final class KeyboardAwt implements Keyboard, KeyListener
 {
     /** No key code. */
     private static final int NO_KEY_CODE = -1;
@@ -62,9 +60,9 @@ final class KeyboardAwt implements Keyboard, KeyListener
     private Integer down = DOWN;
 
     /**
-     * Internal constructor.
+     * Constructor.
      */
-    KeyboardAwt()
+    public KeyboardAwt()
     {
         lastKeyName = ' ';
         lastCode = Integer.valueOf(-1);
@@ -127,13 +125,10 @@ final class KeyboardAwt implements Keyboard, KeyListener
     @Override
     public boolean isPressedOnce(Integer key)
     {
-        if (keys.contains(key))
+        if (keys.contains(key) && !pressed.contains(key))
         {
-            if (!pressed.contains(key))
-            {
-                pressed.add(key);
-                return true;
-            }
+            pressed.add(key);
+            return true;
         }
         return false;
     }

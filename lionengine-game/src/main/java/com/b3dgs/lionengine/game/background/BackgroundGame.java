@@ -20,18 +20,16 @@ package com.b3dgs.lionengine.game.background;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 
 /**
  * AbstractBackground skeleton, used for future backgrounds implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class BackgroundGame implements Background
 {
@@ -41,13 +39,12 @@ public abstract class BackgroundGame implements Background
      * @param name The element name.
      * @param x The location x.
      * @param y The location y.
-     * @param alpha The alpha use flag.
      * @return The created element.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static BackgroundElement createElement(String name, int x, int y, boolean alpha) throws LionEngineException
+    public static BackgroundElement createElement(String name, int x, int y)
     {
-        return new BackgroundElement(x, y, createSprite(Medias.create(name), alpha));
+        return new BackgroundElement(x, y, createSprite(Medias.create(name)));
     }
 
     /**
@@ -57,25 +54,22 @@ public abstract class BackgroundGame implements Background
      * @param name The element name.
      * @param x The location x.
      * @param y The location y.
-     * @param alpha The alpha use flag.
      * @return The created element.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
-            throws LionEngineException
+    public static BackgroundElement createElement(String path, String name, int x, int y)
     {
-        return new BackgroundElement(x, y, createSprite(Medias.create(path, name), alpha));
+        return new BackgroundElement(x, y, createSprite(Medias.create(path, name)));
     }
 
     /**
      * Create a sprite from its filename.
      * 
      * @param media The sprite media.
-     * @param alpha The alpha use flag.
      * @return The sprite instance.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    protected static Sprite createSprite(Media media, boolean alpha) throws LionEngineException
+    protected static Sprite createSprite(Media media)
     {
         final Sprite sprite = Drawable.loadSprite(media);
         sprite.load();
@@ -180,7 +174,7 @@ public abstract class BackgroundGame implements Background
         }
         else
         {
-            final double currentY = UtilMath.fixBetween(y, minY, maxY);
+            final double currentY = UtilMath.clamp(y, minY, maxY);
             py = (int) (currentY / maxY * lowest) - lowest + offsetY;
             if (py > 0)
             {

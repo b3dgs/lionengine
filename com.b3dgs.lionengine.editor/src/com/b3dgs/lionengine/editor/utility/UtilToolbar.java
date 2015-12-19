@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Series of tool functions around the editor related to eclipse.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilToolbar
 {
@@ -54,12 +52,9 @@ public final class UtilToolbar
         for (final MToolBarElement element : toolbar.getChildren())
         {
             final String id = element.getElementId().substring(toolbar.getElementId().length() + 1);
-            if (items.isEmpty() || items.contains(id))
+            if (element instanceof MDirectToolItem && (items.isEmpty() || items.contains(id)))
             {
-                if (element instanceof MDirectToolItem)
-                {
-                    ((MDirectToolItem) element).setSelected(selected);
-                }
+                ((MDirectToolItem) element).setSelected(selected);
             }
         }
     }
@@ -76,12 +71,10 @@ public final class UtilToolbar
         final Collection<String> items = Arrays.asList(names);
         for (final MToolBarElement element : toolbar.getChildren())
         {
-            if (items.isEmpty() || toolbarElementContained(element, items))
+            final Object widget = element.getWidget();
+            if (widget instanceof ToolItem && (items.isEmpty() || toolbarElementContained(element, items)))
             {
-                if (element.getWidget() instanceof ToolItem)
-                {
-                    ((ToolItem) element.getWidget()).setEnabled(enabled);
-                }
+                ((ToolItem) widget).setEnabled(enabled);
             }
         }
     }
@@ -99,7 +92,7 @@ public final class UtilToolbar
         {
             if (element.getElementId().contains(name))
             {
-                setToolItemText(element, name, text);
+                setToolItemText(element, text);
             }
         }
     }
@@ -114,7 +107,7 @@ public final class UtilToolbar
      * @return The composite found.
      * @throws LionEngineException If not found.
      */
-    public static <T> T getToolItem(MToolBar toolbar, String name, Class<T> clazz) throws LionEngineException
+    public static <T> T getToolItem(MToolBar toolbar, String name, Class<T> clazz)
     {
         for (final MToolBarElement element : toolbar.getChildren())
         {
@@ -130,10 +123,9 @@ public final class UtilToolbar
      * Set the tool item text.
      * 
      * @param element The tool bar element reference.
-     * @param name The element name (relative to the tool bar ID).
      * @param text The text value.
      */
-    private static void setToolItemText(MToolBarElement element, String name, String text)
+    private static void setToolItemText(MToolBarElement element, String text)
     {
         final Object object = element.getWidget();
         if (object instanceof Composite)

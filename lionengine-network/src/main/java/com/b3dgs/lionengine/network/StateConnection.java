@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.network;
 
 /**
  * List of different connection state.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum StateConnection
 {

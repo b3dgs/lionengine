@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.core;
 
 /**
  * Input device with key listener.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface InputDeviceKeyListener
 {

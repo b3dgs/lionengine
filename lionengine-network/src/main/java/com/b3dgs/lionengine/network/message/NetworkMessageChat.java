@@ -23,8 +23,6 @@ import java.io.IOException;
 
 /**
  * Message chat implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class NetworkMessageChat extends NetworkMessage
 {

@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
         <artifactId>lionengine-parent</artifactId>
-        <version>8.1.0</version>
+        <version>8.2.0</version>
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-core</artifactId>
@@ -18,8 +18,24 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.core</Bundle-SymbolicName>
+                        <Export-Package>
+                            com.b3dgs.lionengine.*,
+                            com.b3dgs.lionengine.mock,
+                            com.b3dgs.lionengine.util
+                        </Export-Package>
                     </instructions>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
