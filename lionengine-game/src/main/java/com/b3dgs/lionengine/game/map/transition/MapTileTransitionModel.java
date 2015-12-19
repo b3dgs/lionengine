@@ -62,9 +62,7 @@ public class MapTileTransitionModel implements MapTileTransition
      * </p>
      * <ul>
      * <li>{@link MapTile}</li>
-     * <p>
-     * {@link MapTileGroup}
-     * </p>
+     * <li>{@link MapTileGroup}</li>
      * </ul>
      * 
      * @param services The services reference.
