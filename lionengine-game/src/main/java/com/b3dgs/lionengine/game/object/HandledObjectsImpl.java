@@ -27,12 +27,9 @@ import java.util.Queue;
 import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Handler items implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class HandledObjectsImpl implements HandledObjects
 {
@@ -51,7 +48,7 @@ final class HandledObjectsImpl implements HandledObjects
      * @return The next unused id.
      * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
      */
-    static Integer getFreeId() throws LionEngineException
+    static Integer getFreeId()
     {
         if (!RECYCLE.isEmpty())
         {
@@ -80,7 +77,7 @@ final class HandledObjectsImpl implements HandledObjects
     /**
      * Create the objects handler.
      */
-    public HandledObjectsImpl()
+    HandledObjectsImpl()
     {
         objects = new HashMap<Integer, ObjectGame>();
         items = new HashMap<Class<?>, Set<Object>>();
@@ -92,7 +89,7 @@ final class HandledObjectsImpl implements HandledObjects
      * @param object The object to add.
      * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
      */
-    public void add(ObjectGame object) throws LionEngineException
+    public void add(ObjectGame object)
     {
         objects.put(object.getId(), object);
 

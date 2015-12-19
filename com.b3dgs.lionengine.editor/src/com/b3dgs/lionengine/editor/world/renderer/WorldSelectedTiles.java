@@ -20,22 +20,22 @@ package com.b3dgs.lionengine.editor.world.renderer;
 import java.util.Map;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.editor.world.TileSelectionListener;
 import com.b3dgs.lionengine.editor.world.updater.Marker;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.geom.Line;
 
 /**
  * Handle the tiles selection rendering.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class WorldSelectedTiles implements WorldRenderListener
+public class WorldSelectedTiles implements WorldRenderListener, TileSelectionListener
 {
     /** Color of the selected tile. */
     private static final ColorRgba COLOR_TILE_SELECTED = new ColorRgba(192, 192, 192, 96);
@@ -44,10 +44,16 @@ public class WorldSelectedTiles implements WorldRenderListener
 
     /** Map reference. */
     private final MapTile map;
+    /** Map group. */
+    private final MapTileGroup mapGroup;
     /** Camera reference. */
     private final Camera camera;
     /** Tile interaction. */
     private final WorldInteractionTile interactionTile;
+    /** Selected tile. */
+    private Tile tile;
+    /** Selected tile group. */
+    private String tileGroup;
 
     /**
      * Create the renderer.
@@ -57,6 +63,7 @@ public class WorldSelectedTiles implements WorldRenderListener
     public WorldSelectedTiles(Services services)
     {
         map = services.get(MapTile.class);
+        mapGroup = services.get(MapTileGroup.class);
         camera = services.get(Camera.class);
         interactionTile = services.get(WorldInteractionTile.class);
     }
@@ -65,19 +72,19 @@ public class WorldSelectedTiles implements WorldRenderListener
      * Render the selected tiles group.
      * 
      * @param g The graphic output.
-     * @param selectedTile The selected tile reference.
+     * @param selectedGroup The selected group reference.
      * @param scale The scale factor.
      * @param tw The current tile width.
      * @param th The current tile height.
      */
-    private void renderSelectedGroup(Graphic g, Tile selectedTile, double scale, int tw, int th)
+    private void renderSelectedGroup(Graphic g, String selectedGroup, double scale, int tw, int th)
     {
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
             for (int tx = 0; tx < map.getInTileWidth(); tx++)
             {
                 final Tile tile = map.getTile(tx, ty);
-                if (tile != null && CollisionGroup.equals(selectedTile.getGroup(), tile.getGroup()))
+                if (tile != null && CollisionGroup.same(selectedGroup, mapGroup.getGroup(tile)))
                 {
                     final int x = (int) (camera.getViewpointX(tile.getX()) * scale);
                     final int y = (int) (camera.getViewpointY(tile.getY()) * scale) - th;
@@ -138,20 +145,36 @@ public class WorldSelectedTiles implements WorldRenderListener
     @Override
     public void onRender(Graphic g, int width, int height, double scale, int tw, int th)
     {
-        final Tile selectedTile = interactionTile.getSelection();
-        if (selectedTile != null)
+        if (tileGroup != null)
         {
             g.setColor(COLOR_GROUP_SELECTION);
-            renderSelectedGroup(g, selectedTile, scale, tw, th);
-
-            g.setColor(COLOR_TILE_SELECTED);
-            renderSelectedTile(g, selectedTile, scale, tw, th);
+            renderSelectedGroup(g, tileGroup, scale, tw, th);
         }
-
+        if (tile != null)
+        {
+            g.setColor(COLOR_TILE_SELECTED);
+            renderSelectedTile(g, tile, scale, tw, th);
+        }
         final Line currentLine = interactionTile.getCollisionLine();
         if (currentLine != null)
         {
             renderAssigningCollision(g, currentLine, scale, tw, th);
         }
+    }
+
+    /*
+     * TileSelectionListener
+     */
+
+    @Override
+    public void notifyTileSelected(Tile tile)
+    {
+        this.tile = tile;
+    }
+
+    @Override
+    public void notifyTileGroupSelected(String group)
+    {
+        tileGroup = group;
     }
 }

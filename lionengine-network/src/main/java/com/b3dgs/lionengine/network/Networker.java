@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 /**
  * List of services provided by a networker (could be a client or a server).
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <L> The client listener type used.
  */
 interface Networker<L extends ClientListener>

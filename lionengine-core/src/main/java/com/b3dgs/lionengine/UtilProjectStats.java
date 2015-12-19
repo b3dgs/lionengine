@@ -23,22 +23,28 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.b3dgs.lionengine.core.Verbose;
-
 /**
  * Used to know the number of code line, and number of files in current project.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilProjectStats
 {
     /** Java file extension. */
     private static final String JAVA_FILE_EXTENSION = "java";
+    /** Documentation regex. */
+    private static final String REGEX_DOC = "[\\s]*(/|\\*)+.*";
+    /** Spaces regex. */
+    private static final String REGEX_SPACES = "[\\s]*";
     /** Error directory. */
     private static final String ERROR_DIR = "Not a directory: ";
 
     /** Number of files. */
     private static int numberOfFiles;
+    /** Number of code lines. */
+    private static int numberOfLinesCode;
+    /** Number of doc lines. */
+    private static int numberOfLinesDoc;
+    /** Number of empty lines. */
+    private static int numberOfLinesEmpty;
     /** Number of lines. */
     private static int numberOfLines;
 
@@ -48,18 +54,33 @@ public final class UtilProjectStats
      * @param sourcesDir The specified directory to analyze.
      * @throws LionEngineException If an error occurred on check.
      */
-    public static void start(String sourcesDir) throws LionEngineException
+    public static void start(String sourcesDir)
     {
         numberOfFiles = 0;
+        numberOfLinesCode = 0;
+        numberOfLinesDoc = 0;
+        numberOfLinesEmpty = 0;
         numberOfLines = 0;
 
-        final File mainDir = new File(sourcesDir + File.separator);
-        exploreDir(mainDir.getAbsolutePath());
+        final File mainDir = new File(sourcesDir);
+        try
+        {
+            final String path = mainDir.getCanonicalPath();
+            exploreDir(path);
 
-        final StringBuilder builder = new StringBuilder("Project statistics:\n");
-        builder.append("Number of files: ").append(numberOfFiles).append(Constant.NEW_LINE);
-        builder.append("Number of lines: ").append(numberOfLines).append(Constant.NEW_LINE);
-        Verbose.info(builder.toString());
+            final StringBuilder builder = new StringBuilder("Project statistics: ");
+            builder.append(Constant.QUOTE).append(path).append(Constant.QUOTE).append(Constant.NEW_LINE);
+            builder.append("Files = ").append(numberOfFiles).append(Constant.NEW_LINE);
+            builder.append("Code lines = ").append(numberOfLinesCode).append(Constant.NEW_LINE);
+            builder.append("Documentation lines = ").append(numberOfLinesDoc).append(Constant.NEW_LINE);
+            builder.append("Empty lines = ").append(numberOfLinesEmpty).append(Constant.NEW_LINE);
+            builder.append("Total lines = ").append(numberOfLines).append(Constant.NEW_LINE);
+            Verbose.info(builder.toString());
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, ERROR_DIR, sourcesDir);
+        }
     }
 
     /**
@@ -69,19 +90,17 @@ public final class UtilProjectStats
      */
     public static void countFileLines(String fileName)
     {
-        final String name = "countFileLines";
         BufferedReader in = null;
         try
         {
             in = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), Constant.UTF_8));
-            String s;
             boolean stop = false;
             while (!stop)
             {
-                s = in.readLine();
-                if (s != null)
+                final String line = in.readLine();
+                if (line != null)
                 {
-                    numberOfLines++;
+                    countLineTypes(line);
                 }
                 else
                 {
@@ -92,22 +111,34 @@ public final class UtilProjectStats
         }
         catch (final IOException exception)
         {
-            Verbose.exception(UtilProjectStats.class, name, exception);
+            Verbose.exception(exception);
         }
         finally
         {
-            if (in != null)
-            {
-                try
-                {
-                    in.close();
-                }
-                catch (final IOException exception2)
-                {
-                    Verbose.exception(UtilProjectStats.class, name, exception2);
-                }
-            }
+            UtilFile.safeClose(in);
         }
+    }
+
+    /**
+     * Count the line type.
+     * 
+     * @param line The line reference.
+     */
+    private static void countLineTypes(String line)
+    {
+        if (line.matches(REGEX_DOC))
+        {
+            numberOfLinesDoc++;
+        }
+        else if (line.matches(REGEX_SPACES))
+        {
+            numberOfLinesEmpty++;
+        }
+        else
+        {
+            numberOfLinesCode++;
+        }
+        numberOfLines++;
     }
 
     /**
@@ -116,7 +147,7 @@ public final class UtilProjectStats
      * @param dirName The current directory.
      * @throws LionEngineException If directory is not valid.
      */
-    private static void exploreDir(String dirName) throws LionEngineException
+    private static void exploreDir(String dirName)
     {
         final File dir = new File(dirName);
         final File[] files = dir.listFiles();
@@ -150,7 +181,7 @@ public final class UtilProjectStats
      */
     private static String getExtension(String file)
     {
-        return file.substring(file.lastIndexOf('.') + 1);
+        return file.substring(file.lastIndexOf(Constant.DOT) + 1);
     }
 
     /**

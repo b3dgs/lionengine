@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.game.state.StateAnimationBased;
 
 /**
  * List of entity states.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum EntityState implements StateAnimationBased
 {

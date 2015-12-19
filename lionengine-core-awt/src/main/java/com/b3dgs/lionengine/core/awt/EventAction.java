@@ -24,7 +24,6 @@ package com.b3dgs.lionengine.core.awt;
  * content.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Keyboard#addActionPressed(Integer, EventAction)
  * @see Keyboard#addActionReleased(Integer, EventAction)
  */

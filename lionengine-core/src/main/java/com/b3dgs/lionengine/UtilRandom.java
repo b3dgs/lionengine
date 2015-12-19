@@ -21,8 +21,6 @@ import java.util.Random;
 
 /**
  * Random utility class implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilRandom
 {
@@ -57,7 +55,18 @@ public final class UtilRandom
      */
     public static int getRandomInteger(int max)
     {
-        return RANDOM.nextInt(max + 1);
+        return getRandomInteger(0, max);
+    }
+
+    /**
+     * Get a random value from range.
+     * 
+     * @param range The range reference.
+     * @return A value between min inclusive and max inclusive.
+     */
+    public static int getRandomInteger(Range range)
+    {
+        return getRandomInteger(range.getMin(), range.getMax());
     }
 
     /**

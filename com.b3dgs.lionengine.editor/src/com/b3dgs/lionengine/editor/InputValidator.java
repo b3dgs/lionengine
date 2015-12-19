@@ -21,8 +21,6 @@ import org.eclipse.jface.dialogs.IInputValidator;
 
 /**
  * Allows to check an input text and validate it.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class InputValidator implements IInputValidator
 {

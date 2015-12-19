@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.core;
 /**
  * Represents the interface for a web applet compatible.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <A> The applet type used.
  */
 public interface Applet<A>

@@ -26,34 +26,32 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.swt.Engine;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Version;
+import com.b3dgs.lionengine.core.swt.EngineSwt;
 
 /**
  * Plugin activator.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Activator implements BundleActivator
 {
     /** Plugin name. */
-    public static final String PLUGIN_NAME = EngineCore.NAME + " Editor";
+    public static final String PLUGIN_NAME = Engine.NAME + " Editor";
     /** Plugin version. */
-    public static final Version PLUGIN_VERSION = EngineCore.VERSION;
+    public static final Version PLUGIN_VERSION = Engine.VERSION;
     /** Plugin website. */
-    public static final String PLUGIN_WEBSITE = EngineCore.WEBSITE;
+    public static final String PLUGIN_WEBSITE = Engine.WEBSITE;
     /** Plugin ID. */
     public static final String PLUGIN_ID = "com.b3dgs.lionengine.editor";
     /** Context reference. */
-    private static BundleContext context;
+    private static volatile BundleContext context;
 
     /**
      * Get the context reference.
      * 
      * @return The context reference.
      */
-    public static BundleContext getContext()
+    public static synchronized BundleContext getContext()
     {
         return Activator.context;
     }
@@ -102,7 +100,7 @@ public class Activator implements BundleActivator
     {
         Activator.context = bundleContext;
         LionEngineException.setIgnoreEngineTrace(false);
-        Engine.start(Activator.PLUGIN_NAME, Activator.PLUGIN_VERSION, (String) null);
+        EngineSwt.start(Activator.PLUGIN_NAME, Activator.PLUGIN_VERSION);
     }
 
     @Override

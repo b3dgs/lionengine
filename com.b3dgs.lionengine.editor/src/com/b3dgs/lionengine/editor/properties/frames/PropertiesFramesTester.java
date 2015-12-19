@@ -22,13 +22,11 @@ import org.eclipse.core.expressions.PropertyTester;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
+import com.b3dgs.lionengine.game.object.FramesConfig;
+import com.b3dgs.lionengine.game.object.SurfaceConfig;
 
 /**
  * Test the properties node existence.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class PropertiesFramesTester extends PropertyTester
 {
@@ -50,11 +48,11 @@ public final class PropertiesFramesTester extends PropertyTester
         final boolean result;
         if (PROPERTY_FRAMES_SET.equals(property))
         {
-            result = !model.hasProperty(ConfigFrames.FRAMES) && model.hasProperty(ConfigSurface.SURFACE_IMAGE);
+            result = !model.hasProperty(FramesConfig.FRAMES) && model.hasProperty(SurfaceConfig.SURFACE_IMAGE);
         }
-        else if (PROPERTY_FRAMES_REMOVE.equals(property) && ConfigFrames.FRAMES.equals(data))
+        else if (PROPERTY_FRAMES_REMOVE.equals(property) && FramesConfig.FRAMES.equals(data))
         {
-            result = model.hasProperty(ConfigFrames.FRAMES);
+            result = model.hasProperty(FramesConfig.FRAMES);
         }
         else
         {

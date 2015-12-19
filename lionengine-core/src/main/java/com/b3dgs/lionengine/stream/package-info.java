@@ -18,7 +18,5 @@
 
 /**
  * Stream dedicated package, for binary and XML handling.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.stream;

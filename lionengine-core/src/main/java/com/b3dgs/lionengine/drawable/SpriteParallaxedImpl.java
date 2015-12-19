@@ -18,16 +18,14 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * Parallaxed sprite implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteParallaxedImpl implements SpriteParallaxed
 {
@@ -59,7 +57,7 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
      * @param sy The parallax height.
      * @throws LionEngineException If arguments are invalid.
      */
-    SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy) throws LionEngineException
+    SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy)
     {
         Check.notNull(media);
         Check.superiorStrict(linesNumber, 0);
@@ -80,7 +78,7 @@ final class SpriteParallaxedImpl implements SpriteParallaxed
      */
 
     @Override
-    public void load(boolean alpha) throws LionEngineException
+    public void load(boolean alpha)
     {
         ImageBuffer surface = Graphics.getImageBuffer(media);
 

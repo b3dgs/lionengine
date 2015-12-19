@@ -21,17 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 
 /**
  * Specific background element, supporting raster effects.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class BackgroundElementRastered extends BackgroundElement
 {
@@ -69,7 +67,7 @@ public abstract class BackgroundElementRastered extends BackgroundElement
      */
     public Sprite getRaster(int id)
     {
-        return rasters.get(UtilMath.fixBetween(id, 0, rasters.size() - 1));
+        return rasters.get(UtilMath.clamp(id, 0, rasters.size() - 1));
     }
 
     /**
@@ -81,7 +79,7 @@ public abstract class BackgroundElementRastered extends BackgroundElement
      * @param fb The blue color offset.
      * @throws LionEngineException If arguments are invalid.
      */
-    protected void addRaster(Sprite sprite, int fr, int fg, int fb) throws LionEngineException
+    protected void addRaster(Sprite sprite, int fr, int fg, int fb)
     {
         final ImageBuffer buf = sprite.getSurface();
         final ImageBuffer rasterBuf = Graphics.getImageBuffer(buf);

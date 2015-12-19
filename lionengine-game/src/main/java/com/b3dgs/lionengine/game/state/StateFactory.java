@@ -26,15 +26,11 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * State object factory. Provide {@link State} instance from its enum value.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see State
  * @see StateHandler
  */
 public class StateFactory
 {
-    /** Unknown state. */
-    private static final String ERROR_STATE = "State not found: ";
-
     /** List of available states. */
     private final Map<Enum<?>, State> states;
 
@@ -73,12 +69,12 @@ public class StateFactory
      * @return The state instance.
      * @throws LionEngineException If state does not exist.
      */
-    public State getState(Enum<?> type) throws LionEngineException
+    public State getState(Enum<?> type)
     {
         final State state = states.get(type);
         if (state == null)
         {
-            throw new LionEngineException(ERROR_STATE, type.name());
+            throw new LionEngineException(type);
         }
         state.enter();
         return state;

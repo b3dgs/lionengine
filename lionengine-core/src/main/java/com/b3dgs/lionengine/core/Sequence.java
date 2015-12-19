@@ -17,9 +17,18 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Config;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Transform;
+import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilReflection;
 
 /**
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the
@@ -34,26 +43,26 @@ import com.b3dgs.lionengine.Resolution;
  * {
  *     private static final Resolution NATIVE = new Resolution(320, 240, 60);
  * 
- *     public MySequence(Loader loader)
+ *     public MySequence(Context context)
  *     {
- *         super(loader, MySequence.NATIVE);
+ *         super(context, MySequence.NATIVE);
  *         // Initialize variables here
  *     }
  * 
  *     &#064;Override
- *     protected void load()
+ *     public void load()
  *     {
  *         // Load resources here
  *     }
  * 
  *     &#064;Override
- *     protected void update(double extrp)
+ *     public void update(double extrp)
  *     {
  *         // Update routine
  *     }
  * 
  *     &#064;Override
- *     protected void render(Graphic g)
+ *     public void render(Graphic g)
  *     {
  *         // Render routine
  *     }
@@ -64,56 +73,167 @@ import com.b3dgs.lionengine.Resolution;
  * This class is Thread-Safe.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Loader
  * @see Resolution
  * @see InputDevice
  */
-public abstract class Sequence implements Sequencable
+public abstract class Sequence implements Sequencable, ScreenListener
 {
+    /** One nano second. */
+    private static final long TIME_LONG = 1000000000L;
+    /** One nano second. */
+    private static final double TIME_DOUBLE = 1000000000.0;
+    /** Extrapolation standard. */
+    private static final double EXTRP = 1.0;
+
+    /**
+     * Create a sequence from its class.
+     * 
+     * @param nextSequence The next sequence class.
+     * @param context The context reference.
+     * @param arguments The arguments list.
+     * @return The sequence instance.
+     * @throws LionEngineException If not able to create the sequence for any reason.
+     */
+    static Sequence create(Class<? extends Sequencable> nextSequence, Context context, Object... arguments)
+    {
+        Check.notNull(nextSequence);
+        Check.notNull(context);
+
+        try
+        {
+            final Class<?>[] params = getParamTypes(context, arguments);
+            return UtilReflection.create(nextSequence, params, getParams(context, arguments));
+        }
+        catch (final NoSuchMethodException exception)
+        {
+            throw new LionEngineException(exception);
+        }
+    }
+
+    /**
+     * Get the parameter types as array.
+     * 
+     * @param context The context reference.
+     * @param arguments The arguments list.
+     * @return The arguments array.
+     */
+    private static Class<?>[] getParamTypes(Context context, Object... arguments)
+    {
+        final Collection<Object> params = new ArrayList<Object>();
+        params.add(context);
+        params.addAll(Arrays.asList(arguments));
+        return UtilReflection.getParamTypes(params.toArray());
+    }
+
+    /**
+     * Get the parameter as array.
+     * 
+     * @param context The context reference.
+     * @param arguments The arguments list.
+     * @return The arguments array.
+     */
+    private static Object[] getParams(Context context, Object... arguments)
+    {
+        final Collection<Object> params = new ArrayList<Object>(1);
+        params.add(context);
+        params.addAll(Arrays.asList(arguments));
+        return params.toArray();
+    }
+
+    /** Context reference. */
+    private final Context context;
     /** Native resolution. */
-    final Resolution resolution;
-    /** Renderer. */
-    private final Renderer renderer;
+    private final Resolution resolution;
+    /** Config reference. */
+    private final Config config;
+    /** Filter graphic. */
+    private final Graphic graphic;
+    /** Loop time for desired rate. */
+    private final long frameDelay;
+    /** Has sync. */
+    private final boolean sync;
+    /** Output resolution reference. */
+    private final Resolution output;
+    /** Filter reference. */
+    private volatile Filter filter = Filter.NO_FILTER;
     /** Rendering width. */
-    private volatile int width;
+    private int width;
     /** Rendering height. */
-    private volatile int height;
+    private int height;
+    /** Next sequence pointer. */
+    private Sequence nextSequence;
+    /** Thread running flag. */
+    private boolean isRunning;
+    /** Extrapolation flag. */
+    private boolean extrapolated;
+    /** Current frame rate. */
+    private int currentFrameRate;
+    /** Image buffer. */
+    private ImageBuffer buf;
+    /** Filter used. */
+    private Transform transform;
+    /** Direct rendering. */
+    private boolean directRendering;
+    /** Source resolution reference. */
+    private Resolution source;
+    /** Current screen used. */
+    private Screen screen;
+    /** Pending cursor visibility. */
+    private Boolean cursorVisibility;
 
     /**
      * Constructor base.
      * 
+     * @param context The context reference.
      * @param resolution The resolution source reference.
-     * @param loader The loader reference.
      */
-    public Sequence(Loader loader, Resolution resolution)
+    public Sequence(Context context, Resolution resolution)
     {
+        this.context = context;
         this.resolution = resolution;
-        renderer = loader.getRenderer();
-        renderer.getConfig().setSource(resolution);
+        config = context.getConfig();
+        source = resolution;
+        output = config.getOutput();
+        sync = config.isWindowed() && output.getRate() > 0;
         width = resolution.getWidth();
         height = resolution.getHeight();
+
+        // Time needed for a loop to reach desired rate
+        if (output.getRate() == 0)
+        {
+            frameDelay = 0;
+        }
+        else
+        {
+            frameDelay = TIME_LONG / output.getRate();
+        }
+
+        graphic = Graphics.createGraphic();
+        config.setSource(resolution);
     }
 
     /**
      * Loading sequence data.
      */
-    protected abstract void load();
+    public abstract void load();
 
     /**
-     * Called when sequence is focused (screen). Does nothing by default.
+     * Set the filter to use.
+     * 
+     * @param filter The filter to use (if <code>null</code> then {@link Filter#NO_FILTER} is used).
      */
-    public void onFocusGained()
+    public final void setFilter(Filter filter)
     {
-        // Nothing by default
-    }
-
-    /**
-     * Called when sequence lost focus (screen). Does nothing by default.
-     */
-    public void onLostFocus()
-    {
-        // Nothing by default
+        if (filter == null)
+        {
+            this.filter = Filter.NO_FILTER;
+        }
+        else
+        {
+            this.filter = filter;
+        }
+        transform = getTransform(this.filter);
     }
 
     /**
@@ -143,7 +263,7 @@ public abstract class Sequence implements Sequencable
      */
     protected final int getX()
     {
-        return renderer.getX();
+        return screen.getX();
     }
 
     /**
@@ -153,7 +273,7 @@ public abstract class Sequence implements Sequencable
      */
     protected final int getY()
     {
-        return renderer.getY();
+        return screen.getY();
     }
 
     /**
@@ -162,6 +282,7 @@ public abstract class Sequence implements Sequencable
      * @param extrp The extrapolation value.
      * @param g The graphic output.
      */
+    @SuppressWarnings("unused")
     protected void onLoaded(double extrp, Graphic g)
     {
         // Nothing by default
@@ -174,41 +295,95 @@ public abstract class Sequence implements Sequencable
      * @param height The new screen height.
      * @param rate The new rate.
      */
+    @SuppressWarnings("unused")
     protected void onResolutionChanged(int width, int height, int rate)
     {
         // Nothing by default
     }
 
     /**
-     * Called when sequence is closing. Does nothing by default.
+     * Get the transform associated to the filter keeping screen scale independent.
      * 
-     * @param hasNextSequence <code>true</code> if there is a next sequence, <code>false</code> else (then application
-     *            will end definitely).
+     * @param filter The filter reference.
+     * @return The associated transform instance.
      */
-    protected void onTerminate(boolean hasNextSequence)
+    private Transform getTransform(Filter filter)
     {
-        // Nothing by default
+        final double scaleX = output.getWidth() / (double) source.getWidth();
+        final double scaleY = output.getHeight() / (double) source.getHeight();
+        return filter.getTransform(scaleX, scaleY);
     }
 
     /**
-     * Start the sequence and load it.
+     * Local render routine.
      */
-    final synchronized void start()
+    private void render()
     {
-        load();
+        final Graphic g = screen.getGraphic();
+        if (directRendering)
+        {
+            render(g);
+        }
+        else
+        {
+            render(graphic);
+            g.drawImage(filter.filter(buf), transform, 0, 0);
+        }
     }
 
     /**
-     * Set the resolution. Must only be called by {@link Renderer#setResolution(Resolution)}.
+     * Sync frame rate to desired if possible.
      * 
-     * @param width The new screen width.
-     * @param height The new screen height.
+     * @param time The update tile.
      */
-    final void setResolution(int width, int height)
+    private void sync(final long time)
     {
-        this.width = width;
-        this.height = height;
-        onResolutionChanged(width, height, renderer.getConfig().getSource().getRate());
+        if (sync)
+        {
+            final double waitTime = frameDelay - time;
+            if (waitTime > 0.0)
+            {
+                final long prevTime = System.nanoTime();
+                while (System.nanoTime() - prevTime < waitTime)
+                {
+                    Thread.yield();
+                }
+            }
+        }
+    }
+
+    /**
+     * Compute extrapolation value depending of the elapsed time.
+     * 
+     * @param lastTime The last time value before game loop.
+     * @param currentTime The current time after game loop.
+     * @return The computed extrapolation value.
+     */
+    private double computeExtrapolation(long lastTime, long currentTime)
+    {
+        if (extrapolated)
+        {
+            return source.getRate() / TIME_DOUBLE * (currentTime - lastTime);
+        }
+        return EXTRP;
+    }
+
+    /**
+     * Compute the frame rate depending of the game loop speed.
+     * 
+     * @param lastTime The last time value before game loop.
+     * @param currentTime The current time after game loop.
+     * @param updateFpsTimer The last fps update time.
+     * @return The next fps update time.
+     */
+    private long computeFrameRate(long lastTime, long currentTime, long updateFpsTimer)
+    {
+        if (currentTime - updateFpsTimer > TIME_LONG)
+        {
+            currentFrameRate = (int) (TIME_DOUBLE / (currentTime - lastTime));
+            return currentTime;
+        }
+        return updateFpsTimer;
     }
 
     /*
@@ -216,56 +391,185 @@ public abstract class Sequence implements Sequencable
      */
 
     @Override
-    public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments) throws LionEngineException
+    public void start(Screen screen)
     {
-        renderer.end(nextSequenceClass, arguments);
+        this.screen = screen;
+        screen.addListener(this);
+        if (cursorVisibility != null)
+        {
+            setSystemCursorVisible(cursorVisibility.booleanValue());
+        }
+
+        nextSequence = null;
+        load();
+        setResolution(resolution);
+
+        // Prepare sequence to be started
+        double extrp = EXTRP;
+        long updateFpsTimer = 0L;
+        currentFrameRate = output.getRate();
+        screen.requestFocus();
+
+        onLoaded(extrp, screen.getGraphic());
+
+        // Main loop
+        isRunning = true;
+        while (isRunning)
+        {
+            final long lastTime = System.nanoTime();
+            if (screen.isReady())
+            {
+                update(extrp);
+                screen.preUpdate();
+                render();
+                screen.update();
+            }
+            sync(System.nanoTime() - lastTime);
+
+            final long currentTime = Math.max(lastTime + 1, System.nanoTime());
+            extrp = computeExtrapolation(lastTime, currentTime);
+            updateFpsTimer = computeFrameRate(lastTime, currentTime, updateFpsTimer);
+
+            if (!Engine.isStarted())
+            {
+                isRunning = false;
+            }
+        }
+        screen.removeListener(this);
     }
 
     @Override
     public final void end()
     {
-        renderer.end();
+        isRunning = false;
+    }
+
+    @Override
+    public final void end(Class<? extends Sequencable> nextSequenceClass, Object... arguments)
+    {
+        Check.notNull(nextSequenceClass);
+
+        nextSequence = create(nextSequenceClass, context, arguments);
+        isRunning = false;
     }
 
     @Override
     public final void addKeyListener(InputDeviceKeyListener listener)
     {
-        renderer.addKeyListener(listener);
-    }
-
-    @Override
-    public final void setSystemCursorVisible(boolean visible)
-    {
-        renderer.setSystemCursorVisible(visible);
+        screen.addKeyListener(listener);
     }
 
     @Override
     public final void setExtrapolated(boolean extrapolated)
     {
-        renderer.setExtrapolated(extrapolated);
+        this.extrapolated = extrapolated;
     }
 
     @Override
-    public final <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
+    public final void setResolution(Resolution newSource)
     {
-        return renderer.getInputDevice(type);
+        Check.notNull(newSource);
+
+        config.setSource(newSource);
+        source = config.getSource();
+        screen.onSourceChanged(source);
+
+        // Store source size
+        width = source.getWidth();
+        height = source.getHeight();
+
+        // Standard rendering
+        if (Filter.NO_FILTER == filter
+            && source.getWidth() == output.getWidth()
+            && source.getHeight() == output.getHeight())
+        {
+            buf = null;
+            transform = null;
+            graphic.setGraphic(null);
+            directRendering = true;
+        }
+        // Scaled rendering
+        else
+        {
+            buf = Graphics.createImageBuffer(width, height, Transparency.OPAQUE);
+            transform = getTransform(filter);
+            final Graphic gbuf = buf.createGraphic();
+            graphic.setGraphic(gbuf.getGraphic());
+            directRendering = false;
+        }
+
+        onResolutionChanged(width, height, config.getSource().getRate());
+    }
+
+    @Override
+    public final void setSystemCursorVisible(boolean visible)
+    {
+        if (screen == null)
+        {
+            cursorVisibility = Boolean.valueOf(visible);
+        }
+        else
+        {
+            if (visible)
+            {
+                screen.showCursor();
+            }
+            else
+            {
+                screen.hideCursor();
+            }
+        }
     }
 
     @Override
     public final Config getConfig()
     {
-        return renderer.getConfig();
+        return config;
     }
 
     @Override
     public final int getFps()
     {
-        return renderer.getFps();
+        return currentFrameRate;
     }
 
     @Override
-    public final void setResolution(Resolution newSource) throws LionEngineException
+    public final <T extends InputDevice> T getInputDevice(Class<T> type)
     {
-        renderer.setResolution(newSource);
+        return context.getInputDevice(type);
+    }
+
+    @Override
+    public final Sequencable getNextSequence()
+    {
+        return nextSequence;
+    }
+
+    @Override
+    public void onTerminated(boolean hasNextSequence)
+    {
+        // Nothing by default
+    }
+
+    /*
+     * ScreenListener
+     */
+
+    @Override
+    public void notifyFocusGained()
+    {
+        // Nothing by default
+    }
+
+    @Override
+    public void notifyFocusLost()
+    {
+        // Nothing by default
+    }
+
+    @Override
+    public final void notifyClosed()
+    {
+        end();
     }
 }

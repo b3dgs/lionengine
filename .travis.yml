@@ -1,5 +1,9 @@
 sudo: false
 language: java
+notifications:
+  email:
+    on_success: never
+    on_failure: change
 cache:
   directories:
     - $HOME/.m2
@@ -10,8 +14,6 @@ before_install:
   - sh -e /etc/init.d/xvfb start - sleep 10
 script:
 - cd lionengine-parent
-- jdk_switcher use oraclejdk8
-- mvn clean install -Pcore
-- mvn clean install -Ptests-core
-- mvn clean verify -Pplugins
-- mvn clean verify -Ptests-plugins
+- jdk_switcher use oraclejdk7
+- mvn clean install -Pcore -Dgpg.skip=true -Dmaven.javadoc.skip=true -T 8
+- mvn clean verify -Pplugins -Dgpg.skip=true -Dmaven.javadoc.skip=true -T 8

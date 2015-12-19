@@ -17,31 +17,29 @@
  */
 package com.b3dgs.lionengine.example.game.attack;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.attackable.Attacker;
-import com.b3dgs.lionengine.game.trait.attackable.AttackerChecker;
-import com.b3dgs.lionengine.game.trait.attackable.AttackerListener;
-import com.b3dgs.lionengine.game.trait.attackable.AttackerModel;
-import com.b3dgs.lionengine.game.trait.pathfindable.Pathfindable;
-import com.b3dgs.lionengine.game.trait.pathfindable.PathfindableModel;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.trait.attackable.Attacker;
+import com.b3dgs.lionengine.game.object.trait.attackable.AttackerChecker;
+import com.b3dgs.lionengine.game.object.trait.attackable.AttackerListener;
+import com.b3dgs.lionengine.game.object.trait.attackable.AttackerModel;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
 
 /**
  * Grunt entity implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Grunt extends ObjectGame implements Updatable, Renderable, AttackerChecker, AttackerListener
 {

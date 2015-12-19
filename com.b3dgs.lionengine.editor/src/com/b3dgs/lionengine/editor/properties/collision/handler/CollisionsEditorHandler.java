@@ -18,17 +18,14 @@
 package com.b3dgs.lionengine.editor.properties.collision.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.collision.editor.EntityCollisionEditor;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Start collisions editor handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class CollisionsEditorHandler
 {
@@ -42,11 +39,9 @@ public final class CollisionsEditorHandler
 
     /**
      * Execute the handler.
-     * 
-     * @param partService The part service reference.
      */
     @Execute
-    public void execute(EPartService partService)
+    public void execute()
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();
         final Configurer configurer = (Configurer) tree.getData();

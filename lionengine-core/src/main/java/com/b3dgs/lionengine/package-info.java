@@ -18,7 +18,5 @@
 
 /**
  * Main engine core types and utility classes.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine;

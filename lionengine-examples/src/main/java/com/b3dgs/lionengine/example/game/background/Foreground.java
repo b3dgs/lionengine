@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.game.background;
 
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.game.background.BackgroundGame;
 
 /**
  * Water foreground implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Foreground extends BackgroundGame
 {
@@ -64,10 +62,8 @@ class Foreground extends BackgroundGame
      * Constructor.
      * 
      * @param source The resolution source reference.
-     * @param scaleH The horizontal factor.
-     * @param scaleV The vertical factor.
      */
-    public Foreground(Resolution source, double scaleH, double scaleV)
+    public Foreground(Resolution source)
     {
         super(null, 0, 0);
         nominal = 210;
@@ -181,8 +177,6 @@ class Foreground extends BackgroundGame
 
     /**
      * First front component, including water effect.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Primary implements BackgroundComponent
     {
@@ -244,8 +238,6 @@ class Foreground extends BackgroundGame
 
     /**
      * Second front component, including water effect.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Secondary implements BackgroundComponent
     {
@@ -297,12 +289,11 @@ class Foreground extends BackgroundGame
          * Update water effect.
          * 
          * @param g The graphics output.
-         * @param speed The effect speed.
          * @param frequency The effect frequency.
          * @param amplitude The effect amplitude.
          * @param offsetForce The offset force.
          */
-        private void waterEffect(Graphic g, double speed, double frequency, double amplitude, double offsetForce)
+        private void waterEffect(Graphic g, double frequency, double amplitude, double offsetForce)
         {
             final int oy = py + (int) water.getHeight();
             for (int y = screenHeight - 32 + getNominal() - 210 + oy; y < screenHeight; y++)
@@ -364,7 +355,7 @@ class Foreground extends BackgroundGame
                 }
             }
 
-            waterEffect(g, 0.06, 1.5, 0.8, 3.0);
+            waterEffect(g, 1.5, 0.8, 3.0);
         }
     }
 }

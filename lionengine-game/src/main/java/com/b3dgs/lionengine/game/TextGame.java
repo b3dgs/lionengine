@@ -19,12 +19,12 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Text;
 
 /**
  * Game text implementation. This class enhance the text in order to use it in a game referential. It is perfect to
@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.core.Text;
  * The use is strictly the same as {@link Text}, just including an additional function which is
  * {@link TextGame#update(Viewer)}, needed to update the text location.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TextGame implements Text
 {

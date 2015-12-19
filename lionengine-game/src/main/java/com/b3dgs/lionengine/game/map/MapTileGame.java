@@ -26,30 +26,30 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.collision.TileGroup;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileGame;
+import com.b3dgs.lionengine.game.tile.TilesExtractor;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
-import com.b3dgs.lionengine.stream.Stream;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to
- * store sheets references (SpriteTiled), and collisions.
+ * store sheets references ({@link SpriteTiled}), and collisions.
  * <p>
  * The way to prepare a map is the following:
  * </p>
@@ -57,65 +57,34 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * <pre>
  * {@link #create(int, int)} // prepare memory to store tiles
  * {@link #loadSheets(Media)} // load tile sheets
- * {@link #loadGroups(Media)} // load tile groups
  * </pre>
  * 
  * <p>
- * Or import a map from a level rip with {@link #create(Media, Media, Media)}.
+ * Or import a map from a level rip with {@link #create(Media, Media)}.
  * </p>
  * <p>
  * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Tile
  */
 public class MapTileGame implements MapTile
 {
-    /** Info loading sheets. */
-    private static final String INFO_LOAD_SHEETS = "Loading sheets from: ";
-    /** Info loading groups. */
-    private static final String INFO_LOAD_GROUPS = "Loading groups from: ";
     /** Error sheet missing message. */
     private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
-    /** Error group missing message. */
-    private static final String ERROR_GROUP_MISSING = "Group missing: ";
     /** Construction error. */
     private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
-
-    /**
-     * Find group for tile.
-     * 
-     * @param tile The tile reference.
-     * @param groups The groups list.
-     * @return The tile group, <code>null</code> if none.
-     */
-    private static String getGroup(Tile tile, Collection<TileGroup> groups)
-    {
-        for (final TileGroup group : groups)
-        {
-            if (group.contains(tile))
-            {
-                return group.getName();
-            }
-        }
-        return null;
-    }
 
     /** Sheets list. */
     private final Map<Integer, SpriteTiled> sheets = new HashMap<Integer, SpriteTiled>();
     /** Features list. */
     private final Features<MapTileFeature> features = new Features<MapTileFeature>(MapTileFeature.class);
-    /** Tile groups list. */
-    private final Map<String, TileGroup> groups = new HashMap<String, TileGroup>();
     /** Viewer reference. */
     private final Viewer viewer;
     /** Services reference. */
     private final Services services;
     /** Sheet configuration file. */
     private Media sheetsConfig;
-    /** Groups configuration file. */
-    private Media groupsConfig;
     /** Tile width. */
     private int tileWidth;
     /** Tile height. */
@@ -153,11 +122,10 @@ public class MapTileGame implements MapTile
      * @param services The services reference.
      * @throws LionEngineException If service not found.
      */
-    public MapTileGame(Services services) throws LionEngineException
+    public MapTileGame(Services services)
     {
         this.services = services;
         viewer = services.get(Viewer.class);
-        sheetsConfig = null;
     }
 
     /**
@@ -206,7 +174,7 @@ public class MapTileGame implements MapTile
      * <pre>
      * (integer) sheet number
      * (integer) index number inside sheet
-     * (integer) tile location x % AbstractMapTile.BLOC_SIZE
+     * (integer) tile location x % MapTile.BLOC_SIZE
      * (integer tile location y
      * </pre>
      * 
@@ -218,8 +186,8 @@ public class MapTileGame implements MapTile
     {
         file.writeInteger(tile.getSheet().intValue());
         file.writeInteger(tile.getNumber());
-        file.writeInteger(tile.getX() / tileWidth % MapTile.BLOC_SIZE);
-        file.writeInteger(tile.getY() / tileHeight);
+        file.writeInteger(tile.getInTileX() % BLOC_SIZE);
+        file.writeInteger(tile.getInTileY());
     }
 
     /**
@@ -241,18 +209,11 @@ public class MapTileGame implements MapTile
     {
         Check.notNull(file);
 
-        final int sheet = file.readInteger();
+        final Integer sheet = Integer.valueOf(file.readInteger());
         final int number = file.readInteger();
-        final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
-        final int y = file.readInteger() * tileHeight;
-        final Tile tile = createTile();
-
-        tile.setSheet(Integer.valueOf(sheet));
-        tile.setNumber(number);
-        tile.setX(x);
-        tile.setY(y);
-
-        return tile;
+        final int x = file.readInteger() * getTileWidth() + i * BLOC_SIZE * getTileWidth();
+        final int y = file.readInteger() * getTileHeight();
+        return createTile(sheet, number, x, y);
     }
 
     /**
@@ -270,8 +231,8 @@ public class MapTileGame implements MapTile
         final Tile tile = getTile(tx, ty);
         if (tile != null)
         {
-            final int x = tile.getX() - sx;
-            final int y = -tile.getY() - tile.getHeight() + sy + screenHeight;
+            final int x = (int) tile.getX() - sx;
+            final int y = -(int) tile.getY() - tile.getHeight() + sy + screenHeight;
             renderer.renderTile(g, tile, x, y);
         }
     }
@@ -289,7 +250,7 @@ public class MapTileGame implements MapTile
         int count = 0;
         for (int tx = 0; tx < widthInTile; tx++)
         {
-            for (int ty = 0; ty < heightInTile; ty++)
+            for (int ty = 0; ty < getInTileHeight(); ty++)
             {
                 if (getTile(tx + s * step, ty) != null)
                 {
@@ -313,7 +274,7 @@ public class MapTileGame implements MapTile
     {
         for (int tx = 0; tx < widthInTile; tx++)
         {
-            for (int ty = 0; ty < heightInTile; ty++)
+            for (int ty = 0; ty < getInTileHeight(); ty++)
             {
                 final Tile tile = getTile(tx + s * step, ty);
                 if (tile != null)
@@ -324,19 +285,59 @@ public class MapTileGame implements MapTile
         }
     }
 
+    /**
+     * Resize map with new size.
+     * 
+     * @param newWidth The new width in tile.
+     * @param newHeight The new height in tile.
+     */
+    private void resize(int newWidth, int newHeight)
+    {
+        final int oldWidth = widthInTile;
+        final int oldheight = heightInTile;
+
+        // Adjust height
+        for (int v = 0; v < newHeight - oldheight; v++)
+        {
+            tiles.add(new ArrayList<Tile>(newWidth));
+        }
+        // Adjust width
+        for (int v = 0; v < newHeight; v++)
+        {
+            final int width;
+            if (v < oldheight)
+            {
+                width = newWidth - oldWidth;
+            }
+            else
+            {
+                width = newWidth;
+            }
+            for (int h = 0; h < width; h++)
+            {
+                tiles.get(v).add(null);
+            }
+        }
+
+        widthInTile = newWidth;
+        heightInTile = newHeight;
+        radius = (int) Math.ceil(StrictMath.sqrt(newWidth * (double) newWidth + newHeight * (double) newHeight));
+    }
+
     /*
      * MapTile
      */
 
     @Override
-    public void create(int widthInTile, int heightInTile) throws LionEngineException
+    public void create(int widthInTile, int heightInTile)
     {
         Check.superiorStrict(widthInTile, 0);
         Check.superiorStrict(heightInTile, 0);
 
         this.widthInTile = widthInTile;
         this.heightInTile = heightInTile;
-        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * heightInTile));
+        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * (double) heightInTile));
+        clear();
         tiles = new ArrayList<List<Tile>>(heightInTile);
 
         for (int v = 0; v < heightInTile; v++)
@@ -354,22 +355,24 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public Tile createTile()
+    public Tile createTile(Integer sheet, int number, double x, double y)
     {
-        return new TileGame(tileWidth, tileHeight);
+        return new TileGame(sheet, number, x, y, tileWidth, tileHeight);
     }
 
     @Override
     public void load(FileReading file) throws IOException
     {
-        final Media sheetsConfig = Medias.create(file.readString());
-        final Media groupsConfig = Medias.create(file.readString());
-        final int width = file.readShort();
-        final int height = file.readShort();
-
-        create(width, height);
-        loadSheets(sheetsConfig);
-        loadGroups(groupsConfig);
+        create(file.readInteger(), file.readInteger());
+        if (file.readBoolean())
+        {
+            loadSheets(Medias.create(file.readString()));
+        }
+        else
+        {
+            tileWidth = file.readInteger();
+            tileHeight = file.readInteger();
+        }
 
         final int t = file.readShort();
         for (int v = 0; v < t; v++)
@@ -382,8 +385,8 @@ public class MapTileGame implements MapTile
                 {
                     throw new IOException(ERROR_SHEET_MISSING + Constant.DOUBLE_DOT + tile.getSheet().toString());
                 }
-                final int tx = tile.getX() / getTileWidth();
-                final int ty = tile.getY() / getTileHeight();
+                final int tx = tile.getInTileX();
+                final int ty = tile.getInTileY();
                 final List<Tile> list = tiles.get(ty);
                 list.set(tx, tile);
             }
@@ -394,12 +397,22 @@ public class MapTileGame implements MapTile
     public void save(FileWriting file) throws IOException
     {
         // Header
-        file.writeString(sheetsConfig.getPath());
-        file.writeString(groupsConfig.getPath());
-        file.writeShort((short) widthInTile);
-        file.writeShort((short) heightInTile);
+        file.writeInteger(widthInTile);
+        file.writeInteger(heightInTile);
 
-        final int step = MapTile.BLOC_SIZE;
+        final boolean hasConfig = sheetsConfig != null;
+        file.writeBoolean(hasConfig);
+        if (hasConfig)
+        {
+            file.writeString(sheetsConfig.getPath());
+        }
+        else
+        {
+            file.writeInteger(tileWidth);
+            file.writeInteger(tileHeight);
+        }
+
+        final int step = BLOC_SIZE;
         final int x = Math.min(step, widthInTile);
         final int t = (int) Math.ceil(widthInTile / (double) step);
 
@@ -408,37 +421,47 @@ public class MapTileGame implements MapTile
         {
             final int count = countTiles(x, step, s);
             file.writeShort((short) count);
-            saveTiles(file, t, step, s);
+            saveTiles(file, Math.min(widthInTile, BLOC_SIZE), step, s);
         }
     }
 
     @Override
-    public void create(Media levelrip) throws LionEngineException
+    public void create(Media levelrip, int tileWidth, int tileHeight, int horizontalTiles)
     {
-        create(levelrip,
-               Medias.create(levelrip.getParentPath(), DEFAULT_SHEETS_FILE),
-               Medias.create(levelrip.getParentPath(), DEFAULT_GROUPS_FILE));
+        final TilesExtractor tilesExtractor = new TilesExtractor();
+        final Collection<ImageBuffer> tiles = tilesExtractor.extract(tileWidth, tileHeight, levelrip);
+        loadSheets(tileWidth, tileHeight, SheetsExtractor.extract(tiles, horizontalTiles));
+
+        for (final ImageBuffer tile : tiles)
+        {
+            tile.dispose();
+        }
+
+        LevelRipConverter.start(levelrip, this);
     }
 
     @Override
-    public void create(Media levelrip, Media sheetsConfig, Media groupsConfig) throws LionEngineException
+    public void create(Media levelrip)
+    {
+        create(levelrip, Medias.create(levelrip.getParentPath(), TileSheetsConfig.FILENAME));
+    }
+
+    @Override
+    public void create(Media levelrip, Media sheetsConfig)
     {
         clear();
-        final LevelRipConverter rip = new LevelRipConverter(levelrip, sheetsConfig, this);
-        rip.start();
 
-        final int errors = rip.getErrors();
+        loadSheets(sheetsConfig);
+        final int errors = LevelRipConverter.start(levelrip, this);
         if (errors > 0)
         {
             Verbose.warning(getClass(), "create", "Number of missing tiles: " + errors);
         }
         this.sheetsConfig = sheetsConfig;
-        this.groupsConfig = groupsConfig;
-        loadGroups(groupsConfig);
     }
 
     @Override
-    public <F extends MapTileFeature> F createFeature(Class<F> feature) throws LionEngineException
+    public <F extends MapTileFeature> F createFeature(Class<F> feature)
     {
         try
         {
@@ -452,72 +475,55 @@ public class MapTileGame implements MapTile
         }
         catch (final NoSuchMethodException exception)
         {
-            throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + feature);
+            try
+            {
+                final F instance = UtilReflection.create(feature, new Class<?>[0]);
+                services.add(instance);
+                addFeature(instance);
+                return instance;
+            }
+            catch (final NoSuchMethodException exception2)
+            {
+                throw new LionEngineException(exception, ERROR_CONSTRUCTOR_MISSING + feature);
+            }
         }
     }
 
     @Override
-    public void loadSheets(Media sheetsConfig) throws LionEngineException
+    public void loadSheets(int tileWidth, int tileHeight, Collection<SpriteTiled> sheets)
     {
-        Verbose.info(INFO_LOAD_SHEETS, sheetsConfig.getFile().getPath());
-        this.sheetsConfig = sheetsConfig;
-        final XmlNode root = Stream.loadXml(sheetsConfig);
-
-        // Retrieve tile size
-        final XmlNode tileSize = root.getChild(MapTile.NODE_TILE_SIZE);
-        tileWidth = tileSize.readInteger(MapTile.ATTRIBUTE_TILE_WIDTH);
-        tileHeight = tileSize.readInteger(MapTile.ATTRIBUTE_TILE_HEIGHT);
-
-        // Retrieve sheets list
-        final Collection<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
-        final String[] files = new String[children.size()];
-        int sheetNumber = 0;
-        for (final XmlNode child : children)
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+        int sheetId = 0;
+        for (final SpriteTiled sheet : sheets)
         {
-            files[sheetNumber] = child.getText();
-            sheetNumber++;
+            this.sheets.put(Integer.valueOf(sheetId), sheet);
+            sheetId++;
         }
+    }
 
-        // Load sheets from list
+    @Override
+    public void loadSheets(Media sheetsConfig)
+    {
+        this.sheetsConfig = sheetsConfig;
+
+        final TileSheetsConfig config = TileSheetsConfig.imports(sheetsConfig);
+        tileWidth = config.getTileWidth();
+        tileHeight = config.getTileHeight();
+
         final String path = sheetsConfig.getPath();
         final String folder = path.substring(0, path.length() - sheetsConfig.getFile().getName().length());
         sheets.clear();
-        for (int sheet = 0; sheet < files.length; sheet++)
+        int sheetId = 0;
+        for (final String sheet : config.getSheets())
         {
-            final Media media = Medias.create(folder, files[sheet]);
+            final Media media = Medias.create(folder, sheet);
             final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
             sprite.load();
             sprite.prepare();
-            sheets.put(Integer.valueOf(sheet), sprite);
+            sheets.put(Integer.valueOf(sheetId), sprite);
+            sheetId++;
         }
-    }
-
-    @Override
-    public void loadGroups(Media groupsConfig) throws LionEngineException
-    {
-        Verbose.info(INFO_LOAD_GROUPS, groupsConfig.getFile().getPath());
-        this.groupsConfig = groupsConfig;
-
-        groups.clear();
-        final XmlNode nodeGroups = Stream.loadXml(groupsConfig);
-        final Collection<TileGroup> groups = ConfigTileGroup.create(nodeGroups);
-        for (final TileGroup group : groups)
-        {
-            this.groups.put(group.getName(), group);
-        }
-
-        for (int ty = 0; ty < heightInTile; ty++)
-        {
-            for (int tx = 0; tx < widthInTile; tx++)
-            {
-                final Tile tile = getTile(tx, ty);
-                if (tile != null)
-                {
-                    tile.setGroup(getGroup(tile, groups));
-                }
-            }
-        }
-        groups.clear();
     }
 
     @Override
@@ -525,41 +531,25 @@ public class MapTileGame implements MapTile
     {
         Check.notNull(map);
 
-        final int newWidth = widthInTile - (widthInTile - offsetX) + map.getInTileWidth();
-        final int newHeight = heightInTile - (heightInTile - offsetY) + map.getInTileHeight();
+        final int newWidth = Math.max(widthInTile, widthInTile - (widthInTile - offsetX) + map.getInTileWidth());
+        final int newHeight = Math.max(heightInTile, heightInTile - (heightInTile - offsetY) + map.getInTileHeight());
+        resize(newWidth, newHeight);
 
-        // Adjust height
-        final int sizeV = tiles.size();
-        for (int v = 0; v < newHeight - sizeV; v++)
+        for (int v = 0; v < map.getInTileHeight(); v++)
         {
-            tiles.add(new ArrayList<Tile>(newWidth));
-        }
-
-        for (int cty = 0; cty < map.getInTileHeight(); cty++)
-        {
-            final int ty = offsetY + cty;
-
-            // Adjust width
-            final int sizeH = tiles.get(ty).size();
-            for (int h = 0; h < newWidth - sizeH; h++)
+            final int ty = offsetY + v;
+            for (int h = 0; h < map.getInTileWidth(); h++)
             {
-                tiles.get(ty).add(null);
-            }
-
-            for (int ctx = 0; ctx < map.getInTileWidth(); ctx++)
-            {
-                final int tx = offsetX + ctx;
-                final Tile tile = map.getTile(ctx, cty);
+                final int tx = offsetX + h;
+                final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
-                    setTile(tx, ty, tile);
+                    final double x = tx * (double) tileWidth;
+                    final double y = ty * (double) tileHeight;
+                    setTile(createTile(tile.getSheet(), tile.getNumber(), x, y));
                 }
             }
         }
-
-        widthInTile = newWidth;
-        heightInTile = newHeight;
-        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * heightInTile));
     }
 
     @Override
@@ -583,6 +573,10 @@ public class MapTileGame implements MapTile
     public void addFeature(MapTileFeature feature)
     {
         features.add(feature);
+        if (services != null)
+        {
+            services.add(feature);
+        }
     }
 
     @Override
@@ -608,34 +602,31 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public void setTileRenderer(MapTileRenderer renderer) throws LionEngineException
+    public void setTileRenderer(MapTileRenderer renderer)
     {
         Check.notNull(renderer);
         this.renderer = renderer;
     }
 
     @Override
-    public void setTile(int tx, int ty, Tile tile) throws LionEngineException
+    public void setTile(Tile tile)
     {
+        final int tx = tile.getInTileX();
+        final int ty = tile.getInTileY();
         Check.inferiorStrict(tx, getInTileWidth());
         Check.inferiorStrict(ty, getInTileHeight());
 
-        tile.setX(tx * tileWidth);
-        tile.setY(ty * tileHeight);
         tiles.get(ty).set(tx, tile);
     }
 
     @Override
     public Tile getTile(int tx, int ty)
     {
-        try
-        {
-            return tiles.get(ty).get(tx);
-        }
-        catch (final IndexOutOfBoundsException exception)
+        if (!UtilMath.isBetween(tx, 0, getInTileWidth() - 1) || !UtilMath.isBetween(ty, 0, getInTileHeight() - 1))
         {
             return null;
         }
+        return tiles.get(ty).get(tx);
     }
 
     @Override
@@ -701,19 +692,13 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public Media getGroupsConfig()
-    {
-        return groupsConfig;
-    }
-
-    @Override
     public Collection<Integer> getSheets()
     {
         return sheets.keySet();
     }
 
     @Override
-    public SpriteTiled getSheet(Integer sheet) throws LionEngineException
+    public SpriteTiled getSheet(Integer sheet)
     {
         if (!sheets.containsKey(sheet))
         {
@@ -723,23 +708,7 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public TileGroup getGroup(String name)
-    {
-        if (groups.containsKey(name))
-        {
-            return groups.get(name);
-        }
-        throw new LionEngineException(ERROR_GROUP_MISSING, name);
-    }
-
-    @Override
-    public Collection<TileGroup> getGroups()
-    {
-        return groups.values();
-    }
-
-    @Override
-    public <C extends MapTileFeature> C getFeature(Class<C> feature) throws LionEngineException
+    public <C extends MapTileFeature> C getFeature(Class<C> feature)
     {
         return features.get(feature);
     }
@@ -814,5 +783,21 @@ public class MapTileGame implements MapTile
     public boolean isCreated()
     {
         return tiles != null;
+    }
+
+    /*
+     * Surface
+     */
+
+    @Override
+    public int getWidth()
+    {
+        return getInTileWidth() * getTileWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return getInTileHeight() * getTileHeight();
     }
 }

@@ -20,9 +20,8 @@ package com.b3dgs.lionengine.editor.project.dialog.formula;
 import java.util.Collections;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -34,9 +33,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.swt.UtilityImage;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
@@ -46,27 +44,22 @@ import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.collision.CollisionConstraint;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
-import com.b3dgs.lionengine.game.collision.CollisionFunctionType;
-import com.b3dgs.lionengine.game.collision.CollisionRange;
-import com.b3dgs.lionengine.game.collision.TileGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionType;
+import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.tile.TileGroup;
 
 /**
  * Represents the formulas properties edition view.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FormulasProperties extends ObjectProperties<CollisionFormula>
                                 implements ObjectListListener<CollisionFormula>
 {
-    /** Unknown function type. */
-    private static final String ERROR_TYPE = "Unknown collision function type: ";
-
     /**
      * Create the constraints list.
      * 
@@ -112,7 +105,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         {
             final TreeItem item = new TreeItem(tree, SWT.NONE);
             item.setText(group);
-            item.setData(new TileGroup(group, Collections.EMPTY_LIST));
+            item.setData(new TileGroup(group, Collections.emptyList()));
         }
     }
 
@@ -168,7 +161,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
                                                                                 map.getTileWidth(),
                                                                                 map.getTileHeight());
             gc.fillRectangle(0, 0, map.getTileWidth(), map.getTileHeight());
-            gc.drawImage(UtilityImage.getBuffer(buffer), 0, 0);
+            gc.drawImage((Image) buffer.getSurface(), 0, 0);
         }
     }
 
@@ -207,7 +200,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
                 createCollisionFunctionLinear(parent);
                 break;
             default:
-                throw new LionEngineException(ERROR_TYPE, type.name());
+                throw new LionEngineException(type);
         }
     }
 
@@ -256,14 +249,10 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
     {
         final MapTile map = WorldModel.INSTANCE.getMap();
         final Combo template = UtilCombo.create(Messages.EditFormulasDialog_Template, parent, FormulaTemplate.values());
-        template.addSelectionListener(new SelectionAdapter()
+        UtilCombo.setAction(template, () ->
         {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                final CollisionFormula formula = ((FormulaTemplate) template.getData()).getFormula(map);
-                notifyObjectSelected(formula);
-            }
+            final CollisionFormula formula = ((FormulaTemplate) template.getData()).getFormula(map);
+            notifyObjectSelected(formula);
         });
     }
 
@@ -285,10 +274,10 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         xAreaLayout.marginHeight = 0;
         xArea.setLayout(xAreaLayout);
         minX = UtilText.create(Messages.EditFormulasDialog_RangeMinX, xArea);
-        minX.addVerifyListener(UtilText.createVerify(minX, InputValidator.INTEGER_POSITIVE_MATCH));
+        minX.addVerifyListener(UtilText.createVerify(minX, InputValidator.INTEGER_MATCH));
         updatePreviewOnModify(minX);
         maxX = UtilText.create(Messages.EditFormulasDialog_RangeMaxX, xArea);
-        maxX.addVerifyListener(UtilText.createVerify(maxX, InputValidator.INTEGER_POSITIVE_MATCH));
+        maxX.addVerifyListener(UtilText.createVerify(maxX, InputValidator.INTEGER_MATCH));
         updatePreviewOnModify(maxX);
 
         final Composite yArea = new Composite(parent, SWT.NONE);
@@ -296,10 +285,10 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         yAreaLayout.marginHeight = 0;
         yArea.setLayout(yAreaLayout);
         minY = UtilText.create(Messages.EditFormulasDialog_RangeMinY, yArea);
-        minY.addVerifyListener(UtilText.createVerify(minY, InputValidator.INTEGER_POSITIVE_MATCH));
+        minY.addVerifyListener(UtilText.createVerify(minY, InputValidator.INTEGER_MATCH));
         updatePreviewOnModify(minY);
         maxY = UtilText.create(Messages.EditFormulasDialog_RangeMaxY, yArea);
-        maxY.addVerifyListener(UtilText.createVerify(maxY, InputValidator.INTEGER_POSITIVE_MATCH));
+        maxY.addVerifyListener(UtilText.createVerify(maxY, InputValidator.INTEGER_MATCH));
         updatePreviewOnModify(maxY);
     }
 
@@ -316,14 +305,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         typeArea.setLayout(typeAreaLayout);
         type = UtilCombo.create(Messages.EditFormulasDialog_FunctionType, typeArea, CollisionFunctionType.values());
         selectFunctionType(parent);
-        type.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent event)
-            {
-                selectFunctionType(parent);
-            }
-        });
+        UtilCombo.setAction(type, () -> selectFunctionType(parent));
     }
 
     /**
@@ -357,7 +339,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
                 final double b = Double.parseDouble(linearB.getText());
                 return new CollisionFunctionLinear(a, b);
             default:
-                throw new LionEngineException(ERROR_TYPE, type.name());
+                throw new LionEngineException(type);
         }
     }
 
@@ -386,7 +368,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
                 setValueDefault(linearB, Double.toString(linear.getB()));
                 break;
             default:
-                throw new LionEngineException(ERROR_TYPE, function.getType().name());
+                throw new LionEngineException(function.getType());
         }
     }
 
@@ -461,8 +443,7 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         addGroups(constraint, Orientation.WEST, constraintsLeft);
         addGroups(constraint, Orientation.EAST, constraintsRight);
 
-        final CollisionFormula formula = new CollisionFormula(name, range, function, constraint);
-        return formula;
+        return new CollisionFormula(name, range, function, constraint);
     }
 
     /**

@@ -17,35 +17,33 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.collision.object.Collidable;
+import com.b3dgs.lionengine.game.collision.object.CollidableListener;
+import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.collidable.Collidable;
-import com.b3dgs.lionengine.game.trait.collidable.CollidableListener;
-import com.b3dgs.lionengine.game.trait.collidable.CollidableModel;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
 
 /**
  * Ship implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Ship extends ObjectGame implements Updatable, Renderable, CollidableListener
 {
@@ -84,7 +82,7 @@ class Ship extends ObjectGame implements Updatable, Renderable, CollidableListen
         super(setup, services);
         viewer = services.get(Viewer.class);
 
-        final ConfigFrames config = ConfigFrames.create(setup.getConfigurer());
+        final FramesConfig config = FramesConfig.create(setup.getConfigurer());
         sprite = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         sprite.setFrame(3);
         sprite.setOrigin(Origin.MIDDLE);
@@ -170,8 +168,8 @@ class Ship extends ObjectGame implements Updatable, Renderable, CollidableListen
     }
 
     @Override
-    public void notifyCollided(Collidable collidable)
+    public void notifyCollided(ObjectGame object)
     {
-        collidable.getOwner().destroy();
+        object.destroy();
     }
 }

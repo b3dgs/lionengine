@@ -25,15 +25,13 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderTile;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
-import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.map.TileCollision;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
+import com.b3dgs.lionengine.game.collision.tile.TileCollision;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Element properties part.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesTileCollision implements PropertiesProviderTile
 {
@@ -52,14 +50,14 @@ public class PropertiesTileCollision implements PropertiesProviderTile
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         item.setText(Messages.Properties_TileCollisionFormulas);
-        item.setData(ConfigCollisionFormula.FORMULAS);
+        item.setData(CollisionFormulaConfig.FORMULAS);
         item.setImage(PropertiesTileCollision.ICON_FORMULAS);
 
         for (final CollisionFormula formula : tile.getCollisionFormulas())
         {
             final TreeItem current = new TreeItem(item, SWT.NONE);
             PropertiesPart.createLine(current, Messages.Properties_TileCollisionFormula, formula.getName());
-            current.setData(ConfigCollisionFormula.FORMULA);
+            current.setData(CollisionFormulaConfig.FORMULA);
             current.setImage(PropertiesTileCollision.ICON_FORMULA);
         }
     }

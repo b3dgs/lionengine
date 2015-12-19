@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.example.game.chat;
 
 /**
  * Networked messages enum type.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum TypeMessage
 {

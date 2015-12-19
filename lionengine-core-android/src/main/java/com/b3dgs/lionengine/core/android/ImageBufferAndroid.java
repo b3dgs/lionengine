@@ -20,15 +20,12 @@ package com.b3dgs.lionengine.core.android;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * Image buffer implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ImageBufferAndroid implements ImageBuffer
 {
@@ -60,7 +57,7 @@ final class ImageBufferAndroid implements ImageBuffer
      */
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         // Nothing to do
     }
@@ -112,6 +109,13 @@ final class ImageBufferAndroid implements ImageBuffer
     public int getHeight()
     {
         return bufferedImage.getHeight();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Bitmap getSurface()
+    {
+        return bufferedImage;
     }
 
     @Override

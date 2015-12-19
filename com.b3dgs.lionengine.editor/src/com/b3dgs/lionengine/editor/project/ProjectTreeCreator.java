@@ -26,8 +26,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.project.tester.CollisionsTester;
 import com.b3dgs.lionengine.editor.project.tester.FormulasTester;
@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
  * Generate the project tree from the project folder.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ProjectTreeCreator
 {
@@ -71,27 +69,6 @@ public class ProjectTreeCreator
     public static final Image ICON_COLLISIONS = UtilIcon.get(RESOURCES_FOLDER, "collisions.png");
     /** Meta-inf folder. */
     private static final String FOLDER_METAINF = "META-INF";
-
-    /**
-     * Check the path reference and create the node if necessary.
-     * 
-     * @param title The node title.
-     * @param parent The node parent.
-     * @param referencePath The reference path.
-     * @param path The current path.
-     * @return The item reference.
-     */
-    private static TreeItem checkPathReference(String title, TreeItem parent, File referencePath, File path)
-    {
-        if (referencePath.getPath().equals(path.getPath()))
-        {
-            final TreeItem folder = new TreeItem(parent, SWT.NONE);
-            folder.setText(title);
-            folder.setImage(ICON_FOLDER);
-            return folder;
-        }
-        return parent;
-    }
 
     /**
      * Get the data file icon.
@@ -270,6 +247,28 @@ public class ProjectTreeCreator
                 }
             }
         }
+    }
+
+    /**
+     * Check the path reference and create the node if necessary.
+     * 
+     * @param title The node title.
+     * @param parent The node parent.
+     * @param referencePath The reference path.
+     * @param path The current path.
+     * @return The item reference.
+     */
+    private TreeItem checkPathReference(String title, TreeItem parent, File referencePath, File path)
+    {
+        if (referencePath.getPath().equals(path.getPath()))
+        {
+            final TreeItem folder = new TreeItem(parent, SWT.NONE);
+            folder.setText(title);
+            folder.setImage(ICON_FOLDER);
+            tree.setData(title, folder);
+            return folder;
+        }
+        return parent;
     }
 
     /**

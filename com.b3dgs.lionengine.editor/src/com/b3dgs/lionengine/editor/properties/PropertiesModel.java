@@ -22,8 +22,6 @@ import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Describe the properties model.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class PropertiesModel
 {

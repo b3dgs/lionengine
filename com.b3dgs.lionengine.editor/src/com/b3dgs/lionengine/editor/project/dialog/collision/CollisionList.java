@@ -20,22 +20,20 @@ package com.b3dgs.lionengine.editor.project.dialog.collision;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.CollisionGroup;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the collisions list, allowing to add and remove {@link CollisionGroup}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionList extends ObjectList<CollisionGroup> implements ObjectListListener<CollisionGroup>
 {
@@ -47,11 +45,11 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
      */
     private static void removeCollision(Media collisionsConfig, CollisionGroup collision)
     {
-        final XmlNode node = Stream.loadXml(collisionsConfig);
+        final XmlNode node = Xml.load(collisionsConfig);
         final Collection<XmlNode> toRemove = new ArrayList<>();
-        for (final XmlNode nodeFormula : node.getChildren(ConfigCollisionGroup.COLLISION))
+        for (final XmlNode nodeFormula : node.getChildren(CollisionGroupConfig.COLLISION))
         {
-            if (CollisionGroup.equals(nodeFormula.readString(ConfigCollisionGroup.GROUP), collision.getName()))
+            if (CollisionGroup.same(nodeFormula.readString(CollisionGroupConfig.GROUP), collision.getName()))
             {
                 toRemove.add(nodeFormula);
             }
@@ -61,7 +59,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
             node.removeChild(remove);
         }
         toRemove.clear();
-        Stream.saveXml(node, collisionsConfig);
+        Xml.save(node, collisionsConfig);
     }
 
     /** Last config used. */
@@ -93,7 +91,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
     public void loadCollisions(Media config)
     {
         this.config = config;
-        final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(Stream.loadXml(config));
+        final Collection<CollisionGroup> groups = CollisionGroupConfig.create(config);
         loadObjects(groups);
     }
 
@@ -132,7 +130,7 @@ public class CollisionList extends ObjectList<CollisionGroup> implements ObjectL
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             final Media collisionsConfig = mapCollision.getFormulasConfig();
             removeCollision(collisionsConfig, collision);
-            mapCollision.loadCollisions(collisionsConfig, map.getGroupsConfig());
+            mapCollision.loadCollisions();
         }
         else if (config != null)
         {

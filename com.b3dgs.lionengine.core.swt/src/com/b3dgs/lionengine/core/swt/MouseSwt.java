@@ -28,12 +28,10 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.widgets.Display;
 
-import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.core.Config;
 
 /**
  * Mouse input implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, MouseWheelListener
 {
@@ -71,11 +69,11 @@ public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, 
     private boolean moved;
 
     /**
-     * Internal constructor.
+     * Constructor.
      * 
      * @param display The display reference.
      */
-    MouseSwt(Display display)
+    public MouseSwt(Display display)
     {
         super();
         final int mouseButtons = 9;
@@ -97,7 +95,7 @@ public final class MouseSwt implements Mouse, MouseListener, MouseMoveListener, 
      * 
      * @param config The config.
      */
-    void setConfig(Config config)
+    public void setConfig(Config config)
     {
         xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
         yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();

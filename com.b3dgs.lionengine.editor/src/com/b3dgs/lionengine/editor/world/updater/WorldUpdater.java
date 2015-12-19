@@ -29,14 +29,12 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * World updater, update the current world.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListener, MouseWheelListener
 {

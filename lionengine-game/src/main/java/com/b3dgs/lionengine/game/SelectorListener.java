@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * List of events linked to the {@link Selector}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface SelectorListener
 {

@@ -17,12 +17,10 @@
  */
 package com.b3dgs.lionengine.editor.world.renderer;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 
 /**
  * Listener to rendering event.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface WorldRenderListener
 {

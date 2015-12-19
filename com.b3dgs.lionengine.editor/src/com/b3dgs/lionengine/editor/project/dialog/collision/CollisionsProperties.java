@@ -27,13 +27,11 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
 import com.b3dgs.lionengine.editor.project.dialog.formula.FormulaList;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 
 /**
  * Represents the collisions properties edition view.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollisionsProperties extends ObjectProperties<CollisionGroup> implements ObjectListListener<CollisionGroup>
 {

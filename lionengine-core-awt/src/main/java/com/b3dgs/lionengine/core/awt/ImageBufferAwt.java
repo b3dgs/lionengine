@@ -19,44 +19,15 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.image.BufferedImage;
 
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * Image buffer implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ImageBufferAwt implements ImageBuffer
 {
-    /**
-     * Get the transparency equivalence.
-     * 
-     * @param transparency The transparency.
-     * @return The equivalence.
-     */
-    static Transparency getTransparency(int transparency)
-    {
-        final Transparency value;
-        switch (transparency)
-        {
-            case java.awt.Transparency.OPAQUE:
-                value = Transparency.OPAQUE;
-                break;
-            case java.awt.Transparency.BITMASK:
-                value = Transparency.BITMASK;
-                break;
-            case java.awt.Transparency.TRANSLUCENT:
-                value = Transparency.TRANSLUCENT;
-                break;
-            default:
-                value = Transparency.OPAQUE;
-        }
-        return value;
-    }
-
     /** Buffered image. */
     private final BufferedImage bufferedImage;
 
@@ -70,22 +41,12 @@ final class ImageBufferAwt implements ImageBuffer
         this.bufferedImage = bufferedImage;
     }
 
-    /**
-     * Get the image buffer.
-     * 
-     * @return The image buffer.
-     */
-    BufferedImage getBuffer()
-    {
-        return bufferedImage;
-    }
-
     /*
      * ImageBuffer
      */
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         // Nothing to do
     }
@@ -138,9 +99,31 @@ final class ImageBufferAwt implements ImageBuffer
         return bufferedImage.getHeight();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public BufferedImage getSurface()
+    {
+        return bufferedImage;
+    }
+
     @Override
     public Transparency getTransparency()
     {
-        return ImageBufferAwt.getTransparency(bufferedImage.getTransparency());
+        final Transparency value;
+        switch (bufferedImage.getTransparency())
+        {
+            case java.awt.Transparency.OPAQUE:
+                value = Transparency.OPAQUE;
+                break;
+            case java.awt.Transparency.BITMASK:
+                value = Transparency.BITMASK;
+                break;
+            case java.awt.Transparency.TRANSLUCENT:
+                value = Transparency.TRANSLUCENT;
+                break;
+            default:
+                value = Transparency.OPAQUE;
+        }
+        return value;
     }
 }

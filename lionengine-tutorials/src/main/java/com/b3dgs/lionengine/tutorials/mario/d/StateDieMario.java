@@ -23,8 +23,6 @@ import com.b3dgs.lionengine.game.state.StateGame;
 
 /**
  * Mario die state implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateDieMario extends StateGame
 {

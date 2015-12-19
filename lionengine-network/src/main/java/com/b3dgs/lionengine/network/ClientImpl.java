@@ -31,14 +31,12 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**
  * Client implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ClientImpl extends NetworkModel<ConnectionListener> implements Client
 {
@@ -57,7 +55,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     /** Client id. */
     private byte clientId;
     /** Client name. */
-    private String name;
+    private String clientName;
     /** Disconnect flag. */
     private boolean connected;
     /** Ping. */
@@ -80,7 +78,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         bandwidthTimer = new Timing();
         connected = false;
         clientId = -1;
-        name = null;
+        clientName = null;
         bandwidth = 0;
     }
 
@@ -131,17 +129,16 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     /**
      * Get the name value read from the stream.
      * 
-     * @param in The input stream.
      * @return The name string.
      * @throws IOException In case of error.
      */
-    private String readString(ObjectInputStream in) throws IOException
+    private String readString() throws IOException
     {
-        final int size = this.in.readByte();
+        final int size = in.readByte();
         if (size > 0)
         {
             final byte[] name = new byte[size];
-            if (this.in.read(name) != -1)
+            if (in.read(name) != -1)
             {
                 return new String(name, NetworkMessage.CHARSET);
             }
@@ -218,7 +215,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
             // Send the name
             out.writeByte(NetworkMessageSystemId.CONNECTING);
             out.writeByte(clientId);
-            final byte[] data = name.getBytes(NetworkMessage.CHARSET);
+            final byte[] data = clientName.getBytes(NetworkMessage.CHARSET);
             out.writeByte(data.length);
             out.write(data);
             out.flush();
@@ -241,14 +238,14 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         for (final ConnectionListener listener : listeners)
         {
-            listener.notifyConnectionEstablished(Byte.valueOf(clientId), name);
+            listener.notifyConnectionEstablished(Byte.valueOf(clientId), clientName);
         }
         // Read the client list
         final int clientsNumber = in.readByte();
         for (int i = 0; i < clientsNumber; i++)
         {
             cid = in.readByte();
-            final String cname = readString(in);
+            final String cname = readString();
             for (final ConnectionListener listener : listeners)
             {
                 listener.notifyClientConnected(Byte.valueOf(cid), cname);
@@ -257,7 +254,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         // Message of the day if has
         if (in.available() > 0)
         {
-            final String motd = readString(in);
+            final String motd = readString();
             for (final ConnectionListener listener : listeners)
             {
                 listener.notifyMessageOfTheDay(motd);
@@ -278,7 +275,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     private void updateOtherClientConnected() throws IOException
     {
         final byte cid = in.readByte();
-        final String cname = readString(in);
+        final String cname = readString();
         for (final ConnectionListener listener : listeners)
         {
             listener.notifyClientConnected(Byte.valueOf(cid), cname);
@@ -293,7 +290,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     private void updateOtherClientDisconnected() throws IOException
     {
         final byte cid = in.readByte();
-        final String cname = readString(in);
+        final String cname = readString();
         for (final ConnectionListener listener : listeners)
         {
             listener.notifyClientDisconnected(Byte.valueOf(cid), cname);
@@ -308,7 +305,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     private void updateOtherClientRenamed() throws IOException
     {
         final byte cid = in.readByte();
-        final String cname = readString(in);
+        final String cname = readString();
         for (final ConnectionListener listener : listeners)
         {
             listener.notifyClientNameChanged(Byte.valueOf(cid), cname);
@@ -344,7 +341,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
                     }
                     catch (final IOException exception)
                     {
-                        Verbose.exception(getClass(), "updateUserMessage", exception);
+                        Verbose.exception(exception);
                     }
                 }
             }
@@ -396,7 +393,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
             }
             catch (final IOException exception)
             {
-                Verbose.exception(getClass(), "sendMessage finally", exception);
+                Verbose.exception(exception);
             }
         }
     }
@@ -406,7 +403,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
      */
 
     @Override
-    public void connect(String ip, int port) throws LionEngineException
+    public void connect(String ip, int port)
     {
         Check.notNull(ip);
         Check.superiorOrEqual(port, 0);
@@ -437,7 +434,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     @Override
     public void setName(String name)
     {
-        this.name = name;
+        clientName = name;
         if (!connected)
         {
             return;
@@ -446,7 +443,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         {
             out.write(NetworkMessageSystemId.OTHER_CLIENT_RENAMED);
             out.write(clientId);
-            final byte[] data = this.name.getBytes(NetworkMessage.CHARSET);
+            final byte[] data = clientName.getBytes(NetworkMessage.CHARSET);
             out.writeByte(data.length);
             out.write(data);
             out.flush();
@@ -460,7 +457,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
     @Override
     public String getName()
     {
-        return name;
+        return clientName;
     }
 
     @Override
@@ -497,11 +494,12 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         catch (final SocketException exception)
         {
+            Verbose.exception(exception);
             connected = false;
         }
         catch (final IOException exception)
         {
-            Verbose.exception(ClientImpl.class, "disconnect", exception);
+            Verbose.exception(exception);
         }
         connected = false;
     }

@@ -22,8 +22,6 @@ package com.b3dgs.lionengine;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Origin
 {
@@ -39,9 +37,6 @@ public enum Origin
     CENTER_TOP,
     /** Center bottom origin point. */
     CENTER_BOTTOM;
-
-    /** Unsupported enum. */
-    private static final String ERROR_ENUM = "Unknown enum type: ";
 
     /**
      * Get the x relative to origin.
@@ -75,7 +70,7 @@ public enum Origin
                 }
                 break;
             default:
-                throw new LionEngineException(ERROR_ENUM, name());
+                throw new LionEngineException(this);
         }
         return result;
     }
@@ -114,7 +109,7 @@ public enum Origin
                 result = y - height;
                 break;
             default:
-                throw new LionEngineException(ERROR_ENUM, name());
+                throw new LionEngineException(this);
         }
         return result;
     }

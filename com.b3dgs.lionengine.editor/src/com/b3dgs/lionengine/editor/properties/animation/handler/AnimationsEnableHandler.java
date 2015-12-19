@@ -25,13 +25,11 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.animation.PropertiesAnimation;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.state.AnimationConfig;
 
 /**
  * Enable animations handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AnimationsEnableHandler
 {
@@ -56,7 +54,7 @@ public final class AnimationsEnableHandler
         final Configurer configurer = (Configurer) properties.getData();
         final int min = Animation.MINIMUM_FRAME;
         final Animation animation = Anim.createAnimation(Animation.DEFAULT_NAME, min, min + 1, 0.1, false, false);
-        ConfigAnimations.export(configurer.getRoot(), animation);
+        AnimationConfig.export(configurer.getRoot(), animation);
 
         configurer.save();
         part.setInput(properties, configurer);

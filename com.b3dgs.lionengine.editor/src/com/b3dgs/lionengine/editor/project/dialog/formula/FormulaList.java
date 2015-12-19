@@ -20,27 +20,25 @@ package com.b3dgs.lionengine.editor.project.dialog.formula;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.collision.CollisionConstraint;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
-import com.b3dgs.lionengine.game.collision.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.CollisionRange;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the formulas list, allowing to add and remove {@link CollisionFormula}.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FormulaList extends ObjectList<CollisionFormula> implements ObjectListListener<CollisionFormula>
 {
@@ -52,11 +50,11 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
      */
     private static void removeFormula(Media formulasConfig, CollisionFormula formula)
     {
-        final XmlNode node = Stream.loadXml(formulasConfig);
+        final XmlNode node = Xml.load(formulasConfig);
         final Collection<XmlNode> toRemove = new ArrayList<>();
-        for (final XmlNode nodeFormula : node.getChildren(ConfigCollisionFormula.FORMULA))
+        for (final XmlNode nodeFormula : node.getChildren(CollisionFormulaConfig.FORMULA))
         {
-            if (CollisionGroup.equals(nodeFormula.readString(ConfigTileGroup.NAME), formula.getName()))
+            if (CollisionGroup.same(nodeFormula.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), formula.getName()))
             {
                 toRemove.add(nodeFormula);
             }
@@ -66,7 +64,7 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
             node.removeChild(remove);
         }
         toRemove.clear();
-        Stream.saveXml(node, formulasConfig);
+        Xml.save(node, formulasConfig);
     }
 
     /** Last config used. */
@@ -98,7 +96,7 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
     public void loadFormulas(Media config)
     {
         this.config = config;
-        final ConfigCollisionFormula configCollisionFormula = ConfigCollisionFormula.create(Stream.loadXml(config));
+        final CollisionFormulaConfig configCollisionFormula = CollisionFormulaConfig.create(config);
         final Collection<CollisionFormula> formulas = configCollisionFormula.getFormulas().values();
         loadObjects(formulas);
     }
@@ -144,7 +142,7 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             final Media formulasConfig = mapCollision.getFormulasConfig();
             removeFormula(formulasConfig, formula);
-            mapCollision.loadCollisions(formulasConfig, map.getGroupsConfig());
+            mapCollision.loadCollisions();
         }
         else if (config != null)
         {

@@ -17,36 +17,26 @@
  */
 package com.b3dgs.lionengine.core.android;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.SurfaceHolder;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.InputDevice;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
-import com.b3dgs.lionengine.core.Renderer;
-import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.ScreenBase;
 
 /**
  * Screen implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
+public final class ScreenAndroid extends ScreenBase implements SurfaceHolder.Callback
 {
+    /** Max ready time in millisecond. */
+    private static final long READY_TIMEOUT = 5000L;
     /** View. */
-    static volatile ViewAndroid view;
+    private static volatile ViewAndroid view;
     /** Holder. */
-    static volatile SurfaceHolder holder;
+    private static volatile SurfaceHolder holder;
 
     /**
      * Set the view holder.
@@ -59,31 +49,19 @@ public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
         holder = view.getHolder();
     }
 
-    /** Input devices. */
-    private final Map<Class<? extends InputDevice>, InputDevice> devices;
-    /** Active graphic buffer reference. */
-    private final Graphic graphics;
-    /** Configuration reference. */
-    private final Config config;
-    /** Active sequence reference. */
-    Sequence sequence;
     /** Windowed canvas. */
-    private Canvas canvas;
+    private volatile Canvas canvas;
     /** Ready flag. */
-    private boolean ready;
+    private volatile boolean ready;
 
     /**
      * Internal constructor.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      */
-    ScreenAndroid(Renderer renderer)
+    ScreenAndroid(Config config)
     {
-        Check.notNull(renderer);
-
-        config = renderer.getConfig();
-        devices = new HashMap<Class<? extends InputDevice>, InputDevice>(1);
-        graphics = Graphics.createGraphic();
+        super(config, READY_TIMEOUT);
 
         setResolution(config.getOutput());
         holder.addCallback(this);
@@ -97,7 +75,7 @@ public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
     {
         final MouseAndroid mouse = new MouseAndroid();
         view.setMouse(mouse);
-        devices.put(mouse.getClass(), mouse);
+        devices.put(Mouse.class, mouse);
     }
 
     /**
@@ -134,6 +112,7 @@ public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
     @Override
     public void start()
     {
+        super.start();
         ready = false;
     }
 
@@ -181,33 +160,9 @@ public final class ScreenAndroid implements Screen, SurfaceHolder.Callback
     }
 
     @Override
-    public void setSequence(Sequence sequence)
-    {
-        this.sequence = sequence;
-    }
-
-    @Override
     public void setIcon(String filename)
     {
         // Nothing to do
-    }
-
-    @Override
-    public Graphic getGraphic()
-    {
-        return graphics;
-    }
-
-    @Override
-    public Config getConfig()
-    {
-        return config;
-    }
-
-    @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
-    {
-        return null;
     }
 
     @Override

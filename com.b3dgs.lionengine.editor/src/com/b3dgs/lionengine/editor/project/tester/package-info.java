@@ -18,7 +18,5 @@
 
 /**
  * Project tester package for menu activation condition.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.editor.project.tester;

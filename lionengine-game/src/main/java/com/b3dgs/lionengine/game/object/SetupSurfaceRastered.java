@@ -21,21 +21,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.trait.rasterable.Rasterable;
+import com.b3dgs.lionengine.game.raster.Rasterable;
 
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.game.configurer.Configurer
+ * @see com.b3dgs.lionengine.game.Configurer
  */
 public class SetupSurfaceRastered extends SetupSurface
 {
@@ -96,7 +94,7 @@ public class SetupSurfaceRastered extends SetupSurface
      * @param smoothRaster The raster smooth flag.
      * @throws LionEngineException If error when opening the media.
      */
-    public SetupSurfaceRastered(Media config, Media rasterFile, boolean smoothRaster) throws LionEngineException
+    public SetupSurfaceRastered(Media config, Media rasterFile, boolean smoothRaster)
     {
         super(config);
         this.rasterFile = rasterFile;
@@ -104,7 +102,7 @@ public class SetupSurfaceRastered extends SetupSurface
         if (rasterFile != null)
         {
             rastersAnim = new ArrayList<SpriteAnimated>(Rasterable.MAX_RASTERS);
-            final ConfigFrames framesData = ConfigFrames.create(getConfigurer());
+            final FramesConfig framesData = FramesConfig.create(getConfigurer());
             hf = framesData.getHorizontal();
             vf = framesData.getVertical();
             frameHeight = surface.getHeight() / vf;
@@ -154,7 +152,7 @@ public class SetupSurfaceRastered extends SetupSurface
      *
      * @throws LionEngineException If the raster data from the media are invalid.
      */
-    private void loadRasters() throws LionEngineException
+    private void loadRasters()
     {
         final int[][] rasters = Graphics.loadRaster(rasterFile);
         final int[] color = new int[rasters.length];
@@ -182,7 +180,7 @@ public class SetupSurfaceRastered extends SetupSurface
      * @param eb The end blue.
      * @throws LionEngineException If arguments are invalid.
      */
-    private void addRaster(int fr, int fg, int fb, int er, int eg, int eb) throws LionEngineException
+    private void addRaster(int fr, int fg, int fb, int er, int eg, int eb)
     {
         final ImageBuffer rasterBuf = Graphics.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, frameHeight);
         final SpriteAnimated raster = Drawable.loadSpriteAnimated(rasterBuf, hf, vf);

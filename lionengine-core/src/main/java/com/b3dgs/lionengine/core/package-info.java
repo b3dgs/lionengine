@@ -18,7 +18,5 @@
 
 /**
  * Lower level classes related, close to the engine.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.core;

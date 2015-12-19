@@ -23,8 +23,6 @@ import java.util.Comparator;
 
 /**
  * Comparator that prior directory first.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class DirectoryFolderComparator implements Comparator<File>, Serializable
 {

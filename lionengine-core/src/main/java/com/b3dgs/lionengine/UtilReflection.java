@@ -28,8 +28,6 @@ import java.util.Collection;
 
 /**
  * Utility class related to java reflection.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilReflection
 {
@@ -51,8 +49,7 @@ public final class UtilReflection
      * @throws NoSuchMethodException If no constructor found.
      * @throws LionEngineException If unable to create the instance or type is <code>null</code>.
      */
-    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params)
-            throws NoSuchMethodException, LionEngineException
+    public static <T> T create(Class<?> type, Class<?>[] paramTypes, Object... params) throws NoSuchMethodException
     {
         Check.notNull(type);
         try
@@ -121,21 +118,9 @@ public final class UtilReflection
         for (final Constructor<?> current : type.getDeclaredConstructors())
         {
             final Class<?>[] constructorTypes = current.getParameterTypes();
-            if (constructorTypes.length == paramTypes.length)
+            if (constructorTypes.length == paramTypes.length && hasCompatibleConstructor(paramTypes, constructorTypes))
             {
-                boolean found = true;
-                for (int i = 0; i < paramTypes.length; i++)
-                {
-                    if (!constructorTypes[i].isAssignableFrom(paramTypes[i]))
-                    {
-                        found = false;
-                        break;
-                    }
-                }
-                if (found)
-                {
-                    return current;
-                }
+                return current;
             }
         }
         throw new NoSuchMethodException("No compatible constructor found for "
@@ -178,10 +163,6 @@ public final class UtilReflection
         {
             throw new LionEngineException(exception, ERROR_METHOD, name);
         }
-        catch (final IllegalArgumentException exception)
-        {
-            throw new LionEngineException(exception, ERROR_METHOD, name);
-        }
         catch (final IllegalAccessException exception)
         {
             throw new LionEngineException(exception, ERROR_METHOD, name);
@@ -201,7 +182,7 @@ public final class UtilReflection
      * @return The field found.
      * @throws LionEngineException If field not found.
      */
-    public static <T> T getField(Object object, String name) throws LionEngineException
+    public static <T> T getField(Object object, String name)
     {
         Check.notNull(object);
         Check.notNull(name);
@@ -223,10 +204,6 @@ public final class UtilReflection
             return value;
         }
         catch (final NoSuchFieldException exception)
-        {
-            throw new LionEngineException(exception, ERROR_FIELD, name);
-        }
-        catch (final IllegalArgumentException exception)
         {
             throw new LionEngineException(exception, ERROR_FIELD, name);
         }
@@ -268,6 +245,25 @@ public final class UtilReflection
             return (Class<?>) object;
         }
         return object.getClass();
+    }
+
+    /**
+     * Check if there is a compatible constructor for the types.
+     * 
+     * @param paramTypes The types as input.
+     * @param constructorTypes The constructors to check.
+     * @return <code>true</code> if at least one constructor is compatible, <code>false</code> else.
+     */
+    private static boolean hasCompatibleConstructor(Class<?>[] paramTypes, Class<?>[] constructorTypes)
+    {
+        for (int i = 0; i < paramTypes.length; i++)
+        {
+            if (!constructorTypes[i].isAssignableFrom(paramTypes[i]))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

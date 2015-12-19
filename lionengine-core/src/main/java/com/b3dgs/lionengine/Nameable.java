@@ -19,8 +19,6 @@ package com.b3dgs.lionengine;
 
 /**
  * Represents something that can be designated by a name.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Nameable
 {

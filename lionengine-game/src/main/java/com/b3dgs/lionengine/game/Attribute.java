@@ -29,8 +29,6 @@ package com.b3dgs.lionengine.game;
  * vitality.increase(2);
  * print(vitality.get()); // print 3
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Attribute
 {

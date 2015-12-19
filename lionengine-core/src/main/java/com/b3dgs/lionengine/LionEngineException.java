@@ -25,20 +25,18 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.b3dgs.lionengine.core.Media;
-
 /**
  * Special engine exception implementation which limit the trace to the user side.
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class LionEngineException extends RuntimeException
 {
     /** Error private constructor. */
     public static final String ERROR_PRIVATE_CONSTRUCTOR = "Private constructor !";
+    /** Error unknown enum type. */
+    private static final String ERROR_UNKNOWN_ENUM = "Unknown enum: ";
     /** The main ignored package. */
     private static final String ENGINE_PREFIX = "com.b3dgs.lionengine.";
     /** The list of ignored external packages. */
@@ -59,7 +57,7 @@ public final class LionEngineException extends RuntimeException
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599464L;
     /** Activate the ignore flag. */
-    private static final AtomicBoolean IGNORE_ENGINE_TRACE = new AtomicBoolean(true);
+    private static final AtomicBoolean IGNORE_ENGINE_TRACE = new AtomicBoolean(false);
     /** Trace reason. */
     private static final String TRACE_REASON = "\n\tReason: ";
     /** Trace at. */
@@ -143,12 +141,9 @@ public final class LionEngineException extends RuntimeException
             {
                 add = true;
             }
-            if (add)
+            if (add && !neededTrace.contains(element))
             {
-                if (!neededTrace.contains(element))
-                {
-                    neededTrace.add(element);
-                }
+                neededTrace.add(element);
             }
         }
         return neededTrace.toArray(new StackTraceElement[neededTrace.size()]);
@@ -183,6 +178,16 @@ public final class LionEngineException extends RuntimeException
     }
 
     /**
+     * Create an exception related to an unknown enum type.
+     * 
+     * @param type The unknown enum type.
+     */
+    public LionEngineException(Enum<?> type)
+    {
+        this(ERROR_UNKNOWN_ENUM, type != null ? type.name() : "null");
+    }
+
+    /**
      * Create an exception related to another exception and messages if has.
      * 
      * @param exception The exception reference.
@@ -204,7 +209,7 @@ public final class LionEngineException extends RuntimeException
     {
         super(exception);
         final StringBuilder buffer = new StringBuilder(16);
-        if (media != null && media.getPath() != null)
+        if (media != null)
         {
             buffer.append("[").append(media.getPath()).append("] ");
         }
@@ -244,8 +249,8 @@ public final class LionEngineException extends RuntimeException
         }
         while (current != null)
         {
-            final String message = current.getMessage();
-            if (message != null)
+            final String currentMessage = current.getMessage();
+            if (currentMessage != null)
             {
                 buffer.append(Constant.NEW_LINE + Constant.TAB + Constant.TAB).append(current.getMessage());
             }
@@ -264,6 +269,27 @@ public final class LionEngineException extends RuntimeException
         return getFilteredTraces(stacks);
     }
 
+    /**
+     * Get the reason description.
+     * 
+     * @return The reason description.
+     */
+    private String getReasonDescription()
+    {
+        if (reason != null)
+        {
+            Throwable current = reason;
+            Throwable last = current;
+            while (current != null)
+            {
+                last = current;
+                current = current.getCause();
+            }
+            return TRACE_REASON + last;
+        }
+        return Constant.EMPTY_STRING;
+    }
+
     /*
      * RuntimeException
      */
@@ -275,28 +301,12 @@ public final class LionEngineException extends RuntimeException
         {
             stream.print(getClass().getSimpleName());
 
-            // Display traces
             boolean first = true;
             for (final StackTraceElement element : stack)
             {
                 if (first)
                 {
-                    final String reasonDesc;
-                    if (reason != null)
-                    {
-                        Throwable current = reason;
-                        Throwable last = current;
-                        while (current != null)
-                        {
-                            last = current;
-                            current = current.getCause();
-                        }
-                        reasonDesc = TRACE_REASON + last;
-                    }
-                    else
-                    {
-                        reasonDesc = Constant.EMPTY_STRING;
-                    }
+                    final String reasonDesc = getReasonDescription();
                     stream.println(Constant.DOUBLE_DOT + message + reasonDesc + Constant.NEW_LINE + TRACE_AT + element);
                 }
                 else
@@ -315,28 +325,12 @@ public final class LionEngineException extends RuntimeException
         {
             writer.print(getClass().getSimpleName());
 
-            // Display traces
             boolean first = true;
             for (final StackTraceElement element : stack)
             {
                 if (first)
                 {
-                    final String reasonDesc;
-                    if (reason != null)
-                    {
-                        Throwable current = reason;
-                        Throwable last = current;
-                        while (current != null)
-                        {
-                            last = current;
-                            current = current.getCause();
-                        }
-                        reasonDesc = TRACE_REASON + last;
-                    }
-                    else
-                    {
-                        reasonDesc = Constant.EMPTY_STRING;
-                    }
+                    final String reasonDesc = getReasonDescription();
                     writer.println(Constant.DOUBLE_DOT + message + reasonDesc + Constant.NEW_LINE + TRACE_AT + element);
                 }
                 else

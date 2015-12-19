@@ -26,14 +26,12 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.SurfaceConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Element properties part.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesSurface implements PropertiesProviderObject
 {
@@ -50,10 +48,10 @@ public class PropertiesSurface implements PropertiesProviderObject
      */
     public static void createAttributeSurface(Tree properties, Configurer configurer)
     {
-        final ConfigSurface surface = ConfigSurface.create(configurer);
+        final SurfaceConfig surface = SurfaceConfig.create(configurer);
         final TreeItem surfaceItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(surfaceItem, Messages.Properties_Surface, surface.getImage());
-        surfaceItem.setData(ConfigSurface.SURFACE_IMAGE);
+        surfaceItem.setData(SurfaceConfig.SURFACE_IMAGE);
         surfaceItem.setImage(ICON_SURFACE);
 
         final String icon = surface.getIcon();
@@ -73,7 +71,7 @@ public class PropertiesSurface implements PropertiesProviderObject
     {
         final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(iconItem, Messages.Properties_SurfaceIcon, icon);
-        iconItem.setData(ConfigSurface.SURFACE_ICON);
+        iconItem.setData(SurfaceConfig.SURFACE_ICON);
         iconItem.setImage(ICON_ICON);
     }
 
@@ -90,8 +88,8 @@ public class PropertiesSurface implements PropertiesProviderObject
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
-            surfaceNode.writeString(ConfigSurface.SURFACE_IMAGE, file);
+            final XmlNode surfaceNode = root.getChild(SurfaceConfig.SURFACE);
+            surfaceNode.writeString(SurfaceConfig.SURFACE_IMAGE, file);
             item.setText(PropertiesPart.COLUMN_VALUE, file);
             return true;
         }
@@ -111,8 +109,8 @@ public class PropertiesSurface implements PropertiesProviderObject
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
-            surfaceNode.writeString(ConfigSurface.SURFACE_ICON, file);
+            final XmlNode surfaceNode = root.getChild(SurfaceConfig.SURFACE);
+            surfaceNode.writeString(SurfaceConfig.SURFACE_ICON, file);
             item.setText(PropertiesPart.COLUMN_VALUE, file);
             return true;
         }
@@ -135,7 +133,7 @@ public class PropertiesSurface implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        if (root.hasChild(ConfigSurface.SURFACE))
+        if (root.hasChild(SurfaceConfig.SURFACE))
         {
             createAttributeSurface(properties, configurer);
         }
@@ -146,11 +144,11 @@ public class PropertiesSurface implements PropertiesProviderObject
     {
         final Object data = item.getData();
         boolean updated = false;
-        if (ConfigSurface.SURFACE_IMAGE.equals(data))
+        if (SurfaceConfig.SURFACE_IMAGE.equals(data))
         {
             updated = updateSurface(item, configurer);
         }
-        else if (ConfigSurface.SURFACE_ICON.equals(data))
+        else if (SurfaceConfig.SURFACE_ICON.equals(data))
         {
             updated = updateIcon(item, configurer);
         }

@@ -26,14 +26,13 @@ import org.eclipse.swt.graphics.Point;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Text;
 
 /**
  * Text implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class TextSwt implements Text
 {
@@ -139,7 +138,7 @@ final class TextSwt implements Text
                 ty = y;
                 break;
             default:
-                throw new RuntimeException();
+                throw new LionEngineException(alignment);
         }
         final Color c = new Color(device, color.getRed(), color.getGreen(), color.getBlue());
         gc.setForeground(c);

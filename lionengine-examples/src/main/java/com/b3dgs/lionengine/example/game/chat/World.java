@@ -22,11 +22,11 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorld;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
@@ -39,7 +39,6 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * World base implementation.
  * 
  * @param <N> The network type.
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 abstract class World<N extends NetworkedWorld> extends WorldGame implements NetworkedWorld
 {

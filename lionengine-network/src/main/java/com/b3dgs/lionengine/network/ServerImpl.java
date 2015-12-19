@@ -31,14 +31,13 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**
  * Server implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ServerImpl extends NetworkModel<ClientListener> implements Server
 {
@@ -141,7 +140,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 }
             }
             // Prepare first data
-            final ClientSocket client = new ClientSocket(lastId, socket, this);
+            final ClientSocket client = new ClientSocket(lastId, socket);
             client.setState(StateConnection.CONNECTING);
             client.getOut().writeByte(NetworkMessageSystemId.CONNECTING);
             client.getOut().writeByte(client.getId());
@@ -427,7 +426,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
     }
 
     @Override
-    public void start(String name, int port) throws LionEngineException
+    public void start(String name, int port)
     {
         if (!started)
         {
@@ -440,7 +439,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 bandwidthTimer.start();
                 started = true;
             }
-            catch (final Exception exception)
+            catch (final IOException exception)
             {
                 throw new LionEngineException(exception, "Cannot create the server !");
             }
@@ -503,7 +502,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 }
                 catch (final IOException exception)
                 {
-                    Verbose.exception(ServerImpl.class, "disconnect", exception);
+                    Verbose.exception(exception);
                 }
             }
             delete.add(client);
@@ -519,7 +518,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         {
             serverSocket.close();
         }
-        catch (final Exception exception)
+        catch (final IOException exception)
         {
             Verbose.warning(Server.class, "stop", "Error on closing server: ", exception.getMessage());
         }
@@ -534,10 +533,6 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         {
             // Get client data from socket
             final byte[] data = client.receiveMessages();
-            if (data == null)
-            {
-                continue;
-            }
             final DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));
             try
             {
@@ -558,14 +553,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             }
             finally
             {
-                try
-                {
-                    buffer.close();
-                }
-                catch (final IOException exception2)
-                {
-                    Verbose.exception(getClass(), "receiveMessages", exception2);
-                }
+                UtilFile.safeClose(buffer);
             }
         }
         // Remove deleted clients
@@ -620,17 +608,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 }
                 finally
                 {
-                    if (encode != null)
-                    {
-                        try
-                        {
-                            encode.close();
-                        }
-                        catch (final IOException exception2)
-                        {
-                            Verbose.exception(getClass(), "sendMessages", exception2);
-                        }
-                    }
+                    UtilFile.safeClose(encode);
                 }
             }
         }

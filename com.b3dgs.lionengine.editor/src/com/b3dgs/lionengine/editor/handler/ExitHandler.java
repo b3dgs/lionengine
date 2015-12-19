@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.editor.utility.UtilPart;
 
 /**
  * Exit handler implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ExitHandler
 {

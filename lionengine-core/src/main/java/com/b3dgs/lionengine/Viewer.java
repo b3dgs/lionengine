@@ -19,10 +19,8 @@ package com.b3dgs.lionengine;
 
 /**
  * Represents something that is able to view a scene, considered as the point of view of the user, such as a camera.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Viewer extends Localizable
+public interface Viewer extends Shape
 {
     /**
      * Follow automatically the specified localizable. The viewer location will be adjusted to the followed localizable.
@@ -64,10 +62,10 @@ public interface Viewer extends Localizable
     /**
      * Check if the localizable is inside the view area, and so, can be seen.
      * 
-     * @param localizable The localizable to check.
+     * @param shape The shape to check.
      * @param marginX The horizontal margin.
      * @param marginY The vertical margin.
      * @return <code>true</code> if viewable, <code>false</code> else.
      */
-    boolean isViewable(Localizable localizable, int marginX, int marginY);
+    boolean isViewable(Shape shape, int marginX, int marginY);
 }

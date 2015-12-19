@@ -31,8 +31,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Series of tool functions around the texts.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilText
 {
@@ -75,7 +73,22 @@ public final class UtilText
         {
             final String init = text.getText();
             final String newText = init.substring(0, event.start) + event.text + init.substring(event.end);
-            event.doit = newText.matches(match) || newText.isEmpty();
+            if (newText.matches(match) || newText.isEmpty())
+            {
+                try
+                {
+                    Double.parseDouble(newText);
+                    event.doit = true;
+                }
+                catch (final NumberFormatException exception)
+                {
+                    event.doit = false;
+                }
+            }
+            else
+            {
+                event.doit = false;
+            }
         };
     }
 

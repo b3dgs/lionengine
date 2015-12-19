@@ -36,8 +36,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Represents the zoom item label with its current value.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ZoomItem
 {
@@ -47,7 +45,7 @@ public class ZoomItem
     private static final int TEXT_HEIGHT = 8;
 
     /** Current zoom value. */
-    private Text zoom;
+    private Text zoomValue;
 
     /**
      * Create item.
@@ -64,12 +62,12 @@ public class ZoomItem
      */
     private int validateZoomValue()
     {
-        final int value = Integer.parseInt(zoom.getText());
+        final int value = Integer.parseInt(zoomValue.getText());
         final int percent;
         if (value < WorldZoom.ZOOM_MIN || value > WorldZoom.ZOOM_MAX)
         {
-            percent = UtilMath.fixBetween(value, WorldZoom.ZOOM_MIN, WorldZoom.ZOOM_MAX);
-            zoom.setText(String.valueOf(percent));
+            percent = UtilMath.clamp(value, WorldZoom.ZOOM_MIN, WorldZoom.ZOOM_MAX);
+            zoomValue.setText(String.valueOf(percent));
         }
         else
         {
@@ -108,18 +106,18 @@ public class ZoomItem
         layout.marginHeight = 0;
         parent.setLayout(layout);
 
-        zoom = new Text(parent, SWT.SINGLE | SWT.CENTER | SWT.BORDER);
-        zoom.setFont(font);
-        UtilText.createVerify(zoom, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
-        zoom.setText(String.valueOf(WorldZoom.ZOOM_DEFAULT));
-        zoom.addTraverseListener(event ->
+        zoomValue = new Text(parent, SWT.SINGLE | SWT.CENTER | SWT.BORDER);
+        zoomValue.setFont(font);
+        UtilText.createVerify(zoomValue, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
+        zoomValue.setText(String.valueOf(WorldZoom.ZOOM_DEFAULT));
+        zoomValue.addTraverseListener(event ->
         {
             if (event.detail == SWT.TRAVERSE_RETURN)
             {
                 chooseZoom();
             }
         });
-        zoom.pack();
+        zoomValue.pack();
 
         final Label label = new Label(parent, SWT.NONE);
         label.setFont(font);

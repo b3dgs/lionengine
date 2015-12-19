@@ -2,14 +2,14 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <jdk.version>1.6</jdk.version>
-        <jdk.home>${JDK_6_HOME}</jdk.home>
         <android.version>1.5_r3</android.version>
+        <android.sdk>3</android.sdk>
+        <android.maven.version>4.0.0-rc.2</android.maven.version>
     </properties>
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
         <artifactId>lionengine-parent</artifactId>
-        <version>8.1.0</version>
+        <version>8.2.0</version>
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-core-android</artifactId>
@@ -24,9 +24,11 @@
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <version>${android.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
+        <outputDirectory>bin/classes</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -34,16 +36,19 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}.core.android</Bundle-SymbolicName>
+                        <Import-Package>*</Import-Package>
+                        <Require-Bundle>${project.groupId}.core</Require-Bundle>
                     </instructions>
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>${android.maven.version}</version>
                 <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
-                    <executable>${jdk.home}/bin/javac</executable>
+                    <sdk>
+                        <platform>${android.sdk}</platform>
+                    </sdk>
                 </configuration>
             </plugin>
         </plugins>

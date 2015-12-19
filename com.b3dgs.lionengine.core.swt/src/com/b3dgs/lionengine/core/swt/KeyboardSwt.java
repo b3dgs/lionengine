@@ -29,8 +29,6 @@ import org.eclipse.swt.events.KeyListener;
 
 /**
  * Keyboard input implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class KeyboardSwt implements Keyboard, KeyListener
 {
@@ -63,9 +61,9 @@ public final class KeyboardSwt implements Keyboard, KeyListener
     private Integer down = DOWN;
 
     /**
-     * Internal constructor.
+     * Constructor.
      */
-    KeyboardSwt()
+    public KeyboardSwt()
     {
         lastKeyName = ' ';
         lastCode = Integer.valueOf(-1);
@@ -128,13 +126,10 @@ public final class KeyboardSwt implements Keyboard, KeyListener
     @Override
     public boolean isPressedOnce(Integer key)
     {
-        if (keys.contains(key))
+        if (keys.contains(key) && !pressed.contains(key))
         {
-            if (!pressed.contains(key))
-            {
-                pressed.add(key);
-                return true;
-            }
+            pressed.add(key);
+            return true;
         }
         return false;
     }

@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
 
 /**
  * Represents the {@link InputDevicePointer} updater for the state.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface StateInputPointerUpdater extends StateInputUpdater<InputDevicePointer>
 {

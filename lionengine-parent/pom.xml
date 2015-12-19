@@ -9,7 +9,7 @@
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
         <main-group-id>com.b3dgs.${project-name}</main-group-id>
-        <build-tools-project>${project-name}-buildtools</build-tools-project>
+        <buildtools-project>${project-name}-buildtools</buildtools-project>
         <encoding.type>UTF-8</encoding.type>
         <working.dir>${project.basedir}</working.dir>
         <project.build.sourceEncoding>${encoding.type}</project.build.sourceEncoding>
@@ -17,11 +17,13 @@
         <maven.version>3.3.3</maven.version>
         <tycho.version>0.23.1</tycho.version>
         <junit.version>4.12</junit.version>
+        <jacoco.version>0.7.4.201502262128</jacoco.version>
         <maven-bundle.version>3.0.0</maven-bundle.version>
         <maven-compiler.version>3.3</maven-compiler.version>
         <maven-osgi-packaging.version>0.11.1</maven-osgi-packaging.version>
         <maven-jar.version>2.6</maven-jar.version>
         <maven-clean.version>2.6.1</maven-clean.version>
+        <maven-source.version>2.4</maven-source.version>
         <maven-javadoc.version>2.10.3</maven-javadoc.version>
         <maven-surfire.version>2.18.1</maven-surfire.version>
         <maven-checkstyle.version>2.16</maven-checkstyle.version>
@@ -30,24 +32,44 @@
         <maven-install.version>2.5.2</maven-install.version>
         <maven-resources.version>2.7</maven-resources.version>
         <maven-dependency.version>2.10</maven-dependency.version>
-        <checkstyle.version>6.9</checkstyle.version>
+        <maven-release.version>2.4.2</maven-release.version>
+        <checkstyle.version>6.11.1</checkstyle.version>
         <maven-eclipse.version>2.10</maven-eclipse.version>
         <pde-target-maven.version>1.0.1</pde-target-maven.version>
+        <maven-gpg.version>1.5</maven-gpg.version>
+        <nexus-staging-maven.version>1.6.3</nexus-staging-maven.version>
     </properties>
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
     <packaging>pom</packaging>
-    <version>8.1.0</version>
+    <version>8.2.0</version>
     <name>LionEngine</name>
     <description>Java 2D Game Engine</description>
     <url>https://github.com/b3dgs/lionengine</url>
     <organization>
         <name>Byron 3D Games Studio</name>
-        <url>www.b3dgs.com</url>
+        <url>http://www.b3dgs.com</url>
     </organization>
     <scm>
-        <url>https://github.com/b3dgs/lionengine.git</url>
+        <url>https://github.com/b3dgs/lionengine</url>
+        <connection>scm:git:git@github.com:b3dgs/lionengine.git</connection>
+        <developerConnection>scm:git:git@github.com:b3dgs/lionengine.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
+    <ciManagement>
+        <system>TravisCI</system>
+        <url>https://travis-ci.org/b3dgs/lionengine</url>
+    </ciManagement>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
     <developers>
         <developer>
             <id>DjThunder</id>
@@ -96,6 +118,7 @@
                 <module>../lionengine-buildtools</module>
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
+                <module>../com.b3dgs.lionengine.core.swt.test</module>
             </modules>
         </profile>
         <profile>
@@ -124,30 +147,6 @@
                 <module>../lionengine-buildtools</module>
                 <module>../lionengine-examples</module>
                 <module>../lionengine-tutorials</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>tests-core</id>
-            <modules>
-                <module>../lionengine-core-test</module>
-                <module>../lionengine-core-awt-test</module>
-                <module>../lionengine-game-test</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>tests-audio</id>
-            <modules>
-                <module>../lionengine-audio-wav-test</module>
-                <module>../lionengine-audio-midi-test</module>
-                <module>../lionengine-audio-sc68-test</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>tests-plugins</id>
-            <modules>
-                <module>../com.b3dgs.lionengine.target</module>
-                <module>../com.b3dgs.lionengine.core.swt</module>
-                <module>../com.b3dgs.lionengine.core.swt.test</module>
             </modules>
         </profile>
     </profiles>
@@ -218,6 +217,39 @@
                 <artifactId>maven-jar-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
             </plugin>
@@ -226,87 +258,70 @@
                 <artifactId>pde-target-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <configuration>
+                    <destFile>${project.build.directory}/jacoco-ut.exec</destFile>
+                    <dataFile>${project.build.directory}/jacoco-ut.exec</dataFile>
+                    <append>true</append>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <excludeTransitive>true</excludeTransitive>
+                            <outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>tycho-maven-plugin</artifactId>
-                    <version>${tycho.version}</version>
-                    <extensions>true</extensions>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven-gpg.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>target-platform-configuration</artifactId>
-                    <version>${tycho.version}</version>
-                    <configuration>
-                        <resolver>p2</resolver>
-                        <pomDependencies>consider</pomDependencies>
-                        <target>
-                            <artifact>
-                                <groupId>${main-group-id}</groupId>
-                                <artifactId>${main-group-id}.platform</artifactId>
-                                <version>${project.version}</version>
-                                <classifier>${main-group-id}.base</classifier>
-                            </artifact>
-                        </target>
-                        <environments>
-                            <environment>
-                                <os>linux</os>
-                                <ws>gtk</ws>
-                                <arch>x86</arch>
-                            </environment>
-                            <environment>
-                                <os>linux</os>
-                                <ws>gtk</ws>
-                                <arch>x86_64</arch>
-                            </environment>
-                            <environment>
-                                <os>win32</os>
-                                <ws>win32</ws>
-                                <arch>x86</arch>
-                            </environment>
-                            <environment>
-                                <os>win32</os>
-                                <ws>win32</ws>
-                                <arch>x86_64</arch>
-                            </environment>
-                            <environment>
-                                <os>macosx</os>
-                                <ws>cocoa</ws>
-                                <arch>x86_64</arch>
-                            </environment>
-                        </environments>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>tycho-compiler-plugin</artifactId>
-                    <version>${tycho.version}</version>
-                    <configuration>
-                        <compilerArguments>
-                            <inlineJSR/>
-                            <enableJavadoc/>
-                            <encoding>${encoding.type}</encoding>
-                        </compilerArguments>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>tycho-versions-plugin</artifactId>
-                    <version>${tycho.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.eclipse.tycho</groupId>
-                    <artifactId>tycho-surefire-plugin</artifactId>
-                    <version>${tycho.version}</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven-release.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -346,45 +361,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>${maven-dependency.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.felix</groupId>
-                    <artifactId>maven-bundle-plugin</artifactId>
-                    <version>${maven-bundle.version}</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <manifestLocation>META-INF</manifestLocation>
-                        <supportedProjectTypes>
-                            <supportedProjectType>jar</supportedProjectType>
-                        </supportedProjectTypes>
-                        <instructions>
-                            <Import-Package>org.junit;resolution:=optional, *</Import-Package>
-                            <Bundle-RequiredExecutionEnvironment>JavaSE-${jdk.version}</Bundle-RequiredExecutionEnvironment>
-                            <_removeheaders>
-                                Build-Jdk,Built-By,Bnd-LastModified,Created-By,Private-Package,Tool,Require-Capability,
-                                JDK_5_HOME,JDK_6_HOME,JDK_7_HOME,JDK_8_HOME 
-                            </_removeheaders>
-                        </instructions>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>bundle-manifest</id>
-                            <phase>process-classes</phase>
-                            <goals>
-                                <goal>manifest</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.sonatype.tycho</groupId>
-                    <artifactId>maven-osgi-packaging-plugin</artifactId>
-                    <version>${maven-osgi-packaging.version}</version>
-                    <configuration>
-                        <archive>
-                            <addMavenDescriptor>false</addMavenDescriptor>
-                        </archive>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -434,11 +410,11 @@
                         </dependency>
                     </dependencies>
                     <configuration>
-                        <propertiesLocation>../${build-tools-project}/checkstyle.properties</propertiesLocation>
-                        <propertyExpansion>dir=${project.basedir}/../${build-tools-project}</propertyExpansion>
-                        <configLocation>../${build-tools-project}/checkstyle.xml</configLocation>
-                        <headerLocation>../${build-tools-project}/header.txt</headerLocation>
-                        <suppressionsLocation>../${build-tools-project}/checkstyle-suppression.xml</suppressionsLocation>
+                        <propertiesLocation>../${buildtools-project}/checkstyle.properties</propertiesLocation>
+                        <propertyExpansion>dir=${project.basedir}/../${buildtools-project}</propertyExpansion>
+                        <configLocation>../${buildtools-project}/checkstyle.xml</configLocation>
+                        <headerLocation>../${buildtools-project}/header.txt</headerLocation>
+                        <suppressionsLocation>../${buildtools-project}/checkstyle-suppression.xml</suppressionsLocation>
                     </configuration>
                     <executions>
                         <execution>
@@ -471,17 +447,139 @@
                         <additionalConfig>
                             <file>
                                 <name>.checkstyle</name>
-                                <location>../${build-tools-project}/eclipse-checkstyle.xml</location>
+                                <location>../${buildtools-project}/eclipse-checkstyle.xml</location>
                             </file>
                         </additionalConfig>
                     </configuration>
                     <dependencies>
                         <dependency>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>${build-tools-project}</artifactId>
+                            <artifactId>${buildtools-project}</artifactId>
                             <version>${project.version}</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>tycho-maven-plugin</artifactId>
+                    <version>${tycho.version}</version>
+                    <extensions>true</extensions>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>target-platform-configuration</artifactId>
+                    <version>${tycho.version}</version>
+                    <configuration>
+                        <resolver>p2</resolver>
+                        <pomDependencies>consider</pomDependencies>
+                        <target>
+                            <artifact>
+                                <groupId>${main-group-id}</groupId>
+                                <artifactId>${main-group-id}.platform</artifactId>
+                                <version>${project.version}</version>
+                                <classifier>${main-group-id}.base</classifier>
+                            </artifact>
+                        </target>
+                        <environments>
+                            <environment>
+                                <os>win32</os>
+                                <ws>win32</ws>
+                                <arch>x86_64</arch>
+                            </environment>
+                            <environment>
+                                <os>win32</os>
+                                <ws>win32</ws>
+                                <arch>x86</arch>
+                            </environment>
+                            <environment>
+                                <os>linux</os>
+                                <ws>gtk</ws>
+                                <arch>x86_64</arch>
+                            </environment>
+                            <environment>
+                                <os>linux</os>
+                                <ws>gtk</ws>
+                                <arch>x86</arch>
+                            </environment>
+                            <environment>
+                                <os>macosx</os>
+                                <ws>cocoa</ws>
+                                <arch>x86_64</arch>
+                            </environment>
+                        </environments>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>tycho-compiler-plugin</artifactId>
+                    <version>${tycho.version}</version>
+                    <configuration>
+                        <compilerArguments>
+                            <inlineJSR/>
+                            <enableJavadoc/>
+                            <encoding>${encoding.type}</encoding>
+                        </compilerArguments>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>tycho-versions-plugin</artifactId>
+                    <version>${tycho.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>tycho-surefire-plugin</artifactId>
+                    <version>${tycho.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.tycho</groupId>
+                    <artifactId>maven-osgi-packaging-plugin</artifactId>
+                    <version>${maven-osgi-packaging.version}</version>
+                    <configuration>
+                        <archive>
+                            <addMavenDescriptor>false</addMavenDescriptor>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>${nexus-staging-maven.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>${maven-bundle.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <manifestLocation>META-INF</manifestLocation>
+                        <supportedProjectTypes>
+                            <supportedProjectType>jar</supportedProjectType>
+                        </supportedProjectTypes>
+                        <instructions>
+                            <Import-Package>org.junit;resolution:=optional, *</Import-Package>
+                            <Bundle-RequiredExecutionEnvironment>JavaSE-${jdk.version}</Bundle-RequiredExecutionEnvironment>
+                            <_removeheaders>
+                                Build-Jdk,Built-By,Bnd-LastModified,Created-By,Private-Package,Tool,Require-Capability,
+                                JDK_6_HOME,JDK_7_HOME,JDK_8_HOME 
+                            </_removeheaders>
+                        </instructions>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>bundle-manifest</id>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>manifest</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>lt.velykis.maven</groupId>

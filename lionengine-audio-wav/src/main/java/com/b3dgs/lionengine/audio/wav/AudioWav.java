@@ -18,12 +18,10 @@
 package com.b3dgs.lionengine.audio.wav;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Wav factory. Allows to create wav player.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AudioWav
 {
@@ -34,7 +32,7 @@ public final class AudioWav
      * @return The loaded sound.
      * @throws LionEngineException If media is <code>null</code>
      */
-    public static Wav loadWav(Media media) throws LionEngineException
+    public static Wav loadWav(Media media)
     {
         return new Wav(media);
     }
@@ -47,7 +45,7 @@ public final class AudioWav
      * @return The loaded Sound.
      * @throws LionEngineException If media is <code>null</code>
      */
-    public static Wav loadWav(Media media, int maxSimultaneous) throws LionEngineException
+    public static Wav loadWav(Media media, int maxSimultaneous)
     {
         return new Wav(media, maxSimultaneous);
     }

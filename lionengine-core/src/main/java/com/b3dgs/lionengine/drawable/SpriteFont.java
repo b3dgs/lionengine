@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 
 /**
  * <p>
@@ -42,8 +42,6 @@ import com.b3dgs.lionengine.core.Graphic;
  * <p>
  * As the SpriteFont is a sprite, is supports all sprite operations.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface SpriteFont extends Sprite
 {

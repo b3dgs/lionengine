@@ -17,13 +17,11 @@
  */
 package com.b3dgs.lionengine.example.game.background;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.background.CloudsGame;
 
 /**
  * Clouds implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Clouds extends CloudsGame
 {
@@ -36,7 +34,7 @@ class Clouds extends CloudsGame
      */
     public Clouds(Media path, int screenWidth, int decY)
     {
-        super(path, 160, 26, screenWidth, decY, false);
+        super(path, 160, 26, screenWidth, decY);
 
         setY(0, 0);
         setY(1, 30);

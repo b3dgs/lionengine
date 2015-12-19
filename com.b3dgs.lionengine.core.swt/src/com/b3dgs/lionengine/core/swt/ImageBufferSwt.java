@@ -26,15 +26,12 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * Image buffer implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ImageBufferSwt implements ImageBuffer
 {
@@ -44,7 +41,7 @@ final class ImageBufferSwt implements ImageBuffer
      * @param transparency The transparency.
      * @return The equivalence.
      */
-    static Transparency getTransparency(int transparency)
+    private static Transparency getTransparency(int transparency)
     {
         final Transparency value;
         switch (transparency)
@@ -86,7 +83,7 @@ final class ImageBufferSwt implements ImageBuffer
     {
         this.device = device;
         this.data = data;
-        transparency = ImageBufferSwt.getTransparency(data.getTransparencyType());
+        transparency = getTransparency(data.getTransparencyType());
     }
 
     /**
@@ -99,7 +96,7 @@ final class ImageBufferSwt implements ImageBuffer
         device = image.getDevice();
         this.image = image;
         data = image.getImageData();
-        transparency = ImageBufferSwt.getTransparency(data.getTransparencyType());
+        transparency = getTransparency(data.getTransparencyType());
     }
 
     /**
@@ -117,7 +114,7 @@ final class ImageBufferSwt implements ImageBuffer
      */
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         image = new Image(device, data);
     }
@@ -193,6 +190,13 @@ final class ImageBufferSwt implements ImageBuffer
     public int getHeight()
     {
         return data.height;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Image getSurface()
+    {
+        return image;
     }
 
     @Override

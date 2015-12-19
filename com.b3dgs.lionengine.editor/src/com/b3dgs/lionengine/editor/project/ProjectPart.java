@@ -27,8 +27,6 @@ import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -37,7 +35,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.project.handler.CollisionsEditHandler;
@@ -52,12 +51,11 @@ import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.editor.utility.UtilTree;
+import com.b3dgs.lionengine.game.Configurer;
 
 /**
  * Represents the resources explorer, depending of the opened project.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ProjectPart implements Focusable
 {
@@ -65,6 +63,8 @@ public final class ProjectPart implements Focusable
     public static final String ID = Activator.PLUGIN_ID + ".part.project";
     /** Menu ID. */
     public static final String MENU_ID = ProjectPart.ID + ".menu";
+    /** Error open file. */
+    private static final String ERROR_UNABLE_TO_OPEN_FILE = "Unable to open file: ";
 
     /**
      * Update the properties view with the selected media.
@@ -107,7 +107,7 @@ public final class ProjectPart implements Focusable
     /** Watcher. */
     private final FolderModificationWatcher watcher;
     /** Tree viewer. */
-    Tree tree;
+    private Tree tree;
     /** Tree creator. */
     private ProjectTreeCreator projectTreeCreator;
 
@@ -142,14 +142,7 @@ public final class ProjectPart implements Focusable
                 checkOpenFile();
             }
         });
-        tree.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                updateSelection();
-            }
-        });
+        UtilTree.setAction(tree, () -> updateSelection());
         tree.addMenuDetectListener(menuDetectEvent -> updateMenu());
         menuService.registerContextMenu(tree, ProjectPart.MENU_ID);
     }
@@ -184,7 +177,7 @@ public final class ProjectPart implements Focusable
      * @param project The project reference.
      * @throws LionEngineException If error while reading project children.
      */
-    public void setInput(Project project) throws LionEngineException
+    public void setInput(Project project)
     {
         tree.removeAll();
 
@@ -274,6 +267,7 @@ public final class ProjectPart implements Focusable
                 catch (final IOException exception)
                 {
                     // Not able to open the file, just skip
+                    Verbose.warning(ERROR_UNABLE_TO_OPEN_FILE, media.getFile().getAbsolutePath());
                 }
             }
         }

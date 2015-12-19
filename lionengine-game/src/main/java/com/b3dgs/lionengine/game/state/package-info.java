@@ -25,7 +25,5 @@
  * {@link com.b3dgs.lionengine.game.state.StateTransition} depending of the
  * {@link com.b3dgs.lionengine.game.state.StateInputUpdater}.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 package com.b3dgs.lionengine.game.state;

@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.example.game.background;
 
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.background.BackgroundComponent;
@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.game.background.Parallax;
 
 /**
  * Swamp background implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Swamp extends BackgroundGame
 {
@@ -96,8 +94,6 @@ class Swamp extends BackgroundGame
 
     /**
      * Backdrop represents the back background plus top background elements.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Backdrop implements BackgroundComponent
     {
@@ -123,8 +119,8 @@ class Swamp extends BackgroundGame
          */
         Backdrop(int screenWidth)
         {
-            backcolor = createElement("backcolor.png", 0, 0, false);
-            mountain = createElement("mountain.png", 0, 124, false);
+            backcolor = createElement("backcolor.png", 0, 0);
+            mountain = createElement("mountain.png", 0, 124);
             final int x = (int) (208 * scaleH);
             moonOffset = 40;
             moon = Swamp.createElementRastered("moon.png", x, moonOffset, Swamp.MOON_RASTERS);

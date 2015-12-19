@@ -24,6 +24,12 @@
    <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
+            id="com.b3dgs.lionengine.editor.project.active">
+         <test
+               property="com.b3dgs.lionengine.editor.projectTester.active">
+         </test>
+      </definition>
+      <definition
             id="com.b3dgs.lionengine.editor.resource.music">
          <test
                property="com.b3dgs.lionengine.editor.resourceExtensionTester.music">
@@ -230,6 +236,13 @@
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.tester.ProjectTester"
+            id="com.b3dgs.lionengine.editor.projectTester"
+            namespace="com.b3dgs.lionengine.editor.projectTester"
+            properties="active"
+            type="java.lang.Object">
+      </propertyTester>
       <propertyTester
             class="com.b3dgs.lionengine.editor.project.tester.ResourceExtensionTester"
             id="com.b3dgs.lionengine.editor.resourceExtensionTester"

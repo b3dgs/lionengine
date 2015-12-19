@@ -36,7 +36,6 @@ package com.b3dgs.lionengine.anim;
  * This class is Thread-Safe.
  * </p>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Animation
  * @see Animator
  */

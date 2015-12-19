@@ -32,8 +32,6 @@ import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Series of tool functions around the editor related to icons.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilIcon
 {
@@ -51,7 +49,7 @@ public final class UtilIcon
      * @return The icon instance.
      * @throws LionEngineException If error when getting icon.
      */
-    public static Image get(String icon) throws LionEngineException
+    public static Image get(String icon)
     {
         return get(Constant.EMPTY_STRING, icon);
     }
@@ -64,7 +62,7 @@ public final class UtilIcon
      * @return The icon instance.
      * @throws LionEngineException If error when getting icon.
      */
-    public static Image get(String root, String icon) throws LionEngineException
+    public static Image get(String root, String icon)
     {
         final Bundle bundle = Activator.getContext().getBundle();
         final String path = UtilFile.getPathSeparator(Constant.SLASH, UtilIcon.ICON_FOLDER, root, icon);

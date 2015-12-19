@@ -21,12 +21,10 @@ import javax.swing.UIManager;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Handle java theme selection.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Theme
 {
@@ -52,7 +50,7 @@ public enum Theme
      * @param theme The theme.
      * @throws LionEngineException If an error occurred when setting the theme.
      */
-    public static void set(Theme theme) throws LionEngineException
+    public static void set(Theme theme)
     {
         Check.notNull(theme);
 
@@ -72,7 +70,7 @@ public enum Theme
                 lookAndFeel = Theme.LOOK_GTK;
                 break;
             default:
-                Verbose.warning(Theme.class, "set", "Unknown theme: " + theme);
+                Verbose.warning("Unknown theme: " + theme);
                 lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
                 break;
         }

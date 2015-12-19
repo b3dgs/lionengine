@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.editor.world.updater;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -27,55 +26,64 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.swt.Mouse;
+import com.b3dgs.lionengine.editor.dialog.map.collision.assign.MapCollisionAssignDialog;
+import com.b3dgs.lionengine.editor.dialog.map.sheets.palette.SheetPaletteType;
+import com.b3dgs.lionengine.editor.dialog.map.sheets.palette.SheetsPaletteModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.FormulaItem;
+import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.TileSelectionListener;
-import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.editor.world.dialog.MapCollisionAssignDialog;
+import com.b3dgs.lionengine.editor.world.WorldView;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.collision.CollisionConstraint;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.collision.CollisionFunction;
-import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
-import com.b3dgs.lionengine.game.collision.CollisionGroup;
-import com.b3dgs.lionengine.game.collision.CollisionRange;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
-import com.b3dgs.lionengine.game.configurer.ConfigTileGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionConstraint;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
+import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
+import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileCollision;
-import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Line;
 import com.b3dgs.lionengine.geom.Point;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Handle the interaction with tiles.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldInteractionTile implements WorldMouseClickListener, WorldMouseMoveListener
 {
     /** Tile selection listener. */
-    private final Collection<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
+    private final List<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
     /** World part. */
-    private final WorldPart part;
+    private final WorldView view;
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
     private final MapTile map;
+    /** Map tile group reference. */
+    private final MapTileGroup mapGroup;
+    /** Palette model. */
+    private final PaletteModel palette;
     /** Selected tile. */
     private Tile selectedTile;
     /** Line collision assign. */
@@ -104,9 +112,11 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     public WorldInteractionTile(Services services)
     {
-        part = services.get(WorldPart.class);
+        view = services.get(WorldView.class);
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
+        mapGroup = services.get(MapTileGroup.class);
+        palette = services.get(PaletteModel.class);
     }
 
     /**
@@ -136,8 +146,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     public void verifyCollision(int offset)
     {
-        final Media config = map.getGroupsConfig();
-        final XmlNode groupNode = Stream.loadXml(config);
+        final Media config = mapGroup.getGroupsConfig();
+        final XmlNode groupNode = Xml.load(config);
         final List<Integer> keys = new ArrayList<>(markers.keySet());
         Collections.sort(keys);
         final int max = keys.size();
@@ -153,10 +163,10 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         }
         if (!markers.isEmpty())
         {
-            Stream.saveXml(groupNode, config);
-            map.loadGroups(config);
+            Xml.save(groupNode, config);
+            mapGroup.loadGroups(config);
             final MapTileCollision collision = map.getFeature(MapTileCollision.class);
-            collision.loadCollisions(collision.getFormulasConfig(), collision.getCollisionsConfig());
+            collision.loadCollisions();
             collision.createCollisionDraw();
         }
     }
@@ -195,12 +205,12 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         double h = collStart.getX();
         double v = collStart.getY();
 
-        final Map<Integer, Marker> markers = new TreeMap<>();
+        final Map<Integer, Marker> markersFound = new TreeMap<>();
         for (final Tile tile : map.getTilesHit(collStart.getX(), collStart.getY(), collEnd.getX(), collEnd.getY()))
         {
             final int x = (int) UtilMath.getRound(sx, h);
             final int y = (int) UtilMath.getRound(sy, v);
-            checkMarker(markers, tile, x, y);
+            checkMarker(markersFound, tile, x, y);
 
             if (tile == map.getTileAt(x, y))
             {
@@ -208,7 +218,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 v += sy;
             }
         }
-        return markers;
+        return markersFound;
     }
 
     /**
@@ -219,17 +229,71 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void updatePointerTile(int mx, int my)
     {
+        final Tile oldSelectedTile = selectedTile;
         if (map.isCreated())
         {
-            selectedTile = UtilWorld.getTile(map, camera, mx, my);
+            final Tile tile = UtilWorld.getTile(map, camera, mx, my);
+            final SheetPaletteType type = SheetsPaletteModel.INSTANCE.getSheetPaletteType();
+            updatePointerTile(tile, type);
         }
         else
         {
             selectedTile = null;
         }
-        for (final TileSelectionListener listener : tileSelectionListeners)
+        if (selectedTile != oldSelectedTile)
         {
-            listener.notifyTileSelected(selectedTile);
+            for (final TileSelectionListener listener : tileSelectionListeners)
+            {
+                listener.notifyTileSelected(selectedTile);
+                if (selectedTile != null)
+                {
+                    listener.notifyTileGroupSelected(mapGroup.getGroup(selectedTile));
+                }
+                else
+                {
+                    listener.notifyTileGroupSelected(MapTileGroupModel.NO_GROUP_NAME);
+                }
+            }
+        }
+    }
+
+    /**
+     * Update the pointer with current pointed tile depending of the palette.
+     * 
+     * @param tile The pointed tile.
+     * @param type The sheet palette type.
+     */
+    private void updatePointerTile(Tile tile, SheetPaletteType type)
+    {
+        switch (type)
+        {
+            case SELECTION:
+                selectedTile = tile;
+                break;
+            case EDITION:
+                selectedTile = null;
+                updateTileEdition(tile);
+                break;
+            default:
+                throw new LionEngineException(type);
+        }
+    }
+
+    /**
+     * Update the tile edition from palette.
+     * 
+     * @param tile The pointed tile.
+     */
+    private void updateTileEdition(Tile tile)
+    {
+        final TileRef palette = SheetsPaletteModel.INSTANCE.getSelectedTile();
+        if (tile != null && palette != null)
+        {
+            final Tile newTile = map.createTile(palette.getSheet(), palette.getNumber(), tile.getX(), tile.getY());
+            map.setTile(newTile);
+
+            final MapTileTransition mapTileTransition = map.getFeature(MapTileTransition.class);
+            mapTileTransition.resolve(newTile);
         }
     }
 
@@ -242,7 +306,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void updatePointerCollision(int mx, int my, boolean apply)
     {
-        final FormulaItem item = part.getToolItem(FormulaItem.ID, FormulaItem.class);
+        final FormulaItem item = view.getToolItem(FormulaItem.ID, FormulaItem.class);
         function = item.getFunction();
         if (function != null && collStart != null)
         {
@@ -281,12 +345,12 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
             if (Math.abs(x) > Math.abs(y))
             {
                 side = sideX;
-                collEnd = UtilWorld.getPoint(map, camera, startX + x, startY + (int) function.compute(x * side));
+                collEnd = UtilWorld.getPoint(camera, startX + x, startY + (int) function.compute(x * (double) side));
             }
             else
             {
                 side = sideY;
-                collEnd = UtilWorld.getPoint(map, camera, startX + (int) function.compute(y * side), startY + y);
+                collEnd = UtilWorld.getPoint(camera, startX + (int) function.compute(y * (double) side), startY + y);
             }
         }
         else
@@ -300,7 +364,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 side = -sideX;
             }
             final int rx = UtilMath.getRounded(x, (int) (1 / function.compute(1)));
-            collEnd = UtilWorld.getPoint(map, camera, startX + rx, startY + (int) function.compute(rx * side));
+            collEnd = UtilWorld.getPoint(camera, startX + rx, startY + (int) function.compute(rx * (double) side));
         }
     }
 
@@ -314,7 +378,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void checkMarker(Map<Integer, Marker> markers, Tile tile, int x, int y)
     {
-        final Marker marker = new Marker(x - tile.getX(), y - tile.getY());
+        final Marker marker = new Marker(x - (int) tile.getX(), y - (int) tile.getY());
         final Integer key = containsMarker(markers, marker);
 
         if (key != null)
@@ -374,9 +438,10 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final CollisionFormula formula = saveCollisionFormula(collision, fullName, function, index);
         final CollisionGroup group = saveCollisionGroup(collision, fullName, formula);
 
-        if (!group.getName().equals(tile.getGroup()))
+        final String tileGroup = mapGroup.getGroup(tile);
+        if (!group.getName().equals(tileGroup))
         {
-            PropertiesTile.changeTileGroup(groupNode, tile.getGroup(), group.getName(), tile);
+            PropertiesTile.changeTileGroup(groupNode, tileGroup, group.getName(), tile);
         }
     }
 
@@ -395,17 +460,17 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                                                   int index)
     {
         final Media config = collision.getFormulasConfig();
-        final XmlNode root = Stream.loadXml(config);
-        if (ConfigCollisionFormula.has(root, name))
+        final XmlNode root = Xml.load(config);
+        if (CollisionFormulaConfig.has(root, name))
         {
-            ConfigCollisionFormula.remove(root, name);
+            CollisionFormulaConfig.remove(root, name);
         }
 
         final CollisionRange range = new CollisionRange(Axis.Y, 0, map.getTileWidth() - 1, 0, map.getTileHeight() - 1);
         final CollisionFunction updatedFunction = updateFunction(function, index);
         final CollisionFormula formula = new CollisionFormula(name, range, updatedFunction, new CollisionConstraint());
-        ConfigCollisionFormula.export(root, formula);
-        Stream.saveXml(root, config);
+        CollisionFormulaConfig.export(root, formula);
+        Xml.save(root, config);
 
         return formula;
     }
@@ -448,15 +513,15 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     private CollisionGroup saveCollisionGroup(MapTileCollision collision, String name, CollisionFormula formula)
     {
         final Media config = collision.getCollisionsConfig();
-        final XmlNode root = Stream.loadXml(config);
-        if (ConfigCollisionGroup.has(root, name))
+        final XmlNode root = Xml.load(config);
+        if (CollisionGroupConfig.has(root, name))
         {
-            ConfigCollisionGroup.remove(root, name);
+            CollisionGroupConfig.remove(root, name);
         }
 
         final CollisionGroup group = new CollisionGroup(name, Arrays.asList(formula));
-        ConfigCollisionGroup.export(root, group);
-        Stream.saveXml(root, config);
+        CollisionGroupConfig.export(root, group);
+        Xml.save(root, config);
 
         return group;
     }
@@ -468,9 +533,9 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         final Object copy = PropertiesModel.INSTANCE.getCopyData();
         final String group = PropertiesModel.INSTANCE.getCopyText();
-        if (copy != null && selectedTile != null && ConfigTileGroup.GROUP.equals(copy))
+        if (copy != null && selectedTile != null && TileGroupsConfig.NODE_GROUP.equals(copy))
         {
-            PropertiesTile.changeTileGroup(map, selectedTile.getGroup(), group, selectedTile);
+            PropertiesTile.changeTileGroup(mapGroup, mapGroup.getGroup(selectedTile), group, selectedTile);
         }
     }
 
@@ -483,8 +548,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         startX = mx;
         startY = my;
-        collStart = UtilWorld.getPoint(map, camera, mx, my);
-        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_TILE))
+        collStart = UtilWorld.getPoint(camera, mx, my);
+        if (palette.isPalette(PaletteType.POINTER_TILE))
         {
             updatePointerTile(mx, my);
         }
@@ -497,7 +562,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     @Override
     public void onMouseReleased(int click, int mx, int my)
     {
-        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_COLLISION))
+        if (palette.isPalette(PaletteType.POINTER_COLLISION))
         {
             updatePointerCollision(mx, my, true);
             collStart = null;
@@ -513,7 +578,11 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     @Override
     public void onMouseMoved(int click, int oldMx, int oldMy, int mx, int my)
     {
-        if (WorldModel.INSTANCE.isPalette(PaletteType.POINTER_COLLISION) && collStart != null)
+        if (palette.isPalette(PaletteType.POINTER_TILE) && click > 0)
+        {
+            updatePointerTile(mx, my);
+        }
+        else if (palette.isPalette(PaletteType.POINTER_COLLISION) && collStart != null)
         {
             updatePointerCollision(mx, my, false);
             if (collEnd != null)

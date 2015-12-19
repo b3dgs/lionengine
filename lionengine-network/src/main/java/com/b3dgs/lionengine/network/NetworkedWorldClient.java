@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Networkable world interface client side.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface NetworkedWorldClient extends NetworkedWorld, ConnectionListener
 {
@@ -33,7 +31,7 @@ public interface NetworkedWorldClient extends NetworkedWorld, ConnectionListener
      * @param port The server port.
      * @throws LionEngineException If unable to connect.
      */
-    void connect(String ip, int port) throws LionEngineException;
+    void connect(String ip, int port);
 
     /**
      * Set the client new name.

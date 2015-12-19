@@ -24,8 +24,6 @@ import java.util.Properties;
 
 /**
  * Generate project elements.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ProjectGenerator
 {

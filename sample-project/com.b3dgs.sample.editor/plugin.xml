@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.e4.ui.workbench.swt.E4Application"
+            name="Sample Editor">
+         <property
+               name="appName"
+               value="Sample Editor">
+         </property>
+         <property
+               name="lifeCycleURI"
+               value="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.Manager">
+         </property>
+         <property
+               name="applicationXMI"
+               value="platform:/plugin/com.b3dgs.lionengine.editor/Application.e4xmi">
+         </property>
+      </product>
+   </extension>
+   <extension
+         id="com.b3dgs.sample.editor.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            apply="always"
+            uri="fragment.e4xmi">
+      </fragment>
+      <processor
+            apply="always"
+            beforefragment="false"
+            class="com.b3dgs.sample.editor.ApplicationConfiguration">
+      </processor>
+   </extension>
+</plugin>

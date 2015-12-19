@@ -22,10 +22,10 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.core.InputDevicePointer;
-import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * Handle the {@link State} and their {@link StateTransition}.
@@ -37,8 +37,6 @@ import com.b3dgs.lionengine.core.Updatable;
  * <li>{@link #start(Enum)}</li>
  * <li>{@link #update(double)}</li>
  * </ul>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class StateHandler implements Updatable
 {
@@ -75,7 +73,7 @@ public class StateHandler implements Updatable
      * @param input The input device reference.
      * @throws LionEngineException If input is <code>null</code>.
      */
-    public void addInput(InputDevice input) throws LionEngineException
+    public void addInput(InputDevice input)
     {
         Check.notNull(input);
         inputs.add(input);
@@ -165,10 +163,10 @@ public class StateHandler implements Updatable
     {
         if (inputType.isAssignableFrom(input.getClass()))
         {
-            final State next = current.checkTransitions(factory, inputType.cast(input));
-            if (next != null)
+            final Enum<?> type = current.checkTransitions(inputType.cast(input));
+            if (type != null)
             {
-                return next;
+                return factory.getState(type);
             }
         }
         return current;

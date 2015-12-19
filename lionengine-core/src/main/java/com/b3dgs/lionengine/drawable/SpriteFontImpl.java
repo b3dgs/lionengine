@@ -25,21 +25,19 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Font sprite implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteFontImpl implements SpriteFont
 {
@@ -62,14 +60,14 @@ final class SpriteFontImpl implements SpriteFont
      * @param th The vertical character number.
      * @throws LionEngineException If an error occurred when creating the font.
      */
-    SpriteFontImpl(Media media, Media mediaData, int tw, int th) throws LionEngineException
+    SpriteFontImpl(Media media, Media mediaData, int tw, int th)
     {
-        surface = Drawable.loadSpriteTiled(media, tw, th);
+        surface = new SpriteTiledImpl(media, tw, th);
         fontData = new TreeMap<Character, Data>();
         lineHeight = surface.getTileHeight();
 
         // Load data for each characters
-        final XmlNode letters = Stream.loadXml(mediaData);
+        final XmlNode letters = Xml.load(mediaData);
         final Collection<XmlNode> children = letters.getChildren();
         int id = 0;
 
@@ -84,19 +82,19 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
-    public void load() throws LionEngineException
+    public void load()
     {
         surface.load();
     }
 
     @Override
-    public void prepare() throws LionEngineException
+    public void prepare()
     {
         surface.prepare();
     }
 
     @Override
-    public void stretch(double percentWidth, double percentHeight) throws LionEngineException
+    public void stretch(double percentWidth, double percentHeight)
     {
         surface.stretch(percentWidth, percentHeight);
     }
@@ -108,7 +106,7 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
-    public void filter(Filter filter) throws LionEngineException
+    public void filter(Filter filter)
     {
         surface.filter(filter);
     }
@@ -143,7 +141,7 @@ final class SpriteFontImpl implements SpriteFont
             for (int j = 0; j < length; j++)
             {
                 final Data d = fontData.get(Character.valueOf(text.charAt(j)));
-                surface.setLocation(x + lx - width, y + ly + d.getHeight());
+                surface.setLocation(x + lx - (double) width, y + ly + (double) d.getHeight());
                 surface.setTile(d.getId());
                 surface.render(g);
                 lx += d.getWidth() + 1;
@@ -185,7 +183,7 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
-    public void setAlpha(int alpha) throws LionEngineException
+    public void setAlpha(int alpha)
     {
         surface.setAlpha(alpha);
     }
@@ -197,7 +195,7 @@ final class SpriteFontImpl implements SpriteFont
     }
 
     @Override
-    public void setMirror(Mirror mirror) throws LionEngineException
+    public void setMirror(Mirror mirror)
     {
         surface.setMirror(mirror);
     }
@@ -320,8 +318,6 @@ final class SpriteFontImpl implements SpriteFont
 
     /**
      * Character data.
-     * 
-     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private static final class Data
     {

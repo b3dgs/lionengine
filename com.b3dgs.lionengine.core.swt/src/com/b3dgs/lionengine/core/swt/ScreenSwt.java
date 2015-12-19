@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
@@ -33,54 +31,41 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.InputDevice;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
-import com.b3dgs.lionengine.core.Renderer;
-import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.ScreenBase;
+import com.b3dgs.lionengine.core.ScreenListener;
 
 /**
  * Screen implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Keyboard
  * @see Mouse
  */
-abstract class ScreenSwt implements Screen, FocusListener
+abstract class ScreenSwt extends ScreenBase implements FocusListener
 {
-    /** Renderer reference. */
-    protected final Renderer renderer;
+    /** Max ready time in millisecond. */
+    private static final long READY_TIMEOUT = 5000L;
+
     /** Current display. */
     protected final Display display;
     /** Hidden cursor instance. */
     protected final Cursor cursorHidden;
     /** Default cursor instance. */
     protected final Cursor cursorDefault;
-    /** Configuration reference. */
-    protected final Config config;
     /** Frame reference. */
     protected final Shell frame;
-    /** Input devices. */
-    private final Map<Class<? extends InputDevice>, InputDevice> devices;
-    /** Active graphic buffer reference. */
-    private final Graphic graphics;
     /** Buffer reference. */
     protected Canvas buf;
     /** Image buffer reference. */
-    protected ImageBuffer buffer;
+    protected ImageBufferSwt buffer;
     /** Windowed canvas. */
     protected Canvas canvas;
-    /** Active sequence reference. */
-    private Sequence sequence;
     /** Graphic buffer reference. */
     private Graphic gbuf;
     /** Last GC used. */
@@ -93,22 +78,18 @@ abstract class ScreenSwt implements Screen, FocusListener
     /**
      * Internal base constructor.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not
      *             supported.
      */
-    protected ScreenSwt(Renderer renderer) throws LionEngineException
+    protected ScreenSwt(Config config)
     {
-        Check.notNull(renderer);
+        super(config, READY_TIMEOUT);
 
-        this.renderer = renderer;
-        display = UtilityImage.getDisplay();
-        config = renderer.getConfig();
+        display = ToolsSwt.getDisplay();
         cursorHidden = ToolsSwt.createHiddenCursor(display);
         cursorDefault = display.getSystemCursor(0);
-        graphics = Graphics.createGraphic();
-        devices = new HashMap<Class<? extends InputDevice>, InputDevice>(2);
-        frame = initMainFrame(config.isWindowed());
+        frame = initMainFrame(config);
 
         setResolution(config.getOutput());
         prepareFocusListener();
@@ -119,14 +100,14 @@ abstract class ScreenSwt implements Screen, FocusListener
     /**
      * Initialize the main frame.
      * 
-     * @param windowed <code>true</code> if windowed, <code>false</code> else.
+     * @param config The config reference.
      * @return The created main frame.
      * @throws LionEngineException If engine has not been started.
      */
-    private Shell initMainFrame(boolean windowed) throws LionEngineException
+    private Shell initMainFrame(Config config)
     {
         final Shell shell;
-        if (windowed)
+        if (config.isWindowed())
         {
             shell = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.NO_BACKGROUND);
         }
@@ -135,13 +116,13 @@ abstract class ScreenSwt implements Screen, FocusListener
             shell = new Shell(display, SWT.NO_TRIM | SWT.ON_TOP);
             shell.setBounds(display.getPrimaryMonitor().getBounds());
         }
-        shell.setText(EngineCore.getProgramName() + Constant.SPACE + EngineCore.getProgramVersion());
+        shell.setText(Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion());
         shell.addDisposeListener(new DisposeListener()
         {
             @Override
             public void widgetDisposed(DisposeEvent event)
             {
-                renderer.end();
+                onDisposed();
             }
         });
         return shell;
@@ -200,12 +181,23 @@ abstract class ScreenSwt implements Screen, FocusListener
     }
 
     /**
+     * Called when screen is disposed.
+     */
+    void onDisposed()
+    {
+        for (final ScreenListener listener : listeners)
+        {
+            listener.notifyClosed();
+        }
+    }
+
+    /**
      * Set the screen config. Initialize the display.
      * 
      * @param output The output resolution
      * @throws LionEngineException If resolution is not supported.
      */
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
         width = output.getWidth();
         height = output.getHeight();
@@ -218,6 +210,7 @@ abstract class ScreenSwt implements Screen, FocusListener
     @Override
     public void start()
     {
+        super.start();
         buf.setVisible(true);
         buf.update();
         gbuf = buffer.createGraphic();
@@ -241,7 +234,7 @@ abstract class ScreenSwt implements Screen, FocusListener
         if (!canvas.isDisposed())
         {
             final GC gc = new GC(canvas);
-            gc.drawImage(UtilityImage.getBuffer(buffer), 0, 0);
+            gc.drawImage(buffer.getSurface(), 0, 0);
             gc.dispose();
             if (lastGc != null)
             {
@@ -319,15 +312,9 @@ abstract class ScreenSwt implements Screen, FocusListener
             @Override
             public void run()
             {
-                frame.addKeyListener(new KeyListener(listener));
+                frame.addKeyListener(new KeyboardSwtListener(listener));
             }
         });
-    }
-
-    @Override
-    public void setSequence(Sequence sequence)
-    {
-        this.sequence = sequence;
     }
 
     @Override
@@ -345,24 +332,6 @@ abstract class ScreenSwt implements Screen, FocusListener
                 }
             }
         });
-    }
-
-    @Override
-    public Graphic getGraphic()
-    {
-        return graphics;
-    }
-
-    @Override
-    public Config getConfig()
-    {
-        return config;
-    }
-
-    @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
-    {
-        return type.cast(devices.get(type));
     }
 
     @Override
@@ -420,18 +389,18 @@ abstract class ScreenSwt implements Screen, FocusListener
     @Override
     public void focusGained(FocusEvent event)
     {
-        if (sequence != null)
+        for (final ScreenListener listener : listeners)
         {
-            sequence.onFocusGained();
+            listener.notifyFocusGained();
         }
     }
 
     @Override
     public void focusLost(FocusEvent event)
     {
-        if (sequence != null)
+        for (final ScreenListener listener : listeners)
         {
-            sequence.onLostFocus();
+            listener.notifyFocusLost();
         }
     }
 }

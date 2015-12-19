@@ -23,12 +23,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Client socket (bridge between server and client).
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ClientSocket
 {
@@ -50,10 +48,9 @@ final class ClientSocket
      * 
      * @param id The client id.
      * @param socket The socket reference.
-     * @param server The server reference.
      * @throws LionEngineException If error on client socket.
      */
-    ClientSocket(final byte id, final Socket socket, final ServerImpl server) throws LionEngineException
+    ClientSocket(final byte id, final Socket socket)
     {
         clientId = id;
         this.socket = socket;
@@ -120,7 +117,7 @@ final class ClientSocket
         }
         catch (final IOException exception)
         {
-            Verbose.exception(ClientSocket.class, "terminate", exception);
+            Verbose.exception(exception);
         }
         try
         {
@@ -128,7 +125,7 @@ final class ClientSocket
         }
         catch (final IOException exception)
         {
-            Verbose.exception(ClientSocket.class, "terminate", exception);
+            Verbose.exception(exception);
         }
         try
         {
@@ -136,7 +133,7 @@ final class ClientSocket
         }
         catch (final IOException exception)
         {
-            Verbose.exception(ClientSocket.class, "terminate", exception);
+            Verbose.exception(exception);
         }
         state = StateConnection.DISCONNECTED;
     }
@@ -163,9 +160,10 @@ final class ClientSocket
             }
             return data;
         }
-        catch (final Exception exception)
+        catch (final IOException exception)
         {
-            return null;
+            Verbose.exception(exception);
+            return new byte[0];
         }
     }
 
@@ -183,7 +181,7 @@ final class ClientSocket
         }
         catch (final IOException exception)
         {
-            Verbose.exception(ClientSocket.class, "sendMessage", exception);
+            Verbose.exception(exception);
         }
     }
 
@@ -201,7 +199,7 @@ final class ClientSocket
         }
         catch (final IOException exception)
         {
-            Verbose.exception(ClientSocket.class, "sendMessage", exception);
+            Verbose.exception(exception);
         }
     }
 

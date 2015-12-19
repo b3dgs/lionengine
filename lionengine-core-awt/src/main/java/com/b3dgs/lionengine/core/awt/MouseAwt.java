@@ -34,15 +34,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Config;
 
 /**
  * Mouse implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
+public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
 {
     /** Default button number. */
     private static final int DEFAULT_BUTTONS = 3;
@@ -89,14 +87,14 @@ final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, Mouse
     private boolean moved;
 
     /**
-     * Internal constructor.
+     * Constructor.
      */
-    MouseAwt()
+    public MouseAwt()
     {
-        super();
         final int mouseButtons = getButtonsNumber();
         clicks = new boolean[mouseButtons];
         clicked = new boolean[mouseButtons];
+        robot = createRobot();
         centerX = x;
         centerY = y;
         wx = 0;
@@ -105,16 +103,6 @@ final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, Mouse
         my = 0;
         oldX = x;
         oldY = y;
-        Robot r = null;
-        try
-        {
-            r = new Robot();
-        }
-        catch (final AWTException exception)
-        {
-            Verbose.critical(Mouse.class, "constructor", ERROR_ROBOT);
-        }
-        robot = r;
     }
 
     /**
@@ -122,10 +110,28 @@ final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, Mouse
      * 
      * @param config The config.
      */
-    void setConfig(Config config)
+    public void setConfig(Config config)
     {
         xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
         yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
+    }
+
+    /**
+     * Create a mouse robot.
+     * 
+     * @return The created robot, <code>null</code> if not available.
+     */
+    private Robot createRobot()
+    {
+        try
+        {
+            return new Robot();
+        }
+        catch (final AWTException exception)
+        {
+            Verbose.exception(exception, ERROR_ROBOT);
+            return null;
+        }
     }
 
     /**
@@ -162,6 +168,7 @@ final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, Mouse
         }
         catch (final HeadlessException exception)
         {
+            Verbose.exception(exception);
             return DEFAULT_BUTTONS;
         }
     }

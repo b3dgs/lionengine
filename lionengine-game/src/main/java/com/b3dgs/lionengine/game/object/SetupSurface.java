@@ -17,18 +17,16 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 
 /**
  * Define a structure used to create multiple objects, sharing the same data and {@link ImageBuffer}.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.game.configurer.Configurer
+ * @see com.b3dgs.lionengine.game.Configurer
  */
 public class SetupSurface extends Setup
 {
@@ -43,11 +41,11 @@ public class SetupSurface extends Setup
      * @param config The config media.
      * @throws LionEngineException If error when opening the media.
      */
-    public SetupSurface(Media config) throws LionEngineException
+    public SetupSurface(Media config)
     {
         super(config);
         final String conf = config.getPath();
-        final ConfigSurface surfaceData = ConfigSurface.create(getConfigurer());
+        final SurfaceConfig surfaceData = SurfaceConfig.create(getConfigurer());
         final String prefix = conf.substring(0, conf.lastIndexOf(Medias.getSeparator()) + 1);
         surfaceFile = Medias.create(prefix + surfaceData.getImage());
         surface = Graphics.getImageBuffer(surfaceFile);

@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.geom;
 
 /**
  * Represents a coordinate using double precision.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Coord
 {

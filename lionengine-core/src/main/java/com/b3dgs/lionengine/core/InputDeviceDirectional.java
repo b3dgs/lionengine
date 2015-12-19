@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.core;
 
 /**
  * Represents a directional device, supporting multiple axis.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface InputDeviceDirectional extends InputDevice
 {

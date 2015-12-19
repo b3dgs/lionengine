@@ -24,30 +24,21 @@ import java.awt.IllegalComponentStateException;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferStrategy;
-import java.util.HashMap;
-import java.util.Map;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.InputDevice;
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Renderer;
-import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.core.ScreenBase;
+import com.b3dgs.lionengine.core.ScreenListener;
 
 /**
  * Screen base implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Keyboard
  * @see Mouse
  */
-abstract class ScreenAwt implements Screen, FocusListener
+abstract class ScreenAwt extends ScreenBase implements FocusListener
 {
     /** Error message display. */
     private static final String ERROR_DISPLAY = "No available display !";
@@ -55,39 +46,9 @@ abstract class ScreenAwt implements Screen, FocusListener
     private static final Cursor CURSOR_HIDDEN = ToolsAwt.createHiddenCursor();
     /** Default cursor instance. */
     private static final Cursor CURSOR_DEFAULT = Cursor.getDefaultCursor();
+    /** Max ready time in millisecond. */
+    private static final long READY_TIMEOUT = 5000L;
 
-    /**
-     * Create a screen depending of the configuration.
-     * 
-     * @param renderer The renderer reference.
-     * @return The created screen.
-     * @throws LionEngineException If resolution is not supported.
-     */
-    static Screen createScreen(Renderer renderer) throws LionEngineException
-    {
-        final Config config = renderer.getConfig();
-        final Screen screen;
-        if (config.getApplet(AppletAwt.class) != null)
-        {
-            screen = new ScreenAppletAwt(renderer);
-        }
-        else if (config.isWindowed())
-        {
-            screen = new ScreenWindowedAwt(renderer);
-        }
-        else
-        {
-            screen = new ScreenFullAwt(renderer);
-        }
-        return screen;
-    }
-
-    /** Active graphic buffer reference. */
-    protected final Graphic graphics;
-    /** Configuration reference. */
-    protected final Config config;
-    /** Input devices. */
-    private final Map<Class<? extends InputDevice>, InputDevice> devices;
     /** Buffer strategy reference. */
     protected BufferStrategy buf;
     /** Component listener for keyboard inputs. */
@@ -96,8 +57,6 @@ abstract class ScreenAwt implements Screen, FocusListener
     protected Component componentForMouse;
     /** Component listener for cursor. */
     protected Component componentForCursor;
-    /** Active sequence reference. */
-    private Sequence sequence;
     /** Width. */
     private int width;
     /** Height. */
@@ -106,19 +65,17 @@ abstract class ScreenAwt implements Screen, FocusListener
     /**
      * Constructor base.
      * 
-     * @param renderer The renderer reference.
+     * @param config The config reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
-    protected ScreenAwt(Renderer renderer) throws LionEngineException
+    protected ScreenAwt(Config config)
     {
-        Check.notNull(renderer);
+        super(config, READY_TIMEOUT);
+
         if (GraphicsEnvironment.isHeadless())
         {
             throw new LionEngineException(ScreenAwt.ERROR_DISPLAY);
         }
-        config = renderer.getConfig();
-        graphics = Graphics.createGraphic();
-        devices = new HashMap<Class<? extends InputDevice>, InputDevice>(2);
     }
 
     /**
@@ -127,7 +84,7 @@ abstract class ScreenAwt implements Screen, FocusListener
      * @param output The output resolution
      * @throws LionEngineException If resolution is not supported.
      */
-    protected void setResolution(Resolution output) throws LionEngineException
+    protected void setResolution(Resolution output)
     {
         width = output.getWidth();
         height = output.getHeight();
@@ -193,6 +150,7 @@ abstract class ScreenAwt implements Screen, FocusListener
     @Override
     public void start()
     {
+        super.start();
         setResolution(config.getOutput());
         prepareFocusListener();
         addDeviceKeyboard();
@@ -201,11 +159,6 @@ abstract class ScreenAwt implements Screen, FocusListener
         {
             buf.show();
             graphics.setGraphic(buf.getDrawGraphics());
-        }
-        final Media icon = config.getIcon();
-        if (icon != null)
-        {
-            setIcon(icon.getPath());
         }
     }
 
@@ -250,31 +203,7 @@ abstract class ScreenAwt implements Screen, FocusListener
     @Override
     public void addKeyListener(InputDeviceKeyListener listener)
     {
-        componentForKeyboard.addKeyListener(new KeyListener(listener));
-    }
-
-    @Override
-    public void setSequence(Sequence sequence)
-    {
-        this.sequence = sequence;
-    }
-
-    @Override
-    public Graphic getGraphic()
-    {
-        return graphics;
-    }
-
-    @Override
-    public Config getConfig()
-    {
-        return config;
-    }
-
-    @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
-    {
-        return type.cast(devices.get(type));
+        componentForKeyboard.addKeyListener(new KeyboardAwtListener(listener));
     }
 
     @Override
@@ -322,18 +251,18 @@ abstract class ScreenAwt implements Screen, FocusListener
     @Override
     public void focusGained(FocusEvent event)
     {
-        if (sequence != null)
+        for (final ScreenListener listener : listeners)
         {
-            sequence.onFocusGained();
+            listener.notifyFocusGained();
         }
     }
 
     @Override
     public void focusLost(FocusEvent event)
     {
-        if (sequence != null)
+        for (final ScreenListener listener : listeners)
         {
-            sequence.onLostFocus();
+            listener.notifyFocusLost();
         }
     }
 }

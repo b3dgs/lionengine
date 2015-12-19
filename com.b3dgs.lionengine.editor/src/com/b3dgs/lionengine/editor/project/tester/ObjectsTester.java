@@ -22,7 +22,7 @@ import java.io.File;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilClass;
@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * Test if the folder contains objects.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ObjectsTester extends PropertyTester
 {

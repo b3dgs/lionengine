@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.ObjectRepresentation;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
@@ -43,8 +43,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Allows to control the object on the editor with the mouse.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ObjectControl
 {
@@ -110,7 +108,7 @@ public class ObjectControl
         {
             if (isSelected(object))
             {
-                object.move(mx - oldMx, my - oldMy);
+                object.move(mx - (double) oldMx, my - (double) oldMy);
             }
         }
     }
@@ -148,7 +146,7 @@ public class ObjectControl
                 if (setup instanceof SetupSurface)
                 {
                     final ObjectRepresentation object = factory.create(media, ObjectRepresentation.class);
-                    final Point point = UtilWorld.getPoint(map, camera, mx, my);
+                    final Point point = UtilWorld.getPoint(camera, mx, my);
                     object.place(UtilMath.getRounded(point.getX(), map.getTileWidth()),
                                  UtilMath.getRounded(point.getY(), map.getTileHeight()));
                     object.alignToGrid();
@@ -157,7 +155,7 @@ public class ObjectControl
             }
             catch (final LionEngineException exception)
             {
-                Verbose.exception(ObjectControl.class, "addAt", exception, media.getPath());
+                Verbose.exception(exception, media.getPath());
             }
         }
     }

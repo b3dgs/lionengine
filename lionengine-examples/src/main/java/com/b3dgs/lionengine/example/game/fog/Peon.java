@@ -17,29 +17,27 @@
  */
 package com.b3dgs.lionengine.example.game.fog;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.map.Fovable;
+import com.b3dgs.lionengine.game.map.FovableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.trait.fovable.Fovable;
-import com.b3dgs.lionengine.game.trait.fovable.FovableModel;
-import com.b3dgs.lionengine.game.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
 
 /**
  * Peon entity implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Peon extends ObjectGame implements Updatable, Renderable
 {

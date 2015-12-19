@@ -55,8 +55,6 @@ import com.b3dgs.lionengine.Mirror;
  * // Render
  * sprite.render(g);
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Sprite extends Image
 {
@@ -68,7 +66,7 @@ public interface Sprite extends Image
      * @param percentHeight The percent value for scaling height (strictly positive).
      * @throws LionEngineException If arguments are invalid.
      */
-    void stretch(double percentWidth, double percentHeight) throws LionEngineException;
+    void stretch(double percentWidth, double percentHeight);
 
     /**
      * Rotate the sprite with the specified angle in degree.
@@ -83,7 +81,7 @@ public interface Sprite extends Image
      * @param filter The filter to use.
      * @throws LionEngineException If the filter is not supported.
      */
-    void filter(Filter filter) throws LionEngineException;
+    void filter(Filter filter);
 
     /**
      * Set transparency color mask.
@@ -98,7 +96,7 @@ public interface Sprite extends Image
      * @param alpha The alpha value <code>[0 - 255]</code>.
      * @throws LionEngineException If argument is invalid.
      */
-    void setAlpha(int alpha) throws LionEngineException;
+    void setAlpha(int alpha);
 
     /**
      * Set fade value. The lower is the value, the blacker will be the fade effect. The higher is the value, the whiter
@@ -115,7 +113,7 @@ public interface Sprite extends Image
      * @param mirror Set the mirror type to use (must not be <code>null</code>).
      * @throws LionEngineException If invalid mirror type.
      */
-    void setMirror(Mirror mirror) throws LionEngineException;
+    void setMirror(Mirror mirror);
 
     /**
      * Return the current mirror state used.

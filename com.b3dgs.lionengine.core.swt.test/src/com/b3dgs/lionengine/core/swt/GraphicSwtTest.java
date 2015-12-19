@@ -17,82 +17,34 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.ColorGradient;
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.test.ViewerMock;
+import com.b3dgs.lionengine.GraphicTest;
+import com.b3dgs.lionengine.core.Graphics;
 
 /**
  * Test the graphic class.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class GraphicSwtTest
+public class GraphicSwtTest extends GraphicTest
 {
     /**
-     * Test the empty graphic.
+     * Prepare test.
      */
-    @Test
-    public void testEmptyGraphic()
+    @BeforeClass
+    public static void setUp()
     {
-        final GraphicSwt g = new GraphicSwt();
-        Assert.assertNull(g.getGraphic());
+        Graphics.setFactoryGraphic(new FactoryGraphicSwt());
     }
 
     /**
      * Test the graphic.
      */
+    @Override
     @Test
     public void testGraphic()
     {
-        final Image buffer = UtilityImage.createImage(100, 100, SWT.TRANSPARENCY_NONE);
-        final GC gc = new GC(buffer);
-        final GraphicSwt g = new GraphicSwt(gc);
-        final ImageData data = buffer.getImageData();
-
-        Assert.assertNotNull(g.getGraphic());
-        g.clear(0, 0, data.width, data.height);
-        g.copyArea(0, 0, data.width, data.height, 0, 0);
-
-        final ImageBuffer image = new ImageBufferSwt(buffer);
-        g.drawImage(image, 0, 0);
-
-        final TransformSwt transform = new TransformSwt();
-        g.drawImage(image, transform, 0, 0);
-        g.drawImage(image, transform, 0, 0);
-        g.drawImage(image, 0, 0, 0, 0, 0, 0, 0, 0);
-
-        g.drawLine(0, 0, 0, 0);
-        g.drawOval(0, 0, data.width, data.height, true);
-        g.drawOval(0, 0, data.width, data.height, false);
-        g.drawRect(0, 0, data.width, data.height, true);
-        g.drawRect(0, 0, data.width, data.height, false);
-
-        Assert.assertEquals(ColorRgba.WHITE.getRgba(), g.getColor().getRgba());
-        g.setColor(ColorRgba.BLUE);
-        Assert.assertEquals(ColorRgba.BLUE.getRgba(), g.getColor().getRgba());
-
-        g.setColorGradient(new ColorGradient(0, 0, ColorRgba.CYAN, 100, 100, ColorRgba.RED));
-        g.drawGradient(0, 0, 100, 100);
-
-        g.drawLine(new ViewerMock(), 0, 0, 0, 0);
-        g.drawOval(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, data.width, data.height, true);
-        g.drawRect(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, data.width, data.height, true);
-        g.drawGradient(new ViewerMock(), Origin.BOTTOM_LEFT, 0, 0, 100, 100);
-
-        g.dispose();
-
-        g.setGraphic(null);
-        Assert.assertNull(g.getGraphic());
-
-        image.dispose();
+        ScreenSwtTest.checkMultipleDisplaySupport();
+        super.testGraphic();
     }
 }

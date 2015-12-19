@@ -17,17 +17,22 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.Updatable;
 
 /**
  * Represents something that can be sequencable, updated at a specified rate.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Sequencable extends Updatable, Renderable
 {
+    /**
+     * Start sequence.
+     * 
+     * @param screen The screen used for the sequence.
+     */
+    void start(Screen screen);
+
     /**
      * Terminate sequence.
      */
@@ -40,7 +45,7 @@ public interface Sequencable extends Updatable, Renderable
      * @param arguments The sequence arguments list if needed by its constructor.
      * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
      */
-    void end(Class<? extends Sequence> nextSequenceClass, Object... arguments) throws LionEngineException;
+    void end(Class<? extends Sequencable> nextSequenceClass, Object... arguments);
 
     /**
      * Add a key listener.
@@ -62,7 +67,7 @@ public interface Sequencable extends Updatable, Renderable
      * @param newSource The new resolution used.
      * @throws LionEngineException If the resolution is <code>null</code>.
      */
-    void setResolution(Resolution newSource) throws LionEngineException;
+    void setResolution(Resolution newSource);
 
     /**
      * Set the system cursor visibility.
@@ -93,5 +98,20 @@ public interface Sequencable extends Updatable, Renderable
      * @return The input instance reference.
      * @throws LionEngineException If device not found.
      */
-    <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException;
+    <T extends InputDevice> T getInputDevice(Class<T> type);
+
+    /**
+     * Get the next sequence depending of the {@link #end()} or {@link #end(Class, Object...)} call.
+     * 
+     * @return The next sequence to be executed, <code>null</code> if none.
+     */
+    Sequencable getNextSequence();
+
+    /**
+     * Called when sequence is closing.
+     * 
+     * @param hasNextSequence <code>true</code> if there is a next sequence, <code>false</code> else (then application
+     *            will end definitely).
+     */
+    void onTerminated(boolean hasNextSequence);
 }

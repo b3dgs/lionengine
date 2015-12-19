@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LionEngine Core SWT
 Bundle-SymbolicName: com.b3dgs.lionengine.core.swt;singleton:=true
-Bundle-Version: 8.1.0
+Bundle-Version: 8.2.0
 Bundle-License: http://www.gnu.org/licenses/gpl-2.0.txt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.swt,
- com.b3dgs.lionengine.core;bundle-version="8.1.0"
+ com.b3dgs.lionengine.core;bundle-version="8.2.0"
 Bundle-ClassPath: .
 Export-Package: com.b3dgs.lionengine.core.swt

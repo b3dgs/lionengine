@@ -25,8 +25,6 @@ import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Set show hide collisions handler.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class SetShowCollisionsHandler
 {

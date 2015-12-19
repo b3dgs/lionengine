@@ -26,7 +26,8 @@ import java.util.concurrent.Semaphore;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Handle sound fx routine. The sound is expected to be short, as it has to be played quickly. It supports the following
@@ -58,8 +59,6 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * sound.stop();
  * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Wav
 {
@@ -97,7 +96,7 @@ public final class Wav
      * @param media The audio sound media.
      * @throws LionEngineException If media is <code>null</code>
      */
-    Wav(Media media) throws LionEngineException
+    Wav(Media media)
     {
         this(media, 1);
     }
@@ -109,7 +108,7 @@ public final class Wav
      * @param maxSimultaneous The maximum number of simultaneous sounds that can be played at the same time.
      * @throws LionEngineException If media is <code>null</code>
      */
-    Wav(Media media, int maxSimultaneous) throws LionEngineException
+    Wav(Media media, int maxSimultaneous)
     {
         Check.notNull(media);
 
@@ -237,7 +236,7 @@ public final class Wav
      * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
      * @throws LionEngineException If argument is invalid.
      */
-    public void setVolume(int volume) throws LionEngineException
+    public void setVolume(int volume)
     {
         Check.superiorOrEqual(volume, 0);
         Check.inferiorOrEqual(volume, 100);
@@ -290,6 +289,7 @@ public final class Wav
                     catch (final InterruptedException exception)
                     {
                         Thread.currentThread().interrupt();
+                        Verbose.exception(exception);
                     }
                     toStop.clear();
                     busySounds.clear();

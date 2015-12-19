@@ -29,9 +29,9 @@ import android.net.Uri;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
@@ -49,13 +49,11 @@ import com.b3dgs.lionengine.core.Verbose;
  * <p>
  * This class is Thread-Safe.
  * </p>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityMedia
 {
     /** System temp directory. */
-    public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir", null);
+    public static final String SYSTEM_TEMP_DIR = Constant.getSystemProperty("java.io.tmpdir", null);
     /** Error get stream. */
     private static final String ERROR_GET_STREAM = "Error on getting stream of: ";
     /** System separator. */
@@ -97,7 +95,7 @@ public final class UtilityMedia
     public static synchronized Media get(String... path)
     {
         Check.notNull(path);
-        return new MediaAndroid(getPathSeparator(separator, path));
+        return new MediaAndroid(separator, UtilFile.getPathSeparator(separator, path));
     }
 
     /**
