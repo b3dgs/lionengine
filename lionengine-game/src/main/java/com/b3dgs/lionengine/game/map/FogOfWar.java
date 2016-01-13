@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.Tiled;
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.tile.Tiled;
  * <ul>
  * <li>{@link #setTilesheet(SpriteTiled, SpriteTiled)}</li>
  * <li>{@link #setEnabled(boolean, boolean)}</li>
- * <li>{@link #create(MapTile, MapTileRenderer)} - Default or external {@link MapTileRenderer} must be set here (could
+ * <li>{@link #create(MapTile, Media)} - Default or external {@link MapTileRenderer} must be set here (could
  * be the {@link MapTile} or another one).</li>
  * <li>{@link MapTile#setTileRenderer(MapTileRenderer)} - Fog of war is a {@link MapTileRenderer} which will not
  * override the existing map renderer, but decorate it by rendering fog after the old one.</li>
@@ -41,33 +41,28 @@ import com.b3dgs.lionengine.game.tile.Tiled;
  */
 public class FogOfWar implements MapTileRenderer
 {
-    /** Fog map. */
-    private final Border20Map border20Map;
+    /** Hidden map. */
+    private final MapTileFog mapHidden;
+    /** Fogged map. */
+    private final MapTileFog mapFogged;
     /** Map tile renderer. */
     private MapTileRenderer renderer;
     /** Fog black tile. */
     private SpriteTiled hideTiles;
     /** Fog gray tiles. */
     private SpriteTiled fogTiles;
-    /** Fog visited border state. */
-    private Border20[][] visited;
-    /** Fog border state. */
-    private Border20[][] fog;
     /** Uses of hiding fog. */
     private boolean hideMap;
     /** Uses of fog. */
     private boolean fogMap;
-    /** Fog width in tile. */
-    private int widthInTile;
-    /** Fog height in tile. */
-    private int heightInTile;
 
     /**
      * Create a fog of war.
      */
     public FogOfWar()
     {
-        border20Map = new Border20Map(false);
+        mapHidden = new MapTileFog();
+        mapFogged = new MapTileFog();
         hideMap = false;
         fogMap = false;
     }
@@ -76,39 +71,13 @@ public class FogOfWar implements MapTileRenderer
      * Create a fog of war from a map.
      * 
      * @param map The map reference.
-     * @param renderer The renderer reference.
+     * @param config The fog configuration.
      */
-    public void create(MapTile map, MapTileRenderer renderer)
+    public void create(MapTile map, Media config)
     {
-        this.renderer = renderer;
-        widthInTile = map.getInTileWidth();
-        heightInTile = map.getInTileHeight();
-        visited = new Border20[heightInTile][widthInTile];
-        fog = new Border20[heightInTile][widthInTile];
-        border20Map.create(map);
-
-        for (int ty = 0; ty < heightInTile; ty++)
-        {
-            for (int tx = 0; tx < widthInTile; tx++)
-            {
-                if (hideMap)
-                {
-                    visited[ty][tx] = Border20.NONE;
-                }
-                else
-                {
-                    visited[ty][tx] = Border20.CENTER;
-                }
-                if (fogMap)
-                {
-                    fog[ty][tx] = Border20.NONE;
-                }
-                else
-                {
-                    fog[ty][tx] = Border20.CENTER;
-                }
-            }
-        }
+        renderer = map;
+        mapHidden.create(map, config, hideTiles);
+        mapFogged.create(map, config, fogTiles);
     }
 
     /**
@@ -118,17 +87,9 @@ public class FogOfWar implements MapTileRenderer
      */
     public void update(Collection<Fovable> fovables)
     {
-        if (fogMap)
-        {
-            for (int y = 0; y < heightInTile; y++)
-            {
-                Arrays.fill(fog[y], Border20.NONE);
-            }
-        }
-        for (final Fovable fovable : fovables)
-        {
-            updateFov(fovable);
-        }
+        mapHidden.update(fovables);
+        mapFogged.reset();
+        mapFogged.update(fovables);
     }
 
     /**
@@ -200,7 +161,7 @@ public class FogOfWar implements MapTileRenderer
      */
     public boolean isVisited(int tx, int ty)
     {
-        return Border20.NONE != Border20Map.get(visited, tx, ty);
+        return mapHidden.getTile(tx, ty).getNumber() == MapTileFog.NO_FOG;
     }
 
     /**
@@ -212,31 +173,7 @@ public class FogOfWar implements MapTileRenderer
      */
     public boolean isFogged(int tx, int ty)
     {
-        return Border20.NONE != Border20Map.get(fog, tx, ty);
-    }
-
-    /**
-     * Update fovable field of view (fog of war).
-     * 
-     * @param fovable The fovable reference.
-     */
-    private void updateFov(Fovable fovable)
-    {
-        final int tx = fovable.getInTileX();
-        final int ty = fovable.getInTileY();
-        final int tw = fovable.getInTileWidth();
-        final int th = fovable.getInTileHeight();
-        final int ray = fovable.getInTileFov();
-
-        if (hideMap)
-        {
-            border20Map.updateInclude(visited, tx, ty, tw, th, ray + 1);
-        }
-
-        if (fogMap)
-        {
-            border20Map.updateInclude(fog, tx, ty, tw, th, ray);
-        }
+        return mapFogged.getTile(tx, ty).getNumber() < MapTileFog.FOG;
     }
 
     /*
@@ -250,19 +187,20 @@ public class FogOfWar implements MapTileRenderer
 
         final int tx = tile.getInTileX();
         final int ty = tile.getInTileY();
-        final Border20 vid = Border20Map.get(visited, tx, ty);
-        final Border20 fid = Border20Map.get(fog, tx, ty);
 
-        if (fogMap && Border20.NONE != vid)
+        final Tile fogTile = mapFogged.getTile(tx, ty);
+        if (fogMap && fogTile != null && fogTile.getNumber() != MapTileFog.NO_FOG)
         {
             fogTiles.setLocation(x, y);
-            fogTiles.setTile(fid.ordinal());
+            fogTiles.setTile(fogTile.getNumber());
             fogTiles.render(g);
         }
-        if (hideMap)
+
+        final Tile hideTile = mapHidden.getTile(tx, ty);
+        if (hideMap && hideTile != null && hideTile.getNumber() != MapTileFog.NO_FOG)
         {
+            hideTiles.setTile(hideTile.getNumber());
             hideTiles.setLocation(x, y);
-            hideTiles.setTile(vid.ordinal());
             hideTiles.render(g);
         }
     }

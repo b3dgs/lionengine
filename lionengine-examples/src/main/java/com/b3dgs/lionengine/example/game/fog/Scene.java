@@ -93,7 +93,7 @@ class Scene extends Sequence
         fog.prepare();
         fogOfWar.setTilesheet(hide, fog);
         fogOfWar.setEnabled(true, true);
-        fogOfWar.create(map, map);
+        fogOfWar.create(map, Medias.create("fog.xml"));
 
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);

@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
@@ -47,12 +47,20 @@ public class MapTileGroupModel implements MapTileGroup
 
     /**
      * Create a map tile group.
-     * 
-     * @throws LionEngineException If services not found.
      */
     public MapTileGroupModel()
     {
         // Nothing to do
+    }
+
+    /**
+     * Create a map tile group.
+     * 
+     * @param services The services reference.
+     */
+    public MapTileGroupModel(@SuppressWarnings("unused") Services services)
+    {
+        // Compatibility with MapTile#createFeature
     }
 
     /*
