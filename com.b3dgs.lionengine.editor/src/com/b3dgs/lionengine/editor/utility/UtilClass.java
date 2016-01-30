@@ -117,11 +117,11 @@ public final class UtilClass
             }
             else if (file.isDirectory())
             {
-                getImplementing(type, file, null);
+                getImplementing(type, file);
             }
         }
 
-        found.addAll(getImplementing(type, Activator.getLocation(), Activator.class.getPackage().getName()));
+        found.addAll(getImplementing(type, Activator.getLocation()));
 
         return found;
     }
@@ -132,10 +132,9 @@ public final class UtilClass
      * @param <C> The class type.
      * @param type The type to check.
      * @param root The folder or jar to search.
-     * @param packageStart The starting package (<code>null</code> if none).
      * @return The implementing class list.
      */
-    public static <C> Collection<Class<? extends C>> getImplementing(Class<C> type, File root, String packageStart)
+    public static <C> Collection<Class<? extends C>> getImplementing(Class<C> type, File root)
     {
         final Collection<Class<? extends C>> found = new HashSet<>();
         if (root.isDirectory())
@@ -147,7 +146,7 @@ public final class UtilClass
                 final Collection<File> foldersToDo = new HashSet<>();
                 for (final File folder : folders)
                 {
-                    checkImplementing(folder, found, foldersToDo, type, root, packageStart);
+                    checkImplementing(folder, found, foldersToDo, type, root);
                 }
                 folders.clear();
                 folders.addAll(foldersToDo);
@@ -177,14 +176,12 @@ public final class UtilClass
      * @param foldersToDo The next folders to check.
      * @param type The type to check.
      * @param root The folder or jar to search.
-     * @param packageStart The starting package (<code>null</code> if none).
      */
     private static <C> void checkImplementing(File folder,
                                               Collection<Class<? extends C>> found,
                                               Collection<File> foldersToDo,
                                               Class<C> type,
-                                              File root,
-                                              String packageStart)
+                                              File root)
     {
         for (final File current : UtilFile.getFiles(folder))
         {
@@ -194,7 +191,7 @@ public final class UtilClass
             }
             else if (current.isFile())
             {
-                checkAddClass(found, type, root, packageStart, current.getPath());
+                checkAddClass(found, type, root, current.getPath());
             }
         }
     }
@@ -254,7 +251,7 @@ public final class UtilClass
                 final JarEntry entry = entries.nextElement();
                 if (!entry.isDirectory())
                 {
-                    checkAddClass(found, type, null, null, entry.getName());
+                    checkAddClass(found, type, null, entry.getName());
                 }
             }
         }
@@ -271,11 +268,10 @@ public final class UtilClass
      * @param <C> The class type.
      * @param type The type to check.
      * @param root The folder to search.
-     * @param packageStart The starting package (<code>null</code> if none).
      * @param current The current class file to check.
      * @return The implementing class reference.
      */
-    private static <C> Class<? extends C> getImplementing(Class<C> type, File root, String packageStart, String current)
+    private static <C> Class<? extends C> getImplementing(Class<C> type, File root, String current)
     {
         String name = current.replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
                              .replace(File.separator, Constant.DOT)
@@ -288,10 +284,7 @@ public final class UtilClass
         {
             name = name.substring(1);
         }
-        if (packageStart != null)
-        {
-            name = name.substring(name.indexOf(packageStart));
-        }
+
         final Project project = Project.getActive();
         final Class<?> clazz = project.getClass(name);
         if (type.isAssignableFrom(clazz) && clazz != type)
@@ -308,20 +301,15 @@ public final class UtilClass
      * @param found The current classes found.
      * @param type The type to check.
      * @param root The folder or jar to search.
-     * @param packageStart The starting package (<code>null</code> if none).
      * @param name The class name.
      */
-    private static <C> void checkAddClass(Collection<Class<? extends C>> found,
-                                          Class<C> type,
-                                          File root,
-                                          String packageStart,
-                                          String name)
+    private static <C> void checkAddClass(Collection<Class<? extends C>> found, Class<C> type, File root, String name)
     {
         if (name.endsWith(Property.EXTENSION_CLASS))
         {
             try
             {
-                final Class<? extends C> clazz = getImplementing(type, root, packageStart, name);
+                final Class<? extends C> clazz = getImplementing(type, root, name);
                 if (clazz != null)
                 {
                     found.add(clazz);
