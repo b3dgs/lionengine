@@ -117,7 +117,7 @@ public final class UtilClass
             }
             else if (file.isDirectory())
             {
-                getImplementing(type, file);
+                found.addAll(getImplementing(type, file));
             }
         }
 
@@ -191,7 +191,8 @@ public final class UtilClass
             }
             else if (current.isFile())
             {
-                checkAddClass(found, type, root, current.getPath());
+                final int prefix = Project.getActive().getClassesPath().getPath().length() + 1;
+                checkAddClass(found, type, root, current.getPath().substring(prefix));
             }
         }
     }
