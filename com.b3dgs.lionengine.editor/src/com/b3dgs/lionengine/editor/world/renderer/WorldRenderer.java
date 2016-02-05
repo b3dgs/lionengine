@@ -131,6 +131,7 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
 
         renderBackground(g, width, height);
         renderMap(g, width, height);
+        handler.update(1.0);
         handler.render(g);
 
         selection.render(g, COLOR_MOUSE_SELECTION);
@@ -167,8 +168,6 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     {
         if (map.isCreated())
         {
-            handler.update(1.0);
-
             final double scale = zoom.getScale();
             final int width = (int) Math.ceil(paintEvent.width / scale);
             final int height = (int) Math.ceil(paintEvent.height / scale);

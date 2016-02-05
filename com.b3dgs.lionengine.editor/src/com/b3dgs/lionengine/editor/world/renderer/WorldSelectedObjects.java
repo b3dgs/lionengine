@@ -67,7 +67,7 @@ public class WorldSelectedObjects implements WorldRenderListener
             {
                 final int x = (int) (camera.getViewpointX(object.getX()) * scale);
                 final int y = (int) ((camera.getViewpointY(object.getY()) - object.getHeight()) * scale);
-                g.drawRect(x, y, object.getWidth(), object.getHeight(), true);
+                g.drawRect(x, y, (int) (object.getWidth() * scale), (int) (object.getHeight() * scale), true);
             }
         }
     }
