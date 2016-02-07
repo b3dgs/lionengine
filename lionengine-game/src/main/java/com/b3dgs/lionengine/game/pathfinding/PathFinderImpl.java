@@ -22,6 +22,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * A path finder implementation that uses the AStar heuristic based algorithm to determine a path.
@@ -40,8 +41,6 @@ final class PathFinderImpl implements PathFinder
     private final int maxSearchDistance;
     /** Nodes array. */
     private final Node[][] nodes;
-    /** Diagonal movement flag. */
-    private final boolean allowDiagMovement;
     /** Heuristic used. */
     private final Heuristic heuristic;
 
@@ -50,15 +49,13 @@ final class PathFinderImpl implements PathFinder
      * 
      * @param map The map to be searched. Must have the {@link MapTilePath} feature.
      * @param maxSearchDistance The maximum depth we'll search before giving up.
-     * @param allowDiagMovement <code>true</code> if the search should try diagonal movement, <code>false</code> else.
      * @param heuristic The heuristic used to determine the search order of the map.
      */
-    PathFinderImpl(MapTile map, int maxSearchDistance, boolean allowDiagMovement, Heuristic heuristic)
+    PathFinderImpl(MapTile map, int maxSearchDistance, Heuristic heuristic)
     {
         this.heuristic = heuristic;
         this.map = map;
         this.maxSearchDistance = maxSearchDistance;
-        this.allowDiagMovement = allowDiagMovement;
         mapPath = map.getFeature(MapTilePath.class);
         nodes = new Node[map.getInTileHeight()][map.getInTileWidth()];
 
@@ -216,6 +213,9 @@ final class PathFinderImpl implements PathFinder
                            int maxDepth)
     {
         int nextDepth = maxDepth;
+        final Tile tile = map.getTile(current.getX(), current.getY());
+        final TilePath tilePath = tile.getFeature(TilePath.class);
+        final boolean allowDiagMovement = mover.isDiagonalAllowed(tilePath.getCategory());
         for (int y = -1; y < 2; y++)
         {
             for (int x = -1; x < 2; x++)

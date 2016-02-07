@@ -135,15 +135,10 @@ public class MapTilePathModel implements MapTilePath
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
                 {
-                    final TilePath tilePath = new TilePathModel();
-                    tile.addFeature(tilePath);
-
                     final String group = mapGroup.getGroup(tile);
                     final String category = config.getCategory(group);
-                    if (category != null)
-                    {
-                        tilePath.setCategory(category);
-                    }
+                    final TilePath tilePath = new TilePathModel(category);
+                    tile.addFeature(tilePath);
                 }
             }
         }

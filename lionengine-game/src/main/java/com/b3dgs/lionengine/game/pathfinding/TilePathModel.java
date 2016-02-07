@@ -29,13 +29,16 @@ public class TilePathModel implements TilePath
     /** Object id reference. */
     private final Set<Integer> objectsId;
     /** Category name. */
-    private String category;
+    private final String category;
 
     /**
      * Create a tile path.
+     * 
+     * @param category The category name.
      */
-    public TilePathModel()
+    public TilePathModel(String category)
     {
+        this.category = category;
         objectsId = new HashSet<Integer>();
     }
 
@@ -53,12 +56,6 @@ public class TilePathModel implements TilePath
     public void removeObjectId(Integer id)
     {
         objectsId.remove(id);
-    }
-
-    @Override
-    public void setCategory(String category)
-    {
-        this.category = category;
     }
 
     @Override

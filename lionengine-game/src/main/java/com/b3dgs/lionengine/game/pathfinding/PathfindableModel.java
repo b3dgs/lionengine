@@ -49,7 +49,6 @@ import com.b3dgs.lionengine.game.tile.Tiled;
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>
- * <li>{@link Orientable}</li>
  * </ul>
  * <p>
  * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
@@ -532,7 +531,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
         id = owner.getId();
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
                                           + map.getInTileHeight() * (double) map.getInTileHeight());
-        pathfinder = Astar.createPathFinder(map, range, true, Astar.createHeuristicClosest());
+        pathfinder = Astar.createPathFinder(map, range, Astar.createHeuristicClosest());
         categories = PathfindableConfig.create(owner.getConfigurer());
 
         transformable = owner.getTrait(Transformable.class);
@@ -793,6 +792,16 @@ public class PathfindableModel extends TraitModel implements Pathfindable
         if (categories.containsKey(category))
         {
             return categories.get(category).getCost();
+        }
+        throw new LionEngineException(ERROR_CATEGORY, category);
+    }
+
+    @Override
+    public boolean isDiagonalAllowed(String category)
+    {
+        if (categories.containsKey(category))
+        {
+            return categories.get(category).hasDiagonal();
         }
         throw new LionEngineException(ERROR_CATEGORY, category);
     }

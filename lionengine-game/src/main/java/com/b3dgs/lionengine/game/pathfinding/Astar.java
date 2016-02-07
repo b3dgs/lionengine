@@ -31,16 +31,12 @@ public final class Astar
      * @param map The map to be searched. Must have the {@link com.b3dgs.lionengine.game.pathfinding.MapTilePath}
      *            feature.
      * @param maxSearchDistance The maximum depth we'll search before giving up.
-     * @param allowDiagMovement <code>true</code> if the search should try diagonal movement, <code>false</code> else.
      * @param heuristic The heuristic used to determine the search order of the map.
      * @return The path finder instance.
      */
-    public static PathFinder createPathFinder(MapTile map,
-                                              int maxSearchDistance,
-                                              boolean allowDiagMovement,
-                                              Heuristic heuristic)
+    public static PathFinder createPathFinder(MapTile map, int maxSearchDistance, Heuristic heuristic)
     {
-        return new PathFinderImpl(map, maxSearchDistance, allowDiagMovement, heuristic);
+        return new PathFinderImpl(map, maxSearchDistance, heuristic);
     }
 
     /**

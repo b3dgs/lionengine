@@ -48,13 +48,6 @@ public interface TilePath extends TileFeature
     void removeObjectId(Integer id);
 
     /**
-     * Set the tile path category.
-     * 
-     * @param category The category name.
-     */
-    void setCategory(String category);
-
-    /**
      * Get the objects ID over this tile.
      * 
      * @return The objects ID over this tile.

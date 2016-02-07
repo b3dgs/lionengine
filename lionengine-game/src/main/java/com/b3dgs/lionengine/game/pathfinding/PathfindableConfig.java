@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the pathfindable data from a configurer.
- * 
- * @see com.b3dgs.lionengine.game.collision.object.Collision
  */
 public final class PathfindableConfig
 {
@@ -39,6 +37,8 @@ public final class PathfindableConfig
     public static final String COST = "cost";
     /** Block attribute. */
     public static final String BLOCK = "block";
+    /** Diagonal attribute. */
+    public static final String DIAGONAL = "diagonal";
 
     /**
      * Create the pathfindable data from node.
@@ -69,8 +69,9 @@ public final class PathfindableConfig
     {
         final double cost = node.readDouble(COST);
         final boolean blocking = node.readBoolean(BLOCK);
+        final boolean diagonal = node.readBoolean(DIAGONAL);
 
-        return new PathData(cost, blocking);
+        return new PathData(cost, blocking, diagonal);
     }
 
     /**

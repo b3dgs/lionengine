@@ -4,8 +4,8 @@
     <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
     <lionengine:surface image="Peon.png"/>
     <lionengine:size width="16" height="16"/>
-    <lionengine:pathfindable category="ground" cost="1" block="false"/>
-    <lionengine:pathfindable category="border" cost="1" block="true"/>
-    <lionengine:pathfindable category="tree" cost="1" block="true"/>
-    <lionengine:pathfindable category="water" cost="1" block="true"/>
+    <lionengine:pathfindable category="ground" cost="1" block="false" diagonal="true"/>
+    <lionengine:pathfindable category="border" cost="1" block="true" diagonal="true"/>
+    <lionengine:pathfindable category="tree" cost="1" block="true" diagonal="true"/>
+    <lionengine:pathfindable category="water" cost="1" block="true" diagonal="true"/>
 </lionengine:object>

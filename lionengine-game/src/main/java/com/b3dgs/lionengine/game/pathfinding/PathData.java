@@ -26,17 +26,21 @@ public class PathData
     private final double cost;
     /** Blocking flag. */
     private final boolean blocking;
+    /** Diagonal flag. */
+    private final boolean diagonal;
 
     /**
      * Create a path data.
      * 
      * @param cost The cost value.
      * @param blocking The blocking flag.
+     * @param diagonal The diagonal flag.
      */
-    public PathData(double cost, boolean blocking)
+    public PathData(double cost, boolean blocking, boolean diagonal)
     {
         this.cost = cost;
         this.blocking = blocking;
+        this.diagonal = diagonal;
     }
 
     /**
@@ -57,5 +61,15 @@ public class PathData
     public boolean isBlocking()
     {
         return blocking;
+    }
+
+    /**
+     * Get the diagonal flag.
+     * 
+     * @return <code>true</code> if diagonal is allowed, <code>false</code> else.
+     */
+    public boolean hasDiagonal()
+    {
+        return diagonal;
     }
 }

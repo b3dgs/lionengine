@@ -165,6 +165,15 @@ public interface Pathfindable extends Trait, Tiled, Orientable, Updatable, Rende
     double getCost(String category);
 
     /**
+     * Check if diagonal movement is allowed for the specified tile.
+     * 
+     * @param category The category the check.
+     * @return <code>true</code> if diagonal movement allowed, <code>false</code> else.
+     * @throws LionEngineException If category has not been found.
+     */
+    boolean isDiagonalAllowed(String category);
+
+    /**
      * Check if a path exists between object and destination.
      * 
      * @param tx The horizontal location in tile.

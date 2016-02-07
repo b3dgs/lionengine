@@ -60,6 +60,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * <li>Load added images {@link #load()}.</li>
  * <li>Set the input to use {@link #setInputDevice(InputDevicePointer)}.</li>
  * <li>Change the cursor image if when needed with {@link #setSurfaceId(int)}.</li>
+ * <li>Define the screen area {@link #setArea(int, int, int, int)}.</li>
  * </ul>
  * 
  * @see InputDevicePointer
