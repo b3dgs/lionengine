@@ -3,7 +3,7 @@
 <table>
     <tr>
         <td>
-            <a href="http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine"><img src="http://www.b3dgs.com/v6/projects/lionengine/lionengine.jpg"/></a>
+            <a href="http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine"><img src="http://www.b3dgs.com/v7/projects/lionengine/lionengine.jpg"/></a>
         </td>
         <td>
             <h4 align="center">Summary</h4>
@@ -114,8 +114,8 @@ Since the version __7__, it includes an abstract editor that should allow to wri
 
 ## Download
 
-* [Go to website](http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
-* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_8.2.0_lib.zip)
+* [Go to website](http://www.b3dgs.com/v7/page.php?lang=en&section=lionengine)
+* [Last version](http://www.b3dgs.com/v7/projects/lionengine/files/LionEngine_8.2.0_lib.zip)
 
 ## Installation
 
