@@ -233,6 +233,24 @@
                property="com.b3dgs.lionengine.editor.propertiesTesterTileCollision.editFormula">
          </test>
       </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.enablePathfindable">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterPathfindable.enablePathfindable">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.editPathfindable">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterPathfindable.editPathfindable">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.disablePathfindable">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterPathfindable.disablePathfindable">
+         </test>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -334,6 +352,13 @@
             properties="addSheets,editSheets"
             type="java.lang.Object">
       </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.properties.pathfindable.PropertiesPathfindableTester"
+            id="com.b3dgs.lionengine.editor.propertiesTesterPathfindable"
+            namespace="com.b3dgs.lionengine.editor.propertiesTesterPathfindable"
+            properties="enablePathfindable,editPathfindable,disablePathfindable"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
    <extension
          point="com.b3dgs.lionengine.editor.propertiesObject">
@@ -354,6 +379,9 @@
       </implementation>
       <implementation
             class="com.b3dgs.lionengine.editor.properties.collisioncategory.PropertiesCollisionCategory">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.properties.pathfindable.PropertiesPathfindable">
       </implementation>
    </extension>
    <extension

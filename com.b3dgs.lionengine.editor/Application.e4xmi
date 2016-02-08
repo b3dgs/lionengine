@@ -110,6 +110,15 @@
                   <children xsi:type="menu:DirectMenuItem" xmi:id="__k5_8OthEeSC_8GDJLuRUA" elementId="" label="%menu.formula-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/tileformula-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.tilecollision.handler.FormulaEditHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__k5_8ethEeSC_8GDJLuRUA" coreExpressionId="com.b3dgs.lionengine.editor.properties.editFormula"/>
                   </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_z8b4gM3gEeWY8q1xVkRPWg" elementId="" label="%menu.pathfindable-enable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfindable-enable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.pathfindable.handler.PathfindableEnableHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_z8b4gc3gEeWY8q1xVkRPWg" coreExpressionId="com.b3dgs.lionengine.editor.properties.enablePathfindable"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_0dk2sM3gEeWY8q1xVkRPWg" elementId="" label="%menu.pathfindable-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfindable-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.pathfindable.handler.PathfindableEditorHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_0dk2sc3gEeWY8q1xVkRPWg" coreExpressionId="com.b3dgs.lionengine.editor.properties.editPathfindable"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_0tStsM3gEeWY8q1xVkRPWg" elementId="" label="%menu.pathfindable-disable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfindable-disable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.pathfindable.handler.PathfindableDisableHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_0tStsc3gEeWY8q1xVkRPWg" coreExpressionId="com.b3dgs.lionengine.editor.properties.disablePathfindable"/>
+                  </children>
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_E-VP8BhKEeWF3Y2YGaz8Ig" elementId="" label="%menu.properties.copy" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/copy-property.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.PropertyCopyHandler"/>
                 </menus>
               </children>
