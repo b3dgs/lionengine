@@ -35,11 +35,15 @@ public class PathfindableEditor extends AbstractEditor
     /** Dialog icon. */
     public static final Image ICON = UtilIcon.get("pathfindable-editor", "dialog.png");
 
+    /** Path properties. */
+    private final PathProperties properties = new PathProperties();
     /** Configurer reference. */
     private final Configurer configurer;
+    /** Path list. */
+    private final PathList list;
 
     /**
-     * Create an animation editor and associate its configurer.
+     * Create a pathfindable editor and associate its configurer.
      * 
      * @param parent The parent reference.
      * @param configurer The entity configurer reference.
@@ -48,6 +52,7 @@ public class PathfindableEditor extends AbstractEditor
     {
         super(parent, Messages.PathfindableEditor_Title, ICON);
         this.configurer = configurer;
+        list = new PathList(properties);
     }
 
     /*
@@ -60,6 +65,11 @@ public class PathfindableEditor extends AbstractEditor
         final Composite content = new Composite(parent, SWT.NONE);
         content.setLayout(new GridLayout(2, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        list.create(content);
+        properties.create(content);
+        list.addListener(properties);
+        list.loadPaths(configurer);
     }
 
     @Override

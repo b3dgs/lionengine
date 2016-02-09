@@ -31,6 +31,15 @@ public final class Messages extends NLS
     /** Pathfindable editor title. */
     public static String PathfindableEditor_Title;
 
+    /** Path property category name. */
+    public static String PathProperties_Category;
+    /** Path property cost value. */
+    public static String PathProperties_Cost;
+    /** Path property block flag. */
+    public static String PathProperties_Block;
+    /** Path property diagonal flag. */
+    public static String PathProperties_Diagonal;
+
     /**
      * Initialize.
      */

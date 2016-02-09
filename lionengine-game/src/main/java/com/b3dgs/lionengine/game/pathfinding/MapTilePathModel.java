@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.pathfinding;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -37,6 +38,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class MapTilePathModel implements MapTilePath
 {
+    /** Categories list. */
+    private final Collection<String> categories = new ArrayList<String>();
     /** Map reference. */
     private final MapTile map;
     /** Map group reference. */
@@ -128,6 +131,8 @@ public class MapTilePathModel implements MapTilePath
     {
         final XmlNode nodePathfinding = Xml.load(pathfindingConfig);
         final PathfindingConfig config = PathfindingConfig.create(nodePathfinding);
+        categories.clear();
+        categories.addAll(config.getCategories());
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
             for (int tx = 0; tx < map.getInTileWidth(); tx++)
@@ -228,6 +233,12 @@ public class MapTilePathModel implements MapTilePath
             return mover.getCost(tilePath.getCategory());
         }
         return 0.0;
+    }
+
+    @Override
+    public Collection<String> getCategories()
+    {
+        return categories;
     }
 
     @Override

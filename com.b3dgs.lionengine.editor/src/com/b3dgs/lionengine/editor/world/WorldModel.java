@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
 
 /**
  * Contains the objects of the world.
@@ -67,6 +68,7 @@ public class WorldModel
 
         map.addFeature(new MapTileGroupModel());
         map.addFeature(new MapTileTransitionModel(services));
+        map.addFeature(new MapTilePathModel(services));
     }
 
     /**

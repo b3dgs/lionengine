@@ -40,23 +40,35 @@ import com.b3dgs.lionengine.editor.Action;
 public final class UtilCombo
 {
     /**
-     * Create a combo from an enumeration. Selected item can be accessed with {@link Combo#getData()}.
-     * Combo items are enum names as title case, converted by {@link UtilConversion#toTitleCase(String)}.
+     * Create a combo from a list of elements. Selected item can be accessed with {@link Combo#getData()}.
+     * Combo items are elements {@link Object#toString()}.
      * 
+     * @param <T> The combo object type value.
      * @param parent The parent reference.
-     * @param values The enumeration values.
+     * @param editable <code>true</code> if combo can be manually edited, <code>false</code> else.
+     * @param values The objects values.
      * @return The combo instance.
      */
-    public static Combo create(Composite parent, Enum<?>[] values)
+    @SafeVarargs
+    public static <T> Combo create(Composite parent, boolean editable, T... values)
     {
         final String[] items = new String[values.length];
-        final Map<String, Enum<?>> links = new HashMap<>();
+        final Map<String, T> links = new HashMap<>();
         for (int i = 0; i < values.length; i++)
         {
-            items[i] = UtilConversion.toTitleCase(values[i].name());
+            items[i] = UtilConversion.toTitleCase(values[i].toString());
             links.put(items[i], values[i]);
         }
-        final Combo combo = new Combo(parent, SWT.READ_ONLY);
+        final int flag;
+        if (editable)
+        {
+            flag = SWT.DROP_DOWN;
+        }
+        else
+        {
+            flag = SWT.READ_ONLY;
+        }
+        final Combo combo = new Combo(parent, flag);
         combo.setItems(items);
         if (items.length > 0)
         {
@@ -66,6 +78,44 @@ public final class UtilCombo
         UtilCombo.setAction(combo, () -> combo.setData(links.get(combo.getText())));
         combo.addModifyListener(e -> combo.setData(links.get(combo.getText())));
         return combo;
+    }
+
+    /**
+     * Create a combo from an enumeration. Selected item can be accessed with {@link Combo#getData()}.
+     * Combo items are enum names as title case, converted by {@link UtilConversion#toTitleCase(String)}.
+     * 
+     * @param parent The parent reference.
+     * @param values The enumeration values.
+     * @return The combo instance.
+     */
+    public static Combo create(Composite parent, Enum<?>[] values)
+    {
+        return create(parent, false, values);
+    }
+
+    /**
+     * Create a combo from a list of elements. Selected item can be accessed with {@link Combo#getData()}.
+     * Combo items are elements {@link Object#toString()}. Legend label will be added on left.
+     * 
+     * @param <T> The combo object type value.
+     * @param legend The combo legend.
+     * @param parent The parent reference.
+     * @param editable <code>true</code> if combo can be manually edited, <code>false</code> else.
+     * @param values The objects values.
+     * @return The combo instance.
+     */
+    @SafeVarargs
+    public static <T> Combo create(String legend, Composite parent, boolean editable, T... values)
+    {
+        final Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(2, false));
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        final Label textLegend = new Label(composite, SWT.HORIZONTAL);
+        textLegend.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        textLegend.setText(legend);
+
+        return create(composite, editable, values);
     }
 
     /**

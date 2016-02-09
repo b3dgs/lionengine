@@ -17,11 +17,15 @@
  */
 package com.b3dgs.lionengine.game.pathfinding;
 
+import com.b3dgs.lionengine.Nameable;
+
 /**
  * Represents the data associated to a path.
  */
-public class PathData
+public class PathData implements Nameable
 {
+    /** Category name. */
+    private final String category;
     /** Path cost. */
     private final double cost;
     /** Blocking flag. */
@@ -32,12 +36,14 @@ public class PathData
     /**
      * Create a path data.
      * 
+     * @param category The category name.
      * @param cost The cost value.
      * @param blocking The blocking flag.
      * @param diagonal The diagonal flag.
      */
-    public PathData(double cost, boolean blocking, boolean diagonal)
+    public PathData(String category, double cost, boolean blocking, boolean diagonal)
     {
+        this.category = category;
         this.cost = cost;
         this.blocking = blocking;
         this.diagonal = diagonal;
@@ -71,5 +77,15 @@ public class PathData
     public boolean hasDiagonal()
     {
         return diagonal;
+    }
+
+    /*
+     * Nameable
+     */
+
+    @Override
+    public String getName()
+    {
+        return category;
     }
 }

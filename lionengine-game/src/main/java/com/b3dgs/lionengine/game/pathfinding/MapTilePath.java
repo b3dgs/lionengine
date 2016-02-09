@@ -129,6 +129,13 @@ public interface MapTilePath extends MapTileFeature
     double getCost(Pathfindable mover, int tx, int ty);
 
     /**
+     * Return the categories.
+     * 
+     * @return The categories.
+     */
+    Collection<String> getCategories();
+
+    /**
      * Check if area if unused.
      * 
      * @param mover The object moving on map.

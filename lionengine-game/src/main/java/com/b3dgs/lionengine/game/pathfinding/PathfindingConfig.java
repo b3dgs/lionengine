@@ -92,6 +92,16 @@ public final class PathfindingConfig
     }
 
     /**
+     * Return the categories.
+     * 
+     * @return The categories.
+     */
+    public Collection<String> getCategories()
+    {
+        return categories.keySet();
+    }
+
+    /**
      * Clear all data.
      */
     public void clear()

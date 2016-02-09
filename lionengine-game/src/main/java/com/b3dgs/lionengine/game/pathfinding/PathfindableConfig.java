@@ -53,7 +53,7 @@ public final class PathfindableConfig
         for (final XmlNode node : configurer.getRoot().getChildren(PATHFINDABLE))
         {
             final PathData data = createPathData(node);
-            categories.put(node.readString(CATEGORY), data);
+            categories.put(data.getName(), data);
         }
         return categories;
     }
@@ -67,11 +67,12 @@ public final class PathfindableConfig
      */
     public static PathData createPathData(XmlNode node)
     {
+        final String category = node.readString(CATEGORY);
         final double cost = node.readDouble(COST);
         final boolean blocking = node.readBoolean(BLOCK);
         final boolean diagonal = node.readBoolean(DIAGONAL);
 
-        return new PathData(cost, blocking, diagonal);
+        return new PathData(category, cost, blocking, diagonal);
     }
 
     /**
