@@ -21,11 +21,13 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.mock.EngineMock;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.ScreenMock;
 import com.b3dgs.lionengine.mock.SequenceArgumentsMock;
@@ -159,10 +161,10 @@ public class LoaderTest
     /**
      * Test the loader interrupted unchecked exception.
      * 
-     * @throws Throwable If error.
+     * @throws InterruptedException If error.
      */
-    @Test(timeout = SequenceInterruptMock.PAUSE_MILLI * 2L, expected = Throwable.class)
-    public void testInterruptedUnchecked() throws Throwable
+    @Test(timeout = SequenceInterruptMock.PAUSE_MILLI)
+    public void testInterruptedUnchecked() throws InterruptedException
     {
         try
         {
@@ -197,10 +199,8 @@ public class LoaderTest
                 }
             });
             thread.start();
-            UtilTests.pause(SequenceInterruptMock.PAUSE_MILLI / 2L);
-            thread.interrupt();
             semaphore.acquire();
-            throw exception.get();
+            Assert.assertTrue(exception.get().getCause() instanceof NullPointerException);
         }
         finally
         {
@@ -216,6 +216,17 @@ public class LoaderTest
     {
         final Loader loader = new Loader();
         loader.start(CONFIG, SequenceSingleMock.class);
+        loader.start(CONFIG, SequenceSingleMock.class);
+    }
+
+    /**
+     * Test the loader engine started.
+     */
+    @Test
+    public void testEngineStarted()
+    {
+        Engine.start(new EngineMock("testEngineStarted", Version.DEFAULT));
+        final Loader loader = new Loader();
         loader.start(CONFIG, SequenceSingleMock.class);
     }
 
