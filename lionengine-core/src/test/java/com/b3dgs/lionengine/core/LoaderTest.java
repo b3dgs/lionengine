@@ -163,7 +163,7 @@ public class LoaderTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = SequenceInterruptMock.PAUSE_MILLI)
+    @Test(timeout = SequenceInterruptMock.PAUSE_MILLI * 2L)
     public void testInterruptedUnchecked() throws InterruptedException
     {
         try
