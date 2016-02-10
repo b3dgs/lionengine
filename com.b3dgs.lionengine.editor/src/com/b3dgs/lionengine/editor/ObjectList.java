@@ -82,7 +82,7 @@ public abstract class ObjectList<T extends Nameable>
     }
 
     /**
-     * Create an object list.
+     * Create an object list. The additional properties are used to save data to current selected element.
      * 
      * @param type The list class type.
      * @param properties The properties reference.
@@ -240,6 +240,22 @@ public abstract class ObjectList<T extends Nameable>
         for (final TreeItem item : objectsTree.getItems())
         {
             objects.add(cast(item.getData()));
+        }
+        return objects;
+    }
+
+    /**
+     * Get the objects list handled by the tree.
+     * 
+     * @return The objects list.
+     */
+    public Collection<String> getObjectsName()
+    {
+        final Collection<String> objects = new ArrayList<>();
+        for (final TreeItem item : objectsTree.getItems())
+        {
+            final String object = item.getText();
+            objects.add(object);
         }
         return objects;
     }

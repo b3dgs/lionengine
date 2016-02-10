@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
+import com.b3dgs.lionengine.editor.project.dialog.pathfinding.PathfindingEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.CollisionsEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.FormulasEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler;
@@ -47,6 +48,7 @@ import com.b3dgs.lionengine.editor.project.tester.CollisionsTester;
 import com.b3dgs.lionengine.editor.project.tester.FormulasTester;
 import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
+import com.b3dgs.lionengine.editor.project.tester.PathfindingTester;
 import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
@@ -257,6 +259,10 @@ public final class ProjectPart implements Focusable
             else if (CollisionsTester.isCollisionsFile(media))
             {
                 CollisionsEditHandler.executeHandler(tree.getShell());
+            }
+            else if (PathfindingTester.isPathfindingFile(media))
+            {
+                PathfindingEditHandler.executeHandler(tree.getShell());
             }
             else if (media.getFile().isFile())
             {

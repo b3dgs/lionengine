@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.game.pathfinding;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -42,91 +42,35 @@ public final class PathfindingConfig
     public static final String CATEGORY = "category";
 
     /**
-     * Create the pathfinding data from node.
+     * Import the category data from configuration.
      * 
-     * @param root The node root reference.
-     * @return The collisions group data.
-     * @throws LionEngineException If unable to read node.
+     * @param configPathfinding The pathfinding descriptor.
+     * @return The categories data.
+     * @throws LionEngineException If unable to read data.
      */
-    public static PathfindingConfig create(XmlNode root)
+    public static Collection<PathCategory> imports(Media configPathfinding)
     {
-        final PathfindingConfig config = new PathfindingConfig();
-        for (final XmlNode node : root.getChildren(TILE_PATH))
+        final Collection<PathCategory> categories = new HashSet<PathCategory>();
+        final XmlNode nodeCategories = Xml.load(configPathfinding);
+        for (final XmlNode node : nodeCategories.getChildren(TILE_PATH))
         {
-            final String category = node.readString(CATEGORY);
-            for (final XmlNode group : node.getChildren(TileGroupsConfig.NODE_GROUP))
+            final String name = node.readString(CATEGORY);
+            final Collection<String> groups = new HashSet<String>();
+            for (final XmlNode groupNode : node.getChildren(TileGroupsConfig.NODE_GROUP))
             {
-                config.addGroup(category, group.getText());
+                groups.add(groupNode.getText());
             }
+            final PathCategory category = new PathCategory(name, groups);
+            categories.add(category);
         }
-        return config;
+        return categories;
     }
 
-    /** Pathfinding data. */
-    private final Map<String, Collection<String>> categories;
-
     /**
-     * Constructor.
+     * Disabled constructor.
      */
     private PathfindingConfig()
     {
-        categories = new HashMap<String, Collection<String>>();
-    }
-
-    /**
-     * Get the group category.
-     * 
-     * @param group The group name.
-     * @return The category name (<code>null</code> if undefined).
-     */
-    public String getCategory(String group)
-    {
-        for (final Map.Entry<String, Collection<String>> category : categories.entrySet())
-        {
-            if (category.getValue().contains(group))
-            {
-                return category.getKey();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Return the categories.
-     * 
-     * @return The categories.
-     */
-    public Collection<String> getCategories()
-    {
-        return categories.keySet();
-    }
-
-    /**
-     * Clear all data.
-     */
-    public void clear()
-    {
-        categories.clear();
-    }
-
-    /**
-     * Add a group to its category.
-     * 
-     * @param categoryName The category name.
-     * @param groupName The group name.
-     */
-    private void addGroup(String categoryName, String groupName)
-    {
-        final Collection<String> category;
-        if (categories.containsKey(categoryName))
-        {
-            category = categories.get(categoryName);
-        }
-        else
-        {
-            category = new ArrayList<String>();
-            categories.put(categoryName, category);
-        }
-        category.add(groupName);
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.editor.project.tester.CollisionsTester;
 import com.b3dgs.lionengine.editor.project.tester.FormulasTester;
 import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
+import com.b3dgs.lionengine.editor.project.tester.PathfindingTester;
 import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
@@ -67,6 +68,8 @@ public class ProjectTreeCreator
     public static final Image ICON_FORMULAS = UtilIcon.get(RESOURCES_FOLDER, "formulas.png");
     /** Collisions file icon. */
     public static final Image ICON_COLLISIONS = UtilIcon.get(RESOURCES_FOLDER, "collisions.png");
+    /** Pathfinding file icon. */
+    public static final Image ICON_PATHFINDING = UtilIcon.get(RESOURCES_FOLDER, "pathfinding.png");
     /** Meta-inf folder. */
     private static final String FOLDER_METAINF = "META-INF";
 
@@ -98,6 +101,10 @@ public class ProjectTreeCreator
         else if (CollisionsTester.isCollisionsFile(file))
         {
             image = ICON_COLLISIONS;
+        }
+        else if (PathfindingTester.isPathfindingFile(file))
+        {
+            image = ICON_PATHFINDING;
         }
         else
         {

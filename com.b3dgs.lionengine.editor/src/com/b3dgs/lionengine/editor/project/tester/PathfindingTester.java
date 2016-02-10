@@ -23,19 +23,19 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
+import com.b3dgs.lionengine.game.pathfinding.PathfindingConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Test if the folder contains collisions file.
+ * Test if the folder contains pathfinding file.
  */
-public final class CollisionsTester extends PropertyTester
+public final class PathfindingTester extends PropertyTester
 {
-    /** Can add collisions property. */
-    private static final String PROPERTY_ADD_COLLISIONS = "addCollisions";
-    /** Can edit collisions property. */
-    private static final String PROPERTY_EDIT_COLLISIONS = "editCollisions";
+    /** Can add pathfinding property. */
+    private static final String PROPERTY_ADD_PATHFINDING = "addPathfinding";
+    /** Can edit pathfinding property. */
+    private static final String PROPERTY_EDIT_PATHFINDING = "editPathfinding";
 
     /**
      * Check result depending of selection.
@@ -47,11 +47,11 @@ public final class CollisionsTester extends PropertyTester
     private static boolean check(Media selection, String property)
     {
         final boolean result;
-        if (PROPERTY_EDIT_COLLISIONS.equals(property))
+        if (PROPERTY_EDIT_PATHFINDING.equals(property))
         {
-            result = isCollisionsFile(selection);
+            result = isPathfindingFile(selection);
         }
-        else if (PROPERTY_ADD_COLLISIONS.equals(property))
+        else if (PROPERTY_ADD_PATHFINDING.equals(property))
         {
             result = selection.getFile().isDirectory();
         }
@@ -63,17 +63,17 @@ public final class CollisionsTester extends PropertyTester
     }
 
     /**
-     * Check if the media is a collisions descriptor.
+     * Check if the media is a pathfinding descriptor.
      * 
      * @param media The media to test.
      * @return <code>true</code> if valid, <code>false</code> else.
      */
-    public static boolean isCollisionsFile(Media media)
+    public static boolean isPathfindingFile(Media media)
     {
         try
         {
             final XmlNode root = Xml.load(media);
-            return CollisionGroupConfig.COLLISIONS.equals(root.getNodeName());
+            return PathfindingConfig.PATHFINDING.equals(root.getNodeName());
         }
         catch (final LionEngineException exception)
         {
@@ -84,7 +84,7 @@ public final class CollisionsTester extends PropertyTester
     /**
      * Create tester.
      */
-    public CollisionsTester()
+    public PathfindingTester()
     {
         // Nothing to do
     }

@@ -56,7 +56,7 @@ public final class UtilCombo
         final Map<String, T> links = new HashMap<>();
         for (int i = 0; i < values.length; i++)
         {
-            items[i] = UtilConversion.toTitleCase(values[i].toString());
+            items[i] = values[i].toString();
             links.put(items[i], values[i]);
         }
         final int flag;
@@ -76,7 +76,7 @@ public final class UtilCombo
             combo.setData(links.get(items[0]));
         }
         UtilCombo.setAction(combo, () -> combo.setData(links.get(combo.getText())));
-        combo.addModifyListener(e -> combo.setData(links.get(combo.getText())));
+        combo.addModifyListener(event -> combo.setData(links.get(combo.getText())));
         return combo;
     }
 

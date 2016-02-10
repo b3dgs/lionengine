@@ -29,6 +29,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.Focusable;
@@ -140,6 +144,42 @@ public final class UtilSwt
         {
             ((MDirtyable) data).setDirty(dirty);
         }
+    }
+
+    /**
+     * Set the enabled state for parent and all its children.
+     * 
+     * @param parent The parent reference.
+     * @param enabled The enabled flag.
+     */
+    public static void setEnabled(Composite parent, boolean enabled)
+    {
+        for (final Control control : parent.getChildren())
+        {
+            if (control instanceof Composite)
+            {
+                setEnabled((Composite) control, enabled);
+            }
+            else
+            {
+                if (parent instanceof ToolBar)
+                {
+                    for (final ToolItem item : ((ToolBar) parent).getItems())
+                    {
+                        item.setEnabled(enabled);
+                    }
+                }
+                else if (parent instanceof Tree)
+                {
+                    for (final TreeItem item : ((Tree) parent).getItems())
+                    {
+                        item.setGrayed(!enabled);
+                    }
+                }
+                control.setEnabled(enabled);
+            }
+        }
+        parent.setEnabled(enabled);
     }
 
     /**

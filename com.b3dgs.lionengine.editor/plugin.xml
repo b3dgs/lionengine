@@ -144,6 +144,18 @@
          </test>
       </definition>
       <definition
+            id="com.b3dgs.lionengine.editor.pathfinding.add">
+         <test
+               property="com.b3dgs.lionengine.editor.pathfindingTester.addPathfinding">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.pathfinding.edit">
+         <test
+               property="com.b3dgs.lionengine.editor.pathfindingTester.editPathfinding">
+         </test>
+      </definition>
+      <definition
             id="com.b3dgs.lionengine.editor.properties.setSurface">
          <test
                property="com.b3dgs.lionengine.editor.propertiesTesterSurface.setSurface">
@@ -301,6 +313,13 @@
             id="com.b3dgs.lionengine.editor.collisionsTester"
             namespace="com.b3dgs.lionengine.editor.collisionsTester"
             properties="addCollisions,editCollisions"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.tester.PathfindingTester"
+            id="com.b3dgs.lionengine.editor.pathfindingTester"
+            namespace="com.b3dgs.lionengine.editor.pathfindingTester"
+            properties="addPathfinding,editPathfinding"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester

@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.editor.project.Project;
 public final class UtilDialog
 {
     /** Xml filter. */
-    private static final String[] XML = new String[]
+    public static final String[] XML = new String[]
     {
         "*.xml"
     };

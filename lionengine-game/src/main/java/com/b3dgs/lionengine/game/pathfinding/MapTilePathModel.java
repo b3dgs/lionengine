@@ -17,9 +17,10 @@
  */
 package com.b3dgs.lionengine.game.pathfinding;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -30,8 +31,6 @@ import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.Tiled;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Map tile path model implementation.
@@ -39,7 +38,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class MapTilePathModel implements MapTilePath
 {
     /** Categories list. */
-    private final Collection<String> categories = new ArrayList<String>();
+    private final Map<String, PathCategory> categories = new HashMap<String, PathCategory>();
     /** Map reference. */
     private final MapTile map;
     /** Map group reference. */
@@ -122,6 +121,24 @@ public class MapTilePathModel implements MapTilePath
         return new CoordTile(closestX, closestY);
     }
 
+    /**
+     * Get the group category.
+     * 
+     * @param group The group name.
+     * @return The category name (<code>null</code> if undefined).
+     */
+    private String getCategory(String group)
+    {
+        for (final PathCategory category : categories.values())
+        {
+            if (category.getGroups().contains(group))
+            {
+                return category.getName();
+            }
+        }
+        return null;
+    }
+
     /*
      * MapTilePath
      */
@@ -129,10 +146,12 @@ public class MapTilePathModel implements MapTilePath
     @Override
     public void loadPathfinding(Media pathfindingConfig)
     {
-        final XmlNode nodePathfinding = Xml.load(pathfindingConfig);
-        final PathfindingConfig config = PathfindingConfig.create(nodePathfinding);
+        final Collection<PathCategory> config = PathfindingConfig.imports(pathfindingConfig);
         categories.clear();
-        categories.addAll(config.getCategories());
+        for (final PathCategory category : config)
+        {
+            categories.put(category.getName(), category);
+        }
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
             for (int tx = 0; tx < map.getInTileWidth(); tx++)
@@ -141,7 +160,7 @@ public class MapTilePathModel implements MapTilePath
                 if (tile != null)
                 {
                     final String group = mapGroup.getGroup(tile);
-                    final String category = config.getCategory(group);
+                    final String category = getCategory(group);
                     final TilePath tilePath = new TilePathModel(category);
                     tile.addFeature(tilePath);
                 }
@@ -238,7 +257,7 @@ public class MapTilePathModel implements MapTilePath
     @Override
     public Collection<String> getCategories()
     {
-        return categories;
+        return categories.keySet();
     }
 
     @Override
