@@ -17,6 +17,10 @@
  */
 package com.b3dgs.lionengine.audio.wav;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 
@@ -25,8 +29,19 @@ import com.b3dgs.lionengine.Media;
  */
 public final class AudioWav
 {
+    /** Channels handler. */
+    private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(new ThreadFactory()
+    {
+        @Override
+        public Thread newThread(Runnable runnable)
+        {
+            return new Thread(runnable, AudioWav.class.getSimpleName());
+        }
+    });
+
     /**
      * Load a sound file <code>(.wav)</code>.
+     * Don't forget to call {@link #terminate()} once program is finished.
      * 
      * @param media The audio sound media.
      * @return The loaded sound.
@@ -34,20 +49,15 @@ public final class AudioWav
      */
     public static Wav loadWav(Media media)
     {
-        return new Wav(media);
+        return new WavImpl(EXECUTOR, media);
     }
 
     /**
-     * Load a sound file <code>(.wav)</code>.
-     * 
-     * @param media The audio sound media.
-     * @param maxSimultaneous The maximum number of simultaneous sounds that can be played at the same time.
-     * @return The loaded Sound.
-     * @throws LionEngineException If media is <code>null</code>
+     * Terminate all audio task definitely. Must be called when program ends.
      */
-    public static Wav loadWav(Media media, int maxSimultaneous)
+    public static void terminate()
     {
-        return new Wav(media, maxSimultaneous);
+        EXECUTOR.shutdownNow();
     }
 
     /**

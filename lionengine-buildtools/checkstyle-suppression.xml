@@ -44,9 +44,7 @@
     <suppress checks="MethodName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding"/>
     <suppress checks="ParameterName" files="com.b3dgs.lionengine.audio.sc68.Sc68Binding"/>
     
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.audio.wav.Wav" lines="186, 195"/>
-    <suppress checks="AnonInnerLength" files="com.b3dgs.lionengine.audio.wav.Wav" lines="269"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.audio.wav.WavRoutine" lines="267"/>
+    <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.audio.wav.WavImpl"/>
 
     <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile"/>
     <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.dialog.map.groups.GroupsEditDialog"/>    

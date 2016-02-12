@@ -25,6 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
@@ -55,6 +56,7 @@ public class WavTest
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
+        AudioWav.terminate();
     }
 
     /**
@@ -68,12 +70,27 @@ public class WavTest
     }
 
     /**
+     * Test with invalid audio.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test
+    public void testInvalidAudio() throws InterruptedException
+    {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        final Wav wav = AudioWav.loadWav(Medias.create("invalid.wav"));
+        wav.play();
+        Thread.sleep(100);
+        Verbose.info("****************************************************************************************");
+    }
+
+    /**
      * Test with negative volume.
      */
     @Test(expected = LionEngineException.class)
     public void testNegativeVolume()
     {
-        sound.setVolume(-1);
+        sound.play(Align.CENTER, -1);
         Assert.fail();
     }
 
@@ -83,46 +100,29 @@ public class WavTest
     @Test(expected = LionEngineException.class)
     public void testOutOfRangeVolume()
     {
-        sound.setVolume(101);
+        sound.play(Align.CENTER, 101);
         Assert.fail();
     }
 
     /**
-     * Test Wav functions.
+     * Test wav functions.
      * 
      * @throws InterruptedException If error.
      */
     @Test
     public void testWav() throws InterruptedException
     {
-        sound.setVolume(50);
-        sound.setAlignment(Align.LEFT);
         sound.play();
-        Thread.sleep(200);
-
-        sound.setAlignment(Align.CENTER);
-        sound.play();
-        Thread.sleep(200);
-
-        sound.setAlignment(Align.RIGHT);
-        sound.play();
-        Thread.sleep(200);
+        sound.play(10);
+        sound.play(Align.CENTER, 50);
+        Thread.sleep(50);
         sound.stop();
 
-        final Wav soundSim = AudioWav.loadWav(mediaSound, 2);
-        soundSim.play();
-        soundSim.play(20);
-        soundSim.play();
-        Thread.sleep(200);
-        soundSim.play(100);
-        soundSim.play(100);
-        soundSim.terminate();
-
-        final Wav soundSim2 = AudioWav.loadWav(mediaSound, 2);
-        soundSim2.setVolume(50);
-        soundSim2.play();
-        soundSim2.play();
-        Thread.sleep(500);
-        soundSim2.terminate();
+        sound.play(Align.CENTER, 50, 0);
+        sound.play(Align.LEFT, 50, 200);
+        sound.play(Align.CENTER, 50, 400);
+        sound.play(Align.RIGHT, 50, 600);
+        sound.play(Align.CENTER, 50, 800);
+        Thread.sleep(1200);
     }
 }

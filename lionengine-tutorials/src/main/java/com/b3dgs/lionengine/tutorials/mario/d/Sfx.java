@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.audio.wav.AudioWav;
 import com.b3dgs.lionengine.audio.wav.Wav;
@@ -35,17 +36,6 @@ enum Sfx
     /** Audio file extension. */
     private static final String AUDIO_FILE_EXTENSION = ".wav";
 
-    /**
-     * Terminate all sounds.
-     */
-    public static void terminateAll()
-    {
-        for (final Sfx sfx : Sfx.values())
-        {
-            sfx.terminate();
-        }
-    }
-
     /** Sounds list composing the effect. */
     private final Wav sound;
 
@@ -56,20 +46,8 @@ enum Sfx
      */
     private Sfx(String sound)
     {
-        this(sound, 1);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param sound The sound.
-     * @param count The total number of sounds.
-     */
-    private Sfx(String sound, int count)
-    {
         final Media media = Medias.create("sfx", sound + Sfx.AUDIO_FILE_EXTENSION);
-        this.sound = AudioWav.loadWav(media, count);
-        this.sound.setVolume(20);
+        this.sound = AudioWav.loadWav(media);
     }
 
     /**
@@ -77,14 +55,6 @@ enum Sfx
      */
     public void play()
     {
-        sound.play();
-    }
-
-    /**
-     * Terminate all channels.
-     */
-    private void terminate()
-    {
-        sound.terminate();
+        sound.play(Align.CENTER, 50);
     }
 }

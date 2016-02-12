@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.midi.AudioMidi;
 import com.b3dgs.lionengine.audio.midi.Midi;
+import com.b3dgs.lionengine.audio.wav.AudioWav;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
@@ -111,6 +112,6 @@ class Scene extends Sequence
     public void onTerminated(boolean hasNextSequence)
     {
         music.stop();
-        Sfx.terminateAll();
+        AudioWav.terminate();
     }
 }

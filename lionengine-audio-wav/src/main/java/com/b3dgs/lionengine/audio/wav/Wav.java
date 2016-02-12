@@ -17,310 +17,67 @@
  */
 package com.b3dgs.lionengine.audio.wav;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.concurrent.Semaphore;
-
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 
 /**
  * Handle sound fx routine. The sound is expected to be short, as it has to be played quickly. It supports the following
  * main controls:
  * <ul>
- * <li>Alignment</li>
- * <li>Volume</li>
- * <li>Channel</li>
+ * <li>Alignment - output location</li>
+ * <li>Volume - in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code></li>
+ * <li>Channel - number of sound played simultaneously</li>
  * </ul>
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final Wav sound = AudioWav.loadWav(Medias.create(&quot;sound.wav&quot;));
- * sound.setVolume(100);
- * 
- * sound.setAlignment(Align.LEFT);
- * sound.play();
- * Thread.sleep(200);
- * 
- * sound.setAlignment(Align.CENTER);
- * sound.play();
- * Thread.sleep(200);
- * 
- * sound.setAlignment(Align.RIGHT);
- * sound.play();
- * Thread.sleep(200);
- * 
- * sound.stop();
- * </pre>
  */
-public final class Wav
+public interface Wav
 {
     /** Minimum volume value. */
-    public static final int VOLUME_MIN = 0;
+    int VOLUME_MIN = 0;
     /** Maximum volume value. */
-    public static final int VOLUME_MAX = 100;
-
-    /** Maximum number of sounds played at the same time. */
-    final int maxSimultaneous;
-    /** Sound ready threads. */
-    final Queue<WavRoutine> freeSounds;
-    /** Sound busy threads. */
-    final Queue<WavRoutine> busySounds;
-    /** Sound monitor. */
-    final Semaphore latch;
-    /** Terminated. */
-    final Object monitor = new Object();
-    /** Created thread counter. */
-    volatile Integer count;
-    /** Terminated. */
-    volatile Boolean terminated;
-    /** Count monitor. */
-    private final Object monitorCount = new Object();
-    /** Sound file reference. */
-    private final Media media;
-    /** Sound alignment. */
-    private Align alignment;
-    /** Volume value. */
-    private int volume;
-
-    /**
-     * Internal constructor.
-     * 
-     * @param media The audio sound media.
-     * @throws LionEngineException If media is <code>null</code>
-     */
-    Wav(Media media)
-    {
-        this(media, 1);
-    }
-
-    /**
-     * Internal constructor.
-     * 
-     * @param media The audio sound media.
-     * @param maxSimultaneous The maximum number of simultaneous sounds that can be played at the same time.
-     * @throws LionEngineException If media is <code>null</code>
-     */
-    Wav(Media media, int maxSimultaneous)
-    {
-        Check.notNull(media);
-
-        this.media = media;
-        this.maxSimultaneous = maxSimultaneous;
-        count = Integer.valueOf(0);
-        latch = new Semaphore(0);
-        freeSounds = new LinkedList<WavRoutine>();
-        busySounds = new LinkedList<WavRoutine>();
-        alignment = Align.CENTER;
-        volume = 100;
-        terminated = Boolean.FALSE;
-    }
-
-    /**
-     * Decrease the routine counter value.
-     */
-    void decreaseCount()
-    {
-        synchronized (monitorCount)
-        {
-            count = Integer.valueOf(count.intValue() - 1);
-        }
-    }
-
-    /**
-     * Add a sound routine to the free list and remove it from the busy list.
-     * 
-     * @param routine Sound routine.
-     */
-    void addFree(WavRoutine routine)
-    {
-        busySounds.remove(routine);
-        freeSounds.add(routine);
-    }
-
-    /**
-     * Add a sound routine to the busy list.
-     * 
-     * @param routine Sound routine.
-     */
-    void addBusy(WavRoutine routine)
-    {
-        busySounds.add(routine);
-    }
-
-    /*
-     * Wav
-     */
-
-    /**
-     * Play sound immediately until the end, and free resources. Sounds are played in a separated thread. If all
-     * channels are used, the sound will not be played.
-     */
-    public void play()
-    {
-        play(0);
-    }
+    int VOLUME_MAX = 100;
 
     /**
      * Play sound immediately until the end, and free resources. Sounds are played in a separated thread. If all
      * channels are used, the sound will not be played.
      * 
-     * @param delay The delay in millisecond before being played.
+     * @throws LionEngineException If unable to play sound.
      */
-    public void play(int delay)
-    {
-        synchronized (monitor)
-        {
-            if (!terminated.booleanValue())
-            {
-                final WavRoutine routine;
-                if (!freeSounds.isEmpty() || count.intValue() >= maxSimultaneous)
-                {
-                    if (freeSounds.isEmpty())
-                    {
-                        routine = busySounds.poll();
-                    }
-                    else
-                    {
-                        routine = freeSounds.poll();
-                    }
-
-                    if (routine != null)
-                    {
-                        routine.stopSound();
-                        routine.setAlignement(alignment);
-                        routine.setMedia(media);
-                        routine.setVolume(volume);
-                        routine.setDelay(delay);
-                        routine.restart();
-                        routine.latch.release();
-                    }
-                }
-                else
-                {
-                    routine = new WavRoutine(this, media.getPath());
-                    routine.setAlignement(alignment);
-                    routine.setMedia(media);
-                    routine.setVolume(volume);
-                    routine.setDelay(delay);
-                    routine.start();
-                    synchronized (monitorCount)
-                    {
-                        count = Integer.valueOf(count.intValue() + 1);
-                    }
-                }
-            }
-        }
-    }
+    void play();
 
     /**
-     * Set sound alignment.
+     * Play sound immediately until the end, and free resources. Sounds are played in a separated thread. If all
+     * channels are used, the sound will not be played.
      * 
-     * @param align sound alignment.
+     * @param delayMilli The delay before sound is played in milliseconds.
+     * @throws LionEngineException If unable to play sound.
      */
-    public void setAlignment(Align align)
-    {
-        alignment = align;
-    }
+    void play(int delayMilli);
 
     /**
-     * Set the sound volume.
+     * Play sound immediately until the end, and free resources. Sounds are played in a separated thread. If all
+     * channels are used, the sound will not be played.
      * 
+     * @param alignment The sound alignment.
      * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
-     * @throws LionEngineException If argument is invalid.
+     * @throws LionEngineException If unable to play sound.
      */
-    public void setVolume(int volume)
-    {
-        Check.superiorOrEqual(volume, 0);
-        Check.inferiorOrEqual(volume, 100);
-
-        this.volume = volume;
-    }
+    void play(Align alignment, int volume);
+    
+    /**
+     * Play sound immediately until the end, and free resources. Sounds are played in a separated thread. If all
+     * channels are used, the sound will not be played.
+     * 
+     * @param alignment The sound alignment.
+     * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
+     * @param delayMilli The delay before sound is played in milliseconds.
+     * @throws LionEngineException If unable to play sound.
+     */
+    void play(Align alignment, int volume, int delayMilli);
 
     /**
-     * Stop sound. The sound will be stopped, but not deleted.
+     * Stop sound.
+     * 
+     * @throws LionEngineException If unable to stop sound.
      */
-    public void stop()
-    {
-        final Collection<WavRoutine> toStop = new ArrayList<WavRoutine>(busySounds);
-        for (final WavRoutine routine : toStop)
-        {
-            if (routine != null)
-            {
-                routine.stopSound();
-            }
-        }
-        toStop.clear();
-    }
-
-    /**
-     * Close sound. Release resources.
-     */
-    public void terminate()
-    {
-        terminated = Boolean.TRUE;
-        new Thread("WavPlayer cleanup")
-        {
-            @Override
-            public void run()
-            {
-                while (!busySounds.isEmpty())
-                {
-                    final Collection<WavRoutine> toStop = new ArrayList<WavRoutine>(busySounds);
-                    for (final WavRoutine routine : toStop)
-                    {
-                        if (routine != null)
-                        {
-                            routine.stopSound();
-                            routine.interrupt();
-                        }
-                    }
-                    try
-                    {
-                        Thread.sleep(100);
-                    }
-                    catch (final InterruptedException exception)
-                    {
-                        Thread.currentThread().interrupt();
-                        Verbose.exception(exception);
-                    }
-                    toStop.clear();
-                    busySounds.clear();
-                }
-                while (count.intValue() != 0)
-                {
-                    synchronized (monitor)
-                    {
-                        final Collection<WavRoutine> toStop = new ArrayList<WavRoutine>(freeSounds);
-                        for (final WavRoutine routine : toStop)
-                        {
-                            if (routine != null)
-                            {
-                                routine.interrupt();
-                            }
-                        }
-
-                        try
-                        {
-                            monitor.wait(100);
-                        }
-                        catch (final InterruptedException exception)
-                        {
-                            Thread.currentThread().interrupt();
-                        }
-                        toStop.clear();
-                        freeSounds.clear();
-                    }
-                }
-                terminated = Boolean.FALSE;
-            }
-        }.start();
-    }
+    void stop();
 }
