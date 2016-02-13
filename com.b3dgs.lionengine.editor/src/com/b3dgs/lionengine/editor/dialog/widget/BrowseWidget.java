@@ -186,6 +186,7 @@ public class BrowseWidget
     /**
      * Listen to {@link BrowseWidgetListener} events.
      */
+    @FunctionalInterface
     public interface BrowseWidgetListener
     {
         /**

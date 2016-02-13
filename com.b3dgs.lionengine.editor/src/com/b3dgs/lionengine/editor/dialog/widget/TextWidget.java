@@ -106,6 +106,7 @@ public class TextWidget
     /**
      * Listen to {@link TextWidget} events.
      */
+    @FunctionalInterface
     public interface TextWidgetListener
     {
         /**

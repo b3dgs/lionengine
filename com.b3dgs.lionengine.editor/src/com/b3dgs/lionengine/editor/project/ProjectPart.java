@@ -273,7 +273,7 @@ public final class ProjectPart implements Focusable
                 catch (final IOException exception)
                 {
                     // Not able to open the file, just skip
-                    Verbose.warning(ERROR_UNABLE_TO_OPEN_FILE, media.getFile().getAbsolutePath());
+                    Verbose.exception(exception, ERROR_UNABLE_TO_OPEN_FILE, media.getFile().getAbsolutePath());
                 }
             }
         }

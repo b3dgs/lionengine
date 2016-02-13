@@ -147,7 +147,7 @@ public class FilterBlur implements Filter
                 for (int col = -cols2; col <= cols2; col++)
                 {
                     final float f = matrix[moffset + col];
-                    if (f != 0)
+                    if (Double.doubleToRawLongBits(f) != 0L)
                     {
                         final int ix = checkEdge(width, x, col, edge);
                         final int rgb = in[ioffset + ix];

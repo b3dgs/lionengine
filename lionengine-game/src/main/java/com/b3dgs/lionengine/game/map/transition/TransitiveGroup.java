@@ -227,7 +227,7 @@ public class TransitiveGroup
                 count++;
             }
         }
-        if (count >= TransitionType.AREA_TRANSITIONS && (found.size() == 0 || found.getLast().getOut().equals(groupIn)))
+        if (count >= TransitionType.AREA_TRANSITIONS && (found.isEmpty() || found.getLast().getOut().equals(groupIn)))
         {
             found.add(transitive);
             return false;

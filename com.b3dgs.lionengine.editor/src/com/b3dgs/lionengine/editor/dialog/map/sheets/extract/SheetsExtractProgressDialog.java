@@ -74,7 +74,7 @@ public class SheetsExtractProgressDialog extends AbstractProgressDialog
     private void updateSize(Collection<ImageBuffer> tiles)
     {
         final int height = (int) Math.floor(tiles.size() / (double) horizontalTiles);
-        if (height > oldHeight && tiles.size() > 0)
+        if (height > oldHeight && !tiles.isEmpty())
         {
             if (gc != null)
             {

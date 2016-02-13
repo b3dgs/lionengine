@@ -104,6 +104,7 @@ public class ComboWidget<T>
      * 
      * @param <T> Type handled.
      */
+    @FunctionalInterface
     public interface ComboWidgetListener<T>
     {
         /**

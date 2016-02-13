@@ -84,6 +84,16 @@ public class Activator implements BundleActivator
     }
 
     /**
+     * Set the context reference.
+     * 
+     * @param context The context reference.
+     */
+    private static void setContext(BundleContext context)
+    {
+        Activator.context = context;
+    }
+
+    /**
      * Create activator.
      */
     public Activator()
@@ -96,16 +106,16 @@ public class Activator implements BundleActivator
      */
 
     @Override
-    public void start(BundleContext bundleContext) throws Exception
+    public void start(BundleContext context) throws Exception
     {
-        Activator.context = bundleContext;
+        setContext(context);
         LionEngineException.setIgnoreEngineTrace(false);
         EngineSwt.start(Activator.PLUGIN_NAME, Activator.PLUGIN_VERSION);
     }
 
     @Override
-    public void stop(BundleContext bundleContext) throws Exception
+    public void stop(BundleContext context) throws Exception
     {
-        Activator.context = null;
+        setContext(null);
     }
 }

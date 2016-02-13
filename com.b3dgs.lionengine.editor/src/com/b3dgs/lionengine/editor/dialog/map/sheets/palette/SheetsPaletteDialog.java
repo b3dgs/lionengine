@@ -82,8 +82,6 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         }
     }
 
-    /** Model reference. */
-    private final SheetsPaletteModel model = SheetsPaletteModel.INSTANCE;
     /** Map reference. */
     private final MapTile map = WorldModel.INSTANCE.getMap();
     /** Map tile group. */
@@ -155,10 +153,12 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
 
         final Button typeSelection = UtilButton.createRadio(Messages.TileSelection, area);
         typeSelection.setSelection(true);
-        UtilButton.setAction(typeSelection, () -> model.setSheetPaletteType(SheetPaletteType.SELECTION));
+        final SheetPaletteType selection = SheetPaletteType.SELECTION;
+        UtilButton.setAction(typeSelection, () -> SheetsPaletteModel.INSTANCE.setSheetPaletteType(selection));
 
         final Button typeEdit = UtilButton.createRadio(Messages.TileEdition, area);
-        UtilButton.setAction(typeEdit, () -> model.setSheetPaletteType(SheetPaletteType.EDITION));
+        final SheetPaletteType edition = SheetPaletteType.EDITION;
+        UtilButton.setAction(typeEdit, () -> SheetsPaletteModel.INSTANCE.setSheetPaletteType(edition));
 
         final Button simplePalette = UtilButton.createCheck(Messages.SimplePalette, area);
         simplePalette.setSelection(simple);
@@ -466,7 +466,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         if (n < available.size())
         {
             number = n;
-            model.setSelectedTile(available.get(number));
+            SheetsPaletteModel.INSTANCE.setSelectedTile(available.get(number));
         }
         render();
     }

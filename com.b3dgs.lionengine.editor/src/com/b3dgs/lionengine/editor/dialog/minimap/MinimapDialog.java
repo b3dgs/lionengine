@@ -84,6 +84,46 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         }
     }
 
+    /**
+     * Set the current dialog instance.
+     * 
+     * @param instance The instance reference.
+     */
+    private static void setInstance(MinimapDialog instance)
+    {
+        MinimapDialog.instance = instance;
+    }
+
+    /**
+     * Set the current minimap shell.
+     * 
+     * @param minimapShell The minimap shell.
+     */
+    private static void setMinimapShell(Shell minimapShell)
+    {
+        MinimapDialog.minimapShell = minimapShell;
+    }
+
+    /**
+     * Set the last location.
+     * 
+     * @param location The last location.
+     */
+    private static void setLastLocation(Point location)
+    {
+        lastLocation = location;
+    }
+
+    /**
+     * Get the last location.
+     * 
+     * @return The last location.
+     */
+    private Point getLastLocation()
+    {
+        return lastLocation;
+    }
+
     /** Map reference. */
     private final MapTile map = WorldModel.INSTANCE.getMap();
     /** Camera reference. */
@@ -146,15 +186,16 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         shell.addDisposeListener(event ->
         {
             updater.removeListeners(MinimapDialog.this);
-            lastLocation = shell.getLocation();
-            instance = null;
+            setLastLocation(shell.getLocation());
+            setInstance(null);
         });
         shell.addMouseWheelListener(this);
 
         UtilSwt.open(shell);
-        if (lastLocation != null)
+        final Point location = getLastLocation();
+        if (location != null)
         {
-            shell.setLocation(lastLocation);
+            shell.setLocation(location);
         }
     }
 
@@ -203,7 +244,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         {
             minimapShell.dispose();
         }
-        minimapShell = createMiniShell(parent);
+        setMinimapShell(createMiniShell(parent));
         render();
     }
 

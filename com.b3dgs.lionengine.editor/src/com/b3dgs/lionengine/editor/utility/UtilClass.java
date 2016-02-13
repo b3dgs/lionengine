@@ -192,7 +192,10 @@ public final class UtilClass
             else if (current.isFile())
             {
                 final int prefix = Project.getActive().getClassesPath().getPath().length() + 1;
-                checkAddClass(found, type, root, current.getPath().substring(prefix));
+                if (prefix < current.getPath().length())
+                {
+                    checkAddClass(found, type, root, current.getPath().substring(prefix));
+                }
             }
         }
     }

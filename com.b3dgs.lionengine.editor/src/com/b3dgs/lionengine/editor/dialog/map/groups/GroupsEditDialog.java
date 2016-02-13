@@ -197,10 +197,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
             }
             part.loadSheets(tileWidth, tileHeight, sheets);
             LevelRipConverter.start(levelRip, part);
-            if (!first)
-            {
-                map.append(part, offsetX, offsetY);
-            }
+            map.append(part, offsetX, offsetY);
 
             offsetX += part.getInTileWidth();
             if (count >= size)

@@ -64,7 +64,6 @@
     </module>
     <module name="UnusedImports">
       <property name="severity" value="error"/>
-      <property name="processJavadoc" value="true"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="MethodLength">
@@ -318,6 +317,8 @@
     <module name="EmptyLineSeparator">
       <property name="severity" value="error"/>
       <property name="tokens" value="IMPORT,CLASS_DEF,ENUM_DEF,INTERFACE_DEF,CTOR_DEF,METHOD_DEF,STATIC_INIT,INSTANCE_INIT,VARIABLE_DEF"/>
+      <property name="allowNoEmptyLineBetweenFields" value="true"/>
+      <property name="allowMultipleEmptyLines" value="false"/>
     </module>
     <module name="SeparatorWrap">
       <property name="severity" value="error"/>

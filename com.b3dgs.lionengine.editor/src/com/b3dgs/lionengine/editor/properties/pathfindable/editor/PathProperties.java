@@ -82,7 +82,10 @@ public class PathProperties extends ObjectProperties<PathData> implements Object
     @Override
     protected PathData createObject(String name)
     {
-        return new PathData(name, 1.0, true, true);
+        return new PathData(name,
+                            Double.parseDouble(cost.getText()),
+                            Boolean.parseBoolean(block.getText()),
+                            Boolean.parseBoolean(diagonal.getText()));
     }
 
     /*

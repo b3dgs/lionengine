@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
@@ -288,8 +287,9 @@ public class ProjectImportDialog extends AbstractProjectDialog
                 projectResourcesText.setEditable(true);
                 projectResourcesBrowse.setEnabled(true);
             }
-            catch (final LionEngineException | IOException exception)
+            catch (final IOException exception)
             {
+                Verbose.exception(exception, Messages.ImportProjectDialog_InvalidImport);
                 setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportProjectDialog_InvalidImport);
                 tipsLabel.setVisible(true);
                 finish.setEnabled(false);
