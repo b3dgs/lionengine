@@ -146,6 +146,42 @@ public class LionEngineExceptionTest
     }
 
     /**
+     * Test the exception with a null enum as argument.
+     */
+    @Test
+    public void testLionEngineExceptionWithEnumNull()
+    {
+        stream.println("testLionEngineExceptionWitEnumNull");
+        try
+        {
+            throw new LionEngineException((Enum<?>) null);
+        }
+        catch (final LionEngineException exception)
+        {
+            exception.printStackTrace(stream);
+        }
+        stream.println();
+    }
+
+    /**
+     * Test the exception with an enum as argument.
+     */
+    @Test
+    public void testLionEngineExceptionWithEnum()
+    {
+        stream.println("testLionEngineExceptionWitEnum");
+        try
+        {
+            throw new LionEngineException(Origin.MIDDLE);
+        }
+        catch (final LionEngineException exception)
+        {
+            exception.printStackTrace(stream);
+        }
+        stream.println();
+    }
+
+    /**
      * Test the exception with a throwable as argument.
      * 
      * @throws FileNotFoundException If error.

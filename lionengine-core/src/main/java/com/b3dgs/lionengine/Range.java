@@ -56,7 +56,7 @@ public class Range
      */
     public Range(int min, int max)
     {
-        if (min > max || max < min)
+        if (min > max)
         {
             throw new LionEngineException(ERROR_PARAMETER);
         }

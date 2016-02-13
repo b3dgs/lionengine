@@ -62,7 +62,7 @@ public interface Wav
      * @throws LionEngineException If unable to play sound.
      */
     void play(Align alignment, int volume);
-    
+
     /**
      * Play sound immediately until the end, and free resources. Sounds are played in a separated thread. If all
      * channels are used, the sound will not be played.

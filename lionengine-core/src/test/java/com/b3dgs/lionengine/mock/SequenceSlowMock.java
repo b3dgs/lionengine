@@ -17,30 +17,26 @@
  */
 package com.b3dgs.lionengine.mock;
 
-import org.junit.Assert;
-
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Context;
-import com.b3dgs.lionengine.core.InputDevice;
+import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.util.Constant;
 
 /**
- * Filter sequence mock.
+ * Single sequence mock.
  */
-public class SequenceFilterMock extends Sequence
+public class SequenceSlowMock extends Sequence
 {
     /**
      * Constructor.
      * 
      * @param context The context reference.
-     * @param filter The filter used.
      */
-    public SequenceFilterMock(Context context, Filter filter)
+    public SequenceSlowMock(Context context)
     {
         super(context, Constant.RESOLUTION_320_240);
-        setFilter(filter);
     }
 
     /*
@@ -50,18 +46,34 @@ public class SequenceFilterMock extends Sequence
     @Override
     public void load()
     {
-        setSystemCursorVisible(true);
-        setSystemCursorVisible(false);
-        Assert.assertNull(getInputDevice(InputDevice.class));
+        addKeyListener(new InputDeviceKeyListener()
+        {
+            @Override
+            public void keyReleased(int keyCode, char keyChar)
+            {
+                // Mock
+            }
+
+            @Override
+            public void keyPressed(int keyCode, char keyChar)
+            {
+                // Mock
+            }
+        });
     }
 
     @Override
     public void update(double extrp)
     {
-        setFilter(null);
-        getX();
-        getY();
-        end(SequenceArgumentsMock.class, new Object());
+        try
+        {
+            Thread.sleep(1100);
+        }
+        catch (final InterruptedException exception)
+        {
+            throw new LionEngineException(exception);
+        }
+        notifyClosed();
     }
 
     @Override

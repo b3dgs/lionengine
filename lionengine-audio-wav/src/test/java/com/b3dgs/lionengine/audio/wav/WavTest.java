@@ -112,17 +112,17 @@ public class WavTest
     @Test
     public void testWav() throws InterruptedException
     {
+        sound.play(Align.CENTER, 50, 0);
+        sound.play(Align.LEFT, 50, 150);
+        sound.play(Align.CENTER, 50, 300);
+        sound.play(Align.RIGHT, 50, 450);
+        sound.play(Align.CENTER, 50, 600);
+        Thread.sleep(900);
+
         sound.play();
         sound.play(10);
         sound.play(Align.CENTER, 50);
         Thread.sleep(50);
         sound.stop();
-
-        sound.play(Align.CENTER, 50, 0);
-        sound.play(Align.LEFT, 50, 200);
-        sound.play(Align.CENTER, 50, 400);
-        sound.play(Align.RIGHT, 50, 600);
-        sound.play(Align.CENTER, 50, 800);
-        Thread.sleep(1200);
     }
 }

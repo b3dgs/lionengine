@@ -89,8 +89,10 @@ public class ScreenSwtTest
     {
         checkMultipleDisplaySupport();
 
-        final Config config = new Config(com.b3dgs.lionengine.util.Constant.RESOLUTION_320_240, 32, true);
-        config.setIcon(Medias.create(IMAGE));
+        final Config config = new Config(com.b3dgs.lionengine.util.Constant.RESOLUTION_320_240,
+                                         32,
+                                         true,
+                                         Medias.create(IMAGE));
         testScreen(config);
     }
 
@@ -109,8 +111,7 @@ public class ScreenSwtTest
             final int height = gd.getDisplayMode().getHeight();
 
             final Resolution resolution = new Resolution(width, height, 60);
-            final Config config = new Config(resolution, 32, false);
-            config.setIcon(Medias.create(IMAGE));
+            final Config config = new Config(resolution, 32, false, Medias.create(IMAGE));
 
             testScreen(config);
         }

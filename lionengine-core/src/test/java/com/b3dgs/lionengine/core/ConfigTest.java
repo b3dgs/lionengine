@@ -55,15 +55,6 @@ public class ConfigTest
     }
 
     /**
-     * Test the config failure ratio.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testFailureRatio()
-    {
-        CONFIG.setRatio(0);
-    }
-
-    /**
      * Test the config getter.
      */
     @Test
@@ -84,18 +75,6 @@ public class ConfigTest
         Assert.assertEquals(OUTPUT.getWidth(), CONFIG.getSource().getWidth());
         Assert.assertEquals(OUTPUT.getHeight(), CONFIG.getSource().getHeight());
         Assert.assertEquals(OUTPUT.getRate(), CONFIG.getSource().getRate());
-    }
-
-    /**
-     * Test the config ratio.
-     */
-    @Test
-    public void testRatio()
-    {
-        CONFIG.setRatio(Ratio.R16_10);
-        Assert.assertEquals(384, CONFIG.getOutput().getWidth());
-        Assert.assertEquals(240, CONFIG.getOutput().getHeight());
-        Assert.assertEquals(Ratio.R16_10, CONFIG.getOutput().getRatio(), 0.00000000001);
     }
 
     /**
@@ -121,8 +100,9 @@ public class ConfigTest
     @Test
     public void testIcon()
     {
+        Assert.assertEquals(null, CONFIG.getIcon());
         final Media icon = Medias.create(ICON);
-        CONFIG.setIcon(icon);
-        Assert.assertEquals(icon, CONFIG.getIcon());
+        final Config config = new Config(CONFIG.getOutput(), CONFIG.getDepth(), CONFIG.isWindowed(), icon);
+        Assert.assertEquals(icon, config.getIcon());
     }
 }

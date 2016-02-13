@@ -28,6 +28,15 @@ public class RangeTest
     /**
      * Test range constructor.
      */
+    @Test(expected = LionEngineException.class)
+    public void testRangeWrongArguments()
+    {
+        Assert.assertNotNull(new Range(1, 0));
+    }
+
+    /**
+     * Test range constructor.
+     */
     @Test
     public void testRange()
     {

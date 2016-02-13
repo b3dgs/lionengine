@@ -167,7 +167,7 @@ public final class UtilFile
      * @param name The file name reference (to have a similar temporary file name).
      * @param input The input stream reference.
      * @return The temporary file created with copied content from stream.
-     * @throws LionEngineException If <code>null</code> arguments.
+     * @throws LionEngineException If <code>null</code> arguments or invalid stream.
      */
     public static File getCopy(String name, InputStream input)
     {

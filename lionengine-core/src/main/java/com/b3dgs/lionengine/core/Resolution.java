@@ -36,16 +36,12 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public final class Resolution
 {
-    /** Lock. */
-    private final Object lock = new Object();
     /** Display rate. */
-    private volatile int rate;
-    /** Resolution width (locked by {@link #lock}). */
-    private int width;
-    /** Resolution height (locked by {@link #lock}). */
-    private int height;
-    /** Resolution ratio (locked by {@link #lock}). */
-    private double ratio;
+    private final int rate;
+    /** Resolution width. */
+    private final int width;
+    /** Resolution height. */
+    private final int height;
 
     /**
      * Create a resolution.
@@ -57,55 +53,12 @@ public final class Resolution
      */
     public Resolution(int width, int height, int rate)
     {
-        set(width, height, rate);
-    }
-
-    /**
-     * Set the resolution.
-     * 
-     * @param width The resolution width (in pixel).
-     * @param height The resolution height (in pixel).
-     * @throws LionEngineException If arguments are invalid.
-     */
-    public void setSize(int width, int height)
-    {
-        synchronized (lock)
-        {
-            set(width, height, rate);
-        }
-    }
-
-    /**
-     * Set the ratio and adapt the resolution to the new ratio (based on the height value).
-     * 
-     * @param ratio The new ratio (strictly positive).
-     * @throws LionEngineException If ratio is not strictly positive.
-     */
-    public void setRatio(double ratio)
-    {
-        Check.superiorStrict(ratio, 0);
-
-        synchronized (lock)
-        {
-            if (!Ratio.same(this.ratio, ratio))
-            {
-                width = (int) Math.ceil(height * ratio);
-                width = (int) Math.floor(width / 2.0) * 2;
-                this.ratio = ratio;
-            }
-        }
-    }
-
-    /**
-     * Set the refresh rate value in hertz.
-     * 
-     * @param rate The refresh rate value (positive).
-     * @throws LionEngineException If ratio is not strictly positive.
-     */
-    public void setRate(int rate)
-    {
+        Check.superiorStrict(width, 0);
+        Check.superiorStrict(height, 0);
         Check.superiorOrEqual(rate, 0);
 
+        this.width = width;
+        this.height = height;
         this.rate = rate;
     }
 
@@ -116,10 +69,7 @@ public final class Resolution
      */
     public int getWidth()
     {
-        synchronized (lock)
-        {
-            return width;
-        }
+        return width;
     }
 
     /**
@@ -129,23 +79,7 @@ public final class Resolution
      */
     public int getHeight()
     {
-        synchronized (lock)
-        {
-            return height;
-        }
-    }
-
-    /**
-     * Get the resolution ratio.
-     * 
-     * @return The resolution ratio.
-     */
-    public double getRatio()
-    {
-        synchronized (lock)
-        {
-            return ratio;
-        }
+        return height;
     }
 
     /**
@@ -156,25 +90,5 @@ public final class Resolution
     public int getRate()
     {
         return rate;
-    }
-
-    /**
-     * Set the resolution.
-     * 
-     * @param width The resolution width (in pixel, strictly positive).
-     * @param height The resolution height (in pixel, strictly positive).
-     * @param rate The refresh rate in hertz (usually 50 or 60, positive).
-     * @throws LionEngineException If arguments are invalid.
-     */
-    private void set(int width, int height, int rate)
-    {
-        Check.superiorStrict(width, 0);
-        Check.superiorStrict(height, 0);
-        Check.superiorOrEqual(rate, 0);
-
-        this.width = width;
-        this.height = height;
-        this.rate = rate;
-        ratio = width / (double) height;
     }
 }

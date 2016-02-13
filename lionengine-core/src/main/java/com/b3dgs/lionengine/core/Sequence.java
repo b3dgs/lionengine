@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.UtilReflection;
@@ -79,10 +80,10 @@ import com.b3dgs.lionengine.UtilReflection;
  */
 public abstract class Sequence implements Sequencable, ScreenListener
 {
-    /** One nano second. */
-    private static final long TIME_LONG = 1000000000L;
-    /** One nano second. */
-    private static final double TIME_DOUBLE = 1000000000.0;
+    /** One second in milli. */
+    private static final long ONE_SECOND_IN_MILLI = 1000L;
+    /** One second in nano. */
+    private static final long ONE_SECOND_IN_NANO = 1000000000L;
     /** Extrapolation standard. */
     private static final double EXTRP = 1.0;
 
@@ -206,7 +207,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
         }
         else
         {
-            frameDelay = TIME_LONG / output.getRate();
+            frameDelay = ONE_SECOND_IN_NANO / output.getRate();
         }
 
         graphic = Graphics.createGraphic();
@@ -363,7 +364,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
     {
         if (extrapolated)
         {
-            return source.getRate() / TIME_DOUBLE * (currentTime - lastTime);
+            return source.getRate() / ONE_SECOND_IN_NANO * (double) (currentTime - lastTime);
         }
         return EXTRP;
     }
@@ -374,16 +375,14 @@ public abstract class Sequence implements Sequencable, ScreenListener
      * @param lastTime The last time value before game loop.
      * @param currentTime The current time after game loop.
      * @param updateFpsTimer The last fps update time.
-     * @return The next fps update time.
      */
-    private long computeFrameRate(long lastTime, long currentTime, long updateFpsTimer)
+    private void computeFrameRate(long lastTime, long currentTime, Timing updateFpsTimer)
     {
-        if (currentTime - updateFpsTimer > TIME_LONG)
+        if (updateFpsTimer.elapsed(ONE_SECOND_IN_MILLI))
         {
-            currentFrameRate = (int) (TIME_DOUBLE / (currentTime - lastTime));
-            return currentTime;
+            currentFrameRate = (int) (ONE_SECOND_IN_NANO / (double) (currentTime - lastTime));
+            updateFpsTimer.restart();
         }
-        return updateFpsTimer;
     }
 
     /*
@@ -405,11 +404,12 @@ public abstract class Sequence implements Sequencable, ScreenListener
         setResolution(resolution);
 
         // Prepare sequence to be started
-        double extrp = EXTRP;
-        long updateFpsTimer = 0L;
         currentFrameRate = output.getRate();
         screen.requestFocus();
+        final Timing updateFpsTimer = new Timing();
+        updateFpsTimer.start();
 
+        double extrp = EXTRP;
         onLoaded(extrp, screen.getGraphic());
 
         // Main loop
@@ -428,7 +428,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
 
             final long currentTime = Math.max(lastTime + 1, System.nanoTime());
             extrp = computeExtrapolation(lastTime, currentTime);
-            updateFpsTimer = computeFrameRate(lastTime, currentTime, updateFpsTimer);
+            computeFrameRate(lastTime, currentTime, updateFpsTimer);
 
             if (!Engine.isStarted())
             {

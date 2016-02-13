@@ -23,6 +23,7 @@ import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Version;
@@ -151,7 +152,8 @@ public class UtilReflectionTest
     @Test
     public void testGetField()
     {
-        Assert.assertNotNull(UtilReflection.getField(new Resolution(320, 240, 32), "lock"));
+        Assert.assertNotNull(UtilReflection.getField(new Config(new Resolution(320, 240, 32), 16, false),
+                                                     "lockApplet"));
     }
 
     /**

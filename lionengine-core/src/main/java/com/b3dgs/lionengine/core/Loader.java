@@ -57,8 +57,6 @@ public final class Loader
 
     /**
      * Create a loader.
-     * 
-     * @throws LionEngineException If the configuration is <code>null</code>.
      */
     public Loader()
     {

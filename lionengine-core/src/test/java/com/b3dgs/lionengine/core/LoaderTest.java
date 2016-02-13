@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.mock.SequenceInterruptMock;
 import com.b3dgs.lionengine.mock.SequenceMalformedMock;
 import com.b3dgs.lionengine.mock.SequenceNextFailMock;
 import com.b3dgs.lionengine.mock.SequenceSingleMock;
+import com.b3dgs.lionengine.mock.SequenceSlowMock;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -49,7 +50,7 @@ public class LoaderTest
     /** Config. */
     static final Config CONFIG = new Config(OUTPUT, 16, true);
     /** Icon. */
-    private static final Media ICON = Medias.create("image.png");
+    private static Media icon;
 
     /**
      * Prepare the test.
@@ -59,6 +60,7 @@ public class LoaderTest
     {
         Medias.setLoadFromJar(LoaderTest.class);
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
+        icon = Medias.create("image.png");
     }
 
     /**
@@ -88,7 +90,7 @@ public class LoaderTest
     public void testNullSequence()
     {
         final Loader loader = new Loader();
-        loader.start(CONFIG, null);
+        loader.start(CONFIG, null).await();
     }
 
     /**
@@ -216,7 +218,7 @@ public class LoaderTest
     {
         final Loader loader = new Loader();
         loader.start(CONFIG, SequenceSingleMock.class);
-        loader.start(CONFIG, SequenceSingleMock.class);
+        loader.start(CONFIG, SequenceSingleMock.class).await();
     }
 
     /**
@@ -227,7 +229,18 @@ public class LoaderTest
     {
         Engine.start(new EngineMock("testEngineStarted", Version.DEFAULT));
         final Loader loader = new Loader();
-        loader.start(CONFIG, SequenceSingleMock.class);
+        loader.start(CONFIG, SequenceSingleMock.class).await();
+    }
+
+    /**
+     * Test the loader with no icon in windowed mode.
+     */
+    @Test
+    public void testNoIconWindowed()
+    {
+        final Config config = new Config(OUTPUT, 16, true, Medias.create("void"));
+        final Loader loader = new Loader();
+        loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -236,11 +249,9 @@ public class LoaderTest
     @Test
     public void testIconWindowed()
     {
-        final Config config = new Config(OUTPUT, 16, true);
-        config.setIcon(ICON);
-
+        final Config config = new Config(OUTPUT, 16, true, icon);
         final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class);
+        loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -249,11 +260,9 @@ public class LoaderTest
     @Test
     public void testIconFullScreen()
     {
-        final Config config = new Config(OUTPUT, 16, false);
-        config.setIcon(ICON);
-
+        final Config config = new Config(OUTPUT, 16, false, icon);
         final Loader loader = new Loader();
-        loader.start(config, SequenceSingleMock.class);
+        loader.start(config, SequenceSingleMock.class).await();
     }
 
     /**
@@ -264,6 +273,16 @@ public class LoaderTest
     {
         final Loader loader = new Loader();
         loader.start(CONFIG, SequenceSingleMock.class).await();
+    }
+
+    /**
+     * Test the loader with slow sequence.
+     */
+    @Test
+    public void testSlowSequence()
+    {
+        final Loader loader = new Loader();
+        loader.start(CONFIG, SequenceSlowMock.class).await();
     }
 
     /**

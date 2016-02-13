@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -584,5 +585,39 @@ public class UtilFileTest
         Assert.assertFalse(UtilFile.isType(new File("null"), Constant.EMPTY_STRING));
         Assert.assertTrue(UtilFile.isType(Medias.create("file").getFile(), Constant.EMPTY_STRING));
         Assert.assertTrue(UtilFile.isType(Medias.create("file1.txt").getFile(), "txt"));
+    }
+
+    /**
+     * Test the safe close error.
+     */
+    @Test
+    public void testSafeCloseError()
+    {
+        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
+        UtilFile.safeClose(new Closeable()
+        {
+            @Override
+            public void close() throws IOException
+            {
+                throw new IOException();
+            }
+        });
+        Verbose.info("****************************************************************************************");
+    }
+
+    /**
+     * Test the get copy error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetCopyError()
+    {
+        UtilFile.getCopy("copy", new InputStream()
+        {
+            @Override
+            public int read() throws IOException
+            {
+                throw new IOException();
+            }
+        });
     }
 }

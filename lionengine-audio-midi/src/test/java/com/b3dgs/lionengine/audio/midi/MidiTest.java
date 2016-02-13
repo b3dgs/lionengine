@@ -17,6 +17,11 @@
  */
 package com.b3dgs.lionengine.audio.midi;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -26,6 +31,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.FactoryMediaDefault;
 import com.b3dgs.lionengine.core.Medias;
 
 /**
@@ -203,5 +209,73 @@ public class MidiTest
         midi2.setVolume(20);
         Thread.sleep(250);
         midi2.stop();
+    }
+
+    /**
+     * Test midi with invalid stream.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testMidiInvalidStream()
+    {
+        try
+        {
+            Medias.setFactoryMedia(new FactoryMediaDefault()
+            {
+                @Override
+                public Media create(String separator, Class<?> loader, String... path)
+                {
+                    return new Media()
+                    {
+                        @Override
+                        public String getPath()
+                        {
+                            return null;
+                        }
+
+                        @Override
+                        public String getParentPath()
+                        {
+                            return null;
+                        }
+
+                        @Override
+                        public OutputStream getOutputStream()
+                        {
+                            return null;
+                        }
+
+                        @Override
+                        public InputStream getInputStream()
+                        {
+                            return new InputStream()
+                            {
+                                @Override
+                                public int read() throws IOException
+                                {
+                                    throw new IOException();
+                                }
+                            };
+                        }
+
+                        @Override
+                        public File getFile()
+                        {
+                            return null;
+                        }
+
+                        @Override
+                        public boolean exists()
+                        {
+                            return true;
+                        }
+                    };
+                }
+            });
+            Assert.assertNotNull(AudioMidi.loadMidi(Medias.create("test")));
+        }
+        finally
+        {
+            Medias.setFactoryMedia(new FactoryMediaDefault());
+        }
     }
 }

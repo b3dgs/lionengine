@@ -52,8 +52,6 @@ public final class Config
 {
     /** Applet lock. */
     private final Object lockApplet = new Object();
-    /** Source lock. */
-    private final Object sourceLock = new Object();
     /** Output resolution reference. */
     private final Resolution output;
     /** Display depth. */
@@ -61,11 +59,9 @@ public final class Config
     /** Windowed mode. */
     private final boolean windowed;
     /** Icon media. */
-    private volatile Media icon;
-    /** Ratio desired (locked by {@link #sourceLock}). */
-    private double ratio;
-    /** Source resolution reference (locked by {@link #sourceLock}). */
-    private Resolution source;
+    private final Media icon;
+    /** Source resolution reference. */
+    private volatile Resolution source;
     /** Applet reference (locked by {@link #lockApplet}). */
     private Applet<?> applet;
 
@@ -79,28 +75,27 @@ public final class Config
      */
     public Config(Resolution output, int depth, boolean windowed)
     {
+        this(output, depth, windowed, null);
+    }
+
+    /**
+     * Create a configuration.
+     * 
+     * @param output The output resolution (used on rendering).
+     * @param depth The screen color depth in bits (usually 16 or 32).
+     * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
+     * @param icon The icon media (can be <code>null</code> if none).
+     * @throws LionEngineException If arguments are <code>null</code> or invalid.
+     */
+    public Config(Resolution output, int depth, boolean windowed, Media icon)
+    {
         Check.notNull(output);
         Check.superiorStrict(depth, 0);
 
         this.output = output;
         this.depth = depth;
         this.windowed = windowed;
-
-        setRatioValue(output.getWidth() / (double) output.getHeight());
-    }
-
-    /**
-     * Set the ratio and adapt the resolution to the new ratio (based on the height value).
-     * 
-     * @param ratio The new ratio (strictly positive).
-     * @throws LionEngineException If ratio is not strictly positive.
-     */
-    public void setRatio(double ratio)
-    {
-        synchronized (sourceLock)
-        {
-            setRatioValue(ratio);
-        }
+        this.icon = icon;
     }
 
     /**
@@ -117,16 +112,6 @@ public final class Config
     }
 
     /**
-     * Set the application icon.
-     * 
-     * @param icon The icon media.
-     */
-    public void setIcon(Media icon)
-    {
-        this.icon = icon;
-    }
-
-    /**
      * Set the resolution source.
      * 
      * @param source The source resolution (native).
@@ -136,11 +121,7 @@ public final class Config
     {
         Check.notNull(source);
 
-        synchronized (sourceLock)
-        {
-            this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
-            this.source.setRatio(ratio);
-        }
+        this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
     }
 
     /**
@@ -150,10 +131,7 @@ public final class Config
      */
     public Resolution getSource()
     {
-        synchronized (sourceLock)
-        {
-            return source;
-        }
+        return source;
     }
 
     /**
@@ -230,19 +208,5 @@ public final class Config
         {
             return applet != null;
         }
-    }
-
-    /**
-     * Set the ratio value.
-     * 
-     * @param ratio The new ratio (strictly positive).
-     * @throws LionEngineException If ratio is not strictly positive.
-     */
-    private void setRatioValue(double ratio)
-    {
-        Check.superiorStrict(ratio, 0);
-
-        this.ratio = ratio;
-        output.setRatio(ratio);
     }
 }
