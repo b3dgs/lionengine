@@ -402,23 +402,23 @@ public class CheckTest
     }
 
     /**
-     * Test the check equal.
+     * Test the check equality.
      */
     @Test
-    public void testEqual()
+    public void testEquality()
     {
-        Check.equal(Integer.MIN_VALUE, Integer.MIN_VALUE);
-        Check.equal(0, 0);
-        Check.equal(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        Check.equality(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        Check.equality(0, 0);
+        Check.equality(Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
     /**
-     * Test the check equal fail.
+     * Test the check equality fail.
      */
     @Test(expected = LionEngineException.class)
-    public void testEqualFail()
+    public void testEqualityFail()
     {
-        Check.equal(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        Check.equality(Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     /**
