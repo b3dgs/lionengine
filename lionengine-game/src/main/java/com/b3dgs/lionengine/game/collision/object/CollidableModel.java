@@ -109,6 +109,35 @@ public class CollidableModel extends TraitModel implements Collidable
         showCollision = false;
     }
 
+    /**
+     * Check if other collides with collision and its rectangle area.
+     * 
+     * @param other The other collidable to check.
+     * @param collision The collision to check with.
+     * @param rectangle The collision rectangle.
+     * @return The collision collides with other, <code>null</code> if none.
+     */
+    private Collision collide(Collidable other, Collision collision, Rectangle rectangle)
+    {
+        final double sh = rectangle.getX();
+        final double sv = rectangle.getY();
+        final double dh = origin.getX(transformable.getX() + collision.getOffsetX(), rectangle.getWidth()) - sh;
+        final double dv = origin.getY(transformable.getY() + collision.getOffsetY(), rectangle.getHeight()) - sv;
+        final double norm = Math.sqrt(dh * dh + dv * dv);
+        final double sx = dh / norm;
+        final double sy = dv / norm;
+
+        for (int count = 0; count < norm; count++)
+        {
+            if (checkCollide(rectangle, other))
+            {
+                return collision;
+            }
+            rectangle.translate(sx, sy);
+        }
+        return null;
+    }
+
     /*
      * Collidable
      */
@@ -206,25 +235,10 @@ public class CollidableModel extends TraitModel implements Collidable
         {
             for (final Map.Entry<Collision, Rectangle> current : boxs.entrySet())
             {
-                final Collision collision = current.getKey();
-                final Rectangle rectangle = current.getValue();
-
-                final double sh = rectangle.getX();
-                final double sv = rectangle.getY();
-                final double dh = origin.getX(transformable.getX() + collision.getOffsetX(), rectangle.getWidth()) - sh;
-                final double dv = origin.getY(transformable.getY() + collision.getOffsetY(), rectangle.getHeight())
-                                  - sv;
-                final double norm = Math.sqrt(dh * dh + dv * dv);
-                final double sx = dh / norm;
-                final double sy = dv / norm;
-
-                for (int count = 0; count < norm; count++)
+                final Collision collision = collide(other, current.getKey(), current.getValue());
+                if (collision != null)
                 {
-                    if (checkCollide(rectangle, other))
-                    {
-                        return current.getKey();
-                    }
-                    rectangle.translate(sx, sy);
+                    return collision;
                 }
             }
         }

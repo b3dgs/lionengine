@@ -220,21 +220,18 @@ final class PathFinderImpl implements PathFinder
         {
             for (int x = -1; x < 2; x++)
             {
-                if (x == 0 && y == 0)
-                {
-                    continue;
-                }
-                if (!allowDiagMovement && x != 0 && y != 0)
-                {
-                    continue;
-                }
+                final boolean idle = x == 0 && y == 0;
+                final boolean movingDiagonal = x != 0 && y != 0;
 
-                final int xp = x + current.getX();
-                final int yp = y + current.getY();
-
-                if (isValidLocation(mover, stx, sty, xp, yp, ignoreRef))
+                if (!idle && (!movingDiagonal || allowDiagMovement))
                 {
-                    nextDepth = updateNeighbour(mover, dtx, dty, current, xp, yp, maxDepth);
+                    final int xp = x + current.getX();
+                    final int yp = y + current.getY();
+
+                    if (isValidLocation(mover, stx, sty, xp, yp, ignoreRef))
+                    {
+                        nextDepth = updateNeighbour(mover, dtx, dty, current, xp, yp, maxDepth);
+                    }
                 }
             }
         }

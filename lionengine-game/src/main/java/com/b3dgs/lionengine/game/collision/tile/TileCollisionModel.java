@@ -66,6 +66,116 @@ public class TileCollisionModel implements TileCollision
         }
     }
 
+    /**
+     * Get the horizontal collision location between the tile and the movement vector.
+     * 
+     * @param formula The collision formula.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @param offsetX The horizontal offset.
+     * @return The horizontal collision (<code>null</code> if none).
+     */
+    private Double getCollisionX(CollisionFormula formula, double ox, double oy, double x, double y, int offsetX)
+    {
+        final CollisionRange range = formula.getRange();
+        if (range.getOutput() == Axis.X)
+        {
+            final int value = getInputValue(Axis.Y, x, y);
+            if (UtilMath.isBetween(value, range.getMinY(), range.getMaxY()))
+            {
+                final int current = getInputValue(Axis.X, x, y);
+                final int previous = getInputValue(Axis.X, ox, oy);
+                final double result = formula.getFunction().compute(previous);
+                if (UtilMath.isBetween(current, range.getMinX(), range.getMaxX()))
+                {
+                    return getCollisionX(ox, x, result, offsetX);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the horizontal collision location between the tile and the movement vector.
+     * 
+     * @param ox The old horizontal location.
+     * @param x The current horizontal location.
+     * @param result The computed horizontal location.
+     * @param offsetX The horizontal offset.
+     * @return The horizontal collision (<code>null</code> if none).
+     */
+    private Double getCollisionX(double ox, double x, double result, int offsetX)
+    {
+        final double coll = tile.getX() + result - offsetX;
+        final Double collisionX;
+        if (x > ox)
+        {
+            collisionX = Double.valueOf(coll - 1);
+        }
+        else
+        {
+            collisionX = Double.valueOf(coll + 1);
+        }
+        return collisionX;
+    }
+
+    /**
+     * Get the vertical collision location between the tile and the movement vector.
+     * 
+     * @param formula The collision formula.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @param offsetY The vertical offset.
+     * @return The vertical collision (<code>null</code> if none).
+     */
+    private Double getCollisionY(CollisionFormula formula, double ox, double oy, double x, double y, int offsetY)
+    {
+        final CollisionRange range = formula.getRange();
+        if (range.getOutput() == Axis.Y && ox >= tile.getX() + range.getMinX() && ox <= tile.getX() + range.getMaxX())
+        {
+            final int value = getInputValue(Axis.X, x, y);
+            if (UtilMath.isBetween(value, range.getMinX(), range.getMaxX()))
+            {
+                final int current = getInputValue(Axis.Y, x, y);
+                final int previous = getInputValue(Axis.Y, ox, oy);
+                final double result = formula.getFunction().compute(previous);
+                if (UtilMath.isBetween(current, range.getMinY(), range.getMaxY()))
+                {
+                    return getCollisionY(oy, y, result, offsetY);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the vertical collision location between the tile and the movement vector.
+     * 
+     * @param oy The old vertical location.
+     * @param y The current vertical location.
+     * @param result The computed vertical location.
+     * @param offsetY The vertical offset.
+     * @return The vertical collision (<code>null</code> if none).
+     */
+    private Double getCollisionY(double oy, double y, double result, int offsetY)
+    {
+        final double coll = tile.getY() + result - offsetY;
+        final Double collisionY;
+        if (y > oy)
+        {
+            collisionY = Double.valueOf(coll - 1);
+        }
+        else
+        {
+            collisionY = Double.valueOf(coll + 1);
+        }
+        return collisionY;
+    }
+
     /*
      * TileCollision
      */
@@ -95,30 +205,10 @@ public class TileCollisionModel implements TileCollision
         {
             if (formulas.contains(formula) && category.getAxis() == formula.getRange().getOutput())
             {
-                final CollisionRange range = formula.getRange();
-                if (range.getOutput() == Axis.X)
+                final Double collisionX = getCollisionX(formula, ox, oy, x, y, category.getOffsetX());
+                if (collisionX != null)
                 {
-                    final int value = getInputValue(Axis.Y, x, y);
-                    if (UtilMath.isBetween(value, range.getMinY(), range.getMaxY()))
-                    {
-                        final int current = getInputValue(Axis.X, x, y);
-                        final int previous = getInputValue(Axis.X, ox, oy);
-                        final double result = formula.getFunction().compute(previous);
-                        if (UtilMath.isBetween(current, range.getMinX(), range.getMaxX()))
-                        {
-                            final double coll = tile.getX() + result - category.getOffsetX();
-                            final Double collisionX;
-                            if (x > ox)
-                            {
-                                collisionX = Double.valueOf(coll - 1);
-                            }
-                            else
-                            {
-                                collisionX = Double.valueOf(coll + 1);
-                            }
-                            return collisionX;
-                        }
-                    }
+                    return collisionX;
                 }
             }
         }
@@ -132,32 +222,10 @@ public class TileCollisionModel implements TileCollision
         {
             if (formulas.contains(formula) && category.getAxis() == formula.getRange().getOutput())
             {
-                final CollisionRange range = formula.getRange();
-                if (range.getOutput() == Axis.Y
-                    && ox >= tile.getX() + range.getMinX()
-                    && ox <= tile.getX() + range.getMaxX())
+                final Double collisionY = getCollisionY(formula, ox, oy, x, y, category.getOffsetY());
+                if (collisionY != null)
                 {
-                    final int value = getInputValue(Axis.X, x, y);
-                    if (UtilMath.isBetween(value, range.getMinX(), range.getMaxX()))
-                    {
-                        final int current = getInputValue(Axis.Y, x, y);
-                        final int previous = getInputValue(Axis.Y, ox, oy);
-                        final double result = formula.getFunction().compute(previous);
-                        if (UtilMath.isBetween(current, range.getMinY(), range.getMaxY()))
-                        {
-                            final double coll = tile.getY() + result - category.getOffsetY();
-                            final Double collisionY;
-                            if (y > oy)
-                            {
-                                collisionY = Double.valueOf(coll - 1);
-                            }
-                            else
-                            {
-                                collisionY = Double.valueOf(coll + 1);
-                            }
-                            return collisionY;
-                        }
-                    }
+                    return collisionY;
                 }
             }
         }

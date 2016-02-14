@@ -149,21 +149,12 @@ public class MapTileGame implements MapTile
                           int offsetX,
                           int offsetY)
     {
-        // Each vertical tiles
         for (int v = 0; v <= inTileHeight; v++)
         {
             final int ty = v + (sy - offsetY) / tileHeight;
             if (!(ty < 0 || ty >= heightInTile))
             {
-                // Each horizontal tiles
-                for (int h = 0; h <= inTileWidth; h++)
-                {
-                    final int tx = h + (sx - offsetX) / tileWidth;
-                    if (!(tx < 0 || tx >= widthInTile))
-                    {
-                        renderTile(g, tx, ty, sx, sy, screenHeight);
-                    }
-                }
+                renderHorizontal(g, screenHeight, sx, sy, inTileWidth, offsetX, ty);
             }
         }
     }
@@ -214,6 +205,29 @@ public class MapTileGame implements MapTile
         final int x = file.readInteger() * getTileWidth() + i * BLOC_SIZE * getTileWidth();
         final int y = file.readInteger() * getTileHeight();
         return createTile(sheet, number, x, y);
+    }
+
+    /**
+     * Render horizontal tiles.
+     * 
+     * @param g The graphic output.
+     * @param screenHeight The view height (rendering start from bottom).
+     * @param sx The starting x (view real location x).
+     * @param sy The starting y (view real location y).
+     * @param inTileWidth The number of rendered tiles in width.
+     * @param ty The current vertical tile.
+     * @param offsetX The horizontal map offset.
+     */
+    private void renderHorizontal(Graphic g, int screenHeight, int sx, int sy, int inTileWidth, int offsetX, int ty)
+    {
+        for (int h = 0; h <= inTileWidth; h++)
+        {
+            final int tx = h + (sx - offsetX) / tileWidth;
+            if (!(tx < 0 || tx >= widthInTile))
+            {
+                renderTile(g, tx, ty, sx, sy, screenHeight);
+            }
+        }
     }
 
     /**

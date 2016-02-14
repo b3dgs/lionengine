@@ -116,38 +116,54 @@ public class MapTileCollisionModel implements MapTileCollision
         switch (range.getOutput())
         {
             case X:
-                final double fx = function.compute(y);
-                if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX())
-                    && UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
-                {
-                    g.drawRect((int) fx, th - y - 1, 0, 0, false);
-                }
+                renderX(g, function, range, th, x, y);
                 break;
             case Y:
-                final double fy = function.compute(x);
-                if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY())
-                    && UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
-                {
-                    g.drawRect(x, th - (int) fy - 1, 0, 0, false);
-                }
+                renderY(g, function, range, th, x, y);
                 break;
             default:
-                throw new LionEngineException("Unknown type: " + range.getOutput());
+                throw new LionEngineException(range.getOutput());
         }
     }
 
     /**
-     * Check the constraint with the specified tile.
+     * Render horizontal collision from current vector.
      * 
-     * @param constraints The constraint groups to check.
-     * @param tile The tile to check with.
-     * @return <code>true</code> if can be ignored, <code>false</code> else.
+     * @param g The graphic buffer.
+     * @param function The collision function.
+     * @param range The collision range.
+     * @param th The tile height.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
      */
-    private boolean checkConstraint(Collection<String> constraints, Tile tile)
+    private static void renderX(Graphic g, CollisionFunction function, CollisionRange range, int th, int x, int y)
     {
-        return tile != null
-               && constraints.contains(mapGroup.getGroup(tile))
-               && !tile.getFeature(TileCollision.class).getCollisionFormulas().isEmpty();
+        final double fx = function.compute(y);
+        if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX())
+            && UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
+        {
+            g.drawRect((int) fx, th - y - 1, 0, 0, false);
+        }
+    }
+
+    /**
+     * Render vertical collision from current vector.
+     * 
+     * @param g The graphic buffer.
+     * @param function The collision function.
+     * @param range The collision range.
+     * @param th The tile height.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     */
+    private static void renderY(Graphic g, CollisionFunction function, CollisionRange range, int th, int x, int y)
+    {
+        final double fy = function.compute(x);
+        if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY())
+            && UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
+        {
+            g.drawRect(x, th - (int) fy - 1, 0, 0, false);
+        }
     }
 
     /**
@@ -416,6 +432,20 @@ public class MapTileCollisionModel implements MapTileCollision
     }
 
     /**
+     * Check the constraint with the specified tile.
+     * 
+     * @param constraints The constraint groups to check.
+     * @param tile The tile to check with.
+     * @return <code>true</code> if can be ignored, <code>false</code> else.
+     */
+    private boolean checkConstraint(Collection<String> constraints, Tile tile)
+    {
+        return tile != null
+               && constraints.contains(mapGroup.getGroup(tile))
+               && !tile.getFeature(TileCollision.class).getCollisionFormulas().isEmpty();
+    }
+
+    /**
      * Compute the collision from current location.
      * 
      * @param category The collision category.
@@ -423,7 +453,7 @@ public class MapTileCollisionModel implements MapTileCollision
      * @param oy The old vertical location.
      * @param x The current horizontal location.
      * @param y The current vertical location.
-     * @return The computed collision result.
+     * @return The computed collision result, <code>null</code> if none.
      */
     private CollisionResult computeCollision(CollisionCategory category, double ox, double oy, double x, double y)
     {
@@ -461,6 +491,30 @@ public class MapTileCollisionModel implements MapTileCollision
                 g.drawImage(buffer, x - 1, y);
             }
         }
+    }
+
+    /**
+     * Get the collision result from current sub location.
+     * 
+     * @param category The collision category.
+     * @param sx The horizontal speed.
+     * @param sy The vertical speed.
+     * @param h The current horizontal location.
+     * @param v The current vertical location.
+     * @return The collision found, <code>null</code> if none.
+     */
+    private CollisionResult getResult(CollisionCategory category, double sx, double sy, double h, double v)
+    {
+        final double oh = UtilMath.getRound(sx, h);
+        final double ov = UtilMath.getRound(sy, v);
+
+        final CollisionResult result;
+        result = computeCollision(category, oh, ov, UtilMath.getRound(sx, h), UtilMath.getRound(sy, v + sy));
+        if (result == null)
+        {
+            return computeCollision(category, oh, ov, UtilMath.getRound(sx, h + sx), UtilMath.getRound(sy, v + sy));
+        }
+        return result;
     }
 
     /*
@@ -559,38 +613,20 @@ public class MapTileCollisionModel implements MapTileCollision
         final double sx = dh / norm;
         final double sy = dv / norm;
 
-        double oh;
-        double ov;
         double h = sh;
         double v = sv;
 
-        CollisionResult found = null;
         for (int count = 0; count < norm; count++)
         {
-            oh = UtilMath.getRound(sx, h);
-            ov = UtilMath.getRound(sy, v);
-
+            final CollisionResult found = getResult(category, sx, sy, h, v);
+            if (found != null)
+            {
+                return found;
+            }
             v += sy;
-            CollisionResult result = computeCollision(category,
-                                                      oh,
-                                                      ov,
-                                                      UtilMath.getRound(sx, h),
-                                                      UtilMath.getRound(sy, v));
-            if (result != null)
-            {
-                found = result;
-                break;
-            }
-
             h += sx;
-            result = computeCollision(category, oh, ov, UtilMath.getRound(sx, h), UtilMath.getRound(sy, v));
-            if (result != null)
-            {
-                found = result;
-                break;
-            }
         }
-        return found;
+        return null;
     }
 
     @Override

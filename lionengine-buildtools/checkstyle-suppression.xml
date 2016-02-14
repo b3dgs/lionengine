@@ -29,11 +29,11 @@
     <suppress checks="EmptyBlock" files="com.b3dgs.lionengine.game.state.StateAnimationBased" lines="108"/>
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax"/>
     <suppress checks="StaticImport" files="com.b3dgs.lionengine.game.map.transition.TransitionType"/>
-    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.collision.tile.TileCollisionModel" lines="102, 107, 111, 141, 146, 150"/>
+    <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.collision.tile.TileCollisionModel" lines="91, 146"/>
     <suppress checks="[a-zA-Z0-9]*" files="com.b3dgs.lionengine.game.map.Border20Map"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="211"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="224, 229"/>
-    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.PathFinderImpl" lines="287"/>
+    <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.PathFinderImpl" lines="284"/>
     
     <suppress checks="IllegalCatch" files="com.b3dgs.lionengine.network.ClientSocket" lines="63"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.network.ServerImpl"/>

@@ -170,7 +170,7 @@ public final class Check
      * @param b The parameter to compare to.
      * @throws LionEngineException If check failed.
      */
-    public static void equals(int a, int b)
+    public static void equal(int a, int b)
     {
         if (a != b)
         {
