@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.b3dgs.lionengine</groupId>
         <artifactId>lionengine-parent</artifactId>
-        <version>8.2.1-SNAPSHOT</version>
+        <version>8.2.1</version>
         <relativePath>../lionengine-parent</relativePath>
     </parent>
     <artifactId>lionengine-audio-sc68</artifactId>

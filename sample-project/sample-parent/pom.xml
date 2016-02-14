@@ -28,7 +28,7 @@
         <checkstyle.version>6.8.1</checkstyle.version>
         <maven-eclipse.version>2.10</maven-eclipse.version>
         <pde-target-maven.version>1.0.1</pde-target-maven.version>
-        <lionengine.version>8.2.1-SNAPSHOT</lionengine.version>
+        <lionengine.version>8.2.1</lionengine.version>
     </properties>
     <groupId>com.b3dgs.sample</groupId>
     <artifactId>sample-parent</artifactId>
