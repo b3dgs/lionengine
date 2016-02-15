@@ -1,5 +1,5 @@
 # LionEngine
-[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.2.1)](https://travis-ci.org/b3dgs/lionengine)  [![Maven Central](https://img.shields.io/badge/maven--central-8.2.1-blue.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.b3dgs.lionengine%22) [![License](https://img.shields.io/badge/license-GPL%20v2.0-lightgrey.svg)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html)
+[![Build Status](https://travis-ci.org/b3dgs/lionengine.svg?branch=lionengine-8.2.2)](https://travis-ci.org/b3dgs/lionengine)  [![Maven Central](https://img.shields.io/badge/maven--central-8.2.1-blue.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.b3dgs.lionengine%22) [![License](https://img.shields.io/badge/license-GPL%20v2.0-lightgrey.svg)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html)
 <table>
     <tr>
         <td>
@@ -23,7 +23,7 @@
 
 ## Presentation
 
-The __LionEngine__ is a game engine especially developed during the project [Lionheart Remake] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionheart_remake) for an easy Java use.
+The __LionEngine__ is a game engine especially developed during the project [Lionheart Remake] (http://www.b3dgs.com/v7/page.php?lang=en&section=lionheart_remake) for an easy Java use.
 The engine is as a library, in Jar format (_including its javadoc_), which can be included in any project;
 for utility class uses, or to directly implement and inherit a game skeleton (_including management of frame rate, extrapolation, input output..._).
 
