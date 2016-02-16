@@ -40,14 +40,14 @@ import com.b3dgs.lionengine.game.pathfinding.PathData;
  */
 public class PathProperties extends ObjectProperties<PathData> implements ObjectListListener<PathData>
 {
+    /** Diagonal flag. */
+    private final MovementList movements = new MovementList();
     /** Category combo. */
     private Combo category;
     /** Cost value. */
     private Text cost;
     /** Block flag. */
     private Combo block;
-    /** Diagonal flag. */
-    private Combo diagonal;
 
     /**
      * Create a path properties.
@@ -76,7 +76,7 @@ public class PathProperties extends ObjectProperties<PathData> implements Object
         category = UtilCombo.create(Messages.PathProperties_Category, content, true, values);
         cost = UtilText.create(Messages.PathProperties_Cost, content);
         block = UtilCombo.create(Messages.PathProperties_Block, content, false, Boolean.TRUE, Boolean.FALSE);
-        diagonal = UtilCombo.create(Messages.PathProperties_Diagonal, content, false, Boolean.TRUE, Boolean.FALSE);
+        movements.create(content);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class PathProperties extends ObjectProperties<PathData> implements Object
         return new PathData(name,
                             Double.parseDouble(cost.getText()),
                             Boolean.parseBoolean(block.getText()),
-                            Boolean.parseBoolean(diagonal.getText()));
+                            movements.getObjects());
     }
 
     /*
@@ -98,7 +98,7 @@ public class PathProperties extends ObjectProperties<PathData> implements Object
         setValueDefault(category, path.getName());
         setValueDefault(cost, String.valueOf(path.getCost()));
         setValueDefault(block, String.valueOf(path.isBlocking()));
-        setValueDefault(diagonal, String.valueOf(path.hasDiagonal()));
+        movements.loadMovements(path.getAllowedMovements());
     }
 
     @Override

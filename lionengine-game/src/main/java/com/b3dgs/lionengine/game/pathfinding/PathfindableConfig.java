@@ -17,7 +17,11 @@
  */
 package com.b3dgs.lionengine.game.pathfinding;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -37,8 +41,8 @@ public final class PathfindableConfig
     public static final String COST = "cost";
     /** Block attribute. */
     public static final String BLOCK = "block";
-    /** Diagonal attribute. */
-    public static final String DIAGONAL = "diagonal";
+    /** Allowed movement node. */
+    public static final String MOVEMENT = Configurer.PREFIX + "movement";
 
     /**
      * Create the pathfindable data from node.
@@ -68,11 +72,47 @@ public final class PathfindableConfig
     public static PathData createPathData(XmlNode node)
     {
         final String category = node.readString(CATEGORY);
-        final double cost = node.readDouble(COST);
+        final double cost;
+        if (node.hasAttribute(COST))
+        {
+            cost = node.readDouble(COST);
+        }
+        else
+        {
+            cost = 0.0;
+        }
         final boolean blocking = node.readBoolean(BLOCK);
-        final boolean diagonal = node.readBoolean(DIAGONAL);
+        final Collection<MovementTile> movements = getAllowedMovements(node);
 
-        return new PathData(category, cost, blocking, diagonal);
+        return new PathData(category, cost, blocking, movements);
+    }
+
+    /**
+     * Read the allowed movements.
+     * 
+     * @param node The root node.
+     * @return The allowed movements.
+     * @throws LionEngineException If malformed movement name.
+     */
+    private static Collection<MovementTile> getAllowedMovements(XmlNode node)
+    {
+        final Collection<MovementTile> movements = new HashSet<MovementTile>();
+        if (!node.hasChild(MOVEMENT))
+        {
+            return Collections.emptySet();
+        }
+        for (final XmlNode movementNode : node.getChildren(MOVEMENT))
+        {
+            try
+            {
+                movements.add(MovementTile.valueOf(movementNode.getText()));
+            }
+            catch (final IllegalArgumentException exception)
+            {
+                throw new LionEngineException(exception);
+            }
+        }
+        return EnumSet.copyOf(movements);
     }
 
     /**

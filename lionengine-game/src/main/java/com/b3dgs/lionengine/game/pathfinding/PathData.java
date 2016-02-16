@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.pathfinding;
 
+import java.util.Collection;
+
 import com.b3dgs.lionengine.Nameable;
 
 /**
@@ -30,8 +32,8 @@ public class PathData implements Nameable
     private final double cost;
     /** Blocking flag. */
     private final boolean blocking;
-    /** Diagonal flag. */
-    private final boolean diagonal;
+    /** Allowed movements. */
+    private final Collection<MovementTile> movements;
 
     /**
      * Create a path data.
@@ -39,14 +41,14 @@ public class PathData implements Nameable
      * @param category The category name.
      * @param cost The cost value.
      * @param blocking The blocking flag.
-     * @param diagonal The diagonal flag.
+     * @param movements The allowed movements.
      */
-    public PathData(String category, double cost, boolean blocking, boolean diagonal)
+    public PathData(String category, double cost, boolean blocking, Collection<MovementTile> movements)
     {
         this.category = category;
         this.cost = cost;
         this.blocking = blocking;
-        this.diagonal = diagonal;
+        this.movements = movements;
     }
 
     /**
@@ -70,13 +72,13 @@ public class PathData implements Nameable
     }
 
     /**
-     * Get the diagonal flag.
+     * Get the allowed movements.
      * 
-     * @return <code>true</code> if diagonal is allowed, <code>false</code> else.
+     * @return The allowed movements.
      */
-    public boolean hasDiagonal()
+    public Collection<MovementTile> getAllowedMovements()
     {
-        return diagonal;
+        return movements;
     }
 
     /*

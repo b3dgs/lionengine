@@ -212,27 +212,61 @@ final class PathFinderImpl implements PathFinder
                            Node current,
                            int maxDepth)
     {
-        int nextDepth = maxDepth;
+        int depth = maxDepth;
         final Tile tile = map.getTile(current.getX(), current.getY());
         final TilePath tilePath = tile.getFeature(TilePath.class);
-        final boolean allowDiagMovement = mover.isDiagonalAllowed(tilePath.getCategory());
         for (int y = -1; y < 2; y++)
         {
             for (int x = -1; x < 2; x++)
             {
-                final boolean idle = x == 0 && y == 0;
-                final boolean movingDiagonal = x != 0 && y != 0;
-
-                if (!idle && (!movingDiagonal || allowDiagMovement))
+                if (!(x == 0 && y == 0))
                 {
-                    final int xp = x + current.getX();
-                    final int yp = y + current.getY();
-
-                    if (isValidLocation(mover, stx, sty, xp, yp, ignoreRef))
-                    {
-                        nextDepth = updateNeighbour(mover, dtx, dty, current, xp, yp, maxDepth);
-                    }
+                    depth = check(tilePath, depth, x, y, mover, stx, sty, dtx, dty, ignoreRef, current, maxDepth);
                 }
+            }
+        }
+        return depth;
+    }
+
+    /**
+     * Update the open and closed list to find the path.
+     * 
+     * @param tilePath The current tile.
+     * @param nextDepth The next depth value.
+     * @param x The current horizontal movement.
+     * @param y The current vertical movement.
+     * @param mover The entity that will be moving along the path.
+     * @param stx The x coordinate of the start location.
+     * @param sty The y coordinate of the start location.
+     * @param dtx The x coordinate of the destination location.
+     * @param dty The y coordinate of the destination location.
+     * @param ignoreRef The ignore map array reference checking (<code>true</code> to ignore references).
+     * @param current The current node.
+     * @param maxDepth The last max depth.
+     * @return The next max depth.
+     */
+    private int check(TilePath tilePath,
+                      int nextDepth,
+                      int x,
+                      int y,
+                      Pathfindable mover,
+                      int stx,
+                      int sty,
+                      int dtx,
+                      int dty,
+                      boolean ignoreRef,
+                      Node current,
+                      int maxDepth)
+    {
+        final MovementTile movement = MovementTile.from(x, y);
+        if (mover.isMovementAllowed(tilePath.getCategory(), movement))
+        {
+            final int xp = x + current.getX();
+            final int yp = y + current.getY();
+
+            if (isValidLocation(mover, stx, sty, xp, yp, ignoreRef))
+            {
+                return updateNeighbour(mover, dtx, dty, current, xp, yp, maxDepth);
             }
         }
         return nextDepth;

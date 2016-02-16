@@ -17,38 +17,32 @@
  */
 package com.b3dgs.lionengine.editor.properties.pathfindable.editor;
 
-import java.util.Collections;
-import java.util.Map;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.pathfinding.PathData;
-import com.b3dgs.lionengine.game.pathfinding.PathfindableConfig;
+import com.b3dgs.lionengine.game.pathfinding.MovementTile;
 
 /**
- * Represents the path list, allowing to add and remove {@link PathData}.
+ * Represents the movements list, allowing to add and remove {@link MovementTile}.
  */
-public class PathList extends ObjectList<PathData>
+public class MovementList extends ObjectList<MovementTile>
 {
     /**
-     * Create path list and associate its properties.
-     * 
-     * @param properties The properties reference.
+     * Create movement list and associate its properties.
      */
-    public PathList(PathProperties properties)
+    public MovementList()
     {
-        super(PathData.class, properties);
+        super(MovementTile.class);
     }
 
     /**
-     * Load the existing paths from the object configurer.
+     * Load the existing movements from the object configurer.
      * 
-     * @param configurer The configurer reference.
+     * @param movements The movements reference.
      */
-    public void loadPaths(Configurer configurer)
+    public void loadMovements(Collection<MovementTile> movements)
     {
-        final Map<String, PathData> config = PathfindableConfig.create(configurer);
-        loadObjects(config.values());
+        loadObjects(movements);
     }
 
     /*
@@ -56,14 +50,14 @@ public class PathList extends ObjectList<PathData>
      */
 
     @Override
-    protected PathData copyObject(PathData path)
+    protected MovementTile copyObject(MovementTile movement)
     {
-        return new PathData(path.getName(), path.getCost(), path.isBlocking(), path.getAllowedMovements());
+        return movement;
     }
 
     @Override
-    protected PathData createObject(String name)
+    protected MovementTile createObject(String name)
     {
-        return new PathData(name, 1.0, true, Collections.emptyList());
+        return MovementTile.valueOf(name);
     }
 }

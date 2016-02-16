@@ -797,11 +797,11 @@ public class PathfindableModel extends TraitModel implements Pathfindable
     }
 
     @Override
-    public boolean isDiagonalAllowed(String category)
+    public boolean isMovementAllowed(String category, MovementTile movement)
     {
         if (categories.containsKey(category))
         {
-            return categories.get(category).hasDiagonal();
+            return categories.get(category).getAllowedMovements().contains(movement);
         }
         throw new LionEngineException(ERROR_CATEGORY, category);
     }
