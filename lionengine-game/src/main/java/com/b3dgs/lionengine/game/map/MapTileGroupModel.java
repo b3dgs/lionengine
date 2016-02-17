@@ -91,16 +91,24 @@ public class MapTileGroupModel implements MapTileGroup
     {
         final TileRef ref = new TileRef(tile);
         final String oldGroup = getGroup(tile);
-        tilesGroup.put(ref, group);
+
         if (groupTiles.containsKey(oldGroup))
         {
             groupTiles.get(oldGroup).remove(ref);
         }
-        if (!groupTiles.containsKey(group))
+        if (group != null)
         {
-            groupTiles.put(group, new HashSet<TileRef>());
+            tilesGroup.put(ref, group);
+            if (!groupTiles.containsKey(group))
+            {
+                groupTiles.put(group, new HashSet<TileRef>());
+            }
+            groupTiles.get(group).add(ref);
         }
-        groupTiles.get(group).add(ref);
+        else
+        {
+            tilesGroup.remove(ref);
+        }
     }
 
     @Override

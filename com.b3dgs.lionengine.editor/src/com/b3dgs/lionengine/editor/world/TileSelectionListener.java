@@ -27,9 +27,10 @@ public interface TileSelectionListener
     /**
      * Called when a tile is selected.
      * 
+     * @param click The associated mouse click.
      * @param tile The selected tile from map.
      */
-    void notifyTileSelected(Tile tile);
+    void notifyTileSelected(int click, Tile tile);
 
     /**
      * Called when selected tile group changed.

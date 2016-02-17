@@ -226,10 +226,10 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      * 
      * @param mx The horizontal mouse location.
      * @param my The vertical mouse location.
+     * @param click The mouse click.
      */
-    private void updatePointerTile(int mx, int my)
+    private void updatePointerTile(int mx, int my, int click)
     {
-        final Tile oldSelectedTile = selectedTile;
         if (map.isCreated())
         {
             final Tile tile = UtilWorld.getTile(map, camera, mx, my);
@@ -240,19 +240,16 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         {
             selectedTile = null;
         }
-        if (selectedTile != oldSelectedTile)
+        for (final TileSelectionListener listener : tileSelectionListeners)
         {
-            for (final TileSelectionListener listener : tileSelectionListeners)
+            listener.notifyTileSelected(click, selectedTile);
+            if (selectedTile != null)
             {
-                listener.notifyTileSelected(selectedTile);
-                if (selectedTile != null)
-                {
-                    listener.notifyTileGroupSelected(mapGroup.getGroup(selectedTile));
-                }
-                else
-                {
-                    listener.notifyTileGroupSelected(MapTileGroupModel.NO_GROUP_NAME);
-                }
+                listener.notifyTileGroupSelected(mapGroup.getGroup(selectedTile));
+            }
+            else
+            {
+                listener.notifyTileGroupSelected(MapTileGroupModel.NO_GROUP_NAME);
             }
         }
     }
@@ -551,7 +548,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         collStart = UtilWorld.getPoint(camera, mx, my);
         if (palette.isPalette(PaletteType.POINTER_TILE))
         {
-            updatePointerTile(mx, my);
+            updatePointerTile(mx, my, click);
         }
         if (click == Mouse.MIDDLE)
         {
@@ -580,7 +577,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     {
         if (palette.isPalette(PaletteType.POINTER_TILE) && click > 0)
         {
-            updatePointerTile(mx, my);
+            updatePointerTile(mx, my, click);
         }
         else if (palette.isPalette(PaletteType.POINTER_COLLISION) && collStart != null)
         {

@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.Focusable;
@@ -388,6 +389,25 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         }
     }
 
+    /**
+     * Change tile group or remove, depending of mouse click.
+     * 
+     * @param click The mouse click.
+     * @param tile The tile to update.
+     * @param newGroup The new group to set.
+     */
+    private void changeGroup(int click, Tile tile, String newGroup)
+    {
+        if (click == Mouse.RIGHT)
+        {
+            mapGroup.changeGroup(tile, null);
+        }
+        else
+        {
+            mapGroup.changeGroup(tile, newGroup);
+        }
+    }
+
     /*
      * AbstractDialog
      */
@@ -456,13 +476,13 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
      */
 
     @Override
-    public void keyPressed(KeyEvent e)
+    public void keyPressed(KeyEvent event)
     {
         update();
     }
 
     @Override
-    public void keyReleased(KeyEvent e)
+    public void keyReleased(KeyEvent event)
     {
         // Nothing to do
     }
@@ -472,10 +492,10 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
      */
 
     @Override
-    public void notifyTileSelected(Tile tile)
+    public void notifyTileSelected(int click, Tile tile)
     {
         final String newGroup = getSelectedGroup();
-        mapGroup.changeGroup(tile, newGroup);
+        changeGroup(click, tile, newGroup);
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
         {
             for (int tx = 0; tx < map.getInTileWidth(); tx++)
@@ -485,7 +505,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
                     && current.getSheet().equals(tile.getSheet())
                     && current.getNumber() == tile.getNumber())
                 {
-                    mapGroup.changeGroup(current, newGroup);
+                    changeGroup(click, current, newGroup);
                 }
             }
         }

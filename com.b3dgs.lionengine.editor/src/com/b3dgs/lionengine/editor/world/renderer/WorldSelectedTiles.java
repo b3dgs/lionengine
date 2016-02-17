@@ -167,7 +167,7 @@ public class WorldSelectedTiles implements WorldRenderListener, TileSelectionLis
      */
 
     @Override
-    public void notifyTileSelected(Tile tile)
+    public void notifyTileSelected(int click, Tile tile)
     {
         this.tile = tile;
     }

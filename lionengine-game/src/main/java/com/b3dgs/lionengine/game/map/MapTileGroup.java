@@ -41,7 +41,7 @@ public interface MapTileGroup extends MapTileFeature
      * Change the group of the tile.
      * 
      * @param tile The tile to change its group.
-     * @param group The group destination name.
+     * @param group The group destination name (<code>null</code> to simply remove).
      */
     void changeGroup(Tile tile, String group);
 

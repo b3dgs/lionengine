@@ -335,7 +335,7 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
      */
 
     @Override
-    public void notifyTileSelected(Tile tile)
+    public void notifyTileSelected(int click, Tile tile)
     {
         final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         if (tile != null)
