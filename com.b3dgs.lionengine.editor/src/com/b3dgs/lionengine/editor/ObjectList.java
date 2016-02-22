@@ -323,6 +323,7 @@ public abstract class ObjectList<T extends Nameable>
     protected void loadObjects(Collection<T> objects)
     {
         boolean selected = false;
+        clear();
         for (final T object : objects)
         {
             final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
