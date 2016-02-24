@@ -86,6 +86,9 @@ public class HandlerTest
         Assert.assertNotNull(handler.get(object.getId()));
         Assert.assertTrue(handler.get(ObjectGame.class).iterator().hasNext());
         Assert.assertTrue(handler.values().iterator().hasNext());
+
+        handler.removeAll();
+        handler.update(1.0);
     }
 
     /**
@@ -108,6 +111,10 @@ public class HandlerTest
         handler.update(1.0);
 
         Assert.assertEquals(Integer.valueOf(0), object.getId());
+
+        handler.removeAll();
+        handler.update(1.0);
+        Assert.assertEquals(0, handler.size());
     }
 
     /**
@@ -223,6 +230,10 @@ public class HandlerTest
 
         Assert.assertNull(added.get());
         Assert.assertNull(removed.get());
+
+        handler.removeAll();
+        handler.update(1.0);
+        Assert.assertEquals(0, handler.size());
     }
 
     /**
@@ -240,7 +251,10 @@ public class HandlerTest
             public void update(double extrp, HandledObjects objects)
             {
                 extrapolation.set(Double.valueOf(extrp));
-                updated.set(objects.values().iterator().next());
+                for (final ObjectGame object : objects.values())
+                {
+                    updated.set(object);
+                }
             }
         });
 
@@ -253,6 +267,10 @@ public class HandlerTest
 
         Assert.assertEquals(1.0, extrapolation.get().doubleValue(), UtilTests.PRECISION);
         Assert.assertEquals(object, updated.get());
+
+        handler.removeAll();
+        handler.update(1.0);
+        Assert.assertEquals(0, handler.size());
     }
 
     /**
@@ -280,6 +298,10 @@ public class HandlerTest
         handler.render(Graphics.createGraphic());
 
         Assert.assertEquals(object, rendered.get());
+
+        handler.removeAll();
+        handler.update(1.0);
+        Assert.assertEquals(0, handler.size());
     }
 
     /**
@@ -305,6 +327,10 @@ public class HandlerTest
         handler.remove(object);
         handler.remove(object);
         handler.update(1.0);
+
+        handler.removeAll();
+        handler.update(1.0);
+        Assert.assertEquals(0, handler.size());
     }
 
     /**
