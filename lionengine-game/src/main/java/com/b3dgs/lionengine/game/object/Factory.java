@@ -46,8 +46,6 @@ public class Factory
     public static final String FILE_DATA_EXTENSION = "xml";
     /** Setup class error. */
     private static final String ERROR_SETUP_CLASS = "Setup class not found !";
-    /** Setup error. */
-    private static final String ERROR_SETUP = "Setup not found for: ";
     /** Construction error. */
     private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
 
@@ -155,12 +153,7 @@ public class Factory
         {
             setups.put(media, createSetup(media));
         }
-        final Setup setup = setups.get(media);
-        if (setup == null)
-        {
-            throw new LionEngineException(ERROR_SETUP, media.getPath());
-        }
-        return setup;
+        return setups.get(media);
     }
 
     /**
@@ -207,8 +200,6 @@ public class Factory
             setup.getClass(), Services.class
         }, setup, services);
 
-        final Integer id = HandledObjectsImpl.getFreeId();
-        object.setId(id);
         object.prepareTraits(services);
 
         return object;

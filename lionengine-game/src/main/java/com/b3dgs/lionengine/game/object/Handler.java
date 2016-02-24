@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.object;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,12 +57,12 @@ public class Handler implements HandledObjects, Updatable, Renderable, ObjectGam
      */
     public Handler()
     {
-        listeners = new ArrayList<HandlerListener>();
+        listeners = new HashSet<HandlerListener>();
         updatables = new HashSet<ComponentUpdatable>();
         renderables = new HashSet<ComponentRenderable>();
         objects = new HandledObjectsImpl();
-        toDelete = new ArrayList<Integer>();
-        toAdd = new ArrayList<ObjectGame>();
+        toDelete = new HashSet<Integer>();
+        toAdd = new HashSet<ObjectGame>();
         willDelete = false;
         willAdd = false;
     }

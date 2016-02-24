@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Represents the objects handled by the handler, providing quick access to them from their type.
  * 
@@ -29,6 +31,7 @@ public interface HandledObjects
      * 
      * @param id The object id.
      * @return The handlable instance.
+     * @throws LionEngineException If no object found with this id.
      * @see ObjectGame#getId()
      */
     ObjectGame get(Integer id);

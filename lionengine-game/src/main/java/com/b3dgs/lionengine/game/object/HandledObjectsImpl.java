@@ -35,6 +35,8 @@ final class HandledObjectsImpl implements HandledObjects
 {
     /** Free id error. */
     private static final String ERROR_FREE_ID = "No more free id available !";
+    /** Object not found error. */
+    private static final String ERROR_OBJECT_NOT_FOUND = "Object not found: ";
     /** Id used (list of active id used). */
     private static final Collection<Integer> IDS = new HashSet<Integer>(16);
     /** Recycle id (reuse previous removed object id). */
@@ -91,6 +93,9 @@ final class HandledObjectsImpl implements HandledObjects
      */
     public void add(ObjectGame object)
     {
+        final Integer id = getFreeId();
+        object.setId(id);
+
         objects.put(object.getId(), object);
 
         for (final Class<? extends Trait> trait : object.getTraitsType())
@@ -114,6 +119,7 @@ final class HandledObjectsImpl implements HandledObjects
             remove(trait, object.getTrait(trait));
         }
         removeSuperClass(object, object.getClass());
+        objects.remove(id);
         IDS.remove(object.getId());
         RECYCLE.add(object.getId());
     }
@@ -172,10 +178,7 @@ final class HandledObjectsImpl implements HandledObjects
     {
         for (final Class<?> types : type.getInterfaces())
         {
-            if (items.containsKey(types))
-            {
-                remove(types, object);
-            }
+            remove(types, object);
         }
         final Class<?> parent = type.getSuperclass();
         if (parent != null)
@@ -192,9 +195,10 @@ final class HandledObjectsImpl implements HandledObjects
      */
     private void remove(Class<?> type, Object object)
     {
-        if (items.containsKey(type))
+        final Set<?> set = items.get(type);
+        if (set != null)
         {
-            items.get(type).remove(object);
+            set.remove(object);
         }
     }
 
@@ -205,18 +209,24 @@ final class HandledObjectsImpl implements HandledObjects
     @Override
     public ObjectGame get(Integer id)
     {
-        return objects.get(id);
+        final ObjectGame object = objects.get(id);
+        if (object != null)
+        {
+            return object;
+        }
+        throw new LionEngineException(ERROR_OBJECT_NOT_FOUND, String.valueOf(id));
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <I> Iterable<I> get(Class<I> type)
     {
-        if (!items.containsKey(type))
+        final Set<?> objects = items.get(type);
+        if (objects != null)
         {
-            return Collections.emptySet();
+            return (Iterable<I>) objects;
         }
-        return (Iterable<I>) items.get(type);
+        return Collections.emptySet();
     }
 
     @Override
