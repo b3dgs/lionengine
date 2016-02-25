@@ -50,7 +50,7 @@ final class HandledObjectsImpl implements HandledObjects
      * @return The next unused id.
      * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
      */
-    static Integer getFreeId()
+    private static Integer getFreeId()
     {
         if (!RECYCLE.isEmpty())
         {
