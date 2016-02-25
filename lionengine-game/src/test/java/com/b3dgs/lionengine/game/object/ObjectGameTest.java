@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.AfterClass;
@@ -67,6 +69,9 @@ public class ObjectGameTest
         final ObjectGame object = new ObjectGame(new Setup(config), new Services());
         Assert.assertEquals(config, object.getConfigurer().getMedia());
         Assert.assertEquals(config, object.getMedia());
+
+        object.destroy();
+        object.freeId();
     }
 
     /**
@@ -75,11 +80,24 @@ public class ObjectGameTest
     @Test
     public void testId()
     {
+        final Collection<ObjectGame> objects = new ArrayList<ObjectGame>();
+        for (int i = 0; i < 10; i++)
+        {
+            final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
+            objects.add(object);
+            Assert.assertEquals(Integer.valueOf(i), object.getId());
+        }
+        for (final ObjectGame object : objects)
+        {
+            object.destroy();
+            object.freeId();
+            Assert.assertNull(object.getId());
+        }
         final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
-        Assert.assertNull(object.getId());
-
-        object.setId(Integer.valueOf(0));
         Assert.assertEquals(Integer.valueOf(0), object.getId());
+        object.destroy();
+        object.freeId();
+        Assert.assertNull(object.getId());
     }
 
     /**
@@ -120,6 +138,9 @@ public class ObjectGameTest
         {
             Assert.assertEquals(Transformable.class, trait);
         }
+
+        object.destroy();
+        object.freeId();
     }
 
     /**
@@ -136,6 +157,9 @@ public class ObjectGameTest
         Assert.assertFalse(object.hasTrait(Integer.class));
         Assert.assertTrue(object.hasTrait(Boolean.class));
         Assert.assertEquals(Boolean.TRUE, object.getTrait(Boolean.class));
+
+        object.destroy();
+        object.freeId();
     }
 
     /**
@@ -146,6 +170,9 @@ public class ObjectGameTest
     {
         final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
         object.getTrait(Trait.class);
+
+        object.destroy();
+        object.freeId();
     }
 
     /**
@@ -172,5 +199,7 @@ public class ObjectGameTest
         destroyed.set(false);
         object.destroy();
         Assert.assertFalse(destroyed.get());
+
+        object.freeId();
     }
 }

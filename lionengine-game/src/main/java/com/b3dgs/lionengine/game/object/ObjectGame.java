@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -56,6 +58,42 @@ import com.b3dgs.lionengine.game.Features;
  */
 public class ObjectGame
 {
+    /** Free id error. */
+    private static final String ERROR_FREE_ID = "No more free id available !";
+    /** Id used (list of active id used). */
+    private static final Collection<Integer> IDS = new HashSet<Integer>(16);
+    /** Recycle id (reuse previous removed object id). */
+    private static final Queue<Integer> RECYCLE = new LinkedList<Integer>();
+    /** Last id used (last maximum id value). */
+    private static int lastId;
+
+    /**
+     * Get the next unused id.
+     * 
+     * @return The next unused id.
+     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
+     */
+    private static Integer getFreeId()
+    {
+        if (!RECYCLE.isEmpty())
+        {
+            final Integer id = RECYCLE.poll();
+            IDS.add(id);
+            return id;
+        }
+        if (IDS.size() >= Integer.MAX_VALUE)
+        {
+            throw new LionEngineException(ERROR_FREE_ID);
+        }
+        while (IDS.contains(Integer.valueOf(lastId)))
+        {
+            lastId++;
+        }
+        final Integer id = Integer.valueOf(lastId);
+        IDS.add(id);
+        return id;
+    }
+
     /** Features provider. */
     private final Features<Trait> features = new Features<Trait>(Trait.class);
     /** Types provided. */
@@ -69,7 +107,7 @@ public class ObjectGame
     /** Configurer reference. */
     private final Configurer configurer;
     /** Unique id. */
-    private Integer id;
+    private final Integer id;
     /** Destroyed flag. */
     private boolean destroyed;
 
@@ -85,6 +123,7 @@ public class ObjectGame
         Check.notNull(setup);
         Check.notNull(services);
 
+        id = getFreeId();
         media = setup.getConfigFile();
         configurer = setup.getConfigurer();
         destroyed = false;
@@ -210,13 +249,17 @@ public class ObjectGame
     }
 
     /**
-     * Get the id (<code>null</code> will be returned once removed from {@link Handler} after a call to
-     * {@link #destroy()}, or if has never been added by {@link Handler#add(ObjectGame)}).
+     * Get the id (<code>null</code> will be returned once removed by {@link Handler} after a call to
+     * {@link #destroy()}).
      * 
      * @return The object unique id.
      */
     public final Integer getId()
     {
+        if (destroyed)
+        {
+            return null;
+        }
         return id;
     }
 
@@ -231,9 +274,18 @@ public class ObjectGame
             destroyed = true;
             for (final ObjectGameListener listener : listeners)
             {
-                listener.notifyDestroyed(getId());
+                listener.notifyDestroyed(id);
             }
         }
+    }
+
+    /**
+     * Release id.
+     */
+    final void freeId()
+    {
+        IDS.remove(id);
+        RECYCLE.add(id);
     }
 
     /**
@@ -244,16 +296,6 @@ public class ObjectGame
     final void addListener(ObjectGameListener listener)
     {
         listeners.add(listener);
-    }
-
-    /**
-     * Set the object id. Should only be set when adding to handled list by {@link HandledObjects}.
-     * 
-     * @param id The id to set.
-     */
-    final void setId(Integer id)
-    {
-        this.id = id;
     }
 
     /**

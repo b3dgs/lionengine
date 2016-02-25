@@ -21,9 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -33,43 +31,8 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 final class HandledObjectsImpl implements HandledObjects
 {
-    /** Free id error. */
-    private static final String ERROR_FREE_ID = "No more free id available !";
     /** Object not found error. */
     private static final String ERROR_OBJECT_NOT_FOUND = "Object not found: ";
-    /** Id used (list of active id used). */
-    private static final Collection<Integer> IDS = new HashSet<Integer>(16);
-    /** Recycle id (reuse previous removed object id). */
-    private static final Queue<Integer> RECYCLE = new LinkedList<Integer>();
-    /** Last id used (last maximum id value). */
-    private static int lastId;
-
-    /**
-     * Get the next unused id.
-     * 
-     * @return The next unused id.
-     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
-     */
-    private static Integer getFreeId()
-    {
-        if (!RECYCLE.isEmpty())
-        {
-            final Integer id = RECYCLE.poll();
-            IDS.add(id);
-            return id;
-        }
-        if (IDS.size() >= Integer.MAX_VALUE)
-        {
-            throw new LionEngineException(ERROR_FREE_ID);
-        }
-        while (IDS.contains(Integer.valueOf(lastId)))
-        {
-            lastId++;
-        }
-        final Integer id = Integer.valueOf(lastId);
-        IDS.add(id);
-        return id;
-    }
 
     /** List of objects (key id the object id). */
     private final Map<Integer, ObjectGame> objects;
@@ -93,9 +56,6 @@ final class HandledObjectsImpl implements HandledObjects
      */
     public void add(ObjectGame object)
     {
-        final Integer id = getFreeId();
-        object.setId(id);
-
         objects.put(object.getId(), object);
 
         for (final Class<? extends Trait> trait : object.getTraitsType())
@@ -120,8 +80,6 @@ final class HandledObjectsImpl implements HandledObjects
         }
         removeSuperClass(object, object.getClass());
         objects.remove(id);
-        IDS.remove(object.getId());
-        RECYCLE.add(object.getId());
     }
 
     /**

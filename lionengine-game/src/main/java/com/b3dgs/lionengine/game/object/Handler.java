@@ -181,11 +181,13 @@ public class Handler implements HandledObjects, Updatable, Renderable, ObjectGam
         {
             for (final Integer id : toDelete)
             {
+                final ObjectGame object = objects.get(id);
+                objects.remove(id);
+                object.freeId();
                 for (final HandlerListener listener : listeners)
                 {
-                    listener.notifyObjectRemoved(objects.get(id));
+                    listener.notifyObjectRemoved(object);
                 }
-                objects.remove(id);
             }
             toDelete.clear();
             willDelete = false;

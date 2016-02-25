@@ -92,38 +92,6 @@ public class HandlerTest
     }
 
     /**
-     * Test with traits.
-     */
-    @Test
-    public void testIdRecycle()
-    {
-        final Handler handler = new Handler();
-        final ObjectGame object0 = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
-        handler.add(object0);
-        handler.update(1.0);
-
-        Assert.assertEquals(Integer.valueOf(0), object0.getId());
-
-        final ObjectGame object1 = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
-        handler.add(object1);
-        handler.update(1.0);
-
-        Assert.assertEquals(Integer.valueOf(1), object1.getId());
-
-        handler.remove(object0);
-        handler.update(1.0);
-        final ObjectGame object2 = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
-        handler.add(object2);
-        handler.update(1.0);
-
-        Assert.assertEquals(Integer.valueOf(0), object0.getId());
-
-        handler.removeAll();
-        handler.update(1.0);
-        Assert.assertEquals(0, handler.size());
-    }
-
-    /**
      * Get not found object from id.
      */
     @Test(expected = LionEngineException.class)
