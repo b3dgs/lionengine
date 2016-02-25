@@ -169,10 +169,15 @@ public class ObjectGameTest
     public void testTraitNotFound()
     {
         final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
-        object.getTrait(Trait.class);
-
-        object.destroy();
-        object.freeId();
+        try
+        {
+            Assert.assertNotNull(object.getTrait(Trait.class));
+        }
+        finally
+        {
+            object.destroy();
+            object.freeId();
+        }
     }
 
     /**

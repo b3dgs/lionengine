@@ -59,8 +59,22 @@ public class FactoryTest
     {
         final Factory factory = new Factory(new Services());
         factory.setClassLoader(ClassLoader.getSystemClassLoader());
-        Assert.assertNotNull(factory.create(Medias.create(OBJECT_XML)));
-        Assert.assertNotNull(factory.create(Medias.create(OBJECT_XML), ObjectGame.class));
+
+        final ObjectGame object1 = factory.create(Medias.create(OBJECT_XML));
+        final ObjectGame object2 = factory.create(Medias.create(OBJECT_XML), ObjectGame.class);
+
+        try
+        {
+            Assert.assertNotNull(object1);
+            Assert.assertNotNull(object2);
+        }
+        finally
+        {
+            object1.destroy();
+            object2.destroy();
+            object1.freeId();
+            object2.freeId();
+        }
     }
 
     /**
