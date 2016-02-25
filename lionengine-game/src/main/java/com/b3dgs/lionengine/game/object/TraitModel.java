@@ -17,16 +17,11 @@
  */
 package com.b3dgs.lionengine.game.object;
 
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
  * Trait model base implementation.
  */
 public abstract class TraitModel implements Trait
 {
-    /** Cast error. */
-    private static final String ERROR_CAST = "Unable to cast: ";
-
     /** The owner reference. */
     private ObjectGame owner;
 
@@ -52,13 +47,6 @@ public abstract class TraitModel implements Trait
     @SuppressWarnings("unchecked")
     public <O extends ObjectGame> O getOwner()
     {
-        try
-        {
-            return (O) owner;
-        }
-        catch (final ClassCastException exception)
-        {
-            throw new LionEngineException(exception, ERROR_CAST, owner.getClass().getName());
-        }
+        return (O) owner;
     }
 }

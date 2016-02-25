@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.object;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
@@ -92,29 +93,22 @@ public class SetupSurfaceRastered extends SetupSurface
      * @param config The config media.
      * @param rasterFile The raster media.
      * @param smoothRaster The raster smooth flag.
-     * @throws LionEngineException If error when opening the media.
+     * @throws LionEngineException If error when opening the media or invalid raster file.
      */
     public SetupSurfaceRastered(Media config, Media rasterFile, boolean smoothRaster)
     {
         super(config);
+        Check.notNull(rasterFile);
+
         this.rasterFile = rasterFile;
         this.smoothRaster = smoothRaster;
-        if (rasterFile != null)
-        {
-            rastersAnim = new ArrayList<SpriteAnimated>(Rasterable.MAX_RASTERS);
-            final FramesConfig framesData = FramesConfig.create(getConfigurer());
-            hf = framesData.getHorizontal();
-            vf = framesData.getVertical();
-            frameHeight = surface.getHeight() / vf;
-            loadRasters();
-        }
-        else
-        {
-            rastersAnim = null;
-            hf = 0;
-            vf = 0;
-            frameHeight = 0;
-        }
+
+        rastersAnim = new ArrayList<SpriteAnimated>(Rasterable.MAX_RASTERS);
+        final FramesConfig framesData = FramesConfig.create(getConfigurer());
+        hf = framesData.getHorizontal();
+        vf = framesData.getVertical();
+        frameHeight = surface.getHeight() / vf;
+        loadRasters();
     }
 
     /**
