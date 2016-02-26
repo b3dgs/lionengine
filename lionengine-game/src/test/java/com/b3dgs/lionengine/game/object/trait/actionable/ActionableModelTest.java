@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.geom.Geom;
@@ -43,9 +44,6 @@ import com.b3dgs.lionengine.util.UtilTests;
  */
 public class ActionableModelTest
 {
-    /** Temp file name. */
-    private static final String ACTION_XML = "action.xml";
-
     /**
      * Prepare test.
      */
@@ -73,8 +71,7 @@ public class ActionableModelTest
      */
     private static Media createAction(String description, Rectangle rectangle)
     {
-        final Media media = Medias.create(ACTION_XML);
-
+        final Media media = Medias.create("action.xml");
         final String name = "name";
         final ActionConfig action = new ActionConfig(name,
                                                      description,
@@ -159,6 +156,7 @@ public class ActionableModelTest
         final ActionableModel actionable = createActionable(media, services);
         Assert.assertEquals(description, actionable.getDescription());
 
+        ObjectGameTest.freeId(actionable.getOwner());
         Assert.assertTrue(media.getFile().delete());
     }
 
@@ -179,6 +177,7 @@ public class ActionableModelTest
         Assert.assertEquals(rectangle.getWidth(), boutton.getWidth(), UtilTests.PRECISION);
         Assert.assertEquals(rectangle.getHeight(), boutton.getHeight(), UtilTests.PRECISION);
 
+        ObjectGameTest.freeId(actionable.getOwner());
         Assert.assertTrue(media.getFile().delete());
     }
 
@@ -204,6 +203,7 @@ public class ActionableModelTest
         Assert.assertEquals(0, clickNumber.get());
         Assert.assertFalse(executed.get());
 
+        ObjectGameTest.freeId(actionable.getOwner());
         Assert.assertTrue(media.getFile().delete());
     }
 
@@ -229,6 +229,7 @@ public class ActionableModelTest
         Assert.assertEquals(2, clickNumber.get());
         Assert.assertTrue(executed.get());
 
+        ObjectGameTest.freeId(actionable.getOwner());
         Assert.assertTrue(media.getFile().delete());
     }
 
@@ -255,6 +256,7 @@ public class ActionableModelTest
         Assert.assertEquals(1, clickNumber.get());
         Assert.assertFalse(executed.get());
 
+        ObjectGameTest.freeId(actionable.getOwner());
         Assert.assertTrue(media.getFile().delete());
     }
 
@@ -277,6 +279,7 @@ public class ActionableModelTest
 
         Assert.assertTrue(executed.get());
 
+        ObjectGameTest.freeId(object);
         Assert.assertTrue(media.getFile().delete());
     }
 

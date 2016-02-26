@@ -60,6 +60,16 @@ public class ObjectGameTest
     }
 
     /**
+     * Free the object id.
+     * 
+     * @param object The object to free.
+     */
+    public static void freeId(ObjectGame object)
+    {
+        object.freeId();
+    }
+
+    /**
      * Test the config.
      */
     @Test
