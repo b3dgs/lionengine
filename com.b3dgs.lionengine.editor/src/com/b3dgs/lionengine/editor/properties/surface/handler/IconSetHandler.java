@@ -54,8 +54,8 @@ public final class IconSetHandler
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(SurfaceConfig.SURFACE);
-            surfaceNode.writeString(SurfaceConfig.SURFACE_ICON, file);
+            final XmlNode surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
+            surfaceNode.writeString(SurfaceConfig.ATT_ICON, file);
             configurer.save();
             PropertiesSurface.createAttributeIcon(properties, file);
         }

@@ -48,10 +48,10 @@ public class PropertiesSurface implements PropertiesProviderObject
      */
     public static void createAttributeSurface(Tree properties, Configurer configurer)
     {
-        final SurfaceConfig surface = SurfaceConfig.create(configurer);
+        final SurfaceConfig surface = SurfaceConfig.imports(configurer);
         final TreeItem surfaceItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(surfaceItem, Messages.Properties_Surface, surface.getImage());
-        surfaceItem.setData(SurfaceConfig.SURFACE_IMAGE);
+        surfaceItem.setData(SurfaceConfig.ATT_IMAGE);
         surfaceItem.setImage(ICON_SURFACE);
 
         final String icon = surface.getIcon();
@@ -71,7 +71,7 @@ public class PropertiesSurface implements PropertiesProviderObject
     {
         final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
         PropertiesPart.createLine(iconItem, Messages.Properties_SurfaceIcon, icon);
-        iconItem.setData(SurfaceConfig.SURFACE_ICON);
+        iconItem.setData(SurfaceConfig.ATT_ICON);
         iconItem.setImage(ICON_ICON);
     }
 
@@ -88,8 +88,8 @@ public class PropertiesSurface implements PropertiesProviderObject
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(SurfaceConfig.SURFACE);
-            surfaceNode.writeString(SurfaceConfig.SURFACE_IMAGE, file);
+            final XmlNode surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
+            surfaceNode.writeString(SurfaceConfig.ATT_IMAGE, file);
             item.setText(PropertiesPart.COLUMN_VALUE, file);
             return true;
         }
@@ -109,8 +109,8 @@ public class PropertiesSurface implements PropertiesProviderObject
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode surfaceNode = root.getChild(SurfaceConfig.SURFACE);
-            surfaceNode.writeString(SurfaceConfig.SURFACE_ICON, file);
+            final XmlNode surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
+            surfaceNode.writeString(SurfaceConfig.ATT_ICON, file);
             item.setText(PropertiesPart.COLUMN_VALUE, file);
             return true;
         }
@@ -133,7 +133,7 @@ public class PropertiesSurface implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        if (root.hasChild(SurfaceConfig.SURFACE))
+        if (root.hasChild(SurfaceConfig.NODE_SURFACE))
         {
             createAttributeSurface(properties, configurer);
         }
@@ -144,11 +144,11 @@ public class PropertiesSurface implements PropertiesProviderObject
     {
         final Object data = item.getData();
         boolean updated = false;
-        if (SurfaceConfig.SURFACE_IMAGE.equals(data))
+        if (SurfaceConfig.ATT_IMAGE.equals(data))
         {
             updated = updateSurface(item, configurer);
         }
-        else if (SurfaceConfig.SURFACE_ICON.equals(data))
+        else if (SurfaceConfig.ATT_ICON.equals(data))
         {
             updated = updateIcon(item, configurer);
         }

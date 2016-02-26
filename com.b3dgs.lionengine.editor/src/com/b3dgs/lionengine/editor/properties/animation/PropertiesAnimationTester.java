@@ -48,7 +48,7 @@ public final class PropertiesAnimationTester extends PropertyTester
     private static boolean check(PropertiesModel model, Object data, String property)
     {
         final boolean result;
-        if (PROPERTY_ANIMATIONS_ENABLE.equals(property) && model.hasProperty(FramesConfig.FRAMES))
+        if (PROPERTY_ANIMATIONS_ENABLE.equals(property) && model.hasProperty(FramesConfig.NODE_FRAMES))
         {
             result = !model.hasProperty(AnimationConfig.ANIMATION);
         }

@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the frames data from a configurer node.
@@ -26,25 +28,66 @@ import com.b3dgs.lionengine.game.Configurer;
 public final class FramesConfig
 {
     /** Frames node name. */
-    public static final String FRAMES = Configurer.PREFIX + "frames";
+    public static final String NODE_FRAMES = Configurer.PREFIX + "frames";
     /** Frames horizontal node name. */
-    public static final String FRAMES_HORIZONTAL = "horizontal";
+    public static final String ATT_HORIZONTAL = "horizontal";
     /** Frames vertical node name. */
-    public static final String FRAMES_VERTICAL = "vertical";
+    public static final String ATT_VERTICAL = "vertical";
 
     /**
-     * Create the frames node.
+     * Imports the frames config from setup.
+     * 
+     * @param setup The setup reference.
+     * @return The frames data.
+     * @throws LionEngineException If unable to read node or invalid integer.
+     */
+    public static FramesConfig imports(Setup setup)
+    {
+        return imports(setup.getConfigurer().getRoot());
+    }
+
+    /**
+     * Imports the frames config from configurer.
      * 
      * @param configurer The configurer reference.
      * @return The frames data.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @throws LionEngineException If unable to read node or invalid integer.
      */
-    public static FramesConfig create(Configurer configurer)
+    public static FramesConfig imports(Configurer configurer)
     {
-        final int horizontals = configurer.getInteger(FramesConfig.FRAMES_HORIZONTAL, FramesConfig.FRAMES);
-        final int verticals = configurer.getInteger(FramesConfig.FRAMES_VERTICAL, FramesConfig.FRAMES);
+        return imports(configurer.getRoot());
+    }
+
+    /**
+     * Imports the frames config from node.
+     * 
+     * @param root The root reference.
+     * @return The frames data.
+     * @throws LionEngineException If unable to read node or invalid integer.
+     */
+    public static FramesConfig imports(XmlNode root)
+    {
+        final XmlNode node = root.getChild(NODE_FRAMES);
+        final int horizontals = node.readInteger(FramesConfig.ATT_HORIZONTAL);
+        final int verticals = node.readInteger(FramesConfig.ATT_VERTICAL);
 
         return new FramesConfig(horizontals, verticals);
+    }
+
+    /**
+     * Exports the frames node from config.
+     * 
+     * @param config The config reference.
+     * @return The frames data.
+     * @throws LionEngineException If unable to read node or invalid integer.
+     */
+    public static XmlNode exports(FramesConfig config)
+    {
+        final XmlNode node = Xml.create(NODE_FRAMES);
+        node.writeInteger(ATT_HORIZONTAL, config.getHorizontal());
+        node.writeInteger(ATT_VERTICAL, config.getVertical());
+
+        return node;
     }
 
     /** The number of horizontal frames. */
@@ -53,20 +96,12 @@ public final class FramesConfig
     private final int verticalFrames;
 
     /**
-     * Disabled constructor.
-     */
-    private FramesConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
-     * Constructor.
+     * Create the frames configuration.
      * 
      * @param horizontalFrames The horizontal frames value.
      * @param verticalFrames The vertical frames value.
      */
-    private FramesConfig(int horizontalFrames, int verticalFrames)
+    public FramesConfig(int horizontalFrames, int verticalFrames)
     {
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
@@ -90,5 +125,33 @@ public final class FramesConfig
     public int getVertical()
     {
         return verticalFrames;
+    }
+
+    /*
+     * Object
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + horizontalFrames;
+        result = prime * result + verticalFrames;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || !(obj instanceof FramesConfig))
+        {
+            return false;
+        }
+        final FramesConfig other = (FramesConfig) obj;
+        return other.getHorizontal() == getHorizontal() && other.getVertical() == getVertical();
     }
 }

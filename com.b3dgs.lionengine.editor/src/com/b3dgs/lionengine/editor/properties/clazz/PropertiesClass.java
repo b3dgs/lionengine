@@ -154,7 +154,7 @@ public class PropertiesClass implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        final ObjectConfig configObject = ObjectConfig.create(configurer);
+        final ObjectConfig configObject = ObjectConfig.imports(configurer);
         if (root.hasChild(ObjectConfig.CLASS))
         {
             createAttributeClass(properties, configObject);

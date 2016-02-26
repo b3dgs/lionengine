@@ -45,7 +45,7 @@ public class SetupSurface extends Setup
     {
         super(config);
         final String conf = config.getPath();
-        final SurfaceConfig surfaceData = SurfaceConfig.create(getConfigurer());
+        final SurfaceConfig surfaceData = SurfaceConfig.imports(getConfigurer().getRoot());
         final String prefix = conf.substring(0, conf.lastIndexOf(Medias.getSeparator()) + 1);
         surfaceFile = Medias.create(prefix + surfaceData.getImage());
         surface = Graphics.getImageBuffer(surfaceFile);

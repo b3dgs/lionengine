@@ -76,9 +76,9 @@ public final class AnimationRenderer implements PaintListener
         this.parent = parent;
         animationRunner = new AnimationRunner(parent.getDisplay());
         g = Graphics.createGraphic();
-        final SurfaceConfig configSurface = SurfaceConfig.create(configurer);
+        final SurfaceConfig configSurface = SurfaceConfig.imports(configurer);
         final Media media = Medias.get(new File(configurer.getPath(), configSurface.getImage()));
-        final FramesConfig framesData = FramesConfig.create(configurer);
+        final FramesConfig framesData = FramesConfig.imports(configurer);
         surface = Drawable.loadSpriteAnimated(media, framesData.getHorizontal(), framesData.getVertical());
         surface.load();
         surface.prepare();

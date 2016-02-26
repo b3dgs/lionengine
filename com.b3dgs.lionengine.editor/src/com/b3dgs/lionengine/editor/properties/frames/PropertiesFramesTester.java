@@ -48,11 +48,11 @@ public final class PropertiesFramesTester extends PropertyTester
         final boolean result;
         if (PROPERTY_FRAMES_SET.equals(property))
         {
-            result = !model.hasProperty(FramesConfig.FRAMES) && model.hasProperty(SurfaceConfig.SURFACE_IMAGE);
+            result = !model.hasProperty(FramesConfig.NODE_FRAMES) && model.hasProperty(SurfaceConfig.ATT_IMAGE);
         }
-        else if (PROPERTY_FRAMES_REMOVE.equals(property) && FramesConfig.FRAMES.equals(data))
+        else if (PROPERTY_FRAMES_REMOVE.equals(property) && FramesConfig.NODE_FRAMES.equals(data))
         {
-            result = model.hasProperty(FramesConfig.FRAMES);
+            result = model.hasProperty(FramesConfig.NODE_FRAMES);
         }
         else
         {

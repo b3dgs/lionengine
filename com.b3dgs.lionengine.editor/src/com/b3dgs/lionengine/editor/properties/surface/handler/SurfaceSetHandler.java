@@ -69,8 +69,8 @@ public final class SurfaceSetHandler
                 size.writeInteger(SizeConfig.SIZE_HEIGHT, info.getHeight());
             }
 
-            final XmlNode surfaceNode = root.createChild(SurfaceConfig.SURFACE);
-            surfaceNode.writeString(SurfaceConfig.SURFACE_IMAGE, file);
+            final XmlNode surfaceNode = root.createChild(SurfaceConfig.NODE_SURFACE);
+            surfaceNode.writeString(SurfaceConfig.ATT_IMAGE, file);
 
             configurer.save();
             PropertiesSurface.createAttributeSurface(properties, configurer);

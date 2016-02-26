@@ -51,11 +51,11 @@ public final class FramesRemoveHandler
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final XmlNode root = configurer.getRoot();
-        root.removeChild(FramesConfig.FRAMES);
+        root.removeChild(FramesConfig.NODE_FRAMES);
         configurer.save();
         for (final TreeItem item : properties.getItems())
         {
-            if (FramesConfig.FRAMES.equals(item.getData()) || AnimationConfig.ANIMATION.equals(item.getData()))
+            if (FramesConfig.NODE_FRAMES.equals(item.getData()) || AnimationConfig.ANIMATION.equals(item.getData()))
             {
                 part.clear(item);
             }

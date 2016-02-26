@@ -167,7 +167,7 @@ public class Factory
         final Configurer configurer = new Configurer(media);
         try
         {
-            final ObjectConfig configObject = ObjectConfig.create(configurer);
+            final ObjectConfig configObject = ObjectConfig.imports(configurer);
             final Class<?> setupClass = classLoader.loadClass(configObject.getSetupName());
             return UtilReflection.create(setupClass, new Class<?>[]
             {

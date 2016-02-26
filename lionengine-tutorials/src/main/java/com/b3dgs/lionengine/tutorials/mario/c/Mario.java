@@ -93,7 +93,7 @@ class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableL
         camera = services.get(Camera.class);
         keyboard = services.get(Keyboard.class);
 
-        final FramesConfig frames = FramesConfig.create(getConfigurer());
+        final FramesConfig frames = FramesConfig.imports(setup);
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), frames.getHorizontal(), frames.getVertical());
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);

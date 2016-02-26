@@ -17,8 +17,11 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the surface data from a configurer.
@@ -28,24 +31,84 @@ import com.b3dgs.lionengine.game.Configurer;
 public final class SurfaceConfig
 {
     /** Surface node name. */
-    public static final String SURFACE = Configurer.PREFIX + "surface";
+    public static final String NODE_SURFACE = Configurer.PREFIX + "surface";
     /** Surface image node. */
-    public static final String SURFACE_IMAGE = "image";
+    public static final String ATT_IMAGE = "image";
     /** Surface icon node. */
-    public static final String SURFACE_ICON = "icon";
+    public static final String ATT_ICON = "icon";
 
     /**
-     * Create the surface data from node.
+     * Create the surface data from setup.
+     * 
+     * @param setup The setup reference.
+     * @return The surface data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static SurfaceConfig imports(Setup setup)
+    {
+        return imports(setup.getConfigurer().getRoot());
+    }
+
+    /**
+     * Create the surface data from configurer.
      * 
      * @param configurer The configurer reference.
      * @return The surface data.
      * @throws LionEngineException If unable to read node.
      */
-    public static SurfaceConfig create(Configurer configurer)
+    public static SurfaceConfig imports(Configurer configurer)
     {
-        final String surface = configurer.getString(SurfaceConfig.SURFACE_IMAGE, SurfaceConfig.SURFACE);
+        return imports(configurer.getRoot());
+    }
 
-        return new SurfaceConfig(surface, SurfaceConfig.getSurfaceIcon(configurer));
+    /**
+     * Create the surface data from node.
+     * 
+     * @param root The root reference.
+     * @return The surface data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static SurfaceConfig imports(XmlNode root)
+    {
+        final XmlNode node = root.getChild(SurfaceConfig.NODE_SURFACE);
+        final String surface = node.readString(SurfaceConfig.ATT_IMAGE);
+
+        return new SurfaceConfig(surface, SurfaceConfig.getSurfaceIcon(root));
+    }
+
+    /**
+     * Create the surface data from node.
+     * 
+     * @param config The config reference.
+     * @return The node data.
+     * @throws LionEngineException If unable to write node.
+     */
+    public static XmlNode exports(SurfaceConfig config)
+    {
+        final XmlNode node = Xml.create(SurfaceConfig.NODE_SURFACE);
+        node.writeString(SurfaceConfig.ATT_IMAGE, config.getImage());
+        if (config.getIcon() != null)
+        {
+            node.writeString(SurfaceConfig.ATT_ICON, config.getIcon());
+        }
+
+        return node;
+    }
+
+    /**
+     * Get the surface icon if existing.
+     * 
+     * @param root The root reference.
+     * @return The surface icon, <code>null</code> if none.
+     */
+    private static String getSurfaceIcon(XmlNode root)
+    {
+        final XmlNode node = root.getChild(SurfaceConfig.NODE_SURFACE);
+        if (node.hasAttribute(SurfaceConfig.ATT_ICON))
+        {
+            return node.readString(SurfaceConfig.ATT_ICON);
+        }
+        return null;
     }
 
     /** The image descriptor. */
@@ -54,21 +117,15 @@ public final class SurfaceConfig
     private final String icon;
 
     /**
-     * Disabled constructor.
-     */
-    private SurfaceConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
      * Create the surface configuration.
      * 
      * @param image The image file path.
      * @param icon The icon file path (can be <code>null</code>).
      */
-    private SurfaceConfig(String image, String icon)
+    public SurfaceConfig(String image, String icon)
     {
+        Check.notNull(image);
+
         this.image = image;
         this.icon = icon;
     }
@@ -93,18 +150,40 @@ public final class SurfaceConfig
         return icon;
     }
 
-    /**
-     * Get the surface icon if existing.
-     * 
-     * @param configurer The configurer reference.
-     * @return The surface icon, <code>null</code> if none.
+    /*
+     * Object
      */
-    private static String getSurfaceIcon(Configurer configurer)
+
+    @Override
+    public int hashCode()
     {
-        if (configurer.getRoot().getChild(SurfaceConfig.SURFACE).hasAttribute(SurfaceConfig.SURFACE_ICON))
+        final int prime = 31;
+        int result = 1;
+        if (icon == null)
         {
-            return configurer.getString(SurfaceConfig.SURFACE_ICON, SurfaceConfig.SURFACE);
+            result = prime * result;
         }
-        return null;
+        else
+        {
+            result = prime * result + icon.hashCode();
+        }
+        return prime * result + image.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || !(obj instanceof SurfaceConfig))
+        {
+            return false;
+        }
+        final SurfaceConfig other = (SurfaceConfig) obj;
+        final boolean sameIcon = other.getIcon() == null && getIcon() == null
+                                 || other.getIcon() != null && getIcon() != null && other.getIcon().equals(getIcon());
+        return other.getImage().equals(getImage()) && sameIcon;
     }
 }

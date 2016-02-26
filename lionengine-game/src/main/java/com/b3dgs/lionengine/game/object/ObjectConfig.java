@@ -17,8 +17,11 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the object configuration data.
@@ -33,18 +36,70 @@ public final class ObjectConfig
     public static final String SETUP = Configurer.PREFIX + "setup";
 
     /**
-     * Create the object data from node.
+     * Import the object data from setup.
+     * 
+     * @param setup The setup reference.
+     * @return The object data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static ObjectConfig imports(Setup setup)
+    {
+        return imports(setup.getConfigurer().getRoot());
+    }
+
+    /**
+     * Import the object data from configurer.
      * 
      * @param configurer The configurer reference.
      * @return The object data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ObjectConfig create(Configurer configurer)
+    public static ObjectConfig imports(Configurer configurer)
     {
-        final String clazz = configurer.getText(CLASS);
-        final String setup = configurer.getText(SETUP);
+        return imports(configurer.getRoot());
+    }
+
+    /**
+     * Import the object data from node.
+     * 
+     * @param root The root node reference.
+     * @return The object data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static ObjectConfig imports(XmlNode root)
+    {
+        final String clazz = root.getChild(CLASS).getText();
+        final String setup = root.getChild(SETUP).getText();
 
         return new ObjectConfig(clazz, setup);
+    }
+
+    /**
+     * Export the object node from class data.
+     * 
+     * @param clazz The class name.
+     * @return The class node.
+     * @throws LionEngineException If unable to export node.
+     */
+    public static XmlNode exportClass(String clazz)
+    {
+        final XmlNode node = Xml.create(CLASS);
+        node.setText(clazz);
+        return node;
+    }
+
+    /**
+     * Export the object node from setup data.
+     * 
+     * @param setup The setup name.
+     * @return The setup node.
+     * @throws LionEngineException If unable to export node.
+     */
+    public static XmlNode exportSetup(String setup)
+    {
+        final XmlNode node = Xml.create(SETUP);
+        node.setText(setup);
+        return node;
     }
 
     /** Object class name. */
@@ -53,21 +108,16 @@ public final class ObjectConfig
     private final String setup;
 
     /**
-     * Disabled constructor.
-     */
-    private ObjectConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
      * Create an object configuration.
      * 
      * @param clazz The object class name.
      * @param setup The setup class name.
      */
-    private ObjectConfig(String clazz, String setup)
+    public ObjectConfig(String clazz, String setup)
     {
+        Check.notNull(clazz);
+        Check.notNull(setup);
+
         this.clazz = clazz;
         this.setup = setup;
     }
@@ -90,5 +140,34 @@ public final class ObjectConfig
     public String getSetupName()
     {
         return setup;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + clazz.hashCode();
+        result = prime * result + setup.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || !(obj instanceof ObjectConfig))
+        {
+            return false;
+        }
+        final ObjectConfig other = (ObjectConfig) obj;
+        return other.getClassName().equals(getClassName()) && other.getSetupName().equals(getSetupName());
     }
 }

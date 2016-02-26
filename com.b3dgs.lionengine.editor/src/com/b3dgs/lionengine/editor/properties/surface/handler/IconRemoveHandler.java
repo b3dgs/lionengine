@@ -50,12 +50,12 @@ public final class IconRemoveHandler
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final XmlNode root = configurer.getRoot();
-        final XmlNode surfaceNode = root.getChild(SurfaceConfig.SURFACE);
-        surfaceNode.removeAttribute(SurfaceConfig.SURFACE_ICON);
+        final XmlNode surfaceNode = root.getChild(SurfaceConfig.NODE_SURFACE);
+        surfaceNode.removeAttribute(SurfaceConfig.ATT_ICON);
         configurer.save();
         for (final TreeItem item : properties.getItems())
         {
-            if (SurfaceConfig.SURFACE_ICON.equals(item.getData()))
+            if (SurfaceConfig.ATT_ICON.equals(item.getData()))
             {
                 part.clear(item);
             }

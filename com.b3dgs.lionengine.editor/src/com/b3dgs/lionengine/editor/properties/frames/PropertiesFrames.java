@@ -56,22 +56,22 @@ public class PropertiesFrames implements PropertiesProviderObject
     {
         final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
         iconItem.setText(Messages.Properties_Frames);
-        iconItem.setData(FramesConfig.FRAMES);
+        iconItem.setData(FramesConfig.NODE_FRAMES);
         iconItem.setImage(PropertiesFrames.ICON_FRAMES);
 
-        final FramesConfig configFrames = FramesConfig.create(configurer);
+        final FramesConfig configFrames = FramesConfig.imports(configurer);
 
         final TreeItem framesHorizontal = new TreeItem(iconItem, SWT.NONE);
         PropertiesPart.createLine(framesHorizontal,
                                   Messages.Properties_Frames_Horizontal,
                                   String.valueOf(configFrames.getHorizontal()));
-        framesHorizontal.setData(FramesConfig.FRAMES_HORIZONTAL);
+        framesHorizontal.setData(FramesConfig.ATT_HORIZONTAL);
 
         final TreeItem framesVertical = new TreeItem(iconItem, SWT.NONE);
         PropertiesPart.createLine(framesVertical,
                                   Messages.Properties_Frames_Vertical,
                                   String.valueOf(configFrames.getVertical()));
-        framesVertical.setData(FramesConfig.FRAMES_VERTICAL);
+        framesVertical.setData(FramesConfig.ATT_VERTICAL);
     }
 
     /**
@@ -92,7 +92,7 @@ public class PropertiesFrames implements PropertiesProviderObject
         if (frames.open() == Window.OK)
         {
             final XmlNode root = configurer.getRoot();
-            final XmlNode framesNode = root.getChild(FramesConfig.FRAMES);
+            final XmlNode framesNode = root.getChild(FramesConfig.NODE_FRAMES);
             framesNode.writeString((String) item.getData(), frames.getValue());
             item.setText(PropertiesPart.COLUMN_VALUE, frames.getValue());
             updateSize(configurer, root, framesNode);
@@ -113,7 +113,7 @@ public class PropertiesFrames implements PropertiesProviderObject
     {
         final XmlNode size;
         final File file = new File(configurer.getPath(),
-                                   root.getChild(SurfaceConfig.SURFACE).readString(SurfaceConfig.SURFACE_IMAGE));
+                                   root.getChild(SurfaceConfig.NODE_SURFACE).readString(SurfaceConfig.ATT_IMAGE));
         final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(file));
         if (!root.hasChild(SizeConfig.SIZE))
         {
@@ -126,9 +126,9 @@ public class PropertiesFrames implements PropertiesProviderObject
             size = root.getChild(SizeConfig.SIZE);
         }
         size.writeInteger(SizeConfig.SIZE_WIDTH,
-                          info.getWidth() / framesNode.readInteger(FramesConfig.FRAMES_HORIZONTAL));
+                          info.getWidth() / framesNode.readInteger(FramesConfig.ATT_HORIZONTAL));
         size.writeInteger(SizeConfig.SIZE_HEIGHT,
-                          info.getHeight() / framesNode.readInteger(FramesConfig.FRAMES_VERTICAL));
+                          info.getHeight() / framesNode.readInteger(FramesConfig.ATT_VERTICAL));
     }
 
     /**
@@ -147,7 +147,7 @@ public class PropertiesFrames implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        if (root.hasChild(FramesConfig.FRAMES))
+        if (root.hasChild(FramesConfig.NODE_FRAMES))
         {
             createAttributeFrames(properties, configurer);
         }
@@ -158,7 +158,7 @@ public class PropertiesFrames implements PropertiesProviderObject
     {
         final Object data = item.getData();
         boolean updated = false;
-        if (FramesConfig.FRAMES_HORIZONTAL.equals(data) || FramesConfig.FRAMES_VERTICAL.equals(data))
+        if (FramesConfig.ATT_HORIZONTAL.equals(data) || FramesConfig.ATT_VERTICAL.equals(data))
         {
             updated = updateFrames(item, configurer);
         }

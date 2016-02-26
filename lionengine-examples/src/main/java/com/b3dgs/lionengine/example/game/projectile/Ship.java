@@ -82,7 +82,7 @@ class Ship extends ObjectGame implements Updatable, Renderable, CollidableListen
         super(setup, services);
         viewer = services.get(Viewer.class);
 
-        final FramesConfig config = FramesConfig.create(setup.getConfigurer());
+        final FramesConfig config = FramesConfig.imports(setup);
         sprite = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         sprite.setFrame(3);
         sprite.setOrigin(Origin.MIDDLE);

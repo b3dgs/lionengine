@@ -77,9 +77,9 @@ public class FramesSetHandler
             if (verticalFrames.open() == Window.OK)
             {
                 final XmlNode root = configurer.getRoot();
-                final XmlNode frames = root.createChild(FramesConfig.FRAMES);
-                frames.writeString(FramesConfig.FRAMES_HORIZONTAL, horizontalFrames.getValue());
-                frames.writeString(FramesConfig.FRAMES_VERTICAL, verticalFrames.getValue());
+                final XmlNode frames = root.createChild(FramesConfig.NODE_FRAMES);
+                frames.writeString(FramesConfig.ATT_HORIZONTAL, horizontalFrames.getValue());
+                frames.writeString(FramesConfig.ATT_VERTICAL, verticalFrames.getValue());
 
                 PropertiesFrames.updateSize(configurer, root, frames);
 

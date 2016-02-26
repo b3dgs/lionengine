@@ -89,7 +89,7 @@ public class Setup
     {
         if (clazz == null)
         {
-            final ObjectConfig configObject = ObjectConfig.create(configurer);
+            final ObjectConfig configObject = ObjectConfig.imports(configurer);
             try
             {
                 clazz = classLoader.loadClass(configObject.getClassName());

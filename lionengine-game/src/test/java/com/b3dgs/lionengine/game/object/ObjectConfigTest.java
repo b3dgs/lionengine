@@ -22,10 +22,13 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Test the object configuration.
@@ -38,7 +41,7 @@ public class ObjectConfigTest
     @BeforeClass
     public static void setUp()
     {
-        Medias.setLoadFromJar(ObjectConfigTest.class);
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
     }
 
     /**
@@ -47,28 +50,82 @@ public class ObjectConfigTest
     @AfterClass
     public static void cleanUp()
     {
-        Medias.setLoadFromJar(null);
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
     /**
-     * Test the constructor.
-     * 
-     * @throws Exception If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testConstructor() throws Exception
-    {
-        UtilTests.testPrivateConstructor(ObjectConfig.class);
-    }
-
-    /**
-     * Test the configuration reader.
+     * Test the configuration import.
      */
     @Test
     public void testConfig()
     {
-        final ObjectConfig object = ObjectConfig.create(new Configurer(Medias.create("object.xml")));
-        Assert.assertEquals("com.b3dgs.lionengine.game.object.ObjectGame", object.getClassName());
-        Assert.assertEquals("com.b3dgs.lionengine.game.object.Setup", object.getSetupName());
+        final String clazz = "class";
+        final String setup = "setup";
+        final ObjectConfig config = new ObjectConfig(clazz, setup);
+
+        final Media media = Medias.create("object.xml");
+        try
+        {
+            final XmlNode root = Xml.create("test");
+            root.add(ObjectConfig.exportClass(clazz));
+            root.add(ObjectConfig.exportSetup(setup));
+            Xml.save(root, media);
+
+            final ObjectConfig loaded = ObjectConfig.imports(Xml.load(media));
+            Assert.assertEquals(config, loaded);
+            Assert.assertEquals(config, ObjectConfig.imports(new Setup(media)));
+            Assert.assertEquals(config, ObjectConfig.imports(new Configurer(media)));
+        }
+        finally
+        {
+            Assert.assertTrue(media.getFile().delete());
+        }
+    }
+
+    /**
+     * Test the configuration with <code>null</code> class.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testConfigNullClass()
+    {
+        Assert.assertNotNull(new ObjectConfig(null, "setup"));
+    }
+
+    /**
+     * Test the configuration with <code>null</code> setup.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testConfigNullSetup()
+    {
+        Assert.assertNotNull(new ObjectConfig("class", null));
+    }
+
+    /**
+     * Test the hash code.
+     */
+    @Test
+    public void testHashCode()
+    {
+        final int hash = new ObjectConfig("class", "setup").hashCode();
+
+        Assert.assertEquals(hash, new ObjectConfig("class", "setup").hashCode());
+        Assert.assertNotEquals(hash, new ObjectConfig("", "setup").hashCode());
+        Assert.assertNotEquals(hash, new ObjectConfig("class", "").hashCode());
+    }
+
+    /**
+     * Test the equality.
+     */
+    @Test
+    public void testEquals()
+    {
+        final ObjectConfig config = new ObjectConfig("class", "setup");
+
+        Assert.assertEquals(config, config);
+        Assert.assertNotEquals(config, null);
+        Assert.assertNotEquals(config, new Object());
+        Assert.assertEquals(config, new ObjectConfig("class", "setup"));
+        Assert.assertNotEquals(config, new ObjectConfig("", "setup"));
+        Assert.assertNotEquals(config, new ObjectConfig("class", ""));
     }
 }

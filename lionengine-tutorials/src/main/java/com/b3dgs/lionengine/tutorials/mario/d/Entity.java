@@ -92,7 +92,7 @@ class Entity extends ObjectGame implements Updatable, Renderable, TileCollidable
         camera = services.get(Camera.class);
         collidable.setOrigin(Origin.CENTER_TOP);
 
-        final FramesConfig frames = FramesConfig.create(getConfigurer());
+        final FramesConfig frames = FramesConfig.imports(setup);
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), frames.getHorizontal(), frames.getVertical());
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);

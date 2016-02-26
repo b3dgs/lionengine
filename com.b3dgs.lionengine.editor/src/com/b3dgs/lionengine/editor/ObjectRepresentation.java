@@ -58,7 +58,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     {
         try
         {
-            final FramesConfig frames = FramesConfig.create(configurer);
+            final FramesConfig frames = FramesConfig.imports(configurer);
             return Drawable.loadSpriteAnimated(surface, frames.getHorizontal(), frames.getVertical());
         }
         catch (final LionEngineException exception)

@@ -51,19 +51,19 @@ public final class PropertiesSurfaceTester extends PropertyTester
         final boolean result;
         if (PROPERTY_SURFACE_SET.equals(property))
         {
-            result = !model.hasProperty(SurfaceConfig.SURFACE_IMAGE);
+            result = !model.hasProperty(SurfaceConfig.ATT_IMAGE);
         }
-        else if (PROPERTY_SURFACE_REMOVE.equals(property) && SurfaceConfig.SURFACE_IMAGE.equals(data))
+        else if (PROPERTY_SURFACE_REMOVE.equals(property) && SurfaceConfig.ATT_IMAGE.equals(data))
         {
-            result = model.hasProperty(SurfaceConfig.SURFACE_IMAGE);
+            result = model.hasProperty(SurfaceConfig.ATT_IMAGE);
         }
         else if (PROPERTY_ICON_SET.equals(property))
         {
-            result = !model.hasProperty(SurfaceConfig.SURFACE_ICON) && model.hasProperty(SurfaceConfig.SURFACE_IMAGE);
+            result = !model.hasProperty(SurfaceConfig.ATT_ICON) && model.hasProperty(SurfaceConfig.ATT_IMAGE);
         }
-        else if (PROPERTY_ICON_REMOVE.equals(property) && SurfaceConfig.SURFACE_ICON.equals(data))
+        else if (PROPERTY_ICON_REMOVE.equals(property) && SurfaceConfig.ATT_ICON.equals(data))
         {
-            result = model.hasProperty(SurfaceConfig.SURFACE_ICON);
+            result = model.hasProperty(SurfaceConfig.ATT_ICON);
         }
         else
         {

@@ -65,7 +65,7 @@ class Effect extends ObjectGame implements Updatable, Renderable
         super(setup, services);
         viewer = services.get(Viewer.class);
 
-        final FramesConfig config = FramesConfig.create(setup.getConfigurer());
+        final FramesConfig config = FramesConfig.imports(setup);
         final int scale = UtilRandom.getRandomInteger(75) + 50;
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         surface.stretch(scale, scale);
