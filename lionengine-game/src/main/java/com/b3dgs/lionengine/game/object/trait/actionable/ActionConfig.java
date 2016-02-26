@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.game.object.trait.actionable;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -29,62 +31,58 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class ActionConfig
 {
     /** Action node name. */
-    public static final String ACTION = Configurer.PREFIX + "action";
+    public static final String NODE_ACTION = Configurer.PREFIX + "action";
     /** Action attribute name. */
-    public static final String NAME = "name";
+    public static final String ATT_NAME = "name";
     /** Action attribute description. */
-    public static final String DESCRIPTION = "description";
+    public static final String ATT_DESCRIPTION = "description";
     /** Action attribute x. */
-    public static final String X = "x";
+    public static final String ATT_X = "x";
     /** Action attribute y. */
-    public static final String Y = "y";
+    public static final String ATT_Y = "y";
     /** Action attribute width. */
-    public static final String WIDTH = "width";
+    public static final String ATT_WIDTH = "width";
     /** Action attribute height. */
-    public static final String HEIGHT = "height";
-    /** Error parsing integer. */
-    private static final String ERROR_PARSING_INT = "Error on parsing integer value: ";
+    public static final String ATT_HEIGHT = "height";
 
     /**
-     * Create the action data from node.
+     * Import the action data from node.
      *
-     * @param configurer The configurer reference.
+     * @param root The root node reference.
      * @return The action data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ActionConfig create(Configurer configurer)
+    public static ActionConfig imports(XmlNode root)
     {
-        final XmlNode node = configurer.getRoot();
-
-        final String name = node.getChild(NAME).getText();
-        final String description = node.getChild(DESCRIPTION).getText();
-        final int x = getTextInt(node, X);
-        final int y = getTextInt(node, Y);
-        final int width = getTextInt(node, WIDTH);
-        final int height = getTextInt(node, HEIGHT);
+        final XmlNode nodeAction = root.getChild(NODE_ACTION);
+        final String name = nodeAction.readString(ATT_NAME);
+        final String description = nodeAction.readString(ATT_DESCRIPTION);
+        final int x = nodeAction.readInteger(ATT_X);
+        final int y = nodeAction.readInteger(ATT_Y);
+        final int width = nodeAction.readInteger(ATT_WIDTH);
+        final int height = nodeAction.readInteger(ATT_HEIGHT);
 
         return new ActionConfig(name, description, x, y, width, height);
     }
 
     /**
-     * Get text content as integer.
-     * 
-     * @param node The main node.
-     * @param child The child node containing the text.
-     * @return The integer value.
-     * @throws LionEngineException If error on parsing value.
+     * Export the action node from data.
+     *
+     * @param config The config reference.
+     * @return The action node.
+     * @throws LionEngineException If unable to save.
      */
-    private static int getTextInt(XmlNode node, String child)
+    public static XmlNode exports(ActionConfig config)
     {
-        final String text = node.getChild(child).getText();
-        try
-        {
-            return Integer.parseInt(text);
-        }
-        catch (final NumberFormatException exception)
-        {
-            throw new LionEngineException(exception, ERROR_PARSING_INT, text);
-        }
+        final XmlNode nodeAction = Xml.create(NODE_ACTION);
+        nodeAction.writeString(ATT_NAME, config.getName());
+        nodeAction.writeString(ATT_DESCRIPTION, config.getDescription());
+        nodeAction.writeInteger(ATT_X, config.getX());
+        nodeAction.writeInteger(ATT_Y, config.getY());
+        nodeAction.writeInteger(ATT_WIDTH, config.getWidth());
+        nodeAction.writeInteger(ATT_HEIGHT, config.getHeight());
+
+        return nodeAction;
     }
 
     /** Action name. */
@@ -101,14 +99,6 @@ public final class ActionConfig
     private final int height;
 
     /**
-     * Disabled constructor.
-     */
-    private ActionConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
      * Create action from configuration media.
      *
      * @param name The action name.
@@ -117,9 +107,13 @@ public final class ActionConfig
      * @param y The vertical location on screen.
      * @param width The button width.
      * @param height The button height.
+     * @throws LionEngineException If <code>null</code> argument.
      */
-    private ActionConfig(String name, String description, int x, int y, int width, int height)
+    public ActionConfig(String name, String description, int x, int y, int width, int height)
     {
+        Check.notNull(name);
+        Check.notNull(description);
+
         this.name = name;
         this.description = description;
         this.x = x;
@@ -186,5 +180,43 @@ public final class ActionConfig
     public int getHeight()
     {
         return height;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + description.hashCode();
+        result = prime * result + height;
+        result = prime * result + name.hashCode();
+        result = prime * result + width;
+        result = prime * result + x;
+        result = prime * result + y;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || !(obj instanceof ActionConfig))
+        {
+            return false;
+        }
+        final ActionConfig other = (ActionConfig) obj;
+        return other.getDescription().equals(getDescription())
+               && other.getName().equals(getName())
+               && other.getX() == getX()
+               && other.getY() == getY()
+               && other.getWidth() == getWidth()
+               && other.getHeight() == getHeight();
     }
 }

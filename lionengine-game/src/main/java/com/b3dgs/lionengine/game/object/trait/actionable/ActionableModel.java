@@ -70,7 +70,7 @@ public class ActionableModel extends TraitModel implements Actionable
     {
         super.prepare(owner, services);
 
-        final ActionConfig config = ActionConfig.create(owner.getConfigurer());
+        final ActionConfig config = ActionConfig.imports(owner.getConfigurer().getRoot());
         button = Geom.createRectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
         description = config.getDescription();
 
