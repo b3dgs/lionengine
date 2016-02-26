@@ -15,23 +15,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object.trait;
+package com.b3dgs.lionengine.game.object.trait.actionable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.trait.actionable.Action;
-import com.b3dgs.lionengine.game.object.trait.actionable.ActionConfig;
-import com.b3dgs.lionengine.game.object.trait.actionable.ActionableModel;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.stream.Xml;
@@ -39,12 +39,30 @@ import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
- * Test the actionnable model trait.
+ * Test the actionable model trait.
  */
-public class ActionnableModelTest
+public class ActionableModelTest
 {
     /** Temp file name. */
     private static final String ACTION_XML = "action.xml";
+
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+    }
 
     /**
      * Create a default action.
