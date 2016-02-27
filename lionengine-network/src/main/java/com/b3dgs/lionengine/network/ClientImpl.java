@@ -99,7 +99,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         catch (final IOException exception)
         {
-            Verbose.warning(Client.class, "kick", "Error on closing output: ", exception.getMessage());
+            Verbose.exception(exception, "Error on closing output");
         }
         try
         {
@@ -107,7 +107,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         catch (final IOException exception)
         {
-            Verbose.warning(Client.class, "kick", "Error on closing input: ", exception.getMessage());
+            Verbose.exception(exception, "Error on closing input");
         }
         try
         {
@@ -115,7 +115,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         catch (final IOException exception)
         {
-            Verbose.warning(Client.class, "kick", "Error on closing socket: ", exception.getMessage());
+            Verbose.exception(exception, "Error on closing socket");
         }
         for (final ConnectionListener listener : listeners)
         {
@@ -157,45 +157,29 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         switch (messageSystemId)
         {
             case NetworkMessageSystemId.CONNECTING:
-            {
                 updateConnecting();
                 break;
-            }
             case NetworkMessageSystemId.CONNECTED:
-            {
                 updateConnected();
                 break;
-            }
             case NetworkMessageSystemId.PING:
-            {
                 ping = (int) pingTimer.elapsed();
                 break;
-            }
             case NetworkMessageSystemId.KICKED:
-            {
                 kick();
                 break;
-            }
             case NetworkMessageSystemId.OTHER_CLIENT_CONNECTED:
-            {
                 updateOtherClientConnected();
                 break;
-            }
             case NetworkMessageSystemId.OTHER_CLIENT_DISCONNECTED:
-            {
                 updateOtherClientDisconnected();
                 break;
-            }
             case NetworkMessageSystemId.OTHER_CLIENT_RENAMED:
-            {
                 updateOtherClientRenamed();
                 break;
-            }
             case NetworkMessageSystemId.USER_MESSAGE:
-            {
                 updateUserMessage();
                 break;
-            }
             default:
                 break;
         }
@@ -377,10 +361,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         catch (final IOException exception)
         {
-            Verbose.warning(Client.class,
-                            "sendMessage",
-                            "Unable to send the message for client: ",
-                            String.valueOf(clientId));
+            Verbose.exception(exception, "Unable to send the message for client: ", String.valueOf(clientId));
         }
         finally
         {
@@ -450,7 +431,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         catch (final IOException exception)
         {
-            Verbose.warning(Client.class, "setName", "Unable to set a new client name !");
+            Verbose.exception(exception, "Unable to set a new client name !");
         }
     }
 
@@ -526,10 +507,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
             }
             catch (final IOException exception)
             {
-                Verbose.warning(Client.class,
-                                "sendMessages",
-                                "Unable to send the messages for client: ",
-                                String.valueOf(clientId));
+                Verbose.exception(exception, "Unable to send the messages for client: ", String.valueOf(clientId));
             }
         }
         // Send messages
@@ -567,10 +545,7 @@ final class ClientImpl extends NetworkModel<ConnectionListener> implements Clien
         }
         catch (final IOException exception)
         {
-            Verbose.warning(Client.class,
-                            "receiveMessages",
-                            "Unable to receive the messages for client: ",
-                            String.valueOf(clientId));
+            Verbose.exception(exception, "Unable to receive the messages for client: ", String.valueOf(clientId));
         }
     }
 }

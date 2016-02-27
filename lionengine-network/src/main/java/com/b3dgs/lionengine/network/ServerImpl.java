@@ -520,7 +520,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         }
         catch (final IOException exception)
         {
-            Verbose.warning(Server.class, "stop", "Error on closing server: ", exception.getMessage());
+            Verbose.exception(exception, "Error on closing server");
         }
         started = false;
     }
@@ -549,7 +549,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             }
             catch (final IOException exception)
             {
-                Verbose.warning(Server.class, "update", "Error on updating server: ", exception.getMessage());
+                Verbose.exception(exception, "Error on updating server");
             }
             finally
             {
@@ -601,10 +601,9 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 }
                 catch (final IOException exception)
                 {
-                    Verbose.warning(Server.class,
-                                    "sendMessage",
-                                    "Unable to send the messages for client: ",
-                                    String.valueOf(client.getId()));
+                    Verbose.exception(exception,
+                                      "Unable to send the messages for client: ",
+                                      String.valueOf(client.getId()));
                 }
                 finally
                 {
