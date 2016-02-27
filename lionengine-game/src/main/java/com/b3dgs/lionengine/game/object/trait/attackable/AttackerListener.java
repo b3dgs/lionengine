@@ -55,11 +55,4 @@ public interface AttackerListener
      * Notify while attacker is waiting for next attack.
      */
     void notifyPreparingAttack();
-
-    /**
-     * Notify when attacker lost its target.
-     * 
-     * @param target The target lost.
-     */
-    void notifyTargetLost(Transformable target);
 }

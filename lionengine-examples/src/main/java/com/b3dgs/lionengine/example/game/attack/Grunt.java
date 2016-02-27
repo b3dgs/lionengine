@@ -145,10 +145,4 @@ class Grunt extends ObjectGame implements Updatable, Renderable, AttackerChecker
     {
         // Nothing to do
     }
-
-    @Override
-    public void notifyTargetLost(Transformable target)
-    {
-        // Nothing to do
-    }
 }
