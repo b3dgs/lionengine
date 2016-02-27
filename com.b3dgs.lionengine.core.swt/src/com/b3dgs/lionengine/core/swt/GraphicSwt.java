@@ -239,7 +239,7 @@ final class GraphicSwt implements Graphic
         }
         if (gradientColor2 != null)
         {
-            gradientColor1.dispose();
+            gradientColor2.dispose();
         }
         gradientColor1 = new Color(device, color1.getRed(), color1.getGreen(), color1.getBlue());
         gradientColor2 = new Color(device, color2.getRed(), color2.getGreen(), color2.getBlue());
