@@ -62,7 +62,7 @@ public class TransformableModel extends TraitModel implements Transformable
     {
         super.prepare(owner, services);
 
-        final SizeConfig sizeData = SizeConfig.create(owner.getConfigurer());
+        final SizeConfig sizeData = SizeConfig.imports(owner.getConfigurer());
         width = sizeData.getWidth();
         height = sizeData.getHeight();
         oldWidth = width;

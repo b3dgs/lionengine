@@ -115,19 +115,19 @@ public class PropertiesFrames implements PropertiesProviderObject
         final File file = new File(configurer.getPath(),
                                    root.getChild(SurfaceConfig.NODE_SURFACE).readString(SurfaceConfig.ATT_IMAGE));
         final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(file));
-        if (!root.hasChild(SizeConfig.SIZE))
+        if (!root.hasChild(SizeConfig.NODE_SIZE))
         {
-            size = root.createChild(SizeConfig.SIZE);
-            size.writeInteger(SizeConfig.SIZE_WIDTH, info.getWidth());
-            size.writeInteger(SizeConfig.SIZE_HEIGHT, info.getHeight());
+            size = root.createChild(SizeConfig.NODE_SIZE);
+            size.writeInteger(SizeConfig.ATT_WIDTH, info.getWidth());
+            size.writeInteger(SizeConfig.ATT_HEIGHT, info.getHeight());
         }
         else
         {
-            size = root.getChild(SizeConfig.SIZE);
+            size = root.getChild(SizeConfig.NODE_SIZE);
         }
-        size.writeInteger(SizeConfig.SIZE_WIDTH,
+        size.writeInteger(SizeConfig.ATT_WIDTH,
                           info.getWidth() / framesNode.readInteger(FramesConfig.ATT_HORIZONTAL));
-        size.writeInteger(SizeConfig.SIZE_HEIGHT,
+        size.writeInteger(SizeConfig.ATT_HEIGHT,
                           info.getHeight() / framesNode.readInteger(FramesConfig.ATT_VERTICAL));
     }
 

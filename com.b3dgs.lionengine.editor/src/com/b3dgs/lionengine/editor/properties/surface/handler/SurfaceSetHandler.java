@@ -59,14 +59,14 @@ public final class SurfaceSetHandler
         if (file != null)
         {
             final XmlNode root = configurer.getRoot();
-            if (!root.hasChild(SizeConfig.SIZE))
+            if (!root.hasChild(SizeConfig.NODE_SIZE))
             {
                 final File surface = new File(configurer.getPath(), file);
                 final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(surface));
 
-                final XmlNode size = root.createChild(SizeConfig.SIZE);
-                size.writeInteger(SizeConfig.SIZE_WIDTH, info.getWidth());
-                size.writeInteger(SizeConfig.SIZE_HEIGHT, info.getHeight());
+                final XmlNode size = root.createChild(SizeConfig.NODE_SIZE);
+                size.writeInteger(SizeConfig.ATT_WIDTH, info.getWidth());
+                size.writeInteger(SizeConfig.ATT_HEIGHT, info.getHeight());
             }
 
             final XmlNode surfaceNode = root.createChild(SurfaceConfig.NODE_SURFACE);

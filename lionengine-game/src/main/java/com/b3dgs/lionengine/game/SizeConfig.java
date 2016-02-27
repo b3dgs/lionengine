@@ -18,6 +18,9 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the size data from a configurer.
@@ -27,25 +30,66 @@ import com.b3dgs.lionengine.LionEngineException;
 public final class SizeConfig
 {
     /** Size node name. */
-    public static final String SIZE = Configurer.PREFIX + "size";
+    public static final String NODE_SIZE = Configurer.PREFIX + "size";
     /** Size width node. */
-    public static final String SIZE_WIDTH = "width";
+    public static final String ATT_WIDTH = "width";
     /** Size height node. */
-    public static final String SIZE_HEIGHT = "height";
+    public static final String ATT_HEIGHT = "height";
 
     /**
-     * Create the size data from node.
+     * Import the size data from setup.
+     * 
+     * @param setup The setup reference.
+     * @return The size data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static SizeConfig imports(Setup setup)
+    {
+        return imports(setup.getConfigurer().getRoot());
+    }
+
+    /**
+     * Import the size data from configurer.
      * 
      * @param configurer The configurer reference.
      * @return The size data.
      * @throws LionEngineException If unable to read node.
      */
-    public static SizeConfig create(Configurer configurer)
+    public static SizeConfig imports(Configurer configurer)
     {
-        final int width = configurer.getInteger(SizeConfig.SIZE_WIDTH, SizeConfig.SIZE);
-        final int height = configurer.getInteger(SizeConfig.SIZE_HEIGHT, SizeConfig.SIZE);
+        return imports(configurer.getRoot());
+    }
+
+    /**
+     * Import the size data from configurer.
+     * 
+     * @param root The root reference.
+     * @return The size data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static SizeConfig imports(XmlNode root)
+    {
+        final XmlNode node = root.getChild(NODE_SIZE);
+        final int width = node.readInteger(SizeConfig.ATT_WIDTH);
+        final int height = node.readInteger(SizeConfig.ATT_HEIGHT);
 
         return new SizeConfig(width, height);
+    }
+
+    /**
+     * Export the size node from data.
+     * 
+     * @param config The config reference.
+     * @return The size node.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static XmlNode exports(SizeConfig config)
+    {
+        final XmlNode node = Xml.create(NODE_SIZE);
+        node.writeInteger(ATT_WIDTH, config.getWidth());
+        node.writeInteger(ATT_HEIGHT, config.getHeight());
+
+        return node;
     }
 
     /** The width value. */

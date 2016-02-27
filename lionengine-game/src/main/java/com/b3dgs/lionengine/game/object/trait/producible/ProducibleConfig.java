@@ -45,7 +45,7 @@ public final class ProducibleConfig
     public static ProducibleConfig create(Configurer configurer)
     {
         final XmlNode node = configurer.getRoot();
-        final SizeConfig size = SizeConfig.create(configurer);
+        final SizeConfig size = SizeConfig.imports(configurer);
         final int time = node.getChild(PRODUCIBLE).readInteger(STEPS);
 
         return new ProducibleConfig(time, size.getWidth(), size.getHeight());
