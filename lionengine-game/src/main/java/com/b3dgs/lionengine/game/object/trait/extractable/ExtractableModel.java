@@ -26,11 +26,23 @@ import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 
 /**
  * Extractable model implementation.
+ * <p>
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.Trait}:
+ * </p>
+ * <ul>
+ * <li>{@link Transformable}</li>
+ * </ul>
+ * <p>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link MapTile}</li>
+ * </ul>
  */
 public class ExtractableModel extends TraitModel implements Extractable
 {
     /** Resources count. */
-    private final Alterable resources = new Alterable(0);
+    private final Alterable resources = new Alterable(Integer.MAX_VALUE);
     /** Map reference. */
     private MapTile map;
     /** Transformable model. */
@@ -104,12 +116,12 @@ public class ExtractableModel extends TraitModel implements Extractable
     @Override
     public int getInTileWidth()
     {
-        return transformable.getWidth() / map.getTileWidth();
+        return (int) Math.floor(transformable.getWidth() / (double) map.getTileWidth());
     }
 
     @Override
     public int getInTileHeight()
     {
-        return transformable.getHeight() / map.getInTileHeight();
+        return (int) Math.floor(transformable.getHeight() / (double) map.getInTileHeight());
     }
 }

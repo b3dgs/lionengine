@@ -35,11 +35,13 @@ public class ExtractorModel extends TraitModel implements Extractor
     /** Extractor listeners. */
     private final Collection<ExtractorListener> listeners = new ArrayList<ExtractorListener>();
     /** Resources location. */
-    private final ResourceLocation resourceLocation = new ResourceLocation();
+    private ResourceLocation resourceLocation;
     /** Tick timer rate. */
     private double desiredFps;
     /** Extractor checker reference. */
     private ExtractorChecker checker;
+    /** Current resource object. */
+    private Extractable extractable;
     /** Current resources type. */
     private Enum<?> resourceType;
     /** Extraction state. */
@@ -88,27 +90,22 @@ public class ExtractorModel extends TraitModel implements Extractor
      */
     protected void actionExtracting(double extrp)
     {
-        progress += speed * extrp;
-        final int curProgress = (int) Math.floor(progress);
-
-        // Check increases
-        if (curProgress > lastProgress)
+        if (extractable == null || extractable.getResourceQuantity() > 0)
         {
-            lastProgress = curProgress;
-            for (final ExtractorListener listener : listeners)
+            if (extractable != null)
             {
-                listener.notifyExtracted(resourceType, curProgress);
+                progress += Math.min(extractable.getResourceQuantity(), speed * extrp);
             }
-
-            if (curProgress >= extractionCapacity)
+            else
             {
-                progress = extractionCapacity;
-                lastProgress = extractionCapacity;
-                state = ExtractorState.GOTO_WAREHOUSE;
-                for (final ExtractorListener listener : listeners)
-                {
-                    listener.notifyStartCarry(resourceType, lastProgress);
-                }
+                progress += speed * extrp;
+            }
+            final int curProgress = Math.min((int) Math.floor(progress), extractionCapacity);
+
+            // Check increases
+            if (curProgress > lastProgress)
+            {
+                extract(curProgress);
             }
         }
     }
@@ -147,6 +144,35 @@ public class ExtractorModel extends TraitModel implements Extractor
                 listener.notifyDroppedOff(resourceType, lastProgress);
             }
             startExtraction();
+        }
+    }
+
+    /**
+     * Perform extraction.
+     * 
+     * @param curProgress Current extraction progress.
+     */
+    private void extract(int curProgress)
+    {
+        if (extractable != null)
+        {
+            extractable.extractResource(curProgress - lastProgress);
+        }
+        for (final ExtractorListener listener : listeners)
+        {
+            listener.notifyExtracted(resourceType, curProgress);
+        }
+        lastProgress = curProgress;
+
+        if (curProgress >= extractionCapacity)
+        {
+            progress = extractionCapacity;
+            lastProgress = extractionCapacity;
+            state = ExtractorState.GOTO_WAREHOUSE;
+            for (final ExtractorListener listener : listeners)
+            {
+                listener.notifyStartCarry(resourceType, lastProgress);
+            }
         }
     }
 
@@ -228,18 +254,20 @@ public class ExtractorModel extends TraitModel implements Extractor
     }
 
     @Override
-    public void setResource(Extractable entity)
+    public void setResource(Extractable extractable)
     {
-        resourceLocation.setCoordinate(entity.getInTileX(), entity.getInTileY());
-        resourceLocation.setSize(entity.getInTileWidth(), entity.getInTileHeight());
-        resourceType = entity.getResourceType();
+        this.extractable = extractable;
+        resourceLocation = new ResourceLocation(extractable.getInTileX(),
+                                                extractable.getInTileY(),
+                                                extractable.getInTileWidth(),
+                                                extractable.getInTileHeight());
+        resourceType = extractable.getResourceType();
     }
 
     @Override
     public void setResource(Enum<?> type, int tx, int ty, int tw, int th)
     {
-        resourceLocation.setCoordinate(tx, ty);
-        resourceLocation.setSize(tw, th);
+        resourceLocation = new ResourceLocation(tx, ty, tw, th);
         resourceType = type;
     }
 

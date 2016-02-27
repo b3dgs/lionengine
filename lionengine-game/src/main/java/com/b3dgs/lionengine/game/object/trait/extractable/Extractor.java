@@ -34,11 +34,11 @@ public interface Extractor extends Trait, Updatable
     void addListener(ExtractorListener listener);
 
     /**
-     * Set the resources location in tile.
+     * Set the resources location.
      * 
-     * @param extractible The extractible entity.
+     * @param extractable The extractable resource.
      */
-    void setResource(Extractable extractible);
+    void setResource(Extractable extractable);
 
     /**
      * Set the extraction unit per second.
