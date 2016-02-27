@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -105,14 +106,20 @@ public class ObjectGameTest
 
     /**
      * Test the id.
+     * 
+     * @throws NoSuchFieldException If error.
+     * @throws IllegalAccessException If error.
      */
     @Test
-    public void testId()
+    public void testId() throws NoSuchFieldException, IllegalAccessException
     {
         final Collection<Integer> ids = UtilReflection.getField(ObjectGame.class, "IDS");
         ids.clear();
         final Collection<Integer> recycle = UtilReflection.getField(ObjectGame.class, "RECYCLE");
         recycle.clear();
+        final Field field = ObjectGame.class.getDeclaredField("lastId");
+        UtilReflection.setAccessible(field, true);
+        field.set(ObjectGame.class, Integer.valueOf(0));
 
         final Collection<ObjectGame> objects = new ArrayList<ObjectGame>();
         for (int i = 0; i < 10; i++)
