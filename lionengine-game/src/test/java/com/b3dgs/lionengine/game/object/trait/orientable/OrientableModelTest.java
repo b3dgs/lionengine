@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.util.UtilTests;
 /**
  * Test the orientable trait.
  */
-public class OrientableTest
+public class OrientableModelTest
 {
     /**
      * Prepare test.

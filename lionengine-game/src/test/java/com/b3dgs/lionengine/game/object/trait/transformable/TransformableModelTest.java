@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.util.UtilTests;
 /**
  * Test the transformable trait.
  */
-public class TransformableTest
+public class TransformableModelTest
 {
     /**
      * Prepare test.

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.Mirror;
 /**
  * Test the mirrorable trait.
  */
-public class MirrorableTest
+public class MirrorableModelTest
 {
     /**
      * Test the mirror.
