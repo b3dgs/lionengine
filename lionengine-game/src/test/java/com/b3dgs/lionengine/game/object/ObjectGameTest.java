@@ -71,7 +71,7 @@ public class ObjectGameTest
      */
     public static Media createMedia(Class<?> clazz)
     {
-        final Media media = Medias.create("object.xml");
+        final Media media = Medias.create(clazz.getName() + ".xml");
         final XmlNode root = Xml.create("test");
         root.add(ObjectConfig.exportClass(clazz.getName()));
         root.add(ObjectConfig.exportSetup("com.b3dgs.lionengine.game.object.Setup"));
