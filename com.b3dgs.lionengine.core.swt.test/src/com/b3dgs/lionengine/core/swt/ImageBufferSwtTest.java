@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core.swt;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -68,10 +67,7 @@ public class ImageBufferSwtTest
         Assert.assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(0, 0));
         image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
 
-        final Method method = ImageBufferSwt.class.getDeclaredMethod("getTransparency", int.class);
-        UtilReflection.setAccessible(method, true);
-        Assert.assertEquals(Transparency.BITMASK,
-                            method.invoke(ImageBufferSwt.class, Integer.valueOf(SWT.TRANSPARENCY_MASK)));
+        Assert.assertEquals(Transparency.BITMASK, ImageBufferSwt.getTransparency(SWT.TRANSPARENCY_MASK));
 
         image.dispose();
     }

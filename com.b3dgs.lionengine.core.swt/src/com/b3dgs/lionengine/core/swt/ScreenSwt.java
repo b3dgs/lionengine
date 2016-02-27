@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.core.ScreenListener;
  * @see Keyboard
  * @see Mouse
  */
-abstract class ScreenSwt extends ScreenBase implements FocusListener
+public abstract class ScreenSwt extends ScreenBase implements FocusListener
 {
     /** Max ready time in millisecond. */
     private static final long READY_TIMEOUT = 5000L;

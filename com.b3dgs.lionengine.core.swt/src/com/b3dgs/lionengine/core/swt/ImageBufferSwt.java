@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.Transparency;
 /**
  * Image buffer implementation.
  */
-final class ImageBufferSwt implements ImageBuffer
+public final class ImageBufferSwt implements ImageBuffer
 {
     /**
      * Get the transparency equivalence.
@@ -40,7 +40,7 @@ final class ImageBufferSwt implements ImageBuffer
      * @param transparency The transparency.
      * @return The equivalence.
      */
-    private static Transparency getTransparency(int transparency)
+    public static Transparency getTransparency(int transparency)
     {
         final Transparency value;
         switch (transparency)

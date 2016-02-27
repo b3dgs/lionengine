@@ -93,7 +93,10 @@ public class ToolsSwtTest
     public void testGetRasterColor()
     {
         final Image image = ToolsSwt.createImage(16, 16, SWT.TRANSPARENCY_NONE);
-        final PaletteData palette = new PaletteData(new RGB[0]);
+        final PaletteData palette = new PaletteData(new RGB[]
+        {
+            new RGB(0, 0, 0), new RGB(1, 0, 0), new RGB(1, 1, 0), new RGB(1, 0, 1)
+        });
         final ImageData data = new ImageData(16, 16, 8, palette);
         data.transparentPixel = 0;
         ToolsSwt.getRasterBuffer(new Image(image.getDevice(), data), 0, 0, 0, 0, 0, 0, 1);
