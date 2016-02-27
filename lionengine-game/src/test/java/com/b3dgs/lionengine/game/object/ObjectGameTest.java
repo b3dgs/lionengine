@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.object.trait.body.Body;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
@@ -108,6 +109,11 @@ public class ObjectGameTest
     @Test
     public void testId()
     {
+        final Collection<Integer> ids = UtilReflection.getField(ObjectGame.class, "IDS");
+        ids.clear();
+        final Collection<Integer> recycle = UtilReflection.getField(ObjectGame.class, "RECYCLE");
+        recycle.clear();
+
         final Collection<ObjectGame> objects = new ArrayList<ObjectGame>();
         for (int i = 0; i < 10; i++)
         {
