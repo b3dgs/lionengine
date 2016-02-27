@@ -17,13 +17,22 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
+import org.eclipse.swt.SWT;
 import org.junit.Assume;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.FactoryGraphicTest;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.mock.ImageBufferMock;
 
 /**
  * Test the factory graphic provider class.
@@ -42,6 +51,120 @@ public class FactoryGraphicSwtTest extends FactoryGraphicTest
         prepare();
         Graphics.setFactoryGraphic(new FactoryGraphicSwt());
         loadResources();
+    }
+
+    /**
+     * Test the get image buffer exception case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetImageBufferException()
+    {
+        Graphics.getImageBuffer(new Media()
+        {
+            @Override
+            public String getPath()
+            {
+                return null;
+            }
+
+            @Override
+            public String getParentPath()
+            {
+                return null;
+            }
+
+            @Override
+            public OutputStream getOutputStream()
+            {
+                return null;
+            }
+
+            @Override
+            public InputStream getInputStream()
+            {
+                return new InputStream()
+                {
+                    @Override
+                    public int read() throws IOException
+                    {
+                        return 0;
+                    }
+                };
+            }
+
+            @Override
+            public File getFile()
+            {
+                return null;
+            }
+
+            @Override
+            public boolean exists()
+            {
+                return false;
+            }
+        });
+    }
+
+    /**
+     * Test the save image exception case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testSaveImageException()
+    {
+        Graphics.saveImage(new ImageBufferMock(16, 32, Transparency.BITMASK)
+        {
+            @SuppressWarnings("unchecked")
+            @Override
+            public <T> T getSurface()
+            {
+                return (T) ToolsSwt.createImage(100, 100, SWT.TRANSPARENCY_NONE);
+            }
+        }, new Media()
+        {
+            @Override
+            public String getPath()
+            {
+                return null;
+            }
+
+            @Override
+            public String getParentPath()
+            {
+                return null;
+            }
+
+            @Override
+            public OutputStream getOutputStream()
+            {
+                return new OutputStream()
+                {
+                    @Override
+                    public void write(int b) throws IOException
+                    {
+                        throw new IOException();
+                    }
+                };
+            }
+
+            @Override
+            public InputStream getInputStream()
+            {
+                return null;
+            }
+
+            @Override
+            public File getFile()
+            {
+                return null;
+            }
+
+            @Override
+            public boolean exists()
+            {
+                return false;
+            }
+        });
     }
 
     /*

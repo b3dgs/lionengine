@@ -177,7 +177,7 @@ public final class SurfaceConfig
         {
             return true;
         }
-        if (obj == null || !(obj instanceof SurfaceConfig))
+        if (!(obj instanceof SurfaceConfig))
         {
             return false;
         }

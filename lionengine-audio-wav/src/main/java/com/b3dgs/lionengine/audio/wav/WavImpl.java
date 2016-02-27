@@ -51,28 +51,6 @@ final class WavImpl implements Wav
     /** Play sound error. */
     private static final String ERROR_PLAY_SOUND = "Error on playing sound: ";
 
-    /** Opened playback. */
-    private final Collection<Playback> opened = new ConcurrentLinkedQueue<Playback>();
-    /** Tasks executor. */
-    private final ExecutorService executor;
-    /** Sound file reference. */
-    private final Media media;
-
-    /**
-     * Internal constructor.
-     * 
-     * @param executor Tasks executor.
-     * @param media The audio sound media.
-     * @throws LionEngineException If media is <code>null</code>
-     */
-    WavImpl(ExecutorService executor, Media media)
-    {
-        Check.notNull(media);
-
-        this.executor = executor;
-        this.media = media;
-    }
-
     /**
      * Play a sound.
      * 
@@ -82,7 +60,7 @@ final class WavImpl implements Wav
      * @return The created and opened playback ready to be played.
      * @throws IOException If playback error.
      */
-    private Playback createPlayback(Media media, Align alignment, int volume) throws IOException
+    private static Playback createPlayback(Media media, Align alignment, int volume) throws IOException
     {
         final AudioInputStream audioInputStream = openStream(media);
         final SourceDataLine sourceDataLine = getDataLine(audioInputStream);
@@ -100,7 +78,7 @@ final class WavImpl implements Wav
      * @throws IOException If error when reading the audio file.
      * @throws LionEngineException If error when getting the stream.
      */
-    private AudioInputStream openStream(Media media) throws IOException
+    private static AudioInputStream openStream(Media media) throws IOException
     {
         try
         {
@@ -119,7 +97,7 @@ final class WavImpl implements Wav
      * @return The audio source data.
      * @throws IOException The no audio line available (may be already opened).
      */
-    private SourceDataLine getDataLine(AudioInputStream audioInputStream) throws IOException
+    private static SourceDataLine getDataLine(AudioInputStream audioInputStream) throws IOException
     {
         final AudioFormat audioFormat = audioInputStream.getFormat();
         final DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
@@ -142,7 +120,7 @@ final class WavImpl implements Wav
      * @param sourceDataLine Audio source data.
      * @param alignment Alignment value.
      */
-    private void updateAlignment(SourceDataLine sourceDataLine, Align alignment)
+    private static void updateAlignment(SourceDataLine sourceDataLine, Align alignment)
     {
         if (sourceDataLine.isControlSupported(Type.PAN))
         {
@@ -150,13 +128,13 @@ final class WavImpl implements Wav
             switch (alignment)
             {
                 case CENTER:
-                    pan.setValue(0.0f);
+                    pan.setValue(0.0F);
                     break;
                 case RIGHT:
-                    pan.setValue(1.0f);
+                    pan.setValue(1.0F);
                     break;
                 case LEFT:
-                    pan.setValue(-1.0f);
+                    pan.setValue(-1.0F);
                     break;
                 default:
                     throw new LionEngineException(alignment);
@@ -170,7 +148,7 @@ final class WavImpl implements Wav
      * @param sourceDataLine Audio source data.
      * @param volume The audio playback volume value.
      */
-    private void updateVolume(SourceDataLine sourceDataLine, int volume)
+    private static void updateVolume(SourceDataLine sourceDataLine, int volume)
     {
         if (sourceDataLine.isControlSupported(Type.MASTER_GAIN))
         {
@@ -179,6 +157,61 @@ final class WavImpl implements Wav
             final double dB = Math.log(gain) / Math.log(10.0) * 20.0;
             gainControl.setValue((float) dB);
         }
+    }
+
+    /**
+     * Read the full sound and play it by buffer.
+     * 
+     * @param audioInputStream The audio input.
+     * @param sourceDataLine Audio source data.
+     * @throws IOException If error when reading the sound.
+     */
+    private static void readSound(AudioInputStream audioInputStream, SourceDataLine sourceDataLine) throws IOException
+    {
+        int read;
+        final byte[] buffer = new byte[BUFFER];
+        while ((read = audioInputStream.read(buffer, 0, buffer.length)) > 0)
+        {
+            sourceDataLine.write(buffer, 0, read);
+        }
+    }
+
+    /**
+     * Flush and close audio data and stream.
+     * 
+     * @param audioInputStream The audio input.
+     * @param sourceDataLine Audio source data.
+     * @throws IOException If error on closing.
+     */
+    private static void close(AudioInputStream audioInputStream, SourceDataLine sourceDataLine) throws IOException
+    {
+        sourceDataLine.drain();
+        sourceDataLine.flush();
+        sourceDataLine.stop();
+        sourceDataLine.close();
+        audioInputStream.close();
+    }
+
+    /** Opened playback. */
+    private final Collection<Playback> opened = new ConcurrentLinkedQueue<Playback>();
+    /** Tasks executor. */
+    private final ExecutorService executor;
+    /** Sound file reference. */
+    private final Media media;
+
+    /**
+     * Internal constructor.
+     * 
+     * @param executor Tasks executor.
+     * @param media The audio sound media.
+     * @throws LionEngineException If media is <code>null</code>
+     */
+    WavImpl(ExecutorService executor, Media media)
+    {
+        Check.notNull(media);
+
+        this.executor = executor;
+        this.media = media;
     }
 
     /**
@@ -218,39 +251,6 @@ final class WavImpl implements Wav
             Thread.currentThread().interrupt();
             Verbose.exception(exception);
         }
-    }
-
-    /**
-     * Read the full sound and play it by buffer.
-     * 
-     * @param audioInputStream The audio input.
-     * @param sourceDataLine Audio source data.
-     * @throws IOException If error when reading the sound.
-     */
-    private void readSound(AudioInputStream audioInputStream, SourceDataLine sourceDataLine) throws IOException
-    {
-        int read;
-        final byte[] buffer = new byte[BUFFER];
-        while ((read = audioInputStream.read(buffer, 0, buffer.length)) > 0)
-        {
-            sourceDataLine.write(buffer, 0, read);
-        }
-    }
-
-    /**
-     * Flush and close audio data and stream.
-     * 
-     * @param audioInputStream The audio input.
-     * @param sourceDataLine Audio source data.
-     * @throws IOException If error on closing.
-     */
-    private void close(AudioInputStream audioInputStream, SourceDataLine sourceDataLine) throws IOException
-    {
-        sourceDataLine.drain();
-        sourceDataLine.flush();
-        sourceDataLine.stop();
-        sourceDataLine.close();
-        audioInputStream.close();
     }
 
     /*

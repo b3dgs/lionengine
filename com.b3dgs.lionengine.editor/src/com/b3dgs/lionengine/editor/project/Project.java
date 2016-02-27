@@ -87,7 +87,7 @@ public final class Project
      * @return The created project.
      * @throws IOException If not able to create the project.
      */
-    public static Project create(File projectPath) throws IOException
+    public static synchronized Project create(File projectPath) throws IOException
     {
         Verbose.info(VERBOSE_READ_PROJECT_PROPERTIES, projectPath.getAbsolutePath());
         try (InputStream input = new FileInputStream(new File(projectPath, PROPERTIES_FILE)))

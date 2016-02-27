@@ -84,7 +84,7 @@ public final class TilesExtractor
      * @param tiles The current extracted tiles.
      * @return <code>true</code> if already extracted, <code>false</code> else.
      */
-    private boolean isExtracted(SpriteTiled level, int x, int y, Collection<ImageBuffer> tiles)
+    private static boolean isExtracted(SpriteTiled level, int x, int y, Collection<ImageBuffer> tiles)
     {
         final int tw = level.getTileWidth();
         final int th = level.getTileHeight();

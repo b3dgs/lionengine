@@ -138,9 +138,14 @@ public abstract class Engine
     private static String getStartingMessage(Engine engine)
     {
         final StringBuilder message = new StringBuilder(ENGINE_STARTING);
-        message.append(VERSION).append(Constant.QUOTE).append(FOR).append(Constant.QUOTE);
-        message.append(engine.getName()).append(Constant.SPACE);
-        message.append(engine.getVersion()).append(Constant.QUOTE);
+        message.append(VERSION)
+               .append(Constant.QUOTE)
+               .append(FOR)
+               .append(Constant.QUOTE)
+               .append(engine.getName())
+               .append(Constant.SPACE)
+               .append(engine.getVersion())
+               .append(Constant.QUOTE);
         return message.toString();
     }
 

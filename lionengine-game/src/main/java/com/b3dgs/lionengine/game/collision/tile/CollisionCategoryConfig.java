@@ -114,7 +114,6 @@ public final class CollisionCategoryConfig
             groups.add(group);
         }
 
-        final String name = root.readString(NAME);
         final String axisName = root.readString(AXIS);
         final Axis axis;
         try
@@ -128,6 +127,7 @@ public final class CollisionCategoryConfig
         final int x = root.readInteger(X);
         final int y = root.readInteger(Y);
 
+        final String name = root.readString(NAME);
         return new CollisionCategory(name, axis, x, y, groups);
     }
 

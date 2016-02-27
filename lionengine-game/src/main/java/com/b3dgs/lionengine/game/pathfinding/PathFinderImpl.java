@@ -106,7 +106,7 @@ final class PathFinderImpl implements PathFinder
      * @param ignoreRef The ignore map reference array checking.
      * @return <code>true</code> if the location is valid for the given mover, <code>false</code> else.
      */
-    protected boolean isValidLocation(Pathfindable mover, int stx, int sty, int dtx, int dty, boolean ignoreRef)
+    private boolean isValidLocation(Pathfindable mover, int stx, int sty, int dtx, int dty, boolean ignoreRef)
     {
         boolean invalid = dtx < 0 || dty < 0 || dtx >= map.getInTileWidth() || dty >= map.getInTileHeight();
 

@@ -71,7 +71,7 @@ public final class PropertiesCollisionTester extends PropertyTester
      */
     public PropertiesCollisionTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

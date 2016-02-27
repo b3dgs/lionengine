@@ -87,8 +87,6 @@ public abstract class BackgroundGame implements Background
     protected final String theme;
     /** Total background height. */
     protected int totalHeight;
-    /** Number of background components. */
-    protected int componentsNumber;
     /** Offset y. */
     private int offsetY;
 
@@ -128,6 +126,16 @@ public abstract class BackgroundGame implements Background
     }
 
     /**
+     * Get the components number.
+     * 
+     * @return Components number.
+     */
+    public int getComponentsNumber()
+    {
+        return components.size();
+    }
+
+    /**
      * Add a component to the background.
      * 
      * @param component The component reference.
@@ -135,7 +143,6 @@ public abstract class BackgroundGame implements Background
     protected void add(BackgroundComponent component)
     {
         components.add(component);
-        componentsNumber = components.size();
     }
 
     /**

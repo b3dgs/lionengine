@@ -39,6 +39,11 @@ public final class Graphics
 {
     /** Factory graphic implementation. */
     private static volatile FactoryGraphic factoryGraphic;
+    /** Raster colors. */
+    private static final String[] COLORS =
+    {
+        "Red", "Green", "Blue"
+    };
 
     /**
      * Set the graphic factory used.
@@ -242,21 +247,17 @@ public final class Graphics
     public static int[][] loadRaster(Media media)
     {
         final XmlNode raster = Xml.load(media);
-        final String[] colors =
-        {
-            "Red", "Green", "Blue"
-        };
         final int indexs = 6;
-        final int[][] rasters = new int[colors.length][indexs];
+        final int[][] rasters = new int[COLORS.length][indexs];
         final int indexStart = 0;
         final int indexStep = 1;
         final int indexForce = 2;
         final int indexAmplitude = 3;
         final int indexOffset = 4;
         final int indexType = 5;
-        for (int c = 0; c < colors.length; c++)
+        for (int c = 0; c < rasters.length; c++)
         {
-            final XmlNode color = raster.getChild(colors[c]);
+            final XmlNode color = raster.getChild(COLORS[c]);
             rasters[c][indexStart] = Integer.decode(color.readString("start")).intValue();
             rasters[c][indexStep] = Integer.decode(color.readString("step")).intValue();
             rasters[c][indexForce] = color.readInteger("force");

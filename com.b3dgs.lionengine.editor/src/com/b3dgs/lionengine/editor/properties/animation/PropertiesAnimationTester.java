@@ -72,7 +72,7 @@ public final class PropertiesAnimationTester extends PropertyTester
      */
     public PropertiesAnimationTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

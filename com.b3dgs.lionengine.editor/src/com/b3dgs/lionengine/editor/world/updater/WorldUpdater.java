@@ -53,12 +53,6 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     private final Collection<WorldKeyboardListener> keyListeners = new ArrayList<>();
     /** Zoom handler. */
     private final WorldZoom zoom;
-    /** World navigation. */
-    private final WorldNavigation navigation;
-    /** Objects interaction. */
-    private final WorldInteractionObject interactionObject;
-    /** Tiles interaction. */
-    private final WorldInteractionTile interactionTile;
     /** Map reference. */
     private final MapTile map;
     /** Grid enabled. */
@@ -82,9 +76,9 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     {
         this.partService = partService;
         zoom = services.create(WorldZoom.class);
-        navigation = services.create(WorldNavigation.class);
-        interactionObject = services.create(WorldInteractionObject.class);
-        interactionTile = services.create(WorldInteractionTile.class);
+        final WorldNavigation navigation = services.create(WorldNavigation.class);
+        final WorldInteractionObject interactionObject = services.create(WorldInteractionObject.class);
+        final WorldInteractionTile interactionTile = services.create(WorldInteractionTile.class);
         map = services.get(MapTile.class);
         gridEnabled = true;
 
@@ -106,7 +100,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
      * 
      * @param listener The listener reference.
      */
-    public void addMouseClickListener(WorldMouseClickListener listener)
+    public final void addMouseClickListener(WorldMouseClickListener listener)
     {
         clickListeners.add(listener);
     }
@@ -116,7 +110,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
      * 
      * @param listener The listener reference.
      */
-    public void addMouseMoveListener(WorldMouseMoveListener listener)
+    public final void addMouseMoveListener(WorldMouseMoveListener listener)
     {
         moveListeners.add(listener);
     }
@@ -126,7 +120,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
      * 
      * @param listener The listener reference.
      */
-    public void addMouseScrollListener(WorldMouseScrollListener listener)
+    public final void addMouseScrollListener(WorldMouseScrollListener listener)
     {
         scrollListeners.add(listener);
     }
@@ -136,7 +130,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
      * 
      * @param listener The listener reference.
      */
-    public void addKeyboardListener(WorldKeyboardListener listener)
+    public final void addKeyboardListener(WorldKeyboardListener listener)
     {
         keyListeners.add(listener);
     }

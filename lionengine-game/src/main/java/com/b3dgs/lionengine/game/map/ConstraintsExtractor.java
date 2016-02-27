@@ -168,7 +168,7 @@ public final class ConstraintsExtractor
         final Collection<TileConstraint> orientationConstraints = constraints.get(tile);
         for (final TileConstraint constraint : orientationConstraints)
         {
-            if (orientation.equals(constraint.getOrientation()))
+            if (orientation == constraint.getOrientation())
             {
                 return constraint;
             }

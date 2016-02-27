@@ -306,7 +306,7 @@ public final class FolderModificationWatcher
         private void onCreated(File path, String keyParent)
         {
             final Object data = tree.getData(keyParent);
-            if (data != null && data instanceof TreeItem)
+            if (data instanceof TreeItem)
             {
                 final TreeItem parent = (TreeItem) data;
                 creator.checkPath(path, parent);
@@ -334,7 +334,7 @@ public final class FolderModificationWatcher
             if (!tree.isDisposed())
             {
                 final Object data = tree.getData(name);
-                if (data != null && data instanceof TreeItem)
+                if (data instanceof TreeItem)
                 {
                     final TreeItem item = (TreeItem) data;
                     item.dispose();

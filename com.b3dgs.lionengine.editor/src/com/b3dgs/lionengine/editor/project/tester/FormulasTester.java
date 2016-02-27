@@ -86,7 +86,7 @@ public final class FormulasTester extends PropertyTester
      */
     public FormulasTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

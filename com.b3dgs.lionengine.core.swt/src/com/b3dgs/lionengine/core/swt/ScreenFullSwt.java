@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.core.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Canvas;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -75,10 +74,6 @@ final class ScreenFullSwt extends ScreenSwt
 
             buf = canvas;
             frame.setFullScreen(true);
-        }
-        catch (final SWTException exception)
-        {
-            throw new LionEngineException(exception, ScreenFullSwt.ERROR_FULL_SCREEN);
         }
         catch (final SWTError exception)
         {

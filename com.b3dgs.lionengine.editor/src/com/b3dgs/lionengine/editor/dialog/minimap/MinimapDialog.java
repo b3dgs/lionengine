@@ -119,7 +119,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
      * 
      * @return The last location.
      */
-    private Point getLastLocation()
+    private static Point getLastLocation()
     {
         return lastLocation;
     }
@@ -185,7 +185,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
 
         shell.addDisposeListener(event ->
         {
-            updater.removeListeners(MinimapDialog.this);
+            updater.removeListeners(this);
             setLastLocation(shell.getLocation());
             setInstance(null);
         });
@@ -266,7 +266,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         label.addMouseMoveListener(this);
         label.addMouseWheelListener(this);
         label.addMouseTrackListener(UtilSwt.createFocusListener(() -> label.forceFocus()));
-        label.addDisposeListener(event -> part.getUpdater().removeListeners(MinimapDialog.this));
+        label.addDisposeListener(event -> part.getUpdater().removeListeners(this));
 
         final WorldPart worldPart = part;
         miniShell.setLocation(worldPart.getLocation());
@@ -296,7 +296,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
      * @param parent The parent composite.
      * @return The created text.
      */
-    private Text createConfigLocation(final Composite parent)
+    private static Text createConfigLocation(final Composite parent)
     {
         final Composite content = new Composite(parent, SWT.NONE);
         content.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

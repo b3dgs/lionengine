@@ -34,7 +34,7 @@ public final class ProjectTester extends PropertyTester
      */
     public ProjectTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.object.trait.producible;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.SizeConfig;
+import com.b3dgs.lionengine.game.object.SizeConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**

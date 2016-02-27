@@ -53,8 +53,6 @@ public class MapImportProgressDialog extends AbstractProgressDialog
     private int height;
     /** Discover GC. */
     private GC gc;
-    /** Label. */
-    private Label label;
 
     /**
      * Create the dialog.
@@ -107,7 +105,7 @@ public class MapImportProgressDialog extends AbstractProgressDialog
             final ImageData minimapData = data.scaledTo(width, height);
             minimap = new Image(content.getDisplay(), minimapData);
 
-            label = new Label(dialog, SWT.NONE);
+            final Label label = new Label(dialog, SWT.NONE);
             label.setLayoutData(new GridData(minimapData.width, minimapData.height));
 
             gc = new GC(label);
@@ -134,5 +132,11 @@ public class MapImportProgressDialog extends AbstractProgressDialog
             drawMap(percent, progressTileX, progressTileY);
             dialog.getDisplay().readAndDispatch();
         }
+    }
+
+    @Override
+    public boolean isCanceled()
+    {
+        return super.isCanceled();
     }
 }

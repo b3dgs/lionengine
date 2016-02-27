@@ -193,7 +193,7 @@ public class TileGame implements Tile
         {
             return true;
         }
-        if (obj == null || !(obj instanceof TileGame))
+        if (!(obj instanceof TileGame))
         {
             return false;
         }

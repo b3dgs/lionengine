@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.swt;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.swt.SWTError;
 import org.junit.AfterClass;
@@ -31,9 +32,11 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Screen;
+import com.b3dgs.lionengine.core.ScreenListener;
 import com.b3dgs.lionengine.core.Version;
 
 /**
@@ -118,6 +121,19 @@ public class ScreenSwtTest
     }
 
     /**
+     * Test the windowed with wrong resolution.
+     */
+    @Test(timeout = TIMEOUT, expected = LionEngineException.class)
+    public void testWindowedFail()
+    {
+        checkMultipleDisplaySupport();
+
+        final Resolution resolution = new Resolution(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
+        final Config config = new Config(resolution, 32, true);
+        testScreen(config);
+    }
+
+    /**
      * Test the full screen with wrong resolution.
      */
     @Test(timeout = TIMEOUT, expected = LionEngineException.class)
@@ -138,19 +154,64 @@ public class ScreenSwtTest
     private void testScreen(Config config)
     {
         final Screen screen = Graphics.createScreen(config);
-        Assert.assertTrue(screen.isReady());
+        screen.addKeyListener(new InputDeviceKeyListener()
+        {
+            @Override
+            public void keyReleased(int keyCode, char keyChar)
+            {
+                // Mock
+            }
+
+            @Override
+            public void keyPressed(int keyCode, char keyChar)
+            {
+                // Mock
+            }
+        });
+        Assert.assertFalse(screen.isReady());
         screen.start();
         screen.awaitReady();
         screen.preUpdate();
         screen.update();
         screen.showCursor();
         screen.hideCursor();
+        screen.requestFocus();
         Assert.assertNotNull(screen.getConfig());
         Assert.assertNotNull(screen.getGraphic());
         Assert.assertTrue(screen.getReadyTimeOut() > -1L);
         Assert.assertTrue(screen.getX() > -1);
         Assert.assertTrue(screen.getY() > -1);
         Assert.assertTrue(screen.isReady());
+        final AtomicBoolean focus = new AtomicBoolean();
+        final AtomicBoolean disposed = new AtomicBoolean();
+        screen.addListener(new ScreenListener()
+        {
+            @Override
+            public void notifyFocusGained()
+            {
+                focus.set(true);
+            }
+
+            @Override
+            public void notifyFocusLost()
+            {
+                focus.set(false);
+            }
+
+            @Override
+            public void notifyClosed()
+            {
+                disposed.set(true);
+            }
+        });
+
+        ((ScreenSwt) screen).focusGained(null);
+        Assert.assertTrue(focus.get());
+
+        ((ScreenSwt) screen).focusLost(null);
+        Assert.assertFalse(focus.get());
+
         screen.dispose();
+        Assert.assertTrue(disposed.get());
     }
 }

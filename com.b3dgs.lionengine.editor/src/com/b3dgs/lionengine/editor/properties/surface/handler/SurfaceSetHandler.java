@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.editor.properties.surface.PropertiesSurface;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.SizeConfig;
+import com.b3dgs.lionengine.game.object.SizeConfig;
 import com.b3dgs.lionengine.game.object.SurfaceConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 

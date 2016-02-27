@@ -86,7 +86,7 @@ public final class PathfindingTester extends PropertyTester
      */
     public PathfindingTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

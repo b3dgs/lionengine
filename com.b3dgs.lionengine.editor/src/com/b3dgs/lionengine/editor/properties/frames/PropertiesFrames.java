@@ -33,8 +33,8 @@ import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.object.FramesConfig;
+import com.b3dgs.lionengine.game.object.SizeConfig;
 import com.b3dgs.lionengine.game.object.SurfaceConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -125,10 +125,8 @@ public class PropertiesFrames implements PropertiesProviderObject
         {
             size = root.getChild(SizeConfig.NODE_SIZE);
         }
-        size.writeInteger(SizeConfig.ATT_WIDTH,
-                          info.getWidth() / framesNode.readInteger(FramesConfig.ATT_HORIZONTAL));
-        size.writeInteger(SizeConfig.ATT_HEIGHT,
-                          info.getHeight() / framesNode.readInteger(FramesConfig.ATT_VERTICAL));
+        size.writeInteger(SizeConfig.ATT_WIDTH, info.getWidth() / framesNode.readInteger(FramesConfig.ATT_HORIZONTAL));
+        size.writeInteger(SizeConfig.ATT_HEIGHT, info.getHeight() / framesNode.readInteger(FramesConfig.ATT_VERTICAL));
     }
 
     /**

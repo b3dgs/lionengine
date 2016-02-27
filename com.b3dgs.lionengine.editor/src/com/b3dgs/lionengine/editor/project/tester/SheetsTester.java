@@ -86,7 +86,7 @@ public final class SheetsTester extends PropertyTester
      */
     public SheetsTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

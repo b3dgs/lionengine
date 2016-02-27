@@ -77,7 +77,7 @@ public final class PropertiesSurfaceTester extends PropertyTester
      */
     public PropertiesSurfaceTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

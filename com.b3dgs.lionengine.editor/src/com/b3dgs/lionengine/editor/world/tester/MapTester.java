@@ -82,7 +82,7 @@ public final class MapTester extends PropertyTester
      */
     public MapTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

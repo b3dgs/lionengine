@@ -25,7 +25,7 @@ import java.util.Random;
 public final class UtilRandom
 {
     /** The random utility instance. */
-    private static final Random RANDOM = new Random();
+    private static final Random RANDOM = new java.security.SecureRandom();
 
     /**
      * Set the seed.

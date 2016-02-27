@@ -33,7 +33,7 @@ public class FilterBlur implements Filter
     /** Wrap edges. */
     public static final int WRAP_EDGES = 1;
     /** Default radius. */
-    private static final float RADIUS_DEFAULT = 1.5f;
+    private static final float RADIUS_DEFAULT = 1.5F;
 
     /** Current radius. */
     private volatile float radius;

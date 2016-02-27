@@ -173,7 +173,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             client.terminate();
             clientsNumber--;
             willRemove = true;
-            Verbose.info("Server: ", client.getName() + " disconnected");
+            Verbose.info("Server: ", client.getName(), " disconnected");
         }
     }
 
@@ -327,7 +327,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 throw new IOException("Unable to read client name on rename !");
             }
             final String newName = new String(name, NetworkMessage.CHARSET);
-            Verbose.info("Server: ", client.getName(), " rennamed to " + newName);
+            Verbose.info("Server: ", client.getName(), " rennamed to ", newName);
             client.setName(newName);
 
             for (final ClientListener listener : listeners)

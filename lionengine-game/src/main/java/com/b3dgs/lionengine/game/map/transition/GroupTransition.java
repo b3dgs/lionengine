@@ -87,7 +87,7 @@ public class GroupTransition
         {
             return true;
         }
-        if (obj == null || !(obj instanceof GroupTransition))
+        if (!(obj instanceof GroupTransition))
         {
             return false;
         }

@@ -85,7 +85,7 @@ public class MapTileTransitionModel implements MapTileTransition
     {
         final String group = mapGroup.getGroup(tile);
         final Transition transition = getTransition(tile, group);
-        if (TransitionType.CENTER.equals(transition.getType()))
+        if (TransitionType.CENTER == transition.getType())
         {
             final int tx = tile.getInTileX();
             final int ty = tile.getInTileY();
@@ -112,7 +112,7 @@ public class MapTileTransitionModel implements MapTileTransition
         final String group = mapGroup.getGroup(tile);
         if (neighbor != null
             && !isTransitionInverted(neighbor, group)
-            && !TransitionType.CENTER.equals(getTransition(neighbor, group).getType()))
+            && TransitionType.CENTER != getTransition(neighbor, group).getType())
         {
             map.setTile(map.createTile(tile.getSheet(), tile.getNumber(), neighbor.getX(), neighbor.getY()));
         }
@@ -176,7 +176,7 @@ public class MapTileTransitionModel implements MapTileTransition
             for (final TileRef tileRef : tilesRef)
             {
                 final TransitionType type = getTransition(tileRef, transition.getOut()).getType();
-                if (!TransitionType.CENTER.equals(type))
+                if (TransitionType.CENTER != type)
                 {
                     map.setTile(map.createTile(tileRef.getSheet(), tileRef.getNumber(), tile.getX(), tile.getY()));
                     return true;
@@ -234,8 +234,8 @@ public class MapTileTransitionModel implements MapTileTransition
         {
             final String group = mapGroup.getGroup(tile);
             if (group.equals(transition.getIn())
-                && TransitionType.CENTER.equals(transition.getType())
-                && !transition.getType().equals(getTransition(ref, transition.getOut()).getType()))
+                && TransitionType.CENTER == transition.getType()
+                && transition.getType() != getTransition(ref, transition.getOut()).getType())
             {
                 map.setTile(map.createTile(tile.getSheet(), tile.getNumber(), ref.getX(), ref.getY()));
                 fixNeigbor(tile, ref, fixed, 1);
@@ -279,7 +279,8 @@ public class MapTileTransitionModel implements MapTileTransition
     {
         final Transition neighborTransition = TransitionsExtractor.getTransition(map, tile, false);
         final Iterator<TileRef> iterator = getTiles(neighborTransition).iterator();
-        return iterator.hasNext() && TransitionType.CENTER.equals(getTransition(iterator.next(), group).getType());
+
+        return iterator.hasNext() && TransitionType.CENTER == getTransition(iterator.next(), group).getType();
     }
 
     /*

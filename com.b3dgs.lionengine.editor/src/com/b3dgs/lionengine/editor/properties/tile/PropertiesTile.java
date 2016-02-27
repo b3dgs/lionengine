@@ -216,7 +216,7 @@ public class PropertiesTile implements PropertiesProviderTile
         {
             final org.eclipse.swt.graphics.Point point = new org.eclipse.swt.graphics.Point(event.x, event.y);
             final TreeItem selection = properties.getItem(point);
-            if (selection == item)
+            if (item.equals(selection))
             {
                 onDoubleClick(properties, selection, tile);
             }

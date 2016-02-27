@@ -82,6 +82,26 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         }
     }
 
+    /**
+     * Set the last instance.
+     * 
+     * @param instance The last instance.
+     */
+    private static void setInstance(SheetsPaletteDialog instance)
+    {
+        SheetsPaletteDialog.instance = instance;
+    }
+
+    /**
+     * Set the last location.
+     * 
+     * @param lastLocation The last location.
+     */
+    private static void setLastLocation(Point lastLocation)
+    {
+        SheetsPaletteDialog.lastLocation = lastLocation;
+    }
+
     /** Map reference. */
     private final MapTile map = WorldModel.INSTANCE.getMap();
     /** Map tile group. */
@@ -117,8 +137,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         shell.setLayout(UtilSwt.borderless());
         shell.addDisposeListener(event ->
         {
-            lastLocation = shell.getLocation();
-            instance = null;
+            setLastLocation(shell.getLocation());
+            setInstance(null);
         });
 
         int width = 0;

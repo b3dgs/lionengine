@@ -70,7 +70,7 @@ public enum Theme
                 lookAndFeel = Theme.LOOK_GTK;
                 break;
             default:
-                Verbose.warning("Unknown theme: " + theme);
+                Verbose.warning("Unknown theme: ", theme.name());
                 lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
                 break;
         }

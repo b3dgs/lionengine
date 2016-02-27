@@ -24,6 +24,9 @@ import java.io.OutputStream;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -33,6 +36,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilTests;
@@ -69,6 +73,30 @@ public class ToolsSwtTest
     public void testConstructor() throws Throwable
     {
         UtilTests.testPrivateConstructor(ToolsSwt.class);
+    }
+
+    /**
+     * Test the transparency.
+     */
+    @Test
+    public void testTransparency()
+    {
+        Assert.assertEquals(SWT.TRANSPARENCY_NONE, ToolsSwt.getTransparency(Transparency.OPAQUE));
+        Assert.assertEquals(SWT.TRANSPARENCY_MASK, ToolsSwt.getTransparency(Transparency.BITMASK));
+        Assert.assertEquals(SWT.TRANSPARENCY_ALPHA, ToolsSwt.getTransparency(Transparency.TRANSLUCENT));
+    }
+
+    /**
+     * Test the get raster.
+     */
+    @Test
+    public void testGetRasterColor()
+    {
+        final Image image = ToolsSwt.createImage(16, 16, SWT.TRANSPARENCY_NONE);
+        final PaletteData palette = new PaletteData(new RGB[0]);
+        final ImageData data = new ImageData(16, 16, 8, palette);
+        data.transparentPixel = 0;
+        ToolsSwt.getRasterBuffer(new Image(image.getDevice(), data), 0, 0, 0, 0, 0, 0, 1);
     }
 
     /**

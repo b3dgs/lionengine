@@ -100,7 +100,7 @@ public class StateHandler implements Updatable
     {
         if (current != null)
         {
-            return current.getState() == state;
+            return current.getState().equals(state);
         }
         return false;
     }
@@ -127,7 +127,7 @@ public class StateHandler implements Updatable
                 current = checkNext(InputDeviceDirectional.class, input);
                 current = checkNext(InputDevicePointer.class, input);
             }
-            if (old != current)
+            if (!old.equals(current))
             {
                 old.exit();
             }

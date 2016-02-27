@@ -88,6 +88,29 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "import.png");
 
+    /**
+     * Load sheets from configuration file.
+     * 
+     * @param config The configuration file.
+     * @param folder The folder root.
+     * @return The loaded sheets.
+     */
+    private static Collection<SpriteTiled> loadSheets(TileSheetsConfig config, String folder)
+    {
+        final int tw = config.getTileWidth();
+        final int th = config.getTileHeight();
+        final Collection<SpriteTiled> sheets = new ArrayList<>();
+        for (final String sheet : config.getSheets())
+        {
+            final Media media = Medias.create(folder, sheet);
+            final SpriteTiled surface = Drawable.loadSpriteTiled(media, tw, th);
+            surface.load();
+            surface.prepare();
+            sheets.add(surface);
+        }
+        return sheets;
+    }
+
     /** Service reference. */
     private final Services services = new Services();
     /** Groups list. */
@@ -235,29 +258,6 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
             groups.add(new TileGroup(entry.getKey(), entry.getValue()));
         }
         return groups;
-    }
-
-    /**
-     * Load sheets from configuration file.
-     * 
-     * @param config The configuration file.
-     * @param folder The folder root.
-     * @return The loaded sheets.
-     */
-    private Collection<SpriteTiled> loadSheets(TileSheetsConfig config, String folder)
-    {
-        final int tw = config.getTileWidth();
-        final int th = config.getTileHeight();
-        final Collection<SpriteTiled> sheets = new ArrayList<>();
-        for (final String sheet : config.getSheets())
-        {
-            final Media media = Medias.create(folder, sheet);
-            final SpriteTiled surface = Drawable.loadSpriteTiled(media, tw, th);
-            surface.load();
-            surface.prepare();
-            sheets.add(surface);
-        }
-        return sheets;
     }
 
     /**

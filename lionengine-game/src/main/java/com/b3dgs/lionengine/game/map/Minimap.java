@@ -92,7 +92,7 @@ public class Minimap implements Image
     /** Pixel configuration. */
     private Map<TileRef, ColorRgba> pixels;
     /** Minimap image reference. */
-    private ImageBuffer minimap;
+    private ImageBuffer surface;
     /** Origin reference. */
     private Origin origin;
     /** Horizontal location. */
@@ -148,7 +148,7 @@ public class Minimap implements Image
      */
     private void create()
     {
-        if (minimap == null)
+        if (surface == null)
         {
             final Transparency transparency;
             if (alpha)
@@ -159,7 +159,7 @@ public class Minimap implements Image
             {
                 transparency = Transparency.OPAQUE;
             }
-            minimap = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), transparency);
+            surface = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), transparency);
         }
     }
 
@@ -239,7 +239,7 @@ public class Minimap implements Image
     @Override
     public void prepare()
     {
-        final Graphic g = minimap.createGraphic();
+        final Graphic g = surface.createGraphic();
         final int v = map.getInTileHeight();
         final int h = map.getInTileWidth();
 
@@ -258,7 +258,7 @@ public class Minimap implements Image
     @Override
     public void render(Graphic g)
     {
-        g.drawImage(minimap, (int) x, (int) y);
+        g.drawImage(surface, (int) x, (int) y);
     }
 
     @Override
@@ -295,24 +295,24 @@ public class Minimap implements Image
     @Override
     public int getWidth()
     {
-        return minimap.getWidth();
+        return surface.getWidth();
     }
 
     @Override
     public int getHeight()
     {
-        return minimap.getHeight();
+        return surface.getHeight();
     }
 
     @Override
     public ImageBuffer getSurface()
     {
-        return minimap;
+        return surface;
     }
 
     @Override
     public boolean isLoaded()
     {
-        return minimap != null;
+        return surface != null;
     }
 }

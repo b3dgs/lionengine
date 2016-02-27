@@ -68,7 +68,7 @@ public final class PropertiesTileCollisionTester extends PropertyTester
      */
     public PropertiesTileCollisionTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

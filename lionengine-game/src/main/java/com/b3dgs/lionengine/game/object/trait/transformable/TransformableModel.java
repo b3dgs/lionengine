@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.game.object.trait.transformable;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
-import com.b3dgs.lionengine.game.SizeConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SizeConfig;
 import com.b3dgs.lionengine.game.object.TraitModel;
 
 /**
@@ -50,6 +50,7 @@ public class TransformableModel extends TraitModel implements Transformable
      */
     public TransformableModel()
     {
+        super();
         mover = new MoverModel();
     }
 

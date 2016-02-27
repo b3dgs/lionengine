@@ -53,9 +53,9 @@ public final class FilterHq3x implements Filter
         final int[] srcData = new int[width * height];
         source.getRgb(0, 0, width, height, srcData, 0, width);
 
-        final RawScale3x scaler = new RawScale3x(srcData, width, height);
+        final RawScale3x scaler = new RawScale3x(width, height);
         final ImageBuffer image = Graphics.createImageBuffer(width * SCALE, height * SCALE, Transparency.OPAQUE);
-        image.setRgb(0, 0, width * SCALE, height * SCALE, scaler.getScaledData(), 0, width * SCALE);
+        image.setRgb(0, 0, width * SCALE, height * SCALE, scaler.getScaledData(srcData), 0, width * SCALE);
         return image;
     }
 
@@ -224,10 +224,6 @@ public final class FilterHq3x implements Filter
             return e;
         }
 
-        /** Source data array. */
-        private final int[] srcImage;
-        /** Destination data array. */
-        private final int[] dstImage;
         /** Width. */
         private final int width;
         /** Height. */
@@ -236,17 +232,13 @@ public final class FilterHq3x implements Filter
         /**
          * Internal constructor.
          * 
-         * @param imageData The image data array.
          * @param dataWidth The data width.
          * @param dataHeight The data height.
          */
-        RawScale3x(int[] imageData, int dataWidth, int dataHeight)
+        RawScale3x(int dataWidth, int dataHeight)
         {
             width = dataWidth;
             height = dataHeight;
-            srcImage = imageData;
-            final int tripleSize = SCALE * SCALE;
-            dstImage = new int[imageData.length * tripleSize];
         }
 
         /**
@@ -264,11 +256,12 @@ public final class FilterHq3x implements Filter
         /**
          * Set destination pixel.
          * 
+         * @param dstImage The image destination.
          * @param x location x.
          * @param y location y.
          * @param p pixel destination value.
          */
-        private void setDestPixel(int x, int y, int p)
+        private void setDestPixel(int[] dstImage, int x, int y, int p)
         {
             dstImage[x + y * width * SCALE] = p;
         }
@@ -276,11 +269,12 @@ public final class FilterHq3x implements Filter
         /**
          * Get pixel source.
          * 
+         * @param srcImage The image source.
          * @param x The location x.
          * @param y The location y.
          * @return The pixel value found.
          */
-        private int getSourcePixel(int x, int y)
+        private int getSourcePixel(int[] srcImage, int x, int y)
         {
             int x1 = Math.max(0, x);
             x1 = Math.min(width - 1, x1);
@@ -293,20 +287,22 @@ public final class FilterHq3x implements Filter
         /**
          * Process filter.
          * 
+         * @param srcImage The image source.
+         * @param dstImage The image destination.
          * @param x The location x.
          * @param y The location y.
          */
-        private void process(int x, int y)
+        private void process(int[] srcImage, int[] dstImage, int x, int y)
         {
-            final int a = getSourcePixel(x - 1, y - 1);
-            final int b = getSourcePixel(x, y - 1);
-            final int c = getSourcePixel(x + 1, y - 1);
-            final int d = getSourcePixel(x - 1, y);
-            final int e = getSourcePixel(x, y);
-            final int f = getSourcePixel(x + 1, y);
-            final int g = getSourcePixel(x - 1, y + 1);
-            final int h = getSourcePixel(x, y + 1);
-            final int i = getSourcePixel(x + 1, y + 1);
+            final int a = getSourcePixel(srcImage, x - 1, y - 1);
+            final int b = getSourcePixel(srcImage, x, y - 1);
+            final int c = getSourcePixel(srcImage, x + 1, y - 1);
+            final int d = getSourcePixel(srcImage, x - 1, y);
+            final int e = getSourcePixel(srcImage, x, y);
+            final int f = getSourcePixel(srcImage, x + 1, y);
+            final int g = getSourcePixel(srcImage, x - 1, y + 1);
+            final int h = getSourcePixel(srcImage, x, y + 1);
+            final int i = getSourcePixel(srcImage, x + 1, y + 1);
             int e0 = e;
             int e1 = e;
             int e2 = e;
@@ -330,29 +326,32 @@ public final class FilterHq3x implements Filter
                 e8 = RawScale3x.computeE8(e, f, h);
             }
 
-            setDestPixel(x * SCALE, y * SCALE, e0);
-            setDestPixel(x * SCALE + 1, y * SCALE, e1);
-            setDestPixel(x * SCALE + 2, y * SCALE, e2);
-            setDestPixel(x * SCALE, y * SCALE + 1, e3);
-            setDestPixel(x * SCALE + 1, y * SCALE + 1, e4);
-            setDestPixel(x * SCALE + 2, y * SCALE + 1, e5);
-            setDestPixel(x * SCALE, y * SCALE + 2, e6);
-            setDestPixel(x * SCALE + 1, y * SCALE + 2, e7);
-            setDestPixel(x * SCALE + 2, y * SCALE + 2, e8);
+            setDestPixel(dstImage, x * SCALE, y * SCALE, e0);
+            setDestPixel(dstImage, x * SCALE + 1, y * SCALE, e1);
+            setDestPixel(dstImage, x * SCALE + 2, y * SCALE, e2);
+            setDestPixel(dstImage, x * SCALE, y * SCALE + 1, e3);
+            setDestPixel(dstImage, x * SCALE + 1, y * SCALE + 1, e4);
+            setDestPixel(dstImage, x * SCALE + 2, y * SCALE + 1, e5);
+            setDestPixel(dstImage, x * SCALE, y * SCALE + 2, e6);
+            setDestPixel(dstImage, x * SCALE + 1, y * SCALE + 2, e7);
+            setDestPixel(dstImage, x * SCALE + 2, y * SCALE + 2, e8);
         }
 
         /**
          * Get the scaled data.
          * 
+         * @param srcImage The image source
          * @return The data array.
          */
-        public int[] getScaledData()
+        public int[] getScaledData(int[] srcImage)
         {
+            final int[] dstImage = new int[srcImage.length * SCALE * SCALE];
+
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    process(x, y);
+                    process(srcImage, dstImage, x, y);
                 }
             }
 

@@ -122,7 +122,7 @@ public class TileRef
         {
             return true;
         }
-        if (object == null || !(object instanceof TileRef))
+        if (!(object instanceof TileRef))
         {
             return false;
         }

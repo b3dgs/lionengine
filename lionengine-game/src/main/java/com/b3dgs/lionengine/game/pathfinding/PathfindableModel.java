@@ -419,7 +419,6 @@ public class PathfindableModel extends TraitModel implements Pathfindable
     {
         final int tw = transformable.getWidth() / map.getTileWidth();
         final int th = transformable.getHeight() / map.getTileHeight();
-        final boolean areaFree = mapPath.isAreaAvailable(this, dtx, dty, tw, th, id);
         for (int tx = dtx; tx < dtx + tw; tx++)
         {
             for (int ty = dty; ty < dty + th; ty++)
@@ -431,7 +430,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
                 }
             }
         }
-        return areaFree;
+        return mapPath.isAreaAvailable(this, dtx, dty, tw, th, id);
     }
 
     /**

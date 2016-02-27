@@ -43,21 +43,15 @@ public final class ExtractAllHandler
     public static final String ID = "menu.map.extract-all";
 
     /**
-     * Create handler.
-     */
-    public ExtractAllHandler()
-    {
-        // Nothing to do
-    }
-
-    /**
      * Save all level data.
      * 
      * @param sheetsExtractDialog The sheets dialog.
      * @param groupsEditDialog The groups dialog.
      * @param levels The level rip medias.
      */
-    private void saveAll(SheetsExtractDialog sheetsExtractDialog, GroupsEditDialog groupsEditDialog, Media[] levels)
+    private static void saveAll(SheetsExtractDialog sheetsExtractDialog,
+                                GroupsEditDialog groupsEditDialog,
+                                Media[] levels)
     {
         final String folder = sheetsExtractDialog.getFolder();
 
@@ -70,6 +64,14 @@ public final class ExtractAllHandler
         groupsEditDialog.save();
         TileConstraintsConfig.export(constraints, ConstraintsExtractor.getConstraints(levels, sheets));
         TransitionsConfig.exports(transitions, TransitionsExtractor.getTransitions(levels, sheets, groups));
+    }
+
+    /**
+     * Create handler.
+     */
+    public ExtractAllHandler()
+    {
+        super();
     }
 
     /**

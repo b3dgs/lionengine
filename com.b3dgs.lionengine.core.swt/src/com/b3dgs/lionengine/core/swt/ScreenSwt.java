@@ -91,10 +91,9 @@ abstract class ScreenSwt extends ScreenBase implements FocusListener
         cursorDefault = display.getSystemCursor(0);
         frame = initMainFrame(config);
 
-        setResolution(config.getOutput());
-        prepareFocusListener();
-        addDeviceKeyboard();
-        addDeviceMouse();
+        final Resolution output = config.getOutput();
+        width = output.getWidth();
+        height = output.getHeight();
     }
 
     /**
@@ -211,6 +210,12 @@ abstract class ScreenSwt extends ScreenBase implements FocusListener
     public void start()
     {
         super.start();
+
+        setResolution(config.getOutput());
+        prepareFocusListener();
+        addDeviceKeyboard();
+        addDeviceMouse();
+
         buf.setVisible(true);
         buf.update();
         gbuf = buffer.createGraphic();

@@ -68,13 +68,15 @@ public final class UtilProjectStats
             final String path = mainDir.getCanonicalPath();
             exploreDir(path);
 
-            final StringBuilder builder = new StringBuilder("Project statistics: ");
+            final StringBuilder builder = new StringBuilder(Constant.HUNDRED);
+            builder.append("Project statistics: ");
             builder.append(Constant.QUOTE).append(path).append(Constant.QUOTE).append(Constant.NEW_LINE);
             builder.append("Files = ").append(numberOfFiles).append(Constant.NEW_LINE);
             builder.append("Code lines = ").append(numberOfLinesCode).append(Constant.NEW_LINE);
             builder.append("Documentation lines = ").append(numberOfLinesDoc).append(Constant.NEW_LINE);
             builder.append("Empty lines = ").append(numberOfLinesEmpty).append(Constant.NEW_LINE);
             builder.append("Total lines = ").append(numberOfLines).append(Constant.NEW_LINE);
+
             Verbose.info(builder.toString());
         }
         catch (final IOException exception)

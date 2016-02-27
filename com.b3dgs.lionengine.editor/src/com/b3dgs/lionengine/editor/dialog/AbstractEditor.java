@@ -101,7 +101,7 @@ public abstract class AbstractEditor implements MDirtyable
      * @param width The horizontal size.
      * @param height The vertical size.
      */
-    public void setMinimumSize(int width, int height)
+    public final void setMinimumSize(int width, int height)
     {
         shell.setMinimumSize(width, height);
     }

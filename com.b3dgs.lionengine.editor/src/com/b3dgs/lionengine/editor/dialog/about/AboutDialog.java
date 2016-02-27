@@ -42,6 +42,46 @@ public class AboutDialog
     /** About icon. */
     private static final Image ICON_ABOUT = UtilIcon.get("about.png");
 
+    /**
+     * Create the top part.
+     * 
+     * @param top The top composite.
+     */
+    private static void createTop(Composite top)
+    {
+        final Label aboutIcon = new Label(top, SWT.NONE);
+        aboutIcon.setImage(AboutDialog.ICON_ABOUT);
+
+        final Label aboutText = new Label(top, SWT.NONE);
+        aboutText.setBackground(aboutText.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+
+        final String vendor = Platform.getBundle(Activator.PLUGIN_ID).getHeaders().get("Bundle-Vendor");
+        final StringBuilder text = new StringBuilder().append(Activator.PLUGIN_NAME)
+                                                      .append(Constant.SPACE)
+                                                      .append(Activator.PLUGIN_VERSION)
+                                                      .append(Constant.NEW_LINE)
+                                                      .append(vendor)
+                                                      .append(Constant.NEW_LINE)
+                                                      .append(Activator.PLUGIN_WEBSITE);
+        aboutText.setText(text.toString());
+    }
+
+    /**
+     * Create the bottom part.
+     * 
+     * @param dialog The dialog reference.
+     * @param bottom The bottom composite.
+     */
+    private static void createBottom(Shell dialog, Composite bottom)
+    {
+        final Button okButton = UtilButton.create(bottom, "OK", null);
+        final GridData data = new GridData();
+        data.widthHint = 72;
+        okButton.setLayoutData(data);
+        okButton.setImage(AbstractDialog.ICON_EXIT);
+        UtilButton.setAction(okButton, () -> dialog.dispose());
+    }
+
     /** The dialog. */
     private final Shell dialog;
 
@@ -72,7 +112,7 @@ public class AboutDialog
         bottomLayout.marginHeight = 4;
         bottomLayout.marginWidth = 4;
         bottom.setLayout(bottomLayout);
-        createBottom(bottom);
+        createBottom(dialog, bottom);
     }
 
     /**
@@ -81,42 +121,5 @@ public class AboutDialog
     public void open()
     {
         UtilSwt.open(dialog);
-    }
-
-    /**
-     * Create the top part.
-     * 
-     * @param top The top composite.
-     */
-    private void createTop(Composite top)
-    {
-        final Label aboutIcon = new Label(top, SWT.NONE);
-        aboutIcon.setImage(AboutDialog.ICON_ABOUT);
-
-        final Label aboutText = new Label(top, SWT.NONE);
-        aboutText.setBackground(aboutText.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-
-        final String vendor = Platform.getBundle(Activator.PLUGIN_ID).getHeaders().get("Bundle-Vendor");
-        final StringBuilder text = new StringBuilder(Activator.PLUGIN_NAME).append(Constant.SPACE);
-        text.append(Activator.PLUGIN_VERSION + Constant.NEW_LINE);
-        text.append(vendor).append(Constant.NEW_LINE);
-        text.append(Activator.PLUGIN_WEBSITE);
-
-        aboutText.setText(text.toString());
-    }
-
-    /**
-     * Create the bottom part.
-     * 
-     * @param bottom The bottom composite.
-     */
-    private void createBottom(Composite bottom)
-    {
-        final Button okButton = UtilButton.create(bottom, "OK", null);
-        final GridData data = new GridData();
-        data.widthHint = 72;
-        okButton.setLayoutData(data);
-        okButton.setImage(AbstractDialog.ICON_EXIT);
-        UtilButton.setAction(okButton, () -> dialog.dispose());
     }
 }

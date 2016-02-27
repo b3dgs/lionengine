@@ -194,7 +194,7 @@ public final class TransitionsExtractor
         final String groupRef = mapGroup.getGroup(ref);
         for (final Transition transition : getTransition(map, tile))
         {
-            if (!TransitionType.NONE.equals(transition.getType()) && groupRef.equals(transition.getOut()))
+            if (TransitionType.NONE != transition.getType() && groupRef.equals(transition.getOut()))
             {
                 final Collection<TileRef> tiles = getTiles(transitions, transition);
                 tiles.add(ref);

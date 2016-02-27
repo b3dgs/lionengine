@@ -36,7 +36,7 @@ public final class ResourceExtensionTester extends PropertyTester
      */
     public ResourceExtensionTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

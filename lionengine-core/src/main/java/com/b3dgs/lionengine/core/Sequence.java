@@ -479,7 +479,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
         height = source.getHeight();
 
         // Standard rendering
-        if (Filter.NO_FILTER == filter
+        if (Filter.NO_FILTER.equals(filter)
             && source.getWidth() == output.getWidth()
             && source.getHeight() == output.getHeight())
         {

@@ -61,12 +61,16 @@ final class ScreenFullAwt extends ScreenAwt
      */
     private static String formatResolution(Resolution resolution, int depth)
     {
-        final StringBuilder builder = new StringBuilder(String.valueOf(resolution.getWidth()));
-        builder.append(Constant.STAR).append(String.valueOf(resolution.getHeight()));
-        builder.append(Constant.STAR).append(depth);
-        builder.append(Constant.SPACE).append(Constant.AT);
-        builder.append(String.valueOf(resolution.getRate())).append(Constant.UNIT_RATE);
-        return builder.toString();
+        return new StringBuilder().append(String.valueOf(resolution.getWidth()))
+                                  .append(Constant.STAR)
+                                  .append(String.valueOf(resolution.getHeight()))
+                                  .append(Constant.STAR)
+                                  .append(depth)
+                                  .append(Constant.SPACE)
+                                  .append(Constant.AT)
+                                  .append(String.valueOf(resolution.getRate()))
+                                  .append(Constant.UNIT_RATE)
+                                  .toString();
     }
 
     /** Graphics device reference. */
@@ -75,8 +79,6 @@ final class ScreenFullAwt extends ScreenAwt
     private final GraphicsConfiguration conf;
     /** Frame reference. */
     private final JFrame frame;
-    /** Fullscreen window. */
-    private java.awt.Window window;
 
     /**
      * Internal constructor.
@@ -112,7 +114,10 @@ final class ScreenFullAwt extends ScreenAwt
      */
     private JFrame initMainFrame()
     {
-        final String title = Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion();
+        final String title = new StringBuilder().append(Engine.getProgramName())
+                                                .append(Constant.SPACE)
+                                                .append(Engine.getProgramVersion())
+                                                .toString();
         final JFrame frame = new JFrame(title, conf);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter()
@@ -139,7 +144,7 @@ final class ScreenFullAwt extends ScreenAwt
      */
     private void initFullscreen(Resolution output, int depth)
     {
-        window = new java.awt.Window(frame, conf);
+        final java.awt.Window window = new java.awt.Window(frame, conf);
         window.setBackground(Color.BLACK);
         window.setIgnoreRepaint(true);
         window.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
@@ -189,30 +194,39 @@ final class ScreenFullAwt extends ScreenAwt
         int i = 0;
         for (final DisplayMode display : dev.getDisplayModes())
         {
-            final StringBuilder widthSpace = new StringBuilder(Constant.EMPTY_STRING);
+            final StringBuilder widthSpace = new StringBuilder();
             final int width = display.getWidth();
             if (width < Constant.THOUSAND)
             {
                 widthSpace.append(Constant.SPACE);
             }
-            final StringBuilder heightSpace = new StringBuilder(Constant.EMPTY_STRING);
+            final StringBuilder heightSpace = new StringBuilder();
             final int height = display.getHeight();
             if (height < Constant.THOUSAND)
             {
                 heightSpace.append(Constant.NEW_LINE);
             }
-            final StringBuilder freqSpace = new StringBuilder(Constant.EMPTY_STRING);
+            final StringBuilder freqSpace = new StringBuilder();
             final int freq = display.getRefreshRate();
             if (freq < Constant.HUNDRED)
             {
                 freqSpace.append(Constant.SPACE);
             }
-            builder.append("[");
-            builder.append(widthSpace).append(width).append(Constant.STAR);
-            builder.append(heightSpace).append(height).append(Constant.STAR);
-            builder.append(display.getBitDepth()).append(Constant.SPACE).append(Constant.AT);
-            builder.append(freqSpace).append(freq).append(Constant.UNIT_RATE);
-            builder.append("]").append(Constant.SPACE);
+            builder.append("[")
+                   .append(widthSpace)
+                   .append(width)
+                   .append(Constant.STAR)
+                   .append(heightSpace)
+                   .append(height)
+                   .append(Constant.STAR)
+                   .append(display.getBitDepth())
+                   .append(Constant.SPACE)
+                   .append(Constant.AT)
+                   .append(freqSpace)
+                   .append(freq)
+                   .append(Constant.UNIT_RATE)
+                   .append("]")
+                   .append(Constant.SPACE);
             i++;
             final int linesPerDisplay = 5;
             if (i % linesPerDisplay == 0)

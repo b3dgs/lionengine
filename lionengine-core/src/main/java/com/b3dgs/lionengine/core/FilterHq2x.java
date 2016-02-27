@@ -53,9 +53,9 @@ public final class FilterHq2x implements Filter
         final int[] srcData = new int[width * height];
         source.getRgb(0, 0, width, height, srcData, 0, width);
 
-        final RawScale2x scaler = new RawScale2x(srcData, width, height);
+        final RawScale2x scaler = new RawScale2x(width, height);
         final ImageBuffer image = Graphics.createImageBuffer(width * SCALE, height * SCALE, Transparency.OPAQUE);
-        image.setRgb(0, 0, width * SCALE, height * SCALE, scaler.getScaledData(), 0, width * SCALE);
+        image.setRgb(0, 0, width * SCALE, height * SCALE, scaler.getScaledData(srcData), 0, width * SCALE);
 
         return image;
     }
@@ -73,10 +73,6 @@ public final class FilterHq2x implements Filter
      */
     private static final class RawScale2x
     {
-        /** Source data array. */
-        private final int[] srcImage;
-        /** Destination data array. */
-        private final int[] dstImage;
         /** Width. */
         private final int width;
         /** Height. */
@@ -85,17 +81,13 @@ public final class FilterHq2x implements Filter
         /**
          * Internal constructor.
          * 
-         * @param imageData The image data array.
          * @param dataWidth The data width.
          * @param dataHeight The data height.
          */
-        RawScale2x(int[] imageData, int dataWidth, int dataHeight)
+        RawScale2x(int dataWidth, int dataHeight)
         {
             width = dataWidth;
             height = dataHeight;
-            srcImage = imageData;
-            final int doubleSize = SCALE * SCALE;
-            dstImage = new int[imageData.length * doubleSize];
         }
 
         /**
@@ -113,11 +105,12 @@ public final class FilterHq2x implements Filter
         /**
          * Set destination pixel.
          * 
+         * @param dstImage The image destination.
          * @param x The location x.
          * @param y The location y.
          * @param p The pixel destination value.
          */
-        private void setDestPixel(int x, int y, int p)
+        private void setDestPixel(int[] dstImage, int x, int y, int p)
         {
             dstImage[x + y * width * SCALE] = p;
         }
@@ -125,11 +118,12 @@ public final class FilterHq2x implements Filter
         /**
          * Get pixel source.
          * 
+         * @param srcImage The image source.
          * @param x The location x.
          * @param y The location y.
          * @return The pixel value found.
          */
-        private int getSourcePixel(int x, int y)
+        private int getSourcePixel(int[] srcImage, int x, int y)
         {
             int x1 = Math.max(0, x);
             x1 = Math.min(width - 1, x1);
@@ -142,16 +136,18 @@ public final class FilterHq2x implements Filter
         /**
          * Process filter.
          * 
+         * @param srcImage The image source.
+         * @param dstImage The image destination.
          * @param x The location x.
          * @param y The location y.
          */
-        private void process(int x, int y)
+        private void process(int[] srcImage, int[] dstImage, int x, int y)
         {
-            final int b = getSourcePixel(x, y - 1);
-            final int d = getSourcePixel(x - 1, y);
-            final int e = getSourcePixel(x, y);
-            final int f = getSourcePixel(x + 1, y);
-            final int h = getSourcePixel(x, y + 1);
+            final int b = getSourcePixel(srcImage, x, y - 1);
+            final int d = getSourcePixel(srcImage, x - 1, y);
+            final int e = getSourcePixel(srcImage, x, y);
+            final int f = getSourcePixel(srcImage, x + 1, y);
+            final int h = getSourcePixel(srcImage, x, y + 1);
             int e0 = e;
             int e1 = e;
             int e2 = e;
@@ -164,24 +160,27 @@ public final class FilterHq2x implements Filter
                 e3 = !RawScale2x.different(h, f) ? f : e;
             }
 
-            setDestPixel(x * SCALE, y * SCALE, e0);
-            setDestPixel(x * SCALE + 1, y * SCALE, e1);
-            setDestPixel(x * SCALE, y * SCALE + 1, e2);
-            setDestPixel(x * SCALE + 1, y * SCALE + 1, e3);
+            setDestPixel(dstImage, x * SCALE, y * SCALE, e0);
+            setDestPixel(dstImage, x * SCALE + 1, y * SCALE, e1);
+            setDestPixel(dstImage, x * SCALE, y * SCALE + 1, e2);
+            setDestPixel(dstImage, x * SCALE + 1, y * SCALE + 1, e3);
         }
 
         /**
          * Get the scaled data.
          * 
+         * @param srcImage The image source.
          * @return The data array.
          */
-        public int[] getScaledData()
+        public int[] getScaledData(int[] srcImage)
         {
+            final int[] dstImage = new int[srcImage.length * SCALE * SCALE];
+
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    process(x, y);
+                    process(srcImage, dstImage, x, y);
                 }
             }
 

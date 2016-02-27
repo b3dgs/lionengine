@@ -47,6 +47,24 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
     /** Robot error. */
     private static final String ERROR_ROBOT = "No mouse robot available !";
 
+    /**
+     * Create a mouse robot.
+     * 
+     * @return The created robot, <code>null</code> if not available.
+     */
+    private static Robot createRobot()
+    {
+        try
+        {
+            return new Robot();
+        }
+        catch (final AWTException exception)
+        {
+            Verbose.exception(exception, ERROR_ROBOT);
+            return null;
+        }
+    }
+
     /** Actions pressed listeners. */
     private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<Integer, List<EventAction>>();
     /** Actions released listeners. */
@@ -114,24 +132,6 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
     {
         xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
         yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
-    }
-
-    /**
-     * Create a mouse robot.
-     * 
-     * @return The created robot, <code>null</code> if not available.
-     */
-    private Robot createRobot()
-    {
-        try
-        {
-            return new Robot();
-        }
-        catch (final AWTException exception)
-        {
-            Verbose.exception(exception, ERROR_ROBOT);
-            return null;
-        }
     }
 
     /**

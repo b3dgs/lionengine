@@ -42,7 +42,7 @@ public enum PaletteType
     PIPET(new Cursor(Display.getDefault(), UtilIcon.get("toolbar", "pipet.png").getImageData(), 0, 15));
 
     /** The associated cursor. */
-    private final transient Cursor cursor;
+    private final Cursor cursor;
 
     /**
      * Private constructor.

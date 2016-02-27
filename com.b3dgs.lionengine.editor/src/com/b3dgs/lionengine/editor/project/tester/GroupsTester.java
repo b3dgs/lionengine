@@ -86,7 +86,7 @@ public final class GroupsTester extends PropertyTester
      */
     public GroupsTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

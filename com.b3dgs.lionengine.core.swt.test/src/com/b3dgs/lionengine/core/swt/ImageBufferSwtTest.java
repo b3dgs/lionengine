@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -26,6 +29,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilReflection;
 
 /**
  * Test the image buffer class.
@@ -34,15 +38,22 @@ public class ImageBufferSwtTest
 {
     /**
      * Test the image.
+     * 
+     * @throws InvocationTargetException If error.
+     * @throws IllegalAccessException If error.
+     * @throws IllegalArgumentException If error.
+     * @throws NoSuchMethodException If error.
      */
     @Test
     public void testImage()
+            throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
         final Image buffer = ToolsSwt.createImage(100, 100, SWT.TRANSPARENCY_NONE);
         final ImageData data = buffer.getImageData();
         final ImageBuffer image = ToolsSwt.getImageBuffer(buffer);
 
         Assert.assertNotNull(image.createGraphic());
+        Assert.assertEquals(buffer, UtilReflection.getMethod(image, "getBuffer"));
 
         image.prepare();
         Assert.assertNotEquals(buffer, image.getSurface());
@@ -56,6 +67,11 @@ public class ImageBufferSwtTest
         image.setRgb(0, 0, ColorRgba.BLUE.getRgba());
         Assert.assertEquals(ColorRgba.BLUE.getRgba(), image.getRgb(0, 0));
         image.setRgb(0, 0, 0, 0, new int[1], 0, 0);
+
+        final Method method = ImageBufferSwt.class.getDeclaredMethod("getTransparency", int.class);
+        UtilReflection.setAccessible(method, true);
+        Assert.assertEquals(Transparency.BITMASK,
+                            method.invoke(ImageBufferSwt.class, Integer.valueOf(SWT.TRANSPARENCY_MASK)));
 
         image.dispose();
     }

@@ -94,6 +94,7 @@ public class MouseSwtTest
         Assert.assertFalse(mouse.hasClickedOnce(Mouse.MIDDLE));
         mouse.mouseDown(createEvent(shell, Mouse.MIDDLE, 0, 0));
         Assert.assertTrue(mouse.hasClickedOnce(Mouse.MIDDLE));
+        Assert.assertFalse(mouse.hasClickedOnce(Mouse.MIDDLE));
         mouse.mouseUp(createEvent(shell, Mouse.MIDDLE, 0, 0));
         Assert.assertFalse(mouse.hasClickedOnce(Mouse.MIDDLE));
 
@@ -154,6 +155,8 @@ public class MouseSwtTest
         mouse.update(1.0);
         Assert.assertEquals(0, mouse.getMoveX());
         Assert.assertEquals(0, mouse.getMoveY());
+        Assert.assertEquals(0, mouse.getOnScreenX());
+        Assert.assertEquals(0, mouse.getOnScreenY());
         Assert.assertTrue(mouse.hasMoved());
         Assert.assertFalse(mouse.hasMoved());
 
@@ -173,7 +176,6 @@ public class MouseSwtTest
 
         mouse.addActionPressed(Mouse.LEFT, new EventAction()
         {
-
             @Override
             public void action()
             {
@@ -182,7 +184,6 @@ public class MouseSwtTest
         });
         mouse.addActionPressed(Mouse.LEFT, new EventAction()
         {
-
             @Override
             public void action()
             {
@@ -191,7 +192,6 @@ public class MouseSwtTest
         });
         mouse.addActionReleased(Mouse.LEFT, new EventAction()
         {
-
             @Override
             public void action()
             {
@@ -200,7 +200,6 @@ public class MouseSwtTest
         });
         mouse.addActionReleased(Mouse.LEFT, new EventAction()
         {
-
             @Override
             public void action()
             {
@@ -214,6 +213,15 @@ public class MouseSwtTest
 
         mouse.mouseUp(createEvent(shell, Mouse.LEFT, 0, 0));
         Assert.assertFalse(left.get());
+
+        mouse.mouseDown(createEvent(shell, 10, 0, 0));
+        Assert.assertFalse(left.get());
+
+        mouse.mouseUp(createEvent(shell, 10, 0, 0));
+        Assert.assertFalse(left.get());
+
+        mouse.mouseScrolled(createEvent(shell, Mouse.LEFT, 0, 0));
+        mouse.mouseDoubleClick(createEvent(shell, Mouse.LEFT, 0, 0));
 
         shell.dispose();
     }

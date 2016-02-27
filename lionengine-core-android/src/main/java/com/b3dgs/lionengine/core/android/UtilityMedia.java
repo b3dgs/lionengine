@@ -165,7 +165,7 @@ public final class UtilityMedia
         final String path = media.getPath();
         if (logger)
         {
-            Verbose.info("getInputStream from " + from, Constant.DOUBLE_DOT + Constant.QUOTE, path, Constant.QUOTE);
+            Verbose.info("getInputStream from ", from, Constant.DOUBLE_DOT, Constant.QUOTE, path, Constant.QUOTE);
         }
         try
         {
@@ -173,7 +173,7 @@ public final class UtilityMedia
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_GET_STREAM + Constant.QUOTE, path, Constant.QUOTE);
+            throw new LionEngineException(exception, ERROR_GET_STREAM, Constant.QUOTE, path, Constant.QUOTE);
         }
     }
 
@@ -191,7 +191,7 @@ public final class UtilityMedia
         final String path = media.getPath();
         if (logger)
         {
-            Verbose.info("getOutputStream from " + from, Constant.DOUBLE_DOT + Constant.QUOTE, path, Constant.QUOTE);
+            Verbose.info("getOutputStream from ", from, Constant.DOUBLE_DOT, Constant.QUOTE, path, Constant.QUOTE);
         }
         try
         {
@@ -199,7 +199,7 @@ public final class UtilityMedia
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ERROR_GET_STREAM + Constant.QUOTE, path, Constant.QUOTE);
+            throw new LionEngineException(exception, ERROR_GET_STREAM, Constant.QUOTE, path, Constant.QUOTE);
         }
     }
 

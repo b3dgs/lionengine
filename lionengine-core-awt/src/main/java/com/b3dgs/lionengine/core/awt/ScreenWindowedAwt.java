@@ -50,8 +50,6 @@ final class ScreenWindowedAwt extends ScreenAwt
     /** Error message windowed. */
     private static final String ERROR_WINDOWED = "Windowed mode initialization failed !";
 
-    /** Graphics device reference. */
-    private final GraphicsDevice dev;
     /** Graphic configuration reference. */
     private final GraphicsConfiguration conf;
     /** Frame reference. */
@@ -70,7 +68,7 @@ final class ScreenWindowedAwt extends ScreenAwt
         super(config);
 
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        dev = env.getDefaultScreenDevice();
+        final GraphicsDevice dev = env.getDefaultScreenDevice();
         conf = dev.getDefaultConfiguration();
         frame = initMainFrame();
     }
@@ -147,7 +145,10 @@ final class ScreenWindowedAwt extends ScreenAwt
      */
     private JFrame initMainFrame()
     {
-        final String title = Engine.getProgramName() + Constant.SPACE + Engine.getProgramVersion();
+        final String title = new StringBuilder().append(Engine.getProgramName())
+                                                .append(Constant.SPACE)
+                                                .append(Engine.getProgramVersion())
+                                                .toString();
         final JFrame frame = new JFrame(title, conf);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter()

@@ -61,18 +61,16 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
                                 implements ObjectListListener<CollisionFormula>
 {
     /**
-     * Create the constraints list.
+     * Add the constraints list.
      * 
      * @param title The constraints type.
      * @param list The current list.
      * @param parent The parent composite.
-     * @return The constraints list.
      */
-    private static GroupList createConstraintsList(String title, GroupList list, Composite parent)
+    private static void addConstraintsList(String title, GroupList list, Composite parent)
     {
         list.create(parent);
         ((Group) list.getTree().getParent()).setText(title);
-        return list;
     }
 
     /**
@@ -318,10 +316,11 @@ public class FormulasProperties extends ObjectProperties<CollisionFormula>
         final Composite constraintArea = new Composite(parent, SWT.NONE);
         constraintArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         constraintArea.setLayout(new GridLayout(4, true));
-        createConstraintsList(Orientation.NORTH.name(), constraintsTop, constraintArea);
-        createConstraintsList(Orientation.SOUTH.name(), constraintsBottom, constraintArea);
-        createConstraintsList(Orientation.WEST.name(), constraintsLeft, constraintArea);
-        createConstraintsList(Orientation.EAST.name(), constraintsRight, constraintArea);
+
+        addConstraintsList(Orientation.NORTH.name(), constraintsTop, constraintArea);
+        addConstraintsList(Orientation.SOUTH.name(), constraintsBottom, constraintArea);
+        addConstraintsList(Orientation.WEST.name(), constraintsLeft, constraintArea);
+        addConstraintsList(Orientation.EAST.name(), constraintsRight, constraintArea);
     }
 
     /**

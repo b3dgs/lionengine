@@ -72,6 +72,73 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class WorldInteractionTile implements WorldMouseClickListener, WorldMouseMoveListener
 {
+    /**
+     * Check the current marker already exists or not.
+     * 
+     * @param markers The markers found.
+     * @param marker The new marker found.
+     * @return Key if exists, <code>null</code> else.
+     */
+    private static Integer containsMarker(Map<Integer, Marker> markers, Marker marker)
+    {
+        for (final Map.Entry<Integer, Marker> entry : markers.entrySet())
+        {
+            if (entry.getValue().equals(marker))
+            {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Check the current marker and add it to the markers found.
+     * 
+     * @param markers The markers found.
+     * @param tile The current tile.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    private static void checkMarker(Map<Integer, Marker> markers, Tile tile, int x, int y)
+    {
+        final Marker marker = new Marker(x - (int) tile.getX(), y - (int) tile.getY());
+        final Integer key = containsMarker(markers, marker);
+
+        if (key != null)
+        {
+            markers.get(key).addTile(tile);
+        }
+        else
+        {
+            marker.addTile(tile);
+            markers.put(Integer.valueOf(markers.keySet().size()), marker);
+        }
+    }
+
+    /**
+     * Save the collision group.
+     * 
+     * @param collision The collision feature.
+     * @param name The collision name.
+     * @param formula The generated formula.
+     * @return The saved group.
+     */
+    private static CollisionGroup saveCollisionGroup(MapTileCollision collision, String name, CollisionFormula formula)
+    {
+        final Media config = collision.getCollisionsConfig();
+        final XmlNode root = Xml.load(config);
+        if (CollisionGroupConfig.has(root, name))
+        {
+            CollisionGroupConfig.remove(root, name);
+        }
+
+        final CollisionGroup group = new CollisionGroup(name, Arrays.asList(formula));
+        CollisionGroupConfig.export(root, group);
+        Xml.save(root, config);
+
+        return group;
+    }
+
     /** Tile selection listener. */
     private final List<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
     /** World part. */
@@ -212,7 +279,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
             final int y = (int) UtilMath.getRound(sy, v);
             checkMarker(markersFound, tile, x, y);
 
-            if (tile == map.getTileAt(x, y))
+            if (tile.equals(map.getTileAt(x, y)))
             {
                 h += sx;
                 v += sy;
@@ -337,7 +404,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final int sideX = UtilMath.getSign(x);
         final int sideY = UtilMath.getSign(y);
 
-        if (function == FormulaItem.LINE)
+        if (FormulaItem.LINE.equals(function))
         {
             if (Math.abs(x) > Math.abs(y))
             {
@@ -363,49 +430,6 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
             final int rx = UtilMath.getRounded(x, (int) (1 / function.compute(1)));
             collEnd = UtilWorld.getPoint(camera, startX + rx, startY + (int) function.compute(rx * (double) side));
         }
-    }
-
-    /**
-     * Check the current marker and add it to the markers found.
-     * 
-     * @param markers The markers found.
-     * @param tile The current tile.
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     */
-    private void checkMarker(Map<Integer, Marker> markers, Tile tile, int x, int y)
-    {
-        final Marker marker = new Marker(x - (int) tile.getX(), y - (int) tile.getY());
-        final Integer key = containsMarker(markers, marker);
-
-        if (key != null)
-        {
-            markers.get(key).addTile(tile);
-        }
-        else
-        {
-            marker.addTile(tile);
-            markers.put(Integer.valueOf(markers.keySet().size()), marker);
-        }
-    }
-
-    /**
-     * Check the current marker already exists or not.
-     * 
-     * @param markers The markers found.
-     * @param marker The new marker found.
-     * @return Key if exists, <code>null</code> else.
-     */
-    private Integer containsMarker(Map<Integer, Marker> markers, Marker marker)
-    {
-        for (final Map.Entry<Integer, Marker> entry : markers.entrySet())
-        {
-            if (entry.getValue().equals(marker))
-            {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 
     /**
@@ -500,37 +524,13 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     }
 
     /**
-     * Save the collision group.
-     * 
-     * @param collision The collision feature.
-     * @param name The collision name.
-     * @param formula The generated formula.
-     * @return The saved group.
-     */
-    private CollisionGroup saveCollisionGroup(MapTileCollision collision, String name, CollisionFormula formula)
-    {
-        final Media config = collision.getCollisionsConfig();
-        final XmlNode root = Xml.load(config);
-        if (CollisionGroupConfig.has(root, name))
-        {
-            CollisionGroupConfig.remove(root, name);
-        }
-
-        final CollisionGroup group = new CollisionGroup(name, Arrays.asList(formula));
-        CollisionGroupConfig.export(root, group);
-        Xml.save(root, config);
-
-        return group;
-    }
-
-    /**
      * Check if property can be past from middle click.
      */
     private void checkPastProperty()
     {
         final Object copy = PropertiesModel.INSTANCE.getCopyData();
         final String group = PropertiesModel.INSTANCE.getCopyText();
-        if (copy != null && selectedTile != null && TileGroupsConfig.NODE_GROUP.equals(copy))
+        if (selectedTile != null && TileGroupsConfig.NODE_GROUP.equals(copy))
         {
             PropertiesTile.changeTileGroup(mapGroup, mapGroup.getGroup(selectedTile), group, selectedTile);
         }

@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game.state;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.core.InputDevicePointer;
@@ -62,9 +64,12 @@ public abstract class StateGame implements State
      * Create the state.
      * 
      * @param state The corresponding enum.
+     * @throws LionEngineException If <code>null</code> argument.
      */
     protected StateGame(Enum<?> state)
     {
+        Check.notNull(state);
+
         this.state = state;
     }
 

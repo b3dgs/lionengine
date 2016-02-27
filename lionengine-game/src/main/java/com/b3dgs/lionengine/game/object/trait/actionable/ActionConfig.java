@@ -207,7 +207,7 @@ public final class ActionConfig
         {
             return true;
         }
-        if (obj == null || !(obj instanceof ActionConfig))
+        if (!(obj instanceof ActionConfig))
         {
             return false;
         }

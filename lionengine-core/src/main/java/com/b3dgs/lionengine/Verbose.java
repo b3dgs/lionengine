@@ -272,8 +272,7 @@ public enum Verbose
             final Throwable thrown = event.getThrown();
             final StringBuilder message = new StringBuilder(event.getLevel().getName()).append(Constant.DOUBLE_DOT);
 
-            message.append(format.format(Calendar.getInstance().getTime()));
-            message.append(SEPARATOR_DATE);
+            message.append(format.format(Calendar.getInstance().getTime())).append(SEPARATOR_DATE);
             if (clazz != null)
             {
                 message.append(IN).append(clazz);
@@ -287,7 +286,7 @@ public enum Verbose
             {
                 final StringWriter sw = new StringWriter();
                 thrown.printStackTrace(new PrintWriter(sw));
-                message.append(sw.toString());
+                message.append(sw);
             }
 
             return message.toString();

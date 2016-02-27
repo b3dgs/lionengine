@@ -30,22 +30,14 @@ import com.b3dgs.lionengine.game.object.HandledObjects;
 public class ComponentCollision implements ComponentUpdatable
 {
     /**
-     * Create a collision component.
-     */
-    public ComponentCollision()
-    {
-        // Nothing to do
-    }
-
-    /**
      * Check the collision between two collidable.
      * 
      * @param objectA The first collidable.
      * @param objectB The second collidable.
      */
-    private void checkCollision(Collidable objectA, Collidable objectB)
+    private static void checkCollision(Collidable objectA, Collidable objectB)
     {
-        if (objectA != objectB)
+        if (!objectA.equals(objectB))
         {
             final Collision collision = objectA.collide(objectB);
             if (collision != null)
@@ -53,6 +45,14 @@ public class ComponentCollision implements ComponentUpdatable
                 objectB.notifyCollided(objectA.getOwner());
             }
         }
+    }
+
+    /**
+     * Create a collision component.
+     */
+    public ComponentCollision()
+    {
+        super();
     }
 
     /*

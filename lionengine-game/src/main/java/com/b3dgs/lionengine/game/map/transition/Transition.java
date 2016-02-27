@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.map.transition;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -98,17 +99,17 @@ public class Transition
         {
             return true;
         }
-        if (obj == null || !(obj instanceof Transition))
+        if (!(obj instanceof Transition))
         {
             return false;
         }
         final Transition other = (Transition) obj;
-        return groups.equals(other.groups) && type.equals(other.type);
+        return groups.equals(other.groups) && type == other.type;
     }
 
     @Override
     public String toString()
     {
-        return new StringBuilder(type.name()).append(" ").append(groups.toString()).toString();
+        return new StringBuilder().append(type).append(Constant.SPACE).append(groups).toString();
     }
 }

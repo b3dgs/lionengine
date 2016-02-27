@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.dialog.combo;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
@@ -39,9 +41,6 @@ public class ComboChooserDialog extends Dialog
 {
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "browse.png");
-
-    /** Choice. */
-    private String choice;
 
     /**
      * Create the chooser.
@@ -79,9 +78,10 @@ public class ComboChooserDialog extends Dialog
         final Button finish = UtilButton.create(area,
                                                 com.b3dgs.lionengine.editor.dialog.Messages.Finish,
                                                 AbstractDialog.ICON_OK);
+        final AtomicReference<String> choice = new AtomicReference<>();
         UtilButton.setAction(finish, () ->
         {
-            choice = combo.getText();
+            choice.set(combo.getText());
             shell.dispose();
         });
 
@@ -94,6 +94,6 @@ public class ComboChooserDialog extends Dialog
                 display.sleep();
             }
         }
-        return choice;
+        return choice.get();
     }
 }

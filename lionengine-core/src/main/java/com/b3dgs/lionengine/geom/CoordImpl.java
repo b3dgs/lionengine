@@ -105,7 +105,7 @@ final class CoordImpl implements Coord
         {
             return true;
         }
-        if (obj == null || !(obj instanceof CoordImpl))
+        if (!(obj instanceof CoordImpl))
         {
             return false;
         }

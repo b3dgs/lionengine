@@ -78,17 +78,24 @@ public class GraphicTest
         g.drawImage(image, transform, 0, 0);
         g.drawImage(image, transform, 0, 0);
         g.drawImage(image, 0, 0, 0, 0, 0, 0, 0, 0);
+        g.drawImage(image, 0, 0, 0, 0, 2, 0, 0, 0);
+        g.drawImage(image, 0, 0, 0, 0, 2, 0, 0, 0);
 
         g.drawLine(0, 0, 0, 0);
         g.drawOval(0, 0, image.getWidth(), image.getHeight(), true);
         g.drawOval(0, 0, image.getWidth(), image.getHeight(), false);
+        g.drawRect(0, 0, 1, 0, true);
+        g.drawRect(0, 0, 0, 1, true);
+        g.drawRect(0, 0, 0, 0, true);
         g.drawRect(0, 0, image.getWidth(), image.getHeight(), true);
         g.drawRect(0, 0, image.getWidth(), image.getHeight(), false);
 
         Assert.assertEquals(ColorRgba.WHITE.getRgba(), g.getColor().getRgba());
         g.setColor(ColorRgba.BLUE);
+        g.setColor(ColorRgba.BLUE);
         Assert.assertEquals(ColorRgba.BLUE.getRgba(), g.getColor().getRgba());
 
+        g.setColorGradient(new ColorGradient(0, 0, ColorRgba.CYAN, 100, 100, ColorRgba.RED));
         g.setColorGradient(new ColorGradient(0, 0, ColorRgba.CYAN, 100, 100, ColorRgba.RED));
         g.drawGradient(0, 0, 100, 100);
 

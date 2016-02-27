@@ -397,7 +397,7 @@ public class MapTileGame implements MapTile
                 final Tile tile = loadTile(file, v);
                 if (tile.getSheet().intValue() > getSheetsNumber())
                 {
-                    throw new IOException(ERROR_SHEET_MISSING + Constant.DOUBLE_DOT + tile.getSheet().toString());
+                    throw new IOException(ERROR_SHEET_MISSING + Constant.DOUBLE_DOT + tile.getSheet());
                 }
                 final int tx = tile.getInTileX();
                 final int ty = tile.getInTileY();
@@ -469,7 +469,7 @@ public class MapTileGame implements MapTile
         final int errors = LevelRipConverter.start(levelrip, this);
         if (errors > 0)
         {
-            Verbose.warning(getClass(), "create", "Number of missing tiles: " + errors);
+            Verbose.warning(getClass(), "create", "Number of missing tiles: ", String.valueOf(errors));
         }
         this.sheetsConfig = sheetsConfig;
     }

@@ -66,7 +66,7 @@ public final class PropertiesFramesTester extends PropertyTester
      */
     public PropertiesFramesTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

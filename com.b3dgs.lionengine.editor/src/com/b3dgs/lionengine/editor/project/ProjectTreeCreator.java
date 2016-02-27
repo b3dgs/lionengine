@@ -238,7 +238,7 @@ public class ProjectTreeCreator
             if (parentFiles != null && parentFiles.length == 1)
             {
                 folderItem = parent;
-                folderItem.setText(folderItem.getText() + java.io.File.separator + folder.getName());
+                folderItem.setText(folderItem.getText() + File.separator + folder.getName());
             }
             else
             {

@@ -76,7 +76,7 @@ public enum FormulaTemplate
     }
 
     /** Associated formula. */
-    private final transient CollisionFormula formula;
+    private final CollisionFormula formula;
 
     /**
      * Create template.

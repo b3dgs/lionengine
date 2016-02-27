@@ -15,10 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -127,5 +127,33 @@ public final class SizeConfig
     public int getHeight()
     {
         return height;
+    }
+
+    /*
+     * Object
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + height;
+        result = prime * result + width;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof SizeConfig))
+        {
+            return false;
+        }
+        final SizeConfig other = (SizeConfig) obj;
+        return other.getWidth() == getWidth() && other.getHeight() == getHeight();
     }
 }

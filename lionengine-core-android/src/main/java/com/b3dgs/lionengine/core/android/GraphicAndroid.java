@@ -239,7 +239,7 @@ final class GraphicAndroid implements Graphic
     @Override
     public void setColorGradient(ColorGradient gc)
     {
-        if (gc != gradientColor)
+        if (!gc.equals(gradientColor))
         {
             final int c1 = gc.getColor1().getRgba();
             final int c2 = gc.getColor2().getRgba();

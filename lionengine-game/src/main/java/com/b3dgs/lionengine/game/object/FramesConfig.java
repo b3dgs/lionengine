@@ -147,7 +147,7 @@ public final class FramesConfig
         {
             return true;
         }
-        if (obj == null || !(obj instanceof FramesConfig))
+        if (!(obj instanceof FramesConfig))
         {
             return false;
         }

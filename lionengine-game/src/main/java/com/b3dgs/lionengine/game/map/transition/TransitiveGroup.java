@@ -253,7 +253,7 @@ public class TransitiveGroup
                 for (final TileRef ref : mapGroup.getGroup(current.getOut()))
                 {
                     if (!group.equals(current.getOut())
-                        && TransitionType.CENTER.equals(mapTransition.getTransition(ref, current.getOut()).getType()))
+                        && TransitionType.CENTER == mapTransition.getTransition(ref, current.getOut()).getType())
                     {
                         map.setTile(map.createTile(ref.getSheet(), ref.getNumber(), neighbor.getX(), neighbor.getY()));
                     }

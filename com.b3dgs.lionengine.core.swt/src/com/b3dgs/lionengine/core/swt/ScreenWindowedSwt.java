@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.core.swt;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Monitor;
@@ -83,9 +83,9 @@ final class ScreenWindowedSwt extends ScreenSwt
 
             buf = canvas;
         }
-        catch (final SWTException exception)
+        catch (final SWTError exception)
         {
-            throw new LionEngineException(exception, ScreenWindowedSwt.ERROR_WINDOWED);
+            throw new LionEngineException(exception, ERROR_WINDOWED);
         }
     }
 

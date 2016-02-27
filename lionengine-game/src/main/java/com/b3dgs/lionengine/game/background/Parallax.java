@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.drawable.SpriteParallaxed;
 public class Parallax implements BackgroundComponent
 {
     /** Parallax surface. */
-    private final SpriteParallaxed parallax;
+    private final SpriteParallaxed surface;
     /** Parallax number. */
     private final int parallaxsNumber;
     /** Parallax location x. */
@@ -71,11 +71,11 @@ public class Parallax implements BackgroundComponent
 
     {
         this.parallaxsNumber = parallaxsNumber;
-        parallax = Drawable.loadSpriteParallaxed(media, this.parallaxsNumber, sx, sy);
-        parallax.load(false);
+        surface = Drawable.loadSpriteParallaxed(media, this.parallaxsNumber, sx, sy);
+        surface.load(false);
         mainY = decY + 64;
-        this.decX = parallax.getWidth() + decX;
-        offsetX = parallax.getWidth();
+        this.decX = surface.getWidth() + decX;
+        offsetX = surface.getWidth();
         factH = sx / 100.0 / 0.6;
 
         // Create data arrays
@@ -104,7 +104,7 @@ public class Parallax implements BackgroundComponent
     {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        final int w = (int) Math.ceil(screenWidth / (parallax.getWidth() * 0.6 * factH)) + 1;
+        final int w = (int) Math.ceil(screenWidth / (surface.getWidth() * 0.6 * factH)) + 1;
         amplitude = (int) Math.ceil(w / 2.0) + 1;
     }
 
@@ -117,13 +117,13 @@ public class Parallax implements BackgroundComponent
      */
     private void renderLine(Graphic g, int numLine, int lineY)
     {
-        final int lineWidth = parallax.getLineWidth(numLine);
+        final int lineWidth = surface.getLineWidth(numLine);
         for (int j = -amplitude; j < amplitude; j++)
         {
             final int lx = (int) (-offsetX + offsetX * j - x[numLine] - x2[numLine] + numLine * (2.56 * factH) * j);
             if (lx + lineWidth + decX >= 0 && lx <= screenWidth)
             {
-                parallax.render(g, numLine, lx + decX, lineY);
+                surface.render(g, numLine, lx + decX, lineY);
             }
         }
     }

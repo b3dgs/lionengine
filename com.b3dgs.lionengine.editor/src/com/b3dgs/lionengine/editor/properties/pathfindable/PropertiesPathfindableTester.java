@@ -71,7 +71,7 @@ public final class PropertiesPathfindableTester extends PropertyTester
      */
     public PropertiesPathfindableTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

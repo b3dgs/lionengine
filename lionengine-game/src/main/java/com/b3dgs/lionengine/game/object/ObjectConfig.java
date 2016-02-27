@@ -163,7 +163,7 @@ public final class ObjectConfig
         {
             return true;
         }
-        if (obj == null || !(obj instanceof ObjectConfig))
+        if (!(obj instanceof ObjectConfig))
         {
             return false;
         }

@@ -385,7 +385,7 @@ public final class UtilFile
         else if (directory.isFile())
         {
             deleteFile(directory);
-            Verbose.info(FILE_DELETED + directory);
+            Verbose.info(FILE_DELETED, directory.getPath());
         }
     }
 

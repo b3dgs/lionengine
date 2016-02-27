@@ -100,6 +100,7 @@ public final class DocumentFactory
             documentBuilderFactory.setIgnoringElementContentWhitespace(true);
             try
             {
+                documentBuilderFactory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
                 documentFactory = documentBuilderFactory.newDocumentBuilder();
                 documentFactory.setErrorHandler(null);
             }

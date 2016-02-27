@@ -49,6 +49,24 @@ public class EngineSwtTest
     }
 
     /**
+     * Test the engine start with no resource.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testEngineNoResources()
+    {
+        EngineSwt.start(EngineSwtTest.class.getName(), Version.DEFAULT);
+        try
+        {
+            Assert.assertTrue(Engine.isStarted());
+            EngineSwt.start(EngineSwtTest.class.getName(), Version.DEFAULT);
+        }
+        finally
+        {
+            Engine.terminate();
+        }
+    }
+
+    /**
      * Test the engine start with resources.
      */
     @Test(expected = LionEngineException.class)

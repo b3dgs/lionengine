@@ -57,10 +57,6 @@ public class LevelRipsWidget
     private final Collection<Media> medias = new HashSet<>();
     /** Level rips list. */
     private final Tree levelRips;
-    /** Add level rip. */
-    private Button addLevelRip;
-    /** Remove level rip. */
-    private Button removeLevelRip;
 
     /**
      * Create the widget.
@@ -129,7 +125,7 @@ public class LevelRipsWidget
      */
     private void createButtonAdd(Composite parent)
     {
-        addLevelRip = new Button(parent, SWT.PUSH);
+        final Button addLevelRip = new Button(parent, SWT.PUSH);
         addLevelRip.setImage(ObjectList.ICON_ADD);
         addLevelRip.setToolTipText(Messages.AddLevelRip);
         UtilButton.setAction(addLevelRip, () -> onAddLevelRip());
@@ -142,7 +138,7 @@ public class LevelRipsWidget
      */
     private void createButtonRemove(Composite parent)
     {
-        removeLevelRip = new Button(parent, SWT.PUSH);
+        final Button removeLevelRip = new Button(parent, SWT.PUSH);
         removeLevelRip.setImage(ObjectList.ICON_REMOVE);
         removeLevelRip.setToolTipText(Messages.RemoveLevelRip);
         UtilButton.setAction(removeLevelRip, () -> onRemoveLevelRip());

@@ -96,11 +96,11 @@ public final class PathfindableConfig
      */
     private static Collection<MovementTile> getAllowedMovements(XmlNode node)
     {
-        final Collection<MovementTile> movements = new HashSet<MovementTile>();
         if (!node.hasChild(MOVEMENT))
         {
             return Collections.emptySet();
         }
+        final Collection<MovementTile> movements = new HashSet<MovementTile>();
         for (final XmlNode movementNode : node.getChildren(MOVEMENT))
         {
             try

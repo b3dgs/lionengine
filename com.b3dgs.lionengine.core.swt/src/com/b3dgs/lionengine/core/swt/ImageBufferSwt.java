@@ -22,7 +22,6 @@ import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 
 import com.b3dgs.lionengine.ColorRgba;
@@ -164,12 +163,11 @@ final class ImageBufferSwt implements ImageBuffer
     public int getRgb(int x, int y)
     {
         final int pixel = data.getPixel(x, y);
-        final PaletteData palette = data.palette;
-        final RGB rgb = palette.getRGB(pixel);
         if (pixel == data.transparentPixel)
         {
             return ColorRgba.TRANSPARENT.getRgba();
         }
+        final RGB rgb = data.palette.getRGB(pixel);
         return new ColorRgba(rgb.red, rgb.green, rgb.blue, data.getAlpha(x, y)).getRgba();
     }
 

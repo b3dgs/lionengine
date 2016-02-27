@@ -88,7 +88,7 @@ public final class ObjectsTester extends PropertyTester
      */
     public ObjectsTester()
     {
-        // Nothing to do
+        super();
     }
 
     /*

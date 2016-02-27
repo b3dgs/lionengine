@@ -60,7 +60,7 @@ final class ClientSocket
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
         }
-        catch (final Exception exception)
+        catch (final IOException exception)
         {
             throw new LionEngineException(exception, "Cannot create client");
         }
