@@ -142,6 +142,16 @@
             </modules>
         </profile>
         <profile>
+            <id>plugins-editor</id>
+            <modules>
+                <module>../lionengine-buildtools</module>
+                <module>../com.b3dgs.lionengine.target</module>
+                <module>../com.b3dgs.lionengine.core.swt</module>
+                <module>../com.b3dgs.lionengine.core.swt.test</module>
+                <module>../com.b3dgs.lionengine.editor</module>
+            </modules>
+        </profile>
+        <profile>
             <id>examples</id>
             <modules>
                 <module>../lionengine-buildtools</module>
