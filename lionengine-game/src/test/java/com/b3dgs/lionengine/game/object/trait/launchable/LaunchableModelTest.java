@@ -61,14 +61,13 @@ public class LaunchableModelTest
     /**
      * Create launchable.
      * 
-     * @param media The media.
-     * @return The extractable.
+     * @param services The services.
+     * @param object The object.
+     * @return The launchable.
      */
-    public static Launchable createLaunchable(Media media)
+    private static Launchable createLaunchable(Services services, ObjectGame object)
     {
         final Launchable launchable = new LaunchableModel();
-        final Services services = new Services();
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
         object.addType(new TransformableModel());
 
         launchable.prepare(object, services);
@@ -88,13 +87,11 @@ public class LaunchableModelTest
     public void testLaunch() throws InterruptedException
     {
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Launchable launchable = createLaunchable(media);
         final Services services = new Services();
-        services.add(new MapTileGame());
         final ObjectGame object = new ObjectGame(new Setup(media), services);
-        final Transformable transformable = new TransformableModel();
-        object.addType(transformable);
-        launchable.prepare(object, services);
+        final Launchable launchable = createLaunchable(services, object);
+        services.add(new MapTileGame());
+        final Transformable transformable = object.getTrait(Transformable.class);
 
         launchable.launch();
 
@@ -138,17 +135,14 @@ public class LaunchableModelTest
     public void testLaunchNoVector() throws InterruptedException
     {
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Launchable launchable = createLaunchable(media);
-        launchable.setVector(null);
         final Services services = new Services();
         services.add(new MapTileGame());
         final ObjectGame object = new ObjectGame(new Setup(media), services);
-        final Transformable transformable = new TransformableModel();
-        object.addType(transformable);
-        launchable.prepare(object, services);
-
+        final Launchable launchable = createLaunchable(services, object);
+        launchable.setVector(null);
         launchable.launch();
         launchable.update(1.0);
+        final Transformable transformable = object.getTrait(Transformable.class);
 
         Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
