@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.game.object.trait.producible;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SizeConfig;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -30,25 +32,64 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class ProducibleConfig
 {
     /** Producible root node. */
-    public static final String PRODUCIBLE = Configurer.PREFIX + "producible";
+    public static final String NODE_PRODUCIBLE = Configurer.PREFIX + "producible";
     /** Production steps attribute name. */
-    public static final String STEPS = "steps";
+    public static final String ATT_STEPS = "steps";
+
+    /**
+     * Create the producible data from setup.
+     *
+     * @param setup The setup reference.
+     * @return The producible data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static ProducibleConfig imports(Setup setup)
+    {
+        return imports(setup.getConfigurer().getRoot());
+    }
+
+    /**
+     * Create the producible data from configurer.
+     *
+     * @param configurer The configurer reference.
+     * @return The producible data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static ProducibleConfig imports(Configurer configurer)
+    {
+        return imports(configurer.getRoot());
+    }
 
     /**
      * Create the producible data from node.
-     * Must be compatible with {@link SizeConfig}.
      *
-     * @param configurer The configurer reference.
-     * @return The action data.
+     * @param root The root reference.
+     * @return The producible data.
      * @throws LionEngineException If unable to read node.
      */
-    public static ProducibleConfig create(Configurer configurer)
+    public static ProducibleConfig imports(XmlNode root)
     {
-        final XmlNode node = configurer.getRoot();
-        final SizeConfig size = SizeConfig.imports(configurer);
-        final int time = node.getChild(PRODUCIBLE).readInteger(STEPS);
+        final XmlNode node = root.getChild(NODE_PRODUCIBLE);
+        final SizeConfig size = SizeConfig.imports(node);
+        final int time = node.readInteger(ATT_STEPS);
 
         return new ProducibleConfig(time, size.getWidth(), size.getHeight());
+    }
+
+    /**
+     * Export the producible node from config.
+     *
+     * @param config The config reference.
+     * @return The producible node.
+     * @throws LionEngineException If unable to write node.
+     */
+    public static XmlNode exports(ProducibleConfig config)
+    {
+        final XmlNode node = Xml.create(NODE_PRODUCIBLE);
+        node.writeInteger(ATT_STEPS, config.getSteps());
+        node.add(SizeConfig.exports(new SizeConfig(config.getWidth(), config.getHeight())));
+
+        return node;
     }
 
     /** Production steps number. */
@@ -59,22 +100,13 @@ public final class ProducibleConfig
     private final int height;
 
     /**
-     * Disabled constructor.
-     */
-    private ProducibleConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
-     * Create producible from configuration media.
+     * Create producible from configuration.
      *
      * @param steps The production steps number.
      * @param width The production width.
      * @param height The production height.
-     * @throws LionEngineException If error when opening the media.
      */
-    private ProducibleConfig(int steps, int width, int height)
+    public ProducibleConfig(int steps, int width, int height)
     {
         this.steps = steps;
         this.width = width;
@@ -109,5 +141,35 @@ public final class ProducibleConfig
     public int getSteps()
     {
         return steps;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + height;
+        result = prime * result + steps;
+        result = prime * result + width;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof ProducibleConfig))
+        {
+            return false;
+        }
+        final ProducibleConfig other = (ProducibleConfig) obj;
+        return other.getWidth() == getWidth() && other.getHeight() == getHeight() && other.getSteps() == getSteps();
     }
 }

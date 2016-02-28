@@ -70,7 +70,7 @@ public class ProducibleModel extends TraitModel implements Producible
     {
         super.prepare(owner, services);
 
-        final ProducibleConfig configProducible = ProducibleConfig.create(owner.getConfigurer());
+        final ProducibleConfig configProducible = ProducibleConfig.imports(owner.getConfigurer());
         media = owner.getMedia();
         steps = configProducible.getSteps();
         width = configProducible.getWidth();
