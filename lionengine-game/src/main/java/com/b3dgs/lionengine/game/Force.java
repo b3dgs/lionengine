@@ -245,6 +245,16 @@ public class Force implements Direction, Updatable
     }
 
     /**
+     * Get the current sensibility.
+     * 
+     * @return The current sensibility.
+     */
+    public double getSensibility()
+    {
+        return sensibility;
+    }
+
+    /**
      * Check if movement is horizontally decreasing.
      * 
      * @return <code>true</code> if horizontally decreasing, <code>false</code> else.
@@ -414,5 +424,48 @@ public class Force implements Direction, Updatable
     public double getDirectionVertical()
     {
         return fv;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(fh);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(fv);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(sensibility);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(velocity);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof Force))
+        {
+            return false;
+        }
+        final Force other = (Force) obj;
+        if (Double.doubleToLongBits(fh) == Double.doubleToLongBits(other.fh)
+            && Double.doubleToLongBits(fv) == Double.doubleToLongBits(other.fv)
+            && Double.doubleToLongBits(sensibility) == Double.doubleToLongBits(other.sensibility)
+            && Double.doubleToLongBits(velocity) == Double.doubleToLongBits(other.velocity))
+        {
+            return true;
+        }
+        return false;
     }
 }

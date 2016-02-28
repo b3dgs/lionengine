@@ -184,7 +184,7 @@ public class LauncherModel extends TraitModel implements Launcher
         factory = services.get(Factory.class);
         handler = services.get(Handler.class);
 
-        final LauncherConfig config = LauncherConfig.create(owner.getConfigurer());
+        final LauncherConfig config = LauncherConfig.imports(owner.getConfigurer());
         launchables = config.getLaunchables();
         rate = config.getRate();
         fire.start();

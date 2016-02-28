@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -28,15 +29,15 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class ForceConfig
 {
     /** Force node name. */
-    public static final String FORCE = Configurer.PREFIX + "force";
+    public static final String NODE_FORCE = Configurer.PREFIX + "force";
     /** Force horizontal node name. */
-    public static final String FORCE_VX = "vx";
+    public static final String ATT_VX = "vx";
     /** Force vertical node name. */
-    public static final String FORCE_VY = "vy";
+    public static final String ATT_VY = "vy";
     /** Force velocity node name. */
-    public static final String FORCE_VELOCITY = "velocity";
+    public static final String ATT_VELOCITY = "velocity";
     /** Force sensibility node name. */
-    public static final String FORCE_SENSIBILITY = "sensibility";
+    public static final String ATT_SENSIBILITY = "sensibility";
 
     /**
      * Create the force data from node.
@@ -45,15 +46,33 @@ public final class ForceConfig
      * @return The force data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Force create(XmlNode root)
+    public static Force imports(XmlNode root)
     {
-        final XmlNode node = root.getChild(FORCE);
+        final XmlNode node = root.getChild(NODE_FORCE);
 
-        final Force force = new Force(node.readDouble(FORCE_VX), node.readDouble(FORCE_VY));
-        force.setVelocity(node.readDouble(FORCE_VELOCITY));
-        force.setSensibility(node.readDouble(FORCE_SENSIBILITY));
+        final Force force = new Force(node.readDouble(ATT_VX), node.readDouble(ATT_VY));
+        force.setVelocity(node.readDouble(ATT_VELOCITY));
+        force.setSensibility(node.readDouble(ATT_SENSIBILITY));
 
         return force;
+    }
+
+    /**
+     * Export the force node from data.
+     * 
+     * @param force The force reference.
+     * @return The force data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static XmlNode exports(Force force)
+    {
+        final XmlNode node = Xml.create(NODE_FORCE);
+        node.writeDouble(ATT_VX, force.getDirectionHorizontal());
+        node.writeDouble(ATT_VY, force.getDirectionVertical());
+        node.writeDouble(ATT_VELOCITY, force.getVelocity());
+        node.writeDouble(ATT_SENSIBILITY, force.getSensibility());
+
+        return node;
     }
 
     /**

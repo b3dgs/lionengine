@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.game.object.trait.launchable;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.ForceConfig;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -31,25 +33,42 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class LaunchableConfig
 {
     /** Launchable node name. */
-    public static final String LAUNCHABLE = Configurer.PREFIX + "launchable";
+    public static final String NODE_LAUNCHABLE = Configurer.PREFIX + "launchable";
     /** Media attribute name. */
-    public static final String MEDIA = "media";
+    public static final String ATT_MEDIA = "media";
     /** Rate attribute name. */
-    public static final String DELAY = "delay";
+    public static final String ATT_DELAY = "delay";
 
     /**
-     * Create the launchable data from node.
+     * Import the launchable data from node.
      * 
      * @param node The node reference.
      * @return The launchable data.
      * @throws LionEngineException If unable to read node.
      */
-    public static LaunchableConfig create(XmlNode node)
+    public static LaunchableConfig imports(XmlNode node)
     {
-        final String media = node.readString(MEDIA);
-        final int delay = node.readInteger(LaunchableConfig.DELAY);
+        final String media = node.readString(ATT_MEDIA);
+        final int delay = node.readInteger(ATT_DELAY);
 
-        return new LaunchableConfig(media, delay, ForceConfig.create(node));
+        return new LaunchableConfig(media, delay, ForceConfig.imports(node));
+    }
+
+    /**
+     * Export the launchable node from data.
+     * 
+     * @param config The config reference.
+     * @return The node data.
+     * @throws LionEngineException If unable to write node.
+     */
+    public static XmlNode exports(LaunchableConfig config)
+    {
+        final XmlNode node = Xml.create(NODE_LAUNCHABLE);
+        node.writeString(ATT_MEDIA, config.getMedia());
+        node.writeInteger(ATT_DELAY, config.getDelay());
+        node.add(ForceConfig.exports(config.getVector()));
+
+        return node;
     }
 
     /** The media value. */
@@ -60,22 +79,18 @@ public final class LaunchableConfig
     private final Force vector;
 
     /**
-     * Disabled constructor.
-     */
-    private LaunchableConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
      * Constructor.
      * 
      * @param media The media value.
      * @param delay The delay value.
      * @param vector The vector force.
+     * @throws LionEngineException If <code>null</code> arguments.
      */
-    private LaunchableConfig(String media, int delay, Force vector)
+    public LaunchableConfig(String media, int delay, Force vector)
     {
+        Check.notNull(media);
+        Check.notNull(vector);
+
         this.media = media;
         this.delay = delay;
         this.vector = vector;
@@ -109,5 +124,37 @@ public final class LaunchableConfig
     public Force getVector()
     {
         return vector;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + delay;
+        result = prime * result + media.hashCode();
+        result = prime * result + vector.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof LaunchableConfig))
+        {
+            return false;
+        }
+        final LaunchableConfig other = (LaunchableConfig) obj;
+        return other.getMedia().equals(getMedia())
+               && other.getVector().equals(getVector())
+               && other.getDelay() == getDelay();
     }
 }

@@ -34,6 +34,7 @@
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="211"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="224, 229"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.PathFinderImpl" lines="318"/>
+    <suppress checks="CyclomaticComplexity" files="com.b3dgs.lionengine.game.object.trait.launchable.LaunchableConfig" lines="178"/>
     
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.network.ServerImpl"/>
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ClientImpl" lines="102, 110, 118"/>

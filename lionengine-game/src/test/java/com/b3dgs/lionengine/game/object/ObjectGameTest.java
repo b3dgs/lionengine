@@ -75,6 +75,7 @@ public class ObjectGameTest
         final XmlNode root = Xml.create("test");
         root.add(ObjectConfig.exportClass(clazz.getName()));
         root.add(ObjectConfig.exportSetup("com.b3dgs.lionengine.game.object.Setup"));
+        root.add(SizeConfig.exports(new SizeConfig(16, 32)));
         Xml.save(root, media);
         return media;
     }

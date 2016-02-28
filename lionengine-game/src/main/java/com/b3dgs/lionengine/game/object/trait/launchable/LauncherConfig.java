@@ -18,10 +18,12 @@
 package com.b3dgs.lionengine.game.object.trait.launchable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -32,28 +34,59 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public final class LauncherConfig
 {
     /** Launcher node name. */
-    public static final String LAUNCHER = Configurer.PREFIX + "launcher";
+    public static final String NODE_LAUNCHER = Configurer.PREFIX + "launcher";
     /** Rate attribute name. */
-    public static final String RATE = "rate";
+    public static final String ATT_RATE = "rate";
 
     /**
-     * Create the launcher data from node.
+     * Import the launcher data from configurer.
      * 
      * @param configurer The configurer reference.
      * @return The launcher data.
      * @throws LionEngineException If unable to read node.
      */
-    public static LauncherConfig create(Configurer configurer)
+    public static LauncherConfig imports(Configurer configurer)
+    {
+        return imports(configurer.getRoot().getChild(NODE_LAUNCHER));
+    }
+
+    /**
+     * Import the launcher data from node.
+     * 
+     * @param node The node reference.
+     * @return The launcher data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static LauncherConfig imports(XmlNode node)
     {
         final Collection<LaunchableConfig> launchables = new ArrayList<LaunchableConfig>();
-        final XmlNode launcher = configurer.getRoot().getChild(LAUNCHER);
-        for (final XmlNode launchable : launcher.getChildren(LaunchableConfig.LAUNCHABLE))
+        for (final XmlNode launchable : node.getChildren(LaunchableConfig.NODE_LAUNCHABLE))
         {
-            launchables.add(LaunchableConfig.create(launchable));
+            launchables.add(LaunchableConfig.imports(launchable));
         }
-        final int rate = configurer.getInteger(LauncherConfig.RATE, LauncherConfig.LAUNCHER);
+        final int rate = node.readInteger(ATT_RATE);
 
         return new LauncherConfig(rate, launchables);
+    }
+
+    /**
+     * Export the launcher node from config.
+     * 
+     * @param config The config reference.
+     * @return The launcher data.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static XmlNode exports(LauncherConfig config)
+    {
+        final XmlNode node = Xml.create(NODE_LAUNCHER);
+        node.writeInteger(ATT_RATE, config.getRate());
+
+        for (final LaunchableConfig launchable : config.getLaunchables())
+        {
+            node.add(LaunchableConfig.exports(launchable));
+        }
+
+        return node;
     }
 
     /** The rate value. */
@@ -62,20 +95,12 @@ public final class LauncherConfig
     private final Collection<LaunchableConfig> launchables;
 
     /**
-     * Disabled constructor.
-     */
-    private LauncherConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
-
-    /**
      * Create a launcher configuration.
      * 
      * @param rate The rate value.
      * @param launchables The launchables reference.
      */
-    private LauncherConfig(int rate, Collection<LaunchableConfig> launchables)
+    public LauncherConfig(int rate, Collection<LaunchableConfig> launchables)
     {
         this.rate = rate;
         this.launchables = launchables;
@@ -99,5 +124,34 @@ public final class LauncherConfig
     public Iterable<LaunchableConfig> getLaunchables()
     {
         return launchables;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + launchables.hashCode();
+        result = prime * result + rate;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof LauncherConfig))
+        {
+            return false;
+        }
+        final LauncherConfig other = (LauncherConfig) obj;
+        return other.getRate() == getRate() && Arrays.equals(other.launchables.toArray(), launchables.toArray());
     }
 }
