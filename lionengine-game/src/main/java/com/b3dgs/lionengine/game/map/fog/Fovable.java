@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map;
+package com.b3dgs.lionengine.game.map.fog;
 
 import com.b3dgs.lionengine.game.object.Trait;
 import com.b3dgs.lionengine.game.tile.Tiled;

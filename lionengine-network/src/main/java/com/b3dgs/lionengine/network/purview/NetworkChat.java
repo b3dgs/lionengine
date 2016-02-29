@@ -40,11 +40,13 @@ public abstract class NetworkChat implements Networkable, InputDeviceKeyListener
     /** Message type. */
     private final byte type;
     /** List of received message. */
-    private final ConcurrentLinkedQueue<String> messages;
+    private final Queue<String> messages;
     /** Current message. */
     private final StringBuilder message;
-    /** Message max queue. */
-    private int messageQueueMax;
+    /** Messages number. */
+    private int messageCount;
+    /** Messages max queue. */
+    private int messagesQueueMax;
     /** Writing message. */
     private String display;
     /** Validate key. */
@@ -63,7 +65,7 @@ public abstract class NetworkChat implements Networkable, InputDeviceKeyListener
         networkable = new NetworkableModel();
         message = new StringBuilder();
         messages = new ConcurrentLinkedQueue<String>();
-        messageQueueMax = DEFAULT_QUEUE_MAX;
+        messagesQueueMax = DEFAULT_QUEUE_MAX;
         display = Constant.EMPTY_STRING;
     }
 
@@ -126,7 +128,7 @@ public abstract class NetworkChat implements Networkable, InputDeviceKeyListener
      */
     public void setMessagesMax(int max)
     {
-        messageQueueMax = max;
+        messagesQueueMax = max;
     }
 
     /**
@@ -157,9 +159,11 @@ public abstract class NetworkChat implements Networkable, InputDeviceKeyListener
     protected void addMessage(String message)
     {
         messages.add(message);
-        if (messages.size() > messageQueueMax)
+        messageCount++;
+        if (messageCount > messagesQueueMax)
         {
             messages.remove();
+            messageCount--;
         }
     }
 

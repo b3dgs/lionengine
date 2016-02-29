@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.game.pathfinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Sorted list implementation.
@@ -30,6 +32,8 @@ public final class SortedList<E extends Comparable<E>>
 {
     /** List of object. */
     private final List<E> list;
+    /** Backed set. */
+    private final Set<E> set;
 
     /**
      * Internal constructor.
@@ -37,6 +41,7 @@ public final class SortedList<E extends Comparable<E>>
     public SortedList()
     {
         list = new ArrayList<E>();
+        set = new HashSet<E>();
     }
 
     /**
@@ -55,6 +60,7 @@ public final class SortedList<E extends Comparable<E>>
     public void clear()
     {
         list.clear();
+        set.clear();
     }
 
     /**
@@ -66,6 +72,7 @@ public final class SortedList<E extends Comparable<E>>
     {
         list.add(element);
         Collections.sort(list);
+        set.add(element);
     }
 
     /**
@@ -76,6 +83,7 @@ public final class SortedList<E extends Comparable<E>>
     public void remove(E element)
     {
         list.remove(element);
+        set.remove(element);
     }
 
     /**
@@ -85,7 +93,7 @@ public final class SortedList<E extends Comparable<E>>
      */
     public int size()
     {
-        return list.size();
+        return set.size();
     }
 
     /**
@@ -96,6 +104,6 @@ public final class SortedList<E extends Comparable<E>>
      */
     public boolean contains(E element)
     {
-        return list.contains(element);
+        return set.contains(element);
     }
 }

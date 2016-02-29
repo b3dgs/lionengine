@@ -252,14 +252,27 @@ public class TransitiveGroup
             {
                 for (final TileRef ref : mapGroup.getGroup(current.getOut()))
                 {
-                    if (!group.equals(current.getOut())
-                        && TransitionType.CENTER == mapTransition.getTransition(ref, current.getOut()).getType())
-                    {
-                        map.setTile(map.createTile(ref.getSheet(), ref.getNumber(), neighbor.getX(), neighbor.getY()));
-                    }
+                    checkTransitives(neighbor, group, current, ref);
                 }
                 break;
             }
+        }
+    }
+
+    /**
+     * Check transitive tiles.
+     * 
+     * @param neighbor The current neighbor.
+     * @param group The current group.
+     * @param current The current transition.
+     * @param ref The tile ref to check.
+     */
+    private void checkTransitives(Tile neighbor, String group, GroupTransition current, TileRef ref)
+    {
+        if (!group.equals(current.getOut())
+            && TransitionType.CENTER == mapTransition.getTransition(ref, current.getOut()).getType())
+        {
+            map.setTile(map.createTile(ref.getSheet(), ref.getNumber(), neighbor.getX(), neighbor.getY()));
         }
     }
 }

@@ -180,7 +180,7 @@ public class AttackerModel extends TraitModel implements Attacker
             attacked = false;
         }
         // Hit when frame attack reached
-        if (attacking && animator.getFrame() >= frameAttack)
+        if (animator.getFrame() >= frameAttack)
         {
             attacking = false;
             for (final AttackerListener listener : listeners)

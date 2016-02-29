@@ -73,9 +73,9 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
     }
 
     /** Client list. */
-    private final Map<Byte, ClientSocket> clientsList;
+    private final Map<Byte, ClientSocket> clients;
     /** Remove list. */
-    private final Collection<ClientSocket> removeList;
+    private final Collection<ClientSocket> toRemove;
     /** Average bandwidth. */
     private final Timing bandwidthTimer;
     /** Connection listener. */
@@ -107,8 +107,8 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
     ServerImpl(NetworkMessageDecoder decoder)
     {
         super(decoder);
-        clientsList = new HashMap<Byte, ClientSocket>(1);
-        removeList = new HashSet<ClientSocket>(1);
+        clients = new HashMap<Byte, ClientSocket>(1);
+        toRemove = new HashSet<ClientSocket>(1);
         bandwidthTimer = new Timing();
         willRemove = false;
         clientsNumber = 0;
@@ -129,7 +129,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         try
         {
             int secure = 0;
-            while (clientsList.containsKey(Byte.valueOf(lastId)))
+            while (clients.containsKey(Byte.valueOf(lastId)))
             {
                 lastId++;
                 secure++;
@@ -147,7 +147,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             client.getOut().flush();
 
             // Update list
-            clientsList.put(Byte.valueOf(client.getId()), client);
+            clients.put(Byte.valueOf(client.getId()), client);
             clientsNumber++;
         }
         catch (final IOException exception)
@@ -169,7 +169,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
     {
         if (client != null)
         {
-            removeList.add(client);
+            toRemove.add(client);
             client.terminate();
             clientsNumber--;
             willRemove = true;
@@ -185,7 +185,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
     private void errorNewClientConnected(Exception exception)
     {
         Verbose.warning(Server.class, "addClient", "Error on adding client: ", exception.getMessage());
-        if (clientsList.remove(Byte.valueOf(lastId)) != null)
+        if (clients.remove(Byte.valueOf(lastId)) != null)
         {
             clientsNumber--;
         }
@@ -220,7 +220,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             client.getOut().writeByte(clientsNumber - 1);
 
             // Send the list of other clients
-            for (final ClientSocket other : clientsList.values())
+            for (final ClientSocket other : clients.values())
             {
                 if (other.getId() != from)
                 {
@@ -259,7 +259,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             }
 
             // Notify other clients
-            for (final ClientSocket other : clientsList.values())
+            for (final ClientSocket other : clients.values())
             {
                 if (other.getId() == from)
                 {
@@ -291,7 +291,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             {
                 listener.notifyClientDisconnected(Byte.valueOf(client.getId()), client.getName());
             }
-            for (final ClientSocket other : clientsList.values())
+            for (final ClientSocket other : clients.values())
             {
                 if (other.getId() == from || other.getState() != StateConnection.CONNECTED)
                 {
@@ -336,7 +336,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             }
 
             // Notify all clients
-            for (final ClientSocket other : clientsList.values())
+            for (final ClientSocket other : clients.values())
             {
                 other.getOut().writeByte(NetworkMessageSystemId.OTHER_CLIENT_RENAMED);
                 ServerImpl.writeIdAndName(other, client.getId(), client.getName());
@@ -449,7 +449,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
     @Override
     public void removeClient(Byte clientId)
     {
-        removeClient(clientsList.get(clientId));
+        removeClient(clients.get(clientId));
     }
 
     @Override
@@ -485,10 +485,10 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         clientConnectionListener.terminate();
 
         // Disconnect all clients
-        final Collection<ClientSocket> delete = new ArrayList<ClientSocket>(clientsList.size());
-        for (final ClientSocket client : clientsList.values())
+        final Collection<ClientSocket> delete = new ArrayList<ClientSocket>(clients.size());
+        for (final ClientSocket client : clients.values())
         {
-            for (final ClientSocket other : clientsList.values())
+            for (final ClientSocket other : clients.values())
             {
                 if (other.getId() == client.getId())
                 {
@@ -513,7 +513,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             removeClient(client);
         }
         delete.clear();
-        clientsList.clear();
+        clients.clear();
         try
         {
             serverSocket.close();
@@ -529,7 +529,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
     public void receiveMessages()
     {
         messagesIn.clear();
-        for (final ClientSocket client : clientsList.values())
+        for (final ClientSocket client : clients.values())
         {
             // Get client data from socket
             final byte[] data = client.receiveMessages();
@@ -559,11 +559,11 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         // Remove deleted clients
         if (willRemove)
         {
-            for (final ClientSocket client : removeList)
+            for (final ClientSocket client : toRemove)
             {
-                clientsList.remove(Byte.valueOf(client.getId()));
+                clients.remove(Byte.valueOf(client.getId()));
             }
-            removeList.clear();
+            toRemove.clear();
             willRemove = false;
         }
     }
@@ -575,7 +575,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
         messagesOut.addAll(messagesIn);
         for (final NetworkMessage message : messagesOut)
         {
-            for (final ClientSocket client : clientsList.values())
+            for (final ClientSocket client : clients.values())
             {
                 if (!(message.getClientDestId() == client.getId() || message.getClientDestId() == -1))
                 {

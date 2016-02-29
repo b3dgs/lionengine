@@ -202,14 +202,7 @@ public class MapTileTransitionModel implements MapTileTransition
             for (int h = tx - 1; h <= tx + 1; h++)
             {
                 final Tile neighbor = map.getTile(h, v);
-                if (neighbor != null && !checked.contains(neighbor))
-                {
-                    checked.add(neighbor);
-                    if (updateTile(neighbor))
-                    {
-                        todo.add(neighbor);
-                    }
-                }
+                resolve(neighbor, checked, todo);
             }
         }
 
@@ -218,6 +211,25 @@ public class MapTileTransitionModel implements MapTileTransition
             resolve(checked, neighbor);
         }
         todo.clear();
+    }
+
+    /**
+     * Resolve unchecked tiles around.
+     * 
+     * @param neighbor The neighbor tile.
+     * @param checked The list of checked tiles.
+     * @param todo The next tiles to check.
+     */
+    private void resolve(Tile neighbor, Collection<Tile> checked, Collection<Tile> todo)
+    {
+        if (neighbor != null && !checked.contains(neighbor))
+        {
+            checked.add(neighbor);
+            if (updateTile(neighbor))
+            {
+                todo.add(neighbor);
+            }
+        }
     }
 
     /**

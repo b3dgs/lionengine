@@ -483,11 +483,7 @@ public enum TransitionType
     private static boolean equalsOrNull(Boolean a, Boolean b)
     {
         final boolean equals;
-        if (a != null && b == null || a == null && b != null)
-        {
-            equals = true;
-        }
-        else if (a != null && b != null)
+        if (a != null && b != null)
         {
             equals = a.equals(b);
         }
