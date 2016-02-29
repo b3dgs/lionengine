@@ -20,6 +20,7 @@ package com.b3dgs.lionengine;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.util.UtilEnum;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -93,6 +94,33 @@ public class OriginTest
                 default:
                     Assert.fail();
             }
+        }
+    }
+
+    /**
+     * Test the origin enum fail.
+     */
+    @Test
+    public void testEnumFail()
+    {
+        final UtilEnum<Origin> hack = new UtilEnum<Origin>(Origin.class, Origin.class);
+        final Origin fail = hack.make("FAIL");
+
+        try
+        {
+            Assert.assertEquals(-1, fail.getX(0.0, 0), UtilTests.PRECISION);
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+        try
+        {
+            Assert.assertEquals(-1, fail.getY(0.0, 0), UtilTests.PRECISION);
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
         }
     }
 }

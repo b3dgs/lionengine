@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object.trait.attackable;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -26,7 +27,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.Medias;
@@ -36,12 +39,16 @@ import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.util.UtilEnum;
 
 /**
  * Test the attackable trait.
  */
 public class AttackerModelTest
 {
+    /** Hack enum. */
+    private static final UtilEnum<AttackState> HACK = new UtilEnum<AttackState>(AttackState.class, AttackerModel.class);
+
     /**
      * Prepare test.
      */
@@ -49,6 +56,7 @@ public class AttackerModelTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        HACK.addByValue(HACK.make("FAIL"));
     }
 
     /**
@@ -58,6 +66,7 @@ public class AttackerModelTest
     public static void cleanUp()
     {
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        HACK.restore();
     }
 
     /**
@@ -413,6 +422,31 @@ public class AttackerModelTest
 
         ObjectGameTest.freeId(object);
         Assert.assertTrue(media.getFile().delete());
+    }
+
+    /**
+     * Test with enum fail.
+     * 
+     * @throws NoSuchFieldException If error.
+     * @throws IllegalArgumentException If error.
+     * @throws IllegalAccessException If error.
+     */
+    @Test
+    public void testEnumFail() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
+    {
+        final AttackerModel attacker = new AttackerModel();
+        final Field field = attacker.getClass().getDeclaredField("state");
+        UtilReflection.setAccessible(field, true);
+        field.set(attacker, AttackState.values()[3]);
+        try
+        {
+            attacker.update(1.0);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals("Unknown enum: FAIL", exception.getMessage());
+        }
     }
 
     /**

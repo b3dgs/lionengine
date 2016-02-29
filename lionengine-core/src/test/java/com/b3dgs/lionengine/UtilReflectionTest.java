@@ -19,6 +19,7 @@ package com.b3dgs.lionengine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -79,6 +80,29 @@ public class UtilReflectionTest
     }
 
     /**
+     * Create the create with constructor error.
+     * 
+     * @throws NoSuchMethodException If error.
+     * @throws NoSuchFieldException If error.
+     * @throws IllegalAccessException If error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCreateConstructorNotAccessible()
+            throws NoSuchMethodException, NoSuchFieldException, IllegalAccessException
+    {
+        final AtomicBoolean accessible = UtilReflection.getField(UtilReflection.class, "ACCESSIBLE");
+        try
+        {
+            accessible.set(false);
+            Assert.assertNotNull(UtilReflection.create(UtilMath.class, new Class[0]));
+        }
+        finally
+        {
+            accessible.set(true);
+        }
+    }
+
+    /**
      * Create the create with abstract class.
      * 
      * @throws NoSuchMethodException If error.
@@ -120,6 +144,24 @@ public class UtilReflectionTest
     }
 
     /**
+     * Test the get method.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetMethodNotAccessible()
+    {
+        final AtomicBoolean accessible = UtilReflection.getField(UtilReflection.class, "ACCESSIBLE");
+        try
+        {
+            accessible.set(false);
+            Assert.assertNotNull(UtilReflection.getMethod(UtilProjectStats.class, "countLineTypes", "test"));
+        }
+        finally
+        {
+            accessible.set(true);
+        }
+    }
+
+    /**
      * Test the get not existing method.
      */
     @Test(expected = LionEngineException.class)
@@ -154,6 +196,33 @@ public class UtilReflectionTest
     {
         Assert.assertNotNull(UtilReflection.getField(new Config(new Resolution(320, 240, 32), 16, false),
                                                      "lockApplet"));
+    }
+
+    /**
+     * Test the get field accessible.
+     */
+    @Test
+    public void testGetFieldAccessible()
+    {
+        Assert.assertNotNull(UtilReflection.getField(LionEngineException.class, "ERROR_PRIVATE_CONSTRUCTOR"));
+    }
+
+    /**
+     * Test the get field not accessible.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetFieldNotAccessible()
+    {
+        final AtomicBoolean accessible = UtilReflection.getField(UtilReflection.class, "ACCESSIBLE");
+        try
+        {
+            accessible.set(false);
+            Assert.assertNotNull(UtilReflection.getField(LionEngineException.class, "ERROR_UNKNOWN_ENUM"));
+        }
+        finally
+        {
+            accessible.set(true);
+        }
     }
 
     /**

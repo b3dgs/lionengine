@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object.trait.extractable;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -26,7 +27,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -36,6 +39,7 @@ import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.tile.Tiled;
+import com.b3dgs.lionengine.util.UtilEnum;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -43,6 +47,10 @@ import com.b3dgs.lionengine.util.UtilTests;
  */
 public class ExtractorModelTest
 {
+    /** Hack enum. */
+    private static final UtilEnum<ExtractorState> HACK = new UtilEnum<ExtractorState>(ExtractorState.class,
+                                                                                      ExtractorModel.class);
+
     /**
      * Prepare test.
      */
@@ -50,6 +58,7 @@ public class ExtractorModelTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        HACK.addByValue(HACK.make("FAIL"));
     }
 
     /**
@@ -59,6 +68,7 @@ public class ExtractorModelTest
     public static void cleanUp()
     {
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        HACK.restore();
     }
 
     /**
@@ -485,6 +495,31 @@ public class ExtractorModelTest
 
         ObjectGameTest.freeId(object);
         Assert.assertTrue(media.getFile().delete());
+    }
+
+    /**
+     * Test with enum fail.
+     * 
+     * @throws NoSuchFieldException If error.
+     * @throws IllegalArgumentException If error.
+     * @throws IllegalAccessException If error.
+     */
+    @Test
+    public void testEnumFail() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
+    {
+        final ExtractorModel extractor = new ExtractorModel();
+        final Field field = extractor.getClass().getDeclaredField("state");
+        UtilReflection.setAccessible(field, true);
+        field.set(extractor, ExtractorState.values()[5]);
+        try
+        {
+            extractor.update(1.0);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals("Unknown enum: FAIL", exception.getMessage());
+        }
     }
 
     /**

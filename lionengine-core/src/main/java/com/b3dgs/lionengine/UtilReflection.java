@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Utility class related to java reflection.
@@ -37,6 +38,8 @@ public final class UtilReflection
     private static final String ERROR_FIELD = "Unable to access to the following field: ";
     /** Method error. */
     private static final String ERROR_METHOD = "Unable to access to the following method: ";
+    /** Accessibility. */
+    private static final AtomicBoolean ACCESSIBLE = new AtomicBoolean(true);
 
     /**
      * Create a class instance with its parameters.
@@ -56,7 +59,7 @@ public final class UtilReflection
         {
             final Constructor<?> constructor = getCompatibleConstructor(type, paramTypes);
             final boolean accessible = constructor.isAccessible();
-            setAccessible(constructor, true);
+            setAccessible(constructor, ACCESSIBLE.get());
             @SuppressWarnings("unchecked")
             final T object = (T) constructor.newInstance(params);
             if (constructor.isAccessible() != accessible)
@@ -64,10 +67,6 @@ public final class UtilReflection
                 setAccessible(constructor, accessible);
             }
             return object;
-        }
-        catch (final NoSuchMethodException exception)
-        {
-            throw exception;
         }
         catch (final IllegalArgumentException exception)
         {
@@ -149,7 +148,7 @@ public final class UtilReflection
             final boolean accessible = method.isAccessible();
             if (!accessible)
             {
-                setAccessible(method, true);
+                setAccessible(method, ACCESSIBLE.get());
             }
             @SuppressWarnings("unchecked")
             final T value = (T) method.invoke(object, params);
@@ -193,7 +192,7 @@ public final class UtilReflection
             final boolean accessible = field.isAccessible();
             if (!accessible)
             {
-                setAccessible(field, true);
+                setAccessible(field, ACCESSIBLE.get());
             }
             @SuppressWarnings("unchecked")
             final T value = (T) field.get(object);

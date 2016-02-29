@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object.trait.producible;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -27,7 +28,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -35,6 +38,7 @@ import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.util.UtilEnum;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -42,6 +46,10 @@ import com.b3dgs.lionengine.util.UtilTests;
  */
 public class ProducerModelTest
 {
+    /** Hack enum. */
+    private static final UtilEnum<ProducerState> HACK = new UtilEnum<ProducerState>(ProducerState.class,
+                                                                                    ProducerModel.class);
+
     /**
      * Prepare test.
      */
@@ -49,6 +57,7 @@ public class ProducerModelTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        HACK.addByValue(HACK.make("FAIL"));
     }
 
     /**
@@ -58,6 +67,7 @@ public class ProducerModelTest
     public static void cleanUp()
     {
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+        HACK.restore();
     }
 
     /**
@@ -501,6 +511,31 @@ public class ProducerModelTest
 
         ObjectGameTest.freeId(object);
         Assert.assertTrue(media.getFile().delete());
+    }
+
+    /**
+     * Test with enum fail.
+     * 
+     * @throws NoSuchFieldException If error.
+     * @throws IllegalArgumentException If error.
+     * @throws IllegalAccessException If error.
+     */
+    @Test
+    public void testEnumFail() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
+    {
+        final ProducerModel producer = new ProducerModel();
+        final Field field = producer.getClass().getDeclaredField("state");
+        UtilReflection.setAccessible(field, true);
+        field.set(producer, ProducerState.values()[5]);
+        try
+        {
+            producer.update(1.0);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            Assert.assertEquals("Unknown enum: FAIL", exception.getMessage());
+        }
     }
 
     /**

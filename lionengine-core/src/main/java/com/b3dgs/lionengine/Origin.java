@@ -48,29 +48,28 @@ public enum Origin
     public double getX(double x, double width)
     {
         final double result;
-        switch (this)
+        if (this == TOP_LEFT || this == BOTTOM_LEFT)
         {
-            case TOP_LEFT:
-            case BOTTOM_LEFT:
+            result = x;
+        }
+        else if (this == BOTTOM_RIGHT)
+        {
+            result = x - width;
+        }
+        else if (this == MIDDLE || this == CENTER_TOP || this == CENTER_BOTTOM)
+        {
+            if (width > 0)
+            {
+                result = x - width / 2.0;
+            }
+            else
+            {
                 result = x;
-                break;
-            case BOTTOM_RIGHT:
-                result = x - width;
-                break;
-            case MIDDLE:
-            case CENTER_TOP:
-            case CENTER_BOTTOM:
-                if (width > 0)
-                {
-                    result = x - width / 2.0;
-                }
-                else
-                {
-                    result = x;
-                }
-                break;
-            default:
-                throw new LionEngineException(this);
+            }
+        }
+        else
+        {
+            throw new LionEngineException(this);
         }
         return result;
     }
@@ -85,31 +84,32 @@ public enum Origin
     public double getY(double y, double height)
     {
         final double result;
-        switch (this)
+        if (this == TOP_LEFT)
         {
-            case TOP_LEFT:
+            result = y;
+        }
+        else if (this == MIDDLE)
+        {
+            if (height > 0)
+            {
+                result = y - height / 2.0;
+            }
+            else
+            {
                 result = y;
-                break;
-            case MIDDLE:
-                if (height > 0)
-                {
-                    result = y - height / 2.0;
-                }
-                else
-                {
-                    result = y;
-                }
-                break;
-            case CENTER_TOP:
-                result = y;
-                break;
-            case BOTTOM_LEFT:
-            case BOTTOM_RIGHT:
-            case CENTER_BOTTOM:
-                result = y - height;
-                break;
-            default:
-                throw new LionEngineException(this);
+            }
+        }
+        else if (this == CENTER_TOP)
+        {
+            result = y;
+        }
+        else if (this == BOTTOM_LEFT || this == BOTTOM_RIGHT || this == CENTER_BOTTOM)
+        {
+            result = y - height;
+        }
+        else
+        {
+            throw new LionEngineException(this);
         }
         return result;
     }

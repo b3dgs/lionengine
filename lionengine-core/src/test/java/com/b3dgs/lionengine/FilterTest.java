@@ -38,6 +38,7 @@ public class FilterTest
         Assert.assertEquals(1.0, transform.getScaleY(), UtilTests.PRECISION);
         Assert.assertEquals(0, transform.getInterpolation());
         transform.setInterpolation(true);
+        transform.scale(0.0, 0.0);
         Assert.assertEquals(0, transform.getInterpolation());
     }
 }
