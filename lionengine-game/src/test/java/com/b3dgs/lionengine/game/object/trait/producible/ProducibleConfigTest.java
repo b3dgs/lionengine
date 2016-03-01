@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.SizeConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -64,6 +65,7 @@ public class ProducibleConfigTest
         try
         {
             final XmlNode root = Xml.create("test");
+            root.add(SizeConfig.exports(new SizeConfig(producible.getWidth(), producible.getHeight())));
             root.add(ProducibleConfig.exports(producible));
             Xml.save(root, media);
 

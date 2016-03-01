@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the producible data from a configurer.
+ * Represents the producible data from a configurer compatible with {@link SizeConfig}.
  * 
  * @see com.b3dgs.lionengine.game.object.trait.producible.Producible
  */
@@ -70,7 +70,7 @@ public final class ProducibleConfig
     public static ProducibleConfig imports(XmlNode root)
     {
         final XmlNode node = root.getChild(NODE_PRODUCIBLE);
-        final SizeConfig size = SizeConfig.imports(node);
+        final SizeConfig size = SizeConfig.imports(root);
         final int time = node.readInteger(ATT_STEPS);
 
         return new ProducibleConfig(time, size.getWidth(), size.getHeight());
@@ -87,7 +87,6 @@ public final class ProducibleConfig
     {
         final XmlNode node = Xml.create(NODE_PRODUCIBLE);
         node.writeInteger(ATT_STEPS, config.getSteps());
-        node.add(SizeConfig.exports(new SizeConfig(config.getWidth(), config.getHeight())));
 
         return node;
     }

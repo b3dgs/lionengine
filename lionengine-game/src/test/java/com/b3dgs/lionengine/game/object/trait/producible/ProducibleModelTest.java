@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.SizeConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.util.UtilTests;
@@ -67,6 +68,7 @@ public class ProducibleModelTest
 
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final XmlNode root = Xml.create("test");
+        root.add(SizeConfig.exports(new SizeConfig(producibleConfig.getWidth(), producibleConfig.getHeight())));
         root.add(ProducibleConfig.exports(producibleConfig));
         Xml.save(root, media);
 
