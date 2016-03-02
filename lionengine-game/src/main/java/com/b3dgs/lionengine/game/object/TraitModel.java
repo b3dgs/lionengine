@@ -30,7 +30,7 @@ public abstract class TraitModel implements Trait
      */
     public TraitModel()
     {
-        // Nothing to do
+        super();
     }
 
     /*

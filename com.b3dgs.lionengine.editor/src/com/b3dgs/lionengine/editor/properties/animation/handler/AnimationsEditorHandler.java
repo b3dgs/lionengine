@@ -34,7 +34,7 @@ public final class AnimationsEditorHandler
      */
     public AnimationsEditorHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

@@ -30,7 +30,7 @@ public class ComponentRenderer implements ComponentRenderable
      */
     public ComponentRenderer()
     {
-        // Nothing to do
+        super();
     }
 
     /*

@@ -38,7 +38,7 @@ public final class FramesRemoveHandler
      */
     public FramesRemoveHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

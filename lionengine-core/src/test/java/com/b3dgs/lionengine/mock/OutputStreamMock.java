@@ -30,7 +30,7 @@ public class OutputStreamMock extends OutputStream
      */
     public OutputStreamMock()
     {
-        // Nothing to do
+        super();
     }
 
     @Override

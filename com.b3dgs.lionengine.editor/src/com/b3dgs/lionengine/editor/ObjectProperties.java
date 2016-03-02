@@ -138,7 +138,7 @@ public abstract class ObjectProperties<T extends Nameable>
      */
     public ObjectProperties()
     {
-        // Nothing to do
+        super();
     }
 
     /**

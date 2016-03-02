@@ -30,7 +30,7 @@ public class FactoryMediaDefault implements FactoryMedia
      */
     public FactoryMediaDefault()
     {
-        // Nothing to do
+        super();
     }
 
     /*

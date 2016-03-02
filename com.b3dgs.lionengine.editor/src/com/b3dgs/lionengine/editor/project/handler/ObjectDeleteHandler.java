@@ -37,7 +37,7 @@ public final class ObjectDeleteHandler
      */
     public ObjectDeleteHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

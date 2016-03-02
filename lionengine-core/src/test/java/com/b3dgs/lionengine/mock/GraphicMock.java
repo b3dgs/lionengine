@@ -40,7 +40,7 @@ public class GraphicMock implements Graphic
      */
     public GraphicMock()
     {
-        // Nothing to do
+        super();
     }
 
     /*

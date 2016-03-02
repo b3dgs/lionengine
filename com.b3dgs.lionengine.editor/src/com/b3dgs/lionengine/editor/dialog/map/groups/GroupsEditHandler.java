@@ -33,7 +33,7 @@ public final class GroupsEditHandler
      */
     public GroupsEditHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

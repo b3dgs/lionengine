@@ -31,7 +31,7 @@ final class FactoryMediaAndroid implements FactoryMedia
      */
     FactoryMediaAndroid()
     {
-        // Nothing to do
+        super();
     }
 
     /*

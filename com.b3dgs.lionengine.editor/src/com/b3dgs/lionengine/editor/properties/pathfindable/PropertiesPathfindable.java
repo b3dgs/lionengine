@@ -55,7 +55,7 @@ public class PropertiesPathfindable implements PropertiesProviderObject
      */
     public PropertiesPathfindable()
     {
-        // Nothing to do
+        super();
     }
 
     /*

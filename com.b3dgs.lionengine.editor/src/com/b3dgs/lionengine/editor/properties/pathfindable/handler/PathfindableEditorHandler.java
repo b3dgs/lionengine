@@ -34,7 +34,7 @@ public final class PathfindableEditorHandler
      */
     public PathfindableEditorHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

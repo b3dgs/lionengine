@@ -60,7 +60,7 @@ public final class Loader
      */
     public Loader()
     {
-        // Nothing to do
+        super();
     }
 
     /**

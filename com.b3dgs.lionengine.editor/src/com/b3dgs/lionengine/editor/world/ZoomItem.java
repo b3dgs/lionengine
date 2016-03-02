@@ -52,7 +52,7 @@ public class ZoomItem
      */
     public ZoomItem()
     {
-        // Nothing to do
+        super();
     }
 
     /**

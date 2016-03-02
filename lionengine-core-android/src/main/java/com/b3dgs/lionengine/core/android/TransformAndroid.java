@@ -37,7 +37,7 @@ final class TransformAndroid implements Transform
      */
     TransformAndroid()
     {
-        // Nothing to do
+        super();
     }
 
     /*

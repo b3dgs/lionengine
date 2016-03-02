@@ -64,7 +64,7 @@ public final class ProjectImportHandler
      */
     public ProjectImportHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

@@ -43,7 +43,7 @@ public class FactoryGraphicMock implements FactoryGraphic
      */
     public FactoryGraphicMock()
     {
-        // Nothing to do
+        super();
     }
 
     /*

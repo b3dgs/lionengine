@@ -160,7 +160,7 @@ public final class TilesExtractor
      */
     public TilesExtractor()
     {
-        // Nothing to do
+        super();
     }
 
     /**

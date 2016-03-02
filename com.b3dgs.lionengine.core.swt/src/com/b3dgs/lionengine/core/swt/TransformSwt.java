@@ -37,7 +37,7 @@ final class TransformSwt implements Transform
      */
     TransformSwt()
     {
-        // Nothing to do
+        super();
     }
 
     /*

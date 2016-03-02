@@ -65,7 +65,7 @@ public class Services
      */
     public Services()
     {
-        // Nothing to do
+        super();
     }
 
     /**

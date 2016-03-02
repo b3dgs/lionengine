@@ -143,7 +143,7 @@ public class PropertiesClass implements PropertiesProviderObject
      */
     public PropertiesClass()
     {
-        // Nothing to do
+        super();
     }
 
     /*

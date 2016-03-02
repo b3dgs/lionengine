@@ -48,7 +48,7 @@ public final class SetPointerTileHandler
      */
     public SetPointerTileHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

@@ -28,7 +28,7 @@ public final class HeuristicClosestSquared implements Heuristic
      */
     public HeuristicClosestSquared()
     {
-        // Nothing to do
+        super();
     }
 
     /*

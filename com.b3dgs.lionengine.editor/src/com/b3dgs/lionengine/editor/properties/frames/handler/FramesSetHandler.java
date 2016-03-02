@@ -45,7 +45,7 @@ public class FramesSetHandler
      */
     public FramesSetHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

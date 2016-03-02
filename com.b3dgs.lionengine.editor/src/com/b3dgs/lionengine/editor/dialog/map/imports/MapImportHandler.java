@@ -36,7 +36,7 @@ public final class MapImportHandler
      */
     public MapImportHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

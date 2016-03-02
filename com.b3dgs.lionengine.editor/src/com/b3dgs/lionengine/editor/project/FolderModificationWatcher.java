@@ -65,7 +65,7 @@ public final class FolderModificationWatcher
      */
     public FolderModificationWatcher()
     {
-        // Nothing to do
+        super();
     }
 
     /**

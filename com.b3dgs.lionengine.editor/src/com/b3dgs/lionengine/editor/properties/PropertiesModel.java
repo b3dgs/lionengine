@@ -40,7 +40,7 @@ public final class PropertiesModel
      */
     private PropertiesModel()
     {
-        // Nothing to do
+        super();
     }
 
     /**

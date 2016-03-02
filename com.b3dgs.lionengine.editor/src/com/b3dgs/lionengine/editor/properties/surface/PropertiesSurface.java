@@ -122,7 +122,7 @@ public class PropertiesSurface implements PropertiesProviderObject
      */
     public PropertiesSurface()
     {
-        // Nothing to do
+        super();
     }
 
     /*

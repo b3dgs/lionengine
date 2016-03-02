@@ -37,7 +37,7 @@ public final class PathfindableDisableHandler
      */
     public PathfindableDisableHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

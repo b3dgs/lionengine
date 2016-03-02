@@ -33,7 +33,7 @@ public class FilterBilinear implements Filter
      */
     public FilterBilinear()
     {
-        // Nothing to do
+        super();
     }
 
     /*

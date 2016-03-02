@@ -54,7 +54,7 @@ public class CollisionRangeComposite
      */
     public CollisionRangeComposite()
     {
-        // Nothing to do
+        super();
     }
 
     /**

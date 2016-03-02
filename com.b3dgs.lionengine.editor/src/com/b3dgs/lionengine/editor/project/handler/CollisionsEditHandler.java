@@ -46,7 +46,7 @@ public final class CollisionsEditHandler
      */
     public CollisionsEditHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

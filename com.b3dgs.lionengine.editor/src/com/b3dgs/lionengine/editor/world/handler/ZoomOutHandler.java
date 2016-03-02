@@ -38,7 +38,7 @@ public final class ZoomOutHandler
      */
     public ZoomOutHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

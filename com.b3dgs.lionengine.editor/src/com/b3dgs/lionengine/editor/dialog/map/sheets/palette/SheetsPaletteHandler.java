@@ -30,7 +30,7 @@ public final class SheetsPaletteHandler
      */
     public SheetsPaletteHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

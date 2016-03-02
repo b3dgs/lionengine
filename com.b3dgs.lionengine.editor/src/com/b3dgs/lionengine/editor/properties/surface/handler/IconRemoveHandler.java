@@ -37,7 +37,7 @@ public final class IconRemoveHandler
      */
     public IconRemoveHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

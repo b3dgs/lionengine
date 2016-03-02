@@ -50,7 +50,7 @@ public class MapTileGroupModel implements MapTileGroup
      */
     public MapTileGroupModel()
     {
-        // Nothing to do
+        super();
     }
 
     /**

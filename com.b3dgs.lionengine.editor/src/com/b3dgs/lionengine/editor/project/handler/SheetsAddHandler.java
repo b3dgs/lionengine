@@ -81,7 +81,7 @@ public final class SheetsAddHandler
      */
     public SheetsAddHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

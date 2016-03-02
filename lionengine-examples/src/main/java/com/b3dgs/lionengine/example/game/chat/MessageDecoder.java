@@ -31,7 +31,7 @@ class MessageDecoder implements NetworkMessageDecoder
      */
     public MessageDecoder()
     {
-        // Nothing to do
+        super();
     }
 
     /*

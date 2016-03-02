@@ -39,7 +39,7 @@ public final class SurfaceRemoveHandler
      */
     public SurfaceRemoveHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

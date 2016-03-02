@@ -57,7 +57,7 @@ final class GraphicSwt implements Graphic
      */
     GraphicSwt()
     {
-        // Nothing to do
+        super();
     }
 
     /**

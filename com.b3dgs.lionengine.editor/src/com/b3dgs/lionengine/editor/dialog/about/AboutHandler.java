@@ -30,7 +30,7 @@ public final class AboutHandler
      */
     public AboutHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

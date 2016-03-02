@@ -48,7 +48,7 @@ public final class SetPointerCollisionHandler
      */
     public SetPointerCollisionHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

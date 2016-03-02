@@ -48,7 +48,7 @@ public final class SetHandHandler
      */
     public SetHandHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

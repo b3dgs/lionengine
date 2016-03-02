@@ -37,7 +37,7 @@ public class TransformMock implements Transform
      */
     public TransformMock()
     {
-        // Nothing to do
+        super();
     }
 
     /*

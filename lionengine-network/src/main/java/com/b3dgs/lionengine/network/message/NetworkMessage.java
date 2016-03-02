@@ -64,7 +64,7 @@ public abstract class NetworkMessage
      */
     public NetworkMessage()
     {
-        // Nothing to do
+        super();
     }
 
     /**

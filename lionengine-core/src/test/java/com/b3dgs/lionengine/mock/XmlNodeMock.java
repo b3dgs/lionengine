@@ -55,7 +55,7 @@ public final class XmlNodeMock implements XmlNode
      */
     public XmlNodeMock()
     {
-        // Nothing to do
+        super();
     }
 
     /*

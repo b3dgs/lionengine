@@ -74,7 +74,7 @@ public class ApplicationConfiguration
          */
         AppStartupCompleteEventHandler()
         {
-            // Nothing to do
+            super();
         }
 
         /**

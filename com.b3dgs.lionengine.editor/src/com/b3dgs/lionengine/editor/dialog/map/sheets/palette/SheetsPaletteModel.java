@@ -37,7 +37,7 @@ public class SheetsPaletteModel
      */
     protected SheetsPaletteModel()
     {
-        // Nothing to do
+        super();
     }
 
     /**

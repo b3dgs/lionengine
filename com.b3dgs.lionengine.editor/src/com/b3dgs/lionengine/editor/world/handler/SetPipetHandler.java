@@ -48,7 +48,7 @@ public final class SetPipetHandler
      */
     public SetPipetHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

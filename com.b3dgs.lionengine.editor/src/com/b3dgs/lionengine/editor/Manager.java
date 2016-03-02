@@ -38,7 +38,7 @@ public class Manager
      */
     public Manager()
     {
-        // Nothing to do
+        super();
     }
 
     /**

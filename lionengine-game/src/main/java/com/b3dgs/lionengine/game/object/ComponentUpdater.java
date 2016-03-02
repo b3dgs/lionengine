@@ -29,7 +29,7 @@ public class ComponentUpdater implements ComponentUpdatable
      */
     public ComponentUpdater()
     {
-        // Nothing to do
+        super();
     }
 
     /*

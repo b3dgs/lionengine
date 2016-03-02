@@ -30,7 +30,7 @@ public final class MinimapHandler
      */
     public MinimapHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

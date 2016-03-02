@@ -38,7 +38,7 @@ public final class FilterHq2x implements Filter
      */
     public FilterHq2x()
     {
-        // Nothing to do
+        super();
     }
 
     /*

@@ -41,7 +41,7 @@ public final class PathfindingEditHandler
      */
     public PathfindingEditHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

@@ -69,7 +69,7 @@ public final class GroupsAddHandler
      */
     public GroupsAddHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

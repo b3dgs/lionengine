@@ -46,7 +46,7 @@ public final class FormulasEditHandler
      */
     public FormulasEditHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

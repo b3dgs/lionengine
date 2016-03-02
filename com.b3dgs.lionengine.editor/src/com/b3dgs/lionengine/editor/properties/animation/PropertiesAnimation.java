@@ -55,7 +55,7 @@ public class PropertiesAnimation implements PropertiesProviderObject
      */
     public PropertiesAnimation()
     {
-        // Nothing to do
+        super();
     }
 
     /*

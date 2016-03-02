@@ -39,7 +39,7 @@ public final class FactoryGraphicAndroid implements FactoryGraphic
      */
     public FactoryGraphicAndroid()
     {
-        // Nothing to do
+        super();
     }
 
     /*

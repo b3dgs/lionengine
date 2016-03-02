@@ -48,7 +48,7 @@ public final class SetPointerObjectHandler
      */
     public SetPointerObjectHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

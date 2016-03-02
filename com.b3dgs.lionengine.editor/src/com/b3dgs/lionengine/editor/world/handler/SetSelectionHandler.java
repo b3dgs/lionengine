@@ -48,7 +48,7 @@ public final class SetSelectionHandler
      */
     public SetSelectionHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

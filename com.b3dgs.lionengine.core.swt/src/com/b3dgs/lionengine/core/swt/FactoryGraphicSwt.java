@@ -53,7 +53,7 @@ public final class FactoryGraphicSwt implements FactoryGraphic
      */
     public FactoryGraphicSwt()
     {
-        // Nothing to do
+        super();
     }
 
     /*

@@ -55,7 +55,7 @@ public class PropertiesCollisionCategory implements PropertiesProviderObject
      */
     public PropertiesCollisionCategory()
     {
-        // Nothing to do
+        super();
     }
 
     /*

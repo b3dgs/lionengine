@@ -69,7 +69,7 @@ public final class FormulasAddHandler
      */
     public FormulasAddHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

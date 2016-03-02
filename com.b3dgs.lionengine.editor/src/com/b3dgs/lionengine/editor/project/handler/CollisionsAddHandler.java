@@ -69,7 +69,7 @@ public final class CollisionsAddHandler
      */
     public CollisionsAddHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

@@ -128,7 +128,7 @@ public class ServicesTest
          */
         private NoConstructorService()
         {
-            // Private
+            super();
         }
     }
 
@@ -142,7 +142,7 @@ public class ServicesTest
          */
         public InvalidConstructorService()
         {
-            // Private
+            super();
         }
     }
 }

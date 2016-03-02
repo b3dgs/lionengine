@@ -32,7 +32,7 @@ class Client extends NetworkableModel
      */
     public Client()
     {
-        // Nothing to do
+        super();
     }
 
     /**

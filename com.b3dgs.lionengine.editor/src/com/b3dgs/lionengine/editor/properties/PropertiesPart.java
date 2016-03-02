@@ -119,7 +119,7 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
      */
     public PropertiesPart()
     {
-        // Nothing to do
+        super();
     }
 
     /**

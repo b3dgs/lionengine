@@ -29,7 +29,7 @@ public class AppletMock implements Applet<AppletMock>
      */
     public AppletMock()
     {
-        // Nothing to do
+        super();
     }
 
     /*

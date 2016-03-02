@@ -31,7 +31,7 @@ public class ViewerMock implements Viewer
      */
     public ViewerMock()
     {
-        // Nothing to do
+        super();
     }
 
     /*

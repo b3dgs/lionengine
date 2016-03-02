@@ -299,7 +299,7 @@ public class PropertiesTile implements PropertiesProviderTile
      */
     public PropertiesTile()
     {
-        // Nothing to do
+        super();
     }
 
     /*

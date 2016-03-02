@@ -184,7 +184,7 @@ public class ResourceLoaderTest
          */
         SlowResource()
         {
-            // Nothing to do
+            super();
         }
 
         @Override

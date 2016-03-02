@@ -112,7 +112,7 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
      */
     public WorldPart()
     {
-        // Nothing to do
+        super();
     }
 
     /**

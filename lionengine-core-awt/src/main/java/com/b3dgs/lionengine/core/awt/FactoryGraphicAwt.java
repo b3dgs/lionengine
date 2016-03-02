@@ -52,7 +52,7 @@ public final class FactoryGraphicAwt implements FactoryGraphic
      */
     public FactoryGraphicAwt()
     {
-        // Nothing to do
+        super();
     }
 
     /*

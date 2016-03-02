@@ -37,7 +37,7 @@ public final class AnimationsDisableHandler
      */
     public AnimationsDisableHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

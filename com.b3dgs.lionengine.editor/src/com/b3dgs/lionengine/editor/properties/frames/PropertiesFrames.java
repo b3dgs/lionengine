@@ -134,7 +134,7 @@ public class PropertiesFrames implements PropertiesProviderObject
      */
     public PropertiesFrames()
     {
-        // Nothing to do
+        super();
     }
 
     /*

@@ -43,7 +43,7 @@ public final class SurfaceSetHandler
      */
     public SurfaceSetHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

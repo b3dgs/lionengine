@@ -62,7 +62,7 @@ public class FormulaItem
      */
     public FormulaItem()
     {
-        // Nothing to do
+        super();
     }
 
     /**

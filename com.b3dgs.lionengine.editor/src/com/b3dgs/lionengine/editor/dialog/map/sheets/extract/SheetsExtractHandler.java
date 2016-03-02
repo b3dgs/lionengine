@@ -33,7 +33,7 @@ public final class SheetsExtractHandler
      */
     public SheetsExtractHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

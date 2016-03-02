@@ -36,7 +36,7 @@ public final class ExitHandler
      */
     public ExitHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

@@ -35,7 +35,7 @@ public final class SetGridHandler
      */
     public SetGridHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

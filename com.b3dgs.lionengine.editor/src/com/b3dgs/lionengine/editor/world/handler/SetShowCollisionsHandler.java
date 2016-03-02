@@ -36,7 +36,7 @@ public final class SetShowCollisionsHandler
      */
     public SetShowCollisionsHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

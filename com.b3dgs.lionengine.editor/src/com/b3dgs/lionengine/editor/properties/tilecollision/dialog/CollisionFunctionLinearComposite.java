@@ -45,7 +45,7 @@ public class CollisionFunctionLinearComposite implements CollisionFunctionTypeCo
      */
     public CollisionFunctionLinearComposite()
     {
-        // Nothing to do
+        super();
     }
 
     /*

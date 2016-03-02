@@ -37,7 +37,7 @@ public final class CollisionsDisableHandler
      */
     public CollisionsDisableHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

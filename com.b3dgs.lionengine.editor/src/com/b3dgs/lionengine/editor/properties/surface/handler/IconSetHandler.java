@@ -38,7 +38,7 @@ public final class IconSetHandler
      */
     public IconSetHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

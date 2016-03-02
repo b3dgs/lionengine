@@ -63,7 +63,7 @@ public class CollisionFunctionComposite
      */
     public CollisionFunctionComposite()
     {
-        // Nothing to do
+        super();
     }
 
     /**

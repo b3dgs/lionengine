@@ -34,7 +34,7 @@ public final class DirectoryFolderComparator implements Comparator<File>, Serial
      */
     public DirectoryFolderComparator()
     {
-        // Nothing to do
+        super();
     }
 
     /*

@@ -98,7 +98,7 @@ public class Activator implements BundleActivator
      */
     public Activator()
     {
-        // Nothing to do
+        super();
     }
 
     /*

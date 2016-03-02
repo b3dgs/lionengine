@@ -30,7 +30,7 @@ public final class PropertyCopyHandler
      */
     public PropertyCopyHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

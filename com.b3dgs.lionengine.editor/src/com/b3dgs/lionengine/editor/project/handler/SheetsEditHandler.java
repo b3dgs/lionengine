@@ -46,7 +46,7 @@ public final class SheetsEditHandler
      */
     public SheetsEditHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

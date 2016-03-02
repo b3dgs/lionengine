@@ -67,7 +67,7 @@ public class PropertiesTileCollision implements PropertiesProviderTile
      */
     public PropertiesTileCollision()
     {
-        // Nothing to do
+        super();
     }
 
     /*

@@ -36,7 +36,7 @@ public final class ConstraintsExtractHandler
      */
     public ConstraintsExtractHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

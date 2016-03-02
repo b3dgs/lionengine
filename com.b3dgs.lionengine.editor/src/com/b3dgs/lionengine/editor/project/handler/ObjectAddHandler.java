@@ -87,7 +87,7 @@ public final class ObjectAddHandler
      */
     public ObjectAddHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

@@ -39,7 +39,7 @@ public final class ProjectModel
      */
     private ProjectModel()
     {
-        // Nothing to do
+        super();
     }
 
     /**

@@ -38,7 +38,7 @@ public final class ZoomInHandler
      */
     public ZoomInHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**

@@ -36,7 +36,7 @@ public final class CollisionImportHandler
      */
     public CollisionImportHandler()
     {
-        // Nothing to do
+        super();
     }
 
     /**
