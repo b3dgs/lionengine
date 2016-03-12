@@ -302,4 +302,24 @@ public class ColorRgbaTest
         final int filterRgb2 = ColorRgba.filterRgb(65535, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
         Assert.assertTrue(filterRgb2 >= 0);
     }
+
+    /**
+     * Test the weighted color of a surface.
+     */
+    @Test
+    public void testColorWeighted()
+    {
+        final ImageBuffer surface = Graphics.createImageBuffer(2, 2, Transparency.TRANSLUCENT);
+
+        Assert.assertEquals(ColorRgba.TRANSPARENT,
+                            ColorRgba.getWeightedColor(surface, 0, 0, surface.getWidth(), surface.getHeight()));
+
+        surface.setRgb(0, 0, ColorRgba.RED.getRgba());
+        surface.setRgb(0, 1, ColorRgba.BLUE.getRgba());
+        surface.setRgb(1, 0, ColorRgba.GREEN.getRgba());
+        surface.setRgb(1, 1, ColorRgba.WHITE.getRgba());
+
+        Assert.assertEquals(new ColorRgba(127, 127, 127),
+                            ColorRgba.getWeightedColor(surface, 0, 0, surface.getWidth(), surface.getHeight()));
+    }
 }

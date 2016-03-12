@@ -51,6 +51,7 @@ public final class ColorRgba
     public static final ColorRgba TRANSPARENT = new ColorRgba(0, 0, 0, 0);
     /** Opaque color. */
     public static final ColorRgba OPAQUE = new ColorRgba(0, 0, 0, 255);
+
     /** Minimum color value. */
     private static final int MIN_COLOR = 0x000000;
     /** Maximum alpha value. */
@@ -160,6 +161,45 @@ public final class ColorRgba
             return start + step * (int) (force * UtilMath.sin(i * (amplitude / (double) max) - offset));
         }
         return start + step * (int) (force * UtilMath.cos(i * (amplitude / (double) max) - offset));
+    }
+
+    /**
+     * Get the weighted color of an area.
+     * 
+     * @param surface The surface reference.
+     * @param sx The starting horizontal location.
+     * @param sy The starting vertical location.
+     * @param width The area width.
+     * @param height The area height.
+     * @return The weighted color.
+     */
+    public static ColorRgba getWeightedColor(ImageBuffer surface, int sx, int sy, int width, int height)
+    {
+        int r = 0;
+        int g = 0;
+        int b = 0;
+        int count = 0;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                final ColorRgba color = new ColorRgba(surface.getRgb(sx + x, sy + y));
+                if (color.getAlpha() > 0)
+                {
+                    r += color.getRed();
+                    g += color.getGreen();
+                    b += color.getBlue();
+                    count++;
+                }
+            }
+        }
+        if (count == 0)
+        {
+            return TRANSPARENT;
+        }
+        return new ColorRgba((int) Math.floor(r / (double) count),
+                             (int) Math.floor(g / (double) count),
+                             (int) Math.floor(b / (double) count));
     }
 
     /**

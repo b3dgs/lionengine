@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
@@ -58,6 +59,8 @@ public final class MinimapConfig
      */
     public static Map<TileRef, ColorRgba> imports(Media configMinimap)
     {
+        Check.notNull(configMinimap);
+
         final Map<TileRef, ColorRgba> colors = new HashMap<TileRef, ColorRgba>();
         final XmlNode nodeMinimap = Xml.load(configMinimap);
 
@@ -86,6 +89,8 @@ public final class MinimapConfig
      */
     public static void exports(Media configMinimap, Map<TileRef, ColorRgba> tiles)
     {
+        Check.notNull(configMinimap);
+
         final Map<ColorRgba, Collection<TileRef>> colors = convertToColorKey(tiles);
         final XmlNode nodeMinimap = Xml.create(NODE_MINIMAPS);
 

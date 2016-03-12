@@ -378,7 +378,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
     {
         if (text.isEmpty())
         {
-            minimap.automaticColor(null);
+            minimap.automaticColor();
             render();
         }
         else

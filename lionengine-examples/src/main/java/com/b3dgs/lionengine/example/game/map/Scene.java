@@ -72,6 +72,7 @@ class Scene extends Sequence
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
         minimap.load();
+        minimap.automaticColor();
         minimap.prepare();
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);

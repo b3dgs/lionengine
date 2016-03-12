@@ -20,9 +20,11 @@ package com.b3dgs.lionengine.game.map;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageBuffer;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
@@ -37,60 +39,31 @@ import com.b3dgs.lionengine.game.tile.TileRef;
 /**
  * Minimap representation of a map tile. This can be used to represent strategic view of a map.
  * <p>
- * A call to {@link #prepare()} is needed once the {@link MapTile} as been created / loaded, and also each time
- * modification occurs on the map.
+ * Usage:
  * </p>
+ * <ul>
+ * <li>1. Create minimap : {@link #Minimap(MapTile)}</li>
+ * <li>2. Load surface : {@link #load()}</li>
+ * <li>3. Generate minimap from map: {@link #automaticColor()} or {@link #automaticColor(Media)}</li>
+ * <li>3. Or load from configuration: {@link #loadPixelConfig(Media)}</li>
+ * <li>4. Prepare surface : {@link #prepare()}</li>
+ * </ul>
  * 
  * @see MapTile
  */
 public class Minimap implements Image
 {
     /** No tile representation. */
-    public static final ColorRgba NO_TILE = ColorRgba.BLACK;
+    private static final ColorRgba NO_TILE = ColorRgba.TRANSPARENT;
     /** Default tile color. */
     private static final ColorRgba DEFAULT_COLOR = ColorRgba.WHITE;
+    /** Surface not loaded error. */
+    private static final String ERROR_SURFACE = "Surface has not beed loaded !";
 
-    /**
-     * Get the weighted color of an area.
-     * 
-     * @param surface The surface reference.
-     * @param sx The starting horizontal location.
-     * @param sy The starting vertical location.
-     * @param width The area width.
-     * @param height The area height.
-     * @return The weighted color.
-     */
-    public static ColorRgba getWeightedColor(ImageBuffer surface, int sx, int sy, int width, int height)
-    {
-        int r = 0;
-        int g = 0;
-        int b = 0;
-        int count = 0;
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                final ColorRgba color = new ColorRgba(surface.getRgb(sx + x, sy + y));
-                if (!ColorRgba.TRANSPARENT.equals(color))
-                {
-                    r += color.getRed();
-                    g += color.getGreen();
-                    b += color.getBlue();
-                    count++;
-                }
-            }
-        }
-        if (count == 0)
-        {
-            return ColorRgba.TRANSPARENT;
-        }
-        return new ColorRgba(r / count, g / count, b / count);
-    }
-
+    /** Pixel configuration. */
+    private Map<TileRef, ColorRgba> pixels = new HashMap<TileRef, ColorRgba>();
     /** Map reference. */
     private final MapTile map;
-    /** Pixel configuration. */
-    private Map<TileRef, ColorRgba> pixels;
     /** Minimap image reference. */
     private ImageBuffer surface;
     /** Origin reference. */
@@ -99,68 +72,56 @@ public class Minimap implements Image
     private double x;
     /** Vertical location. */
     private double y;
-    /** Alpha. */
-    private boolean alpha;
 
     /**
      * Create a minimap.
      * 
      * @param map The map reference.
+     * @throws LionEngineException If <code>null</code> argument.
      */
     public Minimap(MapTile map)
     {
+        Check.notNull(map);
+
         this.map = map;
         origin = Origin.TOP_LEFT;
     }
 
     /**
-     * Set the pixel configuration to use.
+     * Set the pixel configuration to use. Call {@link #prepare()} to apply configuration.
      * 
      * @param config The pixel configuration file.
+     * @throws LionEngineException If <code>null</code> argument.
      */
     public void loadPixelConfig(Media config)
     {
-        pixels = MinimapConfig.imports(config);
+        pixels.clear();
+        pixels.putAll(MinimapConfig.imports(config));
     }
 
     /**
-     * Perform an automatic color minimap resolution.
-     * 
-     * @param config The pixel configuration destination file (can be <code>null</code>).
+     * Perform an automatic color minimap resolution. Call {@link #prepare()} to apply configuration.
      */
-    public void automaticColor(Media config)
+    public void automaticColor()
     {
         final Map<TileRef, ColorRgba> colors = new HashMap<TileRef, ColorRgba>();
         for (final Integer sheet : map.getSheets())
         {
             computeSheet(colors, sheet);
         }
-        if (config != null)
-        {
-            MinimapConfig.exports(config, colors);
-        }
         pixels = colors;
-        prepare();
     }
 
     /**
-     * Create the minimap if not already created.
+     * Perform an automatic color minimap resolution. Call {@link #prepare()} to apply configuration.
+     * 
+     * @param config The pixel configuration destination file.
+     * @throws LionEngineException If <code>null</code> argument.
      */
-    private void create()
+    public void automaticColor(Media config)
     {
-        if (surface == null)
-        {
-            final Transparency transparency;
-            if (alpha)
-            {
-                transparency = Transparency.TRANSLUCENT;
-            }
-            else
-            {
-                transparency = Transparency.OPAQUE;
-            }
-            surface = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), transparency);
-        }
+        automaticColor();
+        MinimapConfig.exports(config, pixels);
     }
 
     /**
@@ -176,7 +137,7 @@ public class Minimap implements Image
         {
             color = NO_TILE;
         }
-        else if (pixels != null)
+        else
         {
             final TileRef ref = new TileRef(tile.getSheet(), tile.getNumber());
             if (!pixels.containsKey(ref))
@@ -187,10 +148,6 @@ public class Minimap implements Image
             {
                 color = pixels.get(ref);
             }
-        }
-        else
-        {
-            color = DEFAULT_COLOR;
         }
         return color;
     }
@@ -215,9 +172,9 @@ public class Minimap implements Image
             {
                 final int h = number * tw % tiles.getWidth();
                 final int v = number / tiles.getTilesHorizontal() * th;
-                final ColorRgba color = getWeightedColor(surface, h, v, tw, th);
+                final ColorRgba color = ColorRgba.getWeightedColor(surface, h, v, tw, th);
 
-                if (!Minimap.NO_TILE.equals(color) && !ColorRgba.TRANSPARENT.equals(color))
+                if (!(Minimap.NO_TILE.equals(color) || color.getAlpha() == 0))
                 {
                     colors.put(new TileRef(sheet, number), color);
                 }
@@ -230,15 +187,30 @@ public class Minimap implements Image
      * Image
      */
 
+    /**
+     * Load minimap surface from map tile size. Does nothing if already loaded.
+     */
     @Override
     public void load()
     {
-        create();
+        if (surface == null)
+        {
+            surface = Graphics.createImageBuffer(map.getInTileWidth(), map.getInTileHeight(), Transparency.TRANSLUCENT);
+        }
     }
 
+    /**
+     * Fill minimap surface with tile color configuration.
+     * 
+     * @throws LionEngineException If surface has not been loaded ({@link #load()} may have not been called).
+     */
     @Override
     public void prepare()
     {
+        if (surface == null)
+        {
+            throw new LionEngineException(ERROR_SURFACE);
+        }
         final Graphic g = surface.createGraphic();
         final int v = map.getInTileHeight();
         final int h = map.getInTileWidth();
@@ -248,8 +220,12 @@ public class Minimap implements Image
             for (int tx = 0; tx < h; tx++)
             {
                 final Tile tile = map.getTile(tx, ty);
-                g.setColor(getTileColor(tile));
-                g.drawRect(tx, v - ty - 1, 1, 1, true);
+                final ColorRgba color = getTileColor(tile);
+                if (color != NO_TILE)
+                {
+                    g.setColor(color);
+                    g.drawRect(tx, v - ty - 1, 1, 1, true);
+                }
             }
         }
         g.dispose();
@@ -264,6 +240,8 @@ public class Minimap implements Image
     @Override
     public void setOrigin(Origin origin)
     {
+        Check.notNull(origin);
+
         this.origin = origin;
     }
 
