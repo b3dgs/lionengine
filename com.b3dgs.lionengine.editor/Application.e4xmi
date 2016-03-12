@@ -43,6 +43,12 @@
                 <children xsi:type="menu:DirectMenuItem" xmi:id="_SASgwNAdEeWXCfliaXc_Cg" elementId="" label="%menu.pathfinding-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfinding-edit.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.PathfindingEditHandler">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_SASgwdAdEeWXCfliaXc_Cg" coreExpressionId="com.b3dgs.lionengine.editor.pathfinding.edit"/>
                 </children>
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_3QfYIOiYEeWDT9y0LqhLxw" elementId="" label="%menu.minimap-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/minimap-add.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.MinimapAddHandler">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_3QfYIeiYEeWDT9y0LqhLxw" coreExpressionId="com.b3dgs.lionengine.editor.minimap.add"/>
+                </children>
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_mB6W0OiZEeWDT9y0LqhLxw" elementId="" label="%menu.minimap-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/minimap-edit.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.MinimapEditHandler">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_mB6W0eiZEeWDT9y0LqhLxw" coreExpressionId="com.b3dgs.lionengine.editor.minimap.edit"/>
+                </children>
               </menus>
             </children>
           </children>

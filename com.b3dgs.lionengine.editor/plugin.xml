@@ -156,6 +156,18 @@
          </test>
       </definition>
       <definition
+            id="com.b3dgs.lionengine.editor.minimap.add">
+         <test
+               property="com.b3dgs.lionengine.editor.minimapTester.addMinimap">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.minimap.edit">
+         <test
+               property="com.b3dgs.lionengine.editor.minimapTester.editMinimap">
+         </test>
+      </definition>
+      <definition
             id="com.b3dgs.lionengine.editor.properties.setSurface">
          <test
                property="com.b3dgs.lionengine.editor.propertiesTesterSurface.setSurface">
@@ -320,6 +332,13 @@
             id="com.b3dgs.lionengine.editor.pathfindingTester"
             namespace="com.b3dgs.lionengine.editor.pathfindingTester"
             properties="addPathfinding,editPathfinding"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.tester.MinimapTester"
+            id="com.b3dgs.lionengine.editor.minimapTester"
+            namespace="com.b3dgs.lionengine.editor.minimapTester"
+            properties="addMinimap,editMinimap"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester

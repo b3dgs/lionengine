@@ -47,6 +47,8 @@ public final class UtilTemplate
     public static final String TEMPLATE_COLLISIONS = "collisions." + UtilTemplate.TEMPLATE_EXTENSION;
     /** Template sheets. */
     public static final String TEMPLATE_PATHFINDING = "pathfinding." + UtilTemplate.TEMPLATE_EXTENSION;
+    /** Template sheets. */
+    public static final String TEMPLATE_MINIMAP = "minimap." + UtilTemplate.TEMPLATE_EXTENSION;
     /** Template class area. */
     public static final String TEMPLATE_CLASS_AREA = "%CLASS%";
     /** Template setup area. */

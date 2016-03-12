@@ -39,14 +39,16 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
-import com.b3dgs.lionengine.editor.project.dialog.pathfinding.PathfindingEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.CollisionsEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.FormulasEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler;
+import com.b3dgs.lionengine.editor.project.handler.MinimapEditHandler;
+import com.b3dgs.lionengine.editor.project.handler.PathfindingEditHandler;
 import com.b3dgs.lionengine.editor.project.handler.SheetsEditHandler;
 import com.b3dgs.lionengine.editor.project.tester.CollisionsTester;
 import com.b3dgs.lionengine.editor.project.tester.FormulasTester;
 import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
+import com.b3dgs.lionengine.editor.project.tester.MinimapTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.project.tester.PathfindingTester;
 import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
@@ -263,6 +265,10 @@ public final class ProjectPart implements Focusable
             else if (PathfindingTester.isPathfindingFile(media))
             {
                 PathfindingEditHandler.executeHandler(tree.getShell());
+            }
+            else if (MinimapTester.isMinimapFile(media))
+            {
+                MinimapEditHandler.executeHandler(tree.getShell());
             }
             else if (media.getFile().isFile())
             {

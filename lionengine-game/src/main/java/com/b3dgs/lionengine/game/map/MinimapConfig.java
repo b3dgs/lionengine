@@ -39,8 +39,10 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class MinimapConfig
 {
-    /** Minimaps root node. */
-    public static final String NODE_MINIMAPS = Configurer.PREFIX + "minimap";
+    /** Default filename. */
+    public static final String FILENAME = "minimap.xml";
+    /** Minimap root node. */
+    public static final String NODE_MINIMAP = Configurer.PREFIX + "minimap";
     /** Color node. */
     public static final String NODE_COLOR = Configurer.PREFIX + "color";
     /** Red name attribute. */
@@ -92,7 +94,7 @@ public final class MinimapConfig
         Check.notNull(configMinimap);
 
         final Map<ColorRgba, Collection<TileRef>> colors = convertToColorKey(tiles);
-        final XmlNode nodeMinimap = Xml.create(NODE_MINIMAPS);
+        final XmlNode nodeMinimap = Xml.create(NODE_MINIMAP);
 
         for (final Map.Entry<ColorRgba, Collection<TileRef>> entry : colors.entrySet())
         {

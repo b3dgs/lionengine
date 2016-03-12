@@ -91,6 +91,15 @@ public final class Messages extends NLS
     /** Add pathfinding error text. */
     public static String AddPathfinding_Error_Text;
 
+    /** Add minimap title. */
+    public static String AddMinimap_Title;
+    /** Add minimap title. */
+    public static String AddMinimap_Text;
+    /** Add minimap error title. */
+    public static String AddMinimap_Error_Title;
+    /** Add minimap error text. */
+    public static String AddMinimap_Error_Text;
+
     /**
      * Initialize.
      */
