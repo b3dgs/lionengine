@@ -15,10 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project.dialog.pathfinding;
+package com.b3dgs.lionengine.editor.project.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
+
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.project.dialog.pathfinding.PathfindingEditDialog;
 
 /**
  * Edit tile path handler implementation.
@@ -32,8 +36,10 @@ public final class PathfindingEditHandler
      */
     public static void executeHandler(Shell parent)
     {
-        final PathfindingEditDialog pathfindingEditDialog = new PathfindingEditDialog(parent);
-        pathfindingEditDialog.open();
+        final PathfindingEditDialog dialog = new PathfindingEditDialog(parent);
+        final Media selection = ProjectModel.INSTANCE.getSelection();
+        dialog.setLocation(selection.getPath());
+        dialog.open();
     }
 
     /**

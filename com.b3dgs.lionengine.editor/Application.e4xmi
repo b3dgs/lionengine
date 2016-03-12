@@ -37,10 +37,10 @@
                 <children xsi:type="menu:DirectMenuItem" xmi:id="_4awpwA7JEeW6A_3RaUH7Zw" elementId="" label="%menu.collisions-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/collisions-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.CollisionsEditHandler">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_4axQ0A7JEeW6A_3RaUH7Zw" coreExpressionId="com.b3dgs.lionengine.editor.collisions.edit"/>
                 </children>
-                <children xsi:type="menu:DirectMenuItem" xmi:id="_yqD-UHaDEeWb3pFgi6m6GA" elementId="" label="%menu.pathfinding-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfinding-add.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.dialog.pathfinding.PathfindingEditHandler">
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_yqD-UHaDEeWb3pFgi6m6GA" elementId="" label="%menu.pathfinding-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfinding-add.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.PathfindingAddHandler">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_G3IpsHaGEeWb3pFgi6m6GA" coreExpressionId="com.b3dgs.lionengine.editor.pathfinding.add"/>
                 </children>
-                <children xsi:type="menu:DirectMenuItem" xmi:id="_SASgwNAdEeWXCfliaXc_Cg" elementId="" label="%menu.pathfinding-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfinding-edit.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.dialog.pathfinding.PathfindingEditHandler">
+                <children xsi:type="menu:DirectMenuItem" xmi:id="_SASgwNAdEeWXCfliaXc_Cg" elementId="" label="%menu.pathfinding-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfinding-edit.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.PathfindingEditHandler">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_SASgwdAdEeWXCfliaXc_Cg" coreExpressionId="com.b3dgs.lionengine.editor.pathfinding.edit"/>
                 </children>
               </menus>

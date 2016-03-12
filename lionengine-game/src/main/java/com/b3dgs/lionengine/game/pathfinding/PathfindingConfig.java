@@ -34,6 +34,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class PathfindingConfig
 {
+    /** Default filename. */
+    public static final String FILENAME = "pathfinding.xml";
     /** Pathfinding root node. */
     public static final String PATHFINDING = Configurer.PREFIX + "pathfinding";
     /** Tile path node. */
