@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_8yNOoOkkEeWt1ruEBAQ_7g">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_pxrSEOkmEeWt1ruEBAQ_7g" featurename="children" parentElementId="com.b3dgs.lionengine.editor.part.project.menu">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_yqD-UHaDEeWb3pFgi6m6GA" elementId="" label="%menu.pathfinding-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfinding-add.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor.pathfinding/com.b3dgs.lionengine.editor.pathfinding.handler.PathfindingAddHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_WnkaYOk2EeWt1ruEBAQ_7g" coreExpressionId="com.b3dgs.lionengine.editor.pathfinding.add"/>
+    </elements>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_SASgwNAdEeWXCfliaXc_Cg" elementId="" label="%menu.pathfinding-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfinding-edit.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor.pathfinding/com.b3dgs.lionengine.editor.pathfinding.handler.PathfindingEditHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_SASgwdAdEeWXCfliaXc_Cg" coreExpressionId="com.b3dgs.lionengine.editor.pathfinding.edit"/>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_bqRp0Ok3EeWt1ruEBAQ_7g" featurename="children" parentElementId="com.b3dgs.lionengine.editor.part.properties.menu">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_bqRp0uk3EeWt1ruEBAQ_7g" elementId="" label="%menu.pathfindable-enable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfindable-enable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.pathfinding/com.b3dgs.lionengine.editor.pathfinding.handler.PathfindableEnableHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_bqRp0-k3EeWt1ruEBAQ_7g" coreExpressionId="com.b3dgs.lionengine.editor.pathfinding.properties.enablePathfindable"/>
+    </elements>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_bqRp1Ok3EeWt1ruEBAQ_7g" elementId="" label="%menu.pathfindable-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfindable-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.pathfinding/com.b3dgs.lionengine.editor.pathfinding.handler.PathfindableEditorHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_bqRp1ek3EeWt1ruEBAQ_7g" coreExpressionId="com.b3dgs.lionengine.editor.pathfinding.properties.editPathfindable"/>
+    </elements>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_bqRp1uk3EeWt1ruEBAQ_7g" elementId="" label="%menu.pathfindable-disable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/pathfindable-disable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.pathfinding/com.b3dgs.lionengine.editor.pathfinding.handler.PathfindableDisableHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_bqRp1-k3EeWt1ruEBAQ_7g" coreExpressionId="com.b3dgs.lionengine.editor.pathfinding.properties.disablePathfindable"/>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>

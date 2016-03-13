@@ -138,6 +138,7 @@
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
                 <module>../com.b3dgs.lionengine.editor</module>
+                <module>../com.b3dgs.lionengine.editor.pathfinding</module>
                 <module>../com.b3dgs.lionengine.repository</module>
             </modules>
         </profile>
@@ -148,6 +149,7 @@
                 <module>../com.b3dgs.lionengine.target</module>
                 <module>../com.b3dgs.lionengine.core.swt</module>
                 <module>../com.b3dgs.lionengine.editor</module>
+                <module>../com.b3dgs.lionengine.editor.pathfinding</module>
                 <module>../com.b3dgs.lionengine.editor.product</module>
             </modules>
         </profile>

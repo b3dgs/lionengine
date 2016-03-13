@@ -82,15 +82,6 @@ public final class Messages extends NLS
     /** Remove object error text. */
     public static String RemoveObject_Error_Text;
 
-    /** Add pathfinding title. */
-    public static String AddPathfinding_Title;
-    /** Add collisions title. */
-    public static String AddPathfinding_Text;
-    /** Add pathfinding error title. */
-    public static String AddPathfinding_Error_Title;
-    /** Add pathfinding error text. */
-    public static String AddPathfinding_Error_Text;
-
     /** Add minimap title. */
     public static String AddMinimap_Title;
     /** Add minimap title. */
