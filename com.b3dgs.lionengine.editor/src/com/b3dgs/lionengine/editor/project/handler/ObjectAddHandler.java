@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 
 /**
- * Add an object in the selected folder.
+ * Add an object descriptor in the selected folder.
  */
 public final class ObjectAddHandler
 {
@@ -52,12 +52,12 @@ public final class ObjectAddHandler
     /**
      * Create the object.
      * 
-     * @param object The object file destination.
+     * @param file The object file destination.
      * @param clazz The object class.
      * @param setup The setup class.
      * @throws IOException If error when creating the object.
      */
-    private static void createObject(File object, Class<?> clazz, Class<?> setup) throws IOException
+    private static void createObject(File file, Class<?> clazz, Class<?> setup) throws IOException
     {
         final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_OBJECT);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
@@ -77,7 +77,7 @@ public final class ObjectAddHandler
                 dest.add(line);
             }
         }
-        Files.write(object.toPath(), dest, StandardCharsets.UTF_8);
+        Files.write(file.toPath(), dest, StandardCharsets.UTF_8);
         lines.clear();
         dest.clear();
     }
@@ -102,18 +102,18 @@ public final class ObjectAddHandler
         final Media selection = ProjectModel.INSTANCE.getSelection();
         final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
         final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
-        final InputDialog inputDialog = new InputDialog(parent,
-                                                        Messages.AddObject_Title,
-                                                        Messages.AddObject_Text,
-                                                        DEFAULT_NEW_OBJECT_NAME,
-                                                        validator);
-        final int code = inputDialog.open();
+        final InputDialog input = new InputDialog(parent,
+                                                  Messages.AddObject_Title,
+                                                  Messages.AddObject_Text,
+                                                  DEFAULT_NEW_OBJECT_NAME,
+                                                  validator);
+        final int code = input.open();
         if (code == Window.OK)
         {
-            final String name = inputDialog.getValue();
-            final File object = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
+            final String name = input.getValue();
+            final File file = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
-            if (object.exists())
+            if (file.exists())
             {
                 MessageDialog.openError(parent, Messages.AddObject_Error_Title, Messages.AddObject_Error_Text);
                 execute(partService, parent);
@@ -122,7 +122,7 @@ public final class ObjectAddHandler
             {
                 try
                 {
-                    createObject(object, ObjectGame.class, Setup.class);
+                    createObject(file, ObjectGame.class, Setup.class);
                 }
                 catch (final IOException exception)
                 {

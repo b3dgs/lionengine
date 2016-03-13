@@ -51,10 +51,10 @@ public final class SheetsAddHandler
     /**
      * Create the sheets.
      * 
-     * @param sheets The sheets file destination.
+     * @param file The sheets file destination.
      * @throws IOException If error when creating the sheets.
      */
-    private static void createSheets(File sheets) throws IOException
+    private static void createSheets(File file) throws IOException
     {
         final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_SHEETS);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
@@ -71,7 +71,7 @@ public final class SheetsAddHandler
                 dest.add(line);
             }
         }
-        Files.write(sheets.toPath(), dest, StandardCharsets.UTF_8);
+        Files.write(file.toPath(), dest, StandardCharsets.UTF_8);
         lines.clear();
         dest.clear();
     }
@@ -99,18 +99,18 @@ public final class SheetsAddHandler
         final String value = TileSheetsConfig.FILENAME.replace(Constant.DOT
                                                                + Factory.FILE_DATA_EXTENSION,
                                                                Constant.EMPTY_STRING);
-        final InputDialog inputDialog = new InputDialog(parent,
-                                                        Messages.AddSheets_Title,
-                                                        Messages.AddSheets_Text,
-                                                        value,
-                                                        validator);
-        final int code = inputDialog.open();
+        final InputDialog input = new InputDialog(parent,
+                                                  Messages.AddSheets_Title,
+                                                  Messages.AddSheets_Text,
+                                                  value,
+                                                  validator);
+        final int code = input.open();
         if (code == Window.OK)
         {
-            final String name = inputDialog.getValue();
-            final File sheets = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
+            final String name = input.getValue();
+            final File file = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
-            if (sheets.exists())
+            if (file.exists())
             {
                 MessageDialog.openError(parent, Messages.AddSheets_Error_Title, Messages.AddSheets_Error_Text);
                 execute(partService, parent);
@@ -119,7 +119,7 @@ public final class SheetsAddHandler
             {
                 try
                 {
-                    createSheets(sheets);
+                    createSheets(file);
                 }
                 catch (final IOException exception)
                 {

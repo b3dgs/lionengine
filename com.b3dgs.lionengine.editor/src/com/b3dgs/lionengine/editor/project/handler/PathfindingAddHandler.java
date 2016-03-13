@@ -86,15 +86,15 @@ public final class PathfindingAddHandler
                                                                 Constant.EMPTY_STRING);
         final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
         final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
-        final InputDialog inputDialog = new InputDialog(parent,
-                                                        Messages.AddPathfinding_Title,
-                                                        Messages.AddPathfinding_Text,
-                                                        value,
-                                                        validator);
-        final int code = inputDialog.open();
+        final InputDialog input = new InputDialog(parent,
+                                                  Messages.AddPathfinding_Title,
+                                                  Messages.AddPathfinding_Text,
+                                                  value,
+                                                  validator);
+        final int code = input.open();
         if (code == Window.OK)
         {
-            final String name = inputDialog.getValue();
+            final String name = input.getValue();
             final File file = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
             if (file.exists())

@@ -75,10 +75,10 @@ public final class ProjectImportHandler
     @Execute
     public void execute(Shell shell)
     {
-        final ProjectImportDialog importProjectDialog = new ProjectImportDialog(shell);
-        importProjectDialog.open();
+        final ProjectImportDialog dialog = new ProjectImportDialog(shell);
+        dialog.open();
 
-        final Project project = importProjectDialog.getProject();
+        final Project project = dialog.getProject();
         if (project != null)
         {
             importProject(project);

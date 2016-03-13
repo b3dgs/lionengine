@@ -47,10 +47,10 @@ public final class CollisionsAddHandler
     /**
      * Create the collisions.
      * 
-     * @param collisions The collisions file destination.
+     * @param file The collisions file destination.
      * @throws IOException If error when creating the collisions.
      */
-    private static void createCollisions(File collisions) throws IOException
+    private static void createCollisions(File file) throws IOException
     {
         final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_COLLISIONS);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
@@ -59,7 +59,7 @@ public final class CollisionsAddHandler
         {
             dest.add(line);
         }
-        Files.write(collisions.toPath(), dest, StandardCharsets.UTF_8);
+        Files.write(file.toPath(), dest, StandardCharsets.UTF_8);
         lines.clear();
         dest.clear();
     }
@@ -86,18 +86,18 @@ public final class CollisionsAddHandler
                                                                    Constant.EMPTY_STRING);
         final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
         final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
-        final InputDialog inputDialog = new InputDialog(parent,
-                                                        Messages.AddCollisions_Title,
-                                                        Messages.AddCollisions_Text,
-                                                        value,
-                                                        validator);
-        final int code = inputDialog.open();
+        final InputDialog input = new InputDialog(parent,
+                                                  Messages.AddCollisions_Title,
+                                                  Messages.AddCollisions_Text,
+                                                  value,
+                                                  validator);
+        final int code = input.open();
         if (code == Window.OK)
         {
-            final String name = inputDialog.getValue();
-            final File collisions = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
+            final String name = input.getValue();
+            final File file = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
-            if (collisions.exists())
+            if (file.exists())
             {
                 MessageDialog.openError(parent, Messages.AddCollisions_Error_Title, Messages.AddCollisions_Error_Text);
                 execute(parent);
@@ -106,7 +106,7 @@ public final class CollisionsAddHandler
             {
                 try
                 {
-                    createCollisions(collisions);
+                    createCollisions(file);
                 }
                 catch (final IOException exception)
                 {

@@ -47,10 +47,10 @@ public final class GroupsAddHandler
     /**
      * Create the groups.
      * 
-     * @param groups The groups file destination.
+     * @param file The groups file destination.
      * @throws IOException If error when creating the groups.
      */
-    private static void createGroups(File groups) throws IOException
+    private static void createGroups(File file) throws IOException
     {
         final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_GROUPS);
         final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
@@ -59,7 +59,7 @@ public final class GroupsAddHandler
         {
             dest.add(line);
         }
-        Files.write(groups.toPath(), dest, StandardCharsets.UTF_8);
+        Files.write(file.toPath(), dest, StandardCharsets.UTF_8);
         lines.clear();
         dest.clear();
     }
@@ -86,18 +86,18 @@ public final class GroupsAddHandler
         final String value = TileGroupsConfig.FILENAME.replace(Constant.DOT
                                                                + Factory.FILE_DATA_EXTENSION,
                                                                Constant.EMPTY_STRING);
-        final InputDialog inputDialog = new InputDialog(parent,
-                                                        Messages.AddGroups_Title,
-                                                        Messages.AddGroups_Text,
-                                                        value,
-                                                        validator);
-        final int code = inputDialog.open();
+        final InputDialog input = new InputDialog(parent,
+                                                  Messages.AddGroups_Title,
+                                                  Messages.AddGroups_Text,
+                                                  value,
+                                                  validator);
+        final int code = input.open();
         if (code == Window.OK)
         {
-            final String name = inputDialog.getValue();
-            final File groups = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
+            final String name = input.getValue();
+            final File file = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
 
-            if (groups.exists())
+            if (file.exists())
             {
                 MessageDialog.openError(parent, Messages.AddGroups_Error_Title, Messages.AddGroups_Error_Text);
                 execute(parent);
@@ -106,7 +106,7 @@ public final class GroupsAddHandler
             {
                 try
                 {
-                    createGroups(groups);
+                    createGroups(file);
                 }
                 catch (final IOException exception)
                 {
