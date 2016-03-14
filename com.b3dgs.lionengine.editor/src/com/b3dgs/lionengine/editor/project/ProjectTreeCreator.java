@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.project.tester.CollisionsTester;
-import com.b3dgs.lionengine.editor.project.tester.FormulasTester;
 import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
 import com.b3dgs.lionengine.editor.project.tester.MinimapTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
@@ -64,10 +62,6 @@ public class ProjectTreeCreator
     public static final Image ICON_SHEETS = UtilIcon.get(RESOURCES_FOLDER, "sheets.png");
     /** Groups file icon. */
     public static final Image ICON_GROUPS = UtilIcon.get(RESOURCES_FOLDER, "groups.png");
-    /** Formulas file icon. */
-    public static final Image ICON_FORMULAS = UtilIcon.get(RESOURCES_FOLDER, "formulas.png");
-    /** Collisions file icon. */
-    public static final Image ICON_COLLISIONS = UtilIcon.get(RESOURCES_FOLDER, "collisions.png");
     /** Minimap file icon. */
     public static final Image ICON_MINIMAP = UtilIcon.get(RESOURCES_FOLDER, "minimap.png");
     /** META-INF folder. */
@@ -101,14 +95,6 @@ public class ProjectTreeCreator
         else if (GroupsTester.isGroupsFile(file))
         {
             image = ICON_GROUPS;
-        }
-        else if (FormulasTester.isFormulasFile(file))
-        {
-            image = ICON_FORMULAS;
-        }
-        else if (CollisionsTester.isCollisionsFile(file))
-        {
-            image = ICON_COLLISIONS;
         }
         else if (MinimapTester.isMinimapFile(file))
         {

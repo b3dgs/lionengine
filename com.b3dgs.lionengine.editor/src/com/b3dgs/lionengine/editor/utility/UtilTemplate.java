@@ -42,10 +42,6 @@ public final class UtilTemplate
     /** Template sheets. */
     public static final String TEMPLATE_GROUPS = "groups." + UtilTemplate.TEMPLATE_EXTENSION;
     /** Template sheets. */
-    public static final String TEMPLATE_FORMULAS = "formulas." + UtilTemplate.TEMPLATE_EXTENSION;
-    /** Template sheets. */
-    public static final String TEMPLATE_COLLISIONS = "collisions." + UtilTemplate.TEMPLATE_EXTENSION;
-    /** Template sheets. */
     public static final String TEMPLATE_MINIMAP = "minimap." + UtilTemplate.TEMPLATE_EXTENSION;
     /** Template class area. */
     public static final String TEMPLATE_CLASS_AREA = "%CLASS%";

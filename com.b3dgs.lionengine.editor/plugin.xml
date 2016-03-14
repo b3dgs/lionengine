@@ -67,12 +67,6 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.map.collision">
-         <test
-               property="com.b3dgs.lionengine.editor.mapTester.collision">
-         </test>
-      </definition>
-      <definition
             id="com.b3dgs.lionengine.editor.folder-type.category">
          <test
                property="com.b3dgs.lionengine.editor.folderTypeTester.category">
@@ -88,12 +82,6 @@
             id="com.b3dgs.lionengine.editor.objects-folder.isObject">
          <test
                property="com.b3dgs.lionengine.editor.objectsFolderTester.isObject">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.tile-collision-editor.test">
-         <test
-               property="com.b3dgs.lionengine.editor.mapImplementationTester.test">
          </test>
       </definition>
       <definition
@@ -118,30 +106,6 @@
             id="com.b3dgs.lionengine.editor.groups.edit">
          <test
                property="com.b3dgs.lionengine.editor.groupsTester.editGroups">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.formulas.add">
-         <test
-               property="com.b3dgs.lionengine.editor.formulasTester.addFormulas">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.formulas.edit">
-         <test
-               property="com.b3dgs.lionengine.editor.formulasTester.editFormulas">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.collisions.add">
-         <test
-               property="com.b3dgs.lionengine.editor.collisionsTester.addCollisions">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.collisions.edit">
-         <test
-               property="com.b3dgs.lionengine.editor.collisionsTester.editCollisions">
          </test>
       </definition>
       <definition
@@ -199,24 +163,6 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.properties.enableCollisions">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterCollisions.enableCollisions">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.properties.editCollisions">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterCollisions.editCollisions">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.properties.disableCollisions">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterCollisions.disableCollisions">
-         </test>
-      </definition>
-      <definition
             id="com.b3dgs.lionengine.editor.properties.setFrames">
          <test
                property="com.b3dgs.lionengine.editor.propertiesTesterFrames.setFrames">
@@ -226,24 +172,6 @@
             id="com.b3dgs.lionengine.editor.properties.removeFrames">
          <test
                property="com.b3dgs.lionengine.editor.propertiesTesterFrames.removeFrames">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.properties.addFormula">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterTileCollision.addFormula">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.properties.removeFormula">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterTileCollision.removeFormula">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.properties.editFormula">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterTileCollision.editFormula">
          </test>
       </definition>
    </extension>
@@ -285,20 +213,6 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.FormulasTester"
-            id="com.b3dgs.lionengine.editor.formulasTester"
-            namespace="com.b3dgs.lionengine.editor.formulasTester"
-            properties="addFormulas,editFormulas"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.CollisionsTester"
-            id="com.b3dgs.lionengine.editor.collisionsTester"
-            namespace="com.b3dgs.lionengine.editor.collisionsTester"
-            properties="addCollisions,editCollisions"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
             class="com.b3dgs.lionengine.editor.project.tester.MinimapTester"
             id="com.b3dgs.lionengine.editor.minimapTester"
             namespace="com.b3dgs.lionengine.editor.minimapTester"
@@ -320,13 +234,6 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.properties.collision.PropertiesCollisionTester"
-            id="com.b3dgs.lionengine.editor.propertiesTesterCollisions"
-            namespace="com.b3dgs.lionengine.editor.propertiesTesterCollisions"
-            properties="enableCollisions,editCollisions,disableCollisions"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
             class="com.b3dgs.lionengine.editor.properties.surface.PropertiesSurfaceTester"
             id="com.b3dgs.lionengine.editor.propertiesTesterSurface"
             namespace="com.b3dgs.lionengine.editor.propertiesTesterSurface"
@@ -338,13 +245,6 @@
             id="com.b3dgs.lionengine.editor.propertiesTesterFrames"
             namespace="com.b3dgs.lionengine.editor.propertiesTesterFrames"
             properties="setFrames,removeFrames"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
-            class="com.b3dgs.lionengine.editor.properties.tilecollision.PropertiesTileCollisionTester"
-            id="com.b3dgs.lionengine.editor.propertiesTesterTileCollision"
-            namespace="com.b3dgs.lionengine.editor.propertiesTesterTileCollision"
-            properties="addFormula,removeFormula,editFormula"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
@@ -369,20 +269,11 @@
       <implementation
             class="com.b3dgs.lionengine.editor.properties.animation.PropertiesAnimation">
       </implementation>
-      <implementation
-            class="com.b3dgs.lionengine.editor.properties.collision.PropertiesCollision">
-      </implementation>
-      <implementation
-            class="com.b3dgs.lionengine.editor.properties.collisioncategory.PropertiesCollisionCategory">
-      </implementation>
    </extension>
    <extension
          point="com.b3dgs.lionengine.editor.propertiesTile">
       <implementation
             class="com.b3dgs.lionengine.editor.properties.tile.PropertiesTile">
-      </implementation>
-      <implementation
-            class="com.b3dgs.lionengine.editor.properties.tilecollision.PropertiesTileCollision">
       </implementation>
    </extension>
 

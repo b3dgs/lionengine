@@ -55,24 +55,6 @@ public final class Messages extends NLS
     /** Add groups error text. */
     public static String AddGroups_Error_Text;
 
-    /** Add formulas title. */
-    public static String AddFormulas_Title;
-    /** Add formulas title. */
-    public static String AddFormulas_Text;
-    /** Add formulas error title. */
-    public static String AddFormulas_Error_Title;
-    /** Add formulas error text. */
-    public static String AddFormulas_Error_Text;
-
-    /** Add collisions title. */
-    public static String AddCollisions_Title;
-    /** Add collisions title. */
-    public static String AddCollisions_Text;
-    /** Add collisions error title. */
-    public static String AddCollisions_Error_Title;
-    /** Add collisions error text. */
-    public static String AddCollisions_Error_Text;
-
     /** Remove object title. */
     public static String RemoveObject_Title;
     /** Remove object text. */

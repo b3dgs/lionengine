@@ -125,7 +125,7 @@ public abstract class AbstractEditor implements MDirtyable
         bottom.setLayout(new GridLayout(1, false));
         bottom.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
-        final Button exit = UtilButton.create(bottom, "Exit", null);
+        final Button exit = UtilButton.create(bottom, Messages.Exit, null);
         exit.setImage(AbstractDialog.ICON_EXIT);
         UtilButton.setAction(exit, () ->
         {
