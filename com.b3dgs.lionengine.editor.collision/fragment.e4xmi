@@ -24,13 +24,13 @@
     <elements xsi:type="menu:DirectMenuItem" xmi:id="_s7PmEOldEeW6eOAEK5G14g" elementId="" label="%menu.collisions-disable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/collisions-disable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.collision.properties.CollisionsDisableHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_s7PmEeldEeW6eOAEK5G14g" coreExpressionId="com.b3dgs.lionengine.editor.properties.disableCollisions"/>
     </elements>
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_tXs4kOldEeW6eOAEK5G14g" elementId="" label="%menu.formula-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/tileformula-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.formula.project.FormulasAddHandler">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_tXs4kOldEeW6eOAEK5G14g" elementId="" label="%menu.formula-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/tileformula-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.formula.properties.FormulaEditHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_tXs4keldEeW6eOAEK5G14g" coreExpressionId="com.b3dgs.lionengine.editor.properties.addFormula"/>
     </elements>
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_txGQAOldEeW6eOAEK5G14g" elementId="" label="%menu.formula-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/tileformula-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.formula.editor.FormulaRemoveHandler">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_txGQAOldEeW6eOAEK5G14g" elementId="" label="%menu.formula-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/tileformula-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.formula.properties.FormulaRemoveHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_txGQAeldEeW6eOAEK5G14g" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeFormula"/>
     </elements>
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_uJ5xkOldEeW6eOAEK5G14g" elementId="" label="%menu.formula-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/tileformula-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.formula.editor.FormulasEditHandler">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_uJ5xkOldEeW6eOAEK5G14g" elementId="" label="%menu.formula-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/tileformula-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.formula.properties.FormulaEditHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_uJ5xkeldEeW6eOAEK5G14g" coreExpressionId="com.b3dgs.lionengine.editor.properties.editFormula"/>
     </elements>
   </fragments>
