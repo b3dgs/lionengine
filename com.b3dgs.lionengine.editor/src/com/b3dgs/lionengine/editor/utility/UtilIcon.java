@@ -64,13 +64,8 @@ public final class UtilIcon
      */
     public static Image get(String root, String icon)
     {
-        final Bundle bundle = Activator.getContext().getBundle();
         final String path = UtilFile.getPathSeparator(Constant.SLASH, UtilIcon.ICON_FOLDER, root, icon);
-        final URL url = bundle.getEntry(path);
-        if (url == null)
-        {
-            throw new LionEngineException(UtilIcon.ERROR_ICON_PATH + path);
-        }
+        final URL url = getUrl(path);
         try
         {
             final ImageDescriptor descriptor = ImageDescriptor.createFromURL(FileLocator.toFileURL(url));
@@ -85,6 +80,26 @@ public final class UtilIcon
         {
             throw new LionEngineException(exception);
         }
+    }
+
+    /**
+     * Get the URL relative to bundle.
+     * 
+     * @param path The original path.
+     * @return The bundle URL.
+     * @throws LionEngineException If icon not found in any bundle.
+     */
+    private static URL getUrl(String path)
+    {
+        for (final Bundle bundle : Activator.getContext().getBundles())
+        {
+            final URL url = bundle.getEntry(path);
+            if (url != null)
+            {
+                return url;
+            }
+        }
+        throw new LionEngineException(UtilIcon.ERROR_ICON_PATH + path);
     }
 
     /**
