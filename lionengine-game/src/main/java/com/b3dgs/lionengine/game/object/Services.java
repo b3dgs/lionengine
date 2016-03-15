@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.object;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -58,7 +58,7 @@ public class Services
     private static final String ERROR_SERVICE_GET = "Service not found: ";
 
     /** Services list. */
-    private final Collection<Object> services = new ArrayList<Object>();
+    private final Collection<Object> services = new HashSet<Object>();
 
     /**
      * Create a services container.
