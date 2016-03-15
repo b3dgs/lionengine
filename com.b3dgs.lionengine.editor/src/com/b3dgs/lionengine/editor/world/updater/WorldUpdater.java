@@ -29,6 +29,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Services;
@@ -93,6 +94,21 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
 
         addMouseMoveListener(navigation);
         addKeyboardListener(navigation);
+
+        for (final WorldMouseClickListener listener : UtilExtension.get(WorldMouseClickListener.class,
+                                                                        WorldMouseClickListener.EXTENSION_ID,
+                                                                        services))
+        {
+            services.add(listener);
+            addMouseClickListener(listener);
+        }
+        for (final WorldMouseMoveListener listener : UtilExtension.get(WorldMouseMoveListener.class,
+                                                                       WorldMouseMoveListener.EXTENSION_ID,
+                                                                       services))
+        {
+            services.add(listener);
+            addMouseMoveListener(listener);
+        }
     }
 
     /**

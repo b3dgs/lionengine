@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.world.renderer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -35,6 +38,7 @@ import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.world.Selection;
 import com.b3dgs.lionengine.editor.world.WorldView;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
@@ -70,6 +74,8 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
 
     /** Part service. */
     protected final EPartService partService;
+    /** Rendering listener. */
+    private final Collection<WorldRenderListener> listeners = new ArrayList<>();
     /** Scale transform. */
     private final Transform transform = Graphics.createTransform();
     /** The parent. */
@@ -86,14 +92,6 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     private final WorldUpdater worldUpdater;
     /** World zoom. */
     private final WorldZoom zoom;
-    /** Grid renderer. */
-    private final WorldGrid grid;
-    /** Cursor renderer. */
-    private final WorldCursor cursor;
-    /** Selected tiles. */
-    private final WorldSelectedTiles selectedTiles;
-    /** Selected objects. */
-    private final WorldSelectedObjects selectedObjects;
 
     /**
      * Create a world renderer with grid enabled.
@@ -104,10 +102,6 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     public WorldRenderer(EPartService partService, Services services)
     {
         this.partService = partService;
-        grid = services.create(WorldGrid.class);
-        cursor = services.create(WorldCursor.class);
-        selectedTiles = services.create(WorldSelectedTiles.class);
-        selectedObjects = services.create(WorldSelectedObjects.class);
         worldView = services.get(WorldView.class);
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
@@ -115,6 +109,22 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
         selection = services.get(Selection.class);
         worldUpdater = services.get(WorldUpdater.class);
         zoom = services.get(WorldZoom.class);
+
+        final WorldGrid grid = services.create(WorldGrid.class);
+        final WorldCursor cursor = services.create(WorldCursor.class);
+        final WorldSelectedTiles selectedTiles = services.create(WorldSelectedTiles.class);
+        final WorldSelectedObjects selectedObjects = services.create(WorldSelectedObjects.class);
+        listeners.add(selectedObjects);
+        listeners.add(selectedTiles);
+        listeners.add(cursor);
+        listeners.add(grid);
+        for (final WorldRenderListener listener : UtilExtension.get(WorldRenderListener.class,
+                                                                    WorldRenderListener.EXTENSION_ID,
+                                                                    services))
+        {
+            services.add(listener);
+            listeners.add(listener);
+        }
     }
 
     /**
@@ -187,10 +197,10 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
 
             final int tw = (int) Math.ceil(map.getTileWidth() * scale);
             final int th = (int) Math.ceil(map.getTileHeight() * scale);
-            selectedObjects.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
-            selectedTiles.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
-            cursor.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
-            grid.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
+            for (final WorldRenderListener listener : listeners)
+            {
+                listener.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
+            }
         }
     }
 

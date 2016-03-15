@@ -34,10 +34,6 @@ import org.osgi.service.event.EventHandler;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.handler.ProjectImportHandler;
-import com.b3dgs.lionengine.editor.utility.UtilPart;
-import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
-import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
 
 /**
  * Configure the editor with the right name.
@@ -91,11 +87,6 @@ public class ApplicationConfiguration
                     if (i < args.length)
                     {
                         importProject(args[i]);
-
-                        final WorldPart part = UtilPart.getPart(WorldPart.ID, WorldPart.class);
-                        part.setToolItemEnabled(SetShowCollisionsHandler.ID, true);
-                        part.setToolItemEnabled(SetPointerCollisionHandler.ID, true);
-                        part.update();
                     }
                 }
             }

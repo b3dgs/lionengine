@@ -44,6 +44,25 @@ public final class UtilToolbar
      * 
      * @param toolbar The tool bar reference.
      * @param selected The selection state.
+     * @param prefix The elements prefix (relative to the tool bar ID).
+     */
+    public static void setToolItemSelectionPrefix(MToolBar toolbar, boolean selected, String prefix)
+    {
+        for (final MToolBarElement element : toolbar.getChildren())
+        {
+            final String id = element.getElementId().substring(toolbar.getElementId().length() + 1);
+            if (element instanceof MDirectToolItem && id.startsWith(prefix))
+            {
+                ((MDirectToolItem) element).setSelected(selected);
+            }
+        }
+    }
+
+    /**
+     * Set the tool item selection.
+     * 
+     * @param toolbar The tool bar reference.
+     * @param selected The selection state.
      * @param names The elements names (relative to the tool bar ID). None for all.
      */
     public static void setToolItemSelection(MToolBar toolbar, boolean selected, String... names)

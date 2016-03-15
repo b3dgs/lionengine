@@ -20,9 +20,6 @@ package com.b3dgs.lionengine.editor.world;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
@@ -40,7 +37,7 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
-import com.b3dgs.lionengine.editor.utility.UtilClass;
+import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilToolbar;
@@ -58,10 +55,6 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.world";
-    /** Extension point attribute updater. */
-    private static final String EXTENSION_UPDATER = "updater";
-    /** Extension point attribute renderer. */
-    private static final String EXTENSION_RENDERER = "renderer";
     /** Item not found. */
     private static final String ERROR_ITEM = "Item not found: ";
 
@@ -240,22 +233,19 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
      */
     private WorldUpdater checkUpdaterExtensionPoint(Services services)
     {
-        final IExtensionRegistry registry = Platform.getExtensionRegistry();
-        final IConfigurationElement[] elements = registry.getConfigurationElementsFor(WorldUpdater.EXTENSION_ID);
-        if (elements.length > 0)
+        try
         {
-            final String extensionUpdater = elements[0].getAttribute(EXTENSION_UPDATER);
-            if (extensionUpdater != null)
+            for (final WorldUpdater extension : UtilExtension.get(WorldUpdater.class,
+                                                                  WorldUpdater.EXTENSION_ID,
+                                                                  partService,
+                                                                  services))
             {
-                try
-                {
-                    return UtilClass.createClass(extensionUpdater, WorldUpdater.class, partService, services);
-                }
-                catch (final ReflectiveOperationException exception)
-                {
-                    Verbose.exception(exception);
-                }
+                return extension;
             }
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(exception);
         }
         return new WorldUpdater(partService, services);
     }
@@ -268,22 +258,19 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
      */
     private WorldRenderer checkRendererExtensionPoint(Services services)
     {
-        final IExtensionRegistry registry = Platform.getExtensionRegistry();
-        final IConfigurationElement[] elements = registry.getConfigurationElementsFor(WorldRenderer.EXTENSION_ID);
-        if (elements.length > 0)
+        try
         {
-            final String extensionRenderer = elements[0].getAttribute(EXTENSION_RENDERER);
-            if (extensionRenderer != null)
+            for (final WorldRenderer extension : UtilExtension.get(WorldRenderer.class,
+                                                                   WorldRenderer.EXTENSION_ID,
+                                                                   partService,
+                                                                   services))
             {
-                try
-                {
-                    return UtilClass.createClass(extensionRenderer, WorldRenderer.class, partService, services);
-                }
-                catch (final ReflectiveOperationException exception)
-                {
-                    Verbose.exception(exception);
-                }
+                return extension;
             }
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(exception);
         }
         return new WorldRenderer(partService, services);
     }

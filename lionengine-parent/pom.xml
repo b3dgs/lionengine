@@ -129,6 +129,8 @@
                 <module>../com.b3dgs.lionengine.core.swt</module>
                 <module>../com.b3dgs.lionengine.core.swt.test</module>
 				<module>../com.b3dgs.lionengine.editor</module>
+                <module>../com.b3dgs.lionengine.editor.collision</module>
+                <module>../com.b3dgs.lionengine.editor.pathfinding</module>
             </modules>
         </profile>
         <profile>

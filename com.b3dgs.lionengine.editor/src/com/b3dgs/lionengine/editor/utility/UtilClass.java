@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.editor.utility;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -43,43 +42,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class UtilClass
 {
-    /** Create class error. */
-    private static final String ERROR_CLASS_CREATE = "Unable to create the following class: ";
-
-    /**
-     * Create a class from its name and call its corresponding constructor.
-     * 
-     * @param <C> The class type.
-     * @param name The full class name.
-     * @param type The class type.
-     * @param params The constructor parameters.
-     * @return The class instance.
-     * @throws ReflectiveOperationException If error when creating the class.
-     */
-    public static <C> C createClass(String name, Class<C> type, Object... params) throws ReflectiveOperationException
-    {
-        final Class<?> clazz = Activator.getMainBundle().loadClass(name);
-        for (final Constructor<?> constructor : clazz.getConstructors())
-        {
-            final Class<?>[] constructorParams = constructor.getParameterTypes();
-            final int required = params.length;
-            int found = 0;
-            for (final Class<?> constructorParam : constructorParams)
-            {
-                if (found >= params.length || !constructorParam.isAssignableFrom(params[found].getClass()))
-                {
-                    break;
-                }
-                found++;
-            }
-            if (found == required)
-            {
-                return type.cast(constructor.newInstance(params));
-            }
-        }
-        throw new ClassNotFoundException(UtilClass.ERROR_CLASS_CREATE + name);
-    }
-
     /**
      * Get the class from media file, by reading the attribute {@link ObjectConfig#CLASS} attribute.
      * 

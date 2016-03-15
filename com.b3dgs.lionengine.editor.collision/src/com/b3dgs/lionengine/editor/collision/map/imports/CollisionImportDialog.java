@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.map.collision.imports;
+package com.b3dgs.lionengine.editor.collision.map.imports;
 
 import java.io.File;
 
@@ -27,12 +27,11 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.toolbar.SetPointerCollisionHandler;
+import com.b3dgs.lionengine.editor.toolbar.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
-import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
-import com.b3dgs.lionengine.editor.world.tester.MapTester;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
@@ -98,13 +97,13 @@ public class CollisionImportDialog extends AbstractDialog
         final File parentFile = map.getFeature(MapTileGroup.class).getGroupsConfig().getFile().getParentFile();
 
         final File formulas = new File(parentFile, CollisionFormulaConfig.FILENAME);
-        if (MapTester.isFormulasConfig(project.getResourceMedia(formulas)))
+        if (MapCollisionTester.isFormulasConfig(project.getResourceMedia(formulas)))
         {
             this.formulas.setLocation(project.getResourceMedia(formulas).getPath());
         }
 
         final File collisions = new File(parentFile, CollisionGroupConfig.FILENAME);
-        if (MapTester.isCollisionsConfig(project.getResourceMedia(collisions)))
+        if (MapCollisionTester.isCollisionsConfig(project.getResourceMedia(collisions)))
         {
             this.collisions.setLocation(project.getResourceMedia(collisions).getPath());
         }

@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
-import com.b3dgs.lionengine.editor.collision.map.CollisionGroupList;
+import com.b3dgs.lionengine.editor.collision.map.editor.CollisionGroupList;
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.game.Axis;

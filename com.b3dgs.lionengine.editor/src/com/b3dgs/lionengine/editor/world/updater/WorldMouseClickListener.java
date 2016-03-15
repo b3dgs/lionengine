@@ -17,11 +17,16 @@
  */
 package com.b3dgs.lionengine.editor.world.updater;
 
+import com.b3dgs.lionengine.editor.Activator;
+
 /**
  * Listen to world mouse click events.
  */
 public interface WorldMouseClickListener
 {
+    /** Extension ID. */
+    String EXTENSION_ID = Activator.PLUGIN_ID + ".worldMouseClickListener";
+
     /**
      * Called when a mouse click started.
      * 

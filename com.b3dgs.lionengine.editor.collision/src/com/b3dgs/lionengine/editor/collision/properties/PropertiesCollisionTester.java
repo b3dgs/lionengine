@@ -51,11 +51,8 @@ public final class PropertiesCollisionTester extends PropertyTester
         {
             result = !model.hasProperty(CollisionConfig.COLLISION);
         }
-        else if (PROPERTY_COLLISIONS_EDIT.equals(property) && CollisionConfig.COLLISION.equals(data))
-        {
-            result = model.hasProperty(CollisionConfig.COLLISION);
-        }
-        else if (PROPERTY_COLLISIONS_DISABLE.equals(property) && CollisionConfig.COLLISION.equals(data))
+        else if (CollisionConfig.COLLISION.equals(data)
+                 && (PROPERTY_COLLISIONS_EDIT.equals(property) || PROPERTY_COLLISIONS_DISABLE.equals(property)))
         {
             result = model.hasProperty(CollisionConfig.COLLISION);
         }

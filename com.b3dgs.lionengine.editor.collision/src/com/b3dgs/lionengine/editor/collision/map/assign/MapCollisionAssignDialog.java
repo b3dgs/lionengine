@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.dialog.map.collision.assign;
+package com.b3dgs.lionengine.editor.collision.map.assign;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -34,10 +34,10 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
+import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTileCollision;
 
 /**
- * Represents the check assign collision dialog.
+ * Allows to configure the assigned collision from mouse on map.
  */
 public class MapCollisionAssignDialog extends AbstractDialog
 {
@@ -47,7 +47,7 @@ public class MapCollisionAssignDialog extends AbstractDialog
     private static final String DEFAULT_OFFSET = "0";
 
     /** Collision assigner. */
-    private final WorldInteractionTile collision;
+    private final WorldInteractionTileCollision collision;
 
     /**
      * Create an import map dialog.
@@ -55,7 +55,7 @@ public class MapCollisionAssignDialog extends AbstractDialog
      * @param parent The shell parent.
      * @param collision The collision assigner.
      */
-    public MapCollisionAssignDialog(Shell parent, WorldInteractionTile collision)
+    public MapCollisionAssignDialog(Shell parent, WorldInteractionTileCollision collision)
     {
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
         this.collision = collision;
@@ -105,10 +105,9 @@ public class MapCollisionAssignDialog extends AbstractDialog
         final Button check = UtilButton.createBrowse(offsetArea);
         check.setText(Messages.Check);
 
-        final WorldInteractionTile interactionTile = collision;
         UtilButton.setAction(check, () ->
         {
-            interactionTile.verifyCollision(Integer.parseInt(offset.getText()));
+            collision.verifyCollision(Integer.parseInt(offset.getText()));
 
             final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
             if (!part.getUpdater().isCollisionsEnabled())
@@ -118,6 +117,7 @@ public class MapCollisionAssignDialog extends AbstractDialog
             part.update();
         });
         UtilButton.setAction(check, () -> setFinishEnabled(true));
+
         return check;
     }
 

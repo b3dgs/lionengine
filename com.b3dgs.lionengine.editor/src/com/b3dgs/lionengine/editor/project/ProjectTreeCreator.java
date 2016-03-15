@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
 import com.b3dgs.lionengine.editor.project.tester.MinimapTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
+import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
@@ -76,7 +77,7 @@ public class ProjectTreeCreator
     private static Image getDataIcon(Media file)
     {
         final Image image;
-        for (final ResourceChecker checker : ProjectPart.getResourceCheckers())
+        for (final ResourceChecker checker : UtilExtension.get(ResourceChecker.class, ResourceChecker.EXTENSION_ID))
         {
             final Image icon = checker.getIcon(file);
             if (icon != null)

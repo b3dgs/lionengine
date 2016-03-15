@@ -17,14 +17,10 @@
  */
 package com.b3dgs.lionengine.editor.properties;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
@@ -38,9 +34,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Focusable;
+import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilTree;
 import com.b3dgs.lionengine.game.Configurer;
@@ -73,33 +69,6 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
         {
             key, property
         });
-    }
-
-    /**
-     * Check the properties extension point object.
-     * 
-     * @param <T> The properties type.
-     * @param clazz The class type.
-     * @param id The extension id.
-     * @param extension The extension attribute.
-     * @return The properties instance from extension point or default one.
-     */
-    private static <T> Collection<T> checkPropertiesExtensionPoint(Class<T> clazz, String id, String extension)
-    {
-        final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(id);
-        final Collection<T> extensions = new ArrayList<>();
-        for (final IConfigurationElement element : elements)
-        {
-            try
-            {
-                extensions.add(clazz.cast(element.createExecutableExtension(extension)));
-            }
-            catch (final CoreException exception)
-            {
-                Verbose.exception(exception);
-            }
-        }
-        return extensions;
     }
 
     /** Properties tree. */
@@ -146,12 +115,8 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
         addListeners(menuService);
         PropertiesModel.INSTANCE.setTree(properties);
 
-        providersObject = checkPropertiesExtensionPoint(PropertiesProviderObject.class,
-                                                        PropertiesProviderObject.EXTENSION_ID,
-                                                        PropertiesProviderObject.EXTENSION_PROPERTIES);
-        providersTile = checkPropertiesExtensionPoint(PropertiesProviderTile.class,
-                                                      PropertiesProviderTile.EXTENSION_ID,
-                                                      PropertiesProviderTile.EXTENSION_PROPERTIES);
+        providersObject = UtilExtension.get(PropertiesProviderObject.class, PropertiesProviderObject.EXTENSION_ID);
+        providersTile = UtilExtension.get(PropertiesProviderTile.class, PropertiesProviderTile.EXTENSION_ID);
     }
 
     /**

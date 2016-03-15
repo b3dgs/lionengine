@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.toolbar;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
+import com.b3dgs.lionengine.editor.world.Messages;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
 

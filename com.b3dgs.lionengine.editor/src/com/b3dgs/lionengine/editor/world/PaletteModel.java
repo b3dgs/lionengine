@@ -22,6 +22,9 @@ package com.b3dgs.lionengine.editor.world;
  */
 public class PaletteModel
 {
+    /** Palette prefix for items ID. */
+    public static final String ID_PREFIX = "palette.";
+
     /** Selected palette. */
     private Enum<?> palette;
 

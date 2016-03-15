@@ -17,6 +17,6 @@
  */
 
 /**
- * Map collision assign dialog package.
+ * Collisions world renderer package.
  */
-package com.b3dgs.lionengine.editor.dialog.map.collision.assign;
+package com.b3dgs.lionengine.editor.world.renderer;

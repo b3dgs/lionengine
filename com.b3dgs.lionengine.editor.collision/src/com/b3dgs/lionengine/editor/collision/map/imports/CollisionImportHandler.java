@@ -15,35 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.collision.map;
+package com.b3dgs.lionengine.editor.collision.map.imports;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.WorldPart;
 
 /**
- * Edit selected collision file.
+ * Import map collisions handler.
  */
-public final class CollisionsMapEditHandler
+public final class CollisionImportHandler
 {
-    /**
-     * Execute the handler.
-     * 
-     * @param parent The shell parent.
-     */
-    public static void executeHandler(Shell parent)
-    {
-        final Media selection = ProjectModel.INSTANCE.getSelection();
-        final CollisionsMapEditDialog dialog = new CollisionsMapEditDialog(parent, selection);
-        dialog.open();
-    }
+    /** Element ID. */
+    public static final String ID = "menu.map.import-collision";
 
     /**
      * Create handler.
      */
-    public CollisionsMapEditHandler()
+    public CollisionImportHandler()
     {
         super();
     }
@@ -51,11 +42,15 @@ public final class CollisionsMapEditHandler
     /**
      * Execute the handler.
      * 
-     * @param parent The shell parent.
+     * @param shell The shell reference.
      */
     @Execute
-    public void execute(Shell parent)
+    public void execute(Shell shell)
     {
-        executeHandler(parent);
+        final CollisionImportDialog collisionImportDialog = new CollisionImportDialog(shell);
+        collisionImportDialog.open();
+
+        final WorldPart worldPart = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+        worldPart.update();
     }
 }

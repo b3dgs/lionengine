@@ -52,11 +52,7 @@ public final class PropertiesCollisionCategoryTester extends PropertyTester
         {
             result = CollisionFormulaConfig.FORMULAS.equals(data);
         }
-        else if (PROPERTY_FORMULA_REMOVE.equals(property))
-        {
-            result = CollisionFormulaConfig.FORMULA.equals(data);
-        }
-        else if (PROPERTY_FORMULA_EDIT.equals(property))
+        else if (PROPERTY_FORMULA_REMOVE.equals(property) || PROPERTY_FORMULA_EDIT.equals(property))
         {
             result = CollisionFormulaConfig.FORMULA.equals(data);
         }

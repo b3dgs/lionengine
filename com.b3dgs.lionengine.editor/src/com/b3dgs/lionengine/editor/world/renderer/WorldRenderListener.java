@@ -18,12 +18,16 @@
 package com.b3dgs.lionengine.editor.world.renderer;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Listener to rendering event.
  */
 public interface WorldRenderListener
 {
+    /** Extension ID. */
+    String EXTENSION_ID = Activator.PLUGIN_ID + ".worldRenderListener";
+
     /**
      * Called when rendering is requested.
      * 

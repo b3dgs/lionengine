@@ -35,13 +35,7 @@ import com.b3dgs.lionengine.game.object.Services;
 public final class SetPipetHandler
 {
     /** Element ID. */
-    public static final String ID = "pipet";
-    /** Excluded elements. */
-    private static final String[] EXCLUDED =
-    {
-        SetPointerObjectHandler.ID, SetPointerTileHandler.ID, SetHandHandler.ID, SetSelectionHandler.ID,
-        SetPointerCollisionHandler.ID
-    };
+    public static final String ID = PaletteModel.ID_PREFIX + "pipet";
 
     /**
      * Create handler.
@@ -65,7 +59,7 @@ public final class SetPipetHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilToolbar.setToolItemSelection(toolBar, false, EXCLUDED);
+                UtilToolbar.setToolItemSelectionPrefix(toolBar, false, PaletteModel.ID_PREFIX);
                 UtilToolbar.setToolItemSelection(toolBar, true, ID);
             }
         }

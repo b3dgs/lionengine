@@ -5,6 +5,9 @@
    <extension-point id="propertiesObject" name="Properties Object" schema="schema/propertiesObject.exsd"/>
    <extension-point id="propertiesTile" name="Properties Tile" schema="schema/propertiesTile.exsd"/>
    <extension-point id="resourceChecker" name="Resource Checker" schema="schema/resourceChecker.exsd"/>
+   <extension-point id="worldMouseClickListener" name="World Mouse Click Listener" schema="schema/worldMouseClickListener.exsd"/>
+   <extension-point id="worldMouseMoveListener" name="World Mouse Move Listener" schema="schema/worldMouseMoveListener.exsd"/>
+   <extension-point id="worldRenderListener" name="World Render Listener" schema="schema/worldRenderListener.exsd"/>
 
    <extension
          id="product"
@@ -195,7 +198,7 @@
             class="com.b3dgs.lionengine.editor.world.tester.MapTester"
             id="com.b3dgs.lionengine.editor.mapTester"
             namespace="com.b3dgs.lionengine.editor.mapTester"
-            properties="test,collision"
+            properties="test"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester

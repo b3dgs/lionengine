@@ -54,7 +54,7 @@
          </documentation>
       </annotation>
       <complexType>
-         <attribute name="updater" type="string" use="required">
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   

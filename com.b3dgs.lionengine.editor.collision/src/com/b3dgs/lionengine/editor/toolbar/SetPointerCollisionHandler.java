@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world.handler;
+package com.b3dgs.lionengine.editor.toolbar;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -35,13 +35,7 @@ import com.b3dgs.lionengine.game.object.Services;
 public final class SetPointerCollisionHandler
 {
     /** Element ID. */
-    public static final String ID = "pointer-collision";
-    /** Excluded elements. */
-    private static final String[] EXCLUDED =
-    {
-        SetPointerObjectHandler.ID, SetPointerTileHandler.ID, SetHandHandler.ID, SetPipetHandler.ID,
-        SetSelectionHandler.ID
-    };
+    public static final String ID = PaletteModel.ID_PREFIX + "pointer-collision";
 
     /**
      * Create handler.
@@ -65,7 +59,7 @@ public final class SetPointerCollisionHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilToolbar.setToolItemSelection(toolBar, false, EXCLUDED);
+                UtilToolbar.setToolItemSelectionPrefix(toolBar, false, PaletteModel.ID_PREFIX);
                 UtilToolbar.setToolItemSelection(toolBar, true, ID);
             }
         }

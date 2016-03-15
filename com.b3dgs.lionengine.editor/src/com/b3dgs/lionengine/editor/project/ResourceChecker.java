@@ -30,8 +30,6 @@ public interface ResourceChecker
 {
     /** Extension ID. */
     String EXTENSION_ID = Activator.PLUGIN_ID + ".resourceChecker";
-    /** Class attribute. */
-    String ATT_CLASS = "class";
 
     /**
      * Check the media type.

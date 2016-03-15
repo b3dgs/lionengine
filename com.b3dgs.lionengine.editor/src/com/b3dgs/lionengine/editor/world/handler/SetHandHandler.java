@@ -35,13 +35,7 @@ import com.b3dgs.lionengine.game.object.Services;
 public final class SetHandHandler
 {
     /** Element ID. */
-    public static final String ID = "hand";
-    /** Excluded elements. */
-    private static final String[] EXCLUDED =
-    {
-        SetPointerObjectHandler.ID, SetPointerTileHandler.ID, SetSelectionHandler.ID, SetPipetHandler.ID,
-        SetPointerCollisionHandler.ID
-    };
+    public static final String ID = PaletteModel.ID_PREFIX + "hand";
 
     /**
      * Create handler.
@@ -65,7 +59,7 @@ public final class SetHandHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilToolbar.setToolItemSelection(toolBar, false, EXCLUDED);
+                UtilToolbar.setToolItemSelectionPrefix(toolBar, false, PaletteModel.ID_PREFIX);
                 UtilToolbar.setToolItemSelection(toolBar, true, ID);
             }
         }

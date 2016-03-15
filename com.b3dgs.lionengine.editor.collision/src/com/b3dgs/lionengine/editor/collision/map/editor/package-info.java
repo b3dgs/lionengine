@@ -19,4 +19,4 @@
 /**
  * Collision dialog package.
  */
-package com.b3dgs.lionengine.editor.collision.map;
+package com.b3dgs.lionengine.editor.collision.map.editor;

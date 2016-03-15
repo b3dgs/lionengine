@@ -28,8 +28,6 @@ import com.b3dgs.lionengine.editor.project.dialog.ProjectImportDialog;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.editor.world.handler.SetPointerCollisionHandler;
-import com.b3dgs.lionengine.editor.world.handler.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**
@@ -49,8 +47,6 @@ public final class ProjectImportHandler
 
         final WorldPart worldPart = WorldModel.INSTANCE.getServices().get(WorldPart.class);
         worldPart.setToolBarEnabled(true);
-        worldPart.setToolItemEnabled(SetShowCollisionsHandler.ID, false);
-        worldPart.setToolItemEnabled(SetPointerCollisionHandler.ID, false);
 
         Medias.setResourcesDirectory(project.getResourcesPath().getPath());
 

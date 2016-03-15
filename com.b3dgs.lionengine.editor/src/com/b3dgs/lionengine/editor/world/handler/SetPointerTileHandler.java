@@ -35,13 +35,7 @@ import com.b3dgs.lionengine.game.object.Services;
 public final class SetPointerTileHandler
 {
     /** Element ID. */
-    public static final String ID = "pointer-tile";
-    /** Excluded elements. */
-    private static final String[] EXCLUDED =
-    {
-        SetPointerObjectHandler.ID, SetSelectionHandler.ID, SetHandHandler.ID, SetPipetHandler.ID,
-        SetPointerCollisionHandler.ID
-    };
+    public static final String ID = PaletteModel.ID_PREFIX + "pointer-tile";
 
     /**
      * Create handler.
@@ -65,7 +59,7 @@ public final class SetPointerTileHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilToolbar.setToolItemSelection(toolBar, false, EXCLUDED);
+                UtilToolbar.setToolItemSelectionPrefix(toolBar, false, PaletteModel.ID_PREFIX);
                 UtilToolbar.setToolItemSelection(toolBar, true, ID);
             }
         }

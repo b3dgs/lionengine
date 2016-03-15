@@ -3,7 +3,7 @@
 <schema targetNamespace="com.b3dgs.lionengine.editor" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="com.b3dgs.lionengine.editor" id="worldRenderer" name="World Renderer"/>
+         <meta.schema plugin="com.b3dgs.lionengine.editor" id="worldMouseMoveListener" name="World Mouse Move Listener"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -60,7 +60,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="com.b3dgs.lionengine.editor.world.WorldRenderer:"/>
+                  <meta.attribute kind="java" basedOn=":com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener"/>
                </appinfo>
             </annotation>
          </attribute>

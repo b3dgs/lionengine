@@ -17,6 +17,6 @@
  */
 
 /**
- * Map collision import dialog package.
+ * Collisions toolbar package.
  */
-package com.b3dgs.lionengine.editor.dialog.map.collision.imports;
+package com.b3dgs.lionengine.editor.toolbar;

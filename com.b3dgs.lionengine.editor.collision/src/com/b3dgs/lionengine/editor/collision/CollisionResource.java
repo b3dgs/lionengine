@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.editor.collision.map.CollisionsMapEditHandler;
+import com.b3dgs.lionengine.editor.collision.map.editor.CollisionsMapEditHandler;
 import com.b3dgs.lionengine.editor.collision.project.CollisionsTester;
 import com.b3dgs.lionengine.editor.project.ProjectTreeCreator;
 import com.b3dgs.lionengine.editor.project.ResourceChecker;

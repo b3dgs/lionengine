@@ -10,7 +10,7 @@
     <elements xsi:type="menu:DirectMenuItem" xmi:id="_og4TkOldEeW6eOAEK5G14g" elementId="" label="%menu.collisions-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/collisions-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.collision.project.CollisionsAddHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_og4TkeldEeW6eOAEK5G14g" coreExpressionId="com.b3dgs.lionengine.editor.collisions.add"/>
     </elements>
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_o6IhEOldEeW6eOAEK5G14g" elementId="" label="%menu.collisions-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/collisions-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.collision.map.CollisionsMapEditHandler">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_o6IhEOldEeW6eOAEK5G14g" elementId="" label="%menu.collisions-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/collisions-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.collision.map.editor.CollisionsMapEditHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_o6IhEeldEeW6eOAEK5G14g" coreExpressionId="com.b3dgs.lionengine.editor.collisions.edit"/>
     </elements>
   </fragments>
@@ -33,5 +33,16 @@
     <elements xsi:type="menu:DirectMenuItem" xmi:id="_uJ5xkOldEeW6eOAEK5G14g" elementId="" label="%menu.formula-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/context-menu/tileformula-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.formula.properties.FormulaEditHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_uJ5xkeldEeW6eOAEK5G14g" coreExpressionId="com.b3dgs.lionengine.editor.properties.editFormula"/>
     </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_MVBk8OolEeWYhsBcVzN8yA" featurename="children" parentElementId="com.b3dgs.lionengine.editor.menu.map">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_RCGYEOolEeWYhsBcVzN8yA" elementId="com.b3dgs.lionengine.editor.menu.map.import-collision" label="%menu.map.import-collision" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/toolbar/import-collision.png" tooltip="%menu.map.import-collision-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.collision.map.imports.CollisionImportHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_RCGYEeolEeWYhsBcVzN8yA" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_qqbdIOolEeWYhsBcVzN8yA" featurename="children" parentElementId="com.b3dgs.lionengine.editor.part.world.toolbar" positionInList="after:com.b3dgs.lionengine.editor.part.world.toolbar.separator1">
+    <elements xsi:type="menu:DirectToolItem" xmi:id="_uWXjYOolEeWYhsBcVzN8yA" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.collisions" label="%toolbar.world.collisions" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.collision/icons/toolbar/collisions.png" tooltip="%toolbar.world.collisions-tip" type="Check" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.toolbar.SetShowCollisionsHandler"/>
+    <elements xsi:type="menu:ToolBarSeparator" xmi:id="_u-uj4OolEeWYhsBcVzN8yA" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.separator2"/>
+    <elements xsi:type="menu:ToolControl" xmi:id="_vkMBYOolEeWYhsBcVzN8yA" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.formulas" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.toolbar.FormulaItem"/>
+    <elements xsi:type="menu:DirectToolItem" xmi:id="_wDi24OolEeWYhsBcVzN8yA" elementId="com.b3dgs.lionengine.editor.part.world.toolbar.palette.pointer-collision" label="%toolbar.world.pointer-collision" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/pointer-collision.png" tooltip="%toolbar.world.pointer-collision-tip" type="Check" contributionURI="bundleclass://com.b3dgs.lionengine.editor.collision/com.b3dgs.lionengine.editor.toolbar.SetPointerCollisionHandler"/>
   </fragments>
 </fragment:ModelFragments>

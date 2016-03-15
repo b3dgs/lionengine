@@ -19,15 +19,9 @@ package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
@@ -53,6 +47,7 @@ import com.b3dgs.lionengine.editor.project.tester.MinimapTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilTree;
@@ -239,30 +234,6 @@ public final class ProjectPart implements Focusable
     }
 
     /**
-     * Get resources checker entry points.
-     * 
-     * @return The resource checker providers.
-     */
-    public static Collection<ResourceChecker> getResourceCheckers()
-    {
-        final Collection<ResourceChecker> checkers = new ArrayList<>();
-        final IExtensionRegistry registry = Platform.getExtensionRegistry();
-        final IConfigurationElement[] elements = registry.getConfigurationElementsFor(ResourceChecker.EXTENSION_ID);
-        for (final IConfigurationElement element : elements)
-        {
-            try
-            {
-                checkers.add((ResourceChecker) element.createExecutableExtension(ResourceChecker.ATT_CLASS));
-            }
-            catch (final CoreException exception)
-            {
-                Verbose.exception(exception);
-            }
-        }
-        return checkers;
-    }
-
-    /**
      * Check file opening depending of its type.
      */
     void checkOpenFile()
@@ -270,7 +241,7 @@ public final class ProjectPart implements Focusable
         final Media media = ProjectModel.INSTANCE.getSelection();
         if (media != null)
         {
-            for (final ResourceChecker checker : getResourceCheckers())
+            for (final ResourceChecker checker : UtilExtension.get(ResourceChecker.class, ResourceChecker.EXTENSION_ID))
             {
                 if (checker.check(tree.getShell(), media))
                 {
