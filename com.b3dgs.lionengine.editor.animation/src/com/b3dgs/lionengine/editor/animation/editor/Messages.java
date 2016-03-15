@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties.animation;
+package com.b3dgs.lionengine.editor.animation.editor;
 
 import java.util.Locale;
 
@@ -28,8 +28,25 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public final class Messages extends NLS
 {
-    /** Animations property. */
-    public static String Properties_Animations;
+    /** Animation editor title. */
+    public static String AnimationEditor_Title;
+    /** Animation editor sheet. */
+    public static String AnimationEditor_Sheet;
+    /** Animation editor animator. */
+    public static String AnimationEditor_Animator;
+    /** Animation editor animation. */
+    public static String AnimationEditor_Animation;
+
+    /** Animation properties first frame. */
+    public static String AnimationProperties_FirstFrame;
+    /** Animation properties last frame. */
+    public static String AnimationProperties_LastFrame;
+    /** Animation properties anim speed. */
+    public static String AnimationProperties_AnimSpeed;
+    /** Animation properties reverse. */
+    public static String AnimationProperties_Reverse;
+    /** Animation properties repeat. */
+    public static String AnimationProperties_Repeat;
 
     /**
      * Initialize.

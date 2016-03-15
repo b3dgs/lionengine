@@ -17,6 +17,6 @@
  */
 
 /**
- * Animation editor package.
+ * Animation properties package.
  */
-package com.b3dgs.lionengine.editor.properties.animation.editor;
+package com.b3dgs.lionengine.editor.animation.properties;

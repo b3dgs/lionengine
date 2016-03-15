@@ -19,4 +19,4 @@
 /**
  * Animation handlers.
  */
-package com.b3dgs.lionengine.editor.properties.animation.handler;
+package com.b3dgs.lionengine.editor.animation.handler;

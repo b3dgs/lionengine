@@ -15,15 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties.animation.handler;
+package com.b3dgs.lionengine.editor.animation.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.editor.animation.properties.PropertiesAnimation;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
-import com.b3dgs.lionengine.editor.properties.animation.PropertiesAnimation;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.state.AnimationConfig;

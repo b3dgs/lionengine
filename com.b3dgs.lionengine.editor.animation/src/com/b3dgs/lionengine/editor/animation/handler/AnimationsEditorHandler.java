@@ -15,27 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties.animation.handler;
+package com.b3dgs.lionengine.editor.animation.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.editor.animation.editor.AnimationEditor;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.editor.properties.PropertiesPart;
-import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.state.AnimationConfig;
 
 /**
- * Disable animations handler.
+ * Start animations editor handler.
  */
-public final class AnimationsDisableHandler
+public final class AnimationsEditorHandler
 {
     /**
      * Create handler.
      */
-    public AnimationsDisableHandler()
+    public AnimationsEditorHandler()
     {
         super();
     }
@@ -48,18 +45,8 @@ public final class AnimationsDisableHandler
     {
         final Tree tree = PropertiesModel.INSTANCE.getTree();
         final Configurer configurer = (Configurer) tree.getData();
-        configurer.getRoot().removeChildren(AnimationConfig.ANIMATION);
-        configurer.save();
-
-        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
-        for (final TreeItem item : tree.getItems())
-        {
-            if (AnimationConfig.ANIMATION.equals(item.getData()))
-            {
-                part.clear(item);
-            }
-        }
-        final Tree properties = part.getTree();
-        part.setInput(properties, configurer);
+        final AnimationEditor editor = new AnimationEditor(tree, configurer);
+        editor.create();
+        editor.openAndWait();
     }
 }

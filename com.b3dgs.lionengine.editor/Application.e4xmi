@@ -67,15 +67,6 @@
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_7WDx0ExsEeS0NfVbsnb2GQ" elementId="" label="%menu.icon-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/icon-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.surface.handler.IconRemoveHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_opCGcEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeIcon"/>
                   </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_8_l7cExsEeS0NfVbsnb2GQ" elementId="" label="%menu.animations-enable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/animations-enable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.animation.handler.AnimationsEnableHandler">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_qGvakEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.enableAnimations"/>
-                  </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_HpEJoExvEeS0NfVbsnb2GQ" elementId="" label="%menu.animations-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/animations-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.animation.handler.AnimationsEditorHandler">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_rZFMMEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.editAnimations"/>
-                  </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="__BxOkExsEeS0NfVbsnb2GQ" elementId="" label="%menu.animations-disable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/animations-disable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.animation.handler.AnimationsDisableHandler">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_sqDr4Ex2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.disableAnimations"/>
-                  </children>
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_FVGHoEyKEeSJA9sJoETiQw" elementId="" label="%menu.frames-set" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/frames-set.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.frames.handler.FramesSetHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_FVGHoUyKEeSJA9sJoETiQw" coreExpressionId="com.b3dgs.lionengine.editor.properties.setFrames"/>
                   </children>

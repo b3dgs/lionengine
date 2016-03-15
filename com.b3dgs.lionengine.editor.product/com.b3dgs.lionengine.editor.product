@@ -29,6 +29,7 @@
       <plugin id="com.b3dgs.lionengine.core"/>
       <plugin id="com.b3dgs.lionengine.core.swt"/>
       <plugin id="com.b3dgs.lionengine.editor"/>
+      <plugin id="com.b3dgs.lionengine.editor.animation"/>
       <plugin id="com.b3dgs.lionengine.editor.collision"/>
       <plugin id="com.b3dgs.lionengine.editor.pathfinding"/>
       <plugin id="com.b3dgs.lionengine.game"/>

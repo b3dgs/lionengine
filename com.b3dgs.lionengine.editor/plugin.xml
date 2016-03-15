@@ -148,24 +148,6 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.properties.enableAnimations">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterAnimations.enableAnimations">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.properties.editAnimations">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterAnimations.editAnimations">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.properties.disableAnimations">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterAnimations.disableAnimations">
-         </test>
-      </definition>
-      <definition
             id="com.b3dgs.lionengine.editor.properties.setFrames">
          <test
                property="com.b3dgs.lionengine.editor.propertiesTesterFrames.setFrames">
@@ -230,13 +212,6 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.properties.animation.PropertiesAnimationTester"
-            id="com.b3dgs.lionengine.editor.propertiesTesterAnimations"
-            namespace="com.b3dgs.lionengine.editor.propertiesTesterAnimations"
-            properties="enableAnimations,editAnimations,disableAnimations"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
             class="com.b3dgs.lionengine.editor.properties.surface.PropertiesSurfaceTester"
             id="com.b3dgs.lionengine.editor.propertiesTesterSurface"
             namespace="com.b3dgs.lionengine.editor.propertiesTesterSurface"
@@ -268,9 +243,6 @@
       </implementation>
       <implementation
             class="com.b3dgs.lionengine.editor.properties.frames.PropertiesFrames">
-      </implementation>
-      <implementation
-            class="com.b3dgs.lionengine.editor.properties.animation.PropertiesAnimation">
       </implementation>
    </extension>
    <extension

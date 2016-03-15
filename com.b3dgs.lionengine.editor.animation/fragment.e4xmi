@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_8yNOoOkkEeWt1ruEBAQ_7g">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_bqRp0Ok3EeWt1ruEBAQ_7g" featurename="children" parentElementId="com.b3dgs.lionengine.editor.part.properties.menu">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_j-rr4OrrEeWiD71XRtcoCA" elementId="" label="%menu.animations-enable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.animation/icons/context-menu/animations-enable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.animation/com.b3dgs.lionengine.editor.animation.handler.AnimationsEnableHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_j-rr4errEeWiD71XRtcoCA" coreExpressionId="com.b3dgs.lionengine.editor.properties.enableAnimations"/>
+    </elements>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_kis-8OrrEeWiD71XRtcoCA" elementId="" label="%menu.animations-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.animation/icons/context-menu/animations-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.animation/com.b3dgs.lionengine.editor.animation.handler.AnimationsEditorHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_kis-8errEeWiD71XRtcoCA" coreExpressionId="com.b3dgs.lionengine.editor.properties.editAnimations"/>
+    </elements>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_k-PrcOrrEeWiD71XRtcoCA" elementId="" label="%menu.animations-disable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.animation/icons/context-menu/animations-disable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.animation/com.b3dgs.lionengine.editor.animation.handler.AnimationsDisableHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_k-PrcerrEeWiD71XRtcoCA" coreExpressionId="com.b3dgs.lionengine.editor.properties.disableAnimations"/>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>
