@@ -17,18 +17,12 @@
  */
 package com.b3dgs.lionengine.editor.utility;
 
-import java.io.IOException;
-import java.net.URL;
-
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
-import org.osgi.framework.Bundle;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Series of tool functions around the editor related to icons.
@@ -37,8 +31,6 @@ public final class UtilIcon
 {
     /** Icon folder. */
     private static final String ICON_FOLDER = "icons";
-    /** Icon not found error. */
-    private static final String ERROR_ICON_PATH = "Icon not found: ";
     /** Icon not created error. */
     private static final String ERROR_ICON_CREATE = "Icon cannot be created: ";
 
@@ -65,41 +57,13 @@ public final class UtilIcon
     public static Image get(String root, String icon)
     {
         final String path = UtilFile.getPathSeparator(Constant.SLASH, UtilIcon.ICON_FOLDER, root, icon);
-        final URL url = getUrl(path);
-        try
+        final ImageDescriptor descriptor = ImageDescriptor.createFromURL(UtilBundle.getUrl(path));
+        final Image image = descriptor.createImage();
+        if (image == null)
         {
-            final ImageDescriptor descriptor = ImageDescriptor.createFromURL(FileLocator.toFileURL(url));
-            final Image image = descriptor.createImage();
-            if (image == null)
-            {
-                throw new LionEngineException(UtilIcon.ERROR_ICON_CREATE + path);
-            }
-            return image;
+            throw new LionEngineException(UtilIcon.ERROR_ICON_CREATE, path);
         }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Get the URL relative to bundle.
-     * 
-     * @param path The original path.
-     * @return The bundle URL.
-     * @throws LionEngineException If icon not found in any bundle.
-     */
-    private static URL getUrl(String path)
-    {
-        for (final Bundle bundle : Activator.getContext().getBundles())
-        {
-            final URL url = bundle.getEntry(path);
-            if (url != null)
-            {
-                return url;
-            }
-        }
-        throw new LionEngineException(UtilIcon.ERROR_ICON_PATH + path);
+        return image;
     }
 
     /**

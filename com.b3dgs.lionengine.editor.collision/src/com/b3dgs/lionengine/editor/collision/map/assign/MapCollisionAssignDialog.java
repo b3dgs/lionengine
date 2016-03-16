@@ -28,13 +28,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.editor.InputValidator;
+import com.b3dgs.lionengine.editor.collision.CollisionVerifier;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTileCollision;
 
 /**
  * Allows to configure the assigned collision from mouse on map.
@@ -46,19 +46,19 @@ public class MapCollisionAssignDialog extends AbstractDialog
     /** Default offset value. */
     private static final String DEFAULT_OFFSET = "0";
 
-    /** Collision assigner. */
-    private final WorldInteractionTileCollision collision;
+    /** Collision verifier. */
+    private final CollisionVerifier verifier;
 
     /**
      * Create an import map dialog.
      * 
      * @param parent The shell parent.
-     * @param collision The collision assigner.
+     * @param verifier The verifier verifier.
      */
-    public MapCollisionAssignDialog(Shell parent, WorldInteractionTileCollision collision)
+    public MapCollisionAssignDialog(Shell parent, CollisionVerifier verifier)
     {
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
-        this.collision = collision;
+        this.verifier = verifier;
         createDialog();
         dialog.setMinimumSize(320, 160);
         finish.setEnabled(false);
@@ -107,7 +107,7 @@ public class MapCollisionAssignDialog extends AbstractDialog
 
         UtilButton.setAction(check, () ->
         {
-            collision.verifyCollision(Integer.parseInt(offset.getText()));
+            verifier.verifyCollision(Integer.parseInt(offset.getText()));
 
             final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
             if (!part.getUpdater().isCollisionsEnabled())

@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.game.object.ObjectConfig;
@@ -83,7 +82,7 @@ public final class UtilClass
             }
         }
 
-        found.addAll(getImplementing(type, Activator.getLocation()));
+        found.addAll(getImplementing(type, UtilBundle.getLocation()));
 
         return found;
     }

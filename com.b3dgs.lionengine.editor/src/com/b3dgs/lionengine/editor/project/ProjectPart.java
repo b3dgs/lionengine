@@ -38,15 +38,9 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.Focusable;
-import com.b3dgs.lionengine.editor.project.handler.GroupsEditHandler;
-import com.b3dgs.lionengine.editor.project.handler.MinimapEditHandler;
-import com.b3dgs.lionengine.editor.project.handler.SheetsEditHandler;
-import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
-import com.b3dgs.lionengine.editor.project.tester.MinimapTester;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
-import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
+import com.b3dgs.lionengine.editor.utility.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
@@ -241,26 +235,7 @@ public final class ProjectPart implements Focusable
         final Media media = ProjectModel.INSTANCE.getSelection();
         if (media != null)
         {
-            for (final ResourceChecker checker : UtilExtension.get(ResourceChecker.class, ResourceChecker.EXTENSION_ID))
-            {
-                if (checker.check(tree.getShell(), media))
-                {
-                    break;
-                }
-            }
-            if (SheetsTester.isSheetsFile(media))
-            {
-                SheetsEditHandler.executeHandler(tree.getShell());
-            }
-            else if (GroupsTester.isGroupsFile(media))
-            {
-                GroupsEditHandler.executeHandler(tree.getShell());
-            }
-            else if (MinimapTester.isMinimapFile(media))
-            {
-                MinimapEditHandler.executeHandler(tree.getShell());
-            }
-            else if (media.getFile().isFile())
+            if (!checkResource(media) && media.getFile().isFile())
             {
                 try
                 {
@@ -305,5 +280,23 @@ public final class ProjectPart implements Focusable
                 tree.update();
             }
         }
+    }
+
+    /**
+     * Check if media opening is supported.
+     * 
+     * @param media The media to open.
+     * @return <code>true</code> if opened, <code>false</code> else.
+     */
+    private boolean checkResource(Media media)
+    {
+        for (final ResourceChecker checker : UtilExtension.get(ResourceChecker.class, ResourceChecker.EXTENSION_ID))
+        {
+            if (checker.check(tree.getShell(), media))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.Action;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.Messages;
 

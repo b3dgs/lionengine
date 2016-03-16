@@ -29,10 +29,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.project.tester.GroupsTester;
-import com.b3dgs.lionengine.editor.project.tester.MinimapTester;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
-import com.b3dgs.lionengine.editor.project.tester.SheetsTester;
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
@@ -57,14 +53,6 @@ public class ProjectTreeCreator
     public static final Image ICON_IMAGE = UtilIcon.get(RESOURCES_FOLDER, "image.png");
     /** Data file icon. */
     public static final Image ICON_DATA = UtilIcon.get(RESOURCES_FOLDER, "data.png");
-    /** Object file icon. */
-    public static final Image ICON_OBJECT = UtilIcon.get(RESOURCES_FOLDER, "object.png");
-    /** Sheets file icon. */
-    public static final Image ICON_SHEETS = UtilIcon.get(RESOURCES_FOLDER, "sheets.png");
-    /** Groups file icon. */
-    public static final Image ICON_GROUPS = UtilIcon.get(RESOURCES_FOLDER, "groups.png");
-    /** Minimap file icon. */
-    public static final Image ICON_MINIMAP = UtilIcon.get(RESOURCES_FOLDER, "minimap.png");
     /** META-INF folder. */
     private static final String FOLDER_METAINF = "META-INF";
 
@@ -76,7 +64,6 @@ public class ProjectTreeCreator
      */
     private static Image getDataIcon(Media file)
     {
-        final Image image;
         for (final ResourceChecker checker : UtilExtension.get(ResourceChecker.class, ResourceChecker.EXTENSION_ID))
         {
             final Image icon = checker.getIcon(file);
@@ -85,27 +72,7 @@ public class ProjectTreeCreator
                 return icon;
             }
         }
-        if (ObjectsTester.isObjectFile(file))
-        {
-            image = ICON_OBJECT;
-        }
-        else if (SheetsTester.isSheetsFile(file))
-        {
-            image = ICON_SHEETS;
-        }
-        else if (GroupsTester.isGroupsFile(file))
-        {
-            image = ICON_GROUPS;
-        }
-        else if (MinimapTester.isMinimapFile(file))
-        {
-            image = ICON_MINIMAP;
-        }
-        else
-        {
-            image = ICON_DATA;
-        }
-        return image;
+        return ICON_DATA;
     }
 
     /**

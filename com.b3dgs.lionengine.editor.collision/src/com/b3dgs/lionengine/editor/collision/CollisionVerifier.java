@@ -15,16 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor;
+package com.b3dgs.lionengine.editor.collision;
 
 /**
- * Represents the element action.
+ * Verify collision offset.
  */
-@FunctionalInterface
-public interface Action
+public interface CollisionVerifier
 {
     /**
-     * Perform button action.
+     * Apply and verify computed collision.
+     * 
+     * @param offset The marker offset.
      */
-    void perform();
+    void verifyCollision(int offset);
 }

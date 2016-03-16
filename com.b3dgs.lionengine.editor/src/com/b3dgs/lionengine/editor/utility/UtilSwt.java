@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.Focusable;
 
 /**
  * Series of tool functions around the editor related to SWT.

@@ -15,15 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor;
+package com.b3dgs.lionengine.editor.handler;
+
+import java.util.Locale;
+
+import org.eclipse.osgi.util.NLS;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Represents a part which can be focused on mouse enter.
+ * Messages internationalization.
  */
-public interface Focusable
+public final class Messages extends NLS
 {
+    /** Exit handler title. */
+    public static String Title;
+    /** Exit handler text. */
+    public static String Text;
+
     /**
-     * Called when focus is requested.
+     * Initialize.
      */
-    void focus();
+    static
+    {
+        NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Messages()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+    }
 }

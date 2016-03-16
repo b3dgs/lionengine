@@ -28,6 +28,7 @@ import java.util.TreeMap;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.editor.collision.CollisionVerifier;
 import com.b3dgs.lionengine.editor.collision.map.assign.MapCollisionAssignDialog;
 import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.editor.toolbar.FormulaItem;
@@ -60,7 +61,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Handle the interaction with tiles collision.
  */
-public class WorldInteractionTileCollision implements WorldMouseClickListener, WorldMouseMoveListener
+public class WorldInteractionTileCollision implements CollisionVerifier, WorldMouseClickListener, WorldMouseMoveListener
 {
     /**
      * Check the current marker already exists or not.
@@ -170,38 +171,6 @@ public class WorldInteractionTileCollision implements WorldMouseClickListener, W
         map = services.get(MapTile.class);
         mapGroup = services.get(MapTileGroup.class);
         palette = services.get(PaletteModel.class);
-    }
-
-    /**
-     * Apply and verify computed collision.
-     * 
-     * @param offset The marker offset.
-     */
-    public void verifyCollision(int offset)
-    {
-        final Media config = mapGroup.getGroupsConfig();
-        final XmlNode groupNode = Xml.load(config);
-        final List<Integer> keys = new ArrayList<>(markers.keySet());
-        Collections.sort(keys);
-        final int max = keys.size();
-
-        for (final Integer key : keys)
-        {
-            final int offsetKey = (key.intValue() + offset) % max;
-            final Marker marker = markers.get(key);
-            for (final Tile tile : marker.getTiles())
-            {
-                applyCollision(groupNode, offsetKey, tile);
-            }
-        }
-        if (!markers.isEmpty())
-        {
-            Xml.save(groupNode, config);
-            mapGroup.loadGroups(config);
-            final MapTileCollision collision = map.getFeature(MapTileCollision.class);
-            collision.loadCollisions();
-            collision.createCollisionDraw();
-        }
     }
 
     /**
@@ -404,6 +373,38 @@ public class WorldInteractionTileCollision implements WorldMouseClickListener, W
             return new CollisionFunctionLinear(linear.getA() * -side, b);
         }
         return function;
+    }
+
+    /*
+     * CollisionVerifier
+     */
+
+    @Override
+    public void verifyCollision(int offset)
+    {
+        final Media config = mapGroup.getGroupsConfig();
+        final XmlNode groupNode = Xml.load(config);
+        final List<Integer> keys = new ArrayList<>(markers.keySet());
+        Collections.sort(keys);
+        final int max = keys.size();
+
+        for (final Integer key : keys)
+        {
+            final int offsetKey = (key.intValue() + offset) % max;
+            final Marker marker = markers.get(key);
+            for (final Tile tile : marker.getTiles())
+            {
+                applyCollision(groupNode, offsetKey, tile);
+            }
+        }
+        if (!markers.isEmpty())
+        {
+            Xml.save(groupNode, config);
+            mapGroup.loadGroups(config);
+            final MapTileCollision collision = map.getFeature(MapTileCollision.class);
+            collision.loadCollisions();
+            collision.createCollisionDraw();
+        }
     }
 
     /*

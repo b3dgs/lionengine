@@ -18,13 +18,9 @@
 package com.b3dgs.lionengine.editor.utility;
 
 import java.io.File;
-import java.io.IOException;
-
-import org.eclipse.core.runtime.FileLocator;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Series of tool functions around the editor related to template.
@@ -61,27 +57,7 @@ public final class UtilTemplate
      */
     public static File getTemplate(String template)
     {
-        return getFile(UtilFile.getPath(UtilTemplate.TEMPLATES_DIR, template));
-    }
-
-    /**
-     * Get the file from its name, relative to the plugin path.
-     * 
-     * @param file The file name.
-     * @return The file instance.
-     * @throws LionEngineException If path error.
-     */
-    private static File getFile(String file)
-    {
-        try
-        {
-            final File root = FileLocator.getBundleFile(Activator.getContext().getBundle());
-            return new File(root, file);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        return UtilBundle.getFile(UtilFile.getPath(UtilTemplate.TEMPLATES_DIR, template));
     }
 
     /**

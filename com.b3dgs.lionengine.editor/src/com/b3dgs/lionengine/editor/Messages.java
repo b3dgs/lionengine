@@ -28,11 +28,6 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public final class Messages extends NLS
 {
-    /** Exit handler title. */
-    public static String ExitHandler_Title;
-    /** Exit handler text. */
-    public static String ExitHandler_Text;
-
     /** Object properties. */
     public static String ObjectProperties_Properties;
     /** Object properties confirm. */

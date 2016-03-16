@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.editor.dialog.map.sheets.extract.Messages;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;

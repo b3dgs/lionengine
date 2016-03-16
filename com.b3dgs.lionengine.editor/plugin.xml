@@ -251,5 +251,47 @@
             class="com.b3dgs.lionengine.editor.properties.tile.PropertiesTile">
       </implementation>
    </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.resourceChecker">
+      <implementation
+            class="com.b3dgs.lionengine.editor.project.resource.ObjectResource">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.project.resource.GroupResource">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.project.resource.SheetResource">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.project.resource.MinimapResource">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.resourceChecker">
+      <implementation
+            class="com.b3dgs.lionengine.editor.project.resource.ObjectResource">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.project.resource.GroupResource">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.project.resource.SheetResource">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.resourceChecker">
+      <implementation
+            class="com.b3dgs.lionengine.editor.project.resource.ObjectResource">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.project.resource.GroupResource">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.resourceChecker">
+      <implementation
+            class="com.b3dgs.lionengine.editor.project.resource.ObjectResource">
+      </implementation>
+   </extension>
 
 </plugin>

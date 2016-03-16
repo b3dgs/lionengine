@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
@@ -37,7 +38,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.utility.UtilClass;
 
 /**
@@ -182,7 +182,7 @@ public final class Project
         classes = classesFolderName;
         libraries = librariesFolderName;
 
-        final Bundle bundle = Activator.getMainBundle();
+        final Bundle bundle = Platform.getProduct().getDefiningBundle();
         if (bundle != null)
         {
             classLoader = createClassLoader(bundle);

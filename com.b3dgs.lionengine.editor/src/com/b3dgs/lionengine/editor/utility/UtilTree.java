@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.Action;
 
 /**
  * Series of tool functions around the trees.

@@ -17,11 +17,6 @@
  */
 package com.b3dgs.lionengine.editor;
 
-import java.io.File;
-
-import org.eclipse.core.runtime.IProduct;
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -43,55 +38,6 @@ public class Activator implements BundleActivator
     public static final String PLUGIN_WEBSITE = Engine.WEBSITE;
     /** Plugin ID. */
     public static final String PLUGIN_ID = "com.b3dgs.lionengine.editor";
-    /** Context reference. */
-    private static volatile BundleContext context;
-
-    /**
-     * Get the context reference.
-     * 
-     * @return The context reference.
-     */
-    public static synchronized BundleContext getContext()
-    {
-        return Activator.context;
-    }
-
-    /**
-     * Get the current main bundle.
-     * 
-     * @return The main bundle.
-     */
-    public static Bundle getMainBundle()
-    {
-        final IProduct product = Platform.getProduct();
-        if (product != null)
-        {
-            return product.getDefiningBundle();
-        }
-        return Activator.getContext().getBundle();
-    }
-
-    /**
-     * Get the bundle absolute location.
-     * 
-     * @return The bundle absolute location.
-     */
-    public static File getLocation()
-    {
-        final String location = Activator.getMainBundle().getLocation();
-        final String path = location.substring(location.lastIndexOf(':') + 1);
-        return new File(path).getAbsoluteFile();
-    }
-
-    /**
-     * Set the context reference.
-     * 
-     * @param context The context reference.
-     */
-    private static void setContext(BundleContext context)
-    {
-        Activator.context = context;
-    }
 
     /**
      * Create activator.
@@ -108,7 +54,6 @@ public class Activator implements BundleActivator
     @Override
     public void start(BundleContext context) throws Exception
     {
-        setContext(context);
         LionEngineException.setIgnoreEngineTrace(false);
         EngineSwt.start(Activator.PLUGIN_NAME, Activator.PLUGIN_VERSION);
     }
@@ -116,6 +61,6 @@ public class Activator implements BundleActivator
     @Override
     public void stop(BundleContext context) throws Exception
     {
-        setContext(null);
+        Engine.terminate();
     }
 }
