@@ -64,7 +64,7 @@ public final class ProjectPart implements Focusable
      * 
      * @param media The selected media.
      */
-    static void updateProperties(Media media)
+    private static void updateProperties(Media media)
     {
         final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
         if (ObjectsTester.isObjectFile(media))
@@ -233,19 +233,16 @@ public final class ProjectPart implements Focusable
     void checkOpenFile()
     {
         final Media media = ProjectModel.INSTANCE.getSelection();
-        if (media != null)
+        if (media != null && !checkResource(media) && media.getFile().isFile())
         {
-            if (!checkResource(media) && media.getFile().isFile())
+            try
             {
-                try
-                {
-                    java.awt.Desktop.getDesktop().open(media.getFile());
-                }
-                catch (final IOException exception)
-                {
-                    // Not able to open the file, just skip
-                    Verbose.exception(exception, ERROR_UNABLE_TO_OPEN_FILE, media.getFile().getAbsolutePath());
-                }
+                java.awt.Desktop.getDesktop().open(media.getFile());
+            }
+            catch (final IOException exception)
+            {
+                // Not able to open the file, just skip
+                Verbose.exception(exception, ERROR_UNABLE_TO_OPEN_FILE, media.getFile().getAbsolutePath());
             }
         }
     }
@@ -253,7 +250,7 @@ public final class ProjectPart implements Focusable
     /**
      * Update tree selection by storing it.
      */
-    void updateSelection()
+    private void updateSelection()
     {
         if (!tree.isDisposed())
         {
@@ -269,7 +266,7 @@ public final class ProjectPart implements Focusable
     /**
      * Update the menu on detection.
      */
-    void updateMenu()
+    private void updateMenu()
     {
         if (!tree.isDisposed())
         {

@@ -144,11 +144,9 @@ public class MinimapEditDialog extends AbstractDialog
         content.setLayout(new GridLayout(1, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        minimap = new BrowseWidget(content,
-                                   Messages.MinimapConfig,
-                                   Messages.MinimapConfig + " (" + UtilDialog.XML[0] + ")",
-                                   UtilDialog.XML,
-                                   true);
+        final String[] filter = UtilDialog.getXmlFilter();
+        final String label = Messages.MinimapConfig;
+        minimap = new BrowseWidget(content, label, label + " (" + filter[0] + ")", filter, true);
 
         final Label separator1 = new Label(content, SWT.SEPARATOR | SWT.HORIZONTAL);
         separator1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

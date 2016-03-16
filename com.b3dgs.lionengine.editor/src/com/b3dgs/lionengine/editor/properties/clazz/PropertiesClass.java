@@ -26,9 +26,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.dialog.combo.ComboChooserDialog;
+import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
-import com.b3dgs.lionengine.editor.utility.UtilClass;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectConfig;
@@ -84,7 +84,7 @@ public class PropertiesClass implements PropertiesProviderObject
     private static boolean updateClass(TreeItem item, Configurer configurer)
     {
         final ComboChooserDialog chooser = new ComboChooserDialog(item.getParent().getShell());
-        final Collection<Class<? extends ObjectGame>> objects = UtilClass.getImplementing(ObjectGame.class);
+        final Collection<Class<? extends ObjectGame>> objects = Project.getActive().getImplementing(ObjectGame.class);
         objects.add(ObjectGame.class);
         final String[] items = new String[objects.size()];
         int i = 0;
@@ -116,7 +116,7 @@ public class PropertiesClass implements PropertiesProviderObject
     private static boolean updateSetup(TreeItem item, Configurer configurer)
     {
         final ComboChooserDialog chooser = new ComboChooserDialog(item.getParent().getShell());
-        final Collection<Class<? extends Setup>> setups = UtilClass.getImplementing(Setup.class);
+        final Collection<Class<? extends Setup>> setups = Project.getActive().getImplementing(Setup.class);
         setups.add(Setup.class);
         final String[] items = new String[setups.size()];
         int i = 0;

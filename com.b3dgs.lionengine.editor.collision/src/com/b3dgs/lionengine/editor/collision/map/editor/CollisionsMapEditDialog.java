@@ -49,9 +49,9 @@ public class CollisionsMapEditDialog extends AbstractDialog
     private static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
     /** Collisions properties. */
-    private final CollisionGroupProperties properties = new CollisionGroupProperties();
+    private final CollisionGroupProperties collisionGroupProperties = new CollisionGroupProperties();
     /** Collisions list. */
-    private final CollisionGroupList list = new CollisionGroupList(properties);
+    private final CollisionGroupList collisionGroupList = new CollisionGroupList(collisionGroupProperties);
     /** Collisions media. */
     private final Media media;
 
@@ -79,23 +79,23 @@ public class CollisionsMapEditDialog extends AbstractDialog
     {
         content.setLayout(new GridLayout(2, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        list.create(content);
-        list.addListener(list);
+        collisionGroupList.create(content);
+        collisionGroupList.addListener(collisionGroupList);
 
-        properties.create(content);
-        list.addListener(properties);
-        list.loadCollisions(media);
+        collisionGroupProperties.create(content);
+        collisionGroupList.addListener(collisionGroupProperties);
+        collisionGroupList.loadCollisions(media);
     }
 
     @Override
     protected void onFinish()
     {
-        list.save();
+        collisionGroupList.save();
 
         final XmlNode root = Xml.create(CollisionGroupConfig.COLLISIONS);
         root.writeString(Configurer.HEADER, Engine.WEBSITE);
 
-        for (final TreeItem item : list.getTree().getItems())
+        for (final TreeItem item : collisionGroupList.getTree().getItems())
         {
             final CollisionGroup collisionGroup = (CollisionGroup) item.getData();
             final XmlNode nodeCollision = root.createChild(CollisionGroupConfig.COLLISION);

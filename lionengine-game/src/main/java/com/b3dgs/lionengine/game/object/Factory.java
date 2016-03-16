@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilReflection;
@@ -44,6 +45,8 @@ public class Factory
 {
     /** Data file extension. */
     public static final String FILE_DATA_EXTENSION = "xml";
+    /** Data file extension with dot as prefix. */
+    public static final String FILE_DATA_DOT_EXTENSION = Constant.DOT + FILE_DATA_EXTENSION;
     /** Setup class error. */
     private static final String ERROR_SETUP_CLASS = "Setup class not found !";
     /** Construction error. */

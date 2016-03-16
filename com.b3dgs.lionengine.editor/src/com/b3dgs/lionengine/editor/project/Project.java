@@ -26,7 +26,11 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
@@ -38,7 +42,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.editor.utility.UtilClass;
+import com.b3dgs.lionengine.editor.utility.UtilBundle;
 
 /**
  * Represents a project and its data.
@@ -135,6 +139,73 @@ public final class Project
         final int fromPrefix = fromPath.length() + 1;
         final String relativePath = path.substring(fromPrefix);
         return Medias.create(relativePath);
+    }
+
+    /**
+     * Get the list of potential file descriptor which may contains classes (could be folder or jar).
+     * 
+     * @param file The file root.
+     * @return The collection of places.
+     */
+    private static Collection<File> getPotentialClassesContainers(File file)
+    {
+        final Collection<File> places = new HashSet<>();
+        places.add(file);
+        if (file.isDirectory())
+        {
+            places.addAll(getJars(UtilFile.getFiles(file)));
+        }
+        return places;
+    }
+
+    /**
+     * Get all jar in files.
+     * 
+     * @param files The files.
+     * @return The jars.
+     */
+    private static Collection<File> getJars(Collection<File> files)
+    {
+        final Collection<File> jars = new HashSet<>();
+        for (final File current : files)
+        {
+            if (isJar(current))
+            {
+                jars.add(current);
+            }
+        }
+        return jars;
+    }
+
+    /**
+     * Get all jar files as URL.
+     * 
+     * @param files The files.
+     * @return The jars URL.
+     * @throws MalformedURLException If error on URL.
+     */
+    private static Collection<URL> getJarsUrl(Collection<File> files) throws MalformedURLException
+    {
+        final Collection<URL> urls = new ArrayList<>();
+        for (final File file : files)
+        {
+            if (isJar(file))
+            {
+                urls.add(file.toURI().toURL());
+            }
+        }
+        return urls;
+    }
+
+    /**
+     * Check if file is a jar.
+     * 
+     * @param file The file to check.
+     * @return <code>true</code> if jar, <code>false</code> else.
+     */
+    private static boolean isJar(File file)
+    {
+        return UtilFile.isType(file, Constant.TYPE_JAR);
     }
 
     /** Project path. */
@@ -375,6 +446,190 @@ public final class Project
     }
 
     /**
+     * Get all classes that implements the specified type.
+     * 
+     * @param <C> The class type.
+     * @param type The type to check.
+     * @return The implementing class list.
+     */
+    public <C> Collection<Class<? extends C>> getImplementing(Class<C> type)
+    {
+        final Collection<Class<? extends C>> found = new HashSet<>();
+        final Collection<File> places = new HashSet<>();
+
+        places.addAll(getPotentialClassesContainers(getClassesPath()));
+        places.addAll(getPotentialClassesContainers(getLibrariesPath()));
+
+        for (final File file : places)
+        {
+            if (isJar(file))
+            {
+                found.addAll(getImplementingJar(type, file));
+            }
+            else if (file.isDirectory())
+            {
+                found.addAll(getImplementing(type, file));
+            }
+        }
+
+        found.addAll(getImplementing(type, UtilBundle.getLocation()));
+
+        return found;
+    }
+
+    /**
+     * Get all classes that implements the specified type.
+     * 
+     * @param <C> The class type.
+     * @param type The type to check.
+     * @param root The folder or jar to search.
+     * @return The implementing class list.
+     */
+    public <C> Collection<Class<? extends C>> getImplementing(Class<C> type, File root)
+    {
+        final Collection<Class<? extends C>> found = new HashSet<>();
+        if (root.isDirectory())
+        {
+            final Collection<File> folders = new HashSet<>();
+            folders.add(root);
+            while (!folders.isEmpty())
+            {
+                final Collection<File> foldersToDo = new HashSet<>();
+                for (final File folder : folders)
+                {
+                    checkImplementing(folder, found, foldersToDo, type, root);
+                }
+                folders.clear();
+                folders.addAll(foldersToDo);
+                foldersToDo.clear();
+            }
+        }
+        return found;
+    }
+
+    /**
+     * Get all classes that implements the specified type.
+     * 
+     * @param <C> The class type.
+     * @param folder The current folder.
+     * @param found The list of class found.
+     * @param foldersToDo The next folders to check.
+     * @param type The type to check.
+     * @param root The folder or jar to search.
+     */
+    private <C> void checkImplementing(File folder,
+                                       Collection<Class<? extends C>> found,
+                                       Collection<File> foldersToDo,
+                                       Class<C> type,
+                                       File root)
+    {
+        for (final File current : UtilFile.getFiles(folder))
+        {
+            if (current.isDirectory())
+            {
+                foldersToDo.add(current);
+            }
+            else if (current.isFile())
+            {
+                final int prefix = getClassesPath().getPath().length() + 1;
+                if (prefix < current.getPath().length())
+                {
+                    checkAddClass(found, type, root, current.getPath().substring(prefix));
+                }
+            }
+        }
+    }
+
+    /**
+     * Check for classes inside jar.
+     * 
+     * @param <C> The class type.
+     * @param type The type to check.
+     * @param file The jar file.
+     * @return The implementing class list.
+     */
+    private <C> Collection<Class<? extends C>> getImplementingJar(Class<C> type, File file)
+    {
+        final Collection<Class<? extends C>> found = new HashSet<>();
+        try (final JarFile jar = new JarFile(file))
+        {
+            final Enumeration<JarEntry> entries = jar.entries();
+            while (entries.hasMoreElements())
+            {
+                final JarEntry entry = entries.nextElement();
+                if (!entry.isDirectory())
+                {
+                    checkAddClass(found, type, null, entry.getName());
+                }
+            }
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(exception);
+        }
+        return found;
+    }
+
+    /**
+     * Get class that implements the specified type.
+     * 
+     * @param <C> The class type.
+     * @param type The type to check.
+     * @param root The folder to search.
+     * @param current The current class file to check.
+     * @return The implementing class reference.
+     */
+    private <C> Class<? extends C> getImplementing(Class<C> type, File root, String current)
+    {
+        String name = current.replace(Property.EXTENSION_CLASS, Constant.EMPTY_STRING)
+                             .replace(File.separator, Constant.DOT)
+                             .replace(Constant.SLASH, Constant.DOT);
+        if (root != null)
+        {
+            name = name.replace(root.getPath(), Constant.EMPTY_STRING);
+        }
+        if (name.charAt(0) == '.')
+        {
+            name = name.substring(1);
+        }
+
+        final Class<?> clazz = getClass(name);
+        if (type.isAssignableFrom(clazz) && clazz != type)
+        {
+            return clazz.asSubclass(type);
+        }
+        return null;
+    }
+
+    /**
+     * Check if can add class to collection, and add it if possible.
+     * 
+     * @param <C> The class type.
+     * @param found The current classes found.
+     * @param type The type to check.
+     * @param root The folder or jar to search.
+     * @param name The class name.
+     */
+    private <C> void checkAddClass(Collection<Class<? extends C>> found, Class<C> type, File root, String name)
+    {
+        if (name.endsWith(Property.EXTENSION_CLASS))
+        {
+            try
+            {
+                final Class<? extends C> clazz = getImplementing(type, root, name);
+                if (clazz != null)
+                {
+                    found.add(clazz);
+                }
+            }
+            catch (final LionEngineException exception)
+            {
+                return;
+            }
+        }
+    }
+
+    /**
      * Create a class loader from a class folder.
      * 
      * @param bundle The bundle reference.
@@ -393,28 +648,8 @@ public final class Project
         urls.add(librariesPath.toURI().toURL());
         if (librariesPath.isDirectory())
         {
-            urls.addAll(getJars(UtilFile.getFiles(librariesPath)));
+            urls.addAll(getJarsUrl(UtilFile.getFiles(librariesPath)));
         }
         return new URLClassLoader(urls.toArray(new URL[urls.size()]), bundleClassLoader);
-    }
-
-    /**
-     * Get all jar files as URL.
-     * 
-     * @param files The files.
-     * @return The jars URL.
-     * @throws MalformedURLException If error on URL.
-     */
-    private static Collection<URL> getJars(Collection<File> files) throws MalformedURLException
-    {
-        final Collection<URL> urls = new ArrayList<>();
-        for (final File file : files)
-        {
-            if (UtilClass.isJar(file))
-            {
-                urls.add(file.toURI().toURL());
-            }
-        }
-        return urls;
     }
 }

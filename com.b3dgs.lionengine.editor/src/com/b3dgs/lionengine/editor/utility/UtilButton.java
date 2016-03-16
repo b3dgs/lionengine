@@ -27,14 +27,15 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.dialog.Messages;
 
 /**
  * Series of tool functions around buttons.
  */
 public final class UtilButton
 {
+    /** Browse icon. */
+    private static final Image ICON_BROWSE = UtilIcon.get("dialog", "browse.png");
+
     /**
      * Create a button with a text and an icon.
      * 
@@ -63,7 +64,7 @@ public final class UtilButton
      */
     public static Button createBrowse(Composite parent)
     {
-        return UtilButton.create(parent, Messages.Browse, AbstractDialog.ICON_BROWSE);
+        return UtilButton.create(parent, Messages.Browse, ICON_BROWSE);
     }
 
     /**

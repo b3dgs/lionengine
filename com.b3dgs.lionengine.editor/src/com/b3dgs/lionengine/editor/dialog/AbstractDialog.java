@@ -54,8 +54,6 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
     public static final Image ICON_CANCEL = UtilIcon.get(DIALOG_FOLDER, "cancel.png");
     /** Exit icon. */
     public static final Image ICON_EXIT = UtilIcon.get(DIALOG_FOLDER, "exit.png");
-    /** Browse icon. */
-    public static final Image ICON_BROWSE = UtilIcon.get(DIALOG_FOLDER, "browse.png");
     /** Info icon. */
     protected static final Image ICON_INFO = UtilIcon.get(DIALOG_FOLDER, "info.png");
     /** Warning icon. */
@@ -197,7 +195,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
      * 
      * @param header The header composite.
      */
-    protected void createHeader(Composite header)
+    protected final void createHeader(Composite header)
     {
         final Composite titleArea = new Composite(header, SWT.NONE);
         titleArea.setLayout(new GridLayout(1, false));
@@ -228,7 +226,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
      * @param icon The message icon.
      * @param message The error message.
      */
-    protected void setTipsMessage(Image icon, String message)
+    protected final void setTipsMessage(Image icon, String message)
     {
         tipsLabel.setText(message);
         tipsLabel.setImage(icon);
@@ -239,7 +237,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
     /**
      * Create the dialog.
      */
-    protected void createDialog()
+    protected final void createDialog()
     {
         final Composite header = new Composite(dialog, SWT.NONE);
         header.setLayout(new GridLayout(2, false));
@@ -266,7 +264,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
      * 
      * @param dialog The dialog composite.
      */
-    protected void createBottom(final Composite dialog)
+    protected final void createBottom(final Composite dialog)
     {
         final Composite bottom = new Composite(dialog, SWT.NONE);
         bottom.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

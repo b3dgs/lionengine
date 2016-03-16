@@ -27,11 +27,11 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.ImageInfo;
-import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.SizeConfig;

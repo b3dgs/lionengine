@@ -77,6 +77,14 @@ public final class UtilExtension
     }
 
     /**
+     * Clear existing cache.
+     */
+    public static void clearCache()
+    {
+        EXTENSIONS_CACHE.clear();
+    }
+
+    /**
      * Get the cached instance, or a new one if not existing and cache it.
      * 
      * @param <T> The class type.

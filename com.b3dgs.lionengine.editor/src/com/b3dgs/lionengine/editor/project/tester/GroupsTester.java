@@ -21,7 +21,6 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.stream.Xml;
@@ -96,14 +95,10 @@ public final class GroupsTester extends PropertyTester
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
-        final Project project = Project.getActive();
-        if (project != null)
+        final Media selection = ProjectModel.INSTANCE.getSelection();
+        if (selection != null)
         {
-            final Media selection = ProjectModel.INSTANCE.getSelection();
-            if (selection != null)
-            {
-                check(selection, property);
-            }
+            return check(selection, property);
         }
         return false;
     }

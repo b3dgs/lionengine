@@ -41,9 +41,6 @@ public final class Messages extends NLS
     /** Object list add text. */
     public static String ObjectList_AddObject_Text;
 
-    /** Input validator name error text. */
-    public static String InputValidator_Error_Name;
-
     /**
      * Initialize.
      */

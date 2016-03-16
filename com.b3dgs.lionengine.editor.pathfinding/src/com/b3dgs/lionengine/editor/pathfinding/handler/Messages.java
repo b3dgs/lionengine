@@ -29,13 +29,9 @@ import com.b3dgs.lionengine.LionEngineException;
 public final class Messages extends NLS
 {
     /** Add pathfinding title. */
-    public static String AddPathfinding_Title;
+    public static String Title;
     /** Add collisions title. */
-    public static String AddPathfinding_Text;
-    /** Add pathfinding error title. */
-    public static String AddPathfinding_Error_Title;
-    /** Add pathfinding error text. */
-    public static String AddPathfinding_Error_Text;
+    public static String Text;
 
     /**
      * Initialize.

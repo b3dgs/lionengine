@@ -34,8 +34,6 @@ public final class Messages extends NLS
     public static String Next;
     /** Finish button. */
     public static String Finish;
-    /** Browse button. */
-    public static String Browse;
     /** Exit button. */
     public static String Exit;
 

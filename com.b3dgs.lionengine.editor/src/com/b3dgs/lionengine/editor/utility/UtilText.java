@@ -65,7 +65,7 @@ public final class UtilText
      * @param text The text to verify.
      * @param match The expected match.
      * @return The verify listener.
-     * @see com.b3dgs.lionengine.editor.InputValidator
+     * @see com.b3dgs.lionengine.editor.validator.InputValidator
      */
     public static VerifyListener createVerify(final Text text, final String match)
     {

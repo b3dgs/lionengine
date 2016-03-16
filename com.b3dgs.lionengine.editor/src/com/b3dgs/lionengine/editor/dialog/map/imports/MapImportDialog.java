@@ -80,7 +80,7 @@ public class MapImportDialog extends AbstractDialog
         levelRip = new BrowseWidget(content,
                                     Messages.LevelRipLocation,
                                     Messages.LevelRipFileFilter,
-                                    LevelRipsWidget.LEVEL_RIP_FILTER,
+                                    LevelRipsWidget.getLevelRipFilter(),
                                     true);
         levelRip.addListener(media ->
         {

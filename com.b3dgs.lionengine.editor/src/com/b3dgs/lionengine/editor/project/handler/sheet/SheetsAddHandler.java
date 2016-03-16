@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project.handler;
+package com.b3dgs.lionengine.editor.project.handler.sheet;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,20 +25,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilTemplate;
+import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
-import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Add a sheets descriptor in the selected folder.
@@ -87,45 +79,21 @@ public final class SheetsAddHandler
     /**
      * Execute the handler.
      * 
-     * @param partService The part service reference.
      * @param parent The shell parent.
      */
     @Execute
-    public void execute(EPartService partService, Shell parent)
+    public void execute(Shell parent)
     {
-        final Media selection = ProjectModel.INSTANCE.getSelection();
-        final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
-        final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
-        final String value = TileSheetsConfig.FILENAME.replace(Constant.DOT
-                                                               + Factory.FILE_DATA_EXTENSION,
-                                                               Constant.EMPTY_STRING);
-        final InputDialog input = new InputDialog(parent,
-                                                  Messages.AddSheets_Title,
-                                                  Messages.AddSheets_Text,
-                                                  value,
-                                                  validator);
-        final int code = input.open();
-        if (code == Window.OK)
+        InputValidator.getFile(parent, Messages.Title, Messages.Text, TileSheetsConfig.FILENAME, file ->
         {
-            final String name = input.getValue();
-            final File file = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
-
-            if (file.exists())
+            try
             {
-                MessageDialog.openError(parent, Messages.AddSheets_Error_Title, Messages.AddSheets_Error_Text);
-                execute(partService, parent);
+                createSheets(file);
             }
-            else
+            catch (final IOException exception)
             {
-                try
-                {
-                    createSheets(file);
-                }
-                catch (final IOException exception)
-                {
-                    throw new LionEngineException(exception);
-                }
+                throw new LionEngineException(exception);
             }
-        }
+        });
     }
 }

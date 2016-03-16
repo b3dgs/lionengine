@@ -25,18 +25,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.editor.InputValidator;
-import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilTemplate;
-import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.pathfinding.PathfindingConfig;
 
 /**
@@ -83,41 +76,17 @@ public final class PathfindingAddHandler
     @Execute
     public void execute(Shell parent)
     {
-        final Media selection = ProjectModel.INSTANCE.getSelection();
-        final String value = PathfindingConfig.FILENAME.replace(Constant.DOT
-                                                                + Factory.FILE_DATA_EXTENSION,
-                                                                Constant.EMPTY_STRING);
-        final String error = com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name;
-        final InputValidator validator = new InputValidator(InputValidator.NAME_MATCH, error);
-        final InputDialog input = new InputDialog(parent,
-                                                  Messages.AddPathfinding_Title,
-                                                  Messages.AddPathfinding_Text,
-                                                  value,
-                                                  validator);
-        final int code = input.open();
-        if (code == Window.OK)
+        InputValidator.getFile(parent, Messages.Title, Messages.Text, PathfindingConfig.FILENAME, file ->
         {
-            final String name = input.getValue();
-            final File file = new File(selection.getFile(), name + Constant.DOT + Factory.FILE_DATA_EXTENSION);
+            try
+            {
+                createPathfinding(file);
+            }
+            catch (final IOException exception)
+            {
+                throw new LionEngineException(exception);
+            }
 
-            if (file.exists())
-            {
-                MessageDialog.openError(parent,
-                                        Messages.AddPathfinding_Error_Title,
-                                        Messages.AddPathfinding_Error_Text);
-                execute(parent);
-            }
-            else
-            {
-                try
-                {
-                    createPathfinding(file);
-                }
-                catch (final IOException exception)
-                {
-                    throw new LionEngineException(exception);
-                }
-            }
-        }
+        });
     }
 }

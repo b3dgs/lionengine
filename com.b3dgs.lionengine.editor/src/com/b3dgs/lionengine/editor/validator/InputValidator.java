@@ -15,9 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor;
+package com.b3dgs.lionengine.editor.validator;
+
+import java.io.File;
 
 import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Shell;
+
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Allows to check an input text and validate it.
@@ -34,6 +45,35 @@ public class InputValidator implements IInputValidator
     public static final String INTEGER_POSITIVE_MATCH = "[0-9]*";
     /** Must match a strict positive integer. */
     public static final String INTEGER_POSITIVE_STRICT_MATCH = "[1-9][0-9]*";
+
+    /**
+     * Get a validated file name from a default one.
+     * 
+     * @param parent The parent shell.
+     * @param title The input title.
+     * @param text The input text content.
+     * @param filename The default filename value.
+     * @param action The action called if file does not already exists.
+     */
+    public static void getFile(Shell parent, String title, String text, String filename, InputAction action)
+    {
+        final String value = filename.replace(Factory.FILE_DATA_DOT_EXTENSION, Constant.EMPTY_STRING);
+        final Media selection = ProjectModel.INSTANCE.getSelection();
+        final InputValidator validator = new InputValidator(NAME_MATCH, Messages.ErrorName);
+        final InputDialog input = new InputDialog(parent, title, text, value, validator);
+        final int code = input.open();
+        if (code == Window.OK)
+        {
+            final String name = input.getValue();
+            final File file = new File(selection.getFile(), name + Factory.FILE_DATA_DOT_EXTENSION);
+            if (file.exists())
+            {
+                MessageDialog.openError(parent, Messages.ErrorTitle, Messages.ErrorText);
+                getFile(parent, title, text, filename, action);
+            }
+            action.handle(file);
+        }
+    }
 
     /** Expected matches. */
     private final String matches;

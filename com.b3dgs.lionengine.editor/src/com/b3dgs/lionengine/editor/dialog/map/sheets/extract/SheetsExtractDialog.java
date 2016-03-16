@@ -34,13 +34,13 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
 import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget.LevelRipsWidgetListener;
 import com.b3dgs.lionengine.editor.dialog.widget.TextWidget;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.map.SheetsExtractor;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
@@ -198,16 +198,15 @@ public class SheetsExtractDialog extends AbstractDialog
         tilesExtractor.addListener(progress);
         progress.open();
 
-        final Collection<ImageBuffer> tiles = tilesExtractor.extract(progress,
-                                                                     tileWidth.getValue(),
-                                                                     tileHeight.getValue(),
-                                                                     getLevelRips());
+        final int tw = tileWidth.getValue();
+        final int th = tileHeight.getValue();
+        final Collection<ImageBuffer> tiles = tilesExtractor.extract(progress, tw, th, getLevelRips());
         progress.finish();
-        if (progress.isCanceled())
+        if (!progress.isCanceled())
         {
-            return Collections.emptyList();
+            return tiles;
         }
-        return tiles;
+        return Collections.emptyList();
     }
 
     /**

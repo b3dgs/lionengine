@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.ProjectTreeCreator;
 import com.b3dgs.lionengine.editor.project.ResourceChecker;
-import com.b3dgs.lionengine.editor.project.handler.MinimapEditHandler;
+import com.b3dgs.lionengine.editor.project.handler.minimap.MinimapEditHandler;
 import com.b3dgs.lionengine.editor.project.tester.MinimapTester;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 

@@ -25,8 +25,10 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.editor.utility.UtilClass;
+import com.b3dgs.lionengine.game.object.ObjectConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Test if the folder contains objects.
@@ -48,13 +50,27 @@ public final class ObjectsTester extends PropertyTester
     {
         try
         {
-            final Class<?> clazz = UtilClass.get(media);
+            final Class<?> clazz = get(media);
             return ObjectGame.class.isAssignableFrom(clazz);
         }
         catch (final LionEngineException exception)
         {
             return false;
         }
+    }
+
+    /**
+     * Get the class from media file, by reading the attribute {@link ObjectConfig#CLASS} attribute.
+     * 
+     * @param media The media descriptor.
+     * @return The class reference.
+     * @throws LionEngineException If not able to create the class.
+     */
+    private static Class<?> get(Media media)
+    {
+        final XmlNode root = Xml.load(media);
+        final String className = root.getChild(ObjectConfig.CLASS).getText();
+        return Project.getActive().getClass(className);
     }
 
     /**
@@ -68,11 +84,11 @@ public final class ObjectsTester extends PropertyTester
     {
         final boolean result;
         final File file = selection.getFile();
-        if (ObjectsTester.PROPERTY_ADD_OBJECT.equals(property))
+        if (PROPERTY_ADD_OBJECT.equals(property))
         {
             result = file.isDirectory();
         }
-        else if (ObjectsTester.PROPERTY_IS_OBJECT.equals(property))
+        else if (PROPERTY_IS_OBJECT.equals(property))
         {
             result = ObjectsTester.isObjectFile(selection);
         }
@@ -98,14 +114,10 @@ public final class ObjectsTester extends PropertyTester
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
-        final Project project = Project.getActive();
-        if (project != null)
+        final Media selection = ProjectModel.INSTANCE.getSelection();
+        if (selection != null)
         {
-            final Media selection = ProjectModel.INSTANCE.getSelection();
-            if (selection != null)
-            {
-                return check(selection, property);
-            }
+            return check(selection, property);
         }
         return false;
     }

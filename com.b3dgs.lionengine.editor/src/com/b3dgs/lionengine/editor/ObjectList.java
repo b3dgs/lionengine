@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilTree;
+import com.b3dgs.lionengine.editor.validator.InputValidator;
 
 /**
  * Represents the object list, allowing to add and remove objects.
@@ -393,12 +394,12 @@ public abstract class ObjectList<T extends Nameable>
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
+                final String error = com.b3dgs.lionengine.editor.validator.Messages.ErrorName;
                 final InputDialog inputDialog = new InputDialog(toolbar.getShell(),
                                                                 Messages.ObjectList_AddObject_Title,
                                                                 Messages.ObjectList_AddObject_Text,
                                                                 ObjectList.DEFAULT_NEW_OBJECT_NAME,
-                                                                new InputValidator(InputValidator.NAME_MATCH,
-                                                                                   Messages.InputValidator_Error_Name));
+                                                                new InputValidator(InputValidator.NAME_MATCH, error));
                 if (inputDialog.open() == Window.OK)
                 {
                     final String name = inputDialog.getValue();

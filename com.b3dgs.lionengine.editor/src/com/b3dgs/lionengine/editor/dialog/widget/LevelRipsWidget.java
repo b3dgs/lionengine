@@ -43,10 +43,20 @@ import com.b3dgs.lionengine.editor.utility.UtilDialog;
 public class LevelRipsWidget
 {
     /** Level rip filter. */
-    public static final String[] LEVEL_RIP_FILTER = new String[]
+    private static final String LEVEL_RIP_FILTER = "*.bmp;*.png";
+
+    /**
+     * List of supported level rip formats.
+     * 
+     * @return Supported level rip formats.
+     */
+    public static String[] getLevelRipFilter()
     {
-        "*.bmp;*.png"
-    };
+        return new String[]
+        {
+            LEVEL_RIP_FILTER
+        };
+    }
 
     /** Listeners. */
     private final Collection<LevelRipsWidgetListener> listeners = new HashSet<>();
@@ -151,7 +161,7 @@ public class LevelRipsWidget
         final File[] files = UtilDialog.selectResourceFiles(levelRips.getShell(), new String[]
         {
             Messages.LevelRipFileFilter
-        }, LEVEL_RIP_FILTER);
+        }, getLevelRipFilter());
         final Project project = Project.getActive();
         for (final File file : files)
         {

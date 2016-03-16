@@ -15,27 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project.handler;
-
-import java.io.File;
+package com.b3dgs.lionengine.editor.project.handler.minimap;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.project.dialog.minimap.MinimapEditDialog;
 
 /**
- * Remove an object in the selected folder.
+ * Edit minimap handler implementation.
  */
-public final class ObjectDeleteHandler
+public final class MinimapEditHandler
 {
+    /**
+     * Execute the handler.
+     * 
+     * @param parent The shell parent.
+     */
+    public static void executeHandler(Shell parent)
+    {
+        final MinimapEditDialog dialog = new MinimapEditDialog(parent);
+        final Media selection = ProjectModel.INSTANCE.getSelection();
+        dialog.setLocation(selection.getPath());
+        dialog.open();
+    }
+
     /**
      * Create handler.
      */
-    public ObjectDeleteHandler()
+    public MinimapEditHandler()
     {
         super();
     }
@@ -43,29 +53,11 @@ public final class ObjectDeleteHandler
     /**
      * Execute the handler.
      * 
-     * @param parent The shell parent.
+     * @param shell The shell reference.
      */
     @Execute
-    public void execute(Shell parent)
+    public void execute(Shell shell)
     {
-        final Media selection = ProjectModel.INSTANCE.getSelection();
-        final File file = selection.getFile();
-        if (file.isFile())
-        {
-            if (file.delete())
-            {
-                final MessageBox messageBox = new MessageBox(parent, SWT.ICON_INFORMATION);
-                messageBox.setText(Messages.RemoveObject_Title);
-                messageBox.setMessage(Messages.RemoveObject_Text + file);
-                messageBox.open();
-            }
-            else
-            {
-                final MessageBox messageBox = new MessageBox(parent, SWT.ICON_ERROR);
-                messageBox.setText(Messages.RemoveObject_Error_Title);
-                messageBox.setMessage(Messages.RemoveObject_Error_Text + file);
-                messageBox.open();
-            }
-        }
+        executeHandler(shell);
     }
 }

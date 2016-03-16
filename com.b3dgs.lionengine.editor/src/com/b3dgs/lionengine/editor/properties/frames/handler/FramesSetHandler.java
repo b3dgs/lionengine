@@ -23,11 +23,11 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 
-import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.frames.Messages;
 import com.b3dgs.lionengine.editor.properties.frames.PropertiesFrames;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
+import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.stream.XmlNode;

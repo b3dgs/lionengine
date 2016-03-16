@@ -36,10 +36,20 @@ import com.b3dgs.lionengine.editor.project.Project;
 public final class UtilDialog
 {
     /** Xml filter. */
-    public static final String[] XML = new String[]
+    private static final String XML = "*.xml";
+
+    /**
+     * List of supported XML formats.
+     * 
+     * @return Supported XML formats.
+     */
+    public static String[] getXmlFilter()
     {
-        "*.xml"
-    };
+        return new String[]
+        {
+            XML
+        };
+    }
 
     /**
      * Select a file from a dialog and returns its path relative to the starting path.
@@ -178,7 +188,7 @@ public final class UtilDialog
             {
                 description
             });
-            fileDialog.setFilterExtensions(XML);
+            fileDialog.setFilterExtensions(getXmlFilter());
             final String file = fileDialog.open();
             if (file == null)
             {

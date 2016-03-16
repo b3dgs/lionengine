@@ -32,6 +32,8 @@ public final class Messages extends NLS
     public static String UtilDialog_Error;
     /** Util dialog error wrong directory. */
     public static String UtilDialog_WrongDir;
+    /** Browse button. */
+    public static String Browse;
 
     /**
      * Initialize.

@@ -15,19 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project.handler;
+package com.b3dgs.lionengine.editor.project.handler.sheet;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.editor.project.dialog.minimap.MinimapEditDialog;
+import com.b3dgs.lionengine.editor.project.dialog.SheetsEditDialog;
 
 /**
- * Edit minimap handler implementation.
+ * Edit a sheet in the selected folder.
  */
-public final class MinimapEditHandler
+public final class SheetsEditHandler
 {
     /**
      * Execute the handler.
@@ -36,16 +36,15 @@ public final class MinimapEditHandler
      */
     public static void executeHandler(Shell parent)
     {
-        final MinimapEditDialog dialog = new MinimapEditDialog(parent);
         final Media selection = ProjectModel.INSTANCE.getSelection();
-        dialog.setLocation(selection.getPath());
+        final SheetsEditDialog dialog = new SheetsEditDialog(parent, selection);
         dialog.open();
     }
 
     /**
      * Create handler.
      */
-    public MinimapEditHandler()
+    public SheetsEditHandler()
     {
         super();
     }
@@ -53,11 +52,11 @@ public final class MinimapEditHandler
     /**
      * Execute the handler.
      * 
-     * @param shell The shell reference.
+     * @param parent The shell parent.
      */
     @Execute
-    public void execute(Shell shell)
+    public void execute(Shell parent)
     {
-        executeHandler(shell);
+        executeHandler(parent);
     }
 }

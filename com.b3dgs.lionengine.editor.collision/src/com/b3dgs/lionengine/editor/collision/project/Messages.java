@@ -32,10 +32,6 @@ public final class Messages extends NLS
     public static String Title;
     /** Add collisions title. */
     public static String Text;
-    /** Add collisions error title. */
-    public static String Error_Title;
-    /** Add collisions error text. */
-    public static String Error_Text;
 
     /**
      * Initialize.
