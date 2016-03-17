@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.toolbar.SetPointerCollisionHandler;
 import com.b3dgs.lionengine.editor.toolbar.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
@@ -92,7 +93,7 @@ public class CollisionImportDialog extends AbstractDialog
      */
     private void loadDefaults()
     {
-        final Project project = Project.getActive();
+        final Project project = ProjectModel.INSTANCE.getProject();
         final MapTile map = WorldModel.INSTANCE.getMap();
         final File parentFile = map.getFeature(MapTileGroup.class).getGroupsConfig().getFile().getParentFile();
 

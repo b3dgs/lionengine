@@ -21,7 +21,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.object.ObjectConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -55,7 +55,7 @@ public final class ObjectAddHandler
             final XmlNode root = Xml.create(UtilFile.removeExtension(ObjectConfig.NODE_OBJECT));
             root.add(ObjectConfig.exportClass(ObjectGame.class.getName()));
             root.add(ObjectConfig.exportSetup(Setup.class.getName()));
-            Xml.save(root, Project.getActive().getResourceMedia(file));
+            Xml.save(root, ProjectModel.INSTANCE.getProject().getResourceMedia(file));
         });
     }
 }

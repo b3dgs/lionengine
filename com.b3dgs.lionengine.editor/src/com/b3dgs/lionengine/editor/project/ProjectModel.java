@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
-import java.io.File;
-
 import com.b3dgs.lionengine.Media;
 
 /**
@@ -29,8 +27,8 @@ public final class ProjectModel
     /** Project model. */
     public static final ProjectModel INSTANCE = new ProjectModel();
 
-    /** Project root (resources folder). */
-    private File root;
+    /** Active project. */
+    private Project project;
     /** Last resource selected. */
     private Media selection;
 
@@ -43,23 +41,13 @@ public final class ProjectModel
     }
 
     /**
-     * Set the main resources folder.
+     * Set the active project.
      * 
-     * @param root The main resources folder.
+     * @param project The active project.
      */
-    public void setRoot(File root)
+    public void setProject(Project project)
     {
-        this.root = root;
-    }
-
-    /**
-     * Get the resources root folder.
-     * 
-     * @return The resources root folder.
-     */
-    public File getRoot()
-    {
-        return root;
+        this.project = project;
     }
 
     /**
@@ -70,6 +58,16 @@ public final class ProjectModel
     public void setSelection(Media selection)
     {
         this.selection = selection;
+    }
+
+    /**
+     * Get the active project.
+     * 
+     * @return The active project.
+     */
+    public Project getProject()
+    {
+        return project;
     }
 
     /**

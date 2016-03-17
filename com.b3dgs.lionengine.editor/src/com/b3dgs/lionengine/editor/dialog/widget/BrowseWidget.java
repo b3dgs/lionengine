@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 
@@ -155,25 +156,27 @@ public class BrowseWidget
      */
     private void onBrowse(Text location, String filter, String[] types, boolean open)
     {
+        final Project project = ProjectModel.INSTANCE.getProject();
+        final String initialPath = project.getResourcesPath().getAbsolutePath();
         final File file;
         if (filter == null)
         {
-            file = UtilDialog.selectResourceFolder(location.getShell());
+            file = UtilDialog.selectResourceFolder(location.getShell(), initialPath);
         }
         else if (types == null)
         {
-            file = UtilDialog.selectResourceXml(location.getShell(), open, filter);
+            file = UtilDialog.selectResourceXml(location.getShell(), initialPath, open, filter);
         }
         else
         {
-            file = UtilDialog.selectResourceFile(location.getShell(), open, new String[]
+            file = UtilDialog.selectResourceFile(location.getShell(), initialPath, open, new String[]
             {
                 filter
             }, types);
         }
         if (file != null)
         {
-            media = Project.getActive().getResourceMedia(file);
+            media = project.getResourceMedia(file);
             location.setText(media.getPath());
 
             for (final BrowseWidgetListener listener : listeners)

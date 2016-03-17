@@ -18,22 +18,17 @@
 package com.b3dgs.lionengine.editor.project.dialog;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectGenerator;
+import com.b3dgs.lionengine.editor.project.ProjectFactory;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 
 /**
@@ -179,10 +174,9 @@ public class ProjectImportDialog extends AbstractProjectDialog
         final String classes = projectClassesText.getText();
         final String libraries = projectLibrariesText.getText();
         final String resources = projectResourcesText.getText();
-        final ProjectGenerator createProject = new ProjectGenerator(classes, libraries, resources);
         try
         {
-            createProject.createProperties(location);
+            ProjectFactory.createProperties(location, resources, classes, libraries);
         }
         catch (final IOException exception)
         {
@@ -203,7 +197,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
         final String name = projectNameText.getText();
         try
         {
-            project = Project.create(location);
+            project = ProjectFactory.create(location);
             Verbose.info(VERBOSE_PROJECT_IMPORTED, name, VERBOSE_FROM, location.getAbsolutePath());
         }
         catch (final IOException exception)
@@ -221,8 +215,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
     private void checkProjectExistence()
     {
         final File projectPath = new File(projectLocationText.getText());
-        final File projectProperties = new File(projectPath, Project.PROPERTIES_FILE);
-        hasProject = projectProperties.isFile();
+        hasProject = ProjectFactory.exists(projectPath);
         if (hasProject)
         {
             finish.setEnabled(false);
@@ -242,21 +235,15 @@ public class ProjectImportDialog extends AbstractProjectDialog
      */
     private void fillProjectProperties() throws IOException
     {
-        final File file = new File(projectLocationText.getText(), Project.PROPERTIES_FILE);
-        try (InputStream input = new FileInputStream(file))
-        {
-            final Properties properties = new Properties();
-            properties.load(input);
+        final File projectPath = new File(projectLocationText.getText());
+        final ProjectFactory.Info info = ProjectFactory.getInfo(projectPath);
 
-            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES, Constant.EMPTY_STRING);
-            final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES, Constant.EMPTY_STRING);
-            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES, Constant.EMPTY_STRING);
-            projectClassesText.setText(classes);
-            projectLibrariesText.setText(libraries);
-            projectResourcesText.setText(resources);
-            tipsLabel.setVisible(false);
-            finish.setEnabled(true);
-        }
+        projectClassesText.setText(info.getClasses());
+        projectLibrariesText.setText(info.getLibraries());
+        projectResourcesText.setText(info.getResources());
+
+        tipsLabel.setVisible(false);
+        finish.setEnabled(true);
     }
 
     /*
@@ -336,8 +323,21 @@ public class ProjectImportDialog extends AbstractProjectDialog
     @Override
     protected void onFinish()
     {
-        final File location = new File(projectLocationText.getText());
-        generateProperties(location);
-        createProject(location);
+        final File projectPath = new File(projectLocationText.getText());
+        try
+        {
+            final ProjectFactory.Info info = ProjectFactory.getInfo(projectPath);
+            if (!info.getResources().equals(projectResourcesText.getText())
+                || !info.getClasses().equals(projectClassesText.getText())
+                || !info.getLibraries().equals(projectLibrariesText.getText()))
+            {
+                generateProperties(projectPath);
+            }
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(exception);
+        }
+        createProject(projectPath);
     }
 }

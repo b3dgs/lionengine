@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.ImageInfo;
-import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
@@ -114,7 +114,7 @@ public class PropertiesFrames implements PropertiesProviderObject
         final XmlNode size;
         final File file = new File(configurer.getPath(),
                                    root.getChild(SurfaceConfig.NODE_SURFACE).readString(SurfaceConfig.ATT_IMAGE));
-        final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(file));
+        final ImageInfo info = ImageInfo.get(ProjectModel.INSTANCE.getProject().getResourceMedia(file));
         if (!root.hasChild(SizeConfig.NODE_SIZE))
         {
             size = root.createChild(SizeConfig.NODE_SIZE);

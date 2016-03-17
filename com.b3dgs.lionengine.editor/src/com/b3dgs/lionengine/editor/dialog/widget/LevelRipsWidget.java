@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 
@@ -158,11 +159,12 @@ public class LevelRipsWidget
      */
     private void onAddLevelRip()
     {
-        final File[] files = UtilDialog.selectResourceFiles(levelRips.getShell(), new String[]
+        final Project project = ProjectModel.INSTANCE.getProject();
+        final String initialPath = project.getResourcesPath().getAbsolutePath();
+        final File[] files = UtilDialog.selectResourceFiles(levelRips.getShell(), initialPath, new String[]
         {
             Messages.LevelRipFileFilter
         }, getLevelRipFilter());
-        final Project project = Project.getActive();
         for (final File file : files)
         {
             final Media media = project.getResourceMedia(file);

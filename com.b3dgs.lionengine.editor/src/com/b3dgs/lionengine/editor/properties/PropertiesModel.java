@@ -110,9 +110,10 @@ public final class PropertiesModel
      */
     public Object getSelectedData()
     {
-        for (final TreeItem item : properties.getSelection())
+        final TreeItem[] items = properties.getSelection();
+        if (items.length > 0)
         {
-            return item.getData();
+            return items[0];
         }
         return null;
     }

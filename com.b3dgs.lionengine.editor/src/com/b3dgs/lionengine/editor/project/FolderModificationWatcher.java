@@ -71,18 +71,18 @@ public final class FolderModificationWatcher
     /**
      * Listen to directory modification.
      * 
-     * @param root The root path.
+     * @param project The project to watch.
      * @param tree The tree viewer reference.
      * @param creator The creator reference.
      * @throws LionEngineException If already started.
      */
-    public synchronized void start(Path root, Tree tree, ProjectTreeCreator creator)
+    public synchronized void start(Project project, Tree tree, ProjectTreeCreator creator)
     {
         if (started)
         {
             throw new LionEngineException(ERROR_STARTED);
         }
-        future = executor.submit(new Watcher(root, tree, creator));
+        future = executor.submit(new Watcher(project, tree, creator));
         started = true;
     }
 
@@ -119,7 +119,7 @@ public final class FolderModificationWatcher
         /** Tasks. */
         private final Collection<Task> tasks = new HashSet<>();
         /** Root folder. */
-        private final Path root;
+        private final Project project;
         /** Tree reference. */
         private final Tree tree;
         /** Creator reference. */
@@ -128,13 +128,13 @@ public final class FolderModificationWatcher
         /**
          * Create the watcher.
          * 
-         * @param root The root folder.
+         * @param project The project reference.
          * @param tree The tree reference.
          * @param creator The creator reference.
          */
-        Watcher(Path root, Tree tree, ProjectTreeCreator creator)
+        Watcher(Project project, Tree tree, ProjectTreeCreator creator)
         {
-            this.root = root;
+            this.project = project;
             this.tree = tree;
             this.creator = creator;
         }
@@ -162,7 +162,7 @@ public final class FolderModificationWatcher
         {
             try
             {
-                tasks.add(new Task(root, directory, tree, creator));
+                tasks.add(new Task(project, directory, tree, creator));
             }
             catch (final IOException exception)
             {
@@ -196,8 +196,9 @@ public final class FolderModificationWatcher
         @Override
         public void run()
         {
-            createTask(root);
-            createWatchers(root.toFile());
+            final File resourcesPath = project.getResourcesPath();
+            createTask(resourcesPath.toPath());
+            createWatchers(resourcesPath);
 
             while (!Thread.currentThread().isInterrupted())
             {
@@ -230,7 +231,7 @@ public final class FolderModificationWatcher
     private final class Task
     {
         /** Root folder. */
-        private final Path root;
+        private final Project project;
         /** Current folder. */
         private final Path folder;
         /** Tree. */
@@ -245,15 +246,15 @@ public final class FolderModificationWatcher
         /**
          * Create the task.
          * 
-         * @param root The root folder.
+         * @param project The project folder.
          * @param folder The current folder.
          * @param tree The tree reference.
          * @param creator The creator reference.
          * @throws IOException If error.
          */
-        Task(Path root, Path folder, Tree tree, ProjectTreeCreator creator) throws IOException
+        Task(Project project, Path folder, Tree tree, ProjectTreeCreator creator) throws IOException
         {
-            this.root = root;
+            this.project = project;
             this.folder = folder;
             this.tree = tree;
             this.creator = creator;
@@ -314,7 +315,7 @@ public final class FolderModificationWatcher
                 {
                     try
                     {
-                        newTasks.add(new Task(root, path.toPath(), tree, creator));
+                        newTasks.add(new Task(project, path.toPath(), tree, creator));
                     }
                     catch (final IOException exception)
                     {
@@ -352,7 +353,7 @@ public final class FolderModificationWatcher
             final File parent = path.getParentFile();
             if (parent != null)
             {
-                final String keyParent = Project.getActive().getResourceMedia(path).getParentPath();
+                final String keyParent = project.getResourceMedia(path).getParentPath();
                 tree.getDisplay().asyncExec(() -> onCreated(path, keyParent));
             }
         }
@@ -366,7 +367,7 @@ public final class FolderModificationWatcher
         {
             final Path file = folder.resolve(filename);
             final String full = file.toFile().getAbsolutePath();
-            final int prefix = root.toFile().getAbsolutePath().length() + 1;
+            final int prefix = project.getResourcesPath().getAbsolutePath().length() + 1;
             if (full.length() > prefix)
             {
                 final String simple = full.substring(prefix);

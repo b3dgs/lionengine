@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.project.Project;
 
 /**
  * Series of tool functions around the editor related to dialogs.
@@ -87,22 +86,22 @@ public final class UtilDialog
      * Select a media folder from dialog.
      * 
      * @param parent The shell parent.
+     * @param initalPath The initial path.
      * @return The media folder, <code>null</code> if none.
      */
-    public static File selectResourceFolder(Shell parent)
+    public static File selectResourceFolder(Shell parent, String initalPath)
     {
         String selection = null;
         do
         {
             final DirectoryDialog fileDialog = new DirectoryDialog(parent, SWT.OPEN);
-            final String path = Project.getActive().getResourcesPath().getAbsolutePath();
-            fileDialog.setFilterPath(path);
+            fileDialog.setFilterPath(initalPath);
             final String folder = fileDialog.open();
             if (folder == null)
             {
                 return null;
             }
-            if (folder.startsWith(path))
+            if (folder.startsWith(initalPath))
             {
                 selection = folder;
             }
@@ -119,12 +118,17 @@ public final class UtilDialog
      * Select a media file from dialog.
      * 
      * @param parent The shell parent.
+     * @param initalPath The initial path.
      * @param openSave <code>true</code> to open, <code>false</code> to save.
      * @param extensionsName The filtered extensions name.
      * @param extensions The filtered extensions.
      * @return The media file, <code>null</code> if none.
      */
-    public static File selectResourceFile(Shell parent, boolean openSave, String[] extensionsName, String[] extensions)
+    public static File selectResourceFile(Shell parent,
+                                          String initalPath,
+                                          boolean openSave,
+                                          String[] extensionsName,
+                                          String[] extensions)
     {
         String selection = null;
         do
@@ -138,8 +142,7 @@ public final class UtilDialog
             {
                 fileDialog = new FileDialog(parent, SWT.SAVE);
             }
-            final String path = Project.getActive().getResourcesPath().getAbsolutePath();
-            fileDialog.setFilterPath(path);
+            fileDialog.setFilterPath(initalPath);
             fileDialog.setFilterNames(extensionsName);
             fileDialog.setFilterExtensions(extensions);
             final String file = fileDialog.open();
@@ -147,7 +150,7 @@ public final class UtilDialog
             {
                 return null;
             }
-            if (file.startsWith(path))
+            if (file.startsWith(initalPath))
             {
                 selection = file;
             }
@@ -164,11 +167,12 @@ public final class UtilDialog
      * Select a media file from dialog.
      * 
      * @param parent The shell parent.
+     * @param initalPath The initial path.
      * @param openSave <code>true</code> to open, <code>false</code> to save.
      * @param description The type description.
      * @return The media file, <code>null</code> if none.
      */
-    public static File selectResourceXml(Shell parent, boolean openSave, String description)
+    public static File selectResourceXml(Shell parent, String initalPath, boolean openSave, String description)
     {
         String selection = null;
         do
@@ -182,8 +186,7 @@ public final class UtilDialog
             {
                 fileDialog = new FileDialog(parent, SWT.SAVE);
             }
-            final String path = Project.getActive().getResourcesPath().getAbsolutePath();
-            fileDialog.setFilterPath(path);
+            fileDialog.setFilterPath(initalPath);
             fileDialog.setFilterNames(new String[]
             {
                 description
@@ -194,7 +197,7 @@ public final class UtilDialog
             {
                 return null;
             }
-            if (file.startsWith(path))
+            if (file.startsWith(initalPath))
             {
                 selection = file;
             }
@@ -211,18 +214,21 @@ public final class UtilDialog
      * Select media files from dialog.
      * 
      * @param parent The shell parent.
+     * @param initalPath The initial path.
      * @param extensionsName The filtered extensions name.
      * @param extensions The filtered extensions.
      * @return The media files.
      */
-    public static File[] selectResourceFiles(Shell parent, String[] extensionsName, String[] extensions)
+    public static File[] selectResourceFiles(Shell parent,
+                                             String initalPath,
+                                             String[] extensionsName,
+                                             String[] extensions)
     {
         File[] selection = null;
         do
         {
             final FileDialog fileDialog = new FileDialog(parent, SWT.OPEN | SWT.MULTI);
-            final String path = Project.getActive().getResourcesPath().getAbsolutePath();
-            fileDialog.setFilterPath(path);
+            fileDialog.setFilterPath(initalPath);
             fileDialog.setFilterNames(extensionsName);
             fileDialog.setFilterExtensions(extensions);
             final String firstFile = fileDialog.open();
@@ -236,7 +242,7 @@ public final class UtilDialog
             {
                 files[i] = new File(new File(firstFile).getParentFile(), names[i]);
             }
-            if (firstFile.startsWith(path))
+            if (firstFile.startsWith(initalPath))
             {
                 selection = files;
             }

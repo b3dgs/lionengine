@@ -195,7 +195,7 @@ public final class ProjectPart implements Focusable
         projectTreeCreator.start();
 
         watcher.stop();
-        watcher.start(project.getResourcesPath().toPath(), tree, projectTreeCreator);
+        watcher.start(project, tree, projectTreeCreator);
 
         tree.layout();
 

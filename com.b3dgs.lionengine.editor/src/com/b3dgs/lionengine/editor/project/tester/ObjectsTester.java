@@ -23,7 +23,6 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.game.object.ObjectConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -70,7 +69,7 @@ public final class ObjectsTester extends PropertyTester
     {
         final XmlNode root = Xml.load(media);
         final String className = root.getChild(ObjectConfig.CLASS).getText();
-        return Project.getActive().getClass(className);
+        return ProjectModel.INSTANCE.getProject().getLoader().getClass(className);
     }
 
     /**

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.project.tester;
 
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 
 /**
  * Test if there is an active project.
@@ -46,7 +46,7 @@ public final class ProjectTester extends PropertyTester
     {
         if (PROPERTY_ACTIVE.equals(property))
         {
-            return Project.getActive() != null;
+            return ProjectModel.INSTANCE.getProject() != null;
         }
         return false;
     }

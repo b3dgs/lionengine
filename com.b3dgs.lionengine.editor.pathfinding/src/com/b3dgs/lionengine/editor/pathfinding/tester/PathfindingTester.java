@@ -96,7 +96,7 @@ public final class PathfindingTester extends PropertyTester
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
-        final Project project = Project.getActive();
+        final Project project = ProjectModel.INSTANCE.getProject();
         if (project != null)
         {
             final Media selection = ProjectModel.INSTANCE.getSelection();

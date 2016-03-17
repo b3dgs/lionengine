@@ -23,7 +23,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Tree;
 
 import com.b3dgs.lionengine.ImageInfo;
-import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.surface.PropertiesSurface;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
@@ -62,7 +62,7 @@ public final class SurfaceSetHandler
             if (!root.hasChild(SizeConfig.NODE_SIZE))
             {
                 final File surface = new File(configurer.getPath(), file);
-                final ImageInfo info = ImageInfo.get(Project.getActive().getResourceMedia(surface));
+                final ImageInfo info = ImageInfo.get(ProjectModel.INSTANCE.getProject().getResourceMedia(surface));
 
                 final XmlNode size = root.createChild(SizeConfig.NODE_SIZE);
                 size.writeInteger(SizeConfig.ATT_WIDTH, info.getWidth());

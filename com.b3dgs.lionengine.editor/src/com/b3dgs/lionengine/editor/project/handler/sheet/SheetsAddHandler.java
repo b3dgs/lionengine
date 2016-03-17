@@ -21,7 +21,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.stream.Xml;
@@ -51,7 +51,7 @@ public final class SheetsAddHandler
         InputValidator.getFile(parent, Messages.Title, Messages.Text, TileSheetsConfig.FILENAME, file ->
         {
             final XmlNode root = Xml.create(UtilFile.removeExtension(TileSheetsConfig.NODE_TILE_SHEETS));
-            Xml.save(root, Project.getActive().getResourceMedia(file));
+            Xml.save(root, ProjectModel.INSTANCE.getProject().getResourceMedia(file));
         });
     }
 }

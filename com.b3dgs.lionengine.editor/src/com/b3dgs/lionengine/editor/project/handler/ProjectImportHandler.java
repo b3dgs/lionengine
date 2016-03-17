@@ -42,8 +42,10 @@ public final class ProjectImportHandler
      */
     public static void importProject(Project project)
     {
+        ProjectModel.INSTANCE.setProject(project);
+
         final Factory factory = WorldModel.INSTANCE.getFactory();
-        factory.setClassLoader(project.getClassLoader());
+        factory.setClassLoader(project.getLoader().getClassLoader());
 
         final WorldPart worldPart = WorldModel.INSTANCE.getServices().get(WorldPart.class);
         worldPart.setToolBarEnabled(true);
@@ -51,7 +53,6 @@ public final class ProjectImportHandler
         Medias.setResourcesDirectory(project.getResourcesPath().getPath());
 
         final ProjectPart projectPart = UtilPart.getPart(ProjectPart.ID, ProjectPart.class);
-        ProjectModel.INSTANCE.setRoot(project.getPath());
         projectPart.setInput(project);
     }
 

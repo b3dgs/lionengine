@@ -42,6 +42,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
@@ -352,7 +353,8 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
      */
     private void selectConfig()
     {
-        final File file = UtilDialog.selectResourceXml(shell, true, Messages.FileDesc);
+        final String initialPath = ProjectModel.INSTANCE.getProject().getResourcesPath().getAbsolutePath();
+        final File file = UtilDialog.selectResourceXml(shell, initialPath, true, Messages.FileDesc);
         if (file != null)
         {
             final String normalized = UtilFile.normalizeExtension(file.getName(), Factory.FILE_DATA_EXTENSION);

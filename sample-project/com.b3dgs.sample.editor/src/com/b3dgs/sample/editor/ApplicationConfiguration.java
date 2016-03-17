@@ -33,6 +33,7 @@ import org.osgi.service.event.EventHandler;
 
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectFactory;
 import com.b3dgs.lionengine.editor.project.handler.ProjectImportHandler;
 
 /**
@@ -102,7 +103,7 @@ public class ApplicationConfiguration
             final File path = new File(projectPath);
             try
             {
-                final Project project = Project.create(path.getCanonicalFile());
+                final Project project = ProjectFactory.create(path.getCanonicalFile());
                 ProjectImportHandler.importProject(project);
             }
             catch (final IOException exception)
