@@ -17,49 +17,21 @@
  */
 package com.b3dgs.lionengine.editor.collision.project;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.utility.UtilTemplate;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Add a collisions descriptor in the selected folder.
  */
 public final class CollisionsAddHandler
 {
-    /** Template collisions. */
-    private static final String TEMPLATE_COLLISIONS = "collisions." + UtilTemplate.TEMPLATE_EXTENSION;
-
-    /**
-     * Create the collisions.
-     * 
-     * @param file The collisions file destination.
-     * @throws IOException If error when creating the collisions.
-     */
-    private static void createCollisions(File file) throws IOException
-    {
-        final File template = UtilTemplate.getTemplate(TEMPLATE_COLLISIONS);
-        final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
-        final Collection<String> dest = new ArrayList<>();
-        for (final String line : lines)
-        {
-            dest.add(line);
-        }
-        Files.write(file.toPath(), dest, StandardCharsets.UTF_8);
-        lines.clear();
-        dest.clear();
-    }
-
     /**
      * Create handler.
      */
@@ -78,14 +50,8 @@ public final class CollisionsAddHandler
     {
         InputValidator.getFile(parent, Messages.Title, Messages.Text, CollisionGroupConfig.FILENAME, file ->
         {
-            try
-            {
-                createCollisions(file);
-            }
-            catch (final IOException exception)
-            {
-                throw new LionEngineException(exception);
-            }
+            final XmlNode root = Xml.create(UtilFile.removeExtension(CollisionGroupConfig.COLLISIONS));
+            Xml.save(root, Project.getActive().getResourceMedia(file));
         });
     }
 }

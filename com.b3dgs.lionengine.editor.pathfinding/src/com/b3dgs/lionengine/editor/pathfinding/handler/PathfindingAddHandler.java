@@ -17,49 +17,21 @@
  */
 package com.b3dgs.lionengine.editor.pathfinding.handler;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.utility.UtilTemplate;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.pathfinding.PathfindingConfig;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Add a pathfinding descriptor in the selected folder.
  */
 public final class PathfindingAddHandler
 {
-    /** Template sheets. */
-    public static final String TEMPLATE_PATHFINDING = "pathfinding." + UtilTemplate.TEMPLATE_EXTENSION;
-
-    /**
-     * Create the pathfinding.
-     * 
-     * @param file The pathfinding file destination.
-     * @throws IOException If error when creating the pathfinding.
-     */
-    private static void createPathfinding(File file) throws IOException
-    {
-        final File template = UtilTemplate.getTemplate(TEMPLATE_PATHFINDING);
-        final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
-        final Collection<String> dest = new ArrayList<>();
-        for (final String line : lines)
-        {
-            dest.add(line);
-        }
-        Files.write(file.toPath(), dest, StandardCharsets.UTF_8);
-        lines.clear();
-        dest.clear();
-    }
-
     /**
      * Create handler.
      */
@@ -78,15 +50,8 @@ public final class PathfindingAddHandler
     {
         InputValidator.getFile(parent, Messages.Title, Messages.Text, PathfindingConfig.FILENAME, file ->
         {
-            try
-            {
-                createPathfinding(file);
-            }
-            catch (final IOException exception)
-            {
-                throw new LionEngineException(exception);
-            }
-
+            final XmlNode root = Xml.create(UtilFile.removeExtension(PathfindingConfig.PATHFINDING));
+            Xml.save(root, Project.getActive().getResourceMedia(file));
         });
     }
 }

@@ -17,63 +17,23 @@
  */
 package com.b3dgs.lionengine.editor.project.handler.object;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.utility.UtilTemplate;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
+import com.b3dgs.lionengine.game.object.ObjectConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Add an object descriptor in the selected folder.
  */
 public final class ObjectAddHandler
 {
-    /** Default new object name. */
-    private static final String DEFAULT_NEW_OBJECT_NAME = "object";
-
-    /**
-     * Create the object.
-     * 
-     * @param file The object file destination.
-     * @param clazz The object class.
-     * @param setup The setup class.
-     * @throws IOException If error when creating the object.
-     */
-    private static void createObject(File file, Class<?> clazz, Class<?> setup) throws IOException
-    {
-        final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_OBJECT);
-        final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
-        final Collection<String> dest = new ArrayList<>();
-        for (final String line : lines)
-        {
-            if (line.contains(UtilTemplate.TEMPLATE_CLASS_AREA))
-            {
-                dest.add(line.replace(UtilTemplate.TEMPLATE_CLASS_AREA, clazz.getName()));
-            }
-            else if (line.contains(UtilTemplate.TEMPLATE_SETUP_AREA))
-            {
-                dest.add(line.replace(UtilTemplate.TEMPLATE_SETUP_AREA, setup.getName()));
-            }
-            else
-            {
-                dest.add(line);
-            }
-        }
-        Files.write(file.toPath(), dest, StandardCharsets.UTF_8);
-        lines.clear();
-        dest.clear();
-    }
-
     /**
      * Create handler.
      */
@@ -90,16 +50,12 @@ public final class ObjectAddHandler
     @Execute
     public void execute(Shell parent)
     {
-        InputValidator.getFile(parent, Messages.Title, Messages.Text, DEFAULT_NEW_OBJECT_NAME, file ->
+        InputValidator.getFile(parent, Messages.Title, Messages.Text, ObjectConfig.DEFAULT_FILENAME, file ->
         {
-            try
-            {
-                createObject(file, ObjectGame.class, Setup.class);
-            }
-            catch (final IOException exception)
-            {
-                throw new LionEngineException(exception);
-            }
+            final XmlNode root = Xml.create(UtilFile.removeExtension(ObjectConfig.NODE_OBJECT));
+            root.add(ObjectConfig.exportClass(ObjectGame.class.getName()));
+            root.add(ObjectConfig.exportSetup(Setup.class.getName()));
+            Xml.save(root, Project.getActive().getResourceMedia(file));
         });
     }
 }

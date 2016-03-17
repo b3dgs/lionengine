@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project.dialog;
+package com.b3dgs.lionengine.editor.project.dialog.sheet;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,14 +34,12 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -53,6 +51,8 @@ public class SheetsEditDialog extends AbstractDialog
 {
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "edit.png");
+    /** Default size. */
+    private static final String DEFAULT_SIZE = "16";
 
     /** Sheets media. */
     private final Media sheets;
@@ -71,11 +71,7 @@ public class SheetsEditDialog extends AbstractDialog
      */
     public SheetsEditDialog(Shell parent, Media sheets)
     {
-        super(parent,
-              Messages.EditSheetsDialog_Title,
-              Messages.EditSheetsDialog_HeaderTitle,
-              Messages.EditSheetsDialog_HeaderDesc,
-              ICON);
+        super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
         this.sheets = sheets;
         dialog.setMinimumSize(100, 100);
         createDialog();
@@ -92,12 +88,15 @@ public class SheetsEditDialog extends AbstractDialog
         final Group tileSizeArea = new Group(parent, SWT.NONE);
         tileSizeArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         tileSizeArea.setLayout(new GridLayout(1, false));
-        tileSizeArea.setText(Messages.EditSheetsDialog_TileSize);
+        tileSizeArea.setText(Messages.TileSize);
 
-        tileWidthText = UtilText.create(Messages.EditSheetsDialog_TileWidth, tileSizeArea);
+        tileWidthText = UtilText.create(Messages.TileWidth, tileSizeArea);
+        tileWidthText.setText(DEFAULT_SIZE);
         tileWidthText.addVerifyListener(UtilText.createVerify(tileWidthText,
                                                               InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
-        tileHeightText = UtilText.create(Messages.EditSheetsDialog_TileHeight, tileSizeArea);
+
+        tileHeightText = UtilText.create(Messages.TileHeight, tileSizeArea);
+        tileHeightText.setText(DEFAULT_SIZE);
         tileHeightText.addVerifyListener(UtilText.createVerify(tileHeightText,
                                                                InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
     }
@@ -112,7 +111,7 @@ public class SheetsEditDialog extends AbstractDialog
         final Group tileSheetsArea = new Group(parent, SWT.NONE);
         tileSheetsArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         tileSheetsArea.setLayout(new GridLayout(1, false));
-        tileSheetsArea.setText(Messages.EditSheetsDialog_TileSheets);
+        tileSheetsArea.setText(Messages.TileSheets);
 
         for (final File file : UtilFile.getFiles(sheets.getFile().getParentFile()))
         {
@@ -134,15 +133,43 @@ public class SheetsEditDialog extends AbstractDialog
      */
     private void loadData()
     {
-        final XmlNode node = Xml.load(sheets);
-        final XmlNode tileSize = node.getChild(TileSheetsConfig.NODE_TILE_SIZE);
-        tileWidthText.setText(tileSize.readString(TileSheetsConfig.ATTRIBUTE_TILE_WIDTH));
-        tileHeightText.setText(tileSize.readString(TileSheetsConfig.ATTRIBUTE_TILE_HEIGHT));
+        final XmlNode root = Xml.load(sheets);
+        loadSize(root);
+        loadSheets(root);
 
         UtilText.registerDirty(tileWidthText, true);
         UtilText.registerDirty(tileHeightText, true);
+    }
 
-        final Collection<XmlNode> nodeSheets = node.getChildren();
+    /**
+     * Load the size node.
+     * 
+     * @param root The root reference.
+     */
+    private void loadSize(XmlNode root)
+    {
+        if (root.hasChild(TileSheetsConfig.NODE_TILE_SIZE))
+        {
+            final XmlNode tileSize = root.getChild(TileSheetsConfig.NODE_TILE_SIZE);
+            if (tileSize.hasAttribute(TileSheetsConfig.ATTRIBUTE_TILE_WIDTH))
+            {
+                tileWidthText.setText(tileSize.readString(TileSheetsConfig.ATTRIBUTE_TILE_WIDTH));
+            }
+            if (tileSize.hasAttribute(TileSheetsConfig.ATTRIBUTE_TILE_HEIGHT))
+            {
+                tileHeightText.setText(tileSize.readString(TileSheetsConfig.ATTRIBUTE_TILE_HEIGHT));
+            }
+        }
+    }
+
+    /**
+     * Load the sheet nodes.
+     * 
+     * @param root The root reference.
+     */
+    private void loadSheets(XmlNode root)
+    {
+        final Collection<XmlNode> nodeSheets = root.getChildren();
         for (final Button button : buttons)
         {
             for (final XmlNode sheet : nodeSheets)
@@ -175,13 +202,20 @@ public class SheetsEditDialog extends AbstractDialog
     @Override
     protected void onFinish()
     {
-        final XmlNode root = Xml.create(TileSheetsConfig.NODE_TILE_SHEETS);
-        root.writeString(Configurer.HEADER, Engine.WEBSITE);
-
-        final XmlNode tileSize = root.createChild(TileSheetsConfig.NODE_TILE_SIZE);
+        final XmlNode root = Xml.load(sheets);
+        final XmlNode tileSize;
+        if (root.hasChild(TileSheetsConfig.NODE_TILE_SIZE))
+        {
+            tileSize = root.getChild(TileSheetsConfig.NODE_TILE_SIZE);
+        }
+        else
+        {
+            tileSize = root.createChild(TileSheetsConfig.NODE_TILE_SIZE);
+        }
         tileSize.writeString(TileSheetsConfig.ATTRIBUTE_TILE_WIDTH, tileWidthText.getText());
         tileSize.writeString(TileSheetsConfig.ATTRIBUTE_TILE_HEIGHT, tileHeightText.getText());
 
+        root.removeChildren(TileSheetsConfig.NODE_TILE_SHEET);
         for (final Button button : buttons)
         {
             if (button.getSelection())

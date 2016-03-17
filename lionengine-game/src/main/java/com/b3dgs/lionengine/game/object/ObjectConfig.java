@@ -30,6 +30,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class ObjectConfig
 {
+    /** Default file name. */
+    public static final String DEFAULT_FILENAME = "object.xml";
     /** Object node name. */
     public static final String NODE_OBJECT = Configurer.PREFIX + "object";
     /** Class attribute name. */

@@ -17,57 +17,21 @@
  */
 package com.b3dgs.lionengine.editor.project.handler.sheet;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.utility.UtilTemplate;
+import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
+import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Add a sheets descriptor in the selected folder.
  */
 public final class SheetsAddHandler
 {
-    /** Default tile size. */
-    private static final String DEFAULT_TILE_SIZE = String.valueOf(16);
-
-    /**
-     * Create the sheets.
-     * 
-     * @param file The sheets file destination.
-     * @throws IOException If error when creating the sheets.
-     */
-    private static void createSheets(File file) throws IOException
-    {
-        final File template = UtilTemplate.getTemplate(UtilTemplate.TEMPLATE_SHEETS);
-        final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
-        final Collection<String> dest = new ArrayList<>();
-        for (final String line : lines)
-        {
-            if (line.contains(UtilTemplate.TEMPLATE_SHEETS_WIDTH) && line.contains(UtilTemplate.TEMPLATE_SHEETS_HEIGHT))
-            {
-                dest.add(line.replace(UtilTemplate.TEMPLATE_SHEETS_WIDTH, DEFAULT_TILE_SIZE)
-                             .replace(UtilTemplate.TEMPLATE_SHEETS_HEIGHT, DEFAULT_TILE_SIZE));
-            }
-            else
-            {
-                dest.add(line);
-            }
-        }
-        Files.write(file.toPath(), dest, StandardCharsets.UTF_8);
-        lines.clear();
-        dest.clear();
-    }
-
     /**
      * Create handler.
      */
@@ -86,14 +50,8 @@ public final class SheetsAddHandler
     {
         InputValidator.getFile(parent, Messages.Title, Messages.Text, TileSheetsConfig.FILENAME, file ->
         {
-            try
-            {
-                createSheets(file);
-            }
-            catch (final IOException exception)
-            {
-                throw new LionEngineException(exception);
-            }
+            final XmlNode root = Xml.create(UtilFile.removeExtension(TileSheetsConfig.NODE_TILE_SHEETS));
+            Xml.save(root, Project.getActive().getResourceMedia(file));
         });
     }
 }

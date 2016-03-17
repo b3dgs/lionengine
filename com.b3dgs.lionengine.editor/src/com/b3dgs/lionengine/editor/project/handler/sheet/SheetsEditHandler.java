@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.editor.project.dialog.SheetsEditDialog;
+import com.b3dgs.lionengine.editor.project.dialog.sheet.SheetsEditDialog;
 
 /**
  * Edit a sheet in the selected folder.
