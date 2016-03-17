@@ -33,11 +33,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.Focusable;
-import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilToolbar;
@@ -124,9 +122,9 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
         final Services services = WorldModel.INSTANCE.getServices();
         services.add(this);
 
-        updater = checkUpdaterExtensionPoint(services);
+        updater = new WorldUpdater(partService, services);
         services.add(updater);
-        renderer = checkRendererExtensionPoint(services);
+        renderer = new WorldRenderer(partService, services);
 
         composite = createPart(parent, updater, renderer);
         composite.addMouseTrackListener(UtilSwt.createFocusListener(this));
@@ -223,56 +221,6 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
     public void focus()
     {
         composite.forceFocus();
-    }
-
-    /**
-     * Check the updater extension point.
-     * 
-     * @param services The services reference.
-     * @return renderer instance from extension point or default one.
-     */
-    private WorldUpdater checkUpdaterExtensionPoint(Services services)
-    {
-        try
-        {
-            for (final WorldUpdater extension : UtilExtension.get(WorldUpdater.class,
-                                                                  WorldUpdater.EXTENSION_ID,
-                                                                  partService,
-                                                                  services))
-            {
-                return extension;
-            }
-        }
-        catch (final LionEngineException exception)
-        {
-            Verbose.exception(exception);
-        }
-        return new WorldUpdater(partService, services);
-    }
-
-    /**
-     * Check the renderer extension point.
-     * 
-     * @param services The services reference.
-     * @return renderer instance from extension point or default one.
-     */
-    private WorldRenderer checkRendererExtensionPoint(Services services)
-    {
-        try
-        {
-            for (final WorldRenderer extension : UtilExtension.get(WorldRenderer.class,
-                                                                   WorldRenderer.EXTENSION_ID,
-                                                                   partService,
-                                                                   services))
-            {
-                return extension;
-            }
-        }
-        catch (final LionEngineException exception)
-        {
-            Verbose.exception(exception);
-        }
-        return new WorldRenderer(partService, services);
     }
 
     /*
