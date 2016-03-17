@@ -55,7 +55,7 @@ public class PropertiesClass implements PropertiesProviderObject
     private static void createAttributeClass(Tree properties, ObjectConfig configObject)
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(classItem, Messages.Properties_Class, configObject.getClassName());
+        PropertiesPart.createLine(classItem, Messages.Class, configObject.getClassName());
         classItem.setData(ObjectConfig.CLASS);
         classItem.setImage(ICON_CLASS);
     }
@@ -69,7 +69,7 @@ public class PropertiesClass implements PropertiesProviderObject
     private static void createAttributeSetup(Tree properties, ObjectConfig configObject)
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(classItem, Messages.Properties_Setup, configObject.getSetupName());
+        PropertiesPart.createLine(classItem, Messages.Setup, configObject.getSetupName());
         classItem.setData(ObjectConfig.SETUP);
         classItem.setImage(ICON_SETUP);
     }
@@ -154,14 +154,13 @@ public class PropertiesClass implements PropertiesProviderObject
     public void setInput(Tree properties, Configurer configurer)
     {
         final XmlNode root = configurer.getRoot();
-        final ObjectConfig configObject = ObjectConfig.imports(configurer);
         if (root.hasChild(ObjectConfig.CLASS))
         {
-            createAttributeClass(properties, configObject);
+            createAttributeClass(properties, ObjectConfig.imports(configurer));
         }
         if (root.hasChild(ObjectConfig.SETUP))
         {
-            createAttributeSetup(properties, configObject);
+            createAttributeSetup(properties, ObjectConfig.imports(configurer));
         }
     }
 

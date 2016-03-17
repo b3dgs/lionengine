@@ -90,7 +90,7 @@ public final class ObjectsTester extends PropertyTester
         }
         else if (PROPERTY_IS_OBJECT.equals(property))
         {
-            result = ObjectsTester.isObjectFile(selection);
+            result = isObjectFile(selection);
         }
         else
         {

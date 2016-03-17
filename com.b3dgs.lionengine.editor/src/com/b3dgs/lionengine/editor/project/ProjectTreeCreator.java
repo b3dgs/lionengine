@@ -288,7 +288,7 @@ public class ProjectTreeCreator
      */
     private Media getMedia(String path)
     {
-        String relative;
+        final String relative;
         if (path.startsWith(resourcesPath.getPath()))
         {
             relative = path.replace(resourcesPath.getPath(), Constant.EMPTY_STRING);
@@ -299,7 +299,7 @@ public class ProjectTreeCreator
         }
         if (!relative.isEmpty())
         {
-            relative = relative.substring(1);
+            return Medias.create(relative.substring(1));
         }
         return Medias.create(relative);
     }

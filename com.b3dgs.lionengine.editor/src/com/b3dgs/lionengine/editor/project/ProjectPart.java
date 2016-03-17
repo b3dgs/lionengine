@@ -38,7 +38,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
@@ -46,6 +45,7 @@ import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilTree;
 import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.object.ObjectConfig;
 
 /**
  * Represents the resources explorer, depending of the opened project.
@@ -60,21 +60,38 @@ public final class ProjectPart implements Focusable
     private static final String ERROR_UNABLE_TO_OPEN_FILE = "Unable to open file: ";
 
     /**
-     * Update the properties view with the selected media.
+     * Update the properties view with the selected media. Shows object properties, or nothing if not an object.
      * 
      * @param media The selected media.
      */
     private static void updateProperties(Media media)
     {
         final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
-        if (ObjectsTester.isObjectFile(media))
-        {
-            part.setInput(part.getTree(), new Configurer(media));
-        }
-        else
+        if (!updateIfObject(part, media))
         {
             part.setInput(part.getTree(), (Configurer) null);
         }
+    }
+
+    /**
+     * Update the properties with object content if valid.
+     * 
+     * @param part The properties part reference.
+     * @param media The selected media.
+     * @return <code>true</code> if updated with object, <code>false</code> else.
+     */
+    private static boolean updateIfObject(PropertiesPart part, Media media)
+    {
+        if (media != null && Property.DATA.is(media))
+        {
+            final Configurer configurer = new Configurer(media);
+            if (ObjectConfig.NODE_OBJECT.equals(configurer.getRoot().getNodeName()))
+            {
+                part.setInput(part.getTree(), configurer);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
