@@ -24,7 +24,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.mock.XmlNodeMock;
 
@@ -76,7 +76,7 @@ public class FileWritingReadingTest
         }
         finally
         {
-            UtilFile.close(writing);
+            UtilStream.close(writing);
         }
     }
 
@@ -104,7 +104,7 @@ public class FileWritingReadingTest
         }
         finally
         {
-            UtilFile.close(reading);
+            UtilStream.close(reading);
         }
     }
 }

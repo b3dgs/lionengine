@@ -23,7 +23,7 @@ import java.io.InputStream;
 import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.OperatingSystem;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.Verbose;
 import com.sun.jna.Native;
 
@@ -74,7 +74,7 @@ public final class AudioSc68
         final InputStream input = AudioSc68.class.getResourceAsStream(library);
         try
         {
-            final File tempLib = UtilFile.getCopy(name, input);
+            final File tempLib = UtilStream.getCopy(name, input);
             Verbose.info("Temporary copy: ", tempLib.getPath());
             final Sc68Binding binding = (Sc68Binding) Native.loadLibrary(tempLib.getPath(), Sc68Binding.class);
             Verbose.info("Library ", library, " loaded");
@@ -86,7 +86,7 @@ public final class AudioSc68
         }
         finally
         {
-            UtilFile.safeClose(input);
+            UtilStream.safeClose(input);
         }
     }
 

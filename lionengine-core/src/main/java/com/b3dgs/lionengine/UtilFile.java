@@ -17,13 +17,7 @@
  */
 package com.b3dgs.lionengine;
 
-import java.io.BufferedOutputStream;
-import java.io.Closeable;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,73 +40,6 @@ public final class UtilFile
     private static final String ERROR_DELETE_DIRECTORY = "Directory not deleted: ";
     /** Error delete file. */
     private static final String ERROR_DELETE_FILE = "File not deleted: ";
-    /** Error temporary file. */
-    private static final String ERROR_TEMP_FILE = "Unable to create temporary file for: ";
-    /** Close stream failure. */
-    private static final String ERROR_CLOSE_STREAM = "Unable to close stream !";
-    /** Temporary file prefix. */
-    private static final String PREFIX_TEMP = "temp";
-    /** Copy buffer. */
-    private static final int BUFFER_COPY = 65535;
-
-    /**
-     * Copy a stream onto another.
-     * 
-     * @param source The source stream.
-     * @param destination The destination stream.
-     * @throws IOException If error.
-     * @throws LionEngineException If <code>null</code> arguments.
-     */
-    public static void copy(InputStream source, OutputStream destination) throws IOException
-    {
-        Check.notNull(source);
-        Check.notNull(destination);
-
-        final byte[] buffer = new byte[BUFFER_COPY];
-        while (true)
-        {
-            final int read = source.read(buffer);
-            if (read == -1)
-            {
-                break;
-            }
-            destination.write(buffer, 0, read);
-        }
-    }
-
-    /**
-     * Close and log exception if unable to close.
-     * 
-     * @param closeable The closeable to close.
-     */
-    public static void safeClose(Closeable closeable)
-    {
-        if (closeable != null)
-        {
-            try
-            {
-                closeable.close();
-            }
-            catch (final IOException exception)
-            {
-                Verbose.exception(exception, ERROR_CLOSE_STREAM);
-            }
-        }
-    }
-
-    /**
-     * Close and log exception if unable to close.
-     * 
-     * @param closeable The closeable to close.
-     * @throws IOException If unable to close.
-     */
-    public static void close(Closeable closeable) throws IOException
-    {
-        if (closeable != null)
-        {
-            closeable.close();
-        }
-    }
 
     /**
      * Get the file name without its extension.
@@ -159,60 +86,6 @@ public final class UtilFile
             builder.append(extension);
         }
         return builder.toString();
-    }
-
-    /**
-     * Get of full copy of the input stream stored in a temporary file.
-     * 
-     * @param name The file name reference (to have a similar temporary file name).
-     * @param input The input stream reference.
-     * @return The temporary file created with copied content from stream.
-     * @throws LionEngineException If <code>null</code> arguments or invalid stream.
-     */
-    public static File getCopy(String name, InputStream input)
-    {
-        Check.notNull(name);
-        Check.notNull(input);
-
-        final String prefix;
-        final String suffix;
-        final int minimumPrefix = 3;
-        final int i = name.lastIndexOf(Constant.DOT);
-        if (i > minimumPrefix)
-        {
-            prefix = name.substring(0, i);
-            suffix = name.substring(i);
-        }
-        else
-        {
-            if (name.length() > minimumPrefix)
-            {
-                prefix = name;
-            }
-            else
-            {
-                prefix = PREFIX_TEMP;
-            }
-            suffix = null;
-        }
-        try
-        {
-            final File temp = File.createTempFile(prefix, suffix);
-            final OutputStream output = new BufferedOutputStream(new FileOutputStream(temp));
-            try
-            {
-                copy(input, output);
-            }
-            finally
-            {
-                output.close();
-            }
-            return temp;
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, ERROR_TEMP_FILE, name);
-        }
     }
 
     /**

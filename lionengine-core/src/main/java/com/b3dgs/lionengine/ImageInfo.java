@@ -176,7 +176,7 @@ public final class ImageInfo
         }
         finally
         {
-            UtilFile.safeClose(input);
+            UtilStream.safeClose(input);
         }
     }
 

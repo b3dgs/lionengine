@@ -26,7 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -63,7 +63,7 @@ public class DocumentFactoryTest
         }
         finally
         {
-            UtilFile.close(input);
+            UtilStream.close(input);
         }
     }
 
@@ -85,7 +85,7 @@ public class DocumentFactoryTest
         }
         finally
         {
-            UtilFile.close(input);
+            UtilStream.close(input);
         }
     }
 

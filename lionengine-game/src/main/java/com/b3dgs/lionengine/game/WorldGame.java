@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -148,7 +148,7 @@ public abstract class WorldGame implements Updatable, Renderable
         }
         finally
         {
-            UtilFile.safeClose(writing);
+            UtilStream.safeClose(writing);
         }
     }
 
@@ -171,7 +171,7 @@ public abstract class WorldGame implements Updatable, Renderable
         }
         finally
         {
-            UtilFile.safeClose(reading);
+            UtilStream.safeClose(reading);
         }
     }
 }

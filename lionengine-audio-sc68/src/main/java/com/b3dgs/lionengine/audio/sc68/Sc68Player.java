@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilConversion;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 
@@ -52,13 +52,13 @@ final class Sc68Player implements Sc68
         try
         {
             input = media.getInputStream();
-            final File file = UtilFile.getCopy(media.getFile().getName(), input);
+            final File file = UtilStream.getCopy(media.getFile().getName(), input);
             file.deleteOnExit();
             return file.getAbsolutePath();
         }
         finally
         {
-            UtilFile.safeClose(input);
+            UtilStream.safeClose(input);
         }
     }
 

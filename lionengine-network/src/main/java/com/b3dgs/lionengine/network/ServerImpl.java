@@ -31,7 +31,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
@@ -553,7 +553,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
             }
             finally
             {
-                UtilFile.safeClose(buffer);
+                UtilStream.safeClose(buffer);
             }
         }
         // Remove deleted clients
@@ -607,7 +607,7 @@ final class ServerImpl extends NetworkModel<ClientListener> implements Server
                 }
                 finally
                 {
-                    UtilFile.safeClose(encode);
+                    UtilStream.safeClose(encode);
                 }
             }
         }

@@ -28,7 +28,7 @@ import org.junit.rules.TemporaryFolder;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.map.MapTileGame;
@@ -203,7 +203,7 @@ public class MapTileGameTest
         }
         finally
         {
-            UtilFile.safeClose(output);
+            UtilStream.safeClose(output);
         }
     }
 
@@ -225,7 +225,7 @@ public class MapTileGameTest
         }
         finally
         {
-            UtilFile.safeClose(input);
+            UtilStream.safeClose(input);
         }
         return map;
     }

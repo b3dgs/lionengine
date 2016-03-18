@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 
 /**
  * XML parser implementation.
@@ -111,7 +111,7 @@ public final class Xml
         }
         finally
         {
-            UtilFile.safeClose(output);
+            UtilStream.safeClose(output);
         }
     }
 

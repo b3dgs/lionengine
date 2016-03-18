@@ -17,13 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
-import java.io.Closeable;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,8 +32,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.mock.InputStreamMock;
-import com.b3dgs.lionengine.mock.OutputStreamMock;
 import com.b3dgs.lionengine.util.UtilTests;
 
 /**
@@ -77,76 +70,6 @@ public class UtilFileTest
     public void testConstructor() throws Exception
     {
         UtilTests.testPrivateConstructor(UtilFile.class);
-    }
-
-    /**
-     * Test the stream copy.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    public void testCopy() throws IOException
-    {
-        final File temp1 = File.createTempFile("temp", ".tmp");
-        final File temp2 = File.createTempFile("temp", ".tmp");
-
-        InputStream input = null;
-        OutputStream output = null;
-        try
-        {
-            input = new FileInputStream(temp1);
-            output = new FileOutputStream(temp2);
-            output.write(1);
-            output.flush();
-            UtilFile.copy(input, output);
-        }
-        finally
-        {
-            UtilFile.close(input);
-            UtilFile.close(output);
-            Assert.assertTrue(temp1.delete());
-            Assert.assertTrue(temp2.delete());
-        }
-    }
-
-    /**
-     * Test the stream copy with null input.
-     * 
-     * @throws IOException If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testCopyNullInput() throws IOException
-    {
-        OutputStream output = null;
-        try
-        {
-            output = new OutputStreamMock();
-            UtilFile.copy(null, output);
-        }
-        finally
-        {
-            UtilFile.close(output);
-        }
-    }
-
-    /**
-     * Test the stream copy with null output.
-     * 
-     * @throws IOException If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testCopyNullOutput() throws IOException
-    {
-        InputStream input = null;
-        try
-        {
-            input = new InputStreamMock();
-            UtilFile.copy(input, null);
-        }
-        finally
-        {
-            UtilFile.close(input);
-        }
     }
 
     /**
@@ -198,59 +121,6 @@ public class UtilFileTest
     public void testNormalizeExtensionNullExtension()
     {
         Assert.assertNull(UtilFile.normalizeExtension("", null));
-    }
-
-    /**
-     * Test the input stream copy.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    public void testGetCopy() throws IOException
-    {
-        InputStream input = null;
-        try
-        {
-            input = new InputStreamMock();
-            Assert.assertTrue(UtilFile.getCopy("te", input).delete());
-            Assert.assertTrue(UtilFile.getCopy("temp", input).delete());
-            Assert.assertTrue(UtilFile.getCopy("temp.tmp", input).delete());
-        }
-        finally
-        {
-            UtilFile.close(input);
-        }
-    }
-
-    /**
-     * Test the input stream copy with null name.
-     * 
-     * @throws IOException If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testGetCopyNullName() throws IOException
-    {
-        InputStream input = null;
-        try
-        {
-            input = new InputStreamMock();
-            Assert.assertNull(UtilFile.getCopy(null, input));
-        }
-        finally
-        {
-            UtilFile.close(input);
-        }
-    }
-
-    /**
-     * Test the input stream copy with null name.
-     * 
-     * @throws IOException If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testGetCopyNullStream() throws IOException
-    {
-        Assert.assertNull(UtilFile.getCopy("temp", null));
     }
 
     /**
@@ -585,39 +455,5 @@ public class UtilFileTest
         Assert.assertFalse(UtilFile.isType(new File("null"), Constant.EMPTY_STRING));
         Assert.assertTrue(UtilFile.isType(Medias.create("file").getFile(), Constant.EMPTY_STRING));
         Assert.assertTrue(UtilFile.isType(Medias.create("file1.txt").getFile(), "txt"));
-    }
-
-    /**
-     * Test the safe close error.
-     */
-    @Test
-    public void testSafeCloseError()
-    {
-        Verbose.info("*********************************** EXPECTED VERBOSE ***********************************");
-        UtilFile.safeClose(new Closeable()
-        {
-            @Override
-            public void close() throws IOException
-            {
-                throw new IOException();
-            }
-        });
-        Verbose.info("****************************************************************************************");
-    }
-
-    /**
-     * Test the get copy error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testGetCopyError()
-    {
-        UtilFile.getCopy("copy", new InputStream()
-        {
-            @Override
-            public int read() throws IOException
-            {
-                throw new IOException();
-            }
-        });
     }
 }

@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilTests;
 
@@ -141,13 +141,13 @@ public class ToolsSwtTest
             }
             finally
             {
-                UtilFile.close(input2);
+                UtilStream.close(input2);
                 buffer.dispose();
             }
         }
         finally
         {
-            UtilFile.close(input);
+            UtilStream.close(input);
         }
 
         Assert.assertNotNull(ToolsSwt.createHiddenCursor(display));
@@ -193,7 +193,7 @@ public class ToolsSwtTest
             }
             finally
             {
-                UtilFile.close(output);
+                UtilStream.close(output);
                 image.dispose();
             }
             Assert.assertTrue(save.getFile().exists());
@@ -202,7 +202,7 @@ public class ToolsSwtTest
         }
         finally
         {
-            UtilFile.close(input);
+            UtilStream.close(input);
         }
     }
 
@@ -225,7 +225,7 @@ public class ToolsSwtTest
         }
         finally
         {
-            UtilFile.close(input);
+            UtilStream.close(input);
         }
     }
 
@@ -248,7 +248,7 @@ public class ToolsSwtTest
         }
         finally
         {
-            UtilFile.close(input);
+            UtilStream.close(input);
         }
     }
 }

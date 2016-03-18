@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.FactoryGraphic;
 import com.b3dgs.lionengine.core.Screen;
@@ -119,7 +119,7 @@ public final class FactoryGraphicSwt implements FactoryGraphic
         }
         finally
         {
-            UtilFile.safeClose(input);
+            UtilStream.safeClose(input);
         }
     }
 
@@ -185,7 +185,7 @@ public final class FactoryGraphicSwt implements FactoryGraphic
         }
         finally
         {
-            UtilFile.safeClose(output);
+            UtilStream.safeClose(output);
         }
     }
 

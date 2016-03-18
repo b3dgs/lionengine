@@ -32,7 +32,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 
 /**
  * Test the media class.
@@ -135,7 +135,7 @@ public class MediaTest
         }
         finally
         {
-            UtilFile.close(input);
+            UtilStream.close(input);
         }
     }
 
@@ -160,7 +160,7 @@ public class MediaTest
         }
         finally
         {
-            UtilFile.close(input);
+            UtilStream.close(input);
         }
     }
 
@@ -182,7 +182,7 @@ public class MediaTest
         }
         finally
         {
-            UtilFile.close(output);
+            UtilStream.close(output);
         }
         Assert.assertTrue(media.getFile().exists());
         Assert.assertTrue(media.getFile().delete());

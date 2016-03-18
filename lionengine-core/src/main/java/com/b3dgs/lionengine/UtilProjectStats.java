@@ -117,7 +117,7 @@ public final class UtilProjectStats
         }
         finally
         {
-            UtilFile.safeClose(in);
+            UtilStream.safeClose(in);
         }
     }
 

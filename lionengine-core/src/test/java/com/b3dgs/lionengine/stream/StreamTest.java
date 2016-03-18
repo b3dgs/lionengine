@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.util.UtilTests;
 
@@ -111,7 +111,7 @@ public class StreamTest
         }
         finally
         {
-            UtilFile.close(reading);
+            UtilStream.close(reading);
         }
 
         final File file = File.createTempFile("test", null);
@@ -126,7 +126,7 @@ public class StreamTest
         }
         finally
         {
-            UtilFile.close(writing);
+            UtilStream.close(writing);
         }
     }
 }
