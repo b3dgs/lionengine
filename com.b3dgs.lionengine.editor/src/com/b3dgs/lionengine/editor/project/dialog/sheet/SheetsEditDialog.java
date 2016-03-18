@@ -92,13 +92,11 @@ public class SheetsEditDialog extends AbstractDialog
 
         tileWidthText = UtilText.create(Messages.TileWidth, tileSizeArea);
         tileWidthText.setText(DEFAULT_SIZE);
-        tileWidthText.addVerifyListener(UtilText.createVerify(tileWidthText,
-                                                              InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        UtilText.addVerify(tileWidthText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
 
         tileHeightText = UtilText.create(Messages.TileHeight, tileSizeArea);
         tileHeightText.setText(DEFAULT_SIZE);
-        tileHeightText.addVerifyListener(UtilText.createVerify(tileHeightText,
-                                                               InputValidator.INTEGER_POSITIVE_STRICT_MATCH));
+        UtilText.addVerify(tileHeightText, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
     }
 
     /**

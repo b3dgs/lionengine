@@ -108,7 +108,7 @@ public class ZoomItem
 
         zoomValue = new Text(parent, SWT.SINGLE | SWT.CENTER | SWT.BORDER);
         zoomValue.setFont(font);
-        UtilText.createVerify(zoomValue, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
+        UtilText.addVerify(zoomValue, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
         zoomValue.setText(String.valueOf(WorldZoom.ZOOM_DEFAULT));
         zoomValue.addTraverseListener(event ->
         {

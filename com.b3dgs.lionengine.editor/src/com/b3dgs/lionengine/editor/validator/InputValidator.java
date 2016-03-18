@@ -40,11 +40,11 @@ public class InputValidator implements IInputValidator
     /** Must match a double. */
     public static final String DOUBLE_MATCH = "[0-9]{1,13}(\\.[0-9]*)?";
     /** Must match an integer. */
-    public static final String INTEGER_MATCH = "^-?[0-9]*";
+    public static final String INTEGER_MATCH = "^-?[0-9]{0,9}";
     /** Must match a positive integer. */
-    public static final String INTEGER_POSITIVE_MATCH = "[0-9]*";
+    public static final String INTEGER_POSITIVE_MATCH = "[0-9]{0,9}";
     /** Must match a strict positive integer. */
-    public static final String INTEGER_POSITIVE_STRICT_MATCH = "[1-9][0-9]*";
+    public static final String INTEGER_POSITIVE_STRICT_MATCH = "[1-9][0-9]{0,9}";
 
     /**
      * Get a validated file name from a default one.

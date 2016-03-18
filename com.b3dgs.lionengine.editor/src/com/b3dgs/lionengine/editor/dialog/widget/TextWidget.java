@@ -49,7 +49,7 @@ public class TextWidget
     public TextWidget(Composite parent, String name, String validRegex)
     {
         final Text text = UtilText.create(name, parent);
-        text.addVerifyListener(UtilText.createVerify(text, validRegex));
+        UtilText.addVerify(text, validRegex);
         text.addModifyListener(event ->
         {
             final String content = text.getText();

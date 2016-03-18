@@ -81,7 +81,7 @@ public class MapCollisionAssignDialog extends AbstractDialog
 
         final Text offset = new Text(offsetArea, SWT.BORDER);
         offset.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        offset.addVerifyListener(UtilText.createVerify(offset, InputValidator.INTEGER_POSITIVE_MATCH));
+        UtilText.addVerify(offset, InputValidator.INTEGER_POSITIVE_MATCH);
         offset.setText(DEFAULT_OFFSET);
 
         final Button check = createCheckButton(offsetArea, offset);

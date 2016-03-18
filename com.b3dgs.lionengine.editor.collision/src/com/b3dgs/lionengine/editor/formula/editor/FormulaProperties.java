@@ -213,11 +213,11 @@ public class FormulaProperties extends ObjectProperties<CollisionFormula>
         linearArea.setLayout(new GridLayout(2, false));
 
         linearA = UtilText.create(Messages.FunctionLinearA, linearArea);
-        linearA.addVerifyListener(UtilText.createVerify(linearA, InputValidator.DOUBLE_MATCH));
+        UtilText.addVerify(linearA, InputValidator.DOUBLE_MATCH);
         updatePreviewOnModify(linearA);
 
         linearB = UtilText.create(Messages.FunctionLinearB, linearArea);
-        linearB.addVerifyListener(UtilText.createVerify(linearB, InputValidator.DOUBLE_MATCH));
+        UtilText.addVerify(linearB, InputValidator.DOUBLE_MATCH);
         updatePreviewOnModify(linearB);
 
         lastFunctionPanel = linearArea;
@@ -272,10 +272,10 @@ public class FormulaProperties extends ObjectProperties<CollisionFormula>
         xAreaLayout.marginHeight = 0;
         xArea.setLayout(xAreaLayout);
         minX = UtilText.create(Messages.RangeMinX, xArea);
-        minX.addVerifyListener(UtilText.createVerify(minX, InputValidator.INTEGER_MATCH));
+        UtilText.addVerify(minX, InputValidator.INTEGER_MATCH);
         updatePreviewOnModify(minX);
         maxX = UtilText.create(Messages.RangeMaxX, xArea);
-        maxX.addVerifyListener(UtilText.createVerify(maxX, InputValidator.INTEGER_MATCH));
+        UtilText.addVerify(maxX, InputValidator.INTEGER_MATCH);
         updatePreviewOnModify(maxX);
 
         final Composite yArea = new Composite(parent, SWT.NONE);
@@ -283,10 +283,10 @@ public class FormulaProperties extends ObjectProperties<CollisionFormula>
         yAreaLayout.marginHeight = 0;
         yArea.setLayout(yAreaLayout);
         minY = UtilText.create(Messages.RangeMinY, yArea);
-        minY.addVerifyListener(UtilText.createVerify(minY, InputValidator.INTEGER_MATCH));
+        UtilText.addVerify(minY, InputValidator.INTEGER_MATCH);
         updatePreviewOnModify(minY);
         maxY = UtilText.create(Messages.RangeMaxY, yArea);
-        maxY.addVerifyListener(UtilText.createVerify(maxY, InputValidator.INTEGER_MATCH));
+        UtilText.addVerify(maxY, InputValidator.INTEGER_MATCH);
         updatePreviewOnModify(maxY);
     }
 

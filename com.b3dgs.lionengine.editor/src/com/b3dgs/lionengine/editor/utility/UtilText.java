@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.editor.utility;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -60,36 +59,20 @@ public final class UtilText
     }
 
     /**
-     * Create a verify listener.
+     * Create a verify listener and add it to text.
      * 
      * @param text The text to verify.
      * @param match The expected match.
-     * @return The verify listener.
      * @see com.b3dgs.lionengine.editor.validator.InputValidator
      */
-    public static VerifyListener createVerify(final Text text, final String match)
+    public static void addVerify(final Text text, final String match)
     {
-        return event ->
+        text.addVerifyListener(event ->
         {
             final String init = text.getText();
             final String newText = init.substring(0, event.start) + event.text + init.substring(event.end);
-            if (newText.matches(match) || newText.isEmpty())
-            {
-                try
-                {
-                    Double.parseDouble(newText);
-                    event.doit = true;
-                }
-                catch (final NumberFormatException exception)
-                {
-                    event.doit = false;
-                }
-            }
-            else
-            {
-                event.doit = false;
-            }
-        };
+            event.doit = newText.matches(match) || newText.isEmpty();
+        });
     }
 
     /**

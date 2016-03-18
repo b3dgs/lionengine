@@ -82,9 +82,9 @@ public class CollisionCategoryProperties extends ObjectProperties<CollisionCateg
 
         axis = UtilCombo.create(Messages.Axis, fieldsArea, Axis.values());
         offsetX = UtilText.create(Messages.OffsetX, fieldsArea);
-        offsetX.addVerifyListener(UtilText.createVerify(offsetX, InputValidator.INTEGER_MATCH));
+        UtilText.addVerify(offsetX, InputValidator.INTEGER_MATCH);
         offsetY = UtilText.create(Messages.OffsetY, fieldsArea);
-        offsetY.addVerifyListener(UtilText.createVerify(offsetY, InputValidator.INTEGER_MATCH));
+        UtilText.addVerify(offsetY, InputValidator.INTEGER_MATCH);
 
         final Group groupsArea = new Group(parent, SWT.NONE);
         groupsArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
