@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 
 /**
  * Default media factory implementation.
@@ -40,12 +40,12 @@ public class FactoryMediaDefault implements FactoryMedia
     @Override
     public Media create(String separator, String resourcesDir, String... path)
     {
-        return new MediaImpl(separator, resourcesDir, UtilFile.getPathSeparator(separator, path));
+        return new MediaImpl(separator, resourcesDir, UtilFolder.getPathSeparator(separator, path));
     }
 
     @Override
     public Media create(String separator, Class<?> loader, String... path)
     {
-        return new MediaImpl(separator, loader, UtilFile.getPathSeparator(separator, path));
+        return new MediaImpl(separator, loader, UtilFolder.getPathSeparator(separator, path));
     }
 }

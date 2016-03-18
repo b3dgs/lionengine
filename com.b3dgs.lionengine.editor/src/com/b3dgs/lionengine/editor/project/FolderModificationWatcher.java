@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.Verbose;
 
 /**
@@ -146,7 +146,7 @@ public final class FolderModificationWatcher
          */
         private void createWatchers(File directory)
         {
-            for (final File current : UtilFile.getDirectories(directory))
+            for (final File current : UtilFolder.getDirectories(directory))
             {
                 createTask(current.toPath());
                 createWatchers(current);

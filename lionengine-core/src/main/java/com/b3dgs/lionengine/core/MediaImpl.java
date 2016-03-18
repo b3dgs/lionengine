@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 
 /**
  * Media implementation.
@@ -142,7 +142,7 @@ final class MediaImpl implements Media
         }
         else
         {
-            file = new File(UtilFile.getPathSeparator(separator, resourcesDir, path));
+            file = new File(UtilFolder.getPathSeparator(separator, resourcesDir, path));
         }
         return file;
     }
@@ -150,7 +150,7 @@ final class MediaImpl implements Media
     @Override
     public InputStream getInputStream()
     {
-        final String inputPath = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
+        final String inputPath = UtilFolder.getPathSeparator(separator, resourcesDir, getPath());
         try
         {
             if (loader != null)
@@ -173,7 +173,7 @@ final class MediaImpl implements Media
     @Override
     public OutputStream getOutputStream()
     {
-        final String outputPath = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
+        final String outputPath = UtilFolder.getPathSeparator(separator, resourcesDir, getPath());
         try
         {
             return new FileOutputStream(outputPath);
@@ -189,7 +189,7 @@ final class MediaImpl implements Media
     {
         if (loader != null)
         {
-            final String jarPath = UtilFile.getPathSeparator(separator, resourcesDir, getPath());
+            final String jarPath = UtilFolder.getPathSeparator(separator, resourcesDir, getPath());
             return loader.getResource(jarPath) != null;
         }
         return getFile().exists();

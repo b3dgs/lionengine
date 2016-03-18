@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 
 /**
  * Series of tool functions around the editor related to icons.
@@ -56,7 +56,7 @@ public final class UtilIcon
      */
     public static Image get(String root, String icon)
     {
-        final String path = UtilFile.getPathSeparator(Constant.SLASH, UtilIcon.ICON_FOLDER, root, icon);
+        final String path = UtilFolder.getPathSeparator(Constant.SLASH, UtilIcon.ICON_FOLDER, root, icon);
         final ImageDescriptor descriptor = ImageDescriptor.createFromURL(UtilBundle.getUrl(path));
         final Image image = descriptor.createImage();
         if (image == null)

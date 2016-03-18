@@ -37,7 +37,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.mock.XmlNodeMock;
@@ -292,7 +292,7 @@ public class XmlTest
             }
             finally
             {
-                UtilFile.deleteDirectory(file);
+                UtilFolder.deleteDirectory(file);
             }
         }
     }

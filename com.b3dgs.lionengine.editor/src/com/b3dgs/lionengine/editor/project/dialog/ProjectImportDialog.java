@@ -25,7 +25,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.ProjectFactory;
@@ -91,7 +91,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
         final String text = projectClassesText.getText();
         if (!text.isEmpty())
         {
-            final File sourcePath = new File(UtilFile.getPath(projectLocationText.getText(), text));
+            final File sourcePath = new File(UtilFolder.getPath(projectLocationText.getText(), text));
             hasClasses = sourcePath.exists();
         }
         else
@@ -108,7 +108,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
         final String text = projectLibrariesText.getText();
         if (!text.isEmpty())
         {
-            final File librariesPath = new File(UtilFile.getPath(projectLocationText.getText(), text));
+            final File librariesPath = new File(UtilFolder.getPath(projectLocationText.getText(), text));
             hasLibraries = librariesPath.exists();
         }
         else
@@ -125,7 +125,7 @@ public class ProjectImportDialog extends AbstractProjectDialog
         final String text = projectResourcesText.getText();
         if (!text.isEmpty())
         {
-            final File resourcePath = new File(UtilFile.getPath(projectLocationText.getText(), text));
+            final File resourcePath = new File(UtilFolder.getPath(projectLocationText.getText(), text));
             hasResources = resourcePath.exists();
         }
         else

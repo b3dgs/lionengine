@@ -25,19 +25,15 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Tools related to files and directories handling.
+ * Tools related to files handling.
  * <p>
  * This class is Thread-Safe.
  * </p>
  */
 public final class UtilFile
 {
-    /** File deleted. */
-    private static final String FILE_DELETED = "File deleted: ";
     /** Error directory. */
     private static final String ERROR_DIRECTORY = "Not a directory: ";
-    /** Error delete directory. */
-    private static final String ERROR_DELETE_DIRECTORY = "Directory not deleted: ";
     /** Error delete file. */
     private static final String ERROR_DELETE_FILE = "File not deleted: ";
 
@@ -121,29 +117,6 @@ public final class UtilFile
     }
 
     /**
-     * Get all directories existing in the path.
-     * 
-     * @param path The path to check.
-     * @return The directories list.
-     */
-    public static List<File> getDirectories(File path)
-    {
-        final File[] files = path.listFiles();
-        final List<File> directories = new ArrayList<File>();
-        if (files != null)
-        {
-            for (final File current : files)
-            {
-                if (current.isDirectory())
-                {
-                    directories.add(current);
-                }
-            }
-        }
-        return directories;
-    }
-
-    /**
      * Get the files list from directory.
      * 
      * @param directory The directory reference.
@@ -192,77 +165,6 @@ public final class UtilFile
     }
 
     /**
-     * Construct a usable path using a list of string, automatically separated by the portable separator. The
-     * constructed path will use local system file separator.
-     * 
-     * @param path The list of directories (if has) and file.
-     * @return The full media path.
-     */
-    public static String getPath(String... path)
-    {
-        return getPathSeparator(File.separator, path);
-    }
-
-    /**
-     * Construct a usable path using a list of string, automatically separated by the portable separator.
-     * 
-     * @param separator The separator to use.
-     * @param path The list of directories (if has) and file.
-     * @return The full media path.
-     */
-    public static String getPathSeparator(String separator, String... path)
-    {
-        final StringBuilder fullPath = new StringBuilder(path.length);
-        for (int i = 0; i < path.length; i++)
-        {
-            if (i == path.length - 1)
-            {
-                fullPath.append(path[i]);
-            }
-            else if (path[i] != null && path[i].length() > 0)
-            {
-                fullPath.append(path[i]);
-                if (!fullPath.substring(fullPath.length() - 1, fullPath.length()).equals(separator))
-                {
-                    fullPath.append(separator);
-                }
-            }
-        }
-        return fullPath.toString();
-    }
-
-    /**
-     * Delete a directory and all of its content (be careful, it will erase all children, including child directory).
-     * 
-     * @param directory The directory to delete with all of its content.
-     */
-    public static void deleteDirectory(File directory)
-    {
-        Check.notNull(directory);
-
-        if (directory.isDirectory())
-        {
-            final File[] files = directory.listFiles();
-            if (files != null)
-            {
-                for (final File file : files)
-                {
-                    deleteDirectory(file);
-                }
-            }
-            if (!directory.delete())
-            {
-                Verbose.warning(UtilFile.class, "deleteDirectory", ERROR_DELETE_DIRECTORY, directory.getAbsolutePath());
-            }
-        }
-        else if (directory.isFile())
-        {
-            deleteFile(directory);
-            Verbose.info(FILE_DELETED, directory.getPath());
-        }
-    }
-
-    /**
      * Delete a file.
      * 
      * @param file The file to delete.
@@ -271,6 +173,7 @@ public final class UtilFile
     public static void deleteFile(File file)
     {
         Check.notNull(file);
+
         if (!file.delete())
         {
             throw new LionEngineException(ERROR_DELETE_FILE, file.getAbsolutePath());
@@ -290,21 +193,6 @@ public final class UtilFile
             return false;
         }
         return new File(path).exists();
-    }
-
-    /**
-     * Check if the path is a directory.
-     * 
-     * @param path The path to check.
-     * @return <code>true</code> if it is a directory, <code>false</code> else.
-     */
-    public static boolean isDirectory(String path)
-    {
-        if (path == null)
-        {
-            return false;
-        }
-        return new File(path).isDirectory();
     }
 
     /**

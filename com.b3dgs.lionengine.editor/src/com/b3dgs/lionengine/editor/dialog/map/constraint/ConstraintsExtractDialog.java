@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
@@ -118,15 +118,15 @@ public class ConstraintsExtractDialog extends AbstractDialog
             final String folder = media.getParentPath();
             if (groups.getMedia() == null)
             {
-                groups.setLocation(UtilFile.getPath(folder, TileGroupsConfig.FILENAME));
+                groups.setLocation(UtilFolder.getPath(folder, TileGroupsConfig.FILENAME));
             }
             if (constraints.getMedia() == null)
             {
-                constraints.setLocation(UtilFile.getPath(folder, TileConstraintsConfig.FILENAME));
+                constraints.setLocation(UtilFolder.getPath(folder, TileConstraintsConfig.FILENAME));
             }
             if (transitions.getMedia() == null)
             {
-                transitions.setLocation(UtilFile.getPath(folder, TransitionsConfig.FILENAME));
+                transitions.setLocation(UtilFolder.getPath(folder, TransitionsConfig.FILENAME));
             }
             checkFinish();
         });

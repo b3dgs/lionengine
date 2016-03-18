@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.core.android;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.core.FactoryMedia;
 
 /**
@@ -41,12 +41,12 @@ final class FactoryMediaAndroid implements FactoryMedia
     @Override
     public Media create(String separator, String resourcesDir, String... path)
     {
-        return new MediaAndroid(separator, UtilFile.getPathSeparator(separator, path));
+        return new MediaAndroid(separator, UtilFolder.getPathSeparator(separator, path));
     }
 
     @Override
     public Media create(String separator, Class<?> loader, String... path)
     {
-        return new MediaAndroid(separator, UtilFile.getPathSeparator(separator, path));
+        return new MediaAndroid(separator, UtilFolder.getPathSeparator(separator, path));
     }
 }

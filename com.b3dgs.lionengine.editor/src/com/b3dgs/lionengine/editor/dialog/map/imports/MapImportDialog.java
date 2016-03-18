@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
@@ -86,11 +86,11 @@ public class MapImportDialog extends AbstractDialog
         {
             if (sheets.getMedia() == null)
             {
-                sheets.setLocation(UtilFile.getPath(media.getParentPath(), TileSheetsConfig.FILENAME));
+                sheets.setLocation(UtilFolder.getPath(media.getParentPath(), TileSheetsConfig.FILENAME));
             }
             if (groups.getMedia() == null)
             {
-                groups.setLocation(UtilFile.getPath(media.getParentPath(), TileGroupsConfig.FILENAME));
+                groups.setLocation(UtilFolder.getPath(media.getParentPath(), TileGroupsConfig.FILENAME));
             }
             checkFinish();
         });

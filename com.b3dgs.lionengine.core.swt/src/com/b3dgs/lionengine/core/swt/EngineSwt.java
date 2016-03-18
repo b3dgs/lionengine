@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.core.swt;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphics;
@@ -124,7 +124,7 @@ public class EngineSwt extends Engine
         if (resourcesDir != null)
         {
             final String workingDir = Constant.getSystemProperty("user.dir", Constant.EMPTY_STRING);
-            Verbose.info("Resources directory = ", UtilFile.getPath(workingDir, resourcesDir));
+            Verbose.info("Resources directory = ", UtilFolder.getPath(workingDir, resourcesDir));
         }
         else if (classResource != null)
         {

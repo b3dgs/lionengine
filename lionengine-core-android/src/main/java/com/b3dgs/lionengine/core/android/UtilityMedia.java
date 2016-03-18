@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.Verbose;
 
 /**
@@ -95,7 +95,7 @@ public final class UtilityMedia
     public static synchronized Media get(String... path)
     {
         Check.notNull(path);
-        return new MediaAndroid(separator, UtilFile.getPathSeparator(separator, path));
+        return new MediaAndroid(separator, UtilFolder.getPathSeparator(separator, path));
     }
 
     /**

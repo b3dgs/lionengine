@@ -124,26 +124,6 @@ public class UtilFileTest
     }
 
     /**
-     * Test the get path.
-     */
-    @Test
-    public void testGetPath()
-    {
-        Assert.assertEquals("a" + File.separator + "b" + File.separator + "c", UtilFile.getPath("a", "b", "c"));
-    }
-
-    /**
-     * Test the get path separator.
-     */
-    @Test
-    public void testGetPathSeparator()
-    {
-        Assert.assertEquals("this%path%next", UtilFile.getPathSeparator("%", "this", "path", "next"));
-        Assert.assertEquals("this%path%next", UtilFile.getPathSeparator("%", "this%", "path%", "next"));
-        Assert.assertEquals("this%path%", UtilFile.getPathSeparator("%", "this%", "path%", null, ""));
-    }
-
-    /**
      * Test the get extension.
      */
     @Test
@@ -185,57 +165,6 @@ public class UtilFileTest
     public void testGetExtensionFileNull()
     {
         Assert.assertNull(UtilFile.getExtension((File) null));
-    }
-
-    /**
-     * Test the get directories from path.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    public void testGetDirectories() throws IOException
-    {
-        final File dir = TEMP.newFolder("temp");
-        final File file = File.createTempFile("temp", ".tmp", dir);
-        final List<File> expected = new ArrayList<File>();
-        for (int i = 0; i < 5; i++)
-        {
-            final TemporaryFolder folder = new TemporaryFolder(dir);
-            folder.create();
-            expected.add(folder.getRoot());
-        }
-        Collections.sort(expected);
-
-        final List<File> found = UtilFile.getDirectories(dir);
-        Collections.sort(found);
-
-        Assert.assertEquals(expected, found);
-
-        Assert.assertTrue(file.delete());
-        for (final File current : expected)
-        {
-            Assert.assertTrue(current.delete());
-        }
-        Assert.assertTrue(dir.delete());
-    }
-
-    /**
-     * Test the get directories from wrong path.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    public void testGetDirectoriesError() throws IOException
-    {
-        final File dir = TEMP.newFolder("temp");
-        try
-        {
-            Assert.assertTrue(UtilFile.getDirectories(new File("null")).isEmpty());
-        }
-        finally
-        {
-            Assert.assertTrue(dir.delete());
-        }
     }
 
     /**
@@ -330,40 +259,6 @@ public class UtilFileTest
     }
 
     /**
-     * Test the delete directory.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    public void testDeleteDirectory() throws IOException
-    {
-        final File directory = TEMP.newFolder("temp");
-        final File file = File.createTempFile("temp", ".tmp", directory);
-        final File dir1 = File.createTempFile("temp", ".tmp", directory);
-
-        Assert.assertTrue(directory.exists());
-        Assert.assertTrue(file.exists());
-        Assert.assertTrue(dir1.exists());
-
-        UtilFile.deleteDirectory(directory);
-
-        Assert.assertFalse(directory.exists());
-        Assert.assertFalse(file.exists());
-        Assert.assertFalse(dir1.exists());
-    }
-
-    /**
-     * Test the delete directory warning.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    public void testDeleteDirectoryWarning() throws IOException
-    {
-        UtilFile.deleteDirectory(new File("void"));
-    }
-
-    /**
      * Test the delete file.
      * 
      * @throws IOException If error.
@@ -410,23 +305,6 @@ public class UtilFileTest
 
         Assert.assertFalse(UtilFile.exists(dir.getPath()));
         Assert.assertFalse(UtilFile.exists(file.getPath()));
-    }
-
-    /**
-     * Test the is directory.
-     * 
-     * @throws IOException If error.
-     */
-    @Test
-    public void testIsDirectory() throws IOException
-    {
-        Assert.assertFalse(UtilFile.isDirectory(null));
-
-        final File dir = TEMP.newFolder("temp");
-
-        Assert.assertTrue(UtilFile.isDirectory(dir.getPath()));
-        Assert.assertTrue(dir.delete());
-        Assert.assertFalse(UtilFile.isDirectory(dir.getPath()));
     }
 
     /**

@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilFolder;
 
 /**
  * Implementation provider for the {@link FactoryMedia}.
@@ -61,7 +61,7 @@ public final class Medias
         {
             return factoryMedia.create(separator, resourcesDir, path);
         }
-        throw new LionEngineException(ERROR_CREATE, UtilFile.getPath(path));
+        throw new LionEngineException(ERROR_CREATE, UtilFolder.getPath(path));
     }
 
     /**
