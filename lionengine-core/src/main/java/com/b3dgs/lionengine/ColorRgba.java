@@ -138,25 +138,15 @@ public final class ColorRgba
      * @param max The max offset.
      * @return The rastered color.
      */
-    public static int getRasterColor(int i, int[] data, int max)
+    public static int getRasterColor(int i, RasterData data, int max)
     {
-        final int startIndex = 0;
-        final int start = data[startIndex];
+        final int start = data.getStart();
+        final int step = data.getStep();
+        final int force = data.getForce();
+        final int amplitude = data.getAmplitude();
+        final int offset = data.getOffset();
 
-        final int stepIndex = 1;
-        final int step = data[stepIndex];
-
-        final int forceIndex = 2;
-        final int force = data[forceIndex];
-
-        final int amplitudeIndex = 3;
-        final int amplitude = data[amplitudeIndex];
-
-        final int offsetIndex = 4;
-        final int offset = data[offsetIndex];
-
-        final int typeIndex = 5;
-        if (0 == data[typeIndex])
+        if (0 == data.getType())
         {
             return start + step * (int) (force * UtilMath.sin(i * (amplitude / (double) max) - offset));
         }

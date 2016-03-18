@@ -273,10 +273,17 @@ public class ColorRgbaTest
     public void testColorRaster()
     {
         final Media media = Medias.create("raster.xml");
-        final int[][] raster = Graphics.loadRaster(media);
-        Assert.assertTrue(ColorRgba.getRasterColor(0, raster[0], 2) > 0);
-        raster[0][5] = 1;
-        Assert.assertTrue(ColorRgba.getRasterColor(0, raster[0], 2) < 0);
+        final Raster raster = Raster.load(media);
+        final RasterData rasterData = raster.getRed();
+        Assert.assertTrue(ColorRgba.getRasterColor(0, rasterData, 2) > 0);
+
+        final RasterData data = new RasterData(rasterData.getStart(),
+                                               rasterData.getStep(),
+                                               rasterData.getForce(),
+                                               rasterData.getAmplitude(),
+                                               rasterData.getOffset(),
+                                               1);
+        Assert.assertTrue(ColorRgba.getRasterColor(0, data, 2) < 0);
     }
 
     /**

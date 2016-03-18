@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transform;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Implementation provider for the {@link FactoryGraphic}.
@@ -39,11 +37,6 @@ public final class Graphics
 {
     /** Factory graphic implementation. */
     private static volatile FactoryGraphic factoryGraphic;
-    /** Raster colors. */
-    private static final String[] COLORS =
-    {
-        "Red", "Green", "Blue"
-    };
 
     /**
      * Set the graphic factory used.
@@ -235,37 +228,6 @@ public final class Graphics
     public static ImageBuffer getRasterBuffer(ImageBuffer img, int fr, int fg, int fb, int er, int eg, int eb, int size)
     {
         return factoryGraphic.getRasterBuffer(img, fr, fg, fb, er, eg, eb, size);
-    }
-
-    /**
-     * Load a raster data from a file.
-     * 
-     * @param media The raster media.
-     * @return The raster data (can not be empty).
-     * @throws LionEngineException If the raster data from the media are invalid.
-     */
-    public static int[][] loadRaster(Media media)
-    {
-        final XmlNode raster = Xml.load(media);
-        final int indexs = 6;
-        final int[][] rasters = new int[COLORS.length][indexs];
-        final int indexStart = 0;
-        final int indexStep = 1;
-        final int indexForce = 2;
-        final int indexAmplitude = 3;
-        final int indexOffset = 4;
-        final int indexType = 5;
-        for (int c = 0; c < rasters.length; c++)
-        {
-            final XmlNode color = raster.getChild(COLORS[c]);
-            rasters[c][indexStart] = Integer.decode(color.readString("start")).intValue();
-            rasters[c][indexStep] = Integer.decode(color.readString("step")).intValue();
-            rasters[c][indexForce] = color.readInteger("force");
-            rasters[c][indexAmplitude] = color.readInteger("amplitude");
-            rasters[c][indexOffset] = color.readInteger("offset");
-            rasters[c][indexType] = color.readInteger("type");
-        }
-        return rasters;
     }
 
     /**

@@ -28,13 +28,13 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Raster;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.object.SetupSurfaceRastered;
 import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
@@ -70,21 +70,21 @@ public class MapTileRasteredModel implements MapTileRastered
      * Load raster from data.
      * 
      * @param sheet The current sheet.
-     * @param rasters The rasters data.
+     * @param raster The raster data.
      * @throws LionEngineException If arguments are invalid.
      */
-    private void loadRaster(Integer sheet, int[][] rasters)
+    private void loadRaster(Integer sheet, Raster raster)
     {
-        final int[] color = new int[rasters.length];
-        final int[] colorNext = new int[rasters.length];
         final int max = UtilConversion.boolToInt(smooth) + 1;
-
         for (int m = 0; m < max; m++)
         {
             for (int i = 1; i <= Rasterable.MAX_RASTERS; i++)
             {
-                SetupSurfaceRastered.loadRaster(rasters, color, colorNext, m, i, smooth);
-                addRasterSheet(sheet, color[0], color[1], color[2], colorNext[0], colorNext[1], colorNext[2]);
+                final RasterColor red = RasterColor.load(raster.getRed(), m, i, smooth);
+                final RasterColor green = RasterColor.load(raster.getGreen(), m, i, smooth);
+                final RasterColor blue = RasterColor.load(raster.getBlue(), m, i, smooth);
+
+                addRasterSheet(sheet, red, green, blue);
             }
         }
     }
@@ -93,19 +93,23 @@ public class MapTileRasteredModel implements MapTileRastered
      * Add a raster sheet.
      * 
      * @param sheet The current sheet.
-     * @param fr The first red.
-     * @param fg The first green.
-     * @param fb The first blue.
-     * @param er The end red.
-     * @param eg The end green.
-     * @param eb The end blue.
+     * @param red The red color transition.
+     * @param green The green color transition.
+     * @param blue The blue color transition.
      * @throws LionEngineException If arguments are invalid.
      */
-    private void addRasterSheet(Integer sheet, int fr, int fg, int fb, int er, int eg, int eb)
+    private void addRasterSheet(Integer sheet, RasterColor red, RasterColor green, RasterColor blue)
     {
         final SpriteTiled original = map.getSheet(sheet);
         final ImageBuffer buf = original.getSurface();
-        final ImageBuffer rasterBuf = Graphics.getRasterBuffer(buf, fr, fg, fb, er, eg, eb, map.getTileHeight());
+        final ImageBuffer rasterBuf = Graphics.getRasterBuffer(buf,
+                                                               red.getStart(),
+                                                               green.getStart(),
+                                                               blue.getStart(),
+                                                               red.getEnd(),
+                                                               green.getEnd(),
+                                                               blue.getEnd(),
+                                                               map.getTileHeight());
 
         List<SpriteTiled> rasters = rasterSheets.get(sheet);
         if (rasters == null)
@@ -126,14 +130,14 @@ public class MapTileRasteredModel implements MapTileRastered
     {
         this.smooth = smooth;
 
-        final int[][] rasters = Graphics.loadRaster(rasterConfig);
+        final Raster raster = Raster.load(rasterConfig);
         final Collection<Integer> sheets = map.getSheets();
         final Iterator<Integer> itr = sheets.iterator();
 
         while (itr.hasNext())
         {
             final Integer sheet = itr.next();
-            loadRaster(sheet, rasters);
+            loadRaster(sheet, raster);
         }
     }
 

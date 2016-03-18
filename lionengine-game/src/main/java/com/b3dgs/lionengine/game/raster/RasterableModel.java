@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.object.SetupSurfaceRastered;
 import com.b3dgs.lionengine.game.object.TraitModel;
 import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
 

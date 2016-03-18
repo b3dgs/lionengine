@@ -15,21 +15,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object;
+package com.b3dgs.lionengine.game.raster;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Raster;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.raster.Rasterable;
+import com.b3dgs.lionengine.game.object.FramesConfig;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
@@ -38,42 +39,6 @@ import com.b3dgs.lionengine.game.raster.Rasterable;
  */
 public class SetupSurfaceRastered extends SetupSurface
 {
-    /**
-     * Load all rasters data.
-     * 
-     * @param rasters The raster data.
-     * @param color The raster colors.
-     * @param next The next colors.
-     * @param m The raster smooth.
-     * @param i The raster id.
-     * @param smooth <code>true</code> to smooth raster, <code>false</code> else.
-     */
-    public static void loadRaster(int[][] rasters, int[] color, int[] next, int m, int i, boolean smooth)
-    {
-        for (int c = 0; c < rasters.length; c++)
-        {
-            final int[] data = rasters[c];
-            if (smooth)
-            {
-                if (m == 0)
-                {
-                    color[c] = ColorRgba.getRasterColor(i, data, Rasterable.MAX_RASTERS);
-                    next[c] = ColorRgba.getRasterColor(i + 1, data, Rasterable.MAX_RASTERS);
-                }
-                else
-                {
-                    color[c] = ColorRgba.getRasterColor(Rasterable.MAX_RASTERS - i, data, Rasterable.MAX_RASTERS);
-                    next[c] = ColorRgba.getRasterColor(Rasterable.MAX_RASTERS - i - 1, data, Rasterable.MAX_RASTERS);
-                }
-            }
-            else
-            {
-                color[c] = ColorRgba.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
-                next[c] = color[c];
-            }
-        }
-    }
-
     /** List of rasters animation. */
     private final List<SpriteAnimated> rastersAnim;
     /** Raster filename. */
@@ -148,17 +113,18 @@ public class SetupSurfaceRastered extends SetupSurface
      */
     private void loadRasters()
     {
-        final int[][] rasters = Graphics.loadRaster(rasterFile);
-        final int[] color = new int[rasters.length];
-        final int[] colorNext = new int[rasters.length];
+        final Raster raster = Raster.load(rasterFile);
         final int max = UtilConversion.boolToInt(smoothRaster) + 1;
 
         for (int m = 0; m < max; m++)
         {
             for (int i = 1; i <= Rasterable.MAX_RASTERS; i++)
             {
-                loadRaster(rasters, color, colorNext, m, i, smoothRaster);
-                addRaster(color[0], color[1], color[2], colorNext[0], colorNext[1], colorNext[2]);
+                final RasterColor red = RasterColor.load(raster.getRed(), m, i, smoothRaster);
+                final RasterColor green = RasterColor.load(raster.getGreen(), m, i, smoothRaster);
+                final RasterColor blue = RasterColor.load(raster.getBlue(), m, i, smoothRaster);
+
+                addRaster(red, green, blue);
             }
         }
     }
@@ -166,17 +132,21 @@ public class SetupSurfaceRastered extends SetupSurface
     /**
      * Add raster.
      * 
-     * @param fr The first red.
-     * @param fg The first green.
-     * @param fb The first blue.
-     * @param er The end red.
-     * @param eg The end green.
-     * @param eb The end blue.
+     * @param red The red color transition.
+     * @param green The green color transition.
+     * @param blue The blue color transition.
      * @throws LionEngineException If arguments are invalid.
      */
-    private void addRaster(int fr, int fg, int fb, int er, int eg, int eb)
+    private void addRaster(RasterColor red, RasterColor green, RasterColor blue)
     {
-        final ImageBuffer rasterBuf = Graphics.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, frameHeight);
+        final ImageBuffer rasterBuf = Graphics.getRasterBuffer(surface,
+                                                               red.getStart(),
+                                                               green.getStart(),
+                                                               blue.getStart(),
+                                                               red.getEnd(),
+                                                               green.getEnd(),
+                                                               blue.getEnd(),
+                                                               frameHeight);
         final SpriteAnimated raster = Drawable.loadSpriteAnimated(rasterBuf, hf, vf);
         rastersAnim.add(raster);
     }

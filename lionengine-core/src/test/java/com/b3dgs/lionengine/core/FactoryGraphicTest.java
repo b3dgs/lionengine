@@ -44,10 +44,6 @@ public class FactoryGraphicTest
 
     /** Image. */
     private static Media mediaImage;
-    /** Raster. */
-    private static Media mediaRaster;
-    /** Raster error. */
-    private static Media mediaRasterError;
     /** Save image. */
     private static Media mediaSave;
     /** Image. */
@@ -99,9 +95,7 @@ public class FactoryGraphicTest
         final File temp = File.createTempFile("save", "png");
         temp.deleteOnExit();
         mediaImage = Medias.create("image.png");
-        mediaRaster = Medias.create("raster.xml");
         mediaSave = Medias.create(temp.getAbsolutePath());
-        mediaRasterError = Medias.create("raster_error.xml");
         image = Graphics.getImageBuffer(mediaImage);
         image.prepare();
     }
@@ -354,23 +348,5 @@ public class FactoryGraphicTest
         Assert.assertEquals(image.getHeight(), raster.getHeight());
 
         raster.dispose();
-    }
-
-    /**
-     * Test load raster.
-     */
-    @Test
-    public void testLoadRaster()
-    {
-        Assert.assertNotNull(Graphics.loadRaster(mediaRaster));
-    }
-
-    /**
-     * Test load raster failure.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testLoadRasterFailure()
-    {
-        Assert.assertNotNull(Graphics.loadRaster(mediaRasterError));
     }
 }

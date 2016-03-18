@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.raster.SetupSurfaceRastered;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
 /**
