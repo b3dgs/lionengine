@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
  * Drawable factory. Can create the following elements:

@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor.project.handler.object;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.object.ObjectConfig;
@@ -28,6 +27,7 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.util.UtilFile;
 
 /**
  * Add an object descriptor in the selected folder.

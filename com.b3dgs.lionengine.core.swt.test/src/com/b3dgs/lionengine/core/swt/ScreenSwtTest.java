@@ -92,7 +92,7 @@ public class ScreenSwtTest
     {
         checkMultipleDisplaySupport();
 
-        final Config config = new Config(com.b3dgs.lionengine.util.Constant.RESOLUTION_320_240,
+        final Config config = new Config(com.b3dgs.lionengine.test.Constant.RESOLUTION_320_240,
                                          32,
                                          true,
                                          Medias.create(IMAGE));

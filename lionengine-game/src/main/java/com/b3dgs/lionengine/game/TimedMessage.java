@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Renderable;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.Text;
 
 /**
  * Class representing a timed message handler. This allows to prepare a set of timed message that will disappear at the

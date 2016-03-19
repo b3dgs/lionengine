@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.mock;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Mock sequence with malformed constructor.

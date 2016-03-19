@@ -41,17 +41,11 @@ import com.b3dgs.lionengine.Media;
  * final Config config = new Config(output, 16, true);
  * </pre>
  * 
- * <p>
- * This class is Thread-Safe.
- * </p>
- * 
  * @see Resolution
  * @see Ratio
  */
 public final class Config
 {
-    /** Applet lock. */
-    private final Object lockApplet = new Object();
     /** Output resolution reference. */
     private final Resolution output;
     /** Display depth. */
@@ -62,7 +56,7 @@ public final class Config
     private final Media icon;
     /** Source resolution reference. */
     private volatile Resolution source;
-    /** Applet reference (locked by {@link #lockApplet}). */
+    /** Applet reference. */
     private Applet<?> applet;
 
     /**
@@ -105,10 +99,7 @@ public final class Config
      */
     public void setApplet(Applet<?> applet)
     {
-        synchronized (lockApplet)
-        {
-            this.applet = applet;
-        }
+        this.applet = applet;
     }
 
     /**
@@ -156,12 +147,9 @@ public final class Config
         A cast = null;
         if (appletClass != null)
         {
-            synchronized (lockApplet)
+            if (applet != null)
             {
-                if (applet != null)
-                {
-                    cast = appletClass.cast(applet.getApplet());
-                }
+                cast = appletClass.cast(applet.getApplet());
             }
         }
         return cast;
@@ -204,9 +192,6 @@ public final class Config
      */
     public boolean hasApplet()
     {
-        synchronized (lockApplet)
-        {
-            return applet != null;
-        }
+        return applet != null;
     }
 }

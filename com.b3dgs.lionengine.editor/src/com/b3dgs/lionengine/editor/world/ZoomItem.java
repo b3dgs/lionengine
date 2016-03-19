@@ -28,11 +28,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Represents the zoom item label with its current value.

@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
@@ -44,6 +43,7 @@ import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.map.SheetsExtractor;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
  * Extract sheets dialog.

@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.mock;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Mock image buffer.

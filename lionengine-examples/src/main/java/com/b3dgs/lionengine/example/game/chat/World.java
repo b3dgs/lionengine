@@ -22,12 +22,12 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
 import com.b3dgs.lionengine.network.NetworkedWorld;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;

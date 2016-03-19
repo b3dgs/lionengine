@@ -27,7 +27,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
@@ -38,6 +37,7 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.SurfaceConfig;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Animation paint listener, rendering the current animation.

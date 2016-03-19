@@ -24,10 +24,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.RGB;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Image buffer implementation.
@@ -78,7 +78,7 @@ public final class ImageBufferSwt implements ImageBuffer
      * @param device The device reference.
      * @param data The image data.
      */
-    ImageBufferSwt(Device device, ImageData data)
+    public ImageBufferSwt(Device device, ImageData data)
     {
         this.device = device;
         this.data = data;
@@ -90,7 +90,7 @@ public final class ImageBufferSwt implements ImageBuffer
      * 
      * @param image The image.
      */
-    ImageBufferSwt(Image image)
+    public ImageBufferSwt(Image image)
     {
         device = image.getDevice();
         this.image = image;

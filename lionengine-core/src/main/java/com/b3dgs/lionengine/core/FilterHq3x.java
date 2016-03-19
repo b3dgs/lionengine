@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.Transform;
-import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.graphic.Filter;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transform;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * HQ3X implementation.

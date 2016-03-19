@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.game.raster;
 
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.object.Trait;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Represents a surface that can be rastered.

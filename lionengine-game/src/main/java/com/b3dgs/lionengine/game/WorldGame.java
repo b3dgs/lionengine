@@ -21,14 +21,14 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Default world model, designed to contain game elements ({@link com.b3dgs.lionengine.game.map.MapTile},

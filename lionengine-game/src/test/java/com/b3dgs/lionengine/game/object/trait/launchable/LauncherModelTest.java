@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the launcher trait.

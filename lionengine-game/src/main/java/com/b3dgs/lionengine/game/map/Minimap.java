@@ -21,20 +21,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileRef;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transparency;
+import com.b3dgs.lionengine.graphic.UtilColor;
+import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Minimap representation of a map tile. This can be used to represent strategic view of a map.
@@ -172,7 +173,7 @@ public class Minimap implements Image
             {
                 final int h = number * tw % tiles.getWidth();
                 final int v = number / tiles.getTilesHorizontal() * th;
-                final ColorRgba color = ColorRgba.getWeightedColor(surface, h, v, tw, th);
+                final ColorRgba color = UtilColor.getWeightedColor(surface, h, v, tw, th);
 
                 if (!(NO_TILE.equals(color) || color.getAlpha() == 0))
                 {

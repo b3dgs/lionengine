@@ -19,19 +19,19 @@ package com.b3dgs.lionengine.mock;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.Transform;
-import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.FactoryGraphic;
 import com.b3dgs.lionengine.core.Screen;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.ImageInfo;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
+import com.b3dgs.lionengine.graphic.Transform;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Factory graphic mock.

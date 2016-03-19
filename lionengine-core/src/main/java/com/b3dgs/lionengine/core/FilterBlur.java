@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.Transform;
-import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.graphic.Filter;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transform;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Blur filter implementation.

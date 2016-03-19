@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.Transform;
-import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
+import com.b3dgs.lionengine.graphic.Transform;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Implementation provider for the {@link FactoryGraphic}.

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.attack;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
@@ -39,6 +38,7 @@ import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Game loop designed to handle our little world.

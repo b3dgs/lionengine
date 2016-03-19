@@ -18,14 +18,14 @@
 package com.b3dgs.sample.android;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
 
 /**
  * Game scene implementation.

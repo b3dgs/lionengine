@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.core.awt;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Version;
+import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Engine AWT implementation.

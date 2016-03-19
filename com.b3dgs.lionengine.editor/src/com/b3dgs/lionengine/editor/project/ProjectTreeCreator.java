@@ -27,10 +27,10 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.util.UtilFile;
 
 /**
  * Generate the project tree from the project folder.

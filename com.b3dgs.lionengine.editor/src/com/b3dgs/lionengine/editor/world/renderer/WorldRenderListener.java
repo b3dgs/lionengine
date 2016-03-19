@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.world.renderer;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Listener to rendering event.

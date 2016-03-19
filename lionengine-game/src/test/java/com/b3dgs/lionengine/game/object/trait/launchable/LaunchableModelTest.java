@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the launchable model trait.

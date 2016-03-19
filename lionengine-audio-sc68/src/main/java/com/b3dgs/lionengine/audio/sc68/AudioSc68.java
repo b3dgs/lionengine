@@ -23,8 +23,8 @@ import java.io.InputStream;
 import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.OperatingSystem;
-import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.util.UtilStream;
 import com.sun.jna.Native;
 
 /**

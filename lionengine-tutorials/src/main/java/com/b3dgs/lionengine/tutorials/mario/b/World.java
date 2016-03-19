@@ -19,13 +19,13 @@ package com.b3dgs.lionengine.tutorials.mario.b;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 

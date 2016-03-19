@@ -23,12 +23,12 @@ import java.util.HashSet;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.tile.TileConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 

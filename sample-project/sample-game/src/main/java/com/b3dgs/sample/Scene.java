@@ -17,10 +17,10 @@
  */
 package com.b3dgs.sample;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Game scene implementation.

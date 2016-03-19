@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.editor.project.handler.group;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.util.UtilFile;
 
 /**
  * Add a groups descriptor in the selected folder.

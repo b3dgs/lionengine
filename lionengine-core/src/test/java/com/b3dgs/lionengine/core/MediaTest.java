@@ -32,7 +32,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilStream;
+import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Test the media class.

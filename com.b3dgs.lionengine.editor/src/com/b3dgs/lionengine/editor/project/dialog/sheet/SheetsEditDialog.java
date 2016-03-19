@@ -31,9 +31,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
@@ -41,8 +39,10 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
+import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.util.UtilFile;
 
 /**
  * Represents the sheets edition dialog.

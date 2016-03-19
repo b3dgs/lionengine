@@ -23,10 +23,10 @@ import java.io.OutputStream;
 
 import android.graphics.Bitmap;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
  * Misc tools for engine image creation.

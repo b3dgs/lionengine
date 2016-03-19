@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.IllegalComponentStateException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Applet screen implementation.

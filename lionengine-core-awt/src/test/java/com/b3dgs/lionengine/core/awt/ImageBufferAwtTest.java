@@ -22,9 +22,9 @@ import java.awt.image.BufferedImage;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Test the image buffer class.

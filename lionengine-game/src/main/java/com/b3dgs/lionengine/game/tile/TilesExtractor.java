@@ -21,16 +21,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.ImageInfo;
+import com.b3dgs.lionengine.graphic.Transparency;
+import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
  * This class allows to extract unique tiles from a level rip.
@@ -66,7 +67,7 @@ public final class TilesExtractor
                 final int colorA = a.getRgb(x + xa, y + ya);
                 final int colorB = b.getRgb(x + xb, y + yb);
 
-                if (colorA != colorB && !ColorRgba.isOpaqueTransparentExclusive(colorA, colorB))
+                if (colorA != colorB && !UtilColor.isOpaqueTransparentExclusive(colorA, colorB))
                 {
                     return false;
                 }

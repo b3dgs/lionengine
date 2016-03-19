@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.game.background;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteParallaxed;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Parallax is used for background depth effect (2.5D).

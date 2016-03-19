@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
@@ -33,6 +32,7 @@ import com.b3dgs.lionengine.game.map.transition.TransitionsConfig;
 import com.b3dgs.lionengine.game.map.transition.TransitionsExtractor;
 import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Represents the export map tile constraints dialog.

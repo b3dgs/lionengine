@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilStream;
+import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * XML parser implementation.

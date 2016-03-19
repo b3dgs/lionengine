@@ -179,18 +179,6 @@ public final class Check
     }
 
     /**
-     * Check if value is in the range (min and max included).
-     * 
-     * @param range The range to check.
-     * @param value The value to check.
-     */
-    public static void range(Range range, int value)
-    {
-        inferior(value, range.getMax(), false);
-        superior(value, range.getMin(), false);
-    }
-
-    /**
      * Check if the object is not <code>null</code>.
      * 
      * @param object The object to check.

@@ -24,9 +24,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.mock.XmlNodeMock;
+import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Test the file writing and reading.

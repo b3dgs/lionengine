@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.core.android;
 
-import com.b3dgs.lionengine.Transform;
-import com.b3dgs.lionengine.UtilConversion;
+import com.b3dgs.lionengine.graphic.Transform;
+import com.b3dgs.lionengine.util.UtilConversion;
 
 /**
  * Transform implementation.

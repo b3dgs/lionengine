@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.audio.midi;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the audio midi class.

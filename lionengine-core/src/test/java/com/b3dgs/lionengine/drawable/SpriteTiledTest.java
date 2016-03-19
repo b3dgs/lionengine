@@ -22,14 +22,14 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
-import com.b3dgs.lionengine.util.DrawableTestTool;
+import com.b3dgs.lionengine.test.DrawableTestTool;
 
 /**
  * Test the sprite tiled class.
@@ -117,6 +117,8 @@ public class SpriteTiledTest
         Assert.assertFalse(spriteD.equals(spriteE));
         final SpriteTiled spriteF = Drawable.loadSpriteTiled(spriteD.getSurface(), tileWidth, tileHeight);
         Assert.assertTrue(spriteD.equals(spriteF));
+        final SpriteTiled spriteG = Drawable.loadSpriteTiled(spriteD.getSurface(), tileWidth, tileHeight * 2);
+        Assert.assertFalse(spriteD.equals(spriteG));
 
         // Error
         DrawableTestTool.testSpriteTiledLoadError(0, 0);

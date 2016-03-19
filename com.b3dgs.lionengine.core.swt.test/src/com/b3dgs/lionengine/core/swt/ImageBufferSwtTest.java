@@ -25,10 +25,10 @@ import org.eclipse.swt.graphics.ImageData;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transparency;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Test the image buffer class.
@@ -49,7 +49,7 @@ public class ImageBufferSwtTest
     {
         final Image buffer = ToolsSwt.createImage(100, 100, SWT.TRANSPARENCY_NONE);
         final ImageData data = buffer.getImageData();
-        final ImageBuffer image = ToolsSwt.getImageBuffer(buffer);
+        final ImageBuffer image = new ImageBufferSwt(buffer);
 
         Assert.assertNotNull(image.createGraphic());
         Assert.assertEquals(buffer, UtilReflection.getMethod(image, "getBuffer"));

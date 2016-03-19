@@ -22,8 +22,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
 /**

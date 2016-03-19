@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFolder;
+import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Default media factory implementation.

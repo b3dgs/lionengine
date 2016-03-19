@@ -21,18 +21,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Resource;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.Viewer;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Used to represent a pointer cursor, desynchronized from the system pointer or not. This way, it is possible to

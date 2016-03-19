@@ -92,7 +92,7 @@ public class Range
      */
     public boolean includes(int value)
     {
-        return UtilMath.isBetween(value, min, max);
+        return value >= min && value <= max;
     }
 
     /**
@@ -103,6 +103,6 @@ public class Range
      */
     public boolean includes(double value)
     {
-        return UtilMath.isBetween(value, min, max);
+        return value >= min && value <= max;
     }
 }

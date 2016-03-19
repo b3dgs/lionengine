@@ -73,8 +73,8 @@ public final class EngineAndroid extends Engine
         ScreenAndroid.setView(view);
         activity.setContentView(view);
 
-        UtilityMedia.setAssertManager(activity.getAssets());
-        UtilityMedia.setContentResolver(activity.getContentResolver());
+        FactoryMediaAndroid.setAssertManager(activity.getAssets());
+        FactoryMediaAndroid.setContentResolver(activity.getContentResolver());
 
         Graphics.setFactoryGraphic(new FactoryGraphicAndroid());
     }
@@ -82,8 +82,8 @@ public final class EngineAndroid extends Engine
     @Override
     protected void close()
     {
-        UtilityMedia.setAssertManager(null);
-        UtilityMedia.setContentResolver(null);
+        FactoryMediaAndroid.setAssertManager(null);
+        FactoryMediaAndroid.setContentResolver(null);
         Graphics.setFactoryGraphic(null);
     }
 }

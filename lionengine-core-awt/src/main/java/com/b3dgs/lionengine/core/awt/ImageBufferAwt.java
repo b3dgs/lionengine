@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.image.BufferedImage;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Image buffer implementation.

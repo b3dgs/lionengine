@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilFolder;
+import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Series of tool functions around the editor related to icons.

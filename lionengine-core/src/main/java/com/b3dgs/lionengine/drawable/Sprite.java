@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Filter;
 
 /**
  * <p>

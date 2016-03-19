@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.util.UtilFile;
 
 /**
  * Properties type list.

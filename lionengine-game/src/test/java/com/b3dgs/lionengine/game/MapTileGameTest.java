@@ -28,7 +28,6 @@ import org.junit.rules.TemporaryFolder;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.map.MapTileGame;
@@ -36,7 +35,8 @@ import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.test.UtilTests;
+import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Test the map tile default implementation.

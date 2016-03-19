@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Representation of the screen device, supporting different screen rendering type and input devices.

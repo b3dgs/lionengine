@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
@@ -40,6 +39,7 @@ import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.ScreenBase;
 import com.b3dgs.lionengine.core.ScreenListener;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Screen implementation.

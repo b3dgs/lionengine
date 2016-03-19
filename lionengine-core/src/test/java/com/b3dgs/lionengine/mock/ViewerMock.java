@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.mock;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Shape;
-import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Viewer mock.

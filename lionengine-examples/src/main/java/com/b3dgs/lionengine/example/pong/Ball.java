@@ -17,14 +17,9 @@
  */
 package com.b3dgs.lionengine.example.pong;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
@@ -35,6 +30,11 @@ import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.Viewer;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Ball implementation.

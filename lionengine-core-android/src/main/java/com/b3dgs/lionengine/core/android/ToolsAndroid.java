@@ -29,8 +29,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
  * Misc tools for Android.
@@ -218,7 +218,7 @@ public final class ToolsAndroid
                 final int g = (int) (sg * (j % refSize)) * divisorGreen;
                 final int b = (int) (sb * (j % refSize)) * divisorBlue;
 
-                raster.setPixel(i, j, ColorRgba.filterRgb(image.getPixel(i, j), fr + r, fg + g, fb + b));
+                raster.setPixel(i, j, UtilColor.filterRgb(image.getPixel(i, j), fr + r, fg + g, fb + b));
             }
         }
 

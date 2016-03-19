@@ -38,8 +38,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * File modification watcher for project tree.

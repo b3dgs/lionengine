@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.a;
 
-import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
+import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Program starts here.

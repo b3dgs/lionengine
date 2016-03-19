@@ -109,6 +109,6 @@ public final class Constant
      */
     private Constant()
     {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+        super();
     }
 }

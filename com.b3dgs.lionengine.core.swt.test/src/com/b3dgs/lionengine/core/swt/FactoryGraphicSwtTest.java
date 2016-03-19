@@ -29,9 +29,9 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.FactoryGraphicTest;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.graphic.Transparency;
 import com.b3dgs.lionengine.mock.ImageBufferMock;
 
 /**

@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -33,6 +32,7 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.TraitModel;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Default launcher model implementation.

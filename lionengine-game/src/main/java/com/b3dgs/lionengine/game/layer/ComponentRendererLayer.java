@@ -22,12 +22,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.game.object.ComponentRenderable;
 import com.b3dgs.lionengine.game.object.HandledObjects;
 import com.b3dgs.lionengine.game.object.HandlerListener;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Renderer component implementation which render {@link Renderable} objects with {@link Layerable} support to order

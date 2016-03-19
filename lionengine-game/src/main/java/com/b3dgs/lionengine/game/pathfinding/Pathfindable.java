@@ -21,11 +21,11 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.object.Trait;
 import com.b3dgs.lionengine.game.object.trait.orientable.Orientable;
 import com.b3dgs.lionengine.game.tile.Tiled;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Describe an object which can move on a {@link MapTilePath} by using A-Star algorithm.
@@ -120,7 +120,7 @@ public interface Pathfindable extends Trait, Tiled, Orientable, Updatable, Rende
     void setLocation(int tx, int ty);
 
     /**
-     * Render additional information on path rendering with {@link #render(com.b3dgs.lionengine.Graphic)}.
+     * Render additional information on path rendering with {@link #render(com.b3dgs.lionengine.graphic.Graphic)}.
      * (Movement cost for each tile is displayed).
      * 
      * @param debug <code>true</code> to show debug information relative to path, <code>false</code> else.

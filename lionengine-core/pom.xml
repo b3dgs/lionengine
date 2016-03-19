@@ -21,7 +21,7 @@
                         <Export-Package>
                             com.b3dgs.lionengine.*,
                             com.b3dgs.lionengine.mock,
-                            com.b3dgs.lionengine.util
+                            com.b3dgs.lionengine.test
                         </Export-Package>
                     </instructions>
                 </configuration>

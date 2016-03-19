@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Represents something that can be sequencable, updated at a specified rate.

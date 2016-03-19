@@ -24,7 +24,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.core.Graphics;
@@ -32,8 +31,9 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableListener;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
+import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the handler class.

@@ -17,12 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.production;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
@@ -35,6 +32,9 @@ import com.b3dgs.lionengine.game.object.trait.producible.ProducibleListener;
 import com.b3dgs.lionengine.game.object.trait.producible.ProducibleModel;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Building implementation.

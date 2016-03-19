@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.object;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Renderable;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Renderer component implementation which render {@link Renderable} objects.

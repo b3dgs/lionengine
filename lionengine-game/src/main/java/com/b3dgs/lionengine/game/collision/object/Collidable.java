@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.game.collision.object;
 
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.object.Trait;
 import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Represents something which can enter in collision with another.

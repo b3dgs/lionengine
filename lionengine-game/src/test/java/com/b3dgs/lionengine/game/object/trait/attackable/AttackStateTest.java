@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.object.trait.attackable;
 
 import org.junit.Test;
 
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the attack state.

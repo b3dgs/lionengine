@@ -17,15 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.production;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Renderable;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -50,7 +44,13 @@ import com.b3dgs.lionengine.game.object.trait.producible.Producible;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.stream.Xml;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Build button action.

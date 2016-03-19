@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * <p>

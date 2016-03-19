@@ -27,13 +27,13 @@ import android.graphics.Rect;
 import android.graphics.Shader.TileMode;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.ColorGradient;
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageSurface;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Transform;
-import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.graphic.ColorGradient;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageSurface;
+import com.b3dgs.lionengine.graphic.Transform;
+import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.

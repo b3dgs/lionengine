@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.game.state;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Represents an animation based state, where the state enum is corresponding to an animation.

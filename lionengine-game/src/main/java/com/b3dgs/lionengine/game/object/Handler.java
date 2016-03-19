@@ -21,9 +21,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Designed to handle {@link ObjectGame}. Maintain an objects list by updating and rendering them. Modifications on the

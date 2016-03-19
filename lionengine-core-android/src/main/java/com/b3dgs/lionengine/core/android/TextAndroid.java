@@ -22,11 +22,11 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
 
 /**
  * Text implementation.

@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilConversion;
+import com.b3dgs.lionengine.util.UtilConversion;
 
 /**
  * Series of tool functions around combo.

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.state;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Resolution;
@@ -26,6 +25,7 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Game loop designed to handle our little world.

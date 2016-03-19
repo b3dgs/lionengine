@@ -17,13 +17,9 @@
  */
 package com.b3dgs.lionengine.editor;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
@@ -38,6 +34,10 @@ import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Object representation of any user object. This allows to avoid constructor error, especially with traits.

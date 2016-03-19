@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.core.minimal;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with

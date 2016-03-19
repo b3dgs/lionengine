@@ -2,11 +2,11 @@
 
 <!DOCTYPE suppressions PUBLIC "-//Puppy Crawl//DTD Suppressions 1.1//EN" "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
-    <suppress checks="MagicNumber" files="com.b3dgs.lionengine.ImageInfo"/>
-    <suppress checks="MagicNumber" files="com.b3dgs.lionengine.Ratio" lines="31,33,35,37"/>
-    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.LionEngineException" lines="187"/>
+    <suppress checks="AvoidInlineConditionals" files="com.b3dgs.lionengine.LionEngineException"/>
     
-    <suppress checks="AnonInnerLength" files="com.b3dgs.lionengine.Filter" lines="29, 40"/>
+    <suppress checks="MagicNumber" files="com.b3dgs.lionengine.graphic.ImageInfo"/>
+    <suppress checks="BooleanExpressionComplexity" files="com.b3dgs.lionengine.graphic.ColorRgba"/>
+    <suppress checks="AnonInnerLength" files="com.b3dgs.lionengine.graphic.Filter" lines="29, 40"/>
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.FilterBilinear" lines="78"/>
     <suppress checks="NestedForDepth" files="com.b3dgs.lionengine.core.FilterBlur" lines="147"/>
     <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.FilterHq3x"/>
@@ -20,7 +20,7 @@
     
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ScreenSwt"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.ToolsSwt"/>
-    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="338"/>
+    <suppress checks="ExecutableStatementCount" files="com.b3dgs.lionengine.core.swt.ToolsSwt" lines="356"/>
     <suppress checks="FanOut" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="44"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.core.swt.FactoryGraphicSwt" lines="44"/>
     

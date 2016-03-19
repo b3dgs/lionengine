@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.tile;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Range;
 
 /**
  * Represents the tile reference indexes.
@@ -74,8 +73,8 @@ public class TileRef
     public TileRef(Integer sheet, int number)
     {
         Check.notNull(sheet);
-        Check.range(Range.INT_POSITIVE, sheet.intValue());
-        Check.range(Range.INT_POSITIVE, number);
+        Check.superiorOrEqual(sheet.intValue(), 0);
+        Check.superiorOrEqual(number, 0);
 
         this.sheet = sheet;
         this.number = number;

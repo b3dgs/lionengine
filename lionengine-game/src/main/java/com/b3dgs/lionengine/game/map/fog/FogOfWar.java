@@ -19,13 +19,13 @@ package com.b3dgs.lionengine.game.map.fog;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileRenderer;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.Tiled;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).

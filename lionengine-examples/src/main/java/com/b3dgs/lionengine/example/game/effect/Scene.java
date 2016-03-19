@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.effect;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Resolution;
@@ -30,6 +29,7 @@ import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Scene implementation.

@@ -25,11 +25,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.ProjectFactory;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Represents the new project dialog.

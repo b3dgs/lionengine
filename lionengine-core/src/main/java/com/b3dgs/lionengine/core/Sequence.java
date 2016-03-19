@@ -22,14 +22,14 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Transform;
-import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.UtilReflection;
+import com.b3dgs.lionengine.graphic.Filter;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transform;
+import com.b3dgs.lionengine.graphic.Transparency;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the

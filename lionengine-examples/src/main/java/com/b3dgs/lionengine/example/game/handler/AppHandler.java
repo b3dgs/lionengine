@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.handler;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
@@ -28,6 +27,7 @@ import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Main class.

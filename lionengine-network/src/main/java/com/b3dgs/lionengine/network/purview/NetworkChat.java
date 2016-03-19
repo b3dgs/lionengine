@@ -22,8 +22,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
+import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageChat;
 

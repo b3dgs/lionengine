@@ -17,10 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Renderable;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
@@ -34,6 +31,9 @@ import com.b3dgs.lionengine.game.object.trait.actionable.Action;
 import com.b3dgs.lionengine.game.object.trait.actionable.ActionConfig;
 import com.b3dgs.lionengine.game.object.trait.actionable.Actionable;
 import com.b3dgs.lionengine.game.object.trait.actionable.ActionableModel;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.Text;
 
 /**
  * Abstract button action.

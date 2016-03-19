@@ -68,7 +68,7 @@ public class ScreenAwtTest
     @Test(timeout = TIMEOUT)
     public void testWindowed()
     {
-        final Config config = new Config(com.b3dgs.lionengine.util.Constant.RESOLUTION_320_240,
+        final Config config = new Config(com.b3dgs.lionengine.test.Constant.RESOLUTION_320_240,
                                          32,
                                          true,
                                          Medias.create(IMAGE));
@@ -81,7 +81,7 @@ public class ScreenAwtTest
     @Test(timeout = TIMEOUT)
     public void testApplet()
     {
-        final Config config = new Config(com.b3dgs.lionengine.util.Constant.RESOLUTION_320_240,
+        final Config config = new Config(com.b3dgs.lionengine.test.Constant.RESOLUTION_320_240,
                                          32,
                                          false,
                                          Medias.create(IMAGE));

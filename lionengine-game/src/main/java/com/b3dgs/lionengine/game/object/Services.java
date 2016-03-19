@@ -22,8 +22,8 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilReflection;
 import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Represents something designed to keep references on main types, such as {@link Factory}, {@link Handler},

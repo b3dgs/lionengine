@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.cursor;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
@@ -39,6 +35,10 @@ import com.b3dgs.lionengine.game.map.transition.TransitionType;
 import com.b3dgs.lionengine.game.map.transition.TransitionsExtractor;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
 
 /**
  * Game loop designed to handle our little world.

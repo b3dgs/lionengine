@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.game.object;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Describe the main component requirement, which is aimed to provide renderable feature for an object.
  * 
- * @see com.b3dgs.lionengine.Renderable
+ * @see com.b3dgs.lionengine.graphic.Renderable
  */
 public interface ComponentRenderable
 {

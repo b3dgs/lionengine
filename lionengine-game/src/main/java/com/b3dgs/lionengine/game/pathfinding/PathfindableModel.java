@@ -22,13 +22,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Orientation;
@@ -41,6 +36,11 @@ import com.b3dgs.lionengine.game.object.trait.orientable.OrientableModel;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.Tiled;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
+import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Pathfindable implementation.

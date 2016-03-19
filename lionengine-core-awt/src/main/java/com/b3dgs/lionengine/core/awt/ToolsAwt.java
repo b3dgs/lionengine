@@ -38,10 +38,10 @@ import java.io.OutputStream;
 import javax.imageio.ImageIO;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
  * Misc tools for AWT.
@@ -61,7 +61,7 @@ public final class ToolsAwt
      * @param transparency The transparency type.
      * @return The transparency value.
      */
-    public static int getTransparency(com.b3dgs.lionengine.Transparency transparency)
+    public static int getTransparency(com.b3dgs.lionengine.graphic.Transparency transparency)
     {
         final int value;
         switch (transparency)
@@ -349,7 +349,7 @@ public final class ToolsAwt
                 final int g = (int) (sg * (j % size)) * divisorGreen;
                 final int b = (int) (sb * (j % size)) * divisorBlue;
 
-                raster.setRGB(i, j, ColorRgba.filterRgb(image.getRGB(i, j), fr + r, fg + g, fb + b));
+                raster.setRGB(i, j, UtilColor.filterRgb(image.getRGB(i, j), fr + r, fg + g, fb + b));
             }
         }
 

@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.core.android;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageBuffer;
-import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Image buffer implementation.

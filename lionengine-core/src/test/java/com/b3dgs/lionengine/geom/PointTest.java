@@ -79,11 +79,13 @@ public class PointTest
         final Point point1 = Geom.createPoint(1, 2);
         final Point point2 = Geom.createPoint(2, 1);
         final Point point3 = Geom.createPoint(3, 3);
+        final Point point4 = Geom.createPoint(1, 3);
 
         Assert.assertNotEquals(point1, null);
         Assert.assertNotEquals(point1, new Object());
         Assert.assertNotEquals(point1, point2);
         Assert.assertNotEquals(point1, point3);
         Assert.assertNotEquals(point2, point3);
+        Assert.assertNotEquals(point1, point4);
     }
 }

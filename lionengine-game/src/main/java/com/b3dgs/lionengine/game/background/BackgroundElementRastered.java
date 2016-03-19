@@ -20,13 +20,13 @@ package com.b3dgs.lionengine.game.background;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.UtilColor;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Specific background element, supporting raster effects.
@@ -89,7 +89,7 @@ public abstract class BackgroundElementRastered extends BackgroundElement
             for (int j = 0; j < rasterBuf.getHeight(); j++)
             {
                 final int rgb = buf.getRgb(i, j);
-                final int filtered = ColorRgba.filterRgb(rgb, fr, fg, fb);
+                final int filtered = UtilColor.filterRgb(rgb, fr, fg, fb);
                 rasterBuf.setRgb(i, j, filtered);
             }
         }

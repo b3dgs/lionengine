@@ -19,12 +19,12 @@ package com.b3dgs.lionengine.mock;
 
 import org.junit.Assert;
 
-import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.util.Constant;
+import com.b3dgs.lionengine.graphic.Filter;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.test.Constant;
 
 /**
  * Filter sequence mock.

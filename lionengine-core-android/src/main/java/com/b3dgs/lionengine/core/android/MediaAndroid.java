@@ -18,8 +18,13 @@
 package com.b3dgs.lionengine.core.android;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import android.content.ContentResolver;
+import android.content.res.AssetManager;
+import android.net.Uri;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -33,7 +38,13 @@ final class MediaAndroid implements Media
 {
     /** No parent. */
     private static final String NO_PARENT = Constant.EMPTY_STRING;
+    /** Error get stream. */
+    private static final String ERROR_GET_STREAM = "Error on getting stream of: ";
 
+    /** Asset manager. */
+    private final AssetManager assetManager;
+    /** Content resolver. */
+    private final ContentResolver contentResolver;
     /** Media path. */
     private final String path;
     /** Media parent path. */
@@ -44,14 +55,20 @@ final class MediaAndroid implements Media
     /**
      * Internal constructor.
      * 
+     * @param assetManager The asset manager.
+     * @param contentResolver The content resolver.
      * @param separator The path separator.
      * @param path The media path.
      * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaAndroid(String separator, String path)
+    MediaAndroid(AssetManager assetManager, ContentResolver contentResolver, String separator, String path)
     {
+        Check.notNull(assetManager);
+        Check.notNull(contentResolver);
         Check.notNull(path);
 
+        this.assetManager = assetManager;
+        this.contentResolver = contentResolver;
         this.path = path;
         final int index = path.lastIndexOf(separator);
         if (index > -1)
@@ -90,13 +107,31 @@ final class MediaAndroid implements Media
     @Override
     public InputStream getInputStream()
     {
-        return UtilityMedia.getStream(this, MediaAndroid.class.getName(), false);
+        Check.notNull(path);
+
+        try
+        {
+            return assetManager.open(path);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, ERROR_GET_STREAM, Constant.QUOTE, path, Constant.QUOTE);
+        }
     }
 
     @Override
     public OutputStream getOutputStream()
     {
-        return UtilityMedia.getOutputStream(this, MediaAndroid.class.getName(), false);
+        Check.notNull(path);
+
+        try
+        {
+            return contentResolver.openOutputStream(Uri.parse(Uri.encode(path)));
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, ERROR_GET_STREAM, Constant.QUOTE, path, Constant.QUOTE);
+        }
     }
 
     @Override

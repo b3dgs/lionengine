@@ -20,13 +20,13 @@ package com.b3dgs.lionengine.game.background;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * AbstractBackground skeleton, used for future backgrounds implementation.

@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.raster;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.RasterData;
+import com.b3dgs.lionengine.graphic.RasterData;
+import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
  * Represents the raster color.
@@ -42,18 +42,18 @@ public final class RasterColor
         {
             if (m == 0)
             {
-                start = ColorRgba.getRasterColor(i, data, Rasterable.MAX_RASTERS);
-                end = ColorRgba.getRasterColor(i + 1, data, Rasterable.MAX_RASTERS);
+                start = UtilColor.getRasterColor(i, data, Rasterable.MAX_RASTERS);
+                end = UtilColor.getRasterColor(i + 1, data, Rasterable.MAX_RASTERS);
             }
             else
             {
-                start = ColorRgba.getRasterColor(Rasterable.MAX_RASTERS - i, data, Rasterable.MAX_RASTERS);
-                end = ColorRgba.getRasterColor(Rasterable.MAX_RASTERS - i - 1, data, Rasterable.MAX_RASTERS);
+                start = UtilColor.getRasterColor(Rasterable.MAX_RASTERS - i, data, Rasterable.MAX_RASTERS);
+                end = UtilColor.getRasterColor(Rasterable.MAX_RASTERS - i - 1, data, Rasterable.MAX_RASTERS);
             }
         }
         else
         {
-            start = ColorRgba.getRasterColor(i, data, Rasterable.MAX_RASTERS);
+            start = UtilColor.getRasterColor(i, data, Rasterable.MAX_RASTERS);
             end = start;
         }
         return new RasterColor(start, end);

@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.mock.SequenceMalformedMock;
 import com.b3dgs.lionengine.mock.SequenceNextFailMock;
 import com.b3dgs.lionengine.mock.SequenceSingleMock;
 import com.b3dgs.lionengine.mock.SequenceSlowMock;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the loader class.

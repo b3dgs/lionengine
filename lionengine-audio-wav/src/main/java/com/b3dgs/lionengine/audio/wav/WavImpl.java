@@ -38,8 +38,8 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Wav audio implementation.

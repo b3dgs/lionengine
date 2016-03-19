@@ -23,7 +23,6 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Range;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.stream.Xml;
@@ -139,8 +138,8 @@ public final class TileSheetsConfig
      */
     public TileSheetsConfig(int tileWidth, int tileHeight, Collection<String> sheets)
     {
-        Check.range(Range.INT_POSITIVE_STRICT, tileWidth);
-        Check.range(Range.INT_POSITIVE_STRICT, tileHeight);
+        Check.superiorStrict(tileWidth, 0);
+        Check.superiorStrict(tileHeight, 0);
         Check.notNull(sheets);
 
         this.tileWidth = tileWidth;

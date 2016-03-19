@@ -17,10 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.extraction;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Renderable;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Mouse;
@@ -43,6 +40,9 @@ import com.b3dgs.lionengine.game.object.trait.assignable.AssignableModel;
 import com.b3dgs.lionengine.game.object.trait.extractable.Extractable;
 import com.b3dgs.lionengine.game.object.trait.extractable.Extractor;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.graphic.Text;
 
 /**
  * Resources button action.

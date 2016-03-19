@@ -24,10 +24,10 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Screen base implementation.

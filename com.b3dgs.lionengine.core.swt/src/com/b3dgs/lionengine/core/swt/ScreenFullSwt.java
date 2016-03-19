@@ -22,10 +22,10 @@ import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Canvas;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Resolution;
+import com.b3dgs.lionengine.graphic.Transparency;
 
 /**
  * Screen implementation.

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.image.AffineTransformOp;
 
-import com.b3dgs.lionengine.Transform;
+import com.b3dgs.lionengine.graphic.Transform;
 
 /**
  * Transform implementation.

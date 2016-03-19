@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.mock.GraphicMock;
 
 /**

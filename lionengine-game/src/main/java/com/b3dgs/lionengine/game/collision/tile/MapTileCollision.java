@@ -21,9 +21,9 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Renderable;
 import com.b3dgs.lionengine.game.map.MapTileFeature;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Represents the collision feature of a map tile.

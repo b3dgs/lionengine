@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 

@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.background;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Medias;
@@ -29,6 +27,8 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.background.BackgroundElement;
 import com.b3dgs.lionengine.game.background.BackgroundGame;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Water foreground implementation.

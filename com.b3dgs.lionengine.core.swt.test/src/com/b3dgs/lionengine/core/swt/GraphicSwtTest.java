@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.core.swt;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.GraphicTest;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.graphic.GraphicTest;
 
 /**
  * Test the graphic class.

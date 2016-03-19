@@ -36,10 +36,10 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.graphic.Transparency;
+import com.b3dgs.lionengine.graphic.UtilColor;
 
 /**
  * Misc tools for SWT.
@@ -169,18 +169,6 @@ public final class ToolsSwt
     }
 
     /**
-     * Create an image.
-     * 
-     * @param image The image.
-     * @return The image.
-     * @throws SWTException If error on getting data.
-     */
-    public static ImageBuffer getImageBuffer(Image image)
-    {
-        return new ImageBufferSwt(image);
-    }
-
-    /**
      * Apply color mask to the image.
      * 
      * @param image The image reference.
@@ -281,6 +269,36 @@ public final class ToolsSwt
     }
 
     /**
+     * Flip an image depending of the axis.
+     * 
+     * @param image The image source.
+     * @param vertical <code>true</code> if vertical, <code>false</code> if horizontal.
+     * @return The flipped image data.
+     * @throws SWTException If error on getting data.
+     */
+    public static Image flip(Image image, boolean vertical)
+    {
+        final ImageData data = image.getImageData();
+        final ImageData flip = image.getImageData();
+        for (int y = 0; y < data.height; y++)
+        {
+            for (int x = 0; x < data.width; x++)
+            {
+                final int pixel = data.getPixel(x, y);
+                if (vertical)
+                {
+                    flip.setPixel(data.width - x - 1, y, pixel);
+                }
+                else
+                {
+                    flip.setPixel(x, data.height - y - 1, pixel);
+                }
+            }
+        }
+        return new Image(image.getDevice(), flip);
+    }
+
+    /**
      * Apply an horizontal flip to the input image.
      * 
      * @param image The input image.
@@ -376,7 +394,7 @@ public final class ToolsSwt
                     final RGB rgb = palette.getRGB(pixel);
                     final ColorRgba colorRgba = new ColorRgba(rgb.red, rgb.green, rgb.blue);
 
-                    final int filter = ColorRgba.filterRgb(colorRgba.getRgba(), fr + r, fg + g, fb + b);
+                    final int filter = UtilColor.filterRgb(colorRgba.getRgba(), fr + r, fg + g, fb + b);
                     final ColorRgba output = new ColorRgba(filter);
 
                     final Integer rasterRgba = Integer.valueOf(output.getRgba());
@@ -400,36 +418,6 @@ public final class ToolsSwt
         palette.colors = newColorsRgb;
 
         return new Image(image.getDevice(), data);
-    }
-
-    /**
-     * Flip an image depending of the axis.
-     * 
-     * @param image The image source.
-     * @param vertical <code>true</code> if vertical, <code>false</code> if horizontal.
-     * @return The flipped image data.
-     * @throws SWTException If error on getting data.
-     */
-    public static Image flip(Image image, boolean vertical)
-    {
-        final ImageData data = image.getImageData();
-        final ImageData flip = image.getImageData();
-        for (int y = 0; y < data.height; y++)
-        {
-            for (int x = 0; x < data.width; x++)
-            {
-                final int pixel = data.getPixel(x, y);
-                if (vertical)
-                {
-                    flip.setPixel(data.width - x - 1, y, pixel);
-                }
-                else
-                {
-                    flip.setPixel(x, data.height - y - 1, pixel);
-                }
-            }
-        }
-        return new Image(image.getDevice(), flip);
     }
 
     /**

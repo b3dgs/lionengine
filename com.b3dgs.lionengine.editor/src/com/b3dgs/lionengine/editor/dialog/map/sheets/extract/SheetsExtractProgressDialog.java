@@ -28,10 +28,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.ImageBuffer;
 import com.b3dgs.lionengine.editor.dialog.AbstractProgressDialog;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
+import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
  * Extract sheets progress dialog.

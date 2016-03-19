@@ -60,6 +60,11 @@ public class RangeTest
         Assert.assertTrue(range.includes(0.0));
         Assert.assertTrue(range.includes(Double.MIN_NORMAL));
 
+        Assert.assertTrue(range.includes(range.getMin() + 1));
+        Assert.assertTrue(range.includes(range.getMax() - 1));
+        Assert.assertFalse(range.includes(range.getMax() + 1));
+        Assert.assertFalse(range.includes(range.getMin() - 1));
+
         Assert.assertTrue(range.includes(range.getMin() + 0.000000000000001));
         Assert.assertTrue(range.includes(range.getMax() - 0.000000000000001));
         Assert.assertFalse(range.includes(range.getMax() + 0.000000000000001));

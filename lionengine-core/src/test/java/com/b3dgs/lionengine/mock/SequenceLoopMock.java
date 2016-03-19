@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.mock;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.util.Constant;
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.test.Constant;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Loop sequence mock.

@@ -25,10 +25,10 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilConversion;
-import com.b3dgs.lionengine.UtilStream;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.util.UtilConversion;
+import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * SC68 player implementation.

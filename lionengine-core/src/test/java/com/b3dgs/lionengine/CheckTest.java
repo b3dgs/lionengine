@@ -20,7 +20,7 @@ package com.b3dgs.lionengine;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.util.UtilTests;
+import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the check class.
@@ -419,36 +419,5 @@ public class CheckTest
     public void testEqualityFail()
     {
         Check.equality(Integer.MIN_VALUE, Integer.MAX_VALUE);
-    }
-
-    /**
-     * Test the check range with valid value.
-     */
-    @Test
-    public void testRange()
-    {
-        Check.range(Range.INT_POSITIVE, 0);
-        Check.range(Range.INT_POSITIVE, Integer.MAX_VALUE);
-
-        Check.range(Range.INT_POSITIVE_STRICT, 1);
-        Check.range(Range.INT_POSITIVE_STRICT, Integer.MAX_VALUE);
-    }
-
-    /**
-     * Test the check range with too low value.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testRangeMin()
-    {
-        Check.range(Range.INT_POSITIVE_STRICT, 0);
-    }
-
-    /**
-     * Test the check range with too high value.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testRangeMax()
-    {
-        Check.range(new Range(0, 1), 2);
     }
 }

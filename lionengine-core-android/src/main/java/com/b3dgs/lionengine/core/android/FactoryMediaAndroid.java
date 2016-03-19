@@ -17,15 +17,43 @@
  */
 package com.b3dgs.lionengine.core.android;
 
+import android.content.ContentResolver;
+import android.content.res.AssetManager;
+
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.UtilFolder;
 import com.b3dgs.lionengine.core.FactoryMedia;
+import com.b3dgs.lionengine.util.UtilFolder;
 
 /**
  * Media factory implementation.
  */
 final class FactoryMediaAndroid implements FactoryMedia
 {
+    /** Asset manager. */
+    private static volatile AssetManager assetManager;
+    /** Content resolver. */
+    private static volatile ContentResolver contentResolver;
+
+    /**
+     * Set the asset manager.
+     * 
+     * @param assetManager The asset manager.
+     */
+    static synchronized void setAssertManager(AssetManager assetManager)
+    {
+        FactoryMediaAndroid.assetManager = assetManager;
+    }
+
+    /**
+     * Set the content resolver.
+     * 
+     * @param contentResolver The content resolver.
+     */
+    static synchronized void setContentResolver(ContentResolver contentResolver)
+    {
+        FactoryMediaAndroid.contentResolver = contentResolver;
+    }
+
     /**
      * Internal constructor.
      */
@@ -41,12 +69,12 @@ final class FactoryMediaAndroid implements FactoryMedia
     @Override
     public Media create(String separator, String resourcesDir, String... path)
     {
-        return new MediaAndroid(separator, UtilFolder.getPathSeparator(separator, path));
+        return new MediaAndroid(assetManager, contentResolver, separator, UtilFolder.getPathSeparator(separator, path));
     }
 
     @Override
     public Media create(String separator, Class<?> loader, String... path)
     {
-        return new MediaAndroid(separator, UtilFolder.getPathSeparator(separator, path));
+        return new MediaAndroid(assetManager, contentResolver, separator, UtilFolder.getPathSeparator(separator, path));
     }
 }
