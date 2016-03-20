@@ -6,8 +6,7 @@ Bundle-Version: 8.2.3.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: OSGI-INF/l10n/bundle
-Export-Package: com.b3dgs.lionengine.editor,
- com.b3dgs.lionengine.editor.collision,
+Export-Package: com.b3dgs.lionengine.editor.collision,
  com.b3dgs.lionengine.editor.collision.map.assign,
  com.b3dgs.lionengine.editor.collision.map.editor,
  com.b3dgs.lionengine.editor.collision.map.imports,

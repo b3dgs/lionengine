@@ -6,8 +6,7 @@ Bundle-Version: 8.2.3.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: OSGI-INF/l10n/bundle
-Export-Package: com.b3dgs.lionengine.editor.animation,
- com.b3dgs.lionengine.editor.animation.editor,
+Export-Package: com.b3dgs.lionengine.editor.animation.editor,
  com.b3dgs.lionengine.editor.animation.handler,
  com.b3dgs.lionengine.editor.animation.properties
 Require-Bundle: javax.inject;bundle-version="1.0.0",
