@@ -40,18 +40,6 @@ public final class ObjectConfig
     public static final String SETUP = Configurer.PREFIX + "setup";
 
     /**
-     * Import the object data from setup.
-     * 
-     * @param setup The setup reference.
-     * @return The object data.
-     * @throws LionEngineException If unable to read node.
-     */
-    public static ObjectConfig imports(Setup setup)
-    {
-        return imports(setup.getConfigurer().getRoot());
-    }
-
-    /**
      * Import the object data from configurer.
      * 
      * @param configurer The configurer reference.

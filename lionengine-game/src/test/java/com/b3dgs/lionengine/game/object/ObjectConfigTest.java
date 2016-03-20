@@ -73,7 +73,6 @@ public class ObjectConfigTest
 
             final ObjectConfig loaded = ObjectConfig.imports(Xml.load(media));
             Assert.assertEquals(config, loaded);
-            Assert.assertEquals(config, ObjectConfig.imports(new Setup(media)));
             Assert.assertEquals(config, ObjectConfig.imports(new Configurer(media)));
         }
         finally

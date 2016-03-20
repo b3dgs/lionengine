@@ -70,14 +70,28 @@ public final class UtilProjectStats
         final String path = mainDir.getAbsolutePath();
         exploreDir(path);
 
-        final StringBuilder builder = new StringBuilder(Constant.HUNDRED);
-        builder.append("Project statistics: ");
-        builder.append(Constant.QUOTE).append(path).append(Constant.QUOTE).append(Constant.NEW_LINE);
-        builder.append("Files = ").append(numberOfFiles).append(Constant.NEW_LINE);
-        builder.append("Code lines = ").append(numberOfLinesCode).append(Constant.NEW_LINE);
-        builder.append("Documentation lines = ").append(numberOfLinesDoc).append(Constant.NEW_LINE);
-        builder.append("Empty lines = ").append(numberOfLinesEmpty).append(Constant.NEW_LINE);
-        builder.append("Total lines = ").append(numberOfLines).append(Constant.NEW_LINE);
+        final StringBuilder builder = new StringBuilder();
+        builder.append(Constant.HUNDRED)
+               .append("Project statistics: ")
+               .append(Constant.QUOTE)
+               .append(path)
+               .append(Constant.QUOTE)
+               .append(Constant.NEW_LINE)
+               .append("Files = ")
+               .append(numberOfFiles)
+               .append(Constant.NEW_LINE)
+               .append("Code lines = ")
+               .append(numberOfLinesCode)
+               .append(Constant.NEW_LINE)
+               .append("Documentation lines = ")
+               .append(numberOfLinesDoc)
+               .append(Constant.NEW_LINE)
+               .append("Empty lines = ")
+               .append(numberOfLinesEmpty)
+               .append(Constant.NEW_LINE)
+               .append("Total lines = ")
+               .append(numberOfLines)
+               .append(Constant.NEW_LINE);
 
         Verbose.info(builder.toString());
     }

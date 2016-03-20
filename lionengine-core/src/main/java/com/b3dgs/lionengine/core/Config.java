@@ -145,12 +145,9 @@ public final class Config
     public <A extends Applet<A>> A getApplet(Class<A> appletClass)
     {
         A cast = null;
-        if (appletClass != null)
+        if (appletClass != null && applet != null)
         {
-            if (applet != null)
-            {
-                cast = appletClass.cast(applet.getApplet());
-            }
+            cast = appletClass.cast(applet.getApplet());
         }
         return cast;
     }
