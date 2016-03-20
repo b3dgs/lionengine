@@ -47,11 +47,11 @@ import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.editor.world.WorldPart;
 import com.b3dgs.lionengine.editor.world.updater.WorldKeyboardListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseScrollListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
+import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Minimap;
@@ -452,7 +452,6 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         if (active)
         {
             part.getUpdater().mouseScrolled(event);
-            part.getRenderer().mouseScrolled(event);
         }
     }
 

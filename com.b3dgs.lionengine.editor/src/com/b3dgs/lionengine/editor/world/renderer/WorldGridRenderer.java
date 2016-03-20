@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Handle the grid rendering.
  */
-public class WorldGrid implements WorldRenderListener
+public class WorldGridRenderer implements WorldRenderListener
 {
     /** Color of the grid. */
     private static final ColorRgba COLOR_GRID = new ColorRgba(96, 96, 96);
@@ -45,7 +45,7 @@ public class WorldGrid implements WorldRenderListener
      * 
      * @param services The services reference.
      */
-    public WorldGrid(Services services)
+    public WorldGridRenderer(Services services)
     {
         map = services.get(MapTile.class);
         camera = services.get(Camera.class);

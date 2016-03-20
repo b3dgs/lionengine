@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.toolbar;
 import org.eclipse.e4.core.di.annotations.Execute;
 
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**

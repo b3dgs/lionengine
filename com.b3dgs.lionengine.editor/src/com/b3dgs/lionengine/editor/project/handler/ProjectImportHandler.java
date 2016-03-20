@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.editor.project.ProjectPart;
 import com.b3dgs.lionengine.editor.project.dialog.ProjectImportDialog;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**

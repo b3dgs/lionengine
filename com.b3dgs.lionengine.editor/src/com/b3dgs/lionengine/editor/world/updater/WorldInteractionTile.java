@@ -25,11 +25,9 @@ import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.dialog.map.sheets.palette.SheetPaletteType;
 import com.b3dgs.lionengine.editor.dialog.map.sheets.palette.SheetsPaletteModel;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
-import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
-import com.b3dgs.lionengine.editor.world.TileSelectionListener;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
@@ -183,7 +181,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         final String group = PropertiesModel.INSTANCE.getCopyText();
         if (selectedTile != null && TileGroupsConfig.NODE_GROUP.equals(copy))
         {
-            PropertiesTile.changeTileGroup(mapGroup, mapGroup.getGroup(selectedTile), group, selectedTile);
+            UtilWorld.changeTileGroup(mapGroup, mapGroup.getGroup(selectedTile), group, selectedTile);
         }
     }
 

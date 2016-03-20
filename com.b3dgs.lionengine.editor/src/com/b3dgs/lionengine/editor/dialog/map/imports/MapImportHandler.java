@@ -21,7 +21,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.editor.world.view.WorldPart;
 
 /**
  * Import map handler.

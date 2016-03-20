@@ -5,6 +5,8 @@
    <extension-point id="resourceChecker" name="Resource Checker" schema="schema/resourceChecker.exsd"/>
    <extension-point id="worldMouseClickListener" name="World Mouse Click Listener" schema="schema/worldMouseClickListener.exsd"/>
    <extension-point id="worldMouseMoveListener" name="World Mouse Move Listener" schema="schema/worldMouseMoveListener.exsd"/>
+   <extension-point id="worldMouseScrollListener" name="World Mouse Scroll Listener" schema="schema/worldMouseScrollListener.exsd"/>
+   <extension-point id="worldKeyListener" name="World Key Listener" schema="schema/worldKeyListener.exsd"/>
    <extension-point id="worldRenderListener" name="World Render Listener" schema="schema/worldRenderListener.exsd"/>
 
    <extension
@@ -267,6 +269,57 @@
          point="com.b3dgs.lionengine.editor.resourceChecker">
       <implementation
             class="com.b3dgs.lionengine.editor.project.resource.ObjectResource">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.worldRenderListener">
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.renderer.WorldSelectedObjects">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.renderer.WorldSelectedTiles">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.renderer.WorldGridRenderer">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.renderer.WorldCursorRenderer">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.worldMouseClickListener">
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldInteractionObject">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.worldMouseScrollListener">
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.worldMouseMoveListener">
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldInteractionObject">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile">
+      </implementation>
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldNavigation">
+      </implementation>
+   </extension>
+   <extension
+         point="com.b3dgs.lionengine.editor.worldKeyListener">
+      <implementation
+            class="com.b3dgs.lionengine.editor.world.updater.WorldNavigation">
       </implementation>
    </extension>
 

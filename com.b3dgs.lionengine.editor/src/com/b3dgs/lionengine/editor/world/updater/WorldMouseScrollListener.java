@@ -17,11 +17,16 @@
  */
 package com.b3dgs.lionengine.editor.world.updater;
 
+import com.b3dgs.lionengine.editor.Activator;
+
 /**
  * Listen to world mouse scroll event.
  */
 public interface WorldMouseScrollListener
 {
+    /** Extension ID. */
+    String EXTENSION_ID = Activator.PLUGIN_ID + ".worldMouseScrollListener";
+
     /**
      * Called when a mouse click occurred.
      * 

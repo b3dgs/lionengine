@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Handle the world cursor rendering.
  */
-public class WorldCursor implements WorldRenderListener
+public class WorldCursorRenderer implements WorldRenderListener
 {
     /** Color of the selection area. */
     private static final ColorRgba COLOR_CURSOR_SELECTION = new ColorRgba(240, 240, 240, 96);
@@ -53,7 +53,7 @@ public class WorldCursor implements WorldRenderListener
      * 
      * @param services The services reference.
      */
-    public WorldCursor(Services services)
+    public WorldCursorRenderer(Services services)
     {
         map = services.get(MapTile.class);
         camera = services.get(Camera.class);

@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.util.UtilFolder;
 public class MapImportDialog extends AbstractDialog
 {
     /** Icon. */
-    public static final Image ICON = UtilIcon.get("dialog", "import.png");
+    private static final Image ICON = UtilIcon.get("dialog", "import.png");
 
     /** Level rip location. */
     private BrowseWidget levelRip;

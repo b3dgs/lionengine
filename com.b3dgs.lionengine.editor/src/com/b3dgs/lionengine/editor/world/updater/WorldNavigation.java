@@ -63,7 +63,7 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
     /** Map reference. */
     private final MapTile map;
     /** World zoom. */
-    private final WorldZoom zoom;
+    private final WorldZoomUpdater zoom;
     /** Palette model. */
     private final PaletteModel palette;
 
@@ -76,7 +76,7 @@ public class WorldNavigation implements WorldMouseMoveListener, WorldKeyboardLis
     {
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
-        zoom = services.get(WorldZoom.class);
+        zoom = services.get(WorldZoomUpdater.class);
         palette = services.get(PaletteModel.class);
     }
 

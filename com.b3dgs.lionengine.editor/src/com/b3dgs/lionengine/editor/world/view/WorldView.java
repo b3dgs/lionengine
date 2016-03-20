@@ -15,28 +15,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.world.view;
 
-import java.util.Collection;
-
-import com.b3dgs.lionengine.editor.ObjectRepresentation;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Listen to objects selection on map.
+ * Represents the world view.
  */
-public interface ObjectSelectionListener
+public interface WorldView
 {
     /**
-     * Called when an object is selected.
-     * 
-     * @param object The selected object from map.
+     * Update the view.
      */
-    void notifyObjectSelected(ObjectRepresentation object);
+    void update();
 
     /**
-     * Called when objects are selected.
+     * Set the tool item text.
      * 
-     * @param objects The selected objects from map.
+     * @param item The item id extract.
+     * @param text The item text.
      */
-    void notifyObjectsSelected(Collection<ObjectRepresentation> objects);
+    void setToolItemText(String item, String text);
+
+    /**
+     * Get the tool item.
+     * 
+     * @param <T> The element type.
+     * @param item The item id extract.
+     * @param clazz The element class.
+     * @return The composite found.
+     * @throws LionEngineException If not found.
+     */
+    <T> T getToolItem(String item, Class<T> clazz);
 }

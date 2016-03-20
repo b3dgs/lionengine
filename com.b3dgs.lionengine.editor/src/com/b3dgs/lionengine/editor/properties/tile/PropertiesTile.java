@@ -19,29 +19,23 @@ package com.b3dgs.lionengine.editor.properties.tile;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderTile;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
+import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileConfig;
 import com.b3dgs.lionengine.game.tile.TileFeature;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
-import com.b3dgs.lionengine.geom.Geom;
-import com.b3dgs.lionengine.geom.Point;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Element properties part.
@@ -60,88 +54,6 @@ public class PropertiesTile implements PropertiesProviderTile
     private static final Image ICON_FEATURES = UtilIcon.get(FOLDER, "tilefeatures.png");
     /** Tile feature icon. */
     private static final Image ICON_FEATURE = UtilIcon.get(FOLDER, "tilefeature.png");
-
-    /**
-     * Change tile group.
-     * 
-     * @param map The map reference.
-     * @param oldGroup The old group name.
-     * @param newGroup The new group name (empty to remove it).
-     * @param tile The tile reference.
-     */
-    public static void changeTileGroup(MapTileGroup map, String oldGroup, String newGroup, Tile tile)
-    {
-        final Media config = map.getGroupsConfig();
-        final XmlNode root = Xml.load(config);
-        changeTileGroup(root, oldGroup, newGroup, tile);
-        Xml.save(root, config);
-        map.loadGroups(config);
-    }
-
-    /**
-     * Change tile group.
-     * 
-     * @param root The root reference.
-     * @param oldGroup The old group name.
-     * @param newGroup The new group name (empty to remove it).
-     * @param tile The tile reference.
-     */
-    public static void changeTileGroup(XmlNode root, String oldGroup, String newGroup, Tile tile)
-    {
-        final Collection<Point> toAdd = new HashSet<>();
-        for (final XmlNode nodeGroup : root.getChildren(TileGroupsConfig.NODE_GROUP))
-        {
-            removeOldGroup(nodeGroup, oldGroup, tile);
-            if (CollisionGroup.same(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), newGroup))
-            {
-                final Point point = Geom.createPoint(tile.getSheet().intValue(), tile.getNumber());
-                if (!toAdd.contains(point))
-                {
-                    toAdd.add(point);
-                }
-            }
-
-        }
-        if (!TileGroupsConfig.REMOVE_GROUP_NAME.equals(newGroup))
-        {
-            final XmlNode newNode = getNewNode(root, newGroup);
-            for (final Point current : toAdd)
-            {
-                final XmlNode node = newNode.createChild(TileConfig.NODE_TILE);
-                node.writeInteger(TileConfig.ATT_TILE_SHEET, current.getX());
-                node.writeInteger(TileConfig.ATT_TILE_NUMBER, current.getY());
-            }
-        }
-        toAdd.clear();
-    }
-
-    /**
-     * Remove old tile group.
-     * 
-     * @param nodeGroup The current node group.
-     * @param oldGroup The old group name.
-     * @param tile The current tile.
-     */
-    private static void removeOldGroup(XmlNode nodeGroup, String oldGroup, Tile tile)
-    {
-        final Collection<XmlNode> toRemove = new ArrayList<>();
-        if (CollisionGroup.same(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME), oldGroup))
-        {
-            for (final XmlNode nodeTile : nodeGroup.getChildren(TileConfig.NODE_TILE))
-            {
-                if (nodeTile.readInteger(TileConfig.ATT_TILE_SHEET) == tile.getSheet().intValue()
-                    && nodeTile.readInteger(TileConfig.ATT_TILE_NUMBER) == tile.getNumber())
-                {
-                    toRemove.add(nodeTile);
-                }
-            }
-            for (final XmlNode remove : toRemove)
-            {
-                nodeGroup.removeChild(remove);
-            }
-        }
-        toRemove.clear();
-    }
 
     /**
      * Called on double click.
@@ -168,34 +80,12 @@ public class PropertiesTile implements PropertiesProviderTile
         final String newGroup = chooser.getChoice();
         if (newGroup != null)
         {
-            changeTileGroup(mapGroup, oldGroup, newGroup, tile);
+            UtilWorld.changeTileGroup(mapGroup, oldGroup, newGroup, tile);
             selection.setText(PropertiesPart.COLUMN_VALUE, newGroup);
 
             final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
             part.update();
         }
-    }
-
-    /**
-     * Get the new node group.
-     * 
-     * @param node The node root.
-     * @param newGroup The new group name.
-     * @return The node found or created.
-     */
-    private static XmlNode getNewNode(XmlNode node, String newGroup)
-    {
-        for (final XmlNode nodeGroup : node.getChildren(TileGroupsConfig.NODE_GROUP))
-        {
-            if (newGroup.equals(nodeGroup.readString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME)))
-            {
-                return nodeGroup;
-            }
-        }
-        final XmlNode newGroupNode = node.createChild(TileGroupsConfig.NODE_GROUP);
-        newGroupNode.writeString(TileGroupsConfig.ATTRIBUTE_GROUP_NAME, newGroup);
-
-        return newGroupNode;
     }
 
     /**

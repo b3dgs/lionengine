@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.world.view;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -25,6 +25,11 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -39,8 +44,10 @@ import com.b3dgs.lionengine.editor.utility.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilToolbar;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.renderer.WorldRenderer;
 import com.b3dgs.lionengine.editor.world.renderer.WorldSelectedTiles;
+import com.b3dgs.lionengine.editor.world.updater.TileSelectionListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.game.object.Services;
@@ -64,7 +71,7 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
      * @param renderer The renderer reference.
      * @return The created part.
      */
-    public static Composite createPart(Composite parent, WorldUpdater updater, WorldRenderer renderer)
+    public static Composite createPart(Composite parent, WorldUpdater updater, PaintListener renderer)
     {
         final GridLayout layout = new GridLayout(1, false);
         layout.marginHeight = 1;
@@ -80,12 +87,45 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
         composite.addKeyListener(updater);
 
         composite.addPaintListener(renderer);
-        composite.addMouseListener(renderer);
-        composite.addMouseMoveListener(renderer);
-        composite.addMouseWheelListener(renderer);
-        composite.addKeyListener(renderer);
+        composite.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseUp(MouseEvent event)
+            {
+                update(composite);
+            }
+
+            @Override
+            public void mouseDown(MouseEvent event)
+            {
+                update(composite);
+            }
+        });
+        composite.addMouseMoveListener(event -> update(composite));
+        composite.addMouseWheelListener(event -> update(composite));
+        composite.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(org.eclipse.swt.events.KeyEvent event)
+            {
+                update(composite);
+            }
+        });
 
         return composite;
+    }
+
+    /**
+     * Update and redraw composite if not disposed.
+     * 
+     * @param composite The composite to redraw.
+     */
+    private static void update(Composite composite)
+    {
+        if (!composite.isDisposed())
+        {
+            composite.redraw();
+        }
     }
 
     /** Part service. */
@@ -104,6 +144,16 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
     public WorldPart()
     {
         super();
+    }
+
+    /**
+     * Add a mouse wheel listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void addMouseWheelListener(MouseWheelListener listener)
+    {
+        composite.addMouseWheelListener(listener);
     }
 
     /**

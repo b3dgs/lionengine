@@ -21,23 +21,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.world.Selection;
-import com.b3dgs.lionengine.editor.world.WorldView;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
-import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
+import com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -52,10 +44,8 @@ import com.b3dgs.lionengine.graphic.Transparency;
 /**
  * World paint listener, rendering the current world.
  */
-public class WorldRenderer implements PaintListener, MouseListener, MouseMoveListener, MouseWheelListener, KeyListener
+public class WorldRenderer implements PaintListener
 {
-    /** Extension ID. */
-    public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldRenderer";
     /** Color of the selection area. */
     private static final ColorRgba COLOR_MOUSE_SELECTION = new ColorRgba(240, 240, 240, 96);
 
@@ -78,8 +68,6 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     private final Collection<WorldRenderListener> listeners = new ArrayList<>();
     /** Scale transform. */
     private final Transform transform = Graphics.createTransform();
-    /** The parent. */
-    private final WorldView worldView;
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
@@ -91,7 +79,7 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     /** World updater. */
     private final WorldUpdater worldUpdater;
     /** World zoom. */
-    private final WorldZoom zoom;
+    private final WorldZoomUpdater zoom;
 
     /**
      * Create a world renderer with grid enabled.
@@ -102,22 +90,13 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
     public WorldRenderer(EPartService partService, Services services)
     {
         this.partService = partService;
-        worldView = services.get(WorldView.class);
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
         handler = services.get(Handler.class);
         selection = services.get(Selection.class);
         worldUpdater = services.get(WorldUpdater.class);
-        zoom = services.get(WorldZoom.class);
+        zoom = services.get(WorldZoomUpdater.class);
 
-        final WorldGrid grid = services.create(WorldGrid.class);
-        final WorldCursor cursor = services.create(WorldCursor.class);
-        final WorldSelectedTiles selectedTiles = services.create(WorldSelectedTiles.class);
-        final WorldSelectedObjects selectedObjects = services.create(WorldSelectedObjects.class);
-        listeners.add(selectedObjects);
-        listeners.add(selectedTiles);
-        listeners.add(cursor);
-        listeners.add(grid);
         for (final WorldRenderListener listener : UtilExtension.get(WorldRenderListener.class,
                                                                     WorldRenderListener.EXTENSION_ID,
                                                                     services))
@@ -202,63 +181,5 @@ public class WorldRenderer implements PaintListener, MouseListener, MouseMoveLis
                 listener.onRender(g, paintEvent.width, paintEvent.height, scale, tw, th);
             }
         }
-    }
-
-    /*
-     * MouseListener
-     */
-
-    @Override
-    public void mouseDown(MouseEvent mouseEvent)
-    {
-        worldView.update();
-    }
-
-    @Override
-    public void mouseUp(MouseEvent mouseEvent)
-    {
-        worldView.update();
-    }
-
-    @Override
-    public void mouseDoubleClick(MouseEvent mouseEvent)
-    {
-        // Nothing to do
-    }
-
-    /*
-     * MouseMoveListener
-     */
-
-    @Override
-    public void mouseMove(MouseEvent mouseEvent)
-    {
-        worldView.update();
-    }
-
-    /*
-     * MouseWheelListener
-     */
-
-    @Override
-    public void mouseScrolled(MouseEvent event)
-    {
-        worldView.update();
-    }
-
-    /*
-     * KeyListener
-     */
-
-    @Override
-    public void keyPressed(KeyEvent event)
-    {
-        worldView.update();
-    }
-
-    @Override
-    public void keyReleased(KeyEvent event)
-    {
-        // Nothing to do
     }
 }

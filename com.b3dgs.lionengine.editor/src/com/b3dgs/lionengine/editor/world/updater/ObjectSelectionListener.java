@@ -15,35 +15,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.world.updater;
 
-import java.util.Locale;
+import java.util.Collection;
 
-import org.eclipse.osgi.util.NLS;
-
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.editor.ObjectRepresentation;
 
 /**
- * Messages internationalization.
+ * Listen to objects selection on map.
  */
-public final class Messages extends NLS
+public interface ObjectSelectionListener
 {
-    /** Tool bar formulas. */
-    public static String Toolbar_Formula;
+    /**
+     * Called when an object is selected.
+     * 
+     * @param object The selected object from map.
+     */
+    void notifyObjectSelected(ObjectRepresentation object);
 
     /**
-     * Initialize.
+     * Called when objects are selected.
+     * 
+     * @param objects The selected objects from map.
      */
-    static
-    {
-        NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Messages()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
+    void notifyObjectsSelected(Collection<ObjectRepresentation> objects);
 }

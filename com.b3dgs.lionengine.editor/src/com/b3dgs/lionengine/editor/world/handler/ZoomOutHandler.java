@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.editor.world.handler;
 import org.eclipse.e4.core.di.annotations.Execute;
 
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.editor.world.WorldPart;
-import com.b3dgs.lionengine.editor.world.ZoomItem;
-import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
+import com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater;
+import com.b3dgs.lionengine.editor.world.view.WorldPart;
+import com.b3dgs.lionengine.editor.world.view.ZoomItem;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -49,7 +49,7 @@ public final class ZoomOutHandler
     {
         final Services services = WorldModel.INSTANCE.getServices();
 
-        final WorldZoom zoom = services.get(WorldZoom.class);
+        final WorldZoomUpdater zoom = services.get(WorldZoomUpdater.class);
         zoom.zoomOut();
 
         final WorldPart part = services.get(WorldPart.class);

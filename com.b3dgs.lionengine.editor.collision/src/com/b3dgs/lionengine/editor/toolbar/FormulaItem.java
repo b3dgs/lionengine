@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.b3dgs.lionengine.editor.utility.UtilCombo;
-import com.b3dgs.lionengine.editor.world.Messages;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
 
@@ -113,7 +112,7 @@ public class FormulaItem
 
         final Label label = new Label(parent, SWT.NONE);
         label.setFont(font);
-        label.setText(Messages.Toolbar_Formula);
+        label.setText(Messages.Formula);
 
         combo = new Combo(parent, SWT.SINGLE | SWT.READ_ONLY);
         combo.setFont(font);

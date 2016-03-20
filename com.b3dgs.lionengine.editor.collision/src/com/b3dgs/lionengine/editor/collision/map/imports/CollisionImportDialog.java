@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.editor.toolbar.SetPointerCollisionHandler;
 import com.b3dgs.lionengine.editor.toolbar.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.editor.world.WorldPart;
+import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;

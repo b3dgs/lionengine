@@ -29,12 +29,11 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.collision.CollisionVerifier;
 import com.b3dgs.lionengine.editor.collision.map.assign.MapCollisionAssignDialog;
-import com.b3dgs.lionengine.editor.properties.tile.PropertiesTile;
 import com.b3dgs.lionengine.editor.toolbar.FormulaItem;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
-import com.b3dgs.lionengine.editor.world.WorldView;
+import com.b3dgs.lionengine.editor.world.view.WorldView;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Force;
@@ -314,7 +313,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
         final String tileGroup = mapGroup.getGroup(tile);
         if (!group.getName().equals(tileGroup))
         {
-            PropertiesTile.changeTileGroup(groupNode, tileGroup, group.getName(), tile);
+            UtilWorld.changeTileGroup(groupNode, tileGroup, group.getName(), tile);
         }
     }
 

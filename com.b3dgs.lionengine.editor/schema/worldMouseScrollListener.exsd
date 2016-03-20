@@ -60,7 +60,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener"/>
+                  <meta.attribute kind="java" basedOn=":com.b3dgs.lionengine.editor.world.updater.WorldMouseScrollListener"/>
                </appinfo>
             </annotation>
          </attribute>

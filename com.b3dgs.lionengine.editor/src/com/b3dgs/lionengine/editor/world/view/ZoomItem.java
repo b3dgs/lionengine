@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.world.view;
 
 import javax.annotation.PostConstruct;
 
@@ -30,7 +30,8 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.editor.utility.UtilText;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
-import com.b3dgs.lionengine.editor.world.updater.WorldZoom;
+import com.b3dgs.lionengine.editor.world.WorldModel;
+import com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -53,6 +54,10 @@ public class ZoomItem
     public ZoomItem()
     {
         super();
+        final Services services = WorldModel.INSTANCE.getServices();
+        final WorldPart part = services.get(WorldPart.class);
+        final WorldZoomUpdater zoom = services.get(WorldZoomUpdater.class);
+        part.addMouseWheelListener(event -> zoomValue.setText(String.valueOf(zoom.getPercent())));
     }
 
     /**
@@ -64,9 +69,9 @@ public class ZoomItem
     {
         final int value = Integer.parseInt(zoomValue.getText());
         final int percent;
-        if (value < WorldZoom.ZOOM_MIN || value > WorldZoom.ZOOM_MAX)
+        if (value < WorldZoomUpdater.ZOOM_MIN || value > WorldZoomUpdater.ZOOM_MAX)
         {
-            percent = UtilMath.clamp(value, WorldZoom.ZOOM_MIN, WorldZoom.ZOOM_MAX);
+            percent = UtilMath.clamp(value, WorldZoomUpdater.ZOOM_MIN, WorldZoomUpdater.ZOOM_MAX);
             zoomValue.setText(String.valueOf(percent));
         }
         else
@@ -83,7 +88,7 @@ public class ZoomItem
     {
         final Services services = WorldModel.INSTANCE.getServices();
 
-        final WorldZoom zoom = services.get(WorldZoom.class);
+        final WorldZoomUpdater zoom = services.get(WorldZoomUpdater.class);
         final int percent = validateZoomValue();
         zoom.setPercent(percent);
 
@@ -109,7 +114,7 @@ public class ZoomItem
         zoomValue = new Text(parent, SWT.SINGLE | SWT.CENTER | SWT.BORDER);
         zoomValue.setFont(font);
         UtilText.addVerify(zoomValue, InputValidator.INTEGER_POSITIVE_STRICT_MATCH);
-        zoomValue.setText(String.valueOf(WorldZoom.ZOOM_DEFAULT));
+        zoomValue.setText(String.valueOf(WorldZoomUpdater.ZOOM_DEFAULT));
         zoomValue.addTraverseListener(event ->
         {
             if (event.detail == SWT.TRAVERSE_RETURN)

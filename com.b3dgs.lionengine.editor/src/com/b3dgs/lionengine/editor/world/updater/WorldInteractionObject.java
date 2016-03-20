@@ -23,7 +23,6 @@ import java.util.Collection;
 import com.b3dgs.lionengine.core.swt.Mouse;
 import com.b3dgs.lionengine.editor.ObjectRepresentation;
 import com.b3dgs.lionengine.editor.world.ObjectControl;
-import com.b3dgs.lionengine.editor.world.ObjectSelectionListener;
 import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.Selection;

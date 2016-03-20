@@ -28,7 +28,6 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 
-import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -39,9 +38,6 @@ import com.b3dgs.lionengine.game.object.Services;
  */
 public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListener, MouseWheelListener
 {
-    /** Extension ID. */
-    public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldUpdater";
-
     /** Part service. */
     protected final EPartService partService;
     /** World mouse click listeners. */
@@ -53,7 +49,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     /** World keyboard listeners. */
     private final Collection<WorldKeyboardListener> keyListeners = new ArrayList<>();
     /** Zoom handler. */
-    private final WorldZoom zoom;
+    private final WorldZoomUpdater zoom;
     /** Map reference. */
     private final MapTile map;
     /** Grid enabled. */
@@ -76,24 +72,8 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     public WorldUpdater(EPartService partService, Services services)
     {
         this.partService = partService;
-        zoom = services.create(WorldZoom.class);
-        final WorldNavigation navigation = services.create(WorldNavigation.class);
-        final WorldInteractionObject interactionObject = services.create(WorldInteractionObject.class);
-        final WorldInteractionTile interactionTile = services.create(WorldInteractionTile.class);
         map = services.get(MapTile.class);
         gridEnabled = true;
-
-        addMouseClickListener(interactionObject);
-        addMouseMoveListener(interactionObject);
-
-        addMouseClickListener(interactionTile);
-        addMouseMoveListener(interactionTile);
-
-        addMouseClickListener(zoom);
-        addMouseScrollListener(zoom);
-
-        addMouseMoveListener(navigation);
-        addKeyboardListener(navigation);
 
         for (final WorldMouseClickListener listener : UtilExtension.get(WorldMouseClickListener.class,
                                                                         WorldMouseClickListener.EXTENSION_ID,
@@ -102,6 +82,13 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
             services.add(listener);
             addMouseClickListener(listener);
         }
+        for (final WorldMouseScrollListener listener : UtilExtension.get(WorldMouseScrollListener.class,
+                                                                         WorldMouseScrollListener.EXTENSION_ID,
+                                                                         services))
+        {
+            services.add(listener);
+            addMouseScrollListener(listener);
+        }
         for (final WorldMouseMoveListener listener : UtilExtension.get(WorldMouseMoveListener.class,
                                                                        WorldMouseMoveListener.EXTENSION_ID,
                                                                        services))
@@ -109,6 +96,15 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
             services.add(listener);
             addMouseMoveListener(listener);
         }
+        for (final WorldKeyboardListener listener : UtilExtension.get(WorldKeyboardListener.class,
+                                                                      WorldKeyboardListener.EXTENSION_ID,
+                                                                      services))
+        {
+            services.add(listener);
+            addKeyboardListener(listener);
+        }
+
+        zoom = services.get(WorldZoomUpdater.class);
     }
 
     /**

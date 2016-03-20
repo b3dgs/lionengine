@@ -15,23 +15,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world.updater;
+package com.b3dgs.lionengine.editor.toolbar;
 
-import com.b3dgs.lionengine.editor.Activator;
+import java.util.Locale;
+
+import org.eclipse.osgi.util.NLS;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Listener to keyboard event.
+ * Messages internationalization.
  */
-public interface WorldKeyboardListener
+public final class Messages extends NLS
 {
-    /** Extension ID. */
-    String EXTENSION_ID = Activator.PLUGIN_ID + ".worldKeyListener";
+    /** Tool bar formulas. */
+    public static String Formula;
 
     /**
-     * Called when a key has been pressed.
-     * 
-     * @param key The key number.
-     * @see com.b3dgs.lionengine.core.swt.Keyboard
+     * Initialize.
      */
-    void onKeyPushed(Integer key);
+    static
+    {
+        NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Messages()
+    {
+        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+    }
 }
