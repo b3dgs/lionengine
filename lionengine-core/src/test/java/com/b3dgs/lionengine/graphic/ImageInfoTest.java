@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.graphic;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -92,7 +93,7 @@ public class ImageInfoTest
             {
                 name = "image" + i;
             }
-            final Media media = Medias.create(name + "." + type);
+            final Media media = Medias.create(name + "." + type.name().toLowerCase(Locale.ENGLISH));
             final ImageInfo info = ImageInfo.get(media);
 
             Assert.assertEquals(64, info.getWidth());
