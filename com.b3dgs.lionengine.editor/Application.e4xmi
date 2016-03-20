@@ -67,12 +67,6 @@
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_7WDx0ExsEeS0NfVbsnb2GQ" elementId="" label="%menu.icon-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/icon-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.surface.handler.IconRemoveHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_opCGcEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeIcon"/>
                   </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_FVGHoEyKEeSJA9sJoETiQw" elementId="" label="%menu.frames-set" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/frames-set.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.frames.handler.FramesSetHandler">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_FVGHoUyKEeSJA9sJoETiQw" coreExpressionId="com.b3dgs.lionengine.editor.properties.setFrames"/>
-                  </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_FtMekEyKEeSJA9sJoETiQw" elementId="" label="%menu.frames-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/frames-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.frames.handler.FramesRemoveHandler">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_FtMekUyKEeSJA9sJoETiQw" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeFrames"/>
-                  </children>
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_E-VP8BhKEeWF3Y2YGaz8Ig" elementId="" label="%menu.properties.copy" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/copy-property.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.PropertyCopyHandler"/>
                 </menus>
               </children>

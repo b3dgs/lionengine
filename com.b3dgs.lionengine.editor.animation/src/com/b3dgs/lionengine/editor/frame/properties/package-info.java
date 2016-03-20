@@ -19,4 +19,4 @@
 /**
  * Surface frames property package.
  */
-package com.b3dgs.lionengine.editor.properties.frames;
+package com.b3dgs.lionengine.editor.frame.properties;

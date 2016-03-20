@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties.frames.handler;
+package com.b3dgs.lionengine.editor.frame.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -23,9 +23,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 
+import com.b3dgs.lionengine.editor.frame.properties.PropertiesFrames;
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
-import com.b3dgs.lionengine.editor.properties.frames.Messages;
-import com.b3dgs.lionengine.editor.properties.frames.PropertiesFrames;
 import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.game.Configurer;
@@ -60,18 +59,18 @@ public class FramesSetHandler
         final Shell shell = properties.getShell();
 
         final InputValidator validator = new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH,
-                                                            Messages.Properties_Frames_Error);
+                                                            Messages.Error);
 
         final InputDialog horizontalFrames = new InputDialog(shell,
-                                                             Messages.Properties_Frames_Title,
-                                                             Messages.Properties_Frames_NumberHorizontal,
+                                                             Messages.Title,
+                                                             Messages.NumberHorizontal,
                                                              DEFAULT_FRAMES,
                                                              validator);
         if (horizontalFrames.open() == Window.OK)
         {
             final InputDialog verticalFrames = new InputDialog(shell,
-                                                               Messages.Properties_Frames_Title,
-                                                               Messages.Properties_Frames_NumberVertical,
+                                                               Messages.Title,
+                                                               Messages.NumberVertical,
                                                                DEFAULT_FRAMES,
                                                                validator);
             if (verticalFrames.open() == Window.OK)

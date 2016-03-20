@@ -10,6 +10,18 @@
    <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
+            id="com.b3dgs.lionengine.editor.properties.setFrames">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterFrames.setFrames">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.removeFrames">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterFrames.removeFrames">
+         </test>
+      </definition>
+      <definition
             id="com.b3dgs.lionengine.editor.properties.enableAnimations">
          <test
                forcePluginActivation="true"
@@ -34,6 +46,13 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
+            class="com.b3dgs.lionengine.editor.frame.properties.PropertiesFramesTester"
+            id="com.b3dgs.lionengine.editor.propertiesTesterFrames"
+            namespace="com.b3dgs.lionengine.editor.propertiesTesterFrames"
+            properties="setFrames,removeFrames"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
             class="com.b3dgs.lionengine.editor.animation.properties.PropertiesAnimationTester"
             id="com.b3dgs.lionengine.editor.propertiesTesterAnimations"
             namespace="com.b3dgs.lionengine.editor.propertiesTesterAnimations"
@@ -43,6 +62,9 @@
    </extension>
    <extension
          point="com.b3dgs.lionengine.editor.propertiesObject">
+      <implementation
+            class="com.b3dgs.lionengine.editor.frame.properties.PropertiesFrames">
+      </implementation>
       <implementation
             class="com.b3dgs.lionengine.editor.animation.properties.PropertiesAnimation">
       </implementation>

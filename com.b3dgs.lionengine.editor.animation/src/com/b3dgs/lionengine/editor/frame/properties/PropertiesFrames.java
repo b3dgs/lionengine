@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties.frames;
+package com.b3dgs.lionengine.editor.frame.properties;
 
 import java.io.File;
 
@@ -55,22 +55,18 @@ public class PropertiesFrames implements PropertiesProviderObject
     public static void createAttributeFrames(Tree properties, Configurer configurer)
     {
         final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
-        iconItem.setText(Messages.Properties_Frames);
+        iconItem.setText(Messages.Frames);
         iconItem.setData(FramesConfig.NODE_FRAMES);
         iconItem.setImage(PropertiesFrames.ICON_FRAMES);
 
         final FramesConfig configFrames = FramesConfig.imports(configurer);
 
         final TreeItem framesHorizontal = new TreeItem(iconItem, SWT.NONE);
-        PropertiesPart.createLine(framesHorizontal,
-                                  Messages.Properties_Frames_Horizontal,
-                                  String.valueOf(configFrames.getHorizontal()));
+        PropertiesPart.createLine(framesHorizontal, Messages.Horizontal, String.valueOf(configFrames.getHorizontal()));
         framesHorizontal.setData(FramesConfig.ATT_HORIZONTAL);
 
         final TreeItem framesVertical = new TreeItem(iconItem, SWT.NONE);
-        PropertiesPart.createLine(framesVertical,
-                                  Messages.Properties_Frames_Vertical,
-                                  String.valueOf(configFrames.getVertical()));
+        PropertiesPart.createLine(framesVertical, Messages.Vertical, String.valueOf(configFrames.getVertical()));
         framesVertical.setData(FramesConfig.ATT_VERTICAL);
     }
 
@@ -84,11 +80,11 @@ public class PropertiesFrames implements PropertiesProviderObject
     private static boolean updateFrames(TreeItem item, Configurer configurer)
     {
         final InputDialog frames = new InputDialog(item.getParent().getShell(),
-                                                   Messages.Properties_Frames_Title,
-                                                   Messages.Properties_Frames_Message,
+                                                   Messages.Title,
+                                                   Messages.Message,
                                                    item.getText(1),
                                                    new InputValidator(InputValidator.INTEGER_POSITIVE_STRICT_MATCH,
-                                                                      Messages.Properties_Frames_Error));
+                                                                      Messages.Error));
         if (frames.open() == Window.OK)
         {
             final XmlNode root = configurer.getRoot();

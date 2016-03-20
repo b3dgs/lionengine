@@ -145,18 +145,6 @@
                property="com.b3dgs.lionengine.editor.propertiesTesterSurface.removeIcon">
          </test>
       </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.properties.setFrames">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterFrames.setFrames">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.properties.removeFrames">
-         <test
-               property="com.b3dgs.lionengine.editor.propertiesTesterFrames.removeFrames">
-         </test>
-      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -217,13 +205,6 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.properties.frames.PropertiesFramesTester"
-            id="com.b3dgs.lionengine.editor.propertiesTesterFrames"
-            namespace="com.b3dgs.lionengine.editor.propertiesTesterFrames"
-            properties="setFrames,removeFrames"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
             class="com.b3dgs.lionengine.editor.project.tester.SheetsTester"
             id="com.b3dgs.lionengine.editor.sheetsTester"
             namespace="com.b3dgs.lionengine.editor.sheetsTester"
@@ -238,9 +219,6 @@
       </implementation>
       <implementation
             class="com.b3dgs.lionengine.editor.properties.surface.PropertiesSurface">
-      </implementation>
-      <implementation
-            class="com.b3dgs.lionengine.editor.properties.frames.PropertiesFrames">
       </implementation>
    </extension>
    <extension

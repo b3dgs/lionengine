@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.properties.frames;
+package com.b3dgs.lionengine.editor.frame.handler;
 
 import java.util.Locale;
 
@@ -28,22 +28,14 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public final class Messages extends NLS
 {
-    /** Frames property. */
-    public static String Properties_Frames;
-    /** Horizontal frames. */
-    public static String Properties_Frames_Horizontal;
-    /** Vertical frames. */
-    public static String Properties_Frames_Vertical;
     /** Set frames dialog title. */
-    public static String Properties_Frames_Title;
-    /** Set frames dialog message. */
-    public static String Properties_Frames_Message;
+    public static String Title;
     /** Number of horizontal frames. */
-    public static String Properties_Frames_NumberHorizontal;
+    public static String NumberHorizontal;
     /** Number of vertical frames. */
-    public static String Properties_Frames_NumberVertical;
+    public static String NumberVertical;
     /** Frames error. */
-    public static String Properties_Frames_Error;
+    public static String Error;
 
     /**
      * Initialize.

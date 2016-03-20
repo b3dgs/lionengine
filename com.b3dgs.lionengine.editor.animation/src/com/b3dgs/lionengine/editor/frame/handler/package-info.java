@@ -19,4 +19,4 @@
 /**
  * Frames handler.
  */
-package com.b3dgs.lionengine.editor.properties.frames.handler;
+package com.b3dgs.lionengine.editor.frame.handler;
