@@ -18,21 +18,8 @@
 package com.b3dgs.lionengine.core.awt;
 
 import java.awt.AWTException;
-import java.awt.HeadlessException;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.PointerInfo;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Config;
@@ -40,10 +27,8 @@ import com.b3dgs.lionengine.core.Config;
 /**
  * Mouse implementation.
  */
-public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
+public final class MouseAwt implements Mouse
 {
-    /** Default button number. */
-    private static final int DEFAULT_BUTTONS = 3;
     /** Robot error. */
     private static final String ERROR_ROBOT = "No mouse robot available !";
 
@@ -65,62 +50,23 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
         }
     }
 
-    /** Actions pressed listeners. */
-    private final Map<Integer, List<EventAction>> actionsPressed = new HashMap<Integer, List<EventAction>>();
-    /** Actions released listeners. */
-    private final Map<Integer, List<EventAction>> actionsReleased = new HashMap<Integer, List<EventAction>>();
-    /** Clicks flags. */
-    private final boolean[] clicks;
-    /** Clicked flags. */
-    private final boolean[] clicked;
+    /** Move click. */
+    private final MouseClickAwt clicker = new MouseClickAwt();
+    /** Mouse move. */
+    private final MouseMoveAwt mover = new MouseMoveAwt();
     /** Robot instance reference. */
     private final Robot robot;
     /** Screen horizontal ratio. */
     private double xRatio;
     /** Screen vertical ratio. */
     private double yRatio;
-    /** On screen monitor location x. */
-    private int x;
-    /** On screen monitor location y. */
-    private int y;
-    /** On local window location x. */
-    private int wx;
-    /** On local window location y. */
-    private int wy;
-    /** Move value x. */
-    private int mx;
-    /** Move value y. */
-    private int my;
-    /** Old location x. */
-    private int oldX;
-    /** Old location y. */
-    private int oldY;
-    /** Screen center x. */
-    private int centerX;
-    /** Screen center y. */
-    private int centerY;
-    /** Last click number. */
-    private int lastClick;
-    /** Moved flag. */
-    private boolean moved;
 
     /**
      * Constructor.
      */
     public MouseAwt()
     {
-        final int mouseButtons = getButtonsNumber();
-        clicks = new boolean[mouseButtons];
-        clicked = new boolean[mouseButtons];
         robot = createRobot();
-        centerX = x;
-        centerY = y;
-        wx = 0;
-        wy = 0;
-        mx = 0;
-        my = 0;
-        oldX = x;
-        oldY = y;
     }
 
     /**
@@ -135,42 +81,23 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
     }
 
     /**
-     * Update coordinate from event.
+     * Get the click handler.
      * 
-     * @param event event consumed.
+     * @return The click handler.
      */
-    private void updateCoord(MouseEvent event)
+    MouseClickAwt getClicker()
     {
-        oldX = x;
-        oldY = y;
-        x = event.getXOnScreen();
-        y = event.getYOnScreen();
-        wx = event.getX();
-        wy = event.getY();
-        mx = x - oldX;
-        my = y - oldY;
+        return clicker;
     }
 
     /**
-     * Get the buttons number.
+     * Get the movement handler.
      * 
-     * @return The buttons number.
+     * @return The movement handler.
      */
-    private int getButtonsNumber()
+    MouseMoveAwt getMover()
     {
-        try
-        {
-            final PointerInfo a = MouseInfo.getPointerInfo();
-            final Point b = a.getLocation();
-            x = (int) b.getX();
-            y = (int) b.getY();
-            return Math.max(0, MouseInfo.getNumberOfButtons()) + 1;
-        }
-        catch (final HeadlessException exception)
-        {
-            Verbose.exception(exception);
-            return DEFAULT_BUTTONS;
-        }
+        return mover;
     }
 
     /*
@@ -180,41 +107,19 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
     @Override
     public void addActionPressed(int click, EventAction action)
     {
-        final List<EventAction> list;
-        final Integer key = Integer.valueOf(click);
-        if (actionsPressed.get(key) == null)
-        {
-            list = new ArrayList<EventAction>();
-            actionsPressed.put(key, list);
-        }
-        else
-        {
-            list = actionsPressed.get(key);
-        }
-        list.add(action);
+        clicker.addActionPressed(click, action);
     }
 
     @Override
     public void addActionReleased(int click, EventAction action)
     {
-        final Integer key = Integer.valueOf(click);
-        final List<EventAction> list;
-        if (actionsReleased.get(key) == null)
-        {
-            list = new ArrayList<EventAction>();
-            actionsReleased.put(key, list);
-        }
-        else
-        {
-            list = actionsReleased.get(key);
-        }
-        list.add(action);
+        clicker.addActionReleased(click, action);
     }
 
     @Override
     public void lock()
     {
-        lock(centerX, centerY);
+        lock(mover.getCx(), mover.getCy());
     }
 
     @Override
@@ -223,10 +128,7 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
         if (robot != null)
         {
             robot.mouseMove(x, y);
-            this.x = centerX;
-            this.y = centerY;
-            oldX = centerX;
-            oldY = centerY;
+            mover.lock();
         }
     }
 
@@ -272,20 +174,19 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
     @Override
     public void setCenter(int x, int y)
     {
-        centerX = x;
-        centerY = y;
+        mover.setCenter(x, y);
     }
 
     @Override
     public int getOnScreenX()
     {
-        return x;
+        return mover.getX();
     }
 
     @Override
     public int getOnScreenY()
     {
-        return y;
+        return mover.getY();
     }
 
     /*
@@ -295,144 +196,49 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
     @Override
     public int getX()
     {
-        return (int) (wx / xRatio);
+        return (int) (mover.getWx() / xRatio);
     }
 
     @Override
     public int getY()
     {
-        return (int) (wy / yRatio);
+        return (int) (mover.getWy() / yRatio);
     }
 
     @Override
     public int getMoveX()
     {
-        return mx;
+        return mover.getMx();
     }
 
     @Override
     public int getMoveY()
     {
-        return my;
+        return mover.getMy();
     }
 
     @Override
     public int getClick()
     {
-        return lastClick;
+        return clicker.getClick();
     }
 
     @Override
     public boolean hasClicked(int click)
     {
-        return clicks[click];
+        return clicker.hasClicked(click);
     }
 
     @Override
     public boolean hasClickedOnce(int click)
     {
-        if (clicks[click] && !clicked[click])
-        {
-            clicked[click] = true;
-            return true;
-        }
-        return false;
+        return clicker.hasClickedOnce(click);
     }
 
     @Override
     public boolean hasMoved()
     {
-        if (moved)
-        {
-            moved = false;
-            return true;
-        }
-        return false;
-    }
-
-    /*
-     * MouseListener
-     */
-
-    @Override
-    public void mousePressed(MouseEvent event)
-    {
-        lastClick = event.getButton();
-        if (lastClick < clicks.length)
-        {
-            clicks[lastClick] = true;
-        }
-
-        final Integer key = Integer.valueOf(lastClick);
-        if (actionsPressed.containsKey(key))
-        {
-            final List<EventAction> actions = actionsPressed.get(key);
-            for (final EventAction current : actions)
-            {
-                current.action();
-            }
-        }
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent event)
-    {
-        final Integer key = Integer.valueOf(lastClick);
-        lastClick = 0;
-
-        final int button = event.getButton();
-        if (button < clicks.length)
-        {
-            clicks[button] = false;
-            clicked[button] = false;
-        }
-
-        if (actionsPressed.containsKey(key))
-        {
-            final List<EventAction> actions = actionsReleased.get(key);
-            for (final EventAction current : actions)
-            {
-                current.action();
-            }
-        }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent event)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent event)
-    {
-        moved = true;
-        updateCoord(event);
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent event)
-    {
-        moved = true;
-        updateCoord(event);
-    }
-
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent event)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent event)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void mouseExited(MouseEvent event)
-    {
-        // Nothing to do
+        return mover.hasMoved();
     }
 
     /*
@@ -442,9 +248,6 @@ public final class MouseAwt implements Mouse, MouseListener, MouseMotionListener
     @Override
     public void update(double extrp)
     {
-        mx = x - oldX;
-        my = y - oldY;
-        oldX = x;
-        oldY = y;
+        mover.update();
     }
 }

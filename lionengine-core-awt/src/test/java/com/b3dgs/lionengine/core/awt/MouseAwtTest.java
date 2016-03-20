@@ -70,23 +70,24 @@ public class MouseAwtTest
     public void testClicked()
     {
         final MouseAwt mouse = createMouse();
+        final MouseClickAwt clicker = mouse.getClicker();
 
         Assert.assertFalse(mouse.hasClicked(Mouse.LEFT));
-        mouse.mousePressed(createEvent(Mouse.LEFT, 0, 0));
+        clicker.mousePressed(createEvent(Mouse.LEFT, 0, 0));
         Assert.assertTrue(mouse.hasClicked(Mouse.LEFT));
-        mouse.mouseReleased(createEvent(Mouse.LEFT, 0, 0));
+        clicker.mouseReleased(createEvent(Mouse.LEFT, 0, 0));
         Assert.assertFalse(mouse.hasClicked(Mouse.LEFT));
 
         Assert.assertFalse(mouse.hasClicked(Mouse.RIGHT));
-        mouse.mousePressed(createEvent(Mouse.RIGHT, 0, 0));
+        clicker.mousePressed(createEvent(Mouse.RIGHT, 0, 0));
         Assert.assertTrue(mouse.hasClicked(Mouse.RIGHT));
-        mouse.mouseReleased(createEvent(Mouse.RIGHT, 0, 0));
+        clicker.mouseReleased(createEvent(Mouse.RIGHT, 0, 0));
         Assert.assertFalse(mouse.hasClicked(Mouse.RIGHT));
 
         Assert.assertFalse(mouse.hasClickedOnce(Mouse.MIDDLE));
-        mouse.mousePressed(createEvent(Mouse.MIDDLE, 0, 0));
+        clicker.mousePressed(createEvent(Mouse.MIDDLE, 0, 0));
         Assert.assertTrue(mouse.hasClickedOnce(Mouse.MIDDLE));
-        mouse.mouseReleased(createEvent(Mouse.MIDDLE, 0, 0));
+        clicker.mouseReleased(createEvent(Mouse.MIDDLE, 0, 0));
         Assert.assertFalse(mouse.hasClickedOnce(Mouse.MIDDLE));
     }
 
@@ -97,10 +98,11 @@ public class MouseAwtTest
     public void testClick()
     {
         final MouseAwt mouse = createMouse();
+        final MouseClickAwt clicker = mouse.getClicker();
 
-        mouse.mousePressed(createEvent(Mouse.MIDDLE, 0, 0));
+        clicker.mousePressed(createEvent(Mouse.MIDDLE, 0, 0));
         Assert.assertEquals(Mouse.MIDDLE, mouse.getClick());
-        mouse.mouseReleased(createEvent(Mouse.MIDDLE, 0, 0));
+        clicker.mouseReleased(createEvent(Mouse.MIDDLE, 0, 0));
         Assert.assertNotEquals(Mouse.MIDDLE, mouse.getClick());
     }
 
@@ -111,12 +113,13 @@ public class MouseAwtTest
     public void testLocation()
     {
         final MouseAwt mouse = createMouse();
+        final MouseMoveAwt mover = mouse.getMover();
 
-        mouse.mouseMoved(createEvent(Mouse.LEFT, 0, 0));
+        mover.mouseMoved(createEvent(Mouse.LEFT, 0, 0));
         Assert.assertEquals(0, mouse.getX());
         Assert.assertEquals(0, mouse.getY());
 
-        mouse.mouseMoved(createEvent(Mouse.LEFT, 10, 20));
+        mover.mouseMoved(createEvent(Mouse.LEFT, 10, 20));
         Assert.assertEquals(10, mouse.getX());
         Assert.assertEquals(20, mouse.getY());
     }
@@ -128,9 +131,10 @@ public class MouseAwtTest
     public void testDoClick()
     {
         final MouseAwt mouse = createMouse();
+        final MouseMoveAwt mover = mouse.getMover();
 
         Assert.assertFalse(mouse.hasClicked(Mouse.RIGHT));
-        mouse.mouseMoved(createEvent(Mouse.LEFT, 0, 0));
+        mover.mouseMoved(createEvent(Mouse.LEFT, 0, 0));
         mouse.doClickAt(Mouse.RIGHT, 500, 500);
         try
         {
@@ -159,19 +163,20 @@ public class MouseAwtTest
     public void testMouse()
     {
         final MouseAwt mouse = createMouse();
+        final MouseClickAwt clicker = mouse.getClicker();
+        final MouseMoveAwt mover = mouse.getMover();
 
-        mouse.mouseMoved(createEvent(Mouse.LEFT, 0, 0));
-        mouse.mouseDragged(createEvent(0, 0, 0));
+        mover.mouseMoved(createEvent(Mouse.LEFT, 0, 0));
+        mover.mouseDragged(createEvent(0, 0, 0));
         mouse.update(1.0);
         Assert.assertEquals(0, mouse.getMoveX());
         Assert.assertEquals(0, mouse.getMoveY());
         Assert.assertTrue(mouse.hasMoved());
         Assert.assertFalse(mouse.hasMoved());
 
-        mouse.mouseEntered(null);
-        mouse.mouseExited(null);
-        mouse.mouseWheelMoved(null);
-        mouse.mouseClicked(null);
+        clicker.mouseEntered(null);
+        clicker.mouseExited(null);
+        clicker.mouseClicked(null);
     }
 
     /**
@@ -217,10 +222,12 @@ public class MouseAwtTest
         });
         Assert.assertFalse(left.get());
 
-        mouse.mousePressed(createEvent(Mouse.LEFT, 0, 0));
+        final MouseClickAwt clicker = mouse.getClicker();
+
+        clicker.mousePressed(createEvent(Mouse.LEFT, 0, 0));
         Assert.assertTrue(left.get());
 
-        mouse.mouseReleased(createEvent(Mouse.LEFT, 0, 0));
+        clicker.mouseReleased(createEvent(Mouse.LEFT, 0, 0));
         Assert.assertFalse(left.get());
     }
 }

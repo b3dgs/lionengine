@@ -79,7 +79,7 @@ public class ImageInfoTest
      * @param type The expected image type.
      * @param number The number of different files.
      */
-    private static void testImageInfo(String type, int number)
+    private static void testImageInfo(ImageFormat type, int number)
     {
         for (int i = 0; i < number; i++)
         {
@@ -136,16 +136,16 @@ public class ImageInfoTest
     @Test
     public void testImageInfo()
     {
-        testImageInfo("png", 1);
-        testImageInfo("gif", 1);
-        testImageInfo("bmp", 1);
-        testImageInfo("jpg", 3);
-        testImageInfo("tiff", 2);
+        testImageInfo(ImageFormat.PNG, 1);
+        testImageInfo(ImageFormat.GIF, 1);
+        testImageInfo(ImageFormat.BMP, 1);
+        testImageInfo(ImageFormat.JPG, 3);
+        testImageInfo(ImageFormat.TIFF, 2);
 
         final ImageInfo info = ImageInfo.get(Medias.create("image.tif"));
         Assert.assertEquals(64, info.getWidth());
         Assert.assertEquals(32, info.getHeight());
-        Assert.assertEquals("tiff", info.getFormat());
+        Assert.assertEquals(ImageFormat.TIFF, info.getFormat());
 
         final ImageInfo info2 = ImageInfo.get(Medias.create("image2.tiff"));
         Assert.assertNotNull(info2);

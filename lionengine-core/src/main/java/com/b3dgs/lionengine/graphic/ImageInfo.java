@@ -54,16 +54,6 @@ public final class ImageInfo
     private static final String MESSAGE_SKIPPED = "Skipped ";
     /** Message bytes instead of. */
     private static final String MESSAGE_BYTES_INSTEAD_OF = " bytes instead of ";
-    /** Bmp format. */
-    private static final String FORMAT_BMP = "bmp";
-    /** Png format. */
-    private static final String FORMAT_PNG = "png";
-    /** Gif format. */
-    private static final String FORMAT_GIF = "gif";
-    /** Jpg format. */
-    private static final String FORMAT_JPG = "jpg";
-    /** Tiff format. */
-    private static final String FORMAT_TIFF = "tiff";
 
     /**
      * Get the image info of the specified image media.
@@ -155,7 +145,7 @@ public final class ImageInfo
     /** Image height. */
     private int height;
     /** Image format. */
-    private String format;
+    private ImageFormat format;
 
     /**
      * Private constructor.
@@ -210,7 +200,7 @@ public final class ImageInfo
      * 
      * @return The image format.
      */
-    public String getFormat()
+    public ImageFormat getFormat()
     {
         return format;
     }
@@ -333,7 +323,7 @@ public final class ImageInfo
         checkSkippedError(skipped, headBytes);
         width = readInt(input, 2, false);
         height = readInt(input, 2, false);
-        format = FORMAT_GIF;
+        format = ImageFormat.GIF;
     }
 
     /**
@@ -357,7 +347,7 @@ public final class ImageInfo
                 checkSkippedError(skipped, 1);
                 height = readInt(input, 2, true);
                 width = readInt(input, 2, true);
-                format = FORMAT_JPG;
+                format = ImageFormat.JPG;
                 success = true;
                 break;
             }
@@ -386,7 +376,7 @@ public final class ImageInfo
         skipped = input.skip(2);
         checkSkippedError(skipped, 2);
         height = readInt(input, 2, true);
-        format = FORMAT_PNG;
+        format = ImageFormat.PNG;
     }
 
     /**
@@ -404,7 +394,7 @@ public final class ImageInfo
         skipped = input.skip(2);
         checkSkippedError(skipped, 2);
         height = readInt(input, 2, false);
-        format = FORMAT_BMP;
+        format = ImageFormat.BMP;
     }
 
     /**
@@ -419,7 +409,7 @@ public final class ImageInfo
         final long toSkip = 8L;
         final boolean bigEndian = 'M' == byte1;
         final int ifd = readInt(input, 4, bigEndian);
-        long skipped = input.skip(ifd - toSkip);
+        input.skip(ifd - toSkip);
         // checkSkippedError(skipped, ifd - toSkip); fail when reading from JAR, not needed
         final int entries = readInt(input, 2, bigEndian);
 
@@ -434,7 +424,7 @@ public final class ImageInfo
             if (3 == fieldType || 8 == fieldType)
             {
                 valOffset = readInt(input, 2, bigEndian);
-                skipped = input.skip(2);
+                final long skipped = input.skip(2);
                 checkSkippedError(skipped, 2);
             }
             else
@@ -453,7 +443,7 @@ public final class ImageInfo
             {
                 width = w;
                 height = h;
-                format = FORMAT_TIFF;
+                format = ImageFormat.TIFF;
                 break;
             }
         }

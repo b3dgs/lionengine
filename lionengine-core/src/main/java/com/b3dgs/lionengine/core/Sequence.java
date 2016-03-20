@@ -17,19 +17,13 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Transform;
 import com.b3dgs.lionengine.graphic.Transparency;
-import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the
@@ -86,61 +80,6 @@ public abstract class Sequence implements Sequencable, ScreenListener
     private static final long ONE_SECOND_IN_NANO = 1000000000L;
     /** Extrapolation standard. */
     private static final double EXTRP = 1.0;
-
-    /**
-     * Create a sequence from its class.
-     * 
-     * @param nextSequence The next sequence class.
-     * @param context The context reference.
-     * @param arguments The arguments list.
-     * @return The sequence instance.
-     * @throws LionEngineException If not able to create the sequence for any reason.
-     */
-    static Sequence create(Class<? extends Sequencable> nextSequence, Context context, Object... arguments)
-    {
-        Check.notNull(nextSequence);
-        Check.notNull(context);
-
-        try
-        {
-            final Class<?>[] params = getParamTypes(context, arguments);
-            return UtilReflection.create(nextSequence, params, getParams(context, arguments));
-        }
-        catch (final NoSuchMethodException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Get the parameter types as array.
-     * 
-     * @param context The context reference.
-     * @param arguments The arguments list.
-     * @return The arguments array.
-     */
-    private static Class<?>[] getParamTypes(Context context, Object... arguments)
-    {
-        final Collection<Object> params = new ArrayList<Object>();
-        params.add(context);
-        params.addAll(Arrays.asList(arguments));
-        return UtilReflection.getParamTypes(params.toArray());
-    }
-
-    /**
-     * Get the parameter as array.
-     * 
-     * @param context The context reference.
-     * @param arguments The arguments list.
-     * @return The arguments array.
-     */
-    private static Object[] getParams(Context context, Object... arguments)
-    {
-        final Collection<Object> params = new ArrayList<Object>(1);
-        params.add(context);
-        params.addAll(Arrays.asList(arguments));
-        return params.toArray();
-    }
 
     /** Context reference. */
     private final Context context;
@@ -449,7 +388,7 @@ public abstract class Sequence implements Sequencable, ScreenListener
     {
         Check.notNull(nextSequenceClass);
 
-        nextSequence = create(nextSequenceClass, context, arguments);
+        nextSequence = UtilSequence.create(nextSequenceClass, context, arguments);
         isRunning = false;
     }
 

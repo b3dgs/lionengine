@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Filter;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
+import com.b3dgs.lionengine.graphic.ImageFormat;
 import com.b3dgs.lionengine.graphic.ImageInfo;
 import com.b3dgs.lionengine.graphic.Transparency;
 
@@ -56,7 +57,7 @@ public final class DrawableTestTool
         Assert.assertNotNull(image);
         Assert.assertEquals(info.getWidth(), image.getWidth());
         Assert.assertEquals(info.getHeight(), image.getHeight());
-        Assert.assertEquals("png", info.getFormat());
+        Assert.assertEquals(ImageFormat.PNG, info.getFormat());
         Assert.assertTrue(image.equals(image));
         Assert.assertFalse(image.equals(info));
         Assert.assertTrue(image.hashCode() != info.hashCode());

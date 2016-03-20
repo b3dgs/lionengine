@@ -571,9 +571,8 @@ public class MapTileGame implements MapTile
     {
         if (tiles != null)
         {
-            for (int ty = 0; ty < tiles.size(); ty++)
+            for (final List<Tile> list : tiles)
             {
-                final List<Tile> list = tiles.get(ty);
                 if (list != null)
                 {
                     list.clear();

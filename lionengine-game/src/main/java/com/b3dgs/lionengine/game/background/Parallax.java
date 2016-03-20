@@ -146,7 +146,8 @@ public class Parallax implements BackgroundComponent
             x2[lineNum] += wrapedSpeed * 0.25;
 
             // When line has arrived to its border
-            if (this.x[1] >= 2.56 * factH || this.x[1] <= -2.56 * factH)
+            final double secondLine = this.x[1];
+            if (secondLine >= 2.56 * factH || secondLine <= -2.56 * factH)
             {
                 for (int j = 0; j < parallaxsNumber; j++)
                 {

@@ -38,6 +38,18 @@ public final class UtilProjectStats
     private static final String REGEX_DOC = "[\\s]*(/|\\*)+.*";
     /** Spaces regex. */
     private static final String REGEX_SPACES = "[\\s]*";
+    /** Title. */
+    private static final String TITLE = Constant.HUNDRED + "Project statistics: " + Constant.QUOTE;
+    /** Files. */
+    private static final String FILES = Constant.QUOTE + Constant.NEW_LINE + "Files = ";
+    /** Code. */
+    private static final String CODE = Constant.NEW_LINE + "Code lines = ";
+    /** Documentation. */
+    private static final String DOC = Constant.NEW_LINE + "Documentation lines = ";
+    /** Empty. */
+    private static final String EMPTY = Constant.NEW_LINE + "Empty lines = ";
+    /** Total. */
+    private static final String TOTAL = Constant.NEW_LINE + "Total lines = ";
     /** Error directory. */
     private static final String ERROR_DIR = "Not a directory: ";
 
@@ -70,26 +82,18 @@ public final class UtilProjectStats
         final String path = mainDir.getAbsolutePath();
         exploreDir(path);
 
-        final StringBuilder builder = new StringBuilder();
-        builder.append(Constant.HUNDRED)
-               .append("Project statistics: ")
-               .append(Constant.QUOTE)
+        final StringBuilder builder = new StringBuilder(100);
+        builder.append(TITLE)
                .append(path)
-               .append(Constant.QUOTE)
-               .append(Constant.NEW_LINE)
-               .append("Files = ")
+               .append(FILES)
                .append(numberOfFiles)
-               .append(Constant.NEW_LINE)
-               .append("Code lines = ")
+               .append(CODE)
                .append(numberOfLinesCode)
-               .append(Constant.NEW_LINE)
-               .append("Documentation lines = ")
+               .append(DOC)
                .append(numberOfLinesDoc)
-               .append(Constant.NEW_LINE)
-               .append("Empty lines = ")
+               .append(EMPTY)
                .append(numberOfLinesEmpty)
-               .append(Constant.NEW_LINE)
-               .append("Total lines = ")
+               .append(TOTAL)
                .append(numberOfLines)
                .append(Constant.NEW_LINE);
 

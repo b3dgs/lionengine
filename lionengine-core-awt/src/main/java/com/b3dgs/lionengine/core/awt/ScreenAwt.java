@@ -109,9 +109,8 @@ abstract class ScreenAwt extends ScreenBase implements FocusListener
      */
     private void addMouseListener(MouseAwt mouse)
     {
-        componentForMouse.addMouseListener(mouse);
-        componentForMouse.addMouseMotionListener(mouse);
-        componentForMouse.addMouseWheelListener(mouse);
+        componentForMouse.addMouseListener(mouse.getClicker());
+        componentForMouse.addMouseMotionListener(mouse.getMover());
         componentForMouse.requestFocus();
     }
 

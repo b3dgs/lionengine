@@ -135,7 +135,7 @@ public final class Loader
             screen.start();
             screen.awaitReady();
 
-            Sequencable nextSequence = Sequence.create(sequenceClass, screen, arguments);
+            Sequencable nextSequence = UtilSequence.create(sequenceClass, screen, arguments);
             while (nextSequence != null)
             {
                 final Sequencable sequence = nextSequence;
