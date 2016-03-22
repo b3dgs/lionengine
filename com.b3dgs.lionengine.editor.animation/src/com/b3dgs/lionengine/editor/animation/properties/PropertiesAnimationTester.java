@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.editor.animation.properties;
 
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.editor.project.ProjectModel;
-import com.b3dgs.lionengine.editor.project.tester.ObjectsTester;
 import com.b3dgs.lionengine.editor.properties.PropertiesModel;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.state.AnimationConfig;
@@ -80,7 +78,7 @@ public final class PropertiesAnimationTester extends PropertyTester
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
         final PropertiesModel model = PropertiesModel.INSTANCE;
-        if (!model.isEmpty() && ObjectsTester.isObjectFile(ProjectModel.INSTANCE.getSelection()))
+        if (!model.isEmpty())
         {
             final Object data = model.getSelectedData();
             return check(model, data, property);

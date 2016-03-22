@@ -53,7 +53,6 @@ import com.b3dgs.lionengine.editor.utility.Focusable;
 import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
-import com.b3dgs.lionengine.editor.world.ObjectControl;
 import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.Selection;
@@ -148,7 +147,6 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         map = services.create(MapTileGame.class);
         mapGroup = map.createFeature(MapTileGroupModel.class);
         services.add(new Selection());
-        services.add(new ObjectControl(services));
 
         final PaletteModel palette = new PaletteModel();
         palette.setSelectedPalette(PaletteType.POINTER_TILE);

@@ -106,11 +106,11 @@ public class PropertiesPart implements Focusable, PropertiesProviderObject, Prop
         properties.addListener(SWT.Expand, listener);
 
         final TreeColumn key = new TreeColumn(properties, SWT.LEFT);
-        key.setText(Messages.Properties_Key);
+        key.setText(Messages.Key);
 
         final TreeColumn property = new TreeColumn(properties, SWT.LEFT);
         properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        property.setText(Messages.Properties_Value);
+        property.setText(Messages.Value);
 
         addListeners(menuService);
         PropertiesModel.INSTANCE.setTree(properties);

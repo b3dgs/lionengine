@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.LionEngineException;
 public final class Messages extends NLS
 {
     /** Property key. */
-    public static String Properties_Key;
+    public static String Key;
     /** Property value. */
-    public static String Properties_Value;
+    public static String Value;
 
     /**
      * Initialize.

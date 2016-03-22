@@ -10,6 +10,30 @@
    <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
+            id="com.b3dgs.lionengine.editor.properties.setSurface">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterSurface.setSurface">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.removeSurface">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterSurface.removeSurface">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.setIcon">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterSurface.setIcon">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.removeIcon">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTesterSurface.removeIcon">
+         </test>
+      </definition>
+      <definition
             id="com.b3dgs.lionengine.editor.properties.setFrames">
          <test
                property="com.b3dgs.lionengine.editor.propertiesTesterFrames.setFrames">
@@ -46,6 +70,13 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
+            class="com.b3dgs.lionengine.editor.surface.properties.PropertiesSurfaceTester"
+            id="com.b3dgs.lionengine.editor.propertiesTesterSurface"
+            namespace="com.b3dgs.lionengine.editor.propertiesTesterSurface"
+            properties="setSurface,removeSurface,setIcon,removeIcon"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
             class="com.b3dgs.lionengine.editor.frame.properties.PropertiesFramesTester"
             id="com.b3dgs.lionengine.editor.propertiesTesterFrames"
             namespace="com.b3dgs.lionengine.editor.propertiesTesterFrames"
@@ -62,6 +93,9 @@
    </extension>
    <extension
          point="com.b3dgs.lionengine.editor.propertiesObject">
+      <implementation
+            class="com.b3dgs.lionengine.editor.surface.properties.PropertiesSurface">
+      </implementation>
       <implementation
             class="com.b3dgs.lionengine.editor.frame.properties.PropertiesFrames">
       </implementation>

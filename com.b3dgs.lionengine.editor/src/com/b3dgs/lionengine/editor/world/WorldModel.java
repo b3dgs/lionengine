@@ -63,9 +63,6 @@ public class WorldModel
         final Selection selection = new Selection();
         services.add(selection);
 
-        final ObjectControl objectControl = new ObjectControl(services);
-        services.add(objectControl);
-
         map.addFeature(new MapTileGroupModel());
         map.addFeature(new MapTileTransitionModel(services));
         map.addFeature(new MapTilePathModel(services));

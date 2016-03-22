@@ -16,5 +16,17 @@
     <elements xsi:type="menu:DirectMenuItem" xmi:id="_k-PrcOrrEeWiD71XRtcoCA" elementId="" label="%menu.animations-disable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.animation/icons/context-menu/animations-disable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.animation/com.b3dgs.lionengine.editor.animation.handler.AnimationsDisableHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_k-PrcerrEeWiD71XRtcoCA" coreExpressionId="com.b3dgs.lionengine.editor.properties.disableAnimations"/>
     </elements>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_Ubm38PBvEeWk75XqpV10mw" elementId="" label="%menu.surface-set" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.animation/icons/context-menu/surface-set.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.animation/com.b3dgs.lionengine.editor.surface.handler.SurfaceSetHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_Ubm38fBvEeWk75XqpV10mw" coreExpressionId="com.b3dgs.lionengine.editor.properties.setSurface"/>
+    </elements>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_U2grQPBvEeWk75XqpV10mw" elementId="" label="%menu.surface-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.animation/icons/context-menu/surface-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.surface.handler.SurfaceRemoveHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_U2grQfBvEeWk75XqpV10mw" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeSurface"/>
+    </elements>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_VTgJQPBvEeWk75XqpV10mw" elementId="" label="%menu.icon-set" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.animation/icons/context-menu/icon-set.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.surface.handler.IconSetHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VTgJQfBvEeWk75XqpV10mw" coreExpressionId="com.b3dgs.lionengine.editor.properties.setIcon"/>
+    </elements>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_VsOLQPBvEeWk75XqpV10mw" elementId="" label="%menu.icon-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.animation/icons/context-menu/icon-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.surface.handler.IconRemoveHandler">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VsOLQfBvEeWk75XqpV10mw" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeIcon"/>
+    </elements>
   </fragments>
 </fragment:ModelFragments>

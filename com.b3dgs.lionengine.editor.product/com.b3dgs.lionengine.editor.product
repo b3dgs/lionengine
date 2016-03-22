@@ -31,6 +31,7 @@
       <plugin id="com.b3dgs.lionengine.editor"/>
       <plugin id="com.b3dgs.lionengine.editor.animation"/>
       <plugin id="com.b3dgs.lionengine.editor.collision"/>
+      <plugin id="com.b3dgs.lionengine.editor.object"/>
       <plugin id="com.b3dgs.lionengine.editor.pathfinding"/>
       <plugin id="com.b3dgs.lionengine.game"/>
       <plugin id="com.ibm.icu"/>
