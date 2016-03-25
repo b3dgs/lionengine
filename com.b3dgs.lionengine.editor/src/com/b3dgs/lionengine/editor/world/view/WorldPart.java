@@ -39,24 +39,18 @@ import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.utility.Focusable;
-import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilToolbar;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.renderer.WorldRenderer;
-import com.b3dgs.lionengine.editor.world.renderer.WorldSelectedTiles;
-import com.b3dgs.lionengine.editor.world.updater.TileSelectionListener;
-import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Represents the world, where the global map is displayed.
  */
-public class WorldPart implements WorldView, Focusable, TileSelectionListener
+public class WorldPart implements WorldView, Focusable
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.world";
@@ -178,10 +172,6 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
 
         composite = createPart(parent, updater, renderer);
         composite.addMouseTrackListener(UtilSwt.createFocusListener(this));
-
-        final WorldInteractionTile tileInteraction = services.get(WorldInteractionTile.class);
-        tileInteraction.addListener(this);
-        tileInteraction.addListener(services.get(WorldSelectedTiles.class));
 
         Display.getDefault().asyncExec(() -> setToolBarEnabled(false));
     }
@@ -313,29 +303,5 @@ public class WorldPart implements WorldView, Focusable, TileSelectionListener
             }
         }
         throw new LionEngineException(ERROR_ITEM, item);
-    }
-
-    /*
-     * TileSelectionListener
-     */
-
-    @Override
-    public void notifyTileSelected(int click, Tile tile)
-    {
-        final PropertiesPart part = UtilPart.getPart(PropertiesPart.ID, PropertiesPart.class);
-        if (tile != null)
-        {
-            part.setInput(part.getTree(), tile);
-        }
-        else
-        {
-            part.clear();
-        }
-    }
-
-    @Override
-    public void notifyTileGroupSelected(String group)
-    {
-        // Nothing to do
     }
 }

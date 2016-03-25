@@ -12,12 +12,14 @@
       <definition
             id="com.b3dgs.lionengine.editor.objects-folder.addObject">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.objectsFolderTester.addObject">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.objects-folder.isObject">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.objectsFolderTester.isObject">
          </test>
       </definition>

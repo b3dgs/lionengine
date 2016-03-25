@@ -12,36 +12,42 @@
       <definition
             id="com.b3dgs.lionengine.editor.properties.setSurface">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.propertiesTesterSurface.setSurface">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.properties.removeSurface">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.propertiesTesterSurface.removeSurface">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.properties.setIcon">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.propertiesTesterSurface.setIcon">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.properties.removeIcon">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.propertiesTesterSurface.removeIcon">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.properties.setFrames">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.propertiesTesterFrames.setFrames">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.properties.removeFrames">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.propertiesTesterFrames.removeFrames">
          </test>
       </definition>

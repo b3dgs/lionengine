@@ -30,85 +30,50 @@
       <definition
             id="com.b3dgs.lionengine.editor.project.active">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.projectTester.active">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.resource.music">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.resourceExtensionTester.music">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.resource.sound">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.resourceExtensionTester.sound">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.resource.image">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.resourceExtensionTester.image">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.resource.data">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.resourceExtensionTester.data">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.resource.level">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.resourceExtensionTester.level">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.map.test">
-         <test
-               property="com.b3dgs.lionengine.editor.mapTester.test">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.folder-type.category">
          <test
+               forcePluginActivation="true"
                property="com.b3dgs.lionengine.editor.folderTypeTester.category">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.sheets.add">
-         <test
-               property="com.b3dgs.lionengine.editor.sheetsTester.addSheets">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.sheets.edit">
-         <test
-               property="com.b3dgs.lionengine.editor.sheetsTester.editSheets">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.groups.add">
-         <test
-               property="com.b3dgs.lionengine.editor.groupsTester.addGroups">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.groups.edit">
-         <test
-               property="com.b3dgs.lionengine.editor.groupsTester.editGroups">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.minimap.add">
-         <test
-               property="com.b3dgs.lionengine.editor.minimapTester.addMinimap">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.minimap.edit">
-         <test
-               property="com.b3dgs.lionengine.editor.minimapTester.editMinimap">
          </test>
       </definition>
    </extension>
@@ -128,65 +93,9 @@
             properties="music,sound,data,image,level"
             type="java.lang.Object">
       </propertyTester>
-      <propertyTester
-            class="com.b3dgs.lionengine.editor.world.tester.MapTester"
-            id="com.b3dgs.lionengine.editor.mapTester"
-            namespace="com.b3dgs.lionengine.editor.mapTester"
-            properties="test"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.SheetsTester"
-            id="com.b3dgs.lionengine.editor.sheetsTester"
-            namespace="com.b3dgs.lionengine.editor.sheetsTester"
-            properties="addSheets,editSheets"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.GroupsTester"
-            id="com.b3dgs.lionengine.editor.groupsTester"
-            namespace="com.b3dgs.lionengine.editor.groupsTester"
-            properties="addGroups,editGroups"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.MinimapTester"
-            id="com.b3dgs.lionengine.editor.minimapTester"
-            namespace="com.b3dgs.lionengine.editor.minimapTester"
-            properties="addMinimap,editMinimap"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
-            class="com.b3dgs.lionengine.editor.project.tester.SheetsTester"
-            id="com.b3dgs.lionengine.editor.sheetsTester"
-            namespace="com.b3dgs.lionengine.editor.sheetsTester"
-            properties="addSheets,editSheets"
-            type="java.lang.Object">
-      </propertyTester>
-   </extension>
-   <extension
-         point="com.b3dgs.lionengine.editor.propertiesTile">
-      <implementation
-            class="com.b3dgs.lionengine.editor.properties.tile.PropertiesTile">
-      </implementation>
-   </extension>
-   <extension
-         point="com.b3dgs.lionengine.editor.resourceChecker">
-      <implementation
-            class="com.b3dgs.lionengine.editor.project.resource.GroupResource">
-      </implementation>
-      <implementation
-            class="com.b3dgs.lionengine.editor.project.resource.SheetResource">
-      </implementation>
-      <implementation
-            class="com.b3dgs.lionengine.editor.project.resource.MinimapResource">
-      </implementation>
    </extension>
    <extension
          point="com.b3dgs.lionengine.editor.worldRenderListener">
-      <implementation
-            class="com.b3dgs.lionengine.editor.world.renderer.WorldSelectedTiles">
-      </implementation>
       <implementation
             class="com.b3dgs.lionengine.editor.world.renderer.WorldGridRenderer">
       </implementation>
@@ -196,9 +105,6 @@
    </extension>
    <extension
          point="com.b3dgs.lionengine.editor.worldMouseClickListener">
-      <implementation
-            class="com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile">
-      </implementation>
       <implementation
             class="com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater">
       </implementation>
@@ -211,15 +117,6 @@
    </extension>
    <extension
          point="com.b3dgs.lionengine.editor.worldMouseMoveListener">
-      <implementation
-            class="com.b3dgs.lionengine.editor.world.updater.WorldInteractionTile">
-      </implementation>
-      <implementation
-            class="com.b3dgs.lionengine.editor.world.updater.WorldNavigation">
-      </implementation>
-   </extension>
-   <extension
-         point="com.b3dgs.lionengine.editor.worldKeyListener">
       <implementation
             class="com.b3dgs.lionengine.editor.world.updater.WorldNavigation">
       </implementation>
