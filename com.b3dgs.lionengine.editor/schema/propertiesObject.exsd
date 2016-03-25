@@ -59,6 +59,15 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="priority" type="string">
+            <annotation>
+               <documentation>
+                  Allows to define a priority compared to other properties.
+This will define the rendering priority.
+Lower values will be rendered last.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

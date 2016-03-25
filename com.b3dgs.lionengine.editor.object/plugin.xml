@@ -37,10 +37,12 @@
    <extension
          point="com.b3dgs.lionengine.editor.propertiesObject">
       <implementation
-            class="com.b3dgs.lionengine.editor.object.properties.clazz.PropertiesClass">
+            class="com.b3dgs.lionengine.editor.object.properties.clazz.PropertiesClass"
+            priority="99">
       </implementation>
       <implementation
-            class="com.b3dgs.lionengine.editor.object.properties.setup.PropertiesSetup">
+            class="com.b3dgs.lionengine.editor.object.properties.setup.PropertiesSetup"
+            priority="98">
       </implementation>
    </extension>
       <extension

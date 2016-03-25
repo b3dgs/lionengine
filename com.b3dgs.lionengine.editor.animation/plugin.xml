@@ -100,13 +100,16 @@
    <extension
          point="com.b3dgs.lionengine.editor.propertiesObject">
       <implementation
-            class="com.b3dgs.lionengine.editor.surface.properties.PropertiesSurface">
+            class="com.b3dgs.lionengine.editor.surface.properties.PropertiesSurface"
+            priority="12">
       </implementation>
       <implementation
-            class="com.b3dgs.lionengine.editor.frame.properties.PropertiesFrames">
+            class="com.b3dgs.lionengine.editor.frame.properties.PropertiesFrames"
+            priority="11">
       </implementation>
       <implementation
-            class="com.b3dgs.lionengine.editor.animation.properties.PropertiesAnimation">
+            class="com.b3dgs.lionengine.editor.animation.properties.PropertiesAnimation"
+            priority="10">
       </implementation>
    </extension>
 </plugin>

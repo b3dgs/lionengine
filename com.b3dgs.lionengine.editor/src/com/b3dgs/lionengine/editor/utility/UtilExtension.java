@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
@@ -29,6 +30,7 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Verbose;
 
 /**
  * Allows to retrieve easily extension point from their ID.
@@ -37,12 +39,22 @@ public final class UtilExtension
 {
     /** Class extension attribute. */
     private static final String ATT_CLASS = "class";
+    /** Priority extension attribute. */
+    private static final String ATT_PRIORITY = "priority";
     /** Error on loading extension. */
     private static final String ERROR_EXTENSION = "Error on loading extension point: ";
     /** Create class error. */
     private static final String ERROR_CLASS_CREATE = "Unable to create the following class: ";
     /** Extensions point cache. */
     private static final Map<Class<?>, Object> EXTENSIONS_CACHE = new HashMap<>();
+
+    /**
+     * Clear existing cache.
+     */
+    public static void clearCache()
+    {
+        EXTENSIONS_CACHE.clear();
+    }
 
     /**
      * Get the declared extensions from their ID.
@@ -56,7 +68,7 @@ public final class UtilExtension
      */
     public static <T> Collection<T> get(Class<T> type, String id, Object... params)
     {
-        final Collection<T> extensions = new ArrayList<>();
+        final Collection<Extension<T>> extensions = new ArrayList<>();
         final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(id);
         for (final IConfigurationElement element : elements)
         {
@@ -64,24 +76,40 @@ public final class UtilExtension
             {
                 final Bundle bundle = Platform.getBundle(element.getDeclaringExtension().getContributor().getName());
                 final Class<?> rawClazz = bundle.loadClass(element.getAttribute(ATT_CLASS));
+                final int priority = getPriority(element);
                 final Class<? extends T> clazz = rawClazz.asSubclass(type);
                 final T instance = getCachedInstance(clazz, params);
-                extensions.add(instance);
+                extensions.add(new Extension<>(instance, priority));
             }
             catch (final InvalidRegistryObjectException | ReflectiveOperationException exception)
             {
                 throw new LionEngineException(exception, ERROR_EXTENSION, element.getValue());
             }
         }
-        return extensions;
+        return extensions.stream().sorted().map(element -> element.getExtension()).collect(Collectors.toList());
     }
 
     /**
-     * Clear existing cache.
+     * Get the extension priority if defined.
+     * 
+     * @param element The element reference.
+     * @return The priority value.
      */
-    public static void clearCache()
+    private static int getPriority(IConfigurationElement element)
     {
-        EXTENSIONS_CACHE.clear();
+        final String priority = element.getAttribute(ATT_PRIORITY);
+        if (priority != null)
+        {
+            try
+            {
+                return Integer.parseInt(priority);
+            }
+            catch (final NumberFormatException exception)
+            {
+                Verbose.exception(exception);
+            }
+        }
+        return 0;
     }
 
     /**
@@ -148,5 +176,64 @@ public final class UtilExtension
     private UtilExtension()
     {
         throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
+    }
+
+    /**
+     * Represents an extension.
+     * 
+     * @param <T> The extension type.
+     */
+    private static final class Extension<T> implements Comparable<Extension<T>>
+    {
+        /** Extension instance. */
+        private final T extension;
+        /** Extension priority. */
+        private final int priority;
+
+        /**
+         * Create extension.
+         * 
+         * @param extension The extension instance.
+         * @param priority The extension priority.
+         */
+        private Extension(T extension, int priority)
+        {
+            super();
+            this.extension = extension;
+            this.priority = priority;
+        }
+
+        /**
+         * Get the extension instance.
+         * 
+         * @return The extension instance.
+         */
+        private T getExtension()
+        {
+            return extension;
+        }
+
+        /*
+         * Comparable
+         */
+
+        @Override
+        public int compareTo(Extension<T> other)
+        {
+            final int value;
+            if (priority < other.priority)
+            {
+                value = 1;
+            }
+            else if (priority > other.priority)
+            {
+                value = -1;
+            }
+            else
+            {
+                value = 0;
+            }
+            return value;
+        }
     }
 }
