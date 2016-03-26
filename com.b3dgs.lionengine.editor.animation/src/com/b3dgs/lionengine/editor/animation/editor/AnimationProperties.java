@@ -93,18 +93,18 @@ public class AnimationProperties extends ObjectProperties<Animation> implements 
         frames.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         frames.setLayout(new GridLayout(1, false));
 
-        firstFrame = createTextField(frames, Messages.AnimationProperties_FirstFrame);
-        lastFrame = createTextField(frames, Messages.AnimationProperties_LastFrame);
-        speed = createTextField(frames, Messages.AnimationProperties_AnimSpeed);
+        firstFrame = createTextField(frames, Messages.FirstFrame);
+        lastFrame = createTextField(frames, Messages.LastFrame);
+        speed = createTextField(frames, Messages.AnimSpeed);
 
         final Composite flags = new Composite(parent, SWT.NONE);
         flags.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
         flags.setLayout(new GridLayout(2, true));
 
         reverseAnim = new Button(flags, SWT.CHECK | SWT.RIGHT_TO_LEFT);
-        reverseAnim.setText(Messages.AnimationProperties_Reverse);
+        reverseAnim.setText(Messages.Reverse);
         repeatAnim = new Button(flags, SWT.CHECK | SWT.RIGHT_TO_LEFT);
-        repeatAnim.setText(Messages.AnimationProperties_Repeat);
+        repeatAnim.setText(Messages.Repeat);
     }
 
     @Override

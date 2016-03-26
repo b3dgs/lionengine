@@ -23,10 +23,10 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
-import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
-import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget.LevelRipsWidgetListener;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.widget.BrowseWidget;
+import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
+import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.transition.TransitionsConfig;
 import com.b3dgs.lionengine.game.map.transition.TransitionsExtractor;
@@ -43,7 +43,7 @@ public class ConstraintsExtractDialog extends AbstractDialog
     public static final Image ICON = UtilIcon.get("dialog", "import.png");
 
     /** Level rip list. */
-    private LevelRipsWidget levelRips;
+    private LevelRipWidget levelRips;
     /** Sheets location. */
     private BrowseWidget sheets;
     /** Groups location. */
@@ -86,7 +86,7 @@ public class ConstraintsExtractDialog extends AbstractDialog
      */
     private void createLevelRipsArea(Composite parent)
     {
-        levelRips = new LevelRipsWidget(parent);
+        levelRips = new LevelRipWidget(parent);
         levelRips.addListener(new LevelRipsWidgetListener()
         {
             @Override

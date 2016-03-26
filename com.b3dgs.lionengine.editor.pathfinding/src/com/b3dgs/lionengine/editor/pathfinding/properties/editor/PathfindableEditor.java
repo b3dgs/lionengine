@@ -50,7 +50,7 @@ public class PathfindableEditor extends AbstractEditor
      */
     public PathfindableEditor(Composite parent, Configurer configurer)
     {
-        super(parent, Messages.PathfindableEditor_Title, ICON);
+        super(parent, Messages.Title, ICON);
         this.configurer = configurer;
         list = new PathList(properties);
     }

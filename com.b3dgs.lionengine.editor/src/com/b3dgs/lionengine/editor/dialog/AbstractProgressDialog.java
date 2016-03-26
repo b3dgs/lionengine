@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 
 /**
  * Abstract progress dialog.

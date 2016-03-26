@@ -21,8 +21,6 @@ import java.util.Locale;
 
 import org.eclipse.osgi.util.NLS;
 
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
  * Messages internationalization.
  */
@@ -61,13 +59,5 @@ public final class Messages extends NLS
     static
     {
         NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Messages()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

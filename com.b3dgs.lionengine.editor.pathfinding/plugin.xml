@@ -51,14 +51,14 @@
             properties="addPathfinding,editPathfinding"
             namespace="com.b3dgs.lionengine.editor.pathfinding.pathfindingTester"
             type="java.lang.Object"
-            class="com.b3dgs.lionengine.editor.pathfinding.tester.PathfindingTester"
+            class="com.b3dgs.lionengine.editor.pathfinding.project.PathfindingTester"
             id="com.b3dgs.lionengine.editor.pathfinding.pathfindingTester">
       </propertyTester>
       <propertyTester
             properties="enablePathfindable,editPathfindable,disablePathfindable"
             namespace="com.b3dgs.lionengine.editor.pathfinding.propertiesTesterPathfindable"
             type="java.lang.Object"
-            class="com.b3dgs.lionengine.editor.pathfinding.tester.PropertiesPathfindableTester"
+            class="com.b3dgs.lionengine.editor.pathfinding.properties.PropertiesPathfindableTester"
             id="com.b3dgs.lionengine.editor.pathfinding.propertiesTesterPathfindable">
       </propertyTester>
    </extension>
@@ -71,7 +71,7 @@
    <extension
          point="com.b3dgs.lionengine.editor.resourceChecker">
       <implementation
-            class="com.b3dgs.lionengine.editor.pathfinding.PathfindingResource">
+            class="com.b3dgs.lionengine.editor.pathfinding.project.PathfindingResource">
       </implementation>
    </extension>
 </plugin>

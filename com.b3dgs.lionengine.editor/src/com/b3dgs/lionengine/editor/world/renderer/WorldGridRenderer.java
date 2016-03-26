@@ -59,7 +59,7 @@ public class WorldGridRenderer implements WorldRenderListener
     @Override
     public void onRender(Graphic g, int width, int height, double scale, int ctw, int cth)
     {
-        if (world.isGridEnabled())
+        if (world.isGridEnabled() && map.isCreated())
         {
             g.setColor(COLOR_GRID);
             final Tile tile = findTileInView();

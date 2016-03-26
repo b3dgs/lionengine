@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.control.UtilButton;
+import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 
 /**
  * Represents the about dialog of the application.

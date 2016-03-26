@@ -45,7 +45,7 @@ public class PropertiesCollisionCategory implements PropertiesProviderObject
     private static void createAttributeCollisionCategories(Tree properties)
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
-        item.setText(Messages.Properties_CollisionCategory);
+        item.setText(Messages.CollisionCategory);
         item.setData(CollisionCategoryConfig.CATEGORY);
         item.setImage(ICON_CATEGORY);
     }

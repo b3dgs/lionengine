@@ -34,12 +34,12 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
-import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
-import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget.LevelRipsWidgetListener;
-import com.b3dgs.lionengine.editor.dialog.widget.TextWidget;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
+import com.b3dgs.lionengine.editor.widget.BrowseWidget;
+import com.b3dgs.lionengine.editor.widget.TextWidget;
+import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
+import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
 import com.b3dgs.lionengine.game.map.SheetsExtractor;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
@@ -58,7 +58,7 @@ public class SheetsExtractDialog extends AbstractDialog
     private static final Image ICON = UtilIcon.get("dialog", "import.png");
 
     /** Level rips widget. */
-    private LevelRipsWidget levelRips;
+    private LevelRipWidget levelRips;
     /** Tile width. */
     private TextWidget tileWidth;
     /** Tile height. */
@@ -235,7 +235,7 @@ public class SheetsExtractDialog extends AbstractDialog
     {
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        levelRips = new LevelRipsWidget(content);
+        levelRips = new LevelRipWidget(content);
         levelRips.addListener(new LevelRipsWidgetListener()
         {
             @Override

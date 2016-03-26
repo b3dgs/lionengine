@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.editor.utility.UtilPart;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
-import com.b3dgs.lionengine.editor.world.updater.TileSelectionListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseClickListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
 import com.b3dgs.lionengine.game.Camera;
@@ -50,6 +49,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
 {
     /** Tile selection listener. */
     private final Collection<TileSelectionListener> tileSelectionListeners = new ArrayList<>();
+    /** Tile selection listener. */
+    private final TileSelectionListener listener = new TileSelectionListenerImpl();
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
@@ -72,7 +73,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         map = services.get(MapTile.class);
         mapGroup = services.get(MapTileGroup.class);
         palette = services.get(PaletteModel.class);
-        tileSelectionListeners.add(new TileSelectionListenerImpl());
+        tileSelectionListeners.add(listener);
     }
 
     /**
@@ -106,6 +107,16 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     }
 
     /**
+     * Get the tile listener.
+     * 
+     * @return The tile listener.
+     */
+    public TileSelectionListener getListener()
+    {
+        return listener;
+    }
+
+    /**
      * Update the pointer in tile case.
      * 
      * @param mx The horizontal mouse location.
@@ -117,8 +128,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         if (map.isCreated())
         {
             final Tile tile = UtilWorld.getTile(map, camera, mx, my);
-            final SheetPaletteType type = SheetsPaletteModel.INSTANCE.getSheetPaletteType();
-            updatePointerTile(tile, type);
+            updatePointerTile(tile);
         }
         else
         {
@@ -126,9 +136,9 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         }
         for (final TileSelectionListener listener : tileSelectionListeners)
         {
-            listener.notifyTileSelected(click, selectedTile);
             if (selectedTile != null)
             {
+                listener.notifyTileSelected(click, selectedTile);
                 listener.notifyTileGroupSelected(mapGroup.getGroup(selectedTile));
             }
             else
@@ -142,10 +152,10 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      * Update the pointer with current pointed tile depending of the palette.
      * 
      * @param tile The pointed tile.
-     * @param type The sheet palette type.
      */
-    private void updatePointerTile(Tile tile, SheetPaletteType type)
+    private void updatePointerTile(Tile tile)
     {
+        final SheetPaletteType type = SheetsPaletteModel.INSTANCE.getSheetPaletteType();
         switch (type)
         {
             case SELECTION:
@@ -235,7 +245,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         /**
          * Create listener.
          */
-        private TileSelectionListenerImpl()
+        TileSelectionListenerImpl()
         {
             super();
         }

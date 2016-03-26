@@ -17,6 +17,6 @@
  */
 
 /**
- * Sheet edition package.
+ * Add sheet package.
  */
 package com.b3dgs.lionengine.editor.map.sheet.project;

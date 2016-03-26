@@ -21,17 +21,15 @@ import java.util.Locale;
 
 import org.eclipse.osgi.util.NLS;
 
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
  * Messages internationalization.
  */
 public final class Messages extends NLS
 {
     /** Surface property. */
-    public static String Properties_Surface;
+    public static String Surface;
     /** Surface icon property. */
-    public static String Properties_SurfaceIcon;
+    public static String Icon;
 
     /**
      * Initialize.
@@ -39,13 +37,5 @@ public final class Messages extends NLS
     static
     {
         NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Messages()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

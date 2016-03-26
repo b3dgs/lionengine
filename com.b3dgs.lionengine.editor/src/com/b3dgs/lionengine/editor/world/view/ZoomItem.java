@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.editor.utility.UtilText;
+import com.b3dgs.lionengine.editor.utility.control.UtilText;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater;

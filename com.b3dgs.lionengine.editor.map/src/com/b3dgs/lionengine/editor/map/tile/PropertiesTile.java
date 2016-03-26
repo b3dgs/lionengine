@@ -98,7 +98,7 @@ public class PropertiesTile implements PropertiesProviderTile
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
         final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
-        PropertiesPart.createLine(item, Messages.Properties_TileGroup, mapGroup.getGroup(tile));
+        PropertiesPart.createLine(item, Messages.TileGroup, mapGroup.getGroup(tile));
         item.setData(TileGroupsConfig.NODE_GROUP);
         item.setImage(PropertiesTile.ICON_GROUP);
 
@@ -122,7 +122,7 @@ public class PropertiesTile implements PropertiesProviderTile
     private static void createAttributeTileSheet(Tree properties, Tile tile)
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(item, Messages.Properties_TileSheet, String.valueOf(tile.getSheet()));
+        PropertiesPart.createLine(item, Messages.TileSheet, String.valueOf(tile.getSheet()));
         item.setData(TileConfig.ATT_TILE_SHEET);
         item.setImage(PropertiesTile.ICON_SHEET);
     }
@@ -136,7 +136,7 @@ public class PropertiesTile implements PropertiesProviderTile
     private static void createAttributeTileNumber(Tree properties, Tile tile)
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(item, Messages.Properties_TileNumber, String.valueOf(tile.getNumber()));
+        PropertiesPart.createLine(item, Messages.TileNumber, String.valueOf(tile.getNumber()));
         item.setData(TileConfig.ATT_TILE_NUMBER);
         item.setImage(PropertiesTile.ICON_NUMBER);
     }
@@ -150,7 +150,7 @@ public class PropertiesTile implements PropertiesProviderTile
     private static void createAttributeTileSize(Tree properties, Tile tile)
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(item, Messages.Properties_TileSize, tile.getWidth() + " * " + tile.getHeight());
+        PropertiesPart.createLine(item, Messages.TileSize, tile.getWidth() + " * " + tile.getHeight());
         item.setData(TileConfig.NODE_TILE);
         item.setImage(PropertiesTile.ICON_SIZE);
     }
@@ -164,13 +164,13 @@ public class PropertiesTile implements PropertiesProviderTile
     private static void createAttributeTileFeatures(Tree properties, Tile tile)
     {
         final TreeItem features = new TreeItem(properties, SWT.NONE);
-        features.setText(Messages.Properties_TileFeatures);
+        features.setText(Messages.TileFeatures);
         features.setImage(PropertiesTile.ICON_FEATURES);
 
         for (final TileFeature feature : tile.getFeatures())
         {
             final TreeItem item = new TreeItem(features, SWT.NONE);
-            item.setText(Messages.Properties_TileFeature);
+            item.setText(Messages.TileFeature);
             item.setImage(PropertiesTile.ICON_FEATURE);
 
             final Class<?> clazz = feature.getClass();

@@ -75,6 +75,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
         map = services.get(MapTile.class);
         gridEnabled = true;
 
+        UtilExtension.clearCache();
         for (final WorldMouseClickListener listener : UtilExtension.get(WorldMouseClickListener.class,
                                                                         WorldMouseClickListener.EXTENSION_ID,
                                                                         services))

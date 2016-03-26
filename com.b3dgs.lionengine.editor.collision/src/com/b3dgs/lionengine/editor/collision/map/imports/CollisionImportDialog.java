@@ -25,12 +25,12 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.toolbar.SetPointerCollisionHandler;
 import com.b3dgs.lionengine.editor.toolbar.SetShowCollisionsHandler;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFormulaConfig;

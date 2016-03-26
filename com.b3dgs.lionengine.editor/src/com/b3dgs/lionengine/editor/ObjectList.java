@@ -37,8 +37,8 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.editor.utility.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.UtilTree;
+import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 
 /**

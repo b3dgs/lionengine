@@ -21,19 +21,15 @@ import java.util.Locale;
 
 import org.eclipse.osgi.util.NLS;
 
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
  * Messages internationalization.
  */
 public final class Messages extends NLS
 {
-    /** Edit groups dialog title. */
-    public static String EditGroupsDialog_Title;
-    /** Edit groups dialog title header. */
-    public static String EditGroupsDialog_HeaderTitle;
-    /** Edit groups dialog description header. */
-    public static String EditGroupsDialog_HeaderDesc;
+    /** Add groups title. */
+    public static String Title;
+    /** Add groups title. */
+    public static String Text;
 
     /**
      * Initialize.
@@ -41,13 +37,5 @@ public final class Messages extends NLS
     static
     {
         NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Messages()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

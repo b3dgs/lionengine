@@ -43,9 +43,9 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.Focusable;
-import com.b3dgs.lionengine.editor.utility.UtilButton;
-import com.b3dgs.lionengine.editor.utility.UtilDialog;
-import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.control.UtilButton;
+import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldKeyboardListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldMouseMoveListener;
@@ -304,7 +304,7 @@ public final class MinimapDialog implements MouseListener, MouseMoveListener, Mo
         content.setLayout(new GridLayout(2, false));
 
         final Label locationLabel = new Label(content, SWT.NONE);
-        locationLabel.setText(com.b3dgs.lionengine.editor.project.dialog.Messages.AbstractProjectDialog_Location);
+        locationLabel.setText(com.b3dgs.lionengine.editor.dialog.project.Messages.AbstractProjectDialog_Location);
         locationLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 
         final Text text = new Text(content, SWT.BORDER);

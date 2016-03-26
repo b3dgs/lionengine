@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.ObjectProperties;
-import com.b3dgs.lionengine.editor.utility.UtilCombo;
-import com.b3dgs.lionengine.editor.utility.UtilText;
+import com.b3dgs.lionengine.editor.utility.control.UtilCombo;
+import com.b3dgs.lionengine.editor.utility.control.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
@@ -73,9 +73,9 @@ public class PathProperties extends ObjectProperties<PathData> implements Object
         final Collection<String> categories = mapPath.getCategories();
         final String[] values = categories.toArray(new String[categories.size()]);
 
-        category = UtilCombo.create(Messages.PathProperties_Category, content, true, values);
-        cost = UtilText.create(Messages.PathProperties_Cost, content);
-        block = UtilCombo.create(Messages.PathProperties_Block, content, false, Boolean.TRUE, Boolean.FALSE);
+        category = UtilCombo.create(Messages.Category, content, true, values);
+        cost = UtilText.create(Messages.Cost, content);
+        block = UtilCombo.create(Messages.Block, content, false, Boolean.TRUE, Boolean.FALSE);
         movements.create(content);
     }
 

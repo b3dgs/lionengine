@@ -21,27 +21,15 @@ import java.util.Locale;
 
 import org.eclipse.osgi.util.NLS;
 
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
  * Messages internationalization.
  */
 public final class Messages extends NLS
 {
-    /** Edit sheets dialog title. */
+    /** Add sheets title. */
     public static String Title;
-    /** Edit sheets dialog title header. */
-    public static String HeaderTitle;
-    /** Edit sheets dialog description header. */
-    public static String HeaderDesc;
-    /** Edit sheets dialog tile size. */
-    public static String TileSize;
-    /** Edit sheets dialog tile width. */
-    public static String TileWidth;
-    /** Edit sheets dialog tile height. */
-    public static String TileHeight;
-    /** Edit sheets dialog tile sheets. */
-    public static String TileSheets;
+    /** Add sheets title. */
+    public static String Text;
 
     /**
      * Initialize.
@@ -49,13 +37,5 @@ public final class Messages extends NLS
     static
     {
         NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Messages()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

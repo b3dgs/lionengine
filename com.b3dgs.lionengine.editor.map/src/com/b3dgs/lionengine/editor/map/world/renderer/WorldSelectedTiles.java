@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.map.world.renderer;
 
+import com.b3dgs.lionengine.editor.map.world.updater.TileSelectionListener;
 import com.b3dgs.lionengine.editor.map.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.editor.world.renderer.WorldRenderListener;
-import com.b3dgs.lionengine.editor.world.updater.TileSelectionListener;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -148,7 +148,7 @@ public class WorldSelectedTiles implements WorldRenderListener
         /**
          * Create listener.
          */
-        private TileSelectionListenerImpl()
+        TileSelectionListenerImpl()
         {
             super();
         }
@@ -158,7 +158,7 @@ public class WorldSelectedTiles implements WorldRenderListener
          * 
          * @return the tile The selected tile.
          */
-        private Tile getTile()
+        Tile getTile()
         {
             return tile;
         }
@@ -168,7 +168,7 @@ public class WorldSelectedTiles implements WorldRenderListener
          * 
          * @return the tileGroup The selected tile group.
          */
-        private String getTileGroup()
+        String getTileGroup()
         {
             return tileGroup;
         }

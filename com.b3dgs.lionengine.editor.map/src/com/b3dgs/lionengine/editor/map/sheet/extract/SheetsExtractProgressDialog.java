@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractProgressDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 

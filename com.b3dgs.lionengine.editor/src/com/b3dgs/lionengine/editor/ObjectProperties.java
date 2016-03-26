@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.Nameable;
-import com.b3dgs.lionengine.editor.utility.UtilCombo;
-import com.b3dgs.lionengine.editor.utility.UtilText;
+import com.b3dgs.lionengine.editor.utility.control.UtilCombo;
+import com.b3dgs.lionengine.editor.utility.control.UtilText;
 
 /**
  * Represents the object properties edition view.

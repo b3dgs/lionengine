@@ -31,10 +31,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.map.group.project.GroupsEditDialog;
+import com.b3dgs.lionengine.editor.map.group.editor.GroupsEditDialog;
 import com.b3dgs.lionengine.editor.map.world.updater.WorldInteractionTile;
-import com.b3dgs.lionengine.editor.utility.UtilButton;
-import com.b3dgs.lionengine.editor.utility.UtilCombo;
+import com.b3dgs.lionengine.editor.utility.control.UtilButton;
+import com.b3dgs.lionengine.editor.utility.control.UtilCombo;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -60,11 +60,7 @@ public class GroupChooser extends AbstractDialog
      */
     public GroupChooser(Shell parent, Collection<String> groups)
     {
-        super(parent,
-              Messages.GroupChooser_Title,
-              Messages.GroupChooser_HeaderTitle,
-              Messages.GroupChooser_HeaderDesc,
-              GroupsEditDialog.ICON);
+        super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, GroupsEditDialog.ICON);
         this.groups = groups.toArray(new String[groups.size()]);
         createDialog();
         dialog.setMinimumSize(256, 64);
@@ -141,13 +137,13 @@ public class GroupChooser extends AbstractDialog
         composite.setLayout(new GridLayout(3, false));
 
         final Label label = new Label(composite, SWT.NONE);
-        label.setText(Messages.GroupChooser_Choice);
+        label.setText(Messages.Choice);
 
         combo = new Combo(composite, SWT.SINGLE | SWT.READ_ONLY);
         loadGroups(groups);
 
         final Button add = new Button(composite, SWT.PUSH);
-        add.setText(Messages.GroupChooser_Add);
+        add.setText(Messages.Add);
         UtilButton.setAction(add, () -> addGroup(add.getShell()));
     }
 

@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
-import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.widget.BrowseWidget;
+import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -80,7 +80,7 @@ public class MapImportDialog extends AbstractDialog
         levelRip = new BrowseWidget(content,
                                     Messages.LevelRipLocation,
                                     Messages.LevelRipFileFilter,
-                                    LevelRipsWidget.getLevelRipFilter(),
+                                    LevelRipWidget.getLevelRipFilter(),
                                     true);
         levelRip.addListener(media ->
         {

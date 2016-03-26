@@ -63,7 +63,10 @@ public class WorldZoomUpdater implements WorldMouseClickListener, WorldMouseScro
      */
     public void zoomIn()
     {
-        zoom(1);
+        if (map.isCreated())
+        {
+            zoom(1);
+        }
     }
 
     /**
@@ -71,7 +74,10 @@ public class WorldZoomUpdater implements WorldMouseClickListener, WorldMouseScro
      */
     public void zoomOut()
     {
-        zoom(-1);
+        if (map.isCreated())
+        {
+            zoom(-1);
+        }
     }
 
     /**

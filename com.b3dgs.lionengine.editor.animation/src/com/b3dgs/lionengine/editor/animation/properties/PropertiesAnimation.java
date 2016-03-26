@@ -45,7 +45,7 @@ public class PropertiesAnimation implements PropertiesProviderObject
     public static void createAttributeAnimations(Tree properties)
     {
         final TreeItem animationsItem = new TreeItem(properties, SWT.NONE);
-        animationsItem.setText(Messages.Properties_Animations);
+        animationsItem.setText(Messages.Animations);
         animationsItem.setData(AnimationConfig.ANIMATION);
         animationsItem.setImage(ICON_ANIMATIONS);
     }

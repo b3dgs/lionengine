@@ -21,36 +21,33 @@ import java.util.Locale;
 
 import org.eclipse.osgi.util.NLS;
 
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
  * Messages internationalization.
  */
 public final class Messages extends NLS
 {
-    /** Tile group property. */
-    public static String Properties_TileGroup;
-    /** Tile sheet property. */
-    public static String Properties_TileSheet;
-    /** Tile number property. */
-    public static String Properties_TileNumber;
-    /** Tile size property. */
-    public static String Properties_TileSize;
-    /** Tile features property. */
-    public static String Properties_TileFeatures;
-    /** Tile feature property. */
-    public static String Properties_TileFeature;
-
     /** Group chooser title. */
-    public static String GroupChooser_Title;
+    public static String Title;
     /** Group chooser header title. */
-    public static String GroupChooser_HeaderTitle;
+    public static String HeaderTitle;
     /** Group chooser header description. */
-    public static String GroupChooser_HeaderDesc;
+    public static String HeaderDesc;
     /** Group choice. */
-    public static String GroupChooser_Choice;
+    public static String Choice;
     /** Group add. */
-    public static String GroupChooser_Add;
+    public static String Add;
+    /** Tile group property. */
+    public static String TileGroup;
+    /** Tile sheet property. */
+    public static String TileSheet;
+    /** Tile number property. */
+    public static String TileNumber;
+    /** Tile size property. */
+    public static String TileSize;
+    /** Tile features property. */
+    public static String TileFeatures;
+    /** Tile feature property. */
+    public static String TileFeature;
 
     /**
      * Initialize.
@@ -58,13 +55,5 @@ public final class Messages extends NLS
     static
     {
         NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Messages()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

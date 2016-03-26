@@ -21,32 +21,29 @@ import java.util.Locale;
 
 import org.eclipse.osgi.util.NLS;
 
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
  * Messages internationalization.
  */
 public final class Messages extends NLS
 {
     /** Animation editor title. */
-    public static String AnimationEditor_Title;
+    public static String Title;
     /** Animation editor sheet. */
-    public static String AnimationEditor_Sheet;
+    public static String Sheet;
     /** Animation editor animator. */
-    public static String AnimationEditor_Animator;
+    public static String Animator;
     /** Animation editor animation. */
-    public static String AnimationEditor_Animation;
-
+    public static String Animation;
     /** Animation properties first frame. */
-    public static String AnimationProperties_FirstFrame;
+    public static String FirstFrame;
     /** Animation properties last frame. */
-    public static String AnimationProperties_LastFrame;
+    public static String LastFrame;
     /** Animation properties anim speed. */
-    public static String AnimationProperties_AnimSpeed;
+    public static String AnimSpeed;
     /** Animation properties reverse. */
-    public static String AnimationProperties_Reverse;
+    public static String Reverse;
     /** Animation properties repeat. */
-    public static String AnimationProperties_Repeat;
+    public static String Repeat;
 
     /**
      * Initialize.
@@ -54,13 +51,5 @@ public final class Messages extends NLS
     static
     {
         NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Messages()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

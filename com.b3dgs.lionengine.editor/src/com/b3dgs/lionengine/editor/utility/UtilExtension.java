@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
 
@@ -186,20 +187,21 @@ public final class UtilExtension
     private static final class Extension<T> implements Comparable<Extension<T>>
     {
         /** Extension instance. */
-        private final T extension;
+        private final T instance;
         /** Extension priority. */
         private final int priority;
 
         /**
          * Create extension.
          * 
-         * @param extension The extension instance.
+         * @param instance The extension instance.
          * @param priority The extension priority.
          */
-        private Extension(T extension, int priority)
+        Extension(T instance, int priority)
         {
             super();
-            this.extension = extension;
+            Check.notNull(instance);
+            this.instance = instance;
             this.priority = priority;
         }
 
@@ -208,9 +210,9 @@ public final class UtilExtension
          * 
          * @return The extension instance.
          */
-        private T getExtension()
+        T getExtension()
         {
-            return extension;
+            return instance;
         }
 
         /*
@@ -234,6 +236,35 @@ public final class UtilExtension
                 value = 0;
             }
             return value;
+        }
+
+        /*
+         * Object
+         */
+
+        @Override
+        public int hashCode()
+        {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + instance.hashCode();
+            result = prime * result + priority;
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (this == obj)
+            {
+                return true;
+            }
+            if (!(obj instanceof Extension))
+            {
+                return false;
+            }
+            final Extension<?> other = (Extension<?>) obj;
+            return priority == other.priority && getExtension().equals(other.getExtension());
         }
     }
 }

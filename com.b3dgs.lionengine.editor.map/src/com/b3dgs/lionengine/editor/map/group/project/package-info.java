@@ -17,6 +17,6 @@
  */
 
 /**
- * Groups edition package.
+ * Add groups package.
  */
 package com.b3dgs.lionengine.editor.map.group.project;

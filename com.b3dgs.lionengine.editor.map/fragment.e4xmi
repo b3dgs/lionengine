@@ -15,7 +15,7 @@
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_-jMolvKPEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
       </children>
       <children xsi:type="menu:DirectMenuItem" xmi:id="_-jMol_KPEeWpu_NQCohogQ" elementId="com.b3dgs.lionengine.editor.menu.map.extract-all" label="%menu.map.extract-all" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/toolbar/import-map.png" tooltip="%menu.map.extract-all-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.ExtractAllHandler">
-        <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_-jMomPKPEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
+        <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_u5pzEPObEeWyu4iRqxulTg" coreExpressionId="com.b3dgs.lionengine.editor.project.active"/>
       </children>
       <children xsi:type="menu:DirectMenuItem" xmi:id="_-jMomfKPEeWpu_NQCohogQ" elementId="com.b3dgs.lionengine.editor.menu.map.import" label="%menu.map.import" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/toolbar/import-map.png" tooltip="%menu.map.import-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.imports.MapImportHandler">
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_-jMomvKPEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.project.active"/>
@@ -31,22 +31,22 @@
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_yEzYwPKQEeWpu_NQCohogQ" featurename="children" parentElementId="com.b3dgs.lionengine.editor.part.project.menu" positionInList="">
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_3vfqsPKQEeWpu_NQCohogQ" elementId="" label="%menu.sheets-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/sheets-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.sheet.handler.SheetsAddHandler">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_3vfqsPKQEeWpu_NQCohogQ" elementId="" label="%menu.sheets-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/sheets-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.sheet.project.SheetsAddHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_3vfqsfKQEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.sheets.add"/>
     </elements>
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_4rTysPKQEeWpu_NQCohogQ" elementId="" label="%menu.sheets-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/sheets-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.sheet.handler.SheetsEditHandler">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_4rTysPKQEeWpu_NQCohogQ" elementId="" label="%menu.sheets-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/sheets-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.sheet.project.SheetsEditHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_4rTysfKQEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.sheets.edit"/>
     </elements>
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_5Wp1wPKQEeWpu_NQCohogQ" elementId="" label="%menu.groups-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/groups-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.group.handler.GroupsAddHandler">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_5Wp1wPKQEeWpu_NQCohogQ" elementId="" label="%menu.groups-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/groups-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.group.project.GroupsAddHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_5Wp1wfKQEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.groups.add"/>
     </elements>
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_5wR2sPKQEeWpu_NQCohogQ" elementId="" label="%menu.groups-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/groups-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.group.handler.GroupsEditHandler">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_5wR2sPKQEeWpu_NQCohogQ" elementId="" label="%menu.groups-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/groups-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.group.project.GroupsEditHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_5wR2sfKQEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.groups.edit"/>
     </elements>
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_6Ogq0PKQEeWpu_NQCohogQ" elementId="" label="%menu.minimap-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/minimap-add.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.minimap.project.handler.MinimapAddHandler">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_6Ogq0PKQEeWpu_NQCohogQ" elementId="" label="%menu.minimap-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/minimap-add.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.minimap.project.MinimapAddHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_6Ogq0fKQEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.minimap.add"/>
     </elements>
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_6pHjMPKQEeWpu_NQCohogQ" elementId="" label="%menu.minimap-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/minimap-edit.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.minimap.project.handler.MinimapEditHandler">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_6pHjMPKQEeWpu_NQCohogQ" elementId="" label="%menu.minimap-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/context-menu/minimap-edit.png" tooltip="" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.minimap.project.MinimapEditHandler">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_6pHjMfKQEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.minimap.edit"/>
     </elements>
   </fragments>

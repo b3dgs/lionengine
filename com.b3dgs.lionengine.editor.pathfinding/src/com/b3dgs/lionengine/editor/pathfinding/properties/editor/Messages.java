@@ -21,24 +21,21 @@ import java.util.Locale;
 
 import org.eclipse.osgi.util.NLS;
 
-import com.b3dgs.lionengine.LionEngineException;
-
 /**
  * Messages internationalization.
  */
 public final class Messages extends NLS
 {
     /** Pathfindable editor title. */
-    public static String PathfindableEditor_Title;
-
+    public static String Title;
     /** Path property category name. */
-    public static String PathProperties_Category;
+    public static String Category;
     /** Path property cost value. */
-    public static String PathProperties_Cost;
+    public static String Cost;
     /** Path property block flag. */
-    public static String PathProperties_Block;
+    public static String Block;
     /** Path property diagonal flag. */
-    public static String PathProperties_Diagonal;
+    public static String Diagonal;
 
     /**
      * Initialize.
@@ -46,13 +43,5 @@ public final class Messages extends NLS
     static
     {
         NLS.initializeMessages(Messages.class.getName().toLowerCase(Locale.ENGLISH), Messages.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Messages()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
     }
 }

@@ -32,9 +32,9 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.editor.dialog.project.ProjectImportHandler;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectFactory;
-import com.b3dgs.lionengine.editor.project.handler.ProjectImportHandler;
 
 /**
  * Configure the editor with the right name.

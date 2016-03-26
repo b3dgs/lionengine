@@ -45,21 +45,21 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
-import com.b3dgs.lionengine.editor.dialog.widget.BrowseWidget;
-import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget;
-import com.b3dgs.lionengine.editor.dialog.widget.LevelRipsWidget.LevelRipsWidgetListener;
-import com.b3dgs.lionengine.editor.map.group.project.GroupList;
+import com.b3dgs.lionengine.editor.map.group.editor.GroupList;
 import com.b3dgs.lionengine.editor.map.world.renderer.WorldSelectedTiles;
+import com.b3dgs.lionengine.editor.map.world.updater.TileSelectionListener;
 import com.b3dgs.lionengine.editor.map.world.updater.WorldInteractionTile;
 import com.b3dgs.lionengine.editor.utility.Focusable;
-import com.b3dgs.lionengine.editor.utility.UtilButton;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.editor.utility.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.control.UtilButton;
+import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
+import com.b3dgs.lionengine.editor.widget.BrowseWidget;
+import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
+import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
 import com.b3dgs.lionengine.editor.world.PaletteModel;
 import com.b3dgs.lionengine.editor.world.PaletteType;
 import com.b3dgs.lionengine.editor.world.Selection;
 import com.b3dgs.lionengine.editor.world.renderer.WorldRenderer;
-import com.b3dgs.lionengine.editor.world.updater.TileSelectionListener;
 import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.editor.world.view.WorldView;
@@ -121,7 +121,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
     /** Level rips area. */
     private Composite levelsArea;
     /** Level rips widget. */
-    private LevelRipsWidget levelRips;
+    private LevelRipWidget levelRips;
     /** Next button. */
     private Button next;
     /** Sheets config. */
@@ -162,7 +162,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
      */
     public void save()
     {
-        final Media groupsMedia = Medias.create(sheets.getMedia().getParentPath(), TileGroupsConfig.FILENAME);
+        final Media groupsMedia = Medias.create(sheets.getMedia().getPath(), TileGroupsConfig.FILENAME);
         TileGroupsConfig.exports(groupsMedia, getGroups());
     }
 
@@ -305,7 +305,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         levelsArea.setLayout(new GridLayout(1, false));
         levelsArea.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        levelRips = new LevelRipsWidget(levelsArea);
+        levelRips = new LevelRipWidget(levelsArea);
         levelRips.addListener(new LevelRipsWidgetListener()
         {
             @Override
@@ -369,15 +369,18 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
 
         services.add(this);
         final WorldUpdater updater = new WorldUpdater(partService, services);
+        final WorldInteractionTile interactionTile = services.get(WorldInteractionTile.class);
+        interactionTile.removeListener(interactionTile.getListener());
+        interactionTile.addListener(this);
         services.add(updater);
+
         final WorldRenderer renderer = new WorldRenderer(partService, services);
+        final WorldSelectedTiles selectedTiles = services.get(WorldSelectedTiles.class);
+        interactionTile.removeListener(selectedTiles.getListener());
 
         view = WorldPart.createPart(areaView, updater, renderer);
         view.addMouseTrackListener(UtilSwt.createFocusListener(this));
         view.addKeyListener(this);
-
-        final WorldInteractionTile tileInteraction = services.get(WorldInteractionTile.class);
-        tileInteraction.addListener(this);
 
         final Media groupConfig = Medias.create(sheets.getMedia().getParentPath(), TileGroupsConfig.FILENAME);
         if (groupConfig.exists())

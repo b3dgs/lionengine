@@ -45,7 +45,7 @@ public class PropertiesCollision implements PropertiesProviderObject
     public static void createAttributeCollisions(Tree properties)
     {
         final TreeItem item = new TreeItem(properties, SWT.NONE);
-        item.setText(Messages.Properties_Collisions);
+        item.setText(Messages.Collisions);
         item.setData(CollisionConfig.COLLISION);
         item.setImage(PropertiesCollision.ICON_COLLISIONS);
     }

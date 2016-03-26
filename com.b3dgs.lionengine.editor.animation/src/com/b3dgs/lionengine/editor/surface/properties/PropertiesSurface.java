@@ -24,8 +24,8 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.properties.PropertiesProviderObject;
-import com.b3dgs.lionengine.editor.utility.UtilDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.object.SurfaceConfig;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -50,7 +50,7 @@ public class PropertiesSurface implements PropertiesProviderObject
     {
         final SurfaceConfig surface = SurfaceConfig.imports(configurer);
         final TreeItem surfaceItem = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(surfaceItem, Messages.Properties_Surface, surface.getImage());
+        PropertiesPart.createLine(surfaceItem, Messages.Surface, surface.getImage());
         surfaceItem.setData(SurfaceConfig.ATT_IMAGE);
         surfaceItem.setImage(ICON_SURFACE);
 
@@ -70,7 +70,7 @@ public class PropertiesSurface implements PropertiesProviderObject
     public static void createAttributeIcon(Tree properties, String icon)
     {
         final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
-        PropertiesPart.createLine(iconItem, Messages.Properties_SurfaceIcon, icon);
+        PropertiesPart.createLine(iconItem, Messages.Icon, icon);
         iconItem.setData(SurfaceConfig.ATT_ICON);
         iconItem.setImage(ICON_ICON);
     }

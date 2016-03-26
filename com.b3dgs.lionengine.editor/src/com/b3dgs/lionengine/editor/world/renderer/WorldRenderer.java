@@ -97,6 +97,7 @@ public class WorldRenderer implements PaintListener
         worldUpdater = services.get(WorldUpdater.class);
         zoom = services.get(WorldZoomUpdater.class);
 
+        UtilExtension.clearCache();
         for (final WorldRenderListener listener : UtilExtension.get(WorldRenderListener.class,
                                                                     WorldRenderListener.EXTENSION_ID,
                                                                     services))

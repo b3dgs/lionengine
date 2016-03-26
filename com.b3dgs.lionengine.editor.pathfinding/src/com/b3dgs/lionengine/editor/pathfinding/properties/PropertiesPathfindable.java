@@ -45,7 +45,7 @@ public class PropertiesPathfindable implements PropertiesProviderObject
     public static void createAttributePathfindable(Tree properties)
     {
         final TreeItem animationsItem = new TreeItem(properties, SWT.NONE);
-        animationsItem.setText(Messages.Properties_Pathfindable);
+        animationsItem.setText(Messages.Pathfindable);
         animationsItem.setData(PathfindableConfig.PATHFINDABLE);
         animationsItem.setImage(ICON_PATHFINDING);
     }
