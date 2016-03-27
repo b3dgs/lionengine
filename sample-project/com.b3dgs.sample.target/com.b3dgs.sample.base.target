@@ -8,8 +8,8 @@
 <repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.b3dgs.lionengine.core.swt" version="8.2.3.201603121701"/>
-<unit id="com.b3dgs.lionengine.editor" version="8.2.3.201603121701"/>
+<unit id="com.b3dgs.lionengine.core.swt" version="8.3.0.201603271518"/>
+<unit id="com.b3dgs.lionengine.editor" version="8.3.0.201603271518"/>
 <repository location="jar:file:/C:/Users/DjThunder/git/lionengine/com.b3dgs.lionengine.repository/target/com.b3dgs.lionengine.repository-8.3.0-SNAPSHOT.zip!/"/>
 </location>
 </locations>

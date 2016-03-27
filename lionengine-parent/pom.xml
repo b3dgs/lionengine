@@ -42,7 +42,7 @@
     <groupId>com.b3dgs.lionengine</groupId>
     <artifactId>lionengine-parent</artifactId>
     <packaging>pom</packaging>
-    <version>8.2.3</version>
+    <version>8.3.0-SNAPSHOT</version>
     <name>LionEngine</name>
     <description>Java 2D Game Engine</description>
     <url>https://github.com/b3dgs/lionengine</url>
