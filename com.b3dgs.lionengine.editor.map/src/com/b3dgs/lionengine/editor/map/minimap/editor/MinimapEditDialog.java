@@ -26,6 +26,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
@@ -38,19 +39,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MinimapConfig;
+import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 
 /**
  * Edit minimap dialog.
@@ -76,12 +75,16 @@ public class MinimapEditDialog extends AbstractDialog
         colorLabel.setBackground(color);
     }
 
+    /** Map reference. */
+    private final MapTile map = WorldModel.INSTANCE.getMap();
     /** Minimap config. */
     private final Media minimap;
     /** Minimap data. */
-    private final Map<Point, Color> data = new HashMap<>();
+    private final Map<Integer, Map<Point, Color>> data = new HashMap<>();
     /** Selected tile. */
     private final Point selection = Geom.createPoint(0, 0);
+    /** Current sheet. */
+    private int sheet;
 
     /**
      * Create the dialog.
@@ -94,19 +97,49 @@ public class MinimapEditDialog extends AbstractDialog
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON, SWT.SHELL_TRIM);
 
         minimap = Medias.create(destination);
+        load(parent.getDisplay());
         createDialog();
         dialog.setMinimumSize(64, 64);
         finish.setEnabled(true);
     }
 
     /**
+     * Load existing color data.
+     * 
+     * @param device The device reference.
+     */
+    private void load(Device device)
+    {
+        final Map<TileRef, ColorRgba> colors = MinimapConfig.imports(minimap);
+        for (final Map.Entry<TileRef, ColorRgba> current : colors.entrySet())
+        {
+            final TileRef tile = current.getKey();
+            final int x = tile.getNumber() % map.getTileWidth();
+            final int y = tile.getNumber() / map.getTileWidth();
+            final Point point = Geom.createPoint(x, y);
+
+            final ColorRgba colorRgba = current.getValue();
+            final Color color = new Color(device,
+                                          colorRgba.getRed(),
+                                          colorRgba.getGreen(),
+                                          colorRgba.getBlue(),
+                                          colorRgba.getAlpha());
+
+            if (!data.containsKey(tile.getSheet()))
+            {
+                data.put(tile.getSheet(), new HashMap<>());
+            }
+            data.get(tile.getSheet()).put(point, color);
+        }
+    }
+
+    /**
      * Create the sheet area.
      * 
      * @param parent The parent composite.
-     * @param map The map reference.
      * @return The sheet label.
      */
-    private Label createSheetArea(Composite parent, MapTile map)
+    private Label createSheetArea(Composite parent)
     {
         int maxWidth = 0;
         int maxHeight = 0;
@@ -160,11 +193,49 @@ public class MinimapEditDialog extends AbstractDialog
                 final RGB rgb = dialog.open();
                 final Color color = new Color(colorLabel.getDisplay(), rgb);
                 changeColor(colorLabel, color);
-                data.put(selection, color);
+                setSheetData(color);
             }
         });
+        changeColor(colorLabel, getSheetColor());
 
         return colorLabel;
+    }
+
+    /**
+     * Get the sheet data. Create it if not existing.
+     * 
+     * @return The sheet color data.
+     */
+    private Map<Point, Color> getSheetData()
+    {
+        final Integer key = Integer.valueOf(sheet);
+        if (!data.containsKey(key))
+        {
+            data.put(key, new HashMap<>());
+        }
+        return data.get(key);
+    }
+
+    /**
+     * Set the sheet data.
+     * 
+     * @param color The tile color.
+     */
+    private void setSheetData(Color color)
+    {
+        final Map<Point, Color> sheetData = getSheetData();
+        sheetData.put(Geom.createPoint(selection), color);
+    }
+
+    /**
+     * Get the sheet color.
+     * 
+     * @return The current tile sheet color.
+     */
+    private Color getSheetColor()
+    {
+        final Map<Point, Color> sheetData = getSheetData();
+        return sheetData.get(selection);
     }
 
     /*
@@ -181,8 +252,7 @@ public class MinimapEditDialog extends AbstractDialog
         area.setLayout(new GridLayout(3, false));
         area.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
 
-        final MapTile map = WorldModel.INSTANCE.getMap();
-        final Label sheetLabel = createSheetArea(area, map);
+        final Label sheetLabel = createSheetArea(area);
 
         final Label separator = new Label(area, SWT.SEPARATOR | SWT.VERTICAL);
         separator.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -199,7 +269,7 @@ public class MinimapEditDialog extends AbstractDialog
                 selection.set(tx, ty);
                 if (!colorLabel.isDisposed())
                 {
-                    changeColor(colorLabel, data.get(selection));
+                    changeColor(colorLabel, getSheetColor());
                 }
                 if (!sheetLabel.isDisposed())
                 {
@@ -212,9 +282,19 @@ public class MinimapEditDialog extends AbstractDialog
     @Override
     protected void onFinish()
     {
-        final XmlNode root = Xml.create(MinimapConfig.NODE_MINIMAP);
-        root.writeString(Configurer.HEADER, Engine.WEBSITE);
+        final Map<TileRef, ColorRgba> tiles = new HashMap<>();
+        for (final Map.Entry<Integer, Map<Point, Color>> currentSheet : data.entrySet())
+        {
+            final Integer sheet = currentSheet.getKey();
+            for (final Map.Entry<Point, Color> current : currentSheet.getValue().entrySet())
+            {
+                final Point point = current.getKey();
+                final int number = point.getX() + point.getY() * map.getSheet(sheet).getTilesHorizontal();
+                final Color color = current.getValue();
+                tiles.put(new TileRef(sheet, number), new ColorRgba(color.getRed(), color.getGreen(), color.getBlue()));
+            }
+        }
 
-        Xml.save(root, minimap);
+        MinimapConfig.exports(minimap, tiles);
     }
 }
