@@ -34,6 +34,10 @@ public final class Messages extends NLS
     public static String HeaderDesc;
     /** Minimap color. */
     public static String Color;
+    /** Minimap previous sheet. */
+    public static String Previous;
+    /** Minimap next sheet. */
+    public static String Next;
 
     /**
      * Initialize.

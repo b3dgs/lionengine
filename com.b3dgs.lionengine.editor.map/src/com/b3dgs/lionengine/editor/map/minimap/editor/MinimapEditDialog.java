@@ -43,6 +43,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.utility.control.UtilButton;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MinimapConfig;
@@ -50,14 +51,21 @@ import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Edit minimap dialog.
  */
 public class MinimapEditDialog extends AbstractDialog
 {
+    /** Editor folder. */
+    private static final String EDITOR = "editor";
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "edit.png");
+    /** Previous. */
+    private static final Image PREVIOUS = UtilIcon.get(EDITOR, "previous.png");
+    /** Next. */
+    private static final Image NEXT = UtilIcon.get(EDITOR, "next.png");
 
     /**
      * Change the label color.
@@ -114,22 +122,17 @@ public class MinimapEditDialog extends AbstractDialog
         for (final Map.Entry<TileRef, ColorRgba> current : colors.entrySet())
         {
             final TileRef tile = current.getKey();
-            final int x = tile.getNumber() % map.getTileWidth();
-            final int y = tile.getNumber() / map.getTileWidth();
-            final Point point = Geom.createPoint(x, y);
-
-            final ColorRgba colorRgba = current.getValue();
-            final Color color = new Color(device,
-                                          colorRgba.getRed(),
-                                          colorRgba.getGreen(),
-                                          colorRgba.getBlue(),
-                                          colorRgba.getAlpha());
-
             if (!data.containsKey(tile.getSheet()))
             {
                 data.put(tile.getSheet(), new HashMap<>());
             }
-            data.get(tile.getSheet()).put(point, color);
+
+            final int th = map.getSheet(tile.getSheet()).getTilesHorizontal();
+            final int x = tile.getNumber() % th;
+            final int y = tile.getNumber() / th;
+            final ColorRgba c = current.getValue();
+            final Color color = new Color(device, c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
+            data.get(tile.getSheet()).put(Geom.createPoint(x, y), color);
         }
     }
 
@@ -152,7 +155,7 @@ public class MinimapEditDialog extends AbstractDialog
 
         final Label sheetLabel = new Label(parent, SWT.BORDER);
         sheetLabel.setLayoutData(new GridData(maxWidth, maxHeight));
-        sheetLabel.setImage(map.getSheet(Integer.valueOf(0)).getSurface().getSurface());
+        sheetLabel.setImage(map.getSheet(Integer.valueOf(sheet)).getSurface().getSurface());
         sheetLabel.addPaintListener(event ->
         {
             final GC gc = event.gc;
@@ -199,6 +202,44 @@ public class MinimapEditDialog extends AbstractDialog
         changeColor(colorLabel, getSheetColor());
 
         return colorLabel;
+    }
+
+    /**
+     * Create the sheet selector.
+     * 
+     * @param parent The composite parent.
+     * @param sheetLabel The sheet label.
+     * @param colorLabel The color label reference.
+     */
+    private void createSheetSelector(Composite parent, Label sheetLabel, Label colorLabel)
+    {
+        final Composite sheetSelector = new Composite(parent, SWT.NONE);
+        sheetSelector.setLayout(new GridLayout(2, false));
+        sheetSelector.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
+
+        final Button previous = UtilButton.create(sheetSelector, Messages.Previous, PREVIOUS);
+        UtilButton.setAction(previous, () -> updateSheet(sheetLabel, colorLabel, sheet - 1));
+
+        final Button next = UtilButton.create(sheetSelector, Messages.Next, NEXT);
+        UtilButton.setAction(next, () -> updateSheet(sheetLabel, colorLabel, sheet + 1));
+    }
+
+    /**
+     * Update the sheet with new value.
+     * 
+     * @param sheetLabel The label reference.
+     * @param colorLabel The color label reference.
+     * @param next The new sheet index.
+     */
+    private void updateSheet(Label sheetLabel, Label colorLabel, int next)
+    {
+        sheet = UtilMath.clamp(next, 0, map.getSheetsNumber() - 1);
+        if (!sheetLabel.isDisposed())
+        {
+            sheetLabel.setImage(map.getSheet(Integer.valueOf(sheet)).getSurface().getSurface());
+            sheetLabel.redraw();
+        }
+        changeColor(colorLabel, getSheetColor());
     }
 
     /**
@@ -277,6 +318,8 @@ public class MinimapEditDialog extends AbstractDialog
                 }
             }
         });
+
+        createSheetSelector(content, sheetLabel, colorLabel);
     }
 
     @Override
