@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor.map.minimap.project;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.map.minimap.editor.MinimapEditDialog;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
 
@@ -36,9 +35,7 @@ public final class MinimapEditHandler
      */
     public static void executeHandler(Shell parent)
     {
-        final MinimapEditDialog dialog = new MinimapEditDialog(parent);
-        final Media selection = ProjectModel.INSTANCE.getSelection();
-        dialog.setLocation(selection.getPath());
+        final MinimapEditDialog dialog = new MinimapEditDialog(parent, ProjectModel.INSTANCE.getSelection().getPath());
         dialog.open();
     }
 

@@ -32,10 +32,8 @@ public final class Messages extends NLS
     public static String HeaderTitle;
     /** Description header. */
     public static String HeaderDesc;
-    /** Minimap configuration file. */
-    public static String MinimapConfig;
-    /** Minimap groups list. */
-    public static String Groups;
+    /** Minimap color. */
+    public static String Color;
 
     /**
      * Initialize.

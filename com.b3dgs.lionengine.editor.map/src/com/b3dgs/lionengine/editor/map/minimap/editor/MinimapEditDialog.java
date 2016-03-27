@@ -17,10 +17,16 @@
  */
 package com.b3dgs.lionengine.editor.map.minimap.editor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
@@ -31,17 +37,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
-import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
-import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
-import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MinimapConfig;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -53,41 +60,54 @@ public class MinimapEditDialog extends AbstractDialog
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
+    /**
+     * Change the label color.
+     * 
+     * @param colorLabel The label color.
+     * @param color The background color.
+     */
+    private static void changeColor(Label colorLabel, Color color)
+    {
+        final Color old = colorLabel.getBackground();
+        if (old != null)
+        {
+            old.dispose();
+        }
+        colorLabel.setBackground(color);
+    }
+
     /** Minimap config. */
-    private BrowseWidget minimap;
+    private final Media minimap;
+    /** Minimap data. */
+    private final Map<Point, Color> data = new HashMap<>();
+    /** Selected tile. */
+    private final Point selection = Geom.createPoint(0, 0);
 
     /**
      * Create the dialog.
      * 
      * @param parent The parent reference.
+     * @param destination The configuration destination.
      */
-    public MinimapEditDialog(Shell parent)
+    public MinimapEditDialog(Shell parent, String destination)
     {
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON, SWT.SHELL_TRIM);
 
+        minimap = Medias.create(destination);
         createDialog();
-        dialog.setMinimumSize(640, 448);
-        finish.setEnabled(false);
-    }
-
-    /**
-     * Set the save folder destination.
-     * 
-     * @param destination The destination folder.
-     */
-    public void setLocation(String destination)
-    {
-        minimap.setLocation(destination);
+        dialog.setMinimumSize(64, 64);
+        finish.setEnabled(true);
     }
 
     /**
      * Create the sheet area.
      * 
      * @param parent The parent composite.
+     * @param map The map reference.
+     * @return The sheet label.
      */
-    private void createSheetArea(Composite parent)
+    private Label createSheetArea(Composite parent, MapTile map)
     {
-        final MapTile map = WorldModel.INSTANCE.getMap();
         int maxWidth = 0;
         int maxHeight = 0;
         for (final Integer sheet : map.getSheets())
@@ -100,23 +120,37 @@ public class MinimapEditDialog extends AbstractDialog
         final Label sheetLabel = new Label(parent, SWT.BORDER);
         sheetLabel.setLayoutData(new GridData(maxWidth, maxHeight));
         sheetLabel.setImage(map.getSheet(Integer.valueOf(0)).getSurface().getSurface());
+        sheetLabel.addPaintListener(event ->
+        {
+            final GC gc = event.gc;
+            gc.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_RED));
+            final int x = selection.getX() * map.getTileWidth();
+            final int y = selection.getY() * map.getTileHeight();
+            gc.drawRectangle(x, y, map.getTileWidth(), map.getTileHeight());
+        });
+
+        return sheetLabel;
     }
 
     /**
      * Create the color area chooser.
      * 
      * @param parent The parent composite.
+     * @return The color label.
      */
-    private void createColorArea(Composite parent)
+    private Label createColorArea(Composite parent)
     {
         final Composite colorArea = new Composite(parent, SWT.NONE);
-        colorArea.setLayout(new GridLayout(1, false));
+        colorArea.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, true));
+        colorArea.setLayout(new GridLayout(1, true));
 
         final Button colorPicker = new Button(colorArea, SWT.NONE);
-        colorPicker.setText("Color");
+        colorPicker.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+        colorPicker.setText(Messages.Color);
 
-        final Label color = new Label(colorArea, SWT.BORDER);
-        color.setLayoutData(new GridData(32, 24));
+        final Label colorLabel = new Label(colorArea, SWT.BORDER);
+        colorLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+        colorLabel.setLayoutData(new GridData(colorPicker.computeSize(SWT.DEFAULT, SWT.DEFAULT).x + 1, 24));
         colorPicker.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -124,14 +158,13 @@ public class MinimapEditDialog extends AbstractDialog
             {
                 final ColorDialog dialog = new ColorDialog(colorPicker.getShell());
                 final RGB rgb = dialog.open();
-                final Color old = color.getBackground();
-                if (old != null)
-                {
-                    old.dispose();
-                }
-                color.setBackground(new Color(color.getDisplay(), rgb));
+                final Color color = new Color(colorLabel.getDisplay(), rgb);
+                changeColor(colorLabel, color);
+                data.put(selection, color);
             }
         });
+
+        return colorLabel;
     }
 
     /*
@@ -144,31 +177,34 @@ public class MinimapEditDialog extends AbstractDialog
         content.setLayout(new GridLayout(1, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        final String[] filter = UtilDialog.getXmlFilter();
-        final String label = Messages.MinimapConfig;
-        minimap = new BrowseWidget(content, label, label + " (" + filter[0] + ")", filter, true);
-
-        final Label separator1 = new Label(content, SWT.SEPARATOR | SWT.HORIZONTAL);
-        separator1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
         final Composite area = new Composite(content, SWT.NONE);
         area.setLayout(new GridLayout(3, false));
-        area.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, false, true));
+        area.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
 
-        createSheetArea(area);
+        final MapTile map = WorldModel.INSTANCE.getMap();
+        final Label sheetLabel = createSheetArea(area, map);
 
-        final Label separator2 = new Label(area, SWT.SEPARATOR | SWT.VERTICAL);
-        separator2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        final Label separator = new Label(area, SWT.SEPARATOR | SWT.VERTICAL);
+        separator.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        createColorArea(area);
+        final Label colorLabel = createColorArea(area);
 
-        UtilSwt.setEnabled(area, false);
-        minimap.addListener(media ->
+        sheetLabel.addMouseListener(new MouseAdapter()
         {
-            if (media.exists())
+            @Override
+            public void mouseDown(MouseEvent event)
             {
-                UtilSwt.setEnabled(area, true);
-                finish.setEnabled(true);
+                final int tx = event.x / map.getTileWidth();
+                final int ty = event.y / map.getTileHeight();
+                selection.set(tx, ty);
+                if (!colorLabel.isDisposed())
+                {
+                    changeColor(colorLabel, data.get(selection));
+                }
+                if (!sheetLabel.isDisposed())
+                {
+                    sheetLabel.redraw();
+                }
             }
         });
     }
@@ -179,6 +215,6 @@ public class MinimapEditDialog extends AbstractDialog
         final XmlNode root = Xml.create(MinimapConfig.NODE_MINIMAP);
         root.writeString(Configurer.HEADER, Engine.WEBSITE);
 
-        Xml.save(root, minimap.getMedia());
+        Xml.save(root, minimap);
     }
 }

@@ -22,6 +22,7 @@ import org.eclipse.core.expressions.PropertyTester;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.project.ProjectModel;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.MinimapConfig;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -48,7 +49,7 @@ public final class MinimapTester extends PropertyTester
         final boolean result;
         if (PROPERTY_EDIT_MINIMAP.equals(property))
         {
-            result = isMinimapFile(selection);
+            result = isMinimapFile(selection) && WorldModel.INSTANCE.getMap().isCreated();
         }
         else if (PROPERTY_ADD_MINIMAP.equals(property))
         {

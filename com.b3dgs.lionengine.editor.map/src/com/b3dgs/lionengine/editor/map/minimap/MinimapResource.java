@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.editor.map.minimap.project.MinimapEditHandler;
 import com.b3dgs.lionengine.editor.project.ProjectTreeCreator;
 import com.b3dgs.lionengine.editor.project.ResourceChecker;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
+import com.b3dgs.lionengine.editor.world.WorldModel;
 
 /**
  * Minimap resource checker.
@@ -49,7 +50,7 @@ public class MinimapResource implements ResourceChecker
     @Override
     public boolean check(Shell shell, Media media)
     {
-        if (MinimapTester.isMinimapFile(media))
+        if (MinimapTester.isMinimapFile(media) && WorldModel.INSTANCE.getMap().isCreated())
         {
             MinimapEditHandler.executeHandler(shell);
             return true;
