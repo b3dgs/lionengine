@@ -420,7 +420,7 @@ public final class ImageInfo
             final int tag = readInt(input, 2, bigEndian);
             final int fieldType = readInt(input, 2, bigEndian);
             readInt(input, 4, bigEndian);
-            int valOffset;
+            final int valOffset;
             if (3 == fieldType || 8 == fieldType)
             {
                 valOffset = readInt(input, 2, bigEndian);
