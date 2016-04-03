@@ -137,7 +137,7 @@ public final class MouseAwt implements Mouse
     {
         if (robot != null)
         {
-            int event;
+            final int event;
             switch (click)
             {
                 case Mouse.LEFT:
