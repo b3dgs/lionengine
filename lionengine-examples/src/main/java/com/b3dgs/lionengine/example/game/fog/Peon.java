@@ -71,7 +71,7 @@ class Peon extends ObjectGame implements Updatable, Renderable
         surface.setFrameOffsets(-8, -8);
 
         transformable.teleport(64, 64);
-        fovable.setFov(4);
+        fovable.setFov(3);
         timing.start();
     }
 

@@ -172,12 +172,12 @@ public class TileGame implements Tile
     {
         final int prime = 31;
         int result = 1;
+        result = prime * result + width;
         result = prime * result + height;
         result = prime * result + inTileX;
         result = prime * result + inTileY;
-        result = prime * result + number;
         result = prime * result + sheet.hashCode();
-        result = prime * result + width;
+        result = prime * result + number;
         long temp;
         temp = Double.doubleToLongBits(x);
         result = prime * result + (int) (temp ^ temp >>> 32);
@@ -198,15 +198,11 @@ public class TileGame implements Tile
             return false;
         }
         final TileGame other = (TileGame) obj;
-        if (!sheet.equals(other.sheet)
-            || number != other.number
-            || width != other.width
-            || height != other.height
-            || inTileX != other.inTileX
-            || inTileY != other.inTileY)
-        {
-            return false;
-        }
-        return true;
+        return sheet.equals(other.sheet)
+               && number == other.number
+               && width == other.width
+               && height == other.height
+               && inTileX == other.inTileX
+               && inTileY == other.inTileY;
     }
 }

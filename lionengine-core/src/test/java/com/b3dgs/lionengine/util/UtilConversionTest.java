@@ -92,4 +92,85 @@ public class UtilConversionTest
         Assert.assertEquals(0, UtilConversion.boolToInt(false));
         Assert.assertEquals(1, UtilConversion.boolToInt(true));
     }
+
+    /**
+     * Test the utility conversion from binary.
+     */
+    @Test
+    public void testfromBinary()
+    {
+        Assert.assertEquals(0, UtilConversion.fromBinary(new boolean[1]));
+        Assert.assertEquals(1, UtilConversion.fromBinary(new boolean[]
+        {
+            true
+        }));
+        Assert.assertEquals(2, UtilConversion.fromBinary(new boolean[]
+        {
+            true, false
+        }));
+        Assert.assertEquals(3, UtilConversion.fromBinary(new boolean[]
+        {
+            true, true
+        }));
+        Assert.assertEquals(4, UtilConversion.fromBinary(new boolean[]
+        {
+            true, false, false
+        }));
+    }
+
+    /**
+     * Test the utility conversion to binary.
+     */
+    @Test
+    public void testToBinary()
+    {
+        Assert.assertArrayEquals(new boolean[1], UtilConversion.toBinary(0, 1));
+        Assert.assertArrayEquals(new boolean[4], UtilConversion.toBinary(0, 4));
+        Assert.assertArrayEquals(new boolean[]
+        {
+            true
+        }, UtilConversion.toBinary(1, 1));
+        Assert.assertArrayEquals(new boolean[]
+        {
+            true, false
+        }, UtilConversion.toBinary(2, 2));
+    }
+
+    /**
+     * Test the utility invert binary.
+     */
+    @Test
+    public void testInvert()
+    {
+        Assert.assertArrayEquals(new boolean[]
+        {
+            true, false, true
+        }, UtilConversion.invert(new boolean[]
+        {
+            false, true, false
+        }));
+
+        for (int i = 0; i < 32; i++)
+        {
+            final boolean[] table = new boolean[i];
+            for (int j = 0; j < table.length; j++)
+            {
+                if (j % 1 == 0)
+                {
+                    table[j] = false;
+                }
+                else
+                {
+                    table[j] = true;
+                }
+            }
+            final boolean[] inverted = UtilConversion.invert(table);
+
+            Assert.assertEquals(table.length, inverted.length);
+            for (int j = 0; j < inverted.length; j++)
+            {
+                Assert.assertTrue(inverted[j] == !table[j]);
+            }
+        }
+    }
 }

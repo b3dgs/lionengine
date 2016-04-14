@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.editor.map.sheet.extract.SheetsExtractDialog;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.map.transition.TransitionsConfig;
-import com.b3dgs.lionengine.game.map.transition.TransitionsExtractor;
 import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 
@@ -63,7 +62,7 @@ public final class ExtractAllHandler
         sheetsExtractDialog.save();
         groupsEditDialog.save();
         TileConstraintsConfig.export(constraints, ConstraintsExtractor.getConstraints(levels, sheets));
-        TransitionsConfig.exports(transitions, TransitionsExtractor.getTransitions(levels, sheets, groups));
+        TransitionsConfig.exports(transitions, levels, sheets, groups);
     }
 
     /**

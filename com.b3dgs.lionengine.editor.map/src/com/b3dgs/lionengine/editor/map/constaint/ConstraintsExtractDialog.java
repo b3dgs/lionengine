@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.transition.TransitionsConfig;
-import com.b3dgs.lionengine.game.map.transition.TransitionsExtractor;
 import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.util.UtilFolder;
@@ -168,8 +167,6 @@ public class ConstraintsExtractDialog extends AbstractDialog
         final Media groupsConfig = groups.getMedia();
 
         TileConstraintsConfig.export(constraints.getMedia(), ConstraintsExtractor.getConstraints(levels, sheetsConfig));
-
-        TransitionsConfig.exports(transitions.getMedia(),
-                                  TransitionsExtractor.getTransitions(levels, sheetsConfig, groupsConfig));
+        TransitionsConfig.exports(transitions.getMedia(), levels, sheetsConfig, groupsConfig);
     }
 }

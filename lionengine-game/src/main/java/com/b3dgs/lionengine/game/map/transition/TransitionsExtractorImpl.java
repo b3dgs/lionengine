@@ -1,0 +1,136 @@
+/*
+ * Copyright (C) 2013-2016 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+package com.b3dgs.lionengine.game.map.transition;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileRef;
+
+/**
+ * Default transition extractor implementation.
+ */
+final class TransitionsExtractorImpl implements TransitionsExtractor
+{
+    /**
+     * Get the tiles for the transition. Create empty list if new transition.
+     * 
+     * @param transitions The transitions data.
+     * @param transition The transition type.
+     * @return The associated tiles.
+     */
+    private static Collection<TileRef> getTiles(Map<Transition, Collection<TileRef>> transitions, Transition transition)
+    {
+        if (!transitions.containsKey(transition))
+        {
+            transitions.put(transition, new HashSet<TileRef>());
+        }
+        return transitions.get(transition);
+    }
+
+    /**
+     * Create the extractor.
+     */
+    TransitionsExtractorImpl()
+    {
+        super();
+    }
+
+    /*
+     * TransitionsExtractor
+     */
+
+    @Override
+    public Map<Transition, Collection<TileRef>> getTransitions(Media[] levels, Media sheetsMedia, Media groupsMedia)
+    {
+        final Collection<MapTile> mapsSet = new HashSet<MapTile>();
+        for (final Media level : levels)
+        {
+            final MapTile map = new MapTileGame();
+            map.create(level, sheetsMedia);
+
+            final MapTileGroup mapGroup = new MapTileGroupModel();
+            mapGroup.loadGroups(groupsMedia);
+            map.addFeature(mapGroup);
+            mapsSet.add(map);
+        }
+        final MapTile[] maps = mapsSet.toArray(new MapTile[mapsSet.size()]);
+        return getTransitions(maps);
+    }
+
+    @Override
+    public Map<Transition, Collection<TileRef>> getTransitions(MapTile... maps)
+    {
+        final Map<Transition, Collection<TileRef>> transitions = new HashMap<Transition, Collection<TileRef>>();
+        for (final MapTile map : maps)
+        {
+            final Map<Transition, Collection<TileRef>> currents = getTransitions(map);
+            for (final Entry<Transition, Collection<TileRef>> entry : currents.entrySet())
+            {
+                final Transition transition = entry.getKey();
+                final Collection<TileRef> tiles = entry.getValue();
+                if (transitions.containsKey(transition))
+                {
+                    transitions.get(transition).addAll(tiles);
+                }
+                else
+                {
+                    transitions.put(transition, tiles);
+                }
+            }
+        }
+        return transitions;
+    }
+
+    @Override
+    public Map<Transition, Collection<TileRef>> getTransitions(MapTile map)
+    {
+        final Map<Transition, Collection<TileRef>> transitions = new HashMap<Transition, Collection<TileRef>>();
+        final MapTransitionExtractor extractor = new MapTransitionExtractor(map);
+        for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
+        {
+            for (int tx = 1; tx < map.getInTileWidth() - 1; tx++)
+            {
+                final Tile tile = map.getTile(tx, ty);
+                if (tile != null)
+                {
+                    final Transition transition = extractor.getTransition(tile);
+                    if (transition != null)
+                    {
+                        getTiles(transitions, transition).add(new TileRef(tile));
+
+                        final Transition symetric = new Transition(transition.getType().getSymetric(),
+                                                                   transition.getOut(),
+                                                                   transition.getIn());
+                        getTiles(transitions, symetric).add(new TileRef(tile));
+                    }
+                }
+            }
+        }
+        return transitions;
+    }
+}

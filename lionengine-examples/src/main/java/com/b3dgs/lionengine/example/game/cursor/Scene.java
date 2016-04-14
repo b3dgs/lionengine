@@ -31,8 +31,8 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.transition.TransitionType;
-import com.b3dgs.lionengine.game.map.transition.TransitionsExtractor;
+import com.b3dgs.lionengine.game.map.transition.MapTransitionExtractor;
+import com.b3dgs.lionengine.game.map.transition.Transition;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -66,6 +66,8 @@ class Scene extends Sequence
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
     private final Mouse mouse = getInputDevice(Mouse.class);
+    /** Map transition extractor. */
+    private final MapTransitionExtractor transitionExtractor = new MapTransitionExtractor(map);
 
     /**
      * Constructor.
@@ -93,8 +95,6 @@ class Scene extends Sequence
         {
             final int x = tx * map.getTileWidth();
             final int y = ty * map.getTileHeight();
-            final TransitionType typeIn = TransitionsExtractor.getTransition(map, tile, false).getType();
-            final TransitionType typeOut = TransitionsExtractor.getTransition(map, tile, true).getType();
 
             text.drawRect(g, ColorRgba.GREEN, x, y, map.getTileWidth(), map.getTileHeight());
             text.setColor(ColorRgba.YELLOW);
@@ -102,8 +102,9 @@ class Scene extends Sequence
             text.draw(g, x + 20, y + 25, "X = " + tx + " | Y = " + ty);
             text.draw(g, x + 20, y + 15, "RX = " + cursor.getX() + " | RY = " + cursor.getY());
             text.draw(g, x + 20, y + 5, "Group: " + mapGroup.getGroup(tile));
-            text.draw(g, x + 20, y - 5, "Transition In: " + typeIn);
-            text.draw(g, x + 20, y - 15, "Transition Out: " + typeOut);
+
+            final Transition transition = transitionExtractor.getTransition(tile);
+            text.draw(g, x + 20, y - 5, "Transition: " + transition);
         }
     }
 
@@ -111,7 +112,7 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"));
-        map.createFeature(MapTileGroupModel.class).loadGroups(Medias.create("groups.xml"));
+        mapGroup.loadGroups(Medias.create("groups.xml"));
 
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load();

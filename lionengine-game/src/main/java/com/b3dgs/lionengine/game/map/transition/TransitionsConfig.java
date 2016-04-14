@@ -83,6 +83,24 @@ public final class TransitionsConfig
 
     /**
      * Export all transitions to an XML file.
+     *
+     * @param media The export output.
+     * @param levels The level rips used.
+     * @param sheetsMedia The sheets media.
+     * @param groupsMedia The groups media.
+     * @throws LionEngineException If error on export.
+     */
+    public static void exports(Media media, Media[] levels, Media sheetsMedia, Media groupsMedia)
+    {
+        final TransitionsExtractor extractor = new TransitionsExtractorImpl();
+        final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(levels,
+                                                                                          sheetsMedia,
+                                                                                          groupsMedia);
+        exports(media, transitions);
+    }
+
+    /**
+     * Export all transitions to an XML file.
      * 
      * @param media The export output.
      * @param transitions The transitions reference.

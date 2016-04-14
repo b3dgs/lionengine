@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map.transition;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,6 +45,95 @@ import com.b3dgs.lionengine.game.tile.TileRef;
  */
 public class MapTileTransitionModel implements MapTileTransition
 {
+    /**
+     * Get the new transition type from two transitions.
+     * 
+     * @param a The inner transition.
+     * @param b The outer transition.
+     * @param ox The horizontal offset to update.
+     * @param oy The vertical offset to update.
+     * @return The new transition type, <code>null</code> if none.
+     */
+    private static TransitionType getTransition(TransitionType a, TransitionType b, int ox, int oy)
+    {
+        final TransitionType type = getTransitionHorizontalVertical(a, b, ox, oy);
+        if (type != null)
+        {
+            return type;
+        }
+        return getTransitionDiagonals(a, b, ox, oy);
+    }
+
+    /**
+     * Get the new transition type from two transitions on horizontal and vertical axis.
+     * 
+     * @param a The inner transition.
+     * @param b The outer transition.
+     * @param ox The horizontal offset to update.
+     * @param oy The vertical offset to update.
+     * @return The new transition type, <code>null</code> if none.
+     */
+    private static TransitionType getTransitionHorizontalVertical(TransitionType a, TransitionType b, int ox, int oy)
+    {
+        final TransitionType type;
+        if (ox == -1 && oy == 0)
+        {
+            type = TransitionType.from(!b.getDownRight(), a.getDownLeft(), !b.getUpRight(), a.getUpLeft());
+        }
+        else if (ox == 1 && oy == 0)
+        {
+            type = TransitionType.from(a.getDownRight(), !b.getDownLeft(), a.getUpRight(), !b.getUpLeft());
+        }
+        else if (ox == 0 && oy == 1)
+        {
+            type = TransitionType.from(!b.getDownRight(), !b.getDownLeft(), a.getUpRight(), a.getUpLeft());
+        }
+        else if (ox == 0 && oy == -1)
+        {
+            type = TransitionType.from(a.getDownRight(), a.getDownLeft(), !b.getUpRight(), !b.getUpLeft());
+        }
+        else
+        {
+            type = null;
+        }
+        return type;
+    }
+
+    /**
+     * Get the new transition type from two transitions on diagonals.
+     * 
+     * @param a The inner transition.
+     * @param b The outer transition.
+     * @param ox The horizontal offset to update.
+     * @param oy The vertical offset to update.
+     * @return The new transition type, <code>null</code> if none.
+     */
+    private static TransitionType getTransitionDiagonals(TransitionType a, TransitionType b, int ox, int oy)
+    {
+        final TransitionType type;
+        if (ox == -1 && oy == 1)
+        {
+            type = TransitionType.from(!b.getDownRight(), !b.getDownLeft(), !b.getUpRight(), a.getUpLeft());
+        }
+        else if (ox == 1 && oy == 1)
+        {
+            type = TransitionType.from(!b.getDownRight(), !b.getDownLeft(), a.getUpRight(), !b.getUpLeft());
+        }
+        else if (ox == -1 && oy == -1)
+        {
+            type = TransitionType.from(!b.getDownRight(), a.getDownLeft(), !b.getUpRight(), !b.getUpLeft());
+        }
+        else if (ox == 1 && oy == -1)
+        {
+            type = TransitionType.from(a.getDownRight(), !b.getDownLeft(), !b.getUpRight(), !b.getUpLeft());
+        }
+        else
+        {
+            type = null;
+        }
+        return type;
+    }
+
     /** Map reference. */
     private final MapTile map;
     /** Map tile group. */
@@ -53,7 +143,7 @@ public class MapTileTransitionModel implements MapTileTransition
     /** Transitions as key. */
     private Map<Transition, Collection<TileRef>> transitions;
     /** Transitive group handler. */
-    private TransitiveGroup transitive;
+    private TransitiveGroup transitiveGroup;
 
     /**
      * Create a map tile path.
@@ -77,222 +167,203 @@ public class MapTileTransitionModel implements MapTileTransition
     }
 
     /**
-     * Check if tile is a center tile in order to update directly its neighbor properly.
+     * Resolve current tile and add to resolve list extra tiles.
      * 
-     * @param tile The tile reference.
+     * @param toResolve The next tiles to resolve.
+     * @param tile The tile to resolve.
      */
-    private void checkCenterTile(Tile tile)
+    private void resolve(Collection<Tile> toResolve, Tile tile)
+    {
+        updateTile(toResolve, tile, -1, 0);
+        updateTile(toResolve, tile, 1, 0);
+        updateTile(toResolve, tile, 0, 1);
+        updateTile(toResolve, tile, 0, -1);
+
+        updateTile(toResolve, tile, -1, 1);
+        updateTile(toResolve, tile, 1, 1);
+        updateTile(toResolve, tile, -1, -1);
+        updateTile(toResolve, tile, 1, -1);
+    }
+
+    /**
+     * Update tile.
+     * 
+     * @param toResolve Tiles to resolve after.
+     * @param tile The tile reference.
+     * @param ox The horizontal offset to update.
+     * @param oy The vertical offset to update.
+     */
+    private void updateTile(Collection<Tile> toResolve, Tile tile, int ox, int oy)
+    {
+        final int tx = tile.getInTileX();
+        final int ty = tile.getInTileY();
+
+        final Tile neighbor = map.getTile(tx + ox, ty + oy);
+        if (neighbor != null)
+        {
+            updateNeigbor(toResolve, tile, neighbor, ox, oy);
+        }
+    }
+
+    /**
+     * Update neighbor.
+     * 
+     * @param toResolve Tiles to resolve after.
+     * @param tile The tile reference.
+     * @param neighbor The neighbor reference.
+     * @param ox The horizontal offset to update.
+     * @param oy The vertical offset to update.
+     */
+    private void updateNeigbor(Collection<Tile> toResolve, Tile tile, Tile neighbor, int ox, int oy)
     {
         final String group = mapGroup.getGroup(tile);
-        final Transition transition = getTransition(tile, group);
-        if (TransitionType.CENTER == transition.getType())
+        final String neighborGroup = mapGroup.getGroup(neighbor);
+
+        final Transition transitionA = getTransition(tile, neighborGroup);
+        final Transition transitionB = getTransition(neighbor, group);
+
+        if (transitionA != null && transitionB != null)
         {
-            final int tx = tile.getInTileX();
-            final int ty = tile.getInTileY();
-            for (int v = ty + 1; v >= ty - 1; v--)
+            final TransitionType transitionTypeA = transitionA.getType();
+            final TransitionType transitionTypeB = transitionB.getType();
+
+            final TransitionType newType = getTransition(transitionTypeA, transitionTypeB, ox, oy);
+            if (newType != null)
             {
-                for (int h = tx - 1; h <= tx + 1; h++)
-                {
-                    final Tile neighbor = map.getTile(h, v);
-                    checkCenterTile(tile, neighbor);
-                }
+                final Transition newTransition = new Transition(newType, transitionA.getOut(), transitionB.getIn());
+                updateTransition(toResolve, tile, neighbor, neighborGroup, newTransition);
             }
         }
-        // checkTransitives(tile);
     }
 
     /**
-     * Check if tile is a center tile in order to update directly its neighbor properly.
+     * Update transition.
      * 
+     * @param toResolve Tiles to resolve after.
      * @param tile The tile reference.
-     * @param neighbor The tile neighbor reference.
+     * @param neighbor The neighbor reference.
+     * @param neighborGroup The neighbor group.
+     * @param newTransition The new transition.
      */
-    private void checkCenterTile(Tile tile, Tile neighbor)
+    private void updateTransition(Collection<Tile> toResolve,
+                                  Tile tile,
+                                  Tile neighbor,
+                                  String neighborGroup,
+                                  Transition newTransition)
     {
-        final String group = mapGroup.getGroup(tile);
-        if (neighbor != null
-            && !isTransitionInverted(neighbor, group)
-            && TransitionType.CENTER != getTransition(neighbor, group).getType())
+        if (!neighborGroup.equals(newTransition.getIn()))
         {
-            map.setTile(map.createTile(tile.getSheet(), tile.getNumber(), neighbor.getX(), neighbor.getY()));
+            updateTile(toResolve, tile, neighbor, newTransition);
         }
     }
 
     /**
-     * Update the tile depending of its transition. Replace the tile with its right transition representation.
+     * Update tile.
      * 
-     * @param tile The tile reference.
-     * @return <code>true</code> if updated, <code>false</code> if unchanged.
+     * @param toResolve Tiles to resolve after.
+     * @param tile The tile placed.
+     * @param neighbor The tile to update.
+     * @param transition The transition to set.
      */
-    private boolean updateTile(Tile tile)
+    private void updateTile(Collection<Tile> toResolve, Tile tile, Tile neighbor, Transition transition)
     {
-        for (final Transition transition : TransitionsExtractor.getTransition(map, tile))
+        final Iterator<TileRef> iterator = getTiles(transition).iterator();
+        if (iterator.hasNext())
         {
-            final String group = mapGroup.getGroup(tile);
-            if (group.equals(transition.getOut()))
-            {
-                final Collection<TileRef> tilesRef = getTransitionTiles(transition);
-                if (updateTile(tile, transition, tilesRef))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Get the tiles associated to the transition.
-     * 
-     * @param transition The transition reference.
-     * @return The associated tiles.
-     */
-    private Collection<TileRef> getTransitionTiles(Transition transition)
-    {
-        final Collection<TileRef> tilesRef;
-        if (transitions.containsKey(transition))
-        {
-            tilesRef = transitions.get(transition);
+            final TileRef newTile = iterator.next();
+            map.setTile(map.createTile(newTile.getSheet(), newTile.getNumber(), neighbor.getX(), neighbor.getY()));
         }
         else
         {
-            tilesRef = transitive.getDirectTransitiveTiles(transition);
+            final Tile newTile = map.createTile(tile.getSheet(), tile.getNumber(), neighbor.getX(), neighbor.getY());
+            if (!neighbor.equals(newTile))
+            {
+                map.setTile(newTile);
+                toResolve.add(newTile);
+            }
         }
-        return tilesRef;
     }
 
     /**
-     * Update the tile depending of its transition. Replace the tile with its right transition representation.
+     * Check tile transitive groups.
+     * 
+     * @param tile The tile to check.
+     */
+    private void checkTransitives(Tile tile)
+    {
+        boolean isTransitive = false;
+        for (final Tile neighbor : map.getNeighbors(tile))
+        {
+            final String group = mapGroup.getGroup(tile);
+            final String neighborGroup = mapGroup.getGroup(neighbor);
+            final Collection<GroupTransition> transitives = getTransitives(group, neighborGroup);
+
+            if (transitives.size() > 1 && (getTransition(neighbor, group) == null || isCenter(neighbor)))
+            {
+                final int iterations = transitives.size() - 3;
+                int i = 0;
+                for (final GroupTransition transitive : transitives)
+                {
+                    updateTransitive(tile, neighbor, transitive);
+                    isTransitive = true;
+                    i++;
+                    if (i > iterations)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        // Restore initial tile once transition solved by transitive
+        if (isTransitive)
+        {
+            map.setTile(tile);
+        }
+    }
+
+    /**
+     * Update the transitive between tile and its neighbor.
      * 
      * @param tile The tile reference.
-     * @param transition The tile transition.
-     * @param tilesRef The associated tiles.
-     * @return <code>true</code> if updated, <code>false</code> if unchanged.
+     * @param neighbor The neighbor reference.
+     * @param transitive The transitive involved.
      */
-    private boolean updateTile(Tile tile, Transition transition, Collection<TileRef> tilesRef)
+    private void updateTransitive(Tile tile, Tile neighbor, GroupTransition transitive)
     {
-        if (!tilesRef.contains(new TileRef(tile)))
+        final String transitiveGroup = transitive.getOut();
+        final Transition transition = new Transition(TransitionType.CENTER, transitiveGroup, transitiveGroup);
+        final Collection<TileRef> refs = getTiles(transition);
+        if (!refs.isEmpty())
         {
-            for (final TileRef tileRef : tilesRef)
+            final TileRef ref = refs.iterator().next();
+
+            // Replace user tile with the needed tile to solve transition (restored later)
+            final Tile newTile = map.createTile(ref.getSheet(), ref.getNumber(), tile.getX(), tile.getY());
+            map.setTile(newTile);
+
+            // Replace neighbor with the needed tile to solve transition
+            final Tile newTile2 = map.createTile(ref.getSheet(), ref.getNumber(), neighbor.getX(), neighbor.getY());
+            map.setTile(newTile2);
+            resolve(newTile2);
+        }
+    }
+
+    /**
+     * Check if tile is a center.
+     * 
+     * @param tile The tile to check.
+     * @return <code>true</code> if center, <code>false</code> else.
+     */
+    private boolean isCenter(Tile tile)
+    {
+        for (final Transition transition : tiles.get(new TileRef(tile)))
+        {
+            if (TransitionType.CENTER == transition.getType())
             {
-                final TransitionType type = getTransition(tileRef, transition.getOut()).getType();
-                if (TransitionType.CENTER != type)
-                {
-                    map.setTile(map.createTile(tileRef.getSheet(), tileRef.getNumber(), tile.getX(), tile.getY()));
-                    return true;
-                }
+                return true;
             }
         }
         return false;
-    }
-
-    /**
-     * Resolve unchecked tiles around.
-     * 
-     * @param checked The list of checked tiles.
-     * @param tile The tile to check its neighbor.
-     */
-    private void resolve(Collection<Tile> checked, Tile tile)
-    {
-        final Collection<Tile> todo = new HashSet<Tile>();
-        final int tx = tile.getInTileX();
-        final int ty = tile.getInTileY();
-        for (int v = ty + 1; v >= ty - 1; v--)
-        {
-            for (int h = tx - 1; h <= tx + 1; h++)
-            {
-                final Tile neighbor = map.getTile(h, v);
-                resolve(neighbor, checked, todo);
-            }
-        }
-
-        for (final Tile neighbor : todo)
-        {
-            resolve(checked, neighbor);
-        }
-        todo.clear();
-    }
-
-    /**
-     * Resolve unchecked tiles around.
-     * 
-     * @param neighbor The neighbor tile.
-     * @param checked The list of checked tiles.
-     * @param todo The next tiles to check.
-     */
-    private void resolve(Tile neighbor, Collection<Tile> checked, Collection<Tile> todo)
-    {
-        if (neighbor != null && !checked.contains(neighbor))
-        {
-            checked.add(neighbor);
-            if (updateTile(neighbor))
-            {
-                todo.add(neighbor);
-            }
-        }
-    }
-
-    /**
-     * Fix tile transition image if not center where needed.
-     * 
-     * @param tile The initial tile reference.
-     * @param ref The current tile reference to fix.
-     * @param fixed The fixed tiles list.
-     */
-    private void fix(Tile tile, Tile ref, Collection<Tile> fixed)
-    {
-        fixed.add(ref);
-        for (final Transition transition : TransitionsExtractor.getTransition(map, ref))
-        {
-            final String group = mapGroup.getGroup(tile);
-            if (group.equals(transition.getIn())
-                && TransitionType.CENTER == transition.getType()
-                && transition.getType() != getTransition(ref, transition.getOut()).getType())
-            {
-                map.setTile(map.createTile(tile.getSheet(), tile.getNumber(), ref.getX(), ref.getY()));
-                fixNeigbor(tile, ref, fixed, 1);
-            }
-        }
-    }
-
-    /**
-     * Fix tile transition image if not center where needed.
-     * 
-     * @param tile The initial tile reference.
-     * @param ref The current tile reference to fix.
-     * @param fixed The fixed tiles list.
-     * @param radius The fix radius in tile.
-     */
-    private void fixNeigbor(Tile tile, Tile ref, Collection<Tile> fixed, int radius)
-    {
-        final int tx = ref.getInTileX();
-        final int ty = ref.getInTileY();
-        for (int v = ty + radius; v >= ty - radius; v--)
-        {
-            for (int h = tx - radius; h <= tx + radius; h++)
-            {
-                final Tile neighbor = map.getTile(h, v);
-                if (neighbor != null && !fixed.contains(neighbor))
-                {
-                    fix(tile, neighbor, fixed);
-                }
-            }
-        }
-    }
-
-    /**
-     * Check if tile is an inverted transition compared to the group.
-     * 
-     * @param tile The tile to check.
-     * @param group The group to check with.
-     * @return <code>true</code> if transition is inverted, <code>false</code> else.
-     */
-    private boolean isTransitionInverted(Tile tile, String group)
-    {
-        final Transition neighborTransition = TransitionsExtractor.getTransition(map, tile, false);
-        final Iterator<TileRef> iterator = getTiles(neighborTransition).iterator();
-
-        return iterator.hasNext() && TransitionType.CENTER == getTransition(iterator.next(), group).getType();
     }
 
     /*
@@ -324,47 +395,42 @@ public class MapTileTransitionModel implements MapTileTransition
             }
         }
 
-        transitive = new TransitiveGroup(map, mapGroup, this);
-        transitive.load();
+        transitiveGroup = new TransitiveGroup(map, mapGroup, this);
+        transitiveGroup.load();
     }
 
     @Override
     public void resolve(Tile tile)
     {
-        final Collection<Tile> checked = new HashSet<Tile>();
-        checked.add(tile);
+        checkTransitives(tile);
 
-        checkCenterTile(tile);
+        final Collection<Tile> toResolve = new ArrayList<Tile>();
+        resolve(toResolve, tile);
 
-        updateTile(tile);
-        resolve(checked, tile);
-
-        final Collection<Tile> fixed = new HashSet<Tile>();
-        fixNeigbor(tile, tile, fixed, 2);
-        for (final Tile ref : checked)
+        final Collection<Tile> toResolveAfter = new ArrayList<Tile>();
+        for (final Tile next : toResolve)
         {
-            fix(tile, ref, fixed);
+            resolve(toResolveAfter, next);
         }
-        fixed.clear();
-
-        checked.clear();
+        toResolve.clear();
+        toResolveAfter.clear();
     }
 
     @Override
-    public Transition getTransition(TileRef tile, String group)
+    public Transition getTransition(TileRef tile, String groupOut)
     {
         final String groupIn = mapGroup.getGroup(tile);
         if (tiles.containsKey(tile))
         {
             for (final Transition transition : tiles.get(tile))
             {
-                if (transition.getIn().equals(groupIn) && transition.getOut().equals(group))
+                if (transition.getIn().equals(groupIn) || transition.getOut().equals(groupOut))
                 {
                     return transition;
                 }
             }
         }
-        return new Transition(TransitionType.NONE, groupIn, groupIn);
+        return null;
     }
 
     @Override
@@ -376,7 +442,7 @@ public class MapTileTransitionModel implements MapTileTransition
     @Override
     public Collection<GroupTransition> getTransitives(String groupIn, String groupOut)
     {
-        return transitive.getTransitives(groupIn, groupOut);
+        return transitiveGroup.getTransitives(groupIn, groupOut);
     }
 
     @Override

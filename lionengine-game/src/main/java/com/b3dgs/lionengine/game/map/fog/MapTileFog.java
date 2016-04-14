@@ -45,6 +45,8 @@ public class MapTileFog
     static final int NO_FOG = 17;
     /** Fog group. */
     private static final String FOG_GROUP = "fog";
+    /** Transition group. */
+    private static final String TRANSITION_GROUP = "transition";
 
     /** Revealed tiles. */
     private final Collection<Tile> revealed = new HashSet<Tile>();
@@ -81,9 +83,20 @@ public class MapTileFog
         this.map.loadSheets(map.getTileWidth(), map.getTileHeight(), Arrays.asList(sheet));
         for (int i = 0; i < NO_FOG; i++)
         {
-            mapGroup.changeGroup(new TileGame(Integer.valueOf(0), i, 0, 0, 1, 1), FOG_GROUP);
+            final String group;
+            if (i == FOG)
+            {
+                group = FOG_GROUP;
+            }
+            else
+            {
+                group = TRANSITION_GROUP;
+            }
+            mapGroup.changeGroup(new TileGame(Integer.valueOf(0), i, 0, 0, map.getTileWidth(), map.getTileHeight()),
+                                 group);
         }
-        mapGroup.changeGroup(new TileGame(Integer.valueOf(0), NO_FOG, 0, 0, 1, 1), MapTileGroupModel.NO_GROUP_NAME);
+        mapGroup.changeGroup(new TileGame(Integer.valueOf(0), NO_FOG, 0, 0, map.getTileWidth(), map.getTileHeight()),
+                             MapTileGroupModel.NO_GROUP_NAME);
         transition.loadTransitions(config);
 
         for (int x = 0; x < map.getInTileWidth(); x++)
@@ -157,14 +170,14 @@ public class MapTileFog
         final int th = fovable.getInTileHeight();
         final int ray = fovable.getInTileFov();
 
-        final int sx = UtilMath.clamp(tx - ray / 2 - tw / 2, 0, map.getInTileWidth() - 1);
-        final int ex = UtilMath.clamp(tx + ray / 2 + tw / 2, 0, map.getInTileWidth() - 1);
-        final int sy = UtilMath.clamp(ty - ray / 2 - th / 2, 0, map.getInTileHeight() - 1);
-        final int ey = UtilMath.clamp(ty + ray / 2 + th / 2, 0, map.getInTileHeight() - 1);
+        final int sx = UtilMath.clamp(tx - ray - tw / 2, 0, map.getInTileWidth() - 1);
+        final int ex = UtilMath.clamp(tx + ray + tw / 2, 0, map.getInTileWidth() - 1);
+        final int sy = UtilMath.clamp(ty - ray - th / 2, 0, map.getInTileHeight() - 1);
+        final int ey = UtilMath.clamp(ty + ray + th / 2, 0, map.getInTileHeight() - 1);
 
-        for (int x = sx; x <= ex; x++)
+        for (int x = sx + 1; x < ex; x++)
         {
-            for (int y = sy; y <= ey; y++)
+            for (int y = sy + 1; y < ey; y++)
             {
                 final Tile tile = new TileGame(Integer.valueOf(0),
                                                NO_FOG,
@@ -173,12 +186,13 @@ public class MapTileFog
                                                map.getTileWidth(),
                                                map.getTileHeight());
                 map.setTile(tile);
-                transition.resolve(map.getTile(x, y));
+                transition.resolve(getTile(x, y));
             }
         }
-        for (int x = sx - 1; x <= ex + 1; x++)
+
+        for (int x = sx; x < ex + 1; x++)
         {
-            for (int y = sy - 1; y <= ey + 1; y++)
+            for (int y = sy; y < ey + 1; y++)
             {
                 final Tile tile = map.getTile(x, y);
                 if (tile != null)

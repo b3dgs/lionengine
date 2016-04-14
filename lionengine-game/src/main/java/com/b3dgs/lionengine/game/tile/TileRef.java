@@ -132,4 +132,16 @@ public class TileRef
         }
         return true;
     }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append("tileRef(sheet=")
+                                  .append(sheet)
+                                  .append(" | ")
+                                  .append("number=")
+                                  .append(number)
+                                  .append(")")
+                                  .toString();
+    }
 }

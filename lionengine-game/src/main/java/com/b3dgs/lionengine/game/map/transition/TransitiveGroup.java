@@ -36,6 +36,9 @@ import com.b3dgs.lionengine.game.tile.TileRef;
  */
 public class TransitiveGroup
 {
+    /** Number of valid transition to be accepted. */
+    private static final int VALID_TRANSITIONS = 8;
+
     /** Map reference. */
     private final MapTile map;
     /** Map tile group. */
@@ -201,7 +204,7 @@ public class TransitiveGroup
     }
 
     /**
-     * Count the number of area transitions and check if pass is still first or not. Add valid transitive to list.
+     * Count the number of transitions and check if pass is still first or not. Add valid transitive to list.
      * 
      * @param groupStart The first group.
      * @param transitive The current group transition.
@@ -222,12 +225,12 @@ public class TransitiveGroup
         for (final Transition transition : mapTransition.getTransitions())
         {
             final boolean valid = groupIn.equals(transition.getIn()) && groupOut.equals(transition.getOut());
-            if (transition.getType().isArea() && !groupOut.equals(groupStart) && !groupIn.equals(groupEnd) && valid)
+            if (!groupOut.equals(groupStart) && !groupIn.equals(groupEnd) && valid)
             {
                 count++;
             }
         }
-        if (count >= TransitionType.AREA_TRANSITIONS && (found.isEmpty() || found.getLast().getOut().equals(groupIn)))
+        if (count >= VALID_TRANSITIONS && (found.isEmpty() || found.getLast().getOut().equals(groupIn)))
         {
             found.add(transitive);
             return false;

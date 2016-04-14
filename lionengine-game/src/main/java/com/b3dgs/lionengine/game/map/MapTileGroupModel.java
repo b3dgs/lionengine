@@ -71,7 +71,6 @@ public class MapTileGroupModel implements MapTileGroup
     public void loadGroups(Media groupsConfig)
     {
         this.groupsConfig = groupsConfig;
-
         groupTiles.clear();
         tilesGroup.clear();
 

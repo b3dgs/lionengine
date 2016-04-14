@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -654,6 +655,26 @@ public class MapTileGame implements MapTile
         final int tx = (int) Math.floor(x / getTileWidth());
         final int ty = (int) Math.floor(y / getTileHeight());
         return getTile(tx, ty);
+    }
+
+    @Override
+    public Collection<Tile> getNeighbors(Tile tile)
+    {
+        final int tx = tile.getInTileX();
+        final int ty = tile.getInTileY();
+        final Collection<Tile> neighbors = new HashSet<Tile>(8);
+        for (int ox = -1; ox < 2; ox++)
+        {
+            for (int oy = -1; oy < 2; oy++)
+            {
+                final Tile neighbor = getTile(tx + ox, ty + oy);
+                if (neighbor != null && (ox != 0 || oy != 0))
+                {
+                    neighbors.add(neighbor);
+                }
+            }
+        }
+        return neighbors;
     }
 
     @Override

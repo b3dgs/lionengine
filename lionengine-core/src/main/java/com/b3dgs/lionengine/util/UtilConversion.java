@@ -153,6 +153,55 @@ public final class UtilConversion
     }
 
     /**
+     * Convert number to binary array representation.
+     * 
+     * @param number The number to convert.
+     * @param length The binary length.
+     * @return The boolean representation.
+     */
+    public static boolean[] toBinary(int number, int length)
+    {
+        final boolean[] binary = new boolean[length];
+        for (int i = 0; i < length; i++)
+        {
+            binary[length - 1 - i] = (1 << i & number) != 0;
+        }
+        return binary;
+    }
+
+    /**
+     * Convert binary array to number representation.
+     * 
+     * @param binary The binary to convert.
+     * @return The number representation.
+     */
+    public static int fromBinary(boolean[] binary)
+    {
+        int number = 0;
+        for (final boolean current : binary)
+        {
+            number = number << 1 | boolToInt(current);
+        }
+        return number;
+    }
+
+    /**
+     * Invert binary array (apply a negation to each value).
+     * 
+     * @param binary The binary array.
+     * @return The inverted binary array representation.
+     */
+    public static boolean[] invert(boolean[] binary)
+    {
+        final boolean[] inverted = new boolean[binary.length];
+        for (int i = 0; i < inverted.length; i++)
+        {
+            inverted[i] = !binary[i];
+        }
+        return inverted;
+    }
+
+    /**
      * Convert a string to title case.
      * 
      * @param string The string to convert.

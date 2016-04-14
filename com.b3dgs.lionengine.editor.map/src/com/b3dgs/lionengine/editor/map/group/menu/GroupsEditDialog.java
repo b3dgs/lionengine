@@ -70,6 +70,7 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
+import com.b3dgs.lionengine.game.map.transition.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
@@ -146,6 +147,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         services.add(new Factory(services));
         map = services.create(MapTileGame.class);
         mapGroup = map.createFeature(MapTileGroupModel.class);
+        map.addFeature(new MapTileTransitionModel(services));
         services.add(new Selection());
 
         final PaletteModel palette = new PaletteModel();
@@ -162,7 +164,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
      */
     public void save()
     {
-        final Media groupsMedia = Medias.create(sheets.getMedia().getPath(), TileGroupsConfig.FILENAME);
+        final Media groupsMedia = Medias.create(sheets.getMedia().getParentPath(), TileGroupsConfig.FILENAME);
         TileGroupsConfig.exports(groupsMedia, getGroups());
     }
 

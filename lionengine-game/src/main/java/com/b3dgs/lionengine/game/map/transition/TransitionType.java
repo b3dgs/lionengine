@@ -17,403 +17,75 @@
  */
 package com.b3dgs.lionengine.game.map.transition;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.util.UtilConversion;
 
 /**
- * Represents the list of supported angles for transition linking.
- * <p>
- * Each enum will show an example, assuming:
- * </p>
- * <ul>
- * <li><code>[ ]</code> represents the transition position of the group.</li>
- * <li><code>[1]</code> represents the group in.</li>
- * <li><code>[2]</code> represents the group out.</li>
- * <li><code>[0]</code> represents both in or out.</li>
- * </ul>
+ * Represents the list of supported borders for transition linking.
  */
 public enum TransitionType
 {
-    /*
-     * Horizontal - Vertical
-     */
+    /** Center. */
+    CENTER(false, false, false, false),
+    /** UP left. */
+    UP_LEFT(false, false, false, true),
+    /** Up right. */
+    UP_RIGHT(false, false, true, false),
+    /** Up. */
+    UP(false, false, true, true),
+    /** Down. */
+    DOWN(true, true, false, false),
+    /** Down left. */
+    DOWN_LEFT(false, true, false, false),
+    /** Down right. */
+    DOWN_RIGHT(true, false, false, false),
+    /** Left. */
+    LEFT(true, false, true, false),
+    /** Right. */
+    RIGHT(false, true, false, true),
+    /** Up left and down right. */
+    UP_LEFT_DOWN_RIGHT(true, false, false, true),
+    /** Up right and down left. */
+    UP_RIGHT_DOWN_LEFT(false, true, true, false),
+    /** Up left. */
+    CORNER_UP_LEFT(true, true, true, false),
+    /** Up right. */
+    CORNER_UP_RIGHT(true, true, false, true),
+    /** Down left. */
+    CORNER_DOWN_LEFT(true, false, true, true),
+    /** Down right. */
+    CORNER_DOWN_RIGHT(false, true, true, true);
 
-    /**
-     * Transition on top.
-     * 
-     * <pre>
-     * [0][2][0]
-     * [1][ ][1]
-     * [1][1][1]
-     * </pre>
-     */
-    TOP(true, null, FALSE, null, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
-
-    /**
-     * Transition on bottom.
-     * 
-     * <pre>
-     * [1][1][1]
-     * [1][ ][1]
-     * [0][2][0]
-     * </pre>
-     */
-    BOTTOM(true, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, null, FALSE, null),
-
-    /**
-     * Transition on left.
-     * 
-     * <pre>
-     * [0][1][1]
-     * [2][ ][1]
-     * [0][1][1]
-     * </pre>
-     */
-    LEFT(true, null, TRUE, TRUE, FALSE, TRUE, TRUE, null, TRUE, TRUE),
-
-    /**
-     * Transition on right.
-     * 
-     * <pre>
-     * [1][1][0]
-     * [1][ ][2]
-     * [1][1][0]
-     * </pre>
-     */
-    RIGHT(true, TRUE, TRUE, null, TRUE, TRUE, FALSE, TRUE, TRUE, null),
-
-    /*
-     * Borders
-     */
-
-    /**
-     * Transition on top-left.
-     * 
-     * <pre>
-     * [0][2][0]
-     * [2][ ][1]
-     * [0][1][1]
-     * </pre>
-     */
-    TOP_LEFT(true, null, FALSE, null, FALSE, TRUE, TRUE, null, TRUE, TRUE),
-
-    /**
-     * Transition on top-right.
-     * 
-     * <pre>
-     * [0][2][0]
-     * [1][ ][2]
-     * [1][1][0]
-     * </pre>
-     */
-    TOP_RIGHT(true, null, FALSE, null, TRUE, TRUE, FALSE, TRUE, TRUE, null),
-
-    /**
-     * Transition on bottom-left.
-     * 
-     * <pre>
-     * [0][1][1]
-     * [2][ ][1]
-     * [0][2][0]
-     * </pre>
-     */
-    BOTTOM_LEFT(true, null, TRUE, TRUE, FALSE, TRUE, TRUE, null, FALSE, null),
-
-    /**
-     * Transition on bottom-right.
-     * 
-     * <pre>
-     * [1][1][0]
-     * [1][ ][2]
-     * [0][2][0]
-     * </pre>
-     */
-    BOTTOM_RIGHT(true, TRUE, TRUE, null, TRUE, TRUE, FALSE, null, FALSE, null),
-
-    /*
-     * Corners
-     */
-
-    /**
-     * Transition on corner top-left.
-     * 
-     * <pre>
-     * [2][1][1]
-     * [1][ ][1]
-     * [1][1][1]
-     * </pre>
-     */
-    CORNER_TOP_LEFT(false, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
-
-    /**
-     * Transition on corner top-right.
-     * 
-     * <pre>
-     * [1][1][2]
-     * [1][ ][1]
-     * [1][1][1]
-     * </pre>
-     */
-    CORNER_TOP_RIGHT(false, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
-
-    /**
-     * Transition on corner down-left.
-     * 
-     * <pre>
-     * [1][1][1]
-     * [1][ ][1]
-     * [2][1][1]
-     * </pre>
-     */
-    CORNER_BOTTOM_LEFT(false, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE),
-
-    /**
-     * Transition on corner down-right.
-     * 
-     * <pre>
-     * [1][1][1]
-     * [1][ ][1]
-     * [1][1][2]
-     * </pre>
-     */
-    CORNER_BOTTOM_RIGHT(false, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE),
-
-    /*
-     * Corner inside
-     */
-
-    /**
-     * Transition on corner in top-left, bottom-right.
-     * 
-     * <pre>
-     * [2][1][1]
-     * [1][ ][1]
-     * [1][1][2]
-     * </pre>
-     */
-    CORNER_IN_TOP_LEFT_BOTTOM_RIGHT(false, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE),
-
-    /**
-     * Transition on corner in top-right, bottom-left.
-     * 
-     * <pre>
-     * [1][1][2]
-     * [1][ ][1]
-     * [2][1][1]
-     * </pre>
-     */
-    CORNER_IN_TOP_RIGHT_BOTTOM_LEFT(false, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE),
-
-    /*
-     * Corners outside
-     */
-
-    /**
-     * Transition on corner out top-right, bottom-left.
-     * 
-     * <pre>
-     * [2][2][1]
-     * [2][ ][2]
-     * [1][2][2]
-     * </pre>
-     */
-    CORNER_OUT_TOP_LEFT_BOTTOM_RIGHT(false, FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE),
-
-    /**
-     * Transition on corner out top-left, bottom-right.
-     * 
-     * <pre>
-     * [1][2][2]
-     * [2][ ][2]
-     * [2][2][1]
-     * </pre>
-     */
-    CORNER_OUT_TOP_RIGHT_BOTTOM_LEFT(false, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE),
-
-    /*
-     * Horizontal - Vertical Middle
-     */
-
-    /**
-     * Transition on top middle.
-     * 
-     * <pre>
-     * [2][2][2]
-     * [2][ ][2]
-     * [2][1][2]
-     * </pre>
-     */
-    TOP_MIDDLE(false, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE),
-
-    /**
-     * Transition on bottom middle.
-     * 
-     * <pre>
-     * [2][1][2]
-     * [2][ ][2]
-     * [2][2][2]
-     * </pre>
-     */
-    BOTTOM_MIDDLE(false, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE),
-
-    /**
-     * Transition on left middle.
-     * 
-     * <pre>
-     * [2][2][2]
-     * [2][ ][1]
-     * [2][2][2]
-     * </pre>
-     */
-    LEFT_MIDDLE(false, FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE),
-
-    /**
-     * Transition on right middle.
-     * 
-     * <pre>
-     * [2][2][2]
-     * [1][ ][2]
-     * [2][2][2]
-     * </pre>
-     */
-    RIGHT_MIDDLE(false, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE),
-
-    /*
-     * Axis
-     */
-
-    /**
-     * Vertical.
-     * 
-     * <pre>
-     * [0][1][0]
-     * [2][ ][2]
-     * [0][1][0]
-     * </pre>
-     */
-    VERTICAL(false, null, TRUE, null, FALSE, TRUE, FALSE, null, TRUE, null),
-
-    /**
-     * Horizontal.
-     * 
-     * <pre>
-     * [0][2][0]
-     * [1][ ][1]
-     * [0][2][0]
-     * </pre>
-     */
-    HORIZONTAL(false, null, FALSE, null, TRUE, TRUE, TRUE, null, FALSE, null),
-
-    /**
-     * Angle top left.
-     * 
-     * <pre>
-     * [2][2][0]
-     * [2][ ][1]
-     * [2][1][2]
-     * </pre>
-     */
-    ANGLE_TOP_LEFT(false, FALSE, FALSE, null, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE),
-
-    /**
-     * Angle top right.
-     * 
-     * <pre>
-     * [2][2][0]
-     * [1][ ][2]
-     * [2][1][2]
-     * </pre>
-     */
-    ANGLE_TOP_RIGHT(false, FALSE, FALSE, null, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE),
-
-    /**
-     * Angle down left.
-     * 
-     * <pre>
-     * [2][1][2]
-     * [2][ ][1]
-     * [2][2][0]
-     * </pre>
-     */
-    ANGLE_DOWN_LEFT(false, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, null),
-
-    /**
-     * Angle down right.
-     * 
-     * <pre>
-     * [2][1][2]
-     * [1][ ][2]
-     * [2][2][0]
-     * </pre>
-     */
-    ANGLE_DOWN_RIGHT(false, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, null),
-
-    /**
-     * Diagonal top left.
-     * 
-     * <pre>
-     * [2][2][0]
-     * [2][ ][1]
-     * [0][1][2]
-     * </pre>
-     */
-    DIAGONAL_TOP_LEFT(false, FALSE, FALSE, null, FALSE, TRUE, TRUE, null, TRUE, FALSE),
-
-    /**
-     * Diagonal top right.
-     * 
-     * <pre>
-     * [0][2][2]
-     * [1][ ][2]
-     * [2][1][0]
-     * </pre>
-     */
-    DIAGONAL_TOP_RIGHT(false, null, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, null),
-
-    /**
-     * Diagonal bottom left.
-     * 
-     * <pre>
-     * [0][1][2]
-     * [2][ ][1]
-     * [2][2][0]
-     * </pre>
-     */
-    DIAGONAL_BOTTOM_LEFT(false, null, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, null),
-
-    /**
-     * Diagonal bottom right.
-     * 
-     * <pre>
-     * [2][1][0]
-     * [1][ ][2]
-     * [0][2][2]
-     * </pre>
-     */
-    DIAGONAL_BOTTOM_RIGHT(false, FALSE, TRUE, null, TRUE, TRUE, FALSE, null, FALSE, FALSE),
-
-    /**
-     * No transition, center part.
-     * 
-     * <pre>
-     * [1][1][1]
-     * [1][ ][1]
-     * [1][1][1]
-     * </pre>
-     */
-    CENTER(false, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
-
-    /** None. */
-    NONE(false);
-
-    /** Bit numbers. */
-    public static final int BITS = 9;
-    /** Area transitions count. Number of transition for area linking (horizontal, vertical and borders). */
-    public static final int AREA_TRANSITIONS = 8;
+    /** Total bits number. */
+    public static final int BITS = 4;
+    /** Bit down right. */
+    private static final int BIT_UP_LEFT = 0;
+    /** Bit down right. */
+    private static final int BIT_UP_RIGHT = 1;
+    /** Bit down right. */
+    private static final int BIT_DOWN_LEFT = 2;
+    /** Bit down right. */
+    private static final int BIT_DOWN_RIGHT = 3;
+    /** Transition types mapping with their index. */
+    private static final Map<Integer, TransitionType> TYPES = new HashMap<Integer, TransitionType>();
     /** Error transition name. */
     private static final String ERROR_TRANSITION_NAME = "Unknown transition name: ";
+
+    /**
+     * Stores each transition with their integer value.
+     */
+    static
+    {
+        for (final TransitionType type : values())
+        {
+            final Integer index = Integer.valueOf(UtilConversion.fromBinary(type.table));
+            TYPES.put(index, type);
+        }
+    }
 
     /**
      * Convert transition name to its enum value.
@@ -437,125 +109,127 @@ public enum TransitionType
     /**
      * Get the transition representation from its bits sequence.
      * 
-     * @param bits The bits sequence representing the transition.
+     * @param downRight The down right flag.
+     * @param downLeft The down left flag.
+     * @param upRight The up right flag.
+     * @param upLeft The up left flag.
      * @return The transition enum.
      */
-    public static TransitionType from(Boolean... bits)
+    public static TransitionType from(boolean downRight, boolean downLeft, boolean upRight, boolean upLeft)
     {
-        for (final TransitionType transition : values())
+        final Integer index = Integer.valueOf(UtilConversion.fromBinary(new boolean[]
         {
-            if (transition.is(bits))
-            {
-                return transition;
-            }
+            upLeft, upRight, downLeft, downRight
+        }));
+        if (TYPES.containsKey(index))
+        {
+            return TYPES.get(index);
         }
-        return TransitionType.NONE;
+        return CENTER;
     }
 
     /**
-     * Get the transition type from its bytes array.
+     * Get the transition representation from its bits sequence.
      * 
-     * @param bytes The bytes array.
-     * @param inverted <code>true</code> to get inverted transition, <code>false</code> for normal.
-     * @return The transition type.
+     * @param binary The binary array (length must be equal to {@link #BITS}).
+     * @return The transition enum.
+     * @throws LionEngineException If invalid array size.
      */
-    public static TransitionType from(Boolean[] bytes, boolean inverted)
+    public static TransitionType from(boolean[] binary)
     {
-        if (inverted)
+        Check.equality(binary.length, BITS);
+
+        final Integer index = Integer.valueOf(UtilConversion.fromBinary(binary));
+        if (TYPES.containsKey(index))
         {
-            final Boolean[] bitsInv = new Boolean[bytes.length];
-            for (int j = 0; j < bitsInv.length; j++)
-            {
-                bitsInv[j] = bytes[bytes.length - j - 1];
-            }
-            return TransitionType.from(bitsInv);
+            return TYPES.get(index);
         }
-        return TransitionType.from(bytes);
+        return CENTER;
     }
 
-    /**
-     * Check if equals, considering <code>null</code> as possible.
-     * 
-     * @param a The first boolean.
-     * @param b The second boolean.
-     * @return <code>true</code> if equals (same value or both <code>null</code>), <code>false</code> else.
-     */
-    private static boolean equalsOrNull(Boolean a, Boolean b)
-    {
-        final boolean equals;
-        if (a != null && b != null)
-        {
-            equals = a.equals(b);
-        }
-        else
-        {
-            equals = true;
-        }
-        return equals;
-    }
-
-    /** Area flag. */
-    private final boolean area;
     /** Bit table representing the transition. */
-    private final Boolean[] table;
+    private final boolean[] table;
 
     /**
      * Create the tile transition.
      * 
-     * @param area <code>true</code> if represents the minimum transition area, <code>false</code> else.
-     * @param bits Bits defining transition.
-     * @throws LionEngineException If invalid bits number.
+     * @param downRight The down right flag.
+     * @param downLeft The down left flag.
+     * @param upRight The up right flag.
+     * @param upLeft The up left flag.
      */
-    TransitionType(boolean area, Boolean... bits)
+    TransitionType(boolean downRight, boolean downLeft, boolean upRight, boolean upLeft)
     {
-        this.area = area;
-        table = bits;
+        table = new boolean[]
+        {
+            upLeft, upRight, downLeft, downRight
+        };
+    }
+
+    /**
+     * Get the symmetric transition.
+     * 
+     * @return The symmetric transition.
+     */
+    public TransitionType getSymetric()
+    {
+        return from(UtilConversion.invert(table));
     }
 
     /**
      * Check if the sequence of bit has the same representation of this transition.
      * 
-     * @param bits The bits sequence.
+     * @param downRight The down right flag.
+     * @param downLeft The down left flag.
+     * @param upRight The up right flag.
+     * @param upLeft The up left flag.
      * @return <code>true</code> if equals, <code>false</code> else.
      */
-    public boolean is(Boolean... bits)
+    public boolean is(boolean downRight, boolean downLeft, boolean upRight, boolean upLeft)
     {
-        final boolean equals;
-        if (table.length != bits.length)
-        {
-            equals = false;
-        }
-        else
-        {
-            for (int i = 0; i < table.length; i++)
-            {
-                if (!equalsOrNull(table[i], bits[i]))
-                {
-                    return false;
-                }
-            }
-            equals = true;
-        }
-        return equals;
+        return getUpLeft() == upLeft
+               && getUpRight() == upRight
+               && getDownLeft() == downLeft
+               && getDownRight() == downRight;
     }
 
     /**
-     * Get the reversed transition type.
+     * Get bit at up left.
      * 
-     * @return The reversed transition type.
+     * @return The up left bit.
      */
-    public TransitionType reverse()
+    public boolean getUpLeft()
     {
-        return from(table, true);
+        return table[BIT_UP_LEFT];
     }
 
     /**
-     * Check if transition is area.
+     * Get bit at up right.
      * 
-     * @return <code>true</code> if area, <code>false</code> else.
+     * @return The up right bit.
      */
-    public boolean isArea()
+    public boolean getUpRight()
     {
-        return area;
+        return table[BIT_UP_RIGHT];
+    }
+
+    /**
+     * Get bit at down left.
+     * 
+     * @return The down left bit.
+     */
+    public boolean getDownLeft()
+    {
+        return table[BIT_DOWN_LEFT];
+    }
+
+    /**
+     * Get bit at down right.
+     * 
+     * @return The down right bit.
+     */
+    public boolean getDownRight()
+    {
+        return table[BIT_DOWN_RIGHT];
     }
 }

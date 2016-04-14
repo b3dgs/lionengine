@@ -269,6 +269,14 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
     Tile getTileAt(double x, double y);
 
     /**
+     * Get the tile neighbor, directly adjacent to it.
+     * 
+     * @param tile The tile reference.
+     * @return The adjacent tiles in no special order.
+     */
+    Collection<Tile> getNeighbors(Tile tile);
+
+    /**
      * Get the list of tiles from old location to current.
      * 
      * @param ox The old horizontal location.
