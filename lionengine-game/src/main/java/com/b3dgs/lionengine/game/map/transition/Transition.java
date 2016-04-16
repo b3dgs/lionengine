@@ -79,9 +79,21 @@ public class Transition
         return groups.getOut();
     }
 
+    /**
+     * Check if transition if symmetric with other.
+     * 
+     * @param other The other transition to check with.
+     * @return <code>true</code> if symmetric transition, <code>false</code> else.
+     */
+    private boolean isSymmetric(Transition other)
+    {
+        return getIn().equals(other.getOut()) && getOut().equals(other.getIn()) && type == other.type.getSymetric();
+    }
+
     /*
      * Object
      */
+
     @Override
     public int hashCode()
     {
@@ -104,7 +116,7 @@ public class Transition
             return false;
         }
         final Transition other = (Transition) obj;
-        return groups.equals(other.groups) && type == other.type;
+        return groups.equals(other.groups) && type == other.type || isSymmetric(other);
     }
 
     @Override

@@ -17,123 +17,24 @@
  */
 package com.b3dgs.lionengine.game.map.transition;
 
-import java.util.Collection;
-import java.util.HashSet;
+import static com.b3dgs.lionengine.game.map.transition.UtilMap.GROUND;
+import static com.b3dgs.lionengine.game.map.transition.UtilMap.SHEET;
+import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_GROUND;
+import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_TRANSITION;
+import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_TREE;
+import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_WATER;
+import static com.b3dgs.lionengine.game.map.transition.UtilMap.WATER;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
-import com.b3dgs.lionengine.game.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.game.tile.TileGame;
-import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
  * Test the transition extractor class.
  */
 public class MapTransitionExtractorTest
 {
-    /** Ground group name. */
-    private static final String GROUND = "ground";
-    /** Ground group name. */
-    private static final String WATER = "water";
-    /** Transition group name. */
-    private static final String TRANSITION = "transition";
-    /** Sheet ID. */
-    private static final Integer SHEET = Integer.valueOf(0);
-
-    /**
-     * Create the raw test map without transition.
-     * 
-     * @return The created map.
-     */
-    private static MapTile createMap()
-    {
-        final MapTileGame map = new MapTileGame();
-        final MapTileGroup mapGroup = new MapTileGroupModel();
-
-        map.addFeature(mapGroup);
-        map.create(7, 7);
-
-        fillMap(map, mapGroup);
-
-        return map;
-    }
-
-    /**
-     * Fill map with center tiles.
-     * 
-     * @param map The map reference.
-     * @param mapGroup The map group reference.
-     */
-    private static void fillMap(MapTile map, MapTileGroup mapGroup)
-    {
-        for (int tx = 0; tx < map.getInTileWidth(); tx++)
-        {
-            for (int ty = 0; ty < map.getInTileHeight(); ty++)
-            {
-                final Tile tile = new TileGame(SHEET, 0, tx, ty, 1, 1);
-                map.setTile(tile);
-                mapGroup.changeGroup(tile, WATER);
-            }
-        }
-    }
-
-    /**
-     * Fill map with transition tiles.
-     * 
-     * @param map The map reference.
-     */
-    private static void fillMapTransition(MapTile map)
-    {
-        final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
-        int n = 1;
-
-        final Tile center = new TileGame(SHEET, n, map.getInTileWidth() / 2, map.getInTileHeight() / 2, 1, 1);
-        mapGroup.changeGroup(center, GROUND);
-        map.setTile(center);
-
-        for (final Tile neighbor : map.getNeighbors(map.getTile(map.getInTileWidth() / 2, map.getInTileHeight() / 2)))
-        {
-            n++;
-            final Tile tile = new TileGame(SHEET, n, neighbor.getX(), neighbor.getY(), 1, 1);
-            map.setTile(tile);
-            mapGroup.changeGroup(tile, TRANSITION);
-        }
-    }
-
-    /**
-     * Invert map groups.
-     * 
-     * @param map The map reference.
-     */
-    private static void invertGroups(MapTile map)
-    {
-        final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
-        final Collection<TileRef> changed = new HashSet<TileRef>();
-        for (int tx = 0; tx < map.getInTileWidth(); tx++)
-        {
-            for (int ty = 0; ty < map.getInTileHeight(); ty++)
-            {
-                final Tile tile = map.getTile(tx, ty);
-                final TileRef ref = new TileRef(tile);
-                if (!changed.contains(ref) && WATER.equals(mapGroup.getGroup(tile)))
-                {
-                    mapGroup.changeGroup(tile, GROUND);
-                    changed.add(ref);
-                }
-                else if (!changed.contains(ref) && GROUND.equals(mapGroup.getGroup(tile)))
-                {
-                    mapGroup.changeGroup(tile, WATER);
-                    changed.add(ref);
-                }
-            }
-        }
-    }
-
     /**
      * Get the transition for the specified tile.
      * 
@@ -153,8 +54,9 @@ public class MapTransitionExtractorTest
     @Test
     public void checkTransitionCenter()
     {
-        final MapTile map = createMap();
-        fillMapTransition(map);
+        final MapTile map = UtilMap.createMap(7);
+        UtilMap.fill(map, TILE_WATER);
+        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
 
         final Transition transition = new Transition(TransitionType.CENTER, WATER, WATER);
 
@@ -179,8 +81,9 @@ public class MapTransitionExtractorTest
     @Test
     public void checkCorners()
     {
-        final MapTile map = createMap();
-        fillMapTransition(map);
+        final MapTile map = UtilMap.createMap(7);
+        UtilMap.fill(map, TILE_WATER);
+        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
 
         Assert.assertEquals(new Transition(TransitionType.UP_LEFT, WATER, GROUND), get(map, 2, 4));
         Assert.assertEquals(new Transition(TransitionType.UP_RIGHT, WATER, GROUND), get(map, 4, 4));
@@ -194,9 +97,9 @@ public class MapTransitionExtractorTest
     @Test
     public void checkCornersInverted()
     {
-        final MapTile map = createMap();
-        fillMapTransition(map);
-        invertGroups(map);
+        final MapTile map = UtilMap.createMap(7);
+        UtilMap.fill(map, TILE_GROUND);
+        UtilMap.fillTransition(map, TILE_WATER, TILE_TRANSITION, 3);
 
         Assert.assertEquals(new Transition(TransitionType.CORNER_UP_LEFT, WATER, GROUND), get(map, 2, 4));
         Assert.assertEquals(new Transition(TransitionType.CORNER_UP_RIGHT, WATER, GROUND), get(map, 4, 4));
@@ -210,8 +113,9 @@ public class MapTransitionExtractorTest
     @Test
     public void checkHorizontals()
     {
-        final MapTile map = createMap();
-        fillMapTransition(map);
+        final MapTile map = UtilMap.createMap(7);
+        UtilMap.fill(map, TILE_WATER);
+        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
 
         Assert.assertEquals(new Transition(TransitionType.RIGHT, WATER, GROUND), get(map, 2, 3));
         Assert.assertEquals(new Transition(TransitionType.LEFT, WATER, GROUND), get(map, 4, 3));
@@ -223,8 +127,9 @@ public class MapTransitionExtractorTest
     @Test
     public void checkVerticals()
     {
-        final MapTile map = createMap();
-        fillMapTransition(map);
+        final MapTile map = UtilMap.createMap(7);
+        UtilMap.fill(map, TILE_WATER);
+        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
 
         Assert.assertEquals(new Transition(TransitionType.UP, WATER, GROUND), get(map, 3, 4));
         Assert.assertEquals(new Transition(TransitionType.DOWN, WATER, GROUND), get(map, 3, 2));
@@ -236,16 +141,12 @@ public class MapTransitionExtractorTest
     @Test
     public void checkDiagonal()
     {
-        final MapTile map = createMap();
-        fillMapTransition(map);
+        final MapTile map = UtilMap.createMap(7);
+        UtilMap.fill(map, TILE_WATER);
+        UtilMap.fillTransition(map, TILE_TRANSITION, TILE_TRANSITION, 3);
 
-        map.setTile(new TileGame(SHEET, 0, 2, 2, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 2, 3, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 3, 2, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 3, 3, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 3, 4, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 4, 3, 1, 1));
-        map.setTile(new TileGame(SHEET, 0, 4, 4, 1, 1));
+        map.setTile(map.createTile(SHEET, TILE_WATER, 2, 2));
+        map.setTile(map.createTile(SHEET, TILE_WATER, 4, 4));
 
         Assert.assertEquals(new Transition(TransitionType.UP_LEFT_DOWN_RIGHT, WATER, GROUND), get(map, 3, 3));
     }
@@ -256,16 +157,12 @@ public class MapTransitionExtractorTest
     @Test
     public void checkDiagonalInverted()
     {
-        final MapTile map = createMap();
-        fillMapTransition(map);
+        final MapTile map = UtilMap.createMap(7);
+        UtilMap.fill(map, TILE_WATER);
+        UtilMap.fillTransition(map, TILE_TRANSITION, TILE_TRANSITION, 3);
 
-        map.setTile(new TileGame(SHEET, 0, 4, 2, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 2, 3, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 3, 2, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 3, 3, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 3, 4, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 4, 3, 1, 1));
-        map.setTile(new TileGame(SHEET, 0, 2, 4, 1, 1));
+        map.setTile(map.createTile(SHEET, TILE_WATER, 2, 4));
+        map.setTile(map.createTile(SHEET, TILE_WATER, 4, 2));
 
         Assert.assertEquals(new Transition(TransitionType.UP_RIGHT_DOWN_LEFT, WATER, GROUND), get(map, 3, 3));
     }
@@ -279,8 +176,9 @@ public class MapTransitionExtractorTest
     @Test
     public void checkSingleGroup()
     {
-        final MapTile map = createMap();
-        map.setTile(new TileGame(SHEET, 2, 3, 3, 1, 1));
+        final MapTile map = UtilMap.createMap(7);
+        UtilMap.fill(map, TILE_WATER);
+        map.setTile(map.createTile(SHEET, TILE_TRANSITION, 3, 3));
 
         Assert.assertNull(get(map, 3, 3));
     }
@@ -294,10 +192,10 @@ public class MapTransitionExtractorTest
     @Test
     public void checkThreeGroups()
     {
-        final MapTile map = createMap();
-        map.setTile(new TileGame(SHEET, 1, 1, 1, 1, 1));
-        map.setTile(new TileGame(SHEET, 2, 3, 3, 1, 1));
-        map.getFeature(MapTileGroup.class).changeGroup(map.getTile(3, 3), GROUND);
+        final MapTile map = UtilMap.createMap(7);
+        UtilMap.fill(map, TILE_WATER);
+        map.setTile(map.createTile(SHEET, TILE_GROUND, 1, 1));
+        map.setTile(map.createTile(SHEET, TILE_TREE, 3, 3));
 
         Assert.assertNull(get(map, 2, 2));
     }
@@ -308,12 +206,11 @@ public class MapTransitionExtractorTest
     @Test
     public void checkNullNeighbor()
     {
-        final MapTile map = createMap();
-        map.create(7, 7);
-        map.setTile(new TileGame(SHEET, 1, 2, 2, 1, 1));
-        map.setTile(new TileGame(SHEET, 0, 3, 3, 1, 1));
+        final MapTile map = UtilMap.createMap(7);
+        map.setTile(map.createTile(SHEET, TILE_WATER, 4, 2));
+        map.setTile(map.createTile(SHEET, TILE_WATER, 3, 3));
 
-        Assert.assertNull(get(map, 3, 3));
+        Assert.assertEquals(new Transition(TransitionType.CENTER, WATER, WATER), get(map, 3, 3));
     }
 
     /**
@@ -322,8 +219,9 @@ public class MapTransitionExtractorTest
     @Test
     public void checkDifferentSheet()
     {
-        final MapTile map = createMap();
-        map.setTile(new TileGame(Integer.valueOf(1), 0, 3, 3, 1, 1));
+        final MapTile map = UtilMap.createMap(7);
+        UtilMap.fill(map, TILE_WATER);
+        map.setTile(map.createTile(Integer.valueOf(1), TILE_WATER, 3, 3));
 
         Assert.assertNull(get(map, 3, 3));
     }

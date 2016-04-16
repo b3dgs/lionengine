@@ -146,7 +146,7 @@ public class MapTileTransitionModel implements MapTileTransition
     private TransitiveGroup transitiveGroup;
 
     /**
-     * Create a map tile path.
+     * Create a map tile transition.
      * <p>
      * The {@link Services} must provide the following services:
      * </p>
@@ -395,7 +395,7 @@ public class MapTileTransitionModel implements MapTileTransition
             }
         }
 
-        transitiveGroup = new TransitiveGroup(map, mapGroup, this);
+        transitiveGroup = new TransitiveGroup(map);
         transitiveGroup.load();
     }
 

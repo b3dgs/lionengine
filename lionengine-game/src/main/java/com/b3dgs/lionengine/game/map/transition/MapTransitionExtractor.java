@@ -83,6 +83,18 @@ public class MapTransitionExtractor
         return TransitionType.from(bits);
     }
 
+    /**
+     * Check if tiles are same, considering sheet and number.
+     * 
+     * @param tile The tile reference.
+     * @param other The other tile.
+     * @return <code>true</code> if same sheet and number and not <code>null</code>, <code>false</code> else.
+     */
+    private static boolean isTileSame(Tile tile, Tile other)
+    {
+        return other != null && other.getNumber() == tile.getNumber() && other.getSheet().equals(tile.getSheet());
+    }
+
     /** The map reference. */
     private final MapTile map;
     /** The map group reference. */
@@ -252,21 +264,27 @@ public class MapTransitionExtractor
             for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
                 final Tile current = map.getTile(tx, ty);
-                if (current != null
-                    && current.getNumber() == tile.getNumber()
-                    && current.getSheet().equals(tile.getSheet()))
+                if (isTileSame(tile, current) && isTransitionGroup(tile))
                 {
-                    if (isTransitionGroup(current, -1, -1)
-                        || isTransitionGroup(current, 1, -1)
-                        || isTransitionGroup(current, 0, -1)
-                        || isTransitionGroup(current, -1, 0))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * Check if tile is a transition by checking extremity neighbor.
+     * 
+     * @param tile The tile to check.
+     * @return <code>true</code> if transition tile, <code>false</code> else.
+     */
+    private boolean isTransitionGroup(Tile tile)
+    {
+        return isTransitionGroup(tile, -1, -1)
+               || isTransitionGroup(tile, 1, -1)
+               || isTransitionGroup(tile, 0, -1)
+               || isTransitionGroup(tile, -1, 0);
     }
 
     /**

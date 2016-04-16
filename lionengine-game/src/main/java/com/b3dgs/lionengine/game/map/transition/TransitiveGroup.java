@@ -50,16 +50,21 @@ public class TransitiveGroup
 
     /**
      * Create the transitive group handler.
+     * <p>
+     * The {@link MapTile} must provide the following features:
+     * </p>
+     * <ul>
+     * <li>{@link MapTileGroup}</li>
+     * <li>{@link MapTileTransition}</li>
+     * </ul>
      * 
      * @param map The map reference.
-     * @param mapGroup The map group reference.
-     * @param mapTransition The map transition reference.
      */
-    public TransitiveGroup(MapTile map, MapTileGroup mapGroup, MapTileTransition mapTransition)
+    public TransitiveGroup(MapTile map)
     {
         this.map = map;
-        this.mapGroup = mapGroup;
-        this.mapTransition = mapTransition;
+        mapGroup = map.getFeature(MapTileGroup.class);
+        mapTransition = map.getFeature(MapTileTransition.class);
         transitives = new HashMap<GroupTransition, Collection<GroupTransition>>();
     }
 

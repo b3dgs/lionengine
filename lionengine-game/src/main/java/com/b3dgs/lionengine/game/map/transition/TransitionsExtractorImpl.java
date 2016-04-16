@@ -37,6 +37,29 @@ import com.b3dgs.lionengine.game.tile.TileRef;
 final class TransitionsExtractorImpl implements TransitionsExtractor
 {
     /**
+     * Check the tile transition and add it to transitions collection if valid.
+     * 
+     * @param transitions The transitions collection.
+     * @param extractor The transition extractor.
+     * @param tile The tile to check.
+     */
+    private static void checkTransition(Map<Transition, Collection<TileRef>> transitions,
+                                        MapTransitionExtractor extractor,
+                                        Tile tile)
+    {
+        final Transition transition = extractor.getTransition(tile);
+        if (transition != null)
+        {
+            getTiles(transitions, transition).add(new TileRef(tile));
+
+            final Transition symetric = new Transition(transition.getType().getSymetric(),
+                                                       transition.getOut(),
+                                                       transition.getIn());
+            getTiles(transitions, symetric).add(new TileRef(tile));
+        }
+    }
+
+    /**
      * Get the tiles for the transition. Create empty list if new transition.
      * 
      * @param transitions The transitions data.
@@ -118,16 +141,7 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
                 final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
                 {
-                    final Transition transition = extractor.getTransition(tile);
-                    if (transition != null)
-                    {
-                        getTiles(transitions, transition).add(new TileRef(tile));
-
-                        final Transition symetric = new Transition(transition.getType().getSymetric(),
-                                                                   transition.getOut(),
-                                                                   transition.getIn());
-                        getTiles(transitions, symetric).add(new TileRef(tile));
-                    }
+                    checkTransition(transitions, extractor, tile);
                 }
             }
         }
