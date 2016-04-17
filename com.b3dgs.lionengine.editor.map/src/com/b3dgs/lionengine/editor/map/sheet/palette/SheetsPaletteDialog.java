@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -41,18 +39,16 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.utility.Focusable;
 import com.b3dgs.lionengine.editor.utility.control.UtilButton;
 import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
 import com.b3dgs.lionengine.editor.utility.control.UtilText;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
-import com.b3dgs.lionengine.game.tile.TileConstraint;
-import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
+import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
+import com.b3dgs.lionengine.game.map.transition.Transition;
+import com.b3dgs.lionengine.game.map.transition.TransitionType;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
@@ -104,8 +100,6 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
 
     /** Map reference. */
     private final MapTile map = WorldModel.INSTANCE.getMap();
-    /** Map tile group. */
-    private final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
     /** Shell dialog. */
     private final Shell shell;
     /** Tile color. */
@@ -155,7 +149,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         gc = new GC(composite);
         tileColor = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
         gridColor = shell.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
-        simple = Medias.create(mapGroup.getGroupsConfig().getParentPath(), TileConstraintsConfig.FILENAME).exists();
+        simple = true;
 
         createTypes();
         createBottom();
@@ -177,7 +171,9 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         UtilButton.setAction(typeSelection, () -> SheetsPaletteModel.INSTANCE.setSheetPaletteType(selection));
 
         final Button typeEdit = UtilButton.createRadio(Messages.TileEdition, area);
+        typeEdit.setSelection(true);
         final SheetPaletteType edition = SheetPaletteType.EDITION;
+        SheetsPaletteModel.INSTANCE.setSheetPaletteType(edition);
         UtilButton.setAction(typeEdit, () -> SheetsPaletteModel.INSTANCE.setSheetPaletteType(edition));
 
         final Button simplePalette = UtilButton.createCheck(Messages.SimplePalette, area);
@@ -382,95 +378,16 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      */
     private Collection<TileRef> getCenterTiles()
     {
-        final Map<TileRef, Collection<TileConstraint>> constraints = ConstraintsExtractor.getConstraints(map);
         final Collection<TileRef> centerTiles = new HashSet<>();
-
-        for (final Entry<TileRef, Collection<TileConstraint>> entry : constraints.entrySet())
+        final MapTileTransition mapTransition = map.getFeature(MapTileTransition.class);
+        for (final Transition transition : mapTransition.getTransitions())
         {
-            final TileRef tile = entry.getKey();
-            if ((isCenter(tile, entry.getValue()) || !hasCenter(tile, constraints)) && !existsGroup(tile, centerTiles))
+            if (TransitionType.CENTER == transition.getType())
             {
-                centerTiles.add(tile);
+                centerTiles.addAll(mapTransition.getTiles(transition));
             }
         }
         return centerTiles;
-    }
-
-    /**
-     * Check if is center tile.
-     * 
-     * @param tile The tile.
-     * @param constraints The constraints.
-     * @return <code>true</code> if center, <code>false</code> else.
-     */
-    private boolean isCenter(TileRef tile, Collection<TileConstraint> constraints)
-    {
-        int check = 0;
-        for (final TileConstraint constraint : constraints)
-        {
-            for (final TileRef allowed : constraint.getAllowed())
-            {
-                if (sameGroup(tile, allowed))
-                {
-                    check++;
-                    break;
-                }
-            }
-        }
-        return check > constraints.size() - 1;
-    }
-
-    /**
-     * Check if the group of the tile has at least one center tile.
-     * 
-     * @param tile The tile to check group.
-     * @param constraints The associated constraints.
-     * @return <code>true</code> if one tile center exists at least, <code>false</code> else.
-     */
-    private boolean hasCenter(TileRef tile, Map<TileRef, Collection<TileConstraint>> constraints)
-    {
-        final String group = mapGroup.getGroup(tile.getSheet(), tile.getNumber());
-        for (final TileRef tileRef : mapGroup.getGroup(group))
-        {
-            if (constraints.containsKey(tileRef) && isCenter(tileRef, constraints.get(tileRef)))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Check if tiles are in the same group.
-     * 
-     * @param tile1 The first tile.
-     * @param tile2 The second tile.
-     * @return <code>true</code> if in same group, <code>false</code> else.
-     */
-    private boolean sameGroup(TileRef tile1, TileRef tile2)
-    {
-        final String group1 = mapGroup.getGroup(tile1.getSheet(), tile1.getNumber());
-        final String group2 = mapGroup.getGroup(tile2.getSheet(), tile2.getNumber());
-        return group1.equals(group2);
-    }
-
-    /**
-     * Check if tile has the same group of at least one tile from the list.
-     * 
-     * @param tile The tile to check.
-     * @param tiles The tiles to compare within.
-     * @return <code>true</code> if group already exists in the list, <code>false</code> else.
-     */
-    private boolean existsGroup(TileRef tile, Collection<TileRef> tiles)
-    {
-        for (final TileRef existing : tiles)
-        {
-            if (sameGroup(tile, existing))
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     /*
