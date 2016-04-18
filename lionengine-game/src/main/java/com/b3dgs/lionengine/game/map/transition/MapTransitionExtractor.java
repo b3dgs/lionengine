@@ -264,7 +264,7 @@ public class MapTransitionExtractor
             for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
                 final Tile current = map.getTile(tx, ty);
-                if (isTileSame(tile, current) && isTransitionGroup(tile))
+                if (isTileSame(tile, current) && isTransitionGroup(current))
                 {
                     return true;
                 }
