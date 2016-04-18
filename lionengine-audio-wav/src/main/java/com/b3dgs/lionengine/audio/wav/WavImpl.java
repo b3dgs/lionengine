@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.util.UtilMath;
+import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Wav audio implementation.
@@ -224,11 +225,12 @@ final class WavImpl implements Wav
      */
     private void play(Media media, Align alignment, int volume, int delayMilli)
     {
+        Playback playback = null;
         try
         {
             final Timing timing = new Timing();
             timing.start();
-            final Playback playback = createPlayback(media, alignment, volume);
+            playback = createPlayback(media, alignment, volume);
             opened.add(playback);
             final long toWait = delayMilli - timing.elapsed();
             if (toWait > 0)
@@ -245,11 +247,13 @@ final class WavImpl implements Wav
         catch (final IOException exception)
         {
             Verbose.exception(exception);
+            UtilStream.safeClose(playback);
         }
         catch (final InterruptedException exception)
         {
             Thread.currentThread().interrupt();
             Verbose.exception(exception);
+            UtilStream.safeClose(playback);
         }
     }
 

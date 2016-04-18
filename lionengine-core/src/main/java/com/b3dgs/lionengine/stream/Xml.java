@@ -73,6 +73,10 @@ public final class Xml
         {
             throw new LionEngineException(exception, media, ERROR_READING);
         }
+        finally
+        {
+            UtilStream.safeClose(input);
+        }
     }
 
     /**
