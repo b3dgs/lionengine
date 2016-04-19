@@ -300,7 +300,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     private int renderPaletteSimple()
     {
         final Collection<TileRef> centered = getCenterTiles();
-        final ImageBuffer sheet = getCenterTilesSheet(centered);
+        final int horizontalTiles = Math.max(Constant.DECADE, (int) Math.floor(Math.sqrt(centered.size())));
+        final ImageBuffer sheet = getCenterTilesSheet(centered, horizontalTiles);
 
         gc.dispose();
         composite.setLayoutData(new GridData(sheet.getWidth(), sheet.getHeight()));
@@ -313,7 +314,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
         {
             return centered.size();
         }
-        return (int) Math.floor(Math.sqrt(centered.size()));
+        return horizontalTiles;
     }
 
     /**
@@ -325,7 +326,7 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
     {
         final Point size = composite.getSize();
         gc.setForeground(gridColor);
-        final int width = Math.min(size.x, horizontalTiles * map.getTileWidth());
+        final int width = Math.max(size.x, horizontalTiles * map.getTileWidth());
         for (int h = 0; h < width; h += map.getTileWidth())
         {
             gc.drawLine(h, 0, h, size.y);
@@ -340,16 +341,18 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
      * Get the center tiles sheet.
      * 
      * @param tiles The tiles to include in sheet.
+     * @param horizontalTiles The number of horizontal tiles.
      * @return The center tiles sheet.
      */
-    private ImageBuffer getCenterTilesSheet(Collection<TileRef> tiles)
+    private ImageBuffer getCenterTilesSheet(Collection<TileRef> tiles, int horizontalTiles)
     {
         available.clear();
         available.addAll(tiles);
 
-        final int horizontalTiles = Math.max(Constant.DECADE, (int) Math.floor(Math.sqrt(tiles.size())));
-        final int width = horizontalTiles * map.getTileWidth();
-        final int height = horizontalTiles / Math.max(1, tiles.size()) * map.getTileHeight() - map.getTileHeight();
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        final int width = horizontalTiles * tw;
+        final int height = Math.max(horizontalTiles / Math.max(1, tiles.size()) * th, th);
 
         final ImageBuffer buff = Graphics.createImageBuffer(width + 1, height + 1, Transparency.BITMASK);
         final Graphic g = buff.createGraphic();
@@ -360,8 +363,8 @@ public final class SheetsPaletteDialog implements MouseListener, Focusable
             final SpriteTiled sheet = map.getSheet(tile.getSheet());
             sheet.setTile(tile.getNumber());
 
-            final int x = id % horizontalTiles * map.getTileWidth();
-            final int y = id / horizontalTiles * map.getTileHeight();
+            final int x = id % horizontalTiles * tw;
+            final int y = id / horizontalTiles * th;
             sheet.setLocation(x, y);
             sheet.render(g);
 
