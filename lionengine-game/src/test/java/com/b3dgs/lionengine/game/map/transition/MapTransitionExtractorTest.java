@@ -141,30 +141,26 @@ public class MapTransitionExtractorTest
     @Test
     public void checkDiagonal()
     {
-        final MapTile map = UtilMap.createMap(7);
+        final MapTile map = UtilMap.createMap(9);
         UtilMap.fill(map, TILE_WATER);
-        UtilMap.fillTransition(map, TILE_TRANSITION, TILE_TRANSITION, 3);
+        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
+        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 5);
 
-        map.setTile(map.createTile(SHEET, TILE_WATER, 2, 2));
-        map.setTile(map.createTile(SHEET, TILE_WATER, 4, 4));
-
-        Assert.assertEquals(new Transition(TransitionType.UP_LEFT_DOWN_RIGHT, WATER, GROUND), get(map, 3, 3));
+        Assert.assertEquals(new Transition(TransitionType.UP_RIGHT_DOWN_LEFT, WATER, GROUND), get(map, 4, 4));
     }
 
     /**
-     * Check the diagonal transitions.
+     * Check the diagonal inverted transitions.
      */
     @Test
     public void checkDiagonalInverted()
     {
-        final MapTile map = UtilMap.createMap(7);
+        final MapTile map = UtilMap.createMap(9);
         UtilMap.fill(map, TILE_WATER);
-        UtilMap.fillTransition(map, TILE_TRANSITION, TILE_TRANSITION, 3);
+        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 5, 3);
+        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3, 5);
 
-        map.setTile(map.createTile(SHEET, TILE_WATER, 2, 4));
-        map.setTile(map.createTile(SHEET, TILE_WATER, 4, 2));
-
-        Assert.assertEquals(new Transition(TransitionType.UP_RIGHT_DOWN_LEFT, WATER, GROUND), get(map, 3, 3));
+        Assert.assertEquals(new Transition(TransitionType.UP_LEFT_DOWN_RIGHT, WATER, GROUND), get(map, 4, 4));
     }
 
     /**

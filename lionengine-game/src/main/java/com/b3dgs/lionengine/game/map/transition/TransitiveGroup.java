@@ -17,13 +17,14 @@
  */
 package com.b3dgs.lionengine.game.map.transition;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -38,6 +39,40 @@ public class TransitiveGroup
 {
     /** Number of valid transition to be accepted. */
     private static final int VALID_TRANSITIONS = 8;
+    /** Minimum number of transitive for cycle. */
+    private static final int MINIMUM_TRANSITION_FOR_CYCLE = 4;
+
+    /**
+     * Reduce transitive by removing internal cycles.
+     * 
+     * @param transitive The transitive to reduce.
+     */
+    static void reduceTransitive(Collection<GroupTransition> transitive)
+    {
+        final Collection<GroupTransition> localChecked = new ArrayList<GroupTransition>();
+        final Collection<GroupTransition> toRemove = new ArrayList<GroupTransition>();
+
+        final Iterator<GroupTransition> iterator = transitive.iterator();
+        GroupTransition first = iterator.next();
+        while (iterator.hasNext())
+        {
+            final GroupTransition current = iterator.next();
+            localChecked.add(current);
+            if (current.getOut().equals(first.getOut()))
+            {
+                toRemove.addAll(localChecked);
+
+                localChecked.clear();
+
+                if (iterator.hasNext())
+                {
+                    first = iterator.next();
+                }
+            }
+        }
+        transitive.removeAll(toRemove);
+        toRemove.clear();
+    }
 
     /** Map reference. */
     private final MapTile map;
@@ -159,8 +194,13 @@ public class TransitiveGroup
         final Collection<GroupTransition> localChecked = new HashSet<GroupTransition>();
         final Collection<GroupTransition> found = transitives.get(groupTransition);
 
-        final Deque<GroupTransition> collect = new LinkedList<GroupTransition>();
+        final Deque<GroupTransition> collect = new ArrayDeque<GroupTransition>();
         checkTransitive(groupIn, groupIn, groupOut, localChecked, collect, true);
+
+        if (collect.size() >= MINIMUM_TRANSITION_FOR_CYCLE)
+        {
+            reduceTransitive(collect);
+        }
 
         found.addAll(collect);
 

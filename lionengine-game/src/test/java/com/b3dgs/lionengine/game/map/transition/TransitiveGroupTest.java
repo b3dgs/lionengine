@@ -19,12 +19,15 @@ package com.b3dgs.lionengine.game.map.transition;
 
 import static com.b3dgs.lionengine.game.map.transition.UtilMap.GROUND;
 import static com.b3dgs.lionengine.game.map.transition.UtilMap.SHEET;
+import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_TRANSITION2;
 import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_TREE;
 import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_WATER;
 import static com.b3dgs.lionengine.game.map.transition.UtilMap.TREE;
 import static com.b3dgs.lionengine.game.map.transition.UtilMap.WATER;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -95,12 +98,33 @@ public class TransitiveGroupTest
         Assert.assertTrue(transitive.getDirectTransitiveTiles(new Transition(TransitionType.CENTER, "a", "a"))
                                     .isEmpty());
 
-        Assert.assertArrayEquals(Arrays.asList(new TileRef(0, 4)).toArray(),
+        Assert.assertArrayEquals(Arrays.asList(new TileRef(SHEET, TILE_TRANSITION2)).toArray(),
                                  transitive.getDirectTransitiveTiles(new Transition(TransitionType.UP_LEFT,
                                                                                     WATER,
                                                                                     TREE))
                                            .toArray());
 
         Assert.assertTrue(config.getFile().delete());
+    }
+
+    /**
+     * Test the transitive reduce function.
+     */
+    @Test
+    public void testReduce()
+    {
+        final Collection<GroupTransition> transitive = new ArrayList<GroupTransition>();
+        transitive.add(new GroupTransition("a", "b"));
+        transitive.add(new GroupTransition("b", "c"));
+        transitive.add(new GroupTransition("c", "b"));
+        transitive.add(new GroupTransition("b", "d"));
+
+        final Collection<GroupTransition> expected = new ArrayList<GroupTransition>();
+        expected.add(new GroupTransition("a", "b"));
+        expected.add(new GroupTransition("b", "d"));
+
+        TransitiveGroup.reduceTransitive(transitive);
+
+        Assert.assertEquals(expected, transitive);
     }
 }

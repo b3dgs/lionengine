@@ -38,16 +38,20 @@ public class UtilMap
     public static final int TILE_GROUND = 1;
     /** Tree group name. */
     public static final int TILE_TREE = 2;
+    /** Road group name. */
+    public static final int TILE_ROAD = 3;
     /** Transition group name. */
-    public static final int TILE_TRANSITION = 3;
+    public static final int TILE_TRANSITION = 4;
     /** Tree transition group name. */
-    public static final int TILE_TRANSITION2 = 4;
+    public static final int TILE_TRANSITION2 = 5;
     /** Water group name. */
     public static final String WATER = "water";
     /** Ground group name. */
     public static final String GROUND = "ground";
     /** Tree group name. */
     public static final String TREE = "tree";
+    /** Road group name. */
+    public static final String ROAD = "road";
     /** Transition group name. */
     public static final String TRANSITION = "transition";
     /** Tree transition group name. */
@@ -89,11 +93,13 @@ public class UtilMap
      */
     public static Media createTransitions()
     {
-        final MapTile map1 = createMap(12);
+        final MapTile map1 = createMap(16);
         fill(map1, TILE_GROUND);
-        fillTransition(map1, 1, 3, 6);
-        fillTransition(map1, 0, 3, 3);
-        fillTransition(map1, 2, 4, 9);
+        fillTransition(map1, TILE_GROUND, TILE_TRANSITION, 6);
+        fillTransition(map1, TILE_WATER, TILE_TRANSITION, 3);
+        fillTransition(map1, TILE_TREE, TILE_TRANSITION2, 9);
+        fillTransition(map1, TILE_GROUND, TILE_TRANSITION, 13);
+        map1.setTile(map1.createTile(SHEET, TILE_ROAD, 13, 13));
 
         final MapTile map2 = createMap(10);
         fill(map2, TILE_WATER);
@@ -103,8 +109,12 @@ public class UtilMap
         fill(map3, TILE_TREE);
         fillTransition(map3, TILE_GROUND, TILE_TRANSITION2, 5);
 
+        final MapTile map4 = createMap(5);
+        fill(map4, TILE_ROAD);
+        map4.setTile(map4.createTile(SHEET, TILE_GROUND, 2, 2));
+
         final Media config = Medias.create("transitives.xml");
-        TransitionsConfig.exports(config, new TransitionsExtractorImpl().getTransitions(map1, map2, map3));
+        TransitionsConfig.exports(config, new TransitionsExtractorImpl().getTransitions(map1, map2, map3, map4));
 
         return config;
     }
@@ -117,11 +127,12 @@ public class UtilMap
     private static void setGroups(MapTile map)
     {
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
-        mapGroup.changeGroup(map.createTile(SHEET, 0, 0, 0), WATER);
-        mapGroup.changeGroup(map.createTile(SHEET, 1, 0, 0), GROUND);
-        mapGroup.changeGroup(map.createTile(SHEET, 2, 0, 0), TREE);
-        mapGroup.changeGroup(map.createTile(SHEET, 3, 0, 0), TRANSITION);
-        mapGroup.changeGroup(map.createTile(SHEET, 4, 0, 0), TRANSITION2);
+        mapGroup.changeGroup(map.createTile(SHEET, TILE_WATER, 0, 0), WATER);
+        mapGroup.changeGroup(map.createTile(SHEET, TILE_GROUND, 0, 0), GROUND);
+        mapGroup.changeGroup(map.createTile(SHEET, TILE_TREE, 0, 0), TREE);
+        mapGroup.changeGroup(map.createTile(SHEET, TILE_ROAD, 0, 0), ROAD);
+        mapGroup.changeGroup(map.createTile(SHEET, TILE_TRANSITION, 0, 0), TRANSITION);
+        mapGroup.changeGroup(map.createTile(SHEET, TILE_TRANSITION2, 0, 0), TRANSITION2);
     }
 
     /**
@@ -134,7 +145,21 @@ public class UtilMap
      */
     public static void fillTransition(MapTile map, int n1, int n2, int pos)
     {
-        final Tile center = map.createTile(SHEET, n1, pos, pos);
+        fillTransition(map, n1, n2, pos, pos);
+    }
+
+    /**
+     * Fill map with transition tiles.
+     * 
+     * @param map The map reference.
+     * @param n1 The center tile number.
+     * @param n2 The starting tile transition number.
+     * @param posX The starting horizontal position.
+     * @param posY The starting vertical position.
+     */
+    public static void fillTransition(MapTile map, int n1, int n2, int posX, int posY)
+    {
+        final Tile center = map.createTile(SHEET, n1, posX, posY);
         map.setTile(center);
 
         for (final Tile neighbor : map.getNeighbors(center))

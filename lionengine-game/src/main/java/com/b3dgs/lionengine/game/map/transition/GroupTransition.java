@@ -25,6 +25,9 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public class GroupTransition
 {
+    /** Transition string representation. */
+    static final String TRANSITION = " -> ";
+
     /** The first group. */
     private final String groupIn;
     /** The second group. */
@@ -92,12 +95,12 @@ public class GroupTransition
             return false;
         }
         final GroupTransition other = (GroupTransition) obj;
-        return groupIn.equals(other.groupIn) && groupOut.equals(groupOut);
+        return groupIn.equals(other.groupIn) && groupOut.equals(other.groupOut);
     }
 
     @Override
     public String toString()
     {
-        return new StringBuilder(groupIn).append(" -> ").append(groupOut).toString();
+        return new StringBuilder(groupIn).append(TRANSITION).append(groupOut).toString();
     }
 }

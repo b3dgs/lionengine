@@ -127,7 +127,7 @@ public class MapTransitionExtractor
         {
             transition = getTransitionSingleGroup(groups);
         }
-        else if (groups.size() == 2 && neighborGroups.size() == TransitionType.BITS)
+        else if (groups.size() == 2 && neighborGroups.size() == TransitionType.BITS && isTransition(tile))
         {
             transition = getTransitionTwoGroups(neighborGroups);
         }
