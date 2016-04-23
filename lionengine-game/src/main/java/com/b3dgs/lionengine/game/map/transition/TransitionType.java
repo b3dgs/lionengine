@@ -117,15 +117,10 @@ public enum TransitionType
      */
     public static TransitionType from(boolean downRight, boolean downLeft, boolean upRight, boolean upLeft)
     {
-        final Integer index = Integer.valueOf(UtilConversion.fromBinary(new boolean[]
+        return from(new boolean[]
         {
             upLeft, upRight, downLeft, downRight
-        }));
-        if (TYPES.containsKey(index))
-        {
-            return TYPES.get(index);
-        }
-        return CENTER;
+        });
     }
 
     /**
