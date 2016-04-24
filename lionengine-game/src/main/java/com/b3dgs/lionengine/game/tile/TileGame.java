@@ -178,11 +178,6 @@ public class TileGame implements Tile
         result = prime * result + inTileY;
         result = prime * result + sheet.hashCode();
         result = prime * result + number;
-        long temp;
-        temp = Double.doubleToLongBits(x);
-        result = prime * result + (int) (temp ^ temp >>> 32);
-        temp = Double.doubleToLongBits(y);
-        result = prime * result + (int) (temp ^ temp >>> 32);
         return result;
     }
 

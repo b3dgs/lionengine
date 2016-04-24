@@ -20,6 +20,9 @@ package com.b3dgs.lionengine.game.tile;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Orientation;
 
 /**
@@ -36,9 +39,12 @@ public class TileConstraint
      * Create constraint.
      * 
      * @param orientation The orientation.
+     * @throws LionEngineException If <code>null</code> argument.
      */
     public TileConstraint(Orientation orientation)
     {
+        Check.notNull(orientation);
+
         this.orientation = orientation;
     }
 
@@ -70,5 +76,40 @@ public class TileConstraint
     public Orientation getOrientation()
     {
         return orientation;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + allowed.hashCode();
+        result = prime * result + orientation.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof TileConstraint))
+        {
+            return false;
+        }
+        final TileConstraint other = (TileConstraint) obj;
+        return orientation == other.orientation && allowed.equals(other.allowed);
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(orientation).append(Constant.SPACE).append(allowed).toString();
     }
 }

@@ -61,7 +61,7 @@ public final class ExtractAllHandler
 
         sheetsExtractDialog.save();
         groupsEditDialog.save();
-        TileConstraintsConfig.export(constraints, ConstraintsExtractor.getConstraints(levels, sheets));
+        TileConstraintsConfig.exports(constraints, ConstraintsExtractor.getConstraints(levels, sheets));
         TransitionsConfig.exports(transitions, levels, sheets, groups);
     }
 
