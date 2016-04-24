@@ -41,9 +41,9 @@ public enum CircuitType
     /** Right ending. */
     RIGHT(false, true, false, false),
     /** Horizontal rail. */
-    HORIZONTAL(true, false, true, false),
+    HORIZONTAL(false, true, false, true),
     /** Vertical rail. */
-    VERTICAL(false, true, false, true),
+    VERTICAL(true, false, true, false),
     /** Angle top left ending. */
     ANGLE_TOP_LEFT(false, false, true, true),
     /** Angle top right ending. */
@@ -161,6 +161,16 @@ public enum CircuitType
         {
             right, bottom, left, top
         };
+    }
+
+    /**
+     * Get the symmetric circuit.
+     * 
+     * @return The symmetric circuit.
+     */
+    public CircuitType getSymetric()
+    {
+        return from(UtilConversion.invert(table));
     }
 
     /**

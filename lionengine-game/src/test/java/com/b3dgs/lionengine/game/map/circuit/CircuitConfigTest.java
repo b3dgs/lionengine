@@ -15,11 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map.transition;
+package com.b3dgs.lionengine.game.map.circuit;
 
 import static com.b3dgs.lionengine.game.map.UtilMap.TILE_GROUND;
-import static com.b3dgs.lionengine.game.map.UtilMap.TILE_TRANSITION;
-import static com.b3dgs.lionengine.game.map.UtilMap.TILE_WATER;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_ROAD;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -42,9 +41,9 @@ import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
- * Test the transitions configuration class.
+ * Test the circuits configuration class.
  */
-public class TransitionConfigTest
+public class CircuitConfigTest
 {
     /**
      * Prepare test.
@@ -72,11 +71,11 @@ public class TransitionConfigTest
     @Test(expected = LionEngineException.class)
     public void testConstructor() throws Exception
     {
-        UtilTests.testPrivateConstructor(TransitionsConfig.class);
+        UtilTests.testPrivateConstructor(CircuitsConfig.class);
     }
 
     /**
-     * Test the transitions configuration.
+     * Test the circuits configuration.
      * 
      * @throws IOException If error.
      */
@@ -84,28 +83,24 @@ public class TransitionConfigTest
     public void testExtraction() throws IOException
     {
         final MapTile map = UtilMap.createMap(7);
-        UtilMap.fill(map, TILE_WATER);
-        UtilMap.fill(map, TILE_WATER, TILE_TRANSITION, 3);
-
-        final MapTile map2 = UtilMap.createMap(7);
-        UtilMap.fill(map, TILE_WATER);
-        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
+        UtilMap.fill(map, TILE_GROUND);
+        UtilMap.fill(map, TILE_ROAD, TILE_ROAD, 3);
 
         final MapTile map3 = new MapTileGame();
         map3.addFeature(new MapTileGroupModel());
         map3.create(3, 3);
 
-        final TransitionsExtractor extractor = new TransitionsExtractorImpl();
-        final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(map, map2, map3);
+        final CircuitsExtractor extractor = new CircuitsExtractorImpl();
+        final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(map, map3);
 
-        final Media media = Medias.create("transition_tmp.xml");
+        final Media media = Medias.create("circuit_tmp.xml");
         try
         {
-            TransitionsConfig.exports(media, transitions);
+            CircuitsConfig.exports(media, circuits);
 
-            final Map<Transition, Collection<TileRef>> imported = TransitionsConfig.imports(media);
+            final Map<Circuit, Collection<TileRef>> imported = CircuitsConfig.imports(media);
 
-            Assert.assertEquals(transitions, imported);
+            Assert.assertEquals(circuits, imported);
         }
         finally
         {

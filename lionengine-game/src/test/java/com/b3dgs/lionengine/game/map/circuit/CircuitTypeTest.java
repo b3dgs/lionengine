@@ -99,8 +99,8 @@ public class CircuitTypeTest
         Assert.assertTrue(check(CircuitType.LEFT, false, false, false, true));
         Assert.assertTrue(check(CircuitType.BOTTOM, true, false, false, false));
         Assert.assertTrue(check(CircuitType.RIGHT, false, true, false, false));
-        Assert.assertTrue(check(CircuitType.HORIZONTAL, true, false, true, false));
-        Assert.assertTrue(check(CircuitType.VERTICAL, false, true, false, true));
+        Assert.assertTrue(check(CircuitType.HORIZONTAL, false, true, false, true));
+        Assert.assertTrue(check(CircuitType.VERTICAL, true, false, true, false));
         Assert.assertTrue(check(CircuitType.ANGLE_TOP_LEFT, false, false, true, true));
         Assert.assertTrue(check(CircuitType.ANGLE_TOP_RIGHT, false, true, true, false));
         Assert.assertTrue(check(CircuitType.ANGLE_BOTTOM_LEFT, true, false, false, true));

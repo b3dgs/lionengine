@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.game.map.transition;
 
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.GROUND;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.SHEET;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_GROUND;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_TREE;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_WATER;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TRANSITION;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TRANSITION2;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TREE;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.WATER;
+import static com.b3dgs.lionengine.game.map.UtilMap.GROUND;
+import static com.b3dgs.lionengine.game.map.UtilMap.SHEET;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_GROUND;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_TREE;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_WATER;
+import static com.b3dgs.lionengine.game.map.UtilMap.TRANSITION;
+import static com.b3dgs.lionengine.game.map.UtilMap.TRANSITION2;
+import static com.b3dgs.lionengine.game.map.UtilMap.TREE;
+import static com.b3dgs.lionengine.game.map.UtilMap.WATER;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.UtilMap;
 import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
@@ -54,7 +55,7 @@ public class MapTileTransitionModelTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilMap.createTransitions();
+        config = UtilMapTransition.createTransitions();
     }
 
     /**

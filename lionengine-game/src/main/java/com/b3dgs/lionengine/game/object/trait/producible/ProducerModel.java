@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.game.object.trait.producible;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Queue;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -53,7 +53,7 @@ public class ProducerModel extends TraitModel implements Producer
     /** Producer listeners. */
     private final Collection<ProducerListener> listeners = new ArrayList<ProducerListener>();
     /** Production queue. */
-    private final Queue<Producible> productions = new LinkedList<Producible>();
+    private final Queue<Producible> productions = new ArrayDeque<Producible>();
     /** Handler reference. */
     private Handler handler;
     /** Tick timer rate. */

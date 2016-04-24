@@ -80,6 +80,17 @@ public class Circuit
         return groups.getOut();
     }
 
+    /**
+     * Check if transition if symmetric with other.
+     * 
+     * @param other The other transition to check with.
+     * @return <code>true</code> if symmetric transition, <code>false</code> else.
+     */
+    private boolean isSymmetric(Circuit other)
+    {
+        return getIn().equals(other.getOut()) && getOut().equals(other.getIn()) && type == other.type.getSymetric();
+    }
+
     /*
      * Object
      */
@@ -106,7 +117,7 @@ public class Circuit
             return false;
         }
         final Circuit other = (Circuit) obj;
-        return groups.equals(other.groups) && type == other.type;
+        return groups.equals(other.groups) && type == other.type || isSymmetric(other);
     }
 
     @Override

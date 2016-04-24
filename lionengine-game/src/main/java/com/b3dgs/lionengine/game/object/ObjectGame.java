@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
@@ -63,7 +63,7 @@ public class ObjectGame
     /** Id used (list of active id used). */
     private static final Collection<Integer> IDS = new HashSet<Integer>(16);
     /** Recycle id (reuse previous removed object id). */
-    private static final Queue<Integer> RECYCLE = new LinkedList<Integer>();
+    private static final Queue<Integer> RECYCLE = new ArrayDeque<Integer>();
     /** Last id used (last maximum id value). */
     private static int lastId;
 

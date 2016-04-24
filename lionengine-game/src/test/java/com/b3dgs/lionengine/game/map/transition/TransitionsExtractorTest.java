@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.game.map.transition;
 
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.GROUND;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.SHEET;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_GROUND;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_TRANSITION;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_WATER;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.WATER;
+import static com.b3dgs.lionengine.game.map.UtilMap.GROUND;
+import static com.b3dgs.lionengine.game.map.UtilMap.SHEET;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_GROUND;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_TRANSITION;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_WATER;
+import static com.b3dgs.lionengine.game.map.UtilMap.WATER;
 
 import java.util.Collection;
 import java.util.Map;
@@ -31,6 +31,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.UtilMap;
 import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
@@ -46,11 +47,11 @@ public class TransitionsExtractorTest
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
-        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
+        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
 
         final MapTile map2 = UtilMap.createMap(7);
         UtilMap.fill(map2, TILE_GROUND);
-        UtilMap.fillTransition(map2, TILE_WATER, TILE_TRANSITION, 3);
+        UtilMap.fill(map2, TILE_WATER, TILE_TRANSITION, 3);
 
         final MapTile map3 = UtilMap.createMap(3);
 

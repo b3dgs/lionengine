@@ -15,14 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map.transition;
+package com.b3dgs.lionengine.game.map;
 
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
-import com.b3dgs.lionengine.game.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.circuit.MapTileCircuitModel;
+import com.b3dgs.lionengine.game.map.transition.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
@@ -79,44 +75,12 @@ public class UtilMap
         final MapTileGroup mapGroup = new MapTileGroupModel();
         map.addFeature(mapGroup);
         map.addFeature(new MapTileTransitionModel(services));
+        map.addFeature(new MapTileCircuitModel(services));
         map.create(size, size);
 
         setGroups(map);
 
         return map;
-    }
-
-    /**
-     * Create map with transitive.
-     * 
-     * @return The created configuration.
-     */
-    public static Media createTransitions()
-    {
-        final MapTile map1 = createMap(16);
-        fill(map1, TILE_GROUND);
-        fillTransition(map1, TILE_GROUND, TILE_TRANSITION, 6);
-        fillTransition(map1, TILE_WATER, TILE_TRANSITION, 3);
-        fillTransition(map1, TILE_TREE, TILE_TRANSITION2, 9);
-        fillTransition(map1, TILE_GROUND, TILE_TRANSITION, 13);
-        map1.setTile(map1.createTile(SHEET, TILE_ROAD, 13, 13));
-
-        final MapTile map2 = createMap(10);
-        fill(map2, TILE_WATER);
-        fillTransition(map2, TILE_GROUND, TILE_TRANSITION, 5);
-
-        final MapTile map3 = createMap(10);
-        fill(map3, TILE_TREE);
-        fillTransition(map3, TILE_GROUND, TILE_TRANSITION2, 5);
-
-        final MapTile map4 = createMap(5);
-        fill(map4, TILE_ROAD);
-        map4.setTile(map4.createTile(SHEET, TILE_GROUND, 2, 2));
-
-        final Media config = Medias.create("transitives.xml");
-        TransitionsConfig.exports(config, new TransitionsExtractorImpl().getTransitions(map1, map2, map3, map4));
-
-        return config;
     }
 
     /**
@@ -136,43 +100,6 @@ public class UtilMap
     }
 
     /**
-     * Fill map with transition tiles.
-     * 
-     * @param map The map reference.
-     * @param n1 The center tile number.
-     * @param n2 The starting tile transition number.
-     * @param pos The starting position.
-     */
-    public static void fillTransition(MapTile map, int n1, int n2, int pos)
-    {
-        fillTransition(map, n1, n2, pos, pos);
-    }
-
-    /**
-     * Fill map with transition tiles.
-     * 
-     * @param map The map reference.
-     * @param n1 The center tile number.
-     * @param n2 The starting tile transition number.
-     * @param posX The starting horizontal position.
-     * @param posY The starting vertical position.
-     */
-    public static void fillTransition(MapTile map, int n1, int n2, int posX, int posY)
-    {
-        final Tile center = map.createTile(SHEET, n1, posX, posY);
-        map.setTile(center);
-
-        for (final Tile neighbor : map.getNeighbors(center))
-        {
-            if (neighbor.getNumber() != n1)
-            {
-                final Tile tile = map.createTile(SHEET, n2, neighbor.getX(), neighbor.getY());
-                map.setTile(tile);
-            }
-        }
-    }
-
-    /**
      * Fill map with center tiles from group.
      * 
      * @param map The map reference.
@@ -185,6 +112,43 @@ public class UtilMap
             for (int ty = 0; ty < map.getInTileHeight(); ty++)
             {
                 final Tile tile = map.createTile(SHEET, number, tx, ty);
+                map.setTile(tile);
+            }
+        }
+    }
+
+    /**
+     * Fill map with transition tiles.
+     * 
+     * @param map The map reference.
+     * @param n1 The center tile number.
+     * @param n2 The starting tile transition number.
+     * @param pos The starting position.
+     */
+    public static void fill(MapTile map, int n1, int n2, int pos)
+    {
+        fill(map, n1, n2, pos, pos);
+    }
+
+    /**
+     * Fill map with transition tiles.
+     * 
+     * @param map The map reference.
+     * @param n1 The center tile number.
+     * @param n2 The starting tile transition number.
+     * @param posX The starting horizontal position.
+     * @param posY The starting vertical position.
+     */
+    public static void fill(MapTile map, int n1, int n2, int posX, int posY)
+    {
+        final Tile center = map.createTile(SHEET, n1, posX, posY);
+        map.setTile(center);
+
+        for (final Tile neighbor : map.getNeighbors(center))
+        {
+            if (neighbor.getNumber() != n1)
+            {
+                final Tile tile = map.createTile(SHEET, n2, neighbor.getX(), neighbor.getY());
                 map.setTile(tile);
             }
         }

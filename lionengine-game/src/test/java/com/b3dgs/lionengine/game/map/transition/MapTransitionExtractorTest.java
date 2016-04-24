@@ -17,18 +17,19 @@
  */
 package com.b3dgs.lionengine.game.map.transition;
 
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.GROUND;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.SHEET;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_GROUND;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_TRANSITION;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_TREE;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.TILE_WATER;
-import static com.b3dgs.lionengine.game.map.transition.UtilMap.WATER;
+import static com.b3dgs.lionengine.game.map.UtilMap.GROUND;
+import static com.b3dgs.lionengine.game.map.UtilMap.SHEET;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_GROUND;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_TRANSITION;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_TREE;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_WATER;
+import static com.b3dgs.lionengine.game.map.UtilMap.WATER;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.UtilMap;
 
 /**
  * Test the transition extractor class.
@@ -56,7 +57,7 @@ public class MapTransitionExtractorTest
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
-        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
+        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
 
         final Transition transition = new Transition(TransitionType.CENTER, WATER, WATER);
 
@@ -83,7 +84,7 @@ public class MapTransitionExtractorTest
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
-        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
+        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
 
         Assert.assertEquals(new Transition(TransitionType.UP_LEFT, WATER, GROUND), get(map, 2, 4));
         Assert.assertEquals(new Transition(TransitionType.UP_RIGHT, WATER, GROUND), get(map, 4, 4));
@@ -99,7 +100,7 @@ public class MapTransitionExtractorTest
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_GROUND);
-        UtilMap.fillTransition(map, TILE_WATER, TILE_TRANSITION, 3);
+        UtilMap.fill(map, TILE_WATER, TILE_TRANSITION, 3);
 
         Assert.assertEquals(new Transition(TransitionType.CORNER_UP_LEFT, WATER, GROUND), get(map, 2, 4));
         Assert.assertEquals(new Transition(TransitionType.CORNER_UP_RIGHT, WATER, GROUND), get(map, 4, 4));
@@ -115,7 +116,7 @@ public class MapTransitionExtractorTest
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
-        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
+        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
 
         Assert.assertEquals(new Transition(TransitionType.RIGHT, WATER, GROUND), get(map, 2, 3));
         Assert.assertEquals(new Transition(TransitionType.LEFT, WATER, GROUND), get(map, 4, 3));
@@ -129,7 +130,7 @@ public class MapTransitionExtractorTest
     {
         final MapTile map = UtilMap.createMap(7);
         UtilMap.fill(map, TILE_WATER);
-        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
+        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
 
         Assert.assertEquals(new Transition(TransitionType.UP, WATER, GROUND), get(map, 3, 4));
         Assert.assertEquals(new Transition(TransitionType.DOWN, WATER, GROUND), get(map, 3, 2));
@@ -143,8 +144,8 @@ public class MapTransitionExtractorTest
     {
         final MapTile map = UtilMap.createMap(9);
         UtilMap.fill(map, TILE_WATER);
-        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3);
-        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 5);
+        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
+        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 5);
 
         Assert.assertEquals(new Transition(TransitionType.UP_RIGHT_DOWN_LEFT, WATER, GROUND), get(map, 4, 4));
     }
@@ -157,8 +158,8 @@ public class MapTransitionExtractorTest
     {
         final MapTile map = UtilMap.createMap(9);
         UtilMap.fill(map, TILE_WATER);
-        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 5, 3);
-        UtilMap.fillTransition(map, TILE_GROUND, TILE_TRANSITION, 3, 5);
+        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 5, 3);
+        UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3, 5);
 
         Assert.assertEquals(new Transition(TransitionType.UP_LEFT_DOWN_RIGHT, WATER, GROUND), get(map, 4, 4));
     }

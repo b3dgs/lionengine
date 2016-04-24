@@ -35,33 +35,24 @@ public class MapCircuitExtractor
     private static final int CIRCUIT_GROUPS_NUMBER = 2;
 
     /**
-     * Get the tile circuit with one group only.
-     * 
-     * @param groups The groups (must contain one group).
-     * @return The tile circuit.
-     */
-    private static Circuit getCircuitSingleGroup(Collection<String> groups)
-    {
-        final Iterator<String> iterator = groups.iterator();
-        final String group = iterator.next();
-
-        return new Circuit(CircuitType.MIDDLE, group, group);
-    }
-
-    /**
      * Get the tile circuit between two groups.
      * 
+     * @param group The initial group.
      * @param neighborGroups The neighbor groups (must contain two groups).
      * @return The tile circuit.
      */
-    private static Circuit getCircuitTwoGroups(Collection<String> neighborGroups)
+    private static Circuit getCircuitTwoGroups(String group, Collection<String> neighborGroups)
     {
         final Iterator<String> iterator = new HashSet<String>(neighborGroups).iterator();
         final String groupIn = iterator.next();
         final String groupOut = iterator.next();
-        final CircuitType type = getCircuitType(groupIn, neighborGroups);
+        final CircuitType type = getCircuitType(group, neighborGroups);
 
-        return new Circuit(type, groupIn, groupOut);
+        if (groupIn.equals(group))
+        {
+            return new Circuit(type, group, groupOut);
+        }
+        return new Circuit(type, group, groupIn);
     }
 
     /**
@@ -121,15 +112,23 @@ public class MapCircuitExtractor
     {
         final Collection<String> neighborGroups = getNeighborGroups(tile);
         final Collection<String> groups = new HashSet<String>(neighborGroups);
+        final String group = mapGroup.getGroup(tile);
         final Circuit circuit;
 
-        if (groups.size() == 1 && mapGroup.getGroup(tile).equals(groups.iterator().next()))
+        if (groups.size() == 1)
         {
-            circuit = getCircuitSingleGroup(groups);
+            if (group.equals(groups.iterator().next()))
+            {
+                circuit = new Circuit(CircuitType.MIDDLE, group, group);
+            }
+            else
+            {
+                circuit = new Circuit(CircuitType.BLOCK, group, groups.iterator().next());
+            }
         }
         else if (groups.size() == 2 && neighborGroups.size() == CircuitType.BITS && isCircuit(tile))
         {
-            circuit = getCircuitTwoGroups(neighborGroups);
+            circuit = getCircuitTwoGroups(group, neighborGroups);
         }
         else
         {
