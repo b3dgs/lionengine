@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.circuit.MapTileCircuit;
 import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -185,6 +186,9 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
 
             final MapTileTransition mapTileTransition = map.getFeature(MapTileTransition.class);
             mapTileTransition.resolve(newTile);
+
+            final MapTileCircuit mapTileCircuit = map.getFeature(MapTileCircuit.class);
+            mapTileCircuit.resolve(newTile);
         }
     }
 

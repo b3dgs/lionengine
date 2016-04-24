@@ -32,18 +32,27 @@ public final class Messages extends NLS
     public static String HeaderTitle;
     /** Description header. */
     public static String HeaderDesc;
+
     /** Constraints config file filter. */
     public static String ConstraintsConfigFileFilter;
-    /** Transitions config file filter. */
-    public static String TransitionsConfigFileFilter;
     /** Constraints location. */
     public static String ConstraintsLocation;
-    /** Transitions location. */
-    public static String TransitionsLocation;
     /** Error constraints. */
     public static String ErrorConstraints;
+
+    /** Transitions config file filter. */
+    public static String TransitionsConfigFileFilter;
+    /** Transitions location. */
+    public static String TransitionsLocation;
     /** Error transitions. */
     public static String ErrorTransitions;
+
+    /** Circuits config file filter. */
+    public static String CircuitsConfigFileFilter;
+    /** Circuits location. */
+    public static String CircuitsLocation;
+    /** Error circuits. */
+    public static String ErrorCircuits;
 
     /**
      * Initialize.

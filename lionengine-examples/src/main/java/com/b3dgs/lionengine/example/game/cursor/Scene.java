@@ -31,6 +31,8 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.circuit.Circuit;
+import com.b3dgs.lionengine.game.map.circuit.MapCircuitExtractor;
 import com.b3dgs.lionengine.game.map.transition.MapTransitionExtractor;
 import com.b3dgs.lionengine.game.map.transition.Transition;
 import com.b3dgs.lionengine.game.object.Services;
@@ -68,6 +70,8 @@ class Scene extends Sequence
     private final Mouse mouse = getInputDevice(Mouse.class);
     /** Map transition extractor. */
     private final MapTransitionExtractor transitionExtractor = new MapTransitionExtractor(map);
+    /** Map transition extractor. */
+    private final MapCircuitExtractor circuitExtractor = new MapCircuitExtractor(map);
 
     /**
      * Constructor.
@@ -105,6 +109,9 @@ class Scene extends Sequence
 
             final Transition transition = transitionExtractor.getTransition(tile);
             text.draw(g, x + 20, y - 5, "Transition: " + transition);
+
+            final Circuit circuit = circuitExtractor.getCircuit(tile);
+            text.draw(g, x + 20, y - 15, "Circuit: " + circuit);
         }
     }
 

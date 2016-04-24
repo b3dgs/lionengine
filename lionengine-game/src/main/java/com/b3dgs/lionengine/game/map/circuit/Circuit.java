@@ -15,58 +15,69 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map.transition;
+package com.b3dgs.lionengine.game.map.circuit;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.map.GroupTransition;
 
 /**
- * Represents transition between two groups.
+ * Represents a tile circuit from two groups.
  */
-public class GroupTransition
+public class Circuit
 {
-    /** Transition string representation. */
-    static final String TRANSITION = " -> ";
-
-    /** The first group. */
-    private final String groupIn;
-    /** The second group. */
-    private final String groupOut;
+    /** The circuit type. */
+    private final CircuitType type;
+    /** Group transition. */
+    private final GroupTransition groups;
 
     /**
-     * Create the group transition.
+     * Create the circuit.
      * 
-     * @param groupIn The first group.
-     * @param groupOut The second group.
+     * @param type The transition type.
+     * @param groupIn The group inside.
+     * @param groupOut The group outside.
      * @throws LionEngineException If <code>null</code> arguments.
      */
-    public GroupTransition(String groupIn, String groupOut)
+    public Circuit(CircuitType type, String groupIn, String groupOut)
     {
+        Check.notNull(type);
         Check.notNull(groupIn);
         Check.notNull(groupOut);
 
-        this.groupIn = groupIn;
-        this.groupOut = groupOut;
+        this.type = type;
+        groups = new GroupTransition(groupIn, groupOut);
     }
 
     /**
-     * The first group.
+     * Get the circuit type.
      * 
-     * @return The first group.
+     * @return The circuit type.
+     */
+    public CircuitType getType()
+    {
+        return type;
+    }
+
+    /**
+     * Get the group inside.
+     * 
+     * @return The group inside.
      */
     public String getIn()
     {
-        return groupIn;
+        return groups.getIn();
     }
 
     /**
-     * The second group.
+     * Get the group outside.
      * 
-     * @return The second group.
+     * @return The group outside.
      */
     public String getOut()
     {
-        return groupOut;
+        return groups.getOut();
     }
 
     /*
@@ -78,8 +89,8 @@ public class GroupTransition
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + groupIn.hashCode();
-        result = prime * result + groupOut.hashCode();
+        result = prime * result + groups.hashCode();
+        result = prime * result + type.hashCode();
         return result;
     }
 
@@ -90,17 +101,17 @@ public class GroupTransition
         {
             return true;
         }
-        if (!(obj instanceof GroupTransition))
+        if (!(obj instanceof Circuit))
         {
             return false;
         }
-        final GroupTransition other = (GroupTransition) obj;
-        return groupIn.equals(other.groupIn) && groupOut.equals(other.groupOut);
+        final Circuit other = (Circuit) obj;
+        return groups.equals(other.groups) && type == other.type;
     }
 
     @Override
     public String toString()
     {
-        return new StringBuilder(groupIn).append(TRANSITION).append(groupOut).toString();
+        return new StringBuilder().append(type).append(Constant.SPACE).append(groups).toString();
     }
 }

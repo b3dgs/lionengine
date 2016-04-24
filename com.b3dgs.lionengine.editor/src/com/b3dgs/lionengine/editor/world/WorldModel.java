@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.Minimap;
+import com.b3dgs.lionengine.game.map.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.map.transition.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
@@ -65,6 +66,7 @@ public class WorldModel
 
         map.addFeature(new MapTileGroupModel());
         map.addFeature(new MapTileTransitionModel(services));
+        map.addFeature(new MapTileCircuitModel(services));
         map.addFeature(new MapTilePathModel(services));
     }
 

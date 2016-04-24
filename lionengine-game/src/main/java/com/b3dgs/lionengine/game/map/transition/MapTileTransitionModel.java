@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.map.GroupTransition;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.object.Services;
@@ -141,7 +142,9 @@ public class MapTileTransitionModel implements MapTileTransition
     /** Tile as key. */
     private final Map<TileRef, Collection<Transition>> tiles;
     /** Transitions as key. */
-    private Map<Transition, Collection<TileRef>> transitions;
+    private final Map<Transition, Collection<TileRef>> transitions;
+    /** Existing group links. */
+    private final Collection<GroupTransition> groupLinks;
     /** Transitive group handler. */
     private TransitiveGroup transitiveGroup;
 
@@ -161,7 +164,10 @@ public class MapTileTransitionModel implements MapTileTransition
     public MapTileTransitionModel(Services services)
     {
         Check.notNull(services);
+
         tiles = new HashMap<TileRef, Collection<Transition>>();
+        transitions = new HashMap<Transition, Collection<TileRef>>();
+        groupLinks = new HashSet<GroupTransition>();
         map = services.get(MapTile.class);
         mapGroup = map.getFeature(MapTileGroup.class);
     }
@@ -276,7 +282,14 @@ public class MapTileTransitionModel implements MapTileTransition
         else
         {
             final Tile newTile = map.createTile(tile.getSheet(), tile.getNumber(), neighbor.getX(), neighbor.getY());
-            if (!neighbor.equals(newTile))
+            final String groupA = mapGroup.getGroup(tile);
+            final String groupB = mapGroup.getGroup(neighbor);
+
+            // Used to fix transitions not found
+            if (!neighbor.equals(newTile)
+                && (!isCenter(neighbor)
+                    || groupA.equals(groupB)
+                    || groupLinks.contains(new GroupTransition(groupA, groupB))))
             {
                 map.setTile(newTile);
                 toResolve.add(newTile);
@@ -377,11 +390,12 @@ public class MapTileTransitionModel implements MapTileTransition
     }
 
     @Override
-    public void loadTransitions(Media configTransitions)
+    public void loadTransitions(Media config)
     {
-        transitions = TransitionsConfig.imports(configTransitions);
-        tiles.clear();
+        transitions.clear();
+        transitions.putAll(TransitionsConfig.imports(config));
 
+        tiles.clear();
         for (final Entry<Transition, Collection<TileRef>> entry : transitions.entrySet())
         {
             final Transition transition = entry.getKey();
@@ -393,6 +407,8 @@ public class MapTileTransitionModel implements MapTileTransition
                 }
                 tiles.get(tileRef).add(transition);
             }
+            groupLinks.add(new GroupTransition(transition.getIn(), transition.getOut()));
+            groupLinks.add(new GroupTransition(transition.getOut(), transition.getIn()));
         }
 
         transitiveGroup = new TransitiveGroup(map);

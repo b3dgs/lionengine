@@ -54,13 +54,13 @@ public final class TransitionsConfig
     /**
      * Import all transitions from configuration.
      * 
-     * @param configTransitions The transitions media.
+     * @param config The transitions media.
      * @return The transitions imported.
      * @throws LionEngineException If unable to read data.
      */
-    public static Map<Transition, Collection<TileRef>> imports(Media configTransitions)
+    public static Map<Transition, Collection<TileRef>> imports(Media config)
     {
-        final XmlNode root = Xml.load(configTransitions);
+        final XmlNode root = Xml.load(config);
         final Collection<XmlNode> nodesTransition = root.getChildren(NODE_TRANSITION);
         final Map<Transition, Collection<TileRef>> transitions;
         transitions = new HashMap<Transition, Collection<TileRef>>();

@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game.map.transition;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.game.map.GroupTransition;
+
 /**
  * Test the group transition class.
  */

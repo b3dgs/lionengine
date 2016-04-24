@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
+import com.b3dgs.lionengine.game.map.circuit.CircuitsConfig;
 import com.b3dgs.lionengine.game.map.transition.TransitionsConfig;
 import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
@@ -39,7 +40,7 @@ import com.b3dgs.lionengine.util.UtilFolder;
 public class ConstraintsExtractDialog extends AbstractDialog
 {
     /** Icon. */
-    public static final Image ICON = UtilIcon.get("dialog", "import.png");
+    private static final Image ICON = UtilIcon.get("dialog", "import.png");
 
     /** Level rip list. */
     private LevelRipWidget levelRips;
@@ -51,6 +52,8 @@ public class ConstraintsExtractDialog extends AbstractDialog
     private BrowseWidget constraints;
     /** Transitions location. */
     private BrowseWidget transitions;
+    /** Circuits location. */
+    private BrowseWidget circuits;
 
     /**
      * Create an export map tile constraints dialog.
@@ -127,6 +130,10 @@ public class ConstraintsExtractDialog extends AbstractDialog
             {
                 transitions.setLocation(UtilFolder.getPath(folder, TransitionsConfig.FILENAME));
             }
+            if (circuits.getMedia() == null)
+            {
+                circuits.setLocation(UtilFolder.getPath(folder, CircuitsConfig.FILENAME));
+            }
             checkFinish();
         });
     }
@@ -157,6 +164,9 @@ public class ConstraintsExtractDialog extends AbstractDialog
                                        Messages.TransitionsConfigFileFilter,
                                        false);
         transitions.addListener(media -> checkFinish());
+
+        circuits = new BrowseWidget(content, Messages.CircuitsLocation, Messages.CircuitsConfigFileFilter, false);
+        circuits.addListener(media -> checkFinish());
     }
 
     @Override
@@ -168,5 +178,6 @@ public class ConstraintsExtractDialog extends AbstractDialog
 
         TileConstraintsConfig.export(constraints.getMedia(), ConstraintsExtractor.getConstraints(levels, sheetsConfig));
         TransitionsConfig.exports(transitions.getMedia(), levels, sheetsConfig, groupsConfig);
+        CircuitsConfig.exports(circuits.getMedia(), levels, sheetsConfig, groupsConfig);
     }
 }
