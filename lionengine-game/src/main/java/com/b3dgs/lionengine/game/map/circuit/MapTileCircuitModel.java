@@ -104,7 +104,7 @@ public class MapTileCircuitModel implements MapTileCircuit
         final String neighborGroup = mapGroup.getGroup(neighbor);
         final Circuit circuit = extractor.getCircuit(neighbor);
 
-        if (circuit != null && group.equals(neighborGroup))
+        if (circuit != null && (group.equals(neighborGroup) || group.equals(circuit.getOut())))
         {
             updateTile(neighbor, circuit);
         }
