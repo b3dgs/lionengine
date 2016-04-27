@@ -25,9 +25,13 @@ import static com.b3dgs.lionengine.game.map.UtilMap.TILE_TREE;
 import static com.b3dgs.lionengine.game.map.UtilMap.TILE_WATER;
 import static com.b3dgs.lionengine.game.map.UtilMap.WATER;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.UtilMap;
 
@@ -36,6 +40,24 @@ import com.b3dgs.lionengine.game.map.UtilMap;
  */
 public class MapTransitionExtractorTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+    }
+
     /**
      * Get the transition for the specified tile.
      * 

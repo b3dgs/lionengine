@@ -23,9 +23,13 @@ import static com.b3dgs.lionengine.game.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.map.UtilMap.TILE_GROUND;
 import static com.b3dgs.lionengine.game.map.UtilMap.TILE_ROAD;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.UtilMap;
@@ -35,6 +39,24 @@ import com.b3dgs.lionengine.game.map.UtilMap;
  */
 public class MapCircuitExtractorTest
 {
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+    }
+
     /**
      * Get the circuit for the specified tile.
      * 
