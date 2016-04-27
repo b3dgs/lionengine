@@ -103,20 +103,27 @@ public class MapTileCircuitModel implements MapTileCircuit
         final String group = mapGroup.getGroup(tile);
         final String neighborGroup = mapGroup.getGroup(neighbor);
         final Circuit circuit = extractor.getCircuit(neighbor);
-
-        if (circuit != null && (group.equals(neighborGroup) || group.equals(circuit.getOut())))
+        if (circuit != null)
         {
-            updateTile(neighbor, circuit);
+            if (group.equals(neighborGroup))
+            {
+                updateTile(tile, neighbor, circuit);
+            }
+            else if (neighborGroup.equals(circuit.getIn()))
+            {
+                updateTile(neighbor, neighbor, circuit);
+            }
         }
     }
 
     /**
      * Update tile with new representation.
      * 
-     * @param tile The tile to update.
+     * @param tile The tile placed.
+     * @param neighbor The tile to update.
      * @param circuit The circuit to set.
      */
-    private void updateTile(Tile tile, Circuit circuit)
+    private void updateTile(Tile tile, Tile neighbor, Circuit circuit)
     {
         final Iterator<TileRef> iterator = getTiles(circuit).iterator();
         while (iterator.hasNext())
@@ -124,7 +131,7 @@ public class MapTileCircuitModel implements MapTileCircuit
             final TileRef newTile = iterator.next();
             if (mapGroup.getGroup(newTile).equals(mapGroup.getGroup(tile)))
             {
-                map.setTile(map.createTile(newTile.getSheet(), newTile.getNumber(), tile.getX(), tile.getY()));
+                map.setTile(map.createTile(newTile.getSheet(), newTile.getNumber(), neighbor.getX(), neighbor.getY()));
                 break;
             }
         }

@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupType;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.stream.Xml;
@@ -37,6 +38,16 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class GroupList extends ObjectList<TileGroup> implements ObjectListListener<TileGroup>
 {
+    /**
+     * Create the group list.
+     * 
+     * @param properties The properties reference.
+     */
+    public GroupList(GroupProperties properties)
+    {
+        super(TileGroup.class, properties);
+    }
+
     /**
      * Create the group list.
      */
@@ -63,13 +74,13 @@ public class GroupList extends ObjectList<TileGroup> implements ObjectListListen
     @Override
     protected TileGroup copyObject(TileGroup group)
     {
-        return new TileGroup(group.getName(), group.getTiles());
+        return new TileGroup(group.getName(), group.getType(), group.getTiles());
     }
 
     @Override
     protected TileGroup createObject(String name)
     {
-        return new TileGroup(name, new ArrayList<TileRef>());
+        return new TileGroup(name, TileGroupType.NONE, new ArrayList<TileRef>());
     }
 
     /*

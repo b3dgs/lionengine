@@ -22,14 +22,13 @@ import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
+import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
@@ -39,13 +38,15 @@ import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 /**
  * Represents the groups edition dialog.
  */
-public class GroupsEditDialog extends AbstractDialog
+public class GroupsEditDialog extends AbstractEditor
 {
     /** Icon. */
     public static final Image ICON = UtilIcon.get("dialog", "edit.png");
 
+    /** Group properties. */
+    private final GroupProperties properties = new GroupProperties();
     /** Groups list. */
-    private final GroupList list = new GroupList();
+    private final GroupList list = new GroupList(properties);
     /** Groups media. */
     private final Media configGroups;
 
@@ -57,11 +58,8 @@ public class GroupsEditDialog extends AbstractDialog
      */
     public GroupsEditDialog(Shell parent, Media configGroups)
     {
-        super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON);
+        super(parent, Messages.Title, ICON);
         this.configGroups = configGroups;
-        dialog.setMinimumSize(128, 320);
-        createDialog();
-        finish.setEnabled(true);
     }
 
     /*
@@ -69,18 +67,25 @@ public class GroupsEditDialog extends AbstractDialog
      */
 
     @Override
-    protected void createContent(Composite content)
+    protected void createContent(Composite parent)
     {
-        content.setLayout(new GridLayout(2, false));
-        content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        list.create(content);
-        list.loadGroups(configGroups);
+        final Composite content = new Composite(parent, SWT.NONE);
+        content.setLayout(new GridLayout(1, false));
+
         list.addListener(list);
+        list.addListener(properties);
+
+        list.create(content);
+        properties.create(content);
+
+        list.loadGroups(configGroups);
     }
 
     @Override
-    protected void onFinish()
+    protected void onExit()
     {
+        list.save();
+
         final Collection<TileGroup> groups = new ArrayList<>();
         for (final TreeItem item : list.getTree().getItems())
         {

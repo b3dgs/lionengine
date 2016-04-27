@@ -52,6 +52,7 @@ import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupType;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 
 /**
@@ -103,7 +104,7 @@ public class FormulaProperties extends ObjectProperties<CollisionFormula>
         {
             final TreeItem item = new TreeItem(tree, SWT.NONE);
             item.setText(group);
-            item.setData(new TileGroup(group, Collections.emptyList()));
+            item.setData(new TileGroup(group, TileGroupType.NONE, Collections.emptyList()));
         }
     }
 

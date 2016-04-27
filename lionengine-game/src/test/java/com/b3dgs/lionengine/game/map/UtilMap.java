@@ -17,11 +17,23 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.junit.Assert;
+
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.map.transition.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
+import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupType;
+import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
+import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
  * Utility related to map manipulation.
@@ -90,13 +102,25 @@ public class UtilMap
      */
     private static void setGroups(MapTile map)
     {
+        final Collection<TileGroup> groups = new ArrayList<TileGroup>();
+        groups.add(new TileGroup(WATER, TileGroupType.PLAIN, Arrays.asList(new TileRef(SHEET, TILE_WATER))));
+        groups.add(new TileGroup(GROUND, TileGroupType.PLAIN, Arrays.asList(new TileRef(SHEET, TILE_GROUND))));
+        groups.add(new TileGroup(TREE, TileGroupType.PLAIN, Arrays.asList(new TileRef(SHEET, TILE_TREE))));
+        groups.add(new TileGroup(ROAD, TileGroupType.CIRCUIT, Arrays.asList(new TileRef(SHEET, TILE_ROAD))));
+        groups.add(new TileGroup(TRANSITION,
+                                 TileGroupType.TRANSITION,
+                                 Arrays.asList(new TileRef(SHEET, TILE_TRANSITION))));
+        groups.add(new TileGroup(TRANSITION2,
+                                 TileGroupType.TRANSITION,
+                                 Arrays.asList(new TileRef(SHEET, TILE_TRANSITION2))));
+
+        final Media config = Medias.create("groups.xml");
+        TileGroupsConfig.exports(config, groups);
+
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
-        mapGroup.changeGroup(map.createTile(SHEET, TILE_WATER, 0, 0), WATER);
-        mapGroup.changeGroup(map.createTile(SHEET, TILE_GROUND, 0, 0), GROUND);
-        mapGroup.changeGroup(map.createTile(SHEET, TILE_TREE, 0, 0), TREE);
-        mapGroup.changeGroup(map.createTile(SHEET, TILE_ROAD, 0, 0), ROAD);
-        mapGroup.changeGroup(map.createTile(SHEET, TILE_TRANSITION, 0, 0), TRANSITION);
-        mapGroup.changeGroup(map.createTile(SHEET, TILE_TRANSITION2, 0, 0), TRANSITION2);
+        mapGroup.loadGroups(config);
+
+        Assert.assertTrue(config.getFile().delete());
     }
 
     /**

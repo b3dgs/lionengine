@@ -73,11 +73,12 @@ public class TileGroupsConfigTest
     public void testConfiguration()
     {
         final Collection<TileGroup> groups = new ArrayList<TileGroup>();
-        groups.add(new TileGroup("test", Arrays.asList(new TileRef(0, 1))));
+        groups.add(new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))));
 
         final Media config = Medias.create("tilegroups.xml");
         TileGroupsConfig.exports(config, groups);
 
         Assert.assertEquals(groups, TileGroupsConfig.imports(config));
+        Assert.assertTrue(config.getFile().delete());
     }
 }

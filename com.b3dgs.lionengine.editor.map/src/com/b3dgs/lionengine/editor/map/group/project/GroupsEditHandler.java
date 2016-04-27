@@ -38,7 +38,8 @@ public final class GroupsEditHandler
     {
         final Media selection = ProjectModel.INSTANCE.getSelection();
         final GroupsEditDialog dialog = new GroupsEditDialog(parent, selection);
-        dialog.open();
+        dialog.create();
+        dialog.openAndWait();
     }
 
     /**

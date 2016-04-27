@@ -22,6 +22,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileGroupType;
 import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
@@ -84,6 +85,22 @@ public interface MapTileGroup extends MapTileFeature
      * @return The associated group name.
      */
     String getGroup(Integer sheet, int number);
+
+    /**
+     * Get the group type from its name.
+     * 
+     * @param name The group name.
+     * @return The group type.
+     */
+    TileGroupType getType(String name);
+
+    /**
+     * Get the group type from a tile.
+     * 
+     * @param tile The tile reference.
+     * @return The group type.
+     */
+    TileGroupType getType(Tile tile);
 
     /**
      * Get the groups list.

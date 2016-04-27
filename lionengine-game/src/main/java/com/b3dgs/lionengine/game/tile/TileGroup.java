@@ -27,11 +27,11 @@ import com.b3dgs.lionengine.Nameable;
  * 
  * <pre>
  * &lt;lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com"&gt;
- *    &lt;lionengine:group name="block"&gt;
+ *    &lt;lionengine:group name="block"&gt; type="PLAIN"&gt;
  *      &lt;lionengine:tile sheet="0" number="1"/&gt;
  *      &lt;lionengine:tile sheet="1" number="5"/&gt;
  *    &lt;/lionengine:group&gt;
- *    &lt;lionengine:group name="top"&gt;
+ *    &lt;lionengine:group name="top"&gt; type="TRANSITION"&gt;
  *      &lt;lionengine:tile sheet="0" number="2"/&gt;
  *      &lt;lionengine:tile sheet="0" number="3"/&gt;
  *    &lt;/lionengine:group&gt;
@@ -42,8 +42,10 @@ import com.b3dgs.lionengine.Nameable;
  */
 public class TileGroup implements Nameable
 {
-    /** The group Name. */
+    /** The group name. */
     private final String name;
+    /** The group type. */
+    private final TileGroupType type;
     /** Elements inside group. */
     private final Collection<TileRef> tiles;
 
@@ -51,11 +53,13 @@ public class TileGroup implements Nameable
      * Create a tile group.
      * 
      * @param name The group name.
+     * @param type The group type.
      * @param tiles The tiles inside the group.
      */
-    public TileGroup(String name, Collection<TileRef> tiles)
+    public TileGroup(String name, TileGroupType type, Collection<TileRef> tiles)
     {
         this.name = name;
+        this.type = type;
         this.tiles = tiles;
     }
 
@@ -90,6 +94,16 @@ public class TileGroup implements Nameable
     }
 
     /**
+     * Get the group type.
+     * 
+     * @return The group type.
+     */
+    public TileGroupType getType()
+    {
+        return type;
+    }
+
+    /**
      * Get the tiles inside group.
      * 
      * @return The tiles inside group.
@@ -119,7 +133,6 @@ public class TileGroup implements Nameable
         final int prime = 31;
         int result = 1;
         result = prime * result + name.hashCode();
-        result = prime * result + tiles.hashCode();
         return result;
     }
 
@@ -135,6 +148,6 @@ public class TileGroup implements Nameable
             return false;
         }
         final TileGroup other = (TileGroup) obj;
-        return name.equals(other.name) && tiles.equals(other.tiles);
+        return name.equals(other.name);
     }
 }

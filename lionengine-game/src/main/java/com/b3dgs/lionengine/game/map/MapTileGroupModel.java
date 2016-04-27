@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupType;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 
@@ -40,6 +41,8 @@ public class MapTileGroupModel implements MapTileGroup
 
     /** Group tiles mapping. */
     private final Map<String, Collection<TileRef>> groupTiles = new HashMap<String, Collection<TileRef>>();
+    /** Group types mapping. */
+    private final Map<String, TileGroupType> groupTypes = new HashMap<String, TileGroupType>();
     /** Tiles group mapping. */
     private final Map<TileRef, String> tilesGroup = new HashMap<TileRef, String>();
     /** Groups configuration file. */
@@ -73,11 +76,13 @@ public class MapTileGroupModel implements MapTileGroup
         this.groupsConfig = groupsConfig;
         groupTiles.clear();
         tilesGroup.clear();
+        groupTypes.clear();
 
         for (final TileGroup group : TileGroupsConfig.imports(groupsConfig))
         {
             final String name = group.getName();
             groupTiles.put(name, group.getTiles());
+            groupTypes.put(name, group.getType());
             for (final TileRef tile : group.getTiles())
             {
                 tilesGroup.put(tile, name);
@@ -154,6 +159,22 @@ public class MapTileGroupModel implements MapTileGroup
             }
         }
         return NO_GROUP_NAME;
+    }
+
+    @Override
+    public TileGroupType getType(String name)
+    {
+        if (groupTypes.containsKey(name))
+        {
+            return groupTypes.get(name);
+        }
+        return TileGroupType.NONE;
+    }
+
+    @Override
+    public TileGroupType getType(Tile tile)
+    {
+        return getType(getGroup(tile));
     }
 
     @Override

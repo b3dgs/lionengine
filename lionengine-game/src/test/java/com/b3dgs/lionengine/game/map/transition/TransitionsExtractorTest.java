@@ -27,9 +27,14 @@ import static com.b3dgs.lionengine.game.map.UtilMap.WATER;
 import java.util.Collection;
 import java.util.Map;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.UtilMap;
 import com.b3dgs.lionengine.game.tile.TileRef;
@@ -39,21 +44,58 @@ import com.b3dgs.lionengine.game.tile.TileRef;
  */
 public class TransitionsExtractorTest
 {
+    /** Test configuration. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilMapTransition.createTransitions();
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Assert.assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+    }
+
+    /**
+     * Create the map and configure it.
+     * 
+     * @param tileNumber The number to fill.
+     * @return The configured map.
+     */
+    private static MapTile createMap(int tileNumber)
+    {
+        final MapTile map = UtilMap.createMap(tileNumber);
+        map.getFeature(MapTileTransition.class).loadTransitions(config);
+
+        return map;
+    }
+
     /**
      * Test the transitions extraction.
      */
     @Test
     public void testExtraction()
     {
-        final MapTile map = UtilMap.createMap(7);
+        final MapTile map = createMap(7);
         UtilMap.fill(map, TILE_WATER);
         UtilMap.fill(map, TILE_GROUND, TILE_TRANSITION, 3);
 
-        final MapTile map2 = UtilMap.createMap(7);
+        final MapTile map2 = createMap(7);
         UtilMap.fill(map2, TILE_GROUND);
         UtilMap.fill(map2, TILE_WATER, TILE_TRANSITION, 3);
 
-        final MapTile map3 = UtilMap.createMap(3);
+        final MapTile map3 = createMap(3);
 
         final TransitionsExtractor extractor = new TransitionsExtractorImpl();
         final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(map, map2, map3);

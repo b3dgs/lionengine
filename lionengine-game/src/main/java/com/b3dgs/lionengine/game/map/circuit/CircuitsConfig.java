@@ -88,12 +88,20 @@ public final class CircuitsConfig
      * @param levels The level rips used.
      * @param sheetsMedia The sheets media.
      * @param groupsMedia The groups media.
+     * @param transitionsMedia The transitions media.
      * @throws LionEngineException If error on export.
      */
-    public static void exports(Media media, Media[] levels, Media sheetsMedia, Media groupsMedia)
+    public static void exports(Media media,
+                               Media[] levels,
+                               Media sheetsMedia,
+                               Media groupsMedia,
+                               Media transitionsMedia)
     {
         final CircuitsExtractor extractor = new CircuitsExtractorImpl();
-        final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(levels, sheetsMedia, groupsMedia);
+        final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(levels,
+                                                                                 sheetsMedia,
+                                                                                 groupsMedia,
+                                                                                 transitionsMedia);
         exports(media, circuits);
     }
 

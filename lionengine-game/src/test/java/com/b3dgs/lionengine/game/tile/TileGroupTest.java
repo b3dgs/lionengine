@@ -32,10 +32,10 @@ public class TileGroupTest
      * Test the contains.
      */
     @Test
-    public void testContaints()
+    public void testContains()
     {
         final Collection<TileRef> tiles = Arrays.asList(new TileRef(0, 1));
-        final TileGroup tileGroup = new TileGroup("test", tiles);
+        final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, tiles);
 
         Assert.assertTrue(tileGroup.contains(Integer.valueOf(0), 1));
         Assert.assertTrue(tileGroup.contains(new TileGame(Integer.valueOf(0), 1, 1, 1, 1, 1)));
@@ -51,9 +51,10 @@ public class TileGroupTest
     public void testGetters()
     {
         final Collection<TileRef> tiles = Arrays.asList(new TileRef(0, 1));
-        final TileGroup tileGroup = new TileGroup("test", tiles);
+        final TileGroup tileGroup = new TileGroup("test", TileGroupType.PLAIN, tiles);
 
         Assert.assertEquals("test", tileGroup.getName());
+        Assert.assertEquals(TileGroupType.PLAIN, tileGroup.getType());
         Assert.assertEquals(tiles, tileGroup.getTiles());
     }
 
@@ -63,20 +64,37 @@ public class TileGroupTest
     @Test
     public void testHashcode()
     {
-        final TileGroup tileGroup = new TileGroup("test", Arrays.asList(new TileRef(0, 1)));
+        final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1)));
 
         Assert.assertEquals(tileGroup.hashCode(), tileGroup.hashCode());
-        Assert.assertEquals(tileGroup.hashCode(), new TileGroup("test", Arrays.asList(new TileRef(0, 1))).hashCode());
+        Assert.assertEquals(tileGroup.hashCode(),
+                            new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))).hashCode());
 
         Assert.assertNotEquals(tileGroup.hashCode(), new Object().hashCode());
         Assert.assertNotEquals(tileGroup.hashCode(),
-                               new TileGroup("toto", Arrays.asList(new TileRef(0, 1))).hashCode());
+                               new TileGroup("toto", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))).hashCode());
+        Assert.assertEquals(tileGroup.hashCode(),
+                            new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 2))).hashCode());
+        Assert.assertEquals(tileGroup.hashCode(),
+                            new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(1, 1))).hashCode());
         Assert.assertNotEquals(tileGroup.hashCode(),
-                               new TileGroup("test", Arrays.asList(new TileRef(0, 2))).hashCode());
+                               new TileGroup("toto", TileGroupType.NONE, Arrays.asList(new TileRef(1, 1))).hashCode());
         Assert.assertNotEquals(tileGroup.hashCode(),
-                               new TileGroup("test", Arrays.asList(new TileRef(1, 1))).hashCode());
+                               new TileGroup("toto",
+                                             TileGroupType.TRANSITION,
+                                             Arrays.asList(new TileRef(0, 1))).hashCode());
+        Assert.assertEquals(tileGroup.hashCode(),
+                            new TileGroup("test",
+                                          TileGroupType.TRANSITION,
+                                          Arrays.asList(new TileRef(0, 2))).hashCode());
+        Assert.assertEquals(tileGroup.hashCode(),
+                            new TileGroup("test",
+                                          TileGroupType.TRANSITION,
+                                          Arrays.asList(new TileRef(1, 1))).hashCode());
         Assert.assertNotEquals(tileGroup.hashCode(),
-                               new TileGroup("toto", Arrays.asList(new TileRef(1, 1))).hashCode());
+                               new TileGroup("toto",
+                                             TileGroupType.TRANSITION,
+                                             Arrays.asList(new TileRef(1, 1))).hashCode());
     }
 
     /**
@@ -85,15 +103,23 @@ public class TileGroupTest
     @Test
     public void testEquals()
     {
-        final TileGroup tileGroup = new TileGroup("test", Arrays.asList(new TileRef(0, 1)));
+        final TileGroup tileGroup = new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1)));
 
         Assert.assertEquals(tileGroup, tileGroup);
-        Assert.assertEquals(tileGroup, new TileGroup("test", Arrays.asList(new TileRef(0, 1))));
+        Assert.assertEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))));
 
         Assert.assertNotEquals(tileGroup, new Object());
-        Assert.assertNotEquals(tileGroup, new TileGroup("toto", Arrays.asList(new TileRef(0, 1))));
-        Assert.assertNotEquals(tileGroup, new TileGroup("test", Arrays.asList(new TileRef(0, 2))));
-        Assert.assertNotEquals(tileGroup, new TileGroup("test", Arrays.asList(new TileRef(1, 1))));
-        Assert.assertNotEquals(tileGroup, new TileGroup("toto", Arrays.asList(new TileRef(1, 1))));
+        Assert.assertNotEquals(tileGroup, new TileGroup("toto", TileGroupType.NONE, Arrays.asList(new TileRef(0, 1))));
+        Assert.assertEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(0, 2))));
+        Assert.assertEquals(tileGroup, new TileGroup("test", TileGroupType.NONE, Arrays.asList(new TileRef(1, 1))));
+        Assert.assertNotEquals(tileGroup, new TileGroup("toto", TileGroupType.NONE, Arrays.asList(new TileRef(1, 1))));
+        Assert.assertNotEquals(tileGroup,
+                               new TileGroup("toto", TileGroupType.TRANSITION, Arrays.asList(new TileRef(0, 1))));
+        Assert.assertEquals(tileGroup,
+                            new TileGroup("test", TileGroupType.TRANSITION, Arrays.asList(new TileRef(0, 2))));
+        Assert.assertEquals(tileGroup,
+                            new TileGroup("test", TileGroupType.TRANSITION, Arrays.asList(new TileRef(1, 1))));
+        Assert.assertNotEquals(tileGroup,
+                               new TileGroup("toto", TileGroupType.TRANSITION, Arrays.asList(new TileRef(1, 1))));
     }
 }

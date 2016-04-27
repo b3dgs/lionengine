@@ -111,7 +111,8 @@ public class GroupChooser extends AbstractDialog
     {
         final MapTileGroup mapGroup = WorldModel.INSTANCE.getMap().getFeature(MapTileGroup.class);
         final GroupsEditDialog dialog = new GroupsEditDialog(shell, mapGroup.getGroupsConfig());
-        dialog.open();
+        dialog.create();
+        dialog.openAndWait();
 
         final Collection<String> values = new ArrayList<>();
         for (final String group : mapGroup.getGroups())

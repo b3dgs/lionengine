@@ -32,6 +32,8 @@ public final class Messages extends NLS
     public static String HeaderTitle;
     /** Edit groups dialog description header. */
     public static String HeaderDesc;
+    /** Tile group type. */
+    public static String TileGroupType;
 
     /**
      * Initialize.

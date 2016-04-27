@@ -22,18 +22,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileGroupType;
 
 /**
  * Map transition extractor.
  */
 public class MapTransitionExtractor
 {
-    /** Number of groups defining a transition. */
-    private static final int TRANSITION_GROUPS_NUMBER = 3;
-
     /**
      * Get the tile transition with one group only.
      * 
@@ -83,18 +82,6 @@ public class MapTransitionExtractor
         return TransitionType.from(bits);
     }
 
-    /**
-     * Check if tiles are same, considering sheet and number.
-     * 
-     * @param tile The tile reference.
-     * @param other The other tile.
-     * @return <code>true</code> if same sheet and number and not <code>null</code>, <code>false</code> else.
-     */
-    private static boolean isTileSame(Tile tile, Tile other)
-    {
-        return other != null && other.getNumber() == tile.getNumber() && other.getSheet().equals(tile.getSheet());
-    }
-
     /** The map reference. */
     private final MapTile map;
     /** The map group reference. */
@@ -102,8 +89,15 @@ public class MapTransitionExtractor
 
     /**
      * Create the extractor.
+     * <p>
+     * The {@link MapTile} must provide the following features:
+     * </p>
+     * <ul>
+     * <li>{@link MapTileGroup}</li>
+     * </ul>
      * 
      * @param map The map reference.
+     * @throws LionEngineException If missing feature.
      */
     public MapTransitionExtractor(MapTile map)
     {
@@ -259,57 +253,6 @@ public class MapTransitionExtractor
      */
     private boolean isTransition(Tile tile)
     {
-        for (int tx = 0; tx < map.getInTileWidth(); tx++)
-        {
-            for (int ty = 0; ty < map.getInTileHeight(); ty++)
-            {
-                final Tile current = map.getTile(tx, ty);
-                if (isTileSame(tile, current) && isTransitionGroup(current))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Check if tile is a transition by checking extremity neighbor.
-     * 
-     * @param tile The tile to check.
-     * @return <code>true</code> if transition tile, <code>false</code> else.
-     */
-    private boolean isTransitionGroup(Tile tile)
-    {
-        return isTransitionGroup(tile, -1, -1)
-               || isTransitionGroup(tile, 1, -1)
-               || isTransitionGroup(tile, 0, -1)
-               || isTransitionGroup(tile, -1, 0);
-    }
-
-    /**
-     * Check if tile is a transition group by looking at the mirror tile from offset.
-     * 
-     * @param tile The tile to check.
-     * @param ox The starting horizontal offset.
-     * @param oy The starting vertical offset.
-     * @return <code>true</code> if 3 different groups are defined until mirror offset, <code>false</code> else.
-     */
-    private boolean isTransitionGroup(Tile tile, int ox, int oy)
-    {
-        final int tx = tile.getInTileX();
-        final int ty = tile.getInTileY();
-        final Tile tile1 = map.getTile(tx + ox, ty + oy);
-        final Tile tile2 = map.getTile(tx - ox, ty - oy);
-        if (tile1 != null && tile2 != null)
-        {
-            final Collection<String> groups = new HashSet<String>(TRANSITION_GROUPS_NUMBER);
-            groups.add(mapGroup.getGroup(tile));
-            groups.add(mapGroup.getGroup(tile1));
-            groups.add(mapGroup.getGroup(tile2));
-
-            return groups.size() == TRANSITION_GROUPS_NUMBER;
-        }
-        return false;
+        return TileGroupType.TRANSITION == mapGroup.getType(tile);
     }
 }

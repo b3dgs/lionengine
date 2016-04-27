@@ -37,6 +37,8 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.UtilMap;
+import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
+import com.b3dgs.lionengine.game.map.transition.UtilMapTransition;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -45,6 +47,9 @@ import com.b3dgs.lionengine.test.UtilTests;
  */
 public class CircuitConfigTest
 {
+    /** Test configuration. */
+    private static Media config;
+
     /**
      * Prepare test.
      */
@@ -52,6 +57,7 @@ public class CircuitConfigTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilMapTransition.createTransitions();
     }
 
     /**
@@ -60,7 +66,22 @@ public class CircuitConfigTest
     @AfterClass
     public static void cleanUp()
     {
+        Assert.assertTrue(config.getFile().delete());
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+    }
+
+    /**
+     * Create the map and configure it.
+     * 
+     * @param tileNumber The number to fill.
+     * @return The configured map.
+     */
+    private static MapTile createMap(int tileNumber)
+    {
+        final MapTile map = UtilMap.createMap(tileNumber);
+        map.getFeature(MapTileTransition.class).loadTransitions(config);
+
+        return map;
     }
 
     /**
@@ -82,7 +103,7 @@ public class CircuitConfigTest
     @Test
     public void testExtraction() throws IOException
     {
-        final MapTile map = UtilMap.createMap(7);
+        final MapTile map = createMap(7);
         UtilMap.fill(map, TILE_GROUND);
         UtilMap.fill(map, TILE_ROAD, TILE_ROAD, 3);
 

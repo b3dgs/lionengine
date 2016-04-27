@@ -37,6 +37,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
@@ -46,6 +47,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.map.group.editor.GroupList;
+import com.b3dgs.lionengine.editor.map.group.editor.GroupProperties;
 import com.b3dgs.lionengine.editor.map.world.renderer.WorldSelectedTiles;
 import com.b3dgs.lionengine.editor.map.world.updater.TileSelectionListener;
 import com.b3dgs.lionengine.editor.map.world.updater.WorldInteractionTile;
@@ -76,6 +78,7 @@ import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
+import com.b3dgs.lionengine.game.tile.TileGroupType;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 
@@ -113,8 +116,12 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
 
     /** Service reference. */
     private final Services services = new Services();
+    /** Group properties. */
+    private final GroupProperties properties = new GroupProperties();
     /** Groups list. */
-    private final GroupList groupList = new GroupList();
+    private final GroupList groupList = new GroupList(properties);
+    /** Group types mapping. */
+    final Map<String, TileGroupType> groupsTypes = new HashMap<>();
     /** Map reference. */
     private final MapTile map;
     /** Map group. */
@@ -238,7 +245,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
      * 
      * @return The defined map tile groups.
      */
-    public Collection<TileGroup> getGroups()
+    private Collection<TileGroup> getGroups()
     {
         final Map<String, Collection<TileRef>> groupsRef = new HashMap<>();
         for (int ty = 0; ty < map.getInTileHeight(); ty++)
@@ -255,7 +262,8 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         final Collection<TileGroup> groups = new HashSet<>();
         for (final Entry<String, Collection<TileRef>> entry : groupsRef.entrySet())
         {
-            groups.add(new TileGroup(entry.getKey(), entry.getValue()));
+            final String name = entry.getKey();
+            groups.add(new TileGroup(name, groupsTypes.get(name), entry.getValue()));
         }
         return groups;
     }
@@ -351,6 +359,9 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         areaList.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true));
         groupList.create(areaList);
         groupList.addListener(this);
+
+        properties.create(areaList);
+        groupList.addListener(properties);
     }
 
     /**
@@ -439,7 +450,13 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
     @Override
     protected void onFinish()
     {
-        // Nothing to do
+        groupList.save();
+
+        for (final TreeItem item : groupList.getTree().getItems())
+        {
+            final TileGroup group = (TileGroup) item.getData();
+            groupsTypes.put(group.getName(), group.getType());
+        }
     }
 
     @Override
