@@ -14,6 +14,6 @@ before_install:
   - sh -e /etc/init.d/xvfb start - sleep 10
 script:
 - cd lionengine-parent
-- jdk_switcher use oraclejdk7
+- jdk_switcher use oraclejdk8
 - mvn clean install -Pcore -Dgpg.skip=true -Dmaven.javadoc.skip=true
 - mvn clean verify -Pplugins -Dgpg.skip=true -Dmaven.javadoc.skip=true
