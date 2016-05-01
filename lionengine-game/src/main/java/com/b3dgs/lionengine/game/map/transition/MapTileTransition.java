@@ -45,9 +45,10 @@ public interface MapTileTransition extends MapTileFeature
     /**
      * Resolve transitions by updating tiles if necessary.
      * 
-     * @param tile The tile to update.
+     * @param tileNew The new tile placed.
+     * @return The updated tiles.
      */
-    void resolve(Tile tile);
+    Collection<Tile> resolve(Tile tileNew);
 
     /**
      * Get the tile transition.

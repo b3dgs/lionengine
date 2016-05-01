@@ -175,31 +175,33 @@ public class MapTileTransitionModel implements MapTileTransition
     /**
      * Resolve current tile and add to resolve list extra tiles.
      * 
+     * @param resolved The resolved tiles.
      * @param toResolve The next tiles to resolve.
      * @param tile The tile to resolve.
      */
-    private void resolve(Collection<Tile> toResolve, Tile tile)
+    private void resolve(Collection<Tile> resolved, Collection<Tile> toResolve, Tile tile)
     {
-        updateTile(toResolve, tile, -1, 0);
-        updateTile(toResolve, tile, 1, 0);
-        updateTile(toResolve, tile, 0, 1);
-        updateTile(toResolve, tile, 0, -1);
+        updateTile(resolved, toResolve, tile, -1, 0);
+        updateTile(resolved, toResolve, tile, 1, 0);
+        updateTile(resolved, toResolve, tile, 0, 1);
+        updateTile(resolved, toResolve, tile, 0, -1);
 
-        updateTile(toResolve, tile, -1, 1);
-        updateTile(toResolve, tile, 1, 1);
-        updateTile(toResolve, tile, -1, -1);
-        updateTile(toResolve, tile, 1, -1);
+        updateTile(resolved, toResolve, tile, -1, 1);
+        updateTile(resolved, toResolve, tile, 1, 1);
+        updateTile(resolved, toResolve, tile, -1, -1);
+        updateTile(resolved, toResolve, tile, 1, -1);
     }
 
     /**
      * Update tile.
      * 
+     * @param resolved The resolved tiles.
      * @param toResolve Tiles to resolve after.
      * @param tile The tile reference.
      * @param ox The horizontal offset to update.
      * @param oy The vertical offset to update.
      */
-    private void updateTile(Collection<Tile> toResolve, Tile tile, int ox, int oy)
+    private void updateTile(Collection<Tile> resolved, Collection<Tile> toResolve, Tile tile, int ox, int oy)
     {
         final int tx = tile.getInTileX();
         final int ty = tile.getInTileY();
@@ -207,20 +209,26 @@ public class MapTileTransitionModel implements MapTileTransition
         final Tile neighbor = map.getTile(tx + ox, ty + oy);
         if (neighbor != null)
         {
-            updateNeigbor(toResolve, tile, neighbor, ox, oy);
+            updateNeigbor(resolved, toResolve, tile, neighbor, ox, oy);
         }
     }
 
     /**
      * Update neighbor.
      * 
+     * @param resolved The resolved tiles.
      * @param toResolve Tiles to resolve after.
      * @param tile The tile reference.
      * @param neighbor The neighbor reference.
      * @param ox The horizontal offset to update.
      * @param oy The vertical offset to update.
      */
-    private void updateNeigbor(Collection<Tile> toResolve, Tile tile, Tile neighbor, int ox, int oy)
+    private void updateNeigbor(Collection<Tile> resolved,
+                               Collection<Tile> toResolve,
+                               Tile tile,
+                               Tile neighbor,
+                               int ox,
+                               int oy)
     {
         final String group = mapGroup.getGroup(tile);
         final String neighborGroup = mapGroup.getGroup(neighbor);
@@ -237,7 +245,7 @@ public class MapTileTransitionModel implements MapTileTransition
             if (newType != null)
             {
                 final Transition newTransition = new Transition(newType, transitionA.getOut(), transitionB.getIn());
-                updateTransition(toResolve, tile, neighbor, neighborGroup, newTransition);
+                updateTransition(resolved, toResolve, tile, neighbor, neighborGroup, newTransition);
             }
         }
     }
@@ -245,13 +253,15 @@ public class MapTileTransitionModel implements MapTileTransition
     /**
      * Update transition.
      * 
+     * @param resolved The resolved tiles.
      * @param toResolve Tiles to resolve after.
      * @param tile The tile reference.
      * @param neighbor The neighbor reference.
      * @param neighborGroup The neighbor group.
      * @param newTransition The new transition.
      */
-    private void updateTransition(Collection<Tile> toResolve,
+    private void updateTransition(Collection<Tile> resolved,
+                                  Collection<Tile> toResolve,
                                   Tile tile,
                                   Tile neighbor,
                                   String neighborGroup,
@@ -259,25 +269,32 @@ public class MapTileTransitionModel implements MapTileTransition
     {
         if (!neighborGroup.equals(newTransition.getIn()))
         {
-            updateTile(toResolve, tile, neighbor, newTransition);
+            updateTile(resolved, toResolve, tile, neighbor, newTransition);
         }
     }
 
     /**
      * Update tile.
      * 
+     * @param resolved The resolved tiles.
      * @param toResolve Tiles to resolve after.
      * @param tile The tile placed.
      * @param neighbor The tile to update.
      * @param transition The transition to set.
      */
-    private void updateTile(Collection<Tile> toResolve, Tile tile, Tile neighbor, Transition transition)
+    private void updateTile(Collection<Tile> resolved,
+                            Collection<Tile> toResolve,
+                            Tile tile,
+                            Tile neighbor,
+                            Transition transition)
     {
         final Iterator<TileRef> iterator = getTiles(transition).iterator();
         if (iterator.hasNext())
         {
-            final TileRef newTile = iterator.next();
-            map.setTile(map.createTile(newTile.getSheet(), newTile.getNumber(), neighbor.getX(), neighbor.getY()));
+            final TileRef ref = iterator.next();
+            final Tile newTile = map.createTile(ref.getSheet(), ref.getNumber(), neighbor.getX(), neighbor.getY());
+            map.setTile(newTile);
+            resolved.add(newTile);
         }
         else
         {
@@ -294,15 +311,17 @@ public class MapTileTransitionModel implements MapTileTransition
                 map.setTile(newTile);
                 toResolve.add(newTile);
             }
+            resolved.add(newTile);
         }
     }
 
     /**
      * Check tile transitive groups.
      * 
+     * @param resolved The resolved tiles.
      * @param tile The tile to check.
      */
-    private void checkTransitives(Tile tile)
+    private void checkTransitives(Collection<Tile> resolved, Tile tile)
     {
         boolean isTransitive = false;
         for (final Tile neighbor : map.getNeighbors(tile))
@@ -317,7 +336,7 @@ public class MapTileTransitionModel implements MapTileTransition
                 int i = 0;
                 for (final GroupTransition transitive : transitives)
                 {
-                    updateTransitive(tile, neighbor, transitive);
+                    updateTransitive(resolved, tile, neighbor, transitive);
                     isTransitive = true;
                     i++;
                     if (i > iterations)
@@ -337,11 +356,12 @@ public class MapTileTransitionModel implements MapTileTransition
     /**
      * Update the transitive between tile and its neighbor.
      * 
+     * @param resolved The resolved tiles.
      * @param tile The tile reference.
      * @param neighbor The neighbor reference.
      * @param transitive The transitive involved.
      */
-    private void updateTransitive(Tile tile, Tile neighbor, GroupTransition transitive)
+    private void updateTransitive(Collection<Tile> resolved, Tile tile, Tile neighbor, GroupTransition transitive)
     {
         final String transitiveGroup = transitive.getOut();
         final Transition transition = new Transition(TransitionType.CENTER, transitiveGroup, transitiveGroup);
@@ -357,7 +377,7 @@ public class MapTileTransitionModel implements MapTileTransition
             // Replace neighbor with the needed tile to solve transition
             final Tile newTile2 = map.createTile(ref.getSheet(), ref.getNumber(), neighbor.getX(), neighbor.getY());
             map.setTile(newTile2);
-            resolve(newTile2);
+            resolved.addAll(resolve(newTile2));
         }
     }
 
@@ -416,20 +436,24 @@ public class MapTileTransitionModel implements MapTileTransition
     }
 
     @Override
-    public void resolve(Tile tile)
+    public Collection<Tile> resolve(Tile tile)
     {
-        checkTransitives(tile);
+        final Collection<Tile> resolved = new HashSet<Tile>();
+        checkTransitives(resolved, tile);
 
         final Collection<Tile> toResolve = new ArrayList<Tile>();
-        resolve(toResolve, tile);
+        resolve(resolved, toResolve, tile);
 
         final Collection<Tile> toResolveAfter = new ArrayList<Tile>();
         for (final Tile next : toResolve)
         {
-            resolve(toResolveAfter, next);
+            resolve(resolved, toResolveAfter, next);
         }
+
         toResolve.clear();
         toResolveAfter.clear();
+
+        return resolved;
     }
 
     @Override

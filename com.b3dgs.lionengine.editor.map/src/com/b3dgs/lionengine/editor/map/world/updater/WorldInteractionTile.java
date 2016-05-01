@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.game.map.circuit.MapTileCircuit;
 import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileGroupType;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.game.tile.TileRef;
 
@@ -58,6 +59,10 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
     private final MapTile map;
     /** Map tile group reference. */
     private final MapTileGroup mapGroup;
+    /** Map tile transition reference. */
+    private final MapTileTransition mapTransition;
+    /** Map tile circuit reference. */
+    private final MapTileCircuit mapCircuit;
     /** Palette model. */
     private final PaletteModel palette;
     /** Selected tile. */
@@ -74,6 +79,8 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
         map = services.get(MapTile.class);
         mapGroup = services.get(MapTileGroup.class);
         palette = services.get(PaletteModel.class);
+        mapTransition = map.getFeature(MapTileTransition.class);
+        mapCircuit = map.getFeature(MapTileCircuit.class);
         tileSelectionListeners.add(listener);
     }
 
@@ -178,17 +185,44 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
      */
     private void updateTileEdition(Tile tile)
     {
-        final TileRef palette = SheetsPaletteModel.INSTANCE.getSelectedTile();
-        if (tile != null && palette != null)
+        final TileRef tilePalette = SheetsPaletteModel.INSTANCE.getSelectedTile();
+        if (tile != null && tilePalette != null)
         {
-            final Tile newTile = map.createTile(palette.getSheet(), palette.getNumber(), tile.getX(), tile.getY());
+            final Tile newTile = map.createTile(tilePalette.getSheet(),
+                                                tilePalette.getNumber(),
+                                                tile.getX(),
+                                                tile.getY());
             map.setTile(newTile);
 
-            final MapTileTransition mapTileTransition = map.getFeature(MapTileTransition.class);
-            mapTileTransition.resolve(newTile);
+            final TileGroupType groupType = mapGroup.getType(newTile);
+            if (TileGroupType.PLAIN == groupType)
+            {
+                final Collection<Tile> resolved = mapTransition.resolve(newTile);
+                fixCircuits(resolved);
+            }
+            if (TileGroupType.CIRCUIT == groupType || TileGroupType.CIRCUIT == mapGroup.getType(tile))
+            {
+                mapCircuit.resolve(newTile);
+            }
+        }
+    }
 
-            final MapTileCircuit mapTileCircuit = map.getFeature(MapTileCircuit.class);
-            mapTileCircuit.resolve(newTile);
+    /**
+     * Fix circuits due to transition resolution close to existing circuits.
+     * 
+     * @param resolved The list of updated tiles.
+     */
+    private void fixCircuits(Collection<Tile> resolved)
+    {
+        for (final Tile resolvedTile : resolved)
+        {
+            for (final Tile neighbor : map.getNeighbors(resolvedTile))
+            {
+                if (TileGroupType.CIRCUIT == mapGroup.getType(neighbor))
+                {
+                    mapCircuit.resolve(neighbor);
+                }
+            }
         }
     }
 

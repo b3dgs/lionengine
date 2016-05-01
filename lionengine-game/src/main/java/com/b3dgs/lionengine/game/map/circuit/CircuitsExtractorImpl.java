@@ -77,11 +77,12 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
     {
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
         final MapTileTransition mapTransition = map.getFeature(MapTileTransition.class);
+        final String group = mapGroup.getGroup(ref);
         for (final String groupTransition : mapGroup.getGroups())
         {
-            if (mapTransition.getTransitives(circuit.getOut(), groupTransition).size() == 1)
+            if (mapTransition.getTransitives(group, groupTransition).size() == 1)
             {
-                final Circuit transitiveCircuit = new Circuit(circuit.getType(), circuit.getIn(), groupTransition);
+                final Circuit transitiveCircuit = new Circuit(circuit.getType(), group, groupTransition);
                 getTiles(circuits, transitiveCircuit).add(ref);
             }
         }

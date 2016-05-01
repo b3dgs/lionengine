@@ -25,7 +25,6 @@ import java.util.Iterator;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.game.tile.TileGroupType;
 
 /**
  * Map circuit extractor.
@@ -37,20 +36,33 @@ public class MapCircuitExtractor
      * 
      * @param group The initial group.
      * @param neighborGroups The neighbor groups.
-     * @return The tile circuit.
+     * @return The tile circuit, <code>null</code> if invalid groups number.
      */
     private static Circuit getCircuitGroups(String group, Collection<String> neighborGroups)
     {
-        final Iterator<String> iterator = new HashSet<String>(neighborGroups).iterator();
-        final String groupIn = iterator.next();
-        final String groupOut = iterator.next();
-        final CircuitType type = getCircuitType(group, neighborGroups);
-
-        if (groupIn.equals(group))
+        final Collection<String> set = new HashSet<String>(neighborGroups);
+        final Circuit circuit;
+        if (set.size() > 1)
         {
-            return new Circuit(type, group, groupOut);
+            final Iterator<String> iterator = set.iterator();
+            final String groupIn = iterator.next();
+            final String groupOut = iterator.next();
+            final CircuitType type = getCircuitType(group, neighborGroups);
+
+            if (groupIn.equals(group))
+            {
+                circuit = new Circuit(type, group, groupOut);
+            }
+            else
+            {
+                circuit = new Circuit(type, group, groupIn);
+            }
         }
-        return new Circuit(type, group, groupIn);
+        else
+        {
+            circuit = null;
+        }
+        return circuit;
     }
 
     /**
@@ -112,13 +124,9 @@ public class MapCircuitExtractor
                 circuit = new Circuit(CircuitType.BLOCK, group, groups.iterator().next());
             }
         }
-        else if (groups.size() > 1 && neighborGroups.size() == CircuitType.BITS && isCircuit(tile))
-        {
-            circuit = getCircuitGroups(group, neighborGroups);
-        }
         else
         {
-            circuit = null;
+            circuit = getCircuitGroups(group, neighborGroups);
         }
 
         return circuit;
@@ -161,16 +169,5 @@ public class MapCircuitExtractor
                 neighborGroups.add(neighborGroup);
             }
         }
-    }
-
-    /**
-     * Check if the tile is a tile circuit between two groups.
-     * 
-     * @param tile The tile to check.
-     * @return <code>true</code> if is between two groups, <code>false</code> else.
-     */
-    private boolean isCircuit(Tile tile)
-    {
-        return TileGroupType.CIRCUIT == mapGroup.getType(tile);
     }
 }

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.map.circuit;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -27,10 +28,15 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.map.GroupTransition;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
+import com.b3dgs.lionengine.game.map.transition.Transition;
+import com.b3dgs.lionengine.game.map.transition.TransitionType;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.game.tile.TileGroupType;
 import com.b3dgs.lionengine.game.tile.TileRef;
 
 /**
@@ -46,6 +52,8 @@ public class MapTileCircuitModel implements MapTileCircuit
     private final MapTile map;
     /** Map tile group. */
     private final MapTileGroup mapGroup;
+    /** Map tile transition. */
+    private final MapTileTransition mapTransition;
     /** Circuits as key. */
     private final Map<Circuit, Collection<TileRef>> circuits;
     /** Map circuit extractor. */
@@ -59,6 +67,7 @@ public class MapTileCircuitModel implements MapTileCircuit
      * <ul>
      * <li>{@link MapTile}</li>
      * <li>{@link MapTileGroup}</li>
+     * <li>{@link MapTileTransition}</li>
      * </ul>
      * 
      * @param services The services reference.
@@ -70,7 +79,32 @@ public class MapTileCircuitModel implements MapTileCircuit
         circuits = new HashMap<Circuit, Collection<TileRef>>();
         map = services.get(MapTile.class);
         mapGroup = map.getFeature(MapTileGroup.class);
+        mapTransition = map.getFeature(MapTileTransition.class);
         extractor = new MapCircuitExtractor(map);
+    }
+
+    /**
+     * Update tile.
+     * 
+     * @param tile The tile reference.
+     */
+    private void updateTransitiveTile(Tile tile)
+    {
+        final Circuit circuit = extractor.getCircuit(tile);
+        if (circuit == null || !circuits.containsKey(circuit))
+        {
+            final String group = getTransitiveGroup(circuit, tile);
+            if (group != null)
+            {
+                final TileRef ref = mapTransition.getTiles(new Transition(TransitionType.CENTER, group, group))
+                                                 .iterator()
+                                                 .next();
+                final Tile newTile = map.createTile(ref.getSheet(), ref.getNumber(), tile.getX(), tile.getY());
+                map.setTile(newTile);
+                mapTransition.resolve(newTile);
+                map.setTile(tile);
+            }
+        }
     }
 
     /**
@@ -102,17 +136,14 @@ public class MapTileCircuitModel implements MapTileCircuit
     {
         final String group = mapGroup.getGroup(tile);
         final String neighborGroup = mapGroup.getGroup(neighbor);
-        final Circuit circuit = extractor.getCircuit(neighbor);
-        if (circuit != null)
+        final Circuit circuit = getCircuitOverTransition(extractor.getCircuit(neighbor), neighbor);
+        if (group.equals(neighborGroup))
         {
-            if (group.equals(neighborGroup))
-            {
-                updateTile(tile, neighbor, circuit);
-            }
-            else if (neighborGroup.equals(circuit.getIn()))
-            {
-                updateTile(neighbor, neighbor, circuit);
-            }
+            updateTile(tile, neighbor, circuit);
+        }
+        else if (neighborGroup.equals(circuit.getIn()))
+        {
+            updateTile(neighbor, neighbor, circuit);
         }
     }
 
@@ -137,6 +168,99 @@ public class MapTileCircuitModel implements MapTileCircuit
         }
     }
 
+    /**
+     * Get the circuit, supporting over existing transition.
+     * 
+     * @param circuit The initial circuit.
+     * @param neighbor The neighbor tile which can be a transition.
+     * @return The new circuit or original one.
+     */
+    private Circuit getCircuitOverTransition(Circuit circuit, Tile neighbor)
+    {
+        final String group = getTransitiveGroup(circuit, neighbor);
+        final Circuit newCircuit;
+        if (TileGroupType.TRANSITION == mapGroup.getType(circuit.getIn()))
+        {
+            newCircuit = new Circuit(circuit.getType(), group, circuit.getOut());
+        }
+        else if (TileGroupType.TRANSITION == mapGroup.getType(circuit.getOut()))
+        {
+            newCircuit = new Circuit(circuit.getType(), circuit.getIn(), group);
+        }
+        else
+        {
+            newCircuit = circuit;
+        }
+        return newCircuit;
+    }
+
+    /**
+     * Get the transitive group by replacing the transition group name with the plain one.
+     * 
+     * @param initialCircuit The initial circuit.
+     * @param tile The tile reference.
+     * @return The plain group name.
+     */
+    private String getTransitiveGroup(Circuit initialCircuit, Tile tile)
+    {
+        final Collection<String> groups = new HashSet<String>();
+        final String groupIn = mapGroup.getGroup(tile);
+        for (final Circuit circuit : circuits.keySet())
+        {
+            final String groupOut = circuit.getOut();
+            for (final Tile neighbor : map.getNeighbors(tile))
+            {
+                final String groupNeighbor = mapGroup.getGroup(neighbor);
+                if (groupNeighbor.equals(groupOut) && !groupNeighbor.equals(groupIn))
+                {
+                    return groupOut;
+                }
+            }
+            groups.add(groupOut);
+        }
+        return getShortestTransitiveGroup(groups, initialCircuit);
+    }
+
+    /**
+     * Get the shortest transitive group.
+     * 
+     * @param groups The groups list.
+     * @param initialCircuit The initial circuit.
+     * @return The transitive group from shortest.
+     */
+    private String getShortestTransitiveGroup(Collection<String> groups, Circuit initialCircuit)
+    {
+        int min = Integer.MAX_VALUE;
+        String groupOut = null;
+        final String group = initialCircuit.getIn();
+
+        for (final String group2 : groups)
+        {
+            if (!group2.equals(group)
+                && !group2.equals(initialCircuit.getIn())
+                && !group2.equals(initialCircuit.getOut())
+                && TileGroupType.TRANSITION != mapGroup.getType(group2))
+            {
+                final Collection<GroupTransition> transitive = mapTransition.getTransitives(group, group2);
+                final int size = transitive.size();
+                if (size < min)
+                {
+                    if (transitive.isEmpty())
+                    {
+                        groupOut = group2;
+                    }
+                    else
+                    {
+                        groupOut = transitive.iterator().next().getOut();
+                    }
+                    min = size;
+                }
+            }
+
+        }
+        return groupOut;
+    }
+
     /*
      * MapTileCircuit
      */
@@ -157,6 +281,7 @@ public class MapTileCircuitModel implements MapTileCircuit
     @Override
     public void resolve(Tile tile)
     {
+        updateTransitiveTile(tile);
         updateTile(tile, 0, 0);
         updateTile(tile, 0, 1);
         updateTile(tile, -1, 0);

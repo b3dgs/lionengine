@@ -21,6 +21,8 @@ import static com.b3dgs.lionengine.game.map.UtilMap.ROAD;
 import static com.b3dgs.lionengine.game.map.UtilMap.SHEET;
 import static com.b3dgs.lionengine.game.map.UtilMap.TILE_GROUND;
 import static com.b3dgs.lionengine.game.map.UtilMap.TILE_ROAD;
+import static com.b3dgs.lionengine.game.map.UtilMap.TILE_WATER;
+import static com.b3dgs.lionengine.game.map.UtilMap.TRANSITION;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -33,15 +35,19 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.UtilMap;
+import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.map.transition.UtilMapTransition;
+import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Test the map tile circuit model class.
  */
 public class MapTileCircuitModelTest
 {
-    /** Test configuration. */
-    private static Media config;
+    /** Test configuration transitions. */
+    private static Media configTransitions;
+    /** Test configuration circuits. */
+    private static Media configCircuits;
 
     /**
      * Prepare test.
@@ -50,7 +56,8 @@ public class MapTileCircuitModelTest
     public static void setUp()
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilMapTransition.createTransitions();
+        configTransitions = UtilMapTransition.createTransitions();
+        configCircuits = UtilMapCircuit.createCircuits(configTransitions);
     }
 
     /**
@@ -59,7 +66,8 @@ public class MapTileCircuitModelTest
     @AfterClass
     public static void cleanUp()
     {
-        Assert.assertTrue(config.getFile().delete());
+        Assert.assertTrue(configTransitions.getFile().delete());
+        Assert.assertTrue(configCircuits.getFile().delete());
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
@@ -71,10 +79,11 @@ public class MapTileCircuitModelTest
      */
     private static MapTile createMap(int tileNumber)
     {
-        final MapTile map = UtilMap.createMap(12);
-        UtilMap.fill(map, tileNumber);
+        final MapTile map = UtilMap.createMap(8);
+        map.getFeature(MapTileTransition.class).loadTransitions(configTransitions);
+        map.getFeature(MapTileCircuit.class).loadCircuits(configCircuits);
 
-        map.getFeature(MapTileCircuit.class).loadCircuits(config);
+        UtilMap.fill(map, tileNumber);
 
         return map;
     }
@@ -90,14 +99,38 @@ public class MapTileCircuitModelTest
         final MapTileCircuit mapCircuit = map.getFeature(MapTileCircuitModel.class);
 
         map.setTile(map.createTile(SHEET, TILE_ROAD, 5, 6));
-        map.setTile(map.createTile(SHEET, TILE_ROAD, 5, 5));
         map.setTile(map.createTile(SHEET, TILE_ROAD, 5, 4));
-        map.setTile(map.createTile(SHEET, TILE_ROAD, 4, 5));
         map.setTile(map.createTile(SHEET, TILE_ROAD, 5, 5));
+        map.setTile(map.createTile(SHEET, TILE_ROAD, 4, 5));
         map.setTile(map.createTile(SHEET, TILE_ROAD, 6, 5));
 
-        Assert.assertEquals(ROAD, mapGroup.getGroup(map.getTile(5, 5)));
-
         mapCircuit.resolve(map.getTile(5, 5));
+
+        Assert.assertEquals(ROAD, mapGroup.getGroup(map.getTile(5, 5)));
+    }
+
+    /**
+     * Test the map circuit resolution with transitive.
+     */
+    @Test
+    public void testTransitive()
+    {
+        final MapTile map = createMap(TILE_WATER);
+        final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
+        final MapTileCircuit mapCircuit = map.getFeature(MapTileCircuitModel.class);
+
+        final Tile newTile = map.createTile(SHEET, TILE_ROAD, 5, 5);
+        map.setTile(newTile);
+        mapCircuit.resolve(newTile);
+
+        Assert.assertEquals(ROAD, mapGroup.getGroup(map.getTile(5, 5)));
+        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(4, 4)));
+        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(5, 4)));
+        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(6, 4)));
+        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(4, 5)));
+        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(6, 5)));
+        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(4, 6)));
+        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(5, 6)));
+        Assert.assertEquals(TRANSITION, mapGroup.getGroup(map.getTile(6, 6)));
     }
 }
