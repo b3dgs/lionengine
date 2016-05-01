@@ -200,7 +200,7 @@ public class WorldInteractionTile implements WorldMouseClickListener, WorldMouse
                 final Collection<Tile> resolved = mapTransition.resolve(newTile);
                 fixCircuits(resolved);
             }
-            if (TileGroupType.CIRCUIT == groupType || TileGroupType.CIRCUIT == mapGroup.getType(tile))
+            if (TileGroupType.CIRCUIT == groupType)
             {
                 mapCircuit.resolve(newTile);
             }
