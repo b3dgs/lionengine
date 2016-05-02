@@ -17,21 +17,24 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Describe how the map tile rendering is performed. This will allow to customize map rendering.
+ * Describe how the map viewing is performed. This will allow to customize map rendering.
  */
-public interface MapTileRenderer extends MapTileFeature
+public interface MapTileViewer extends MapTileFeature, Renderable
 {
     /**
-     * Render tile on its designed location.
+     * Add a map tile renderer.
      * 
-     * @param g The graphic output.
-     * @param x The location x.
-     * @param y The location y.
-     * @param tile The tile to render.
+     * @param renderer The map tile renderer reference.
      */
-    void renderTile(Graphic g, Tile tile, int x, int y);
+    void addRenderer(MapTileRenderer renderer);
+
+    /**
+     * Remove a map tile renderer.
+     * 
+     * @param renderer The map tile renderer reference.
+     */
+    void removeRenderer(MapTileRenderer renderer);
 }

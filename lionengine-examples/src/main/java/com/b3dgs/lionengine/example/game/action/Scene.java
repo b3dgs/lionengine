@@ -32,6 +32,9 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.MapTileViewer;
+import com.b3dgs.lionengine.game.map.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -66,6 +69,8 @@ class Scene extends Sequence
     private final Cursor cursor = services.create(Cursor.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map viewer. */
+    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
@@ -90,8 +95,11 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
+        mapViewer.addRenderer(new MapTileRendererModel(services));
+
         hud.load();
         hud.prepare();
+
         text.setLocation(74, 192);
 
         cursor.addImage(0, Medias.create("cursor.png"));
@@ -123,7 +131,7 @@ class Scene extends Sequence
     @Override
     public void render(Graphic g)
     {
-        map.render(g);
+        mapViewer.render(g);
         hud.render(g);
         handler.render(g);
         text.render(g);

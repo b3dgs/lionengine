@@ -78,7 +78,7 @@ public final class LevelRipConverter
 
         final int imageTilesInX = imageMap.getWidth() / map.getTileWidth();
         final int imageTilesInY = imageMap.getHeight() / map.getTileHeight();
-        map.create(imageTilesInX, imageTilesInY);
+        map.create(map.getTileWidth(), map.getTileHeight(), imageTilesInX, imageTilesInY);
 
         final double progressMax = imageTilesInX * (double) imageTilesInY;
         long progress = 0L;

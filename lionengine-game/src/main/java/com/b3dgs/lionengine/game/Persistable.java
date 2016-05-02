@@ -15,23 +15,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map;
+package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.graphic.Graphic;
+import java.io.IOException;
+
+import com.b3dgs.lionengine.stream.FileReading;
+import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
- * Describe how the map tile rendering is performed. This will allow to customize map rendering.
+ * Represents something which can be saved and loaded.
  */
-public interface MapTileRenderer extends MapTileFeature
+public interface Persistable
 {
     /**
-     * Render tile on its designed location.
+     * Save to local storage.
      * 
-     * @param g The graphic output.
-     * @param x The location x.
-     * @param y The location y.
-     * @param tile The tile to render.
+     * @param output The output writer.
+     * @throws IOException If error on writing.
      */
-    void renderTile(Graphic g, Tile tile, int x, int y);
+    void save(FileWriting output) throws IOException;
+
+    /**
+     * Load from local storage.
+     * 
+     * @param input The input reader.
+     * @throws IOException If error on reading.
+     */
+    void load(FileReading input) throws IOException;
 }

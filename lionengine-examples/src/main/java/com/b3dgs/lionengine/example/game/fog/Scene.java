@@ -32,6 +32,9 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.MapTileViewer;
+import com.b3dgs.lionengine.game.map.MapTileViewerModel;
 import com.b3dgs.lionengine.game.map.fog.FogOfWar;
 import com.b3dgs.lionengine.game.map.fog.Fovable;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -60,6 +63,8 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map viewer. */
+    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
@@ -83,7 +88,8 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
-        map.setTileRenderer(fogOfWar);
+        mapViewer.addRenderer(new MapTileRendererModel(services));
+        mapViewer.addRenderer(fogOfWar);
 
         final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create("hide.png"), 16, 16);
         final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create("fog.png"), 16, 16);
@@ -114,7 +120,7 @@ class Scene extends Sequence
     @Override
     public void render(Graphic g)
     {
-        map.render(g);
+        mapViewer.render(g);
         peon.render(g);
     }
 

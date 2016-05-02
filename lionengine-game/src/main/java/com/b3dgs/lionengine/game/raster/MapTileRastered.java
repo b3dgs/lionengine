@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.game.raster;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileFeature;
 import com.b3dgs.lionengine.game.map.MapTileRenderer;
 
 /**
@@ -33,10 +31,9 @@ import com.b3dgs.lionengine.game.map.MapTileRenderer;
  * 
  * <pre>
  * {@link #loadSheets(Media, boolean)}
- * {@link MapTile#setTileRenderer(MapTileRenderer)} // Give reference to the MapTileRastered instance
  * </pre>
  */
-public interface MapTileRastered extends MapTileFeature, MapTileRenderer
+public interface MapTileRastered extends MapTileRenderer
 {
     /**
      * Load tile sheets as rastered.

@@ -26,6 +26,9 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.MapTileViewer;
+import com.b3dgs.lionengine.game.map.MapTileViewerModel;
 import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -47,6 +50,8 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map viewer. */
+    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
     /** Keyboard reference. */
@@ -71,11 +76,15 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
+        mapViewer.addRenderer(new MapTileRendererModel(services));
+
         minimap.load();
         minimap.automaticColor();
         minimap.prepare();
+
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
+
         size = map.getWidth() - camera.getWidth();
         speed = 3;
     }
@@ -100,7 +109,7 @@ class Scene extends Sequence
     public void render(Graphic g)
     {
         g.clear(0, 0, getWidth(), getHeight());
-        map.render(g);
+        mapViewer.render(g);
         minimap.render(g);
         g.setColor(ColorRgba.RED);
         g.drawRect((int) (camera.getX() / map.getTileWidth()),

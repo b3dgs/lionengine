@@ -30,6 +30,9 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.MapTileViewer;
+import com.b3dgs.lionengine.game.map.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -55,6 +58,8 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map viewer. */
+    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
     /** Map group reference. */
     private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
     /** Map collision. */
@@ -83,6 +88,7 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"));
+        mapViewer.addRenderer(new MapTileRendererModel(services));
         mapGroup.loadGroups(Medias.create("groups.xml"));
         mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
         mapCollision.createCollisionDraw();
@@ -107,7 +113,7 @@ class Scene extends Sequence
         g.setColor(Scene.BACKGROUND_COLOR);
         g.drawRect(0, 0, getWidth(), getHeight(), true);
 
-        map.render(g);
+        mapViewer.render(g);
         mapCollision.render(g);
         hero.render(g);
     }

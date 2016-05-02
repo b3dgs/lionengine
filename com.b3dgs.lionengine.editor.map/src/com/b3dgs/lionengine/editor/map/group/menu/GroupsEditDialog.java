@@ -201,12 +201,10 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
     /**
      * Load the levels rip.
      * 
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
      * @param sheets The sheets used.
      * @param levelRips The level rips.
      */
-    public void load(int tileWidth, int tileHeight, Collection<SpriteTiled> sheets, Media... levelRips)
+    public void load(Collection<SpriteTiled> sheets, Media... levelRips)
     {
         int offsetX = 0;
         int offsetY = 0;
@@ -226,7 +224,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
             {
                 part = new MapTileGame();
             }
-            part.loadSheets(tileWidth, tileHeight, sheets);
+            part.loadSheets(sheets);
             LevelRipConverter.start(levelRip, part);
             map.append(part, offsetX, offsetY);
 
@@ -438,10 +436,8 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         {
             final Media sheetsMedia = sheets.getMedia();
             final TileSheetsConfig config = TileSheetsConfig.imports(sheetsMedia);
-            final int tw = config.getTileWidth();
-            final int th = config.getTileHeight();
 
-            load(tw, th, loadSheets(config, sheetsMedia.getParentPath()), levelRips.getLevelRips());
+            load(loadSheets(config, sheetsMedia.getParentPath()), levelRips.getLevelRips());
             showWorldView();
             update();
         });

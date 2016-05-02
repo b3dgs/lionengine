@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
@@ -40,11 +38,8 @@ import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
-import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
 import com.b3dgs.lionengine.graphic.Viewer;
-import com.b3dgs.lionengine.stream.FileReading;
-import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.util.UtilMath;
 import com.b3dgs.lionengine.util.UtilReflection;
 
@@ -56,15 +51,12 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * </p>
  * 
  * <pre>
- * {@link #create(int, int)} // prepare memory to store tiles
+ * {@link #create(int, int, int, int)} // prepare memory to store tiles
  * {@link #loadSheets(Media)} // load tile sheets
  * </pre>
  * 
  * <p>
  * Or import a map from a level rip with {@link #create(Media, Media)}.
- * </p>
- * <p>
- * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
  * </p>
  * 
  * @see Tile
@@ -80,8 +72,6 @@ public class MapTileGame implements MapTile
     private final Map<Integer, SpriteTiled> sheets = new HashMap<Integer, SpriteTiled>();
     /** Features list. */
     private final Features<MapTileFeature> features = new Features<MapTileFeature>(MapTileFeature.class);
-    /** Viewer reference. */
-    private final Viewer viewer;
     /** Services reference. */
     private final Services services;
     /** Sheet configuration file. */
@@ -98,17 +88,13 @@ public class MapTileGame implements MapTile
     private int radius;
     /** Tiles map. */
     private List<List<Tile>> tiles;
-    /** Tile renderer. */
-    private MapTileRenderer renderer;
 
     /**
-     * Create a map tile. Rendering is not enable and must not be used ({@link #render(Graphic)}). Use
-     * {@link #MapTileGame(Services)} instead if rendering will be used.
+     * Create a map tile.
      */
     public MapTileGame()
     {
-        viewer = null;
-        services = null;
+        this(new Services());
     }
 
     /**
@@ -126,178 +112,6 @@ public class MapTileGame implements MapTile
     public MapTileGame(Services services)
     {
         this.services = services;
-        viewer = services.get(Viewer.class);
-    }
-
-    /**
-     * Render map from starting position, showing a specified area, including a specific offset.
-     * 
-     * @param g The graphic output.
-     * @param screenHeight The view height (rendering start from bottom).
-     * @param sx The starting x (view real location x).
-     * @param sy The starting y (view real location y).
-     * @param inTileWidth The number of rendered tiles in width.
-     * @param inTileHeight The number of rendered tiles in height.
-     * @param offsetX The horizontal map offset.
-     * @param offsetY The vertical map offset.
-     */
-    protected void render(Graphic g,
-                          int screenHeight,
-                          int sx,
-                          int sy,
-                          int inTileWidth,
-                          int inTileHeight,
-                          int offsetX,
-                          int offsetY)
-    {
-        for (int v = 0; v <= inTileHeight; v++)
-        {
-            final int ty = v + (sy - offsetY) / tileHeight;
-            if (!(ty < 0 || ty >= heightInTile))
-            {
-                renderHorizontal(g, screenHeight, sx, sy, inTileWidth, offsetX, ty);
-            }
-        }
-    }
-
-    /**
-     * Save tile. Data are saved this way:
-     * 
-     * <pre>
-     * (integer) sheet number
-     * (integer) index number inside sheet
-     * (integer) tile location x % MapTile.BLOC_SIZE
-     * (integer tile location y
-     * </pre>
-     * 
-     * @param file The file writer reference.
-     * @param tile The tile to save.
-     * @throws IOException If error on writing.
-     */
-    protected void saveTile(FileWriting file, Tile tile) throws IOException
-    {
-        file.writeInteger(tile.getSheet().intValue());
-        file.writeInteger(tile.getNumber());
-        file.writeInteger(tile.getInTileX() % BLOC_SIZE);
-        file.writeInteger(tile.getInTileY());
-    }
-
-    /**
-     * Load tile. Data are loaded this way:
-     * 
-     * <pre>
-     * (integer) sheet number
-     * (integer) index number inside sheet
-     * (integer) tile location x
-     * (integer tile location y
-     * </pre>
-     * 
-     * @param file The file reader reference.
-     * @param i The last loaded tile number.
-     * @return The loaded tile.
-     * @throws IOException If error on reading.
-     */
-    protected Tile loadTile(FileReading file, int i) throws IOException
-    {
-        Check.notNull(file);
-
-        final Integer sheet = Integer.valueOf(file.readInteger());
-        final int number = file.readInteger();
-        final int x = file.readInteger() * getTileWidth() + i * BLOC_SIZE * getTileWidth();
-        final int y = file.readInteger() * getTileHeight();
-        return createTile(sheet, number, x, y);
-    }
-
-    /**
-     * Render horizontal tiles.
-     * 
-     * @param g The graphic output.
-     * @param screenHeight The view height (rendering start from bottom).
-     * @param sx The starting x (view real location x).
-     * @param sy The starting y (view real location y).
-     * @param inTileWidth The number of rendered tiles in width.
-     * @param ty The current vertical tile.
-     * @param offsetX The horizontal map offset.
-     */
-    private void renderHorizontal(Graphic g, int screenHeight, int sx, int sy, int inTileWidth, int offsetX, int ty)
-    {
-        for (int h = 0; h <= inTileWidth; h++)
-        {
-            final int tx = h + (sx - offsetX) / tileWidth;
-            if (!(tx < 0 || tx >= widthInTile))
-            {
-                renderTile(g, tx, ty, sx, sy, screenHeight);
-            }
-        }
-    }
-
-    /**
-     * Get the tile at location and render it.
-     * 
-     * @param g The graphic output.
-     * @param tx The horizontal tile location.
-     * @param ty The vertical tile location.
-     * @param sx The starting horizontal location.
-     * @param sy The starting vertical location.
-     * @param screenHeight The view height (rendering start from bottom).
-     */
-    private void renderTile(Graphic g, int tx, int ty, int sx, int sy, int screenHeight)
-    {
-        final Tile tile = getTile(tx, ty);
-        if (tile != null)
-        {
-            final int x = (int) tile.getX() - sx;
-            final int y = -(int) tile.getY() - tile.getHeight() + sy + screenHeight;
-            renderer.renderTile(g, tile, x, y);
-        }
-    }
-
-    /**
-     * Count the active tiles.
-     * 
-     * @param widthInTile The horizontal tiles.
-     * @param step The step number.
-     * @param s The s value.
-     * @return The active tiles.
-     */
-    private int countTiles(int widthInTile, int step, int s)
-    {
-        int count = 0;
-        for (int tx = 0; tx < widthInTile; tx++)
-        {
-            for (int ty = 0; ty < getInTileHeight(); ty++)
-            {
-                if (getTile(tx + s * step, ty) != null)
-                {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
-    /**
-     * Save the active tiles.
-     * 
-     * @param file The output file.
-     * @param widthInTile The horizontal tiles.
-     * @param step The step number.
-     * @param s The s value.
-     * @throws IOException If error on saving.
-     */
-    private void saveTiles(FileWriting file, int widthInTile, int step, int s) throws IOException
-    {
-        for (int tx = 0; tx < widthInTile; tx++)
-        {
-            for (int ty = 0; ty < getInTileHeight(); ty++)
-            {
-                final Tile tile = getTile(tx + s * step, ty);
-                if (tile != null)
-                {
-                    saveTile(file, tile);
-                }
-            }
-        }
     }
 
     /**
@@ -344,13 +158,18 @@ public class MapTileGame implements MapTile
      */
 
     @Override
-    public void create(int widthInTile, int heightInTile)
+    public void create(int tileWidth, int tileHeight, int widthInTile, int heightInTile)
     {
+        Check.superiorStrict(tileWidth, 0);
+        Check.superiorStrict(tileHeight, 0);
         Check.superiorStrict(widthInTile, 0);
         Check.superiorStrict(heightInTile, 0);
 
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
         this.widthInTile = widthInTile;
         this.heightInTile = heightInTile;
+
         radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * (double) heightInTile));
         clear();
         tiles = new ArrayList<List<Tile>>(heightInTile);
@@ -363,10 +182,6 @@ public class MapTileGame implements MapTile
                 tiles.get(v).add(h, null);
             }
         }
-        if (renderer == null)
-        {
-            renderer = this;
-        }
     }
 
     @Override
@@ -376,76 +191,14 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public void load(FileReading file) throws IOException
-    {
-        create(file.readInteger(), file.readInteger());
-        if (file.readBoolean())
-        {
-            loadSheets(Medias.create(file.readString()));
-        }
-        else
-        {
-            tileWidth = file.readInteger();
-            tileHeight = file.readInteger();
-        }
-
-        final int t = file.readShort();
-        for (int v = 0; v < t; v++)
-        {
-            final int n = file.readShort();
-            for (int h = 0; h < n; h++)
-            {
-                final Tile tile = loadTile(file, v);
-                if (tile.getSheet().intValue() > getSheetsNumber())
-                {
-                    throw new IOException(ERROR_SHEET_MISSING + Constant.DOUBLE_DOT + tile.getSheet());
-                }
-                final int tx = tile.getInTileX();
-                final int ty = tile.getInTileY();
-                final List<Tile> list = tiles.get(ty);
-                list.set(tx, tile);
-            }
-        }
-    }
-
-    @Override
-    public void save(FileWriting file) throws IOException
-    {
-        // Header
-        file.writeInteger(widthInTile);
-        file.writeInteger(heightInTile);
-
-        final boolean hasConfig = sheetsConfig != null;
-        file.writeBoolean(hasConfig);
-        if (hasConfig)
-        {
-            file.writeString(sheetsConfig.getPath());
-        }
-        else
-        {
-            file.writeInteger(tileWidth);
-            file.writeInteger(tileHeight);
-        }
-
-        final int step = BLOC_SIZE;
-        final int x = Math.min(step, widthInTile);
-        final int t = (int) Math.ceil(widthInTile / (double) step);
-
-        file.writeShort((short) t);
-        for (int s = 0; s < t; s++)
-        {
-            final int count = countTiles(x, step, s);
-            file.writeShort((short) count);
-            saveTiles(file, Math.min(widthInTile, BLOC_SIZE), step, s);
-        }
-    }
-
-    @Override
     public void create(Media levelrip, int tileWidth, int tileHeight, int horizontalTiles)
     {
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+
         final TilesExtractor tilesExtractor = new TilesExtractor();
         final Collection<ImageBuffer> tiles = tilesExtractor.extract(tileWidth, tileHeight, levelrip);
-        loadSheets(tileWidth, tileHeight, SheetsExtractor.extract(tiles, horizontalTiles));
+        loadSheets(SheetsExtractor.extract(tiles, horizontalTiles));
 
         for (final ImageBuffer tile : tiles)
         {
@@ -505,10 +258,8 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public void loadSheets(int tileWidth, int tileHeight, Collection<SpriteTiled> sheets)
+    public void loadSheets(Collection<SpriteTiled> sheets)
     {
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
         int sheetId = 0;
         for (final SpriteTiled sheet : sheets)
         {
@@ -591,35 +342,6 @@ public class MapTileGame implements MapTile
         {
             services.add(feature);
         }
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        render(g,
-               viewer.getHeight(),
-               (int) Math.ceil(viewer.getX()),
-               (int) Math.ceil(viewer.getY()),
-               (int) Math.ceil(viewer.getWidth() / (double) tileWidth),
-               (int) Math.ceil(viewer.getHeight() / (double) tileHeight),
-               -viewer.getViewX(),
-               viewer.getViewY());
-    }
-
-    @Override
-    public void renderTile(Graphic g, Tile tile, int x, int y)
-    {
-        final SpriteTiled sprite = getSheet(tile.getSheet());
-        sprite.setLocation(x, y);
-        sprite.setTile(tile.getNumber());
-        sprite.render(g);
-    }
-
-    @Override
-    public void setTileRenderer(MapTileRenderer renderer)
-    {
-        Check.notNull(renderer);
-        this.renderer = renderer;
     }
 
     @Override

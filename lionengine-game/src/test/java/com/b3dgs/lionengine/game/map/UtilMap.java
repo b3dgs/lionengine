@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.map.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.map.transition.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupType;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
@@ -76,19 +75,12 @@ public class UtilMap
     public static MapTile createMap(int size)
     {
         final Services services = new Services();
-        final MapTileGame map = services.add(new MapTileGame()
-        {
-            @Override
-            public Tile createTile(Integer sheet, int number, double x, double y)
-            {
-                return new TileGame(sheet, number, x, y, 1, 1);
-            }
-        });
+        final MapTileGame map = services.add(new MapTileGame());
         final MapTileGroup mapGroup = new MapTileGroupModel();
         map.addFeature(mapGroup);
         map.addFeature(new MapTileTransitionModel(services));
         map.addFeature(new MapTileCircuitModel(services));
-        map.create(size, size);
+        map.create(1, 1, size, size);
 
         setGroups(map);
 

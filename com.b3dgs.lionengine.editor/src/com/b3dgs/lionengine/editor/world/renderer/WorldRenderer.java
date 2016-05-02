@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileViewer;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -72,6 +73,8 @@ public class WorldRenderer implements PaintListener
     private final Camera camera;
     /** Map reference. */
     private final MapTile map;
+    /** Map viewer reference. */
+    private final MapTileViewer mapViewer;
     /** Handler object. */
     private final Handler handler;
     /** Selection handler. */
@@ -92,6 +95,7 @@ public class WorldRenderer implements PaintListener
         this.partService = partService;
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
+        mapViewer = services.get(MapTileViewer.class);
         handler = services.get(Handler.class);
         selection = services.get(Selection.class);
         worldUpdater = services.get(WorldUpdater.class);
@@ -141,7 +145,7 @@ public class WorldRenderer implements PaintListener
 
         if (map.getSheetsNumber() > 0)
         {
-            map.render(g);
+            mapViewer.render(g);
             if (worldUpdater.isCollisionsEnabled() && map.hasFeature(MapTileCollision.class))
             {
                 map.getFeature(MapTileCollision.class).render(g);

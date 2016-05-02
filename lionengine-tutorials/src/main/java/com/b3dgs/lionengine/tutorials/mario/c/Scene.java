@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTilePersister;
+import com.b3dgs.lionengine.game.map.MapTilePersisterModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -49,9 +51,10 @@ class Scene extends Sequence
     {
         final MapTile map = new MapTileGame();
         map.create(Medias.create("map", "level.png"));
-        try (FileWriting file = Stream.createFileWriting(LEVEL))
+        final MapTilePersister mapPersister = new MapTilePersisterModel(map);
+        try (FileWriting output = Stream.createFileWriting(LEVEL))
         {
-            map.save(file);
+            mapPersister.save(output);
         }
         catch (final IOException exception)
         {

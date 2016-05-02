@@ -27,6 +27,9 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.MapTileViewer;
+import com.b3dgs.lionengine.game.map.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.raster.MapTileRastered;
 import com.b3dgs.lionengine.game.raster.MapTileRasteredModel;
@@ -50,6 +53,8 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map viewer. */
+    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
     /** Map raster reference. */
     private final MapTileRastered raster = services.create(MapTileRasteredModel.class);
     /** Keyboard reference. */
@@ -72,6 +77,8 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
+        mapViewer.addRenderer(new MapTileRendererModel(services));
+
         raster.loadSheets(Medias.create("raster.xml"), false);
 
         camera.setView(0, 0, getWidth(), getHeight());
@@ -86,7 +93,14 @@ class Scene extends Sequence
         if (timing.isStarted() && timing.elapsed(1000))
         {
             useRaster = !useRaster;
-            map.setTileRenderer(useRaster ? raster : map);
+            if (useRaster)
+            {
+                mapViewer.addRenderer(raster);
+            }
+            else
+            {
+                mapViewer.removeRenderer(raster);
+            }
             timing.restart();
         }
     }
@@ -94,7 +108,7 @@ class Scene extends Sequence
     @Override
     public void render(Graphic g)
     {
-        map.render(g);
+        mapViewer.render(g);
     }
 
     @Override

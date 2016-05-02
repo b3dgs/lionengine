@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -28,9 +27,6 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Featurable;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
-import com.b3dgs.lionengine.graphic.Renderable;
-import com.b3dgs.lionengine.stream.FileReading;
-import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
  * Describe a map using tile for its representation. This is the lower level interface to describe a 2D map using tiles.
@@ -45,27 +41,26 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * @see MapTileFeature
  * @see Tile
  */
-public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurable<MapTileFeature>
+public interface MapTile extends Surface, Featurable<MapTileFeature>
 {
-    /** Number of horizontal tiles to make a bloc. Used to reduce saved map file size. */
-    int BLOC_SIZE = 256;
-
     /**
      * Create and prepare map memory area. Must be called before assigning tiles ({@link #setTile(Tile)}).
      * Previous map data (if existing) will be cleared ({@link #clear()}).
      * 
+     * @param tileWidth The tile width.
+     * @param tileHeight The tile height.
      * @param widthInTile The map width in tile (must be strictly positive).
      * @param heightInTile The map height in tile (must be strictly positive).
      * @throws LionEngineException If size is invalid.
      * @see #create(Media)
      * @see #create(Media, Media)
      */
-    void create(int widthInTile, int heightInTile);
+    void create(int tileWidth, int tileHeight, int widthInTile, int heightInTile);
 
     /**
      * Create a map from a level rip which should be an image file (*.PNG, *.BMP) that represents the full map.
      * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
-     * {@link #create(int, int)}).
+     * {@link #create(int, int, int, int)}).
      * 
      * @param levelrip The file describing the levelrip as a single image.
      * @param tileWidth The tile width.
@@ -80,7 +75,7 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
     /**
      * Create a map from a level rip which should be an image file (*.PNG, *.BMP) that represents the full map.
      * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
-     * {@link #create(int, int)}).
+     * {@link #create(int, int, int, int)}).
      * <p>
      * {@link TileSheetsConfig#FILENAME} and {@link com.b3dgs.lionengine.game.tile.TileGroupsConfig#FILENAME} will be
      * used as default, by calling {@link #create(Media, Media)}.
@@ -100,7 +95,7 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
      * Create a map from a level rip and the associated tiles configuration file.
      * A level rip is an image file (*.PNG, *.BMP) that represents the full map.
      * The file will be read pixel by pixel to recognize tiles and their location. Data structure will be created (
-     * {@link #create(int, int)}).
+     * {@link #create(int, int, int, int)}).
      * 
      * @param levelrip The file describing the levelrip as a single image.
      * @param sheetsConfig The file that define the sheets configuration.
@@ -139,11 +134,9 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
      * Load map sheets (tiles surfaces). Must be called before rendering map.
      * Clear previous sheets if has.
      * 
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
      * @param sheets The sheets reference.
      */
-    void loadSheets(int tileWidth, int tileHeight, Collection<SpriteTiled> sheets);
+    void loadSheets(Collection<SpriteTiled> sheets);
 
     /**
      * Load map sheets (tiles surfaces) from directory. Must be called before rendering map.
@@ -153,53 +146,6 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
      * @throws LionEngineException If error when reading sheets.
      */
     void loadSheets(Media sheetsConfig);
-
-    /**
-     * Load a map from a specified file as binary data.
-     * <p>
-     * Data are loaded this way (see {@link #save(FileWriting)} order):
-     * </p>
-     * 
-     * <pre>
-     * <code>(String)</code> sheets file configuration
-     * <code>(short)</code> width in tiles
-     * <code>(short)</code> height in tiles
-     * <code>(byte)</code> tile width
-     * <code>(byte)</code> tile height
-     * <code>(short)</code> number of {@value #BLOC_SIZE} horizontal blocs (widthInTile / {@value #BLOC_SIZE})
-     * for each blocs tile
-     *   <code>(short)</code> number of tiles in this bloc
-     *   for each tile in this bloc
-     *     create blank tile
-     *     call load(file)
-     *     call setTile(...) to update map with this new tile
-     * </pre>
-     * 
-     * @param file The input level file.
-     * @throws IOException If error on reading.
-     */
-    void load(FileReading file) throws IOException;
-
-    /**
-     * Save map to specified file as binary data. Data are saved this way (using specific types to save space):
-     * 
-     * <pre>
-     * <code>(String)</code> sheets configuration file
-     * <code>(short)</code> width in tiles
-     * <code>(short)</code> height in tiles
-     * <code>(byte)</code> tile width (use of byte because tile width &lt; 255)
-     * <code>(byte)</code> tile height (use of byte because tile height &lt; 255)
-     * <code>(short)</code> number of {@value #BLOC_SIZE} horizontal blocs (widthInTile / {@value #BLOC_SIZE})
-     * for each blocs tile
-     *   <code>(short)</code> number of tiles in this bloc
-     *   for each tile in this bloc
-     *     call tile.save(file)
-     * </pre>
-     * 
-     * @param file The output level file.
-     * @throws IOException If error on writing.
-     */
-    void save(FileWriting file) throws IOException;
 
     /**
      * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
@@ -216,14 +162,6 @@ public interface MapTile extends Surface, MapTileRenderer, Renderable, Featurabl
      * Remove all tiles from map and clear internal data. Keep existing loaded tile sheets ({@link #loadSheets(Media)}).
      */
     void clear();
-
-    /**
-     * Set an external map tile renderer, defining how tiles are rendered.
-     * 
-     * @param renderer The renderer reference.
-     * @throws LionEngineException If renderer is <code>null</code>.
-     */
-    void setTileRenderer(MapTileRenderer renderer);
 
     /**
      * Set a tile at specified map location.

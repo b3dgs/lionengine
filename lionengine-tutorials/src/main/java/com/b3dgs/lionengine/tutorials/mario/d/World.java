@@ -31,6 +31,11 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.MapTilePersister;
+import com.b3dgs.lionengine.game.map.MapTilePersisterModel;
+import com.b3dgs.lionengine.game.map.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.MapTileViewer;
+import com.b3dgs.lionengine.game.map.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -59,6 +64,10 @@ class World extends WorldGame
     private final Handler handler = services.create(Handler.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map persister. */
+    private final MapTilePersister mapPersister = map.createFeature(MapTilePersisterModel.class);
+    /** Map viewer. */
+    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
     /** Map group reference. */
     private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
     /** Map collision. */
@@ -99,20 +108,21 @@ class World extends WorldGame
     {
         g.setColor(BACKGROUND_COLOR);
         g.drawRect(0, 0, width, height, true);
-        map.render(g);
+        mapViewer.render(g);
         handler.render(g);
     }
 
     @Override
     protected void saving(FileWriting file) throws IOException
     {
-        map.save(file);
+        mapPersister.save(file);
     }
 
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        map.load(file);
+        mapPersister.load(file);
+        mapViewer.addRenderer(new MapTileRendererModel(services));
         mapGroup.loadGroups(Medias.create("map", "groups.xml"));
         mapCollision.loadCollisions();
         mapCollision.createCollisionDraw();

@@ -35,10 +35,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
  * <ul>
  * <li>{@link #setTilesheet(SpriteTiled, SpriteTiled)}</li>
  * <li>{@link #setEnabled(boolean, boolean)}</li>
- * <li>{@link #create(MapTile, Media)} - Default or external {@link MapTileRenderer} must be set here (could
- * be the {@link MapTile} or another one).</li>
- * <li>{@link MapTile#setTileRenderer(MapTileRenderer)} - Fog of war is a {@link MapTileRenderer} which will not
- * override the existing map renderer, but decorate it by rendering fog after the old one.</li>
+ * <li>{@link #create(MapTile, Media)}</li>
  * </ul>
  */
 public class FogOfWar implements MapTileRenderer
@@ -47,8 +44,6 @@ public class FogOfWar implements MapTileRenderer
     private final MapTileFog mapHidden;
     /** Fogged map. */
     private final MapTileFog mapFogged;
-    /** Map tile renderer. */
-    private MapTileRenderer renderer;
     /** Fog black tile. */
     private SpriteTiled hideTiles;
     /** Fog gray tiles. */
@@ -77,7 +72,6 @@ public class FogOfWar implements MapTileRenderer
      */
     public void create(MapTile map, Media config)
     {
-        renderer = map;
         mapHidden.create(map, config, hideTiles);
         mapFogged.create(map, config, fogTiles);
     }
@@ -185,8 +179,6 @@ public class FogOfWar implements MapTileRenderer
     @Override
     public void renderTile(Graphic g, Tile tile, int x, int y)
     {
-        renderer.renderTile(g, tile, x, y);
-
         final int tx = tile.getInTileX();
         final int ty = tile.getInTileY();
 

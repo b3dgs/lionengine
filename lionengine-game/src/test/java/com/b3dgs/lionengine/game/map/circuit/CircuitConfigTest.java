@@ -109,7 +109,7 @@ public class CircuitConfigTest
 
         final MapTile map3 = new MapTileGame();
         map3.addFeature(new MapTileGroupModel());
-        map3.create(3, 3);
+        map3.create(1, 1, 3, 3);
 
         final CircuitsExtractor extractor = new CircuitsExtractorImpl();
         final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(map, map3);

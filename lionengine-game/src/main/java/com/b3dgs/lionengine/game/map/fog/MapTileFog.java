@@ -79,8 +79,8 @@ public class MapTileFog
      */
     public void create(MapTile map, Media config, SpriteTiled sheet)
     {
-        this.map.create(map.getInTileWidth(), map.getInTileHeight());
-        this.map.loadSheets(map.getTileWidth(), map.getTileHeight(), Arrays.asList(sheet));
+        this.map.create(map.getTileWidth(), map.getTileHeight(), map.getInTileWidth(), map.getInTileHeight());
+        this.map.loadSheets(Arrays.asList(sheet));
         for (int i = 0; i < NO_FOG; i++)
         {
             final String group;

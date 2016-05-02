@@ -87,14 +87,11 @@ public final class ExtractAllHandler
         final Collection<SpriteTiled> sheets = sheetsExtractDialog.getSheets();
         if (!sheets.isEmpty())
         {
-            final TileSheetsConfig sheetsConfig = sheetsExtractDialog.getConfig();
-            final int tw = sheetsConfig.getTileWidth();
-            final int th = sheetsConfig.getTileHeight();
             final Media[] levels = sheetsExtractDialog.getLevelRips();
 
             final GroupsEditDialog groupsEditDialog = new GroupsEditDialog(shell);
             groupsEditDialog.setLocation(sheetsExtractDialog.getFolder());
-            groupsEditDialog.load(tw, th, sheets, levels);
+            groupsEditDialog.load(sheets, levels);
             groupsEditDialog.showWorldView();
             groupsEditDialog.open();
 

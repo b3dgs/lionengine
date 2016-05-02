@@ -24,6 +24,11 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTilePersister;
+import com.b3dgs.lionengine.game.map.MapTilePersisterModel;
+import com.b3dgs.lionengine.game.map.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.MapTileViewer;
+import com.b3dgs.lionengine.game.map.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -40,6 +45,10 @@ class World extends WorldGame
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
+    /** Map persister. */
+    private final MapTilePersister mapPersister = map.createFeature(MapTilePersisterModel.class);
+    /** Map viewer. */
+    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
 
     /**
      * Constructor.
@@ -60,19 +69,20 @@ class World extends WorldGame
     @Override
     public void render(Graphic g)
     {
-        map.render(g);
+        mapViewer.render(g);
     }
 
     @Override
     protected void saving(FileWriting file) throws IOException
     {
-        map.save(file);
+        mapPersister.save(file);
     }
 
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        map.load(file);
+        mapPersister.load(file);
+        mapViewer.addRenderer(new MapTileRendererModel(services));
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
     }
