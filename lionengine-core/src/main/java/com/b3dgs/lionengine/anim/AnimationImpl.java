@@ -106,4 +106,32 @@ final class AnimationImpl implements Animation
     {
         return repeat;
     }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + name.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof Animation))
+        {
+            return false;
+        }
+        final Animation other = (Animation) obj;
+        return getName().equals(other.getName());
+    }
 }

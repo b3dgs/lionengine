@@ -136,7 +136,7 @@ class Mario extends ObjectGame implements Updatable, Renderable
     protected void onPrepared()
     {
         StateAnimationBased.Util.loadStates(MarioState.values(), factory, this);
-        handler.start(MarioState.IDLE);
+        handler.changeState(MarioState.IDLE);
     }
 
     @Override

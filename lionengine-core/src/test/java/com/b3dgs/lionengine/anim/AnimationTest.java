@@ -53,6 +53,45 @@ public class AnimationTest
     }
 
     /**
+     * Test the animation hash code.
+     */
+    @Test
+    public void testHashcode()
+    {
+        final int animation = Anim.createAnimation("test", 1, 2, 3, false, true).hashCode();
+
+        Assert.assertEquals(animation, Anim.createAnimation("test", 1, 2, 3, false, true).hashCode());
+        Assert.assertEquals(animation, Anim.createAnimation("test", 10, 12, 3, false, true).hashCode());
+        Assert.assertEquals(animation, Anim.createAnimation("test", 1, 12, 3, false, true).hashCode());
+        Assert.assertEquals(animation, Anim.createAnimation("test", 1, 2, 13, false, true).hashCode());
+        Assert.assertEquals(animation, Anim.createAnimation("test", 1, 2, 3, true, true).hashCode());
+        Assert.assertEquals(animation, Anim.createAnimation("test", 1, 2, 3, false, false).hashCode());
+
+        Assert.assertNotEquals(animation, new Object().hashCode());
+        Assert.assertNotEquals(animation, Anim.createAnimation("test1", 1, 2, 3, false, true).hashCode());
+    }
+
+    /**
+     * Test the animation equality.
+     */
+    @Test
+    public void testEquals()
+    {
+        final Animation animation = Anim.createAnimation("test", 1, 2, 3, false, true);
+
+        Assert.assertEquals(animation, animation);
+        Assert.assertEquals(animation, Anim.createAnimation("test", 1, 2, 3, false, true));
+        Assert.assertEquals(animation, Anim.createAnimation("test", 11, 12, 3, false, true));
+        Assert.assertEquals(animation, Anim.createAnimation("test", 1, 12, 2, false, true));
+        Assert.assertEquals(animation, Anim.createAnimation("test", 1, 2, 13, false, true));
+        Assert.assertEquals(animation, Anim.createAnimation("test", 1, 2, 3, true, true));
+        Assert.assertEquals(animation, Anim.createAnimation("test", 1, 2, 3, false, false));
+
+        Assert.assertNotEquals(animation, new Object());
+        Assert.assertNotEquals(animation, Anim.createAnimation("test1", 1, 2, 3, false, true));
+    }
+
+    /**
      * Test the animation failure minimum frame.
      */
     @Test(expected = LionEngineException.class)

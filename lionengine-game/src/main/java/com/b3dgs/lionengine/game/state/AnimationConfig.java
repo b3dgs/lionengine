@@ -56,7 +56,7 @@ public final class AnimationConfig
      * @return The animations configuration instance.
      * @throws LionEngineException If unable to read data.
      */
-    public static AnimationConfig create(Configurer configurer)
+    public static AnimationConfig imports(Configurer configurer)
     {
         final Map<String, Animation> animations = new HashMap<String, Animation>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(ANIMATION))
@@ -100,7 +100,7 @@ public final class AnimationConfig
      * @param animation The animation reference.
      * @throws LionEngineException If error on writing.
      */
-    public static void export(XmlNode root, Animation animation)
+    public static void exports(XmlNode root, Animation animation)
     {
         final XmlNode node = root.createChild(ANIMATION);
         node.writeString(ANIMATION_NAME, animation.getName());

@@ -118,7 +118,7 @@ class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableL
     protected void onPrepared()
     {
         StateAnimationBased.Util.loadStates(MarioState.values(), factory, this);
-        handler.start(MarioState.IDLE);
+        handler.changeState(MarioState.IDLE);
         handler.addInput(keyboard);
     }
 

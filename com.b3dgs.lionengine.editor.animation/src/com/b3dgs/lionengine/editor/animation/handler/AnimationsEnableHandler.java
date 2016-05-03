@@ -54,7 +54,7 @@ public final class AnimationsEnableHandler
         final Configurer configurer = (Configurer) properties.getData();
         final int min = Animation.MINIMUM_FRAME;
         final Animation animation = Anim.createAnimation(Animation.DEFAULT_NAME, min, min + 1, 0.1, false, false);
-        AnimationConfig.export(configurer.getRoot(), animation);
+        AnimationConfig.exports(configurer.getRoot(), animation);
 
         configurer.save();
         part.setInput(properties, configurer);

@@ -158,7 +158,7 @@ public class AnimationEditor extends AbstractEditor
         for (final TreeItem item : animationList.getTree().getItems())
         {
             final Animation animation = (Animation) item.getData();
-            AnimationConfig.export(root, animation);
+            AnimationConfig.exports(root, animation);
         }
         configurer.save();
     }

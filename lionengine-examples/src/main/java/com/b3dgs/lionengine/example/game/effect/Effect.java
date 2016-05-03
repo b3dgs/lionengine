@@ -71,7 +71,7 @@ class Effect extends ObjectGame implements Updatable, Renderable
         surface.stretch(scale, scale);
         surface.setOrigin(Origin.MIDDLE);
 
-        final AnimationConfig configAnimations = AnimationConfig.create(setup.getConfigurer());
+        final AnimationConfig configAnimations = AnimationConfig.imports(setup.getConfigurer());
         animExplode = configAnimations.getAnimation("explode");
     }
 

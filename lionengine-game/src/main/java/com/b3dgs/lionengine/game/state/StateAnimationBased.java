@@ -61,7 +61,7 @@ public interface StateAnimationBased
          */
         public static void loadStates(StateAnimationBased[] states, StateFactory factory, ObjectGame object)
         {
-            final AnimationConfig configAnimations = AnimationConfig.create(object.getConfigurer());
+            final AnimationConfig configAnimations = AnimationConfig.imports(object.getConfigurer());
             for (final StateAnimationBased type : states)
             {
                 try

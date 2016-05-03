@@ -50,7 +50,7 @@ public class AnimationList extends ObjectList<Animation>
      */
     public void loadAnimations()
     {
-        final AnimationConfig configAnimations = AnimationConfig.create(configurer);
+        final AnimationConfig configAnimations = AnimationConfig.imports(configurer);
         final Collection<Animation> animations = configAnimations.getAnimations();
         loadObjects(animations);
     }

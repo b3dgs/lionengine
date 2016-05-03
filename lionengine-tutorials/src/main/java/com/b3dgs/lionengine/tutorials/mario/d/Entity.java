@@ -163,7 +163,7 @@ class Entity extends ObjectGame implements Updatable, Renderable, TileCollidable
     protected void onPrepared()
     {
         StateAnimationBased.Util.loadStates(EntityState.values(), factory, this);
-        handler.start(EntityState.IDLE);
+        handler.changeState(EntityState.IDLE);
     }
 
     @Override

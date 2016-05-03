@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
  * </p>
  * <ul>
  * <li>{@link #addInput(InputDevice)}</li>
- * <li>{@link #start(Enum)}</li>
+ * <li>{@link #changeState(Enum)}</li>
  * <li>{@link #update(double)}</li>
  * </ul>
  */
@@ -58,16 +58,6 @@ public class StateHandler implements Updatable
     }
 
     /**
-     * Start with the first state.
-     * 
-     * @param state The first state used.
-     */
-    public void start(Enum<?> state)
-    {
-        current = factory.getState(state);
-    }
-
-    /**
      * Set the input device used.
      * 
      * @param input The input device reference.
@@ -83,10 +73,15 @@ public class StateHandler implements Updatable
      * Change the current state.
      * 
      * @param next The next state.
+     * @throws LionEngineException If <code>null</code> argument.
      */
     public void changeState(Enum<?> next)
     {
-        current.exit();
+        Check.notNull(next);
+        if (current != null)
+        {
+            current.exit();
+        }
         current = factory.getState(next);
     }
 
@@ -125,7 +120,15 @@ public class StateHandler implements Updatable
             for (final InputDevice input : inputs)
             {
                 current = checkNext(InputDeviceDirectional.class, input);
+                if (!old.equals(current))
+                {
+                    break;
+                }
                 current = checkNext(InputDevicePointer.class, input);
+                if (!old.equals(current))
+                {
+                    break;
+                }
             }
             if (!old.equals(current))
             {
