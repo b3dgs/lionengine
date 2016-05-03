@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.game.layer;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
+import java.util.TreeSet;
 
 import com.b3dgs.lionengine.game.object.ComponentRenderable;
 import com.b3dgs.lionengine.game.object.HandledObjects;
@@ -35,15 +37,18 @@ import com.b3dgs.lionengine.graphic.Renderable;
  */
 public class ComponentRendererLayer implements ComponentRenderable, HandlerListener, LayerableListener
 {
+    /** Sorted layers index. */
+    private final Set<Integer> indexs;
     /** Layers to render. */
-    private final Map<Integer, Set<Renderable>> layers;
+    private final Map<Integer, Collection<Renderable>> layers;
 
     /**
      * Create a renderer component.
      */
     public ComponentRendererLayer()
     {
-        layers = new TreeMap<Integer, Set<Renderable>>();
+        indexs = new TreeSet<Integer>();
+        layers = new HashMap<Integer, Collection<Renderable>>();
     }
 
     /**
@@ -52,12 +57,12 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
      * @param layer The layer index.
      * @return The layer set reference.
      */
-    private Set<Renderable> getLayer(Integer layer)
+    private Collection<Renderable> getLayer(Integer layer)
     {
-        final Set<Renderable> objects;
+        final Collection<Renderable> objects;
         if (!layers.containsKey(layer))
         {
-            objects = new HashSet<Renderable>();
+            objects = new ArrayList<Renderable>();
             layers.put(layer, objects);
         }
         else
@@ -67,6 +72,22 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
         return objects;
     }
 
+    /**
+     * Remove renderable and its layer.
+     * 
+     * @param layer The layer index.
+     * @param renderable The renderable to remove.
+     */
+    private void remove(Integer layer, Renderable renderable)
+    {
+        final Collection<Renderable> elements = getLayer(layer);
+        elements.remove(renderable);
+        if (elements.isEmpty())
+        {
+            indexs.remove(layer);
+        }
+    }
+
     /*
      * ComponentRenderable
      */
@@ -74,9 +95,9 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
     @Override
     public void render(Graphic g, HandledObjects objects)
     {
-        for (final Set<Renderable> renderables : layers.values())
+        for (final Integer layer : indexs)
         {
-            for (final Renderable renderable : renderables)
+            for (final Renderable renderable : layers.get(layer))
             {
                 renderable.render(g);
             }
@@ -95,8 +116,9 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
             final Layerable layerable = object.getTrait(Layerable.class);
             final Renderable renderable = object.getTrait(Renderable.class);
             final Integer layer = layerable.getLayer();
-            final Set<Renderable> objects = getLayer(layer);
+            final Collection<Renderable> objects = getLayer(layer);
             objects.add(renderable);
+            indexs.add(layer);
         }
     }
 
@@ -108,10 +130,7 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
             final Layerable layerable = object.getTrait(Layerable.class);
             final Renderable renderable = object.getTrait(Renderable.class);
             final Integer layer = layerable.getLayer();
-            if (layers.containsKey(layer))
-            {
-                layers.get(layer).remove(renderable);
-            }
+            remove(layer, renderable);
         }
     }
 
@@ -122,7 +141,8 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
         {
             final Renderable renderable = object.getTrait(Renderable.class);
             getLayer(oldLayer).remove(renderable);
-            getLayer(oldLayer).add(renderable);
+            getLayer(newLayer).add(renderable);
+            indexs.add(newLayer);
         }
     }
 }

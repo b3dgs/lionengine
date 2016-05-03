@@ -26,6 +26,12 @@ import com.b3dgs.lionengine.game.object.TraitModel;
 
 /**
  * Layerable model implementation.
+ * <p>
+ * The {@link Services} must contains the following interface:
+ * </p>
+ * <ul>
+ * <li>{@link LayerableListener}</li>
+ * </ul>
  */
 public class LayerableModel extends TraitModel implements Layerable
 {
