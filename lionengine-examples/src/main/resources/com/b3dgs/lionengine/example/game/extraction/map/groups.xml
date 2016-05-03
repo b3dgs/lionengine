@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:group name="grassDark">
+    <lionengine:group name="grassDark" type="NONE">
         <lionengine:tile number="0" sheet="0"/>
         <lionengine:tile number="1" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="grassDarkBorder">
+    <lionengine:group name="grassDarkBorder" type="NONE">
         <lionengine:tile number="2" sheet="0"/>
         <lionengine:tile number="3" sheet="0"/>
         <lionengine:tile number="4" sheet="0"/>
@@ -22,7 +22,7 @@
         <lionengine:tile number="16" sheet="0"/>
         <lionengine:tile number="17" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="grass">
+    <lionengine:group name="grass" type="NONE">
         <lionengine:tile number="18" sheet="0"/>
         <lionengine:tile number="19" sheet="0"/>
         <lionengine:tile number="20" sheet="0"/>
@@ -39,7 +39,7 @@
         <lionengine:tile number="31" sheet="0"/>
         <lionengine:tile number="32" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="grassLightBorder">
+    <lionengine:group name="grassLightBorder" type="NONE">
         <lionengine:tile number="33" sheet="0"/>
         <lionengine:tile number="34" sheet="0"/>
         <lionengine:tile number="35" sheet="0"/>
@@ -57,11 +57,11 @@
         <lionengine:tile number="47" sheet="0"/>
         <lionengine:tile number="48" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="grassLight">
+    <lionengine:group name="grassLight" type="NONE">
         <lionengine:tile number="49" sheet="0"/>
         <lionengine:tile number="50" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="grassBrightBorder">
+    <lionengine:group name="grassBrightBorder" type="NONE">
         <lionengine:tile number="51" sheet="0"/>
         <lionengine:tile number="52" sheet="0"/>
         <lionengine:tile number="53" sheet="0"/>
@@ -79,10 +79,10 @@
         <lionengine:tile number="65" sheet="0"/>
         <lionengine:tile number="66" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="grassBright">
+    <lionengine:group name="grassBright" type="NONE">
         <lionengine:tile number="67" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="road">
+    <lionengine:group name="road" type="NONE">
         <lionengine:tile number="68" sheet="0"/>
         <lionengine:tile number="69" sheet="0"/>
         <lionengine:tile number="70" sheet="0"/>
@@ -112,7 +112,7 @@
         <lionengine:tile number="94" sheet="0"/>
         <lionengine:tile number="95" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="bridge">
+    <lionengine:group name="bridge" type="NONE">
         <lionengine:tile number="96" sheet="0"/>
         <lionengine:tile number="97" sheet="0"/>
         <lionengine:tile number="98" sheet="0"/>
@@ -142,10 +142,10 @@
         <lionengine:tile number="122" sheet="0"/>
         <lionengine:tile number="123" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="treeCut">
+    <lionengine:group name="treeCut" type="NONE">
         <lionengine:tile number="124" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="treeBorder">
+    <lionengine:group name="treeBorder" type="NONE">
         <lionengine:tile number="125" sheet="0"/>
         <lionengine:tile number="126" sheet="0"/>
         <lionengine:tile number="127" sheet="0"/>
@@ -163,14 +163,14 @@
         <lionengine:tile number="139" sheet="0"/>
         <lionengine:tile number="140" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="tree">
+    <lionengine:group name="tree" type="NONE">
         <lionengine:tile number="141" sheet="0"/>
         <lionengine:tile number="142" sheet="0"/>
         <lionengine:tile number="143" sheet="0"/>
         <lionengine:tile number="144" sheet="0"/>
         <lionengine:tile number="145" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="border">
+    <lionengine:group name="border" type="NONE">
         <lionengine:tile number="146" sheet="0"/>
         <lionengine:tile number="147" sheet="0"/>
         <lionengine:tile number="148" sheet="0"/>
@@ -211,7 +211,7 @@
         <lionengine:tile number="183" sheet="0"/>
         <lionengine:tile number="184" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="water">
+    <lionengine:group name="water" type="NONE">
         <lionengine:tile number="185" sheet="0"/>
         <lionengine:tile number="186" sheet="0"/>
         <lionengine:tile number="187" sheet="0"/>

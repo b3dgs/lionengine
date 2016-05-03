@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:group name="transition2">
+    <lionengine:group name="transition2" type="NONE">
         <lionengine:tile number="33" sheet="0"/>
         <lionengine:tile number="32" sheet="0"/>
         <lionengine:tile number="31" sheet="0"/>
@@ -14,7 +14,7 @@
         <lionengine:tile number="35" sheet="0"/>
         <lionengine:tile number="34" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="transition">
+    <lionengine:group name="transition" type="NONE">
         <lionengine:tile number="13" sheet="0"/>
         <lionengine:tile number="11" sheet="0"/>
         <lionengine:tile number="42" sheet="0"/>
@@ -28,14 +28,14 @@
         <lionengine:tile number="19" sheet="0"/>
         <lionengine:tile number="18" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="water">
+    <lionengine:group name="water" type="NONE">
         <lionengine:tile number="12" sheet="0"/>
         <lionengine:tile number="38" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="grass">
+    <lionengine:group name="grass" type="NONE">
         <lionengine:tile number="0" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="road">
+    <lionengine:group name="road" type="NONE">
         <lionengine:tile number="1" sheet="0"/>
         <lionengine:tile number="24" sheet="0"/>
         <lionengine:tile number="23" sheet="0"/>
@@ -52,7 +52,7 @@
         <lionengine:tile number="3" sheet="0"/>
         <lionengine:tile number="2" sheet="0"/>
     </lionengine:group>
-    <lionengine:group name="tree">
+    <lionengine:group name="tree" type="NONE">
         <lionengine:tile number="29" sheet="0"/>
     </lionengine:group>
 </lionengine:groups>
