@@ -17,9 +17,14 @@
  */
 package com.b3dgs.lionengine.game.map.fog;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Constant;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.UtilMap;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -34,6 +39,29 @@ import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
  */
 public class FovableModelTest
 {
+    /** Object config test. */
+    private static Media config;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
+        config = UtilSetup.createConfig();
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Assert.assertTrue(config.getFile().delete());
+        Medias.setResourcesDirectory(Constant.EMPTY_STRING);
+    }
+
     /**
      * Test the fovable model.
      */
@@ -45,7 +73,7 @@ public class FovableModelTest
         final MapTile map = UtilMap.createMap(7);
         services.add(map);
 
-        final ObjectGame object = new ObjectGame(new Setup(UtilSetup.createConfig()), services);
+        final ObjectGame object = new ObjectGame(new Setup(config), services);
         final Transformable transformable = new TransformableModel();
         transformable.teleport(1, 2);
         transformable.setSize(3, 4);
