@@ -195,10 +195,7 @@ public class MapTileFog
             for (int y = sy; y < ey + 1; y++)
             {
                 final Tile tile = map.getTile(x, y);
-                if (tile != null)
-                {
-                    revealed.add(tile);
-                }
+                revealed.add(tile);
             }
         }
     }
