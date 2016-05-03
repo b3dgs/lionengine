@@ -121,6 +121,6 @@ public class StateHandlerTest
     public void testNullArgument()
     {
         final StateHandler handler = new StateHandler(new StateFactory());
-        Assert.assertTrue(handler.isState(null));
+        handler.changeState(null);
     }
 }
