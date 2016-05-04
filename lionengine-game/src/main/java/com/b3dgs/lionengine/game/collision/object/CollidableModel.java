@@ -71,7 +71,7 @@ public class CollidableModel extends TraitModel implements Collidable
     {
         for (final Rectangle current : other.getCollisionBounds())
         {
-            if (rectangle.intersects(current) || rectangle.contains(current))
+            if (rectangle.intersects(current))
             {
                 return true;
             }
@@ -184,9 +184,9 @@ public class CollidableModel extends TraitModel implements Collidable
             for (final Collision collision : collisions)
             {
                 Mirror mirror = Mirror.NONE;
-                if (collision.hasMirror() && transformable instanceof Mirrorable)
+                if (collision.hasMirror() && getOwner().hasTrait(Mirrorable.class))
                 {
-                    mirror = ((Mirrorable) transformable).getMirror();
+                    mirror = getOwner().getTrait(Mirrorable.class).getMirror();
                 }
 
                 final int offsetX;

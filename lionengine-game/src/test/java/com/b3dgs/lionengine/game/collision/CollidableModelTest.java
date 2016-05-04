@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
@@ -35,6 +36,8 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
+import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.trait.mirrorable.MirrorableModel;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -137,6 +140,81 @@ public class CollidableModelTest
     }
 
     /**
+     * Test collidable class with different sizes.
+     */
+    @Test
+    public void testCollidableDifferentSizes()
+    {
+        final Services services = new Services();
+        services.add(new Camera());
+
+        final ObjectGame object1 = createObject(config, services);
+        final ObjectGame object2 = createObject(config, services);
+
+        final Collidable collidable1 = object1.getTrait(Collidable.class);
+        final Collidable collidable2 = object2.getTrait(Collidable.class);
+
+        final Collision collision1 = new Collision("test1", 1, 1, 1, 1, true);
+        collidable1.addCollision(collision1);
+
+        final Collision collision2 = new Collision("test2", 0, 0, 3, 3, false);
+        collidable2.addCollision(collision2);
+
+        object1.getTrait(Transformable.class).teleport(1.0, 1.0);
+        collidable1.update(1.0);
+        collidable2.update(1.0);
+
+        Assert.assertEquals(collision2, collidable2.collide(collidable1));
+
+        object1.getTrait(Transformable.class).teleport(2.0, 2.0);
+        collidable1.update(1.0);
+
+        Assert.assertEquals(collision2, collidable2.collide(collidable1));
+    }
+
+    /**
+     * Test collidable class with mirror.
+     */
+    @Test
+    public void testCollidableMirror()
+    {
+        final Services services = new Services();
+        services.add(new Camera());
+
+        final ObjectGame object1 = createObject(config, services);
+        final Mirrorable mirror1 = new MirrorableModel();
+        object1.addType(mirror1);
+        mirror1.mirror(Mirror.HORIZONTAL);
+        mirror1.update(1.0);
+
+        final ObjectGame object2 = createObject(config, services);
+        final Mirrorable mirror2 = new MirrorableModel();
+        object2.addType(mirror2);
+        mirror2.mirror(Mirror.VERTICAL);
+        mirror2.update(1.0);
+
+        final Collidable collidable1 = object1.getTrait(Collidable.class);
+        final Collidable collidable2 = object2.getTrait(Collidable.class);
+
+        final Collision collision1 = new Collision("test1", 1, 1, 1, 1, true);
+        collidable1.addCollision(collision1);
+
+        final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
+        collidable2.addCollision(collision2);
+
+        object1.getTrait(Transformable.class).teleport(1.0, 1.0);
+        collidable1.update(1.0);
+        collidable2.update(1.0);
+
+        Assert.assertEquals(collision2, collidable2.collide(collidable1));
+
+        object1.getTrait(Transformable.class).teleport(2.0, 2.0);
+        collidable1.update(1.0);
+
+        Assert.assertEquals(collision2, collidable2.collide(collidable1));
+    }
+
+    /**
      * Test collidable disabled.
      */
     @Test
@@ -155,6 +233,7 @@ public class CollidableModelTest
         Assert.assertNotNull(collidable.collide(collidable));
 
         collidable.setEnabled(false);
+        collidable.update(1.0);
 
         Assert.assertNull(collidable.collide(collidable));
     }
