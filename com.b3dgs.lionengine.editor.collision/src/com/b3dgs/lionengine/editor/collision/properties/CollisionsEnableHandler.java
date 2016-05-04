@@ -49,7 +49,7 @@ public final class CollisionsEnableHandler
         final Tree properties = part.getTree();
         final Configurer configurer = (Configurer) properties.getData();
         final Collision collision = new Collision("default", 0, 0, 0, 0, false);
-        CollisionConfig.export(configurer.getRoot(), collision);
+        CollisionConfig.exports(configurer.getRoot(), collision);
         configurer.save();
         part.setInput(properties, configurer);
     }

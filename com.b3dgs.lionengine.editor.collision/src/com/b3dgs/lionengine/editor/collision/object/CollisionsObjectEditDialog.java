@@ -87,7 +87,7 @@ public class CollisionsObjectEditDialog extends AbstractEditor
         for (final TreeItem item : list.getTree().getItems())
         {
             final Collision collision = (Collision) item.getData();
-            CollisionConfig.export(root, collision);
+            CollisionConfig.exports(root, collision);
         }
         configurer.save();
     }

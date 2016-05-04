@@ -62,6 +62,10 @@ final class HandledObjectsImpl implements HandledObjects
         {
             addType(trait, object.getTrait(trait));
         }
+        for (final Class<?> type : object.getTypes())
+        {
+            addType(type, object.getTrait(type));
+        }
         addType(object.getClass(), object);
         addSuperClass(object, object.getClass());
     }
@@ -78,6 +82,10 @@ final class HandledObjectsImpl implements HandledObjects
         {
             remove(trait, object.getTrait(trait));
         }
+        for (final Class<?> type : object.getTypes())
+        {
+            remove(type, object.getTrait(type));
+        }
         removeSuperClass(object, object.getClass());
         objects.remove(id);
     }
@@ -85,7 +93,7 @@ final class HandledObjectsImpl implements HandledObjects
     /**
      * Get all objects id.
      * 
-     * @return The ids list.
+     * @return The IDs list.
      */
     public Collection<Integer> getIds()
     {

@@ -56,7 +56,7 @@ public final class CollisionConfig
      * @return The collisions data.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollisionConfig create(Configurer configurer)
+    public static CollisionConfig imports(Configurer configurer)
     {
         final Map<String, Collision> collisions = new HashMap<String, Collision>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(COLLISION))
@@ -93,7 +93,7 @@ public final class CollisionConfig
      * @param root The node root.
      * @param collision The collision reference.
      */
-    public static void export(XmlNode root, Collision collision)
+    public static void exports(XmlNode root, Collision collision)
     {
         final XmlNode node = root.createChild(COLLISION);
         node.writeString(COLLISION_NAME, collision.getName());

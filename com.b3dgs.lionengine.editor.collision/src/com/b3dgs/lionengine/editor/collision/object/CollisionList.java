@@ -49,7 +49,7 @@ public class CollisionList extends ObjectList<Collision>
      */
     public void loadCollisions()
     {
-        final CollisionConfig configCollisions = CollisionConfig.create(configurer);
+        final CollisionConfig configCollisions = CollisionConfig.imports(configurer);
         final Collection<Collision> collisions = configCollisions.getCollisions();
         loadObjects(collisions);
     }

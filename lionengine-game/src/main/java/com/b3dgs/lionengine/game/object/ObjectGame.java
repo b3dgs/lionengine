@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.game.object;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -96,7 +98,7 @@ public class ObjectGame
 
     /** Features provider. */
     private final Features<Trait> features = new Features<Trait>(Trait.class);
-    /** Types provided. */
+    /** Types provided (must be interface). */
     private final Map<Class<?>, Object> types = new HashMap<Class<?>, Object>();
     /** Trait to prepare. */
     private final Collection<Trait> traitToPrepare = new ArrayList<Trait>();
@@ -150,6 +152,36 @@ public class ObjectGame
     public final void addType(Object type)
     {
         types.put(type.getClass(), type);
+        for (final Class<?> current : getInterfaces(type))
+        {
+            types.put(current, type);
+        }
+    }
+
+    /**
+     * Get all declared interfaces from object.
+     * 
+     * @param object The object reference.
+     * @return The declared interfaces.
+     */
+    private static Collection<Class<?>> getInterfaces(Object object)
+    {
+        final Collection<Class<?>> interfaces = new ArrayList<Class<?>>();
+        final Deque<Class<?>> currents = new ArrayDeque<Class<?>>(Arrays.asList(object.getClass().getInterfaces()));
+        final Deque<Class<?>> nexts = new ArrayDeque<Class<?>>();
+        while (!currents.isEmpty())
+        {
+            nexts.clear();
+            interfaces.addAll(currents);
+            for (final Class<?> current : currents)
+            {
+                nexts.addAll(Arrays.asList(current.getInterfaces()));
+            }
+            currents.clear();
+            currents.addAll(nexts);
+            nexts.clear();
+        }
+        return interfaces;
     }
 
     /**
@@ -226,6 +258,16 @@ public class ObjectGame
     public final Iterable<Class<? extends Trait>> getTraitsType()
     {
         return features.getFeatures();
+    }
+
+    /**
+     * Get all types.
+     * 
+     * @return The traits types.
+     */
+    public final Iterable<Class<?>> getTypes()
+    {
+        return types.keySet();
     }
 
     /**

@@ -147,7 +147,7 @@ public class CollidableModel extends TraitModel implements Collidable
     {
         super.prepare(owner, services);
         viewer = services.get(Viewer.class);
-        for (final Collision collision : CollisionConfig.create(owner.getConfigurer()).getCollisions())
+        for (final Collision collision : CollisionConfig.imports(owner.getConfigurer()).getCollisions())
         {
             addCollision(collision);
         }

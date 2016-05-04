@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.UtilMap;
-import com.b3dgs.lionengine.game.map.transition.UtilMapTransition;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -57,7 +56,7 @@ public class FogOfWarTest
     {
         Graphics.setFactoryGraphic(new FactoryGraphicMock());
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
-        config = UtilMapTransition.createTransitions();
+        config = UtilSetup.createConfig();
     }
 
     /**
@@ -83,7 +82,7 @@ public class FogOfWarTest
         UtilMap.fill(map, UtilMap.TILE_GROUND);
         services.add(map);
 
-        final ObjectGame object = new ObjectGame(new Setup(UtilSetup.createConfig()), services);
+        final ObjectGame object = new ObjectGame(new Setup(config), services);
         final Transformable transformable = new TransformableModel();
         transformable.teleport(3, 3);
         object.addType(transformable);
