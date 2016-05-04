@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SizeConfig;
+import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -75,6 +76,24 @@ public class TransformableModelTest
         root.add(SizeConfig.exports(new SizeConfig(16, 32)));
         Xml.save(root, media);
         return media;
+    }
+
+    /**
+     * Test the transformable with default size.
+     */
+    @Test
+    public void testDefaultSize()
+    {
+        final Media media = UtilSetup.createConfig();
+        final Services services = new Services();
+        services.add(new MapTileGame());
+        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final Transformable transformable = new TransformableModel();
+        transformable.prepare(object, services);
+
+        Assert.assertEquals(0, transformable.getWidth());
+        Assert.assertEquals(0, transformable.getHeight());
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
