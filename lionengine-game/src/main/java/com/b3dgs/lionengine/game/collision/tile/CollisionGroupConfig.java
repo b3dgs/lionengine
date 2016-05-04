@@ -50,7 +50,7 @@ public final class CollisionGroupConfig
      * @return The collisions group data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<CollisionGroup> create(Media config)
+    public static Collection<CollisionGroup> imports(Media config)
     {
         final XmlNode root = Xml.load(config);
         final Collection<CollisionGroup> collisions = new ArrayList<CollisionGroup>();
@@ -76,7 +76,7 @@ public final class CollisionGroupConfig
      * @return The collisions group data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<CollisionGroup> create(XmlNode root, MapTileCollision map)
+    public static Collection<CollisionGroup> imports(XmlNode root, MapTileCollision map)
     {
         final Collection<CollisionGroup> collisions = new ArrayList<CollisionGroup>();
         for (final XmlNode node : root.getChildren(COLLISION))
@@ -100,7 +100,7 @@ public final class CollisionGroupConfig
      * @param group The collision group to export.
      * @throws LionEngineException If error on writing.
      */
-    public static void export(XmlNode root, CollisionGroup group)
+    public static void exports(XmlNode root, CollisionGroup group)
     {
         final XmlNode node = root.createChild(COLLISION);
         node.writeString(GROUP, group.getName());

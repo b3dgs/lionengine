@@ -284,7 +284,7 @@ public class MapTileCollisionModel implements MapTileCollision
         Verbose.info(INFO_LOAD_FORMULAS, formulasConfig.getFile().getPath());
         formulas.clear();
         this.formulasConfig = formulasConfig;
-        final CollisionFormulaConfig config = CollisionFormulaConfig.create(formulasConfig);
+        final CollisionFormulaConfig config = CollisionFormulaConfig.imports(formulasConfig);
         for (final CollisionFormula formula : config.getFormulas().values())
         {
             formulas.put(formula.getName(), formula);
@@ -303,7 +303,7 @@ public class MapTileCollisionModel implements MapTileCollision
         groups.clear();
         this.groupsConfig = groupsConfig;
         final XmlNode nodeGroups = Xml.load(groupsConfig);
-        final Collection<CollisionGroup> groups = CollisionGroupConfig.create(nodeGroups, this);
+        final Collection<CollisionGroup> groups = CollisionGroupConfig.imports(nodeGroups, this);
         for (final CollisionGroup group : groups)
         {
             this.groups.put(group.getName(), group);
@@ -552,7 +552,7 @@ public class MapTileCollisionModel implements MapTileCollision
             final XmlNode formulasRoot = Xml.create(CollisionFormulaConfig.FORMULAS);
             for (final CollisionFormula formula : getCollisionFormulas())
             {
-                CollisionFormulaConfig.export(formulasRoot, formula);
+                CollisionFormulaConfig.exports(formulasRoot, formula);
             }
             Xml.save(formulasRoot, formulasConfig);
         }
@@ -561,7 +561,7 @@ public class MapTileCollisionModel implements MapTileCollision
             final XmlNode groupsNode = Xml.create(CollisionGroupConfig.COLLISIONS);
             for (final CollisionGroup group : getCollisionGroups())
             {
-                CollisionGroupConfig.export(groupsNode, group);
+                CollisionGroupConfig.exports(groupsNode, group);
             }
             Xml.save(groupsNode, groupsConfig);
         }

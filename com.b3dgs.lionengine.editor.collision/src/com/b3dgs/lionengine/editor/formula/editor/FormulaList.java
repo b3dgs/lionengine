@@ -96,7 +96,7 @@ public class FormulaList extends ObjectList<CollisionFormula> implements ObjectL
     public void loadFormulas(Media config)
     {
         this.config = config;
-        final CollisionFormulaConfig configCollisionFormula = CollisionFormulaConfig.create(config);
+        final CollisionFormulaConfig configCollisionFormula = CollisionFormulaConfig.imports(config);
         final Collection<CollisionFormula> formulas = configCollisionFormula.getFormulas().values();
         loadObjects(formulas);
     }

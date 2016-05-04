@@ -91,7 +91,7 @@ public class CollisionGroupList extends ObjectList<CollisionGroup> implements Ob
     public void loadCollisions(Media config)
     {
         this.config = config;
-        final Collection<CollisionGroup> groups = CollisionGroupConfig.create(config);
+        final Collection<CollisionGroup> groups = CollisionGroupConfig.imports(config);
         loadObjects(groups);
     }
 

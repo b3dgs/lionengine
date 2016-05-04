@@ -50,7 +50,7 @@ public final class CollisionFormulaConfig
      * @return The collision formula data.
      * @throws LionEngineException If error when reading data.
      */
-    public static CollisionFormulaConfig create(Media config)
+    public static CollisionFormulaConfig imports(Media config)
     {
         final XmlNode root = Xml.load(config);
         final Map<String, CollisionFormula> collisions = new HashMap<String, CollisionFormula>(0);
@@ -70,14 +70,14 @@ public final class CollisionFormulaConfig
      * @param formula The formula reference.
      * @throws LionEngineException If error on writing.
      */
-    public static void export(XmlNode root, CollisionFormula formula)
+    public static void exports(XmlNode root, CollisionFormula formula)
     {
         final XmlNode node = root.createChild(FORMULA);
         node.writeString(NAME, formula.getName());
 
-        CollisionRangeConfig.export(node, formula.getRange());
-        CollisionFunctionConfig.export(node, formula.getFunction());
-        CollisionConstraintConfig.export(node, formula.getConstraint());
+        CollisionRangeConfig.exports(node, formula.getRange());
+        CollisionFunctionConfig.exports(node, formula.getFunction());
+        CollisionConstraintConfig.exports(node, formula.getConstraint());
     }
 
     /**
@@ -90,9 +90,9 @@ public final class CollisionFormulaConfig
     public static CollisionFormula createCollision(XmlNode node)
     {
         final String name = node.readString(NAME);
-        final CollisionRange range = CollisionRangeConfig.create(node.getChild(CollisionRangeConfig.RANGE));
-        final CollisionFunction function = CollisionFunctionConfig.create(node);
-        final CollisionConstraint constraint = CollisionConstraintConfig.create(node);
+        final CollisionRange range = CollisionRangeConfig.imports(node.getChild(CollisionRangeConfig.RANGE));
+        final CollisionFunction function = CollisionFunctionConfig.imports(node);
+        final CollisionConstraint constraint = CollisionConstraintConfig.imports(node);
 
         return new CollisionFormula(name, range, function, constraint);
     }
@@ -135,14 +135,6 @@ public final class CollisionFormulaConfig
 
     /** Collision formulas list. */
     private final Map<String, CollisionFormula> formulas;
-
-    /**
-     * Disabled constructor.
-     */
-    private CollisionFormulaConfig()
-    {
-        throw new LionEngineException(LionEngineException.ERROR_PRIVATE_CONSTRUCTOR);
-    }
 
     /**
      * Create a collision formula config map.

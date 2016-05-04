@@ -52,7 +52,7 @@ public class CollisionCategoryList extends ObjectList<CollisionCategory>
      */
     public void loadCategories()
     {
-        final Collection<CollisionCategory> categories = CollisionCategoryConfig.create(configurer.getRoot());
+        final Collection<CollisionCategory> categories = CollisionCategoryConfig.imports(configurer.getRoot());
         loadObjects(categories);
     }
 

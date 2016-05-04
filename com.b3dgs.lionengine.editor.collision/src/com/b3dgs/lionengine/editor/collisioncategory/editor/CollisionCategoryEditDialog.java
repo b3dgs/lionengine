@@ -88,7 +88,7 @@ public class CollisionCategoryEditDialog extends AbstractEditor
         for (final TreeItem item : list.getTree().getItems())
         {
             final CollisionCategory category = (CollisionCategory) item.getData();
-            CollisionCategoryConfig.export(root, category);
+            CollisionCategoryConfig.exports(root, category);
         }
         configurer.save();
     }

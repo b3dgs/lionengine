@@ -54,7 +54,7 @@ public final class CollisionCategoryConfig
      * @return The collisions category data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<CollisionCategory> create(XmlNode root)
+    public static Collection<CollisionCategory> imports(XmlNode root)
     {
         final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
         for (final XmlNode node : root.getChildren(CATEGORY))
@@ -85,12 +85,12 @@ public final class CollisionCategoryConfig
      * @return The category collisions data.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<CollisionCategory> create(Configurer configurer, MapTileCollision map)
+    public static Collection<CollisionCategory> imports(Configurer configurer, MapTileCollision map)
     {
         final Collection<CollisionCategory> categories = new ArrayList<CollisionCategory>();
         for (final XmlNode node : configurer.getRoot().getChildren(CATEGORY))
         {
-            final CollisionCategory category = create(node, map);
+            final CollisionCategory category = imports(node, map);
             categories.add(category);
         }
         return categories;
@@ -104,7 +104,7 @@ public final class CollisionCategoryConfig
      * @return The category node instance.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollisionCategory create(XmlNode root, MapTileCollision map)
+    public static CollisionCategory imports(XmlNode root, MapTileCollision map)
     {
         final Collection<CollisionGroup> groups = new ArrayList<CollisionGroup>();
         for (final XmlNode groupNode : root.getChildren(TileGroupsConfig.NODE_GROUP))
@@ -138,7 +138,7 @@ public final class CollisionCategoryConfig
      * @param category The collision category to export.
      * @throws LionEngineException If error on writing.
      */
-    public static void export(XmlNode root, CollisionCategory category)
+    public static void exports(XmlNode root, CollisionCategory category)
     {
         final XmlNode node = root.createChild(CATEGORY);
         node.writeString(NAME, category.getName());

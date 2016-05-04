@@ -123,7 +123,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
         }
 
         final CollisionGroup group = new CollisionGroup(name, Arrays.asList(formula));
-        CollisionGroupConfig.export(root, group);
+        CollisionGroupConfig.exports(root, group);
         Xml.save(root, config);
 
         return group;
@@ -341,7 +341,7 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
         final CollisionRange range = new CollisionRange(Axis.Y, 0, map.getTileWidth() - 1, 0, map.getTileHeight() - 1);
         final CollisionFunction updatedFunction = updateFunction(function, index);
         final CollisionFormula formula = new CollisionFormula(name, range, updatedFunction, new CollisionConstraint());
-        CollisionFormulaConfig.export(root, formula);
+        CollisionFormulaConfig.exports(root, formula);
         Xml.save(root, config);
 
         return formula;

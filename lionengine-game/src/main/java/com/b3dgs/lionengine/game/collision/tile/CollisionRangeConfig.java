@@ -51,7 +51,7 @@ public final class CollisionRangeConfig
      * @return The collision range data.
      * @throws LionEngineException If error when reading node.
      */
-    public static CollisionRange create(XmlNode node)
+    public static CollisionRange imports(XmlNode node)
     {
         final String axisName = node.readString(AXIS);
         try
@@ -77,7 +77,7 @@ public final class CollisionRangeConfig
      * @param range The collision range to export.
      * @throws LionEngineException If error on writing.
      */
-    public static void export(XmlNode root, CollisionRange range)
+    public static void exports(XmlNode root, CollisionRange range)
     {
         final XmlNode node = root.createChild(RANGE);
         node.writeString(AXIS, range.getOutput().name());

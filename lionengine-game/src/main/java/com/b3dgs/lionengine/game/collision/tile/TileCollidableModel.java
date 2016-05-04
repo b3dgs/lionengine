@@ -118,7 +118,7 @@ public class TileCollidableModel extends TraitModel implements TileCollidable
     {
         transformable = owner.getTrait(Transformable.class);
         map = services.get(MapTileCollision.class);
-        categories = CollisionCategoryConfig.create(owner.getConfigurer(), map);
+        categories = CollisionCategoryConfig.imports(owner.getConfigurer(), map);
 
         if (owner instanceof TileCollidableListener)
         {

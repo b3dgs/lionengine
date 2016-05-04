@@ -46,7 +46,7 @@ public final class CollisionConstraintConfig
      * @return The collision constraint data.
      * @throws LionEngineException If error when reading node.
      */
-    public static CollisionConstraint create(XmlNode node)
+    public static CollisionConstraint imports(XmlNode node)
     {
         final CollisionConstraint constraint = new CollisionConstraint();
         if (node.hasChild(CONSTRAINT))
@@ -68,7 +68,7 @@ public final class CollisionConstraintConfig
      * @param constraint The collision constraint to export.
      * @throws LionEngineException If error on writing.
      */
-    public static void export(XmlNode root, CollisionConstraint constraint)
+    public static void exports(XmlNode root, CollisionConstraint constraint)
     {
         for (final Entry<Orientation, Collection<String>> entry : constraint.getConstraints().entrySet())
         {

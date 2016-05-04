@@ -95,7 +95,7 @@ public class FormulasEditDialog extends AbstractDialog
         for (final TreeItem item : list.getTree().getItems())
         {
             final CollisionFormula formula = (CollisionFormula) item.getData();
-            CollisionFormulaConfig.export(root, formula);
+            CollisionFormulaConfig.exports(root, formula);
         }
         Xml.save(root, formulas);
 
