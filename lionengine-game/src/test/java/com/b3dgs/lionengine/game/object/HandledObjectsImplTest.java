@@ -26,10 +26,12 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.trait.mirrorable.MirrorableModel;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
 
 /**
  * Test the handled objects.
@@ -120,7 +122,7 @@ public class HandledObjectsImplTest
     }
 
     /**
-     * Test trait manipulation.
+     * Test type manipulation.
      */
     @Test
     public void testType()
@@ -134,5 +136,50 @@ public class HandledObjectsImplTest
         handled.remove(object.getId());
 
         Assert.assertFalse(handled.get(Mirrorable.class).iterator().hasNext());
+    }
+
+    /**
+     * Test type with complex object manipulation.
+     */
+    @Test
+    public void testTypeComplex()
+    {
+        final ObjectGame complex = new ObjectComplex(new Setup(config), new Services());
+        final Mirrorable mirrorable = new MirrorableModel();
+        complex.addType(mirrorable);
+        complex.addTrait(new TransformableModel());
+        complex.prepareTraits(new Services());
+        handled.add(complex);
+
+        int i = 0;
+        for (final Updatable updatable : handled.get(Updatable.class))
+        {
+            Assert.assertEquals(complex, updatable);
+            i++;
+        }
+        Assert.assertEquals(1, i);
+    }
+
+    /**
+     * Complex object with interface.
+     */
+    private static class ObjectComplex extends ObjectGame implements Updatable
+    {
+        /**
+         * Create object.
+         * 
+         * @param setup The setup reference.
+         * @param services The services used.
+         */
+        public ObjectComplex(Setup setup, Services services)
+        {
+            super(setup, services);
+        }
+
+        @Override
+        public void update(double extrp)
+        {
+            // Mock
+        }
     }
 }
