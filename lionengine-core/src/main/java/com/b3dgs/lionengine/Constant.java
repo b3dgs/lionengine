@@ -29,7 +29,7 @@ public final class Constant
     /** Empty string. */
     public static final String EMPTY_STRING = "";
     /** New line. */
-    public static final String NEW_LINE = "\n";
+    public static final String NEW_LINE = System.getProperty("line.separator");
     /** Tabulation. */
     public static final String TAB = "\t";
     /** Quote. */

@@ -252,7 +252,7 @@ public final class LionEngineException extends RuntimeException
             final String currentMessage = current.getMessage();
             if (currentMessage != null)
             {
-                buffer.append(Constant.NEW_LINE + Constant.TAB + Constant.TAB).append(current.getMessage());
+                buffer.append(Constant.NEW_LINE).append(Constant.TAB + Constant.TAB).append(current.getMessage());
             }
             final StackTraceElement[] elements = getFilteredTraces(current.getStackTrace());
             for (final StackTraceElement element : elements)
