@@ -77,4 +77,50 @@ public class CollisionFunctionLinear implements CollisionFunction
     {
         return CollisionFunctionType.LINEAR;
     }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(a);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(b);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof CollisionFunctionLinear))
+        {
+            return false;
+        }
+        final CollisionFunctionLinear other = (CollisionFunctionLinear) obj;
+        return Double.doubleToLongBits(a) == Double.doubleToLongBits(other.a)
+               && Double.doubleToLongBits(b) == Double.doubleToLongBits(other.b);
+
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append(getClass().getSimpleName())
+                                  .append(" (a=")
+                                  .append(a)
+                                  .append(", b=")
+                                  .append(b)
+                                  .append(")")
+                                  .toString();
+    }
 }

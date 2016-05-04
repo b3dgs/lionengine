@@ -27,6 +27,9 @@ import com.b3dgs.lionengine.game.Axis;
  */
 public class CollisionRange
 {
+    /** Minimum to string characters. */
+    private static final int MINIMUM_LENGTH = 64;
+
     /** Output target (where should be stored computation result). */
     private final Axis output;
     /** Minimum horizontal value relative to tile. */
@@ -104,5 +107,58 @@ public class CollisionRange
     public int getMaxY()
     {
         return maxY;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + maxX;
+        result = prime * result + maxY;
+        result = prime * result + minX;
+        result = prime * result + minY;
+        result = prime * result + output.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof CollisionRange))
+        {
+            return false;
+        }
+        final CollisionRange other = (CollisionRange) obj;
+        final boolean sameRange = maxX == other.maxX && maxY == other.maxY && minX == other.minX && minY == other.minY;
+        return sameRange && output == other.output;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MINIMUM_LENGTH).append(CollisionRange.class.getSimpleName())
+                                                .append(" (")
+                                                .append("output=")
+                                                .append(output)
+                                                .append(", ")
+                                                .append("minX=")
+                                                .append(minX)
+                                                .append(", maxX=")
+                                                .append(maxX)
+                                                .append(", minY=")
+                                                .append(minY)
+                                                .append(", maxY=")
+                                                .append(maxY)
+                                                .append(")")
+                                                .toString();
     }
 }

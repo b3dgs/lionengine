@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.collision.tile;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.game.Axis;
 
@@ -56,6 +57,9 @@ import com.b3dgs.lionengine.game.Axis;
  */
 public class CollisionCategory implements Nameable
 {
+    /** Minimum to string characters. */
+    private static final int MINIMUM_LENGTH = 64;
+
     /** Category name. */
     private final String name;
     /** Working for this axis. */
@@ -153,5 +157,52 @@ public class CollisionCategory implements Nameable
     public String getName()
     {
         return name;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + name.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof CollisionCategory))
+        {
+            return false;
+        }
+        final CollisionCategory other = (CollisionCategory) obj;
+        return getName().equals(other.getName());
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MINIMUM_LENGTH).append(getClass().getSimpleName())
+                                                .append(" (name=")
+                                                .append(name)
+                                                .append(", axis=")
+                                                .append(axis)
+                                                .append(", x=")
+                                                .append(x)
+                                                .append(", y=")
+                                                .append(y)
+                                                .append(")")
+                                                .append(Constant.NEW_LINE)
+                                                .append(Constant.TAB)
+                                                .append(groups)
+                                                .toString();
     }
 }

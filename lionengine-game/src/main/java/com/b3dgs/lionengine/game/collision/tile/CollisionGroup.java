@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.collision.tile;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Nameable;
 
 /**
@@ -42,6 +43,9 @@ import com.b3dgs.lionengine.Nameable;
  */
 public class CollisionGroup implements Nameable
 {
+    /** Minimum to string characters. */
+    private static final int MINIMUM_LENGTH = 32;
+
     /**
      * Check if tiles groups are same.
      * 
@@ -68,19 +72,19 @@ public class CollisionGroup implements Nameable
     }
 
     /** The group name. */
-    private final String group;
+    private final String name;
     /** The collision formulas used. */
     private final Collection<CollisionFormula> formulas;
 
     /**
      * Create a collision group.
      * 
-     * @param group The group name.
+     * @param name The group name.
      * @param formulas The collision formulas reference.
      */
-    public CollisionGroup(String group, Collection<CollisionFormula> formulas)
+    public CollisionGroup(String name, Collection<CollisionFormula> formulas)
     {
-        this.group = group;
+        this.name = name;
         this.formulas = formulas;
     }
 
@@ -101,6 +105,47 @@ public class CollisionGroup implements Nameable
     @Override
     public String getName()
     {
-        return group;
+        return name;
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + name.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof CollisionGroup))
+        {
+            return false;
+        }
+        final CollisionGroup other = (CollisionGroup) obj;
+        return getName().equals(other.getName());
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MINIMUM_LENGTH).append(getClass().getSimpleName())
+                                                .append(" (name=")
+                                                .append(name)
+                                                .append(")")
+                                                .append(Constant.NEW_LINE)
+                                                .append(Constant.TAB)
+                                                .append(formulas)
+                                                .toString();
     }
 }

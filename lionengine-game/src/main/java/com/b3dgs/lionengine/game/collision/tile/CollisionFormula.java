@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.collision.tile;
 
+import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Nameable;
 
 /**
@@ -59,6 +60,9 @@ import com.b3dgs.lionengine.Nameable;
  */
 public class CollisionFormula implements Nameable
 {
+    /** Minimum to string characters. */
+    private static final int MINIMUM_LENGTH = 64;
+
     /** Formula name. */
     private final String name;
     /** Range representation. */
@@ -125,5 +129,48 @@ public class CollisionFormula implements Nameable
     public String getName()
     {
         return name;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + name.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof CollisionFormula))
+        {
+            return false;
+        }
+        final CollisionFormula other = (CollisionFormula) obj;
+        return getName().equals(other.getName());
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder(MINIMUM_LENGTH).append(getClass().getSimpleName())
+                                                .append(" (name=")
+                                                .append(name)
+                                                .append(")")
+                                                .append(Constant.NEW_LINE)
+                                                .append(Constant.TAB)
+                                                .append(range)
+                                                .append(Constant.NEW_LINE)
+                                                .append(Constant.TAB)
+                                                .append(function)
+                                                .append(Constant.NEW_LINE)
+                                                .append(Constant.TAB)
+                                                .append(constraint)
+                                                .toString();
     }
 }
