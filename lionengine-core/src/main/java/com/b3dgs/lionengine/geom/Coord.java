@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.geom;
 
+import com.b3dgs.lionengine.Localizable;
+
 /**
  * Represents a coordinate using double precision.
  */
-public interface Coord
+public interface Coord extends Localizable
 {
     /**
      * Translate coordinate using specified values.
@@ -51,19 +53,4 @@ public interface Coord
      * @param y The new vertical location.
      */
     void setY(double y);
-
-    /**
-     * Get the horizontal location.
-     * 
-     * @return The horizontal location.
-     */
-    double getX();
-
-    /**
-     * Get the vertical location.
-     * 
-     * @return The vertical location.
-     */
-    double getY();
-
 }

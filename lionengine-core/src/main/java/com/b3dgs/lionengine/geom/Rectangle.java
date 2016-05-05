@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.geom;
 
+import com.b3dgs.lionengine.Localizable;
+
 /**
  * Rectangle interface.
  */
-public interface Rectangle
+public interface Rectangle extends Localizable
 {
     /**
      * Check if the rectangle intersects the other.
@@ -64,20 +66,6 @@ public interface Rectangle
      * @param h The rectangle height.
      */
     void set(double x, double y, double w, double h);
-
-    /**
-     * Get the horizontal location.
-     * 
-     * @return The horizontal location.
-     */
-    double getX();
-
-    /**
-     * Get the vertical location.
-     * 
-     * @return The vertical location.
-     */
-    double getY();
 
     /**
      * Get the min x location.

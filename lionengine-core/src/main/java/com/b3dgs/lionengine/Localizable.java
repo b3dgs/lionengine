@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine;
 
 /**
- * Represents something that can be located, using a coordinate and its size.
+ * Represents something that can be located, using a coordinate.
  */
 public interface Localizable
 {
