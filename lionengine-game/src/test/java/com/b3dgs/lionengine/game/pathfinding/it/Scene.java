@@ -15,51 +15,64 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.map;
+package com.b3dgs.lionengine.game.pathfinding.it;
 
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.MapTileRendererModel;
 import com.b3dgs.lionengine.game.map.MapTileViewer;
 import com.b3dgs.lionengine.game.map.MapTileViewerModel;
-import com.b3dgs.lionengine.game.map.Minimap;
+import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.graphic.ColorRgba;
+import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
+import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
+import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.pathfinding.PathfindableListener;
 import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
 
 /**
- * Game loop designed to handle our world.
- * 
- * @see com.b3dgs.lionengine.example.core.minimal
+ * Game loop designed to handle our little world.
  */
 class Scene extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Text reference. */
+    private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
     /** Services reference. */
     private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
     /** Map viewer. */
     private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Minimap reference. */
-    private final Minimap minimap = new Minimap(map);
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
-    /** Scrolling speed. */
-    private double speed;
-    /** Map size. */
-    private int size;
+    /** Map group reference. */
+    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
+    /** Map path. */
+    private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
+    /** Mouse reference. */
+    private final Mouse mouse = getInputDevice(Mouse.class);
+    /** Timeout. */
+    private final Timing timing = new Timing();
+    /** Peon reference. */
+    private Peon peon;
 
     /**
      * Constructor.
@@ -69,54 +82,63 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        setSystemCursorVisible(false);
     }
 
     @Override
     public void load()
     {
-        map.create(Medias.create("level.png"), 16, 16, 16);
+        map.create(Medias.create("level.png"));
         mapViewer.addRenderer(new MapTileRendererModel(services));
-
-        minimap.load();
-        minimap.automaticColor();
-        minimap.prepare();
+        mapGroup.loadGroups(Medias.create("groups.xml"));
+        mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
 
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
+        camera.setLocation(320, 208);
 
-        size = map.getWidth() - camera.getWidth();
-        speed = 3;
+        peon = factory.create(Peon.MEDIA);
+        peon.getTrait(Pathfindable.class).addListener(new PathfindableListener()
+        {
+            @Override
+            public void notifyStartMove()
+            {
+                // Mock
+            }
+
+            @Override
+            public void notifyMoving()
+            {
+                // Mock
+            }
+
+            @Override
+            public void notifyArrived()
+            {
+                end();
+            }
+        });
+
+        timing.start();
     }
 
     @Override
     public void update(double extrp)
     {
-        if (camera.getX() >= size)
+        mouse.update(extrp);
+        peon.update(extrp);
+        text.update(camera);
+        if (timing.elapsed(5000L))
         {
-            camera.setLocation(size, 0);
-            speed *= -1;
+            end();
         }
-        if (camera.getX() <= 0)
-        {
-            camera.setLocation(0, 0);
-            speed *= -1;
-        }
-        camera.moveLocation(extrp, speed, 0.0);
     }
 
     @Override
     public void render(Graphic g)
     {
-        g.clear(0, 0, getWidth(), getHeight());
         mapViewer.render(g);
-        minimap.render(g);
-        g.setColor(ColorRgba.RED);
-        g.drawRect((int) (camera.getX() / map.getTileWidth()),
-                   (int) (camera.getY() / map.getTileHeight()),
-                   camera.getWidth() / map.getTileWidth(),
-                   camera.getHeight() / map.getTileWidth(),
-                   false);
+        peon.render(g);
     }
 
     @Override

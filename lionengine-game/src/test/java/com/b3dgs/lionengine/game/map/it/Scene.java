@@ -15,14 +15,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.map;
+package com.b3dgs.lionengine.game.map.it;
 
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
@@ -36,8 +35,6 @@ import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Game loop designed to handle our world.
- * 
- * @see com.b3dgs.lionengine.example.core.minimal
  */
 class Scene extends Sequence
 {
@@ -54,8 +51,6 @@ class Scene extends Sequence
     private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
     /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Scrolling speed. */
     private double speed;
     /** Map size. */
@@ -69,7 +64,6 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
@@ -86,7 +80,7 @@ class Scene extends Sequence
         camera.setLimits(map);
 
         size = map.getWidth() - camera.getWidth();
-        speed = 3;
+        speed = 20;
     }
 
     @Override
@@ -94,13 +88,7 @@ class Scene extends Sequence
     {
         if (camera.getX() >= size)
         {
-            camera.setLocation(size, 0);
-            speed *= -1;
-        }
-        if (camera.getX() <= 0)
-        {
-            camera.setLocation(0, 0);
-            speed *= -1;
+            end();
         }
         camera.moveLocation(extrp, speed, 0.0);
     }
