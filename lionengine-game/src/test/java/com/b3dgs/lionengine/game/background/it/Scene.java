@@ -15,20 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.background;
+package com.b3dgs.lionengine.game.background.it;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.game.background.BackgroundGame;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Game loop designed to handle our world.
  */
-class BackgroundScene extends Sequence
+class Scene extends Sequence
 {
     /** Native resolution. */
     static final Resolution NATIVE = new Resolution(320, 240, 60);
@@ -47,7 +48,7 @@ class BackgroundScene extends Sequence
      * 
      * @param context The context reference.
      */
-    public BackgroundScene(Context context)
+    public Scene(Context context)
     {
         super(context, NATIVE);
         background = new Swamp(getConfig().getSource(), 1.0, 1.0);

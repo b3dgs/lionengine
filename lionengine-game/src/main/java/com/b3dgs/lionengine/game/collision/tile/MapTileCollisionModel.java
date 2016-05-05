@@ -524,9 +524,17 @@ public class MapTileCollisionModel implements MapTileCollision
     @Override
     public void loadCollisions()
     {
-        final String parent = map.getSheetsConfig().getParentPath();
-        loadCollisions(Medias.create(parent, CollisionFormulaConfig.FILENAME),
-                       Medias.create(parent, CollisionGroupConfig.FILENAME));
+        final Media sheetsConfig = map.getSheetsConfig();
+        if (sheetsConfig != null)
+        {
+            final String parent = sheetsConfig.getParentPath();
+            loadCollisions(Medias.create(parent, CollisionFormulaConfig.FILENAME),
+                           Medias.create(parent, CollisionGroupConfig.FILENAME));
+        }
+        else
+        {
+            Verbose.warning("No sheets configuration defined, unable to load default collisions !");
+        }
     }
 
     @Override

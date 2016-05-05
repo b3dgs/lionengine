@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.raster;
+package com.b3dgs.lionengine.game.collision.tile.it;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Context;
@@ -23,57 +23,95 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
+import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.MapTileRendererModel;
 import com.b3dgs.lionengine.game.map.MapTileViewer;
 import com.b3dgs.lionengine.game.map.MapTileViewerModel;
+import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.tile.Tile;
+import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * Integration test for map tile rastered model.
+ * Game loop designed to handle our little world.
  */
-public class MapTileRasteredSequence extends Sequence
+class Scene extends Sequence
 {
-    /** Timing value. */
-    private final Timing timing = new Timing();
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    /** Background color. */
+    private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
+
     /** Services reference. */
     private final Services services = new Services();
+    /** Game factory. */
+    private final Factory factory = services.create(Factory.class);
     /** Camera reference. */
     private final Camera camera = services.create(Camera.class);
     /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
     /** Map viewer. */
     private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Map raster reference. */
-    private final MapTileRastered raster = services.create(MapTileRasteredModel.class);
-    /** Renderable selection (false = default, true = raster). */
-    private boolean useRaster;
-    /** Count. */
-    private int count;
+    /** Map group reference. */
+    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
+    /** Map collision. */
+    private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
+    /** Timeout. */
+    private final Timing timing = new Timing();
+    /** Mario reference. */
+    private Mario hero;
 
     /**
      * Constructor.
      * 
      * @param context The context reference.
      */
-    public MapTileRasteredSequence(Context context)
+    public Scene(Context context)
     {
-        super(context, new Resolution(320, 240, 60));
+        super(context, NATIVE);
     }
+
+    /*
+     * Sequence
+     */
 
     @Override
     public void load()
     {
-        map.create(Medias.create("level.png"), 16, 16, 16);
+        map.create(Medias.create("level.png"));
         mapViewer.addRenderer(new MapTileRendererModel(services));
+        mapGroup.loadGroups(Medias.create("groups.xml"));
+        mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
+        mapCollision.createCollisionDraw();
 
-        raster.loadSheets(Medias.create("raster.xml"), false);
-
+        camera.setIntervals(16, 0);
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
+
+        services.add(Integer.valueOf(getConfig().getSource().getRate()));
+        hero = factory.create(Mario.MEDIA);
+
+        hero.getTrait(TileCollidable.class).addListener(new TileCollidableListener()
+        {
+            @Override
+            public void notifyTileCollided(Tile tile, Axis axis)
+            {
+                if (Axis.X == axis)
+                {
+                    end();
+                }
+            }
+        });
 
         timing.start();
     }
@@ -81,21 +119,8 @@ public class MapTileRasteredSequence extends Sequence
     @Override
     public void update(double extrp)
     {
-        if (timing.isStarted() && timing.elapsed(300))
-        {
-            useRaster = !useRaster;
-            if (useRaster)
-            {
-                mapViewer.addRenderer(raster);
-            }
-            else
-            {
-                mapViewer.removeRenderer(raster);
-            }
-            timing.restart();
-            count++;
-        }
-        if (count > 5)
+        hero.update(extrp);
+        if (timing.elapsed(5000L))
         {
             end();
         }
@@ -104,7 +129,12 @@ public class MapTileRasteredSequence extends Sequence
     @Override
     public void render(Graphic g)
     {
+        g.setColor(Scene.BACKGROUND_COLOR);
+        g.drawRect(0, 0, getWidth(), getHeight(), true);
+
         mapViewer.render(g);
+        mapCollision.render(g);
+        hero.render(g);
     }
 
     @Override

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.background;
+package com.b3dgs.lionengine.game.background.it;
 
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
@@ -107,8 +107,8 @@ class Foreground extends BackgroundGame
     {
         screenWidth = width;
         screenHeight = height;
-        final double scaleH = width / (double) BackgroundScene.NATIVE.getWidth();
-        final double scaleV = height / (double) BackgroundScene.NATIVE.getHeight();
+        final double scaleH = width / (double) Scene.NATIVE.getWidth();
+        final double scaleV = height / (double) Scene.NATIVE.getHeight();
         this.scaleH = scaleH;
         this.scaleV = scaleV;
         primary.updateMainY();

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.background;
+package com.b3dgs.lionengine.game.collision.tile.it;
 
 import org.junit.Test;
 
@@ -26,20 +26,20 @@ import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
- * Integration test for background package.
+ * Integration test of map tile collision model class.
  */
-public class BackgroundIT
+public class MapTileCollisionModelIT
 {
     /**
-     * Test the background.
+     * Test the map tile collision.
      */
     @Test
-    public void testBackground()
+    public void testModel()
     {
         EngineAwt.start(getClass().getSimpleName(), Version.create(1, 0, 0), getClass());
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();
-        loader.start(config, BackgroundScene.class).await();
+        loader.start(config, Scene.class).await();
     }
 }

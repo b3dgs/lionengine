@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.background;
+package com.b3dgs.lionengine.game.background.it;
 
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
@@ -82,7 +82,7 @@ class Swamp extends BackgroundGame
         final int halfScreen = (int) (source.getWidth() / 3.5);
         this.scaleH = scaleH;
         this.scaleV = scaleV;
-        setOffsetY(source.getHeight() - BackgroundScene.NATIVE.getHeight() + 72);
+        setOffsetY(source.getHeight() - Scene.NATIVE.getHeight() + 72);
         backdrop = new Backdrop(width);
         clouds = new Clouds(Medias.create("cloud.png"), width, 4);
         parallax = new Parallax(source, Medias.create("parallax.png"), parallaxsNumber, halfScreen, 124, 50, 100);
