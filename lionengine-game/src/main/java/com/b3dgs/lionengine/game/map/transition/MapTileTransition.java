@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.map.transition;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.map.GroupTransition;
@@ -31,16 +32,27 @@ import com.b3dgs.lionengine.game.tile.TileRef;
 public interface MapTileTransition extends MapTileFeature
 {
     /**
-     * Load the transitions by using the default file.
-     */
-    void loadTransitions();
-
-    /**
      * Load the transitions from a specific configuration.
      * 
-     * @param config The configuration media.
+     * @param transitionsConfig The configuration media.
      */
-    void loadTransitions(Media config);
+    void loadTransitions(Media transitionsConfig);
+
+    /**
+     * Load the transitions from map configuration.
+     *
+     * @param levels The level rips used.
+     * @param sheetsConfig The sheets configuration media.
+     * @param groupsConfig The groups configuration media.
+     */
+    void loadTransitions(Media[] levels, Media sheetsConfig, Media groupsConfig);
+
+    /**
+     * Load the transitions from raw data.
+     * 
+     * @param transitions The transitions data.
+     */
+    void loadTransitions(Map<Transition, Collection<TileRef>> transitions);
 
     /**
      * Resolve transitions by updating tiles if necessary.

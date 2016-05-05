@@ -34,19 +34,6 @@ import com.b3dgs.lionengine.graphic.Renderable;
 public interface MapTileCollision extends MapTileFeature, Renderable
 {
     /**
-     * Load map collision with default files.
-     * 
-     * <p>
-     * {@link CollisionFormulaConfig#FILENAME} and
-     * {@link CollisionGroupConfig#FILENAME} will be used as default, by calling
-     * {@link #loadCollisions(Media, Media)}.
-     * </p>
-     * 
-     * @throws LionEngineException If error when reading collisions.
-     */
-    void loadCollisions();
-
-    /**
      * Load map collision from an external file.
      * 
      * @param formulasConfig The collision formulas descriptor.
@@ -54,6 +41,15 @@ public interface MapTileCollision extends MapTileFeature, Renderable
      * @throws LionEngineException If error when reading collisions.
      */
     void loadCollisions(Media formulasConfig, Media groupsConfig);
+
+    /**
+     * Load map collision with default files.
+     * 
+     * @param formulasConfig The collision formulas descriptor.
+     * @param groupsConfig The tile collision groups descriptor.
+     * @throws LionEngineException If error when reading collisions.
+     */
+    void loadCollisions(CollisionFormulaConfig formulasConfig, CollisionGroupConfig groupsConfig);
 
     /**
      * Save the current collisions to the collision file.

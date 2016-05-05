@@ -54,13 +54,13 @@ public final class CircuitsConfig
     /**
      * Import all circuits from configuration.
      * 
-     * @param config The circuits media.
+     * @param circuitsConfig The circuits configuration.
      * @return The circuits imported.
      * @throws LionEngineException If unable to read data.
      */
-    public static Map<Circuit, Collection<TileRef>> imports(Media config)
+    public static Map<Circuit, Collection<TileRef>> imports(Media circuitsConfig)
     {
-        final XmlNode root = Xml.load(config);
+        final XmlNode root = Xml.load(circuitsConfig);
         final Collection<XmlNode> nodesCircuit = root.getChildren(NODE_CIRCUIT);
         final Map<Circuit, Collection<TileRef>> circuits;
         circuits = new HashMap<Circuit, Collection<TileRef>>();
@@ -86,22 +86,14 @@ public final class CircuitsConfig
      *
      * @param media The export output.
      * @param levels The level rips used.
-     * @param sheetsMedia The sheets media.
-     * @param groupsMedia The groups media.
-     * @param transitionsMedia The transitions media.
+     * @param sheetsConfig The sheets media.
+     * @param groupsConfig The groups media.
      * @throws LionEngineException If error on export.
      */
-    public static void exports(Media media,
-                               Media[] levels,
-                               Media sheetsMedia,
-                               Media groupsMedia,
-                               Media transitionsMedia)
+    public static void exports(Media media, Media[] levels, Media sheetsConfig, Media groupsConfig)
     {
         final CircuitsExtractor extractor = new CircuitsExtractorImpl();
-        final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(levels,
-                                                                                 sheetsMedia,
-                                                                                 groupsMedia,
-                                                                                 transitionsMedia);
+        final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(levels, sheetsConfig, groupsConfig);
         exports(media, circuits);
     }
 

@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.collision.tile;
 
 import java.util.Arrays;
-import java.util.Collection;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -27,7 +26,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
@@ -37,7 +35,6 @@ import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
-import com.b3dgs.lionengine.test.UtilTests;
 
 /**
  * Test the collision group configuration class.
@@ -86,17 +83,6 @@ public class CollisionGroupConfigTest
     }
 
     /**
-     * Test the constructor.
-     * 
-     * @throws Exception If error.
-     */
-    @Test(expected = LionEngineException.class)
-    public void testEnum() throws Exception
-    {
-        UtilTests.testPrivateConstructor(CollisionGroupConfig.class);
-    }
-
-    /**
      * Test the group import export.
      */
     @Test
@@ -106,9 +92,9 @@ public class CollisionGroupConfigTest
         CollisionGroupConfig.exports(root, group);
         final Media config = Medias.create("groups.xml");
         Xml.save(root, config);
-        final Collection<CollisionGroup> groups = CollisionGroupConfig.imports(config);
+        final CollisionGroupConfig groups = CollisionGroupConfig.imports(config);
 
-        Assert.assertEquals(group, groups.iterator().next());
+        Assert.assertEquals(group, groups.getGroups().values().iterator().next());
         Assert.assertTrue(config.getFile().delete());
     }
 
@@ -126,9 +112,9 @@ public class CollisionGroupConfigTest
         final Media formulasConfig = UtilConfig.createFormulaConfig(formula);
         mapCollision.loadCollisions(formulasConfig, groupsConfig);
 
-        final Collection<CollisionGroup> groups = CollisionGroupConfig.imports(groupsConfig);
+        final CollisionGroupConfig groups = CollisionGroupConfig.imports(groupsConfig);
 
-        Assert.assertEquals(group, groups.iterator().next());
+        Assert.assertEquals(group, groups.getGroups().values().iterator().next());
         Assert.assertTrue(groupsConfig.getFile().delete());
         Assert.assertTrue(formulasConfig.getFile().delete());
     }

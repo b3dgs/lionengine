@@ -27,7 +27,6 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.GroupTransition;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
@@ -266,16 +265,23 @@ public class MapTileCircuitModel implements MapTileCircuit
      */
 
     @Override
-    public void loadCircuits()
+    public void loadCircuits(Media circuitsConfig)
     {
-        loadCircuits(Medias.create(map.getSheetsConfig().getParentPath(), CircuitsConfig.FILENAME));
+        loadCircuits(CircuitsConfig.imports(circuitsConfig));
     }
 
     @Override
-    public void loadCircuits(Media config)
+    public void loadCircuits(Media[] levels, Media sheetsConfig, Media groupsConfig)
     {
-        circuits.clear();
-        circuits.putAll(CircuitsConfig.imports(config));
+        final CircuitsExtractor circuitsExtractor = new CircuitsExtractorImpl();
+        loadCircuits(circuitsExtractor.getCircuits(levels, sheetsConfig, groupsConfig));
+    }
+
+    @Override
+    public void loadCircuits(Map<Circuit, Collection<TileRef>> circuits)
+    {
+        this.circuits.clear();
+        this.circuits.putAll(circuits);
     }
 
     @Override

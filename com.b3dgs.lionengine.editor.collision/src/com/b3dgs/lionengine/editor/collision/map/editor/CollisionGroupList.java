@@ -63,7 +63,7 @@ public class CollisionGroupList extends ObjectList<CollisionGroup> implements Ob
     }
 
     /** Last config used. */
-    private Media config;
+    private Media groupsConfig;
 
     /**
      * Create the collision list.
@@ -86,13 +86,13 @@ public class CollisionGroupList extends ObjectList<CollisionGroup> implements Ob
     /**
      * Load the existing collisions from the object configurer.
      * 
-     * @param config The config file.
+     * @param groupsConfig The groups config file.
      */
-    public void loadCollisions(Media config)
+    public void loadCollisions(Media groupsConfig)
     {
-        this.config = config;
-        final Collection<CollisionGroup> groups = CollisionGroupConfig.imports(config);
-        loadObjects(groups);
+        this.groupsConfig = groupsConfig;
+        final CollisionGroupConfig groups = CollisionGroupConfig.imports(groupsConfig);
+        loadObjects(groups.getGroups().values());
     }
 
     /*
@@ -128,13 +128,13 @@ public class CollisionGroupList extends ObjectList<CollisionGroup> implements Ob
         if (map.hasFeature(MapTileCollision.class))
         {
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
-            final Media collisionsConfig = mapCollision.getFormulasConfig();
-            removeCollision(collisionsConfig, collision);
-            mapCollision.loadCollisions();
+            final Media formulasConfig = mapCollision.getFormulasConfig();
+            removeCollision(formulasConfig, collision);
+            mapCollision.loadCollisions(formulasConfig, groupsConfig);
         }
-        else if (config != null)
+        else if (groupsConfig != null)
         {
-            removeCollision(config, collision);
+            removeCollision(groupsConfig, collision);
         }
     }
 }

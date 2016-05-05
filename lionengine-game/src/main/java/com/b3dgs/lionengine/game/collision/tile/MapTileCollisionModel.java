@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -282,14 +281,20 @@ public class MapTileCollisionModel implements MapTileCollision
     private void loadCollisionFormulas(Media formulasConfig)
     {
         Verbose.info(INFO_LOAD_FORMULAS, formulasConfig.getFile().getPath());
-        formulas.clear();
         this.formulasConfig = formulasConfig;
         final CollisionFormulaConfig config = CollisionFormulaConfig.imports(formulasConfig);
-        for (final CollisionFormula formula : config.getFormulas().values())
-        {
-            formulas.put(formula.getName(), formula);
-        }
-        config.clear();
+        loadCollisionFormulas(config);
+    }
+
+    /**
+     * Load the collision formula. All previous collisions will be cleared.
+     * 
+     * @param config The configuration collision formulas.
+     */
+    private void loadCollisionFormulas(CollisionFormulaConfig config)
+    {
+        formulas.clear();
+        formulas.putAll(config.getFormulas());
     }
 
     /**
@@ -300,15 +305,22 @@ public class MapTileCollisionModel implements MapTileCollision
     private void loadCollisionGroups(Media groupsConfig)
     {
         Verbose.info(INFO_LOAD_GROUPS, groupsConfig.getFile().getPath());
-        groups.clear();
+
         this.groupsConfig = groupsConfig;
         final XmlNode nodeGroups = Xml.load(groupsConfig);
-        final Collection<CollisionGroup> groups = CollisionGroupConfig.imports(nodeGroups, this);
-        for (final CollisionGroup group : groups)
-        {
-            this.groups.put(group.getName(), group);
-        }
+        final CollisionGroupConfig config = CollisionGroupConfig.imports(nodeGroups, this);
+        loadCollisionGroups(config);
+    }
+
+    /**
+     * Load the collision groups. All previous groups will be cleared.
+     * 
+     * @param config The configuration collision groups.
+     */
+    private void loadCollisionGroups(CollisionGroupConfig config)
+    {
         groups.clear();
+        groups.putAll(config.getGroups());
     }
 
     /**
@@ -522,22 +534,6 @@ public class MapTileCollisionModel implements MapTileCollision
      */
 
     @Override
-    public void loadCollisions()
-    {
-        final Media sheetsConfig = map.getSheetsConfig();
-        if (sheetsConfig != null)
-        {
-            final String parent = sheetsConfig.getParentPath();
-            loadCollisions(Medias.create(parent, CollisionFormulaConfig.FILENAME),
-                           Medias.create(parent, CollisionGroupConfig.FILENAME));
-        }
-        else
-        {
-            Verbose.warning("No sheets configuration defined, unable to load default collisions !");
-        }
-    }
-
-    @Override
     public void loadCollisions(Media collisionFormulas, Media collisionGroups)
     {
         if (collisionFormulas.exists())
@@ -548,6 +544,15 @@ public class MapTileCollisionModel implements MapTileCollision
         {
             loadCollisionGroups(collisionGroups);
         }
+        loadTilesCollisions();
+        applyConstraints();
+    }
+
+    @Override
+    public void loadCollisions(CollisionFormulaConfig formulasConfig, CollisionGroupConfig groupsConfig)
+    {
+        loadCollisionFormulas(formulasConfig);
+        loadCollisionGroups(groupsConfig);
         loadTilesCollisions();
         applyConstraints();
     }

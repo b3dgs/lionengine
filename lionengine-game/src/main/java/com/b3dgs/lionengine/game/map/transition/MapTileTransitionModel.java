@@ -29,7 +29,6 @@ import java.util.Map.Entry;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.map.GroupTransition;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
@@ -404,19 +403,26 @@ public class MapTileTransitionModel implements MapTileTransition
      */
 
     @Override
-    public void loadTransitions()
+    public void loadTransitions(Media transitionsConfig)
     {
-        loadTransitions(Medias.create(map.getSheetsConfig().getParentPath(), TransitionsConfig.FILENAME));
+        loadTransitions(TransitionsConfig.imports(transitionsConfig));
     }
 
     @Override
-    public void loadTransitions(Media config)
+    public void loadTransitions(Media[] levels, Media sheetsConfig, Media groupsConfig)
     {
-        transitions.clear();
-        transitions.putAll(TransitionsConfig.imports(config));
+        final TransitionsExtractor transitionsExtractor = new TransitionsExtractorImpl();
+        loadTransitions(transitionsExtractor.getTransitions(levels, sheetsConfig, groupsConfig));
+    }
+
+    @Override
+    public void loadTransitions(Map<Transition, Collection<TileRef>> transitions)
+    {
+        this.transitions.clear();
+        this.transitions.putAll(transitions);
 
         tiles.clear();
-        for (final Entry<Transition, Collection<TileRef>> entry : transitions.entrySet())
+        for (final Entry<Transition, Collection<TileRef>> entry : this.transitions.entrySet())
         {
             final Transition transition = entry.getKey();
             for (final TileRef tileRef : entry.getValue())

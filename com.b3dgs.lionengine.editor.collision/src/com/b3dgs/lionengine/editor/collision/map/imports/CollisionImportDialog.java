@@ -141,7 +141,7 @@ public class CollisionImportDialog extends AbstractDialog
             map.createFeature(MapTileCollisionModel.class);
         }
         final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
-        mapCollision.loadCollisions();
+        mapCollision.loadCollisions(formulas.getMedia(), collisions.getMedia());
         mapCollision.createCollisionDraw();
 
         final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);

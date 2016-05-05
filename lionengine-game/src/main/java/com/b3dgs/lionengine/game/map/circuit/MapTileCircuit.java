@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.map.circuit;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.map.MapTileFeature;
@@ -30,16 +31,27 @@ import com.b3dgs.lionengine.game.tile.TileRef;
 public interface MapTileCircuit extends MapTileFeature
 {
     /**
-     * Load the circuits by using the default file.
-     */
-    void loadCircuits();
-
-    /**
      * Load the circuits from a specific configuration.
      * 
-     * @param config The configuration media.
+     * @param circuitsConfig The configuration media.
      */
-    void loadCircuits(Media config);
+    void loadCircuits(Media circuitsConfig);
+
+    /**
+     * Load the circuits from map configuration.
+     *
+     * @param levels The level rips used.
+     * @param sheetsConfig The sheets configuration media.
+     * @param groupsConfig The groups configuration media.
+     */
+    void loadCircuits(Media[] levels, Media sheetsConfig, Media groupsConfig);
+
+    /**
+     * Load the circuits by using existing data.
+     * 
+     * @param circuits The circuits raw data.
+     */
+    void loadCircuits(Map<Circuit, Collection<TileRef>> circuits);
 
     /**
      * Resolve circuit by updating tiles if necessary.

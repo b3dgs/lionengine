@@ -179,6 +179,6 @@ public class ConstraintsExtractDialog extends AbstractDialog
         TileConstraintsConfig.exports(constraints.getMedia(),
                                       ConstraintsExtractor.getConstraints(levels, sheetsConfig));
         TransitionsConfig.exports(transitions.getMedia(), levels, sheetsConfig, groupsConfig);
-        CircuitsConfig.exports(circuits.getMedia(), levels, sheetsConfig, groupsConfig, transitions.getMedia());
+        CircuitsConfig.exports(circuits.getMedia(), levels, sheetsConfig, groupsConfig);
     }
 }

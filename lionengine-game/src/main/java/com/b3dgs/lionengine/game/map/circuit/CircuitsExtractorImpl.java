@@ -41,6 +41,31 @@ import com.b3dgs.lionengine.game.tile.TileRef;
 final class CircuitsExtractorImpl implements CircuitsExtractor
 {
     /**
+     * Get map tile circuits.
+     *
+     * @param map The map reference.
+     * @return The circuits found with their associated tiles.
+     */
+    private static Map<Circuit, Collection<TileRef>> getCircuits(MapTile map)
+    {
+        final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
+        final Map<Circuit, Collection<TileRef>> circuits = new HashMap<Circuit, Collection<TileRef>>();
+        final MapCircuitExtractor extractor = new MapCircuitExtractor(map);
+        for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
+        {
+            for (int tx = 1; tx < map.getInTileWidth() - 1; tx++)
+            {
+                final Tile tile = map.getTile(tx, ty);
+                if (tile != null && TileGroupType.CIRCUIT == mapGroup.getType(tile))
+                {
+                    checkCircuit(circuits, extractor, map, tile);
+                }
+            }
+        }
+        return circuits;
+    }
+
+    /**
      * Check the tile circuit and add it to circuits collection if valid.
      * 
      * @param circuits The circuits collection.
@@ -117,10 +142,7 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
      */
 
     @Override
-    public Map<Circuit, Collection<TileRef>> getCircuits(Media[] levels,
-                                                         Media sheetsMedia,
-                                                         Media groupsMedia,
-                                                         Media transitionsMedia)
+    public Map<Circuit, Collection<TileRef>> getCircuits(Media[] levels, Media sheetsConfig, Media groupsConfig)
     {
         final Collection<MapTile> mapsSet = new HashSet<MapTile>();
         for (final Media level : levels)
@@ -128,15 +150,15 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
             final Services services = new Services();
             final MapTile map = new MapTileGame();
             services.add(map);
-            map.create(level, sheetsMedia);
+            map.create(level, sheetsConfig);
 
             final MapTileGroup mapGroup = new MapTileGroupModel();
-            mapGroup.loadGroups(groupsMedia);
+            mapGroup.loadGroups(groupsConfig);
             map.addFeature(mapGroup);
 
             final MapTileTransition mapTransition = new MapTileTransitionModel(services);
             map.addFeature(mapTransition);
-            mapTransition.loadTransitions(transitionsMedia);
+            mapTransition.loadTransitions(levels, sheetsConfig, groupsConfig);
 
             mapsSet.add(map);
         }
@@ -162,26 +184,6 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
                 else
                 {
                     circuits.put(circuit, tiles);
-                }
-            }
-        }
-        return circuits;
-    }
-
-    @Override
-    public Map<Circuit, Collection<TileRef>> getCircuits(MapTile map)
-    {
-        final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
-        final Map<Circuit, Collection<TileRef>> circuits = new HashMap<Circuit, Collection<TileRef>>();
-        final MapCircuitExtractor extractor = new MapCircuitExtractor(map);
-        for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
-        {
-            for (int tx = 1; tx < map.getInTileWidth() - 1; tx++)
-            {
-                final Tile tile = map.getTile(tx, ty);
-                if (tile != null && TileGroupType.CIRCUIT == mapGroup.getType(tile))
-                {
-                    checkCircuit(circuits, extractor, map, tile);
                 }
             }
         }

@@ -33,11 +33,11 @@ public interface TransitionsExtractor
      * Get map tile transitions from map configuration.
      *
      * @param levels The level rips used.
-     * @param sheetsMedia The sheets media.
-     * @param groupsMedia The groups media.
+     * @param sheetsConfig The sheets configuration media.
+     * @param groupsConfig The groups configuration media.
      * @return The transitions found with their associated tiles.
      */
-    Map<Transition, Collection<TileRef>> getTransitions(Media[] levels, Media sheetsMedia, Media groupsMedia);
+    Map<Transition, Collection<TileRef>> getTransitions(Media[] levels, Media sheetsConfig, Media groupsConfig);
 
     /**
      * Get map tile transitions from existing maps.
@@ -46,12 +46,4 @@ public interface TransitionsExtractor
      * @return The transitions found with their associated tiles.
      */
     Map<Transition, Collection<TileRef>> getTransitions(MapTile... maps);
-
-    /**
-     * Get map tile transitions.
-     *
-     * @param map The map reference.
-     * @return The transitions found with their associated tiles.
-     */
-    Map<Transition, Collection<TileRef>> getTransitions(MapTile map);
 }

@@ -37,6 +37,30 @@ import com.b3dgs.lionengine.game.tile.TileRef;
 final class TransitionsExtractorImpl implements TransitionsExtractor
 {
     /**
+     * Get map tile transitions.
+     *
+     * @param map The map reference.
+     * @return The transitions found with their associated tiles.
+     */
+    private static Map<Transition, Collection<TileRef>> getTransitions(MapTile map)
+    {
+        final Map<Transition, Collection<TileRef>> transitions = new HashMap<Transition, Collection<TileRef>>();
+        final MapTransitionExtractor extractor = new MapTransitionExtractor(map);
+        for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
+        {
+            for (int tx = 1; tx < map.getInTileWidth() - 1; tx++)
+            {
+                final Tile tile = map.getTile(tx, ty);
+                if (tile != null)
+                {
+                    checkTransition(transitions, extractor, tile);
+                }
+            }
+        }
+        return transitions;
+    }
+
+    /**
      * Check the tile transition and add it to transitions collection if valid.
      * 
      * @param transitions The transitions collection.
@@ -88,16 +112,16 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
      */
 
     @Override
-    public Map<Transition, Collection<TileRef>> getTransitions(Media[] levels, Media sheetsMedia, Media groupsMedia)
+    public Map<Transition, Collection<TileRef>> getTransitions(Media[] levels, Media sheetsConfig, Media groupsConfig)
     {
         final Collection<MapTile> mapsSet = new HashSet<MapTile>();
         for (final Media level : levels)
         {
             final MapTile map = new MapTileGame();
-            map.create(level, sheetsMedia);
+            map.create(level, sheetsConfig);
 
             final MapTileGroup mapGroup = new MapTileGroupModel();
-            mapGroup.loadGroups(groupsMedia);
+            mapGroup.loadGroups(groupsConfig);
             map.addFeature(mapGroup);
             mapsSet.add(map);
         }
@@ -123,25 +147,6 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
                 else
                 {
                     transitions.put(transition, tiles);
-                }
-            }
-        }
-        return transitions;
-    }
-
-    @Override
-    public Map<Transition, Collection<TileRef>> getTransitions(MapTile map)
-    {
-        final Map<Transition, Collection<TileRef>> transitions = new HashMap<Transition, Collection<TileRef>>();
-        final MapTransitionExtractor extractor = new MapTransitionExtractor(map);
-        for (int ty = 1; ty < map.getInTileHeight() - 1; ty++)
-        {
-            for (int tx = 1; tx < map.getInTileWidth() - 1; tx++)
-            {
-                final Tile tile = map.getTile(tx, ty);
-                if (tile != null)
-                {
-                    checkTransition(transitions, extractor, tile);
                 }
             }
         }

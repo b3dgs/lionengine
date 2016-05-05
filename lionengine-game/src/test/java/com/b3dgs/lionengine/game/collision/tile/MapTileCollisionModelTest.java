@@ -219,20 +219,6 @@ public class MapTileCollisionModelTest
     }
 
     /**
-     * Test the map tile collision saving without configuration.
-     */
-    @Test
-    public void testSaveCollisionWithout()
-    {
-        final MapTileCollision mapTileCollision = new MapTileCollisionModel(services);
-        mapTileCollision.saveCollisions();
-        mapTileCollision.loadCollisions();
-
-        Assert.assertTrue(mapTileCollision.getCollisionFormulas().isEmpty());
-        Assert.assertTrue(mapTileCollision.getCollisionGroups().isEmpty());
-    }
-
-    /**
      * Test the map tile collision loading without configuration.
      */
     @Test

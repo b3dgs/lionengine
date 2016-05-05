@@ -39,7 +39,6 @@ import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
 import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
 import com.b3dgs.lionengine.util.UtilReflection;
 
@@ -99,12 +98,6 @@ public class MapTileGame implements MapTile
 
     /**
      * Create a map tile.
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link Viewer}</li>
-     * </ul>
      * 
      * @param services The services reference.
      * @throws LionEngineException If service not found.

@@ -141,7 +141,7 @@ public final class CollisionFormulaConfig
      * 
      * @param formulas The collisions formula mapping.
      */
-    private CollisionFormulaConfig(Map<String, CollisionFormula> formulas)
+    public CollisionFormulaConfig(Map<String, CollisionFormula> formulas)
     {
         this.formulas = formulas;
     }

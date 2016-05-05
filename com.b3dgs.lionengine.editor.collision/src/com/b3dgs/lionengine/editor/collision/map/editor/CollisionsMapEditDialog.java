@@ -113,7 +113,7 @@ public class CollisionsMapEditDialog extends AbstractDialog
         if (map.hasFeature(MapTileCollision.class))
         {
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
-            mapCollision.loadCollisions();
+            mapCollision.loadCollisions(mapCollision.getFormulasConfig(), media);
         }
     }
 }

@@ -140,7 +140,7 @@ public interface MapTile extends Surface, Featurable<MapTileFeature>
 
     /**
      * Load map sheets (tiles surfaces) from directory. Must be called before rendering map.
-     * Clear previous sheets if has.
+     * Clears previous sheets if has.
      * 
      * @param sheetsConfig The file that define the sheets configuration.
      * @throws LionEngineException If error when reading sheets.

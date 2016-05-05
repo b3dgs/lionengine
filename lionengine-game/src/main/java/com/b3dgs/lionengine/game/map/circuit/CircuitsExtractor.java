@@ -33,15 +33,11 @@ public interface CircuitsExtractor
      * Get map tile circuits from map configuration.
      *
      * @param levels The level rips used.
-     * @param sheetsMedia The sheets media.
-     * @param groupsMedia The groups media.
-     * @param transitionsMedia The transitions media.
+     * @param sheetsConfig The sheets configuration media.
+     * @param groupsConfig The groups configuration media.
      * @return The circuits found with their associated tiles.
      */
-    Map<Circuit, Collection<TileRef>> getCircuits(Media[] levels,
-                                                  Media sheetsMedia,
-                                                  Media groupsMedia,
-                                                  Media transitionsMedia);
+    Map<Circuit, Collection<TileRef>> getCircuits(Media[] levels, Media sheetsConfig, Media groupsConfig);
 
     /**
      * Get map tile circuits from existing maps.
@@ -50,12 +46,4 @@ public interface CircuitsExtractor
      * @return The circuits found with their associated tiles.
      */
     Map<Circuit, Collection<TileRef>> getCircuits(MapTile... maps);
-
-    /**
-     * Get map tile circuits.
-     *
-     * @param map The map reference.
-     * @return The circuits found with their associated tiles.
-     */
-    Map<Circuit, Collection<TileRef>> getCircuits(MapTile map);
 }
