@@ -92,7 +92,7 @@ public class UtilMap
      * 
      * @param map The map reference.
      */
-    private static void setGroups(MapTile map)
+    public static void setGroups(MapTile map)
     {
         final Collection<TileGroup> groups = new ArrayList<TileGroup>();
         groups.add(new TileGroup(WATER, TileGroupType.PLAIN, Arrays.asList(new TileRef(SHEET, TILE_WATER))));

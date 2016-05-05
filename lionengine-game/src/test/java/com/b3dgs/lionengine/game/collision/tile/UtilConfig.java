@@ -30,14 +30,17 @@ public class UtilConfig
     /**
      * Create formula configuration.
      * 
-     * @param formula The collision formula.
+     * @param formulas The collision formulas.
      * @return The formula configuration.
      */
-    public static Media createFormulaConfig(CollisionFormula formula)
+    public static Media createFormulaConfig(CollisionFormula... formulas)
     {
         final Media media = Medias.create("formulas.xml");
         final XmlNode root = Xml.create("formulas");
-        CollisionFormulaConfig.exports(root, formula);
+        for (final CollisionFormula formula : formulas)
+        {
+            CollisionFormulaConfig.exports(root, formula);
+        }
         Xml.save(root, media);
         return media;
     }
