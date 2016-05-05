@@ -119,7 +119,7 @@ public class SheetsExtractDialog extends AbstractDialog
      * 
      * @return The level rip medias.
      */
-    public Media[] getLevelRips()
+    public Collection<Media> getLevelRips()
     {
         return levelRips.getLevelRips();
     }
@@ -153,7 +153,7 @@ public class SheetsExtractDialog extends AbstractDialog
      */
     void checkFinish()
     {
-        final boolean hasRips = levelRips.getLevelRips().length > 0;
+        final boolean hasRips = levelRips.getLevelRips().size() > 0;
         final boolean hasSize = !tileWidth.isEmpty() && !tileHeight.isEmpty();
         final boolean finished = hasRips && hasSize && !horizontalTiles.isEmpty() && destination.getMedia() != null;
 

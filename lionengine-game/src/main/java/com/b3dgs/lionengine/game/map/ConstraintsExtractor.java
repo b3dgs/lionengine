@@ -43,7 +43,7 @@ public final class ConstraintsExtractor
      * @param sheetsMedia The sheets media.
      * @return The constraints found.
      */
-    public static Map<TileRef, Collection<TileConstraint>> getConstraints(Media[] levels, Media sheetsMedia)
+    public static Map<TileRef, Collection<TileConstraint>> getConstraints(Collection<Media> levels, Media sheetsMedia)
     {
         final Collection<MapTile> mapsSet = new HashSet<MapTile>();
         for (final Media level : levels)

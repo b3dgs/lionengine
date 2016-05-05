@@ -37,7 +37,9 @@ public interface TransitionsExtractor
      * @param groupsConfig The groups configuration media.
      * @return The transitions found with their associated tiles.
      */
-    Map<Transition, Collection<TileRef>> getTransitions(Media[] levels, Media sheetsConfig, Media groupsConfig);
+    Map<Transition, Collection<TileRef>> getTransitions(Collection<Media> levels,
+                                                        Media sheetsConfig,
+                                                        Media groupsConfig);
 
     /**
      * Get map tile transitions from existing maps.

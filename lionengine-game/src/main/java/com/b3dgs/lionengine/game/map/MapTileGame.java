@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.map;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -93,7 +94,8 @@ public class MapTileGame implements MapTile
      */
     public MapTileGame()
     {
-        this(new Services());
+        services = new Services();
+        services.add(this);
     }
 
     /**
@@ -190,7 +192,7 @@ public class MapTileGame implements MapTile
         this.tileHeight = tileHeight;
 
         final TilesExtractor tilesExtractor = new TilesExtractor();
-        final Collection<ImageBuffer> tiles = tilesExtractor.extract(tileWidth, tileHeight, levelrip);
+        final Collection<ImageBuffer> tiles = tilesExtractor.extract(tileWidth, tileHeight, Arrays.asList(levelrip));
         loadSheets(SheetsExtractor.extract(tiles, horizontalTiles));
 
         for (final ImageBuffer tile : tiles)

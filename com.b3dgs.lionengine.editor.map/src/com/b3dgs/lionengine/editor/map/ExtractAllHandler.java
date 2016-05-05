@@ -50,7 +50,7 @@ public final class ExtractAllHandler
      */
     private static void saveAll(SheetsExtractDialog sheetsExtractDialog,
                                 GroupsEditDialog groupsEditDialog,
-                                Media[] levels)
+                                Collection<Media> levels)
     {
         final String folder = sheetsExtractDialog.getFolder();
 
@@ -87,7 +87,7 @@ public final class ExtractAllHandler
         final Collection<SpriteTiled> sheets = sheetsExtractDialog.getSheets();
         if (!sheets.isEmpty())
         {
-            final Media[] levels = sheetsExtractDialog.getLevelRips();
+            final Collection<Media> levels = sheetsExtractDialog.getLevelRips();
 
             final GroupsEditDialog groupsEditDialog = new GroupsEditDialog(shell);
             groupsEditDialog.setLocation(sheetsExtractDialog.getFolder());

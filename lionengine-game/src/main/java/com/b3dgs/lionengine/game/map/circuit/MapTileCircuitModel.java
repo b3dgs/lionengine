@@ -271,7 +271,7 @@ public class MapTileCircuitModel implements MapTileCircuit
     }
 
     @Override
-    public void loadCircuits(Media[] levels, Media sheetsConfig, Media groupsConfig)
+    public void loadCircuits(Collection<Media> levels, Media sheetsConfig, Media groupsConfig)
     {
         final CircuitsExtractor circuitsExtractor = new CircuitsExtractorImpl();
         loadCircuits(circuitsExtractor.getCircuits(levels, sheetsConfig, groupsConfig));

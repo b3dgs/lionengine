@@ -204,12 +204,12 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
      * @param sheets The sheets used.
      * @param levelRips The level rips.
      */
-    public void load(Collection<SpriteTiled> sheets, Media... levelRips)
+    public void load(Collection<SpriteTiled> sheets, Collection<Media> levelRips)
     {
         int offsetX = 0;
         int offsetY = 0;
         boolean first = true;
-        final int size = (int) Math.ceil(Math.sqrt(levelRips.length));
+        final int size = (int) Math.ceil(Math.sqrt(levelRips.size()));
         int count = 0;
         for (final Media levelRip : levelRips)
         {
@@ -342,7 +342,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
      */
     private void checkNextEnabled()
     {
-        next.setEnabled(levelRips.getLevelRips().length > 0 && sheets.getMedia() != null);
+        next.setEnabled(levelRips.getLevelRips().size() > 0 && sheets.getMedia() != null);
     }
 
     /**

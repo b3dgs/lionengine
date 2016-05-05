@@ -45,7 +45,7 @@ public interface MapTileTransition extends MapTileFeature
      * @param sheetsConfig The sheets configuration media.
      * @param groupsConfig The groups configuration media.
      */
-    void loadTransitions(Media[] levels, Media sheetsConfig, Media groupsConfig);
+    void loadTransitions(Collection<Media> levels, Media sheetsConfig, Media groupsConfig);
 
     /**
      * Load the transitions from raw data.
@@ -57,10 +57,10 @@ public interface MapTileTransition extends MapTileFeature
     /**
      * Resolve transitions by updating tiles if necessary.
      * 
-     * @param tileNew The new tile placed.
+     * @param tile The new tile placed.
      * @return The updated tiles.
      */
-    Collection<Tile> resolve(Tile tileNew);
+    Collection<Tile> resolve(Tile tile);
 
     /**
      * Get the tile transition.

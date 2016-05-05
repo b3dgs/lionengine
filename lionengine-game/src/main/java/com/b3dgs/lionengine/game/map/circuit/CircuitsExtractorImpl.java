@@ -142,7 +142,9 @@ final class CircuitsExtractorImpl implements CircuitsExtractor
      */
 
     @Override
-    public Map<Circuit, Collection<TileRef>> getCircuits(Media[] levels, Media sheetsConfig, Media groupsConfig)
+    public Map<Circuit, Collection<TileRef>> getCircuits(Collection<Media> levels,
+                                                         Media sheetsConfig,
+                                                         Media groupsConfig)
     {
         final Collection<MapTile> mapsSet = new HashSet<MapTile>();
         for (final Media level : levels)

@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.map.constaint;
 
+import java.util.Collection;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -74,7 +76,7 @@ public class ConstraintsExtractDialog extends AbstractDialog
      */
     void checkFinish()
     {
-        final boolean hasRips = levelRips.getLevelRips().length > 0;
+        final boolean hasRips = levelRips.getLevelRips().size() > 0;
         final boolean finished = hasRips;
 
         finish.setEnabled(finished);
@@ -172,7 +174,7 @@ public class ConstraintsExtractDialog extends AbstractDialog
     @Override
     protected void onFinish()
     {
-        final Media[] levels = levelRips.getLevelRips();
+        final Collection<Media> levels = levelRips.getLevelRips();
         final Media sheetsConfig = sheets.getMedia();
         final Media groupsConfig = groups.getMedia();
 

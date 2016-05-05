@@ -37,7 +37,7 @@ public interface CircuitsExtractor
      * @param groupsConfig The groups configuration media.
      * @return The circuits found with their associated tiles.
      */
-    Map<Circuit, Collection<TileRef>> getCircuits(Media[] levels, Media sheetsConfig, Media groupsConfig);
+    Map<Circuit, Collection<TileRef>> getCircuits(Collection<Media> levels, Media sheetsConfig, Media groupsConfig);
 
     /**
      * Get map tile circuits from existing maps.

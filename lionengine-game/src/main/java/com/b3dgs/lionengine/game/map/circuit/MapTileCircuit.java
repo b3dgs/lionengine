@@ -44,7 +44,7 @@ public interface MapTileCircuit extends MapTileFeature
      * @param sheetsConfig The sheets configuration media.
      * @param groupsConfig The groups configuration media.
      */
-    void loadCircuits(Media[] levels, Media sheetsConfig, Media groupsConfig);
+    void loadCircuits(Collection<Media> levels, Media sheetsConfig, Media groupsConfig);
 
     /**
      * Load the circuits by using existing data.

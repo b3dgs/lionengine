@@ -90,7 +90,7 @@ public final class TransitionsConfig
      * @param groupsMedia The groups media.
      * @throws LionEngineException If error on export.
      */
-    public static void exports(Media media, Media[] levels, Media sheetsMedia, Media groupsMedia)
+    public static void exports(Media media, Collection<Media> levels, Media sheetsMedia, Media groupsMedia)
     {
         final TransitionsExtractor extractor = new TransitionsExtractorImpl();
         final Map<Transition, Collection<TileRef>> transitions = extractor.getTransitions(levels,

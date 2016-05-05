@@ -409,7 +409,7 @@ public class MapTileTransitionModel implements MapTileTransition
     }
 
     @Override
-    public void loadTransitions(Media[] levels, Media sheetsConfig, Media groupsConfig)
+    public void loadTransitions(Collection<Media> levels, Media sheetsConfig, Media groupsConfig)
     {
         final TransitionsExtractor transitionsExtractor = new TransitionsExtractorImpl();
         loadTransitions(transitionsExtractor.getTransitions(levels, sheetsConfig, groupsConfig));

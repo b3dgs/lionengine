@@ -112,7 +112,9 @@ final class TransitionsExtractorImpl implements TransitionsExtractor
      */
 
     @Override
-    public Map<Transition, Collection<TileRef>> getTransitions(Media[] levels, Media sheetsConfig, Media groupsConfig)
+    public Map<Transition, Collection<TileRef>> getTransitions(Collection<Media> levels,
+                                                               Media sheetsConfig,
+                                                               Media groupsConfig)
     {
         final Collection<MapTile> mapsSet = new HashSet<MapTile>();
         for (final Media level : levels)

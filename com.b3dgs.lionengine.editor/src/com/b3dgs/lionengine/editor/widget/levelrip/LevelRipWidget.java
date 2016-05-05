@@ -61,9 +61,7 @@ public class LevelRipWidget
 
     /** Listeners. */
     private final Collection<LevelRipsWidgetListener> listeners = new HashSet<>();
-    /** Level rip medias lock. */
-    private final Object mediasLock = new Object();
-    /** Level rip medias (guarded by {@link #mediasLock}). */
+    /** Level rip medias. */
     private final Collection<Media> medias = new HashSet<>();
     /** Level rips list. */
     private final Tree levelRips;
@@ -120,12 +118,9 @@ public class LevelRipWidget
      * 
      * @return The level rip medias.
      */
-    public Media[] getLevelRips()
+    public Collection<Media> getLevelRips()
     {
-        synchronized (mediasLock)
-        {
-            return medias.toArray(new Media[medias.size()]);
-        }
+        return medias;
     }
 
     /**
@@ -174,10 +169,7 @@ public class LevelRipWidget
                 final TreeItem item = new TreeItem(levelRips, SWT.NONE);
                 item.setText(path);
                 item.setData(media);
-                synchronized (mediasLock)
-                {
-                    medias.add(media);
-                }
+                medias.add(media);
 
                 for (final LevelRipsWidgetListener listener : listeners)
                 {
@@ -215,10 +207,7 @@ public class LevelRipWidget
             final Media media = (Media) item.getData();
             item.setData(null);
             item.dispose();
-            synchronized (mediasLock)
-            {
-                medias.remove(media);
-            }
+            medias.remove(media);
             for (final LevelRipsWidgetListener listener : listeners)
             {
                 listener.notifyLevelRipRemoved(media);

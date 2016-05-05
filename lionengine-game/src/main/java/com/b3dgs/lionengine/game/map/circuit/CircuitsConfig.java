@@ -90,7 +90,7 @@ public final class CircuitsConfig
      * @param groupsConfig The groups media.
      * @throws LionEngineException If error on export.
      */
-    public static void exports(Media media, Media[] levels, Media sheetsConfig, Media groupsConfig)
+    public static void exports(Media media, Collection<Media> levels, Media sheetsConfig, Media groupsConfig)
     {
         final CircuitsExtractor extractor = new CircuitsExtractorImpl();
         final Map<Circuit, Collection<TileRef>> circuits = extractor.getCircuits(levels, sheetsConfig, groupsConfig);

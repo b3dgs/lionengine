@@ -128,7 +128,7 @@ public final class TilesExtractor
      * @param levelRips The levels rip used.
      * @return The total number of tiles.
      */
-    private static int getTilesNumber(int tileWidth, int tileHeight, Media... levelRips)
+    private static int getTilesNumber(int tileWidth, int tileHeight, Collection<Media> levelRips)
     {
         int tiles = 0;
         for (final Media levelRip : levelRips)
@@ -183,7 +183,7 @@ public final class TilesExtractor
      * @return The extracted tile sheets.
      * @throws LionEngineException If an error occurred when computing sheet.
      */
-    public Collection<ImageBuffer> extract(int tw, int th, Media... levelRips)
+    public Collection<ImageBuffer> extract(int tw, int th, Collection<Media> levelRips)
     {
         return extract(null, tw, th, levelRips);
     }
@@ -198,7 +198,7 @@ public final class TilesExtractor
      * @return The extracted tile sheets.
      * @throws LionEngineException If an error occurred when computing sheet.
      */
-    public Collection<ImageBuffer> extract(Canceler canceler, int tw, int th, Media... levelRips)
+    public Collection<ImageBuffer> extract(Canceler canceler, int tw, int th, Collection<Media> levelRips)
     {
         final int tilesNumber = getTilesNumber(tw, th, levelRips);
         final Collection<ImageBuffer> tiles = new ArrayList<ImageBuffer>();
