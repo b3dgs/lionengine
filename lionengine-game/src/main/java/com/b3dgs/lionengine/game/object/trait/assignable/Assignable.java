@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.object.trait.assignable;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.object.Trait;
+import com.b3dgs.lionengine.game.object.trait.Trait;
 
 /**
  * Represents an assignable action, allows to assign an action by click.

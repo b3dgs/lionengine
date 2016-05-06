@@ -24,13 +24,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
 import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.map.transition.MapTileTransitionModel;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroupType;
 import com.b3dgs.lionengine.game.tile.TileRef;

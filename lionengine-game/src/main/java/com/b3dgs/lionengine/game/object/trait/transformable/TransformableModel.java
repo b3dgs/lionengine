@@ -21,10 +21,10 @@ import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.MoverModel;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SizeConfig;
-import com.b3dgs.lionengine.game.object.TraitModel;
+import com.b3dgs.lionengine.game.object.trait.TraitModel;
 
 /**
  * Transformable model implementation.

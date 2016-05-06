@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.object.trait.Trait;
 
 /**
  * Handler items implementation.

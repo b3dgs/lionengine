@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.trait.mirrorable.MirrorableModel;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;

@@ -107,7 +107,7 @@ public interface MapTile extends Surface, Featurable<MapTileFeature>
 
     /**
      * Create a feature from its type, and automatically {@link #addFeature} it.
-     * The feature instance must provide a public constructor with {@link com.b3dgs.lionengine.game.object.Services} as
+     * The feature instance must provide a public constructor with {@link com.b3dgs.lionengine.game.Services} as
      * single argument, or the public default constructor. Else, create manually the instance and use
      * {@link #addFeature} on it.
      * 

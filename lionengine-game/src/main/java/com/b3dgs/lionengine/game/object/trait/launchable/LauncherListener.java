@@ -27,7 +27,7 @@ public interface LauncherListener
     /**
      * Notify when a fire occurred.
      * <p>
-     * The fired object has at least the following {@link com.b3dgs.lionengine.game.object.Trait}:
+     * The fired object has at least the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
      * </p>
      * <ul>
      * <li>{@link Launchable}</li>

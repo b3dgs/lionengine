@@ -25,9 +25,9 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.object.TraitModel;
+import com.b3dgs.lionengine.game.object.trait.TraitModel;
 import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 import com.b3dgs.lionengine.geom.Geom;
@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Box ray cast collidable model implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>

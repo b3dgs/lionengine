@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTileGroup;
@@ -43,7 +44,6 @@ import com.b3dgs.lionengine.game.map.generator.PrefMapSize;
 import com.b3dgs.lionengine.game.map.generator.TileArea;
 import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.map.transition.MapTileTransitionModel;
-import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.graphic.Graphic;
 

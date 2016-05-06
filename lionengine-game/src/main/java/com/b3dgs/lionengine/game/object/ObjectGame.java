@@ -32,6 +32,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Features;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.object.trait.Trait;
 
 /**
  * Object minimal representation. Defined by a unique ID, the object is designed to be handled by a {@link Handler} . To

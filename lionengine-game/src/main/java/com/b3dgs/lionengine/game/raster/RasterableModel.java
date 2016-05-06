@@ -23,9 +23,9 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.object.TraitModel;
+import com.b3dgs.lionengine.game.object.trait.TraitModel;
 import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Viewer;
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Default rasterable implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
  * </p>
  * <ul>
  * <li>{@link Localizable}</li>

@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.object.trait.mirrorable;
 
 import com.b3dgs.lionengine.Mirror;
-import com.b3dgs.lionengine.game.object.TraitModel;
+import com.b3dgs.lionengine.game.object.trait.TraitModel;
 
 /**
  * Default mirrorable implementation.

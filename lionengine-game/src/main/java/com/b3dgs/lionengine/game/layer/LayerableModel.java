@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.game.layer;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Services;
-import com.b3dgs.lionengine.game.object.TraitModel;
+import com.b3dgs.lionengine.game.object.trait.TraitModel;
 
 /**
  * Layerable model implementation.

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.object.trait.transformable;
 
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.game.Mover;
-import com.b3dgs.lionengine.game.object.Trait;
+import com.b3dgs.lionengine.game.object.trait.Trait;
 
 /**
  * Represents something that can be transformed with a translation or a size modification.

@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.object.trait.actionable;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.object.Trait;
+import com.b3dgs.lionengine.game.object.trait.Trait;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**

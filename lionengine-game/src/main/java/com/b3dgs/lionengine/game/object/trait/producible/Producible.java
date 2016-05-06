@@ -21,7 +21,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Shape;
-import com.b3dgs.lionengine.game.object.Trait;
+import com.b3dgs.lionengine.game.object.trait.Trait;
 
 /**
  * Represents a producible object.

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.object.trait.launchable;
 
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.object.Trait;
+import com.b3dgs.lionengine.game.object.trait.Trait;
 
 /**
  * Represents something which can be launched with a specified vector.

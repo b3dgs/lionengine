@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.layer;
 
-import com.b3dgs.lionengine.game.object.Trait;
+import com.b3dgs.lionengine.game.object.trait.Trait;
 
 /**
  * Represents something that can support layer, in order to define an order.
