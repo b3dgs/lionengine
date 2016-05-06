@@ -153,7 +153,7 @@ public class SheetsExtractDialog extends AbstractDialog
      */
     void checkFinish()
     {
-        final boolean hasRips = levelRips.getLevelRips().size() > 0;
+        final boolean hasRips = !levelRips.getLevelRips().isEmpty();
         final boolean hasSize = !tileWidth.isEmpty() && !tileHeight.isEmpty();
         final boolean finished = hasRips && hasSize && !horizontalTiles.isEmpty() && destination.getMedia() != null;
 

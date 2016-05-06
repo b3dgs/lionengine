@@ -342,7 +342,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
      */
     private void checkNextEnabled()
     {
-        next.setEnabled(levelRips.getLevelRips().size() > 0 && sheets.getMedia() != null);
+        next.setEnabled(!levelRips.getLevelRips().isEmpty() && sheets.getMedia() != null);
     }
 
     /**

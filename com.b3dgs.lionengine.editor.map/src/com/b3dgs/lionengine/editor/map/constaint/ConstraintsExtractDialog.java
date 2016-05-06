@@ -76,7 +76,7 @@ public class ConstraintsExtractDialog extends AbstractDialog
      */
     void checkFinish()
     {
-        final boolean hasRips = levelRips.getLevelRips().size() > 0;
+        final boolean hasRips = !levelRips.getLevelRips().isEmpty();
         final boolean finished = hasRips;
 
         finish.setEnabled(finished);
