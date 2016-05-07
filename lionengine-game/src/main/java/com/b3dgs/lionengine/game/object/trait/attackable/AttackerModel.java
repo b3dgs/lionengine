@@ -34,13 +34,6 @@ import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Attacker model implementation.
- * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
- * </p>
- * <ul>
- * <li>{@link Animator}</li>
- * <li>{@link Transformable}</li>
- * </ul>
  */
 public class AttackerModel extends TraitModel implements Attacker
 {
@@ -75,6 +68,14 @@ public class AttackerModel extends TraitModel implements Attacker
 
     /**
      * Create an attacker model.
+     * 
+     * <p>
+     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
+     * </p>
+     * <ul>
+     * <li>{@link Animator}</li>
+     * <li>{@link Transformable}</li>
+     * </ul>
      */
     public AttackerModel()
     {

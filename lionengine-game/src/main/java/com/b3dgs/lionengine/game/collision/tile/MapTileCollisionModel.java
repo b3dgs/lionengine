@@ -46,10 +46,14 @@ import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Map tile collision model implementation.
- * 
  * <p>
- * The map must have the {@link MapTileGroup} feature.
+ * The {@link Services} must provide the following services:
  * </p>
+ * <ul>
+ * <li>{@link MapTile}</li>
+ * <li>{@link MapTileGroup}</li>
+ * <li>{@link Viewer}</li>
+ * </ul>
  */
 public class MapTileCollisionModel implements MapTileCollision
 {
@@ -254,14 +258,6 @@ public class MapTileCollisionModel implements MapTileCollision
 
     /**
      * Create the map tile collision.
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link MapTile}</li>
-     * <li>{@link MapTileGroup}</li>
-     * <li>{@link Viewer}</li>
-     * </ul>
      * 
      * @param services The services reference.
      * @throws LionEngineException If services not found.

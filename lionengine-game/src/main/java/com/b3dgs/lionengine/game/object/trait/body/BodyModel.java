@@ -26,12 +26,6 @@ import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 
 /**
  * Default body supporting gravity implementation.
- * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
- * </p>
- * <ul>
- * <li>{@link Transformable}</li>
- * </ul>
  */
 public class BodyModel extends TraitModel implements Body
 {
@@ -52,6 +46,13 @@ public class BodyModel extends TraitModel implements Body
 
     /**
      * Create a body model.
+     * 
+     * <p>
+     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
      */
     public BodyModel()
     {

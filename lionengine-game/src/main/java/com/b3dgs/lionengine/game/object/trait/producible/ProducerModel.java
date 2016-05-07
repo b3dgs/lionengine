@@ -33,20 +33,6 @@ import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 
 /**
  * Producer model implementation.
- * <p>
- * The {@link Services} must provide the following services:
- * </p>
- * <ul>
- * <li>{@link Handler}</li>
- * <li>{@link Integer} (for the desired fps).</li>
- * </ul>
- * <p>
- * The {@link ObjectGame} must be a {@link ProducerChecker}.
- * </p>
- * <p>
- * If the {@link ObjectGame} is a {@link ProducerListener}, it will automatically {@link #addListener(ProducerListener)}
- * on it.
- * </p>
  */
 public class ProducerModel extends TraitModel implements Producer
 {
@@ -77,6 +63,21 @@ public class ProducerModel extends TraitModel implements Producer
 
     /**
      * Create a producer model.
+     * 
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link Handler}</li>
+     * <li>{@link Integer} (for the desired fps).</li>
+     * </ul>
+     * <p>
+     * The {@link ObjectGame} must be a {@link ProducerChecker}.
+     * </p>
+     * <p>
+     * If the {@link ObjectGame} is a {@link ProducerListener}, it will automatically
+     * {@link #addListener(ProducerListener)} on it.
+     * </p>
      */
     public ProducerModel()
     {

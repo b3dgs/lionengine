@@ -26,18 +26,6 @@ import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 
 /**
  * Extractable model implementation.
- * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
- * </p>
- * <ul>
- * <li>{@link Transformable}</li>
- * </ul>
- * <p>
- * The {@link Services} must provide the following services:
- * </p>
- * <ul>
- * <li>{@link MapTile}</li>
- * </ul>
  */
 public class ExtractableModel extends TraitModel implements Extractable
 {
@@ -52,6 +40,19 @@ public class ExtractableModel extends TraitModel implements Extractable
 
     /**
      * Create an extractable model.
+     * 
+     * <p>
+     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * </ul>
      */
     public ExtractableModel()
     {

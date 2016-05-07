@@ -26,9 +26,12 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Designed to handle {@link ObjectGame}. Maintain an objects list by updating and rendering them. Modifications on the
+ * Designed to handler updating and rendering for a set of components.
+ * Can handle {@link ObjectGame}. Maintain an objects list by updating and rendering them. Modifications on the
  * list can be done at any time because their are applied at the beginning of the next update.
  * 
+ * @see Updatable
+ * @see Renderable
  * @see ObjectGame
  * @see ComponentUpdatable
  * @see ComponentRenderable
@@ -36,17 +39,17 @@ import com.b3dgs.lionengine.graphic.Renderable;
 public class Handler implements HandledObjects, Updatable, Renderable, ObjectGameListener
 {
     /** Handler listeners. */
-    private final Collection<HandlerListener> listeners;
+    private final Collection<HandlerListener> listeners = new HashSet<HandlerListener>();
     /** List of components. */
-    private final Set<ComponentUpdatable> updatables;
+    private final Set<ComponentUpdatable> updatables = new HashSet<ComponentUpdatable>();
     /** List of components. */
-    private final Set<ComponentRenderable> renderables;
+    private final Set<ComponentRenderable> renderables = new HashSet<ComponentRenderable>();
     /** List of items. */
-    private final HandledObjectsImpl objects;
+    private final HandledObjectsImpl objects = new HandledObjectsImpl();
     /** To add list. */
-    private final Collection<ObjectGame> toAdd;
+    private final Collection<ObjectGame> toAdd = new HashSet<ObjectGame>();
     /** To delete list. */
-    private final Collection<Integer> toDelete;
+    private final Collection<Integer> toDelete = new HashSet<Integer>();
     /** Will delete flag. */
     private boolean willDelete;
     /** Will add flag. */
@@ -57,14 +60,7 @@ public class Handler implements HandledObjects, Updatable, Renderable, ObjectGam
      */
     public Handler()
     {
-        listeners = new HashSet<HandlerListener>();
-        updatables = new HashSet<ComponentUpdatable>();
-        renderables = new HashSet<ComponentRenderable>();
-        objects = new HandledObjectsImpl();
-        toDelete = new HashSet<Integer>();
-        toAdd = new HashSet<ObjectGame>();
-        willDelete = false;
-        willAdd = false;
+        super();
     }
 
     /**

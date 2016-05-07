@@ -28,15 +28,11 @@ import com.b3dgs.lionengine.game.object.trait.TraitModel;
 
 /**
  * Transformable model implementation.
- * <p>
- * The {@link ObjectGame} owner can provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
- * with {@link SizeConfig}.
- * </p>
  */
 public class TransformableModel extends TraitModel implements Transformable
 {
     /** Mover model. */
-    private final Mover mover;
+    private final Mover mover = new MoverModel();
     /** Body width. */
     private int width;
     /** Body height. */
@@ -48,11 +44,15 @@ public class TransformableModel extends TraitModel implements Transformable
 
     /**
      * Create a transformable model.
+     * 
+     * <p>
+     * The {@link ObjectGame} owner can provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+     * with {@link SizeConfig}.
+     * </p>
      */
     public TransformableModel()
     {
         super();
-        mover = new MoverModel();
     }
 
     /*

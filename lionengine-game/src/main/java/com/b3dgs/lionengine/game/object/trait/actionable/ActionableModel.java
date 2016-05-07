@@ -26,19 +26,6 @@ import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Actionnable model implementation.
- * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
- * with {@link ActionConfig}.
- * </p>
- * <p>
- * The {@link Services} must provide the following services:
- * </p>
- * <ul>
- * <li>{@link Cursor}</li>
- * </ul>
- * <p>
- * If the {@link ObjectGame} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
- * </p>
  */
 public class ActionableModel extends TraitModel implements Actionable
 {
@@ -55,6 +42,20 @@ public class ActionableModel extends TraitModel implements Actionable
 
     /**
      * Create an actionable model.
+     * 
+     * <p>
+     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+     * with {@link ActionConfig}.
+     * </p>
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link Cursor}</li>
+     * </ul>
+     * <p>
+     * If the {@link ObjectGame} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
+     * </p>
      */
     public ActionableModel()
     {

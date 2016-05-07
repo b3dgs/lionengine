@@ -27,6 +27,13 @@ import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Map tile renderer default implementation.
+ * <p>
+ * The {@link Services} must provide the following services:
+ * </p>
+ * <ul>
+ * <li>{@link MapTile}</li>
+ * <li>{@link Viewer}</li>
+ * </ul>
  */
 public class MapTileViewerModel implements MapTileViewer
 {
@@ -39,14 +46,6 @@ public class MapTileViewerModel implements MapTileViewer
 
     /**
      * Create the renderer.
-     * 
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link MapTile}</li>
-     * <li>{@link Viewer}</li>
-     * </ul>
      * 
      * @param services The services reference.
      */

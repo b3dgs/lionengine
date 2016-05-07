@@ -26,12 +26,6 @@ import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
 
 /**
  * Default launchable model implementation.
- * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
- * </p>
- * <ul>
- * <li>{@link Transformable}</li>
- * </ul>
  */
 public class LaunchableModel extends TraitModel implements Launchable
 {
@@ -46,6 +40,13 @@ public class LaunchableModel extends TraitModel implements Launchable
 
     /**
      * Create the launchable model.
+     * 
+     * <p>
+     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
      */
     public LaunchableModel()
     {

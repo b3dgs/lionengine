@@ -27,18 +27,6 @@ import com.b3dgs.lionengine.game.tile.Tiled;
 
 /**
  * Orientable model implementation.
- * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
- * </p>
- * <ul>
- * <li>{@link Transformable}</li>
- * </ul>
- * <p>
- * The {@link Services} must provide the following services:
- * </p>
- * <ul>
- * <li>{@link MapTile}</li>
- * </ul>
  */
 public class OrientableModel extends TraitModel implements Orientable
 {
@@ -51,6 +39,19 @@ public class OrientableModel extends TraitModel implements Orientable
 
     /**
      * Create an orientable model.
+     * 
+     * <p>
+     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link MapTile}</li>
+     * </ul>
      */
     public OrientableModel()
     {

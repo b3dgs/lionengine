@@ -27,14 +27,6 @@ import com.b3dgs.lionengine.game.object.trait.TraitModel;
 
 /**
  * Represents a producible object.
- * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
- * with {@link ProducibleConfig}.
- * </p>
- * <p>
- * If the {@link ObjectGame} is a {@link ProducibleListener}, it will automatically
- * {@link #addListener(ProducibleListener)} on it.
- * </p>
  */
 public class ProducibleModel extends TraitModel implements Producible
 {
@@ -55,6 +47,15 @@ public class ProducibleModel extends TraitModel implements Producible
 
     /**
      * Create a producible and load its configuration.
+     * 
+     * <p>
+     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+     * with {@link ProducibleConfig}.
+     * </p>
+     * <p>
+     * If the {@link ObjectGame} is a {@link ProducibleListener}, it will automatically
+     * {@link #addListener(ProducibleListener)} on it.
+     * </p>
      */
     public ProducibleModel()
     {
