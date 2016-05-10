@@ -22,10 +22,10 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.tile.Tile;
 
@@ -103,10 +103,10 @@ class Goomba extends Entity implements InputDeviceDirectional, CollidableListene
     }
 
     @Override
-    public void notifyCollided(ObjectGame object)
+    public void notifyCollided(Collidable other)
     {
-        final Entity target = (Entity) object;
-        final Transformable collider = target.getTrait(Transformable.class);
+        final Entity target = other.getOwner();
+        final Transformable collider = target.getFeature(Transformable.class);
         if (collider.getY() < collider.getOldY() && collider.getY() > transformable.getY())
         {
             collider.teleportY(transformable.getY() + transformable.getHeight());

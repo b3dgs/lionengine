@@ -31,18 +31,14 @@ public class ModuleWav
     void vav() throws InterruptedException
     {
         final Wav sound = AudioWav.loadWav(Medias.create("sound.wav"));
-        sound.setVolume(100);
 
-        sound.setAlignment(Align.LEFT);
-        sound.play();
+        sound.play(Align.LEFT, 100);
         Thread.sleep(200);
 
-        sound.setAlignment(Align.CENTER);
-        sound.play();
+        sound.play(Align.CENTER, 100);
         Thread.sleep(200);
 
-        sound.setAlignment(Align.RIGHT);
-        sound.play();
+        sound.play(Align.RIGHT, 100);
         Thread.sleep(200);
 
         sound.stop();

@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.game.layer;
 
-import com.b3dgs.lionengine.game.object.trait.Trait;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Represents something that can support layer, in order to define an order.
  */
-public interface Layerable extends Trait
+public interface Layerable extends Feature
 {
     /**
      * Add a layer listener.

@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.action;
 
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 

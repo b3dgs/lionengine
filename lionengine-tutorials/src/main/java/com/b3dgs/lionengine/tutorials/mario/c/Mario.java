@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
@@ -35,12 +36,12 @@ import com.b3dgs.lionengine.game.collision.tile.TileCollidableModel;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.body.Body;
-import com.b3dgs.lionengine.game.object.trait.body.BodyModel;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.MirrorableModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.body.Body;
+import com.b3dgs.lionengine.game.object.feature.body.BodyModel;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.MirrorableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.state.StateFactory;
 import com.b3dgs.lionengine.game.state.StateHandler;
@@ -65,13 +66,13 @@ class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableL
     /** Surface. */
     public final SpriteAnimated surface;
     /** Mirrorable model. */
-    private final Mirrorable mirrorable = addTrait(new MirrorableModel());
+    private final Mirrorable mirrorable = addFeatureAndGet(new MirrorableModel());
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable;
     /** Body model. */
-    private final Body body = addTrait(new BodyModel());
+    private final Body body;
     /** Tile collidable. */
-    private final TileCollidable tileCollidable = addTrait(new TileCollidableModel());
+    private final TileCollidable tileCollidable;
     /** State factory. */
     private final StateFactory factory = new StateFactory();
     /** State handler. */
@@ -90,6 +91,12 @@ class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableL
     public Mario(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        final Configurer configurer = setup.getConfigurer();
+        transformable = addFeatureAndGet(new TransformableModel(configurer));
+        body = addFeatureAndGet(new BodyModel());
+        tileCollidable = addFeatureAndGet(new TileCollidableModel(configurer));
+
         camera = services.get(Camera.class);
         keyboard = services.get(Keyboard.class);
 

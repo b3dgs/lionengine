@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
@@ -69,17 +70,17 @@ public class LayerableModelTest
     {
         final LayerableModel layerable = new LayerableModel();
 
-        final AtomicReference<ObjectGame> objectRef = new AtomicReference<ObjectGame>();
+        final AtomicReference<Featurable> objectRef = new AtomicReference<Featurable>();
         final AtomicInteger oldLayerRef = new AtomicInteger();
         final AtomicInteger newLayerRef = new AtomicInteger();
         layerable.addListener(new LayerableListener()
         {
             @Override
-            public void notifyLayerChanged(ObjectGame object, Integer oldLayer, Integer newLayer)
+            public void notifyLayerChanged(Featurable featurable, Integer layerOld, Integer layerNew)
             {
-                objectRef.set(object);
-                oldLayerRef.set(oldLayer.intValue());
-                newLayerRef.set(newLayer.intValue());
+                objectRef.set(featurable);
+                oldLayerRef.set(layerOld.intValue());
+                newLayerRef.set(layerNew.intValue());
             }
         });
 

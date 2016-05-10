@@ -19,19 +19,19 @@ package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.MapTileRendererModel;
-import com.b3dgs.lionengine.game.map.MapTileViewer;
-import com.b3dgs.lionengine.game.map.MapTileViewerModel;
 import com.b3dgs.lionengine.game.map.Minimap;
-import com.b3dgs.lionengine.game.map.circuit.MapTileCircuitModel;
-import com.b3dgs.lionengine.game.map.transition.MapTileTransitionModel;
+import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransitionModel;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
 
 /**

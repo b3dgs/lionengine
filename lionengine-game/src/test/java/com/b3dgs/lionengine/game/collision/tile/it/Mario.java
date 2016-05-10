@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
@@ -34,10 +35,10 @@ import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.body.Body;
-import com.b3dgs.lionengine.game.object.trait.body.BodyModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.body.Body;
+import com.b3dgs.lionengine.game.object.feature.body.BodyModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -56,13 +57,13 @@ class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableL
     /** Jump force. */
     private final Force jump = new Force();
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable;
     /** Body model. */
-    private final Body body = addTrait(new BodyModel());
+    private final Body body;
     /** Tile collidable. */
-    private final TileCollidable tileCollidable = addTrait(new TileCollidableModel());
+    private final TileCollidable tileCollidable;
     /** Object collidable. */
-    private final Collidable collidable = addTrait(new CollidableModel());
+    private final Collidable collidable;
     /** Surface. */
     private final SpriteAnimated surface;
     /** Camera reference. */
@@ -79,7 +80,14 @@ class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableL
         super(setup, services);
         camera = services.get(Camera.class);
 
+        final Configurer configurer = getConfigurer();
+        transformable = addFeatureAndGet(new TransformableModel(configurer));
         transformable.teleport(256, 32);
+
+        body = addFeatureAndGet(new BodyModel());
+
+        collidable = addFeatureAndGet(new CollidableModel(configurer));
+        tileCollidable = addFeatureAndGet(new TileCollidableModel(configurer));
 
         jump.setVelocity(0.1);
         jump.setDestination(0.0, 0.0);

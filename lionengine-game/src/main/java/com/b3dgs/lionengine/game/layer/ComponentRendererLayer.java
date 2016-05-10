@@ -24,23 +24,48 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.Handlables;
+import com.b3dgs.lionengine.game.handler.HandlerListener;
 import com.b3dgs.lionengine.game.object.ComponentRenderable;
-import com.b3dgs.lionengine.game.object.HandledObjects;
-import com.b3dgs.lionengine.game.object.HandlerListener;
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.feature.displayable.Displayable;
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Renderer component implementation which render {@link Renderable} objects with {@link Layerable} support to order
- * rendering.
+ * Renderer component implementation which render {@link Displayable} elements with {@link Layerable} support to order
+ * rendering. If there is not {@link Layerable} feature, {@link #LAYER_DEFAULT} will be used as default layer value.
+ * <p>
+ * {@link com.b3dgs.lionengine.game.handler.Handler} should add it as listener with
+ * {@link com.b3dgs.lionengine.game.handler.Handler#addListener(HandlerListener)} and must be added to
+ * {@link com.b3dgs.lionengine.game.Services}}.
+ * </p>
  */
 public class ComponentRendererLayer implements ComponentRenderable, HandlerListener, LayerableListener
 {
+    /** Default layer value. */
+    private static final Integer LAYER_DEFAULT = Integer.valueOf(0);
+
+    /**
+     * Get the handlable layer.
+     * 
+     * @param handlable The handlable reference.
+     * @return The handlable layer if is {@link Layerable}, {@link #LAYER_DEFAULT} else.
+     */
+    private static Integer getLayer(Handlable handlable)
+    {
+        if (handlable.hasFeature(Layerable.class))
+        {
+            final Layerable layerable = handlable.getFeature(Layerable.class);
+            return layerable.getLayer();
+        }
+        return LAYER_DEFAULT;
+    }
+
     /** Sorted layers index. */
     private final Set<Integer> indexs;
     /** Layers to render. */
-    private final Map<Integer, Collection<Renderable>> layers;
+    private final Map<Integer, Collection<Displayable>> layers;
 
     /**
      * Create a renderer component.
@@ -48,7 +73,7 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
     public ComponentRendererLayer()
     {
         indexs = new TreeSet<Integer>();
-        layers = new HashMap<Integer, Collection<Renderable>>();
+        layers = new HashMap<Integer, Collection<Displayable>>();
     }
 
     /**
@@ -57,32 +82,32 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
      * @param layer The layer index.
      * @return The layer set reference.
      */
-    private Collection<Renderable> getLayer(Integer layer)
+    private Collection<Displayable> getLayer(Integer layer)
     {
-        final Collection<Renderable> objects;
+        final Collection<Displayable> displayables;
         if (!layers.containsKey(layer))
         {
-            objects = new ArrayList<Renderable>();
-            layers.put(layer, objects);
+            displayables = new ArrayList<Displayable>();
+            layers.put(layer, displayables);
         }
         else
         {
-            objects = layers.get(layer);
+            displayables = layers.get(layer);
         }
-        return objects;
+        return displayables;
     }
 
     /**
-     * Remove renderable and its layer.
+     * Remove displayable and its layer.
      * 
      * @param layer The layer index.
-     * @param renderable The renderable to remove.
+     * @param displayable The displayable to remove.
      */
-    private void remove(Integer layer, Renderable renderable)
+    private void remove(Integer layer, Displayable displayable)
     {
-        final Collection<Renderable> elements = getLayer(layer);
-        elements.remove(renderable);
-        if (elements.isEmpty())
+        final Collection<Displayable> displayables = getLayer(layer);
+        displayables.remove(displayable);
+        if (displayables.isEmpty())
         {
             indexs.remove(layer);
         }
@@ -93,13 +118,13 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
      */
 
     @Override
-    public void render(Graphic g, HandledObjects objects)
+    public void render(Graphic g, Handlables handlables)
     {
         for (final Integer layer : indexs)
         {
-            for (final Renderable renderable : layers.get(layer))
+            for (final Displayable displayable : layers.get(layer))
             {
-                renderable.render(g);
+                displayable.render(g);
             }
         }
     }
@@ -109,40 +134,42 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
      */
 
     @Override
-    public void notifyObjectAdded(ObjectGame object)
+    public void notifyHandlableAdded(Handlable handlable)
     {
-        if (object.hasTrait(Layerable.class) && object.hasTrait(Renderable.class))
+        if (handlable.hasFeature(Displayable.class))
         {
-            final Layerable layerable = object.getTrait(Layerable.class);
-            final Renderable renderable = object.getTrait(Renderable.class);
-            final Integer layer = layerable.getLayer();
-            final Collection<Renderable> objects = getLayer(layer);
-            objects.add(renderable);
+            final Displayable displayable = handlable.getFeature(Displayable.class);
+            final Integer layer = getLayer(handlable);
+            final Collection<Displayable> displayables = getLayer(layer);
+            displayables.add(displayable);
             indexs.add(layer);
         }
     }
 
     @Override
-    public void notifyObjectRemoved(ObjectGame object)
+    public void notifyHandlableRemoved(Handlable handlable)
     {
-        if (object.hasTrait(Layerable.class) && object.hasTrait(Renderable.class))
+        if (handlable.hasFeature(Displayable.class))
         {
-            final Layerable layerable = object.getTrait(Layerable.class);
-            final Renderable renderable = object.getTrait(Renderable.class);
-            final Integer layer = layerable.getLayer();
-            remove(layer, renderable);
+            final Displayable displayable = handlable.getFeature(Displayable.class);
+            final Integer layer = getLayer(handlable);
+            remove(layer, displayable);
         }
     }
 
+    /*
+     * LayerableListener
+     */
+
     @Override
-    public void notifyLayerChanged(ObjectGame object, Integer oldLayer, Integer newLayer)
+    public void notifyLayerChanged(Featurable featurable, Integer layerOld, Integer layerNew)
     {
-        if (object.hasTrait(Renderable.class))
+        if (featurable.hasFeature(Displayable.class))
         {
-            final Renderable renderable = object.getTrait(Renderable.class);
-            getLayer(oldLayer).remove(renderable);
-            getLayer(newLayer).add(renderable);
-            indexs.add(newLayer);
+            final Displayable displayable = featurable.getFeature(Displayable.class);
+            getLayer(layerOld).remove(displayable);
+            getLayer(layerNew).add(displayable);
+            indexs.add(layerNew);
         }
     }
 }

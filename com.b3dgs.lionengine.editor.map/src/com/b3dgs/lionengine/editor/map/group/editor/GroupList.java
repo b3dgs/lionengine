@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.ObjectListListener;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupType;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;

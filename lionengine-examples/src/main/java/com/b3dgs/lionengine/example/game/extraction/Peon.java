@@ -28,36 +28,35 @@ import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.extractable.Extractor;
-import com.b3dgs.lionengine.game.object.trait.extractable.ExtractorChecker;
-import com.b3dgs.lionengine.game.object.trait.extractable.ExtractorListener;
-import com.b3dgs.lionengine.game.object.trait.extractable.ExtractorModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.extractable.Extractor;
+import com.b3dgs.lionengine.game.object.feature.extractable.ExtractorChecker;
+import com.b3dgs.lionengine.game.object.feature.extractable.ExtractorListener;
+import com.b3dgs.lionengine.game.object.feature.extractable.ExtractorModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.game.tile.Tiled;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Peon entity implementation.
  */
-class Peon extends ObjectGame implements Updatable, Renderable, ExtractorChecker, ExtractorListener
+class Peon extends ObjectGame implements Updatable, ExtractorChecker, ExtractorListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     /** Pathfindable model. */
-    private final Pathfindable pathfindable = addTrait(new PathfindableModel());
+    private final Pathfindable pathfindable;
     /** Extractor model. */
-    private final Extractor extractor = addTrait(new ExtractorModel());
+    private final Extractor extractor = addFeatureAndGet(new ExtractorModel());
     /** Layerable model. */
-    private final Layerable layerable = addTrait(new LayerableModel());
+    private final Layerable layerable = addFeatureAndGet(new LayerableModel());
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
@@ -74,6 +73,9 @@ class Peon extends ObjectGame implements Updatable, Renderable, ExtractorChecker
     public Peon(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup.getConfigurer()));
+
         viewer = services.get(Viewer.class);
         transformable.teleport(208, 160);
         layerable.setLayer(Integer.valueOf(2));
@@ -86,6 +88,14 @@ class Peon extends ObjectGame implements Updatable, Renderable, ExtractorChecker
         extractor.setExtractionPerSecond(1.0);
         extractor.setDropOffPerSecond(1.0);
         extractor.setCapacity(5);
+
+        addFeature(new DisplayableModel(g ->
+        {
+            if (visible)
+            {
+                surface.render(g);
+            }
+        }));
     }
 
     @Override
@@ -94,15 +104,6 @@ class Peon extends ObjectGame implements Updatable, Renderable, ExtractorChecker
         pathfindable.update(extrp);
         extractor.update(extrp);
         surface.setLocation(viewer, transformable);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        if (visible)
-        {
-            surface.render(g);
-        }
     }
 
     @Override

@@ -22,8 +22,9 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.util.UtilReflection;
@@ -170,7 +171,7 @@ public class Services
         services.add(service);
         if (service instanceof Featurable)
         {
-            for (final Object feature : ((Featurable<?>) service).getFeatures())
+            for (final Object feature : ((Featurable) service).getFeatures())
             {
                 add(feature);
             }

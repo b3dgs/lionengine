@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.collision.tile.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;

@@ -21,39 +21,23 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.trait.TraitModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
  * Tile collidable model implementation.
- * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
- * </p>
- * <ul>
- * <li>{@link Transformable}</li>
- * </ul>
- * <p>
- * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
- * with {@link CollisionCategoryConfig}.
- * </p>
- * <p>
- * The {@link Services} must provide the following services:
- * </p>
- * <ul>
- * <li>{@link com.b3dgs.lionengine.game.map.MapTile}</li>
- * </ul>
- * <p>
- * If the {@link ObjectGame} is a {@link TileCollidableListener}, it will automatically
- * {@link #addListener(TileCollidableListener)} on it.
- * </p>
  */
-public class TileCollidableModel extends TraitModel implements TileCollidable
+public class TileCollidableModel extends FeatureModel implements TileCollidable
 {
     /** Launcher listeners. */
     private final Collection<TileCollidableListener> listeners = new HashSet<TileCollidableListener>();
+    /** Configurer reference. */
+    private final Configurer configurer;
     /** Transformable owning this model. */
     private Transformable transformable;
     /** The collisions used. */
@@ -61,15 +45,37 @@ public class TileCollidableModel extends TraitModel implements TileCollidable
     /** Map tile reference. */
     private MapTileCollision map;
     /** Collision enabled. */
-    private boolean enabled;
+    private boolean enabled = true;
 
     /**
      * Create a tile collidable model.
+     * <p>
+     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.feature.Feature}:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * <p>
+     * The {@link ObjectGame} owner must provide a valid {@link com.b3dgs.lionengine.game.Configurer} compatible
+     * with {@link CollisionCategoryConfig}.
+     * </p>
+     * <p>
+     * The {@link Services} must provide the following services:
+     * </p>
+     * <ul>
+     * <li>{@link com.b3dgs.lionengine.game.map.MapTile}</li>
+     * </ul>
+     * <p>
+     * If the {@link ObjectGame} is a {@link TileCollidableListener}, it will automatically
+     * {@link #addListener(TileCollidableListener)} on it.
+     * </p>
+     * 
+     * @param configurer The configurer reference.
      */
-    public TileCollidableModel()
+    public TileCollidableModel(Configurer configurer)
     {
         super();
-        enabled = true;
+        this.configurer = configurer;
     }
 
     /**
@@ -114,11 +120,11 @@ public class TileCollidableModel extends TraitModel implements TileCollidable
      */
 
     @Override
-    public void prepare(ObjectGame owner, Services services)
+    public void prepare(Handlable owner, Services services)
     {
-        transformable = owner.getTrait(Transformable.class);
+        transformable = owner.getFeature(Transformable.class);
         map = services.get(MapTileCollision.class);
-        categories = CollisionCategoryConfig.imports(owner.getConfigurer(), map);
+        categories = CollisionCategoryConfig.imports(configurer, map);
 
         if (owner instanceof TileCollidableListener)
         {

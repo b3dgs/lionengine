@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import com.b3dgs.lionengine.game.handler.Handlables;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
@@ -32,5 +33,5 @@ public interface ComponentRenderable
      * @param g The graphic output.
      * @param objects The objects reference.
      */
-    void render(Graphic g, HandledObjects objects);
+    void render(Graphic g, Handlables objects);
 }

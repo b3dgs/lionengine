@@ -30,9 +30,10 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -55,7 +56,7 @@ import com.b3dgs.lionengine.util.UtilMath;
  * <li>{@link Viewer}</li>
  * </ul>
  */
-public class MapTileCollisionModel implements MapTileCollision
+public class MapTileCollisionModel extends FeatureModel implements MapTileCollision
 {
     /** Info loading formulas. */
     private static final String INFO_LOAD_FORMULAS = "Loading collision formulas from: ";
@@ -249,6 +250,8 @@ public class MapTileCollisionModel implements MapTileCollision
     private final MapTileGroup mapGroup;
     /** Viewer reference. */
     private final Viewer viewer;
+    /** The services reference. */
+    private final Services services;
     /** Collision draw cache. */
     private Map<CollisionFormula, ImageBuffer> collisionCache;
     /** Formulas configuration media. */
@@ -264,6 +267,8 @@ public class MapTileCollisionModel implements MapTileCollision
      */
     public MapTileCollisionModel(Services services)
     {
+        super();
+        this.services = services;
         map = services.get(MapTile.class);
         mapGroup = services.get(MapTileGroup.class);
         viewer = services.get(Viewer.class);
@@ -349,6 +354,7 @@ public class MapTileCollisionModel implements MapTileCollision
         {
             tileCollision = new TileCollisionModel(tile);
             tile.addFeature(tileCollision);
+            tile.prepareFeatures(map, services);
         }
         else
         {

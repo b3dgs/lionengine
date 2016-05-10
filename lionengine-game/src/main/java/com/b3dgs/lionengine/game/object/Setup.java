@@ -33,8 +33,6 @@ public class Setup
 
     /** Configurer reference. */
     private final Configurer configurer;
-    /** Config file name. */
-    private final Media configFile;
     /** Class reference. */
     private Class<?> clazz;
 
@@ -47,7 +45,6 @@ public class Setup
     public Setup(Media config)
     {
         configurer = new Configurer(config);
-        configFile = config;
     }
 
     /**
@@ -69,16 +66,6 @@ public class Setup
     }
 
     /**
-     * Get the configuration file.
-     * 
-     * @return The configuration file.
-     */
-    public final Media getConfigFile()
-    {
-        return configFile;
-    }
-
-    /**
      * Get the class mapped to the setup. Lazy call (load class only first time, and keep its reference after).
      * 
      * @param classLoader The class loader used.
@@ -96,7 +83,7 @@ public class Setup
             }
             catch (final ClassNotFoundException exception)
             {
-                throw new LionEngineException(exception, Setup.ERROR_CLASS, configFile.getPath());
+                throw new LionEngineException(exception, Setup.ERROR_CLASS, configurer.getMedia().getPath());
             }
         }
         return clazz;

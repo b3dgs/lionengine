@@ -20,12 +20,12 @@ package com.b3dgs.lionengine.game.collision.tile;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.object.trait.Trait;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Represents something which can enter in collision with a {@link TileCollision}.
  */
-public interface TileCollidable extends Trait, Updatable
+public interface TileCollidable extends Feature, Updatable
 {
     /**
      * Add a tile collision listener.

@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
@@ -47,9 +47,9 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
     private static final ColorRgba COLOR = ColorRgba.GRAY;
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable;
     /** Collidable model. */
-    private final Collidable collidable = addTrait(new CollidableModel());
+    private final Collidable collidable;
     /** Viewer reference. */
     private final Viewer viewer;
     /** Current force. */
@@ -63,6 +63,11 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
     public Ball(Setup setup, Services services)
     {
         super(setup, services);
+
+        transformable = addFeatureAndGet(new TransformableModel(setup.getConfigurer()));
+        collidable = addFeatureAndGet(new CollidableModel(setup.getConfigurer()));
+        collidable.setOrigin(Origin.MIDDLE);
+
         viewer = services.get(Viewer.class);
 
         speed = 3.0;
@@ -71,8 +76,6 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
         force.setVelocity(speed);
 
         transformable.teleport(320 / 2, 220 / 2);
-
-        collidable.setOrigin(Origin.MIDDLE);
     }
 
     @Override
@@ -108,9 +111,9 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
     }
 
     @Override
-    public void notifyCollided(ObjectGame object)
+    public void notifyCollided(Collidable collidable)
     {
-        final Transformable transformable = object.getTrait(Transformable.class);
+        final Transformable transformable = collidable.getOwner().getFeature(Transformable.class);
         int side = 0;
         if (transformable.getX() < transformable.getOldX())
         {

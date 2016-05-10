@@ -20,7 +20,7 @@
  * Object representation and manipulation by handler, providing quick object access from their types, and object
  * creation by using a resources sharing system that allows to reduce significantly memory usage.
  * <p>
- * There is also a component system which can be used by the {@link com.b3dgs.lionengine.game.object.Handler} in order
+ * There is also a component system which can be used by the {@link com.b3dgs.lionengine.game.handler.Handler} in order
  * to provide specialized routine.
  * </p>
  */

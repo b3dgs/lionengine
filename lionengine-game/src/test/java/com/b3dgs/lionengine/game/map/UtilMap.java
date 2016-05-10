@@ -26,8 +26,10 @@ import org.junit.Assert;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.map.circuit.MapTileCircuitModel;
-import com.b3dgs.lionengine.game.map.transition.MapTileTransitionModel;
+import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupType;
@@ -80,6 +82,7 @@ public class UtilMap
         map.addFeature(mapGroup);
         map.addFeature(new MapTileTransitionModel(services));
         map.addFeature(new MapTileCircuitModel(services));
+        map.prepareFeatures(map, services);
         map.create(1, 1, size, size);
 
         setGroups(map);

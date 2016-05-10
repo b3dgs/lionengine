@@ -20,14 +20,14 @@ package com.b3dgs.lionengine.game.pathfinding;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.map.MapTileFeature;
+import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.Tiled;
 
 /**
  * Represents the pathfinding feature of a map tile. It works by using {@link TilePath} feature.
  */
-public interface MapTilePath extends MapTileFeature
+public interface MapTilePath extends Feature
 {
     /**
      * Load map pathfinding from an external file.

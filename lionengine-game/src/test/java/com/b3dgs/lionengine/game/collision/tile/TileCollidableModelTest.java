@@ -32,16 +32,17 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.UtilMap;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
@@ -93,7 +94,7 @@ public class TileCollidableModelTest
     /** Map. */
     private final MapTile map = services.create(MapTileGame.class);
     /** Tile collidable. */
-    private final TileCollidable collidable = new TileCollidableModel();
+    private TileCollidable collidable;
     /** Map collision. */
     private MapTileCollision mapCollision;
     /** Formulas config. */
@@ -109,6 +110,7 @@ public class TileCollidableModelTest
     {
         services.add(new Camera());
         map.addFeature(new MapTileGroupModel());
+        map.prepareFeatures(map, services);
         map.create(1, 1, 3, 3);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
@@ -268,12 +270,15 @@ public class TileCollidableModelTest
         CollisionCategoryConfig.exports(setup.getConfigurer().getRoot(), categoryY);
         CollisionCategoryConfig.exports(setup.getConfigurer().getRoot(), categoryX);
         final ObjectGame object = new ObjectGame(setup, services);
-        final Transformable transformable = new TransformableModel();
+        final Configurer configurer = object.getConfigurer();
+
+        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(configurer));
         transformable.setSize(2, 2);
-        object.addType(transformable);
-        object.addType(collidable);
-        collidable.prepare(object, services);
+
+        collidable = object.addFeatureAndGet(new TileCollidableModel(configurer));
         collidable.setEnabled(true);
+
+        object.prepareFeatures(object, services);
 
         Assert.assertEquals(Arrays.asList(categoryY, categoryX), collidable.getCategories());
 

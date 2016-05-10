@@ -33,11 +33,11 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileRendererModel;
-import com.b3dgs.lionengine.game.map.MapTileViewer;
-import com.b3dgs.lionengine.game.map.MapTileViewerModel;
-import com.b3dgs.lionengine.game.map.fog.FogOfWar;
-import com.b3dgs.lionengine.game.map.fog.Fovable;
+import com.b3dgs.lionengine.game.map.feature.fog.FogOfWar;
+import com.b3dgs.lionengine.game.map.feature.fog.Fovable;
+import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -106,7 +106,7 @@ class Scene extends Sequence
         camera.setLocation(0, 0);
 
         peon = factory.create(Peon.MEDIA);
-        fovables.add(peon.getTrait(Fovable.class));
+        fovables.add(peon.getFeature(Fovable.class));
     }
 
     @Override

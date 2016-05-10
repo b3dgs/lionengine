@@ -30,8 +30,8 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -71,7 +71,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     /** Rectangle. */
     private final Rectangle rectangle = Geom.createRectangle();
     /** Transformable trait. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable;
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Camera reference. */
@@ -89,10 +89,15 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     public ObjectRepresentation(SetupSurface setup, Services services)
     {
         super(setup, services);
-        surface = getSprite(setup.getConfigurer(), setup.getSurface());
+
+        final Configurer configurer = setup.getConfigurer();
+        surface = getSprite(configurer, setup.getSurface());
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.prepare();
+
+        transformable = addFeatureAndGet(new TransformableModel(configurer));
         transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
+
         camera = services.get(Camera.class);
         map = services.get(MapTile.class);
     }

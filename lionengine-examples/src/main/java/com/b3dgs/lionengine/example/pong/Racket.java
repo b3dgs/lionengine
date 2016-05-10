@@ -27,8 +27,8 @@ import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
@@ -46,9 +46,9 @@ class Racket extends ObjectGame implements Updatable, Renderable, CollidableList
     private static final ColorRgba COLOR = ColorRgba.YELLOW;
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable;
     /** Collidable model. */
-    private final Collidable collidable = addTrait(new CollidableModel());
+    private final Collidable collidable;
     /** Viewer reference. */
     private final Viewer viewer;
     /** Move speed. */
@@ -62,11 +62,15 @@ class Racket extends ObjectGame implements Updatable, Renderable, CollidableList
     public Racket(Setup setup, Services services)
     {
         super(setup, services);
+
+        transformable = addFeatureAndGet(new TransformableModel(setup.getConfigurer()));
+        collidable = addFeatureAndGet(new CollidableModel(setup.getConfigurer()));
+        collidable.setOrigin(Origin.MIDDLE);
+
         viewer = services.get(Viewer.class);
 
         transformable.teleportY(240 / 2);
 
-        collidable.setOrigin(Origin.MIDDLE);
         speed = UtilRandom.getRandomDouble() + 2.0;
     }
 
@@ -94,7 +98,7 @@ class Racket extends ObjectGame implements Updatable, Renderable, CollidableList
      */
     public void setBall(Ball ball)
     {
-        target = ball.getTrait(Transformable.class);
+        target = ball.getFeature(Transformable.class);
     }
 
     @Override
@@ -127,7 +131,7 @@ class Racket extends ObjectGame implements Updatable, Renderable, CollidableList
     }
 
     @Override
-    public void notifyCollided(ObjectGame object)
+    public void notifyCollided(Collidable collidable)
     {
         // Nothing to do
     }

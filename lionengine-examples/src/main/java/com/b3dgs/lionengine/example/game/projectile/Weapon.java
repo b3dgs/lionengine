@@ -25,11 +25,11 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.trait.launchable.Launcher;
-import com.b3dgs.lionengine.game.object.trait.launchable.LauncherListener;
-import com.b3dgs.lionengine.game.object.trait.launchable.LauncherModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.launchable.Launcher;
+import com.b3dgs.lionengine.game.object.feature.launchable.LauncherListener;
+import com.b3dgs.lionengine.game.object.feature.launchable.LauncherModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 
 /**
  * Weapon implementation.
@@ -40,9 +40,9 @@ class Weapon extends ObjectGame implements Updatable, LauncherListener
     public static final Media PULSE_CANNON = Medias.create("PulseCannon.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     /** Launcher model. */
-    private final Launcher launcher = addTrait(new LauncherModel());
+    private final Launcher launcher;
     /** Owner localizable. */
     private Transformable ownerLocalizable;
     /** Owner collidable. */
@@ -57,6 +57,8 @@ class Weapon extends ObjectGame implements Updatable, LauncherListener
     public Weapon(Setup setup, Services services)
     {
         super(setup, services);
+
+        launcher = addFeatureAndGet(new LauncherModel(setup.getConfigurer()));
     }
 
     /**
@@ -66,8 +68,8 @@ class Weapon extends ObjectGame implements Updatable, LauncherListener
      */
     public void setOwner(Ship owner)
     {
-        ownerLocalizable = owner.getTrait(Transformable.class);
-        ownerCollidable = owner.getTrait(Collidable.class);
+        ownerLocalizable = owner.getFeature(Transformable.class);
+        ownerCollidable = owner.getFeature(Collidable.class);
     }
 
     /**
@@ -100,6 +102,6 @@ class Weapon extends ObjectGame implements Updatable, LauncherListener
     @Override
     public void notifyFired(ObjectGame object)
     {
-        object.getTrait(Collidable.class).addIgnore(ownerCollidable);
+        object.getFeature(Collidable.class).addIgnore(ownerCollidable);
     }
 }

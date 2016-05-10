@@ -28,32 +28,31 @@ import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.extractable.Extractable;
-import com.b3dgs.lionengine.game.object.trait.extractable.ExtractableModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.extractable.Extractable;
+import com.b3dgs.lionengine.game.object.feature.extractable.ExtractableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Building implementation.
  */
-class GoldMine extends ObjectGame implements Updatable, Renderable
+class GoldMine extends ObjectGame implements Updatable
 {
     /** Gold mine media reference. */
     public static final Media GOLD_MINE = Medias.create("GoldMine.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable;
     /** Extractable model. */
-    private final Extractable extractable = addTrait(new ExtractableModel());
+    private final Extractable extractable = addFeatureAndGet(new ExtractableModel());
     /** Pathfindable model. */
-    private final Pathfindable pathfindable = addTrait(new PathfindableModel());
+    private final Pathfindable pathfindable;
     /** Layerable model. */
-    private final Layerable layerable = addTrait(new LayerableModel());
+    private final Layerable layerable = addFeatureAndGet(new LayerableModel());
     /** Surface reference. */
     private final Sprite surface;
     /** Viewer reference. */
@@ -68,6 +67,10 @@ class GoldMine extends ObjectGame implements Updatable, Renderable
     public GoldMine(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        transformable = addFeatureAndGet(new TransformableModel(setup.getConfigurer()));
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup.getConfigurer()));
+
         viewer = services.get(Viewer.class);
 
         surface = Drawable.loadSprite(setup.getSurface());
@@ -75,6 +78,8 @@ class GoldMine extends ObjectGame implements Updatable, Renderable
 
         extractable.setResourcesQuantity(100);
         layerable.setLayer(Integer.valueOf(1));
+
+        addFeature(new DisplayableModel(g -> surface.render(g)));
     }
 
     @Override
@@ -87,11 +92,5 @@ class GoldMine extends ObjectGame implements Updatable, Renderable
     public void update(double extrp)
     {
         surface.setLocation(viewer, transformable);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        surface.render(g);
     }
 }

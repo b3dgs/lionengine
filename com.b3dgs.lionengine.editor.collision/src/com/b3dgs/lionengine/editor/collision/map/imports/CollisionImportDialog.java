@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.game.collision.tile.CollisionGroupConfig;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 
 /**
  * Represents the import map dialog.

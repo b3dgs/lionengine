@@ -24,7 +24,8 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
 
@@ -38,10 +39,9 @@ import com.b3dgs.lionengine.game.tile.TilesExtractor;
  * 
  * @see MapTileGame
  * @see Minimap
- * @see MapTileFeature
  * @see Tile
  */
-public interface MapTile extends Surface, Featurable<MapTileFeature>
+public interface MapTile extends Surface, Handlable
 {
     /**
      * Create and prepare map memory area. Must be called before assigning tiles ({@link #setTile(Tile)}).
@@ -116,7 +116,7 @@ public interface MapTile extends Surface, Featurable<MapTileFeature>
      * @return The feature instance already added.
      * @throws LionEngineException If unable to create feature or <code>null</code>.
      */
-    <F extends MapTileFeature> F createFeature(Class<F> feature);
+    <F extends Feature> F createFeature(Class<F> feature);
 
     /**
      * Create a tile.

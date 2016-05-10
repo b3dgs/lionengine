@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.trait.TraitModel;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.handler.Handlable;
 
 /**
  * Layerable model implementation.
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.object.trait.TraitModel;
  * <li>{@link LayerableListener}</li>
  * </ul>
  */
-public class LayerableModel extends TraitModel implements Layerable
+public class LayerableModel extends FeatureModel implements Layerable
 {
     /** Layers listener. */
     private final Collection<LayerableListener> listeners = new ArrayList<LayerableListener>();
@@ -54,7 +54,7 @@ public class LayerableModel extends TraitModel implements Layerable
      */
 
     @Override
-    public void prepare(ObjectGame owner, Services services)
+    public void prepare(Handlable owner, Services services)
     {
         super.prepare(owner, services);
 

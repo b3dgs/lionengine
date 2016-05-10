@@ -25,12 +25,12 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.map.fog.Fovable;
-import com.b3dgs.lionengine.game.map.fog.FovableModel;
+import com.b3dgs.lionengine.game.map.feature.fog.Fovable;
+import com.b3dgs.lionengine.game.map.feature.fog.FovableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
@@ -45,9 +45,9 @@ class Peon extends ObjectGame implements Updatable, Renderable
     public static final Media MEDIA = Medias.create("Peon.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     /** Fovable model. */
-    private final Fovable fovable = addTrait(new FovableModel());
+    private final Fovable fovable = addFeatureAndGet(new FovableModel());
     /** Random timer. */
     private final Timing timing = new Timing();
     /** Surface reference. */

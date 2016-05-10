@@ -18,14 +18,15 @@
 package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.handler.Handlables;
 
 /**
- * Updater component implementation which update {@link Updatable} objects with an extrapolation value.
+ * Updater component implementation which update {@link Updatable} elements with an extrapolation value.
  */
 public class ComponentUpdater implements ComponentUpdatable
 {
     /**
-     * Create an updater component.
+     * Create component.
      */
     public ComponentUpdater()
     {
@@ -37,9 +38,9 @@ public class ComponentUpdater implements ComponentUpdatable
      */
 
     @Override
-    public void update(double extrp, HandledObjects objects)
+    public void update(double extrp, Handlables handlables)
     {
-        for (final Updatable updatable : objects.get(Updatable.class))
+        for (final Updatable updatable : handlables.get(Updatable.class))
         {
             updatable.update(extrp);
         }

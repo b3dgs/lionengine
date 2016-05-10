@@ -29,10 +29,10 @@ import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.launchable.Launchable;
-import com.b3dgs.lionengine.game.object.trait.launchable.LaunchableModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.launchable.Launchable;
+import com.b3dgs.lionengine.game.object.feature.launchable.LaunchableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
@@ -46,11 +46,11 @@ class Projectile extends ObjectGame implements Updatable, Renderable, Collidable
     public static final Media PULSE = Medias.create("Pulse.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     /** Collidable model. */
-    private final Collidable collidable = addTrait(new CollidableModel());
+    private final Collidable collidable;
     /** Launchable model. */
-    private final Launchable launchable = addTrait(new LaunchableModel());
+    private final Launchable launchable = addFeatureAndGet(new LaunchableModel());
     /** Projectile surface. */
     private final Sprite sprite;
     /** Viewer reference. */
@@ -65,6 +65,9 @@ class Projectile extends ObjectGame implements Updatable, Renderable, Collidable
     public Projectile(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        collidable = addFeatureAndGet(new CollidableModel(setup.getConfigurer()));
+
         viewer = services.get(Viewer.class);
 
         sprite = Drawable.loadSprite(setup.getSurface());
@@ -93,7 +96,7 @@ class Projectile extends ObjectGame implements Updatable, Renderable, Collidable
     }
 
     @Override
-    public void notifyCollided(ObjectGame object)
+    public void notifyCollided(Collidable collidable)
     {
         // Nothing to do
     }

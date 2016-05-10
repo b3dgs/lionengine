@@ -23,15 +23,9 @@ import org.junit.Assert;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.UtilChecksum;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
@@ -50,14 +44,20 @@ import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Handler;
-import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.ImageInfo;
+import com.b3dgs.lionengine.graphic.Text;
+import com.b3dgs.lionengine.graphic.TextStyle;
+import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.util.UtilChecksum;
 
 public class ModuleCore
 {

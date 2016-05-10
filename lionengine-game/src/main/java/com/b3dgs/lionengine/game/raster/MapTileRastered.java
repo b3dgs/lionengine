@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.raster;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.map.MapTileRenderer;
+import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
 
 /**
  * Map tile rastered representation. This will allow to apply a raster effect to map rendering, improving the number of

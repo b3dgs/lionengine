@@ -19,7 +19,8 @@ package com.b3dgs.lionengine.game.tile;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Surface;
-import com.b3dgs.lionengine.game.Featurable;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Tile representation with the following data:
@@ -33,12 +34,12 @@ import com.b3dgs.lionengine.game.Featurable;
  * A tile represents a surface, localized on a {@link com.b3dgs.lionengine.game.map.MapTile}.
  * </p>
  * <p>
- * Services can be extended by using the {@link TileFeature} layer.
+ * Services can be extended by using the {@link Feature} layer.
  * </p>
  * 
  * @see com.b3dgs.lionengine.game.map.MapTile
  */
-public interface Tile extends Surface, Localizable, Tiled, Featurable<TileFeature>
+public interface Tile extends Surface, Localizable, Tiled, Featurable
 {
     /**
      * Get sheet number.

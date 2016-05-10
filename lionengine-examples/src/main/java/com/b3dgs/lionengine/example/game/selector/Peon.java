@@ -29,8 +29,8 @@ import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -46,9 +46,9 @@ class Peon extends ObjectGame implements Updatable, Renderable, SelectorListener
     public static final Media MEDIA = Medias.create("Peon.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable;
     /** Collidable model. */
-    private final Collidable collidable = addTrait(new CollidableModel());
+    private final Collidable collidable;
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
@@ -65,6 +65,10 @@ class Peon extends ObjectGame implements Updatable, Renderable, SelectorListener
     public Peon(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        transformable = addFeatureAndGet(new TransformableModel(setup.getConfigurer()));
+        collidable = addFeatureAndGet(new CollidableModel(setup.getConfigurer()));
+
         viewer = services.get(Viewer.class);
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);

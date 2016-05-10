@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.pathfinding;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.tile.TileFeature;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Tile representation with the following data:
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.tile.TileFeature;
  * This allows to know easily which objects are on tile.
  * </p>
  */
-public interface TilePath extends TileFeature
+public interface TilePath extends Feature
 {
     /**
      * Add an object ID over this tile.

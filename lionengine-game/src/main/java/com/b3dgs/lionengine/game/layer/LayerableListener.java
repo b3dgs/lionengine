@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.layer;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.feature.Featurable;
 
 /**
  * Notify when layer value changed.
@@ -27,9 +27,9 @@ public interface LayerableListener
     /**
      * Notify when layer value changed.
      * 
-     * @param object The object reference.
-     * @param oldLayer The old layer value.
-     * @param newLayer The new layer value.
+     * @param featurable The featurable reference.
+     * @param layerOld The old layer value.
+     * @param layerNew The new layer value.
      */
-    void notifyLayerChanged(ObjectGame object, Integer oldLayer, Integer newLayer);
+    void notifyLayerChanged(Featurable featurable, Integer layerOld, Integer layerNew);
 }

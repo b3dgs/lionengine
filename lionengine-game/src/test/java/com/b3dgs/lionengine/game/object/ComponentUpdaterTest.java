@@ -25,6 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handler;
 
 /**
  * Test the component updater.

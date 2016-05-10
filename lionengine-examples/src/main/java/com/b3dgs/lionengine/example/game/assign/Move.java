@@ -25,15 +25,15 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.actionable.Action;
-import com.b3dgs.lionengine.game.object.trait.actionable.Actionable;
-import com.b3dgs.lionengine.game.object.trait.actionable.ActionableModel;
-import com.b3dgs.lionengine.game.object.trait.assignable.Assign;
-import com.b3dgs.lionengine.game.object.trait.assignable.Assignable;
-import com.b3dgs.lionengine.game.object.trait.assignable.AssignableModel;
+import com.b3dgs.lionengine.game.object.feature.actionable.Action;
+import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
+import com.b3dgs.lionengine.game.object.feature.actionable.ActionableModel;
+import com.b3dgs.lionengine.game.object.feature.assignable.Assign;
+import com.b3dgs.lionengine.game.object.feature.assignable.Assignable;
+import com.b3dgs.lionengine.game.object.feature.assignable.AssignableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
@@ -47,10 +47,10 @@ class Move extends ObjectGame implements Action, Assign, Updatable, Renderable
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Move.xml");
 
-    /** Actionable model. */
-    private final Actionable actionable = addTrait(new ActionableModel());
     /** Assignable model. */
-    private final Assignable assignable = addTrait(new AssignableModel());
+    private final Assignable assignable = addFeatureAndGet(new AssignableModel());
+    /** Actionable model. */
+    private final Actionable actionable;
     /** Button image. */
     private final Image image;
     /** Text reference. */
@@ -71,6 +71,9 @@ class Move extends ObjectGame implements Action, Assign, Updatable, Renderable
     public Move(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        actionable = addFeatureAndGet(new ActionableModel(setup.getConfigurer()));
+
         text = services.get(Text.class);
         cursor = services.get(Cursor.class);
         handler = services.get(Handler.class);

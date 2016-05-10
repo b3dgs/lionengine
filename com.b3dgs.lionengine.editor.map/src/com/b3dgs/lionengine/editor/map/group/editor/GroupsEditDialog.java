@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.editor.dialog.AbstractEditor;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.world.WorldModel;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 

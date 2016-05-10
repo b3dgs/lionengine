@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.collision.tile;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.tile.TileFeature;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
  * Tile representation with the following data:
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.tile.TileFeature;
  * 
  * @see CollisionFormula
  */
-public interface TileCollision extends TileFeature
+public interface TileCollision extends Feature
 {
     /**
      * Add a collision formula.

@@ -29,14 +29,15 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.MirrorableModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.MirrorableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
@@ -80,14 +81,14 @@ public class CollidableModelTest
     public static ObjectGame createObject(Media config, Services services)
     {
         final ObjectGame object = new ObjectGame(new Setup(config), services);
-        final Transformable transformable = new TransformableModel();
-        object.addType(transformable);
+        final Configurer configurer = object.getConfigurer();
+
+        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(object.getConfigurer()));
         transformable.setLocation(1.0, 2.0);
         transformable.setSize(2, 2);
 
-        final CollidableModel collidable = new CollidableModel();
-        object.addType(collidable);
-        collidable.prepare(object, services);
+        object.addFeature(new CollidableModel(configurer));
+        object.prepareFeatures(object, services);
 
         return object;
     }
@@ -104,8 +105,8 @@ public class CollidableModelTest
         final ObjectGame object1 = createObject(config, services);
         final ObjectGame object2 = createObject(config, services);
 
-        final Collidable collidable1 = object1.getTrait(Collidable.class);
-        final Collidable collidable2 = object2.getTrait(Collidable.class);
+        final Collidable collidable1 = object1.getFeature(Collidable.class);
+        final Collidable collidable2 = object2.getFeature(Collidable.class);
 
         Assert.assertNull(collidable1.collide(collidable1));
         Assert.assertNull(collidable2.collide(collidable1));
@@ -125,12 +126,12 @@ public class CollidableModelTest
         Assert.assertTrue(collidable1.getCollisionBounds().iterator().hasNext());
         Assert.assertEquals(collision1, collidable1.getCollisions().iterator().next());
 
-        object2.getTrait(Transformable.class).moveLocation(1.0, 5.0, 5.0);
+        object2.getFeature(Transformable.class).moveLocation(1.0, 5.0, 5.0);
         collidable2.update(1.0);
 
         Assert.assertEquals(collision2, collidable2.collide(collidable1));
 
-        object2.getTrait(Transformable.class).moveLocation(1.0, 5.0, 5.0);
+        object2.getFeature(Transformable.class).moveLocation(1.0, 5.0, 5.0);
         collidable2.update(1.0);
 
         Assert.assertNull(collidable1.collide(collidable2));
@@ -148,8 +149,8 @@ public class CollidableModelTest
         final ObjectGame object1 = createObject(config, services);
         final ObjectGame object2 = createObject(config, services);
 
-        final Collidable collidable1 = object1.getTrait(Collidable.class);
-        final Collidable collidable2 = object2.getTrait(Collidable.class);
+        final Collidable collidable1 = object1.getFeature(Collidable.class);
+        final Collidable collidable2 = object2.getFeature(Collidable.class);
 
         final Collision collision1 = new Collision("test1", 1, 1, 1, 1, true);
         collidable1.addCollision(collision1);
@@ -157,13 +158,13 @@ public class CollidableModelTest
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, false);
         collidable2.addCollision(collision2);
 
-        object1.getTrait(Transformable.class).teleport(1.0, 1.0);
+        object1.getFeature(Transformable.class).teleport(1.0, 1.0);
         collidable1.update(1.0);
         collidable2.update(1.0);
 
         Assert.assertEquals(collision2, collidable2.collide(collidable1));
 
-        object1.getTrait(Transformable.class).teleport(2.0, 2.0);
+        object1.getFeature(Transformable.class).teleport(2.0, 2.0);
         collidable1.update(1.0);
 
         Assert.assertEquals(collision2, collidable2.collide(collidable1));
@@ -179,19 +180,17 @@ public class CollidableModelTest
         services.add(new Camera());
 
         final ObjectGame object1 = createObject(config, services);
-        final Mirrorable mirror1 = new MirrorableModel();
-        object1.addType(mirror1);
+        final Mirrorable mirror1 = object1.addFeatureAndGet(new MirrorableModel());
         mirror1.mirror(Mirror.HORIZONTAL);
         mirror1.update(1.0);
 
         final ObjectGame object2 = createObject(config, services);
-        final Mirrorable mirror2 = new MirrorableModel();
-        object2.addType(mirror2);
+        final Mirrorable mirror2 = object2.addFeatureAndGet(new MirrorableModel());
         mirror2.mirror(Mirror.VERTICAL);
         mirror2.update(1.0);
 
-        final Collidable collidable1 = object1.getTrait(Collidable.class);
-        final Collidable collidable2 = object2.getTrait(Collidable.class);
+        final Collidable collidable1 = object1.getFeature(Collidable.class);
+        final Collidable collidable2 = object2.getFeature(Collidable.class);
 
         final Collision collision1 = new Collision("test1", 1, 1, 1, 1, true);
         collidable1.addCollision(collision1);
@@ -199,13 +198,13 @@ public class CollidableModelTest
         final Collision collision2 = new Collision("test2", 0, 0, 3, 3, true);
         collidable2.addCollision(collision2);
 
-        object1.getTrait(Transformable.class).teleport(1.0, 1.0);
+        object1.getFeature(Transformable.class).teleport(1.0, 1.0);
         collidable1.update(1.0);
         collidable2.update(1.0);
 
         Assert.assertEquals(collision2, collidable2.collide(collidable1));
 
-        object1.getTrait(Transformable.class).teleport(2.0, 2.0);
+        object1.getFeature(Transformable.class).teleport(2.0, 2.0);
         collidable1.update(1.0);
 
         Assert.assertEquals(collision2, collidable2.collide(collidable1));
@@ -221,7 +220,7 @@ public class CollidableModelTest
         services.add(new Camera());
 
         final ObjectGame object = createObject(config, services);
-        final Collidable collidable = object.getTrait(Collidable.class);
+        final Collidable collidable = object.getFeature(Collidable.class);
 
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
         collidable.addCollision(collision);
@@ -245,7 +244,7 @@ public class CollidableModelTest
         services.add(new Camera());
 
         final ObjectGame object = createObject(config, services);
-        final Collidable collidable = object.getTrait(Collidable.class);
+        final Collidable collidable = object.getFeature(Collidable.class);
 
         final Collision collision = new Collision("test", 0, 0, 3, 3, false);
         collidable.addCollision(collision);
@@ -268,10 +267,10 @@ public class CollidableModelTest
         services.add(new Camera());
 
         final ObjectGame object = createObject(config, services);
-        object.getTrait(Transformable.class).moveLocation(1.0, 1.0, 1.0);
+        object.getFeature(Transformable.class).moveLocation(1.0, 1.0, 1.0);
 
         final Graphic g = Graphics.createGraphic();
-        final Collidable collidable = object.getTrait(Collidable.class);
+        final Collidable collidable = object.getFeature(Collidable.class);
         collidable.setOrigin(Origin.MIDDLE);
 
         collidable.render(g);

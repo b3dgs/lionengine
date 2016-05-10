@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
 import com.b3dgs.lionengine.game.state.StateTransition;
@@ -74,9 +74,9 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     {
         super(EntityState.WALK);
         this.animation = animation;
-        mirrorable = entity.getTrait(Mirrorable.class);
-        tileCollidable = entity.getTrait(TileCollidable.class);
-        transformable = entity.getTrait(Transformable.class);
+        mirrorable = entity.getFeature(Mirrorable.class);
+        tileCollidable = entity.getFeature(TileCollidable.class);
+        transformable = entity.getFeature(Transformable.class);
         animator = entity.surface;
         movement = entity.movement;
         jump = entity.jump;

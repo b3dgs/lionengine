@@ -31,9 +31,6 @@ class Scene extends Sequence
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
-
     /**
      * Constructor.
      * 
@@ -42,6 +39,8 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
+        final Keyboard keyboard = getInputDevice(Keyboard.class);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 

@@ -28,10 +28,11 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
@@ -75,19 +76,17 @@ public class ComponentRendererLayerTest
     {
         final Setup setup = new Setup(config);
         final ObjectGame object = new ObjectGame(setup, services);
-        final LayerableModel layerable = new LayerableModel();
+        final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel());
         layerable.prepare(object, services);
-        object.addType(layerable);
 
-        final Renderable renderable1 = new Renderable()
+        object.addFeature(new DisplayableModel(new Renderable()
         {
             @Override
             public void render(Graphic g)
             {
                 last.set(object.getId().intValue());
             }
-        };
-        object.addType(renderable1);
+        }));
         handler.add(object);
 
         return layerable;

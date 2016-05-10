@@ -31,8 +31,8 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTilePersister;
-import com.b3dgs.lionengine.game.map.MapTilePersisterModel;
+import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
+import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -49,10 +49,8 @@ class Scene extends Sequence
 
     /** Music. */
     private final Midi music = AudioMidi.loadMidi(Medias.create("music", "music.mid"));
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** World reference. */
-    private final World world = new World(getConfig(), keyboard);
+    private final World world;
 
     /**
      * Constructor.
@@ -62,7 +60,10 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
+        final Keyboard keyboard = getInputDevice(Keyboard.class);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        world = new World(getConfig(), keyboard);
     }
 
     /**

@@ -24,46 +24,46 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.producible.Producer;
-import com.b3dgs.lionengine.game.object.trait.producible.ProducerChecker;
-import com.b3dgs.lionengine.game.object.trait.producible.ProducerListener;
-import com.b3dgs.lionengine.game.object.trait.producible.ProducerModel;
-import com.b3dgs.lionengine.game.object.trait.producible.Producible;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.producible.Producer;
+import com.b3dgs.lionengine.game.object.feature.producible.ProducerChecker;
+import com.b3dgs.lionengine.game.object.feature.producible.ProducerListener;
+import com.b3dgs.lionengine.game.object.feature.producible.ProducerModel;
+import com.b3dgs.lionengine.game.object.feature.producible.Producible;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.CoordTile;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
  * Peon entity implementation.
  */
-class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker, ProducerListener
+class Peon extends ObjectGame implements Updatable, ProducerChecker, ProducerListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     /** Pathfindable model. */
-    private final Pathfindable pathfindable = addTrait(new PathfindableModel());
+    private final Pathfindable pathfindable;
     /** Producer model. */
-    private final Producer producer = addTrait(new ProducerModel());
+    private final Producer producer = addFeatureAndGet(new ProducerModel());
     /** Layerable model. */
-    private final Layerable layerable = addTrait(new LayerableModel());
+    private final Layerable layerable = addFeatureAndGet(new LayerableModel());
     /** Surface reference. */
     private final SpriteAnimated surface;
-    /** Map tile referene. */
+    /** Map tile reference. */
     private final MapTile map;
     /** Map tile reference. */
     private final MapTilePath mapPath;
@@ -81,6 +81,9 @@ class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker,
     public Peon(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup.getConfigurer()));
+
         viewer = services.get(Viewer.class);
         map = services.get(MapTile.class);
         mapPath = services.get(MapTilePath.class);
@@ -93,6 +96,14 @@ class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker,
         transformable.teleport(208, 160);
         producer.setStepsPerSecond(1.0);
         layerable.setLayer(Integer.valueOf(2));
+
+        addFeature(new DisplayableModel(g ->
+        {
+            if (visible)
+            {
+                surface.render(g);
+            }
+        }));
     }
 
     @Override
@@ -101,15 +112,6 @@ class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker,
         pathfindable.update(extrp);
         producer.update(extrp);
         surface.setLocation(viewer, transformable);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        if (visible)
-        {
-            surface.render(g);
-        }
     }
 
     @Override
@@ -128,19 +130,19 @@ class Peon extends ObjectGame implements Updatable, Renderable, ProducerChecker,
     }
 
     @Override
-    public void notifyStartProduction(Producible producible, ObjectGame object)
+    public void notifyStartProduction(Producible producible, Handlable handlable)
     {
         visible = false;
     }
 
     @Override
-    public void notifyProducing(Producible producible, ObjectGame object)
+    public void notifyProducing(Producible producible, Handlable handlable)
     {
         // Nothing to do
     }
 
     @Override
-    public void notifyProduced(Producible producible, ObjectGame object)
+    public void notifyProduced(Producible producible, Handlable handlable)
     {
         final CoordTile coord = mapPath.getFreeTileAround(pathfindable,
                                                           (int) producible.getX() / map.getTileWidth(),

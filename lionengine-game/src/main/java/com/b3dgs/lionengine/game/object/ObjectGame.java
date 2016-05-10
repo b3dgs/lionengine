@@ -17,23 +17,18 @@
  */
 package com.b3dgs.lionengine.game.object;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Queue;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.object.trait.Trait;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.handler.Identifiable;
+import com.b3dgs.lionengine.game.handler.IdentifiableListener;
+import com.b3dgs.lionengine.game.handler.IdentifiableModel;
 
 /**
  * Object minimal representation. Defined by a unique ID, the object is designed to be handled by a {@link Handler} . To
@@ -47,239 +42,57 @@ import com.b3dgs.lionengine.game.object.trait.Trait;
  * </p>
  * <p>
  * It is possible to retrieve external {@link Services} when object is being constructed.
+ * They cannot be used before a call to {@link #prepareFeatures(Handlable, Services)} (called when created with a
+ * {@link Factory}).
  * </p>
  * <p>
- * Instead of using traditional interface implementation, it is possible to use {@link Trait} system, in order to reduce
+ * Instead of using traditional interface implementation, it is possible to use {@link Feature} system, in order to
+ * reduce
  * class complexity. The {@link Handler} is designed to work well with that system.
  * </p>
  * 
  * @see Configurer
  * @see Factory
  * @see Handler
- * @see Trait
+ * @see Feature
  * @see Setup
  * @see Services
  */
-public class ObjectGame
+public class ObjectGame implements Handlable
 {
-    /** Free id error. */
-    private static final String ERROR_FREE_ID = "No more free id available !";
-    /** Id used (list of active id used). */
-    private static final Collection<Integer> IDS = new HashSet<Integer>(16);
-    /** Recycle id (reuse previous removed object id). */
-    private static final Queue<Integer> RECYCLE = new ArrayDeque<Integer>();
-    /** Last id used (last maximum id value). */
-    private static int lastId;
-
-    /**
-     * Get the next unused id.
-     * 
-     * @return The next unused id.
-     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
-     */
-    private static Integer getFreeId()
-    {
-        if (!RECYCLE.isEmpty())
-        {
-            final Integer id = RECYCLE.poll();
-            IDS.add(id);
-            return id;
-        }
-        if (IDS.size() >= Integer.MAX_VALUE)
-        {
-            throw new LionEngineException(ERROR_FREE_ID);
-        }
-        while (IDS.contains(Integer.valueOf(lastId)))
-        {
-            lastId++;
-        }
-        final Integer id = Integer.valueOf(lastId);
-        IDS.add(id);
-        return id;
-    }
-
-    /** Features provider. */
-    private final Features<Trait> features = new Features<Trait>(Trait.class);
-    /** Types provided (must be interface). */
-    private final Map<Class<?>, Object> types = new HashMap<Class<?>, Object>();
-    /** Trait to prepare. */
-    private final Collection<Trait> traitToPrepare = new ArrayList<Trait>();
-    /** Listeners. */
-    private final Collection<ObjectGameListener> listeners = new HashSet<ObjectGameListener>(1);
-    /** Media representation. */
-    private final Media media;
+    /** Identifiable model. */
+    private final Identifiable identifiable = new IdentifiableModel();
+    /** Featurable model. */
+    private final Featurable featurable = new FeaturableModel();
     /** Configurer reference. */
     private final Configurer configurer;
-    /** Unique id. */
-    private final Integer id;
-    /** Destroyed flag. */
-    private boolean destroyed;
 
     /**
      * Create an object.
      * 
      * @param setup The setup reference (resources sharing entry point).
      * @param services The services reference (external services provider).
-     * @throws LionEngineException If setup or service is <code>null</code>.
+     * @throws LionEngineException If setup or service is <code>null</code>, or no free ID available.
      */
     public ObjectGame(Setup setup, Services services)
     {
         Check.notNull(setup);
         Check.notNull(services);
 
-        id = getFreeId();
-        media = setup.getConfigFile();
         configurer = setup.getConfigurer();
-        destroyed = false;
     }
 
     /**
-     * Add a trait.
+     * Add a feature.
      * 
-     * @param <T> The trait type.
-     * @param trait The trait to add.
-     * @return The added trait (same as source).
+     * @param <T> The feature type.
+     * @param feature The feature to add.
+     * @return The added feature (same as source).
      */
-    public final <T extends Trait> T addTrait(T trait)
+    public final <T extends Feature> T addFeatureAndGet(T feature)
     {
-        traitToPrepare.add(trait);
-        return trait;
-    }
-
-    /**
-     * Add a type.
-     * 
-     * @param type The type to add.
-     */
-    public final void addType(Object type)
-    {
-        types.put(type.getClass(), type);
-        for (final Class<?> current : getInterfaces(type))
-        {
-            types.put(current, type);
-        }
-    }
-
-    /**
-     * Get all declared interfaces from object.
-     * 
-     * @param object The object reference.
-     * @return The declared interfaces.
-     */
-    private static Collection<Class<?>> getInterfaces(Object object)
-    {
-        final Collection<Class<?>> interfaces = new ArrayList<Class<?>>();
-        final Deque<Class<?>> currents = new ArrayDeque<Class<?>>(Arrays.asList(object.getClass().getInterfaces()));
-        final Deque<Class<?>> nexts = new ArrayDeque<Class<?>>();
-        while (!currents.isEmpty())
-        {
-            nexts.clear();
-            interfaces.addAll(currents);
-            for (final Class<?> current : currents)
-            {
-                nexts.addAll(Arrays.asList(current.getInterfaces()));
-            }
-            currents.clear();
-            currents.addAll(nexts);
-            nexts.clear();
-        }
-        return interfaces;
-    }
-
-    /**
-     * Check if object has the following trait.
-     * 
-     * @param trait The trait to check (could be a {@link Trait} or a classic interface.
-     * @return <code>true</code> if has trait, <code>false</code> else.
-     */
-    public final boolean hasTrait(Class<?> trait)
-    {
-        final boolean hasTrait;
-        if (trait.isAssignableFrom(getClass()))
-        {
-            hasTrait = true;
-        }
-        else
-        {
-            for (final Class<?> type : types.keySet())
-            {
-                if (trait.isAssignableFrom(type))
-                {
-                    return true;
-                }
-            }
-            hasTrait = features.contains(trait);
-        }
-        return hasTrait;
-    }
-
-    /**
-     * Get a trait from its class.
-     * 
-     * @param <T> The trait class type used.
-     * @param trait The trait class.
-     * @return The trait instance.
-     * @throws LionEngineException If feature was not found.
-     */
-    public final <T> T getTrait(Class<T> trait)
-    {
-        final T found;
-        if (trait.isAssignableFrom(getClass()))
-        {
-            found = trait.cast(this);
-        }
-        else
-        {
-            for (final Map.Entry<Class<?>, Object> type : types.entrySet())
-            {
-                if (trait.isAssignableFrom(type.getKey()))
-                {
-                    return trait.cast(type.getValue());
-                }
-            }
-            found = features.get(trait);
-        }
-        return found;
-    }
-
-    /**
-     * Get all traits.
-     * 
-     * @return The traits list.
-     */
-    public final Iterable<Trait> getTraits()
-    {
-        return features.getAll();
-    }
-
-    /**
-     * Get all traits types.
-     * 
-     * @return The traits types.
-     */
-    public final Iterable<Class<? extends Trait>> getTraitsType()
-    {
-        return features.getFeatures();
-    }
-
-    /**
-     * Get all types.
-     * 
-     * @return The traits types.
-     */
-    public final Iterable<Class<?>> getTypes()
-    {
-        return types.keySet();
-    }
-
-    /**
-     * Get the media representing this object.
-     * 
-     * @return The media representing this object.
-     */
-    public final Media getMedia()
-    {
-        return media;
+        addFeature(feature);
+        return feature;
     }
 
     /**
@@ -293,78 +106,85 @@ public class ObjectGame
     }
 
     /**
-     * Get the id (<code>null</code> will be returned once removed by {@link Handler} after a call to
-     * {@link #destroy()}).
-     * 
-     * @return The object unique id.
-     */
-    public final Integer getId()
-    {
-        if (destroyed)
-        {
-            return null;
-        }
-        return id;
-    }
-
-    /**
-     * Declare as removable from handler. Will be removed on next {@link Handler#update(double)} call.
-     * Can be destroyed only one time.
-     */
-    public final void destroy()
-    {
-        if (!destroyed)
-        {
-            destroyed = true;
-            for (final ObjectGameListener listener : listeners)
-            {
-                listener.notifyDestroyed(id);
-            }
-        }
-    }
-
-    /**
-     * Release id.
-     */
-    final void freeId()
-    {
-        IDS.remove(id);
-        RECYCLE.add(id);
-    }
-
-    /**
-     * Add an object listener.
-     * 
-     * @param listener The listener reference.
-     */
-    final void addListener(ObjectGameListener listener)
-    {
-        listeners.add(listener);
-    }
-
-    /**
-     * Called when object has been prepared and is ready to be used. All traits are also prepared.
-     * Does nothing by default.
+     * Called when features are prepared and can be used. Does nothing by default.
      */
     protected void onPrepared()
     {
         // Nothing by default
     }
 
-    /**
-     * Prepare added traits.
-     * 
-     * @param services The services reference.
-     * @throws LionEngineException If error when creating instances.
+    /*
+     * Identifiable
      */
-    void prepareTraits(Services services)
+
+    @Override
+    public void addListener(IdentifiableListener listener)
     {
-        for (final Trait trait : traitToPrepare)
-        {
-            trait.prepare(this, services);
-            features.add(trait);
-        }
-        traitToPrepare.clear();
+        identifiable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(IdentifiableListener listener)
+    {
+        identifiable.removeListener(listener);
+    }
+
+    @Override
+    public Integer getId()
+    {
+        return identifiable.getId();
+    }
+
+    @Override
+    public void destroy()
+    {
+        identifiable.destroy();
+    }
+
+    @Override
+    public void notifyDestroyed()
+    {
+        identifiable.notifyDestroyed();
+    }
+
+    /*
+     * Featurable
+     */
+
+    @Override
+    public void prepareFeatures(Handlable owner, Services services)
+    {
+        featurable.prepareFeatures(owner, services);
         onPrepared();
+    }
+
+    @Override
+    public void addFeature(Feature feature)
+    {
+        featurable.addFeature(feature);
+    }
+
+    @Override
+    public boolean hasFeature(Class<? extends Feature> feature)
+    {
+        return featurable.hasFeature(feature);
+    }
+
+    @Override
+    public <C extends Feature> C getFeature(Class<C> feature)
+    {
+        return featurable.getFeature(feature);
+    }
+
+    @Override
+    public Iterable<Feature> getFeatures()
+    {
+        return featurable.getFeatures();
+    }
+
+    @Override
+    public Iterable<Class<? extends Feature>> getFeaturesType()
+    {
+        return featurable.getFeaturesType();
     }
 }

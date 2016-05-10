@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.object;
 
+import com.b3dgs.lionengine.game.handler.Handlables;
+
 /**
  * Describe the main component requirement, which is aimed to provide updatable feature for an object.
  * 
@@ -28,7 +30,7 @@ public interface ComponentUpdatable
      * Update the current objects.
      * 
      * @param extrp The extrapolation value.
-     * @param objects The objects reference.
+     * @param handlables The handlables reference.
      */
-    void update(double extrp, HandledObjects objects);
+    void update(double extrp, Handlables handlables);
 }

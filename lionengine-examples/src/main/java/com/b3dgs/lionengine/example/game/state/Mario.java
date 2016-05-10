@@ -30,12 +30,12 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.body.Body;
-import com.b3dgs.lionengine.game.object.trait.body.BodyModel;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.MirrorableModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.body.Body;
+import com.b3dgs.lionengine.game.object.feature.body.BodyModel;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.MirrorableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.state.StateFactory;
 import com.b3dgs.lionengine.game.state.StateHandler;
@@ -61,11 +61,11 @@ class Mario extends ObjectGame implements Updatable, Renderable
     /** Jump force. */
     private final Force jump = new Force();
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     /** Mirrorable model. */
-    private final Mirrorable mirrorable = addTrait(new MirrorableModel());
+    private final Mirrorable mirrorable = addFeatureAndGet(new MirrorableModel());
     /** Body model. */
-    private final Body body = addTrait(new BodyModel());
+    private final Body body = addFeatureAndGet(new BodyModel());
     /** Surface. */
     private final SpriteAnimated surface;
     /** Camera reference. */

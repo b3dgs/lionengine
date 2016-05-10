@@ -28,18 +28,17 @@ import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.producible.ProducibleListener;
-import com.b3dgs.lionengine.game.object.trait.producible.ProducibleModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.producible.ProducibleListener;
+import com.b3dgs.lionengine.game.object.feature.producible.ProducibleModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Building implementation.
  */
-class Building extends ObjectGame implements Updatable, Renderable, ProducibleListener
+class Building extends ObjectGame implements Updatable, ProducibleListener
 {
     /** Farm media reference. */
     public static final Media FARM = Medias.create("Farm.xml");
@@ -47,9 +46,9 @@ class Building extends ObjectGame implements Updatable, Renderable, ProducibleLi
     public static final Media BARRACKS = Medias.create("Barracks.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable;
     /** Layerable model. */
-    private final Layerable layerable = addTrait(new LayerableModel());
+    private final Layerable layerable = addFeatureAndGet(new LayerableModel());
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
@@ -66,6 +65,9 @@ class Building extends ObjectGame implements Updatable, Renderable, ProducibleLi
     public Building(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        transformable = addFeatureAndGet(new TransformableModel(setup.getConfigurer()));
+
         viewer = services.get(Viewer.class);
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 2, 1);
@@ -73,22 +75,20 @@ class Building extends ObjectGame implements Updatable, Renderable, ProducibleLi
 
         layerable.setLayer(Integer.valueOf(1));
 
-        addTrait(new ProducibleModel());
+        addFeature(new ProducibleModel(setup.getConfigurer()));
+        addFeature(new DisplayableModel(g ->
+        {
+            if (visible)
+            {
+                surface.render(g);
+            }
+        }));
     }
 
     @Override
     public void update(double extrp)
     {
         // Nothing to do
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        if (visible)
-        {
-            surface.render(g);
-        }
     }
 
     @Override

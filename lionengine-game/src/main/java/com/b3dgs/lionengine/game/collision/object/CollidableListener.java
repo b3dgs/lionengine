@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.collision.object;
 
-import com.b3dgs.lionengine.game.object.ObjectGame;
-
 /**
  * Notify collision events between two {@link Collidable}.
  */
@@ -27,7 +25,7 @@ public interface CollidableListener
     /**
      * Notify when a collision occurred with another {@link Collidable}.
      * 
-     * @param object The collidable reference.
+     * @param collidable The collidable reference.
      */
-    void notifyCollided(ObjectGame object);
+    void notifyCollided(Collidable collidable);
 }

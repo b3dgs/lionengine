@@ -22,15 +22,15 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.object.trait.Trait;
-import com.b3dgs.lionengine.game.object.trait.orientable.Orientable;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.object.feature.orientable.Orientable;
 import com.b3dgs.lionengine.game.tile.Tiled;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Describe an object which can move on a {@link MapTilePath} by using A-Star algorithm.
  */
-public interface Pathfindable extends Trait, Tiled, Orientable, Updatable, Renderable
+public interface Pathfindable extends Feature, Tiled, Orientable, Updatable, Renderable
 {
     /**
      * Add a pathfindable listener.

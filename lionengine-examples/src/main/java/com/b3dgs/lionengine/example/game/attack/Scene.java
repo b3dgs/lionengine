@@ -26,18 +26,18 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
-import com.b3dgs.lionengine.game.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.MapTileRendererModel;
-import com.b3dgs.lionengine.game.map.MapTileViewer;
-import com.b3dgs.lionengine.game.map.MapTileViewerModel;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Handler;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
@@ -106,10 +106,10 @@ class Scene extends Sequence
         final Grunt grunt2 = factory.create(Grunt.MEDIA);
         handler.add(grunt2);
 
-        final Pathfindable pathfindable = grunt2.getTrait(Pathfindable.class);
+        final Pathfindable pathfindable = grunt2.getFeature(Pathfindable.class);
         pathfindable.setLocation(4, 10);
 
-        grunt1.attack(grunt2.getTrait(Transformable.class));
+        grunt1.attack(grunt2.getFeature(Transformable.class));
     }
 
     @Override

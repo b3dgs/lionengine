@@ -31,10 +31,10 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileConfig;
-import com.b3dgs.lionengine.game.tile.TileFeature;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 
 /**
@@ -167,7 +167,7 @@ public class PropertiesTile implements PropertiesProviderTile
         features.setText(Messages.TileFeatures);
         features.setImage(PropertiesTile.ICON_FEATURES);
 
-        for (final TileFeature feature : tile.getFeatures())
+        for (final Feature feature : tile.getFeatures())
         {
             final TreeItem item = new TreeItem(features, SWT.NONE);
             item.setText(Messages.TileFeature);
@@ -176,7 +176,7 @@ public class PropertiesTile implements PropertiesProviderTile
             final Class<?> clazz = feature.getClass();
             for (final Class<?> type : clazz.getInterfaces())
             {
-                if (TileFeature.class.isAssignableFrom(type))
+                if (Feature.class.isAssignableFrom(type))
                 {
                     PropertiesPart.createLine(item, type.getSimpleName(), clazz.getName());
                 }

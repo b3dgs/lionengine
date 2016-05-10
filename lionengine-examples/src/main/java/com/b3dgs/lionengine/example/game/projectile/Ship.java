@@ -29,13 +29,13 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.FramesConfig;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
@@ -51,9 +51,9 @@ class Ship extends ObjectGame implements Updatable, Renderable, CollidableListen
     public static final Media MEDIA = Medias.create("Ship.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     /** Collidable model. */
-    private final Collidable collidable = addTrait(new CollidableModel());
+    private final Collidable collidable;
     /** Surface. */
     private final SpriteAnimated sprite;
     /** Viewer reference. */
@@ -80,6 +80,9 @@ class Ship extends ObjectGame implements Updatable, Renderable, CollidableListen
     public Ship(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        collidable = addFeatureAndGet(new CollidableModel(setup.getConfigurer()));
+
         viewer = services.get(Viewer.class);
 
         final FramesConfig config = FramesConfig.imports(setup);
@@ -168,8 +171,8 @@ class Ship extends ObjectGame implements Updatable, Renderable, CollidableListen
     }
 
     @Override
-    public void notifyCollided(ObjectGame object)
+    public void notifyCollided(Collidable collidable)
     {
-        object.destroy();
+        collidable.getOwner().destroy();
     }
 }

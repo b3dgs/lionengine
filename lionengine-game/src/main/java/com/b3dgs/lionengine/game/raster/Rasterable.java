@@ -19,13 +19,13 @@ package com.b3dgs.lionengine.game.raster;
 
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.object.trait.Trait;
+import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Represents a surface that can be rastered.
  */
-public interface Rasterable extends Trait, Updatable, Renderable
+public interface Rasterable extends Feature, Updatable, Renderable
 {
     /** Maximum rasters. */
     int MAX_RASTERS = 15;

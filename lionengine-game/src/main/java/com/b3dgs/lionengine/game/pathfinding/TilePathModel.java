@@ -21,13 +21,15 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+
 /**
  * Representation of a pathfindable tile.
  */
-public class TilePathModel implements TilePath
+public class TilePathModel extends FeatureModel implements TilePath
 {
     /** Object id reference. */
-    private final Set<Integer> objectsId;
+    private final Set<Integer> objectsId = new HashSet<Integer>();
     /** Category name. */
     private final String category;
 
@@ -38,8 +40,8 @@ public class TilePathModel implements TilePath
      */
     public TilePathModel(String category)
     {
+        super();
         this.category = category;
-        objectsId = new HashSet<Integer>();
     }
 
     /*

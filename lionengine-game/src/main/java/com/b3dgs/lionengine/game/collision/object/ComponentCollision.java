@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.collision.object;
 
+import com.b3dgs.lionengine.game.handler.Handlables;
 import com.b3dgs.lionengine.game.object.ComponentUpdatable;
-import com.b3dgs.lionengine.game.object.HandledObjects;
 
 /**
  * Default collision component implementation. Designed to check collision between {@link Collidable}.
@@ -42,13 +42,13 @@ public class ComponentCollision implements ComponentUpdatable
             final Collision collision = objectA.collide(objectB);
             if (collision != null)
             {
-                objectB.notifyCollided(objectA.getOwner());
+                objectB.notifyCollided(objectA);
             }
         }
     }
 
     /**
-     * Create a collision component.
+     * Create component.
      */
     public ComponentCollision()
     {
@@ -60,7 +60,7 @@ public class ComponentCollision implements ComponentUpdatable
      */
 
     @Override
-    public void update(double extrp, HandledObjects objects)
+    public void update(double extrp, Handlables objects)
     {
         final Iterable<Collidable> collidables = objects.get(Collidable.class);
         for (final Collidable objectA : collidables)

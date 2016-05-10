@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
 import com.b3dgs.lionengine.game.state.StateTransition;
@@ -54,7 +54,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater
     {
         super(MarioState.WALK);
         this.animation = animation;
-        mirrorable = mario.getTrait(Mirrorable.class);
+        mirrorable = mario.getFeature(Mirrorable.class);
         animator = mario.getSurface();
         movement = mario.getMovement();
         addTransition(new TransitionWalkToIdle());

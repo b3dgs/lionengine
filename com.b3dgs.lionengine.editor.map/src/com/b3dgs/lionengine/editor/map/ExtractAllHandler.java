@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.editor.map.group.menu.GroupsEditDialog;
 import com.b3dgs.lionengine.editor.map.sheet.extract.SheetsExtractDialog;
 import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
-import com.b3dgs.lionengine.game.map.transition.TransitionsConfig;
+import com.b3dgs.lionengine.game.map.feature.transition.TransitionsConfig;
 import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 

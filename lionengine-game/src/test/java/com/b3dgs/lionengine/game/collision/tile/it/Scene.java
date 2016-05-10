@@ -32,11 +32,11 @@ import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
-import com.b3dgs.lionengine.game.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.MapTileRendererModel;
-import com.b3dgs.lionengine.game.map.MapTileViewer;
-import com.b3dgs.lionengine.game.map.MapTileViewerModel;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -101,7 +101,7 @@ class Scene extends Sequence
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
         hero = factory.create(Mario.MEDIA);
 
-        hero.getTrait(TileCollidable.class).addListener(new TileCollidableListener()
+        hero.getFeature(TileCollidable.class).addListener(new TileCollidableListener()
         {
             @Override
             public void notifyTileCollided(Tile tile, Axis axis)

@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine.game.object;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.AfterClass;
@@ -31,13 +28,13 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.object.trait.Trait;
-import com.b3dgs.lionengine.game.object.trait.body.Body;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.IdentifiableListener;
+import com.b3dgs.lionengine.game.object.feature.body.Body;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
-import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Test the object game class.
@@ -87,9 +84,9 @@ public class ObjectGameTest
      * 
      * @param object The object to free.
      */
-    public static void freeId(ObjectGame object)
+    public static void notifyDestroyed(ObjectGame object)
     {
-        object.freeId();
+        object.notifyDestroyed();
     }
 
     /**
@@ -101,54 +98,16 @@ public class ObjectGameTest
         final Media config = Medias.create(OBJECT_XML);
         final ObjectGame object = new ObjectGame(new Setup(config), new Services());
         Assert.assertEquals(config, object.getConfigurer().getMedia());
-        Assert.assertEquals(config, object.getMedia());
 
         object.destroy();
-        object.freeId();
+        object.notifyDestroyed();
     }
 
     /**
-     * Test the id.
-     * 
-     * @throws NoSuchFieldException If error.
-     * @throws IllegalAccessException If error.
+     * Test the features.
      */
     @Test
-    public void testId() throws NoSuchFieldException, IllegalAccessException
-    {
-        final Collection<Integer> ids = UtilReflection.getField(ObjectGame.class, "IDS");
-        ids.clear();
-        final Collection<Integer> recycle = UtilReflection.getField(ObjectGame.class, "RECYCLE");
-        recycle.clear();
-        final Field field = ObjectGame.class.getDeclaredField("lastId");
-        UtilReflection.setAccessible(field, true);
-        field.set(ObjectGame.class, Integer.valueOf(0));
-
-        final Collection<ObjectGame> objects = new ArrayList<ObjectGame>();
-        for (int i = 0; i < 10; i++)
-        {
-            final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
-            objects.add(object);
-            Assert.assertEquals(Integer.valueOf(i), object.getId());
-        }
-        for (final ObjectGame object : objects)
-        {
-            object.destroy();
-            object.freeId();
-            Assert.assertNull(object.getId());
-        }
-        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
-        Assert.assertEquals(Integer.valueOf(0), object.getId());
-        object.destroy();
-        object.freeId();
-        Assert.assertNull(object.getId());
-    }
-
-    /**
-     * Test the trait.
-     */
-    @Test
-    public void testTrait()
+    public void testFeatures()
     {
         final AtomicBoolean prepared = new AtomicBoolean();
         final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services())
@@ -160,67 +119,40 @@ public class ObjectGameTest
                 prepared.set(true);
             }
         };
-        final TransformableModel transformable = object.addTrait(new TransformableModel());
-        object.prepareTraits(new Services());
+        final TransformableModel transformable = object.addFeatureAndGet(new TransformableModel(object.getConfigurer()));
+        object.prepareFeatures(object, new Services());
 
         Assert.assertEquals(object, transformable.getOwner());
         Assert.assertTrue(prepared.get());
 
-        Assert.assertTrue(object.hasTrait(ObjectGame.class));
-        Assert.assertNotNull(object.getTrait(ObjectGame.class));
+        Assert.assertFalse(object.hasFeature(Body.class));
+        Assert.assertTrue(object.hasFeature(Transformable.class));
+        Assert.assertEquals(transformable, object.getFeature(Transformable.class));
 
-        Assert.assertFalse(object.hasTrait(Body.class));
-        Assert.assertTrue(object.hasTrait(Transformable.class));
-        Assert.assertEquals(transformable, object.getTrait(Transformable.class));
-
-        for (final Trait trait : object.getTraits())
+        for (final Feature trait : object.getFeatures())
         {
             Assert.assertEquals(transformable, trait);
         }
 
-        for (final Class<? extends Trait> trait : object.getTraitsType())
-        {
-            Assert.assertEquals(Transformable.class, trait);
-        }
-
         object.destroy();
-        object.freeId();
+        object.notifyDestroyed();
     }
 
     /**
-     * Test the types.
-     */
-    @Test
-    public void testTypes()
-    {
-        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
-        object.addType(new TransformableModel());
-        object.addType(Boolean.TRUE);
-
-        Assert.assertFalse(object.hasTrait(Body.class));
-        Assert.assertFalse(object.hasTrait(Integer.class));
-        Assert.assertTrue(object.hasTrait(Boolean.class));
-        Assert.assertEquals(Boolean.TRUE, object.getTrait(Boolean.class));
-
-        object.destroy();
-        object.freeId();
-    }
-
-    /**
-     * Test the trait not found.
+     * Test the feature not found.
      */
     @Test(expected = LionEngineException.class)
-    public void testTraitNotFound()
+    public void testFeatureNotFound()
     {
         final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
         try
         {
-            Assert.assertNotNull(object.getTrait(Trait.class));
+            Assert.assertNotNull(object.getFeature(Feature.class));
         }
         finally
         {
             object.destroy();
-            object.freeId();
+            object.notifyDestroyed();
         }
     }
 
@@ -232,7 +164,7 @@ public class ObjectGameTest
     {
         final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
         final AtomicBoolean destroyed = new AtomicBoolean();
-        object.addListener(new ObjectGameListener()
+        object.addListener(new IdentifiableListener()
         {
             @Override
             public void notifyDestroyed(Integer objectId)
@@ -249,6 +181,6 @@ public class ObjectGameTest
         object.destroy();
         Assert.assertFalse(destroyed.get());
 
-        object.freeId();
+        object.notifyDestroyed();
     }
 }

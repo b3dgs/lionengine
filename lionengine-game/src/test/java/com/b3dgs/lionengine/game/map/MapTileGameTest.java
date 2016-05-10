@@ -35,8 +35,7 @@ import com.b3dgs.lionengine.test.UtilTests;
 public class MapTileGameTest
 {
     /** Temp folder. */
-    @Rule
-    public final TemporaryFolder folder = new TemporaryFolder();
+    @Rule public final TemporaryFolder folder = new TemporaryFolder();
 
     /**
      * Test map creation.

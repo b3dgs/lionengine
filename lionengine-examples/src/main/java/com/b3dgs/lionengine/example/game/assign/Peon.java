@@ -26,8 +26,8 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -43,9 +43,9 @@ class Peon extends ObjectGame implements Updatable, Renderable
     public static final Media MEDIA = Medias.create("Peon.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     /** Pathfindable model. */
-    private final Pathfindable pathfindable = addTrait(new PathfindableModel());
+    private final Pathfindable pathfindable;
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
@@ -60,6 +60,9 @@ class Peon extends ObjectGame implements Updatable, Renderable
     public Peon(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup.getConfigurer()));
+
         viewer = services.get(Viewer.class);
         transformable.teleport(208, 160);
 

@@ -19,7 +19,11 @@ package com.b3dgs.lionengine.game.tile;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Features;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Handlable;
 
 /**
  * Tile base implementation.
@@ -27,7 +31,7 @@ import com.b3dgs.lionengine.game.Features;
 public class TileGame implements Tile
 {
     /** Features list. */
-    private final Features<TileFeature> features = new Features<TileFeature>(TileFeature.class);
+    private final Featurable featurable = new FeaturableModel();
     /** Tile sheet number where tile is contained. */
     private final Integer sheet;
     /** Position number in the tilesheet. */
@@ -80,9 +84,39 @@ public class TileGame implements Tile
      */
 
     @Override
-    public void addFeature(TileFeature feature)
+    public void prepareFeatures(Handlable owner, Services services)
     {
-        features.add(feature);
+        featurable.prepareFeatures(owner, services);
+    }
+
+    @Override
+    public void addFeature(Feature feature)
+    {
+        featurable.addFeature(feature);
+    }
+
+    @Override
+    public <C extends Feature> C getFeature(Class<C> feature)
+    {
+        return featurable.getFeature(feature);
+    }
+
+    @Override
+    public Iterable<Feature> getFeatures()
+    {
+        return featurable.getFeatures();
+    }
+
+    @Override
+    public Iterable<Class<? extends Feature>> getFeaturesType()
+    {
+        return featurable.getFeaturesType();
+    }
+
+    @Override
+    public boolean hasFeature(Class<? extends Feature> feature)
+    {
+        return featurable.hasFeature(feature);
     }
 
     @Override
@@ -143,24 +177,6 @@ public class TileGame implements Tile
     public int getInTileHeight()
     {
         return 1;
-    }
-
-    @Override
-    public <C extends TileFeature> C getFeature(Class<C> feature)
-    {
-        return features.get(feature);
-    }
-
-    @Override
-    public Iterable<? extends TileFeature> getFeatures()
-    {
-        return features.getAll();
-    }
-
-    @Override
-    public <C extends TileFeature> boolean hasFeature(Class<C> feature)
-    {
-        return features.contains(feature);
     }
 
     /*

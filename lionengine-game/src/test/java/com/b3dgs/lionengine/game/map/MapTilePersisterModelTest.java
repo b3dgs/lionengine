@@ -33,6 +33,8 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
+import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -61,8 +63,10 @@ public class MapTilePersisterModelTest
      */
     private static MapTile createMap()
     {
-        final MapTileGame map = new MapTileGame();
+        final Services services = new Services();
+        final MapTileGame map = new MapTileGame(services);
         map.addFeature(new MapTilePersisterModel(map));
+        map.prepareFeatures(map, services);
         map.create(16, 32, 3, 3);
         map.loadSheets(new ArrayList<SpriteTiled>());
 
@@ -111,8 +115,10 @@ public class MapTilePersisterModelTest
      */
     private static MapTileGame loadMap(Media level) throws IOException
     {
-        final MapTileGame map = new MapTileGame();
+        final Services services = new Services();
+        final MapTileGame map = new MapTileGame(services);
         map.addFeature(new MapTilePersisterModel(map));
+        map.prepareFeatures(map, services);
         FileReading input = null;
         try
         {
@@ -127,8 +133,7 @@ public class MapTilePersisterModelTest
     }
 
     /** Temp folder. */
-    @Rule
-    public final TemporaryFolder folder = new TemporaryFolder();
+    @Rule public final TemporaryFolder folder = new TemporaryFolder();
 
     /**
      * Prepare test.
@@ -199,8 +204,10 @@ public class MapTilePersisterModelTest
 
         TileSheetsConfig.exports(config, 16, 32, new ArrayList<String>());
 
-        final MapTile map = new MapTileGame();
+        final Services services = new Services();
+        final MapTile map = new MapTileGame(services);
         map.addFeature(new MapTilePersisterModel(map));
+        map.prepareFeatures(map, services);
         map.create(16, 32, 3, 3);
         map.loadSheets(config);
 

@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
 import com.b3dgs.lionengine.game.state.StateTransition;
@@ -54,7 +54,7 @@ class StateTurn extends StateGame implements StateInputDirectionalUpdater
     {
         super(EntityState.TURN);
         this.animation = animation;
-        mirrorable = entity.getTrait(Mirrorable.class);
+        mirrorable = entity.getFeature(Mirrorable.class);
         animator = entity.surface;
         movement = entity.movement;
         addTransition(new TransitionTurnToIdle());

@@ -24,9 +24,12 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.trait.TraitModel;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.feature.animatable.Animatable;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
@@ -34,15 +37,15 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Default rasterable implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.feature.Feature}:
  * </p>
  * <ul>
- * <li>{@link Localizable}</li>
+ * <li>{@link Transformable}</li>
  * <li>{@link Mirrorable}</li>
- * <li>{@link Animator}</li>
+ * <li>{@link Animatable}</li>
  * </ul>
  */
-public class RasterableModel extends TraitModel implements Rasterable
+public class RasterableModel extends FeatureModel implements Rasterable
 {
     /** List of rastered frames. */
     private final List<SpriteAnimated> rastersAnim;
@@ -86,11 +89,11 @@ public class RasterableModel extends TraitModel implements Rasterable
      */
 
     @Override
-    public void prepare(ObjectGame owner, Services services)
+    public void prepare(Handlable owner, Services services)
     {
-        localizable = owner.getTrait(Localizable.class);
-        mirrorable = owner.getTrait(Mirrorable.class);
-        animator = owner.getTrait(Animator.class);
+        localizable = owner.getFeature(Transformable.class);
+        mirrorable = owner.getFeature(Mirrorable.class);
+        animator = owner.getFeature(Animatable.class);
         viewer = services.get(Viewer.class);
     }
 

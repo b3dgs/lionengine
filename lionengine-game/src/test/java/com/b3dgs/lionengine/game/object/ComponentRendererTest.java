@@ -24,6 +24,8 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.handler.HandlerTest;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 

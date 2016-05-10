@@ -58,7 +58,7 @@ public class SetupTest
         final Media config = Medias.create("object.xml");
         final Setup setup = new Setup(config);
 
-        Assert.assertEquals(config, setup.getConfigFile());
+        Assert.assertEquals(config, setup.getConfigurer().getMedia());
         Assert.assertNotNull(setup.getConfigurer());
     }
 

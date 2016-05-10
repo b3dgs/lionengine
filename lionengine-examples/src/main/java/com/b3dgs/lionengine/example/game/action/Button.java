@@ -27,10 +27,10 @@ import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.actionable.Action;
-import com.b3dgs.lionengine.game.object.trait.actionable.ActionConfig;
-import com.b3dgs.lionengine.game.object.trait.actionable.Actionable;
-import com.b3dgs.lionengine.game.object.trait.actionable.ActionableModel;
+import com.b3dgs.lionengine.game.object.feature.actionable.Action;
+import com.b3dgs.lionengine.game.object.feature.actionable.ActionConfig;
+import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
+import com.b3dgs.lionengine.game.object.feature.actionable.ActionableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Text;
@@ -50,7 +50,7 @@ class Button extends ObjectGame implements Action, Updatable, Renderable
     public static final Media CANCEL = Medias.create("action", "Cancel.xml");
 
     /** Actionable model. */
-    private final Actionable actionable = addTrait(new ActionableModel());
+    private final Actionable actionable;
     /** Button image. */
     private final Image image;
     /** Text reference. */
@@ -70,6 +70,8 @@ class Button extends ObjectGame implements Action, Updatable, Renderable
         text = services.get(Text.class);
         image = Drawable.loadImage(setup.getSurface());
         name = ActionConfig.imports(getConfigurer().getRoot()).getName();
+
+        actionable = addFeatureAndGet(new ActionableModel(setup.getConfigurer()));
         actionable.setClickAction(Mouse.LEFT);
     }
 

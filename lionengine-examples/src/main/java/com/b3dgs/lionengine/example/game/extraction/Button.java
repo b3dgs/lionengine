@@ -25,29 +25,29 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.actionable.Action;
-import com.b3dgs.lionengine.game.object.trait.actionable.Actionable;
-import com.b3dgs.lionengine.game.object.trait.actionable.ActionableModel;
-import com.b3dgs.lionengine.game.object.trait.assignable.Assign;
-import com.b3dgs.lionengine.game.object.trait.assignable.Assignable;
-import com.b3dgs.lionengine.game.object.trait.assignable.AssignableModel;
-import com.b3dgs.lionengine.game.object.trait.extractable.Extractable;
-import com.b3dgs.lionengine.game.object.trait.extractable.Extractor;
+import com.b3dgs.lionengine.game.object.feature.actionable.Action;
+import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
+import com.b3dgs.lionengine.game.object.feature.actionable.ActionableModel;
+import com.b3dgs.lionengine.game.object.feature.assignable.Assign;
+import com.b3dgs.lionengine.game.object.feature.assignable.Assignable;
+import com.b3dgs.lionengine.game.object.feature.assignable.AssignableModel;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.extractable.Extractable;
+import com.b3dgs.lionengine.game.object.feature.extractable.Extractor;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Text;
 
 /**
  * Resources button action.
  */
-class Button extends ObjectGame implements Action, Assign, Updatable, Renderable
+class Button extends ObjectGame implements Action, Assign, Updatable
 {
     /** Extract media. */
     public static final Media EXTRACT = Medias.create("Extract.xml");
@@ -55,11 +55,11 @@ class Button extends ObjectGame implements Action, Assign, Updatable, Renderable
     public static final Media CARRY = Medias.create("Carry.xml");
 
     /** Actionable model. */
-    private final Actionable actionable = addTrait(new ActionableModel());
+    private final Actionable actionable;
     /** Assignable model. */
-    private final Assignable assignable = addTrait(new AssignableModel());
+    private final Assignable assignable = addFeatureAndGet(new AssignableModel());
     /** Layerable model. */
-    private final Layerable layerable = addTrait(new LayerableModel());
+    private final Layerable layerable = addFeatureAndGet(new LayerableModel());
     /** Button image. */
     private final Image image;
     /** Text reference. */
@@ -84,6 +84,9 @@ class Button extends ObjectGame implements Action, Assign, Updatable, Renderable
     public Button(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        actionable = addFeatureAndGet(new ActionableModel(setup.getConfigurer()));
+
         image = Drawable.loadImage(setup.getSurface());
 
         text = services.get(Text.class);
@@ -94,6 +97,8 @@ class Button extends ObjectGame implements Action, Assign, Updatable, Renderable
 
         actionable.setClickAction(Mouse.LEFT);
         assignable.setClickAssign(Mouse.LEFT);
+
+        addFeature(new DisplayableModel(g -> image.render(g)));
     }
 
     @Override
@@ -124,10 +129,10 @@ class Button extends ObjectGame implements Action, Assign, Updatable, Renderable
         {
             for (final Integer id : mapPath.getObjectsId(tx, ty))
             {
-                final ObjectGame object = handler.get(id);
-                if (object.hasTrait(Extractable.class))
+                final Handlable handlable = handler.get(id);
+                if (handlable.hasFeature(Extractable.class))
                 {
-                    extractor.setResource(object.getTrait(Extractable.class));
+                    extractor.setResource(handlable.getFeature(Extractable.class));
                     extractor.startExtraction();
                 }
             }
@@ -144,11 +149,5 @@ class Button extends ObjectGame implements Action, Assign, Updatable, Renderable
             text.setText(actionable.getDescription());
         }
         state.update(extrp);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        image.render(g);
     }
 }

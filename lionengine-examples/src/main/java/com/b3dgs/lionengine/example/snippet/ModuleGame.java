@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.snippet;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Context;
@@ -34,10 +34,13 @@ import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
+import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateTransition;
 import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
+import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -193,9 +196,10 @@ public class ModuleGame
     private void ripLevel(Media levelrip, Media output)
     {
         LevelRipConverter.start(levelrip, map);
+        final MapTilePersister mapPersister = new MapTilePersisterModel(map);
         try (FileWriting file = Stream.createFileWriting(output))
         {
-            map.save(file);
+            mapPersister.save(file);
         }
         catch (final IOException exception)
         {
@@ -206,6 +210,6 @@ public class ModuleGame
     private void tileExtractor()
     {
         final TilesExtractor tilesExtractor = new TilesExtractor();
-        tilesExtractor.extract(16, 16, Medias.create("level.png"));
+        tilesExtractor.extract(16, 16, Arrays.asList(Medias.create("level.png")));
     }
 }

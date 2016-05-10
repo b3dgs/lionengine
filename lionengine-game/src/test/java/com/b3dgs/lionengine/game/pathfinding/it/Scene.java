@@ -29,11 +29,11 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
-import com.b3dgs.lionengine.game.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.MapTileRendererModel;
-import com.b3dgs.lionengine.game.map.MapTileViewer;
-import com.b3dgs.lionengine.game.map.MapTileViewerModel;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePathModel;
@@ -98,7 +98,7 @@ class Scene extends Sequence
         camera.setLocation(320, 208);
 
         peon = factory.create(Peon.MEDIA);
-        peon.getTrait(Pathfindable.class).addListener(new PathfindableListener()
+        peon.getFeature(Pathfindable.class).addListener(new PathfindableListener()
         {
             @Override
             public void notifyStartMove()

@@ -182,7 +182,7 @@ public class Camera implements Viewer
      * (screen top-left).</li>
      * </ul>
      * <p>
-     * It is also compatible with object rendering (by using an {@link com.b3dgs.lionengine.game.object.Handler}). The
+     * It is also compatible with object rendering (by using an {@link com.b3dgs.lionengine.game.handler.Handler}). The
      * object which is outside the camera view will not be rendered. This avoid useless rendering.
      * </p>
      * <p>

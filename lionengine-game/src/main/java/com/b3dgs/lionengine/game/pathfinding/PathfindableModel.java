@@ -25,15 +25,17 @@ import java.util.Map;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.core.Graphics;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.trait.TraitModel;
-import com.b3dgs.lionengine.game.object.trait.orientable.Orientable;
-import com.b3dgs.lionengine.game.object.trait.orientable.OrientableModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.orientable.Orientable;
+import com.b3dgs.lionengine.game.object.feature.orientable.OrientableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.Tiled;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -45,7 +47,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Pathfindable implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.feature.Feature}:
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>
@@ -66,7 +68,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
  * {@link #addListener(PathfindableListener)} on it.
  * </p>
  */
-public class PathfindableModel extends TraitModel implements Pathfindable
+public class PathfindableModel extends FeatureModel implements Pathfindable
 {
     /** Category not found error. */
     private static final String ERROR_CATEGORY = "Category not found: ";
@@ -92,7 +94,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
     /** Pathfinder reference. */
     private PathFinder pathfinder;
     /** List of categories. */
-    private Map<String, PathData> categories;
+    private final Map<String, PathData> categories;
     /** Transformable model. */
     private Transformable transformable;
     /** Orientable model. */
@@ -108,9 +110,9 @@ public class PathfindableModel extends TraitModel implements Pathfindable
     /** Destination location y. */
     private int destY;
     /** Horizontal movement speed. */
-    private double speedX;
+    private double speedX = 1.0;
     /** Vertical movement speed. */
-    private double speedY;
+    private double speedY = 1.0;
     /** Horizontal movement force. */
     private double moveX;
     /** Vertical movement force. */
@@ -118,7 +120,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
     /** Pathfound changes flag. */
     private boolean pathFoundChanged;
     /** Destination has been reached. */
-    private boolean destinationReached;
+    private boolean destinationReached = true;
     /** Path stopped request flag. */
     private boolean pathStoppedRequested;
     /** Path stopped flag. */
@@ -134,14 +136,13 @@ public class PathfindableModel extends TraitModel implements Pathfindable
 
     /**
      * Create a pathfindable model.
+     * 
+     * @param configurer The configurer reference.
      */
-    public PathfindableModel()
+    public PathfindableModel(Configurer configurer)
     {
         super();
-
-        destinationReached = true;
-        speedX = 1.0;
-        speedY = 1.0;
+        categories = PathfindableConfig.create(configurer);
     }
 
     /**
@@ -520,7 +521,7 @@ public class PathfindableModel extends TraitModel implements Pathfindable
      */
 
     @Override
-    public void prepare(ObjectGame owner, Services services)
+    public void prepare(Handlable owner, Services services)
     {
         super.prepare(owner, services);
 
@@ -531,9 +532,8 @@ public class PathfindableModel extends TraitModel implements Pathfindable
         final int range = (int) Math.sqrt(map.getInTileWidth() * map.getInTileWidth()
                                           + map.getInTileHeight() * (double) map.getInTileHeight());
         pathfinder = Astar.createPathFinder(map, range, Astar.createHeuristicClosest());
-        categories = PathfindableConfig.create(owner.getConfigurer());
 
-        transformable = owner.getTrait(Transformable.class);
+        transformable = owner.getFeature(Transformable.class);
         final OrientableModel orientableModel = new OrientableModel();
         orientableModel.prepare(owner, services);
         orientable = orientableModel;

@@ -22,12 +22,12 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileGroup;
-import com.b3dgs.lionengine.game.map.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.circuit.MapTileCircuit;
-import com.b3dgs.lionengine.game.map.circuit.MapTileCircuitModel;
-import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
-import com.b3dgs.lionengine.game.map.transition.MapTileTransitionModel;
+import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuit;
+import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
+import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransition;
+import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransitionModel;
 
 /**
  * Default map generator implementation.

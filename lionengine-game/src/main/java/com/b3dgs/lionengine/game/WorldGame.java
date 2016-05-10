@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.util.UtilStream;
 
 /**
  * Default world model, designed to contain game elements ({@link com.b3dgs.lionengine.game.map.MapTile},
- * {@link com.b3dgs.lionengine.game.object.Handler}, {@link com.b3dgs.lionengine.game.object.Factory}...).
+ * {@link com.b3dgs.lionengine.game.handler.Handler}, {@link com.b3dgs.lionengine.game.object.Factory}...).
  * <p>
  * It contains different elements, such as:
  * </p>
@@ -111,7 +111,7 @@ public abstract class WorldGame implements Updatable, Renderable
     /**
      * Internal world saves; called from {@link WorldGame#saveToFile(Media)} function. The world will be saved in a file
      * as binary. Here should be called all saving functions, such as
-     * {@link com.b3dgs.lionengine.game.map.MapTilePersister#save(FileWriting)}...
+     * {@link com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister#save(FileWriting)}...
      * 
      * @param file The file writer reference.
      * @throws IOException If error on writing.
@@ -121,7 +121,7 @@ public abstract class WorldGame implements Updatable, Renderable
     /**
      * Internal world loads; called from {@link WorldGame#loadFromFile(Media)} function. The world will be loaded from
      * an existing binary file. Here should be called all loading functions, such as
-     * {@link com.b3dgs.lionengine.game.map.MapTilePersister#load(FileReading)}
+     * {@link com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister#load(FileReading)}
      * ...
      * 
      * @param file The file reader reference.

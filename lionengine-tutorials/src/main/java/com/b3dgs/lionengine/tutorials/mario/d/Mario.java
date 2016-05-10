@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 
@@ -62,9 +62,9 @@ class Mario extends Entity implements CollidableListener
     }
 
     @Override
-    public void notifyCollided(ObjectGame object)
+    public void notifyCollided(Collidable other)
     {
-        final Entity entity = (Entity) object;
+        final Entity entity = other.getOwner();
         if (transformable.getY() >= transformable.getOldY() && !entity.isState(GoombaState.DEATH))
         {
             collidable.setEnabled(false);

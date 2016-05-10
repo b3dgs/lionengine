@@ -25,11 +25,13 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.trait.TraitModel;
-import com.b3dgs.lionengine.game.object.trait.mirrorable.Mirrorable;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -38,7 +40,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Box ray cast collidable model implementation.
  * <p>
- * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.object.trait.Trait}:
+ * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.feature.Feature}:
  * </p>
  * <ul>
  * <li>{@link Transformable}</li>
@@ -58,7 +60,7 @@ import com.b3dgs.lionengine.graphic.Viewer;
  * {@link #addListener(CollidableListener)} on it.
  * </p>
  */
-public class CollidableModel extends TraitModel implements Collidable
+public class CollidableModel extends FeatureModel implements Collidable
 {
     /**
      * Check if current rectangle collides other collidable rectangles.
@@ -92,21 +94,24 @@ public class CollidableModel extends TraitModel implements Collidable
     /** The viewer reference. */
     private Viewer viewer;
     /** Origin used. */
-    private Origin origin;
+    private Origin origin = Origin.TOP_LEFT;
     /** Enabled flag. */
-    private boolean enabled;
+    private boolean enabled = true;
     /** Show collision flag. */
     private boolean showCollision;
 
     /**
      * Create a collidable model.
+     * 
+     * @param configurer The configurer reference.
      */
-    public CollidableModel()
+    public CollidableModel(Configurer configurer)
     {
         super();
-        origin = Origin.TOP_LEFT;
-        enabled = true;
-        showCollision = false;
+        for (final Collision collision : CollisionConfig.imports(configurer).getCollisions())
+        {
+            collisions.add(collision);
+        }
     }
 
     /**
@@ -143,15 +148,13 @@ public class CollidableModel extends TraitModel implements Collidable
      */
 
     @Override
-    public void prepare(ObjectGame owner, Services services)
+    public void prepare(Handlable owner, Services services)
     {
         super.prepare(owner, services);
+
         viewer = services.get(Viewer.class);
-        for (final Collision collision : CollisionConfig.imports(owner.getConfigurer()).getCollisions())
-        {
-            addCollision(collision);
-        }
-        transformable = owner.getTrait(Transformable.class);
+        transformable = owner.getFeature(Transformable.class);
+
         if (owner instanceof CollidableListener)
         {
             addListener((CollidableListener) owner);
@@ -184,9 +187,9 @@ public class CollidableModel extends TraitModel implements Collidable
             for (final Collision collision : collisions)
             {
                 Mirror mirror = Mirror.NONE;
-                if (collision.hasMirror() && getOwner().hasTrait(Mirrorable.class))
+                if (collision.hasMirror() && getOwner().hasFeature(Mirrorable.class))
                 {
-                    mirror = getOwner().getTrait(Mirrorable.class).getMirror();
+                    mirror = getOwner().getFeature(Mirrorable.class).getMirror();
                 }
 
                 final int offsetX;
@@ -294,11 +297,11 @@ public class CollidableModel extends TraitModel implements Collidable
     }
 
     @Override
-    public void notifyCollided(ObjectGame object)
+    public void notifyCollided(Collidable collidable)
     {
         for (final CollidableListener listener : listeners)
         {
-            listener.notifyCollided(object);
+            listener.notifyCollided(collidable);
         }
     }
 }

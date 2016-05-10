@@ -22,9 +22,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.b3dgs.lionengine.Check;
@@ -213,6 +215,59 @@ public final class UtilReflection
         {
             throw new LionEngineException(exception, ERROR_FIELD, name);
         }
+    }
+
+    /**
+     * Get all declared interfaces from object.
+     * 
+     * @param object The object reference.
+     * @param base The minimum base interface.
+     * @return The declared interfaces.
+     */
+    public static Collection<Class<?>> getInterfaces(Class<?> object, Class<?> base)
+    {
+        final Collection<Class<?>> interfaces = new ArrayList<Class<?>>();
+        final Deque<Class<?>> currents = new ArrayDeque<Class<?>>(filterInterfaces(object, base));
+        final Deque<Class<?>> nexts = new ArrayDeque<Class<?>>();
+        while (!currents.isEmpty())
+        {
+            nexts.clear();
+            interfaces.addAll(currents);
+            for (final Class<?> current : currents)
+            {
+                for (final Class<?> type : current.getInterfaces())
+                {
+                    if (base.isAssignableFrom(type) && !type.equals(base))
+                    {
+                        nexts.add(type);
+                    }
+                }
+            }
+            currents.clear();
+            currents.addAll(nexts);
+            nexts.clear();
+        }
+        return interfaces;
+    }
+
+    /**
+     * Get all direct interfaces from object filtered by base interface (excluded).
+     * 
+     * @param object The object reference.
+     * @param base The minimum base interface.
+     * @return The declared interfaces.
+     */
+    private static Collection<Class<?>> filterInterfaces(Class<?> object, Class<?> base)
+    {
+        final Collection<Class<?>> interfaces = new ArrayList<Class<?>>();
+        for (final Class<?> current : object.getInterfaces())
+        {
+            if (base.isAssignableFrom(current) && !current.equals(base))
+            {
+                interfaces.add(current);
+            }
+        }
+        return interfaces;
     }
 
     /**

@@ -21,8 +21,8 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.map.MapTileFeature;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
  * @see CollisionFormula
  * @see CollisionGroup
  */
-public interface MapTileCollision extends MapTileFeature, Renderable
+public interface MapTileCollision extends Feature, Renderable
 {
     /**
      * Load map collision from an external file.

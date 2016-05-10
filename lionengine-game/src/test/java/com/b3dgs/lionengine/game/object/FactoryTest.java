@@ -73,8 +73,8 @@ public class FactoryTest
         {
             object1.destroy();
             object2.destroy();
-            object1.freeId();
-            object2.freeId();
+            object1.notifyDestroyed();
+            object2.notifyDestroyed();
         }
     }
 
@@ -169,7 +169,7 @@ public class FactoryTest
     {
         final Factory factory = new Factory(new Services());
         final Setup setup = factory.getSetup(Medias.create(OBJECT_XML));
-        Assert.assertEquals(Medias.create(OBJECT_XML), setup.getConfigFile());
+        Assert.assertEquals(Medias.create(OBJECT_XML), setup.getConfigurer().getMedia());
 
         final Setup setupCache = factory.getSetup(Medias.create(OBJECT_XML));
         Assert.assertEquals(setup, setupCache);

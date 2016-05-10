@@ -33,9 +33,15 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
+import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.Identifiable;
+import com.b3dgs.lionengine.game.handler.IdentifiableListener;
+import com.b3dgs.lionengine.game.handler.IdentifiableModel;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGame;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
@@ -70,8 +76,10 @@ public class MapTileGame implements MapTile
 
     /** Sheets list. */
     private final Map<Integer, SpriteTiled> sheets = new HashMap<Integer, SpriteTiled>();
+    /** Identifiable model. */
+    private final Identifiable identifiable = new IdentifiableModel();
     /** Features list. */
-    private final Features<MapTileFeature> features = new Features<MapTileFeature>(MapTileFeature.class);
+    private final Featurable featurable = new FeaturableModel();
     /** Services reference. */
     private final Services services;
     /** Sheet configuration file. */
@@ -224,7 +232,7 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public <F extends MapTileFeature> F createFeature(Class<F> feature)
+    public <F extends Feature> F createFeature(Class<F> feature)
     {
         try
         {
@@ -326,16 +334,6 @@ public class MapTileGame implements MapTile
                 }
             }
             tiles.clear();
-        }
-    }
-
-    @Override
-    public void addFeature(MapTileFeature feature)
-    {
-        features.add(feature);
-        if (services != null)
-        {
-            services.add(feature);
         }
     }
 
@@ -459,18 +457,6 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public <C extends MapTileFeature> C getFeature(Class<C> feature)
-    {
-        return features.get(feature);
-    }
-
-    @Override
-    public <C extends MapTileFeature> boolean hasFeature(Class<C> feature)
-    {
-        return features.contains(feature);
-    }
-
-    @Override
     public int getSheetsNumber()
     {
         return sheets.size();
@@ -525,12 +511,6 @@ public class MapTileGame implements MapTile
     }
 
     @Override
-    public Iterable<? extends MapTileFeature> getFeatures()
-    {
-        return features.getAll();
-    }
-
-    @Override
     public boolean isCreated()
     {
         return tiles != null;
@@ -550,5 +530,83 @@ public class MapTileGame implements MapTile
     public int getHeight()
     {
         return getInTileHeight() * getTileHeight();
+    }
+
+    /*
+     * Identifiable
+     */
+
+    @Override
+    public void addListener(IdentifiableListener listener)
+    {
+        identifiable.addListener(listener);
+    }
+
+    @Override
+    public void removeListener(IdentifiableListener listener)
+    {
+        identifiable.removeListener(listener);
+    }
+
+    @Override
+    public Integer getId()
+    {
+        return identifiable.getId();
+    }
+
+    @Override
+    public void destroy()
+    {
+        identifiable.destroy();
+    }
+
+    @Override
+    public void notifyDestroyed()
+    {
+        identifiable.notifyDestroyed();
+    }
+
+    /*
+     * Featurable
+     */
+
+    @Override
+    public void prepareFeatures(Handlable owner, Services services)
+    {
+        featurable.prepareFeatures(owner, services);
+    }
+
+    @Override
+    public void addFeature(Feature feature)
+    {
+        featurable.addFeature(feature);
+        if (services != null)
+        {
+            services.add(feature);
+        }
+    }
+
+    @Override
+    public boolean hasFeature(Class<? extends Feature> feature)
+    {
+        return featurable.hasFeature(feature);
+    }
+
+    @Override
+    public <C extends Feature> C getFeature(Class<C> feature)
+    {
+        return featurable.getFeature(feature);
+    }
+
+    @Override
+    public Iterable<Feature> getFeatures()
+    {
+        return featurable.getFeatures();
+    }
+
+    @Override
+    public Iterable<Class<? extends Feature>> getFeaturesType()
+    {
+        return featurable.getFeaturesType();
     }
 }

@@ -30,11 +30,11 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.UtilSetup;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
 /**
@@ -79,8 +79,8 @@ public class ComponentCollisionTest
         final ObjectGame object1 = CollidableModelTest.createObject(config, services);
         final ObjectGame object2 = CollidableModelTest.createObject(config, services);
 
-        final Collidable collidable1 = object1.getTrait(Collidable.class);
-        final Collidable collidable2 = object2.getTrait(Collidable.class);
+        final Collidable collidable1 = object1.getFeature(Collidable.class);
+        final Collidable collidable2 = object2.getFeature(Collidable.class);
 
         final Collision collision1 = new Collision("test1", 0, 0, 3, 3, false);
         collidable1.addCollision(collision1);
@@ -95,13 +95,13 @@ public class ComponentCollisionTest
         handler.add(object1);
         handler.add(object2);
 
-        final AtomicReference<ObjectGame> collide = new AtomicReference<ObjectGame>();
+        final AtomicReference<Collidable> collide = new AtomicReference<Collidable>();
         final CollidableListener listener = new CollidableListener()
         {
             @Override
-            public void notifyCollided(ObjectGame object)
+            public void notifyCollided(Collidable collidable)
             {
-                collide.set(object);
+                collide.set(collidable);
             }
         };
         collidable2.addListener(listener);
@@ -109,10 +109,10 @@ public class ComponentCollisionTest
         collidable2.update(1.0);
         handler.update(1.0);
 
-        Assert.assertEquals(object1, collide.get());
+        Assert.assertEquals(object1, collide.get().getOwner());
 
         collide.set(null);
-        object1.getTrait(Transformable.class).teleport(10.0, 10.0);
+        object1.getFeature(Transformable.class).teleport(10.0, 10.0);
         collidable1.update(1.0);
         handler.update(1.0);
 

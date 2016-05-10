@@ -26,27 +26,26 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.SizeConfig;
-import com.b3dgs.lionengine.game.object.trait.actionable.Action;
-import com.b3dgs.lionengine.game.object.trait.actionable.Actionable;
-import com.b3dgs.lionengine.game.object.trait.actionable.ActionableModel;
-import com.b3dgs.lionengine.game.object.trait.assignable.Assign;
-import com.b3dgs.lionengine.game.object.trait.assignable.Assignable;
-import com.b3dgs.lionengine.game.object.trait.assignable.AssignableModel;
-import com.b3dgs.lionengine.game.object.trait.producible.Producer;
-import com.b3dgs.lionengine.game.object.trait.producible.Producible;
+import com.b3dgs.lionengine.game.object.feature.actionable.Action;
+import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
+import com.b3dgs.lionengine.game.object.feature.actionable.ActionableModel;
+import com.b3dgs.lionengine.game.object.feature.assignable.Assign;
+import com.b3dgs.lionengine.game.object.feature.assignable.Assignable;
+import com.b3dgs.lionengine.game.object.feature.assignable.AssignableModel;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.producible.Producer;
+import com.b3dgs.lionengine.game.object.feature.producible.Producible;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Text;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.stream.Xml;
@@ -55,7 +54,7 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Build button action.
  */
-class BuildButton extends ObjectGame implements Action, Assign, Updatable, Renderable
+class BuildButton extends ObjectGame implements Action, Assign, Updatable
 {
     /** Build farm media. */
     public static final Media FARM = Medias.create("BuildFarm.xml");
@@ -63,11 +62,11 @@ class BuildButton extends ObjectGame implements Action, Assign, Updatable, Rende
     public static final Media BARRACKS = Medias.create("BuildBarracks.xml");
 
     /** Actionable model. */
-    private final Actionable actionable = addTrait(new ActionableModel());
+    private final Actionable actionable;
     /** Assignable model. */
-    private final Assignable assignable = addTrait(new AssignableModel());
+    private final Assignable assignable = addFeatureAndGet(new AssignableModel());
     /** Layerable model. */
-    private final Layerable layerable = addTrait(new LayerableModel());
+    private final Layerable layerable = addFeatureAndGet(new LayerableModel());
     /** Button image. */
     private final Image image;
     /** Text reference. */
@@ -96,6 +95,9 @@ class BuildButton extends ObjectGame implements Action, Assign, Updatable, Rende
     public BuildButton(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        actionable = addFeatureAndGet(new ActionableModel(setup.getConfigurer()));
+
         text = services.get(Text.class);
         viewer = services.get(Viewer.class);
         cursor = services.get(Cursor.class);
@@ -109,6 +111,22 @@ class BuildButton extends ObjectGame implements Action, Assign, Updatable, Rende
         assignable.setClickAssign(Mouse.LEFT);
         layerable.setLayer(Integer.valueOf(3));
         state = actionable;
+
+        addFeature(new DisplayableModel(g ->
+        {
+            image.render(g);
+            if (area != null)
+            {
+                g.setColor(ColorRgba.GREEN);
+                g.drawRect(viewer,
+                           Origin.TOP_LEFT,
+                           area.getX(),
+                           area.getY(),
+                           (int) area.getWidth(),
+                           (int) area.getHeight(),
+                           false);
+            }
+        }));
     }
 
     @Override
@@ -135,14 +153,14 @@ class BuildButton extends ObjectGame implements Action, Assign, Updatable, Rende
         for (final Producer producer : handler.get(Producer.class))
         {
             final ObjectGame farm = factory.create(target);
-            final Producible producible = farm.getTrait(Producible.class);
+            final Producible producible = farm.getFeature(Producible.class);
             producible.setLocation(UtilMath.getRounded(cursor.getX(), cursor.getWidth()),
                                    UtilMath.getRounded(cursor.getY(), cursor.getHeight()));
             producer.addToProductionQueue(producible);
 
             final int x = (int) (producible.getX() + producible.getWidth() / 2) / cursor.getWidth();
             final int y = (int) (producible.getY() - producible.getHeight() / 2) / cursor.getHeight();
-            producer.getOwner().getTrait(Pathfindable.class).setDestination(x, y);
+            producer.getOwner().getFeature(Pathfindable.class).setDestination(x, y);
         }
         area = null;
         state = actionable;
@@ -163,23 +181,6 @@ class BuildButton extends ObjectGame implements Action, Assign, Updatable, Rende
                      UtilMath.getRounded(cursor.getY(), cursor.getHeight()),
                      area.getWidth(),
                      area.getHeight());
-        }
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        image.render(g);
-        if (area != null)
-        {
-            g.setColor(ColorRgba.GREEN);
-            g.drawRect(viewer,
-                       Origin.TOP_LEFT,
-                       area.getX(),
-                       area.getY(),
-                       (int) area.getWidth(),
-                       (int) area.getHeight(),
-                       false);
         }
     }
 }

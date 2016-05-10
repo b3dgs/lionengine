@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.map.generator;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.transition.MapTileTransition;
+import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileRef;
 import com.b3dgs.lionengine.game.tile.Tiled;

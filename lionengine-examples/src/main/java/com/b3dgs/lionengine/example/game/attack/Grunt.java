@@ -26,12 +26,13 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.trait.attackable.Attacker;
-import com.b3dgs.lionengine.game.object.trait.attackable.AttackerChecker;
-import com.b3dgs.lionengine.game.object.trait.attackable.AttackerListener;
-import com.b3dgs.lionengine.game.object.trait.attackable.AttackerModel;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.animatable.AnimatableModel;
+import com.b3dgs.lionengine.game.object.feature.attackable.Attacker;
+import com.b3dgs.lionengine.game.object.feature.attackable.AttackerChecker;
+import com.b3dgs.lionengine.game.object.feature.attackable.AttackerListener;
+import com.b3dgs.lionengine.game.object.feature.attackable.AttackerModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -47,11 +48,11 @@ class Grunt extends ObjectGame implements Updatable, Renderable, AttackerChecker
     public static final Media MEDIA = Medias.create("Grunt.xml");
 
     /** Transformable model. */
-    private final Transformable transformable = addTrait(new TransformableModel());
+    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
     /** Pathfindable model. */
-    private final Pathfindable pathfindable = addTrait(new PathfindableModel());
+    private final Pathfindable pathfindable;
     /** Attacker model. */
-    private final Attacker attacker = addTrait(new AttackerModel());
+    private final Attacker attacker = addFeatureAndGet(new AttackerModel());
     /** Surface reference. */
     private final SpriteAnimated surface;
     /** Viewer reference. */
@@ -66,6 +67,9 @@ class Grunt extends ObjectGame implements Updatable, Renderable, AttackerChecker
     public Grunt(SetupSurface setup, Services services)
     {
         super(setup, services);
+
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup.getConfigurer()));
+
         viewer = services.get(Viewer.class);
 
         attacker.setAttackDistance(16, 16);
@@ -76,7 +80,7 @@ class Grunt extends ObjectGame implements Updatable, Renderable, AttackerChecker
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 8, 7);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
-        addType(surface);
+        addFeature(new AnimatableModel(surface));
     }
 
     /***

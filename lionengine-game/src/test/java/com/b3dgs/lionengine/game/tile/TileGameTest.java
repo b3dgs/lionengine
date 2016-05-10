@@ -21,6 +21,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.collision.tile.TileCollision;
+import com.b3dgs.lionengine.game.collision.tile.TileCollisionModel;
+import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
@@ -80,11 +83,9 @@ public class TileGameTest
     public void testGetters()
     {
         final TileGame tile = new TileGame(Integer.valueOf(0), 1, 16, 25, 4, 5);
-        final TileFeature feature = new TileFeature()
-        {
-            // Empty
-        };
+        final TileCollision feature = new TileCollisionModel(tile);
         tile.addFeature(feature);
+        tile.prepareFeatures(null, null);
 
         Assert.assertEquals(Integer.valueOf(0), tile.getSheet());
         Assert.assertEquals(1, tile.getNumber());
@@ -96,9 +97,9 @@ public class TileGameTest
         Assert.assertEquals(5, tile.getHeight());
         Assert.assertEquals(1, tile.getInTileWidth());
         Assert.assertEquals(1, tile.getInTileHeight());
-        Assert.assertTrue(tile.hasFeature(TileFeature.class));
+        Assert.assertTrue(tile.hasFeature(TileCollision.class));
         Assert.assertFalse(tile.hasFeature(MockFeature.class));
-        Assert.assertEquals(tile.getFeature(TileFeature.class), feature);
+        Assert.assertEquals(tile.getFeature(Feature.class), feature);
         Assert.assertEquals(tile.getFeatures().iterator().next(), feature);
     }
 
@@ -145,7 +146,7 @@ public class TileGameTest
     /**
      * Mock feature.
      */
-    private interface MockFeature extends TileFeature
+    private interface MockFeature extends Feature
     {
         // Mock
     }

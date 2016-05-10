@@ -31,16 +31,17 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.UtilMap;
+import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
-import com.b3dgs.lionengine.game.object.trait.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.trait.transformable.TransformableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 
 /**
  * Test the map tile collision model class.
@@ -107,6 +108,7 @@ public class MapTileCollisionModelTest
     {
         services.add(new Camera());
         map.addFeature(new MapTileGroupModel());
+        map.prepareFeatures(map, services);
         map.create(1, 1, 3, 3);
         UtilMap.setGroups(map);
         UtilMap.fill(map, UtilMap.TILE_GROUND);
@@ -260,15 +262,15 @@ public class MapTileCollisionModelTest
         CollisionCategoryConfig.exports(setup.getConfigurer().getRoot(), categoryY);
         CollisionCategoryConfig.exports(setup.getConfigurer().getRoot(), categoryX);
         final ObjectGame object = new ObjectGame(setup, services);
+        final Configurer configurer = object.getConfigurer();
 
-        final Transformable transformable = new TransformableModel();
+        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(configurer));
         transformable.setSize(1, 1);
-        object.addType(transformable);
 
-        final TileCollidable collidable = new TileCollidableModel();
-        object.addType(collidable);
-        collidable.prepare(object, services);
+        final TileCollidable collidable = object.addFeatureAndGet(new TileCollidableModel(configurer));
         collidable.setEnabled(true);
+
+        object.prepareFeatures(object, services);
 
         return transformable;
     }

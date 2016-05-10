@@ -63,8 +63,7 @@ public class UtilStreamTest
     }
 
     /** Temp folder. */
-    @Rule
-    public final TemporaryFolder TEMP = new TemporaryFolder();
+    @Rule public final TemporaryFolder TEMP = new TemporaryFolder();
 
     /**
      * Test the constructor.

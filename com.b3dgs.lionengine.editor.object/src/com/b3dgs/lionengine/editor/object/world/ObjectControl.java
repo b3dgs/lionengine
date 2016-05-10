@@ -31,9 +31,10 @@ import com.b3dgs.lionengine.editor.project.ProjectModel;
 import com.b3dgs.lionengine.editor.utility.UtilWorld;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -47,9 +48,9 @@ import com.b3dgs.lionengine.util.UtilMath;
 public class ObjectControl
 {
     /** Mouse over object flag. */
-    private final Map<ObjectGame, Boolean> objectsOver = new HashMap<>();
+    private final Map<Handlable, Boolean> objectsOver = new HashMap<>();
     /** Mouse selection object flag. */
-    private final Map<ObjectGame, Boolean> objectsSelection = new HashMap<>();
+    private final Map<Handlable, Boolean> objectsSelection = new HashMap<>();
     /** Camera reference. */
     private final Camera camera;
     /** Factory reference. */
@@ -268,7 +269,7 @@ public class ObjectControl
      * @param object The object to check.
      * @return <code>true</code> if over, <code>false</code> else.
      */
-    public boolean isOver(ObjectGame object)
+    public boolean isOver(Handlable object)
     {
         if (objectsOver.containsKey(object))
         {
@@ -283,7 +284,7 @@ public class ObjectControl
      * @param object The object to check.
      * @return <code>true</code> if selected, <code>false</code> else.
      */
-    public boolean isSelected(ObjectGame object)
+    public boolean isSelected(Handlable object)
     {
         if (objectsSelection.containsKey(object))
         {
@@ -319,7 +320,7 @@ public class ObjectControl
      */
     public boolean hasSelection()
     {
-        for (final ObjectGame object : handler.values())
+        for (final ObjectGame object : handler.get(ObjectGame.class))
         {
             if (isSelected(object))
             {
