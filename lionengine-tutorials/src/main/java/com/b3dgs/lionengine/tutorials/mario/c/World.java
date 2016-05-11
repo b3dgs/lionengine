@@ -33,7 +33,6 @@ import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
-import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -111,7 +110,6 @@ class World extends WorldGame
     protected void loading(FileReading file) throws IOException
     {
         mapPersister.load(file);
-        mapViewer.addRenderer(new MapTileRendererModel(services));
         mapGroup.loadGroups(Medias.create("map", "groups.xml"));
         mapCollision.loadCollisions(Medias.create("map", "formulas.xml"), Medias.create("map", "collisions.xml"));
 

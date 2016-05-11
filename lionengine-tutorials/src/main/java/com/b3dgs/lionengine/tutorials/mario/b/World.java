@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
-import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -82,7 +81,6 @@ class World extends WorldGame
     protected void loading(FileReading file) throws IOException
     {
         mapPersister.load(file);
-        mapViewer.addRenderer(new MapTileRendererModel(services));
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
     }

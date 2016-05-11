@@ -38,4 +38,9 @@ public interface MapTileViewer extends Displayable
      * @param renderer The map tile renderer reference.
      */
     void removeRenderer(MapTileRenderer renderer);
+
+    /**
+     * Remove all renderers.
+     */
+    void clear();
 }

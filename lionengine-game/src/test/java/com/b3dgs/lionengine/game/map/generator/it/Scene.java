@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuit;
 import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
 import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransition;
 import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransitionModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
@@ -92,7 +91,6 @@ class Scene extends Sequence
         mapGroup.loadGroups(Medias.create("groups.xml"));
         mapTransition.loadTransitions(Medias.create("transitions.xml"));
         mapCircuit.loadCircuits(Medias.create("circuits.xml"));
-        mapViewer.addRenderer(new MapTileRendererModel(services));
 
         camera.setView(0, 0, 1024, 768);
         camera.setLimits(map);

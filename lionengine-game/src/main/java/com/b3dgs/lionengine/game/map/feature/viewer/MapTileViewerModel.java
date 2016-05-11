@@ -47,11 +47,9 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
     private final MapTile map;
     /** Viewer reference. */
     private final Viewer viewer;
-    /** Default renderer. */
-    private boolean defaultRenderer = true;
 
     /**
-     * Create the renderer.
+     * Create the renderer. It is shipped with a default renderer: {@link MapTileRendererModel}.
      * 
      * @param services The services reference.
      */
@@ -148,11 +146,6 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
     @Override
     public void addRenderer(MapTileRenderer renderer)
     {
-        if (defaultRenderer)
-        {
-            renderers.clear();
-            defaultRenderer = false;
-        }
         renderers.add(renderer);
     }
 
@@ -160,6 +153,12 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
     public void removeRenderer(MapTileRenderer renderer)
     {
         renderers.remove(renderer);
+    }
+
+    @Override
+    public void clear()
+    {
+        renderers.clear();
     }
 
     @Override

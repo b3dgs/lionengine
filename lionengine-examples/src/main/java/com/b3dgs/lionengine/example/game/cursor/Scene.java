@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.game.map.feature.circuit.Circuit;
 import com.b3dgs.lionengine.game.map.feature.circuit.MapCircuitExtractor;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
 import com.b3dgs.lionengine.game.map.feature.transition.MapTransitionExtractor;
 import com.b3dgs.lionengine.game.map.feature.transition.Transition;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
@@ -124,7 +123,6 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("level.png"));
-        mapViewer.addRenderer(new MapTileRendererModel(services));
         mapGroup.loadGroups(Medias.create("groups.xml"));
 
         cursor.addImage(0, Medias.create("cursor.png"));

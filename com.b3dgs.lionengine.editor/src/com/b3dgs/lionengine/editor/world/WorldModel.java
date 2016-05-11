@@ -25,9 +25,7 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
 import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransitionModel;
-import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.ComponentRenderer;
 import com.b3dgs.lionengine.game.object.ComponentUpdater;
@@ -67,10 +65,7 @@ public class WorldModel
         final Selection selection = new Selection();
         services.add(selection);
 
-        final MapTileViewer mapViewer = new MapTileViewerModel(services);
-        mapViewer.addRenderer(new MapTileRendererModel(services));
-
-        map.addFeature(mapViewer);
+        map.addFeature(new MapTileViewerModel(services));
         map.addFeature(new MapTileGroupModel());
         map.addFeature(new MapTileTransitionModel(services));
         map.addFeature(new MapTileCircuitModel(services));
