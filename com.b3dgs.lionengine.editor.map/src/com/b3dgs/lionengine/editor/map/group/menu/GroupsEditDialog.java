@@ -72,9 +72,11 @@ import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
+import com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.feature.transition.MapTileTransitionModel;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
@@ -137,8 +139,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
     /** World view. */
     private Composite view;
     /** Part service. */
-    @Inject
-    private EPartService partService;
+    @Inject private EPartService partService;
 
     /**
      * Create the dialog.
@@ -155,6 +156,8 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         map = services.create(MapTileGame.class);
         mapGroup = map.createFeature(MapTileGroupModel.class);
         map.addFeature(new MapTileTransitionModel(services));
+        map.addFeature(new MapTileCircuitModel(services));
+        map.addFeature(new MapTileViewerModel(services));
         services.add(new Selection());
 
         final PaletteModel palette = new PaletteModel();
@@ -214,24 +217,24 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         for (final Media levelRip : levelRips)
         {
             count++;
-            final MapTile part;
+            final MapTile mapPart;
             if (first)
             {
-                part = map;
+                mapPart = map;
                 first = false;
             }
             else
             {
-                part = new MapTileGame();
+                mapPart = new MapTileGame();
             }
-            part.loadSheets(sheets);
-            LevelRipConverter.start(levelRip, part);
-            map.append(part, offsetX, offsetY);
+            mapPart.loadSheets(sheets);
+            LevelRipConverter.start(levelRip, mapPart);
+            map.append(mapPart, offsetX, offsetY);
 
-            offsetX += part.getInTileWidth();
+            offsetX += mapPart.getInTileWidth();
             if (count >= size)
             {
-                offsetY += part.getInTileHeight();
+                offsetY += mapPart.getInTileHeight();
                 offsetX = 0;
                 count = 0;
             }
