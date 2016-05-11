@@ -135,6 +135,7 @@ public interface MapTile extends Surface, Handlable
      * Clear previous sheets if has.
      * 
      * @param sheets The sheets reference.
+     * @throws LionEngineException If inconsistent tile size.
      */
     void loadSheets(Collection<SpriteTiled> sheets);
 

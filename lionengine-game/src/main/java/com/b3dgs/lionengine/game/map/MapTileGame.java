@@ -73,6 +73,8 @@ public class MapTileGame implements MapTile
     private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
     /** Construction error. */
     private static final String ERROR_CONSTRUCTOR_MISSING = "No recognized constructor found for: ";
+    /** Inconsistent tile size. */
+    private static final String ERROR_TILE_SIZE = "Tile size is inconsistent between sheets !";
 
     /** Sheets list. */
     private final Map<Integer, SpriteTiled> sheets = new HashMap<Integer, SpriteTiled>();
@@ -267,6 +269,14 @@ public class MapTileGame implements MapTile
         for (final SpriteTiled sheet : sheets)
         {
             this.sheets.put(Integer.valueOf(sheetId), sheet);
+            if ((tileWidth != 0 || tileHeight != 0)
+                && tileWidth != sheet.getTileWidth()
+                && tileHeight != sheet.getTileHeight())
+            {
+                throw new LionEngineException(ERROR_TILE_SIZE);
+            }
+            tileWidth = sheet.getTileWidth();
+            tileHeight = sheet.getTileHeight();
             sheetId++;
         }
     }
