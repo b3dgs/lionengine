@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
+import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Viewer;
@@ -46,6 +47,8 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
     private final MapTile map;
     /** Viewer reference. */
     private final Viewer viewer;
+    /** Default renderer. */
+    private boolean defaultRenderer = true;
 
     /**
      * Create the renderer.
@@ -57,6 +60,7 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
         super();
         map = services.get(MapTile.class);
         viewer = services.get(Viewer.class);
+        renderers.add(new MapTileRendererModel(services));
     }
 
     /**
@@ -144,6 +148,11 @@ public class MapTileViewerModel extends FeatureModel implements MapTileViewer
     @Override
     public void addRenderer(MapTileRenderer renderer)
     {
+        if (defaultRenderer)
+        {
+            renderers.clear();
+            defaultRenderer = false;
+        }
         renderers.add(renderer);
     }
 
