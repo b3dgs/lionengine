@@ -75,12 +75,15 @@ public class MapTileFog
      * 
      * @param map The map reference.
      * @param config The fog configuration.
-     * @param sheet The sheet used.
+     * @param sheet The sheet used (can be <code>null</code>).
      */
     public void create(MapTile map, Media config, SpriteTiled sheet)
     {
         this.map.create(map.getTileWidth(), map.getTileHeight(), map.getInTileWidth(), map.getInTileHeight());
-        this.map.loadSheets(Arrays.asList(sheet));
+        if (sheet != null)
+        {
+            this.map.loadSheets(Arrays.asList(sheet));
+        }
         for (int i = 0; i < NO_FOG; i++)
         {
             final String group;
