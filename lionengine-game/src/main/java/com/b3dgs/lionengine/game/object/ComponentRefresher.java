@@ -15,23 +15,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map.feature.renderer;
+package com.b3dgs.lionengine.game.object;
 
-import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.game.handler.Handlables;
+import com.b3dgs.lionengine.game.object.feature.Refreshable;
 
 /**
- * Describe how the map tile rendering is performed. This will allow to customize map rendering.
+ * Refresher component implementation which update {@link Refreshable} elements.
  */
-public interface MapTileRenderer
+public class ComponentRefresher implements ComponentUpdatable
 {
     /**
-     * Render tile on its designed location.
-     * 
-     * @param g The graphic output.
-     * @param x The location x.
-     * @param y The location y.
-     * @param tile The tile to render.
+     * Create component.
      */
-    void renderTile(Graphic g, Tile tile, int x, int y);
+    public ComponentRefresher()
+    {
+        super();
+    }
+
+    /*
+     * ComponentUpdatable
+     */
+
+    @Override
+    public void update(double extrp, Handlables handlables)
+    {
+        for (final Refreshable refreshable : handlables.get(Refreshable.class))
+        {
+            refreshable.update(extrp);
+        }
+    }
 }

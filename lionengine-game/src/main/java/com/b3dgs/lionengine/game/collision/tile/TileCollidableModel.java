@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
 
@@ -70,12 +71,12 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
      * {@link #addListener(TileCollidableListener)} on it.
      * </p>
      * 
-     * @param configurer The configurer reference.
+     * @param setup The setup reference.
      */
-    public TileCollidableModel(Configurer configurer)
+    public TileCollidableModel(Setup setup)
     {
         super();
-        this.configurer = configurer;
+        configurer = setup.getConfigurer();
     }
 
     /**

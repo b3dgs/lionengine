@@ -107,7 +107,7 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
     {
         final Collection<Displayable> displayables = getLayer(layer);
         displayables.remove(displayable);
-        if (displayables.isEmpty())
+        if (!displayables.isEmpty())
         {
             indexs.remove(layer);
         }

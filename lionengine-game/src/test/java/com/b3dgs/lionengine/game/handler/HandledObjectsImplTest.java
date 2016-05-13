@@ -131,9 +131,10 @@ public class HandledObjectsImplTest
     @Test
     public void testFeatureComplex()
     {
-        final ObjectGame complex = new ObjectComplex(new Setup(config), new Services());
+        final Setup setup = new Setup(config);
+        final ObjectGame complex = new ObjectComplex(setup, new Services());
         complex.addFeature(new MirrorableModel());
-        complex.addFeature(new TransformableModel(complex.getConfigurer()));
+        complex.addFeature(new TransformableModel(setup));
         complex.prepareFeatures(complex, new Services());
         handled.add(complex);
 

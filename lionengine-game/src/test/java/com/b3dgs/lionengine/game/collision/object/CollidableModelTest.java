@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -80,14 +79,14 @@ public class CollidableModelTest
      */
     public static ObjectGame createObject(Media config, Services services)
     {
-        final ObjectGame object = new ObjectGame(new Setup(config), services);
-        final Configurer configurer = object.getConfigurer();
+        final Setup setup = new Setup(config);
+        final ObjectGame object = new ObjectGame(setup, services);
 
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(object.getConfigurer()));
+        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
         transformable.setLocation(1.0, 2.0);
         transformable.setSize(2, 2);
 
-        object.addFeature(new CollidableModel(configurer));
+        object.addFeature(new CollidableModel(setup));
         object.prepareFeatures(object, services);
 
         return object;

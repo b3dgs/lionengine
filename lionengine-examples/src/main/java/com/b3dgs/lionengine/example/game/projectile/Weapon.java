@@ -58,7 +58,7 @@ class Weapon extends ObjectGame implements Updatable, LauncherListener
     {
         super(setup, services);
 
-        launcher = addFeatureAndGet(new LauncherModel(setup.getConfigurer()));
+        launcher = addFeatureAndGet(new LauncherModel(setup));
     }
 
     /**

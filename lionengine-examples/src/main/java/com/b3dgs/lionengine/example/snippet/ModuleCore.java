@@ -80,7 +80,7 @@ public class ModuleCore
     // Method 2
     private final Factory factory2 = new Factory(services);
     private final Camera camera2 = new Camera();
-    private final Handler handler2 = new Handler();
+    private final Handler handler2 = new Handler(services);
 
     void services()
     {

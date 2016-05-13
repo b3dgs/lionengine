@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Represents a producible object.
@@ -59,11 +60,12 @@ public class ProducibleModel extends FeatureModel implements Producible
      * {@link #addListener(ProducibleListener)} on it.
      * </p>
      * 
-     * @param configurer The configurer reference.
+     * @param setup The setup reference.
      */
-    public ProducibleModel(Configurer configurer)
+    public ProducibleModel(Setup setup)
     {
         super();
+        final Configurer configurer = setup.getConfigurer();
         final ProducibleConfig configProducible = ProducibleConfig.imports(configurer);
         media = configurer.getMedia();
         steps = configProducible.getSteps();

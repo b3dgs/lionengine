@@ -75,7 +75,7 @@ public class HandlerTest
     @Test
     public void testAddGetObject()
     {
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(new Services());
         final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
         handler.add(object);
         try
@@ -103,7 +103,7 @@ public class HandlerTest
     @Test(expected = LionEngineException.class)
     public void testObjectIdNotFound()
     {
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(new Services());
         Assert.assertNull(handler.get(Integer.valueOf(0)));
     }
 
@@ -113,7 +113,7 @@ public class HandlerTest
     @Test
     public void testObjectTypeNotFound()
     {
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(new Services());
         Assert.assertFalse(handler.get(ObjectGame.class).iterator().hasNext());
     }
 
@@ -123,7 +123,7 @@ public class HandlerTest
     @Test
     public void testRemoveObject()
     {
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(new Services());
         Assert.assertEquals(0, handler.size());
 
         final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
@@ -165,7 +165,7 @@ public class HandlerTest
     @Test
     public void testAddRemoveListener()
     {
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(new Services());
         final AtomicReference<Handlable> added = new AtomicReference<Handlable>();
         final AtomicReference<Handlable> removed = new AtomicReference<Handlable>();
         final HandlerListener listener = new HandlerListener()
@@ -222,7 +222,7 @@ public class HandlerTest
     @Test
     public void testUpdatable()
     {
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(new Services());
         final AtomicReference<Double> extrapolation = new AtomicReference<Double>();
         final AtomicReference<Handlable> updated = new AtomicReference<Handlable>();
         handler.addUpdatable(new ComponentUpdatable()
@@ -259,7 +259,7 @@ public class HandlerTest
     @Test
     public void testRenderable()
     {
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(new Services());
         final AtomicReference<Handlable> rendered = new AtomicReference<Handlable>();
         handler.addRenderable(new ComponentRenderable()
         {
@@ -290,7 +290,6 @@ public class HandlerTest
     @Test
     public void testFeatures()
     {
-        final Handler handler = new Handler();
         final Services services = new Services();
         services.add(new LayerableListener()
         {
@@ -300,6 +299,7 @@ public class HandlerTest
                 // Mock
             }
         });
+        final Handler handler = new Handler(services);
         final ObjectGame object = new ObjectFeatures(new Setup(Medias.create(OBJECT_XML)), services);
         object.prepareFeatures(object, services);
 

@@ -25,11 +25,11 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.geom.Geom;
@@ -103,12 +103,12 @@ public class CollidableModel extends FeatureModel implements Collidable
     /**
      * Create a collidable model.
      * 
-     * @param configurer The configurer reference.
+     * @param setup The setup reference.
      */
-    public CollidableModel(Configurer configurer)
+    public CollidableModel(Setup setup)
     {
         super();
-        for (final Collision collision : CollisionConfig.imports(configurer).getCollisions())
+        for (final Collision collision : CollisionConfig.imports(setup.getConfigurer()).getCollisions())
         {
             collisions.add(collision);
         }

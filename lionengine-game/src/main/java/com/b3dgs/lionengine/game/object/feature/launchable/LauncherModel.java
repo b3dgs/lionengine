@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
@@ -33,6 +32,7 @@ import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -87,12 +87,12 @@ public class LauncherModel extends FeatureModel implements Launcher
      * on it.
      * </p>
      * 
-     * @param configurer The configurer reference.
+     * @param setup The setup reference.
      */
-    public LauncherModel(Configurer configurer)
+    public LauncherModel(Setup setup)
     {
         super();
-        final LauncherConfig config = LauncherConfig.imports(configurer);
+        final LauncherConfig config = LauncherConfig.imports(setup.getConfigurer());
         launchables = config.getLaunchables();
         rate = config.getRate();
         fire.start();

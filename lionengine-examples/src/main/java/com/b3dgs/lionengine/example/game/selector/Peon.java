@@ -66,8 +66,8 @@ class Peon extends ObjectGame implements Updatable, Renderable, SelectorListener
     {
         super(setup, services);
 
-        transformable = addFeatureAndGet(new TransformableModel(setup.getConfigurer()));
-        collidable = addFeatureAndGet(new CollidableModel(setup.getConfigurer()));
+        transformable = addFeatureAndGet(new TransformableModel(setup));
+        collidable = addFeatureAndGet(new CollidableModel(setup));
 
         viewer = services.get(Viewer.class);
 

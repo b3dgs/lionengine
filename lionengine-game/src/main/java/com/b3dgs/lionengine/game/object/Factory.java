@@ -203,7 +203,6 @@ public class Factory
         {
             setup.getClass(), Services.class
         }, setup, services);
-
         object.prepareFeatures(object, services);
 
         return object;

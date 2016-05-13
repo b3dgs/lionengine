@@ -68,7 +68,7 @@ class Grunt extends ObjectGame implements Updatable, Renderable, AttackerChecker
     {
         super(setup, services);
 
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup.getConfigurer()));
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
         viewer = services.get(Viewer.class);
 

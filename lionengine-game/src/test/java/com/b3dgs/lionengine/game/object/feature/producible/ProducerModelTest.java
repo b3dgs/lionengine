@@ -157,10 +157,11 @@ public class ProducerModelTest
     private static Producible createProducible(Services services)
     {
         final Media media = ProducibleModelTest.createProducibleMedia();
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final Setup setup = new Setup(media);
+        final ObjectGame object = new ObjectGame(setup, services);
         object.addFeature(new TransformableModel());
 
-        final Producible producible = new ProducibleModel(object.getConfigurer());
+        final Producible producible = new ProducibleModel(setup);
         producible.prepare(object, services);
 
         return producible;
@@ -173,7 +174,7 @@ public class ProducerModelTest
     public void testProduction()
     {
         final Services services = new Services();
-        services.add(new Handler());
+        services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
         final ProducerObject object = new ProducerObject(new Setup(media), services);
@@ -246,7 +247,7 @@ public class ProducerModelTest
     public void testProductionListenerSelf()
     {
         final Services services = new Services();
-        services.add(new Handler());
+        services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
         final ProducerObjectSelf object = new ProducerObjectSelf(new Setup(media), services);
@@ -285,7 +286,7 @@ public class ProducerModelTest
     public void testPending()
     {
         final Services services = new Services();
-        services.add(new Handler());
+        services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
         final ProducerObject object = new ProducerObject(new Setup(media), services);
@@ -331,7 +332,7 @@ public class ProducerModelTest
     public void testPendingCannot()
     {
         final Services services = new Services();
-        services.add(new Handler());
+        services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
         final ProducerObject object = new ProducerObject(new Setup(media), services);
@@ -367,7 +368,7 @@ public class ProducerModelTest
     public void testSkip()
     {
         final Services services = new Services();
-        services.add(new Handler());
+        services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
         final ProducerObject object = new ProducerObject(new Setup(media), services);
@@ -404,7 +405,7 @@ public class ProducerModelTest
     public void testStop()
     {
         final Services services = new Services();
-        services.add(new Handler());
+        services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
         final ProducerObject object = new ProducerObject(new Setup(media), services);
@@ -447,7 +448,7 @@ public class ProducerModelTest
     public void testCannot()
     {
         final Services services = new Services();
-        services.add(new Handler());
+        services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
         final ProducerObject object = new ProducerObject(new Setup(media), services);
@@ -478,7 +479,7 @@ public class ProducerModelTest
     public void testProducibleListener()
     {
         final Services services = new Services();
-        services.add(new Handler());
+        services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
         final ProducerObject object = new ProducerObject(new Setup(media), services);

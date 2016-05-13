@@ -15,23 +15,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map.feature.renderer;
+package com.b3dgs.lionengine.game.collision.tile;
 
-import com.b3dgs.lionengine.game.tile.Tile;
-import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
 
 /**
- * Describe how the map tile rendering is performed. This will allow to customize map rendering.
+ * Represents the collision rendering feature of a map tile.
+ * 
+ * @see MapTileCollision
  */
-public interface MapTileRenderer
+public interface MapTileCollisionRenderer extends MapTileRenderer
 {
     /**
-     * Render tile on its designed location.
-     * 
-     * @param g The graphic output.
-     * @param x The location x.
-     * @param y The location y.
-     * @param tile The tile to render.
+     * Create the collision draw surface. Must be called after map creation to enable collision rendering.
+     * Previous cache is cleared is exists.
      */
-    void renderTile(Graphic g, Tile tile, int x, int y);
+    void createCollisionDraw();
+
+    /**
+     * Clear the cached collision image created with {@link #createCollisionDraw()}.
+     */
+    void clearCollisionDraw();
 }

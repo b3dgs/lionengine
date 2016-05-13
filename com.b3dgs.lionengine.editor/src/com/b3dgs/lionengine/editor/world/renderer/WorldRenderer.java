@@ -28,11 +28,9 @@ import org.eclipse.swt.graphics.GC;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.editor.world.Selection;
-import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
@@ -79,8 +77,6 @@ public class WorldRenderer implements PaintListener
     private final Handler handler;
     /** Selection handler. */
     private final Selection selection;
-    /** World updater. */
-    private final WorldUpdater worldUpdater;
     /** World zoom. */
     private final WorldZoomUpdater zoom;
 
@@ -98,7 +94,6 @@ public class WorldRenderer implements PaintListener
         mapViewer = services.get(MapTileViewer.class);
         handler = services.get(Handler.class);
         selection = services.get(Selection.class);
-        worldUpdater = services.get(WorldUpdater.class);
         zoom = services.get(WorldZoomUpdater.class);
 
         UtilExtension.clearCache();
@@ -146,10 +141,6 @@ public class WorldRenderer implements PaintListener
         if (map.getSheetsNumber() > 0)
         {
             mapViewer.render(g);
-            if (worldUpdater.isCollisionsEnabled() && map.hasFeature(MapTileCollision.class))
-            {
-                map.getFeature(MapTileCollision.class).render(g);
-            }
         }
     }
 

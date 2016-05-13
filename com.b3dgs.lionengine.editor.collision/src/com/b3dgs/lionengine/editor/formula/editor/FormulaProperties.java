@@ -49,7 +49,7 @@ import com.b3dgs.lionengine.game.collision.tile.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionLinear;
 import com.b3dgs.lionengine.game.collision.tile.CollisionFunctionType;
 import com.b3dgs.lionengine.game.collision.tile.CollisionRange;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.tile.TileGroup;
 import com.b3dgs.lionengine.game.tile.TileGroupType;
@@ -156,9 +156,9 @@ public class FormulaProperties extends ObjectProperties<CollisionFormula>
         if (map.isCreated() && isFieldsFilled() && !linearB.getText().isEmpty())
         {
             final CollisionFormula formula = createObject("preview");
-            final ImageBuffer buffer = MapTileCollisionModel.createFunctionDraw(formula,
-                                                                                map.getTileWidth(),
-                                                                                map.getTileHeight());
+            final ImageBuffer buffer = MapTileCollisionRendererModel.createFunctionDraw(formula,
+                                                                                        map.getTileWidth(),
+                                                                                        map.getTileHeight());
             gc.fillRectangle(0, 0, map.getTileWidth(), map.getTileHeight());
             gc.drawImage((Image) buffer.getSurface(), 0, 0);
         }

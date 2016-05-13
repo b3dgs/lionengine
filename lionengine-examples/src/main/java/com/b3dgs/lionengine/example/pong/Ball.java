@@ -64,8 +64,8 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
     {
         super(setup, services);
 
-        transformable = addFeatureAndGet(new TransformableModel(setup.getConfigurer()));
-        collidable = addFeatureAndGet(new CollidableModel(setup.getConfigurer()));
+        transformable = addFeatureAndGet(new TransformableModel(setup));
+        collidable = addFeatureAndGet(new CollidableModel(setup));
         collidable.setOrigin(Origin.MIDDLE);
 
         viewer = services.get(Viewer.class);

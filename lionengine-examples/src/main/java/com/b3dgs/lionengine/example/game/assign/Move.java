@@ -72,7 +72,7 @@ class Move extends ObjectGame implements Action, Assign, Updatable, Renderable
     {
         super(setup, services);
 
-        actionable = addFeatureAndGet(new ActionableModel(setup.getConfigurer()));
+        actionable = addFeatureAndGet(new ActionableModel(setup));
 
         text = services.get(Text.class);
         cursor = services.get(Cursor.class);

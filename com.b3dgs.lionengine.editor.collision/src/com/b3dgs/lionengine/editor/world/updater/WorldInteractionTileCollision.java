@@ -402,7 +402,6 @@ public class WorldInteractionTileCollision implements CollisionVerifier, WorldMo
             mapGroup.loadGroups(config);
             final MapTileCollision mapCollision = map.getFeature(MapTileCollision.class);
             mapCollision.loadCollisions(mapCollision.getFormulasConfig(), mapCollision.getCollisionsConfig());
-            mapCollision.createCollisionDraw();
         }
     }
 

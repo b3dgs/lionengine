@@ -21,14 +21,10 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.HandlableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Identifiable;
-import com.b3dgs.lionengine.game.handler.IdentifiableListener;
-import com.b3dgs.lionengine.game.handler.IdentifiableModel;
 
 /**
  * Object minimal representation. Defined by a unique ID, the object is designed to be handled by a {@link Handler} . To
@@ -58,12 +54,8 @@ import com.b3dgs.lionengine.game.handler.IdentifiableModel;
  * @see Setup
  * @see Services
  */
-public class ObjectGame implements Handlable
+public class ObjectGame extends HandlableModel
 {
-    /** Identifiable model. */
-    private final Identifiable identifiable = new IdentifiableModel();
-    /** Featurable model. */
-    private final Featurable featurable = new FeaturableModel();
     /** Configurer reference. */
     private final Configurer configurer;
 
@@ -76,6 +68,7 @@ public class ObjectGame implements Handlable
      */
     public ObjectGame(Setup setup, Services services)
     {
+        super();
         Check.notNull(setup);
         Check.notNull(services);
 
@@ -114,77 +107,14 @@ public class ObjectGame implements Handlable
     }
 
     /*
-     * Identifiable
-     */
-
-    @Override
-    public void addListener(IdentifiableListener listener)
-    {
-        identifiable.addListener(listener);
-    }
-
-    @Override
-    public void removeListener(IdentifiableListener listener)
-    {
-        identifiable.removeListener(listener);
-    }
-
-    @Override
-    public Integer getId()
-    {
-        return identifiable.getId();
-    }
-
-    @Override
-    public void destroy()
-    {
-        identifiable.destroy();
-    }
-
-    @Override
-    public void notifyDestroyed()
-    {
-        identifiable.notifyDestroyed();
-    }
-
-    /*
      * Featurable
      */
 
     @Override
     public void prepareFeatures(Handlable owner, Services services)
     {
-        featurable.prepareFeatures(owner, services);
+        super.prepareFeatures(owner, services);
+        // TODO use listener ?
         onPrepared();
-    }
-
-    @Override
-    public void addFeature(Feature feature)
-    {
-        featurable.addFeature(feature);
-    }
-
-    @Override
-    public boolean hasFeature(Class<? extends Feature> feature)
-    {
-        return featurable.hasFeature(feature);
-    }
-
-    @Override
-    public <C extends Feature> C getFeature(Class<C> feature)
-    {
-        return featurable.getFeature(feature);
-    }
-
-    @Override
-    public Iterable<Feature> getFeatures()
-    {
-        return featurable.getFeatures();
-    }
-
-    @Override
-    public Iterable<Class<? extends Feature>> getFeaturesType()
-    {
-        return featurable.getFeaturesType();
     }
 }

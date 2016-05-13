@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ComponentRenderable;
 import com.b3dgs.lionengine.game.object.ComponentUpdatable;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -51,6 +52,8 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     private final Collection<Handlable> toAdd = new HashSet<Handlable>();
     /** To delete list. */
     private final Collection<Integer> toDelete = new HashSet<Integer>();
+    /** Services reference. */
+    private final Services services;
     /** Will delete flag. */
     private boolean willDelete;
     /** Will add flag. */
@@ -58,10 +61,13 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
 
     /**
      * Create a handler.
+     * 
+     * @param services The services reference.
      */
-    public Handler()
+    public Handler(Services services)
     {
         super();
+        this.services = services;
     }
 
     /**
@@ -161,6 +167,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
         {
             for (final Handlable handlable : toAdd)
             {
+                handlable.prepareFeatures(handlable, services);
                 handlables.add(handlable);
                 for (final HandlerListener listener : listeners)
                 {

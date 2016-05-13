@@ -57,7 +57,7 @@ public class ComponentUpdaterTest
     public void testUpdater()
     {
         final ComponentUpdater updater = new ComponentUpdater();
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(new Services());
         handler.addUpdatable(updater);
 
         final Updater object = new Updater(new Setup(Medias.create("object.xml")), new Services());

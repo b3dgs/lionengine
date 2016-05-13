@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -62,9 +61,8 @@ class Peon extends ObjectGame implements Updatable, Renderable
     {
         super(setup, services);
 
-        final Configurer configurer = getConfigurer();
-        transformable = addFeatureAndGet(new TransformableModel(configurer));
-        pathfindable = addFeatureAndGet(new PathfindableModel(configurer));
+        transformable = addFeatureAndGet(new TransformableModel(setup));
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
         viewer = services.get(Viewer.class);
         transformable.teleport(208, 224);

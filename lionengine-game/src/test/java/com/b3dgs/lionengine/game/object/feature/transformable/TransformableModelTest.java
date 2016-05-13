@@ -194,8 +194,9 @@ public class TransformableModelTest
         final Services services = new Services();
         services.add(new MapTileGame());
 
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
-        final Transformable transformable = new TransformableModel(object.getConfigurer());
+        final Setup setup = new Setup(media);
+        final ObjectGame object = new ObjectGame(setup, services);
+        final Transformable transformable = new TransformableModel(setup);
         transformable.prepare(object, services);
 
         Assert.assertEquals(16, transformable.getOldWidth(), UtilTests.PRECISION);

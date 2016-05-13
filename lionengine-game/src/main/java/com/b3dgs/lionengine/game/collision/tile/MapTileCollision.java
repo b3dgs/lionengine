@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Represents the collision feature of a map tile.
@@ -31,7 +30,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
  * @see CollisionFormula
  * @see CollisionGroup
  */
-public interface MapTileCollision extends Feature, Renderable
+public interface MapTileCollision extends Feature
 {
     /**
      * Load map collision from an external file.
@@ -57,17 +56,6 @@ public interface MapTileCollision extends Feature, Renderable
      * @throws LionEngineException If error when saving collisions.
      */
     void saveCollisions();
-
-    /**
-     * Create the collision draw surface. Must be called after map creation to enable collision rendering.
-     * Previous cache is cleared is exists.
-     */
-    void createCollisionDraw();
-
-    /**
-     * Clear the cached collision image created with {@link #createCollisionDraw()}.
-     */
-    void clearCollisionDraw();
 
     /**
      * Search first tile hit by the transformable that contains collision, applying a ray tracing from its old location

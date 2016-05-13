@@ -71,7 +71,7 @@ class Button extends ObjectGame implements Action, Updatable, Renderable
         image = Drawable.loadImage(setup.getSurface());
         name = ActionConfig.imports(getConfigurer().getRoot()).getName();
 
-        actionable = addFeatureAndGet(new ActionableModel(setup.getConfigurer()));
+        actionable = addFeatureAndGet(new ActionableModel(setup));
         actionable.setClickAction(Mouse.LEFT);
     }
 

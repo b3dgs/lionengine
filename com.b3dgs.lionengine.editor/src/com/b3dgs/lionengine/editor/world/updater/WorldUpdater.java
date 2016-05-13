@@ -30,8 +30,10 @@ import org.eclipse.swt.events.MouseWheelListener;
 
 import com.b3dgs.lionengine.editor.utility.UtilExtension;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRenderer;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 
 /**
  * World updater, update the current world.
@@ -48,6 +50,8 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     private final Collection<WorldMouseScrollListener> scrollListeners = new ArrayList<>();
     /** World keyboard listeners. */
     private final Collection<WorldKeyboardListener> keyListeners = new ArrayList<>();
+    /** Map collision renderer. */
+    private final MapTileCollisionRenderer mapCollisionRenderer;
     /** Zoom handler. */
     private final WorldZoomUpdater zoom;
     /** Map reference. */
@@ -72,6 +76,7 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     public WorldUpdater(EPartService partService, Services services)
     {
         this.partService = partService;
+        mapCollisionRenderer = new MapTileCollisionRendererModel(services);
         map = services.get(MapTile.class);
         gridEnabled = true;
 
@@ -175,18 +180,15 @@ public class WorldUpdater implements KeyListener, MouseListener, MouseMoveListen
     public void switchCollisionsEnabled()
     {
         collisionsEnabled = !collisionsEnabled;
-
-        if (map.hasFeature(MapTileCollision.class))
+        if (collisionsEnabled)
         {
-            final MapTileCollision mapTileCollision = map.getFeature(MapTileCollision.class);
-            if (collisionsEnabled)
-            {
-                mapTileCollision.createCollisionDraw();
-            }
-            else
-            {
-                mapTileCollision.clearCollisionDraw();
-            }
+            map.getFeature(MapTileViewer.class).addRenderer(mapCollisionRenderer);
+            mapCollisionRenderer.createCollisionDraw();
+        }
+        else
+        {
+            mapCollisionRenderer.clearCollisionDraw();
+            map.getFeature(MapTileViewer.class).removeRenderer(mapCollisionRenderer);
         }
     }
 

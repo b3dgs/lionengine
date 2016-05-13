@@ -74,7 +74,7 @@ class Peon extends ObjectGame implements Updatable, ExtractorChecker, ExtractorL
     {
         super(setup, services);
 
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup.getConfigurer()));
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
         viewer = services.get(Viewer.class);
         transformable.teleport(208, 160);

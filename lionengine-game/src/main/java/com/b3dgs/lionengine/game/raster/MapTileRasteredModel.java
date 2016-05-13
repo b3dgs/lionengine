@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -41,7 +40,7 @@ import com.b3dgs.lionengine.util.UtilConversion;
 /**
  * Rastered map tile implementation.
  */
-public class MapTileRasteredModel extends FeatureModel implements MapTileRastered
+public class MapTileRasteredModel implements MapTileRastered
 {
     /** List of rastered sheets. */
     private final Map<Integer, List<SpriteTiled>> rasterSheets = new TreeMap<Integer, List<SpriteTiled>>();

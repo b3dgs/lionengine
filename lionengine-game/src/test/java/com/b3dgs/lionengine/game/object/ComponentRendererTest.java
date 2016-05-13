@@ -59,7 +59,7 @@ public class ComponentRendererTest
     public void testUpdater()
     {
         final ComponentRenderer renderer = new ComponentRenderer();
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(new Services());
         handler.addRenderable(renderer);
 
         final Renderer object = new Renderer(new Setup(Medias.create("object.xml")), new Services());

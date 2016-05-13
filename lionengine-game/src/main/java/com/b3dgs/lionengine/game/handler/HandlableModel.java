@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.handler;
 
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.feature.FeaturableModel;
 import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
@@ -30,6 +31,14 @@ public class HandlableModel implements Handlable
     private final Identifiable identifiable;
     /** The featurable model. */
     private final Featurable featurable;
+
+    /**
+     * Create a default model with an {@link IdentifiableModel} and a {@link FeaturableModel}.
+     */
+    public HandlableModel()
+    {
+        this(new IdentifiableModel(), new FeaturableModel());
+    }
 
     /**
      * Create model.

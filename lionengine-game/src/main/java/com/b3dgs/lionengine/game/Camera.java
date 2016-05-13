@@ -17,9 +17,13 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
+import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.HandlableModel;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -37,12 +41,12 @@ import com.b3dgs.lionengine.util.UtilMath;
  * <li>{@link #setLimits(Surface)}</li>
  * </ul>
  */
-public class Camera implements Viewer
+public class Camera extends HandlableModel implements Viewer
 {
     /** Current location. */
-    private final Mover mover;
+    private final Mover mover = new MoverModel();
     /** Current offset location. */
-    private final Mover offset;
+    private final Mover offset = new MoverModel();
     /** Intervals horizontal value. */
     private int intervalHorizontal;
     /** Intervals vertical value. */
@@ -56,31 +60,38 @@ public class Camera implements Viewer
     /** Camera view height. */
     private int height;
     /** Limit left. */
-    private int limitLeft;
+    private int limitLeft = Integer.MIN_VALUE;
     /** Limit right. */
-    private int limitRight;
+    private int limitRight = Integer.MAX_VALUE;
     /** Limit top. */
-    private int limitTop;
+    private int limitTop = Integer.MAX_VALUE;
     /** Limit bottom. */
-    private int limitBottom;
+    private int limitBottom = Integer.MIN_VALUE;
 
     /**
      * Create a camera.
      */
     public Camera()
     {
-        mover = new MoverModel();
-        offset = new MoverModel();
-        intervalHorizontal = 0;
-        intervalVertical = 0;
-        x = 0;
-        y = 0;
-        width = 0;
-        height = 0;
-        limitLeft = Integer.MIN_VALUE;
-        limitRight = Integer.MAX_VALUE;
-        limitTop = Integer.MAX_VALUE;
-        limitBottom = Integer.MIN_VALUE;
+        super();
+    }
+
+    /**
+     * Follow automatically the specified handlable. The viewer location will be adjusted to the followed handlable.
+     * <p>
+     * The {@link Handlable} must provide the following features:
+     * </p>
+     * <ul>
+     * <li>{@link Transformable}</li>
+     * </ul>
+     * 
+     * @param handlable The handlable to follow.
+     * @throws LionEngineException If missing feature.
+     */
+    public void follow(Handlable handlable)
+    {
+        final Transformable transformable = handlable.getFeature(Transformable.class);
+        follow(transformable);
     }
 
     /**

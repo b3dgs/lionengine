@@ -95,7 +95,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
         surface.setOrigin(Origin.BOTTOM_LEFT);
         surface.prepare();
 
-        transformable = addFeatureAndGet(new TransformableModel(configurer));
+        transformable = addFeatureAndGet(new TransformableModel(setup));
         transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
 
         camera = services.get(Camera.class);

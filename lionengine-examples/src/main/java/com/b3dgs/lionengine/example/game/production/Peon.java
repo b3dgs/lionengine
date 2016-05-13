@@ -82,7 +82,7 @@ class Peon extends ObjectGame implements Updatable, ProducerChecker, ProducerLis
     {
         super(setup, services);
 
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup.getConfigurer()));
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
         viewer = services.get(Viewer.class);
         map = services.get(MapTile.class);

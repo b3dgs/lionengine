@@ -110,7 +110,9 @@ public class ObjectGameTest
     public void testFeatures()
     {
         final AtomicBoolean prepared = new AtomicBoolean();
-        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services())
+        final Services services = new Services();
+        final Setup setup = new Setup(Medias.create(OBJECT_XML));
+        final ObjectGame object = new ObjectGame(setup, services)
         {
             @Override
             protected void onPrepared()
@@ -119,8 +121,8 @@ public class ObjectGameTest
                 prepared.set(true);
             }
         };
-        final TransformableModel transformable = object.addFeatureAndGet(new TransformableModel(object.getConfigurer()));
-        object.prepareFeatures(object, new Services());
+        final TransformableModel transformable = object.addFeatureAndGet(new TransformableModel(setup));
+        object.prepareFeatures(object, services);
 
         Assert.assertEquals(object, transformable.getOwner());
         Assert.assertTrue(prepared.get());

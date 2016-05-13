@@ -151,7 +151,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.HeaderDesc, ICON, SWT.SHELL_TRIM);
 
         services.add(new Camera());
-        services.add(new Handler());
+        services.add(new Handler(services));
         services.add(new Factory(services));
         map = services.create(MapTileGame.class);
         mapGroup = map.createFeature(MapTileGroupModel.class);

@@ -47,7 +47,7 @@ public class AppHandler
 
         final Graphic g = Graphics.createGraphic();
         final Services services = new Services();
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(services);
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());
         handler.add(new MyObject(new Setup(Medias.create("MyObject.xml")), services));

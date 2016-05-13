@@ -112,8 +112,9 @@ public class ProducibleModelTest
     {
         final Services services = new Services();
         final Media media = createProducibleMedia();
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
-        final Producible producible = new ProducibleModel(object.getConfigurer());
+        final Setup setup = new Setup(media);
+        final ObjectGame object = new ObjectGame(setup, services);
+        final Producible producible = new ProducibleModel(setup);
         final ProducibleListener listener = createListener();
         producible.setLocation(1.0, 2.0);
         producible.prepare(object, services);
@@ -139,8 +140,9 @@ public class ProducibleModelTest
     {
         final Services services = new Services();
         final Media media = createProducibleMedia();
-        final ProducibleListenerSelf object = new ProducibleListenerSelf(new Setup(media), services);
-        final Producible producible = new ProducibleModel(object.getConfigurer());
+        final Setup setup = new Setup(media);
+        final ProducibleListenerSelf object = new ProducibleListenerSelf(setup, services);
+        final Producible producible = new ProducibleModel(setup);
         producible.prepare(object, services);
 
         Assert.assertTrue(producible.getListeners().contains(object));

@@ -89,7 +89,7 @@ public class ComponentCollisionTest
         collidable2.addCollision(collision2);
 
         final ComponentCollision component = new ComponentCollision();
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(services);
         handler.addUpdatable(new ComponentUpdater());
         handler.addUpdatable(component);
         handler.add(object1);

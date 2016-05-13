@@ -66,7 +66,7 @@ class Projectile extends ObjectGame implements Updatable, Renderable, Collidable
     {
         super(setup, services);
 
-        collidable = addFeatureAndGet(new CollidableModel(setup.getConfigurer()));
+        collidable = addFeatureAndGet(new CollidableModel(setup));
 
         viewer = services.get(Viewer.class);
 

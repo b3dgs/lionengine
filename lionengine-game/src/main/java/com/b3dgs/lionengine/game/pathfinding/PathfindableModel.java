@@ -25,7 +25,6 @@ import java.util.Map;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Services;
@@ -33,6 +32,7 @@ import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.orientable.Orientable;
 import com.b3dgs.lionengine.game.object.feature.orientable.OrientableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
@@ -137,12 +137,12 @@ public class PathfindableModel extends FeatureModel implements Pathfindable
     /**
      * Create a pathfindable model.
      * 
-     * @param configurer The configurer reference.
+     * @param setup The setup reference.
      */
-    public PathfindableModel(Configurer configurer)
+    public PathfindableModel(Setup setup)
     {
         super();
-        categories = PathfindableConfig.create(configurer);
+        categories = PathfindableConfig.create(setup.getConfigurer());
     }
 
     /**

@@ -90,16 +90,17 @@ public class LauncherModelTest
      * Create launcher.
      * 
      * @param services The services.
+     * @param setup The setup.
      * @param object The object.
      * @return The extractable.
      */
-    private static Launcher createLauncher(Services services, ObjectGame object)
+    private static Launcher createLauncher(Services services, Setup setup, ObjectGame object)
     {
         services.add(new Factory(services));
-        services.add(new Handler());
+        services.add(new Handler(services));
         object.addFeature(new TransformableModel());
 
-        final Launcher launcher = new LauncherModel(object.getConfigurer());
+        final Launcher launcher = new LauncherModel(setup);
         launcher.prepare(object, services);
         launcher.setOffset(1, 2);
         launcher.setRate(10);
@@ -157,8 +158,9 @@ public class LauncherModelTest
         final Media launchableMedia = Medias.create("launchable.xml");
         final Media launcherMedia = createLauncherMedia(launchableMedia);
         final Services services = new Services();
-        final ObjectGame object = new ObjectGame(new Setup(launcherMedia), services);
-        final Launcher launcher = createLauncher(services, object);
+        final Setup setup = new Setup(launcherMedia);
+        final ObjectGame object = new ObjectGame(setup, services);
+        final Launcher launcher = createLauncher(services, setup, object);
 
         Assert.assertEquals(1.0, launcher.getOffsetX(), UtilTests.PRECISION);
         Assert.assertEquals(2.0, launcher.getOffsetY(), UtilTests.PRECISION);
@@ -177,8 +179,9 @@ public class LauncherModelTest
         final Media launchableMedia = ObjectGameTest.createMedia(LaunchableObject.class);
         final Media launcherMedia = createLauncherMedia(launchableMedia);
         final Services services = new Services();
-        final ObjectGame object = new ObjectGame(new Setup(launcherMedia), services);
-        final Launcher launcher = createLauncher(services, object);
+        final Setup setup = new Setup(launcherMedia);
+        final ObjectGame object = new ObjectGame(setup, services);
+        final Launcher launcher = createLauncher(services, setup, object);
 
         final AtomicReference<ObjectGame> fired = new AtomicReference<ObjectGame>();
         launcher.addListener(createListener(fired));
@@ -232,8 +235,9 @@ public class LauncherModelTest
         final Media launchableMedia = ObjectGameTest.createMedia(LaunchableObjectSelf.class);
         final Media launcherMedia = createLauncherMedia(launchableMedia);
         final Services services = new Services();
-        final LaunchableObjectSelf object = new LaunchableObjectSelf(new Setup(launcherMedia), services);
-        final Launcher launcher = createLauncher(services, object);
+        final Setup setup = new Setup(launcherMedia);
+        final LaunchableObjectSelf object = new LaunchableObjectSelf(setup, services);
+        final Launcher launcher = createLauncher(services, setup, object);
         launcher.addListener(object);
 
         Assert.assertNull(object.fired.get());
@@ -264,8 +268,9 @@ public class LauncherModelTest
         final Media launchableMedia = ObjectGameTest.createMedia(ObjectGame.class);
         final Media launcherMedia = createLauncherMedia(launchableMedia);
         final Services services = new Services();
-        final ObjectGame object = new ObjectGame(new Setup(launcherMedia), services);
-        final Launcher launcher = createLauncher(services, object);
+        final Setup setup = new Setup(launcherMedia);
+        final ObjectGame object = new ObjectGame(setup, services);
+        final Launcher launcher = createLauncher(services, setup, object);
 
         try
         {

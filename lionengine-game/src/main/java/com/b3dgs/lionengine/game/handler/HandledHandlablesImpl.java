@@ -60,6 +60,11 @@ final class HandledHandlablesImpl implements Handlables
     {
         handlables.put(handlable.getId(), handlable);
 
+        for (final Class<?> type : handlable.getClass().getInterfaces())
+        {
+            addType(type, handlable);
+        }
+
         for (final Class<? extends Feature> feature : handlable.getFeaturesType())
         {
             final Feature object = handlable.getFeature(feature);
@@ -81,10 +86,23 @@ final class HandledHandlablesImpl implements Handlables
     public void remove(Integer id)
     {
         final Handlable handlable = handlables.get(id);
+
+        for (final Class<?> type : handlable.getClass().getInterfaces())
+        {
+            remove(type, handlable);
+        }
+
         for (final Class<? extends Feature> feature : handlable.getFeaturesType())
         {
-            remove(feature, handlable.getFeature(feature));
+            final Feature object = handlable.getFeature(feature);
+            remove(feature, object);
+            for (final Class<?> other : UtilReflection.getInterfaces(feature, Feature.class))
+            {
+                remove(other, object);
+            }
+
         }
+        remove(handlable.getClass(), handlable);
         removeSuperClass(handlable, handlable.getClass());
         handlables.remove(id);
     }

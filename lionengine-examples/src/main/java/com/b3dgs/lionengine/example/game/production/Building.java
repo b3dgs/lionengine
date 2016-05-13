@@ -66,7 +66,7 @@ class Building extends ObjectGame implements Updatable, ProducibleListener
     {
         super(setup, services);
 
-        transformable = addFeatureAndGet(new TransformableModel(setup.getConfigurer()));
+        transformable = addFeatureAndGet(new TransformableModel(setup));
 
         viewer = services.get(Viewer.class);
 
@@ -75,7 +75,7 @@ class Building extends ObjectGame implements Updatable, ProducibleListener
 
         layerable.setLayer(Integer.valueOf(1));
 
-        addFeature(new ProducibleModel(setup.getConfigurer()));
+        addFeature(new ProducibleModel(setup));
         addFeature(new DisplayableModel(g ->
         {
             if (visible)

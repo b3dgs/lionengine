@@ -125,7 +125,6 @@ class World extends WorldGame
         mapViewer.addRenderer(new MapTileRendererModel(services));
         mapGroup.loadGroups(Medias.create("map", "groups.xml"));
         mapCollision.loadCollisions(Medias.create("map", "formulas.xml"), Medias.create("map", "collisions.xml"));
-        mapCollision.createCollisionDraw();
 
         mario = factory.create(Mario.CONFIG);
         mario.respawn(160);

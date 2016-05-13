@@ -73,8 +73,9 @@ public class FovableModelTest
         final MapTile map = UtilMap.createMap(7);
         services.add(map);
 
-        final ObjectGame object = new ObjectGame(new Setup(config), services);
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(object.getConfigurer()));
+        final Setup setup = new Setup(config);
+        final ObjectGame object = new ObjectGame(setup, services);
+        final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
         transformable.teleport(1, 2);
         transformable.setSize(3, 4);
         fovable.prepare(object, services);

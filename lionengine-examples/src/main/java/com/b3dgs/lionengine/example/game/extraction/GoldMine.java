@@ -68,8 +68,8 @@ class GoldMine extends ObjectGame implements Updatable
     {
         super(setup, services);
 
-        transformable = addFeatureAndGet(new TransformableModel(setup.getConfigurer()));
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup.getConfigurer()));
+        transformable = addFeatureAndGet(new TransformableModel(setup));
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
         viewer = services.get(Viewer.class);
 

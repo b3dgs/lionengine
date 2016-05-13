@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.game.object.feature.actionable;
 
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -59,12 +59,12 @@ public class ActionableModel extends FeatureModel implements Actionable
      * If the {@link ObjectGame} owner is an {@link Action}, it will automatically {@link #setAction(Action)} on it.
      * </p>
      * 
-     * @param configurer The configurer reference.
+     * @param setup The setup reference.
      */
-    public ActionableModel(Configurer configurer)
+    public ActionableModel(Setup setup)
     {
         super();
-        final ActionConfig config = ActionConfig.imports(configurer.getRoot());
+        final ActionConfig config = ActionConfig.imports(setup.getConfigurer().getRoot());
         button = Geom.createRectangle(config.getX(), config.getY(), config.getWidth(), config.getHeight());
         description = config.getDescription();
     }

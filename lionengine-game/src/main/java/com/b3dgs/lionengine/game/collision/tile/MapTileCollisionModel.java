@@ -26,7 +26,6 @@ import java.util.Map.Entry;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
-import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Services;
@@ -36,11 +35,6 @@ import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TileRef;
-import com.b3dgs.lionengine.graphic.ColorRgba;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.ImageBuffer;
-import com.b3dgs.lionengine.graphic.Transparency;
-import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.util.UtilMath;
@@ -53,7 +47,6 @@ import com.b3dgs.lionengine.util.UtilMath;
  * <ul>
  * <li>{@link MapTile}</li>
  * <li>{@link MapTileGroup}</li>
- * <li>{@link Viewer}</li>
  * </ul>
  */
 public class MapTileCollisionModel extends FeatureModel implements MapTileCollision
@@ -64,111 +57,6 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     private static final String INFO_LOAD_GROUPS = "Loading collision groups from: ";
     /** Error formula not found. */
     private static final String ERROR_FORMULA = "Formula not found (may not have been loaded): ";
-
-    /**
-     * Create the function draw to buffer.
-     * 
-     * @param collision The collision reference.
-     * @param tw The tile width.
-     * @param th The tile height.
-     * @return The created collision representation buffer.
-     */
-    public static ImageBuffer createFunctionDraw(CollisionFormula collision, int tw, int th)
-    {
-        final ImageBuffer buffer = Graphics.createImageBuffer(tw, th, Transparency.TRANSLUCENT);
-        final Graphic g = buffer.createGraphic();
-        g.setColor(ColorRgba.PURPLE);
-
-        createFunctionDraw(g, collision, tw, th);
-
-        g.dispose();
-        return buffer;
-    }
-
-    /**
-     * Create the function draw to buffer by computing all possible locations.
-     * 
-     * @param g The graphic buffer.
-     * @param formula The collision formula.
-     * @param tw The tile width.
-     * @param th The tile height.
-     */
-    private static void createFunctionDraw(Graphic g, CollisionFormula formula, int tw, int th)
-    {
-        for (int x = 0; x < tw; x++)
-        {
-            for (int y = 0; y < th; y++)
-            {
-                renderCollision(g, formula, th, x, y);
-            }
-        }
-    }
-
-    /**
-     * Render collision from current vector.
-     * 
-     * @param g The graphic buffer.
-     * @param formula The collision formula.
-     * @param th The tile height.
-     * @param x The current horizontal location.
-     * @param y The current vertical location.
-     */
-    private static void renderCollision(Graphic g, CollisionFormula formula, int th, int x, int y)
-    {
-        final CollisionFunction function = formula.getFunction();
-        final CollisionRange range = formula.getRange();
-        switch (range.getOutput())
-        {
-            case X:
-                renderX(g, function, range, th, x, y);
-                break;
-            case Y:
-                renderY(g, function, range, th, x, y);
-                break;
-            default:
-                throw new LionEngineException(range.getOutput());
-        }
-    }
-
-    /**
-     * Render horizontal collision from current vector.
-     * 
-     * @param g The graphic buffer.
-     * @param function The collision function.
-     * @param range The collision range.
-     * @param th The tile height.
-     * @param x The current horizontal location.
-     * @param y The current vertical location.
-     */
-    private static void renderX(Graphic g, CollisionFunction function, CollisionRange range, int th, int x, int y)
-    {
-        final double fx = function.compute(y);
-        if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX())
-            && UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
-        {
-            g.drawRect((int) fx, th - y - 1, 0, 0, false);
-        }
-    }
-
-    /**
-     * Render vertical collision from current vector.
-     * 
-     * @param g The graphic buffer.
-     * @param function The collision function.
-     * @param range The collision range.
-     * @param th The tile height.
-     * @param x The current horizontal location.
-     * @param y The current vertical location.
-     */
-    private static void renderY(Graphic g, CollisionFunction function, CollisionRange range, int th, int x, int y)
-    {
-        final double fy = function.compute(x);
-        if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY())
-            && UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
-        {
-            g.drawRect(x, th - (int) fy - 1, 0, 0, false);
-        }
-    }
 
     /**
      * Check if tile contains at least one collision from the category.
@@ -248,12 +136,8 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     private final MapTile map;
     /** Map tile group. */
     private final MapTileGroup mapGroup;
-    /** Viewer reference. */
-    private final Viewer viewer;
     /** The services reference. */
     private final Services services;
-    /** Collision draw cache. */
-    private Map<CollisionFormula, ImageBuffer> collisionCache;
     /** Formulas configuration media. */
     private Media formulasConfig;
     /** Groups configuration media. */
@@ -271,7 +155,6 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
         this.services = services;
         map = services.get(MapTile.class);
         mapGroup = services.get(MapTileGroup.class);
-        viewer = services.get(Viewer.class);
     }
 
     /**
@@ -487,27 +370,6 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
     }
 
     /**
-     * Render the collision function.
-     * 
-     * @param g The graphic output.
-     * @param tile The tile reference.
-     * @param x The horizontal render location.
-     * @param y The vertical render location.
-     */
-    private void renderCollision(Graphic g, TileCollision tile, int x, int y)
-    {
-        for (final CollisionFormula collision : tile.getCollisionFormulas())
-        {
-            final ImageBuffer buffer = collisionCache.get(collision);
-            if (buffer != null)
-            {
-                // x - 1 because collision result is outside tile area
-                g.drawImage(buffer, x - 1, y);
-            }
-        }
-    }
-
-    /**
      * Get the collision result from current sub location.
      * 
      * @param category The collision category.
@@ -587,33 +449,6 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
      */
 
     @Override
-    public void createCollisionDraw()
-    {
-        clearCollisionDraw();
-        collisionCache = new HashMap<CollisionFormula, ImageBuffer>(formulas.size());
-
-        for (final CollisionFormula collision : formulas.values())
-        {
-            final ImageBuffer buffer = createFunctionDraw(collision, map.getTileWidth(), map.getTileHeight());
-            collisionCache.put(collision, buffer);
-        }
-    }
-
-    @Override
-    public void clearCollisionDraw()
-    {
-        if (collisionCache != null)
-        {
-            for (final ImageBuffer buffer : collisionCache.values())
-            {
-                buffer.dispose();
-            }
-            collisionCache.clear();
-            collisionCache = null;
-        }
-    }
-
-    @Override
     public CollisionResult computeCollision(Transformable transformable, CollisionCategory category)
     {
         // Distance calculation
@@ -642,24 +477,6 @@ public class MapTileCollisionModel extends FeatureModel implements MapTileCollis
             h += sx;
         }
         return null;
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        for (int v = 0; v < map.getInTileHeight(); v++)
-        {
-            for (int h = 0; h < map.getInTileWidth(); h++)
-            {
-                final Tile tile = map.getTile(h, v);
-                if (tile != null)
-                {
-                    final int x = (int) Math.floor(viewer.getViewpointX(tile.getX()));
-                    final int y = (int) Math.floor(viewer.getViewpointY(tile.getY() + tile.getHeight()));
-                    renderCollision(g, tile.getFeature(TileCollision.class), x, y);
-                }
-            }
-        }
     }
 
     @Override

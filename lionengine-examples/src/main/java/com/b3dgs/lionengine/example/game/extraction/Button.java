@@ -85,7 +85,7 @@ class Button extends ObjectGame implements Action, Assign, Updatable
     {
         super(setup, services);
 
-        actionable = addFeatureAndGet(new ActionableModel(setup.getConfigurer()));
+        actionable = addFeatureAndGet(new ActionableModel(setup));
 
         image = Drawable.loadImage(setup.getSurface());
 

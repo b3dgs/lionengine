@@ -84,10 +84,10 @@ class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableL
     {
         super(setup, services);
 
-        transformable = addFeatureAndGet(new TransformableModel(setup.getConfigurer()));
+        transformable = addFeatureAndGet(new TransformableModel(setup));
         body = addFeatureAndGet(new BodyModel());
-        tileCollidable = addFeatureAndGet(new TileCollidableModel(setup.getConfigurer()));
-        collidable = addFeatureAndGet(new CollidableModel(setup.getConfigurer()));
+        tileCollidable = addFeatureAndGet(new TileCollidableModel(setup));
+        collidable = addFeatureAndGet(new CollidableModel(setup));
 
         keyboard = services.get(Keyboard.class);
         camera = services.get(Camera.class);

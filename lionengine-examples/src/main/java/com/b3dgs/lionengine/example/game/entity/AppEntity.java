@@ -47,7 +47,7 @@ public class AppEntity
         final Graphic g = Graphics.createGraphic();
         final Services services = new Services();
         final Factory factory = new Factory(services);
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(services);
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());
 

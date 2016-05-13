@@ -97,7 +97,7 @@ public class Services
      * private final Services services = new Services();
      * private final Factory factory = new Factory(services);
      * private final Camera camera = new Camera();
-     * private final Handler handler = new Handler();
+     * private final Handler handler = new Handler(services);
      * ...
      * services.add(factory);
      * services.add(camera);

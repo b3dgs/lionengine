@@ -55,7 +55,7 @@ class Scene extends Sequence
     /** Map viewer. */
     private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
     /** Map raster reference. */
-    private final MapTileRastered raster = services.create(MapTileRasteredModel.class);
+    private final MapTileRastered raster = new MapTileRasteredModel(services);
     /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Renderable selection (false = default, true = raster). */

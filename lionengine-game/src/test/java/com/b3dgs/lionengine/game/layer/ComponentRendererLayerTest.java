@@ -102,7 +102,7 @@ public class ComponentRendererLayerTest
         final Services services = new Services();
         services.add(component);
 
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(services);
         handler.addRenderable(component);
         handler.addListener(component);
         final AtomicInteger last = new AtomicInteger();
@@ -117,6 +117,7 @@ public class ComponentRendererLayerTest
         object2.setLayer(Integer.valueOf(6));
         object3.setLayer(Integer.valueOf(5));
         object4.setLayer(Integer.valueOf(4));
+        last.set(-1);
 
         component.render(null, null);
 
@@ -130,6 +131,7 @@ public class ComponentRendererLayerTest
         handler.remove(object2.getOwner());
         handler.remove(object4.getOwner());
         handler.update(1.0);
+        last.set(-1);
         component.render(null, null);
 
         Assert.assertEquals(object3.getOwner().getId().intValue(), last.get());

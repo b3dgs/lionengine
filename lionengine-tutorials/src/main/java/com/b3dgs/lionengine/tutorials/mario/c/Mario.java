@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
@@ -92,10 +91,9 @@ class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableL
     {
         super(setup, services);
 
-        final Configurer configurer = setup.getConfigurer();
-        transformable = addFeatureAndGet(new TransformableModel(configurer));
+        transformable = addFeatureAndGet(new TransformableModel(setup));
         body = addFeatureAndGet(new BodyModel());
-        tileCollidable = addFeatureAndGet(new TileCollidableModel(configurer));
+        tileCollidable = addFeatureAndGet(new TileCollidableModel(setup));
 
         camera = services.get(Camera.class);
         keyboard = services.get(Keyboard.class);
