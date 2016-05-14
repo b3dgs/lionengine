@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.handler;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -74,5 +75,28 @@ public class IdentifiableModelTest
         identifiable.notifyDestroyed();
 
         Assert.assertNull(identifiable.getId());
+    }
+
+    /**
+     * Test the listener.
+     */
+    @Test
+    public void testListener()
+    {
+        final Identifiable identifiable = new IdentifiableModel();
+        final AtomicBoolean destroyed = new AtomicBoolean();
+        final IdentifiableListener listener = new IdentifiableListener()
+        {
+            @Override
+            public void notifyDestroyed(Integer id)
+            {
+                destroyed.set(true);
+            }
+        };
+        identifiable.addListener(listener);
+        identifiable.removeListener(listener);
+        identifiable.destroy();
+
+        Assert.assertFalse(destroyed.get());
     }
 }

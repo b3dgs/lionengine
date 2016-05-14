@@ -48,6 +48,7 @@ public class Features
      */
     public final void add(Feature feature)
     {
+        features.put(feature.getClass(), feature);
         for (final Class<?> type : feature.getClass().getInterfaces())
         {
             if (Feature.class.isAssignableFrom(type))
@@ -123,21 +124,14 @@ public class Features
         }
         else
         {
-            for (final Object current : features.values())
+            for (final Feature current : features.values())
             {
                 if (feature.isAssignableFrom(current.getClass()))
                 {
                     return feature.cast(current);
                 }
             }
-            if (feature.isAssignableFrom(getClass()))
-            {
-                value = feature.cast(this);
-            }
-            else
-            {
-                value = null;
-            }
+            value = null;
         }
         return value;
     }

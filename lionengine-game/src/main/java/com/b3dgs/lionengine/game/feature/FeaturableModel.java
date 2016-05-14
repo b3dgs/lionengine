@@ -50,18 +50,6 @@ public class FeaturableModel implements Featurable
         super();
     }
 
-    @Override
-    public void prepareFeatures(Handlable owner, Services services)
-    {
-        fillServices(this, services);
-        for (final Feature feature : featuresToPrepare)
-        {
-            fillServices(feature, services);
-            feature.prepare(owner, services);
-        }
-        featuresToPrepare.clear();
-    }
-
     /**
      * Fill services fields with their right instance.
      * 
@@ -147,6 +135,18 @@ public class FeaturableModel implements Featurable
      */
 
     @Override
+    public void prepareFeatures(Handlable owner, Services services)
+    {
+        fillServices(this, services);
+        for (final Feature feature : featuresToPrepare)
+        {
+            fillServices(feature, services);
+            feature.prepare(owner, services);
+        }
+        featuresToPrepare.clear();
+    }
+
+    @Override
     public void addFeature(Feature feature)
     {
         featuresToPrepare.add(feature);
@@ -156,16 +156,7 @@ public class FeaturableModel implements Featurable
     @Override
     public <C extends Feature> C getFeature(Class<C> feature)
     {
-        final C found;
-        if (feature.isAssignableFrom(getClass()))
-        {
-            found = feature.cast(this);
-        }
-        else
-        {
-            found = features.get(feature);
-        }
-        return found;
+        return features.get(feature);
     }
 
     @Override
@@ -183,15 +174,6 @@ public class FeaturableModel implements Featurable
     @Override
     public boolean hasFeature(Class<? extends Feature> feature)
     {
-        final boolean hasTrait;
-        if (feature.isAssignableFrom(getClass()))
-        {
-            hasTrait = true;
-        }
-        else
-        {
-            hasTrait = features.contains(feature);
-        }
-        return hasTrait;
+        return features.contains(feature);
     }
 }
