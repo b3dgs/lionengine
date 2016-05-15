@@ -39,7 +39,7 @@ public class AppFactory
      */
     public static void main(String[] args)
     {
-        EngineAwt.start("Factory", Version.create(1, 0, 0), AppFactory.class);
+        EngineAwt.start(AppFactory.class.getSimpleName(), Version.create(1, 0, 0), AppFactory.class);
 
         final Services services = new Services();
         final Factory factory = new Factory(services);

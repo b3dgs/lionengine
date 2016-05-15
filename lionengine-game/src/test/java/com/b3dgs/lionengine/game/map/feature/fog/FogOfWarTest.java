@@ -83,7 +83,7 @@ public class FogOfWarTest
         services.add(map);
 
         final Setup setup = new Setup(config);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
         transformable.teleport(3, 3);
         fovable.prepare(object, services);

@@ -21,23 +21,24 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.layer.Layerable;
+import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
 import com.b3dgs.lionengine.util.UtilRandom;
@@ -45,63 +46,60 @@ import com.b3dgs.lionengine.util.UtilRandom;
 /**
  * Ship implementation.
  */
-class Ship extends ObjectGame implements Updatable, Renderable, CollidableListener
+class Ship extends ObjectGame implements CollidableListener
 {
     /** Media. */
     public static final Media MEDIA = Medias.create("Ship.xml");
 
-    /** Transformable model. */
+    private final double speed = UtilRandom.getRandomDouble() / 1.5 + 0.75;
     private final Transformable transformable = addFeatureAndGet(new TransformableModel());
-    /** Collidable model. */
-    private final Collidable collidable;
-    /** Surface. */
     private final SpriteAnimated sprite;
-    /** Viewer reference. */
-    private final Viewer viewer;
-    /** Weapon model. */
-    private final Weapon weapon;
-    /** Speed. */
-    private final double speed;
-    /** Target used. */
+
+    private Weapon weapon;
     private Localizable target;
-    /** Location ship. */
     private double location;
-    /** Start x. */
-    private int x;
-    /** Start y. */
-    private int y;
+    private int x = 64;
+    private int y = 192;
+
+    @Service private Factory factory;
+    @Service private Handler handler;
+    @Service private Viewer viewer;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Ship(SetupSurface setup, Services services)
+    public Ship(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
-        collidable = addFeatureAndGet(new CollidableModel(setup));
+        final Layerable layerable = addFeatureAndGet(new LayerableModel());
+        layerable.setLayer(Integer.valueOf(1));
 
-        viewer = services.get(Viewer.class);
+        final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
+        collidable.setOrigin(Origin.MIDDLE);
 
         final FramesConfig config = FramesConfig.imports(setup);
         sprite = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         sprite.setFrame(3);
         sprite.setOrigin(Origin.MIDDLE);
 
-        collidable.setOrigin(Origin.MIDDLE);
+        addFeature(new RefreshableModel(extrp ->
+        {
+            pointTarget();
+            location += speed;
+            transformable.setLocation(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
+            sprite.setLocation(viewer, transformable);
+            weapon.fire(target);
+            collidable.update(extrp);
+        }));
 
-        final Factory factory = services.get(Factory.class);
-        final Handler handler = services.get(Handler.class);
-
-        weapon = factory.create(Weapon.PULSE_CANNON);
-        weapon.setOffset(6, -6);
-        handler.add(weapon);
-
-        x = 64;
-        y = 192;
-        speed = UtilRandom.getRandomDouble() / 1.5 + 0.75;
+        addFeature(new DisplayableModel(g ->
+        {
+            sprite.render(g);
+            collidable.render(g);
+        }));
     }
 
     /**
@@ -111,6 +109,7 @@ class Ship extends ObjectGame implements Updatable, Renderable, CollidableListen
     {
         sprite.setMirror(Mirror.VERTICAL);
         weapon.setOffset(0, 0);
+
         final int old = x;
         x = y;
         y = old;
@@ -148,26 +147,11 @@ class Ship extends ObjectGame implements Updatable, Renderable, CollidableListen
     protected void onPrepared()
     {
         transformable.teleport(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
+
+        weapon = factory.create(Weapon.PULSE_CANNON);
+        weapon.setOffset(6, -6);
+        handler.add(weapon);
         weapon.setOwner(this);
-        weapon.update(1.0);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        pointTarget();
-        location += speed;
-        transformable.setLocation(x + UtilMath.cos(location * 1.5) * 60, y + UtilMath.sin(location * 2) * 30);
-        sprite.setLocation(viewer, transformable);
-        weapon.fire(target);
-        collidable.update(extrp);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        sprite.render(g);
-        collidable.render(g);
     }
 
     @Override

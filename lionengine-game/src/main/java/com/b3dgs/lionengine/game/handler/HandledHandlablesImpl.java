@@ -79,14 +79,12 @@ final class HandledHandlablesImpl implements Handlables
     }
 
     /**
-     * Remove the handlable and all its references from its ID.
+     * Remove the handlable and all its references.
      * 
-     * @param id The ID reference.
+     * @param handlable The handlable reference.
      */
-    public void remove(Integer id)
+    public void remove(Handlable handlable)
     {
-        final Handlable handlable = handlables.get(id);
-
         for (final Class<?> type : handlable.getClass().getInterfaces())
         {
             remove(type, handlable);
@@ -104,7 +102,8 @@ final class HandledHandlablesImpl implements Handlables
         }
         remove(handlable.getClass(), handlable);
         removeSuperClass(handlable, handlable.getClass());
-        handlables.remove(id);
+
+        handlables.remove(handlable.getId());
     }
 
     /**

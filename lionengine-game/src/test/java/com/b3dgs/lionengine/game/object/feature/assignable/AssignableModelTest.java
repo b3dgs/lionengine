@@ -28,9 +28,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
@@ -95,7 +95,7 @@ public class AssignableModelTest
      */
     private static AssignableModel createAssignable(Media media, Services services)
     {
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         final AssignableModel assignable = new AssignableModel();
         assignable.prepare(object, services);
         return assignable;
@@ -216,7 +216,7 @@ public class AssignableModelTest
 
         final AtomicBoolean assigned = new AtomicBoolean();
         final Media media = ObjectGameTest.createMedia(ObjectAssign.class);
-        final ObjectAssign object = new ObjectAssign(new Setup(media), services, assigned);
+        final ObjectAssign object = new ObjectAssign(new Setup(media), assigned);
         final AssignableModel assignable = new AssignableModel();
         assignable.prepare(object, services);
 
@@ -241,12 +241,11 @@ public class AssignableModelTest
          * Constructor.
          * 
          * @param setup The setup reference.
-         * @param services The services.
          * @param assigned The assigned flag.
          */
-        public ObjectAssign(Setup setup, Services services, AtomicBoolean assigned)
+        public ObjectAssign(Setup setup, AtomicBoolean assigned)
         {
-            super(setup, services);
+            super(setup);
             this.assigned = assigned;
         }
 

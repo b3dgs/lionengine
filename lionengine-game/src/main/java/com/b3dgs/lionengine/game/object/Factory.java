@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * Any object created by the factory from a {@link Media} must have the following public constructor:
  * </p>
  * <ul>
- * <li>{@link ObjectGame#ObjectGame(Setup, Services)}</li>
+ * <li>{@link ObjectGame#ObjectGame(Setup)}</li>
  * </ul>
  * <p>
  * The factory uses the {@link ClassLoader#getSystemClassLoader()}, but it is possible to set a custom one with
@@ -80,7 +80,7 @@ public class Factory
      * @return The object instance.
      * @throws LionEngineException If {@link Media} is <code>null</code>, {@link Setup} not found, or {@link Services}
      *             missing service.
-     * @see ObjectGame#ObjectGame(Setup, Services)
+     * @see ObjectGame#ObjectGame(Setup)
      */
     public <O extends ObjectGame> O create(Media media)
     {
@@ -106,7 +106,7 @@ public class Factory
      * @return The object instance.
      * @throws LionEngineException If {@link Media} is <code>null</code>, {@link Setup} not found, or {@link Services}
      *             missing service.
-     * @see ObjectGame#ObjectGame(Setup, Services)
+     * @see ObjectGame#ObjectGame(Setup)
      */
     public <O extends ObjectGame> O create(Media media, Class<O> type)
     {
@@ -201,8 +201,8 @@ public class Factory
     {
         final O object = UtilReflection.create(type, new Class<?>[]
         {
-            setup.getClass(), Services.class
-        }, setup, services);
+            setup.getClass()
+        }, setup);
         object.prepareFeatures(object, services);
 
         return object;

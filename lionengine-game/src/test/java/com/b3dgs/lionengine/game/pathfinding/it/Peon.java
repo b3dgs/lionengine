@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
@@ -42,29 +42,24 @@ class Peon extends ObjectGame implements Updatable, Renderable
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
-    /** Transformable model. */
     private final Transformable transformable;
-    /** Pathfindable model. */
     private final Pathfindable pathfindable;
-    /** Surface reference. */
     private final SpriteAnimated surface;
-    /** Viewer reference. */
-    private final Viewer viewer;
+
+    @Service private Viewer viewer;
 
     /**
      * Create a peon.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Peon(SetupSurface setup, Services services)
+    public Peon(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
-        viewer = services.get(Viewer.class);
         transformable.teleport(208, 224);
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);

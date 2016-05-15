@@ -19,11 +19,12 @@ package com.b3dgs.lionengine.example.game.attack;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.layer.Layerable;
+import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.animatable.AnimatableModel;
@@ -31,56 +32,60 @@ import com.b3dgs.lionengine.game.object.feature.attackable.Attacker;
 import com.b3dgs.lionengine.game.object.feature.attackable.AttackerChecker;
 import com.b3dgs.lionengine.game.object.feature.attackable.AttackerListener;
 import com.b3dgs.lionengine.game.object.feature.attackable.AttackerModel;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Grunt entity implementation.
  */
-class Grunt extends ObjectGame implements Updatable, Renderable, AttackerChecker, AttackerListener
+class Grunt extends ObjectGame implements AttackerChecker, AttackerListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Grunt.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
-    /** Pathfindable model. */
     private final Pathfindable pathfindable;
-    /** Attacker model. */
-    private final Attacker attacker = addFeatureAndGet(new AttackerModel());
-    /** Surface reference. */
-    private final SpriteAnimated surface;
-    /** Viewer reference. */
-    private final Viewer viewer;
+    private final Attacker attacker;
+
+    @Service private Viewer viewer;
 
     /**
      * Create a peon.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Grunt(SetupSurface setup, Services services)
+    public Grunt(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
+        final Layerable layerable = addFeatureAndGet(new LayerableModel());
+        layerable.setLayer(Integer.valueOf(1));
+
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
         pathfindable = addFeatureAndGet(new PathfindableModel(setup));
 
-        viewer = services.get(Viewer.class);
-
+        attacker = addFeatureAndGet(new AttackerModel());
         attacker.setAttackDistance(16, 16);
         attacker.setAttackDamages(1, 5);
         attacker.setAttackFrame(1);
         attacker.setAttackTimer(1000);
 
-        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 8, 7);
+        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 8, 7);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
+
+        addFeature(new RefreshableModel(extrp ->
+        {
+            pathfindable.update(extrp);
+            attacker.update(extrp);
+            surface.setLocation(viewer, transformable);
+        }));
         addFeature(new AnimatableModel(surface));
+        addFeature(new DisplayableModel(g -> surface.render(g)));
     }
 
     /***
@@ -90,28 +95,19 @@ class Grunt extends ObjectGame implements Updatable, Renderable, AttackerChecker
      */
     public void attack(Transformable target)
     {
-        pathfindable.setDestination(4, 10);
+        pathfindable.setDestination(target);
         attacker.attack(target);
     }
 
-    @Override
-    protected void onPrepared()
+    /**
+     * Set location in tile.
+     * 
+     * @param tx The horizontal tile.
+     * @param ty The vertical tile.
+     */
+    public void teleport(int tx, int ty)
     {
-        pathfindable.setLocation(2, 6);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        pathfindable.update(extrp);
-        attacker.update(extrp);
-        surface.setLocation(viewer, transformable);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        surface.render(g);
+        pathfindable.setLocation(tx, ty);
     }
 
     @Override

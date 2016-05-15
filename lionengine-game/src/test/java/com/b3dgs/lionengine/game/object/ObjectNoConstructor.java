@@ -27,6 +27,6 @@ public class ObjectNoConstructor extends ObjectGame
      */
     private ObjectNoConstructor()
     {
-        super(null, null);
+        super(null);
     }
 }

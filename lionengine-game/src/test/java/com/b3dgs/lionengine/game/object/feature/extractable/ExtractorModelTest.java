@@ -139,7 +139,7 @@ public class ExtractorModelTest
         final Services services = new Services();
         services.add(Integer.valueOf(50));
         services.add(new MapTileGame());
-        final ObjectExtractor object = new ObjectExtractor(new Setup(media), services, true, true);
+        final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, true);
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -167,7 +167,7 @@ public class ExtractorModelTest
         services.add(Integer.valueOf(50));
         services.add(new MapTileGame());
 
-        final ObjectExtractor object = new ObjectExtractor(new Setup(media), services, true, true);
+        final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, true);
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -249,7 +249,7 @@ public class ExtractorModelTest
         final Services services = new Services();
         services.add(Integer.valueOf(50));
         services.add(new MapTileGame());
-        final ObjectExtractor object = new ObjectExtractor(new Setup(media), services, false, true);
+        final ObjectExtractor object = new ObjectExtractor(new Setup(media), false, true);
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -288,7 +288,7 @@ public class ExtractorModelTest
         services.add(Integer.valueOf(50));
         services.add(new MapTileGame());
 
-        final ObjectExtractor object = new ObjectExtractor(new Setup(media), services, true, false);
+        final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, false);
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -327,7 +327,7 @@ public class ExtractorModelTest
         services.add(Integer.valueOf(50));
         services.add(new MapTileGame());
 
-        final ObjectExtractorSelf object = new ObjectExtractorSelf(new Setup(media), services);
+        final ObjectExtractorSelf object = new ObjectExtractorSelf(new Setup(media));
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -410,7 +410,7 @@ public class ExtractorModelTest
         services.add(Integer.valueOf(50));
         services.add(new MapTileGame());
 
-        final ObjectExtractorSelf object = new ObjectExtractorSelf(new Setup(media), services);
+        final ObjectExtractorSelf object = new ObjectExtractorSelf(new Setup(media));
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -462,7 +462,7 @@ public class ExtractorModelTest
         services.add(Integer.valueOf(50));
         services.add(new MapTileGame());
 
-        final ObjectExtractor object = new ObjectExtractor(new Setup(media), services, true, true);
+        final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, true);
         object.addFeature(new TransformableModel());
 
         final Extractor extractor = new ExtractorModel();
@@ -541,13 +541,12 @@ public class ExtractorModelTest
          * Constructor.
          * 
          * @param setup The setup.
-         * @param services The services.
          * @param extract Extract.
          * @param carry Carry.
          */
-        public ObjectExtractor(Setup setup, Services services, boolean extract, boolean carry)
+        public ObjectExtractor(Setup setup, boolean extract, boolean carry)
         {
-            super(setup, services);
+            super(setup);
             this.extract = extract;
             this.carry = carry;
         }
@@ -577,11 +576,10 @@ public class ExtractorModelTest
          * Constructor.
          * 
          * @param setup The setup.
-         * @param services The services.
          */
-        public ObjectExtractorSelf(Setup setup, Services services)
+        public ObjectExtractorSelf(Setup setup)
         {
-            super(setup, services);
+            super(setup);
         }
 
         @Override

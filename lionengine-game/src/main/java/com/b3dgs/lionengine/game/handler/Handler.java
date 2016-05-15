@@ -17,14 +17,12 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.object.ComponentRenderable;
-import com.b3dgs.lionengine.game.object.ComponentUpdatable;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
@@ -43,9 +41,9 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     /** Handler listeners. */
     private final Collection<HandlerListener> listeners = new HashSet<HandlerListener>();
     /** List of components. */
-    private final Set<ComponentUpdatable> updatables = new HashSet<ComponentUpdatable>();
+    private final Collection<ComponentUpdatable> updatables = new ArrayList<ComponentUpdatable>();
     /** List of components. */
-    private final Set<ComponentRenderable> renderables = new HashSet<ComponentRenderable>();
+    private final Collection<ComponentRenderable> renderables = new ArrayList<ComponentRenderable>();
     /** List of items. */
     private final HandledHandlablesImpl handlables = new HandledHandlablesImpl();
     /** To add list. */
@@ -98,6 +96,10 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     public final void addUpdatable(ComponentUpdatable component)
     {
         updatables.add(component);
+        if (component instanceof HandlerListener)
+        {
+            addListener((HandlerListener) component);
+        }
     }
 
     /**
@@ -108,6 +110,10 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     public final void addRenderable(ComponentRenderable component)
     {
         renderables.add(component);
+        if (component instanceof HandlerListener)
+        {
+            addListener((HandlerListener) component);
+        }
     }
 
     /**
@@ -189,7 +195,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
             for (final Integer id : toDelete)
             {
                 final Handlable handlable = handlables.get(id);
-                handlables.remove(id);
+                handlables.remove(handlable);
                 handlable.notifyDestroyed();
                 for (final HandlerListener listener : listeners)
                 {

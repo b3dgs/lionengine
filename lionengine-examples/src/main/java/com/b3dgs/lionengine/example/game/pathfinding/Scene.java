@@ -24,15 +24,17 @@ import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.TextGame;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.handler.ComponentRefresher;
+import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.pathfinding.MapTilePath;
@@ -50,33 +52,16 @@ import com.b3dgs.lionengine.graphic.TextStyle;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Text reference. */
     private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
-    /** Services reference. */
     private final Services services = new Services();
-    /** Game factory. */
     private final Factory factory = services.create(Factory.class);
-    /** Camera reference. */
+    private final Handler handler = services.create(Handler.class);
     private final Camera camera = services.create(Camera.class);
-    /** Cursor reference. */
     private final Cursor cursor = services.create(Cursor.class);
-    /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map viewer. */
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Map group reference. */
-    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
-    /** Map path. */
-    private final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
-    /** Mouse reference. */
     private final Mouse mouse = getInputDevice(Mouse.class);
-    /** Peon reference. */
-    private Peon peon;
 
     /**
      * Constructor.
@@ -87,15 +72,29 @@ class Scene extends Sequence
     {
         super(context, NATIVE);
         setSystemCursorVisible(false);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
+
+        handler.addUpdatable(new ComponentRefresher());
+        handler.addRenderable(services.add(new ComponentRendererLayer()));
     }
 
     @Override
     public void load()
     {
         map.create(Medias.create("level.png"));
+
+        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
         mapGroup.loadGroups(Medias.create("groups.xml"));
+
+        final MapTilePath mapPath = map.createFeature(MapTilePathModel.class);
         mapPath.loadPathfinding(Medias.create("pathfinding.xml"));
+
+        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setLimits(map);
+        camera.setLocation(320, 208);
+
+        map.addFeature(new MapTileViewerModel(services));
+        handler.add(map);
 
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load();
@@ -104,11 +103,7 @@ class Scene extends Sequence
         cursor.setInputDevice(mouse);
         cursor.setViewer(camera);
 
-        camera.setView(0, 0, getWidth(), getHeight());
-        camera.setLimits(map);
-        camera.setLocation(320, 208);
-
-        peon = factory.create(Peon.MEDIA);
+        handler.add(factory.create(Peon.MEDIA));
     }
 
     @Override
@@ -116,16 +111,14 @@ class Scene extends Sequence
     {
         mouse.update(extrp);
         cursor.update(extrp);
-        peon.update(extrp);
+        handler.update(extrp);
         text.update(camera);
     }
 
     @Override
     public void render(Graphic g)
     {
-        mapViewer.render(g);
-        peon.render(g);
-        cursor.render(g);
+        handler.render(g);
 
         final Tile tile = map.getTile(cursor, 0, 0);
         if (tile != null)
@@ -138,6 +131,7 @@ class Scene extends Sequence
                           map.getTileHeight());
             text.setColor(ColorRgba.YELLOW);
         }
+        cursor.render(g);
     }
 
     @Override

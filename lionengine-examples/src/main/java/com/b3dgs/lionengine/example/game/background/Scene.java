@@ -36,13 +36,9 @@ class Scene extends Sequence
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
-    /** Background. */
-    private final BackgroundGame background;
-    /** Foreground. */
-    private final Foreground foreground;
-    /** Camera y. */
+    private final BackgroundGame background = new Swamp(getConfig().getSource(), 1.0, 1.0);
+    private final Foreground foreground = new Foreground(getConfig().getSource());
+
     private double y;
 
     /**
@@ -53,9 +49,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        background = new Swamp(getConfig().getSource(), 1.0, 1.0);
-        foreground = new Foreground(getConfig().getSource());
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     /*

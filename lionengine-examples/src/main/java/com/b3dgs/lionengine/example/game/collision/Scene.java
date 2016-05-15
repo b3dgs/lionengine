@@ -23,17 +23,20 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.camera.CameraTracker;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRenderer;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionRendererModel;
+import com.b3dgs.lionengine.game.handler.ComponentRefresher;
+import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
-import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRendererModel;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -47,68 +50,66 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
-    /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
-    /** Services reference. */
     private final Services services = new Services();
-    /** Game factory. */
-    private final Factory factory = services.create(Factory.class);
-    /** Camera reference. */
-    private final Camera camera = services.create(Camera.class);
-    /** Map reference. */
-    private final MapTile map = services.create(MapTileGame.class);
-    /** Map viewer. */
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Map group reference. */
-    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
-    /** Map collision. */
-    private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
-    /** Keyboard reference. */
-    private final Keyboard keyboard = services.add(getInputDevice(Keyboard.class));
-    /** Mario reference. */
-    private Mario hero;
+    private final Handler handler = services.create(Handler.class);
 
     /**
-     * Constructor.
+     * Create the scene.
      * 
      * @param context The context reference.
      */
     public Scene(Context context)
     {
         super(context, NATIVE);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
-    }
 
-    /*
-     * Sequence
-     */
+        services.add(getInputDevice(Keyboard.class)).addActionPressed(Keyboard.ESCAPE, () -> end());
+        services.add(Integer.valueOf(getConfig().getSource().getRate()));
+
+        handler.addRenderable(services.create(ComponentRendererLayer.class));
+        handler.addUpdatable(new ComponentRefresher());
+    }
 
     @Override
     public void load()
     {
+        final MapTile map = services.create(MapTileGame.class);
         map.create(Medias.create("level.png"));
-        mapViewer.addRenderer(new MapTileRendererModel(services));
-        mapGroup.loadGroups(Medias.create("groups.xml"));
-        mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
-        final MapTileCollisionRenderer mapCollisionRenderer = new MapTileCollisionRendererModel(services);
-        mapCollisionRenderer.createCollisionDraw();
-        mapViewer.addRenderer(mapCollisionRenderer);
+        handler.add(map);
 
+        final Camera camera = services.create(Camera.class);
         camera.setIntervals(16, 0);
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
+        handler.add(camera);
 
-        services.add(Integer.valueOf(getConfig().getSource().getRate()));
-        hero = factory.create(Mario.MEDIA);
+        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
+        mapGroup.loadGroups(Medias.create("groups.xml"));
+
+        final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
+        mapCollision.loadCollisions(Medias.create("formulas.xml"), Medias.create("collisions.xml"));
+
+        final MapTileCollisionRenderer mapCollisionRenderer = new MapTileCollisionRendererModel(services);
+        mapCollisionRenderer.createCollisionDraw();
+
+        final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
+        mapViewer.addRenderer(mapCollisionRenderer);
+
+        final Factory factory = services.create(Factory.class);
+        final Mario mario = factory.create(Mario.MEDIA);
+        handler.add(mario);
+
+        final CameraTracker tracker = new CameraTracker();
+        camera.addFeature(tracker);
+        tracker.track(mario);
     }
 
     @Override
     public void update(double extrp)
     {
-        hero.update(extrp);
+        handler.update(extrp);
     }
 
     @Override
@@ -117,8 +118,7 @@ class Scene extends Sequence
         g.setColor(Scene.BACKGROUND_COLOR);
         g.drawRect(0, 0, getWidth(), getHeight(), true);
 
-        mapViewer.render(g);
-        hero.render(g);
+        handler.render(g);
     }
 
     @Override

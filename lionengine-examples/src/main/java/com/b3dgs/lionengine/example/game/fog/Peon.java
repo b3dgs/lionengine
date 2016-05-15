@@ -20,75 +20,68 @@ package com.b3dgs.lionengine.example.game.fog;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.layer.Layerable;
+import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.map.feature.fog.Fovable;
 import com.b3dgs.lionengine.game.map.feature.fog.FovableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilRandom;
 
 /**
  * Peon entity implementation.
  */
-class Peon extends ObjectGame implements Updatable, Renderable
+class Peon extends ObjectGame
 {
     /** Setup reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
-    /** Fovable model. */
-    private final Fovable fovable = addFeatureAndGet(new FovableModel());
-    /** Random timer. */
-    private final Timing timing = new Timing();
-    /** Surface reference. */
-    private final SpriteAnimated surface;
-    /** Viewer reference. */
-    private final Viewer viewer;
+    @Service private Viewer viewer;
 
     /**
      * Create a peon.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Peon(SetupSurface setup, Services services)
+    public Peon(SetupSurface setup)
     {
-        super(setup, services);
-        viewer = services.get(Viewer.class);
+        super(setup);
 
-        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
+        final Layerable layerable = addFeatureAndGet(new LayerableModel());
+        layerable.setLayer(Integer.valueOf(1));
+
+        final Fovable fovable = addFeatureAndGet(new FovableModel());
+        fovable.setFov(3);
+
+        final Timing timing = new Timing();
+        timing.start();
+
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
+        transformable.teleport(64, 64);
+
+        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
-        transformable.teleport(64, 64);
-        fovable.setFov(3);
-        timing.start();
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        surface.setLocation(viewer, transformable);
-        if (timing.elapsed(1000))
+        addFeature(new RefreshableModel(extrp ->
         {
-            transformable.teleport(UtilRandom.getRandomInteger(19) * 16, UtilRandom.getRandomInteger(14) * 16);
-            timing.restart();
-        }
-    }
+            surface.setLocation(viewer, transformable);
+            if (timing.elapsed(1000))
+            {
+                transformable.teleport(UtilRandom.getRandomInteger(19) * 16, UtilRandom.getRandomInteger(14) * 16);
+                timing.restart();
+            }
+        }));
 
-    @Override
-    public void render(Graphic g)
-    {
-        surface.render(g);
+        addFeature(new DisplayableModel(g -> surface.render(g)));
     }
 }

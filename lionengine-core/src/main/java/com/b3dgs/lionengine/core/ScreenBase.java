@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Constant;
@@ -38,7 +38,7 @@ public abstract class ScreenBase implements Screen
     private static final String ERROR_SCREEN_READY = "Unable to get screen ready !";
 
     /** Screen listeners. */
-    protected final Collection<ScreenListener> listeners = new ArrayList<ScreenListener>();
+    protected final Collection<ScreenListener> listeners = new ConcurrentLinkedQueue<ScreenListener>();
     /** Input devices. */
     protected final Map<Class<? extends InputDevice>, InputDevice> devices;
     /** Configuration reference. */

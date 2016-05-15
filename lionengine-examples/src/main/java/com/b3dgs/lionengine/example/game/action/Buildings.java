@@ -17,49 +17,43 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
 
 /**
  * Buildings action.
  */
 class Buildings extends Button
 {
-    /** Factory reference. */
-    private final Factory factory;
-    /** Handler reference. */
-    private final Handler handler;
+    @Service private Factory factory;
+    @Service private Handler handler;
 
     /**
      * Create buildings action.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Buildings(SetupSurface setup, Services services)
+    public Buildings(SetupSurface setup)
     {
-        super(setup, services);
-        factory = services.get(Factory.class);
-        handler = services.get(Handler.class);
-    }
+        super(setup);
 
-    @Override
-    public void execute()
-    {
-        final ObjectGame buildFarm = factory.create(Button.BUILD_FARM);
-        final ObjectGame buildBarracks = factory.create(Button.BUILD_BARRACKS);
-        final Cancel cancel = factory.create(Button.CANCEL);
+        getFeature(Actionable.class).setAction(() ->
+        {
+            final Button buildFarm = factory.create(Button.BUILD_FARM);
+            final Button buildBarracks = factory.create(Button.BUILD_BARRACKS);
+            final Cancel cancel = factory.create(Button.CANCEL);
 
-        cancel.addToDelete(buildFarm);
-        cancel.addToDelete(buildBarracks);
+            cancel.addToDelete(buildFarm);
+            cancel.addToDelete(buildBarracks);
 
-        handler.add(buildFarm);
-        handler.add(buildBarracks);
-        handler.add(cancel);
+            handler.add(buildFarm);
+            handler.add(buildBarracks);
+            handler.add(cancel);
 
-        destroy();
+            destroy();
+        });
     }
 }

@@ -24,10 +24,11 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.ComponentRefresher;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.HandlerTest;
-import com.b3dgs.lionengine.game.object.feature.Refreshable;
+import com.b3dgs.lionengine.game.object.feature.refreshable.Refreshable;
 
 /**
  * Test the component refresher.
@@ -62,7 +63,7 @@ public class ComponentRefresherTest
         final Handler handler = new Handler(new Services());
         handler.addUpdatable(refresher);
 
-        final Refresher object = new Refresher(new Setup(Medias.create("object.xml")), new Services());
+        final Refresher object = new Refresher(new Setup(Medias.create("object.xml")));
         handler.add(object);
         Assert.assertFalse(object.isRefreshed());
         handler.update(1.0);
@@ -84,11 +85,10 @@ public class ComponentRefresherTest
          * Constructor.
          * 
          * @param setup The setup reference.
-         * @param services The services reference.
          */
-        public Refresher(Setup setup, Services services)
+        public Refresher(Setup setup)
         {
-            super(setup, services);
+            super(setup);
         }
 
         /**

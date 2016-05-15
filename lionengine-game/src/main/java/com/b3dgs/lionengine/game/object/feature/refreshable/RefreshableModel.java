@@ -15,22 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object;
+package com.b3dgs.lionengine.game.object.feature.refreshable;
 
-import com.b3dgs.lionengine.game.handler.Handlables;
+import com.b3dgs.lionengine.Updatable;
+import com.b3dgs.lionengine.game.feature.FeatureModel;
 
 /**
- * Describe the main component requirement, which is aimed to provide updatable feature for an object.
- * 
- * @see com.b3dgs.lionengine.Updatable
+ * Updatable feature wrapper.
  */
-public interface ComponentUpdatable
+public class RefreshableModel extends FeatureModel implements Refreshable
 {
+    /** Updatable reference. */
+    private final Updatable updatable;
+
     /**
-     * Update the current objects.
+     * Create feature.
      * 
-     * @param extrp The extrapolation value.
-     * @param handlables The handlables reference.
+     * @param updatable The updatable reference.
      */
-    void update(double extrp, Handlables handlables);
+    public RefreshableModel(Updatable updatable)
+    {
+        super();
+        this.updatable = updatable;
+    }
+
+    /*
+     * Displayable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        updatable.update(extrp);
+    }
 }

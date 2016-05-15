@@ -23,9 +23,9 @@ import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -74,21 +74,19 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
     private final Transformable transformable;
     /** Surface reference. */
     private final SpriteAnimated surface;
-    /** Camera reference. */
-    private final Camera camera;
-    /** Map reference. */
-    private final MapTile map;
+
+    @Service private Camera camera;
+    @Service private MapTile map;
 
     /**
      * Create the object.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      * @throws LionEngineException If error.
      */
-    public ObjectRepresentation(SetupSurface setup, Services services)
+    public ObjectRepresentation(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
         final Configurer configurer = setup.getConfigurer();
         surface = getSprite(configurer, setup.getSurface());
@@ -97,9 +95,6 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
         transformable.setSize(surface.getFrameWidth(), surface.getFrameHeight());
-
-        camera = services.get(Camera.class);
-        map = services.get(MapTile.class);
     }
 
     /**

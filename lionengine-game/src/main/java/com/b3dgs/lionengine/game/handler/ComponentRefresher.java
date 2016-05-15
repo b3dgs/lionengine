@@ -15,10 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object;
+package com.b3dgs.lionengine.game.handler;
 
-import com.b3dgs.lionengine.game.handler.Handlables;
-import com.b3dgs.lionengine.game.object.feature.Refreshable;
+import com.b3dgs.lionengine.game.object.feature.refreshable.Refreshable;
 
 /**
  * Refresher component implementation which update {@link Refreshable} elements.

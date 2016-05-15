@@ -33,9 +33,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  */
 class World extends WorldGame
 {
-    /** The text. */
     private final Text text = Graphics.createText(Text.SERIF, 12, TextStyle.NORMAL);
-    /** The str. */
     private String str;
 
     /**

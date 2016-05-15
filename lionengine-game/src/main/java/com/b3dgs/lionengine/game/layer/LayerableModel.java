@@ -38,7 +38,7 @@ public class LayerableModel extends FeatureModel implements Layerable
     /** Layers listener. */
     private final Collection<LayerableListener> listeners = new ArrayList<LayerableListener>();
     /** Layer value. */
-    private Integer layer;
+    private Integer layer = Integer.valueOf(0);
 
     /**
      * Create a layerable model.
@@ -46,7 +46,6 @@ public class LayerableModel extends FeatureModel implements Layerable
     public LayerableModel()
     {
         super();
-        layer = Integer.valueOf(0);
     }
 
     /*

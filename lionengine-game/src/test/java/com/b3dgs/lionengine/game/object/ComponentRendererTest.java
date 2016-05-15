@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.ComponentRenderer;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.HandlerTest;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -62,7 +63,7 @@ public class ComponentRendererTest
         final Handler handler = new Handler(new Services());
         handler.addRenderable(renderer);
 
-        final Renderer object = new Renderer(new Setup(Medias.create("object.xml")), new Services());
+        final Renderer object = new Renderer(new Setup(Medias.create("object.xml")));
         handler.add(object);
         Assert.assertFalse(object.isRendered());
         handler.update(1.0);
@@ -87,11 +88,10 @@ public class ComponentRendererTest
          * Constructor.
          * 
          * @param setup The setup reference.
-         * @param services The services reference.
          */
-        public Renderer(Setup setup, Services services)
+        public Renderer(Setup setup)
         {
-            super(setup, services);
+            super(setup);
         }
 
         /**

@@ -20,35 +20,40 @@ package com.b3dgs.lionengine.example.game.action;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
 
 /**
  * Cancel action.
  */
 class Cancel extends Button
 {
-    /** Action to delete. */
-    private final Collection<ObjectGame> toDelete = new ArrayList<>();
-    /** Factory reference. */
-    private final Factory factory;
-    /** Handler reference. */
-    private final Handler handler;
+    private final Collection<Button> toDelete = new ArrayList<>();
+
+    @Service private Factory factory;
+    @Service private Handler handler;
 
     /**
      * Create cancel action.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Cancel(SetupSurface setup, Services services)
+    public Cancel(SetupSurface setup)
     {
-        super(setup, services);
-        factory = services.get(Factory.class);
-        handler = services.get(Handler.class);
+        super(setup);
+        getFeature(Actionable.class).setAction(() ->
+        {
+            final Button buildings = factory.create(Button.BUILDINGS);
+            handler.add(buildings);
+            for (final Button current : toDelete)
+            {
+                current.destroy();
+            }
+            destroy();
+        });
     }
 
     /**
@@ -56,20 +61,8 @@ class Cancel extends Button
      * 
      * @param action The action to delete.
      */
-    public void addToDelete(ObjectGame action)
+    public void addToDelete(Button action)
     {
         toDelete.add(action);
-    }
-
-    @Override
-    public void execute()
-    {
-        final ObjectGame buildings = factory.create(Button.BUILDINGS);
-        handler.add(buildings);
-        for (final ObjectGame current : toDelete)
-        {
-            current.destroy();
-        }
-        destroy();
     }
 }

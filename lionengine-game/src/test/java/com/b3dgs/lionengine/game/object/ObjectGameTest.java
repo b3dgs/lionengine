@@ -96,7 +96,7 @@ public class ObjectGameTest
     public void testConfig()
     {
         final Media config = Medias.create(OBJECT_XML);
-        final ObjectGame object = new ObjectGame(new Setup(config), new Services());
+        final ObjectGame object = new ObjectGame(new Setup(config));
         Assert.assertEquals(config, object.getConfigurer().getMedia());
 
         object.destroy();
@@ -112,7 +112,7 @@ public class ObjectGameTest
         final AtomicBoolean prepared = new AtomicBoolean();
         final Services services = new Services();
         final Setup setup = new Setup(Medias.create(OBJECT_XML));
-        final ObjectGame object = new ObjectGame(setup, services)
+        final ObjectGame object = new ObjectGame(setup)
         {
             @Override
             protected void onPrepared()
@@ -146,7 +146,7 @@ public class ObjectGameTest
     @Test(expected = LionEngineException.class)
     public void testFeatureNotFound()
     {
-        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
+        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)));
         try
         {
             Assert.assertNotNull(object.getFeature(Feature.class));
@@ -164,7 +164,7 @@ public class ObjectGameTest
     @Test
     public void testDestroy()
     {
-        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
+        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)));
         final AtomicBoolean destroyed = new AtomicBoolean();
         object.addListener(new IdentifiableListener()
         {

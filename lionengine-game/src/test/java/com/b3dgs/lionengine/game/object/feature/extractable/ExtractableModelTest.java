@@ -66,7 +66,7 @@ public class ExtractableModelTest
     {
         final Services services = new Services();
         services.add(new MapTileGame());
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         object.addFeature(new TransformableModel());
 
         final Extractable extractable = new ExtractableModel();
@@ -108,7 +108,7 @@ public class ExtractableModelTest
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
         services.add(new MapTileGame());
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         object.addFeature(new TransformableModel());
         extractable.prepare(object, services);
         extractable.setResourcesQuantity(10);

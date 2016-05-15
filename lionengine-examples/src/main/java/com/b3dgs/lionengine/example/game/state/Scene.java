@@ -22,8 +22,11 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.handler.ComponentRefresher;
+import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -34,19 +37,11 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Services reference. */
     private final Services services = new Services();
-    /** Game factory. */
-    private final Factory factory = services.create(Factory.class);
-    /** Camera reference. */
+    private final Handler handler = services.create(Handler.class);
     private final Camera camera = services.create(Camera.class);
-    /** Keyboard reference. */
-    private final Keyboard keyboard = services.add(getInputDevice(Keyboard.class));
-    /** Mario reference. */
-    private Mario mario;
 
     /**
      * Constructor.
@@ -56,7 +51,8 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        handler.addUpdatable(new ComponentRefresher());
+        handler.addRenderable(new ComponentRendererLayer());
     }
 
     /*
@@ -66,16 +62,22 @@ class Scene extends Sequence
     @Override
     public void load()
     {
+        final Keyboard keyboard = services.add(getInputDevice(Keyboard.class));
+        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+
         camera.setView(0, 0, getWidth(), getHeight());
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
-        mario = factory.create(Mario.MEDIA);
+
+        final Factory factory = services.create(Factory.class);
+        final Mario mario = factory.create(Mario.MEDIA);
+        handler.add(mario);
         mario.addInput(keyboard);
     }
 
     @Override
     public void update(double extrp)
     {
-        mario.update(extrp);
+        handler.update(extrp);
     }
 
     @Override
@@ -83,7 +85,7 @@ class Scene extends Sequence
     {
         g.clear(0, 0, getWidth(), getHeight());
         g.drawLine(camera, 0, Mario.GROUND, getWidth(), Mario.GROUND);
-        mario.render(g);
+        handler.render(g);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class AppFog
      */
     public static void main(String[] args)
     {
-        EngineAwt.start("Fog of War", Version.create(1, 0, 0), AppFog.class);
+        EngineAwt.start(AppFog.class.getSimpleName(), Version.create(1, 0, 0), AppFog.class);
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();

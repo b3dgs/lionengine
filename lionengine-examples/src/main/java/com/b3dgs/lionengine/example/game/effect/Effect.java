@@ -19,60 +19,72 @@ package com.b3dgs.lionengine.example.game.effect;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.object.FramesConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.state.AnimationConfig;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilRandom;
 
 /**
  * Effect base implementation.
  */
-class Effect extends ObjectGame implements Updatable, Renderable
+class Effect extends ObjectGame
 {
     /** Explode media. */
     public static final Media EXPLODE = Medias.create("Explode.xml");
 
-    /** Transformable model. */
     private final Transformable transformable = addFeatureAndGet(new TransformableModel());
-    /** Surface. */
     private final SpriteAnimated surface;
-    /** Explode animation. */
     private final Animation animExplode;
-    /** The viewer reference. */
-    private final Viewer viewer;
+
+    @Service private Viewer viewer;
 
     /**
      * Constructor.
      * 
      * @param setup the setup reference.
-     * @param services The services reference.
      */
-    public Effect(SetupSurface setup, Services services)
+    public Effect(SetupSurface setup)
     {
-        super(setup, services);
-        viewer = services.get(Viewer.class);
+        super(setup);
 
         final FramesConfig config = FramesConfig.imports(setup);
         final int scale = UtilRandom.getRandomInteger(75) + 50;
+
+        final AnimationConfig configAnimations = AnimationConfig.imports(setup.getConfigurer());
+        animExplode = configAnimations.getAnimation("explode");
+
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), config.getHorizontal(), config.getVertical());
         surface.stretch(scale, scale);
         surface.setOrigin(Origin.MIDDLE);
 
-        final AnimationConfig configAnimations = AnimationConfig.imports(setup.getConfigurer());
-        animExplode = configAnimations.getAnimation("explode");
+        addFeature(new RefreshableModel(extrp ->
+        {
+            surface.update(extrp);
+            if (AnimState.FINISHED == surface.getAnimState())
+            {
+                destroy();
+            }
+        }));
+
+        addFeature(new DisplayableModel(g ->
+        {
+            if (viewer.isViewable(surface, 0, 0))
+            {
+                surface.render(g);
+            }
+        }));
     }
 
     /**
@@ -86,24 +98,5 @@ class Effect extends ObjectGame implements Updatable, Renderable
         transformable.teleport(x, y);
         surface.setLocation(viewer.getViewpointX(transformable.getX()), viewer.getViewpointY(transformable.getY()));
         surface.play(animExplode);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        surface.update(extrp);
-        if (surface.getAnimState() == AnimState.FINISHED)
-        {
-            destroy();
-        }
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        if (viewer.isViewable(surface, 0, 0))
-        {
-            surface.render(g);
-        }
     }
 }

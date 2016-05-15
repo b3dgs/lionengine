@@ -43,7 +43,7 @@ public class AppJava
         // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
         // To load resources from JAR, this alternative is preferred if external folder is not possible:
         // EngineAwt.start("AppJava", Version.create(1, 0, 0), AppJava.class);
-        EngineAwt.start("AppJava", Version.create(1, 0, 0), AppJava.class);
+        EngineAwt.start(AppJava.class.getSimpleName(), Version.create(1, 0, 0), AppJava.class);
 
         // Resolution configuration (output = 640*480 at 60Hz). This is the output configuration.
         // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.

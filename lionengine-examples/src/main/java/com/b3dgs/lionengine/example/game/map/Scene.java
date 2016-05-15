@@ -23,8 +23,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.Minimap;
@@ -40,24 +40,15 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Services reference. */
     private final Services services = new Services();
-    /** Camera reference. */
     private final Camera camera = services.create(Camera.class);
-    /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map viewer. */
     private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
-    /** Scrolling speed. */
+
     private double speed;
-    /** Map size. */
     private int size;
 
     /**
@@ -68,7 +59,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override

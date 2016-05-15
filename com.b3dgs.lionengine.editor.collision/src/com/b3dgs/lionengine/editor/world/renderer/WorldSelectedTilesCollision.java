@@ -21,8 +21,8 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.editor.world.updater.Marker;
 import com.b3dgs.lionengine.editor.world.updater.WorldInteractionTileCollision;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.geom.Line;
 import com.b3dgs.lionengine.graphic.Graphic;

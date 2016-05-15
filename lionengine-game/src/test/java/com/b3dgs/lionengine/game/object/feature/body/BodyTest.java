@@ -66,7 +66,7 @@ public class BodyTest
         final Body body = new BodyModel();
         final Services services = new Services();
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
         transformable.teleport(0, 6.0);
         body.prepare(object, services);
@@ -110,7 +110,7 @@ public class BodyTest
         final Body body = new BodyModel();
         final Services services = new Services();
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
         transformable.teleport(0, 6.0);
         body.prepare(object, services);
@@ -143,7 +143,7 @@ public class BodyTest
         final Body body = new BodyModel();
         final Services services = new Services();
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
         transformable.teleport(0, 6.0);
         body.prepare(object, services);

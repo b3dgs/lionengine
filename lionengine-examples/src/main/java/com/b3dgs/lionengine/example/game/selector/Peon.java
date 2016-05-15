@@ -19,88 +19,81 @@ package com.b3dgs.lionengine.example.game.selector;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.SelectorListener;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
+import com.b3dgs.lionengine.game.layer.Layerable;
+import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.ColorRgba;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Peon entity implementation.
  */
-class Peon extends ObjectGame implements Updatable, Renderable, SelectorListener
+class Peon extends ObjectGame implements SelectorListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable;
-    /** Collidable model. */
     private final Collidable collidable;
-    /** Surface reference. */
-    private final SpriteAnimated surface;
-    /** Viewer reference. */
-    private final Viewer viewer;
-    /** Selected flag. */
     private boolean selected;
+
+    @Service private Viewer viewer;
 
     /**
      * Create a peon.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Peon(SetupSurface setup, Services services)
+    public Peon(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
-        transformable = addFeatureAndGet(new TransformableModel(setup));
+        final Layerable layerable = addFeatureAndGet(new LayerableModel());
+        layerable.setLayer(Integer.valueOf(1));
+
+        final Transformable transformable = addFeatureAndGet(new TransformableModel(setup));
         collidable = addFeatureAndGet(new CollidableModel(setup));
 
-        viewer = services.get(Viewer.class);
-
-        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
+        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
 
         transformable.teleport(240, 160);
         collidable.setOrigin(Origin.MIDDLE);
-    }
 
-    @Override
-    public void update(double extrp)
-    {
-        collidable.update(extrp);
-        surface.setLocation(viewer, transformable);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        surface.render(g);
-        if (selected)
+        addFeature(new RefreshableModel(extrp ->
         {
-            g.setColor(ColorRgba.GREEN);
-            g.drawRect(viewer,
-                       Origin.MIDDLE,
-                       transformable.getX() + 8,
-                       transformable.getY() + 8,
-                       transformable.getWidth(),
-                       transformable.getHeight(),
-                       false);
-        }
+            collidable.update(extrp);
+            surface.setLocation(viewer, transformable);
+        }));
+
+        addFeature(new DisplayableModel(g ->
+        {
+            surface.render(g);
+            if (selected)
+            {
+                g.setColor(ColorRgba.GREEN);
+                g.drawRect(viewer,
+                           Origin.MIDDLE,
+                           transformable.getX() + 8,
+                           transformable.getY() + 8,
+                           transformable.getWidth(),
+                           transformable.getHeight(),
+                           false);
+            }
+        }));
     }
 
     /*

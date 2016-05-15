@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
@@ -41,24 +41,15 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Timing value. */
     private final Timing timing = new Timing();
-    /** Services reference. */
     private final Services services = new Services();
-    /** Camera reference. */
     private final Camera camera = services.create(Camera.class);
-    /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map viewer. */
     private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Map raster reference. */
     private final MapTileRastered raster = new MapTileRasteredModel(services);
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
-    /** Renderable selection (false = default, true = raster). */
+
     private boolean useRaster;
 
     /**
@@ -69,14 +60,13 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
     public void load()
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
-
         raster.loadSheets(Medias.create("raster.xml"), false);
 
         camera.setView(0, 0, getWidth(), getHeight());
@@ -88,7 +78,7 @@ class Scene extends Sequence
     @Override
     public void update(double extrp)
     {
-        if (timing.isStarted() && timing.elapsed(1000))
+        if (timing.isStarted() && timing.elapsed(1000L))
         {
             useRaster = !useRaster;
             if (useRaster)

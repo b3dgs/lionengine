@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.collision.object;
 
+import com.b3dgs.lionengine.game.handler.ComponentUpdatable;
 import com.b3dgs.lionengine.game.handler.Handlables;
-import com.b3dgs.lionengine.game.object.ComponentUpdatable;
 
 /**
  * Default collision component implementation. Designed to check collision between {@link Collidable}.

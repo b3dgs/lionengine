@@ -19,77 +19,88 @@ package com.b3dgs.lionengine.example.game.state;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.body.Body;
 import com.b3dgs.lionengine.game.object.feature.body.BodyModel;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.feature.mirrorable.MirrorableModel;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.state.StateFactory;
 import com.b3dgs.lionengine.game.state.StateHandler;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
  * Implementation of our controllable entity.
  */
-class Mario extends ObjectGame implements Updatable, Renderable
+class Mario extends ObjectGame
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Mario.xml");
     /** Ground location y. */
     static final int GROUND = 32;
 
-    /** State factory. */
     private final StateFactory factory = new StateFactory();
-    /** State handler. */
     private final StateHandler handler = new StateHandler(factory);
-    /** Movement force. */
     private final Force movement = new Force();
-    /** Jump force. */
     private final Force jump = new Force();
-    /** Transformable model. */
-    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
-    /** Mirrorable model. */
-    private final Mirrorable mirrorable = addFeatureAndGet(new MirrorableModel());
-    /** Body model. */
-    private final Body body = addFeatureAndGet(new BodyModel());
-    /** Surface. */
     private final SpriteAnimated surface;
-    /** Camera reference. */
-    private final Camera camera;
+
+    @Service private Camera camera;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Mario(SetupSurface setup, Services services)
+    public Mario(SetupSurface setup)
     {
-        super(setup, services);
-        camera = services.get(Camera.class);
+        super(setup);
+
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(160, GROUND);
+
+        final Body body = addFeatureAndGet(new BodyModel());
+        body.setVectors(movement, jump);
+        body.setDesiredFps(60);
+        body.setMass(2.0);
+
+        final Mirrorable mirrorable = addFeatureAndGet(new MirrorableModel());
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 
-        body.setVectors(movement, jump);
-        body.setDesiredFps(60);
-        body.setMass(2.0);
+        addFeature(new RefreshableModel(extrp ->
+        {
+            handler.update(extrp);
+            mirrorable.update(extrp);
+            movement.update(extrp);
+            jump.update(extrp);
+            body.update(extrp);
+            if (transformable.getY() < GROUND)
+            {
+                transformable.teleportY(GROUND);
+                jump.setDirection(Direction.ZERO);
+                body.resetGravity();
+            }
+            surface.setMirror(mirrorable.getMirror());
+            surface.update(extrp);
+            surface.setLocation(camera, transformable);
+        }));
+
+        addFeature(new DisplayableModel(g -> surface.render(g)));
     }
 
     /**
@@ -137,30 +148,5 @@ class Mario extends ObjectGame implements Updatable, Renderable
     {
         StateAnimationBased.Util.loadStates(MarioState.values(), factory, this);
         handler.changeState(MarioState.IDLE);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        handler.update(extrp);
-        mirrorable.update(extrp);
-        movement.update(extrp);
-        jump.update(extrp);
-        body.update(extrp);
-        if (transformable.getY() < GROUND)
-        {
-            transformable.teleportY(GROUND);
-            jump.setDirection(Direction.ZERO);
-            body.resetGravity();
-        }
-        surface.setMirror(mirrorable.getMirror());
-        surface.update(extrp);
-        surface.setLocation(camera, transformable);
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        surface.render(g);
     }
 }

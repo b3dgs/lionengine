@@ -118,12 +118,11 @@ public class AppExamples
      * Add a example with its button and action.
      * 
      * @param panel The panel reference.
-     * @param name The example name.
      * @param example The example class.
      */
-    private static void addExample(final JPanel panel, String name, final Class<?> example)
+    private static void addExample(final JPanel panel, final Class<?> example)
     {
-        final JButton drawable = new JButton(name);
+        final JButton drawable = new JButton(example.getSimpleName().substring(3));
         drawable.addActionListener(event ->
         {
             UtilitySwing.setEnabled(panel.getComponents(), false);
@@ -164,24 +163,16 @@ public class AppExamples
      */
     private static void addExamples(JPanel panel)
     {
-        addExample(panel, "Hello World", AppHelloWorld.class);
-        addExample(panel, "Drawable", AppDrawable.class);
-        addExample(panel, "Action", AppAction.class);
-        addExample(panel, "Assign", AppAssign.class);
-        addExample(panel, "Attack", AppAttack.class);
-        addExample(panel, "Background", AppBackground.class);
-        addExample(panel, "Collision", AppCollision.class);
-        addExample(panel, "Cursor", AppCursor.class);
-        addExample(panel, "Effect", AppEffect.class);
-        addExample(panel, "Fog", AppFog.class);
-        addExample(panel, "Map", AppMap.class);
-        addExample(panel, "Pathfinding", AppPathfinding.class);
-        addExample(panel, "Production", AppProduction.class);
-        addExample(panel, "Extraction", AppExtraction.class);
-        addExample(panel, "Projectile", AppProjectile.class);
-        addExample(panel, "Raster", AppRaster.class);
-        addExample(panel, "Selector", AppSelector.class);
-        addExample(panel, "State", AppState.class);
-        addExample(panel, "Pong", AppPong.class);
+        final Class<?>[] examples = new Class<?>[]
+        {
+            AppHelloWorld.class, AppDrawable.class, AppAction.class, AppAssign.class, AppAttack.class,
+            AppBackground.class, AppCollision.class, AppCursor.class, AppEffect.class, AppFog.class, AppMap.class,
+            AppPathfinding.class, AppProduction.class, AppExtraction.class, AppProjectile.class, AppRaster.class,
+            AppSelector.class, AppState.class, AppPong.class
+        };
+        for (final Class<?> example : examples)
+        {
+            addExample(panel, example);
+        }
     }
 }

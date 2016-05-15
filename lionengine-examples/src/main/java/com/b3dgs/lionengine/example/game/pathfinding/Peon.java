@@ -19,78 +19,70 @@ package com.b3dgs.lionengine.example.game.pathfinding;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.layer.Layerable;
+import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Peon entity implementation.
  */
-class Peon extends ObjectGame implements Updatable, Renderable
+class Peon extends ObjectGame
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
-    /** Pathfindable model. */
-    private final Pathfindable pathfindable;
-    /** Surface reference. */
-    private final SpriteAnimated surface;
-    /** Viewer reference. */
-    private final Viewer viewer;
-    /** Cursor reference. */
-    private final Cursor cursor;
+    @Service private Viewer viewer;
+    @Service private Cursor cursor;
 
     /**
      * Create a peon.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Peon(SetupSurface setup, Services services)
+    public Peon(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
-
-        viewer = services.get(Viewer.class);
-        cursor = services.get(Cursor.class);
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
         transformable.teleport(208, 224);
 
-        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
+        final Layerable layerable = addFeatureAndGet(new LayerableModel());
+        layerable.setLayer(Integer.valueOf(1));
+
+        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
-    }
 
-    @Override
-    public void update(double extrp)
-    {
-        if (cursor.hasClickedOnce(Mouse.RIGHT))
+        final Pathfindable pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+
+        addFeature(new RefreshableModel(extrp ->
         {
-            pathfindable.setDestination(cursor);
-        }
-        pathfindable.update(extrp);
-        surface.setLocation(viewer, transformable);
-    }
+            if (cursor.hasClickedOnce(Mouse.RIGHT))
+            {
+                pathfindable.setDestination(cursor);
+            }
+            pathfindable.update(extrp);
+            surface.setLocation(viewer, transformable);
+        }));
 
-    @Override
-    public void render(Graphic g)
-    {
-        pathfindable.render(g);
-        surface.render(g);
+        addFeature(new DisplayableModel(g ->
+        {
+            pathfindable.render(g);
+            surface.render(g);
+        }));
     }
 }

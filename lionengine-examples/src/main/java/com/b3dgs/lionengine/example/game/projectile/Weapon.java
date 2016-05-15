@@ -19,46 +19,43 @@ package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.launchable.Launcher;
 import com.b3dgs.lionengine.game.object.feature.launchable.LauncherListener;
 import com.b3dgs.lionengine.game.object.feature.launchable.LauncherModel;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 
 /**
  * Weapon implementation.
  */
-class Weapon extends ObjectGame implements Updatable, LauncherListener
+class Weapon extends ObjectGame implements LauncherListener
 {
     /** Media. */
     public static final Media PULSE_CANNON = Medias.create("PulseCannon.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
-    /** Launcher model. */
     private final Launcher launcher;
-    /** Owner localizable. */
     private Transformable ownerLocalizable;
-    /** Owner collidable. */
     private Collidable ownerCollidable;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Weapon(Setup setup, Services services)
+    public Weapon(Setup setup)
     {
-        super(setup, services);
+        super(setup);
 
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
         launcher = addFeatureAndGet(new LauncherModel(setup));
+
+        addFeature(new RefreshableModel(extrp -> transformable.teleport(ownerLocalizable.getX(),
+                                                                        ownerLocalizable.getY())));
     }
 
     /**
@@ -91,12 +88,6 @@ class Weapon extends ObjectGame implements Updatable, LauncherListener
     public void fire(Localizable target)
     {
         launcher.fire(target);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        transformable.teleport(ownerLocalizable.getX(), ownerLocalizable.getY());
     }
 
     @Override

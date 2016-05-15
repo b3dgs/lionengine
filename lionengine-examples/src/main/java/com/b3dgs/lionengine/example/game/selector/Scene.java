@@ -26,14 +26,16 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Selector;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.handler.ComponentRefresher;
+import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.Minimap;
-import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -46,33 +48,19 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 200, 60);
 
-    /** Services reference. */
     private final Services services = new Services();
-    /** Game factory. */
     private final Factory factory = services.create(Factory.class);
-    /** Camera reference. */
+    private final Handler handler = services.create(Handler.class);
     private final Camera camera = services.create(Camera.class);
-    /** Cursor reference. */
     private final Cursor cursor = services.create(Cursor.class);
-    /** Map reference. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map viewer. */
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Minimap reference. */
     private final Minimap minimap = new Minimap(map);
-    /** Selector reference. */
     private final Selector selector = new Selector(camera, cursor);
-    /** Keyboard reference. */
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
-    /** Mouse reference. */
     private final Mouse mouse = getInputDevice(Mouse.class);
-    /** HUD image. */
     private final Image hud;
-    /** Peon reference. */
-    private Peon peon;
 
     /**
      * Constructor.
@@ -85,12 +73,22 @@ class Scene extends Sequence
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+
+        handler.addUpdatable(new ComponentRefresher());
+        handler.addRenderable(services.create(ComponentRendererLayer.class));
     }
 
     @Override
     public void load()
     {
         map.create(Medias.create("level.png"), 16, 16, 16);
+
+        camera.setView(72, 28, 224, 160);
+        camera.setLimits(map);
+        camera.setLocation(320, 208);
+
+        map.addFeature(new MapTileViewerModel(services));
+        handler.add(map);
 
         minimap.load();
         minimap.automaticColor();
@@ -99,6 +97,7 @@ class Scene extends Sequence
 
         hud.load();
         hud.prepare();
+
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load();
         cursor.setArea(0, 0, getWidth(), getHeight());
@@ -106,11 +105,8 @@ class Scene extends Sequence
         cursor.setInputDevice(mouse);
         cursor.setViewer(camera);
 
-        camera.setView(72, 12, 240, 176);
-        camera.setLimits(map);
-        camera.setLocation(320, 208);
-
-        peon = factory.create(Peon.MEDIA);
+        final Peon peon = factory.create(Peon.MEDIA);
+        handler.add(peon);
 
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
@@ -123,7 +119,7 @@ class Scene extends Sequence
     {
         mouse.update(extrp);
         cursor.update(extrp);
-        peon.update(extrp);
+        handler.update(extrp);
         selector.update(extrp);
 
         if (keyboard.isPressed(Keyboard.UP))
@@ -147,8 +143,7 @@ class Scene extends Sequence
     @Override
     public void render(Graphic g)
     {
-        mapViewer.render(g);
-        peon.render(g);
+        handler.render(g);
         hud.render(g);
         selector.render(g);
         minimap.render(g);

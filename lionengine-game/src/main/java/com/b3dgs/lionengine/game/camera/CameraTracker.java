@@ -15,13 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.camera;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.object.feature.Refreshable;
+import com.b3dgs.lionengine.game.object.feature.refreshable.Refreshable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.Viewer;
 
@@ -37,12 +38,6 @@ public class CameraTracker extends FeatureModel implements Refreshable
 
     /**
      * Create tracker.
-     * <p>
-     * The {@link Services} must provide the following services:
-     * </p>
-     * <ul>
-     * <li>{@link Viewer}</li>
-     * </ul>
      */
     public CameraTracker()
     {

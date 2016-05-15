@@ -68,7 +68,7 @@ public class HandledObjectsImplTest
     /** Handled objects test. */
     private final HandledHandlablesImpl handled = new HandledHandlablesImpl();
     /** Object test. */
-    private final ObjectGame object = new ObjectGame(new Setup(config), new Services());
+    private final ObjectGame object = new ObjectGame(new Setup(config));
 
     /**
      * Clean test.
@@ -91,7 +91,7 @@ public class HandledObjectsImplTest
         Assert.assertEquals(object, handled.values().iterator().next());
         Assert.assertEquals(1, handled.getIds().size());
 
-        handled.remove(object.getId());
+        handled.remove(object);
 
         Assert.assertTrue(handled.getIds().isEmpty());
         Assert.assertFalse(handled.values().iterator().hasNext());
@@ -120,7 +120,7 @@ public class HandledObjectsImplTest
         Assert.assertEquals(mirrorable, handled.get(Mirrorable.class).iterator().next());
         Assert.assertFalse(handled.get(Transformable.class).iterator().hasNext());
 
-        handled.remove(object.getId());
+        handled.remove(object);
 
         Assert.assertFalse(handled.get(Mirrorable.class).iterator().hasNext());
     }
@@ -132,7 +132,7 @@ public class HandledObjectsImplTest
     public void testFeatureComplex()
     {
         final Setup setup = new Setup(config);
-        final ObjectGame complex = new ObjectComplex(setup, new Services());
+        final ObjectGame complex = new ObjectComplex(setup);
         complex.addFeature(new MirrorableModel());
         complex.addFeature(new TransformableModel(setup));
         complex.prepareFeatures(complex, new Services());
@@ -156,11 +156,10 @@ public class HandledObjectsImplTest
          * Create object.
          * 
          * @param setup The setup reference.
-         * @param services The services used.
          */
-        public ObjectComplex(Setup setup, Services services)
+        public ObjectComplex(Setup setup)
         {
-            super(setup, services);
+            super(setup);
         }
 
         @Override

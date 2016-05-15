@@ -52,25 +52,24 @@ import com.b3dgs.lionengine.game.handler.Handler;
  * @see Handler
  * @see Feature
  * @see Setup
- * @see Services
  */
 public class ObjectGame extends HandlableModel
 {
     /** Configurer reference. */
     private final Configurer configurer;
+    /** Prepared flag. */
+    private boolean prepared;
 
     /**
      * Create an object.
      * 
      * @param setup The setup reference (resources sharing entry point).
-     * @param services The services reference (external services provider).
      * @throws LionEngineException If setup or service is <code>null</code>, or no free ID available.
      */
-    public ObjectGame(Setup setup, Services services)
+    public ObjectGame(Setup setup)
     {
         super();
         Check.notNull(setup);
-        Check.notNull(services);
 
         configurer = setup.getConfigurer();
     }
@@ -115,6 +114,10 @@ public class ObjectGame extends HandlableModel
     {
         super.prepareFeatures(owner, services);
         // TODO use listener ?
-        onPrepared();
+        if (!prepared)
+        {
+            prepared = true;
+            onPrepared();
+        }
     }
 }

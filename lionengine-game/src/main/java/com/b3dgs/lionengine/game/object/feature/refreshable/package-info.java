@@ -15,15 +15,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object.feature;
-
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
- * Updatable feature wrapper.
+ * {@link com.b3dgs.lionengine.Updatable} feature wrapper.
  */
-public interface Refreshable extends Feature, Updatable
-{
-    // Wrapper
-}
+package com.b3dgs.lionengine.game.object.feature.refreshable;

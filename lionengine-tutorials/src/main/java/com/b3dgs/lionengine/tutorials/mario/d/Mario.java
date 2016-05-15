@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -37,11 +36,10 @@ class Mario extends Entity implements CollidableListener
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Mario(SetupSurface setup, Services services)
+    public Mario(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
     }
 
     @Override

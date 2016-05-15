@@ -22,9 +22,9 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.ComponentRenderer;
+import com.b3dgs.lionengine.game.handler.ComponentUpdater;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.ComponentRenderer;
-import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -42,7 +42,7 @@ public class AppEntity
      */
     public static void main(String[] args)
     {
-        EngineAwt.start("Entity", Version.create(1, 0, 0), AppEntity.class);
+        EngineAwt.start(AppEntity.class.getSimpleName(), Version.create(1, 0, 0), AppEntity.class);
 
         final Graphic g = Graphics.createGraphic();
         final Services services = new Services();

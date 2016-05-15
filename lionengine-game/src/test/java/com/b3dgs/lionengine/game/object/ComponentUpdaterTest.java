@@ -25,6 +25,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.ComponentUpdater;
 import com.b3dgs.lionengine.game.handler.Handler;
 
 /**
@@ -60,7 +61,7 @@ public class ComponentUpdaterTest
         final Handler handler = new Handler(new Services());
         handler.addUpdatable(updater);
 
-        final Updater object = new Updater(new Setup(Medias.create("object.xml")), new Services());
+        final Updater object = new Updater(new Setup(Medias.create("object.xml")));
         handler.add(object);
         Assert.assertFalse(object.isUpdated());
         handler.update(1.0);
@@ -83,11 +84,10 @@ public class ComponentUpdaterTest
          * Constructor.
          * 
          * @param setup The setup reference.
-         * @param services The services reference.
          */
-        public Updater(Setup setup, Services services)
+        public Updater(Setup setup)
         {
-            super(setup, services);
+            super(setup);
         }
 
         /**

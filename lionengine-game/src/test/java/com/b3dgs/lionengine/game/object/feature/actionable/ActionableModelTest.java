@@ -120,7 +120,7 @@ public class ActionableModelTest
     private static ActionableModel createActionable(Media media, Services services)
     {
         final Setup setup = new Setup(media);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         final ActionableModel actionable = new ActionableModel(setup);
         actionable.prepare(object, services);
         return actionable;
@@ -271,7 +271,7 @@ public class ActionableModelTest
         final Services services = createServices(clicked, new AtomicInteger());
         final AtomicBoolean executed = new AtomicBoolean();
         final Setup setup = new Setup(media);
-        final ObjectAction object = new ObjectAction(setup, services, executed);
+        final ObjectAction object = new ObjectAction(setup, executed);
         final ActionableModel actionable = new ActionableModel(setup);
         actionable.prepare(object, services);
 
@@ -296,12 +296,11 @@ public class ActionableModelTest
          * Constructor.
          * 
          * @param setup The setup reference.
-         * @param services The services.
          * @param executed The executed flag.
          */
-        public ObjectAction(Setup setup, Services services, AtomicBoolean executed)
+        public ObjectAction(Setup setup, AtomicBoolean executed)
         {
-            super(setup, services);
+            super(setup);
             this.executed = executed;
         }
 

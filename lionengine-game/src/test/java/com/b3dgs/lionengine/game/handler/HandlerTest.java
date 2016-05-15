@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableListener;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
-import com.b3dgs.lionengine.game.object.ComponentRenderable;
-import com.b3dgs.lionengine.game.object.ComponentUpdatable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.graphic.Graphic;
@@ -76,7 +74,7 @@ public class HandlerTest
     public void testAddGetObject()
     {
         final Handler handler = new Handler(new Services());
-        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
+        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)));
         handler.add(object);
         try
         {
@@ -126,7 +124,7 @@ public class HandlerTest
         final Handler handler = new Handler(new Services());
         Assert.assertEquals(0, handler.size());
 
-        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
+        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)));
         handler.add(object);
         Assert.assertEquals(0, handler.size());
 
@@ -149,9 +147,22 @@ public class HandlerTest
         Assert.assertEquals(1, handler.size());
         handler.update(1.0);
         Assert.assertEquals(0, handler.size());
+    }
 
+    /**
+     * Add an object and destroy it.
+     */
+    @Test
+    public void testDestroyObject()
+    {
+        final Handler handler = new Handler(new Services());
+        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)));
         handler.add(object);
+
+        Assert.assertEquals(0, handler.size());
         handler.update(1.0);
+        Assert.assertEquals(1, handler.size());
+
         object.destroy();
 
         Assert.assertEquals(1, handler.size());
@@ -184,7 +195,7 @@ public class HandlerTest
         };
         handler.addListener(listener);
 
-        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
+        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)));
         Assert.assertNull(added.get());
         handler.add(object);
         Assert.assertNull(added.get());
@@ -241,7 +252,7 @@ public class HandlerTest
         Assert.assertNull(extrapolation.get());
         Assert.assertNull(updated.get());
 
-        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
+        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)));
         handler.add(object);
         handler.update(1.0);
 
@@ -272,7 +283,7 @@ public class HandlerTest
 
         Assert.assertNull(rendered.get());
 
-        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)), new Services());
+        final ObjectGame object = new ObjectGame(new Setup(Medias.create(OBJECT_XML)));
         handler.add(object);
         handler.update(1.0);
         handler.render(Graphics.createGraphic());
@@ -300,7 +311,7 @@ public class HandlerTest
             }
         });
         final Handler handler = new Handler(services);
-        final ObjectGame object = new ObjectFeatures(new Setup(Medias.create(OBJECT_XML)), services);
+        final ObjectGame object = new ObjectFeatures(new Setup(Medias.create(OBJECT_XML)));
         object.prepareFeatures(object, services);
 
         handler.add(object);
@@ -324,11 +335,10 @@ public class HandlerTest
          * Create object.
          * 
          * @param setup The setup reference.
-         * @param services The services.
          */
-        public ObjectFeatures(Setup setup, Services services)
+        public ObjectFeatures(Setup setup)
         {
-            super(setup, services);
+            super(setup);
             addFeature(new LayerableModel());
         }
 

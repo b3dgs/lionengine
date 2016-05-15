@@ -87,7 +87,7 @@ public class TransformableModelTest
         final Services services = new Services();
         services.add(new MapTileGame());
 
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         final Transformable transformable = new TransformableModel();
         transformable.prepare(object, services);
 
@@ -106,7 +106,7 @@ public class TransformableModelTest
         final Services services = new Services();
         services.add(new MapTileGame());
 
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         final Transformable transformable = new TransformableModel();
         transformable.prepare(object, services);
 
@@ -150,7 +150,7 @@ public class TransformableModelTest
         final Services services = new Services();
         services.add(new MapTileGame());
 
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         final Transformable transformable = new TransformableModel();
         transformable.prepare(object, services);
 
@@ -195,7 +195,7 @@ public class TransformableModelTest
         services.add(new MapTileGame());
 
         final Setup setup = new Setup(media);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         final Transformable transformable = new TransformableModel(setup);
         transformable.prepare(object, services);
 
@@ -225,7 +225,7 @@ public class TransformableModelTest
         final Services services = new Services();
         services.add(new MapTileGame());
 
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         final Transformable transformable = new TransformableModel();
         transformable.prepare(object, services);
 

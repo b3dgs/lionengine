@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.feature.FeaturableModel;
@@ -34,6 +35,8 @@ public class HandlableModel implements Handlable
 
     /**
      * Create a default model with an {@link IdentifiableModel} and a {@link FeaturableModel}.
+     * 
+     * @throws LionEngineException If no free ID available.
      */
     public HandlableModel()
     {

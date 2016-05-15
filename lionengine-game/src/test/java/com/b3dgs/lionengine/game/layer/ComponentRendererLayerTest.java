@@ -75,7 +75,7 @@ public class ComponentRendererLayerTest
     private static Layerable createObject(Services services, Handler handler, final AtomicInteger last)
     {
         final Setup setup = new Setup(config);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         final LayerableModel layerable = object.addFeatureAndGet(new LayerableModel());
         layerable.prepare(object, services);
 
@@ -84,7 +84,10 @@ public class ComponentRendererLayerTest
             @Override
             public void render(Graphic g)
             {
-                last.set(object.getId().intValue());
+                if (object.getId() != null)
+                {
+                    last.set(object.getId().intValue());
+                }
             }
         }));
         handler.add(object);

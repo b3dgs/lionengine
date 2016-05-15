@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
@@ -50,25 +50,25 @@ class Ball extends ObjectGame implements Updatable, Renderable, CollidableListen
     private final Transformable transformable;
     /** Collidable model. */
     private final Collidable collidable;
-    /** Viewer reference. */
-    private final Viewer viewer;
     /** Current force. */
     private final Force force;
     /** Speed. */
     private final double speed;
 
+    @Service private Viewer viewer;
+
     /**
-     * {@link ObjectGame#ObjectGame(Setup, Services)}
+     * Create an object.
+     * 
+     * @param setup The setup reference.
      */
-    public Ball(Setup setup, Services services)
+    public Ball(Setup setup)
     {
-        super(setup, services);
+        super(setup);
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
         collidable = addFeatureAndGet(new CollidableModel(setup));
         collidable.setOrigin(Origin.MIDDLE);
-
-        viewer = services.get(Viewer.class);
 
         speed = 3.0;
         force = new Force(-speed, 0.0);

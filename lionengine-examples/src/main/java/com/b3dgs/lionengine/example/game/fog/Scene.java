@@ -29,8 +29,11 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.handler.ComponentRefresher;
+import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.fog.FogOfWar;
@@ -47,29 +50,13 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Collection fog. */
     private final Collection<Fovable> fovables = new ArrayList<>();
-    /** Fog of war layer. */
     private final FogOfWar fogOfWar = new FogOfWar();
-    /** Services reference. */
     private final Services services = new Services();
-    /** Game factory. */
-    private final Factory factory = services.create(Factory.class);
-    /** Camera reference. */
-    private final Camera camera = services.create(Camera.class);
-    /** Map reference. */
-    private final MapTile map = services.create(MapTileGame.class);
-    /** Map viewer. */
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
-    /** Mouse reference. */
+    private final Handler handler = services.create(Handler.class);
     private final Mouse mouse = getInputDevice(Mouse.class);
-    /** Peon reference. */
-    private Peon peon;
 
     /**
      * Constructor.
@@ -80,30 +67,42 @@ class Scene extends Sequence
     {
         super(context, NATIVE);
         setSystemCursorVisible(false);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
+
+        handler.addUpdatable(new ComponentRefresher());
+        handler.addRenderable(services.add(new ComponentRendererLayer()));
     }
 
     @Override
     public void load()
     {
+        final MapTile map = services.create(MapTileGame.class);
         map.create(Medias.create("level.png"), 16, 16, 16);
-        mapViewer.addRenderer(fogOfWar);
 
-        final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create("hide.png"), 16, 16);
-        final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create("fog.png"), 16, 16);
-        hide.load();
-        hide.prepare();
-        fog.load();
-        fog.prepare();
-        fogOfWar.setTilesheet(hide, fog);
-        fogOfWar.setEnabled(true, true);
-        fogOfWar.create(map, Medias.create("fog.xml"));
-
+        final Camera camera = services.create(Camera.class);
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
         camera.setLocation(0, 0);
 
-        peon = factory.create(Peon.MEDIA);
+        final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
+        mapViewer.addRenderer(fogOfWar);
+        handler.add(map);
+
+        final SpriteTiled hide = Drawable.loadSpriteTiled(Medias.create("hide.png"), 16, 16);
+        hide.load();
+        hide.prepare();
+
+        final SpriteTiled fog = Drawable.loadSpriteTiled(Medias.create("fog.png"), 16, 16);
+        fog.load();
+        fog.prepare();
+
+        fogOfWar.setTilesheet(hide, fog);
+        fogOfWar.setEnabled(true, true);
+        fogOfWar.create(map, Medias.create("fog.xml"));
+
+        final Factory factory = services.create(Factory.class);
+        final Peon peon = factory.create(Peon.MEDIA);
+        handler.add(peon);
         fovables.add(peon.getFeature(Fovable.class));
     }
 
@@ -111,15 +110,14 @@ class Scene extends Sequence
     public void update(double extrp)
     {
         mouse.update(extrp);
-        peon.update(extrp);
+        handler.update(extrp);
         fogOfWar.update(fovables);
     }
 
     @Override
     public void render(Graphic g)
     {
-        mapViewer.render(g);
-        peon.render(g);
+        handler.render(g);
     }
 
     @Override

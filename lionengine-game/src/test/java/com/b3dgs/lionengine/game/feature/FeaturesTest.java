@@ -23,8 +23,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.object.feature.Refreshable;
 import com.b3dgs.lionengine.game.object.feature.displayable.Displayable;
+import com.b3dgs.lionengine.game.object.feature.refreshable.Refreshable;
 
 /**
  * Test the features class.

@@ -24,10 +24,10 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
@@ -77,25 +77,22 @@ class Entity extends ObjectGame implements Updatable, Renderable, TileCollidable
     private final Body body;
     /** State handler. */
     private final StateHandler handler = new StateHandler(factory);
-    /** Camera reference. */
-    private final Camera camera;
+
+    @Service private Camera camera;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Entity(SetupSurface setup, Services services)
+    public Entity(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
         body = addFeatureAndGet(new BodyModel());
         tileCollidable = addFeatureAndGet(new TileCollidableModel(setup));
         collidable = addFeatureAndGet(new CollidableModel(setup));
-
-        camera = services.get(Camera.class);
         collidable.setOrigin(Origin.CENTER_TOP);
 
         final FramesConfig frames = FramesConfig.imports(setup);

@@ -69,6 +69,8 @@ public class IdentifiableModel implements Identifiable
     private final Collection<IdentifiableListener> listeners = new HashSet<IdentifiableListener>(1);
     /** Unique ID. */
     private final Integer id;
+    /** Destroy flag. */
+    private boolean destroy;
     /** Destroyed flag. */
     private boolean destroyed;
 
@@ -111,9 +113,9 @@ public class IdentifiableModel implements Identifiable
     @Override
     public void destroy()
     {
-        if (!destroyed)
+        if (!destroy)
         {
-            destroyed = true;
+            destroy = true;
             for (final IdentifiableListener listener : listeners)
             {
                 listener.notifyDestroyed(id);
@@ -124,6 +126,7 @@ public class IdentifiableModel implements Identifiable
     @Override
     public void notifyDestroyed()
     {
+        destroyed = true;
         IDS.remove(id);
         RECYCLE.add(id);
         listeners.clear();

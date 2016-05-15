@@ -25,21 +25,16 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.handler.ComponentRenderable;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Handlables;
 import com.b3dgs.lionengine.game.handler.HandlerListener;
-import com.b3dgs.lionengine.game.object.ComponentRenderable;
 import com.b3dgs.lionengine.game.object.feature.displayable.Displayable;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
  * Renderer component implementation which render {@link Displayable} elements with {@link Layerable} support to order
  * rendering. If there is not {@link Layerable} feature, {@link #LAYER_DEFAULT} will be used as default layer value.
- * <p>
- * {@link com.b3dgs.lionengine.game.handler.Handler} should add it as listener with
- * {@link com.b3dgs.lionengine.game.handler.Handler#addListener(HandlerListener)} and must be added to
- * {@link com.b3dgs.lionengine.game.Services}}.
- * </p>
  */
 public class ComponentRendererLayer implements ComponentRenderable, HandlerListener, LayerableListener
 {
@@ -107,7 +102,7 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
     {
         final Collection<Displayable> displayables = getLayer(layer);
         displayables.remove(displayable);
-        if (!displayables.isEmpty())
+        if (displayables.isEmpty())
         {
             indexs.remove(layer);
         }

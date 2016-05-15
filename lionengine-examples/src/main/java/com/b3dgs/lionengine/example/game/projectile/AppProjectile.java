@@ -37,7 +37,7 @@ public class AppProjectile
      */
     public static void main(String[] args)
     {
-        EngineAwt.start("Projectile", Version.create(1, 0, 0), AppProjectile.class);
+        EngineAwt.start(AppProjectile.class.getSimpleName(), Version.create(1, 0, 0), AppProjectile.class);
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();

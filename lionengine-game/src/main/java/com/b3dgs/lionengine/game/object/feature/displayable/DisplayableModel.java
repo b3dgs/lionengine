@@ -26,18 +26,18 @@ import com.b3dgs.lionengine.graphic.Renderable;
  */
 public class DisplayableModel extends FeatureModel implements Displayable
 {
-    /** Renderer reference. */
-    private final Renderable renderer;
+    /** Renderable reference. */
+    private final Renderable renderable;
 
     /**
      * Create feature.
      * 
-     * @param renderer The renderer reference.
+     * @param renderable The renderable reference.
      */
-    public DisplayableModel(Renderable renderer)
+    public DisplayableModel(Renderable renderable)
     {
         super();
-        this.renderer = renderer;
+        this.renderable = renderable;
     }
 
     /*
@@ -47,6 +47,6 @@ public class DisplayableModel extends FeatureModel implements Displayable
     @Override
     public void render(Graphic g)
     {
-        renderer.render(g);
+        renderable.render(g);
     }
 }

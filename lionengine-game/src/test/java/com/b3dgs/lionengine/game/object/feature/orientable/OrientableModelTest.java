@@ -116,7 +116,7 @@ public class OrientableModelTest
         final Services services = new Services();
         services.add(new MapTileGame());
 
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         object.addFeature(new TransformableModel());
 
         final OrientableModel orientable = new OrientableModel();
@@ -169,7 +169,7 @@ public class OrientableModelTest
         final Services services = new Services();
         services.add(new MapTileGame());
 
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         object.addFeature(new TransformableModel());
 
         final OrientableModel orientable = new OrientableModel();

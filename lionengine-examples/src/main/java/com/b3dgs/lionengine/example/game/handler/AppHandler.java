@@ -23,9 +23,9 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.ComponentRenderer;
+import com.b3dgs.lionengine.game.handler.ComponentUpdater;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.ComponentRenderer;
-import com.b3dgs.lionengine.game.object.ComponentUpdater;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -43,15 +43,15 @@ public class AppHandler
      */
     public static void main(String[] args)
     {
-        EngineAwt.start("Handler", Version.create(1, 0, 0), AppHandler.class);
+        EngineAwt.start(AppHandler.class.getSimpleName(), Version.create(1, 0, 0), AppHandler.class);
 
         final Graphic g = Graphics.createGraphic();
         final Services services = new Services();
         final Handler handler = new Handler(services);
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());
-        handler.add(new MyObject(new Setup(Medias.create("MyObject.xml")), services));
-        handler.add(new MyObject(new Setup(Medias.create("MyObject.xml")), services));
+        handler.add(new MyObject(new Setup(Medias.create("MyObject.xml"))));
+        handler.add(new MyObject(new Setup(Medias.create("MyObject.xml"))));
 
         for (int i = 0; i < 2; i++)
         {

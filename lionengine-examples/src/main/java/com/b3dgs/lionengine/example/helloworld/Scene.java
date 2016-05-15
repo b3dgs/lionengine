@@ -35,13 +35,9 @@ import com.b3dgs.lionengine.graphic.TextStyle;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Text drawer. */
     private final Text text = Graphics.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
-    /** Keyboard. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
 
     /**
      * Constructor.
@@ -51,7 +47,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override

@@ -37,7 +37,7 @@ public class AppAction
      */
     public static void main(String[] args)
     {
-        EngineAwt.start("Action", Version.create(1, 0, 0), AppAction.class);
+        EngineAwt.start(AppAction.class.getSimpleName(), Version.create(1, 0, 0), AppAction.class);
         final Resolution output = new Resolution(640, 400, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();

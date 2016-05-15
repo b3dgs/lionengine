@@ -18,27 +18,25 @@
 package com.b3dgs.lionengine.example.game.action;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.feature.actionable.Action;
 import com.b3dgs.lionengine.game.object.feature.actionable.ActionConfig;
 import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
 import com.b3dgs.lionengine.game.object.feature.actionable.ActionableModel;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.graphic.Text;
 
 /**
  * Abstract button action.
  */
-class Button extends ObjectGame implements Action, Updatable, Renderable
+class Button extends ObjectGame
 {
     /** Media buildings reference. */
     public static final Media BUILDINGS = Medias.create("action", "Buildings.xml");
@@ -49,57 +47,35 @@ class Button extends ObjectGame implements Action, Updatable, Renderable
     /** Media cancel reference. */
     public static final Media CANCEL = Medias.create("action", "Cancel.xml");
 
-    /** Actionable model. */
-    private final Actionable actionable;
-    /** Button image. */
-    private final Image image;
-    /** Text reference. */
-    private final Text text;
-    /** Action name. */
-    private final String name;
+    @Service private Text text;
 
     /**
      * Create build farm action.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Button(SetupSurface setup, Services services)
+    public Button(SetupSurface setup)
     {
-        super(setup, services);
-        text = services.get(Text.class);
-        image = Drawable.loadImage(setup.getSurface());
-        name = ActionConfig.imports(getConfigurer().getRoot()).getName();
+        super(setup);
 
-        actionable = addFeatureAndGet(new ActionableModel(setup));
+        final String name = ActionConfig.imports(getConfigurer().getRoot()).getName();
+
+        final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
+        actionable.setAction(() -> Verbose.info(name));
         actionable.setClickAction(Mouse.LEFT);
-    }
 
-    @Override
-    protected void onPrepared()
-    {
+        final Image image = Drawable.loadImage(setup.getSurface());
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
-    }
 
-    @Override
-    public void execute()
-    {
-        Verbose.info(name);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        actionable.update(extrp);
-        if (actionable.isOver())
+        addFeature(new RefreshableModel(extrp ->
         {
-            text.setText(actionable.getDescription());
-        }
-    }
+            actionable.update(extrp);
+            if (actionable.isOver())
+            {
+                text.setText(actionable.getDescription());
+            }
+        }));
 
-    @Override
-    public void render(Graphic g)
-    {
-        image.render(g);
+        addFeature(new DisplayableModel(g -> image.render(g)));
     }
 }

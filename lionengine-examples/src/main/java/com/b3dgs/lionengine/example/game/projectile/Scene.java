@@ -22,12 +22,12 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.object.ComponentCollision;
+import com.b3dgs.lionengine.game.handler.ComponentRefresher;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.ComponentRenderer;
-import com.b3dgs.lionengine.game.object.ComponentUpdater;
+import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -38,16 +38,8 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 class Scene extends Sequence
 {
-    /** Services reference. */
     private final Services services = new Services();
-    /** Game factory. */
-    private final Factory factory = services.create(Factory.class);
-    /** Handler. */
     private final Handler handler = services.create(Handler.class);
-    /** Camera. */
-    private final Camera camera = services.create(Camera.class);
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
 
     /**
      * Constructor.
@@ -57,12 +49,20 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, new Resolution(320, 240, 60));
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
+
+        handler.addUpdatable(new ComponentRefresher());
+        handler.addUpdatable(new ComponentCollision());
+        handler.addRenderable(services.add(new ComponentRendererLayer()));
     }
 
     @Override
     public void load()
     {
+        final Camera camera = services.create(Camera.class);
+        camera.setView(0, 0, getWidth(), getHeight());
+
+        final Factory factory = services.create(Factory.class);
         final Ship ship1 = factory.create(Ship.MEDIA);
         final Ship ship2 = factory.create(Ship.MEDIA);
         handler.add(ship1);
@@ -71,12 +71,6 @@ class Scene extends Sequence
         ship1.mirror();
         ship1.setTarget(ship2);
         ship2.setTarget(ship1);
-
-        handler.addUpdatable(new ComponentUpdater());
-        handler.addUpdatable(new ComponentCollision());
-        handler.addRenderable(new ComponentRenderer());
-
-        camera.setView(0, 0, getWidth(), getHeight());
     }
 
     @Override

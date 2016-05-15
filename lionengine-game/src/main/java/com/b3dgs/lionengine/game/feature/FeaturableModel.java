@@ -96,12 +96,17 @@ public class FeaturableModel implements Featurable
     private Collection<Field> getServiceFields(Object object)
     {
         final Collection<Field> toInject = new HashSet<Field>();
-        for (final Field field : object.getClass().getDeclaredFields())
+        Class<?> clazz = object.getClass();
+        while (clazz != null)
         {
-            if (field.isAnnotationPresent(Service.class))
+            for (final Field field : clazz.getDeclaredFields())
             {
-                toInject.add(field);
+                if (field.isAnnotationPresent(Service.class))
+                {
+                    toInject.add(field);
+                }
             }
+            clazz = clazz.getSuperclass();
         }
         return toInject;
     }
@@ -137,7 +142,7 @@ public class FeaturableModel implements Featurable
     @Override
     public void prepareFeatures(Handlable owner, Services services)
     {
-        fillServices(this, services);
+        fillServices(owner, services);
         for (final Feature feature : featuresToPrepare)
         {
             fillServices(feature, services);

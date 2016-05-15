@@ -19,11 +19,10 @@ package com.b3dgs.lionengine.example.game.production;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
@@ -36,6 +35,7 @@ import com.b3dgs.lionengine.game.object.feature.producible.ProducerChecker;
 import com.b3dgs.lionengine.game.object.feature.producible.ProducerListener;
 import com.b3dgs.lionengine.game.object.feature.producible.ProducerModel;
 import com.b3dgs.lionengine.game.object.feature.producible.Producible;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.pathfinding.CoordTile;
@@ -48,54 +48,48 @@ import com.b3dgs.lionengine.util.UtilMath;
 /**
  * Peon entity implementation.
  */
-class Peon extends ObjectGame implements Updatable, ProducerChecker, ProducerListener
+class Peon extends ObjectGame implements ProducerChecker, ProducerListener
 {
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
-    /** Transformable model. */
     private final Transformable transformable = addFeatureAndGet(new TransformableModel());
-    /** Pathfindable model. */
     private final Pathfindable pathfindable;
-    /** Producer model. */
-    private final Producer producer = addFeatureAndGet(new ProducerModel());
-    /** Layerable model. */
-    private final Layerable layerable = addFeatureAndGet(new LayerableModel());
-    /** Surface reference. */
-    private final SpriteAnimated surface;
-    /** Map tile reference. */
-    private final MapTile map;
-    /** Map tile reference. */
-    private final MapTilePath mapPath;
-    /** Viewer reference. */
-    private final Viewer viewer;
-    /** Visible. */
-    private boolean visible;
+
+    private boolean visible = true;
+
+    @Service private MapTile map;
+    @Service private MapTilePath mapPath;
+    @Service private Viewer viewer;
 
     /**
      * Create a peon.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Peon(SetupSurface setup, Services services)
+    public Peon(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
-        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+        final Layerable layerable = addFeatureAndGet(new LayerableModel());
+        layerable.setLayer(Integer.valueOf(2));
 
-        viewer = services.get(Viewer.class);
-        map = services.get(MapTile.class);
-        mapPath = services.get(MapTilePath.class);
-
-        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
+        final SpriteAnimated surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
-        visible = true;
 
         transformable.teleport(208, 160);
+        pathfindable = addFeatureAndGet(new PathfindableModel(setup));
+
+        final Producer producer = addFeatureAndGet(new ProducerModel());
         producer.setStepsPerSecond(1.0);
-        layerable.setLayer(Integer.valueOf(2));
+
+        addFeature(new RefreshableModel(extrp ->
+        {
+            pathfindable.update(extrp);
+            producer.update(extrp);
+            surface.setLocation(viewer, transformable);
+        }));
 
         addFeature(new DisplayableModel(g ->
         {
@@ -104,14 +98,6 @@ class Peon extends ObjectGame implements Updatable, ProducerChecker, ProducerLis
                 surface.render(g);
             }
         }));
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        pathfindable.update(extrp);
-        producer.update(extrp);
-        surface.setLocation(viewer, transformable);
     }
 
     @Override

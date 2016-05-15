@@ -37,7 +37,7 @@ public class AppRaster
      */
     public static void main(String[] args)
     {
-        EngineAwt.start("Raster", Version.create(1, 0, 0), AppRaster.class);
+        EngineAwt.start(AppRaster.class.getSimpleName(), Version.create(1, 0, 0), AppRaster.class);
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();

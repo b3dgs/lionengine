@@ -23,20 +23,21 @@ import java.util.HashSet;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.feature.Feature;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
- * Represents something designed to keep references on main types, such as {@link Factory}, {@link Handler},
- * {@link com.b3dgs.lionengine.game.Camera}, {@link com.b3dgs.lionengine.game.Cursor} ... in order to access to them
- * from the object instance (created by a {@link Factory} in constructor {@link ObjectGame#ObjectGame(Setup, Services)}
+ * Represents something designed to keep references on main types, such as
+ * {@link com.b3dgs.lionengine.game.object.Factory}, {@link com.b3dgs.lionengine.game.handler.Handler},
+ * {@link com.b3dgs.lionengine.game.camera.Camera}, {@link com.b3dgs.lionengine.game.Cursor} ... in order to access to
+ * them
+ * from the object instance (created by a {@link com.b3dgs.lionengine.game.object.Factory} in constructor
+ * {@link com.b3dgs.lionengine.game.object.ObjectGame#ObjectGame(com.b3dgs.lionengine.game.object.Setup)}
  * ).
  * <p>
  * Ensure to add any required services before creating an object with the factory, else it will fail with a
- * {@link LionEngineException} when calling {@link Factory#create(com.b3dgs.lionengine.Media)}.
+ * {@link LionEngineException} when calling
+ * {@link com.b3dgs.lionengine.game.object.Factory#create(com.b3dgs.lionengine.Media)}.
  * </p>
  * <p>
  * Usage example:
@@ -48,9 +49,6 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * private final Camera camera = services.create(Camera.class);
  * private final MapTile map = services.create(MapTileGame.class);
  * </pre>
- * 
- * @see Factory
- * @see ObjectGame
  */
 public class Services
 {
@@ -171,7 +169,7 @@ public class Services
         services.add(service);
         if (service instanceof Featurable)
         {
-            for (final Object feature : ((Featurable) service).getFeatures())
+            for (final Feature feature : ((Featurable) service).getFeatures())
             {
                 add(feature);
             }

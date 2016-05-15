@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.stream.Xml;
@@ -101,7 +100,7 @@ public class StateAnimationBasedTest
         handler.addInput(new InputDirectionalMock());
         handler.addInput(new InputPointerMock());
 
-        final ObjectGame object = new ObjectGame(new Setup(media), new Services());
+        final ObjectGame object = new ObjectGame(new Setup(media));
         StateAnimationBased.Util.loadStates(StateType.values(), factory, object);
 
         handler.changeState(StateType.IDLE);
@@ -119,7 +118,7 @@ public class StateAnimationBasedTest
     @Test(expected = LionEngineException.class)
     public void testUtilError()
     {
-        final ObjectGame object = new ObjectGame(new Setup(media), new Services());
+        final ObjectGame object = new ObjectGame(new Setup(media));
         StateAnimationBased.Util.loadStates(StateTypeError.values(), new StateFactory(), object);
     }
 }

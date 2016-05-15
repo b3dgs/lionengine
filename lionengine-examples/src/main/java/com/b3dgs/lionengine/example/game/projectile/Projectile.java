@@ -19,85 +19,69 @@ package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
-import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
+import com.b3dgs.lionengine.game.layer.Layerable;
+import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
 import com.b3dgs.lionengine.game.object.feature.launchable.Launchable;
 import com.b3dgs.lionengine.game.object.feature.launchable.LaunchableModel;
+import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
  * Projectile implementation.
  */
-class Projectile extends ObjectGame implements Updatable, Renderable, CollidableListener
+class Projectile extends ObjectGame
 {
     /** Media. */
     public static final Media PULSE = Medias.create("Pulse.xml");
 
-    /** Transformable model. */
-    private final Transformable transformable = addFeatureAndGet(new TransformableModel());
-    /** Collidable model. */
-    private final Collidable collidable;
-    /** Launchable model. */
-    private final Launchable launchable = addFeatureAndGet(new LaunchableModel());
-    /** Projectile surface. */
-    private final Sprite sprite;
-    /** Viewer reference. */
-    private final Viewer viewer;
+    @Service private Viewer viewer;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Projectile(SetupSurface setup, Services services)
+    public Projectile(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
-        collidable = addFeatureAndGet(new CollidableModel(setup));
+        final Layerable layerable = addFeatureAndGet(new LayerableModel());
+        layerable.setLayer(Integer.valueOf(0));
 
-        viewer = services.get(Viewer.class);
+        final Transformable transformable = addFeatureAndGet(new TransformableModel());
+        final Launchable launchable = addFeatureAndGet(new LaunchableModel());
+        final Collidable collidable = addFeatureAndGet(new CollidableModel(setup));
+        collidable.setOrigin(Origin.MIDDLE);
 
-        sprite = Drawable.loadSprite(setup.getSurface());
+        final Sprite sprite = Drawable.loadSprite(setup.getSurface());
         sprite.setOrigin(Origin.MIDDLE);
 
-        collidable.setOrigin(Origin.MIDDLE);
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        launchable.update(extrp);
-        collidable.update(extrp);
-        sprite.setLocation(viewer, transformable);
-        if (!viewer.isViewable(transformable, 0, 0))
+        addFeature(new RefreshableModel(extrp ->
         {
-            destroy();
-        }
-    }
+            launchable.update(extrp);
+            collidable.update(extrp);
+            sprite.setLocation(viewer, transformable);
+            if (!viewer.isViewable(transformable, 0, 0))
+            {
+                destroy();
+            }
+        }));
 
-    @Override
-    public void render(Graphic g)
-    {
-        sprite.render(g);
-        collidable.render(g);
-    }
-
-    @Override
-    public void notifyCollided(Collidable collidable)
-    {
-        // Nothing to do
+        addFeature(new DisplayableModel(g ->
+        {
+            sprite.render(g);
+            collidable.render(g);
+        }));
     }
 }

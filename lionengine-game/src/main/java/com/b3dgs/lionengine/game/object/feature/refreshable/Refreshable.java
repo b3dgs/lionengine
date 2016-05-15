@@ -15,34 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object;
+package com.b3dgs.lionengine.game.object.feature.refreshable;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.handler.Handlables;
+import com.b3dgs.lionengine.game.feature.Feature;
 
 /**
- * Updater component implementation which update {@link Updatable} elements with an extrapolation value.
+ * Updatable feature wrapper.
  */
-public class ComponentUpdater implements ComponentUpdatable
+public interface Refreshable extends Feature, Updatable
 {
-    /**
-     * Create component.
-     */
-    public ComponentUpdater()
-    {
-        super();
-    }
-
-    /*
-     * ComponentUpdatable
-     */
-
-    @Override
-    public void update(double extrp, Handlables handlables)
-    {
-        for (final Updatable updatable : handlables.get(Updatable.class))
-        {
-            updatable.update(extrp);
-        }
-    }
+    // Wrapper
 }

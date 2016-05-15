@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.object.feature.transformable;
 
 import com.b3dgs.lionengine.Shape;
-import com.b3dgs.lionengine.game.Mover;
 import com.b3dgs.lionengine.game.feature.Feature;
 
 /**

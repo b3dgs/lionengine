@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.object.feature.transformable;
 
 import com.b3dgs.lionengine.game.Configurer;
 import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.Mover;
-import com.b3dgs.lionengine.game.MoverModel;
 import com.b3dgs.lionengine.game.feature.FeatureModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;

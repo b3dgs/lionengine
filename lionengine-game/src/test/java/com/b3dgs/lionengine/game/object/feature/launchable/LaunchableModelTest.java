@@ -88,7 +88,7 @@ public class LaunchableModelTest
     {
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         final Launchable launchable = createLaunchable(services, object);
         services.add(new MapTileGame());
         final Transformable transformable = object.getFeature(Transformable.class);
@@ -137,7 +137,7 @@ public class LaunchableModelTest
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
         services.add(new MapTileGame());
-        final ObjectGame object = new ObjectGame(new Setup(media), services);
+        final ObjectGame object = new ObjectGame(new Setup(media));
         final Launchable launchable = createLaunchable(services, object);
         launchable.setVector(null);
         launchable.launch();

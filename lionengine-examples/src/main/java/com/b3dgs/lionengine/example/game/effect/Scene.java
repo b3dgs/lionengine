@@ -23,11 +23,11 @@ import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.handler.ComponentRefresher;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.object.ComponentRenderer;
-import com.b3dgs.lionengine.game.object.ComponentUpdater;
+import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -46,8 +46,6 @@ class Scene extends Sequence
     private final Camera camera = services.create(Camera.class);
     /** Handler effect. */
     private final Handler handler = services.create(Handler.class);
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Mouse reference. */
     private final Mouse mouse = getInputDevice(Mouse.class);
 
@@ -59,15 +57,15 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, new Resolution(320, 240, 60));
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
     public void load()
     {
         camera.setView(0, 0, getWidth(), getHeight());
-        handler.addUpdatable(new ComponentUpdater());
-        handler.addRenderable(new ComponentRenderer());
+        handler.addUpdatable(new ComponentRefresher());
+        handler.addRenderable(new ComponentRendererLayer());
     }
 
     @Override

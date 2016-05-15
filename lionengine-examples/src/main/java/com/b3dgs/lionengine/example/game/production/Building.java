@@ -19,11 +19,10 @@ package com.b3dgs.lionengine.example.game.production;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.object.ObjectGame;
@@ -38,41 +37,35 @@ import com.b3dgs.lionengine.graphic.Viewer;
 /**
  * Building implementation.
  */
-class Building extends ObjectGame implements Updatable, ProducibleListener
+class Building extends ObjectGame implements ProducibleListener
 {
     /** Farm media reference. */
     public static final Media FARM = Medias.create("Farm.xml");
     /** Barracks media reference. */
     public static final Media BARRACKS = Medias.create("Barracks.xml");
 
-    /** Transformable model. */
     private final Transformable transformable;
-    /** Layerable model. */
-    private final Layerable layerable = addFeatureAndGet(new LayerableModel());
-    /** Surface reference. */
     private final SpriteAnimated surface;
-    /** Viewer reference. */
-    private final Viewer viewer;
-    /** Visible flag. */
+
     private boolean visible;
+
+    @Service private Viewer viewer;
 
     /**
      * Create a building.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Building(SetupSurface setup, Services services)
+    public Building(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
-
-        viewer = services.get(Viewer.class);
 
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 2, 1);
         surface.setOrigin(Origin.TOP_LEFT);
 
+        final Layerable layerable = addFeatureAndGet(new LayerableModel());
         layerable.setLayer(Integer.valueOf(1));
 
         addFeature(new ProducibleModel(setup));
@@ -83,12 +76,6 @@ class Building extends ObjectGame implements Updatable, ProducibleListener
                 surface.render(g);
             }
         }));
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        // Nothing to do
     }
 
     @Override

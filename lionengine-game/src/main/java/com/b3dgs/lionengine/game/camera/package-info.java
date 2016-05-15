@@ -15,23 +15,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object;
-
-import com.b3dgs.lionengine.game.handler.Handlables;
-import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * Describe the main component requirement, which is aimed to provide renderable feature for an object.
- * 
- * @see com.b3dgs.lionengine.graphic.Renderable
+ * Camera system that allows to define a view area and tracking system.
  */
-public interface ComponentRenderable
-{
-    /**
-     * Render the current objects.
-     * 
-     * @param g The graphic output.
-     * @param objects The objects reference.
-     */
-    void render(Graphic g, Handlables objects);
-}
+package com.b3dgs.lionengine.game.camera;

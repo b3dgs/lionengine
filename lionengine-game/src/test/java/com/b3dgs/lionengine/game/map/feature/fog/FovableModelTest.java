@@ -74,7 +74,7 @@ public class FovableModelTest
         services.add(map);
 
         final Setup setup = new Setup(config);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
         transformable.teleport(1, 2);
         transformable.setSize(3, 4);

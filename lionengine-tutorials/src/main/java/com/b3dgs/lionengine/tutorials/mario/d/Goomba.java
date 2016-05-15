@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.object.SetupSurface;
@@ -41,11 +40,13 @@ class Goomba extends Entity implements InputDeviceDirectional, CollidableListene
     private double side;
 
     /**
-     * {@link Entity#Entity(SetupSurface, Services)}
+     * Constructor.
+     * 
+     * @param setup The setup reference.
      */
-    public Goomba(SetupSurface setup, Services services)
+    public Goomba(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
         side = 0.25;
     }
 

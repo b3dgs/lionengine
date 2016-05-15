@@ -87,7 +87,7 @@ public class LayerableModelTest
         final Services services = new Services();
         services.add(new ComponentRendererLayer());
         final Setup setup = new Setup(config);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         layerable.prepare(object, services);
 
         Assert.assertEquals(0, layerable.getLayer().intValue());

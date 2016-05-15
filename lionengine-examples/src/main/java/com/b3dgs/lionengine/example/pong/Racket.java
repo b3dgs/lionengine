@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
 import com.b3dgs.lionengine.game.collision.object.CollidableModel;
@@ -49,25 +49,25 @@ class Racket extends ObjectGame implements Updatable, Renderable, CollidableList
     private final Transformable transformable;
     /** Collidable model. */
     private final Collidable collidable;
-    /** Viewer reference. */
-    private final Viewer viewer;
     /** Move speed. */
     private final double speed;
     /** Ball reference. */
     private Transformable target;
 
+    @Service private Viewer viewer;
+
     /**
-     * {@link ObjectGame#ObjectGame(Setup, Services)}
+     * Create an object.
+     * 
+     * @param setup The setup reference.
      */
-    public Racket(Setup setup, Services services)
+    public Racket(Setup setup)
     {
-        super(setup, services);
+        super(setup);
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
         collidable = addFeatureAndGet(new CollidableModel(setup));
         collidable.setOrigin(Origin.MIDDLE);
-
-        viewer = services.get(Viewer.class);
 
         transformable.teleportY(240 / 2);
 

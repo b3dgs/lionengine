@@ -158,7 +158,7 @@ public class ProducerModelTest
     {
         final Media media = ProducibleModelTest.createProducibleMedia();
         final Setup setup = new Setup(media);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         object.addFeature(new TransformableModel());
 
         final Producible producible = new ProducibleModel(setup);
@@ -177,7 +177,7 @@ public class ProducerModelTest
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media), services);
+        final ProducerObject object = new ProducerObject(new Setup(media));
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
         producer.setStepsPerSecond(25.0);
@@ -250,7 +250,7 @@ public class ProducerModelTest
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObjectSelf object = new ProducerObjectSelf(new Setup(media), services);
+        final ProducerObjectSelf object = new ProducerObjectSelf(new Setup(media));
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
@@ -289,7 +289,7 @@ public class ProducerModelTest
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media), services);
+        final ProducerObject object = new ProducerObject(new Setup(media));
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
@@ -335,7 +335,7 @@ public class ProducerModelTest
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media), services);
+        final ProducerObject object = new ProducerObject(new Setup(media));
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
@@ -371,7 +371,7 @@ public class ProducerModelTest
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media), services);
+        final ProducerObject object = new ProducerObject(new Setup(media));
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
@@ -408,7 +408,7 @@ public class ProducerModelTest
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media), services);
+        final ProducerObject object = new ProducerObject(new Setup(media));
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
@@ -451,7 +451,7 @@ public class ProducerModelTest
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media), services);
+        final ProducerObject object = new ProducerObject(new Setup(media));
         object.check.set(false);
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
@@ -482,7 +482,7 @@ public class ProducerModelTest
         services.add(new Handler(services));
         services.add(Integer.valueOf(50));
         final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media), services);
+        final ProducerObject object = new ProducerObject(new Setup(media));
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
@@ -555,11 +555,10 @@ public class ProducerModelTest
          * Constructor.
          * 
          * @param setup The setup.
-         * @param services The services.
          */
-        public ProducerObject(Setup setup, Services services)
+        public ProducerObject(Setup setup)
         {
-            super(setup, services);
+            super(setup);
         }
 
         @Override
@@ -583,11 +582,10 @@ public class ProducerModelTest
          * Constructor.
          * 
          * @param setup The setup.
-         * @param services The services.
          */
-        public ProducerObjectSelf(Setup setup, Services services)
+        public ProducerObjectSelf(Setup setup)
         {
-            super(setup, services);
+            super(setup);
         }
 
         @Override

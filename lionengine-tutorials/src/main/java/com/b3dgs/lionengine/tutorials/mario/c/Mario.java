@@ -25,10 +25,10 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableModel;
@@ -64,39 +64,29 @@ class Mario extends ObjectGame implements Updatable, Renderable, TileCollidableL
     public final Force jump = new Force();
     /** Surface. */
     public final SpriteAnimated surface;
-    /** Mirrorable model. */
+
     private final Mirrorable mirrorable = addFeatureAndGet(new MirrorableModel());
-    /** Transformable model. */
     private final Transformable transformable;
-    /** Body model. */
     private final Body body;
-    /** Tile collidable. */
     private final TileCollidable tileCollidable;
-    /** State factory. */
     private final StateFactory factory = new StateFactory();
-    /** State handler. */
     private final StateHandler handler = new StateHandler(factory);
-    /** Camera reference. */
-    private final Camera camera;
-    /** Keyboard reference. */
-    private final Keyboard keyboard;
+
+    @Service private Camera camera;
+    @Service private Keyboard keyboard;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public Mario(SetupSurface setup, Services services)
+    public Mario(SetupSurface setup)
     {
-        super(setup, services);
+        super(setup);
 
         transformable = addFeatureAndGet(new TransformableModel(setup));
         body = addFeatureAndGet(new BodyModel());
         tileCollidable = addFeatureAndGet(new TileCollidableModel(setup));
-
-        camera = services.get(Camera.class);
-        keyboard = services.get(Keyboard.class);
 
         final FramesConfig frames = FramesConfig.imports(setup);
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), frames.getHorizontal(), frames.getVertical());

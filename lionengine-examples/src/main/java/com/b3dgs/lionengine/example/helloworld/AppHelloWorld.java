@@ -37,7 +37,7 @@ public class AppHelloWorld
      */
     public static void main(String[] args)
     {
-        EngineAwt.start("Hello World", Version.create(1, 0, 0), AppHelloWorld.class);
+        EngineAwt.start(AppHelloWorld.class.getSimpleName(), Version.create(1, 0, 0), AppHelloWorld.class);
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();

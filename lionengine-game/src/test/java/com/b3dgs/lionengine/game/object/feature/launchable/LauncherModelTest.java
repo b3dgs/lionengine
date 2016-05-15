@@ -159,7 +159,7 @@ public class LauncherModelTest
         final Media launcherMedia = createLauncherMedia(launchableMedia);
         final Services services = new Services();
         final Setup setup = new Setup(launcherMedia);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         final Launcher launcher = createLauncher(services, setup, object);
 
         Assert.assertEquals(1.0, launcher.getOffsetX(), UtilTests.PRECISION);
@@ -180,7 +180,7 @@ public class LauncherModelTest
         final Media launcherMedia = createLauncherMedia(launchableMedia);
         final Services services = new Services();
         final Setup setup = new Setup(launcherMedia);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         final Launcher launcher = createLauncher(services, setup, object);
 
         final AtomicReference<ObjectGame> fired = new AtomicReference<ObjectGame>();
@@ -236,7 +236,7 @@ public class LauncherModelTest
         final Media launcherMedia = createLauncherMedia(launchableMedia);
         final Services services = new Services();
         final Setup setup = new Setup(launcherMedia);
-        final LaunchableObjectSelf object = new LaunchableObjectSelf(setup, services);
+        final LaunchableObjectSelf object = new LaunchableObjectSelf(setup);
         final Launcher launcher = createLauncher(services, setup, object);
         launcher.addListener(object);
 
@@ -269,7 +269,7 @@ public class LauncherModelTest
         final Media launcherMedia = createLauncherMedia(launchableMedia);
         final Services services = new Services();
         final Setup setup = new Setup(launcherMedia);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         final Launcher launcher = createLauncher(services, setup, object);
 
         try
@@ -300,11 +300,10 @@ public class LauncherModelTest
          * Constructor.
          * 
          * @param setup The setup.
-         * @param services The services.
          */
-        public LaunchableObject(Setup setup, Services services)
+        public LaunchableObject(Setup setup)
         {
-            super(setup, services);
+            super(setup);
             addFeatureAndGet(new TransformableModel());
             addFeatureAndGet(new LaunchableModel());
         }
@@ -322,11 +321,10 @@ public class LauncherModelTest
          * Constructor.
          * 
          * @param setup The setup.
-         * @param services The services.
          */
-        public LaunchableObjectSelf(Setup setup, Services services)
+        public LaunchableObjectSelf(Setup setup)
         {
-            super(setup, services);
+            super(setup);
         }
 
         @Override

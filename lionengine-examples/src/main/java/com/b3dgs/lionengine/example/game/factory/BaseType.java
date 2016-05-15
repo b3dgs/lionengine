@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.factory;
 
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.Service;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 
@@ -26,19 +26,16 @@ import com.b3dgs.lionengine.game.object.Setup;
  */
 class BaseType extends ObjectGame
 {
-    /** Object argument. */
-    private final Object param;
+    @Service private Object param;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param services The services reference.
      */
-    public BaseType(Setup setup, Services services)
+    public BaseType(Setup setup)
     {
-        super(setup, services);
-        param = services.get(Object.class);
+        super(setup);
     }
 
     /**

@@ -15,35 +15,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object;
+package com.b3dgs.lionengine.game.handler;
 
-import com.b3dgs.lionengine.game.handler.Handlables;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
+import com.b3dgs.lionengine.Updatable;
 
 /**
- * Renderer component implementation which render {@link Renderable} elements.
+ * Updater component implementation which update {@link Updatable} elements with an extrapolation value.
  */
-public class ComponentRenderer implements ComponentRenderable
+public class ComponentUpdater implements ComponentUpdatable
 {
     /**
      * Create component.
      */
-    public ComponentRenderer()
+    public ComponentUpdater()
     {
         super();
     }
 
     /*
-     * ComponentRenderable
+     * ComponentUpdatable
      */
 
     @Override
-    public void render(Graphic g, Handlables handlables)
+    public void update(double extrp, Handlables handlables)
     {
-        for (final Renderable renderable : handlables.get(Renderable.class))
+        for (final Updatable updatable : handlables.get(Updatable.class))
         {
-            renderable.render(g);
+            updatable.update(extrp);
         }
     }
 }

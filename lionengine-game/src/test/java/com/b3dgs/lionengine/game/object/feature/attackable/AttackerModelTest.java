@@ -185,7 +185,7 @@ public class AttackerModelTest
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
         final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), services, canAttack);
+        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
         prepareObject(object);
         final Attacker attacker = createAttacker(object, services);
         final Transformable target = new TransformableModel();
@@ -206,7 +206,7 @@ public class AttackerModelTest
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
         final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), services, canAttack);
+        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
         prepareObject(object);
         final Attacker attacker = createAttacker(object, services);
         final Transformable target = new TransformableModel();
@@ -232,7 +232,7 @@ public class AttackerModelTest
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
         final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), services, canAttack);
+        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
         prepareObject(object);
         final Attacker attacker = createAttacker(object, services);
         canAttack.set(true);
@@ -271,7 +271,7 @@ public class AttackerModelTest
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
         final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), services, canAttack);
+        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
         prepareObject(object);
         final Attacker attacker = createAttacker(object, services);
         canAttack.set(true);
@@ -313,7 +313,7 @@ public class AttackerModelTest
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
         final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), services, canAttack);
+        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
         prepareObject(object);
         final Attacker attacker = createAttacker(object, services);
         canAttack.set(true);
@@ -347,7 +347,7 @@ public class AttackerModelTest
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
         final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttackerSelf object = new ObjectAttackerSelf(new Setup(media), services);
+        final ObjectAttackerSelf object = new ObjectAttackerSelf(new Setup(media));
         prepareObject(object);
         final Attacker attacker = createAttacker(object, services);
         canAttack.set(true);
@@ -374,7 +374,7 @@ public class AttackerModelTest
         final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
         final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), services, canAttack);
+        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
         prepareObject(object);
         final Attacker attacker = createAttacker(object, services);
         canAttack.set(true);
@@ -463,12 +463,11 @@ public class AttackerModelTest
          * Constructor.
          * 
          * @param setup The setup.
-         * @param services The services.
          * @param canAttack Attack flag.
          */
-        public ObjectAttacker(Setup setup, Services services, AtomicBoolean canAttack)
+        public ObjectAttacker(Setup setup, AtomicBoolean canAttack)
         {
-            super(setup, services);
+            super(setup);
             this.canAttack = canAttack;
         }
 
@@ -490,12 +489,11 @@ public class AttackerModelTest
         /**
          * Constructor.
          * 
-         * @param setup The setup.
-         * @param services The services.
+         * @param setup The setup.s
          */
-        public ObjectAttackerSelf(Setup setup, Services services)
+        public ObjectAttackerSelf(Setup setup)
         {
-            super(setup, services);
+            super(setup);
         }
 
         @Override

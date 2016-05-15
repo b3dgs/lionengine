@@ -113,7 +113,7 @@ public class ProducibleModelTest
         final Services services = new Services();
         final Media media = createProducibleMedia();
         final Setup setup = new Setup(media);
-        final ObjectGame object = new ObjectGame(setup, services);
+        final ObjectGame object = new ObjectGame(setup);
         final Producible producible = new ProducibleModel(setup);
         final ProducibleListener listener = createListener();
         producible.setLocation(1.0, 2.0);
@@ -141,7 +141,7 @@ public class ProducibleModelTest
         final Services services = new Services();
         final Media media = createProducibleMedia();
         final Setup setup = new Setup(media);
-        final ProducibleListenerSelf object = new ProducibleListenerSelf(setup, services);
+        final ProducibleListenerSelf object = new ProducibleListenerSelf(setup);
         final Producible producible = new ProducibleModel(setup);
         producible.prepare(object, services);
 
@@ -160,11 +160,10 @@ public class ProducibleModelTest
          * Constructor.
          * 
          * @param setup The setup.
-         * @param services The services.
          */
-        public ProducibleListenerSelf(Setup setup, Services services)
+        public ProducibleListenerSelf(Setup setup)
         {
-            super(setup, services);
+            super(setup);
         }
 
         @Override
