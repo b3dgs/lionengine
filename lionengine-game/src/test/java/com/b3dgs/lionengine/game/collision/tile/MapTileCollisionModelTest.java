@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.collision.tile;
 
 import java.util.Arrays;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -118,6 +119,16 @@ public class MapTileCollisionModelTest
         mapCollision.loadCollisions(formulasConfig, groupsConfig);
 
         transformable = createObject();
+    }
+
+    /**
+     * Clean test.
+     */
+    @After
+    public void clean()
+    {
+        Assert.assertTrue(formulasConfig.getFile().delete());
+        Assert.assertTrue(groupsConfig.getFile().delete());
     }
 
     /**
