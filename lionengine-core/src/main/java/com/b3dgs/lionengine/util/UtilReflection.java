@@ -218,6 +218,25 @@ public final class UtilReflection
     }
 
     /**
+     * Set the object accessibility with an access controller.
+     * 
+     * @param object The accessible object.
+     * @param accessible <code>true</code> if accessible, <code>false</code> else.
+     */
+    public static void setAccessible(final AccessibleObject object, final boolean accessible)
+    {
+        java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<Void>()
+        {
+            @Override
+            public Void run()
+            {
+                object.setAccessible(accessible);
+                return null;
+            }
+        });
+    }
+
+    /**
      * Get all declared interfaces from object.
      * 
      * @param object The object reference.
@@ -233,21 +252,33 @@ public final class UtilReflection
         {
             nexts.clear();
             interfaces.addAll(currents);
-            for (final Class<?> current : currents)
-            {
-                for (final Class<?> type : current.getInterfaces())
-                {
-                    if (base.isAssignableFrom(type) && !type.equals(base))
-                    {
-                        nexts.add(type);
-                    }
-                }
-            }
+            checkInterfaces(base, currents, nexts);
             currents.clear();
             currents.addAll(nexts);
             nexts.clear();
         }
         return interfaces;
+    }
+
+    /**
+     * Store all declared valid interfaces into next.
+     * 
+     * @param base The minimum base interface.
+     * @param currents The current interfaces found.
+     * @param nexts The next interface to check.
+     */
+    private static void checkInterfaces(Class<?> base, Deque<Class<?>> currents, Deque<Class<?>> nexts)
+    {
+        for (final Class<?> current : currents)
+        {
+            for (final Class<?> type : current.getInterfaces())
+            {
+                if (base.isAssignableFrom(type) && !type.equals(base))
+                {
+                    nexts.add(type);
+                }
+            }
+        }
     }
 
     /**
@@ -268,25 +299,6 @@ public final class UtilReflection
             }
         }
         return interfaces;
-    }
-
-    /**
-     * Set the object accessibility with an access controller.
-     * 
-     * @param object The accessible object.
-     * @param accessible <code>true</code> if accessible, <code>false</code> else.
-     */
-    public static void setAccessible(final AccessibleObject object, final boolean accessible)
-    {
-        java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<Void>()
-        {
-            @Override
-            public Void run()
-            {
-                object.setAccessible(accessible);
-                return null;
-            }
-        });
     }
 
     /**

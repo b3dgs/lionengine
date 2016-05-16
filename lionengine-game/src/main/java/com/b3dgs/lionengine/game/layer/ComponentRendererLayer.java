@@ -24,12 +24,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
 import com.b3dgs.lionengine.game.handler.ComponentRenderable;
+import com.b3dgs.lionengine.game.handler.Displayable;
+import com.b3dgs.lionengine.game.handler.Featurable;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Handlables;
 import com.b3dgs.lionengine.game.handler.HandlerListener;
-import com.b3dgs.lionengine.game.object.feature.displayable.Displayable;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**

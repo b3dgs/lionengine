@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.game.camera;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
-import com.b3dgs.lionengine.game.Service;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.handler.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.object.feature.refreshable.Refreshable;
+import com.b3dgs.lionengine.game.handler.Refreshable;
+import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.Viewer;
 

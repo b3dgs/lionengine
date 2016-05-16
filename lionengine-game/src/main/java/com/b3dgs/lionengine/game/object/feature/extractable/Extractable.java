@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object.feature.extractable;
 
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Feature;
 import com.b3dgs.lionengine.game.tile.Tiled;
 
 /**

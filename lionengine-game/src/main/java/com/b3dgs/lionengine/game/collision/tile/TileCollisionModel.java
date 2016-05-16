@@ -22,7 +22,7 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.handler.FeatureModel;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.util.UtilMath;
 

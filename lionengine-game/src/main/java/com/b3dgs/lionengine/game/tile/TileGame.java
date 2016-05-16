@@ -19,19 +19,13 @@ package com.b3dgs.lionengine.game.tile;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.FeaturableModel;
-import com.b3dgs.lionengine.game.feature.Feature;
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.FeaturableModel;
 
 /**
  * Tile base implementation.
  */
-public class TileGame implements Tile
+public class TileGame extends FeaturableModel implements Tile
 {
-    /** Features list. */
-    private final Featurable featurable = new FeaturableModel();
     /** Tile sheet number where tile is contained. */
     private final Integer sheet;
     /** Position number in the tilesheet. */
@@ -62,6 +56,7 @@ public class TileGame implements Tile
      */
     public TileGame(Integer sheet, int number, double x, double y, int width, int height)
     {
+        super();
         Check.notNull(sheet);
         Check.superiorOrEqual(sheet.intValue(), 0);
         Check.superiorOrEqual(number, 0);
@@ -82,42 +77,6 @@ public class TileGame implements Tile
     /*
      * Tile
      */
-
-    @Override
-    public void prepareFeatures(Handlable owner, Services services)
-    {
-        featurable.prepareFeatures(owner, services);
-    }
-
-    @Override
-    public void addFeature(Feature feature)
-    {
-        featurable.addFeature(feature);
-    }
-
-    @Override
-    public <C extends Feature> C getFeature(Class<C> feature)
-    {
-        return featurable.getFeature(feature);
-    }
-
-    @Override
-    public Iterable<Feature> getFeatures()
-    {
-        return featurable.getFeatures();
-    }
-
-    @Override
-    public Iterable<Class<? extends Feature>> getFeaturesType()
-    {
-        return featurable.getFeaturesType();
-    }
-
-    @Override
-    public boolean hasFeature(Class<? extends Feature> feature)
-    {
-        return featurable.hasFeature(feature);
-    }
 
     @Override
     public Integer getSheet()

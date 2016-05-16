@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.object.feature.mirrorable;
 
 import com.b3dgs.lionengine.Mirror;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.handler.FeatureModel;
 
 /**
  * Default mirrorable implementation.

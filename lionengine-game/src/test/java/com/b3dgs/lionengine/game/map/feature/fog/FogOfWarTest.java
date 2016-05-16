@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.UtilMap;
 import com.b3dgs.lionengine.game.object.ObjectGame;

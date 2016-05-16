@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.collision.object;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Feature;
 import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.graphic.Renderable;
 

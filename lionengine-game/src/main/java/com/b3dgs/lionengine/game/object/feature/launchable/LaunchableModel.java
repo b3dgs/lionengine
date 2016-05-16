@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.game.object.feature.launchable;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.handler.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 
@@ -43,7 +43,7 @@ public class LaunchableModel extends FeatureModel implements Launchable
      * Create the launchable model.
      * 
      * <p>
-     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.feature.Feature}:
+     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.handler.Feature}:
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>

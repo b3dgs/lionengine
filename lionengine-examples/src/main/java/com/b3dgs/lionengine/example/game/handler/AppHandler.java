@@ -22,10 +22,10 @@ import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.handler.ComponentRenderer;
 import com.b3dgs.lionengine.game.handler.ComponentUpdater;
 import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.graphic.Graphic;
 

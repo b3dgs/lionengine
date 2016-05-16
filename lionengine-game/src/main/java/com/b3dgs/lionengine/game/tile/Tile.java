@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.tile;
 
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Surface;
-import com.b3dgs.lionengine.game.feature.Featurable;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Featurable;
+import com.b3dgs.lionengine.game.handler.Feature;
 
 /**
  * Tile representation with the following data:

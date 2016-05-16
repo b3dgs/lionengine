@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.object.feature.body;
 
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Feature;
 
 /**
  * Represents something designed to receive a gravitational force.

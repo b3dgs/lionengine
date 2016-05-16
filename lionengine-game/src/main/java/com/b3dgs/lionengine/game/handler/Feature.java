@@ -15,10 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature;
-
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.handler.Handlable;
+package com.b3dgs.lionengine.game.handler;
 
 /**
  * Represents something that can be delegated to perform specialized computing and reduce owner visible complexity.

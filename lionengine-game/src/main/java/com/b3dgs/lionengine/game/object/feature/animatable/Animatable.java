@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.object.feature.animatable;
 
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Feature;
 
 /**
  * Animator feature wrapper.

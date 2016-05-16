@@ -23,14 +23,14 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.handler.DisplayableModel;
+import com.b3dgs.lionengine.game.handler.RefreshableModel;
+import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.actionable.ActionConfig;
 import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
 import com.b3dgs.lionengine.game.object.feature.actionable.ActionableModel;
-import com.b3dgs.lionengine.game.object.feature.displayable.DisplayableModel;
-import com.b3dgs.lionengine.game.object.feature.refreshable.RefreshableModel;
 import com.b3dgs.lionengine.graphic.Text;
 
 /**

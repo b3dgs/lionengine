@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object;
+package com.b3dgs.lionengine.game.handler;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -23,17 +23,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.handler.ComponentRefresher;
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.ComponentRenderer;
 import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.HandlerTest;
-import com.b3dgs.lionengine.game.object.feature.refreshable.Refreshable;
+import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Test the component refresher.
+ * Test the component renderer.
  */
-public class ComponentRefresherTest
+public class ComponentRendererTest
 {
     /**
      * Prepare test.
@@ -54,69 +55,60 @@ public class ComponentRefresherTest
     }
 
     /**
-     * Test the refresher.
+     * Test the updater.
      */
     @Test
-    public void testRefresher()
+    public void testUpdater()
     {
-        final ComponentRefresher refresher = new ComponentRefresher();
+        final ComponentRenderer renderer = new ComponentRenderer();
         final Handler handler = new Handler(new Services());
-        handler.addUpdatable(refresher);
+        handler.addRenderable(renderer);
 
-        final Refresher object = new Refresher(new Setup(Medias.create("object.xml")));
+        final Renderer object = new Renderer(new Setup(Medias.create("object.xml")));
         handler.add(object);
-        Assert.assertFalse(object.isRefreshed());
+        Assert.assertFalse(object.isRendered());
         handler.update(1.0);
-        Assert.assertTrue(object.isRefreshed());
+        Assert.assertFalse(object.isRendered());
+        handler.render(null);
+
+        Assert.assertTrue(object.isRendered());
 
         handler.removeAll();
         handler.update(1.0);
     }
 
     /**
-     * Refreshable object mock.
+     * Renderable object mock.
      */
-    private static class Refresher extends ObjectGame implements Refreshable
+    private static class Renderer extends ObjectGame implements Renderable
     {
-        /** Refreshed flag. */
-        private boolean refreshed;
+        /** Rendered flag. */
+        private boolean rendered;
 
         /**
          * Constructor.
          * 
          * @param setup The setup reference.
          */
-        public Refresher(Setup setup)
+        public Renderer(Setup setup)
         {
             super(setup);
         }
 
         /**
-         * Check if has been refreshed.
+         * Check if has been rendered.
          * 
-         * @return <code>true</code> if refreshed, <code>false</code> else.
+         * @return <code>true</code> if rendered, <code>false</code> else.
          */
-        public boolean isRefreshed()
+        public boolean isRendered()
         {
-            return refreshed;
+            return rendered;
         }
 
         @Override
-        public void prepare(Handlable owner, Services services)
+        public void render(Graphic g)
         {
-            // Mock
-        }
-
-        @Override
-        public void update(double extrp)
-        {
-            refreshed = true;
-        }
-
-        @Override
-        public <O extends Handlable> O getOwner()
-        {
-            return null;
+            rendered = true;
         }
     }
 }

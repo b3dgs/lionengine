@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
@@ -38,9 +37,9 @@ import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 
 /**
- * Test the handled objects.
+ * Test the handled handlables.
  */
-public class HandledObjectsImplTest
+public class HandledHandlablesImplTest
 {
     /** Test configuration. */
     private static Media config;
@@ -65,7 +64,7 @@ public class HandledObjectsImplTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
-    /** Handled objects test. */
+    /** Handled handlables test. */
     private final HandledHandlablesImpl handled = new HandledHandlablesImpl();
     /** Object test. */
     private final ObjectGame object = new ObjectGame(new Setup(config));

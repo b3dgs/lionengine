@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 

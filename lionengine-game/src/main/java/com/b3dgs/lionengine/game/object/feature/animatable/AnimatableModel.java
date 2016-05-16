@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.object.feature.animatable;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import com.b3dgs.lionengine.game.handler.FeatureModel;
 
 /**
  * Animatable model implementation.

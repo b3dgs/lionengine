@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.factory;
 
-import com.b3dgs.lionengine.game.Service;
+import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 

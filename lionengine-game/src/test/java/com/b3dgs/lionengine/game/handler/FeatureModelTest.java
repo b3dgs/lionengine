@@ -15,37 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object.feature.refreshable;
+package com.b3dgs.lionengine.game.handler;
 
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.feature.FeatureModel;
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.b3dgs.lionengine.game.handler.Feature;
+import com.b3dgs.lionengine.game.handler.FeatureModel;
+import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.HandlableModel;
+import com.b3dgs.lionengine.game.handler.Services;
 
 /**
- * Updatable feature wrapper.
+ * Test the feature model class.
  */
-public class RefreshableModel extends FeatureModel implements Refreshable
+public class FeatureModelTest
 {
-    /** Updatable reference. */
-    private final Updatable updatable;
-
     /**
-     * Create feature.
-     * 
-     * @param updatable The updatable reference.
+     * Test the feature model.
      */
-    public RefreshableModel(Updatable updatable)
+    @Test
+    public void testModel()
     {
-        super();
-        this.updatable = updatable;
-    }
+        final Feature feature = new FeatureModel()
+        {
+            // Mock
+        };
 
-    /*
-     * Displayable
-     */
+        Assert.assertNull(feature.getOwner());
 
-    @Override
-    public void update(double extrp)
-    {
-        updatable.update(extrp);
+        final Handlable handlable = new HandlableModel();
+        feature.prepare(handlable, new Services());
+
+        Assert.assertEquals(handlable, feature.getOwner());
     }
 }

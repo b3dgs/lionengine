@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
-import com.b3dgs.lionengine.game.object.feature.refreshable.Refreshable;
-
 /**
  * Refresher component implementation which update {@link Refreshable} elements.
  */

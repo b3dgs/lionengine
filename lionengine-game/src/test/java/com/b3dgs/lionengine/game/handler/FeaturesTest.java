@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature;
+package com.b3dgs.lionengine.game.handler;
 
 import java.io.Serializable;
 
@@ -23,8 +23,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.object.feature.displayable.Displayable;
-import com.b3dgs.lionengine.game.object.feature.refreshable.Refreshable;
+import com.b3dgs.lionengine.game.handler.Feature;
+import com.b3dgs.lionengine.game.handler.FeatureModel;
+import com.b3dgs.lionengine.game.handler.Features;
 
 /**
  * Test the features class.

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.collision.tile;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Feature;
 
 /**
  * Tile representation with the following data:

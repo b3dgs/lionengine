@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.map.feature.viewer;
 
+import com.b3dgs.lionengine.game.handler.Displayable;
 import com.b3dgs.lionengine.game.map.feature.renderer.MapTileRenderer;
-import com.b3dgs.lionengine.game.object.feature.displayable.Displayable;
 
 /**
  * Describe how the map viewing is performed. This will allow to customize map rendering.

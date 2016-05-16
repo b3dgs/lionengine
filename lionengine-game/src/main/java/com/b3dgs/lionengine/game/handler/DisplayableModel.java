@@ -15,41 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature;
+package com.b3dgs.lionengine.game.handler;
 
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.graphic.Graphic;
+import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Feature model base implementation.
+ * Renderable feature wrapper.
  */
-public abstract class FeatureModel implements Feature
+public class DisplayableModel extends FeatureModel implements Displayable
 {
-    /** The owner reference. */
-    private Handlable owner;
+    /** Renderable reference. */
+    private final Renderable renderable;
 
     /**
-     * Create a trait model.
+     * Create feature.
+     * 
+     * @param renderable The renderable reference.
      */
-    public FeatureModel()
+    public DisplayableModel(Renderable renderable)
     {
         super();
+        this.renderable = renderable;
     }
 
     /*
-     * Feature
+     * Displayable
      */
 
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void render(Graphic g)
     {
-        this.owner = owner;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <O extends Handlable> O getOwner()
-    {
-        return (O) owner;
+        renderable.render(g);
     }
 }

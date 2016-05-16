@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.feature;
+package com.b3dgs.lionengine.game.handler;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -24,9 +24,6 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Service;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
@@ -124,9 +121,10 @@ public class FeaturableModel implements Featurable
     {
         if (field.get(object) == null)
         {
-            if (Feature.class.isAssignableFrom(type) && hasFeature(type.asSubclass(Feature.class)))
+            final Class<? extends Feature> clazz;
+            if (Feature.class.isAssignableFrom(type) && hasFeature(clazz = type.asSubclass(Feature.class)))
             {
-                field.set(object, getFeature(type.asSubclass(Feature.class)));
+                field.set(object, getFeature(clazz));
             }
             else
             {

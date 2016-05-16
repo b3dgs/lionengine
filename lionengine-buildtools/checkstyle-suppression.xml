@@ -30,12 +30,11 @@
     <suppress checks="MagicNumber" files="com.b3dgs.lionengine.game.background.Parallax"/>
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.game.map.feature.circuit.CircuitsExtractorImpl"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.map.feature.circuit.MapTileCircuitModel" lines="249"/>
-    <suppress checks="StaticImport" files="com.b3dgs.lionengine.game.map.transition.TransitionType"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.collision.tile.TileCollisionModel" lines="93, 148"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="213"/>
     <suppress checks="NestedIfDepth" files="com.b3dgs.lionengine.game.pathfinding.MapTilePathModel" lines="226, 231"/>
     <suppress checks="ReturnCount" files="com.b3dgs.lionengine.game.pathfinding.PathFinderImpl" lines="318"/>
-    <suppress checks="CyclomaticComplexity" files="com.b3dgs.lionengine.game.object.trait.launchable.LaunchableConfig" lines="178"/>
+    <suppress checks="InnerAssignment" files="com.b3dgs.lionengine.game.handler.FeaturableModel" lines="125"/>    
     
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.network.ServerImpl"/>
     <suppress checks="MultipleStringLiterals" files="com.b3dgs.lionengine.network.ClientImpl" lines="102, 110, 118"/>

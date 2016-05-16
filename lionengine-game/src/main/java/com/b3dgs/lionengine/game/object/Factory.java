@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map.feature.fog;
 
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Feature;
 import com.b3dgs.lionengine.game.tile.Tiled;
 
 /**

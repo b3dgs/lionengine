@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
-
 /**
  * Represents something which can be handled by a {@link com.b3dgs.lionengine.game.handler.Handler}.
  */

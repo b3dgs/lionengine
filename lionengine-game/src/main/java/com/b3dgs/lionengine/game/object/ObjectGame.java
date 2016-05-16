@@ -20,11 +20,11 @@ package com.b3dgs.lionengine.game.object;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Configurer;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Feature;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.HandlableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.handler.Services;
 
 /**
  * Object minimal representation. Defined by a unique ID, the object is designed to be handled by a {@link Handler} . To

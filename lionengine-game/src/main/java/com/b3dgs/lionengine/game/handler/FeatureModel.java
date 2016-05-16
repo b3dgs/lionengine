@@ -15,15 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.object.feature.refreshable;
-
-import com.b3dgs.lionengine.Updatable;
-import com.b3dgs.lionengine.game.feature.Feature;
+package com.b3dgs.lionengine.game.handler;
 
 /**
- * Updatable feature wrapper.
+ * Feature model base implementation.
  */
-public interface Refreshable extends Feature, Updatable
+public abstract class FeatureModel implements Feature
 {
-    // Wrapper
+    /** The owner reference. */
+    private Handlable owner;
+
+    /**
+     * Create a trait model.
+     */
+    public FeatureModel()
+    {
+        super();
+    }
+
+    /*
+     * Feature
+     */
+
+    @Override
+    public void prepare(Handlable owner, Services services)
+    {
+        this.owner = owner;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <O extends Handlable> O getOwner()
+    {
+        return (O) owner;
+    }
 }

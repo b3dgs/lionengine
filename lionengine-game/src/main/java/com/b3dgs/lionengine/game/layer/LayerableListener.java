@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.layer;
 
-import com.b3dgs.lionengine.game.feature.Featurable;
+import com.b3dgs.lionengine.game.handler.Featurable;
 
 /**
  * Notify when layer value changed.

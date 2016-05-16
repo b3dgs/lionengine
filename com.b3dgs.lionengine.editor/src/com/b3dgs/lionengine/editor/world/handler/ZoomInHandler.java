@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.editor.world.WorldModel;
 import com.b3dgs.lionengine.editor.world.updater.WorldZoomUpdater;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.editor.world.view.ZoomItem;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.handler.Services;
 
 /**
  * Zoom in handler.

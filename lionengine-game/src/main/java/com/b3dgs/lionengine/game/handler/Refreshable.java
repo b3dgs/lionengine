@@ -15,10 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+package com.b3dgs.lionengine.game.handler;
+
+import com.b3dgs.lionengine.Updatable;
 
 /**
- * Feature system allows to provide additional implementation dynamically to an object without changing its interface.
- * It is important to specify which features are required in the javadoc when using this system, because of the low
- * typing. A missing dependency will only be known at runtime.
+ * Updatable feature wrapper.
  */
-package com.b3dgs.lionengine.game.feature;
+public interface Refreshable extends Feature, Updatable
+{
+    // Wrapper
+}

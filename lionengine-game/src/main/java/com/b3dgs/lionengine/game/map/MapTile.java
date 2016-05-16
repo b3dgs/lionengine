@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.feature.Feature;
+import com.b3dgs.lionengine.game.handler.Feature;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.tile.Tile;
 import com.b3dgs.lionengine.game.tile.TilesExtractor;
@@ -107,7 +107,7 @@ public interface MapTile extends Surface, Handlable
 
     /**
      * Create a feature from its type, and automatically {@link #addFeature} it.
-     * The feature instance must provide a public constructor with {@link com.b3dgs.lionengine.game.Services} as
+     * The feature instance must provide a public constructor with {@link com.b3dgs.lionengine.game.handler.Services} as
      * single argument, or the public default constructor. Else, create manually the instance and use
      * {@link #addFeature} on it.
      * 
