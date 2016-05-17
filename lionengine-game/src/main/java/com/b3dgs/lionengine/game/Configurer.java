@@ -17,11 +17,17 @@
  */
 package com.b3dgs.lionengine.game;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.Collections;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
+import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
  * Allows to retrieve informations from an external XML configuration file.
@@ -35,6 +41,14 @@ public class Configurer
     public static final String HEADER = "xmlns:lionengine";
     /** Prefix XML node. */
     public static final String PREFIX = "lionengine:";
+    /** Class instance error. */
+    private static final String ERROR_CLASS_INSTANCE = "Class instantiation error: ";
+    /** Class constructor error. */
+    private static final String ERROR_CLASS_CONSTRUCTOR = "Class constructor error: ";
+    /** Class accessibility error. */
+    private static final String ERROR_CLASS_ACCESSIBILITY = "Class not accessible: ";
+    /** Class not found error. */
+    private static final String ERROR_CLASS_PRESENCE = "Class not found: ";
 
     /** Media reference. */
     private final Media media;
@@ -174,6 +188,72 @@ public class Configurer
         catch (final NumberFormatException exception)
         {
             throw new LionEngineException(exception, media);
+        }
+    }
+
+    /**
+     * Get the class implementation from its name. Default constructor must be available.
+     * 
+     * @param <T> The instance type.
+     * @param loader The class loader to use.
+     * @param type The class type.
+     * @param path The attribute path.
+     * @return The typed class instance.
+     * @throws LionEngineException If invalid class.
+     */
+    public <T> T getImplementation(ClassLoader loader, Class<T> type, String... path)
+    {
+        return getImplementation(loader, type, new Class<?>[0], Collections.emptyList(), path);
+    }
+
+    /**
+     * Get the class implementation from its name by using a custom constructor.
+     * 
+     * @param <T> The instance type.
+     * @param loader The class loader to use.
+     * @param type The class type.
+     * @param paramsType The parameters type.
+     * @param paramsValue The parameters value.
+     * @param path The attribute path.
+     * @return The typed class instance.
+     * @throws LionEngineException If invalid class.
+     */
+    public <T> T getImplementation(ClassLoader loader,
+                                   Class<T> type,
+                                   Class<?>[] paramsType,
+                                   Collection<?> paramsValue,
+                                   String... path)
+    {
+        final String className = getText(path);
+        try
+        {
+            final Class<?> clazz = loader.loadClass(className);
+            final Constructor<?> constructor = UtilReflection.getCompatibleConstructor(clazz, paramsType);
+            return type.cast(constructor.newInstance(paramsValue.toArray()));
+        }
+        catch (final InstantiationException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE, className);
+        }
+        catch (final IllegalArgumentException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE, className);
+        }
+        catch (final InvocationTargetException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS_INSTANCE, className);
+        }
+        catch (final NoSuchMethodException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS_CONSTRUCTOR, className);
+        }
+        catch (final IllegalAccessException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS_ACCESSIBILITY, className);
+        }
+        catch (final ClassNotFoundException exception)
+        {
+            throw new LionEngineException(exception, ERROR_CLASS_PRESENCE, className);
         }
     }
 
