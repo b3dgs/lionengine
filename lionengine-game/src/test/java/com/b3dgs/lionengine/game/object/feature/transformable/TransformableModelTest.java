@@ -205,4 +205,25 @@ public class TransformableModelTest
         Assert.assertEquals(-2.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(-3.0, transformable.getY(), UtilTests.PRECISION);
     }
+
+    /**
+     * Test the transformable moving on single axis at a time.
+     */
+    @Test
+    public void testMoveLocationSingleAxis()
+    {
+        transformable.moveLocationX(1.0, 1.0);
+
+        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, transformable.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
+
+        transformable.moveLocationY(1.0, 1.0);
+
+        Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
+        Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, transformable.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(1.0, transformable.getY(), UtilTests.PRECISION);
+    }
 }

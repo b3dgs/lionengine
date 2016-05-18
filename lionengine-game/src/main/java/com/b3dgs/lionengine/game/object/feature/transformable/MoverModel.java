@@ -60,6 +60,18 @@ public class MoverModel implements Mover
     }
 
     @Override
+    public void moveLocationX(double extrp, double vx)
+    {
+        setLocationX(x + vx * extrp);
+    }
+
+    @Override
+    public void moveLocationY(double extrp, double vy)
+    {
+        setLocationY(y + vy * extrp);
+    }
+
+    @Override
     public void moveLocation(double extrp, double vx, double vy)
     {
         setLocation(x + vx * extrp, y + vy * extrp);

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.test.UtilTests;
@@ -35,5 +36,15 @@ public class OrientationTest
     public void testEnum() throws Exception
     {
         UtilTests.testEnum(Orientation.class);
+    }
+
+    /**
+     * Test the next.
+     */
+    @Test
+    public void testNext()
+    {
+        Assert.assertEquals(Orientation.NORTH_EAST, Orientation.next(Orientation.NORTH, 1));
+        Assert.assertEquals(Orientation.NORTH, Orientation.next(Orientation.NORTH, 8));
     }
 }

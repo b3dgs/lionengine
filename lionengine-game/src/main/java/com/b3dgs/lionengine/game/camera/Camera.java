@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
-import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.HandlableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Mover;
@@ -284,7 +283,7 @@ public class Camera extends HandlableModel implements Viewer
         // Outside interval
         if ((int) offset.getX() == -intervalHorizontal || (int) offset.getX() == intervalHorizontal)
         {
-            mover.moveLocation(extrp, vx, 0);
+            mover.moveLocationX(extrp, vx);
         }
         applyHorizontalLimit();
     }
@@ -318,7 +317,7 @@ public class Camera extends HandlableModel implements Viewer
         // Outside interval
         if ((int) offset.getY() == -intervalVertical || (int) offset.getY() == intervalVertical)
         {
-            mover.moveLocation(extrp, 0, vy);
+            mover.moveLocationY(extrp, vy);
         }
         applyVerticalLimit();
     }
@@ -328,7 +327,6 @@ public class Camera extends HandlableModel implements Viewer
      */
     private void applyHorizontalLimit()
     {
-        // Apply limit
         if (mover.getX() < limitLeft && limitLeft != Integer.MIN_VALUE)
         {
             mover.teleportX(limitLeft);
@@ -336,10 +334,6 @@ public class Camera extends HandlableModel implements Viewer
         else if (mover.getX() > limitRight && limitRight != Integer.MAX_VALUE)
         {
             mover.teleportX(limitRight);
-        }
-        else
-        {
-            mover.moveLocation(1, Direction.ZERO);
         }
     }
 
@@ -355,10 +349,6 @@ public class Camera extends HandlableModel implements Viewer
         else if (mover.getY() > limitTop && limitTop != Integer.MAX_VALUE)
         {
             mover.teleportY(limitTop);
-        }
-        else
-        {
-            mover.moveLocation(1, Direction.ZERO);
         }
     }
 

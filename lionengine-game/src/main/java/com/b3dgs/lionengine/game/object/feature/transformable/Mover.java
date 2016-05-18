@@ -41,6 +41,24 @@ public interface Mover extends Localizable
      * 
      * @param extrp The extrapolation value.
      * @param vx The horizontal force.
+     */
+    void moveLocationX(double extrp, double vx);
+
+    /**
+     * Move location using a simple force. Old location is stored before moving and the movement is updated after
+     * calculation.
+     * 
+     * @param extrp The extrapolation value.
+     * @param vy The vertical force.
+     */
+    void moveLocationY(double extrp, double vy);
+
+    /**
+     * Move location using a simple force. Old location is stored before moving and the movement is updated after
+     * calculation.
+     * 
+     * @param extrp The extrapolation value.
+     * @param vx The horizontal force.
      * @param vy The vertical force.
      */
     void moveLocation(double extrp, double vx, double vy);

@@ -51,13 +51,13 @@ public final class TileGroupsConfig
     /**
      * Import the group data from configuration.
      * 
-     * @param configGroups The groups descriptor.
+     * @param groupsConfig The groups descriptor.
      * @return The groups data.
      * @throws LionEngineException If unable to read data.
      */
-    public static Collection<TileGroup> imports(Media configGroups)
+    public static Collection<TileGroup> imports(Media groupsConfig)
     {
-        final XmlNode nodeGroups = Xml.load(configGroups);
+        final XmlNode nodeGroups = Xml.load(groupsConfig);
         final Collection<TileGroup> groups = new ArrayList<TileGroup>();
 
         for (final XmlNode nodeGroup : nodeGroups.getChildren(NODE_GROUP))
@@ -72,11 +72,11 @@ public final class TileGroupsConfig
     /**
      * Export groups to configuration file.
      * 
-     * @param configGroups The export media.
+     * @param groupsConfig The export media.
      * @param groups The groups to export.
      * @throws LionEngineException If unable to write to media.
      */
-    public static void exports(Media configGroups, Collection<TileGroup> groups)
+    public static void exports(Media groupsConfig, Collection<TileGroup> groups)
     {
         final XmlNode nodeGroups = Xml.create(NODE_GROUPS);
         nodeGroups.writeString(Configurer.HEADER, Engine.WEBSITE);
@@ -86,7 +86,7 @@ public final class TileGroupsConfig
             exportGroup(nodeGroups, group);
         }
 
-        Xml.save(nodeGroups, configGroups);
+        Xml.save(nodeGroups, groupsConfig);
     }
 
     /**

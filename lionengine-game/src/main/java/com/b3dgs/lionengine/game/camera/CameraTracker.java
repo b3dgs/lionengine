@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.game.handler.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Refreshable;
-import com.b3dgs.lionengine.game.handler.Service;
+import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.Viewer;
 
@@ -33,8 +33,7 @@ public class CameraTracker extends FeatureModel implements Refreshable
 {
     /** Tracked localizable. */
     private Localizable tracked;
-
-    @Service private Viewer viewer;
+    private Viewer viewer;
 
     /**
      * Create tracker.
@@ -74,6 +73,14 @@ public class CameraTracker extends FeatureModel implements Refreshable
     /*
      * Refreshable
      */
+
+    @Override
+    public void prepare(Handlable owner, Services services)
+    {
+        super.prepare(owner, services);
+
+        viewer = services.get(Viewer.class);
+    }
 
     @Override
     public void update(double extrp)

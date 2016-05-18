@@ -82,6 +82,18 @@ public class TransformableModel extends FeatureModel implements Transformable
     }
 
     @Override
+    public void moveLocationX(double extrp, double vx)
+    {
+        mover.moveLocationX(extrp, vx);
+    }
+
+    @Override
+    public void moveLocationY(double extrp, double vy)
+    {
+        mover.moveLocationY(extrp, vy);
+    }
+
+    @Override
     public void moveLocation(double extrp, double vx, double vy)
     {
         mover.moveLocation(extrp, vx, vy);
