@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import java.util.Arrays;
-
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Configurer;
@@ -63,10 +61,7 @@ class Entity extends ObjectGame
         addFeature(model);
 
         final Configurer configurer = setup.getConfigurer();
-        addFeature(configurer.getImplementation(EntityUpdater.class, new Class<?>[]
-        {
-            EntityModel.class
-        }, Arrays.asList(model), NODE_UPDATER));
+        addFeature(configurer.getImplementation(EntityUpdater.class, EntityModel.class, model, NODE_UPDATER));
 
         addFeature(new EntityRenderer(model));
     }

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -218,6 +219,25 @@ public class Configurer
     public <T> T getImplementation(ClassLoader loader, Class<T> type, String... path)
     {
         return getImplementation(loader, type, new Class<?>[0], Collections.emptyList(), path);
+    }
+
+    /**
+     * Get the class implementation from its name by using a custom constructor.
+     * 
+     * @param <T> The instance type.
+     * @param type The class type.
+     * @param paramType The parameter type.
+     * @param paramValue The parameter value.
+     * @param path The node path.
+     * @return The typed class instance.
+     * @throws LionEngineException If invalid class.
+     */
+    public <T> T getImplementation(Class<T> type, Class<?> paramType, Object paramValue, String... path)
+    {
+        return getImplementation(type, new Class<?>[]
+        {
+            paramType
+        }, Arrays.asList(paramValue), path);
     }
 
     /**

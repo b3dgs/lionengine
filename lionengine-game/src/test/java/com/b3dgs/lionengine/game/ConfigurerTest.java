@@ -237,8 +237,8 @@ public class ConfigurerTest
     public void testGetImplementationCustom()
     {
         final Custom impl = configurer.getImplementation(Custom.class,
-                                                         UtilReflection.getParamTypes(Boolean.TRUE),
-                                                         Arrays.asList(Boolean.TRUE),
+                                                         Boolean.class,
+                                                         Boolean.TRUE,
                                                          Custom.class.getSimpleName());
         Assert.assertTrue(impl.created);
     }
@@ -252,8 +252,8 @@ public class ConfigurerTest
         try
         {
             Assert.assertNull(configurer.getImplementation(Custom.class,
-                                                           UtilReflection.getParamTypes(Boolean.TRUE),
-                                                           Arrays.asList(Constant.EMPTY_STRING),
+                                                           Boolean.class,
+                                                           Constant.EMPTY_STRING,
                                                            Custom.class.getSimpleName()));
             Assert.fail();
         }
