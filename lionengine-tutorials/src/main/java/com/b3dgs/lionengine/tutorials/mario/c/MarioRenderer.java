@@ -15,46 +15,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.d;
+package com.b3dgs.lionengine.tutorials.mario.c;
 
-import java.util.Locale;
-
-import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.audio.wav.AudioWav;
-import com.b3dgs.lionengine.audio.wav.Wav;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.handler.Displayable;
+import com.b3dgs.lionengine.game.handler.FeatureModel;
+import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * Handle the SFX.
+ * Mario rendering implementation.
  */
-enum Sfx
+class MarioRenderer extends FeatureModel implements Displayable
 {
-    /** Jump. */
-    JUMP,
-    /** Die. */
-    CRUSH;
-
-    /** Audio file extension. */
-    private static final String AUDIO_FILE_EXTENSION = ".wav";
-
-    /** Sounds list composing the effect. */
-    private final Wav sound;
+    private final SpriteAnimated surface;
 
     /**
      * Constructor.
+     * 
+     * @param model The mario model.
      */
-    private Sfx()
+    public MarioRenderer(MarioModel model)
     {
-        final Media media = Medias.create("sfx", name().toLowerCase(Locale.ENGLISH) + AUDIO_FILE_EXTENSION);
-        sound = AudioWav.loadWav(media);
+        super();
+
+        surface = model.getSurface();
     }
 
-    /**
-     * Play the sound effect.
-     */
-    public void play()
+    @Override
+    public void render(Graphic g)
     {
-        sound.play(Align.CENTER, 15);
+        surface.render(g);
     }
 }

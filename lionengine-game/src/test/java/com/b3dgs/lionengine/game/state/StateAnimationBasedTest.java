@@ -101,7 +101,7 @@ public class StateAnimationBasedTest
         handler.addInput(new InputPointerMock());
 
         final ObjectGame object = new ObjectGame(new Setup(media));
-        StateAnimationBased.Util.loadStates(StateType.values(), factory, object);
+        StateAnimationBased.Util.loadStates(StateType.values(), factory, object, object.getConfigurer());
 
         handler.changeState(StateType.IDLE);
 
@@ -119,6 +119,9 @@ public class StateAnimationBasedTest
     public void testUtilError()
     {
         final ObjectGame object = new ObjectGame(new Setup(media));
-        StateAnimationBased.Util.loadStates(StateTypeError.values(), new StateFactory(), object);
+        StateAnimationBased.Util.loadStates(StateTypeError.values(),
+                                            new StateFactory(),
+                                            object,
+                                            object.getConfigurer());
     }
 }

@@ -147,6 +147,27 @@ public class HandledHandlablesImplTest
     }
 
     /**
+     * Test type with multiple feature inheritance.
+     */
+    @Test
+    public void testFeatureInheritance()
+    {
+        final Setup setup = new Setup(config);
+        final ObjectGame inheritance = new ObjectComplex(setup);
+        inheritance.addFeature(new FeatureLevel2());
+        inheritance.prepareFeatures(inheritance, new Services());
+        handled.add(inheritance);
+
+        int i = 0;
+        for (final Refreshable refreshable : handled.get(Refreshable.class))
+        {
+            Assert.assertEquals(inheritance, refreshable.getOwner());
+            i++;
+        }
+        Assert.assertEquals(1, i);
+    }
+
+    /**
      * Complex object with interface.
      */
     private static class ObjectComplex extends ObjectGame implements Updatable
@@ -166,5 +187,25 @@ public class HandledHandlablesImplTest
         {
             // Mock
         }
+    }
+
+    /**
+     * Mock feature.
+     */
+    private static class FeatureLevel1 extends FeatureModel implements Refreshable
+    {
+        @Override
+        public void update(double extrp)
+        {
+            // Mock
+        }
+    }
+
+    /**
+     * Mock feature.
+     */
+    private static class FeatureLevel2 extends FeatureLevel1
+    {
+        // Mock
     }
 }

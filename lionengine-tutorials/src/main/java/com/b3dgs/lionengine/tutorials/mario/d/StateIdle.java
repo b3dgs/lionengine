@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateTransition;
@@ -37,36 +38,33 @@ import com.b3dgs.lionengine.game.tile.Tile;
  */
 class StateIdle extends StateGame implements TileCollidableListener
 {
-    /** Can jump flag. */
     private final AtomicBoolean canJump = new AtomicBoolean(false);
-    /** Jump force. */
-    private final Force jump;
-    /** Transformable reference. */
     private final Transformable transformable;
-    /** Animator reference. */
-    private final Animator animator;
-    /** Animation reference. */
-    private final Animation animation;
-    /** Tile collidable reference. */
     private final TileCollidable tileCollidable;
-    /** Movement force. */
+    private final Animator animator;
+    private final Animation animation;
     private final Force movement;
+    private final Force jump;
 
     /**
      * Create the state.
      * 
-     * @param entity The entity reference.
+     * @param handlable The handlable reference.
      * @param animation The associated animation.
      */
-    public StateIdle(Entity entity, Animation animation)
+    public StateIdle(Handlable handlable, Animation animation)
     {
         super(EntityState.IDLE);
+
         this.animation = animation;
-        transformable = entity.getFeature(Transformable.class);
-        tileCollidable = entity.getFeature(TileCollidable.class);
-        animator = entity.surface;
-        movement = entity.movement;
-        jump = entity.jump;
+        transformable = handlable.getFeature(Transformable.class);
+        tileCollidable = handlable.getFeature(TileCollidable.class);
+
+        final EntityModel model = handlable.getFeature(EntityModel.class);
+        animator = model.getSurface();
+        movement = model.getMovement();
+        jump = model.getJump();
+
         addTransition(new TransitionIdleToWalk());
         addTransition(new TransitionIdleToJump());
     }

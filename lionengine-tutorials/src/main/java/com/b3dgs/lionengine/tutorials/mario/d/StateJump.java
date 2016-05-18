@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.feature.body.Body;
 import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
@@ -42,44 +43,40 @@ import com.b3dgs.lionengine.game.tile.Tile;
  */
 class StateJump extends StateGame implements StateInputDirectionalUpdater, TileCollidableListener
 {
-    /** On ground. */
     private final AtomicBoolean ground = new AtomicBoolean();
-    /** Transformable reference. */
     private final Transformable transformable;
-    /** The body reference. */
     private final Body body;
-    /** Mirrorable reference. */
     private final Mirrorable mirrorable;
-    /** Animator reference. */
     private final Animator animator;
-    /** Animation reference. */
     private final Animation animation;
-    /** Tile collidable reference. */
     private final TileCollidable tileCollidable;
-    /** Movement force. */
     private final Force movement;
-    /** Jump force. */
     private final Force jump;
+
     /** Movement side. */
     private double side;
 
     /**
      * Create the state.
      * 
-     * @param entity The entity reference.
+     * @param handlable The handlable reference.
      * @param animation The associated animation.
      */
-    public StateJump(Entity entity, Animation animation)
+    public StateJump(Handlable handlable, Animation animation)
     {
         super(EntityState.JUMP);
+
         this.animation = animation;
-        transformable = entity.getFeature(Transformable.class);
-        body = entity.getFeature(Body.class);
-        mirrorable = entity.getFeature(Mirrorable.class);
-        tileCollidable = entity.getFeature(TileCollidable.class);
-        animator = entity.surface;
-        movement = entity.movement;
-        jump = entity.jump;
+        transformable = handlable.getFeature(Transformable.class);
+        body = handlable.getFeature(Body.class);
+        mirrorable = handlable.getFeature(Mirrorable.class);
+        tileCollidable = handlable.getFeature(TileCollidable.class);
+
+        final EntityModel model = handlable.getFeature(EntityModel.class);
+        animator = model.getSurface();
+        movement = model.getMovement();
+        jump = model.getJump();
+
         addTransition(new TransitionJumpToIdle());
     }
 

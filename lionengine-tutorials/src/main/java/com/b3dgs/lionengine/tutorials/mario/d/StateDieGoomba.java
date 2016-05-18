@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.state.StateGame;
 
 /**
@@ -27,32 +29,34 @@ import com.b3dgs.lionengine.game.state.StateGame;
  */
 class StateDieGoomba extends StateGame
 {
-    /** Entity reference. */
-    private final Entity entity;
-    /** Animator reference. */
+    private final Handlable handlable;
+    private final Force movement;
     private final Animator animator;
-    /** Animation reference. */
     private final Animation animation;
 
     /**
      * Create the state.
      * 
-     * @param entity The entity reference.
+     * @param handlable The handlable reference.
      * @param animation The associated animation.
      */
-    public StateDieGoomba(Entity entity, Animation animation)
+    public StateDieGoomba(Handlable handlable, Animation animation)
     {
         super(GoombaState.DEATH);
-        this.entity = entity;
+
+        this.handlable = handlable;
         this.animation = animation;
-        animator = entity.surface;
+
+        final EntityModel model = handlable.getFeature(EntityModel.class);
+        animator = model.getSurface();
+        movement = model.getMovement();
     }
 
     @Override
     public void enter()
     {
         animator.play(animation);
-        entity.movement.setDestination(0.0, 0.0);
+        movement.setDestination(0.0, 0.0);
     }
 
     @Override
@@ -60,7 +64,7 @@ class StateDieGoomba extends StateGame
     {
         if (AnimState.FINISHED == animator.getAnimState())
         {
-            entity.destroy();
+            handlable.destroy();
         }
     }
 }

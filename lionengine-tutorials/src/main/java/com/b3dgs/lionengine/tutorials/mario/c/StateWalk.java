@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
@@ -42,16 +43,13 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
 {
     /** Horizontal collision. */
     private final AtomicBoolean collide = new AtomicBoolean();
-    /** Movement force. */
+
     private final Force movement;
-    /** Mirrorable reference. */
     private final Mirrorable mirrorable;
-    /** Animator reference. */
     private final Animator animator;
-    /** Animation reference. */
     private final Animation animation;
-    /** Tile collidable reference. */
     private final TileCollidable tileCollidable;
+
     /** Movement side. */
     private double side;
     /** Played flag. */
@@ -60,17 +58,18 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Create the state.
      * 
-     * @param mario The mario reference.
+     * @param handlable The handlable reference.
      * @param animation The associated animation.
      */
-    public StateWalk(Mario mario, Animation animation)
+    public StateWalk(Handlable handlable, Animation animation)
     {
         super(MarioState.WALK);
         this.animation = animation;
-        mirrorable = mario.getFeature(Mirrorable.class);
-        tileCollidable = mario.getFeature(TileCollidable.class);
-        animator = mario.surface;
-        movement = mario.movement;
+        mirrorable = handlable.getFeature(Mirrorable.class);
+        tileCollidable = handlable.getFeature(TileCollidable.class);
+        final MarioModel model = handlable.getFeature(MarioModel.class);
+        animator = model.getSurface();
+        movement = model.getMovement();
         addTransition(new TransitionWalkToIdle());
         addTransition(new TransitionWalkToTurn());
         addTransition(new TransitionWalkToJump());

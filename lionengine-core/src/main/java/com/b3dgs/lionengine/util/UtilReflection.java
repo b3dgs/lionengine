@@ -246,16 +246,21 @@ public final class UtilReflection
     public static Collection<Class<?>> getInterfaces(Class<?> object, Class<?> base)
     {
         final Collection<Class<?>> interfaces = new ArrayList<Class<?>>();
-        final Deque<Class<?>> currents = new ArrayDeque<Class<?>>(filterInterfaces(object, base));
-        final Deque<Class<?>> nexts = new ArrayDeque<Class<?>>();
-        while (!currents.isEmpty())
+        Class<?> current = object;
+        while (current != null)
         {
-            nexts.clear();
-            interfaces.addAll(currents);
-            checkInterfaces(base, currents, nexts);
-            currents.clear();
-            currents.addAll(nexts);
-            nexts.clear();
+            final Deque<Class<?>> currents = new ArrayDeque<Class<?>>(filterInterfaces(current, base));
+            final Deque<Class<?>> nexts = new ArrayDeque<Class<?>>();
+            while (!currents.isEmpty())
+            {
+                nexts.clear();
+                interfaces.addAll(currents);
+                checkInterfaces(base, currents, nexts);
+                currents.clear();
+                currents.addAll(nexts);
+                nexts.clear();
+            }
+            current = current.getSuperclass();
         }
         return interfaces;
     }

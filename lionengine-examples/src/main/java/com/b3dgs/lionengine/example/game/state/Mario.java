@@ -146,7 +146,7 @@ class Mario extends ObjectGame
     @Override
     protected void onPrepared()
     {
-        StateAnimationBased.Util.loadStates(MarioState.values(), factory, this);
+        StateAnimationBased.Util.loadStates(MarioState.values(), factory, this, getConfigurer());
         handler.changeState(MarioState.IDLE);
     }
 }

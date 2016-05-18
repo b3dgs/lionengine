@@ -17,13 +17,14 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
-import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
+import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.Service;
+import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 import com.b3dgs.lionengine.game.tile.Tile;
@@ -31,30 +32,34 @@ import com.b3dgs.lionengine.game.tile.Tile;
 /**
  * Goomba specific implementation.
  */
-class Goomba extends Entity implements InputDeviceDirectional, CollidableListener
+public class GoombaUpdater extends EntityUpdater implements InputDeviceDirectional, CollidableListener
 {
-    /** Goomba media. */
-    public static final Media CONFIG = Medias.create("entity", "Goomba.xml");
+    @Service private Transformable transformable;
+    @Service private TileCollidable tileCollidable;
+    @Service private Collidable collidable;
 
     /** Side movement. */
-    private double side;
+    private double side = 0.25;
 
     /**
      * Constructor.
      * 
-     * @param setup The setup reference.
+     * @param model The model reference.
      */
-    public Goomba(SetupSurface setup)
+    public GoombaUpdater(EntityModel model)
     {
-        super(setup);
-        side = 0.25;
+        super(model);
     }
 
     @Override
-    protected void onPrepared()
+    public void prepare(Handlable owner, Services services)
     {
-        StateAnimationBased.Util.loadStates(GoombaState.values(), factory, this);
-        super.onPrepared();
+        StateAnimationBased.Util.loadStates(GoombaState.values(), factory, owner, configurer);
+
+        super.prepare(owner, services);
+
+        collidable.addListener(this);
+        setControl(this);
     }
 
     @Override
@@ -97,6 +102,7 @@ class Goomba extends Entity implements InputDeviceDirectional, CollidableListene
     public void notifyTileCollided(Tile tile, Axis axis)
     {
         super.notifyTileCollided(tile, axis);
+
         if (Axis.X == axis)
         {
             side = -side;
@@ -111,7 +117,7 @@ class Goomba extends Entity implements InputDeviceDirectional, CollidableListene
         if (collider.getY() < collider.getOldY() && collider.getY() > transformable.getY())
         {
             collider.teleportY(transformable.getY() + transformable.getHeight());
-            target.jump();
+            target.getFeature(EntityUpdater.class).jump();
             collidable.setEnabled(false);
             changeState(GoombaState.DEATH);
             Sfx.CRUSH.play();

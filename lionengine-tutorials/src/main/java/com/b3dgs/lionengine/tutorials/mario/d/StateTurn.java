@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
@@ -33,30 +34,31 @@ import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
  */
 class StateTurn extends StateGame implements StateInputDirectionalUpdater
 {
-    /** Mirrorable reference. */
     private final Mirrorable mirrorable;
-    /** Movement force. */
     private final Force movement;
-    /** Animator reference. */
     private final Animator animator;
-    /** Animation reference. */
     private final Animation animation;
+
     /** Movement side. */
     private double side;
 
     /**
      * Create the state.
      * 
-     * @param entity The entity reference.
+     * @param handlable The handlable reference.
      * @param animation The associated animation.
      */
-    public StateTurn(Entity entity, Animation animation)
+    public StateTurn(Handlable handlable, Animation animation)
     {
         super(EntityState.TURN);
+
         this.animation = animation;
-        mirrorable = entity.getFeature(Mirrorable.class);
-        animator = entity.surface;
-        movement = entity.movement;
+        mirrorable = handlable.getFeature(Mirrorable.class);
+
+        final EntityModel model = handlable.getFeature(EntityModel.class);
+        animator = model.getSurface();
+        movement = model.getMovement();
+
         addTransition(new TransitionTurnToIdle());
         addTransition(new TransitionTurnToWalk());
         addTransition(new TransitionTurnToJump());

@@ -17,36 +17,47 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.core.Medias;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.object.CollidableListener;
-import com.b3dgs.lionengine.game.object.SetupSurface;
+import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
+import com.b3dgs.lionengine.game.handler.Handlable;
+import com.b3dgs.lionengine.game.handler.Service;
+import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 
 /**
  * Mario specific implementation.
  */
-class Mario extends Entity implements CollidableListener
+public class MarioUpdater extends EntityUpdater implements CollidableListener
 {
-    /** Mario media. */
-    public static final Media CONFIG = Medias.create("entity", "Mario.xml");
+    @Service private Transformable transformable;
+    @Service private TileCollidable tileCollidable;
+    @Service private Collidable collidable;
+
+    @Service private Keyboard keyboard;
 
     /**
      * Constructor.
      * 
-     * @param setup The setup reference.
+     * @param model The model reference.
      */
-    public Mario(SetupSurface setup)
+    public MarioUpdater(EntityModel model)
     {
-        super(setup);
+        super(model);
     }
 
     @Override
-    protected void onPrepared()
+    public void prepare(Handlable owner, Services services)
     {
-        StateAnimationBased.Util.loadStates(MarioState.values(), factory, this);
-        super.onPrepared();
+        StateAnimationBased.Util.loadStates(MarioState.values(), factory, owner, configurer);
+
+        super.prepare(owner, services);
+
+        collidable.addListener(this);
+        setControl(keyboard);
+        respawn(160);
     }
 
     @Override
@@ -63,7 +74,8 @@ class Mario extends Entity implements CollidableListener
     public void notifyCollided(Collidable other)
     {
         final Entity entity = other.getOwner();
-        if (transformable.getY() >= transformable.getOldY() && !entity.isState(GoombaState.DEATH))
+        if (transformable.getY() >= transformable.getOldY()
+            && !entity.getFeature(EntityUpdater.class).isState(GoombaState.DEATH))
         {
             collidable.setEnabled(false);
             tileCollidable.setEnabled(false);

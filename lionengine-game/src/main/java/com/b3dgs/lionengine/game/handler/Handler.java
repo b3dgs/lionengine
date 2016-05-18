@@ -195,11 +195,11 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
             {
                 final Handlable handlable = handlables.get(id);
                 handlables.remove(handlable);
-                handlable.notifyDestroyed();
                 for (final HandlerListener listener : listeners)
                 {
                     listener.notifyHandlableRemoved(handlable);
                 }
+                handlable.notifyDestroyed();
             }
             toDelete.clear();
             willDelete = false;

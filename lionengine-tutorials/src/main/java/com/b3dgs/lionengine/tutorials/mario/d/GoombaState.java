@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.game.state.State;
 import com.b3dgs.lionengine.game.state.StateAnimationBased;
 
 /**
- * List of entity states.
+ * List of goomba states.
  */
 enum GoombaState implements StateAnimationBased
 {

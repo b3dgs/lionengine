@@ -23,9 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.handler.Feature;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Features;
 
 /**
  * Test the features class.
@@ -86,6 +83,20 @@ public class FeaturesTest
     }
 
     /**
+     * Test the feature with inheritance.
+     */
+    @Test
+    public void testInheritance()
+    {
+        final Features features = new Features();
+        features.add(new FeatureLevel2());
+
+        Assert.assertTrue(features.contains(FeatureLevel1.class));
+        Assert.assertTrue(features.contains(FeatureLevel2.class));
+        Assert.assertTrue(features.contains(Refreshable.class));
+    }
+
+    /**
      * Mock feature.
      */
     private static class FeatureNotCompatible extends FeatureModel implements Serializable, Refreshable
@@ -97,5 +108,25 @@ public class FeaturesTest
         {
             // Mock
         }
+    }
+
+    /**
+     * Mock feature.
+     */
+    private static class FeatureLevel1 extends FeatureModel implements Refreshable
+    {
+        @Override
+        public void update(double extrp)
+        {
+            // Mock
+        }
+    }
+
+    /**
+     * Mock feature.
+     */
+    private static class FeatureLevel2 extends FeatureLevel1
+    {
+        // Mock
     }
 }

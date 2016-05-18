@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.state.StateGame;
@@ -41,24 +42,17 @@ import com.b3dgs.lionengine.game.tile.Tile;
  */
 class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileCollidableListener
 {
-    /** Horizontal collision. */
-    private final AtomicBoolean collide = new AtomicBoolean(false);
-    /** Can jump flag. */
+    private final AtomicBoolean horizontalCollide = new AtomicBoolean(false);
     private final AtomicBoolean canJump = new AtomicBoolean(false);
-    /** Movement force. */
+
     private final Force movement;
-    /** Jump force. */
     private final Force jump;
-    /** Mirrorable reference. */
     private final Mirrorable mirrorable;
-    /** Animator reference. */
     private final Animator animator;
-    /** Animation reference. */
     private final Animation animation;
-    /** Transformable reference. */
     private final Transformable transformable;
-    /** Tile collidable reference. */
     private final TileCollidable tileCollidable;
+
     /** Movement side. */
     private double side;
     /** Played flag. */
@@ -67,19 +61,23 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
     /**
      * Create the state.
      * 
-     * @param entity The entity reference.
+     * @param handlable The handlable reference.
      * @param animation The associated animation.
      */
-    public StateWalk(Entity entity, Animation animation)
+    public StateWalk(Handlable handlable, Animation animation)
     {
         super(EntityState.WALK);
+
         this.animation = animation;
-        mirrorable = entity.getFeature(Mirrorable.class);
-        tileCollidable = entity.getFeature(TileCollidable.class);
-        transformable = entity.getFeature(Transformable.class);
-        animator = entity.surface;
-        movement = entity.movement;
-        jump = entity.jump;
+        mirrorable = handlable.getFeature(Mirrorable.class);
+        tileCollidable = handlable.getFeature(TileCollidable.class);
+        transformable = handlable.getFeature(Transformable.class);
+
+        final EntityModel model = handlable.getFeature(EntityModel.class);
+        animator = model.getSurface();
+        movement = model.getMovement();
+        jump = model.getJump();
+
         addTransition(new TransitionWalkToIdle());
         addTransition(new TransitionWalkToTurn());
         addTransition(new TransitionWalkToJump());
@@ -93,7 +91,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
         tileCollidable.addListener(this);
         side = 0;
         played = false;
-        collide.set(false);
+        horizontalCollide.set(false);
     }
 
     @Override
@@ -135,7 +133,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
         if (Axis.X == axis)
         {
             movement.setDirection(Direction.ZERO);
-            collide.set(true);
+            horizontalCollide.set(true);
         }
         else if (Axis.Y == axis && transformable.getY() < transformable.getOldY())
         {
@@ -159,7 +157,7 @@ class StateWalk extends StateGame implements StateInputDirectionalUpdater, TileC
         @Override
         public boolean check(InputDeviceDirectional input)
         {
-            return collide.get() || input.getHorizontalDirection() == 0 && input.getVerticalDirection() == 0;
+            return horizontalCollide.get() || input.getHorizontalDirection() == 0 && input.getVerticalDirection() == 0;
         }
     }
 

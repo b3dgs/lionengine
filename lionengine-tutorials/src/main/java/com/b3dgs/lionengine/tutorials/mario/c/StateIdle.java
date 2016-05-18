@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateTransition;
 import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
@@ -30,25 +31,24 @@ import com.b3dgs.lionengine.game.state.StateTransitionInputDirectionalChecker;
  */
 class StateIdle extends StateGame
 {
-    /** Animator reference. */
     private final Animator animator;
-    /** Animation reference. */
     private final Animation animation;
-    /** Movement force. */
     private final Force movement;
 
     /**
      * Create the state.
      * 
-     * @param mario The mario reference.
+     * @param handlable The handlable reference.
      * @param animation The associated animation.
      */
-    public StateIdle(Mario mario, Animation animation)
+    public StateIdle(Handlable handlable, Animation animation)
     {
         super(MarioState.IDLE);
         this.animation = animation;
-        animator = mario.surface;
-        movement = mario.movement;
+
+        final MarioModel model = handlable.getFeature(MarioModel.class);
+        animator = model.getSurface();
+        movement = model.getMovement();
         addTransition(new TransitionIdleToWalk());
         addTransition(new TransitionIdleToJump());
     }

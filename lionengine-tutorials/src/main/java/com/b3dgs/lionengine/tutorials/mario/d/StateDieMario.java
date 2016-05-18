@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.state.StateGame;
 
 /**
@@ -26,33 +28,35 @@ import com.b3dgs.lionengine.game.state.StateGame;
  */
 class StateDieMario extends StateGame
 {
-    /** Entity reference. */
-    private final Entity entity;
-    /** Animator reference. */
+    private final Force movement;
+    private final Force jump;
     private final Animator animator;
-    /** Animation reference. */
     private final Animation animation;
 
     /**
      * Create the state.
      * 
-     * @param entity The entity reference.
+     * @param handlable The handlable reference.
      * @param animation The associated animation.
      */
-    public StateDieMario(Entity entity, Animation animation)
+    public StateDieMario(Handlable handlable, Animation animation)
     {
         super(MarioState.DEATH);
-        this.entity = entity;
+
         this.animation = animation;
-        animator = entity.surface;
+
+        final EntityModel model = handlable.getFeature(EntityModel.class);
+        animator = model.getSurface();
+        movement = model.getMovement();
+        jump = model.getJump();
     }
 
     @Override
     public void enter()
     {
         animator.play(animation);
-        entity.movement.setDestination(0.0, 0.0);
-        entity.jump.setDirection(0.0, 9.0);
+        movement.setDestination(0.0, 0.0);
+        jump.setDirection(0.0, 9.0);
     }
 
     @Override

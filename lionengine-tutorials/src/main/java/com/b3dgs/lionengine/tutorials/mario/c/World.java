@@ -24,16 +24,19 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.camera.CameraTracker;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollision;
 import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
+import com.b3dgs.lionengine.game.handler.ComponentRefresher;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
+import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroupModel;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersister;
 import com.b3dgs.lionengine.game.map.feature.persister.MapTilePersisterModel;
-import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewer;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.ColorRgba;
@@ -46,27 +49,12 @@ import com.b3dgs.lionengine.stream.FileWriting;
  */
 class World extends WorldGame
 {
-    /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
 
-    /** Services reference. */
     private final Services services = new Services();
-    /** Game factory. */
-    private final Factory factory = services.create(Factory.class);
-    /** Camera reference. */
-    private final Camera camera = services.create(Camera.class);
-    /** Map reference. */
+    private final Handler handler = services.create(Handler.class);
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map persister. */
     private final MapTilePersister mapPersister = map.createFeature(MapTilePersisterModel.class);
-    /** Map viewer. */
-    private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Map group reference. */
-    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
-    /** Map collision. */
-    private final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
-    /** Mario reference. */
-    private Mario mario;
 
     /**
      * Constructor.
@@ -77,18 +65,17 @@ class World extends WorldGame
     public World(Config config, Keyboard keyboard)
     {
         super(config);
+
         services.add(keyboard);
         services.add(Integer.valueOf(source.getRate()));
+        handler.addUpdatable(new ComponentRefresher());
+        handler.addRenderable(services.add(new ComponentRendererLayer()));
     }
-
-    /*
-     * WorldGame
-     */
 
     @Override
     public void update(double extrp)
     {
-        mario.update(extrp);
+        handler.update(extrp);
     }
 
     @Override
@@ -96,8 +83,7 @@ class World extends WorldGame
     {
         g.setColor(BACKGROUND_COLOR);
         g.drawRect(0, 0, width, height, true);
-        mapViewer.render(g);
-        mario.render(g);
+        handler.render(g);
     }
 
     @Override
@@ -109,15 +95,28 @@ class World extends WorldGame
     @Override
     protected void loading(FileReading file) throws IOException
     {
+        handler.add(map);
         mapPersister.load(file);
+
+        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
         mapGroup.loadGroups(Medias.create("map", "groups.xml"));
+
+        final MapTileCollision mapCollision = map.createFeature(MapTileCollisionModel.class);
         mapCollision.loadCollisions(Medias.create("map", "formulas.xml"), Medias.create("map", "collisions.xml"));
 
+        final Camera camera = services.create(Camera.class);
         camera.setIntervals(16, 0);
         camera.setView(0, 0, width, height);
         camera.setLimits(map);
+        final CameraTracker tracker = new CameraTracker();
+        camera.addFeature(tracker);
+        handler.add(camera);
 
-        mario = factory.create(Mario.MEDIA);
-        mario.respawn();
+        map.addFeature(new MapTileViewerModel(services));
+
+        final Factory factory = services.create(Factory.class);
+        final Mario mario = factory.create(Mario.MEDIA);
+        handler.add(mario);
+        tracker.track(mario);
     }
 }

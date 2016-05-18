@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.state;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.game.Configurer;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.util.UtilReflection;
 
@@ -29,7 +31,7 @@ import com.b3dgs.lionengine.util.UtilReflection;
  * {@link Animation}).
  * </p>
  * 
- * @see Util#loadStates(StateAnimationBased[], StateFactory, ObjectGame)
+ * @see Util#loadStates(StateAnimationBased[], StateFactory, Handlable, Configurer)
  */
 public interface StateAnimationBased
 {
@@ -57,19 +59,23 @@ public interface StateAnimationBased
          * 
          * @param states The states values.
          * @param factory The factory reference.
-         * @param object The object reference.
+         * @param handlable The handlable reference.
+         * @param configurer The configurer reference.
          */
-        public static void loadStates(StateAnimationBased[] states, StateFactory factory, ObjectGame object)
+        public static void loadStates(StateAnimationBased[] states,
+                                      StateFactory factory,
+                                      Handlable handlable,
+                                      Configurer configurer)
         {
-            final AnimationConfig configAnimations = AnimationConfig.imports(object.getConfigurer());
+            final AnimationConfig configAnimations = AnimationConfig.imports(configurer);
             for (final StateAnimationBased type : states)
             {
                 try
                 {
                     final Animation animation = configAnimations.getAnimation(type.getAnimationName());
                     final State state = UtilReflection.create(type.getStateClass(),
-                                                              UtilReflection.getParamTypes(object, animation),
-                                                              object,
+                                                              UtilReflection.getParamTypes(handlable, animation),
+                                                              handlable,
                                                               animation);
                     factory.addState(state);
                 }

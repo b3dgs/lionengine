@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.game.layer;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -82,7 +82,7 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
         final Collection<Displayable> displayables;
         if (!layers.containsKey(layer))
         {
-            displayables = new ArrayList<Displayable>();
+            displayables = new HashSet<Displayable>();
             layers.put(layer, displayables);
         }
         else

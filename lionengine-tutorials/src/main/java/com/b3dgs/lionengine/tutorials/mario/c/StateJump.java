@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
+import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.object.feature.mirrorable.Mirrorable;
 import com.b3dgs.lionengine.game.state.StateGame;
 import com.b3dgs.lionengine.game.state.StateInputDirectionalUpdater;
@@ -38,36 +39,32 @@ import com.b3dgs.lionengine.game.tile.Tile;
  */
 class StateJump extends StateGame implements StateInputDirectionalUpdater, TileCollidableListener
 {
-    /** Jump force. */
     private final Force jump;
-    /** Mirrorable reference. */
     private final Mirrorable mirrorable;
-    /** Animator reference. */
     private final Animator animator;
-    /** Animation reference. */
     private final Animation animation;
-    /** Tile collidable reference. */
     private final TileCollidable tileCollidable;
-    /** Movement force. */
     private final Force movement;
+
     /** Movement side. */
     private double side;
 
     /**
      * Create the state.
      * 
-     * @param mario The mario reference.
+     * @param handlable The handlable reference.
      * @param animation The associated animation.
      */
-    public StateJump(Mario mario, Animation animation)
+    public StateJump(Handlable handlable, Animation animation)
     {
         super(MarioState.JUMP);
         this.animation = animation;
-        mirrorable = mario.getFeature(Mirrorable.class);
-        tileCollidable = mario.getFeature(TileCollidable.class);
-        animator = mario.surface;
-        movement = mario.movement;
-        jump = mario.jump;
+        mirrorable = handlable.getFeature(Mirrorable.class);
+        tileCollidable = handlable.getFeature(TileCollidable.class);
+        final MarioModel model = handlable.getFeature(MarioModel.class);
+        animator = model.getSurface();
+        movement = model.getMovement();
+        jump = model.getJump();
         addTransition(new TransitionJumpToIdle());
     }
 

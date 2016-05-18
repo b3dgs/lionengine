@@ -39,9 +39,7 @@ import com.b3dgs.lionengine.stream.Stream;
  */
 class Scene extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
-    /** Level file. */
     private static final Media LEVEL = Medias.create("map", "level.lvl");
 
     /**
@@ -62,7 +60,6 @@ class Scene extends Sequence
         }
     }
 
-    /** World reference. */
     private final World world;
 
     /**
