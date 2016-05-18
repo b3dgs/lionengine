@@ -33,8 +33,6 @@ import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.feature.body.Body;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Test the object game class.
@@ -60,33 +58,6 @@ public class ObjectGameTest
     public static void cleanUp()
     {
         Medias.setLoadFromJar(null);
-    }
-
-    /**
-     * Create the object media.
-     * 
-     * @param clazz The class type.
-     * @return The object media.
-     */
-    public static Media createMedia(Class<?> clazz)
-    {
-        final Media media = Medias.create(clazz.getName() + ".xml");
-        final XmlNode root = Xml.create("test");
-        root.add(ObjectConfig.exportClass(clazz.getName()));
-        root.add(ObjectConfig.exportSetup("com.b3dgs.lionengine.game.object.Setup"));
-        root.add(SizeConfig.exports(new SizeConfig(16, 32)));
-        Xml.save(root, media);
-        return media;
-    }
-
-    /**
-     * Free the object id.
-     * 
-     * @param object The object to free.
-     */
-    public static void notifyDestroyed(ObjectGame object)
-    {
-        object.notifyDestroyed();
     }
 
     /**

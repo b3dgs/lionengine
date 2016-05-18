@@ -34,8 +34,8 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.animatable.Animatable;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
@@ -70,7 +70,7 @@ public class AttackerModelTest
         HACK.restore();
     }
 
-    private final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+    private final Media media = UtilSetup.createMedia(ObjectGame.class);
     private final Services services = new Services();
     private final AtomicBoolean canAttack = new AtomicBoolean();
     private final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);

@@ -27,19 +27,21 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public class StateHandlerTest
 {
+    private final StateFactory factory = new StateFactory();
+    private final StateHandler handler = new StateHandler(factory);
+
     /**
      * Test the state handling.
      */
     @Test
     public void testHandler()
     {
-        final StateFactory factory = new StateFactory();
         final StateTest idle = new StateIdle();
-        final StateTest walk = new StateWalk();
         factory.addState(idle);
+
+        final StateTest walk = new StateWalk();
         factory.addState(walk);
 
-        final StateHandler handler = new StateHandler(factory);
         handler.update(1.0);
 
         Assert.assertFalse(handler.isState(StateType.IDLE));
@@ -87,12 +89,10 @@ public class StateHandlerTest
     @Test
     public void testTransition()
     {
-        final StateFactory factory = new StateFactory();
         final State idle = new StateIdle();
         factory.addState(idle);
         factory.addState(new StateWalk());
 
-        final StateHandler handler = new StateHandler(factory);
         handler.addInput(new InputDirectionalMock());
         handler.addInput(new InputPointerMock());
 
@@ -120,7 +120,6 @@ public class StateHandlerTest
     @Test(expected = LionEngineException.class)
     public void testNullArgument()
     {
-        final StateHandler handler = new StateHandler(new StateFactory());
         handler.changeState(null);
     }
 }

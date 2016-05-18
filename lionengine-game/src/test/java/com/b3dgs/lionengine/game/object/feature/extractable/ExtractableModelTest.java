@@ -29,8 +29,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -57,7 +57,7 @@ public class ExtractableModelTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
-    private final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+    private final Media media = UtilSetup.createMedia(ObjectGame.class);
 
     /**
      * Clean test.

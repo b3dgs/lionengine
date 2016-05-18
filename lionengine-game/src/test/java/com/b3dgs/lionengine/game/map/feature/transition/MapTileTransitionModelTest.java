@@ -69,22 +69,6 @@ public class MapTileTransitionModelTest
     }
 
     /**
-     * Create the map and configure it.
-     * 
-     * @param tileNumber The number to fill.
-     * @return The configured map.
-     */
-    private static MapTile createMap(int tileNumber)
-    {
-        final MapTile map = UtilMap.createMap(12);
-        UtilMap.fill(map, tileNumber);
-
-        map.getFeature(MapTileTransition.class).loadTransitions(config);
-
-        return map;
-    }
-
-    /**
      * Test the map transition resolution.
      */
     @Test
@@ -111,7 +95,10 @@ public class MapTileTransitionModelTest
      */
     private void testResolution(int tileNumber, String groupOrigin, int tileNew, String groupNew, String transition)
     {
-        final MapTile map = createMap(tileNumber);
+        final MapTile map = UtilMap.createMap(12);
+        UtilMap.fill(map, tileNumber);
+        map.getFeature(MapTileTransition.class).loadTransitions(config);
+
         final MapTileGroup mapGroup = map.getFeature(MapTileGroup.class);
         final MapTileTransition mapTransition = map.getFeature(MapTileTransitionModel.class);
 

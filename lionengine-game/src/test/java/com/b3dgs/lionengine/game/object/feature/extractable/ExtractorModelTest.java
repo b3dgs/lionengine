@@ -34,8 +34,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.game.tile.Tiled;
 import com.b3dgs.lionengine.test.UtilEnum;
@@ -71,7 +71,7 @@ public class ExtractorModelTest
         HACK.restore();
     }
 
-    private final Media media = ObjectGameTest.createMedia(ObjectExtractor.class);
+    private final Media media = UtilSetup.createMedia(ObjectExtractor.class);
     private final Services services = new Services();
 
     /**
@@ -277,7 +277,7 @@ public class ExtractorModelTest
         Assert.assertNull(extractor.getResourceLocation());
         Assert.assertNull(extractor.getResourceType());
 
-        final Media extractableMedia = ObjectGameTest.createMedia(ObjectGame.class);
+        final Media extractableMedia = UtilSetup.createMedia(ObjectGame.class);
         final Extractable extractable = UtilExtractable.createExtractable(extractableMedia);
         extractor.setResource(extractable);
 
@@ -354,7 +354,7 @@ public class ExtractorModelTest
         Assert.assertNull(extractor.getResourceLocation());
         Assert.assertNull(extractor.getResourceType());
 
-        final Media extractableMedia = ObjectGameTest.createMedia(ObjectGame.class);
+        final Media extractableMedia = UtilSetup.createMedia(ObjectGame.class);
         final Extractable extractable = UtilExtractable.createExtractable(extractableMedia);
         extractable.setResourcesQuantity(0);
         extractor.setResource(extractable);

@@ -32,8 +32,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.UtilSetup;
 
 /**
  * Test the assignable model trait.
@@ -62,7 +62,7 @@ public class AssignableModelTest
     private final AtomicInteger clickNumber = new AtomicInteger();
     private final AtomicBoolean assigned = new AtomicBoolean();
     private final Services services = UtilAssignable.createServices(clicked, clickNumber);
-    private final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+    private final Media media = UtilSetup.createMedia(ObjectGame.class);
     private final AssignableModel assignable = UtilAssignable.createAssignable(media, services);
 
     /**
@@ -139,7 +139,7 @@ public class AssignableModelTest
     {
         clicked.set(true);
 
-        final Media media = ObjectGameTest.createMedia(ObjectAssign.class);
+        final Media media = UtilSetup.createMedia(ObjectAssign.class);
         final ObjectAssign object = new ObjectAssign(new Setup(media), assigned);
         final AssignableModel assignable = new AssignableModel();
         assignable.prepare(object, services);

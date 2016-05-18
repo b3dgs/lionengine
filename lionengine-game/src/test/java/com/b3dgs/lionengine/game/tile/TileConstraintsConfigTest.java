@@ -102,7 +102,6 @@ public class TileConstraintsConfigTest
         }
 
         Assert.assertEquals(expected, data);
-
         Assert.assertTrue(config.getFile().delete());
     }
 }

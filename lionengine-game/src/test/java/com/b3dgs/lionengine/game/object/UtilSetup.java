@@ -43,4 +43,21 @@ public class UtilSetup
 
         return media;
     }
+
+    /**
+     * Create the object media.
+     * 
+     * @param clazz The class type.
+     * @return The object media.
+     */
+    public static Media createMedia(Class<?> clazz)
+    {
+        final Media media = Medias.create(clazz.getName() + ".xml");
+        final XmlNode root = Xml.create("test");
+        root.add(ObjectConfig.exportClass(clazz.getName()));
+        root.add(ObjectConfig.exportSetup("com.b3dgs.lionengine.game.object.Setup"));
+        root.add(SizeConfig.exports(new SizeConfig(16, 32)));
+        Xml.save(root, media);
+        return media;
+    }
 }

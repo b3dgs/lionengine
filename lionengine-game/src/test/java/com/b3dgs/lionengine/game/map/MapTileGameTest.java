@@ -37,14 +37,14 @@ public class MapTileGameTest
     /** Temp folder. */
     @Rule public final TemporaryFolder folder = new TemporaryFolder();
 
+    private final MapTileGame map = new MapTileGame();
+
     /**
      * Test map creation.
      */
     @Test
     public void testCreate()
     {
-        final MapTileGame map = new MapTileGame();
-
         Assert.assertFalse(map.isCreated());
         map.create(16, 32, 2, 3);
         Assert.assertTrue(map.isCreated());
@@ -77,7 +77,6 @@ public class MapTileGameTest
     @Test(expected = LionEngineException.class)
     public void testCreateWrongTileWidth()
     {
-        final MapTileGame map = new MapTileGame();
         map.create(0, 1, 1, 1);
     }
 
@@ -87,7 +86,6 @@ public class MapTileGameTest
     @Test(expected = LionEngineException.class)
     public void testCreateWrongTileHeight()
     {
-        final MapTileGame map = new MapTileGame();
         map.create(1, 0, 1, 1);
     }
 
@@ -97,7 +95,6 @@ public class MapTileGameTest
     @Test(expected = LionEngineException.class)
     public void testCreateWrongWidth()
     {
-        final MapTileGame map = new MapTileGame();
         map.create(1, 1, 0, 1);
     }
 
@@ -107,7 +104,6 @@ public class MapTileGameTest
     @Test(expected = LionEngineException.class)
     public void testCreateWrongHeight()
     {
-        final MapTileGame map = new MapTileGame();
         map.create(1, 1, 1, 0);
     }
 
@@ -117,7 +113,6 @@ public class MapTileGameTest
     @Test(expected = LionEngineException.class)
     public void testCreateTileError()
     {
-        final MapTileGame map = new MapTileGame();
         Assert.assertNull(map.createTile(Integer.valueOf(0), 0, 0.0, 0.0));
     }
 
@@ -127,7 +122,6 @@ public class MapTileGameTest
     @Test
     public void testSetGetTile()
     {
-        final MapTileGame map = new MapTileGame();
         map.create(16, 16, 3, 3);
         map.loadSheets(new ArrayList<SpriteTiled>());
 

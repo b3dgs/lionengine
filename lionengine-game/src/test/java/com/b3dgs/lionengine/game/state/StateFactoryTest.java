@@ -34,9 +34,11 @@ public class StateFactoryTest
     public void testCreate()
     {
         final StateFactory factory = new StateFactory();
+
         final State idle = new StateIdle();
-        final State walk = new StateWalk();
         factory.addState(idle);
+
+        final State walk = new StateWalk();
         factory.addState(walk);
 
         Assert.assertEquals(idle, factory.getState(StateType.IDLE));

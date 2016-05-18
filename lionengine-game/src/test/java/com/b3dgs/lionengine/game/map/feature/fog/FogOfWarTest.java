@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -70,18 +71,27 @@ public class FogOfWarTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
+    private final FovableModel fovable = new FovableModel();
+    private final Services services = new Services();
+    private final MapTile map = UtilMap.createMap(5);
+    private final FogOfWar fog = new FogOfWar();
+
+    /**
+     * Prepare test.
+     */
+    @Before
+    public void prepare()
+    {
+        UtilMap.fill(map, UtilMap.TILE_GROUND);
+        services.add(map);
+    }
+
     /**
      * Test the fog of war.
      */
     @Test
     public void testFogOfWar()
     {
-        final FovableModel fovable = new FovableModel();
-        final Services services = new Services();
-        final MapTile map = UtilMap.createMap(5);
-        UtilMap.fill(map, UtilMap.TILE_GROUND);
-        services.add(map);
-
         final Setup setup = new Setup(config);
         final ObjectGame object = new ObjectGame(setup);
         final Transformable transformable = object.addFeatureAndGet(new TransformableModel(setup));
@@ -89,7 +99,6 @@ public class FogOfWarTest
         fovable.prepare(object, services);
         fovable.setFov(1);
 
-        final FogOfWar fog = new FogOfWar();
         Medias.setLoadFromJar(MapTileFog.class);
         fog.create(map, Medias.create("fog.xml"));
         Medias.setLoadFromJar(null);
@@ -136,11 +145,6 @@ public class FogOfWarTest
     @Test
     public void testRender()
     {
-        final FogOfWar fog = new FogOfWar();
-        final Services services = new Services();
-        final MapTile map = UtilMap.createMap(5);
-        UtilMap.fill(map, UtilMap.TILE_GROUND);
-        services.add(map);
         Medias.setLoadFromJar(MapTileFog.class);
         fog.create(map, Medias.create("fog.xml"));
         Medias.setLoadFromJar(null);

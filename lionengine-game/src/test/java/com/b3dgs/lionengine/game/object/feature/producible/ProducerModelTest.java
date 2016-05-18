@@ -35,8 +35,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.test.UtilEnum;
 import com.b3dgs.lionengine.test.UtilTests;
 import com.b3dgs.lionengine.util.UtilReflection;
@@ -71,7 +71,7 @@ public class ProducerModelTest
     }
 
     private final Services services = new Services();
-    private final Media media = ObjectGameTest.createMedia(ProducerObject.class);
+    private final Media media = UtilSetup.createMedia(ProducerObject.class);
     private final ProducerObject object = new ProducerObject(new Setup(media));
     private final ProducerModel producer = new ProducerModel();
 

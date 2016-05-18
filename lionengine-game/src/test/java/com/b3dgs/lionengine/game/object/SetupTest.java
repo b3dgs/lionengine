@@ -73,7 +73,9 @@ public class SetupTest
 
         Assert.assertEquals(ObjectGame.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
         Assert.assertEquals(ObjectGame.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
+
         setup.clear();
+
         Assert.assertEquals(ObjectGame.class, setup.getConfigClass(ClassLoader.getSystemClassLoader()));
     }
 

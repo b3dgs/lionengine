@@ -24,9 +24,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SizeConfig;
+import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.stream.Xml;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -141,7 +141,7 @@ public class UtilProducible
     {
         final ProducibleConfig producibleConfig = new ProducibleConfig(1, 2, 3);
 
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+        final Media media = UtilSetup.createMedia(ObjectGame.class);
         final XmlNode root = Xml.create("test");
         root.add(SizeConfig.exports(new SizeConfig(producibleConfig.getWidth(), producibleConfig.getHeight())));
         root.add(ProducibleConfig.exports(producibleConfig));

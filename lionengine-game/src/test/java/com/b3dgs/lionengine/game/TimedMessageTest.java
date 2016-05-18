@@ -17,37 +17,14 @@
  */
 package com.b3dgs.lionengine.game;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.b3dgs.lionengine.core.Graphics;
-import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 
 /**
  * Test timed message class.
  */
 public class TimedMessageTest
 {
-    /**
-     * Prepare test.
-     */
-    @BeforeClass
-    public static void setUp()
-    {
-        Graphics.setFactoryGraphic(new FactoryGraphicMock());
-    }
-
-    /**
-     * Clean up test.
-     */
-    @AfterClass
-    public static void cleanUp()
-    {
-        Graphics.setFactoryGraphic(null);
-    }
-
     /**
      * Test timed message functions.
      * 
@@ -57,13 +34,21 @@ public class TimedMessageTest
     public void testTimedMessage() throws InterruptedException
     {
         final TimedMessage timedMessage = new TimedMessage(null);
+
         Assert.assertFalse(timedMessage.hasMessage());
+
+        timedMessage.addMessage("test", 0, 0, 50);
         timedMessage.addMessage("test", 0, 0, 100);
-        timedMessage.addMessage("test", 0, 0, 500);
+
         Assert.assertTrue(timedMessage.hasMessage());
+
         timedMessage.update(0.0);
-        Thread.sleep(150);
+        Thread.sleep(25);
         timedMessage.update(0.0);
         timedMessage.update(0.0);
+        Thread.sleep(100);
+        timedMessage.update(0.0);
+
+        Assert.assertFalse(timedMessage.hasMessage());
     }
 }

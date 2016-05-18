@@ -50,7 +50,19 @@ public class StateAnimationBasedTest
     {
         Medias.setResourcesDirectory(System.getProperty("java.io.tmpdir"));
         media = Medias.create("animations.xml");
-        createConfig();
+
+        final XmlNode root = Xml.create("test");
+
+        final Animation idle = Anim.createAnimation("idle", 1, 2, 3.0, false, true);
+        AnimationConfig.exports(root, idle);
+
+        final Animation walk = Anim.createAnimation("walk", 1, 2, 3.0, false, true);
+        AnimationConfig.exports(root, walk);
+
+        final Animation jump = Anim.createAnimation("jump", 1, 2, 3.0, false, true);
+        AnimationConfig.exports(root, jump);
+
+        Xml.save(root, media);
     }
 
     /**
@@ -72,21 +84,6 @@ public class StateAnimationBasedTest
     public void testConstructor() throws Exception
     {
         UtilTests.testPrivateConstructor(StateAnimationBased.Util.class);
-    }
-
-    /**
-     * Create animation configuration.
-     */
-    private static void createConfig()
-    {
-        final XmlNode root = Xml.create("test");
-        final Animation idle = Anim.createAnimation("idle", 1, 2, 3.0, false, true);
-        final Animation walk = Anim.createAnimation("walk", 1, 2, 3.0, false, true);
-        final Animation jump = Anim.createAnimation("jump", 1, 2, 3.0, false, true);
-        AnimationConfig.exports(root, idle);
-        AnimationConfig.exports(root, walk);
-        AnimationConfig.exports(root, jump);
-        Xml.save(root, media);
     }
 
     /**

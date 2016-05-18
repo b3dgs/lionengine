@@ -32,8 +32,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -60,7 +60,7 @@ public class LauncherModelTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
-    private final Media launchableMedia = ObjectGameTest.createMedia(LaunchableObject.class);
+    private final Media launchableMedia = UtilSetup.createMedia(LaunchableObject.class);
     private final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
     private final Services services = new Services();
     private final Setup setup = new Setup(launcherMedia);
@@ -196,7 +196,7 @@ public class LauncherModelTest
     @Test(expected = LionEngineException.class)
     public void testLauncherFailure() throws InterruptedException
     {
-        final Media launchableMedia = ObjectGameTest.createMedia(ObjectGame.class);
+        final Media launchableMedia = UtilSetup.createMedia(ObjectGame.class);
         final Media launcherMedia = UtilLaunchable.createLauncherMedia(launchableMedia);
         final Setup setup = new Setup(launcherMedia);
         final Launcher launcher = UtilLaunchable.createLauncher(services, setup, object);

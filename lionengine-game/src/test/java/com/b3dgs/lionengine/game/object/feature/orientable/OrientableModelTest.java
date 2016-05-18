@@ -31,8 +31,8 @@ import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.UtilSetup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
 
@@ -59,7 +59,7 @@ public class OrientableModelTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
-    private final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+    private final Media media = UtilSetup.createMedia(ObjectGame.class);
     private final Services services = new Services();
     private final ObjectGame object = new ObjectGame(new Setup(media));
     private final OrientableModel orientable = new OrientableModel();

@@ -15,25 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.collision.object;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.collision.object.Collision;
-
 /**
  * Test collision data class.
  */
-public class CollisionDataTest
+public class CollisionTest
 {
     /**
      * Test collision data functions.
      */
     @Test
-    public void testCollisionData()
+    public void testCollision()
     {
         final Collision collisionData = new Collision(null, 1, 2, 3, 4, true);
+
         Assert.assertTrue(collisionData.getOffsetX() == 1);
         Assert.assertTrue(collisionData.getOffsetY() == 2);
         Assert.assertTrue(collisionData.getWidth() == 3);

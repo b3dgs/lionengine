@@ -71,20 +71,6 @@ public class CircuitConfigTest
     }
 
     /**
-     * Create the map and configure it.
-     * 
-     * @param tileNumber The number to fill.
-     * @return The configured map.
-     */
-    private static MapTile createMap(int tileNumber)
-    {
-        final MapTile map = UtilMap.createMap(tileNumber);
-        map.getFeature(MapTileTransition.class).loadTransitions(config);
-
-        return map;
-    }
-
-    /**
      * Test the constructor.
      * 
      * @throws Exception If error.
@@ -103,7 +89,8 @@ public class CircuitConfigTest
     @Test
     public void testExtraction() throws IOException
     {
-        final MapTile map = createMap(7);
+        final MapTile map = UtilMap.createMap(7);
+        map.getFeature(MapTileTransition.class).loadTransitions(config);
         UtilMap.fill(map, TILE_GROUND);
         UtilMap.fill(map, TILE_ROAD, TILE_ROAD, 3);
 
