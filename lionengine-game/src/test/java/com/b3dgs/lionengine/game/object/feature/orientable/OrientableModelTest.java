@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.game.object.feature.orientable;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,7 +34,6 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
-import com.b3dgs.lionengine.game.tile.Tiled;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
@@ -58,41 +59,30 @@ public class OrientableModelTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
+    private final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+    private final Services services = new Services();
+    private final ObjectGame object = new ObjectGame(new Setup(media));
+    private final OrientableModel orientable = new OrientableModel();
+
     /**
-     * Point to a tiled.
-     * 
-     * @param orientable The orientable.
-     * @param tx The horizontal location.
-     * @param ty The vertical location.
+     * Prepare test.
      */
-    private static void pointToTiled(Orientable orientable, final int tx, final int ty)
+    @Before
+    public void prepare()
     {
-        orientable.pointTo(new Tiled()
-        {
-            @Override
-            public int getInTileX()
-            {
-                return tx;
-            }
+        services.add(new MapTileGame());
+        object.addFeature(new TransformableModel());
+        orientable.prepare(object, services);
+    }
 
-            @Override
-            public int getInTileY()
-            {
-                return ty;
-            }
-
-            @Override
-            public int getInTileWidth()
-            {
-                return 0;
-            }
-
-            @Override
-            public int getInTileHeight()
-            {
-                return 0;
-            }
-        });
+    /**
+     * Clean test.
+     */
+    @After
+    public void clean()
+    {
+        object.notifyDestroyed();
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -112,16 +102,6 @@ public class OrientableModelTest
     @Test
     public void testOrientable()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        services.add(new MapTileGame());
-
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        object.addFeature(new TransformableModel());
-
-        final OrientableModel orientable = new OrientableModel();
-        orientable.prepare(object, services);
-
         Assert.assertEquals(Orientation.NORTH, orientable.getOrientation());
 
         orientable.setOrientation(Orientation.SOUTH);
@@ -154,9 +134,6 @@ public class OrientableModelTest
 
         orientable.pointTo(1, -1);
         Assert.assertEquals(Orientation.SOUTH_EAST, orientable.getOrientation());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -165,50 +142,37 @@ public class OrientableModelTest
     @Test
     public void testOrientableTiled()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        services.add(new MapTileGame());
-
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        object.addFeature(new TransformableModel());
-
-        final OrientableModel orientable = new OrientableModel();
-        orientable.prepare(object, services);
-
         Assert.assertEquals(Orientation.NORTH, orientable.getOrientation());
 
         orientable.setOrientation(Orientation.SOUTH);
 
         Assert.assertEquals(Orientation.SOUTH, orientable.getOrientation());
 
-        pointToTiled(orientable, 0, 0);
+        UtilOrientable.pointToTiled(orientable, 0, 0);
         Assert.assertEquals(Orientation.SOUTH, orientable.getOrientation());
 
-        pointToTiled(orientable, -1, 0);
+        UtilOrientable.pointToTiled(orientable, -1, 0);
         Assert.assertEquals(Orientation.WEST, orientable.getOrientation());
 
-        pointToTiled(orientable, 1, 0);
+        UtilOrientable.pointToTiled(orientable, 1, 0);
         Assert.assertEquals(Orientation.EAST, orientable.getOrientation());
 
-        pointToTiled(orientable, 0, 1);
+        UtilOrientable.pointToTiled(orientable, 0, 1);
         Assert.assertEquals(Orientation.NORTH, orientable.getOrientation());
 
-        pointToTiled(orientable, 0, -1);
+        UtilOrientable.pointToTiled(orientable, 0, -1);
         Assert.assertEquals(Orientation.SOUTH, orientable.getOrientation());
 
-        pointToTiled(orientable, -1, 1);
+        UtilOrientable.pointToTiled(orientable, -1, 1);
         Assert.assertEquals(Orientation.NORTH_WEST, orientable.getOrientation());
 
-        pointToTiled(orientable, 1, 1);
+        UtilOrientable.pointToTiled(orientable, 1, 1);
         Assert.assertEquals(Orientation.NORTH_EAST, orientable.getOrientation());
 
-        pointToTiled(orientable, -1, -1);
+        UtilOrientable.pointToTiled(orientable, -1, -1);
         Assert.assertEquals(Orientation.SOUTH_WEST, orientable.getOrientation());
 
-        pointToTiled(orientable, 1, -1);
+        UtilOrientable.pointToTiled(orientable, 1, -1);
         Assert.assertEquals(Orientation.SOUTH_EAST, orientable.getOrientation());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 }

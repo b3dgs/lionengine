@@ -162,6 +162,17 @@ public class CollidableModel extends FeatureModel implements Collidable
     }
 
     @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof CollidableListener)
+        {
+            addListener((CollidableListener) listener);
+        }
+    }
+
+    @Override
     public void addListener(CollidableListener listener)
     {
         listeners.add(listener);

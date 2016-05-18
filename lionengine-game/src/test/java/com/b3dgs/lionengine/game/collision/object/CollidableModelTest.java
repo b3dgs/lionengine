@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.collision.object;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -150,6 +152,19 @@ public class CollidableModelTest
 
         final Collidable collidable1 = object1.getFeature(Collidable.class);
         final Collidable collidable2 = object2.getFeature(Collidable.class);
+
+        final AtomicBoolean auto = new AtomicBoolean();
+        collidable1.checkListener(new CollidableListener()
+        {
+            @Override
+            public void notifyCollided(Collidable collidable)
+            {
+                auto.set(true);
+            }
+        });
+
+        collidable1.notifyCollided(collidable2);
+        Assert.assertTrue(auto.get());
 
         final Collision collision1 = new Collision("test1", 1, 1, 1, 1, true);
         collidable1.addCollision(collision1);

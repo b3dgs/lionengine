@@ -85,8 +85,6 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
         handler.changeState(MarioState.IDLE);
         handler.addInput(keyboard);
 
-        tileCollidable.addListener(this);
-
         respawn();
     }
 

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.object.feature.assignable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -29,7 +30,6 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.ObjectGameTest;
@@ -58,65 +58,21 @@ public class AssignableModelTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
-    /**
-     * Create the services.
-     * 
-     * @param clicked The click flag.
-     * @param clickNumber The click number recorded.
-     * @return The services.
-     */
-    private static Services createServices(final AtomicBoolean clicked, final AtomicInteger clickNumber)
-    {
-        final Services services = new Services();
-        final Camera camera = new Camera();
-        camera.setView(0, 0, 32, 32);
-        services.add(camera);
-        final Cursor cursor = new Cursor()
-        {
-            @Override
-            public boolean hasClickedOnce(int click)
-            {
-                clickNumber.set(click);
-                return clicked.get();
-            }
-        };
-        cursor.setArea(0, 0, 64, 64);
-        cursor.setLocation(0, 1);
-        services.add(cursor);
-        return services;
-    }
+    private final AtomicBoolean clicked = new AtomicBoolean();
+    private final AtomicInteger clickNumber = new AtomicInteger();
+    private final AtomicBoolean assigned = new AtomicBoolean();
+    private final Services services = UtilAssignable.createServices(clicked, clickNumber);
+    private final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+    private final AssignableModel assignable = UtilAssignable.createAssignable(media, services);
 
     /**
-     * Create the trait.
-     * 
-     * @param media The media.
-     * @param services The services.
-     * @return The prepared trait.
+     * Clean test.
      */
-    private static AssignableModel createAssignable(Media media, Services services)
+    @After
+    public void clean()
     {
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        final AssignableModel assignable = new AssignableModel();
-        assignable.prepare(object, services);
-        return assignable;
-    }
-
-    /**
-     * Add a default assign.
-     * 
-     * @param assignable The trait.
-     * @param assigned The assigned flag.
-     */
-    private static void addAssign(AssignableModel assignable, final AtomicBoolean assigned)
-    {
-        assignable.setAssign(new Assign()
-        {
-            @Override
-            public void assign()
-            {
-                assigned.set(true);
-            }
-        });
+        assignable.getOwner().notifyDestroyed();
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -125,19 +81,11 @@ public class AssignableModelTest
     @Test
     public void testClick()
     {
-        final AtomicBoolean clicked = new AtomicBoolean();
-        final AtomicInteger clickNumber = new AtomicInteger();
-        final Services services = createServices(clicked, clickNumber);
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final AssignableModel assignable = createAssignable(media, services);
-
-        final AtomicBoolean assigned = new AtomicBoolean();
         assignable.update(1.0);
 
         Assert.assertFalse(assigned.get());
 
-        addAssign(assignable, assigned);
-
+        assignable.setAssign(UtilAssignable.createAssign(assigned));
         assignable.setClickAssign(1);
         assigned.set(false);
         clicked.set(true);
@@ -146,9 +94,6 @@ public class AssignableModelTest
 
         Assert.assertEquals(1, clickNumber.get());
         Assert.assertTrue(assigned.get());
-
-        assignable.getOwner().notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -157,23 +102,13 @@ public class AssignableModelTest
     @Test
     public void testNoClick()
     {
-        final AtomicInteger clickNumber = new AtomicInteger();
-        final Services services = createServices(new AtomicBoolean(), clickNumber);
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final AssignableModel assignable = createAssignable(media, services);
-
-        final AtomicBoolean assigned = new AtomicBoolean();
-        addAssign(assignable, assigned);
-
+        assignable.setAssign(UtilAssignable.createAssign(assigned));
         assigned.set(false);
         clickNumber.set(0);
         assignable.update(1.0);
 
         Assert.assertEquals(0, clickNumber.get());
         Assert.assertFalse(assigned.get());
-
-        assignable.getOwner().notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -182,16 +117,10 @@ public class AssignableModelTest
     @Test
     public void testClickOutside()
     {
-        final AtomicBoolean clicked = new AtomicBoolean();
-        final AtomicInteger clickNumber = new AtomicInteger();
-        final Services services = createServices(clicked, clickNumber);
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final AssignableModel assignable = createAssignable(media, services);
-
-        final AtomicBoolean assigned = new AtomicBoolean();
-        addAssign(assignable, assigned);
         clicked.set(true);
         services.get(Cursor.class).setLocation(64, 1);
+
+        assignable.setAssign(UtilAssignable.createAssign(assigned));
         assignable.update(1.0);
 
         Assert.assertFalse(assigned.get());
@@ -200,9 +129,6 @@ public class AssignableModelTest
         assignable.update(1.0);
 
         Assert.assertFalse(assigned.get());
-
-        assignable.getOwner().notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -211,48 +137,14 @@ public class AssignableModelTest
     @Test
     public void testObjectIsAssign()
     {
-        final AtomicBoolean clicked = new AtomicBoolean();
-        final Services services = createServices(clicked, new AtomicInteger());
+        clicked.set(true);
 
-        final AtomicBoolean assigned = new AtomicBoolean();
         final Media media = ObjectGameTest.createMedia(ObjectAssign.class);
         final ObjectAssign object = new ObjectAssign(new Setup(media), assigned);
         final AssignableModel assignable = new AssignableModel();
         assignable.prepare(object, services);
-
-        clicked.set(true);
         assignable.update(1.0);
 
         Assert.assertTrue(assigned.get());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
-    }
-
-    /**
-     * Object containing action.
-     */
-    public static class ObjectAssign extends ObjectGame implements Assign
-    {
-        /** Action assigned flag. */
-        private final AtomicBoolean assigned;
-
-        /**
-         * Constructor.
-         * 
-         * @param setup The setup reference.
-         * @param assigned The assigned flag.
-         */
-        public ObjectAssign(Setup setup, AtomicBoolean assigned)
-        {
-            super(setup);
-            this.assigned = assigned;
-        }
-
-        @Override
-        public void assign()
-        {
-            assigned.set(true);
-        }
     }
 }

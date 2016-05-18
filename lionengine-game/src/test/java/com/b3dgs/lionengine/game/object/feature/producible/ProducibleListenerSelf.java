@@ -15,48 +15,41 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object.feature.producible;
+
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
- * Feature model base implementation.
+ * Producible self listener test.
  */
-public abstract class FeatureModel implements Feature
+class ProducibleListenerSelf extends ObjectGame implements ProducibleListener
 {
-    /** The owner reference. */
-    private Handlable owner;
-
     /**
-     * Create a trait model.
+     * Constructor.
+     * 
+     * @param setup The setup.
      */
-    public FeatureModel()
+    public ProducibleListenerSelf(Setup setup)
     {
-        super();
+        super(setup);
     }
 
-    /*
-     * Feature
-     */
-
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void notifyProductionStarted()
     {
-        this.owner = owner;
+        // Mock
     }
 
-    /**
-     * {@inheritDoc}
-     * Does nothing by default.
-     */
     @Override
-    public void checkListener(Object listener)
+    public void notifyProductionProgress()
     {
-        // Nothing by default
+        // Mock
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <O extends Handlable> O getOwner()
+    public void notifyProductionEnded()
     {
-        return (O) owner;
+        // Mock
     }
 }

@@ -15,48 +15,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object.feature.extractable;
 
 /**
- * Feature model base implementation.
+ * Resource type.
  */
-public abstract class FeatureModel implements Feature
+public enum ResourceType
 {
-    /** The owner reference. */
-    private Handlable owner;
-
-    /**
-     * Create a trait model.
-     */
-    public FeatureModel()
-    {
-        super();
-    }
-
-    /*
-     * Feature
-     */
-
-    @Override
-    public void prepare(Handlable owner, Services services)
-    {
-        this.owner = owner;
-    }
-
-    /**
-     * {@inheritDoc}
-     * Does nothing by default.
-     */
-    @Override
-    public void checkListener(Object listener)
-    {
-        // Nothing by default
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <O extends Handlable> O getOwner()
-    {
-        return (O) owner;
-    }
+    /** Resource wood. */
+    WOOD;
 }

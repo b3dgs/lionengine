@@ -201,6 +201,17 @@ public class LauncherModel extends FeatureModel implements Launcher
     }
 
     @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof LauncherListener)
+        {
+            addListener((LauncherListener) listener);
+        }
+    }
+
+    @Override
     public void addListener(LauncherListener listener)
     {
         listeners.add(listener);

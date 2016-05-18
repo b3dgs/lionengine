@@ -15,48 +15,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object.feature.attackable;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
- * Feature model base implementation.
+ * Attacker test.
  */
-public abstract class FeatureModel implements Feature
+class ObjectAttacker extends ObjectGame implements AttackerChecker
 {
-    /** The owner reference. */
-    private Handlable owner;
+    /** Can attack flag. */
+    private final AtomicBoolean canAttack;
 
     /**
-     * Create a trait model.
+     * Constructor.
+     * 
+     * @param setup The setup.
+     * @param canAttack Attack flag.
      */
-    public FeatureModel()
+    public ObjectAttacker(Setup setup, AtomicBoolean canAttack)
     {
-        super();
+        super(setup);
+        this.canAttack = canAttack;
     }
 
-    /*
-     * Feature
-     */
-
     @Override
-    public void prepare(Handlable owner, Services services)
+    public boolean canAttack()
     {
-        this.owner = owner;
-    }
-
-    /**
-     * {@inheritDoc}
-     * Does nothing by default.
-     */
-    @Override
-    public void checkListener(Object listener)
-    {
-        // Nothing by default
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <O extends Handlable> O getOwner()
-    {
-        return (O) owner;
+        return canAttack.get();
     }
 }

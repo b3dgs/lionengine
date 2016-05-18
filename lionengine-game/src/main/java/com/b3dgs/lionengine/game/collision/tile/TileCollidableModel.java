@@ -134,6 +134,17 @@ public class TileCollidableModel extends FeatureModel implements TileCollidable
     }
 
     @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof TileCollidableListener)
+        {
+            addListener((TileCollidableListener) listener);
+        }
+    }
+
+    @Override
     public void addListener(TileCollidableListener listener)
     {
         listeners.add(listener);

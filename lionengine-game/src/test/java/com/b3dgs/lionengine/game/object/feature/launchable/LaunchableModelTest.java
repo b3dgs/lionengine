@@ -17,22 +17,22 @@
  */
 package com.b3dgs.lionengine.game.object.feature.launchable;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
@@ -58,24 +58,29 @@ public class LaunchableModelTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
+    private final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+    private final Services services = new Services();
+    private final ObjectGame object = new ObjectGame(new Setup(media));
+    private final Launchable launchable = UtilLaunchable.createLaunchable(services, object);
+    private final Transformable transformable = object.getFeature(Transformable.class);
+
     /**
-     * Create launchable.
-     * 
-     * @param services The services.
-     * @param object The object.
-     * @return The launchable.
+     * Prepare test.
      */
-    private static Launchable createLaunchable(Services services, ObjectGame object)
+    @Before
+    public void prepare()
     {
-        object.addFeature(new TransformableModel());
+        services.add(new MapTileGame());
+    }
 
-        final Launchable launchable = new LaunchableModel();
-        launchable.prepare(object, services);
-        launchable.setDelay(10);
-        launchable.setLocation(0.0, 0.0);
-        launchable.setVector(new Force(0.0, 1.0));
-
-        return launchable;
+    /**
+     * Clean test.
+     */
+    @After
+    public void clean()
+    {
+        object.notifyDestroyed();
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -86,13 +91,6 @@ public class LaunchableModelTest
     @Test
     public void testLaunch() throws InterruptedException
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        final Launchable launchable = createLaunchable(services, object);
-        services.add(new MapTileGame());
-        final Transformable transformable = object.getFeature(Transformable.class);
-
         launchable.launch();
 
         Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
@@ -121,9 +119,6 @@ public class LaunchableModelTest
         Assert.assertEquals(1.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(2.0, transformable.getY(), UtilTests.PRECISION);
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -134,15 +129,9 @@ public class LaunchableModelTest
     @Test
     public void testLaunchNoVector() throws InterruptedException
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        services.add(new MapTileGame());
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        final Launchable launchable = createLaunchable(services, object);
         launchable.setVector(null);
         launchable.launch();
         launchable.update(1.0);
-        final Transformable transformable = object.getFeature(Transformable.class);
 
         Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
@@ -156,8 +145,5 @@ public class LaunchableModelTest
         Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getY(), UtilTests.PRECISION);
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 }

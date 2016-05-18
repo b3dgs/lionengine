@@ -89,6 +89,17 @@ public class ProducibleModel extends FeatureModel implements Producible
     }
 
     @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof ProducibleListener)
+        {
+            addListener((ProducibleListener) listener);
+        }
+    }
+
+    @Override
     public void addListener(ProducibleListener listener)
     {
         listeners.add(listener);

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object.feature.body;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -57,20 +58,31 @@ public class BodyTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
+    private final Body body = new BodyModel();
+    private final Services services = new Services();
+    private final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+    private final ObjectGame object = new ObjectGame(new Setup(media));
+    private final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
+
+    /**
+     * Clean test.
+     */
+    @After
+    public void clean()
+    {
+        object.notifyDestroyed();
+        Assert.assertTrue(media.getFile().delete());
+    }
+
     /**
      * Test the gravity on body.
      */
     @Test
     public void testGravity()
     {
-        final Body body = new BodyModel();
-        final Services services = new Services();
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
         transformable.teleport(0, 6.0);
-        body.prepare(object, services);
 
+        body.prepare(object, services);
         body.setMass(2.0);
 
         Assert.assertEquals(2.0, body.getMass(), UtilTests.PRECISION);
@@ -96,9 +108,6 @@ public class BodyTest
 
         Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(-8.0, transformable.getY(), UtilTests.PRECISION);
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -107,14 +116,9 @@ public class BodyTest
     @Test
     public void testResetGravity()
     {
-        final Body body = new BodyModel();
-        final Services services = new Services();
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
         transformable.teleport(0, 6.0);
-        body.prepare(object, services);
 
+        body.prepare(object, services);
         body.setMass(2.0);
         body.setGravity(3.0);
         body.setGravityMax(8.0);
@@ -129,9 +133,6 @@ public class BodyTest
 
         Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(-6.0, transformable.getY(), UtilTests.PRECISION);
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -140,14 +141,9 @@ public class BodyTest
     @Test
     public void testFps()
     {
-        final Body body = new BodyModel();
-        final Services services = new Services();
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        final Transformable transformable = object.addFeatureAndGet(new TransformableModel());
         transformable.teleport(0, 6.0);
-        body.prepare(object, services);
 
+        body.prepare(object, services);
         body.setMass(1.0);
         body.setGravity(1.0);
         body.setDesiredFps(50);
@@ -161,8 +157,5 @@ public class BodyTest
 
         Assert.assertEquals(4.98, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(4.45, transformable.getY(), UtilTests.PRECISION);
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 }

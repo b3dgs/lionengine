@@ -27,11 +27,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
-import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.SizeConfig;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
@@ -58,64 +54,17 @@ public class ProducibleModelTest
     }
 
     /**
-     * Create media.
-     * 
-     * @return The media.
-     */
-    public static Media createProducibleMedia()
-    {
-        final ProducibleConfig producibleConfig = new ProducibleConfig(1, 2, 3);
-
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final XmlNode root = Xml.create("test");
-        root.add(SizeConfig.exports(new SizeConfig(producibleConfig.getWidth(), producibleConfig.getHeight())));
-        root.add(ProducibleConfig.exports(producibleConfig));
-        Xml.save(root, media);
-
-        return media;
-    }
-
-    /**
-     * Create listener.
-     * 
-     * @return The listener.
-     */
-    private ProducibleListener createListener()
-    {
-        return new ProducibleListener()
-        {
-            @Override
-            public void notifyProductionStarted()
-            {
-                // Mock
-            }
-
-            @Override
-            public void notifyProductionProgress()
-            {
-                // Mock
-            }
-
-            @Override
-            public void notifyProductionEnded()
-            {
-                // Mock
-            }
-        };
-    }
-
-    /**
      * Test the producible.
      */
     @Test
     public void testProducible()
     {
         final Services services = new Services();
-        final Media media = createProducibleMedia();
+        final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
         final ObjectGame object = new ObjectGame(setup);
         final Producible producible = new ProducibleModel(setup);
-        final ProducibleListener listener = createListener();
+        final ProducibleListener listener = UtilProducible.createListener();
         producible.setLocation(1.0, 2.0);
         producible.prepare(object, services);
         producible.addListener(listener);
@@ -139,7 +88,7 @@ public class ProducibleModelTest
     public void testProducibleSelf()
     {
         final Services services = new Services();
-        final Media media = createProducibleMedia();
+        final Media media = UtilProducible.createProducibleMedia();
         final Setup setup = new Setup(media);
         final ProducibleListenerSelf object = new ProducibleListenerSelf(setup);
         final Producible producible = new ProducibleModel(setup);
@@ -152,36 +101,20 @@ public class ProducibleModelTest
     }
 
     /**
-     * Producible self listener test.
+     * Test the producible listener auto add.
      */
-    private static class ProducibleListenerSelf extends ObjectGame implements ProducibleListener
+    @Test
+    public void testListenerAutoAdd()
     {
-        /**
-         * Constructor.
-         * 
-         * @param setup The setup.
-         */
-        public ProducibleListenerSelf(Setup setup)
-        {
-            super(setup);
-        }
+        final Media media = UtilProducible.createProducibleMedia();
+        final Setup setup = new Setup(media);
+        final ProducibleListenerSelf object = new ProducibleListenerSelf(setup);
+        final Producible producible = new ProducibleModel(setup);
+        producible.checkListener(object);
 
-        @Override
-        public void notifyProductionStarted()
-        {
-            // Mock
-        }
+        Assert.assertTrue(producible.getListeners().contains(object));
 
-        @Override
-        public void notifyProductionProgress()
-        {
-            // Mock
-        }
-
-        @Override
-        public void notifyProductionEnded()
-        {
-            // Mock
-        }
+        object.notifyDestroyed();
+        Assert.assertTrue(media.getFile().delete());
     }
 }

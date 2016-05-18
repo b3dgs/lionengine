@@ -15,48 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object.feature.launchable;
+
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
+import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 
 /**
- * Feature model base implementation.
+ * Launchable object test.
  */
-public abstract class FeatureModel implements Feature
+class LaunchableObject extends ObjectGame
 {
-    /** The owner reference. */
-    private Handlable owner;
-
     /**
-     * Create a trait model.
+     * Constructor.
+     * 
+     * @param setup The setup.
      */
-    public FeatureModel()
+    public LaunchableObject(Setup setup)
     {
-        super();
-    }
-
-    /*
-     * Feature
-     */
-
-    @Override
-    public void prepare(Handlable owner, Services services)
-    {
-        this.owner = owner;
-    }
-
-    /**
-     * {@inheritDoc}
-     * Does nothing by default.
-     */
-    @Override
-    public void checkListener(Object listener)
-    {
-        // Nothing by default
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <O extends Handlable> O getOwner()
-    {
-        return (O) owner;
+        super(setup);
+        addFeatureAndGet(new TransformableModel());
+        addFeatureAndGet(new LaunchableModel());
     }
 }

@@ -225,6 +225,17 @@ public class ProducerModel extends FeatureModel implements Producer
     }
 
     @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof ProducerListener)
+        {
+            addListener((ProducerListener) listener);
+        }
+    }
+
+    @Override
     public void addListener(ProducerListener listener)
     {
         listeners.add(listener);

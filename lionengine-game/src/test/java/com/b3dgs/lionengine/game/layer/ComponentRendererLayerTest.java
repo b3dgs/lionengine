@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.layer;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.AfterClass;
@@ -107,7 +108,6 @@ public class ComponentRendererLayerTest
 
         final Handler handler = new Handler(services);
         handler.addRenderable(component);
-        handler.addListener(component);
         final AtomicInteger last = new AtomicInteger();
 
         final Layerable object1 = createObject(services, handler, last);
@@ -138,5 +138,36 @@ public class ComponentRendererLayerTest
         component.render(null, null);
 
         Assert.assertEquals(object3.getOwner().getId().intValue(), last.get());
+    }
+
+    /**
+     * Test the component with default value.
+     */
+    @Test
+    public void testComponentLayerDefault()
+    {
+        final ComponentRendererLayer component = new ComponentRendererLayer();
+        final Services services = new Services();
+        services.add(component);
+
+        final Handler handler = new Handler(services);
+        handler.addRenderable(component);
+        final AtomicBoolean auto = new AtomicBoolean();
+
+        final ObjectGame object = new ObjectGame(new Setup(config));
+        object.addFeature(new DisplayableModel(new Renderable()
+        {
+            @Override
+            public void render(Graphic g)
+            {
+                auto.set(true);
+            }
+        }));
+        handler.add(object);
+
+        handler.update(1.0);
+        component.render(null, null);
+
+        Assert.assertTrue(auto.get());
     }
 }

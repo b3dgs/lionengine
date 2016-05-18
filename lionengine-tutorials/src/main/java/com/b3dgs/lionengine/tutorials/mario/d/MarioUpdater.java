@@ -55,7 +55,6 @@ public class MarioUpdater extends EntityUpdater implements CollidableListener
 
         super.prepare(owner, services);
 
-        collidable.addListener(this);
         setControl(keyboard);
         respawn(160);
     }

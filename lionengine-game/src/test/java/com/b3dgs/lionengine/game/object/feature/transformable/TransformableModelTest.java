@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.game.object.feature.transformable;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -28,13 +30,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.object.ObjectConfig;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.SizeConfig;
-import com.b3dgs.lionengine.game.object.UtilSetup;
-import com.b3dgs.lionengine.stream.Xml;
-import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
@@ -60,21 +57,30 @@ public class TransformableModelTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
+    private final Media media = UtilTransformable.createMedia(ObjectGame.class);
+    private final Services services = new Services();
+    private final Setup setup = new Setup(media);
+    private final ObjectGame object = new ObjectGame(setup);
+    private final Transformable transformable = new TransformableModel(setup);
+
     /**
-     * Create the object media.
-     * 
-     * @param clazz The class type.
-     * @return The object media.
+     * Prepare test.
      */
-    private static Media createMedia(Class<?> clazz)
+    @Before
+    public void prepare()
     {
-        final Media media = Medias.create("object.xml");
-        final XmlNode root = Xml.create("test");
-        root.add(ObjectConfig.exportClass(clazz.getName()));
-        root.add(ObjectConfig.exportSetup("com.b3dgs.lionengine.game.object.Setup"));
-        root.add(SizeConfig.exports(new SizeConfig(16, 32)));
-        Xml.save(root, media);
-        return media;
+        services.add(new MapTileGame());
+        transformable.prepare(object, services);
+    }
+
+    /**
+     * Clean test.
+     */
+    @After
+    public void clean()
+    {
+        object.notifyDestroyed();
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -83,17 +89,10 @@ public class TransformableModelTest
     @Test
     public void testDefaultSize()
     {
-        final Media media = UtilSetup.createConfig();
-        final Services services = new Services();
-        services.add(new MapTileGame());
-
-        final ObjectGame object = new ObjectGame(new Setup(media));
         final Transformable transformable = new TransformableModel();
-        transformable.prepare(object, services);
 
         Assert.assertEquals(0, transformable.getWidth());
         Assert.assertEquals(0, transformable.getHeight());
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -102,14 +101,6 @@ public class TransformableModelTest
     @Test
     public void testTeleport()
     {
-        final Media media = createMedia(ObjectGame.class);
-        final Services services = new Services();
-        services.add(new MapTileGame());
-
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        final Transformable transformable = new TransformableModel();
-        transformable.prepare(object, services);
-
         Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
@@ -135,9 +126,6 @@ public class TransformableModelTest
         Assert.assertEquals(3.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(2.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(3.0, transformable.getY(), UtilTests.PRECISION);
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -146,14 +134,6 @@ public class TransformableModelTest
     @Test
     public void testSetLocation()
     {
-        final Media media = createMedia(ObjectGame.class);
-        final Services services = new Services();
-        services.add(new MapTileGame());
-
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        final Transformable transformable = new TransformableModel();
-        transformable.prepare(object, services);
-
         Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
@@ -179,9 +159,6 @@ public class TransformableModelTest
         Assert.assertEquals(1.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(2.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(3.0, transformable.getY(), UtilTests.PRECISION);
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -190,15 +167,6 @@ public class TransformableModelTest
     @Test
     public void testSetSize()
     {
-        final Media media = createMedia(ObjectGame.class);
-        final Services services = new Services();
-        services.add(new MapTileGame());
-
-        final Setup setup = new Setup(media);
-        final ObjectGame object = new ObjectGame(setup);
-        final Transformable transformable = new TransformableModel(setup);
-        transformable.prepare(object, services);
-
         Assert.assertEquals(16, transformable.getOldWidth(), UtilTests.PRECISION);
         Assert.assertEquals(32, transformable.getOldHeight(), UtilTests.PRECISION);
         Assert.assertEquals(16, transformable.getWidth(), UtilTests.PRECISION);
@@ -210,9 +178,6 @@ public class TransformableModelTest
         Assert.assertEquals(32, transformable.getOldHeight(), UtilTests.PRECISION);
         Assert.assertEquals(64, transformable.getWidth(), UtilTests.PRECISION);
         Assert.assertEquals(48, transformable.getHeight(), UtilTests.PRECISION);
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -221,14 +186,6 @@ public class TransformableModelTest
     @Test
     public void testMoveLocation()
     {
-        final Media media = createMedia(ObjectGame.class);
-        final Services services = new Services();
-        services.add(new MapTileGame());
-
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        final Transformable transformable = new TransformableModel();
-        transformable.prepare(object, services);
-
         Assert.assertEquals(0.0, transformable.getOldX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, transformable.getX(), UtilTests.PRECISION);
@@ -247,8 +204,5 @@ public class TransformableModelTest
         Assert.assertEquals(2.0, transformable.getOldY(), UtilTests.PRECISION);
         Assert.assertEquals(-2.0, transformable.getX(), UtilTests.PRECISION);
         Assert.assertEquals(-3.0, transformable.getY(), UtilTests.PRECISION);
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 }

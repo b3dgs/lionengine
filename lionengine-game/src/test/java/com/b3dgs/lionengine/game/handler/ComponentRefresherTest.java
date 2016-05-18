@@ -23,11 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.handler.ComponentRefresher;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Refreshable;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 
@@ -104,6 +99,12 @@ public class ComponentRefresherTest
 
         @Override
         public void prepare(Handlable owner, Services services)
+        {
+            // Mock
+        }
+
+        @Override
+        public void checkListener(Object listener)
         {
             // Mock
         }

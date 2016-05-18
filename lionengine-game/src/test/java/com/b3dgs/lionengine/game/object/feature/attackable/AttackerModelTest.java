@@ -21,23 +21,22 @@ import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.feature.animatable.Animatable;
-import com.b3dgs.lionengine.game.object.feature.animatable.AnimatableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilEnum;
@@ -71,17 +70,31 @@ public class AttackerModelTest
         HACK.restore();
     }
 
+    private final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+    private final Services services = new Services();
+    private final AtomicBoolean canAttack = new AtomicBoolean();
+    private final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
+    private final Transformable target = new TransformableModel();
+    private Attacker attacker;
+
     /**
-     * Create the object.
-     * 
-     * @param object The object.
+     * Prepare test.
      */
-    private static void prepareObject(ObjectGame object)
+    @Before
+    public void prepare()
     {
-        final Animator animator = Anim.createAnimator();
-        animator.play(Anim.createAnimation("test", 1, 1, 1.0, false, false));
-        object.addFeature(new AnimatableModel(animator));
-        object.addFeature(new TransformableModel());
+        UtilAttackable.prepareObject(object);
+        attacker = UtilAttackable.createAttacker(object, services);
+    }
+
+    /**
+     * Clean test.
+     */
+    @After
+    public void clean()
+    {
+        object.notifyDestroyed();
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -108,93 +121,14 @@ public class AttackerModelTest
     }
 
     /**
-     * Create an attacker.
-     * 
-     * @param object The object.
-     * @param services The services.
-     * @return The attacker.
-     */
-    private static Attacker createAttacker(ObjectGame object, Services services)
-    {
-        final Attacker attacker = new AttackerModel();
-        attacker.setAttackDamages(1, 2);
-        attacker.setAttackDistance(1, 2);
-        attacker.setAttackFrame(1);
-        attacker.setAttackTimer(0);
-        attacker.prepare(object, services);
-        return attacker;
-    }
-
-    /**
-     * Add the listener.
-     * 
-     * @param attacker The attacker.
-     * @param preparing The preparing state.
-     * @param reaching The reaching state.
-     * @param started The attack started state.
-     * @param ended The attack ended state.
-     * @param anim The anim state.
-     */
-    private static void addListener(Attacker attacker,
-                                    final AtomicBoolean preparing,
-                                    final AtomicReference<Transformable> reaching,
-                                    final AtomicReference<Transformable> started,
-                                    final AtomicReference<Transformable> ended,
-                                    final AtomicBoolean anim)
-    {
-        attacker.addListener(new AttackerListener()
-        {
-            @Override
-            public void notifyReachingTarget(Transformable target)
-            {
-                reaching.set(target);
-            }
-
-            @Override
-            public void notifyPreparingAttack()
-            {
-                preparing.set(true);
-            }
-
-            @Override
-            public void notifyAttackStarted(Transformable target)
-            {
-                started.set(target);
-            }
-
-            @Override
-            public void notifyAttackEnded(int damages, Transformable target)
-            {
-                ended.set(target);
-            }
-
-            @Override
-            public void notifyAttackAnimEnded()
-            {
-                anim.set(true);
-            }
-        });
-    }
-
-    /**
      * Test the target.
      */
     @Test
     public void testTarget()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
-        prepareObject(object);
-        final Attacker attacker = createAttacker(object, services);
-        final Transformable target = new TransformableModel();
         attacker.attack(target);
 
         Assert.assertEquals(target, attacker.getTarget());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -203,13 +137,6 @@ public class AttackerModelTest
     @Test
     public void testCantAttack()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
-        prepareObject(object);
-        final Attacker attacker = createAttacker(object, services);
-        final Transformable target = new TransformableModel();
         target.teleport(0, 1);
         attacker.attack(target);
 
@@ -218,9 +145,6 @@ public class AttackerModelTest
 
         Assert.assertNotNull(attacker.getTarget());
         Assert.assertFalse(attacker.isAttacking());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -229,14 +153,8 @@ public class AttackerModelTest
     @Test
     public void testAttackNull()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
-        prepareObject(object);
-        final Attacker attacker = createAttacker(object, services);
         canAttack.set(true);
-        attacker.attack(new TransformableModel());
+        attacker.attack(target);
 
         Assert.assertNotNull(attacker.getTarget());
         Assert.assertFalse(attacker.isAttacking());
@@ -257,9 +175,6 @@ public class AttackerModelTest
 
         Assert.assertNull(attacker.getTarget());
         Assert.assertFalse(attacker.isAttacking());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -268,12 +183,6 @@ public class AttackerModelTest
     @Test
     public void testAttackDifferent()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
-        prepareObject(object);
-        final Attacker attacker = createAttacker(object, services);
         canAttack.set(true);
 
         final Transformable target1 = new TransformableModel();
@@ -299,9 +208,6 @@ public class AttackerModelTest
 
         Assert.assertEquals(target2, attacker.getTarget());
         Assert.assertFalse(attacker.isAttacking());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -310,12 +216,6 @@ public class AttackerModelTest
     @Test
     public void testStopAttack()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
-        prepareObject(object);
-        final Attacker attacker = createAttacker(object, services);
         canAttack.set(true);
 
         final Transformable target = new TransformableModel();
@@ -333,9 +233,6 @@ public class AttackerModelTest
         attacker.update(1.0);
 
         Assert.assertFalse(attacker.isAttacking());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -344,23 +241,16 @@ public class AttackerModelTest
     @Test
     public void testSelfListener()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        final AtomicBoolean canAttack = new AtomicBoolean();
         final ObjectAttackerSelf object = new ObjectAttackerSelf(new Setup(media));
-        prepareObject(object);
-        final Attacker attacker = createAttacker(object, services);
+        UtilAttackable.prepareObject(object);
+        final Attacker attacker = UtilAttackable.createAttacker(object, services);
         canAttack.set(true);
 
-        final Transformable target = new TransformableModel();
         target.teleport(10, 10);
         attacker.attack(target);
         attacker.update(1.0);
 
         Assert.assertTrue(object.flag.get());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -371,12 +261,6 @@ public class AttackerModelTest
     @Test
     public void testListener() throws InterruptedException
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Services services = new Services();
-        final AtomicBoolean canAttack = new AtomicBoolean();
-        final ObjectAttacker object = new ObjectAttacker(new Setup(media), canAttack);
-        prepareObject(object);
-        final Attacker attacker = createAttacker(object, services);
         canAttack.set(true);
 
         final AtomicBoolean preparing = new AtomicBoolean();
@@ -384,11 +268,9 @@ public class AttackerModelTest
         final AtomicReference<Transformable> started = new AtomicReference<Transformable>();
         final AtomicBoolean anim = new AtomicBoolean();
         final AtomicReference<Transformable> ended = new AtomicReference<Transformable>();
-        addListener(attacker, preparing, reaching, started, ended, anim);
+        attacker.addListener(UtilAttackable.createListener(preparing, reaching, started, ended, anim));
 
         attacker.update(1.0);
-
-        final Transformable target = new TransformableModel();
         attacker.getOwner().getFeature(Transformable.class).teleport(0, 0);
         target.teleport(5, 5);
         attacker.attack(target);
@@ -421,9 +303,23 @@ public class AttackerModelTest
         attacker.update(1.0);
 
         Assert.assertTrue(anim.get());
+    }
 
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
+    /**
+     * Test the auto add listener.
+     */
+    @Test
+    public void testListenerAutoAdd()
+    {
+        final ObjectAttackerSelf object = new ObjectAttackerSelf(new Setup(media));
+        UtilAttackable.prepareObject(object);
+        final Attacker attacker = UtilAttackable.createAttacker(object, new Services());
+        attacker.checkListener(object);
+
+        attacker.attack(target);
+        attacker.update(1.0);
+
+        Assert.assertTrue(object.flag.get());
     }
 
     /**
@@ -448,88 +344,6 @@ public class AttackerModelTest
         catch (final LionEngineException exception)
         {
             Assert.assertEquals("Unknown enum: FAIL", exception.getMessage());
-        }
-    }
-
-    /**
-     * Attacker test.
-     */
-    private static class ObjectAttacker extends ObjectGame implements AttackerChecker
-    {
-        /** Can attack flag. */
-        private final AtomicBoolean canAttack;
-
-        /**
-         * Constructor.
-         * 
-         * @param setup The setup.
-         * @param canAttack Attack flag.
-         */
-        public ObjectAttacker(Setup setup, AtomicBoolean canAttack)
-        {
-            super(setup);
-            this.canAttack = canAttack;
-        }
-
-        @Override
-        public boolean canAttack()
-        {
-            return canAttack.get();
-        }
-    }
-
-    /**
-     * Attacker test.
-     */
-    private static class ObjectAttackerSelf extends ObjectGame implements AttackerChecker, AttackerListener
-    {
-        /** Flag. */
-        private final AtomicBoolean flag = new AtomicBoolean();
-
-        /**
-         * Constructor.
-         * 
-         * @param setup The setup.s
-         */
-        public ObjectAttackerSelf(Setup setup)
-        {
-            super(setup);
-        }
-
-        @Override
-        public boolean canAttack()
-        {
-            return true;
-        }
-
-        @Override
-        public void notifyReachingTarget(Transformable target)
-        {
-            flag.set(true);
-        }
-
-        @Override
-        public void notifyAttackStarted(Transformable target)
-        {
-            // Mock
-        }
-
-        @Override
-        public void notifyAttackEnded(int damages, Transformable target)
-        {
-            // Mock
-        }
-
-        @Override
-        public void notifyAttackAnimEnded()
-        {
-            // Mock
-        }
-
-        @Override
-        public void notifyPreparingAttack()
-        {
-            // Mock
         }
     }
 }

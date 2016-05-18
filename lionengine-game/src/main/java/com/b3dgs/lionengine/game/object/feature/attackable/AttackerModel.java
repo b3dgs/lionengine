@@ -215,6 +215,17 @@ public class AttackerModel extends FeatureModel implements Attacker
     }
 
     @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof AttackerListener)
+        {
+            addListener((AttackerListener) listener);
+        }
+    }
+
+    @Override
     public void addListener(AttackerListener listener)
     {
         listeners.add(listener);

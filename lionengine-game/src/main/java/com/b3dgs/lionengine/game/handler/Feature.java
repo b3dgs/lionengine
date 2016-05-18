@@ -31,6 +31,13 @@ public interface Feature
     void prepare(Handlable owner, Services services);
 
     /**
+     * Check object interface listening and add them automatically.
+     * 
+     * @param listener The listener to check.
+     */
+    void checkListener(Object listener);
+
+    /**
      * Get the owner reference.
      * 
      * @param <O> The real handlable type.

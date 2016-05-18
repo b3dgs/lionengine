@@ -58,7 +58,6 @@ public class GoombaUpdater extends EntityUpdater implements InputDeviceDirection
 
         super.prepare(owner, services);
 
-        collidable.addListener(this);
         setControl(this);
     }
 

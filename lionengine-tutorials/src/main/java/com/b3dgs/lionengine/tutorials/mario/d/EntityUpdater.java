@@ -89,8 +89,6 @@ class EntityUpdater extends FeatureModel implements Refreshable, TileCollidableL
 
         StateAnimationBased.Util.loadStates(EntityState.values(), factory, owner, configurer);
         handler.changeState(EntityState.IDLE);
-
-        tileCollidable.addListener(this);
     }
 
     /**

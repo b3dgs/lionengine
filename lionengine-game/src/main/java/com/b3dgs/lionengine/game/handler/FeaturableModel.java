@@ -145,6 +145,14 @@ public class FeaturableModel implements Featurable
         {
             fillServices(feature, services);
             feature.prepare(owner, services);
+
+            for (final Feature current : featuresToPrepare)
+            {
+                if (feature != current)
+                {
+                    current.checkListener(feature);
+                }
+            }
         }
         featuresToPrepare.clear();
     }

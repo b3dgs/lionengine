@@ -24,14 +24,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.handler.Featurable;
-import com.b3dgs.lionengine.game.handler.FeaturableModel;
-import com.b3dgs.lionengine.game.handler.Feature;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.HandlableModel;
-import com.b3dgs.lionengine.game.handler.Service;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.Factory;
 
 /**
@@ -233,6 +225,12 @@ public class FeaturableModelTest
     {
         @Override
         public void prepare(Handlable owner, Services services)
+        {
+            // Mock
+        }
+
+        @Override
+        public void checkListener(Object listener)
         {
             // Mock
         }

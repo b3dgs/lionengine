@@ -19,11 +19,12 @@ package com.b3dgs.lionengine.game.object.feature.producible;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,13 +32,11 @@ import com.b3dgs.lionengine.Constant;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.ObjectGameTest;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilEnum;
 import com.b3dgs.lionengine.test.UtilTests;
 import com.b3dgs.lionengine.util.UtilReflection;
@@ -71,100 +70,30 @@ public class ProducerModelTest
         HACK.restore();
     }
 
+    private final Services services = new Services();
+    private final Media media = ObjectGameTest.createMedia(ProducerObject.class);
+    private final ProducerObject object = new ProducerObject(new Setup(media));
+    private final ProducerModel producer = new ProducerModel();
+
     /**
-     * Create listener.
-     * 
-     * @param start The start.
-     * @param current The current.
-     * @param done The done.
-     * @param cant The cannot.
-     * @return The listener.
+     * Prepare test.
      */
-    private static ProducerListener createProducerListener(final AtomicReference<Producible> start,
-                                                           final AtomicReference<Producible> current,
-                                                           final AtomicReference<Producible> done,
-                                                           final AtomicReference<Producible> cant)
+    @Before
+    public void prepare()
     {
-        return new ProducerListener()
-        {
-            @Override
-            public void notifyStartProduction(Producible producible, Handlable handlable)
-            {
-                start.set(producible);
-            }
-
-            @Override
-            public void notifyProducing(Producible producible, Handlable handlable)
-            {
-                current.set(producible);
-            }
-
-            @Override
-            public void notifyProduced(Producible producible, Handlable handlable)
-            {
-                done.set(producible);
-            }
-
-            @Override
-            public void notifyCanNotProduce(Producible producible)
-            {
-                cant.set(producible);
-            }
-        };
+        services.add(new Handler(services));
+        services.add(Integer.valueOf(50));
+        producer.prepare(object, services);
     }
 
     /**
-     * Create listener.
-     * 
-     * @param start The start.
-     * @param progress The progress.
-     * @param end The end.
-     * 
-     * @return The listener.
+     * Clean test.
      */
-    private static ProducibleListener createProducibleListener(final AtomicBoolean start,
-                                                               final AtomicBoolean progress,
-                                                               final AtomicBoolean end)
+    @After
+    public void clean()
     {
-        return new ProducibleListener()
-        {
-            @Override
-            public void notifyProductionStarted()
-            {
-                start.set(true);
-            }
-
-            @Override
-            public void notifyProductionProgress()
-            {
-                progress.set(true);
-            }
-
-            @Override
-            public void notifyProductionEnded()
-            {
-                end.set(true);
-            }
-        };
-    }
-
-    /**
-     * Create producible.
-     * 
-     * @param services The services.
-     * @return The producible.
-     */
-    private static Producible createProducible(Services services)
-    {
-        final Media media = ProducibleModelTest.createProducibleMedia();
-        final Setup setup = new Setup(media);
-        final ObjectGame object = new ObjectGame(setup);
-        object.addFeature(new TransformableModel());
-
-        final Producible producible = new ProducibleModel(setup);
-        producible.prepare(object, services);
-
-        return producible;
+        object.notifyDestroyed();
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -173,20 +102,13 @@ public class ProducerModelTest
     @Test
     public void testProduction()
     {
-        final Services services = new Services();
-        services.add(new Handler(services));
-        services.add(Integer.valueOf(50));
-        final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media));
-        final ProducerModel producer = new ProducerModel();
-        producer.prepare(object, services);
         producer.setStepsPerSecond(25.0);
 
         final AtomicReference<Producible> start = new AtomicReference<Producible>();
         final AtomicReference<Producible> current = new AtomicReference<Producible>();
         final AtomicReference<Producible> done = new AtomicReference<Producible>();
         final AtomicReference<Producible> cant = new AtomicReference<Producible>();
-        producer.addListener(createProducerListener(start, current, done, cant));
+        producer.addListener(UtilProducible.createProducerListener(start, current, done, cant));
 
         producer.update(1.0);
 
@@ -196,7 +118,7 @@ public class ProducerModelTest
         Assert.assertEquals(0, producer.getQueueLength());
         Assert.assertFalse(producer.isProducing());
 
-        final Producible producible = createProducible(services);
+        final Producible producible = UtilProducible.createProducible(services);
         producer.addToProductionQueue(producible);
 
         Assert.assertEquals(0, producer.getQueueLength());
@@ -235,9 +157,6 @@ public class ProducerModelTest
         Assert.assertEquals(producible, done.get());
         Assert.assertNull(cant.get());
         Assert.assertFalse(producer.isProducing());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -246,17 +165,13 @@ public class ProducerModelTest
     @Test
     public void testProductionListenerSelf()
     {
-        final Services services = new Services();
-        services.add(new Handler(services));
-        services.add(Integer.valueOf(50));
-        final Media media = ObjectGameTest.createMedia(ProducerObject.class);
         final ProducerObjectSelf object = new ProducerObjectSelf(new Setup(media));
         final ProducerModel producer = new ProducerModel();
         producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
         producer.addListener(object);
 
-        final Producible producible = createProducible(services);
+        final Producible producible = UtilProducible.createProducible(services);
         producer.addToProductionQueue(producible);
 
         Assert.assertEquals(0, object.flag.get());
@@ -274,9 +189,6 @@ public class ProducerModelTest
         Assert.assertEquals(3, object.flag.get());
 
         producer.update(1.0);
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -285,20 +197,13 @@ public class ProducerModelTest
     @Test
     public void testPending()
     {
-        final Services services = new Services();
-        services.add(new Handler(services));
-        services.add(Integer.valueOf(50));
-        final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media));
-        final ProducerModel producer = new ProducerModel();
-        producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
 
         final AtomicReference<Producible> start = new AtomicReference<Producible>();
         final AtomicReference<Producible> skip = new AtomicReference<Producible>();
-        producer.addListener(createProducerListener(start, skip, skip, skip));
+        producer.addListener(UtilProducible.createProducerListener(start, skip, skip, skip));
 
-        final Producible producible = createProducible(services);
+        final Producible producible = UtilProducible.createProducible(services);
         producer.addToProductionQueue(producible);
         producer.addToProductionQueue(producible);
 
@@ -320,9 +225,6 @@ public class ProducerModelTest
         Assert.assertEquals(0, producer.getQueueLength());
         Assert.assertNotNull(start.get());
         Assert.assertFalse(producer.iterator().hasNext());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -331,20 +233,13 @@ public class ProducerModelTest
     @Test
     public void testPendingCannot()
     {
-        final Services services = new Services();
-        services.add(new Handler(services));
-        services.add(Integer.valueOf(50));
-        final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media));
-        final ProducerModel producer = new ProducerModel();
-        producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
 
         final AtomicReference<Producible> start = new AtomicReference<Producible>();
         final AtomicReference<Producible> skip = new AtomicReference<Producible>();
-        producer.addListener(createProducerListener(start, skip, skip, skip));
+        producer.addListener(UtilProducible.createProducerListener(start, skip, skip, skip));
 
-        final Producible producible = createProducible(services);
+        final Producible producible = UtilProducible.createProducible(services);
         producer.addToProductionQueue(producible);
         producer.addToProductionQueue(producible);
 
@@ -356,9 +251,6 @@ public class ProducerModelTest
 
         Assert.assertEquals(1, producer.getQueueLength());
         Assert.assertNotNull(start.get());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -367,22 +259,15 @@ public class ProducerModelTest
     @Test
     public void testSkip()
     {
-        final Services services = new Services();
-        services.add(new Handler(services));
-        services.add(Integer.valueOf(50));
-        final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media));
-        final ProducerModel producer = new ProducerModel();
-        producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
 
         final AtomicReference<Producible> done = new AtomicReference<Producible>();
         final AtomicReference<Producible> skip = new AtomicReference<Producible>();
-        producer.addListener(createProducerListener(skip, skip, done, skip));
+        producer.addListener(UtilProducible.createProducerListener(skip, skip, done, skip));
 
         producer.skipProduction();
 
-        final Producible producible = createProducible(services);
+        final Producible producible = UtilProducible.createProducible(services);
         producer.addToProductionQueue(producible);
         producer.addToProductionQueue(producible);
 
@@ -393,9 +278,6 @@ public class ProducerModelTest
         producer.update(1.0);
 
         Assert.assertNull(done.get());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -404,20 +286,13 @@ public class ProducerModelTest
     @Test
     public void testStop()
     {
-        final Services services = new Services();
-        services.add(new Handler(services));
-        services.add(Integer.valueOf(50));
-        final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media));
-        final ProducerModel producer = new ProducerModel();
-        producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
 
         final AtomicReference<Producible> done = new AtomicReference<Producible>();
         final AtomicReference<Producible> skip = new AtomicReference<Producible>();
-        producer.addListener(createProducerListener(skip, skip, done, skip));
+        producer.addListener(UtilProducible.createProducerListener(skip, skip, done, skip));
 
-        final Producible producible = createProducible(services);
+        final Producible producible = UtilProducible.createProducible(services);
         producer.addToProductionQueue(producible);
         producer.addToProductionQueue(producible);
 
@@ -436,9 +311,6 @@ public class ProducerModelTest
         producer.update(1.0);
 
         Assert.assertNull(done.get());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -447,29 +319,19 @@ public class ProducerModelTest
     @Test
     public void testCannot()
     {
-        final Services services = new Services();
-        services.add(new Handler(services));
-        services.add(Integer.valueOf(50));
-        final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media));
         object.check.set(false);
-        final ProducerModel producer = new ProducerModel();
-        producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
 
         final AtomicReference<Producible> skip = new AtomicReference<Producible>();
         final AtomicReference<Producible> cant = new AtomicReference<Producible>();
-        producer.addListener(createProducerListener(skip, skip, skip, cant));
+        producer.addListener(UtilProducible.createProducerListener(skip, skip, skip, cant));
 
-        final Producible producible = createProducible(services);
+        final Producible producible = UtilProducible.createProducible(services);
         producer.addToProductionQueue(producible);
         producer.update(1.0);
 
         Assert.assertFalse(producer.isProducing());
         Assert.assertEquals(producible, cant.get());
-
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -478,20 +340,13 @@ public class ProducerModelTest
     @Test
     public void testProducibleListener()
     {
-        final Services services = new Services();
-        services.add(new Handler(services));
-        services.add(Integer.valueOf(50));
-        final Media media = ObjectGameTest.createMedia(ProducerObject.class);
-        final ProducerObject object = new ProducerObject(new Setup(media));
-        final ProducerModel producer = new ProducerModel();
-        producer.prepare(object, services);
         producer.setStepsPerSecond(50.0);
 
-        final Producible producible = createProducible(services);
+        final Producible producible = UtilProducible.createProducible(services);
         final AtomicBoolean start = new AtomicBoolean();
         final AtomicBoolean progress = new AtomicBoolean();
         final AtomicBoolean end = new AtomicBoolean();
-        producible.addListener(createProducibleListener(start, progress, end));
+        producible.addListener(UtilProducible.createProducibleListener(start, progress, end));
 
         producer.addToProductionQueue(producible);
 
@@ -513,9 +368,28 @@ public class ProducerModelTest
         producer.update(1.0);
 
         Assert.assertTrue(end.get());
+    }
 
-        object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
+    /**
+     * Test the production listener auto add.
+     */
+    @Test
+    public void testListenerAutoAdd()
+    {
+        final ProducerObjectSelf object = new ProducerObjectSelf(new Setup(media));
+        final ProducerModel producer = new ProducerModel();
+        producer.prepare(object, services);
+        producer.setStepsPerSecond(50.0);
+        producer.checkListener(object);
+
+        final Producible producible = UtilProducible.createProducible(services);
+        producer.addToProductionQueue(producible);
+
+        Assert.assertEquals(0, object.flag.get());
+
+        producer.update(1.0);
+
+        Assert.assertEquals(1, object.flag.get());
     }
 
     /**
@@ -540,82 +414,6 @@ public class ProducerModelTest
         catch (final LionEngineException exception)
         {
             Assert.assertEquals("Unknown enum: FAIL", exception.getMessage());
-        }
-    }
-
-    /**
-     * Object producer test.
-     */
-    private static class ProducerObject extends ObjectGame implements ProducerChecker
-    {
-        /** Checker. */
-        private final AtomicBoolean check = new AtomicBoolean(true);
-
-        /**
-         * Constructor.
-         * 
-         * @param setup The setup.
-         */
-        public ProducerObject(Setup setup)
-        {
-            super(setup);
-        }
-
-        @Override
-        public boolean checkProduction(Producible producible)
-        {
-            return check.get();
-        }
-    }
-
-    /**
-     * Object producer self listener test.
-     */
-    private static class ProducerObjectSelf extends ObjectGame implements ProducerChecker, ProducerListener
-    {
-        /** Checker. */
-        private final AtomicBoolean check = new AtomicBoolean(true);
-        /** Flag. */
-        private final AtomicInteger flag = new AtomicInteger();
-
-        /**
-         * Constructor.
-         * 
-         * @param setup The setup.
-         */
-        public ProducerObjectSelf(Setup setup)
-        {
-            super(setup);
-        }
-
-        @Override
-        public boolean checkProduction(Producible producible)
-        {
-            return check.get();
-        }
-
-        @Override
-        public void notifyStartProduction(Producible producible, Handlable handlable)
-        {
-            flag.set(1);
-        }
-
-        @Override
-        public void notifyProducing(Producible producible, Handlable handlable)
-        {
-            flag.set(2);
-        }
-
-        @Override
-        public void notifyProduced(Producible producible, Handlable handlable)
-        {
-            flag.set(3);
-        }
-
-        @Override
-        public void notifyCanNotProduce(Producible producible)
-        {
-            flag.set(4);
         }
     }
 }

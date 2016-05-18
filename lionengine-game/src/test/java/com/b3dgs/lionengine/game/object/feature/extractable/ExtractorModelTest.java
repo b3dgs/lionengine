@@ -18,11 +18,12 @@
 package com.b3dgs.lionengine.game.object.feature.extractable;
 
 import java.lang.reflect.Field;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -70,63 +71,26 @@ public class ExtractorModelTest
         HACK.restore();
     }
 
+    private final Media media = ObjectGameTest.createMedia(ObjectExtractor.class);
+    private final Services services = new Services();
+
     /**
-     * Add listener.
-     * 
-     * @param extractor The extractor.
-     * @param goTo The go to.
-     * @param startExtract The start extract.
-     * @param extracted The extracted.
-     * @param carry The carry.
-     * @param startDrop The start drop.
-     * @param endDrop The dropped.
+     * Prepare test.
      */
-    private static void addListener(Extractor extractor,
-                                    final AtomicReference<Enum<?>> goTo,
-                                    final AtomicReference<Enum<?>> startExtract,
-                                    final AtomicReference<Enum<?>> extracted,
-                                    final AtomicReference<Enum<?>> carry,
-                                    final AtomicReference<Enum<?>> startDrop,
-                                    final AtomicReference<Enum<?>> endDrop)
+    @Before
+    public void prepare()
     {
-        extractor.addListener(new ExtractorListener()
-        {
-            @Override
-            public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
-            {
-                goTo.set(type);
-            }
+        services.add(Integer.valueOf(50));
+        services.add(new MapTileGame());
+    }
 
-            @Override
-            public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
-            {
-                startExtract.set(type);
-            }
-
-            @Override
-            public void notifyExtracted(Enum<?> type, int currentQuantity)
-            {
-                extracted.set(type);
-            }
-
-            @Override
-            public void notifyStartCarry(Enum<?> type, int totalQuantity)
-            {
-                carry.set(type);
-            }
-
-            @Override
-            public void notifyStartDropOff(Enum<?> type, int totalQuantity)
-            {
-                startDrop.set(type);
-            }
-
-            @Override
-            public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
-            {
-                endDrop.set(type);
-            }
-        });
+    /**
+     * Clean test.
+     */
+    @After
+    public void clean()
+    {
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -135,10 +99,6 @@ public class ExtractorModelTest
     @Test
     public void testConfig()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectExtractor.class);
-        final Services services = new Services();
-        services.add(Integer.valueOf(50));
-        services.add(new MapTileGame());
         final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, true);
         object.addFeature(new TransformableModel());
 
@@ -153,7 +113,6 @@ public class ExtractorModelTest
         Assert.assertEquals(2.0, extractor.getDropOffPerSecond(), UtilTests.PRECISION);
 
         object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -162,11 +121,6 @@ public class ExtractorModelTest
     @Test
     public void testExtractor()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectExtractor.class);
-        final Services services = new Services();
-        services.add(Integer.valueOf(50));
-        services.add(new MapTileGame());
-
         final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, true);
         object.addFeature(new TransformableModel());
 
@@ -182,36 +136,36 @@ public class ExtractorModelTest
         final AtomicReference<Enum<?>> carry = new AtomicReference<Enum<?>>();
         final AtomicReference<Enum<?>> startDrop = new AtomicReference<Enum<?>>();
         final AtomicReference<Enum<?>> endDrop = new AtomicReference<Enum<?>>();
-        addListener(extractor, goTo, startExtract, extracted, carry, startDrop, endDrop);
+        extractor.addListener(UtilExtractable.createListener(goTo, startExtract, extracted, carry, startDrop, endDrop));
 
         Assert.assertNull(extractor.getResourceLocation());
         Assert.assertNull(extractor.getResourceType());
 
-        extractor.setResource(ExtractableModelTest.Type.TYPE, 1, 2, 1, 1);
+        extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
 
         final Tiled location = extractor.getResourceLocation();
         Assert.assertEquals(1.0, location.getInTileX(), UtilTests.PRECISION);
         Assert.assertEquals(2.0, location.getInTileY(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, location.getInTileWidth(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, location.getInTileHeight(), UtilTests.PRECISION);
-        Assert.assertEquals(ExtractableModelTest.Type.TYPE, extractor.getResourceType());
+        Assert.assertEquals(ResourceType.WOOD, extractor.getResourceType());
         Assert.assertFalse(extractor.isExtracting());
 
         extractor.startExtraction();
 
         Assert.assertFalse(extractor.isExtracting());
-        Assert.assertEquals(ExtractableModelTest.Type.TYPE, goTo.get());
+        Assert.assertEquals(ResourceType.WOOD, goTo.get());
 
         extractor.update(1.0);
 
         Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(ExtractableModelTest.Type.TYPE, startExtract.get());
-        Assert.assertNotEquals(ExtractableModelTest.Type.TYPE, extracted.get());
+        Assert.assertEquals(ResourceType.WOOD, startExtract.get());
+        Assert.assertNotEquals(ResourceType.WOOD, extracted.get());
 
         extractor.update(1.0);
 
         Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(ExtractableModelTest.Type.TYPE, extracted.get());
+        Assert.assertEquals(ResourceType.WOOD, extracted.get());
 
         extractor.update(1.0);
         extractor.update(1.0);
@@ -220,23 +174,22 @@ public class ExtractorModelTest
         extractor.update(1.0);
 
         Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(ExtractableModelTest.Type.TYPE, carry.get());
-        Assert.assertNotEquals(ExtractableModelTest.Type.TYPE, startDrop.get());
+        Assert.assertEquals(ResourceType.WOOD, carry.get());
+        Assert.assertNotEquals(ResourceType.WOOD, startDrop.get());
 
         extractor.update(1.0);
 
         Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(ExtractableModelTest.Type.TYPE, startDrop.get());
+        Assert.assertEquals(ResourceType.WOOD, startDrop.get());
 
         extractor.update(1.0);
         extractor.update(1.0);
         extractor.update(1.0);
 
         Assert.assertFalse(extractor.isExtracting());
-        Assert.assertEquals(ExtractableModelTest.Type.TYPE, endDrop.get());
+        Assert.assertEquals(ResourceType.WOOD, endDrop.get());
 
         object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -245,10 +198,6 @@ public class ExtractorModelTest
     @Test
     public void testCannotExtract()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectExtractor.class);
-        final Services services = new Services();
-        services.add(Integer.valueOf(50));
-        services.add(new MapTileGame());
         final ObjectExtractor object = new ObjectExtractor(new Setup(media), false, true);
         object.addFeature(new TransformableModel());
 
@@ -260,8 +209,8 @@ public class ExtractorModelTest
 
         final AtomicReference<Enum<?>> goTo = new AtomicReference<Enum<?>>();
         final AtomicReference<Enum<?>> skip = new AtomicReference<Enum<?>>();
-        addListener(extractor, goTo, skip, skip, skip, skip, skip);
-        extractor.setResource(ExtractableModelTest.Type.TYPE, 1, 2, 1, 1);
+        extractor.addListener(UtilExtractable.createListener(goTo, skip, skip, skip, skip, skip));
+        extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
         extractor.startExtraction();
         extractor.update(1.0);
 
@@ -274,7 +223,6 @@ public class ExtractorModelTest
         Assert.assertNotNull(goTo.get());
 
         object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -283,11 +231,6 @@ public class ExtractorModelTest
     @Test
     public void testCannotCarry()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectExtractor.class);
-        final Services services = new Services();
-        services.add(Integer.valueOf(50));
-        services.add(new MapTileGame());
-
         final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, false);
         object.addFeature(new TransformableModel());
 
@@ -299,8 +242,8 @@ public class ExtractorModelTest
 
         final AtomicReference<Enum<?>> drop = new AtomicReference<Enum<?>>();
         final AtomicReference<Enum<?>> skip = new AtomicReference<Enum<?>>();
-        addListener(extractor, skip, skip, skip, skip, drop, skip);
-        extractor.setResource(ExtractableModelTest.Type.TYPE, 1, 2, 1, 1);
+        extractor.addListener(UtilExtractable.createListener(skip, skip, skip, skip, drop, skip));
+        extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
         extractor.startExtraction();
         extractor.update(1.0);
 
@@ -313,7 +256,6 @@ public class ExtractorModelTest
         Assert.assertNull(drop.get());
 
         object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -322,11 +264,6 @@ public class ExtractorModelTest
     @Test
     public void testExtractorExtractable()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectExtractor.class);
-        final Services services = new Services();
-        services.add(Integer.valueOf(50));
-        services.add(new MapTileGame());
-
         final ObjectExtractorSelf object = new ObjectExtractorSelf(new Setup(media));
         object.addFeature(new TransformableModel());
 
@@ -341,7 +278,7 @@ public class ExtractorModelTest
         Assert.assertNull(extractor.getResourceType());
 
         final Media extractableMedia = ObjectGameTest.createMedia(ObjectGame.class);
-        final Extractable extractable = ExtractableModelTest.createExtractable(extractableMedia);
+        final Extractable extractable = UtilExtractable.createExtractable(extractableMedia);
         extractor.setResource(extractable);
 
         Assert.assertFalse(extractor.isExtracting());
@@ -394,7 +331,7 @@ public class ExtractorModelTest
 
         object.notifyDestroyed();
         extractable.getOwner().notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
+
         Assert.assertTrue(extractableMedia.getFile().delete());
     }
 
@@ -404,12 +341,6 @@ public class ExtractorModelTest
     @Test
     public void testExtractorExtractableNoResource()
     {
-
-        final Media media = ObjectGameTest.createMedia(ObjectExtractor.class);
-        final Services services = new Services();
-        services.add(Integer.valueOf(50));
-        services.add(new MapTileGame());
-
         final ObjectExtractorSelf object = new ObjectExtractorSelf(new Setup(media));
         object.addFeature(new TransformableModel());
 
@@ -424,7 +355,7 @@ public class ExtractorModelTest
         Assert.assertNull(extractor.getResourceType());
 
         final Media extractableMedia = ObjectGameTest.createMedia(ObjectGame.class);
-        final Extractable extractable = ExtractableModelTest.createExtractable(extractableMedia);
+        final Extractable extractable = UtilExtractable.createExtractable(extractableMedia);
         extractable.setResourcesQuantity(0);
         extractor.setResource(extractable);
 
@@ -447,7 +378,7 @@ public class ExtractorModelTest
 
         object.notifyDestroyed();
         extractable.getOwner().notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
+
         Assert.assertTrue(extractableMedia.getFile().delete());
     }
 
@@ -457,11 +388,6 @@ public class ExtractorModelTest
     @Test
     public void testStopExtraction()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectExtractor.class);
-        final Services services = new Services();
-        services.add(Integer.valueOf(50));
-        services.add(new MapTileGame());
-
         final ObjectExtractor object = new ObjectExtractor(new Setup(media), true, true);
         object.addFeature(new TransformableModel());
 
@@ -475,31 +401,51 @@ public class ExtractorModelTest
         final AtomicReference<Enum<?>> startExtract = new AtomicReference<Enum<?>>();
         final AtomicReference<Enum<?>> empty = new AtomicReference<Enum<?>>();
         final AtomicReference<Enum<?>> extracted = new AtomicReference<Enum<?>>();
-        addListener(extractor, goTo, startExtract, extracted, empty, empty, empty);
+        extractor.addListener(UtilExtractable.createListener(goTo, startExtract, extracted, empty, empty, empty));
 
         Assert.assertNull(extractor.getResourceLocation());
         Assert.assertNull(extractor.getResourceType());
 
-        extractor.setResource(ExtractableModelTest.Type.TYPE, 1, 2, 1, 1);
+        extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
         extractor.startExtraction();
 
         Assert.assertFalse(extractor.isExtracting());
-        Assert.assertEquals(ExtractableModelTest.Type.TYPE, goTo.get());
+        Assert.assertEquals(ResourceType.WOOD, goTo.get());
 
         extractor.update(1.0);
 
         Assert.assertTrue(extractor.isExtracting());
-        Assert.assertEquals(ExtractableModelTest.Type.TYPE, startExtract.get());
-        Assert.assertNotEquals(ExtractableModelTest.Type.TYPE, extracted.get());
+        Assert.assertEquals(ResourceType.WOOD, startExtract.get());
+        Assert.assertNotEquals(ResourceType.WOOD, extracted.get());
 
         extractor.stopExtraction();
         extractor.update(1.0);
 
         Assert.assertFalse(extractor.isExtracting());
-        Assert.assertNotEquals(ExtractableModelTest.Type.TYPE, extracted.get());
+        Assert.assertNotEquals(ResourceType.WOOD, extracted.get());
 
         object.notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
+    }
+
+    /**
+     * Test the auto add listener.
+     */
+    @Test
+    public void testListenerAutoAdd()
+    {
+        final ObjectExtractorSelf object = new ObjectExtractorSelf(new Setup(media));
+        object.addFeature(new TransformableModel());
+
+        final Extractor extractor = new ExtractorModel();
+        extractor.prepare(object, services);
+        extractor.checkListener(object);
+        extractor.setResource(ResourceType.WOOD, 1, 2, 1, 1);
+        extractor.startExtraction();
+        extractor.update(1.0);
+
+        Assert.assertEquals(2, object.flag.get());
+
+        object.notifyDestroyed();
     }
 
     /**
@@ -524,110 +470,6 @@ public class ExtractorModelTest
         catch (final LionEngineException exception)
         {
             Assert.assertEquals("Unknown enum: FAIL", exception.getMessage());
-        }
-    }
-
-    /**
-     * Extractor test.
-     */
-    private static class ObjectExtractor extends ObjectGame implements ExtractorChecker
-    {
-        /** Extract flag. */
-        private final boolean extract;
-        /** Carry flag. */
-        private final boolean carry;
-
-        /**
-         * Constructor.
-         * 
-         * @param setup The setup.
-         * @param extract Extract.
-         * @param carry Carry.
-         */
-        public ObjectExtractor(Setup setup, boolean extract, boolean carry)
-        {
-            super(setup);
-            this.extract = extract;
-            this.carry = carry;
-        }
-
-        @Override
-        public boolean canExtract()
-        {
-            return extract;
-        }
-
-        @Override
-        public boolean canCarry()
-        {
-            return carry;
-        }
-    }
-
-    /**
-     * Extractor test with self listener.
-     */
-    private static class ObjectExtractorSelf extends ObjectGame implements ExtractorChecker, ExtractorListener
-    {
-        /** Flag. */
-        private final AtomicInteger flag = new AtomicInteger();
-
-        /**
-         * Constructor.
-         * 
-         * @param setup The setup.
-         */
-        public ObjectExtractorSelf(Setup setup)
-        {
-            super(setup);
-        }
-
-        @Override
-        public boolean canExtract()
-        {
-            return true;
-        }
-
-        @Override
-        public boolean canCarry()
-        {
-            return true;
-        }
-
-        @Override
-        public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
-        {
-            flag.compareAndSet(0, 1);
-        }
-
-        @Override
-        public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
-        {
-            flag.set(2);
-        }
-
-        @Override
-        public void notifyExtracted(Enum<?> type, int currentQuantity)
-        {
-            flag.set(3);
-        }
-
-        @Override
-        public void notifyStartCarry(Enum<?> type, int totalQuantity)
-        {
-            flag.set(4);
-        }
-
-        @Override
-        public void notifyStartDropOff(Enum<?> type, int totalQuantity)
-        {
-            flag.set(5);
-        }
-
-        @Override
-        public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
-        {
-            flag.set(6);
         }
     }
 }

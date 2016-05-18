@@ -359,6 +359,12 @@ public class HandlerTest
         }
 
         @Override
+        public void checkListener(Object listener)
+        {
+            // Mock
+        }
+
+        @Override
         public <O extends Handlable> O getOwner()
         {
             return null;

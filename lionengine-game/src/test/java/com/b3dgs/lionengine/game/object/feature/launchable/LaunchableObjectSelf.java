@@ -15,48 +15,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object.feature.launchable;
+
+import java.util.concurrent.atomic.AtomicReference;
+
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
- * Feature model base implementation.
+ * Launchable object test self listener.
  */
-public abstract class FeatureModel implements Feature
+class LaunchableObjectSelf extends LaunchableObject implements LauncherListener
 {
-    /** The owner reference. */
-    private Handlable owner;
+    /** Fired flag. */
+    final AtomicReference<ObjectGame> fired = new AtomicReference<ObjectGame>();
 
     /**
-     * Create a trait model.
+     * Constructor.
+     * 
+     * @param setup The setup.
      */
-    public FeatureModel()
+    public LaunchableObjectSelf(Setup setup)
     {
-        super();
+        super(setup);
     }
 
-    /*
-     * Feature
-     */
-
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void notifyFired(ObjectGame object)
     {
-        this.owner = owner;
-    }
-
-    /**
-     * {@inheritDoc}
-     * Does nothing by default.
-     */
-    @Override
-    public void checkListener(Object listener)
-    {
-        // Nothing by default
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <O extends Handlable> O getOwner()
-    {
-        return (O) owner;
+        fired.set(object);
     }
 }

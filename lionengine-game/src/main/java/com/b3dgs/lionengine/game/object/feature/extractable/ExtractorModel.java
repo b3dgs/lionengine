@@ -195,6 +195,17 @@ public class ExtractorModel extends FeatureModel implements Extractor
     }
 
     @Override
+    public void checkListener(Object listener)
+    {
+        super.checkListener(listener);
+
+        if (listener instanceof ExtractorListener)
+        {
+            addListener((ExtractorListener) listener);
+        }
+    }
+
+    @Override
     public void addListener(ExtractorListener listener)
     {
         listeners.add(listener);

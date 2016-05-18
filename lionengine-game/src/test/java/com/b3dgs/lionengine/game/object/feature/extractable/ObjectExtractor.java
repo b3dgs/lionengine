@@ -15,48 +15,44 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object.feature.extractable;
+
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
- * Feature model base implementation.
+ * Extractor test.
  */
-public abstract class FeatureModel implements Feature
+class ObjectExtractor extends ObjectGame implements ExtractorChecker
 {
-    /** The owner reference. */
-    private Handlable owner;
+    /** Extract flag. */
+    private final boolean extract;
+    /** Carry flag. */
+    private final boolean carry;
 
     /**
-     * Create a trait model.
+     * Constructor.
+     * 
+     * @param setup The setup.
+     * @param extract Extract.
+     * @param carry Carry.
      */
-    public FeatureModel()
+    public ObjectExtractor(Setup setup, boolean extract, boolean carry)
     {
-        super();
+        super(setup);
+        this.extract = extract;
+        this.carry = carry;
     }
 
-    /*
-     * Feature
-     */
-
     @Override
-    public void prepare(Handlable owner, Services services)
+    public boolean canExtract()
     {
-        this.owner = owner;
+        return extract;
     }
 
-    /**
-     * {@inheritDoc}
-     * Does nothing by default.
-     */
     @Override
-    public void checkListener(Object listener)
+    public boolean canCarry()
     {
-        // Nothing by default
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <O extends Handlable> O getOwner()
-    {
-        return (O) owner;
+        return carry;
     }
 }

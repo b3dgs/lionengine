@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.object.feature.extractable;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -56,25 +57,15 @@ public class ExtractableModelTest
         Medias.setResourcesDirectory(Constant.EMPTY_STRING);
     }
 
+    private final Media media = ObjectGameTest.createMedia(ObjectGame.class);
+
     /**
-     * Create extractable.
-     * 
-     * @param media The media.
-     * @return The extractable.
+     * Clean test.
      */
-    public static Extractable createExtractable(Media media)
+    @After
+    public void clean()
     {
-        final Services services = new Services();
-        services.add(new MapTileGame());
-        final ObjectGame object = new ObjectGame(new Setup(media));
-        object.addFeature(new TransformableModel());
-
-        final Extractable extractable = new ExtractableModel();
-        extractable.setResourcesQuantity(10);
-        extractable.setResourcesType(Type.TYPE);
-        extractable.prepare(object, services);
-
-        return extractable;
+        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -83,11 +74,10 @@ public class ExtractableModelTest
     @Test
     public void testConfig()
     {
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
-        final Extractable extractable = createExtractable(media);
+        final Extractable extractable = UtilExtractable.createExtractable(media);
 
         Assert.assertEquals(10, extractable.getResourceQuantity());
-        Assert.assertEquals(Type.TYPE, extractable.getResourceType());
+        Assert.assertEquals(ResourceType.WOOD, extractable.getResourceType());
 
         Assert.assertEquals(0, extractable.getInTileX(), UtilTests.PRECISION);
         Assert.assertEquals(0, extractable.getInTileY(), UtilTests.PRECISION);
@@ -95,7 +85,6 @@ public class ExtractableModelTest
         Assert.assertEquals(0, extractable.getInTileHeight(), UtilTests.PRECISION);
 
         extractable.getOwner().notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
     }
 
     /**
@@ -105,9 +94,9 @@ public class ExtractableModelTest
     public void testExtract()
     {
         final Extractable extractable = new ExtractableModel();
-        final Media media = ObjectGameTest.createMedia(ObjectGame.class);
         final Services services = new Services();
         services.add(new MapTileGame());
+
         final ObjectGame object = new ObjectGame(new Setup(media));
         object.addFeature(new TransformableModel());
         extractable.prepare(object, services);
@@ -120,15 +109,5 @@ public class ExtractableModelTest
         Assert.assertEquals(5, extractable.getResourceQuantity());
 
         extractable.getOwner().notifyDestroyed();
-        Assert.assertTrue(media.getFile().delete());
-    }
-
-    /**
-     * Resource type.
-     */
-    public static enum Type
-    {
-        /** Resource type. */
-        TYPE;
     }
 }

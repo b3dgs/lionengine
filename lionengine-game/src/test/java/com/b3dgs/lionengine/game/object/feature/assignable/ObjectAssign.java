@@ -15,48 +15,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object.feature.assignable;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
- * Feature model base implementation.
+ * Object containing action.
  */
-public abstract class FeatureModel implements Feature
+public class ObjectAssign extends ObjectGame implements Assign
 {
-    /** The owner reference. */
-    private Handlable owner;
+    /** Action assigned flag. */
+    private final AtomicBoolean assigned;
 
     /**
-     * Create a trait model.
+     * Constructor.
+     * 
+     * @param setup The setup reference.
+     * @param assigned The assigned flag.
      */
-    public FeatureModel()
+    public ObjectAssign(Setup setup, AtomicBoolean assigned)
     {
-        super();
+        super(setup);
+        this.assigned = assigned;
     }
 
-    /*
-     * Feature
-     */
-
     @Override
-    public void prepare(Handlable owner, Services services)
+    public void assign()
     {
-        this.owner = owner;
-    }
-
-    /**
-     * {@inheritDoc}
-     * Does nothing by default.
-     */
-    @Override
-    public void checkListener(Object listener)
-    {
-        // Nothing by default
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <O extends Handlable> O getOwner()
-    {
-        return (O) owner;
+        assigned.set(true);
     }
 }
