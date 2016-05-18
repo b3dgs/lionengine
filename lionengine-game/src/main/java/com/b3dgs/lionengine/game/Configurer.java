@@ -195,9 +195,23 @@ public class Configurer
      * Get the class implementation from its name. Default constructor must be available.
      * 
      * @param <T> The instance type.
+     * @param type The class type.
+     * @param path The node path.
+     * @return The typed class instance.
+     * @throws LionEngineException If invalid class.
+     */
+    public <T> T getImplementation(Class<T> type, String... path)
+    {
+        return getImplementation(ClassLoader.getSystemClassLoader(), type, path);
+    }
+
+    /**
+     * Get the class implementation from its name. Default constructor must be available.
+     * 
+     * @param <T> The instance type.
      * @param loader The class loader to use.
      * @param type The class type.
-     * @param path The attribute path.
+     * @param path The node path.
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */
@@ -210,11 +224,27 @@ public class Configurer
      * Get the class implementation from its name by using a custom constructor.
      * 
      * @param <T> The instance type.
+     * @param type The class type.
+     * @param paramsType The parameters type.
+     * @param paramsValue The parameters value.
+     * @param path The node path.
+     * @return The typed class instance.
+     * @throws LionEngineException If invalid class.
+     */
+    public <T> T getImplementation(Class<T> type, Class<?>[] paramsType, Collection<?> paramsValue, String... path)
+    {
+        return getImplementation(ClassLoader.getSystemClassLoader(), type, paramsType, paramsValue, path);
+    }
+
+    /**
+     * Get the class implementation from its name by using a custom constructor.
+     * 
+     * @param <T> The instance type.
      * @param loader The class loader to use.
      * @param type The class type.
      * @param paramsType The parameters type.
      * @param paramsValue The parameters value.
-     * @param path The attribute path.
+     * @param path The node path.
      * @return The typed class instance.
      * @throws LionEngineException If invalid class.
      */

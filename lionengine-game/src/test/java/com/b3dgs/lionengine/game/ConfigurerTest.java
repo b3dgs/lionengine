@@ -39,8 +39,6 @@ import com.b3dgs.lionengine.util.UtilReflection;
  */
 public class ConfigurerTest
 {
-    /** Class loader. */
-    private static final ClassLoader LOADER = ClassLoader.getSystemClassLoader();
     /** Test configuration. */
     private static Media config;
 
@@ -211,9 +209,7 @@ public class ConfigurerTest
     @Test
     public void testGetImplementationDefault()
     {
-        final Accessible impl = configurer.getImplementation(LOADER,
-                                                             Accessible.class,
-                                                             Accessible.class.getSimpleName());
+        final Accessible impl = configurer.getImplementation(Accessible.class, Accessible.class.getSimpleName());
         Assert.assertTrue(impl.created);
     }
 
@@ -225,9 +221,7 @@ public class ConfigurerTest
     {
         try
         {
-            Assert.assertNull(configurer.getImplementation(LOADER,
-                                                           NotAccessible.class,
-                                                           NotAccessible.class.getSimpleName()));
+            Assert.assertNull(configurer.getImplementation(NotAccessible.class, NotAccessible.class.getSimpleName()));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -242,8 +236,7 @@ public class ConfigurerTest
     @Test
     public void testGetImplementationCustom()
     {
-        final Custom impl = configurer.getImplementation(LOADER,
-                                                         Custom.class,
+        final Custom impl = configurer.getImplementation(Custom.class,
                                                          UtilReflection.getParamTypes(Boolean.TRUE),
                                                          Arrays.asList(Boolean.TRUE),
                                                          Custom.class.getSimpleName());
@@ -258,8 +251,7 @@ public class ConfigurerTest
     {
         try
         {
-            Assert.assertNull(configurer.getImplementation(LOADER,
-                                                           Custom.class,
+            Assert.assertNull(configurer.getImplementation(Custom.class,
                                                            UtilReflection.getParamTypes(Boolean.TRUE),
                                                            Arrays.asList(Constant.EMPTY_STRING),
                                                            Custom.class.getSimpleName()));
@@ -281,8 +273,7 @@ public class ConfigurerTest
     {
         try
         {
-            Assert.assertNull(configurer.getImplementation(LOADER,
-                                                           Abstract.class,
+            Assert.assertNull(configurer.getImplementation(Abstract.class,
                                                            UtilReflection.getParamTypes(Boolean.TRUE),
                                                            Arrays.asList(Boolean.TRUE),
                                                            Abstract.class.getSimpleName()));
@@ -302,7 +293,7 @@ public class ConfigurerTest
     {
         try
         {
-            Assert.assertNull(configurer.getImplementation(LOADER, Object.class, "unknown"));
+            Assert.assertNull(configurer.getImplementation(Object.class, "unknown"));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -319,8 +310,7 @@ public class ConfigurerTest
     {
         try
         {
-            Assert.assertNull(configurer.getImplementation(LOADER,
-                                                           Accessible.class,
+            Assert.assertNull(configurer.getImplementation(Accessible.class,
                                                            UtilReflection.getParamTypes(Boolean.TRUE),
                                                            Arrays.asList(Boolean.TRUE),
                                                            Accessible.class.getSimpleName()));
@@ -340,7 +330,7 @@ public class ConfigurerTest
     {
         try
         {
-            Assert.assertNull(configurer.getImplementation(LOADER, Throws.class, Throws.class.getSimpleName()));
+            Assert.assertNull(configurer.getImplementation(Throws.class, Throws.class.getSimpleName()));
             Assert.fail();
         }
         catch (final LionEngineException exception)
