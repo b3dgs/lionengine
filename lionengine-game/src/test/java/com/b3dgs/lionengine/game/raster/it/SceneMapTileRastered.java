@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 /**
  * Integration test for map tile rastered model.
  */
-public class Scene extends Sequence
+public class SceneMapTileRastered extends Sequence
 {
     /** Timing value. */
     private final Timing timing = new Timing();
@@ -60,7 +60,7 @@ public class Scene extends Sequence
      * 
      * @param context The context reference.
      */
-    public Scene(Context context)
+    public SceneMapTileRastered(Context context)
     {
         super(context, new Resolution(320, 240, 60));
     }

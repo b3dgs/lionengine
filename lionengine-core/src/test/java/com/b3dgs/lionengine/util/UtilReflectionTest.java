@@ -245,4 +245,28 @@ public class UtilReflectionTest
         Assert.assertNotNull(UtilReflection.getCompatibleConstructor(String.class,
                                                                      UtilReflection.getParamTypes(new Integer(1))));
     }
+
+    /**
+     * Test the get interfaces.
+     */
+    @Test
+    public void testGetInterfaces()
+    {
+        Assert.assertEquals(0, UtilReflection.getInterfaces(Interface0.class, Interface0.class).size());
+        Assert.assertEquals(0, UtilReflection.getInterfaces(Interface1.class, Interface0.class).size());
+        Assert.assertEquals(Interface2.class,
+                            UtilReflection.getInterfaces(Interface3.class, Interface0.class).iterator().next());
+
+        final Collection<Class<?>> interfaces = new ArrayList<Class<?>>();
+        interfaces.add(Interface1.class);
+
+        Assert.assertEquals(1, UtilReflection.getInterfaces(ObjectTest1.class, Interface0.class).size());
+        Assert.assertTrue(UtilReflection.getInterfaces(ObjectTest1.class, Interface0.class).containsAll(interfaces));
+
+        interfaces.add(Interface2.class);
+        interfaces.add(Interface3.class);
+
+        Assert.assertEquals(3, UtilReflection.getInterfaces(ObjectTest2.class, Interface0.class).size());
+        Assert.assertTrue(UtilReflection.getInterfaces(ObjectTest2.class, Interface0.class).containsAll(interfaces));
+    }
 }

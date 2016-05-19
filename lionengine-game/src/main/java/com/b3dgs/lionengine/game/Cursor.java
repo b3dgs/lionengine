@@ -72,7 +72,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     private static final String ERROR_SURFACE_ID = "Undefined surface id:";
 
     /** Surface reference. */
-    private final Map<Integer, Image> surfaces;
+    private final Map<Integer, Image> surfaces = new HashMap<Integer, Image>();
     /** Pointer reference. */
     private InputDevicePointer pointer;
     /** Viewer reference. */
@@ -86,23 +86,23 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
     /** Cursor viewer relative location y. */
     private double viewY;
     /** Synchronization mode. */
-    private boolean sync;
+    private boolean sync = true;
     /** Horizontal sensibility. */
-    private double sensibilityHorizontal;
+    private double sensibilityHorizontal = 1.0;
     /** Vertical sensibility. */
-    private double sensibilityVertical;
+    private double sensibilityVertical = 1.0;
     /** Grid width. */
-    private int gridWidth;
+    private int gridWidth = 1;
     /** Grid height. */
-    private int gridHeight;
+    private int gridHeight = 1;
     /** Minimum location x. */
-    private int minX;
+    private int minX = Integer.MIN_VALUE;
     /** Minimum location y. */
-    private int minY;
+    private int minY = Integer.MIN_VALUE;
     /** Maximum location x. */
-    private int maxX;
+    private int maxX = Integer.MAX_VALUE;
     /** Maximum location y. */
-    private int maxY;
+    private int maxY = Integer.MAX_VALUE;
     /** Surface id. */
     private Integer surfaceId;
     /** Current surface. */
@@ -121,16 +121,7 @@ public class Cursor implements Resource, Shape, Updatable, Renderable
      */
     public Cursor()
     {
-        surfaces = new HashMap<Integer, Image>();
-        x = 0.0;
-        y = 0.0;
-        sensibilityHorizontal = 1.0;
-        sensibilityVertical = 1.0;
-        sync = true;
-        gridWidth = 1;
-        gridHeight = 1;
-        offsetX = 0;
-        offsetY = 0;
+        super();
     }
 
     /**

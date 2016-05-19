@@ -24,51 +24,85 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
  */
 public class MouseMock implements InputDevicePointer
 {
+    private int click;
+    private int clicked;
+    private int x;
+    private int y;
+    private int mx;
+    private int my;
+
+    /**
+     * Set the current click.
+     * 
+     * @param click The current click.
+     */
+    public void setClick(int click)
+    {
+        this.click = click;
+        clicked = click;
+    }
+
+    /**
+     * Move mouse.
+     * 
+     * @param mx Horizontal movement.
+     * @param my Vertical movement.
+     */
+    public void move(int mx, int my)
+    {
+        this.mx = mx;
+        this.my = my;
+        x += mx;
+        y += my;
+    }
+
     @Override
     public int getX()
     {
-        return 0;
+        return x;
     }
 
     @Override
     public int getY()
     {
-        return 0;
+        return y;
     }
 
     @Override
     public int getMoveX()
     {
-        return 0;
+        return mx;
     }
 
     @Override
     public int getMoveY()
     {
-        return 0;
+        return my;
     }
 
     @Override
     public int getClick()
     {
-        return 0;
+        return click;
     }
 
     @Override
     public boolean hasClicked(int click)
     {
-        return false;
+        return this.click == click;
     }
 
     @Override
     public boolean hasClickedOnce(int click)
     {
-        return false;
+        final boolean once = clicked == click;
+        clicked = -1;
+        return once;
     }
 
     @Override
     public boolean hasMoved()
     {
-        return false;
+        return mx != 0 || my != 0;
     }
 }

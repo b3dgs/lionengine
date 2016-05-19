@@ -26,9 +26,9 @@ import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
- * Integration test for map tile rastered model.
+ * Integration test for rasterable model.
  */
-public class MapTileRasteredModelIT
+public class RasterableModelIT
 {
     /**
      * Test the raster.
@@ -40,6 +40,6 @@ public class MapTileRasteredModelIT
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader();
-        loader.start(config, SceneMapTileRastered.class).await();
+        loader.start(config, SceneRasterable.class).await();
     }
 }

@@ -42,6 +42,7 @@ public class CameraTrackerTest
         final Services services = new Services();
         final Camera camera = new Camera();
         services.add(camera);
+        camera.setView(0, 0, 16, 32);
         tracker.prepare(new HandlableModel(), services);
         tracker.update(1.0);
 
@@ -54,8 +55,8 @@ public class CameraTrackerTest
         tracker.track(transformable);
         tracker.update(1.0);
 
-        Assert.assertEquals(1.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, camera.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(-7.0, camera.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(-14.0, camera.getY(), UtilTests.PRECISION);
 
         final Handlable handlable = new HandlableModel();
         handlable.addFeature(transformable);
@@ -65,7 +66,7 @@ public class CameraTrackerTest
         tracker.track(handlable);
         tracker.update(1.0);
 
-        Assert.assertEquals(2.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, camera.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(-6.0, camera.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(-13.0, camera.getY(), UtilTests.PRECISION);
     }
 }

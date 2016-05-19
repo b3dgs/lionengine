@@ -83,7 +83,7 @@ public class Selector implements Updatable, Renderable
         this.cursor = cursor;
         listeners = new HashSet<SelectorListener>(1);
         selectionArea = Geom.createRectangle();
-        clickableArea = Geom.createRectangle();
+        clickableArea = Geom.createRectangle(0.0, 0.0, Integer.MAX_VALUE, Integer.MAX_VALUE);
         colorSelection = ColorRgba.GRAY;
     }
 
@@ -172,7 +172,7 @@ public class Selector implements Updatable, Renderable
 
             for (final SelectorListener listener : listeners)
             {
-                listener.notifySelectionStarted(Geom.createRectangle(selectionArea));
+                listener.notifySelectionStarted(Geom.createRectangle(startX, startY, 0, 0));
             }
         }
     }

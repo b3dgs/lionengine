@@ -58,9 +58,9 @@ public class Camera extends HandlableModel implements Viewer
     /** Camera view location y. */
     private int y;
     /** Camera view width. */
-    private int width;
+    private int width = Integer.MAX_VALUE;
     /** Camera view height. */
-    private int height;
+    private int height = Integer.MAX_VALUE;
     /** Limit left. */
     private int limitLeft = Integer.MIN_VALUE;
     /** Limit right. */

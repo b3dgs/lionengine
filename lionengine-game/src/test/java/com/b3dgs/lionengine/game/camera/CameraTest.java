@@ -57,8 +57,8 @@ public class CameraTest
     {
         Assert.assertEquals(0, camera.getViewX());
         Assert.assertEquals(0, camera.getViewY());
-        Assert.assertEquals(0, camera.getWidth());
-        Assert.assertEquals(0, camera.getHeight());
+        Assert.assertEquals(Integer.MAX_VALUE, camera.getWidth());
+        Assert.assertEquals(Integer.MAX_VALUE, camera.getHeight());
         Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, camera.getY(), UtilTests.PRECISION);
         Assert.assertEquals(0.0, camera.getMovementHorizontal(), UtilTests.PRECISION);
@@ -88,12 +88,13 @@ public class CameraTest
     {
         final Transformable transformable = new TransformableModel();
         transformable.teleport(1.0, 2.0);
+        camera.setView(0, 0, 16, 32);
         camera.follow(transformable);
 
-        Assert.assertEquals(1.0, camera.getMovementHorizontal(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, camera.getMovementVertical(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, camera.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(-7.0, camera.getMovementHorizontal(), UtilTests.PRECISION);
+        Assert.assertEquals(-14.0, camera.getMovementVertical(), UtilTests.PRECISION);
+        Assert.assertEquals(-7.0, camera.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(-14.0, camera.getY(), UtilTests.PRECISION);
 
         final Handlable handlable = new HandlableModel();
         handlable.addFeature(transformable);
@@ -102,8 +103,8 @@ public class CameraTest
 
         Assert.assertEquals(2.0, camera.getMovementHorizontal(), UtilTests.PRECISION);
         Assert.assertEquals(2.0, camera.getMovementVertical(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(4.0, camera.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(-5.0, camera.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(-12.0, camera.getY(), UtilTests.PRECISION);
     }
 
     /**
@@ -126,13 +127,15 @@ public class CameraTest
     @Test
     public void testCameraViewpoint()
     {
+        camera.setView(0, 0, 16, 32);
+
         Assert.assertEquals(0.0, camera.getViewpointX(0.0), UtilTests.PRECISION);
-        Assert.assertEquals(0.0, camera.getViewpointY(0.0), UtilTests.PRECISION);
+        Assert.assertEquals(32.0, camera.getViewpointY(0.0), UtilTests.PRECISION);
 
         camera.setLocation(1.0, 2.0);
 
-        Assert.assertEquals(-1.0, camera.getViewpointX(0.0), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, camera.getViewpointY(0.0), UtilTests.PRECISION);
+        Assert.assertEquals(7.0, camera.getViewpointX(0.0), UtilTests.PRECISION);
+        Assert.assertEquals(18.0, camera.getViewpointY(0.0), UtilTests.PRECISION);
     }
 
     /**
@@ -210,22 +213,23 @@ public class CameraTest
         final Transformable transformable = new TransformableModel();
         transformable.teleport(1.0, 2.0);
 
+        camera.setView(0, 0, 1, 1);
         camera.setLimits(surface);
         camera.resetInterval(transformable);
 
-        Assert.assertEquals(1.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, camera.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(0.5, camera.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(1.5, camera.getY(), UtilTests.PRECISION);
 
         camera.setIntervals(1, 1);
-        camera.moveLocation(1.0, 1.0, 1.0);
+        camera.moveLocation(1.0, 3.0, 3.0);
 
-        Assert.assertEquals(2.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(3.0, camera.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(3.5, camera.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(4.5, camera.getY(), UtilTests.PRECISION);
 
         camera.moveLocation(1.0, -2.0, -2.0);
 
-        Assert.assertEquals(0.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(1.0, camera.getY(), UtilTests.PRECISION);
+        Assert.assertEquals(1.5, camera.getX(), UtilTests.PRECISION);
+        Assert.assertEquals(2.5, camera.getY(), UtilTests.PRECISION);
     }
 
     /**
@@ -234,6 +238,7 @@ public class CameraTest
     @Test
     public void testIntervalLimit()
     {
+        camera.setView(0, 0, 0, 0);
         camera.setLimits(surface);
 
         // Limit right

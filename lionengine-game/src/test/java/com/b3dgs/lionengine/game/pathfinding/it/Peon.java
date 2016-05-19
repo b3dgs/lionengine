@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.pathfinding.it;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -42,6 +43,7 @@ class Peon extends ObjectGame implements Updatable, Renderable
     /** Media reference. */
     public static final Media MEDIA = Medias.create("Peon.xml");
 
+    private final Timing timing = new Timing();
     private final Transformable transformable;
     private final Pathfindable pathfindable;
     private final SpriteAnimated surface;
@@ -65,6 +67,8 @@ class Peon extends ObjectGame implements Updatable, Renderable
         surface = Drawable.loadSpriteAnimated(setup.getSurface(), 15, 9);
         surface.setOrigin(Origin.MIDDLE);
         surface.setFrameOffsets(-8, -8);
+
+        timing.start();
     }
 
     @Override
@@ -79,6 +83,12 @@ class Peon extends ObjectGame implements Updatable, Renderable
     {
         pathfindable.update(extrp);
         surface.setLocation(viewer, transformable);
+
+        if (timing.elapsed(1000L))
+        {
+            pathfindable.setDestination(12, 12);
+            timing.stop();
+        }
     }
 
     @Override

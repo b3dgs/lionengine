@@ -146,4 +146,59 @@ final class RectangleImpl implements Rectangle
     {
         return height;
     }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(height);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(width);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(x);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        temp = Double.doubleToLongBits(y);
+        result = prime * result + (int) (temp ^ temp >>> 32);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (!(obj instanceof RectangleImpl))
+        {
+            return false;
+        }
+        final RectangleImpl other = (RectangleImpl) obj;
+        final boolean sameSize = Double.doubleToLongBits(height) == Double.doubleToLongBits(other.height)
+                                 && Double.doubleToLongBits(width) == Double.doubleToLongBits(other.width);
+        final boolean sameCoord = Double.doubleToLongBits(x) == Double.doubleToLongBits(other.x)
+                                  && Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
+        return sameSize && sameCoord;
+    }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append("Rectangle [x=")
+                                  .append(x)
+                                  .append(", y=")
+                                  .append(y)
+                                  .append(", width=")
+                                  .append(width)
+                                  .append(", height=")
+                                  .append(height)
+                                  .append("]")
+                                  .toString();
+    }
 }
