@@ -27,10 +27,8 @@ import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.editor.map.group.menu.GroupsEditDialog;
 import com.b3dgs.lionengine.editor.map.sheet.extract.SheetsExtractDialog;
-import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.map.feature.transition.TransitionsConfig;
-import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 
 /**
@@ -56,12 +54,10 @@ public final class ExtractAllHandler
 
         final Media sheets = Medias.create(folder, TileSheetsConfig.FILENAME);
         final Media groups = Medias.create(folder, TileGroupsConfig.FILENAME);
-        final Media constraints = Medias.create(folder, TileConstraintsConfig.FILENAME);
         final Media transitions = Medias.create(folder, TransitionsConfig.FILENAME);
 
         sheetsExtractDialog.save();
         groupsEditDialog.save();
-        TileConstraintsConfig.exports(constraints, ConstraintsExtractor.getConstraints(levels, sheets));
         TransitionsConfig.exports(transitions, levels, sheets, groups);
     }
 

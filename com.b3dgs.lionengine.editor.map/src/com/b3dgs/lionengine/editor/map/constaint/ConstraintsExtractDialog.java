@@ -29,10 +29,8 @@ import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
-import com.b3dgs.lionengine.game.map.ConstraintsExtractor;
 import com.b3dgs.lionengine.game.map.feature.circuit.CircuitsConfig;
 import com.b3dgs.lionengine.game.map.feature.transition.TransitionsConfig;
-import com.b3dgs.lionengine.game.tile.TileConstraintsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
 import com.b3dgs.lionengine.util.UtilFolder;
 
@@ -50,8 +48,6 @@ public class ConstraintsExtractDialog extends AbstractDialog
     private BrowseWidget sheets;
     /** Groups location. */
     private BrowseWidget groups;
-    /** Constraints location. */
-    private BrowseWidget constraints;
     /** Transitions location. */
     private BrowseWidget transitions;
     /** Circuits location. */
@@ -124,10 +120,6 @@ public class ConstraintsExtractDialog extends AbstractDialog
             {
                 groups.setLocation(UtilFolder.getPath(folder, TileGroupsConfig.FILENAME));
             }
-            if (constraints.getMedia() == null)
-            {
-                constraints.setLocation(UtilFolder.getPath(folder, TileConstraintsConfig.FILENAME));
-            }
             if (transitions.getMedia() == null)
             {
                 transitions.setLocation(UtilFolder.getPath(folder, TransitionsConfig.FILENAME));
@@ -155,12 +147,6 @@ public class ConstraintsExtractDialog extends AbstractDialog
         groups = new BrowseWidget(content, groupsTitle, groupsFilter, false);
         groups.addListener(media -> checkFinish());
 
-        constraints = new BrowseWidget(content,
-                                       Messages.ConstraintsLocation,
-                                       Messages.ConstraintsConfigFileFilter,
-                                       false);
-        constraints.addListener(media -> checkFinish());
-
         transitions = new BrowseWidget(content,
                                        Messages.TransitionsLocation,
                                        Messages.TransitionsConfigFileFilter,
@@ -178,8 +164,6 @@ public class ConstraintsExtractDialog extends AbstractDialog
         final Media sheetsConfig = sheets.getMedia();
         final Media groupsConfig = groups.getMedia();
 
-        TileConstraintsConfig.exports(constraints.getMedia(),
-                                      ConstraintsExtractor.getConstraints(levels, sheetsConfig));
         TransitionsConfig.exports(transitions.getMedia(), levels, sheetsConfig, groupsConfig);
         CircuitsConfig.exports(circuits.getMedia(), levels, sheetsConfig, groupsConfig);
     }
