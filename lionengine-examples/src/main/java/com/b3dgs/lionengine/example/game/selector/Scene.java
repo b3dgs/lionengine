@@ -27,17 +27,19 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.Selector;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.handler.ComponentRefresher;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
+import com.b3dgs.lionengine.game.layer.Layerable;
+import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.Minimap;
 import com.b3dgs.lionengine.game.map.feature.viewer.MapTileViewerModel;
 import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.selector.Selector;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -57,7 +59,6 @@ class Scene extends Sequence
     private final Cursor cursor = services.create(Cursor.class);
     private final MapTile map = services.create(MapTileGame.class);
     private final Minimap minimap = new Minimap(map);
-    private final Selector selector = new Selector(camera, cursor);
     private final Keyboard keyboard = getInputDevice(Keyboard.class);
     private final Mouse mouse = getInputDevice(Mouse.class);
     private final Image hud;
@@ -108,10 +109,15 @@ class Scene extends Sequence
         final Peon peon = factory.create(Peon.MEDIA);
         handler.add(peon);
 
+        final Selector selector = new Selector();
+        final Layerable layerable = new LayerableModel();
+        layerable.setLayer(Integer.valueOf(1));
+        selector.addFeature(layerable);
         selector.setClickableArea(camera);
         selector.setSelectionColor(ColorRgba.GREEN);
         selector.setClickSelection(Mouse.LEFT);
         selector.addListener(peon);
+        handler.add(selector);
     }
 
     @Override
@@ -120,7 +126,6 @@ class Scene extends Sequence
         mouse.update(extrp);
         cursor.update(extrp);
         handler.update(extrp);
-        selector.update(extrp);
 
         if (keyboard.isPressed(Keyboard.UP))
         {
@@ -145,7 +150,6 @@ class Scene extends Sequence
     {
         handler.render(g);
         hud.render(g);
-        selector.render(g);
         minimap.render(g);
         cursor.render(g);
     }

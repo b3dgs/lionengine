@@ -17,15 +17,12 @@
  */
 package com.b3dgs.lionengine.game.camera;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Shape;
 import com.b3dgs.lionengine.Surface;
-import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.HandlableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Mover;
 import com.b3dgs.lionengine.game.object.feature.transformable.MoverModel;
-import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.Viewer;
 import com.b3dgs.lionengine.util.UtilMath;
 
@@ -79,24 +76,6 @@ public class Camera extends HandlableModel implements Viewer
     }
 
     /**
-     * Follow automatically the specified handlable. The viewer location will be adjusted to the followed handlable.
-     * <p>
-     * The {@link Handlable} must provide the following features:
-     * </p>
-     * <ul>
-     * <li>{@link Transformable}</li>
-     * </ul>
-     * 
-     * @param handlable The handlable to follow.
-     * @throws LionEngineException If missing feature.
-     */
-    public void follow(Handlable handlable)
-    {
-        final Transformable transformable = handlable.getFeature(Transformable.class);
-        follow(transformable);
-    }
-
-    /**
      * Reset the camera interval to 0 by adapting its position.
      * 
      * @param localizable The localizable to center to.
@@ -110,7 +89,7 @@ public class Camera extends HandlableModel implements Viewer
 
         setIntervals(0, 0);
         offset.setLocation(0.0, 0.0);
-        follow(localizable);
+        setLocation(localizable.getX(), localizable.getY());
 
         final double newX = getX();
         final double newY = getY();
@@ -355,12 +334,6 @@ public class Camera extends HandlableModel implements Viewer
     /*
      * Viewer
      */
-
-    @Override
-    public void follow(Localizable localizable)
-    {
-        setLocation(localizable.getX(), localizable.getY());
-    }
 
     @Override
     public double getViewpointX(double x)

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.selector;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -23,17 +23,23 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.MouseMock;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.handler.HandlableModel;
+import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
- * Test the selector class.
+ * Test the selector refresher class.
  */
-public class SelectorTest
+public class SelectorRefresherTest
 {
-    private final Cursor cursor = new Cursor();
-    private final Selector selector = new Selector(new Camera(), cursor);
+    private final Services services = new Services();
+    private final Cursor cursor = services.create(Cursor.class);
+    private final SelectorModel model = new SelectorModel();
+    private final SelectorRefresher refresher = new SelectorRefresher(model);
     private final MouseMock mouse = new MouseMock();
     private final AtomicReference<Rectangle> started = new AtomicReference<Rectangle>();
     private final AtomicReference<Rectangle> done = new AtomicReference<Rectangle>();
@@ -44,9 +50,8 @@ public class SelectorTest
     @Before
     public void prepare()
     {
-        selector.addListener(new SelectorListener()
+        refresher.addListener(new SelectorListener()
         {
-
             @Override
             public void notifySelectionStarted(Rectangle selection)
             {
@@ -61,6 +66,9 @@ public class SelectorTest
         });
         cursor.setInputDevice(mouse);
         cursor.setSyncMode(true);
+
+        services.add(new Camera());
+        refresher.prepare(new HandlableModel(), services);
     }
 
     /**
@@ -69,17 +77,17 @@ public class SelectorTest
     @Test
     public void testSelecting()
     {
-        Assert.assertFalse(selector.isSelecting());
+        Assert.assertFalse(model.isSelecting());
 
         mouse.setClick(1);
-        selector.update(1.0);
+        refresher.update(1.0);
 
-        Assert.assertFalse(selector.isSelecting());
+        Assert.assertFalse(model.isSelecting());
 
-        selector.setClickSelection(1);
-        selector.update(1.0);
+        model.setClickSelection(1);
+        refresher.update(1.0);
 
-        Assert.assertTrue(selector.isSelecting());
+        Assert.assertTrue(model.isSelecting());
     }
 
     /**
@@ -91,29 +99,29 @@ public class SelectorTest
         Assert.assertNull(started.get());
         Assert.assertNull(done.get());
 
-        selector.setClickSelection(1);
+        model.setClickSelection(1);
 
         mouse.move(1, 1);
         cursor.update(1.0);
-        selector.update(1.0);
+        refresher.update(1.0);
 
         Assert.assertNull(started.get());
 
         mouse.setClick(1);
         cursor.update(1.0);
-        selector.update(1.0);
+        refresher.update(1.0);
 
         Assert.assertEquals(Geom.createRectangle(1.0, -1.0, 0, 0.0), started.get());
 
         mouse.move(10, -20);
         cursor.update(1.0);
-        selector.update(1.0);
+        refresher.update(1.0);
 
         Assert.assertNull(done.get());
 
         mouse.setClick(0);
         cursor.update(1.0);
-        selector.update(1.0);
+        refresher.update(1.0);
 
         Assert.assertEquals(Geom.createRectangle(1.0, -1.0, 10, 20.0), done.get());
     }

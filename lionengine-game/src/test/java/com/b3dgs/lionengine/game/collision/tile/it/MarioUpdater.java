@@ -15,12 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.collision;
+package com.b3dgs.lionengine.game.collision.tile.it;
 
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
@@ -57,7 +56,7 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
 
         jump.setVelocity(0.1);
         jump.setDestination(0.0, 0.0);
-        transformable.teleport(80, 32);
+        transformable.teleport(256, 32);
 
         body.setDesiredFps(60);
         body.setMass(2.0);
@@ -67,7 +66,8 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     @Override
     public void update(double extrp)
     {
-        movement.setDirection(Direction.ZERO);
+        movement.setDirection(2, 0);
+        jump.setDirection(0.0, 8.0);
         if (keyboard.isPressed(Keyboard.LEFT))
         {
             movement.setDirection(-2, 0);

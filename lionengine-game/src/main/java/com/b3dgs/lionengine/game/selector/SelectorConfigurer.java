@@ -15,26 +15,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.selector;
 
 import com.b3dgs.lionengine.geom.Rectangle;
+import com.b3dgs.lionengine.graphic.Viewer;
 
 /**
- * List of events linked to the {@link Selector}.
+ * Allows to configure the selector.
  */
-public interface SelectorListener
+public interface SelectorConfigurer
 {
     /**
-     * Notify when selection started.
+     * Set the mouse click selection value.
      * 
-     * @param selection The selection.
+     * @param click The click number.
+     * @see com.b3dgs.lionengine.core.InputDevicePointer
      */
-    void notifySelectionStarted(Rectangle selection);
+    void setClickSelection(int click);
 
     /**
-     * Notify when selection is done.
+     * Set clickable area (where selection can be performed on screen).
      * 
-     * @param selection The selection.
+     * @param area The representation of the clickable area.
      */
-    void notifySelectionDone(Rectangle selection);
+    void setClickableArea(Rectangle area);
+
+    /**
+     * Set clickable area (where selection can be performed on screen).
+     * 
+     * @param viewer The viewer reference.
+     */
+    void setClickableArea(Viewer viewer);
 }

@@ -22,8 +22,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.game.Cursor;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.HandlableModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 import com.b3dgs.lionengine.test.UtilTests;
@@ -78,33 +76,6 @@ public class CameraTest
         Assert.assertEquals(0.0, camera.getMovementVertical(), UtilTests.PRECISION);
         Assert.assertEquals(1.0, camera.getX(), UtilTests.PRECISION);
         Assert.assertEquals(2.0, camera.getY(), UtilTests.PRECISION);
-    }
-
-    /**
-     * Test the camera follow.
-     */
-    @Test
-    public void testCameraFollow()
-    {
-        final Transformable transformable = new TransformableModel();
-        transformable.teleport(1.0, 2.0);
-        camera.setView(0, 0, 16, 32);
-        camera.follow(transformable);
-
-        Assert.assertEquals(-7.0, camera.getMovementHorizontal(), UtilTests.PRECISION);
-        Assert.assertEquals(-14.0, camera.getMovementVertical(), UtilTests.PRECISION);
-        Assert.assertEquals(-7.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(-14.0, camera.getY(), UtilTests.PRECISION);
-
-        final Handlable handlable = new HandlableModel();
-        handlable.addFeature(transformable);
-        transformable.teleport(3.0, 4.0);
-        camera.follow(handlable);
-
-        Assert.assertEquals(2.0, camera.getMovementHorizontal(), UtilTests.PRECISION);
-        Assert.assertEquals(2.0, camera.getMovementVertical(), UtilTests.PRECISION);
-        Assert.assertEquals(-5.0, camera.getX(), UtilTests.PRECISION);
-        Assert.assertEquals(-12.0, camera.getY(), UtilTests.PRECISION);
     }
 
     /**

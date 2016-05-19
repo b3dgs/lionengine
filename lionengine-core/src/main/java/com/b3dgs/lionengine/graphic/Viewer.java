@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.graphic;
 
-import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Shape;
 
 /**
@@ -25,13 +24,6 @@ import com.b3dgs.lionengine.Shape;
  */
 public interface Viewer extends Shape
 {
-    /**
-     * Follow automatically the specified localizable. The viewer location will be adjusted to the followed localizable.
-     * 
-     * @param localizable The localizable to follow.
-     */
-    void follow(Localizable localizable);
-
     /**
      * Get the horizontal viewpoint from the object location.
      * 
