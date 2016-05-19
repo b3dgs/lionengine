@@ -322,6 +322,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
             @Override
             public void notifyLevelRipAdded(Media media)
             {
+                autofillSheetsConfig(media);
                 checkNextEnabled();
             }
 
@@ -338,6 +339,23 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
                                   true);
         sheets.addListener(media -> checkNextEnabled());
         return levelsArea;
+    }
+
+    /**
+     * Check for auto fill sheets config.
+     * 
+     * @param media The media reference.
+     */
+    private void autofillSheetsConfig(Media media)
+    {
+        if (sheets.getMedia() == null)
+        {
+            final Media sheetsConfig = Medias.create(media.getParentPath(), TileSheetsConfig.FILENAME);
+            if (sheetsConfig.exists())
+            {
+                sheets.setLocation(sheetsConfig.getPath());
+            }
+        }
     }
 
     /**
