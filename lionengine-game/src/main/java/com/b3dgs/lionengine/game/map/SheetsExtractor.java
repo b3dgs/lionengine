@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Surface;
 import com.b3dgs.lionengine.core.Graphics;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -36,15 +37,16 @@ public final class SheetsExtractor
      * Convert a set of tile to a set of tile sheets.
      * 
      * @param tiles The list of tiles.
-     * @param horizontalTiles The number of horizontal tiles on sheet.
+     * @param horizontalTiles The number of horizontal tiles on sheet (inferior or equal to 0 to use automatic).
      * @return The list of tile sheets.
      */
     public static Collection<SpriteTiled> extract(Collection<ImageBuffer> tiles, int horizontalTiles)
     {
-        final int size = (int) Math.ceil(Math.sqrt(tiles.size()));
-        final int tilesPerSheet = size * size;
-        final int sheetsNumber = (int) Math.ceil(size / (double) horizontalTiles);
-        final Collection<SpriteTiled> sheets = new ArrayList<SpriteTiled>(sheetsNumber);
+        final Surface surface = getSheetSize(tiles, horizontalTiles);
+        final int horizontals = surface.getWidth();
+        final int verticals = surface.getHeight();
+        final int tilesPerSheet = Math.min(tiles.size(), horizontals * verticals);
+        final Collection<SpriteTiled> sheets = new ArrayList<SpriteTiled>();
 
         ImageBuffer sheet = null;
         Graphic g = null;
@@ -58,15 +60,18 @@ public final class SheetsExtractor
             {
                 tw = tile.getWidth();
                 th = tile.getHeight();
-                sheet = Graphics.createImageBuffer(size * tw, size * th, tile.getTransparency());
+
+                final int width = Math.max(tw, horizontals * tw);
+                final int height = Math.max(th, verticals * th);
+                sheet = Graphics.createImageBuffer(width, height, tile.getTransparency());
                 g = sheet.createGraphic();
             }
-            final int x = number % size;
-            final int y = (int) Math.floor(number / (double) size);
+            final int x = number % horizontals;
+            final int y = (int) Math.floor(number / (double) horizontals);
             g.drawImage(tile, x * tw, y * th);
             number++;
 
-            if (number >= tilesPerSheet || number >= tiles.size())
+            if (number >= tilesPerSheet)
             {
                 g.dispose();
                 sheets.add(Drawable.loadSpriteTiled(Graphics.getImageBuffer(sheet), tw, th));
@@ -77,6 +82,44 @@ public final class SheetsExtractor
         }
 
         return sheets;
+    }
+
+    /**
+     * Get the sheet size depending of the number of horizontal tiles and total number of tiles.
+     * 
+     * @param tiles The tiles list.
+     * @param horizontalTiles The horizontal tiles.
+     * @return The horizontal and vertical tiles.
+     */
+    private static Surface getSheetSize(Collection<ImageBuffer> tiles, int horizontalTiles)
+    {
+        final int tilesNumber = tiles.size();
+        final int horizontals;
+        final int verticals;
+        if (horizontalTiles > 0)
+        {
+            horizontals = horizontalTiles;
+            verticals = (int) Math.ceil(tilesNumber / (double) horizontalTiles);
+        }
+        else
+        {
+            horizontals = (int) Math.ceil(Math.sqrt(tilesNumber));
+            verticals = horizontals;
+        }
+        return new Surface()
+        {
+            @Override
+            public int getWidth()
+            {
+                return Math.max(1, horizontals);
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return Math.max(1, verticals);
+            }
+        };
     }
 
     /**

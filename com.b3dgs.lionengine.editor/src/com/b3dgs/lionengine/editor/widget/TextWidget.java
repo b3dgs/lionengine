@@ -19,8 +19,9 @@ package com.b3dgs.lionengine.editor.widget;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -35,7 +36,7 @@ public class TextWidget
     /** Listeners. */
     private final Collection<TextWidgetListener> listeners = new HashSet<>();
     /** Text value. */
-    private final AtomicInteger value = new AtomicInteger();
+    private final AtomicReference<Integer> value = new AtomicReference<>();
     /** Empty flag. */
     private final AtomicBoolean empty = new AtomicBoolean(true);
 
@@ -54,7 +55,14 @@ public class TextWidget
         {
             final String content = text.getText();
             empty.set(content.isEmpty());
-            value.set(Integer.parseInt(content));
+            if (empty.get())
+            {
+                value.set(null);
+            }
+            else
+            {
+                value.set(Integer.valueOf(content));
+            }
             for (final TextWidgetListener listener : listeners)
             {
                 listener.notifyTextModified(content);
@@ -88,9 +96,9 @@ public class TextWidget
      * 
      * @return The text value.
      */
-    public int getValue()
+    public Optional<Integer> getValue()
     {
-        return value.get();
+        return Optional.ofNullable(value.get());
     }
 
     /**

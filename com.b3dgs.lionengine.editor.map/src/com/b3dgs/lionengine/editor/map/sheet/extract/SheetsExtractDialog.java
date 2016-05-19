@@ -100,7 +100,10 @@ public class SheetsExtractDialog extends AbstractDialog
             }
 
             final Media sheetsMedia = Medias.create(folder, TileSheetsConfig.FILENAME);
-            TileSheetsConfig.exports(sheetsMedia, tileWidth.getValue(), tileHeight.getValue(), getSheetNames());
+            TileSheetsConfig.exports(sheetsMedia,
+                                     tileWidth.getValue().get().intValue(),
+                                     tileHeight.getValue().get().intValue(),
+                                     getSheetNames());
         }
     }
 
@@ -125,16 +128,6 @@ public class SheetsExtractDialog extends AbstractDialog
     }
 
     /**
-     * Get the sheets config.
-     * 
-     * @return The sheets config.
-     */
-    public TileSheetsConfig getConfig()
-    {
-        return new TileSheetsConfig(tileWidth.getValue(), tileHeight.getValue(), getSheetNames());
-    }
-
-    /**
      * Get the extracted tile sheets.
      * 
      * @return The extracted tile sheets.
@@ -155,7 +148,7 @@ public class SheetsExtractDialog extends AbstractDialog
     {
         final boolean hasRips = !levelRips.getLevelRips().isEmpty();
         final boolean hasSize = !tileWidth.isEmpty() && !tileHeight.isEmpty();
-        final boolean finished = hasRips && hasSize && !horizontalTiles.isEmpty() && destination.getMedia() != null;
+        final boolean finished = hasRips && hasSize && destination.getMedia() != null;
 
         finish.setEnabled(finished);
         tipsLabel.setVisible(!finished);
@@ -193,13 +186,12 @@ public class SheetsExtractDialog extends AbstractDialog
     private Collection<ImageBuffer> getTiles()
     {
         final TilesExtractor tilesExtractor = new TilesExtractor();
-        final SheetsExtractProgressDialog progress = new SheetsExtractProgressDialog(dialog,
-                                                                                     horizontalTiles.getValue());
+        final SheetsExtractProgressDialog progress = new SheetsExtractProgressDialog(dialog, getHorizontalTiles());
         tilesExtractor.addListener(progress);
         progress.open();
 
-        final int tw = tileWidth.getValue();
-        final int th = tileHeight.getValue();
+        final int tw = tileWidth.getValue().get().intValue();
+        final int th = tileHeight.getValue().get().intValue();
         final Collection<ImageBuffer> tiles = tilesExtractor.extract(progress, tw, th, getLevelRips());
         progress.finish();
         if (!progress.isCanceled())
@@ -223,7 +215,16 @@ public class SheetsExtractDialog extends AbstractDialog
             sheetsName.add(i + SHEET_EXTENSION);
         }
         return sheetsName;
+    }
 
+    /**
+     * Get the horizontal tiles value.
+     * 
+     * @return Horizontal tiles value.
+     */
+    private int getHorizontalTiles()
+    {
+        return horizontalTiles.getValue().orElse(Integer.valueOf(0)).intValue();
     }
 
     /*
@@ -247,6 +248,10 @@ public class SheetsExtractDialog extends AbstractDialog
             @Override
             public void notifyLevelRipAdded(Media media)
             {
+                if (destination.getMedia() == null)
+                {
+                    destination.setLocation(media.getParentPath());
+                }
                 checkFinish();
             }
         });
@@ -259,6 +264,6 @@ public class SheetsExtractDialog extends AbstractDialog
     @Override
     protected void onFinish()
     {
-        sheets = SheetsExtractor.extract(getTiles(), horizontalTiles.getValue());
+        sheets = SheetsExtractor.extract(getTiles(), getHorizontalTiles());
     }
 }

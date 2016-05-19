@@ -42,6 +42,8 @@ public class SheetsExtractProgressDialog extends AbstractProgressDialog
 {
     /** Icon. */
     private static final Image ICON = UtilIcon.get("dialog", "import.png");
+    /** Default horizontal tiles number. */
+    private static final int DEFAULT_HORIZONTAL_TILES = 16;
 
     /** Image width. */
     private final int horizontalTiles;
@@ -61,7 +63,14 @@ public class SheetsExtractProgressDialog extends AbstractProgressDialog
     public SheetsExtractProgressDialog(Shell parent, int horizontalTiles)
     {
         super(parent, Messages.Title, Messages.HeaderTitle, Messages.Progress, ICON);
-        this.horizontalTiles = horizontalTiles;
+        if (horizontalTiles > 0)
+        {
+            this.horizontalTiles = horizontalTiles;
+        }
+        else
+        {
+            this.horizontalTiles = DEFAULT_HORIZONTAL_TILES;
+        }
 
         createDialog();
         finish.dispose();
@@ -73,11 +82,11 @@ public class SheetsExtractProgressDialog extends AbstractProgressDialog
     /**
      * Update the rendering size depending of the tiles.
      * 
-     * @param tiles The tiles collection.
+     * @param tiles The extracted tiles collection.
      */
     private void updateSize(Collection<ImageBuffer> tiles)
     {
-        final int height = (int) Math.floor(tiles.size() / (double) horizontalTiles);
+        final int height = (int) Math.ceil(tiles.size() / (double) horizontalTiles);
         if (height > oldHeight && !tiles.isEmpty())
         {
             if (gc != null)
