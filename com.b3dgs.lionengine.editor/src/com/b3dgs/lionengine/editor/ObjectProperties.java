@@ -165,7 +165,7 @@ public abstract class ObjectProperties<T extends Nameable>
     {
         final Group objectProperties = new Group(parent, SWT.NONE);
         objectProperties.setLayout(new GridLayout(1, false));
-        objectProperties.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true));
+        objectProperties.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false));
         objectProperties.setText(Messages.ObjectProperties_Properties);
 
         final Composite objectData = new Composite(objectProperties, SWT.NONE);

@@ -66,6 +66,7 @@ import com.b3dgs.lionengine.editor.world.updater.WorldUpdater;
 import com.b3dgs.lionengine.editor.world.view.WorldPart;
 import com.b3dgs.lionengine.editor.world.view.WorldView;
 import com.b3dgs.lionengine.game.camera.Camera;
+import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
@@ -155,6 +156,7 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         services.add(new Factory(services));
         map = services.create(MapTileGame.class);
         mapGroup = map.createFeature(MapTileGroupModel.class);
+        map.addFeature(new MapTileCollisionModel(services));
         map.addFeature(new MapTileTransitionModel(services));
         map.addFeature(new MapTileCircuitModel(services));
         map.addFeature(new MapTileViewerModel(services));
@@ -196,9 +198,10 @@ public class GroupsEditDialog extends AbstractDialog implements WorldView, Focus
         final Composite content = levelsArea.getParent();
         levelsArea.dispose();
         createWorldView(content);
-
+        dialog.setMinimumSize(900, 700);
         setFinishEnabled(true);
         content.layout(true, true);
+        UtilSwt.center(dialog);
     }
 
     /**
