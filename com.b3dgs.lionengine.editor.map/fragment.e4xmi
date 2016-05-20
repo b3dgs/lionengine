@@ -12,7 +12,7 @@
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_-jMolPKPEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.project.active"/>
       </children>
       <children xsi:type="menu:DirectMenuItem" xmi:id="_-jMolfKPEeWpu_NQCohogQ" elementId="com.b3dgs.lionengine.editor.menu.map.extract-constraints" label="%menu.map.extract-constraints" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/toolbar/import-map.png" tooltip="%menu.map.extract-constraints-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.constaint.ConstraintsExtractHandler">
-        <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_-jMolvKPEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.map.test"/>
+        <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_-jMolvKPEeWpu_NQCohogQ" coreExpressionId="com.b3dgs.lionengine.editor.project.active"/>
       </children>
       <children xsi:type="menu:DirectMenuItem" xmi:id="_-jMol_KPEeWpu_NQCohogQ" elementId="com.b3dgs.lionengine.editor.menu.map.extract-all" label="%menu.map.extract-all" iconURI="platform:/plugin/com.b3dgs.lionengine.editor.map/icons/toolbar/import-map.png" tooltip="%menu.map.extract-all-tip" contributionURI="bundleclass://com.b3dgs.lionengine.editor.map/com.b3dgs.lionengine.editor.map.ExtractAllHandler">
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_u5pzEPObEeWyu4iRqxulTg" coreExpressionId="com.b3dgs.lionengine.editor.project.active"/>

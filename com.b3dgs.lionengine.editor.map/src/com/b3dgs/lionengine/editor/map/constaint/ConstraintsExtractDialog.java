@@ -24,11 +24,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.editor.dialog.AbstractDialog;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.widget.BrowseWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget;
 import com.b3dgs.lionengine.editor.widget.levelrip.LevelRipWidget.LevelRipsWidgetListener;
+import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.map.feature.circuit.CircuitsConfig;
 import com.b3dgs.lionengine.game.map.feature.transition.TransitionsConfig;
 import com.b3dgs.lionengine.game.tile.TileGroupsConfig;
@@ -90,17 +92,35 @@ public class ConstraintsExtractDialog extends AbstractDialog
         levelRips.addListener(new LevelRipsWidgetListener()
         {
             @Override
-            public void notifyLevelRipRemoved(Media media)
+            public void notifyLevelRipAdded(Media media)
             {
+                autofillSheetsConfig(media);
                 checkFinish();
             }
 
             @Override
-            public void notifyLevelRipAdded(Media media)
+            public void notifyLevelRipRemoved(Media media)
             {
                 checkFinish();
             }
         });
+    }
+
+    /**
+     * Check for auto fill sheets config.
+     * 
+     * @param media The media reference.
+     */
+    private void autofillSheetsConfig(Media media)
+    {
+        if (sheets.getMedia() == null)
+        {
+            final Media sheetsConfig = Medias.create(media.getParentPath(), TileSheetsConfig.FILENAME);
+            if (sheetsConfig.exists())
+            {
+                sheets.setLocation(sheetsConfig.getPath());
+            }
+        }
     }
 
     /**
