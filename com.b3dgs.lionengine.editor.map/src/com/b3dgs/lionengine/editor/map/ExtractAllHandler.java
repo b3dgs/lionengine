@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.editor.map.group.menu.GroupsEditDialog;
+import com.b3dgs.lionengine.editor.map.group.menu.GroupsAssignDialog;
 import com.b3dgs.lionengine.editor.map.sheet.extract.SheetsExtractDialog;
 import com.b3dgs.lionengine.game.map.TileSheetsConfig;
 import com.b3dgs.lionengine.game.map.feature.transition.TransitionsConfig;
@@ -43,11 +43,11 @@ public final class ExtractAllHandler
      * Save all level data.
      * 
      * @param sheetsExtractDialog The sheets dialog.
-     * @param groupsEditDialog The groups dialog.
+     * @param groupsAssignDialog The groups dialog.
      * @param levels The level rip medias.
      */
     private static void saveAll(SheetsExtractDialog sheetsExtractDialog,
-                                GroupsEditDialog groupsEditDialog,
+                                GroupsAssignDialog groupsAssignDialog,
                                 Collection<Media> levels)
     {
         final String folder = sheetsExtractDialog.getFolder();
@@ -57,7 +57,7 @@ public final class ExtractAllHandler
         final Media transitions = Medias.create(folder, TransitionsConfig.FILENAME);
 
         sheetsExtractDialog.save();
-        groupsEditDialog.save();
+        groupsAssignDialog.save();
         TransitionsConfig.exports(transitions, levels, sheets, groups);
     }
 
@@ -85,15 +85,14 @@ public final class ExtractAllHandler
         {
             final Collection<Media> levels = sheetsExtractDialog.getLevelRips();
 
-            final GroupsEditDialog groupsEditDialog = new GroupsEditDialog(shell);
-            groupsEditDialog.setLocation(sheetsExtractDialog.getFolder());
-            groupsEditDialog.load(sheets, levels);
-            groupsEditDialog.showWorldView();
-            groupsEditDialog.open();
+            final GroupsAssignDialog groupsAssignDialog = new GroupsAssignDialog(shell);
+            groupsAssignDialog.setLocation(sheetsExtractDialog.getFolder());
+            groupsAssignDialog.load(sheets, levels);
+            groupsAssignDialog.open();
 
-            if (!groupsEditDialog.isCanceled())
+            if (!groupsAssignDialog.isCanceled())
             {
-                saveAll(sheetsExtractDialog, groupsEditDialog, levels);
+                saveAll(sheetsExtractDialog, groupsAssignDialog, levels);
             }
         }
     }

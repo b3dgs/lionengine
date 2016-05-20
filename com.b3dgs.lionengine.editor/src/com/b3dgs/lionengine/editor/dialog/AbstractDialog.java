@@ -280,14 +280,7 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
 
         finish = UtilButton.create(buttonArea, Messages.Finish, AbstractDialog.ICON_OK);
         finish.setEnabled(false);
-        UtilButton.setAction(finish, () ->
-        {
-            onFinish();
-            dialog.dispose();
-
-            final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
-            part.update();
-        });
+        UtilButton.setAction(finish, () -> close());
 
         cancel = UtilButton.create(buttonArea, Messages.Cancel, AbstractDialog.ICON_CANCEL);
         UtilButton.setAction(cancel, () ->
@@ -299,6 +292,18 @@ public abstract class AbstractDialog extends Dialog implements MDirtyable
             final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
             part.update();
         });
+    }
+
+    /**
+     * Close dialog.
+     */
+    protected final void close()
+    {
+        onFinish();
+        dialog.dispose();
+
+        final WorldPart part = WorldModel.INSTANCE.getServices().get(WorldPart.class);
+        part.update();
     }
 
     /*

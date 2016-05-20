@@ -46,7 +46,7 @@
     
     <suppress checks="ClassDataAbstractionCoupling" files="com.b3dgs.lionengine.audio.wav.WavImpl"/>
     
-    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.map.group.menu.GroupsEditDialog"/>    
+    <suppress checks="FanOutComplexity" files="com.b3dgs.lionengine.editor.map.group.menu.GroupsAssignDialog"/>    
     
     <suppress checks="StaticVariableName" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
     <suppress checks="VisibilityModifier" files="[\\/]com.b3dgs.lionengine.editor.*.Messages"/>
