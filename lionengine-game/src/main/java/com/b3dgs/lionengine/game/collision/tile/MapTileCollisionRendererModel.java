@@ -226,6 +226,9 @@ public class MapTileCollisionRendererModel implements MapTileCollisionRenderer
     @Override
     public void renderTile(Graphic g, Tile tile, int x, int y)
     {
-        renderCollision(g, tile.getFeature(TileCollision.class), x, y);
+        if (tile.hasFeature(TileCollision.class))
+        {
+            renderCollision(g, tile.getFeature(TileCollision.class), x, y);
+        }
     }
 }
