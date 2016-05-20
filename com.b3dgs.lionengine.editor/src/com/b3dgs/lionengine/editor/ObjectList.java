@@ -30,6 +30,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
@@ -39,6 +40,7 @@ import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.editor.utility.UtilIcon;
 import com.b3dgs.lionengine.editor.utility.UtilTree;
 import com.b3dgs.lionengine.editor.utility.control.UtilSwt;
+import com.b3dgs.lionengine.editor.utility.dialog.UtilDialog;
 import com.b3dgs.lionengine.editor.validator.InputValidator;
 
 /**
@@ -394,22 +396,40 @@ public abstract class ObjectList<T extends Nameable>
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final String error = com.b3dgs.lionengine.editor.validator.Messages.ErrorName;
-                final InputDialog inputDialog = new InputDialog(toolbar.getShell(),
-                                                                Messages.ObjectList_AddObject_Title,
-                                                                Messages.ObjectList_AddObject_Text,
-                                                                ObjectList.DEFAULT_NEW_OBJECT_NAME,
-                                                                new InputValidator(InputValidator.NAME_MATCH, error));
-                if (inputDialog.open() == Window.OK)
-                {
-                    final String name = inputDialog.getValue();
-                    final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
-                    item.setText(name);
-                    item.setData(createObject(name));
-                    UtilSwt.setDirty(toolbar.getShell(), true);
-                }
+                addItem(toolbar.getShell());
             }
         });
+    }
+
+    /**
+     * Add an item to tree from input dialog if accepted.
+     * 
+     * @param parent The parent shell.
+     */
+    private void addItem(Shell parent)
+    {
+        final String error = com.b3dgs.lionengine.editor.validator.Messages.ErrorName;
+        final InputDialog inputDialog = new InputDialog(parent,
+                                                        Messages.ObjectList_AddObject_Title,
+                                                        Messages.ObjectList_AddObject_Text,
+                                                        ObjectList.DEFAULT_NEW_OBJECT_NAME,
+                                                        new InputValidator(InputValidator.NAME_MATCH, error));
+        if (inputDialog.open() == Window.OK)
+        {
+            final String name = inputDialog.getValue();
+            if (getObjectsName().contains(name))
+            {
+                UtilDialog.error(parent, Messages.ErrorExistsTitle, Messages.ErrorExistsMessage);
+                addItem(parent);
+            }
+            else
+            {
+                final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
+                item.setText(name);
+                item.setData(createObject(name));
+                UtilSwt.setDirty(parent, true);
+            }
+        }
     }
 
     /**
@@ -426,17 +446,27 @@ public abstract class ObjectList<T extends Nameable>
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                for (final TreeItem item : objectsTree.getSelection())
-                {
-                    for (final ObjectListListener<T> listener : listeners)
-                    {
-                        listener.notifyObjectDeleted(type.cast(item.getData()));
-                    }
-                    item.dispose();
-                }
-                objectsTree.layout(true, true);
-                UtilSwt.setDirty(toolbar.getShell(), true);
+                removeItem(toolbar.getShell());
             }
         });
+    }
+
+    /**
+     * Remove selected items from tree.
+     * 
+     * @param parent The parent shell.
+     */
+    private void removeItem(Shell parent)
+    {
+        for (final TreeItem item : objectsTree.getSelection())
+        {
+            for (final ObjectListListener<T> listener : listeners)
+            {
+                listener.notifyObjectDeleted(type.cast(item.getData()));
+            }
+            item.dispose();
+        }
+        objectsTree.layout(true, true);
+        UtilSwt.setDirty(parent, true);
     }
 }

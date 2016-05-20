@@ -38,6 +38,10 @@ public final class Messages extends NLS
     public static String ObjectList_AddObject_Title;
     /** Object list add text. */
     public static String ObjectList_AddObject_Text;
+    /** Item already exists title. */
+    public static String ErrorExistsTitle;
+    /** Item already exists message. */
+    public static String ErrorExistsMessage;
 
     /**
      * Initialize.
