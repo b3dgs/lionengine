@@ -20,12 +20,6 @@ package com.b3dgs.lionengine.game.handler;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.handler.Feature;
-import com.b3dgs.lionengine.game.handler.FeatureModel;
-import com.b3dgs.lionengine.game.handler.Handlable;
-import com.b3dgs.lionengine.game.handler.HandlableModel;
-import com.b3dgs.lionengine.game.handler.Services;
-
 /**
  * Test the feature model class.
  */
