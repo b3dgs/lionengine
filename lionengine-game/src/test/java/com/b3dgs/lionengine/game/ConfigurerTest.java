@@ -219,15 +219,9 @@ public class ConfigurerTest
     @Test
     public void testGetImplementationNotAccessible()
     {
-        try
-        {
-            Assert.assertNull(configurer.getImplementation(NotAccessible.class, NotAccessible.class.getSimpleName()));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.assertEquals(exception.getMessage(), IllegalAccessException.class, exception.getCause().getClass());
-        }
+        final NotAccessible impl = configurer.getImplementation(NotAccessible.class,
+                                                                NotAccessible.class.getSimpleName());
+        Assert.assertTrue(impl.created);
     }
 
     /**
@@ -362,7 +356,6 @@ public class ConfigurerTest
      */
     static class Accessible
     {
-        /** Created flag. */
         private final boolean created;
 
         /**
@@ -379,9 +372,11 @@ public class ConfigurerTest
      */
     static class NotAccessible
     {
+        private final boolean created;
+
         private NotAccessible()
         {
-            // Private
+            created = true;
         }
     }
 
@@ -390,7 +385,6 @@ public class ConfigurerTest
      */
     static class Custom
     {
-        /** Created flag. */
         private final boolean created;
 
         /**
