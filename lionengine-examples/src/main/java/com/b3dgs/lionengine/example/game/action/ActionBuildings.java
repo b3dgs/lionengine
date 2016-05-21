@@ -20,40 +20,40 @@ package com.b3dgs.lionengine.example.game.action;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
- * Buildings action.
+ * Buildings action implementation.
  */
-class Buildings extends Button
+class ActionBuildings extends ActionFeature
 {
     @Service private Factory factory;
     @Service private Handler handler;
 
     /**
-     * Create buildings action.
+     * Create feature.
      * 
      * @param setup The setup reference.
      */
-    public Buildings(SetupSurface setup)
+    public ActionBuildings(Setup setup)
     {
         super(setup);
+    }
 
-        getFeature(Actionable.class).setAction(() ->
-        {
-            final Button buildFarm = factory.create(Button.BUILD_FARM);
-            final Button buildBarracks = factory.create(Button.BUILD_BARRACKS);
-            final Cancel cancel = factory.create(Button.CANCEL);
+    @Override
+    public void execute()
+    {
+        final Button cancel = factory.create(Button.CANCEL);
+        handler.add(cancel);
 
-            cancel.addToDelete(buildFarm);
-            cancel.addToDelete(buildBarracks);
+        final Button buildFarm = factory.create(Button.BUILD_FARM);
+        cancel.addToDelete(buildFarm);
+        handler.add(buildFarm);
 
-            handler.add(buildFarm);
-            handler.add(buildBarracks);
-            handler.add(cancel);
+        final Button buildBarracks = factory.create(Button.BUILD_BARRACKS);
+        cancel.addToDelete(buildBarracks);
+        handler.add(buildBarracks);
 
-            destroy();
-        });
+        getOwner().destroy();
     }
 }

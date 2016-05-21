@@ -17,53 +17,35 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.object.Factory;
-import com.b3dgs.lionengine.game.object.SetupSurface;
-import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Cancel action.
  */
-class Cancel extends Button
+class ActionCancel extends ActionFeature
 {
-    private final Collection<Button> toDelete = new ArrayList<>();
-
     @Service private Factory factory;
     @Service private Handler handler;
 
     /**
-     * Create cancel action.
+     * Create feature.
      * 
      * @param setup The setup reference.
      */
-    public Cancel(SetupSurface setup)
+    public ActionCancel(Setup setup)
     {
         super(setup);
-
-        getFeature(Actionable.class).setAction(() ->
-        {
-            final Button buildings = factory.create(Button.BUILDINGS);
-            handler.add(buildings);
-            for (final Button current : toDelete)
-            {
-                current.destroy();
-            }
-            destroy();
-        });
     }
 
-    /**
-     * Add an action to delete on click.
-     * 
-     * @param action The action to delete.
-     */
-    public void addToDelete(Button action)
+    @Override
+    public void execute()
     {
-        toDelete.add(action);
+        final Button buildings = factory.create(Button.BUILDINGS);
+        handler.add(buildings);
+
+        getOwner().destroy();
     }
 }

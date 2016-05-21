@@ -3,5 +3,7 @@
     <lionengine:setup>com.b3dgs.lionengine.game.object.SetupSurface</lionengine:setup>
     <lionengine:class>com.b3dgs.lionengine.example.game.action.Button</lionengine:class>
 	<lionengine:surface image="BuildFarm.png"/>
-    <lionengine:action name="Build Farm" description="Build a Farm" x="4" y="114" width="27" height ="19"/>
+    <lionengine:action name="Build Farm" description="Build a Farm" x="4" y="114" width="27" height ="19">
+        com.b3dgs.lionengine.example.game.action.ActionFeature
+    </lionengine:action>
 </lionengine:skill>

@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.example.game.action;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.core.Medias;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -27,6 +29,7 @@ import com.b3dgs.lionengine.game.handler.DisplayableModel;
 import com.b3dgs.lionengine.game.handler.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.actionable.ActionConfig;
 import com.b3dgs.lionengine.game.object.feature.actionable.Actionable;
@@ -34,7 +37,7 @@ import com.b3dgs.lionengine.game.object.feature.actionable.ActionableModel;
 import com.b3dgs.lionengine.graphic.Text;
 
 /**
- * Abstract button action.
+ * Button action implementation.
  */
 class Button extends ObjectGame
 {
@@ -47,6 +50,8 @@ class Button extends ObjectGame
     /** Media cancel reference. */
     public static final Media CANCEL = Medias.create("action", "Cancel.xml");
 
+    private final Collection<Button> toDelete = new ArrayList<>();
+
     @Service private Text text;
 
     /**
@@ -58,11 +63,15 @@ class Button extends ObjectGame
     {
         super(setup);
 
-        final String name = ActionConfig.imports(getConfigurer().getRoot()).getName();
-
         final Actionable actionable = addFeatureAndGet(new ActionableModel(setup));
-        actionable.setAction(() -> Verbose.info(name));
         actionable.setClickAction(Mouse.LEFT);
+
+        final ActionFeature action = setup.getConfigurer().getImplementation(ActionFeature.class,
+                                                                             Setup.class,
+                                                                             setup,
+                                                                             ActionConfig.NODE_ACTION);
+        actionable.setAction(action);
+        addFeature(action);
 
         final Image image = Drawable.loadImage(setup.getSurface());
         image.setLocation(actionable.getButton().getX(), actionable.getButton().getY());
@@ -77,5 +86,25 @@ class Button extends ObjectGame
         }));
 
         addFeature(new DisplayableModel(g -> image.render(g)));
+    }
+
+    /**
+     * Add an action to delete on click.
+     * 
+     * @param action The action to delete.
+     */
+    public void addToDelete(Button action)
+    {
+        toDelete.add(action);
+    }
+
+    @Override
+    public void destroy()
+    {
+        for (final Button button : toDelete)
+        {
+            button.destroy();
+        }
+        super.destroy();
     }
 }
