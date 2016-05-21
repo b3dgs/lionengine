@@ -484,6 +484,10 @@ public abstract class Sequence implements Sequencable, ScreenListener
         return nextSequence;
     }
 
+    /**
+     * {@inheritDoc}
+     * Does nothing by default.
+     */
     @Override
     public void onTerminated(boolean hasNextSequence)
     {
@@ -494,12 +498,20 @@ public abstract class Sequence implements Sequencable, ScreenListener
      * ScreenListener
      */
 
+    /**
+     * {@inheritDoc}
+     * Does nothing by default.
+     */
     @Override
     public void notifyFocusGained()
     {
         // Nothing by default
     }
 
+    /**
+     * {@inheritDoc}
+     * Does nothing by default.
+     */
     @Override
     public void notifyFocusLost()
     {
