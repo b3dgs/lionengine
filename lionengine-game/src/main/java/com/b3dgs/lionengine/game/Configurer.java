@@ -274,12 +274,22 @@ public class Configurer
                                    Collection<?> paramsValue,
                                    String... path)
     {
-        final String className = getText(path);
+        final String className = getText(path).trim();
         try
         {
             final Class<?> clazz = loader.loadClass(className);
             final Constructor<?> constructor = UtilReflection.getCompatibleConstructor(clazz, paramsType);
-            return type.cast(constructor.newInstance(paramsValue.toArray()));
+            final boolean accessible = constructor.isAccessible();
+            if (!constructor.isAccessible())
+            {
+                UtilReflection.setAccessible(constructor, true);
+            }
+            final T instance = type.cast(constructor.newInstance(paramsValue.toArray()));
+            if (constructor.isAccessible() != accessible)
+            {
+                UtilReflection.setAccessible(constructor, accessible);
+            }
+            return instance;
         }
         catch (final InstantiationException exception)
         {
