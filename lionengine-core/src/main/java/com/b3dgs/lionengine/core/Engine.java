@@ -76,7 +76,7 @@ public abstract class Engine
 
     /**
      * Terminate the engine. It is necessary to call this function only if the engine need to be started again during
-     * the same jvm execution.
+     * the same JVM execution.
      */
     public static synchronized void terminate()
     {
@@ -199,7 +199,7 @@ public abstract class Engine
 
     /**
      * Close the engine. It is necessary to call this function only if the engine need to be started again during
-     * the same jvm execution.
+     * the same JVM execution.
      * When overridden, super must be called first.
      */
     protected abstract void close();

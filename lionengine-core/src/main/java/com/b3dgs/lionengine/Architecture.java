@@ -69,7 +69,7 @@ public enum Architecture
     /**
      * Get java current running architecture.
      * 
-     * @return The jvm architecture.
+     * @return The JVM architecture.
      */
     public static Architecture getArchitecture()
     {
