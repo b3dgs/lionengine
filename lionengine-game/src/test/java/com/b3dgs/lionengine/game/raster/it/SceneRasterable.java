@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.handler.ComponentRefresher;
+import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.DisplayableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.RefreshableModel;
@@ -66,8 +66,8 @@ public class SceneRasterable extends Sequence
     public SceneRasterable(Context context)
     {
         super(context, new Resolution(320, 240, 60));
-        handler.addUpdatable(new ComponentRefresher());
-        handler.addRenderable(new ComponentDisplayerLayer());
+        handler.addComponent(new ComponentRefreshable());
+        handler.addComponent(new ComponentDisplayerLayer());
     }
 
     @Override

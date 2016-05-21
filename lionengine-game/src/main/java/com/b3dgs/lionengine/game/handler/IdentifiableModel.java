@@ -29,12 +29,12 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public class IdentifiableModel implements Identifiable
 {
-    /** Free ID error. */
-    private static final String ERROR_FREE_ID = "No more free id available !";
     /** ID used (list of active id used). */
     private static final Collection<Integer> IDS = new HashSet<Integer>();
     /** Recycle ID (reuse previous removed object ID). */
     private static final Queue<Integer> RECYCLE = new ArrayDeque<Integer>();
+    /** Free ID error. */
+    private static final String ERROR_FREE_ID = "No more free id available !";
     /** Last ID used (last maximum id value). */
     private static int lastId;
 
@@ -69,13 +69,13 @@ public class IdentifiableModel implements Identifiable
     private final Collection<IdentifiableListener> listeners = new HashSet<IdentifiableListener>(1);
     /** Unique ID. */
     private final Integer id;
-    /** Destroy flag. */
+    /** Destroy request flag. */
     private boolean destroy;
     /** Destroyed flag. */
     private boolean destroyed;
 
     /**
-     * Create the identifiable.
+     * Create the identifiable with a unique ID.
      * 
      * @throws LionEngineException If no free ID available.
      */

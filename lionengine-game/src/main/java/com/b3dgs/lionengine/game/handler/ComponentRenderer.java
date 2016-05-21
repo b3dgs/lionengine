@@ -21,28 +21,17 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Renderer component implementation which render {@link Renderable} elements.
+ * Describe the component requirement, which is aimed to provide {@link Renderable} feature for a {@link Handlable}.
+ * 
+ * @see Renderable
  */
-public class ComponentRenderer implements ComponentRenderable
+public interface ComponentRenderer
 {
     /**
-     * Create component.
+     * Render the current handlables.
+     * 
+     * @param g The graphic output.
+     * @param handlables The handlables reference.
      */
-    public ComponentRenderer()
-    {
-        super();
-    }
-
-    /*
-     * ComponentRenderable
-     */
-
-    @Override
-    public void render(Graphic g, Handlables handlables)
-    {
-        for (final Renderable renderable : handlables.get(Renderable.class))
-        {
-            renderable.render(g);
-        }
-    }
+    void render(Graphic g, Handlables handlables);
 }

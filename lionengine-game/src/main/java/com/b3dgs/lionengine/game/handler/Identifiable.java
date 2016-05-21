@@ -18,7 +18,8 @@
 package com.b3dgs.lionengine.game.handler;
 
 /**
- * Represents something which can be identified by a unique ID. Can request to be removed and free its ID.
+ * Represents something which can be identified by a unique ID.
+ * Can request to be removed and free its ID in order to be reused.
  */
 public interface Identifiable
 {
@@ -37,20 +38,21 @@ public interface Identifiable
     void removeListener(IdentifiableListener listener);
 
     /**
-     * Get the id (<code>null</code> will be returned once removed after a call to {@link #destroy()}).
+     * Get the ID (<code>null</code> will be returned once removed after a call to {@link #destroy()}).
      * 
-     * @return The object unique id.
+     * @return The object unique ID.
      */
     Integer getId();
 
     /**
      * Declare as removable. Can be destroyed only one time.
-     * {@link #notifyDestroyed()} should be then called when recycle can be performed.
+     * {@link #notifyDestroyed()} should be called when recycle can be performed.
      */
     void destroy();
 
     /**
-     * Notify effective destruction, and allow to recycle destroyed ID.
+     * Notify effective destruction, and allow to recycle destroyed ID. Any call to {@link #getId()} will return
+     * <code>null</code>.
      * Called by the identifiable handler after a call to {@link #destroy()}.
      */
     void notifyDestroyed();

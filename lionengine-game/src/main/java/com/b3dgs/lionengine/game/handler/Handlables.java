@@ -18,10 +18,9 @@
 package com.b3dgs.lionengine.game.handler;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
- * Represents the handlable handled by the handler, providing quick access to them from their type.
+ * Represents the handlables handled by the handler, providing quick access to them from their type.
  * 
  * @see Handlable
  */
@@ -33,7 +32,6 @@ public interface Handlables
      * @param id The handlable ID.
      * @return The handlable instance.
      * @throws LionEngineException If no handlable found with this ID.
-     * @see ObjectGame#getId()
      */
     Handlable get(Integer id);
 
@@ -42,14 +40,14 @@ public interface Handlables
      * 
      * @param <I> The handlable interface type.
      * @param type The expected type.
-     * @return The handlables list of this type.
+     * @return The handlables of this type.
      */
     <I> Iterable<I> get(Class<I> type);
 
     /**
      * Get all handlables.
      * 
-     * @return The handlables list.
+     * @return The handlables.
      */
     Iterable<Handlable> values();
 }

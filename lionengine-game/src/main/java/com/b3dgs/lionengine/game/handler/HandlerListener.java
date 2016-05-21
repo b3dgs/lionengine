@@ -23,7 +23,7 @@ package com.b3dgs.lionengine.game.handler;
 public interface HandlerListener
 {
     /**
-     * Notify when a handlable as been added.
+     * Notify when a handlable has been added.
      * 
      * @param handlable The added handlable.
      */

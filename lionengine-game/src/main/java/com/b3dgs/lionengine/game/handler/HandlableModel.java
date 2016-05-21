@@ -30,7 +30,7 @@ public class HandlableModel implements Handlable
     private final Featurable featurable;
 
     /**
-     * Create a default model with an {@link IdentifiableModel} and a {@link FeaturableModel}.
+     * Create model with an {@link IdentifiableModel} and a {@link FeaturableModel}.
      * 
      * @throws LionEngineException If no free ID available.
      */
@@ -120,5 +120,4 @@ public class HandlableModel implements Handlable
     {
         return featurable.hasFeature(feature);
     }
-
 }

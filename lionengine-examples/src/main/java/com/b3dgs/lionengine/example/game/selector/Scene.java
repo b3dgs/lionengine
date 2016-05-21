@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.camera.Camera;
-import com.b3dgs.lionengine.game.handler.ComponentRefresher;
+import com.b3dgs.lionengine.game.handler.ComponentRefreshable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
@@ -75,8 +75,8 @@ class Scene extends Sequence
         setSystemCursorVisible(false);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
 
-        handler.addUpdatable(new ComponentRefresher());
-        handler.addRenderable(services.create(ComponentDisplayerLayer.class));
+        handler.addComponent(new ComponentRefreshable());
+        handler.addComponent(services.create(ComponentDisplayerLayer.class));
     }
 
     @Override

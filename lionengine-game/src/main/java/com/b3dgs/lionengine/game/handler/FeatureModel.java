@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.handler;
 
 /**
  * Feature model base implementation.
+ * Any feature can override {@link #checkListener(Object)} to automatically add listener of object if implements
+ * it/them.
  */
 public abstract class FeatureModel implements Feature
 {

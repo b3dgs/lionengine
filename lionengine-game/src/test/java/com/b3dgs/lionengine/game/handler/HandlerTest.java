@@ -234,7 +234,7 @@ public class HandlerTest
         final Handler handler = new Handler(new Services());
         final AtomicReference<Double> extrapolation = new AtomicReference<Double>();
         final AtomicReference<Handlable> updated = new AtomicReference<Handlable>();
-        handler.addUpdatable(new ComponentUpdatable()
+        handler.addComponent(new ComponentUpdater()
         {
             @Override
             public void update(double extrp, Handlables objects)
@@ -270,7 +270,7 @@ public class HandlerTest
     {
         final Handler handler = new Handler(new Services());
         final AtomicReference<Handlable> rendered = new AtomicReference<Handlable>();
-        handler.addRenderable(new ComponentRenderable()
+        handler.addComponent(new ComponentRenderer()
         {
             @Override
             public void render(Graphic g, Handlables objects)

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.b3dgs.lionengine.game.handler.ComponentRenderable;
+import com.b3dgs.lionengine.game.handler.ComponentRenderer;
 import com.b3dgs.lionengine.game.handler.Displayable;
 import com.b3dgs.lionengine.game.handler.Featurable;
 import com.b3dgs.lionengine.game.handler.Handlable;
@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
  * Renderer component implementation which render {@link Displayable} elements with {@link Layerable} support to order
  * rendering. If there is not {@link Layerable} feature, {@link #LAYER_DEFAULT} will be used as default layer value.
  */
-public class ComponentDisplayerLayer implements ComponentRenderable, HandlerListener, LayerableListener
+public class ComponentDisplayerLayer implements ComponentRenderer, HandlerListener, LayerableListener
 {
     /** Default layer value. */
     private static final Integer LAYER_DEFAULT = Integer.valueOf(0);

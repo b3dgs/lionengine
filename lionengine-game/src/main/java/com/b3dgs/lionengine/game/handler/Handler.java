@@ -26,25 +26,23 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Designed to handler updating and rendering for a set of components.
- * Can handle {@link Handlable}. Maintain a handlable list by updating and rendering them. Modifications on the
- * list can be done at any time because their are applied at the beginning of the next update.
+ * Designed to handle {@link Handlable}, updating and rendering a set of components.
+ * Modifications on the list can be done at any time because they are applied at the beginning of the next update.
  * 
- * @see Updatable
- * @see Renderable
- * @see ComponentUpdatable
- * @see ComponentRenderable
+ * @see HandlerListener
+ * @see ComponentUpdater
+ * @see ComponentRenderer
  */
 public class Handler implements Handlables, Updatable, Renderable, IdentifiableListener
 {
     /** Handler listeners. */
     private final Collection<HandlerListener> listeners = new HashSet<HandlerListener>();
     /** List of components. */
-    private final Collection<ComponentUpdatable> updatables = new ArrayList<ComponentUpdatable>();
+    private final Collection<ComponentUpdater> updaters = new ArrayList<ComponentUpdater>();
     /** List of components. */
-    private final Collection<ComponentRenderable> renderables = new ArrayList<ComponentRenderable>();
+    private final Collection<ComponentRenderer> renderers = new ArrayList<ComponentRenderer>();
     /** List of items. */
-    private final HandledHandlablesImpl handlables = new HandledHandlablesImpl();
+    private final HandlablesImpl handlables = new HandlablesImpl();
     /** To add list. */
     private final Collection<Handlable> toAdd = new HashSet<Handlable>();
     /** To delete list. */
@@ -88,13 +86,13 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     }
 
     /**
-     * Add an updatable component.
+     * Add an updater component.
      * 
      * @param component The component to add.
      */
-    public final void addUpdatable(ComponentUpdatable component)
+    public final void addComponent(ComponentUpdater component)
     {
-        updatables.add(component);
+        updaters.add(component);
         if (component instanceof HandlerListener)
         {
             addListener((HandlerListener) component);
@@ -102,13 +100,13 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     }
 
     /**
-     * Add a renderable component.
+     * Add a renderer component.
      * 
      * @param component The component to add.
      */
-    public final void addRenderable(ComponentRenderable component)
+    public final void addComponent(ComponentRenderer component)
     {
-        renderables.add(component);
+        renderers.add(component);
         if (component instanceof HandlerListener)
         {
             addListener((HandlerListener) component);
@@ -237,7 +235,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     {
         updateRemove();
         updateAdd();
-        for (final ComponentUpdatable component : updatables)
+        for (final ComponentUpdater component : updaters)
         {
             component.update(extrp, handlables);
         }
@@ -250,7 +248,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     @Override
     public void render(Graphic g)
     {
-        for (final ComponentRenderable component : renderables)
+        for (final ComponentRenderer component : renderers)
         {
             component.render(g, handlables);
         }

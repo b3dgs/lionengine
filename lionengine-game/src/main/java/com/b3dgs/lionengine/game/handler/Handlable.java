@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.handler;
 
 /**
- * Represents something which can be handled by a {@link com.b3dgs.lionengine.game.handler.Handler}.
+ * Represents something which can be handled by a {@link Handler}.
  */
 public interface Handlable extends Identifiable, Featurable
 {

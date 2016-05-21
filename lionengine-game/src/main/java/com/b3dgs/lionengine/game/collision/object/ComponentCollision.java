@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.collision.object;
 
-import com.b3dgs.lionengine.game.handler.ComponentUpdatable;
+import com.b3dgs.lionengine.game.handler.ComponentUpdater;
 import com.b3dgs.lionengine.game.handler.Handlables;
 
 /**
@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.handler.Handlables;
  * @see Collidable
  * @see CollidableListener
  */
-public class ComponentCollision implements ComponentUpdatable
+public class ComponentCollision implements ComponentUpdater
 {
     /**
      * Check the collision between two collidable.

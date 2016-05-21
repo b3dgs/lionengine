@@ -17,6 +17,7 @@
  */
 
 /**
- * Handler system that allows to control a set of different objects by updating and rendering them.
+ * Handler system that allows to control a set {@link com.b3dgs.lionengine.game.handler.Handlable} by updating and
+ * rendering them.
  */
 package com.b3dgs.lionengine.game.handler;

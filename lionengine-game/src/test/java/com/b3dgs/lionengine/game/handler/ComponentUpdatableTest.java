@@ -22,19 +22,15 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Updatable;
 import com.b3dgs.lionengine.core.Medias;
-import com.b3dgs.lionengine.game.handler.ComponentRenderer;
-import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
-import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Test the component renderer.
+ * Test the component updatable.
  */
-public class ComponentRendererTest
+public class ComponentUpdatableTest
 {
     /**
      * Prepare test.
@@ -42,7 +38,7 @@ public class ComponentRendererTest
     @BeforeClass
     public static void setUp()
     {
-        Medias.setLoadFromJar(HandlerTest.class);
+        Medias.setLoadFromJar(ComponentUpdatableTest.class);
     }
 
     /**
@@ -60,55 +56,53 @@ public class ComponentRendererTest
     @Test
     public void testUpdater()
     {
-        final ComponentRenderer renderer = new ComponentRenderer();
+        final ComponentUpdatable updatable = new ComponentUpdatable();
         final Handler handler = new Handler(new Services());
-        handler.addRenderable(renderer);
+        handler.addComponent(updatable);
 
-        final Renderer object = new Renderer(new Setup(Medias.create("object.xml")));
+        final Updater object = new Updater(new Setup(Medias.create("object.xml")));
         handler.add(object);
-        Assert.assertFalse(object.isRendered());
+        Assert.assertFalse(object.isUpdated());
         handler.update(1.0);
-        Assert.assertFalse(object.isRendered());
-        handler.render(null);
 
-        Assert.assertTrue(object.isRendered());
+        Assert.assertTrue(object.isUpdated());
 
         handler.removeAll();
         handler.update(1.0);
     }
 
     /**
-     * Renderable object mock.
+     * Updatable object mock.
      */
-    private static class Renderer extends ObjectGame implements Renderable
+    private static class Updater extends ObjectGame implements Updatable
     {
-        /** Rendered flag. */
-        private boolean rendered;
+        /** Updated flag. */
+        private boolean updated;
 
         /**
          * Constructor.
          * 
          * @param setup The setup reference.
          */
-        public Renderer(Setup setup)
+        public Updater(Setup setup)
         {
             super(setup);
         }
 
         /**
-         * Check if has been rendered.
+         * Check if has been updated.
          * 
-         * @return <code>true</code> if rendered, <code>false</code> else.
+         * @return <code>true</code> if updated, <code>false</code> else.
          */
-        public boolean isRendered()
+        public boolean isUpdated()
         {
-            return rendered;
+            return updated;
         }
 
         @Override
-        public void render(Graphic g)
+        public void update(double extrp)
         {
-            rendered = true;
+            updated = true;
         }
     }
 }

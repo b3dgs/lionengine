@@ -107,7 +107,7 @@ public class ComponentRendererLayerTest
         services.add(component);
 
         final Handler handler = new Handler(services);
-        handler.addRenderable(component);
+        handler.addComponent(component);
         final AtomicInteger last = new AtomicInteger();
 
         final Layerable object1 = createObject(services, handler, last);
@@ -151,7 +151,7 @@ public class ComponentRendererLayerTest
         services.add(component);
 
         final Handler handler = new Handler(services);
-        handler.addRenderable(component);
+        handler.addComponent(component);
         final AtomicBoolean auto = new AtomicBoolean();
 
         final ObjectGame object = new ObjectGame(new Setup(config));

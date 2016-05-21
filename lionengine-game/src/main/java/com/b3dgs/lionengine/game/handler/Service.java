@@ -23,8 +23,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.b3dgs.lionengine.game.object.Factory;
+
 /**
- * Service dependency injection.
+ * Service dependency injection. Any element annotated with will be injected with a compatible instance found in the
+ * current {@link Service} during {@link Featurable#prepareFeatures(Handlable, Services)}.
+ * <p>
+ * It is automatically called by the:
+ * </p>
+ * <ul>
+ * <li>{@link Factory} after a call to {@link Factory#create(com.b3dgs.lionengine.Media)}.</li>
+ * <li>{@link Handler} once a {@link Handlable} is added to the main list.</li>
+ * </ul>
+ * <p>
+ * If manually used, do not forget to call {@link Featurable#prepareFeatures(Handlable, Services)}, else annotated
+ * fields will remain <code>null</code>.
+ * </p>
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

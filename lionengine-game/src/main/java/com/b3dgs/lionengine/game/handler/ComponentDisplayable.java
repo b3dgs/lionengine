@@ -18,17 +18,16 @@
 package com.b3dgs.lionengine.game.handler;
 
 import com.b3dgs.lionengine.graphic.Graphic;
-import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Renderer component implementation which renders {@link Renderable} elements to a {@link Graphic} output.
+ * Displayable component implementation which display {@link Displayable} elements.
  */
-public class ComponentRenderable implements ComponentRenderer
+public class ComponentDisplayable implements ComponentRenderer
 {
     /**
      * Create component.
      */
-    public ComponentRenderable()
+    public ComponentDisplayable()
     {
         super();
     }
@@ -40,9 +39,9 @@ public class ComponentRenderable implements ComponentRenderer
     @Override
     public void render(Graphic g, Handlables handlables)
     {
-        for (final Renderable renderable : handlables.get(Renderable.class))
+        for (final Displayable displayable : handlables.get(Displayable.class))
         {
-            renderable.render(g);
+            displayable.render(g);
         }
     }
 }

@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Setup;
 
 /**
- * Test the component refresher.
+ * Test the component refreshable.
  */
-public class ComponentRefresherTest
+public class ComponentRefreshableTest
 {
     /**
      * Prepare test.
@@ -55,9 +55,9 @@ public class ComponentRefresherTest
     @Test
     public void testRefresher()
     {
-        final ComponentRefresher refresher = new ComponentRefresher();
+        final ComponentRefreshable refresher = new ComponentRefreshable();
         final Handler handler = new Handler(new Services());
-        handler.addUpdatable(refresher);
+        handler.addComponent(refresher);
 
         final Refresher object = new Refresher(new Setup(Medias.create("object.xml")));
         handler.add(object);

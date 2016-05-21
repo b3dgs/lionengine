@@ -18,15 +18,14 @@
 package com.b3dgs.lionengine.game.handler;
 
 /**
- * Describes the identifiable events.
+ * Describes the {@link Identifiable} events.
  */
 public interface IdentifiableListener
 {
     /**
-     * Called when identifiable is destroyed (after a call to
-     * {@link com.b3dgs.lionengine.game.handler.Identifiable#destroy()}.
+     * Called when identifiable is destroyed (after a call to {@link Identifiable#destroy()}.
      * 
-     * @param id The destroyed id.
+     * @param id The destroyed ID.
      */
     void notifyDestroyed(Integer id);
 }

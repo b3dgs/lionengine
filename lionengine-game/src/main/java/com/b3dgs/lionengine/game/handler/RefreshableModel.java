@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.handler;
 import com.b3dgs.lionengine.Updatable;
 
 /**
- * Updatable feature wrapper.
+ * Refreshable feature implementation.
  */
 public class RefreshableModel extends FeatureModel implements Refreshable
 {

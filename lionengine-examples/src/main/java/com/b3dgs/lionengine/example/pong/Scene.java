@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.object.ComponentCollision;
-import com.b3dgs.lionengine.game.handler.ComponentRenderer;
-import com.b3dgs.lionengine.game.handler.ComponentUpdater;
+import com.b3dgs.lionengine.game.handler.ComponentRenderable;
+import com.b3dgs.lionengine.game.handler.ComponentUpdatable;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.object.Factory;
@@ -69,9 +69,9 @@ class Scene extends Sequence
         camera.setView(0, 0, getWidth(), getHeight());
         setSystemCursorVisible(false);
 
-        handler.addUpdatable(new ComponentUpdater());
-        handler.addUpdatable(new ComponentCollision());
-        handler.addRenderable(new ComponentRenderer());
+        handler.addComponent(new ComponentUpdatable());
+        handler.addComponent(new ComponentCollision());
+        handler.addComponent(new ComponentRenderable());
 
         final Racket racket1 = factory.create(Racket.MEDIA);
         racket1.setSide(true);

@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Renderable;
 
 /**
- * Renderable feature wrapper.
+ * Displayable feature implementation.
  */
 public class DisplayableModel extends FeatureModel implements Displayable
 {

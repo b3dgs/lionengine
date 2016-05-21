@@ -28,12 +28,12 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
- * Handler handlables implementation.
+ * Handlables implementation.
  */
-final class HandledHandlablesImpl implements Handlables
+final class HandlablesImpl implements Handlables
 {
     /** Handlable not found error. */
-    private static final String ERROR_OBJECT_NOT_FOUND = "Object not found: ";
+    private static final String ERROR_HANDLABLE_NOT_FOUND = "Handlable not found: ";
 
     /** List of handlables (key is the handlable ID). */
     private final Map<Integer, Handlable> handlables;
@@ -41,9 +41,9 @@ final class HandledHandlablesImpl implements Handlables
     private final Map<Class<?>, Set<Object>> items;
 
     /**
-     * Create the objects handler.
+     * Create the handlables.
      */
-    HandledHandlablesImpl()
+    HandlablesImpl()
     {
         handlables = new HashMap<Integer, Handlable>();
         items = new HashMap<Class<?>, Set<Object>>();
@@ -195,7 +195,7 @@ final class HandledHandlablesImpl implements Handlables
         {
             return handlable;
         }
-        throw new LionEngineException(ERROR_OBJECT_NOT_FOUND, String.valueOf(id));
+        throw new LionEngineException(ERROR_HANDLABLE_NOT_FOUND, String.valueOf(id));
     }
 
     @Override

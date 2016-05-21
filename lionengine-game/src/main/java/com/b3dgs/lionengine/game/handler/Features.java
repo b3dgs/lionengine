@@ -23,7 +23,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Feature representation.
+ * Features handler representation. Store features by type, allowing quick access from an interface.
  */
 public class Features
 {
@@ -42,11 +42,11 @@ public class Features
     }
 
     /**
-     * Add a feature.
+     * Add a feature. Stores its interface, and all sub interfaces which describe also a {@link Feature}.
      * 
      * @param feature The feature to add.
      */
-    public final void add(Feature feature)
+    public void add(Feature feature)
     {
         features.put(feature.getClass(), feature);
         for (final Class<?> type : feature.getClass().getInterfaces())
@@ -59,14 +59,14 @@ public class Features
     }
 
     /**
-     * Get a feature from its class.
+     * Get a feature from its class or interface.
      * 
      * @param <C> The custom feature type.
-     * @param feature The feature class.
+     * @param feature The feature class or interface.
      * @return The feature instance.
      * @throws LionEngineException If the feature was not found.
      */
-    public final <C extends Feature> C get(Class<C> feature)
+    public <C extends Feature> C get(Class<C> feature)
     {
         final C found = getFeature(feature);
         if (found == null)
@@ -83,7 +83,7 @@ public class Features
      * @param feature The feature to check.
      * @return <code>true</code> if contains, <code>false</code> else.
      */
-    public final <C extends Feature> boolean contains(Class<C> feature)
+    public <C extends Feature> boolean contains(Class<C> feature)
     {
         return getFeature(feature) != null;
     }
@@ -93,7 +93,7 @@ public class Features
      * 
      * @return The features list.
      */
-    public final Iterable<Feature> getFeatures()
+    public Iterable<Feature> getFeatures()
     {
         return features.values();
     }
@@ -103,16 +103,16 @@ public class Features
      * 
      * @return The features types.
      */
-    public final Iterable<Class<? extends Feature>> getFeaturesType()
+    public Iterable<Class<? extends Feature>> getFeaturesType()
     {
         return features.keySet();
     }
 
     /**
-     * Get a feature from its class.
+     * Get a feature from its class or interface.
      * 
      * @param <C> The custom feature type.
-     * @param feature The feature class.
+     * @param feature The feature class or interface.
      * @return The feature instance, <code>null</code> if not found.
      */
     private <C extends Feature> C getFeature(Class<C> feature)

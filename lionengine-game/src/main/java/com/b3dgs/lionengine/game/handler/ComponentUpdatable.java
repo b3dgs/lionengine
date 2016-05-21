@@ -17,18 +17,32 @@
  */
 package com.b3dgs.lionengine.game.handler;
 
+import com.b3dgs.lionengine.Updatable;
+
 /**
- * Describe the main component requirement, which is aimed to provide updatable feature for an object.
- * 
- * @see com.b3dgs.lionengine.Updatable
+ * Updater component implementation which updates {@link Updatable} elements with an extrapolation value (
+ * {@link Updatable#update(double)}).
  */
-public interface ComponentUpdatable
+public class ComponentUpdatable implements ComponentUpdater
 {
     /**
-     * Update the current objects.
-     * 
-     * @param extrp The extrapolation value.
-     * @param handlables The handlables reference.
+     * Create component.
      */
-    void update(double extrp, Handlables handlables);
+    public ComponentUpdatable()
+    {
+        super();
+    }
+
+    /*
+     * ComponentUpdater
+     */
+
+    @Override
+    public void update(double extrp, Handlables handlables)
+    {
+        for (final Updatable updatable : handlables.get(Updatable.class))
+        {
+            updatable.update(extrp);
+        }
+    }
 }

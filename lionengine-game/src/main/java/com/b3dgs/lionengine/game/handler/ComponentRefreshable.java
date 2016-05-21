@@ -18,20 +18,20 @@
 package com.b3dgs.lionengine.game.handler;
 
 /**
- * Refresher component implementation which update {@link Refreshable} elements.
+ * Refresher component implementation which updates {@link Refreshable} elements.
  */
-public class ComponentRefresher implements ComponentUpdatable
+public class ComponentRefreshable implements ComponentUpdater
 {
     /**
      * Create component.
      */
-    public ComponentRefresher()
+    public ComponentRefreshable()
     {
         super();
     }
 
     /*
-     * ComponentUpdatable
+     * ComponentUpdater
      */
 
     @Override
