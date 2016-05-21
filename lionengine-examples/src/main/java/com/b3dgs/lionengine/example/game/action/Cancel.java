@@ -44,6 +44,7 @@ class Cancel extends Button
     public Cancel(SetupSurface setup)
     {
         super(setup);
+
         getFeature(Actionable.class).setAction(() ->
         {
             final Button buildings = factory.create(Button.BUILDINGS);

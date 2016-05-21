@@ -78,13 +78,7 @@ class Effect extends ObjectGame
             }
         }));
 
-        addFeature(new DisplayableModel(g ->
-        {
-            if (viewer.isViewable(surface, 0, 0))
-            {
-                surface.render(g);
-            }
-        }));
+        addFeature(new DisplayableModel(g -> surface.render(g)));
     }
 
     /**

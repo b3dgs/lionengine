@@ -85,6 +85,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
         setSystemCursorVisible(false);
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
     }

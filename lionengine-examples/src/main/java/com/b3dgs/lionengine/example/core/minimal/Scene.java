@@ -19,23 +19,21 @@ package com.b3dgs.lionengine.example.core.minimal;
 
 import com.b3dgs.lionengine.core.Context;
 import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Resolution;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
- * another one, a simple call to {@link Sequence#end(Class, Object...)} is necessary. This will terminate the current
- * sequence, and start the linked one.
+ * This is where the game loop is running. A sequence represents a thread handled by the {@link Loader}.
+ * To link a sequence with another one, a simple call to {@link Sequence#end(Class, Object...)} is necessary.
+ * This will terminate the current sequence, and start the linked one.
  */
 class Scene extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
-
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
 
     /**
      * Constructor.
@@ -45,7 +43,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
@@ -69,9 +67,6 @@ class Scene extends Sequence
     @Override
     public void onTerminated(boolean hasNextSequence)
     {
-        if (!hasNextSequence)
-        {
-            Engine.terminate();
-        }
+        Engine.terminate();
     }
 }

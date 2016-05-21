@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * SequenceNext implementation.
+ * Second sequence implementation.
  */
 class SequenceNext extends Sequence
 {
@@ -42,7 +42,7 @@ class SequenceNext extends Sequence
     @Override
     public void load()
     {
-        Verbose.info("SequenceNext loaded !");
+        Verbose.info("Next sequence loaded !");
     }
 
     @Override

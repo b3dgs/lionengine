@@ -208,10 +208,6 @@ class Foreground extends BackgroundGame
             data.setMainY((int) Math.ceil(water.getNominal() * scaleV));
         }
 
-        /*
-         * BackgroundComponent
-         */
-
         @Override
         public void update(double extrp, int x, int y, double speed)
         {
@@ -303,10 +299,6 @@ class Foreground extends BackgroundGame
                 g.copyArea(0, y, screenWidth, 1, (int) (inside + outside), 0);
             }
         }
-
-        /*
-         * BackgroundComponent
-         */
 
         @Override
         public void update(double extrp, int x, int y, double speed)

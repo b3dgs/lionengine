@@ -15,30 +15,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.core.sequence;
-
-import com.b3dgs.lionengine.core.Config;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Resolution;
-import com.b3dgs.lionengine.core.Version;
-import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
- * Program starts here.
+ * This example will show how to use the standard {@link com.b3dgs.lionengine.drawable.Drawable} elements.
  */
-public class AppSequence
-{
-    /**
-     * Main function called by the JVM.
-     * 
-     * @param args The arguments.
-     */
-    public static void main(String[] args)
-    {
-        EngineAwt.start(AppSequence.class.getSimpleName(), Version.create(1, 0, 0), AppSequence.class);
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader();
-        loader.start(config, SequenceFirst.class);
-    }
-}
+package com.b3dgs.lionengine.example.core.drawable;

@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.core.awt.EngineAwt;
 public class AppPong
 {
     /**
-     * Main function called by the jvm.
+     * Main function called by the JVM.
      * 
      * @param args The arguments.
      */

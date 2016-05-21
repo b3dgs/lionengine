@@ -108,7 +108,7 @@ public class AppExamples
      * 
      * @param frame The main frame reference.
      */
-    static void terminate(JFrame frame)
+    private static void terminate(JFrame frame)
     {
         EXECUTOR.shutdownNow();
         frame.dispose();

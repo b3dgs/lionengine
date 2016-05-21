@@ -70,6 +70,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());

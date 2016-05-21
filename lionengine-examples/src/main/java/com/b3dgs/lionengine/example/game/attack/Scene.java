@@ -62,6 +62,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
         setSystemCursorVisible(false);
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
 

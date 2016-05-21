@@ -56,7 +56,6 @@ class Scene extends Sequence
 
     private final TextGame text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
     private final Services services = new Services();
-    private final Factory factory = services.create(Factory.class);
     private final Handler handler = services.create(Handler.class);
     private final Camera camera = services.create(Camera.class);
     private final Cursor cursor = services.create(Cursor.class);
@@ -71,6 +70,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
         setSystemCursorVisible(false);
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
 
@@ -103,6 +103,7 @@ class Scene extends Sequence
         cursor.setInputDevice(mouse);
         cursor.setViewer(camera);
 
+        final Factory factory = services.create(Factory.class);
         handler.add(factory.create(Peon.MEDIA));
     }
 

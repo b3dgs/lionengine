@@ -104,10 +104,11 @@ class BuildButton extends ObjectGame
         {
             for (final Producer producer : handler.get(Producer.class))
             {
-                final ObjectGame farm = factory.create(target);
+                final Building farm = factory.create(target);
                 final Producible producible = farm.getFeature(Producible.class);
                 producible.setLocation(UtilMath.getRounded(cursor.getX(), cursor.getWidth()),
                                        UtilMath.getRounded(cursor.getY(), cursor.getHeight()));
+
                 producer.addToProductionQueue(producible);
 
                 final int x = (int) (producible.getX() + producible.getWidth() / 2) / cursor.getWidth();

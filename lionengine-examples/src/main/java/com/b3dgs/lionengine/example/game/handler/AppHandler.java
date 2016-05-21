@@ -45,14 +45,15 @@ public class AppHandler
     {
         EngineAwt.start(AppHandler.class.getSimpleName(), Version.create(1, 0, 0), AppHandler.class);
 
-        final Graphic g = Graphics.createGraphic();
         final Services services = new Services();
+
         final Handler handler = new Handler(services);
         handler.addUpdatable(new ComponentUpdater());
         handler.addRenderable(new ComponentRenderer());
         handler.add(new MyObject(new Setup(Medias.create("MyObject.xml"))));
         handler.add(new MyObject(new Setup(Medias.create("MyObject.xml"))));
 
+        final Graphic g = Graphics.createGraphic();
         for (int i = 0; i < 2; i++)
         {
             handler.update(1.0);

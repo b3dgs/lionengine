@@ -25,11 +25,11 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * SequenceLinkSimple implementation.
+ * First sequence implementation.
  */
 class SequenceFirst extends Sequence
 {
-    /** Count value. */
+    /** Count value (increases to end). */
     private int count;
 
     /**
@@ -61,7 +61,7 @@ class SequenceFirst extends Sequence
     @Override
     public void render(Graphic g)
     {
-        Verbose.info("SimpleLink rendering number " + count);
+        Verbose.info("SequenceFirst rendering number ", String.valueOf(count));
     }
 
     @Override

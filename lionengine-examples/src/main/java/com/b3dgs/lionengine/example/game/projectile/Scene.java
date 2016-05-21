@@ -49,6 +49,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, new Resolution(320, 240, 60));
+
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
 
         handler.addUpdatable(new ComponentRefresher());

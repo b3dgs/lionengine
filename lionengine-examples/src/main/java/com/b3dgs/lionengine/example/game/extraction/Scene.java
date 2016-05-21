@@ -56,17 +56,11 @@ class Scene extends Sequence
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 200, 60);
 
-    /** Services reference. */
     private final Services services = new Services();
-    /** Text reference. */
     private final Text text = services.add(Graphics.createText(Text.SANS_SERIF, 9, TextStyle.NORMAL));
-    /** Actions handler. */
     private final Handler handler = services.create(Handler.class);
-    /** Cursor reference. */
     private final Cursor cursor = services.create(Cursor.class);
-    /** Mouse reference. */
     private final Mouse mouse = getInputDevice(Mouse.class);
-    /** HUD image. */
     private final Image hud;
 
     /**
@@ -77,6 +71,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
+
         hud = Drawable.loadImage(Medias.create("hud.png"));
         setSystemCursorVisible(false);
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());

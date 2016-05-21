@@ -24,25 +24,24 @@ import com.b3dgs.lionengine.core.Version;
 import com.b3dgs.lionengine.core.awt.EngineAwt;
 
 /**
- * Program starts here. When you start the jvm, ensure that this main function is called.
+ * Program starts here. When you start the JVM, ensure that this main function is called.
  */
 public class AppJava
 {
     /**
-     * Main function called by the jvm.
+     * Main function called by the JVM.
      * 
      * @param args The arguments.
      */
     public static void main(String[] args)
     {
-        // Start engine (name = "First Code", version = "1.0.0", resources directory = "resources")
+        // Start engine EngineAwt.start("AppJava", Version.create(1, 0, 0), "resources");
         // The engine is initialized with our parameters:
-        // - The name of our program: "First Code"
+        // - The name of our program: "AppJava"
         // - The program version: "1.0.0"
         // - The main resources directory, relative to the execution directory: ./resources/
         // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
         // To load resources from JAR, this alternative is preferred if external folder is not possible:
-        // EngineAwt.start("AppJava", Version.create(1, 0, 0), AppJava.class);
         EngineAwt.start(AppJava.class.getSimpleName(), Version.create(1, 0, 0), AppJava.class);
 
         // Resolution configuration (output = 640*480 at 60Hz). This is the output configuration.

@@ -26,7 +26,12 @@ import com.b3dgs.lionengine.game.background.BackgroundElementRastered;
 class ElementRastered extends BackgroundElementRastered
 {
     /**
-     * @see BackgroundElementRastered#BackgroundElementRastered(int, int, Sprite, int)
+     * Create a rastered background element.
+     * 
+     * @param mainX The main location x.
+     * @param mainY The main location y.
+     * @param sprite The sprite to be rastered.
+     * @param rastersNumber The number of rasters.
      */
     public ElementRastered(int mainX, int mainY, Sprite sprite, int rastersNumber)
     {
@@ -46,10 +51,6 @@ class ElementRastered extends BackgroundElementRastered
         final int b = -0x000026 + 0x000007 * (int) (i * 1.5);
         addRaster(sprite, r, g, b);
     }
-
-    /*
-     * BackgroundElementRastered
-     */
 
     @Override
     protected void load(Sprite sprite, int rastersNumber)

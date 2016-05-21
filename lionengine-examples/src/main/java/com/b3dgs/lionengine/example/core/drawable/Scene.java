@@ -42,10 +42,8 @@ import com.b3dgs.lionengine.graphic.Graphic;
 class Scene extends Sequence
 {
     /** Native resolution. */
-    private static final Resolution NATIVE = new Resolution(640, 480, 60);
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Keyboard reference. */
-    private final Keyboard keyboard = getInputDevice(Keyboard.class);
     /** Image reference. */
     private final Image image;
     /** Sprite reference. */
@@ -71,13 +69,13 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, NATIVE);
-        // As we defined our resources directory as this: Medias.get("resources", "drawable")
-        // Any call to Medias.get(...) will load from ./resources/drawable/
+        // As we defined our resources class loader with: AppDrawable.class
+        // Any call to Medias.get(...) will load from AppDrawable class path
 
-        // Load an image (./resources/drawable/image.png)
-        image = Drawable.loadImage(Medias.create("image.png"));
+        // Load an image (com/b3dgs/lionengine/example/core/drawable/image.png)
+        image = Drawable.loadImage(Medias.create("image.jpg"));
 
-        // Load a sprite (./resources/drawable/sprite.png)
+        // Load a sprite (com/b3dgs/lionengine/example/core/drawable/sprite.png)
         sprite = Drawable.loadSprite(Medias.create("sprite.png"));
 
         // Load an animated sprite, with 7 horizontal frames only
@@ -92,7 +90,7 @@ class Scene extends Sequence
         anim = Anim.createAnimation(null, 4, 6, 0.125, false, true);
 
         // Exit
-        keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
+        getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
     @Override
@@ -113,15 +111,13 @@ class Scene extends Sequence
         tilesheet.load();
         tilesheet.prepare();
 
-        tile = 0.0;
-
         // Place images
         image.setLocation(0, 0);
-        sprite.setLocation(64, 280);
-        animation.setLocation(160, 300);
-        animationMirror.setLocation(200, 300);
-        tilesheet.setLocation(300, 300);
-        tilesheets.setLocation(350, 300);
+        sprite.setLocation(16, 160);
+        animation.setLocation(80, 150);
+        animationMirror.setLocation(100, 150);
+        tilesheet.setLocation(150, 150);
+        tilesheets.setLocation(175, 150);
 
         animationMirror.setMirror(Mirror.HORIZONTAL);
 
@@ -163,8 +159,8 @@ class Scene extends Sequence
         tilesheet.render(g);
 
         // Box the current tile
-        final int x = 350 + (int) (tile % tilesheet.getTilesHorizontal()) * tilesheet.getTileWidth();
-        final int y = 300 + (int) Math.floor(tile / tilesheet.getTilesHorizontal()) * tilesheet.getTileHeight();
+        final int x = 175 + (int) (tile % tilesheet.getTilesHorizontal()) * tilesheet.getTileWidth();
+        final int y = 150 + (int) Math.floor(tile / tilesheet.getTilesHorizontal()) * tilesheet.getTileHeight();
 
         g.setColor(ColorRgba.GREEN);
         g.drawRect(x, y, tilesheet.getTileWidth(), tilesheet.getTileHeight(), false);

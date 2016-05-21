@@ -38,15 +38,10 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 class Scene extends Sequence
 {
-    /** Services reference. */
     private final Services services = new Services();
-    /** Game factory. */
     private final Factory factory = services.create(Factory.class);
-    /** Camera reference. */
     private final Camera camera = services.create(Camera.class);
-    /** Handler effect. */
     private final Handler handler = services.create(Handler.class);
-    /** Mouse reference. */
     private final Mouse mouse = getInputDevice(Mouse.class);
 
     /**
@@ -57,6 +52,7 @@ class Scene extends Sequence
     public Scene(Context context)
     {
         super(context, new Resolution(320, 240, 60));
+
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
     }
 
