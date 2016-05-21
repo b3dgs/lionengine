@@ -61,11 +61,11 @@ public class UtilAssignable
     }
 
     /**
-     * Create the trait.
+     * Create the assignable.
      * 
      * @param media The media.
      * @param services The services.
-     * @return The prepared trait.
+     * @return The prepared assignable.
      */
     public static AssignableModel createAssignable(Media media, Services services)
     {

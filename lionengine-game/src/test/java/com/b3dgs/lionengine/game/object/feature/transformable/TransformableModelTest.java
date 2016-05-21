@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
- * Test the transformable trait.
+ * Test the transformable.
  */
 public class TransformableModelTest
 {

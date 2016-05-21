@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.graphic.Renderable;
 import com.b3dgs.lionengine.util.UtilMath;
 
 /**
- * Object representation of any user object. This allows to avoid constructor error, especially with traits.
+ * Object representation of any user object. This allows to avoid constructor error, especially with features.
  */
 public class ObjectRepresentation extends ObjectGame implements Updatable, Renderable
 {
@@ -70,7 +70,7 @@ public class ObjectRepresentation extends ObjectGame implements Updatable, Rende
 
     /** Rectangle. */
     private final Rectangle rectangle = Geom.createRectangle();
-    /** Transformable trait. */
+    /** Transformable feature. */
     private final Transformable transformable;
     /** Surface reference. */
     private final SpriteAnimated surface;

@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
- * Test the orientable trait.
+ * Test the orientable.
  */
 public class OrientableModelTest
 {

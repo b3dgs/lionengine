@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.test.UtilTests;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
- * Test the producer model trait.
+ * Test the producer model.
  */
 public class ProducerModelTest
 {

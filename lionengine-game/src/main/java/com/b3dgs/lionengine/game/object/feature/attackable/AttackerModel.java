@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.game.Damages;
+import com.b3dgs.lionengine.game.handler.Feature;
 import com.b3dgs.lionengine.game.handler.FeatureModel;
 import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Services;
@@ -72,7 +73,7 @@ public class AttackerModel extends FeatureModel implements Attacker
      * Create an attacker model.
      * 
      * <p>
-     * The {@link ObjectGame} owner must have the following {@link com.b3dgs.lionengine.game.handler.Feature}:
+     * The {@link ObjectGame} owner must have the following {@link Feature}:
      * </p>
      * <ul>
      * <li>{@link Animatable}</li>

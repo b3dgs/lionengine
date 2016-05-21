@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.graphic.Graphic;
  * Renderer component implementation which render {@link Displayable} elements with {@link Layerable} support to order
  * rendering. If there is not {@link Layerable} feature, {@link #LAYER_DEFAULT} will be used as default layer value.
  */
-public class ComponentRendererLayer implements ComponentRenderable, HandlerListener, LayerableListener
+public class ComponentDisplayerLayer implements ComponentRenderable, HandlerListener, LayerableListener
 {
     /** Default layer value. */
     private static final Integer LAYER_DEFAULT = Integer.valueOf(0);
@@ -65,7 +65,7 @@ public class ComponentRendererLayer implements ComponentRenderable, HandlerListe
     /**
      * Create a renderer component.
      */
-    public ComponentRendererLayer()
+    public ComponentDisplayerLayer()
     {
         indexs = new TreeSet<Integer>();
         layers = new HashMap<Integer, Collection<Displayable>>();

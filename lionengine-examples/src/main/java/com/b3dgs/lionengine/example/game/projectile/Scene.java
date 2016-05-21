@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.collision.object.ComponentCollision;
 import com.b3dgs.lionengine.game.handler.ComponentRefresher;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
+import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -54,7 +54,7 @@ class Scene extends Sequence
 
         handler.addUpdatable(new ComponentRefresher());
         handler.addUpdatable(new ComponentCollision());
-        handler.addRenderable(services.add(new ComponentRendererLayer()));
+        handler.addRenderable(services.add(new ComponentDisplayerLayer()));
     }
 
     @Override

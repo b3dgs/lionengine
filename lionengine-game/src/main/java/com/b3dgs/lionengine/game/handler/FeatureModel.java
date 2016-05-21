@@ -26,7 +26,7 @@ public abstract class FeatureModel implements Feature
     private Handlable owner;
 
     /**
-     * Create a trait model.
+     * Create model.
      */
     public FeatureModel()
     {

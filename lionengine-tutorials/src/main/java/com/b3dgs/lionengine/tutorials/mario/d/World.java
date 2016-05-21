@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.collision.tile.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.handler.ComponentRefresher;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
+import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
@@ -72,7 +72,7 @@ class World extends WorldGame
 
         handler.addUpdatable(new ComponentRefresher());
         handler.addUpdatable(new ComponentCollision());
-        handler.addRenderable(services.add(new ComponentRendererLayer()));
+        handler.addRenderable(services.add(new ComponentDisplayerLayer()));
     }
 
     @Override

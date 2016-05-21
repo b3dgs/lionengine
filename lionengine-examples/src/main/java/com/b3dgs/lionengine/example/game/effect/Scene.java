@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.handler.ComponentRefresher;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
+import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 
@@ -61,7 +61,7 @@ class Scene extends Sequence
     {
         camera.setView(0, 0, getWidth(), getHeight());
         handler.addUpdatable(new ComponentRefresher());
-        handler.addRenderable(new ComponentRendererLayer());
+        handler.addRenderable(new ComponentDisplayerLayer());
     }
 
     @Override

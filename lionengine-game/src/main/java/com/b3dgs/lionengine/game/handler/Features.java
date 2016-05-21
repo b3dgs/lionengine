@@ -42,7 +42,7 @@ public class Features
     }
 
     /**
-     * Add a trait.
+     * Add a feature.
      * 
      * @param feature The feature to add.
      */

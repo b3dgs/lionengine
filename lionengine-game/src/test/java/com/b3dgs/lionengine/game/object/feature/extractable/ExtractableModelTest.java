@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
- * Test the extractable trait.
+ * Test the extractable.
  */
 public class ExtractableModelTest
 {

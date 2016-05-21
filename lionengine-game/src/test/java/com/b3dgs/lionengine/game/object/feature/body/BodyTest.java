@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
- * Test the body trait.
+ * Test the body assignable.
  */
 public class BodyTest
 {

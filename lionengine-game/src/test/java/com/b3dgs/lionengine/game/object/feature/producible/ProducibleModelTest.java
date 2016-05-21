@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
- * Test the producible model trait.
+ * Test the producible model.
  */
 public class ProducibleModelTest
 {

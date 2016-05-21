@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
- * Test the actionable model trait.
+ * Test the actionable model.
  */
 public class ActionableModelTest
 {

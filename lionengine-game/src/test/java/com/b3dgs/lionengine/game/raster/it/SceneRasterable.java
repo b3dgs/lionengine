@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.handler.DisplayableModel;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.RefreshableModel;
 import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
+import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.feature.animatable.AnimatableModel;
 import com.b3dgs.lionengine.game.object.feature.mirrorable.MirrorableModel;
@@ -67,7 +67,7 @@ public class SceneRasterable extends Sequence
     {
         super(context, new Resolution(320, 240, 60));
         handler.addUpdatable(new ComponentRefresher());
-        handler.addRenderable(new ComponentRendererLayer());
+        handler.addRenderable(new ComponentDisplayerLayer());
     }
 
     @Override

@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.collision.tile.TileCollidableListener;
 import com.b3dgs.lionengine.game.handler.ComponentRefresher;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
+import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.feature.group.MapTileGroup;
@@ -72,7 +72,7 @@ class Scene extends Sequence
         services.add(getInputDevice(Keyboard.class));
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
 
-        handler.addRenderable(services.create(ComponentRendererLayer.class));
+        handler.addRenderable(services.create(ComponentDisplayerLayer.class));
         handler.addUpdatable(new ComponentRefresher());
     }
 

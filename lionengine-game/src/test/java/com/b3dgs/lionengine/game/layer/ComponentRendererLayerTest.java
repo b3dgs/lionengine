@@ -102,7 +102,7 @@ public class ComponentRendererLayerTest
     @Test
     public void testComponentLayer()
     {
-        final ComponentRendererLayer component = new ComponentRendererLayer();
+        final ComponentDisplayerLayer component = new ComponentDisplayerLayer();
         final Services services = new Services();
         services.add(component);
 
@@ -146,7 +146,7 @@ public class ComponentRendererLayerTest
     @Test
     public void testComponentLayerDefault()
     {
-        final ComponentRendererLayer component = new ComponentRendererLayer();
+        final ComponentDisplayerLayer component = new ComponentDisplayerLayer();
         final Services services = new Services();
         services.add(component);
 

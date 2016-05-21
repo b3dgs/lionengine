@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.handler.ComponentRefresher;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
+import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.game.layer.Layerable;
 import com.b3dgs.lionengine.game.layer.LayerableModel;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -76,7 +76,7 @@ class Scene extends Sequence
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
 
         handler.addUpdatable(new ComponentRefresher());
-        handler.addRenderable(services.create(ComponentRendererLayer.class));
+        handler.addRenderable(services.create(ComponentDisplayerLayer.class));
     }
 
     @Override

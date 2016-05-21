@@ -85,7 +85,7 @@ public class LayerableModelTest
         });
 
         final Services services = new Services();
-        services.add(new ComponentRendererLayer());
+        services.add(new ComponentDisplayerLayer());
         final Setup setup = new Setup(config);
         final ObjectGame object = new ObjectGame(setup);
         layerable.prepare(object, services);

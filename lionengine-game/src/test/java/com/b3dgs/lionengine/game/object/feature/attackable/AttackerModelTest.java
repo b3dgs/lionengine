@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.test.UtilEnum;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
- * Test the attackable trait.
+ * Test the attackable.
  */
 public class AttackerModelTest
 {

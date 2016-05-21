@@ -17,7 +17,7 @@
  */
 
 /**
- * Trait system that allow to represent a layer, mainly used to order rendering for
- * {@link com.b3dgs.lionengine.graphic.Renderable} objects.
+ * System that allow to represent a layer, mainly used to order rendering for
+ * {@link com.b3dgs.lionengine.game.handler.Displayable} objects.
  */
 package com.b3dgs.lionengine.game.layer;

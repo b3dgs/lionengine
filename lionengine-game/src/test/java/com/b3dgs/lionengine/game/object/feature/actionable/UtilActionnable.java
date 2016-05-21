@@ -86,11 +86,11 @@ public class UtilActionnable
     }
 
     /**
-     * Create the trait.
+     * Create the actionable.
      * 
      * @param media The media.
      * @param services The services.
-     * @return The prepared trait.
+     * @return The prepared actionable.
      */
     public static ActionableModel createActionable(Media media, Services services)
     {

@@ -23,7 +23,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Mirror;
 
 /**
- * Test the mirrorable trait.
+ * Test the mirrorable.
  */
 public class MirrorableModelTest
 {

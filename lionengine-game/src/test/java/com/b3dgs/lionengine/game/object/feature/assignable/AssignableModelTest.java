@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.object.UtilSetup;
 
 /**
- * Test the assignable model trait.
+ * Test the assignable model.
  */
 public class AssignableModelTest
 {

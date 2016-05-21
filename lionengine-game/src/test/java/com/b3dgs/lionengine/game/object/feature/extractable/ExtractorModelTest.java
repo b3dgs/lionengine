@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.test.UtilTests;
 import com.b3dgs.lionengine.util.UtilReflection;
 
 /**
- * Test the extractor trait.
+ * Test the extractor.
  */
 public class ExtractorModelTest
 {

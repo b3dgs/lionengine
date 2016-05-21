@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.test.UtilTests;
 
 /**
- * Test the launchable model trait.
+ * Test the launchable model.
  */
 public class LaunchableModelTest
 {

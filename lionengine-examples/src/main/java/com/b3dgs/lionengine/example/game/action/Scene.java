@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.handler.ComponentRefresher;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.Services;
-import com.b3dgs.lionengine.game.layer.ComponentRendererLayer;
+import com.b3dgs.lionengine.game.layer.ComponentDisplayerLayer;
 import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.graphic.Graphic;
 import com.b3dgs.lionengine.graphic.Text;
@@ -68,7 +68,7 @@ class Scene extends Sequence
         getInputDevice(Keyboard.class).addActionPressed(Keyboard.ESCAPE, () -> end());
 
         handler.addUpdatable(new ComponentRefresher());
-        handler.addRenderable(new ComponentRendererLayer());
+        handler.addRenderable(new ComponentDisplayerLayer());
     }
 
     @Override

@@ -23,7 +23,7 @@ package com.b3dgs.lionengine.game.handler;
 public interface Feature
 {
     /**
-     * Prepare the trait.
+     * Prepare the feature.
      * 
      * @param owner The owner reference.
      * @param services The services reference.

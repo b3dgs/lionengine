@@ -102,9 +102,9 @@ public class ObjectGameTest
         Assert.assertTrue(object.hasFeature(Transformable.class));
         Assert.assertEquals(transformable, object.getFeature(Transformable.class));
 
-        for (final Feature trait : object.getFeatures())
+        for (final Feature feature : object.getFeatures())
         {
-            Assert.assertEquals(transformable, trait);
+            Assert.assertEquals(transformable, feature);
         }
 
         object.destroy();
