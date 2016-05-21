@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.example.game.collision;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
 import com.b3dgs.lionengine.game.collision.tile.TileCollidable;
@@ -35,12 +34,12 @@ import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.game.tile.Tile;
 
 /**
- * Updating of our controllable entity.
+ * Mario updating implementation.
  */
 class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableListener
 {
-    private final Force movement = new Force();
-    private final Force jump = new Force();
+    private final Force movement;
+    private final Force jump;
 
     @Service private Body body;
     @Service private Transformable transformable;
@@ -48,15 +47,23 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     @Service private TileCollidable tileCollidable;
     @Service private Keyboard keyboard;
 
+    /**
+     * Create updater.
+     * 
+     * @param model The model reference.
+     */
+    public MarioUpdater(MarioModel model)
+    {
+        movement = model.getMovement();
+        jump = model.getJump();
+    }
+
     @Override
     public void prepare(Handlable owner, Services services)
     {
         super.prepare(owner, services);
 
         collidable.setOrigin(Origin.CENTER_BOTTOM);
-
-        jump.setVelocity(0.1);
-        jump.setDestination(0.0, 0.0);
         transformable.teleport(80, 32);
 
         body.setDesiredFps(60);
@@ -67,20 +74,6 @@ class MarioUpdater extends FeatureModel implements Refreshable, TileCollidableLi
     @Override
     public void update(double extrp)
     {
-        movement.setDirection(Direction.ZERO);
-        if (keyboard.isPressed(Keyboard.LEFT))
-        {
-            movement.setDirection(-2, 0);
-        }
-        if (keyboard.isPressed(Keyboard.RIGHT))
-        {
-            movement.setDirection(2, 0);
-        }
-        if (keyboard.isPressedOnce(Keyboard.UP))
-        {
-            jump.setDirection(0.0, 8.0);
-        }
-
         movement.update(extrp);
         jump.update(extrp);
         body.update(extrp);

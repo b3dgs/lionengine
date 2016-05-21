@@ -28,9 +28,7 @@ import com.b3dgs.lionengine.game.object.feature.body.BodyModel;
 import com.b3dgs.lionengine.game.object.feature.transformable.TransformableModel;
 
 /**
- * Implementation of our controllable entity.
- * 
- * @see com.b3dgs.lionengine.example.game.entity
+ * Mario description implementation.
  */
 class Mario extends ObjectGame
 {
@@ -50,8 +48,11 @@ class Mario extends ObjectGame
         addFeature(new BodyModel());
         addFeature(new CollidableModel(setup));
         addFeature(new TileCollidableModel(setup));
-        addFeature(new MarioUpdater());
-        addFeature(new MarioRenderer(setup));
+
+        final MarioModel model = new MarioModel(setup);
+        addFeature(new MarioController(model));
+        addFeature(new MarioUpdater(model));
+        addFeature(new MarioRenderer(model));
         addFeature(new LayerableModel());
     }
 }

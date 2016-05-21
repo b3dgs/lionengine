@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.collision;
 
-import com.b3dgs.lionengine.Origin;
-import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.camera.Camera;
 import com.b3dgs.lionengine.game.collision.object.Collidable;
@@ -28,13 +26,12 @@ import com.b3dgs.lionengine.game.handler.Handlable;
 import com.b3dgs.lionengine.game.handler.Service;
 import com.b3dgs.lionengine.game.handler.Services;
 import com.b3dgs.lionengine.game.layer.Layerable;
-import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.object.feature.transformable.Transformable;
 import com.b3dgs.lionengine.graphic.ColorRgba;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * Rendering of our controllable entity.
+ * Mario rendering implementation.
  */
 class MarioRenderer extends FeatureModel implements Displayable
 {
@@ -48,15 +45,13 @@ class MarioRenderer extends FeatureModel implements Displayable
     /**
      * Constructor.
      * 
-     * @param setup The setup reference.
+     * @param model The model reference.
      */
-    public MarioRenderer(SetupSurface setup)
+    public MarioRenderer(MarioModel model)
     {
         super();
 
-        surface = Drawable.loadSpriteAnimated(setup.getSurface(), 7, 1);
-        surface.setOrigin(Origin.CENTER_BOTTOM);
-        surface.setFrameOffsets(-1, 0);
+        surface = model.getSurface();
     }
 
     @Override
