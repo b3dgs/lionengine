@@ -80,7 +80,6 @@ class Scene extends Sequence
 
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.load();
-        cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setInputDevice(mouse);
 
         final Factory factory = services.create(Factory.class);

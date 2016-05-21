@@ -106,7 +106,6 @@ class Scene extends Sequence
         cursor.addImage(0, Medias.create("cursor.png"));
         cursor.addImage(1, Medias.create("cursor_order.png"));
         cursor.load();
-        cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
         cursor.setInputDevice(mouse);
         cursor.setViewer(camera);
