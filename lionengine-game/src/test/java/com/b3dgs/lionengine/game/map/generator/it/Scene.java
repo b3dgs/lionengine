@@ -51,27 +51,14 @@ import com.b3dgs.lionengine.graphic.Graphic;
  */
 class Scene extends Sequence
 {
-    /** The services. */
     private final Services services = new Services();
-    /** The camera. */
     private final Camera camera = services.create(Camera.class);
-    /** The map test. */
     private final MapTile map = services.create(MapTileGame.class);
-    /** Map group. */
-    private final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
-    /** Map transition. */
-    private final MapTileTransition mapTransition = map.createFeature(MapTileTransitionModel.class);
-    /** Map circuit. */
-    private final MapTileCircuit mapCircuit = map.createFeature(MapTileCircuitModel.class);
-    /** The viewer. */
     private final MapTileViewer mapViewer = map.createFeature(MapTileViewerModel.class);
-    /** Random parameters. */
     private final GeneratorParameter parameters = new GeneratorParameter();
-    /** Random generator. */
     private final MapGenerator generator = new MapGeneratorImpl();
-    /** Random generation timing. */
     private final Timing timing = new Timing();
-    /** Count. */
+
     private int count;
 
     /**
@@ -88,8 +75,14 @@ class Scene extends Sequence
     public void load()
     {
         map.create(Medias.create("forest.png"));
+
+        final MapTileGroup mapGroup = map.createFeature(MapTileGroupModel.class);
         mapGroup.loadGroups(Medias.create("groups.xml"));
+
+        final MapTileTransition mapTransition = map.createFeature(MapTileTransitionModel.class);
         mapTransition.loadTransitions(Medias.create("transitions.xml"));
+
+        final MapTileCircuit mapCircuit = map.createFeature(MapTileCircuitModel.class);
         mapCircuit.loadCircuits(Medias.create("circuits.xml"));
 
         camera.setView(0, 0, 1024, 768);
