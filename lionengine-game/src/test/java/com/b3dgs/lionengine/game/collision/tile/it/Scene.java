@@ -72,7 +72,7 @@ class Scene extends Sequence
         services.add(getInputDevice(Keyboard.class));
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
 
-        handler.addComponent(services.create(ComponentDisplayerLayer.class));
+        handler.addComponent(new ComponentDisplayerLayer());
         handler.addComponent(new ComponentRefreshable());
     }
 

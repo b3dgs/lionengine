@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.handler;
 import com.b3dgs.lionengine.graphic.Graphic;
 
 /**
- * Displayable component implementation which display {@link Displayable} elements.
+ * Displayable component implementation which displays {@link Displayable} elements.
  */
 public class ComponentDisplayable implements ComponentRenderer
 {

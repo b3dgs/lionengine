@@ -76,7 +76,7 @@ class Scene extends Sequence
         keyboard.addActionPressed(Keyboard.ESCAPE, () -> end());
 
         handler.addComponent(new ComponentRefreshable());
-        handler.addComponent(services.create(ComponentDisplayerLayer.class));
+        handler.addComponent(new ComponentDisplayerLayer());
     }
 
     @Override

@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.handler;
 
 /**
- * Refresher component implementation which updates {@link Refreshable} elements.
+ * Refresher component implementation which refreshes {@link Refreshable} elements.
  */
 public class ComponentRefreshable implements ComponentUpdater
 {

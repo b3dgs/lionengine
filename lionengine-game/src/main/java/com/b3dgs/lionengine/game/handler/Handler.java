@@ -86,13 +86,15 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     }
 
     /**
-     * Add an updater component.
+     * Add an updater component. Automatically added to {@link Services} and {@link #addListener(HandlerListener)} if
+     * interface compatible.
      * 
      * @param component The component to add.
      */
     public final void addComponent(ComponentUpdater component)
     {
         updaters.add(component);
+        services.add(component);
         if (component instanceof HandlerListener)
         {
             addListener((HandlerListener) component);
@@ -100,13 +102,15 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     }
 
     /**
-     * Add a renderer component.
+     * Add a renderer component. Automatically added to {@link Services} and {@link #addListener(HandlerListener)} if
+     * interface compatible.
      * 
      * @param component The component to add.
      */
     public final void addComponent(ComponentRenderer component)
     {
         renderers.add(component);
+        services.add(component);
         if (component instanceof HandlerListener)
         {
             addListener((HandlerListener) component);
@@ -162,7 +166,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     }
 
     /**
-     * Update the add list.
+     * Update the add list. Prepare features, add to main list and notify listeners.
      */
     private void updateAdd()
     {
@@ -183,7 +187,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     }
 
     /**
-     * Update the remove list.
+     * Update the remove list. Remove from main list and notify listeners. Notify handlable destroyed.
      */
     private void updateRemove()
     {
@@ -205,7 +209,7 @@ public class Handler implements Handlables, Updatable, Renderable, IdentifiableL
     }
 
     /*
-     * HandledObjects
+     * Handlables
      */
 
     @Override
